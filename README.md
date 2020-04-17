@@ -1,5 +1,5 @@
 # Vyxal
-( ): NOP
+```( ): NOP
 (!): Push (length of stack)
 ("): Right shift stack
 (#): Comment
@@ -95,3 +95,4 @@
 (}): Close while loop
 (~): Push a random number
 (λ): Start an anonymous function (lambda)
+```
