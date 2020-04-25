@@ -1,4 +1,4 @@
-```( ): NOP
+( ): NOP
 (!): Push (length of stack)
 ("): Right shift stack
 (#): Comment
@@ -120,4 +120,23 @@
 (𐊄): Pop [x] Push (range(1, x))
 (Þ): Pop [x] Push (is_palindromic(x))
 (ƈ): Pop [x - list, y - integer] Push (ncr(x, y))
-```
+(∞): Push (inf list 0...∞)
+(⫙): Pop [f], Map f to the entire stack
+(ß): Pop [x] Push ([bin(n) for n in range(x)])
+(⎝): Pop [x -- zipmap] Push (min(x))
+(⎠): Pop [x -- zipmap] Push (max(x))
+(⎡): Pop [x, y]  Push (max(x, y))
+(⎣): Pop [x, y]  Push (min(x, y))
+(⨥): Pop [x] Push (x + 1) / Used in regex
+(⨪): Pop [x] Push (x - 1)
+(∺): Pop [x] Push (x % 2)
+(❝): Push ("")
+(£): Pop [x] Assign x to var
+(¥): Push var
+(§): Switch statement §case: code|case: code¡default;
+(¡): Used in switches
+(∂): Set active variable
+(Ð): Pop [x, n] Push (x in direction n)
+(ř): Pop [x, n] Push (repeat(x, n))
+(Š): Pop [x, n] Push ([x[N] + x[N + 1] + ... + x[N + n]  for N in range(len(x) - n + 1)])
+(č): Pop [x, y] Push (y c n)
