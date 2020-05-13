@@ -53,7 +53,21 @@ def Tokenise(source: str) -> [Token]:
     structure = NO_STMT
     structure_data = {}
 
+    CONTENTS = "string_contents"
+
     for char in source:
-        if structure = STRING_STMT:
-            if 
+        if structure == STRING_STMT:
+            if char == CLOSING[STRING_STMT]:
+                    this_token = Token(STRING_STMT, structure_data[CONTENTS])
+                    tokens.append(this_token)
+                    structure_data = {}                    
+            else:
+                structure_data[CONTENTS] += char
+
+        if char == CLOSING[STRING_STMT]:
+            structure_data[CONTENTS] = ""
+            structure = STRING_STMT
+
+    return tokens
+
             
