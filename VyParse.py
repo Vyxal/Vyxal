@@ -9,6 +9,7 @@ LAMBDA_STMT = "STRUCTURE_LAMBDA"
 SWITCH_STMT = "STRUCTURE_SWITCH"
 NO_STMT = "STRUCTURE_NONE"
 STRING_STMT = "STRUCTURE_STRING"
+INTEGER = "STRUCTURE_INTEGER"
 
 
 OPENING = {
@@ -53,21 +54,43 @@ def Tokenise(source: str) -> [Token]:
     structure = NO_STMT
     structure_data = {}
 
-    CONTENTS = "string_contents"
+    STRING_CONTENTS = "string_contents"
+    INTEGER_CONTENTS = "integer_contents"
 
     for char in source:
+        print(structure_data)
         if structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
-                    this_token = Token(STRING_STMT, structure_data[CONTENTS])
+                    this_token = Token(STRING_STMT,
+                                       structure_data[STRING_CONTENTS])
                     tokens.append(this_token)
-                    structure_data = {}                    
+                    structure_data = {}
+                    structure = NO_STMT
             else:
-                structure_data[CONTENTS] += char
+                structure_data[STRING_CONTENTS] += char
+                continue
+
+        elif structure == INTEGER:
+            if char in "0123456789":
+                structure_data[INTEGER_CONTENTS] += char
+                continue
+            else:
+                this_token = Token(INTEGER, structure_data[INTEGER_CONTENTS])
+                tokens.append(this_token)
+                structure_data = {}
+                structure = NO_STMT
+        
 
         if char == CLOSING[STRING_STMT]:
-            structure_data[CONTENTS] = ""
+            structure_data[STRING_CONTENTS] = ""
             structure = STRING_STMT
 
-    return tokens
+        elif char in "0123456789":
+            structure = INTEGER
+            structure_data[INTEGER_CONTENTS] = char
 
-            
+        else:
+            this_token = Token(NO_STMT, char)
+            tokens.append(this_token)
+
+    return tokens
