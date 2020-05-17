@@ -10,6 +10,7 @@ SWITCH_STMT = "STRUCTURE_SWITCH"
 NO_STMT = "STRUCTURE_NONE"
 STRING_STMT = "STRUCTURE_STRING"
 INTEGER = "STRUCTURE_INTEGER"
+CHARACTER = "STRUCTURE_CHARACTER"
 
 
 OPENING = {
@@ -50,21 +51,35 @@ class Token:
 
 
 def Tokenise(source: str) -> [Token]:
+    source += " "
     tokens = []
     structure = NO_STMT
     structure_data = {}
-
+    escaped = False
+    active_key = ""
+    
     STRING_CONTENTS = "string_contents"
     INTEGER_CONTENTS = "integer_contents"
 
     for char in source:
-        print(structure, structure_data)
+        if escaped:
+            if structure != NO_STMT:
+                structure_data[active_key] += char
+            else:
+                tokens.append(Token(CHARACTER, char))
 
+            escaped = False
+            continue
+
+        if char == "\\":
+            escaped = True
+            continue
+        
         
         if structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
                     this_token = Token(STRING_STMT,
-                                       structure_data[STRING_CONTENTS])
+                                       structure_data[active_key])
                     tokens.append(this_token)
                     structure_data = {}
                     structure = NO_STMT
@@ -78,22 +93,31 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[INTEGER_CONTENTS] += char
                 continue
             else:
-                this_token = Token(INTEGER, structure_data[INTEGER_CONTENTS])
+                this_token = Token(INTEGER, structure_data[active_key])
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
+
         
 
         if char == CLOSING[STRING_STMT]:
             structure_data[STRING_CONTENTS] = ""
             structure = STRING_STMT
+            active_key = STRING_CONTENTS
 
         elif char in "0123456789":
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
+            active_key = INTEGER_CONTENTS
 
         else:
             this_token = Token(NO_STMT, char)
             tokens.append(this_token)
 
+    tokens.pop()
     return tokens
+
+        
+tests = ["`abc`", "123", "`abc`123", r"`\``", r"\a"]
+for test in tests:
+    print([(n[0], n[1]) for n in Tokenise(test)])
