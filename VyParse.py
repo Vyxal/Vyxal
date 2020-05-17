@@ -60,6 +60,12 @@ def Tokenise(source: str) -> [Token]:
     
     STRING_CONTENTS = "string_contents"
     INTEGER_CONTENTS = "integer_contents"
+    IF_ON_TRUE = "if_on_true"
+    IF_ON_FALSE = "if_on_false"
+    FOR_COUNT = "for_count"
+    FOR_BODY = "for_body"
+    WHILE_CONDITION = "while_condition"
+    WHILE_BODY = "while_body"
 
     for char in source:
         if escaped:
