@@ -58,7 +58,9 @@ def Tokenise(source: str) -> [Token]:
     INTEGER_CONTENTS = "integer_contents"
 
     for char in source:
-        print(structure_data)
+        print(structure, structure_data)
+
+        
         if structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
                     this_token = Token(STRING_STMT,
@@ -66,6 +68,7 @@ def Tokenise(source: str) -> [Token]:
                     tokens.append(this_token)
                     structure_data = {}
                     structure = NO_STMT
+                    continue
             else:
                 structure_data[STRING_CONTENTS] += char
                 continue
