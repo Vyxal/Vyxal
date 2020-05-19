@@ -103,7 +103,6 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
-
         
 
         if char == CLOSING[STRING_STMT]:
@@ -115,6 +114,26 @@ def Tokenise(source: str) -> [Token]:
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
+
+        elif char in OPENING.values():
+            if char == OPENING[IF_STMT]:
+                statement = IF_STMT
+                active_key = IF_ON_TRUE
+
+            elif char == OPENING[WHILE_STMT]:
+                statement = WHILE_STMT
+                active_key = WHILE_CONDITION
+
+            elif char == OPENING[FOR_STMT]:
+                statement = FOR_STMT
+                active_key = FOR_COUNT
+
+            else:
+                raise NotImplementedError("That structure isn't implemented yet")
+
+        elif char in CLOSING.values():
+            if char == CLOSING[IF_STMT]:
+                
 
         else:
             this_token = Token(NO_STMT, char)
