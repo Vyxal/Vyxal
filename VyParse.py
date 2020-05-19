@@ -132,9 +132,11 @@ def Tokenise(source: str) -> [Token]:
                 raise NotImplementedError("That structure isn't implemented yet")
 
         elif char in CLOSING.values():
-            if char == CLOSING[IF_STMT]:
-                
-
+            this_token = Token(statement, structure_data)
+            tokens.append(this_token)
+            structure_data = {}
+            structure = NO_STMT
+            
         else:
             this_token = Token(NO_STMT, char)
             tokens.append(this_token)
