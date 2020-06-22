@@ -57,6 +57,8 @@ def Tokenise(source: str) -> [Token]:
     structure_data = {}
     escaped = False
     active_key = ""
+
+    nest_level = 0
     
     STRING_CONTENTS = "string_contents"
     INTEGER_CONTENTS = "integer_contents"
@@ -68,9 +70,10 @@ def Tokenise(source: str) -> [Token]:
     WHILE_BODY = "while_body"
 
     for char in source:
+        # print(char, structure, structure_data, nest_level)
         if escaped:
             if structure != NO_STMT:
-                structure_data[active_key] += char
+                structure_data[active_key] += "\\" + char
             else:
                 tokens.append(Token(CHARACTER, char))
 
@@ -80,19 +83,18 @@ def Tokenise(source: str) -> [Token]:
         if char == "\\":
             escaped = True
             continue
-        
-        
-        if structure == STRING_STMT:
+
+        elif structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
-                    this_token = Token(STRING_STMT,
-                                       structure_data[active_key])
-                    tokens.append(this_token)
-                    structure_data = {}
-                    structure = NO_STMT
-                    continue
+                nest_level -= 1
+                this_token = Token(structure, structure_data)
+                tokens.append(this_token)
+                structure_data = {}
+                structure = NO_STMT
             else:
-                structure_data[STRING_CONTENTS] += char
-                continue
+                structure_data[active_key] += char
+
+            continue
 
         elif structure == INTEGER:
             if char in "0123456789":
@@ -103,39 +105,73 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
-        
 
-        if char == CLOSING[STRING_STMT]:
-            structure_data[STRING_CONTENTS] = ""
-            structure = STRING_STMT
-            active_key = STRING_CONTENTS
+
+        if char in OPENING.values():
+            if nest_level > 0:
+                if char != CLOSING[STRING_STMT]:
+                    nest_level += 1
+                structure_data[active_key] += char
+                continue
+            
+            elif char == OPENING[IF_STMT]:
+                structure = IF_STMT
+                active_key = IF_ON_TRUE
+
+            elif char == OPENING[WHILE_STMT]:
+                structure = WHILE_STMT
+                active_key = WHILE_CONDITION
+
+            elif char == OPENING[FOR_STMT]:
+                structure = FOR_STMT
+                active_key = FOR_COUNT
+
+
+            elif char == OPENING[STRING_STMT]:
+                structure = STRING_STMT
+                active_key = STRING_CONTENTS
+
+
+            else:
+                raise NotImplementedError("That structure isn't implemented yet")
+
+            structure_data[active_key] = ""
+            nest_level += 1
+
+            
+        elif char in CLOSING.values():
+            nest_level -= 1
+            if nest_level > 0:
+                structure_data[active_key] += char
+            else:
+                this_token = Token(structure, structure_data)
+                tokens.append(this_token)
+                structure_data = {}
+                structure = NO_STMT
+
+
+        elif char == "|" and nest_level == 1:
+            # Oh, the magical pipe which makes Vyxal and Keg unique
+            if structure == IF_STMT:
+                active_key = IF_ON_FALSE
+
+            elif structure == WHILE_STMT:
+                active_key = WHILE_BODY
+
+            elif structure == FOR_STMT:
+                active_key = FOR_BODY
+
+            structure_data[active_key] = ""
+
+
+        elif structure != NO_STMT:
+            structure_data[active_key] += char
+
 
         elif char in "0123456789":
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
-
-        elif char in OPENING.values():
-            if char == OPENING[IF_STMT]:
-                statement = IF_STMT
-                active_key = IF_ON_TRUE
-
-            elif char == OPENING[WHILE_STMT]:
-                statement = WHILE_STMT
-                active_key = WHILE_CONDITION
-
-            elif char == OPENING[FOR_STMT]:
-                statement = FOR_STMT
-                active_key = FOR_COUNT
-
-            else:
-                raise NotImplementedError("That structure isn't implemented yet")
-
-        elif char in CLOSING.values():
-            this_token = Token(statement, structure_data)
-            tokens.append(this_token)
-            structure_data = {}
-            structure = NO_STMT
             
         else:
             this_token = Token(NO_STMT, char)
@@ -144,7 +180,8 @@ def Tokenise(source: str) -> [Token]:
     tokens.pop()
     return tokens
 
-        
-tests = ["`abc`", "123", "`abc`123", r"`\``", r"\a"]
-for test in tests:
-    print([(n[0], n[1]) for n in Tokenise(test)])
+
+if __name__ == "__main__":
+    tests = ["(10|\\*,)"]
+    for test in tests:
+        print([(n[0], n[1]) for n in Tokenise(test)])
