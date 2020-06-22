@@ -1,0 +1,98 @@
+!: stack.push(len(stack))
+": stack.shift(RIGHT)
+$: stack[-1], stack[-2] = stack[-2], stack[-1]
+%: lhs, rhs = stack.pop(2); stack.push(lhs % rhs)
+&: VY_reg = stack.pop() if VY_reg else stack.push(VY_reg)
+*: lhs, rhs = stack.pop(2); stack.push(lhs * rhs)
++: lhs, rhs = stack.pop(2); stack.push(lhs + rhs)
+,: pprint(stack.pop())
+-: lhs, rhs = stack.pop(2); stack.push(lhs - rhs)
+.: print(stack.pop())
+/: lhs, rhs = stack.pop(2); stack.push(lhs / rhs)
+:: top = stack.pop(); stack.push(top); stack.push(top)
+<: lhs, rhs = stack.pop(2); stack.push(lhs < rhs)
+=: lhs, rhs = stack.pop(2); stack.push(lhs == rhs)
+>: lhs, rhs = stack.pop(2); stack.push(lhs > rhs)
+?: stack.push(get_input())
+A: stack.push(all(stack))
+B: stack.push(int(stack.pop(), 2))
+C: stack.push("<CHAR>")
+D: top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)
+E: stack.push(eval(x))
+F: TODO
+G: lhs, rhs = stack.pop(2); stack.push(math.gcd(lhs, rhs))
+H: stack.push(int(stack.pop(), 16))
+I: stack.push(int(stack.pop()))
+J: lhs, rhs = stack.pop(2); stack.push(lhs + rhs)
+K: stack.push(<CONSTANT>)
+L: stack.push(len(stack.pop()))
+M: TODO
+N: TODO
+O: lhs, rhs = stack.pop(2); stack.push(lhs.count(rhs))
+P: TODO
+Q: exit
+R: TODO
+S: stack.push(str(stack.pop()))
+T: stack.push([n for n in stack.pop() if bool(n)])
+U: TODO
+V: stack.push("<CODEPAGE>")
+W: lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(lhs, rhs))
+X: TODO
+Y: TODO
+Z: lhs, rhs = stack.pop(2); stack.push(list(zip(lhs, rhs)))
+^: stack.reverse()
+_: stack.pop()
+`: stack.push("<STRING>")
+a: stack.push(any(x))
+b: stack.push(bin(x))
+c: lhs, rhs = stack.pop(2); stack.push(lhs in rhs)
+d: stack.push(stack.pop() * 2)
+e: lhs, rhs = stack.pop(2); stack.push(lhs ** rhs)
+f: TODO
+g: stack.push(VY_source[stack.pop()])
+h: stack.push(stack.pop()[0])
+i: lhs, rhs = stack.pop(2); stack.push(lhs[rhs])
+j: lhs, rhs = stack.pop(2); stack.push(lhs.join(rhs))
+k: TODO
+l: stack.push([])
+m: TODO
+n: TODO
+o: stack.push(type(stack.pop()))
+p: TODO
+q: stack.push('"' + str(stack.pop()) + '"')
+r: lhs, rhs = stack.pop(2); stack.push(list(range(lhs, rhs)))
+s: top = stack.pop(); stack.push(type(top)(sorted(top)))
+t: stack.push(stack.pop()[-1])
+u: TODO
+v: TODO
+w: stack.push([stack.pop()])
+x: TODO
+y: TODO
+z: TODO
+~: stack.push(random.randint(-INT, INT))
+¬: stack.push(not stack.pop())
+∧: lhs, rhs = stack.pop(2); stack.push(bool(lhs and rhs))
+⟑: lhs, rhs = stack.pop(2); stack.push(lhs and rhs)
+∨: lhs, rhs = stack.pop(2); stack.push(bool(lhs or rhs))
+⟇: lhs, rhs = stack.pop(2); stack.push(lhs or rhs)
+÷: TODO
+⍎: TODO
+Ṛ: lhs, rhs = stack.pop(2); stack.push(random.randint(lhs, rhs))
+Ï: lhs, rhs = stack.pop(2); stack.push(lhs.index(rhs))
+Ô: TODO
+Ç: TODO
+ɼ: stack.push(list(range(0, stack.pop() + 1)))
+𐊕: stack.push(list(range(0, stack.pop())))
+𐊓: stack.push(list(range(1, stack.pop() + 1)))
+𐊄: stack.push(list(range(1, stack.pop())))
+Þ: top = stack.pop(); stack.push(top == top[::-1])
+ƈ: TODO
+∞: TODO
+ß: TODO
+∺: stack.push(stack.pop() % 2)
+
+
+
+
+
+
