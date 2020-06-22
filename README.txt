@@ -34,11 +34,11 @@
 (A): Pop [x] Push (all(x))
 (B): Pop [x] Push (int(x, 2))
 (C): Pop [x] Push (x as a character)
-(D): Pop [x] Push (x - 1)
+(D): Pop [x] Push [x, x, x]
 (E): Pop [x] Push (eval(x))
 (F): Pop [x, f] Push (filtered(f, x))
 (G): Pop [x, y] Push (gcd(x, y))
-(H): Pop [x] Push (x / 2)
+(H): Pop [x] Push (int(x, 16))
 (I): Pop [x] Push (x as integer)
 (J): Pop [x, y] Push (x concatenated with y)
 (K): Push (constant x)
