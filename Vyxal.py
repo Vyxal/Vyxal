@@ -131,16 +131,25 @@ def VyCompile(source):
 
             elif token[NAME] == VyParse.IF_STMT:
                 onTrue = token[VALUE][VyParse.IF_ON_TRUE]
-                #onFalse = token[VALUE][VyParse.IF_ON_FALSE]
-
                 onTrue = tab(VyCompile(onTrue))
-                #onFalse = tab(VyCompile(onFalse))
-
-                print(onTrue)
 
                 compiled += "condition = bool(stack.pop())\n"
                 compiled += "if condition:\n"
                 compiled += onTrue
+
+                if VyParse.IF_ON_FALSE in token[VALUE]:
+                    onFalse = token[VALUE][VyParse.IF_ON_FALSE]
+                    onFalse = tab(VyCompile(onFalse))
+
+                    compiled += "else:\n"
+                    compiled += onFalse
+
+            elif token[NAME] == VyParse.FOR_STMT:
+                pass
+                
+                
+
+
             
 
                 
