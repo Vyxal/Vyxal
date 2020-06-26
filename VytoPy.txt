@@ -81,18 +81,12 @@ z: TODO
 Ï: lhs, rhs = stack.pop(2); stack.push(lhs.index(rhs))
 Ô: TODO
 Ç: TODO
-ɼ: stack.push(list(range(0, stack.pop() + 1)))
-𐊕: stack.push(list(range(0, stack.pop())))
-𐊓: stack.push(list(range(1, stack.pop() + 1)))
-𐊄: stack.push(list(range(1, stack.pop())))
+ʀ: stack.push(list(range(0, stack.pop() + 1)))
+ʁ: stack.push(list(range(0, stack.pop())))
+ɾ: stack.push(list(range(1, stack.pop() + 1)))
+ɽ: stack.push(list(range(1, stack.pop())))
 Þ: top = stack.pop(); stack.push(top == top[::-1])
 ƈ: TODO
 ∞: TODO
 ß: TODO
 ∺: stack.push(stack.pop() % 2)
-
-
-
-
-
-
