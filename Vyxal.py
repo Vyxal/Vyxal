@@ -1,6 +1,7 @@
 import VyParse
 from VyParse import NAME
 from VyParse import VALUE
+import string
 source = input("Enter Source: ")
 
 
@@ -113,11 +114,30 @@ class Stack(list):
         return str(self.contents)
 
 
-tab = lambda x: "    " + x
+def smart_range(item):
+    if type(item) is int:
+        return range(item)
+
+    elif type(item) is float:
+        return range(int(item))
+
+    else:
+        return item
+
+def strip_non_alphabet(name):
+    result = ""
+    for char in name:
+        if char in string.ascii_letters:
+            result += char
+
+    return result
+
+tab = lambda x: "\n".join(["    " + m for m in x.split("\n")]).rstrip("    ")
 
 def VyCompile(source):
     tokens = VyParse.Tokenise(source)
     compiled = ""
+    context_level = 0
     for token in tokens:
         if type(token[VALUE]) == str and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + "\n"
@@ -145,14 +165,19 @@ def VyCompile(source):
                     compiled += onFalse
 
             elif token[NAME] == VyParse.FOR_STMT:
-                pass
-                
-                
+                context_level += 1
 
+                if not VyParse.FOR_VARIABLE in token[VALUE]:
+                    var_name = "_context_" + str(context_level)
+                else:
+                    var_name = strip_non_alphabet(token\
+                                                  [VALUE][VyParse.FOR_VARIABLE])
 
-            
+                            
+                compiled = f"for {var_name} in smart_range(stack.pop()):\n"
+                compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
-                
+                context_level -= 1
                 
     return compiled
 
