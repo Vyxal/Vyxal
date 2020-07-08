@@ -12,6 +12,14 @@ STRING_STMT = "STRUCTURE_STRING"
 INTEGER = "STRUCTURE_INTEGER"
 CHARACTER = "STRUCTURE_CHARACTER"
 
+STRING_CONTENTS = "string_contents"
+INTEGER_CONTENTS = "integer_contents"
+IF_ON_TRUE = "if_on_true"
+IF_ON_FALSE = "if_on_false"
+FOR_VARIABLE = "for_variable"
+FOR_BODY = "for_body"
+WHILE_CONDITION = "while_condition"
+WHILE_BODY = "while_body"
 
 OPENING = {
     IF_STMT: "[",
@@ -32,7 +40,12 @@ CLOSING = {
     SWITCH_STMT: ";",
     STRING_STMT: "`"
 }
-    
+
+DEFAULT_KEYS = {
+    IF_STMT: IF_ON_TRUE,
+    FOR_STMT: FOR_BODY,
+    WHILE_STMT: WHILE_BODY,
+}
 
 class Token:
     def __init__(self, name: str, value: object):
@@ -60,14 +73,7 @@ def Tokenise(source: str) -> [Token]:
 
     nest_level = 0
     
-    STRING_CONTENTS = "string_contents"
-    INTEGER_CONTENTS = "integer_contents"
-    IF_ON_TRUE = "if_on_true"
-    IF_ON_FALSE = "if_on_false"
-    FOR_COUNT = "for_count"
-    FOR_BODY = "for_body"
-    WHILE_CONDITION = "while_condition"
-    WHILE_BODY = "while_body"
+
 
     for char in source:
         # print(char, structure, structure_data, nest_level)
@@ -124,7 +130,7 @@ def Tokenise(source: str) -> [Token]:
 
             elif char == OPENING[FOR_STMT]:
                 structure = FOR_STMT
-                active_key = FOR_COUNT
+                active_key = FOR_VARIABLE
 
 
             elif char == OPENING[STRING_STMT]:
@@ -137,6 +143,7 @@ def Tokenise(source: str) -> [Token]:
 
             structure_data[active_key] = ""
             nest_level += 1
+            default_key = DEFAULT_KEYS[structure]
 
             
         elif char in CLOSING.values():
@@ -144,6 +151,10 @@ def Tokenise(source: str) -> [Token]:
             if nest_level > 0:
                 structure_data[active_key] += char
             else:
+                if active_key != default_key:
+                    structure_data[default_key] = structure_data[active_key]
+                    del structure_data[active_key]
+                    
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
                 structure_data = {}
@@ -182,6 +193,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["(10|\\*,)"]
+    tests = ["(x)1+"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

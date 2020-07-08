@@ -2,7 +2,9 @@ import VyParse
 from VyParse import NAME
 from VyParse import VALUE
 import string
-source = input("Enter Source: ")
+source = "()"
+
+context_level = 0
 
 
 commands = {
@@ -25,7 +27,7 @@ commands = {
     '?': 'stack.push(get_input())',
     'A': 'stack.push(all(stack))',
     'B': 'stack.push(int(stack.pop(), 2))',
-    'C': 'stack.push("<CHAR>")',
+    'C': 'stack.push("{}")',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
     'E': 'stack.push(eval(x))',
     'F': 'TODO',
@@ -33,7 +35,7 @@ commands = {
     'H': 'stack.push(int(stack.pop(), 16))',
     'I': 'stack.push(int(stack.pop()))',
     'J': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
-    'K': 'stack.push(<CONSTANT>)',
+    'K': 'stack.push({})',
     'L': 'stack.push(len(stack.pop()))',
     'M': 'TODO',
     'N': 'TODO',
@@ -44,14 +46,14 @@ commands = {
     'S': 'stack.push(str(stack.pop()))',
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
     'U': 'TODO',
-    'V': 'stack.push("<CODEPAGE>")',
+    'V': 'stack.push("{}")',
     'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(lhs, rhs))',
     'X': 'TODO',
     'Y': 'TODO',
     'Z': 'lhs, rhs = stack.pop(2); stack.push(list(zip(lhs, rhs)))',
     '^': 'stack.reverse()',
     '_': 'stack.pop()',
-    '`': 'stack.push("<STRING>")',
+    '`': 'stack.push("{}")',
     'a': 'stack.push(any(x))',
     'b': 'stack.push(bin(x))',
     'c': 'lhs, rhs = stack.pop(2); stack.push(lhs in rhs)',
@@ -135,9 +137,9 @@ def strip_non_alphabet(name):
 tab = lambda x: "\n".join(["    " + m for m in x.split("\n")]).rstrip("    ")
 
 def VyCompile(source):
+    global context_level
     tokens = VyParse.Tokenise(source)
     compiled = ""
-    context_level = 0
     for token in tokens:
         if type(token[VALUE]) == str and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + "\n"
