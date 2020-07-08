@@ -2,7 +2,6 @@ import VyParse
 from VyParse import NAME
 from VyParse import VALUE
 import string
-source = "()"
 
 context_level = 0
 
@@ -16,9 +15,9 @@ commands = {
     '&': 'VY_reg = stack.pop() if VY_reg else stack.push(VY_reg)',
     '*': 'lhs, rhs = stack.pop(2); stack.push(lhs * rhs)',
     '+': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
-    ',': 'pprint(stack.pop())',
+    ',': 'pprint(stack.pop()); printed = True',
     '-': 'lhs, rhs = stack.pop(2); stack.push(lhs - rhs)',
-    '.': 'print(stack.pop())',
+    '.': 'print(stack.pop()); printed = True',
     '/': 'lhs, rhs = stack.pop(2); stack.push(lhs / rhs)',
     ':': 'top = stack.pop(); stack.push(top); stack.push(top)',
     '<': 'lhs, rhs = stack.pop(2); stack.push(lhs < rhs)',
@@ -115,6 +114,9 @@ class Stack(list):
     def __self__(self):
         return str(self.contents)
 
+    def __getitem__(self, n):
+        return self.contents[n]
+
 
 def smart_range(item):
     if type(item) is int:
@@ -125,6 +127,9 @@ def smart_range(item):
 
     else:
         return item
+
+def pprint(item):
+    print(item)
 
 def strip_non_alphabet(name):
     result = ""
@@ -137,6 +142,8 @@ def strip_non_alphabet(name):
 tab = lambda x: "\n".join(["    " + m for m in x.split("\n")]).rstrip("    ")
 
 def VyCompile(source):
+    if not source:
+        return "pass"
     global context_level
     tokens = VyParse.Tokenise(source)
     compiled = ""
@@ -180,8 +187,55 @@ def VyCompile(source):
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
                 context_level -= 1
+            elif token[NAME] == VyParse.WHILE_STMT:
+                context_level += 1
+
+                if not VyParse.WHILE_CONDITION in token[VALUE]:
+                    condition = "stack.push(1)"
+                else:
+                    condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
+
+                            
+                compiled = f"{condition}\nwhile stack.pop():\n"
+                compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + "\n"
+                compiled += tab(condition)
+
+                context_level -= 1
                 
     return compiled
 
-x = "stack = Stack()\n" + VyCompile(source)
-print(x)
+if __name__ == "__main__":
+    import sys
+
+    file_location = ""
+    flags = ""
+    inputs = []
+
+    if len(sys.argv) > 1:
+        file_location = sys.argv[1]
+        
+    if len(sys.argv) > 2:
+        flags = sys.argv[2]
+        inputs = sys.argv[3:]
+
+    file = open(file_location, "r", encoding="utf-8")
+    code = file.read()
+
+    header = "stack = Stack()\nVY_reg = 0\nprinted = False\n"
+    code = VyCompile(code)
+
+    exec(header + code)
+
+    if not printed:
+        print(stack[-1])
+
+    
+    
+
+    
+        
+    
+
+
+
+

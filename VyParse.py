@@ -45,6 +45,8 @@ DEFAULT_KEYS = {
     IF_STMT: IF_ON_TRUE,
     FOR_STMT: FOR_BODY,
     WHILE_STMT: WHILE_BODY,
+    STRING_STMT: STRING_CONTENTS,
+    INTEGER: INTEGER_CONTENTS
 }
 
 class Token:
@@ -193,6 +195,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["(x)1+"]
+    tests = ["{x}1+"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
