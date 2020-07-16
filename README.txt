@@ -131,12 +131,14 @@
 (⨪): Pop [x] Push (x - 1)
 (∺): Pop [x] Push (x % 2)
 (❝): Push ("")
+(ð): Push (" ")
 (£): Pop [x] Assign x to var
 (¥): Push var
-(§): Switch statement §case: code|case: code¡default;
+(§): Switch statement §case¦code|case¦code¡default;
+(¦): Used in switches
 (¡): Used in switches
 (∂): Set active variable
 (Ð): Pop [x, n] Push (x in direction n)
 (ř): Pop [x, n] Push (repeat(x, n))
 (Š): Pop [x, n] Push ([x[N] + x[N + 1] + ... + x[N + n]  for N in range(len(x) - n + 1)])
-(č): Pop [x, y] Push (y c n)
+(č): Pop [x] Push (ord(x))
