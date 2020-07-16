@@ -33,11 +33,11 @@
 (@): Define/call a function @name n|code; @name;
 (A): Pop [x] Push (all(x))
 (B): Pop [x] Push (int(x, 2))
-(C): Pop [x] Push (x as a character)
+(C): Pop [x] Push (chr(x))
 (D): Pop [x] Push [x, x, x]
 (E): Pop [x] Push (eval(x))
 (F): Pop [x, f] Push (filtered(f, x))
-(G): Pop [x, y] Push (gcd(x, y))
+(G): Pop [x] Push (max(x))
 (H): Pop [x] Push (int(x, 16))
 (I): Pop [x] Push (x as integer)
 (J): Pop [x, y] Push (x concatenated with y)
@@ -69,7 +69,7 @@
 (d): Pop [x] Push (x * 2)
 (e): Pop [x, y] Push (x ^ y)
 (f): Pop [x] Push (flattened(x))
-(g): Pop [x] Push (program[x])
+(g): Pop [x] Push (min(x))
 (h): Pop [x] Push (x[0])
 (i): Pop [x, y] Push x[y]
 (j): Pop [x, y] Push (x.join(y))
@@ -84,7 +84,7 @@
 (s): Pop [x] Push (sorted(x))
 (t): Pop [x] Push (x[-1])
 (u): Pop [x] Push (sorted(uniquified(x)))
-(v): Undo the last operation and vectorise it instead.
+(v): Vectorise the next operation
 (w): Pop [x] Push ([x])
 (x): Context level down
 (y): Pop [x] Push (uninterleave(x))
@@ -112,7 +112,7 @@
 (ø): Call imported function f
 (Ï): Pop [x, y] Push (x.index(y))
 (Ô): Push (list of odd numbers)
-(Ç): Pop [x] Push ([centred(n) for n in x])
+(Ç): Pop [x] Push (1 - x)
 (æ): Escape next character as a string
 (ʀ): Pop [x] Push (range(0, x + 1))
 (ʁ): Pop [x] Push (range(0, x))
