@@ -5,14 +5,13 @@ import string
 
 context_level = 0
 
-
 commands = {
-    '!': 'stack.push(len(stack))',
+    '!': 'stack.push(stack.len())',
     '"': 'stack.shift(RIGHT)',
     "'": 'stack.shift(LEFT)',
-    '$': 'stack[-1], stack[-2] = stack[-2], stack[-1]',
+    '$': 'stack.swap()',
     '%': 'lhs, rhs = stack.pop(2); stack.push(lhs % rhs)',
-    '&': 'VY_reg = stack.pop() if VY_reg else stack.push(VY_reg)',
+    '&': 'if VY_reg_reps % 2:VY_reg=stack.pop()\nelse:stack.push(VY_reg)\nVY_reg_reps += 1',
     '*': 'lhs, rhs = stack.pop(2); stack.push(lhs * rhs)',
     '+': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
     ',': 'pprint(stack.pop()); printed = True',
@@ -24,11 +23,11 @@ commands = {
     '=': 'lhs, rhs = stack.pop(2); stack.push(lhs == rhs)',
     '>': 'lhs, rhs = stack.pop(2); stack.push(lhs > rhs)',
     '?': 'stack.push(get_input())',
-    'A': 'stack.push(all(stack))',
+    'A': 'stack.push(stack.all())',
     'B': 'stack.push(int(stack.pop(), 2))',
     'C': 'stack.push("{}")',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
-    'E': 'stack.push(eval(x))',
+    'E': 'x = stack.pop(); stack.push(eval(x))',
     'F': 'TODO',
     'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(lhs, rhs))',
     'H': 'stack.push(int(stack.pop(), 16))',
@@ -107,6 +106,20 @@ class Stack(list):
         self.contents = []
     def push(self, item):
         self.contents.append(item)
+    def pop(self, num=1):
+        i = self.contents[-num:]
+        del self.contents[-num:]
+        if num == 1:
+            return i[0]
+        return i
+    def swap(self):
+        self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
+    def len(self):
+        return len(self.contents)
+    def all(self):
+        return all(self.contents)
+    def reverse(self):
+        self.contents = self.contents[::-1]
 
     def __repr__(self):
         return repr(self.contents)
@@ -222,26 +235,15 @@ if __name__ == "__main__":
         
     if len(sys.argv) > 2:
         flags = sys.argv[2]
-        inputs = sys.argv[3:]
+        inputs = list(map(eval,sys.argv[2:]))
 
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
 
-    header = "stack = Stack()\nVY_reg = 0\nprinted = False\n"
+    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
     code = VyCompile(code)
 
     exec(header + code)
 
     if not printed:
         print(stack[-1])
-
-    
-    
-
-    
-        
-    
-
-
-
-
