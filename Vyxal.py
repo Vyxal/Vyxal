@@ -7,7 +7,7 @@ context_level = 0
 
 
 commands = {
-    '!': 'stack.push(len(stack))',
+    '!': 'stack.push(stack.len())',
     '"': 'stack.shift(RIGHT)',
     "'": 'stack.shift(LEFT)',
     '$': 'stack[-1], stack[-2] = stack[-2], stack[-1]',
@@ -111,6 +111,8 @@ class Stack(list):
         i = self.contents[-num:]
         del self.contents[-num:]
         return i
+    def len(self):
+        return len(self.contents)
 
     def __repr__(self):
         return repr(self.contents)
@@ -224,8 +226,6 @@ if __name__ == "__main__":
 
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
-
-    print(inputs)
 
     header = "stack = Stack()\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
     code = VyCompile(code)
