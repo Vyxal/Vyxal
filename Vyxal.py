@@ -107,6 +107,10 @@ class Stack(list):
         self.contents = []
     def push(self, item):
         self.contents.append(item)
+    def pop(self, num):
+        i = self.contents[-num:]
+        del self.contents[-num:]
+        return i
 
     def __repr__(self):
         return repr(self.contents)
@@ -216,26 +220,17 @@ if __name__ == "__main__":
         
     if len(sys.argv) > 2:
         flags = sys.argv[2]
-        inputs = sys.argv[3:]
+        inputs = list(map(eval,sys.argv[2:]))
 
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
 
-    header = "stack = Stack()\nVY_reg = 0\nprinted = False\n"
+    print(inputs)
+
+    header = "stack = Stack()\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
     code = VyCompile(code)
 
     exec(header + code)
 
     if not printed:
         print(stack[-1])
-
-    
-    
-
-    
-        
-    
-
-
-
-
