@@ -23,11 +23,11 @@ commands = {
     '=': 'lhs, rhs = stack.pop(2); stack.push(lhs == rhs)',
     '>': 'lhs, rhs = stack.pop(2); stack.push(lhs > rhs)',
     '?': 'stack.push(get_input())',
-    'A': 'stack.push(all(stack))',
+    'A': 'stack.push(stack.all())',
     'B': 'stack.push(int(stack.pop(), 2))',
     'C': 'stack.push("{}")',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
-    'E': 'stack.push(eval(x))',
+    'E': 'x = stack.pop(); stack.push(eval(x))',
     'F': 'TODO',
     'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(lhs, rhs))',
     'H': 'stack.push(int(stack.pop(), 16))',
@@ -116,6 +116,10 @@ class Stack(list):
         self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
     def len(self):
         return len(self.contents)
+    def all(self):
+        return all(self.contents)
+    def reverse(self):
+        self.contents = self.contents[::-1]
 
     def __repr__(self):
         return repr(self.contents)
