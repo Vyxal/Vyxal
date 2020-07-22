@@ -5,14 +5,13 @@ import string
 
 context_level = 0
 
-
 commands = {
     '!': 'stack.push(stack.len())',
     '"': 'stack.shift(RIGHT)',
     "'": 'stack.shift(LEFT)',
-    '$': 'stack[-1], stack[-2] = stack[-2], stack[-1]',
+    '$': 'stack.swap()',
     '%': 'lhs, rhs = stack.pop(2); stack.push(lhs % rhs)',
-    '&': 'VY_reg = stack.pop() if VY_reg else stack.push(VY_reg)',
+    '&': 'if VY_reg_reps % 2:VY_reg=stack.pop()\nelse:stack.push(VY_reg)\nVY_reg_reps += 1',
     '*': 'lhs, rhs = stack.pop(2); stack.push(lhs * rhs)',
     '+': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
     ',': 'pprint(stack.pop()); printed = True',
@@ -107,10 +106,14 @@ class Stack(list):
         self.contents = []
     def push(self, item):
         self.contents.append(item)
-    def pop(self, num):
+    def pop(self, num=1):
         i = self.contents[-num:]
         del self.contents[-num:]
+        if num == 1:
+            return i[0]
         return i
+    def swap(self):
+        self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
     def len(self):
         return len(self.contents)
 
@@ -227,7 +230,7 @@ if __name__ == "__main__":
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
 
-    header = "stack = Stack()\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
+    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
     code = VyCompile(code)
 
     exec(header + code)
