@@ -117,6 +117,12 @@ class Stack(list):
     def __getitem__(self, n):
         return self.contents[n]
 
+    def pop(self, n=1):
+        items = []
+        for i in range(n):
+            items.append(self.contents.pop())
+        return items
+
 
 def smart_range(item):
     if type(item) is int:
