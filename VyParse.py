@@ -109,7 +109,7 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[INTEGER_CONTENTS] += char
                 continue
             else:
-                this_token = Token(INTEGER, structure_data[active_key])
+                this_token = Token(INTEGER, int(structure_data[active_key]))
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
@@ -195,6 +195,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["{x}1+"]
+    tests = ["1."]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

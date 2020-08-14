@@ -16,7 +16,7 @@ commands = {
     '+': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
     ',': 'pprint(stack.pop()); printed = True',
     '-': 'lhs, rhs = stack.pop(2); stack.push(lhs - rhs)',
-    '.': 'print(stack.pop()); printed = True',
+    '.': 'print(stack.pop(), end=""); printed = True',
     '/': 'lhs, rhs = stack.pop(2); stack.push(lhs / rhs)',
     ':': 'top = stack.pop(); stack.push(top); stack.push(top)',
     '<': 'lhs, rhs = stack.pop(2); stack.push(lhs < rhs)',
@@ -126,11 +126,16 @@ class Stack(list):
         return self.contents[n]
 
     def pop(self, n=1):
+        if n == 1:
+            if len(self.contents):
+                return self.contents.pop()
+            else:
+                return get_input()
         items = []
-        for i in range(n - len(self) - 1):
-            items.append(self.contents.pop())
-
-        while len(items) != n:
+        if len(self.contents) >= n:
+            for i in range(n):
+                items.append(self.contents.pop())
+        while len(items) < n:
             items.append(get_input())
         return items
 
@@ -152,13 +157,15 @@ def get_input():
 
 def smart_range(item):
     if type(item) is int:
-        return range(item)
+        x =  range(item)
 
     elif type(item) is float:
-        return range(int(item))
+        x =  range(int(item))
 
     else:
-        return item
+        x =  item
+    print(list(x))
+    return x
 
 def pprint(item):
     print(item)
@@ -180,7 +187,7 @@ def VyCompile(source):
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
-        if type(token[VALUE]) == str and token[VALUE] in commands:
+        if token[NAME] == VyParse.NO_STMT and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + "\n"
 
         else:
@@ -215,7 +222,7 @@ def VyCompile(source):
                                                   [VALUE][VyParse.FOR_VARIABLE])
 
                             
-                compiled = f"for {var_name} in smart_range(stack.pop()):\n"
+                compiled += f"for {var_name} in smart_range(stack.pop()):\n"
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
                 context_level -= 1
@@ -253,9 +260,8 @@ if __name__ == "__main__":
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
 
-    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\nfor i in inputs:stack.push(i)\n"
+    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\n"
     code = VyCompile(code)
-
     exec(header + code)
 
     if not printed:
