@@ -132,11 +132,16 @@ class Stack(list):
             else:
                 return get_input()
         items = []
+
         if len(self.contents) >= n:
             for i in range(n):
                 items.append(self.contents.pop())
-        while len(items) < n:
-            items.append(get_input())
+        else:
+            for i in range(len(self.contents)):
+                items.append(self.contents.pop())
+        
+            while len(items) < n:
+                items.append(get_input())
         return items
 
 
@@ -164,7 +169,6 @@ def smart_range(item):
 
     else:
         x =  item
-    print(list(x))
     return x
 
 def pprint(item):
@@ -255,7 +259,7 @@ if __name__ == "__main__":
         
     if len(sys.argv) > 2:
         flags = sys.argv[2]
-        inputs = list(map(eval,sys.argv[2:]))
+        inputs = list(map(eval,sys.argv[3:]))
 
     file = open(file_location, "r", encoding="utf-8")
     code = file.read()
