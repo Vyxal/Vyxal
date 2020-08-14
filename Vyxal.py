@@ -4,7 +4,7 @@ from VyParse import VALUE
 import string
 
 context_level = 0
-
+input_cycle = 0
 commands = {
     '!': 'stack.push(stack.len())',
     '"': 'stack.shift(RIGHT)',
@@ -106,12 +106,7 @@ class Stack(list):
         self.contents = []
     def push(self, item):
         self.contents.append(item)
-    def pop(self, num=1):
-        i = self.contents[-num:]
-        del self.contents[-num:]
-        if num == 1:
-            return i[0]
-        return i
+
     def swap(self):
         self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
     def len(self):
@@ -132,9 +127,27 @@ class Stack(list):
 
     def pop(self, n=1):
         items = []
-        for i in range(n):
+        for i in range(n - len(self) - 1):
             items.append(self.contents.pop())
+
+        while len(items) != n:
+            items.append(get_input())
         return items
+
+
+def get_input():
+    global input_cycle
+    if inputs:
+        item = inputs[input_cycle % len(inputs)]
+        input_cycle += 1
+        return item
+    else:
+        try:
+            item = input()
+            return item
+        except Exception:
+            return 0
+    
 
 
 def smart_range(item):
