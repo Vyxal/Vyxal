@@ -10,9 +10,9 @@
 ()): End for loop
 (*): Pop [x, y] Push (y * x)
 (+): Pop [x, y] Push (y + x)
-(,): Print nicely
+(,): Print t.o.s. with newline
 (-): Pop [x, y] Push (y - x)
-(.): Print rawly
+(.): Print t.o.s
 (/): Pop [x, y] Push (y / x)
 (0): Push (0)
 (1): Push (1)
