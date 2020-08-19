@@ -102,8 +102,14 @@ commands = {
 }
 
 class Stack(list):
-    def __init__(self):
-        self.contents = []
+    def __init__(self, prelist=None):
+        if prelist:
+            if type(prelist) is list:
+                self.contents = prelist
+            else:
+                self.contents = [prelist]
+        else:
+            self.contents = []
     def push(self, item):
         self.contents.append(item)
 
@@ -244,6 +250,29 @@ def VyCompile(source):
                 compiled += tab(condition)
 
                 context_level -= 1
+
+            elif token[NAME] == VyParse.FUNCTION_STMT:
+                if VyParse.FUNCTION_BODY not in token[VALUE]:
+                    compiled += f"stack += {token[VALUE][VyParse.FUNCTION_NAME]}(stack)\n"
+                else:
+                    function_data = token[VALUE][VyParse.FUNCTION_NAME].split(":")
+                    number_of_parameters = 0
+                    name = function_data[0]
+
+                    if len(function_data) == 2:
+                        number_of_parameters = int(function_data[1])
+                        
+                    compiled += f"def {name}(stack):\n"
+                    compiled += tab(f"temp = Stack(stack.pop({number_of_parameters}))") + "\n"
+                    compiled += tab("stack = temp") + "\n"
+                    compiled += tab(VyCompile(token[VALUE][VyParse.FUNCTION_BODY])) + "\n"
+                    compiled += tab("return stack") +  "\n"
+                
+
+
+                
+                
+                
                 
     return compiled
 

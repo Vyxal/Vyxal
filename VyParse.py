@@ -20,6 +20,8 @@ FOR_VARIABLE = "for_variable"
 FOR_BODY = "for_body"
 WHILE_CONDITION = "while_condition"
 WHILE_BODY = "while_body"
+FUNCTION_NAME = "function_name"
+FUNCTION_BODY = "function_body"
 
 OPENING = {
     IF_STMT: "[",
@@ -46,7 +48,8 @@ DEFAULT_KEYS = {
     FOR_STMT: FOR_BODY,
     WHILE_STMT: WHILE_BODY,
     STRING_STMT: STRING_CONTENTS,
-    INTEGER: INTEGER_CONTENTS
+    INTEGER: INTEGER_CONTENTS,
+    FUNCTION_STMT: FUNCTION_NAME
 }
 
 class Token:
@@ -78,7 +81,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        # print(char, structure, structure_data, nest_level)
+        #print(char, structure, structure_data, nest_level)
         if escaped:
             if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
@@ -139,6 +142,10 @@ def Tokenise(source: str) -> [Token]:
                 structure = STRING_STMT
                 active_key = STRING_CONTENTS
 
+            elif char == OPENING[FUNCTION_STMT]:
+                structure = FUNCTION_STMT
+                active_key = FUNCTION_NAME
+
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
@@ -153,9 +160,10 @@ def Tokenise(source: str) -> [Token]:
             if nest_level > 0:
                 structure_data[active_key] += char
             else:
-                if active_key != default_key:
-                    structure_data[default_key] = structure_data[active_key]
-                    del structure_data[active_key]
+                if structure != FUNCTION_STMT:
+                    if active_key != default_key:
+                        structure_data[default_key] = structure_data[active_key]
+                        del structure_data[active_key]
                     
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
@@ -173,6 +181,9 @@ def Tokenise(source: str) -> [Token]:
 
             elif structure == FOR_STMT:
                 active_key = FOR_BODY
+
+            elif structure == FUNCTION_STMT:
+                active_key = FUNCTION_BODY
 
             structure_data[active_key] = ""
 
@@ -195,6 +206,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["1."]
+    tests = ["@triple;"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
