@@ -131,6 +131,17 @@ class Stack(list):
     def __getitem__(self, n):
         return self.contents[n]
 
+    def __iadd__(self, rhs):
+        if type(rhs) == type(self):
+            self.contents += rhs.contents
+        else:
+            self.contents += rhs
+        return self
+
+    def __add__(self, rhs):
+        return self.contents + rhs
+        
+
     def pop(self, n=1):
         if n == 1:
             if len(self.contents):
@@ -282,6 +293,7 @@ if __name__ == "__main__":
     file_location = ""
     flags = ""
     inputs = []
+    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\n"
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
@@ -290,12 +302,19 @@ if __name__ == "__main__":
         flags = sys.argv[2]
         inputs = list(map(eval,sys.argv[3:]))
 
-    file = open(file_location, "r", encoding="utf-8")
-    code = file.read()
 
-    header = "stack = Stack()\nVY_reg_reps = 1\nVY_reg = 0\nprinted = False\n"
-    code = VyCompile(code)
-    exec(header + code)
+    if not file_location: #repl mode
+        while 1:
+            line = input(">>> ")
+            line = VyCompile(line)
+            exec(header + line)
+            print(stack)
+    else:
+        file = open(file_location, "r", encoding="utf-8")
+        code = file.read()
 
-    if not printed:
-        print(stack[-1])
+        code = VyCompile(code)
+        exec(header + code)
+
+        if not printed:
+            print(stack[-1])
