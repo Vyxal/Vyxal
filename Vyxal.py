@@ -5,23 +5,28 @@ import string
 
 context_level = 0
 input_cycle = 0
+
+_MAP_START = 0
+_MAP_OFFSET = 1
+join = False
+
 commands = {
     '!': 'stack.push(stack.len())',
     '"': 'stack.shift(RIGHT)',
     "'": 'stack.shift(LEFT)',
     '$': 'stack.swap()',
-    '%': 'lhs, rhs = stack.pop(2); stack.push(lhs % rhs)',
+    '%': 'lhs, rhs = stack.pop(2); stack.push(rhs % lhs)',
     '&': 'if VY_reg_reps % 2:VY_reg=stack.pop()\nelse:stack.push(VY_reg)\nVY_reg_reps += 1',
-    '*': 'lhs, rhs = stack.pop(2); stack.push(lhs * rhs)',
-    '+': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
+    '*': 'lhs, rhs = stack.pop(2); stack.push(rhs * lhs)',
+    '+': 'lhs, rhs = stack.pop(2); stack.push(rhs + lhs)',
     ',': 'pprint(stack.pop()); printed = True',
-    '-': 'lhs, rhs = stack.pop(2); stack.push(lhs - rhs)',
+    '-': 'lhs, rhs = stack.pop(2); stack.push(rhs - lhs)',
     '.': 'print(stack.pop(), end=""); printed = True',
-    '/': 'lhs, rhs = stack.pop(2); stack.push(lhs / rhs)',
+    '/': 'lhs, rhs = stack.pop(2); stack.push(rhs / lhs)',
     ':': 'top = stack.pop(); stack.push(top); stack.push(top)',
-    '<': 'lhs, rhs = stack.pop(2); stack.push(lhs < rhs)',
-    '=': 'lhs, rhs = stack.pop(2); stack.push(lhs == rhs)',
-    '>': 'lhs, rhs = stack.pop(2); stack.push(lhs > rhs)',
+    '<': 'lhs, rhs = stack.pop(2); stack.push(rhs < lhs)',
+    '=': 'lhs, rhs = stack.pop(2); stack.push(rhs == lhs)',
+    '>': 'lhs, rhs = stack.pop(2); stack.push(rhs > lhs)',
     '?': 'stack.push(get_input())',
     'A': 'stack.push(stack.all())',
     'B': 'stack.push(int(stack.pop(), 2))',
@@ -29,15 +34,15 @@ commands = {
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
     'E': 'x = stack.pop(); stack.push(eval(x))',
     'F': 'TODO',
-    'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(lhs, rhs))',
+    'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(rhs, lhs))',
     'H': 'stack.push(int(stack.pop(), 16))',
     'I': 'stack.push(int(stack.pop()))',
-    'J': 'lhs, rhs = stack.pop(2); stack.push(lhs + rhs)',
+    'J': 'lhs, rhs = stack.pop(2); stack.push(rhs + lhs)',
     'K': 'stack.push({})',
     'L': 'stack.push(len(stack.pop()))',
-    'M': 'TODO',
+    'M': 'stack.do_map(stack.pop())',
     'N': 'TODO',
-    'O': 'lhs, rhs = stack.pop(2); stack.push(lhs.count(rhs))',
+    'O': 'lhs, rhs = stack.pop(2); stack.push(rhs.count(lhs))',
     'P': 'TODO',
     'Q': 'exit',
     'R': 'TODO',
@@ -45,23 +50,23 @@ commands = {
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
     'U': 'TODO',
     'V': 'stack.push("{}")',
-    'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(lhs, rhs))',
+    'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(rhs, lhs))',
     'X': 'TODO',
     'Y': 'TODO',
-    'Z': 'lhs, rhs = stack.pop(2); stack.push(list(zip(lhs, rhs)))',
+    'Z': 'lhs, rhs = stack.pop(2); stack.push(list(zip(rhs, lhs)))',
     '^': 'stack.reverse()',
     '_': 'stack.pop()',
     '`': 'stack.push("{}")',
     'a': 'stack.push(any(x))',
     'b': 'stack.push(bin(x))',
-    'c': 'lhs, rhs = stack.pop(2); stack.push(lhs in rhs)',
+    'c': 'lhs, rhs = stack.pop(2); stack.push(rhs in lhs)',
     'd': 'stack.push(stack.pop() * 2)',
-    'e': 'lhs, rhs = stack.pop(2); stack.push(lhs ** rhs)',
+    'e': 'lhs, rhs = stack.pop(2); stack.push(rhs ** lhs)',
     'f': 'TODO',
     'g': 'stack.push(VY_source[stack.pop()])',
     'h': 'stack.push(stack.pop()[0])',
-    'i': 'lhs, rhs = stack.pop(2); stack.push(lhs[rhs])',
-    'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join(rhs))',
+    'i': 'lhs, rhs = stack.pop(2); stack.push(rhs[lhs])',
+    'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in rhs])); ',
     'k': 'TODO',
     'l': 'stack.push([])',
     'm': 'TODO',
@@ -69,7 +74,7 @@ commands = {
     'o': 'stack.push(type(stack.pop()))',
     'p': 'TODO',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
-    'r': 'lhs, rhs = stack.pop(2); stack.push(list(range(lhs, rhs)))',
+    'r': 'lhs, rhs = stack.pop(2); stack.push(list(range(rhs, lhs)))',
     's': 'top = stack.pop(); stack.push(type(top)(sorted(top)))',
     't': 'stack.push(stack.pop()[-1])',
     'u': 'TODO',
@@ -80,14 +85,14 @@ commands = {
     'z': 'TODO',
     '~': 'stack.push(random.randint(-INT, INT))',
     '¬': 'stack.push(not stack.pop())',
-    '∧': 'lhs, rhs = stack.pop(2); stack.push(bool(lhs and rhs))',
-    '⟑': 'lhs, rhs = stack.pop(2); stack.push(lhs and rhs)',
-    '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(lhs or rhs))',
-    '⟇': 'lhs, rhs = stack.pop(2); stack.push(lhs or rhs)',
+    '∧': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs and lhs))',
+    '⟑': 'lhs, rhs = stack.pop(2); stack.push(rhs and lhs)',
+    '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs or lhs))',
+    '⟇': 'lhs, rhs = stack.pop(2); stack.push(rhs or lhs)',
     '÷': 'TODO',
-    '⍎': 'TODO',
-    'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(lhs, rhs))',
-    'Ï': 'lhs, rhs = stack.pop(2); stack.push(lhs.index(rhs))',
+    '⍎': 'stack += (stack.pop())(stack)',
+    'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
+    'Ï': 'lhs, rhs = stack.pop(2); stack.push(rhs.index(lhs))',
     'Ô': 'TODO',
     'Ç': 'TODO',
     'ʀ': 'stack.push(list(range(0, stack.pop() + 1)))',
@@ -98,7 +103,8 @@ commands = {
     'ƈ': 'TODO',
     '∞': 'TODO',
     'ß': 'TODO',
-    '∺': 'stack.push(stack.pop() % 2)'
+    '∺': 'stack.push(stack.pop() % 2)',
+    "∻": 'lhs, rhs = stack.pop(2); stack.push((rhs % lhs) == 0)'
 }
 
 class Stack(list):
@@ -140,7 +146,15 @@ class Stack(list):
 
     def __add__(self, rhs):
         return self.contents + rhs
-        
+
+    def do_map(self, fn):
+        temp = []
+        obj = self.contents.pop()
+        if type(obj) in [int, float]:
+            obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
+        for item in obj:
+            temp.append(fn(item))
+        self.contents.append(temp)
 
     def pop(self, n=1):
         if n == 1:
@@ -174,8 +188,6 @@ def get_input():
             return item
         except Exception:
             return 0
-    
-
 
 def smart_range(item):
     if type(item) is int:
@@ -199,7 +211,9 @@ def strip_non_alphabet(name):
 
     return result
 
-tab = lambda x: "\n".join(["    " + m for m in x.split("\n")]).rstrip("    ")
+newline = "\n"
+tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
+
 
 def VyCompile(source):
     if not source:
@@ -209,28 +223,28 @@ def VyCompile(source):
     compiled = ""
     for token in tokens:
         if token[NAME] == VyParse.NO_STMT and token[VALUE] in commands:
-            compiled += commands[token[VALUE]] + "\n"
+            compiled += commands[token[VALUE]] + newline
 
         else:
             if token[NAME] == VyParse.INTEGER:
-                compiled += f"stack.push({token[VALUE]})\n"
+                compiled += f"stack.push({token[VALUE]})" + newline
 
             elif token[NAME] == VyParse.STRING_STMT:
-                compiled += f"stack.push('{token[VALUE][VyParse.STRING_CONTENTS]}')\n"
+                compiled += f"stack.push('{token[VALUE][VyParse.STRING_CONTENTS]}')" + newline
 
             elif token[NAME] == VyParse.IF_STMT:
                 onTrue = token[VALUE][VyParse.IF_ON_TRUE]
                 onTrue = tab(VyCompile(onTrue))
 
-                compiled += "condition = bool(stack.pop())\n"
-                compiled += "if condition:\n"
+                compiled += "condition = bool(stack.pop())" + newline
+                compiled += "if condition:" + newline
                 compiled += onTrue
 
                 if VyParse.IF_ON_FALSE in token[VALUE]:
                     onFalse = token[VALUE][VyParse.IF_ON_FALSE]
                     onFalse = tab(VyCompile(onFalse))
 
-                    compiled += "else:\n"
+                    compiled += "else:"  + newline
                     compiled += onFalse
 
             elif token[NAME] == VyParse.FOR_STMT:
@@ -243,7 +257,7 @@ def VyCompile(source):
                                                   [VALUE][VyParse.FOR_VARIABLE])
 
                             
-                compiled += f"for {var_name} in smart_range(stack.pop()):\n"
+                compiled += f"for {var_name} in smart_range(stack.pop()):" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
                 context_level -= 1
@@ -256,15 +270,15 @@ def VyCompile(source):
                     condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
 
                             
-                compiled = f"{condition}\nwhile stack.pop():\n"
-                compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + "\n"
+                compiled = f"{condition}\nwhile stack.pop():" + newline
+                compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + newline
                 compiled += tab(condition)
 
                 context_level -= 1
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
-                    compiled += f"stack += {token[VALUE][VyParse.FUNCTION_NAME]}(stack)\n"
+                    compiled += f"stack += {token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
                 else:
                     function_data = token[VALUE][VyParse.FUNCTION_NAME].split(":")
                     number_of_parameters = 0
@@ -273,17 +287,19 @@ def VyCompile(source):
                     if len(function_data) == 2:
                         number_of_parameters = int(function_data[1])
                         
-                    compiled += f"def {name}(stack):\n"
-                    compiled += tab(f"temp = Stack(stack.pop({number_of_parameters}))") + "\n"
-                    compiled += tab("stack = temp") + "\n"
-                    compiled += tab(VyCompile(token[VALUE][VyParse.FUNCTION_BODY])) + "\n"
-                    compiled += tab("return stack") +  "\n"
-                
+                    compiled += f"def {name}(stack):" + newline
+                    compiled += tab("global VY_reg_reps") + newline
+                    compiled += tab(f"temp = Stack(stack.pop({number_of_parameters}))") + newline
+                    compiled += tab("stack = temp") + newline
+                    compiled += tab(VyCompile(token[VALUE][VyParse.FUNCTION_BODY])) + newline
+                    compiled += tab("return stack") + newline
 
-
-                
-                
-                
+            elif token[NAME] == VyParse.LAMBDA_STMT:
+                compiled += "def _lambda(item):" + newline
+                compiled += tab("global VY_reg_reps; stack = Stack([item])") + newline
+                compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
+                compiled += tab("return stack[-1]") + newline
+                compiled += "stack.push(_lambda)" + newline     
                 
     return compiled
 
@@ -310,6 +326,15 @@ if __name__ == "__main__":
             exec(header + line)
             print(stack)
     else:
+        if flags:
+            if "M" in flags:
+                _MAP_START = 1
+
+            if "m" in flags:
+                _MAP_OFFSET = 0
+
+            if 'j' in flags:
+                join = True
         file = open(file_location, "r", encoding="utf-8")
         code = file.read()
 
@@ -317,4 +342,7 @@ if __name__ == "__main__":
         exec(header + code)
 
         if not printed:
-            print(stack[-1])
+            if join:
+                print("\n".join([str(n) for n in stack[-1]]))
+            else:
+                print(stack[-1])

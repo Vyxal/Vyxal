@@ -11,6 +11,7 @@ NO_STMT = "STRUCTURE_NONE"
 STRING_STMT = "STRUCTURE_STRING"
 INTEGER = "STRUCTURE_INTEGER"
 CHARACTER = "STRUCTURE_CHARACTER"
+LAMBDA_STMT = "LAMBDA_STMT"
 
 STRING_CONTENTS = "string_contents"
 INTEGER_CONTENTS = "integer_contents"
@@ -22,6 +23,7 @@ WHILE_CONDITION = "while_condition"
 WHILE_BODY = "while_body"
 FUNCTION_NAME = "function_name"
 FUNCTION_BODY = "function_body"
+LAMBDA_BODY = "lambda_body"
 
 OPENING = {
     IF_STMT: "[",
@@ -30,7 +32,8 @@ OPENING = {
     FUNCTION_STMT: "@",
     LAMBDA_STMT: "λ",
     SWITCH_STMT: "§",
-    STRING_STMT: "`"
+    STRING_STMT: "`",
+    LAMBDA_STMT: "λ"
 }
 
 CLOSING = {
@@ -40,7 +43,8 @@ CLOSING = {
     FUNCTION_STMT: ";",
     LAMBDA_STMT: ";",
     SWITCH_STMT: ";",
-    STRING_STMT: "`"
+    STRING_STMT: "`",
+    LAMBDA_STMT: ";"
 }
 
 DEFAULT_KEYS = {
@@ -49,7 +53,8 @@ DEFAULT_KEYS = {
     WHILE_STMT: WHILE_BODY,
     STRING_STMT: STRING_CONTENTS,
     INTEGER: INTEGER_CONTENTS,
-    FUNCTION_STMT: FUNCTION_NAME
+    FUNCTION_STMT: FUNCTION_NAME,
+    LAMBDA_STMT: LAMBDA_BODY
 }
 
 class Token:
@@ -146,6 +151,10 @@ def Tokenise(source: str) -> [Token]:
                 structure = FUNCTION_STMT
                 active_key = FUNCTION_NAME
 
+            elif char == OPENING[LAMBDA_STMT]:
+                structure = LAMBDA_STMT
+                active_key = LAMBDA_BODY
+
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
@@ -206,6 +215,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["@triple;"]
+    tests = ["λ::+;"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
