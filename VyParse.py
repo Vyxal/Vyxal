@@ -12,6 +12,7 @@ STRING_STMT = "STRUCTURE_STRING"
 INTEGER = "STRUCTURE_INTEGER"
 CHARACTER = "STRUCTURE_CHARACTER"
 LAMBDA_STMT = "LAMBDA_STMT"
+LAMBDA_MAP = "LAMBDA_MAP"
 
 STRING_CONTENTS = "string_contents"
 INTEGER_CONTENTS = "integer_contents"
@@ -33,7 +34,8 @@ OPENING = {
     LAMBDA_STMT: "λ",
     SWITCH_STMT: "§",
     STRING_STMT: "`",
-    LAMBDA_STMT: "λ"
+    LAMBDA_STMT: "λ",
+    LAMBDA_MAP: "ƛ"
 }
 
 CLOSING = {
@@ -44,7 +46,8 @@ CLOSING = {
     LAMBDA_STMT: ";",
     SWITCH_STMT: ";",
     STRING_STMT: "`",
-    LAMBDA_STMT: ";"
+    LAMBDA_STMT: ";",
+    LAMBDA_MAP: ";"
 }
 
 DEFAULT_KEYS = {
@@ -54,7 +57,8 @@ DEFAULT_KEYS = {
     STRING_STMT: STRING_CONTENTS,
     INTEGER: INTEGER_CONTENTS,
     FUNCTION_STMT: FUNCTION_NAME,
-    LAMBDA_STMT: LAMBDA_BODY
+    LAMBDA_STMT: LAMBDA_BODY,
+    LAMBDA_MAP: LAMBDA_BODY
 }
 
 class Token:
@@ -88,7 +92,9 @@ def Tokenise(source: str) -> [Token]:
     for char in source:
         #print(char, structure, structure_data, nest_level)
         if escaped:
-            if structure != NO_STMT:
+            if structure == STRING_STMT:
+                structure_data[active_key] += "\\" + char
+            elif structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
             else:
                 tokens.append(Token(CHARACTER, char))
@@ -155,6 +161,10 @@ def Tokenise(source: str) -> [Token]:
                 structure = LAMBDA_STMT
                 active_key = LAMBDA_BODY
 
+            elif char == OPENING[LAMBDA_MAP]:
+                structure = LAMBDA_MAP
+                active_key = LAMBDA_BODY
+
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
@@ -173,11 +183,18 @@ def Tokenise(source: str) -> [Token]:
                     if active_key != default_key:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
-                    
+
+                additional_token = None
+                if structure == LAMBDA_MAP:
+                    additional_token = Token(NO_STMT, "M")
+                    structure = LAMBDA_BODY
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
+
+                if additional_token:
+                    tokens.append(additional_token)
 
 
         elif char == "|" and nest_level == 1:
@@ -215,6 +232,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["λ::+;"]
+    tests = ["`\n`"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

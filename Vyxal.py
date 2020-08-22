@@ -33,7 +33,7 @@ commands = {
     'C': 'stack.push("{}")',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
     'E': 'x = stack.pop(); stack.push(eval(x))',
-    'F': 'TODO',
+    'F': 'stack.do_filter(stack.pop())',
     'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(rhs, lhs))',
     'H': 'stack.push(int(stack.pop(), 16))',
     'I': 'stack.push(int(stack.pop()))',
@@ -41,7 +41,7 @@ commands = {
     'K': 'stack.push({})',
     'L': 'stack.push(len(stack.pop()))',
     'M': 'stack.do_map(stack.pop())',
-    'N': 'TODO',
+    'N': 'top = stack.pop(); stack.push(Number(top))',
     'O': 'lhs, rhs = stack.pop(2); stack.push(rhs.count(lhs))',
     'P': 'TODO',
     'Q': 'exit',
@@ -104,7 +104,9 @@ commands = {
     '∞': 'TODO',
     'ß': 'TODO',
     '∺': 'stack.push(stack.pop() % 2)',
-    "∻": 'lhs, rhs = stack.pop(2); stack.push((rhs % lhs) == 0)'
+    "∻": 'lhs, rhs = stack.pop(2); stack.push((rhs % lhs) == 0)',
+    '\n': '',
+    '\t': ''
 }
 
 class Stack(list):
@@ -156,6 +158,19 @@ class Stack(list):
             temp.append(fn(item))
         self.contents.append(temp)
 
+    def do_filter(self, fn):
+        temp = []
+        obj = self.contents.pop()
+        if type(obj) in [int, float]:
+            obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
+
+        for item in obj:
+            x = fn(item)
+            if bool(x):
+                temp.append(item)
+
+        self.contents.append(temp)
+
     def pop(self, n=1):
         if n == 1:
             if len(self.contents):
@@ -188,6 +203,23 @@ def get_input():
             return item
         except Exception:
             return 0
+
+
+def Number(item):
+    if type(item) in [float, int]:
+        return item
+
+    else:
+        try:
+            x = float(str(item))
+            try:
+                y = int(str(item))
+                return y if x == y else x
+            except ValueError:
+                return x
+        
+        except ValueError:
+            return item
 
 def smart_range(item):
     if type(item) is int:
@@ -230,7 +262,15 @@ def VyCompile(source):
                 compiled += f"stack.push({token[VALUE]})" + newline
 
             elif token[NAME] == VyParse.STRING_STMT:
-                compiled += f"stack.push('{token[VALUE][VyParse.STRING_CONTENTS]}')" + newline
+                string = token[VALUE][VyParse.STRING_CONTENTS]
+                string = string.replace("'", "\\'")
+                string = string.replace('"', "\\\"")
+                #string = string.replace("\\", "\\\\")
+                compiled += f"stack.push(\"{string}\")" \
+                            + newline
+
+            elif token[NAME] == VyParse.CHARACTER:
+                compiled += f"stack.push({repr(token[VALUE][0])})" + newline
 
             elif token[NAME] == VyParse.IF_STMT:
                 onTrue = token[VALUE][VyParse.IF_ON_TRUE]
