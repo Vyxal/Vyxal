@@ -154,3 +154,4 @@
 (∑): Pop [x] Push (sum(x))
 (Ṡ): Push (sum of stack)
 (İ): Pop [x] Push (id(x))
+(Ĥ): Push (100)
