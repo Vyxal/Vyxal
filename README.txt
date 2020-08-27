@@ -46,7 +46,7 @@
 (M): Pop [x, f] Push (map(f, x))
 (N): Pop [x] Push (x as number)
 (O): Pop [x, y] Push (x.count(y))
-(P): Pop [x] Push (Prefixes of x)
+(P): Pop [x, y] Push (is_divisible(y, x))
 (Q): Halt execution
 (R): Pop [x, f] Push (reduce(f, x))
 (S): Pop [x] Push (x as string)
@@ -78,7 +78,7 @@
 (m): Pop [x] Push [x + x[::-1]]
 (n): Contextual variable
 (o): Pop [x, t -- type] Push (type(x))
-(p): Pop [x] Push (itertools.permutations(x))
+(p): Print t.o.s without popping
 (q): Pop [x] Push (str(x))
 (r): Pop [x, y] Push (range(y, x))
 (s): Pop [x] Push (sorted(x))
