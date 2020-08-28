@@ -3,12 +3,13 @@ from VyParse import NAME
 from VyParse import VALUE
 import string
 
-context_level = 0
-input_cycle = 0
+_context_level = 0
+_max_context_level = 0
+_input_cycle = 0
 
 _MAP_START = 0
 _MAP_OFFSET = 1
-join = False
+_join = False
 
 commands = {
     '!': 'stack.push(stack.len())',
@@ -51,7 +52,7 @@ commands = {
     'U': 'TODO',
     'V': 'stack.push("{}")',
     'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(rhs, lhs))',
-    'X': 'TODO',
+    'X': 'if _context_level + 1 < _max_context_level: _context_level += 1',
     'Y': 'TODO',
     'Z': 'lhs, rhs = stack.pop(2); stack.push(list(zip(rhs, lhs)))',
     '^': 'stack.reverse()',
@@ -62,7 +63,7 @@ commands = {
     'c': 'lhs, rhs = stack.pop(2); stack.push(rhs in lhs)',
     'd': 'stack.push(stack.pop() * 2)',
     'e': 'lhs, rhs = stack.pop(2); stack.push(rhs ** lhs)',
-    'f': 'TODO',
+    'f': 'stack.push(flatten(stack.pop())',
     'g': 'stack.push(VY_source[stack.pop()])',
     'h': 'stack.push(stack.pop()[0])',
     'i': 'lhs, rhs = stack.pop(2); stack.push(rhs[lhs])',
@@ -70,7 +71,7 @@ commands = {
     'k': 'TODO',
     'l': 'stack.push([])',
     'm': 'TODO',
-    'n': 'TODO',
+    'n': 'stack.push(eval(f"_context_{_context_level}"))',
     'o': 'stack.push(type(stack.pop()))',
     'p': 'TODO',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
@@ -80,7 +81,7 @@ commands = {
     'u': 'TODO',
     'v': 'TODO',
     'w': 'stack.push([stack.pop()])',
-    'x': 'TODO',
+    'x': '_context_level -= 1 * (1 - (_context_level == 0))',
     'y': 'TODO',
     'z': 'TODO',
     '~': 'stack.push(random.randint(-INT, INT))',
@@ -190,6 +191,15 @@ class Stack(list):
                 items.append(get_input())
         return items
 
+def flatten(nested_list):
+    flattened = []
+    for item in nested_list:
+        if type(item) is list:
+            flattened += flatten(item)
+        else:
+            flattened.append(item)
+
+    return flattened
 
 def get_input():
     global input_cycle
@@ -250,7 +260,8 @@ tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("   
 def VyCompile(source):
     if not source:
         return "pass"
-    global context_level
+    global _context_level
+    global _max_context_level
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
@@ -288,10 +299,12 @@ def VyCompile(source):
                     compiled += onFalse
 
             elif token[NAME] == VyParse.FOR_STMT:
-                context_level += 1
+                _context_level += 1
+                if _context_level > _max_context_level:
+                    _max_context_level = _context_level
 
                 if not VyParse.FOR_VARIABLE in token[VALUE]:
-                    var_name = "_context_" + str(context_level)
+                    var_name = "_context_" + str(_context_level)
                 else:
                     var_name = strip_non_alphabet(token\
                                                   [VALUE][VyParse.FOR_VARIABLE])
@@ -300,23 +313,30 @@ def VyCompile(source):
                 compiled += f"for {var_name} in smart_range(stack.pop()):" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
-                context_level -= 1
+                _context_level -= 1
             elif token[NAME] == VyParse.WHILE_STMT:
-                context_level += 1
+                _context_level += 1
+                if _context_level > _max_context_level:
+                    _max_context_level = _context_level
 
                 if not VyParse.WHILE_CONDITION in token[VALUE]:
                     condition = "stack.push(1)"
                 else:
                     condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
 
-                            
+                compiled += f"_context_{_context_level} = stack[-1]"
                 compiled = f"{condition}\nwhile stack.pop():" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + newline
-                compiled += tab(condition)
+                compiled += tab(condition) + newline
+                compiled += tab(f"_context_{_context_level} = stack[-1]") + newline
 
-                context_level -= 1
+                _context_level -= 1
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
+                _context_level += 1
+                
+                if _context_level > _max_context_level:
+                    _max_context_level = _context_level
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
                     compiled += f"stack += {token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
                 else:
@@ -329,17 +349,25 @@ def VyCompile(source):
                         
                     compiled += f"def {name}(stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
+                    compiled += tab(f"_context_{_context_level} = stack[:-{number_of_paramters}]") + newline
                     compiled += tab(f"temp = Stack(stack.pop({number_of_parameters}))") + newline
                     compiled += tab("stack = temp") + newline
                     compiled += tab(VyCompile(token[VALUE][VyParse.FUNCTION_BODY])) + newline
                     compiled += tab("return stack") + newline
 
+                _context_level -= 1
+
             elif token[NAME] == VyParse.LAMBDA_STMT:
+                _context_level += 1
+                if _context_level > _max_context_level:
+                    _max_context_level = _context_level
                 compiled += "def _lambda(item):" + newline
                 compiled += tab("global VY_reg_reps; stack = Stack([item])") + newline
+                compiled += tab(f"_context_{_context_level} = item") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
                 compiled += tab("return stack[-1]") + newline
-                compiled += "stack.push(_lambda)" + newline     
+                compiled += "stack.push(_lambda)" + newline
+                _context_level -= 1
                 
     return compiled
 
@@ -362,7 +390,9 @@ if __name__ == "__main__":
     if not file_location: #repl mode
         while 1:
             line = input(">>> ")
+            _context_level = 0
             line = VyCompile(line)
+            _context_level = 1
             exec(header + line)
             print(stack)
     else:
@@ -377,8 +407,8 @@ if __name__ == "__main__":
                 join = True
         file = open(file_location, "r", encoding="utf-8")
         code = file.read()
-
         code = VyCompile(code)
+        _context_level = 1
         exec(header + code)
 
         if not printed:

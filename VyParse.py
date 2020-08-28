@@ -13,6 +13,7 @@ INTEGER = "STRUCTURE_INTEGER"
 CHARACTER = "STRUCTURE_CHARACTER"
 LAMBDA_STMT = "LAMBDA_STMT"
 LAMBDA_MAP = "LAMBDA_MAP"
+LIST_STMT = "LIST_STMT"
 
 STRING_CONTENTS = "string_contents"
 INTEGER_CONTENTS = "integer_contents"
@@ -25,6 +26,8 @@ WHILE_BODY = "while_body"
 FUNCTION_NAME = "function_name"
 FUNCTION_BODY = "function_body"
 LAMBDA_BODY = "lambda_body"
+LIST_ITEM = "list_item"
+LIST_ITEMS = "list_items"
 
 OPENING = {
     IF_STMT: "[",
@@ -35,7 +38,8 @@ OPENING = {
     SWITCH_STMT: "§",
     STRING_STMT: "`",
     LAMBDA_STMT: "λ",
-    LAMBDA_MAP: "ƛ"
+    LAMBDA_MAP: "ƛ",
+    LIST_STMT: "⟨"
 }
 
 CLOSING = {
@@ -47,7 +51,9 @@ CLOSING = {
     SWITCH_STMT: ";",
     STRING_STMT: "`",
     LAMBDA_STMT: ";",
-    LAMBDA_MAP: ";"
+    LAMBDA_MAP: ";",
+    LIST_STMT: "⟩"
+    
 }
 
 DEFAULT_KEYS = {
@@ -58,7 +64,8 @@ DEFAULT_KEYS = {
     INTEGER: INTEGER_CONTENTS,
     FUNCTION_STMT: FUNCTION_NAME,
     LAMBDA_STMT: LAMBDA_BODY,
-    LAMBDA_MAP: LAMBDA_BODY
+    LAMBDA_MAP: LAMBDA_BODY,
+    LIST_STMT: LIST_ITEM
 }
 
 class Token:
@@ -92,9 +99,7 @@ def Tokenise(source: str) -> [Token]:
     for char in source:
         #print(char, structure, structure_data, nest_level)
         if escaped:
-            if structure == STRING_STMT:
-                structure_data[active_key] += "\\" + char
-            elif structure != NO_STMT:
+            if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
             else:
                 tokens.append(Token(CHARACTER, char))
@@ -165,6 +170,11 @@ def Tokenise(source: str) -> [Token]:
                 structure = LAMBDA_MAP
                 active_key = LAMBDA_BODY
 
+            elif char == OPENING[LIST_STMT]:
+                structure = LIST_STMT
+                active_key = LIST_ITEM
+                structure_data[LIST_ITEMS] = []
+
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
@@ -211,6 +221,9 @@ def Tokenise(source: str) -> [Token]:
             elif structure == FUNCTION_STMT:
                 active_key = FUNCTION_BODY
 
+            elif structure == LIST_STMT:
+                structure_data[LIST_ITEMS].append(structure_data[active_key])
+
             structure_data[active_key] = ""
 
 
@@ -232,6 +245,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`\n`"]
+    tests = ["⟨123|456|789⟩"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
