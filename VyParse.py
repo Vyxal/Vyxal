@@ -189,15 +189,25 @@ def Tokenise(source: str) -> [Token]:
             if nest_level > 0:
                 structure_data[active_key] += char
             else:
-                if structure != FUNCTION_STMT:
+
+                additional_token = None
+
+                if structure == FUNCTION_STMT:
+                    pass
+
+                elif structure == LAMBDA_MAP:
+                    additional_token = Token(NO_STMT, "M")
+                    structure = LAMBDA_BODY
+
+                elif structure == LIST_STMT:
+                    structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
+                    del structure_data[LIST_ITEM]
+                else:
                     if active_key != default_key:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
 
-                additional_token = None
-                if structure == LAMBDA_MAP:
-                    additional_token = Token(NO_STMT, "M")
-                    structure = LAMBDA_BODY
+                    
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
                 structure_data = {}

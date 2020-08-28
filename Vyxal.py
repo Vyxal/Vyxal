@@ -257,7 +257,7 @@ newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
 
 
-def VyCompile(source):
+def VyCompile(source, header=""):
     if not source:
         return "pass"
     global _context_level
@@ -368,8 +368,12 @@ def VyCompile(source):
                 compiled += tab("return stack[-1]") + newline
                 compiled += "stack.push(_lambda)" + newline
                 _context_level -= 1
+
+            elif token[NAME] == VyParse.LIST_STMT:
+                for item in token[VALUE][VyParse.LIST_ITEMS]:
+                    compiled  += VyCompile(item) + newline
                 
-    return compiled
+    return header + compiled
 
 if __name__ == "__main__":
     import sys
@@ -391,9 +395,9 @@ if __name__ == "__main__":
         while 1:
             line = input(">>> ")
             _context_level = 0
-            line = VyCompile(line)
+            line = VyCompile(line, header)
             _context_level = 1
-            exec(header + line)
+            exec(line)
             print(stack)
     else:
         if flags:
@@ -407,9 +411,8 @@ if __name__ == "__main__":
                 join = True
         file = open(file_location, "r", encoding="utf-8")
         code = file.read()
-        code = VyCompile(code)
+        code = VyCompile(code, header)
         _context_level = 1
-        exec(header + code)
 
         if not printed:
             if join:
