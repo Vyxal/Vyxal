@@ -155,3 +155,5 @@
 (Ṡ): Push (sum of stack)
 (İ): Pop [x] Push (id(x))
 (Ĥ): Push (100)
+(⟨): Open a list ⟨...|...|...|...⟩
+(⟩): Close a list
