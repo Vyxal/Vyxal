@@ -107,7 +107,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        print(char, structure, structure_data, nest_level, tokens)
+        #print(char, structure, structure_data, nest_level, tokens)
         if escaped:
             if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char

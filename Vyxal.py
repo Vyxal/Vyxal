@@ -299,6 +299,9 @@ def VyCompile(source, header=""):
                 string = token[VALUE][VyParse.STRING_CONTENTS]
                 string = string.replace("'", "\\'")
                 string = string.replace('"', "\\\"")
+
+                import uncompress
+                string = uncompress.uncompress(string)
                 #string = string.replace("\\", "\\\\")
                 compiled += f"stack.push(\"{string}\")" \
                             + newline

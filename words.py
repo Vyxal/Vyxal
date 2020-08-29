@@ -2481,3 +2481,8 @@ friends
 towards
 different
 understand""".split("\n")
+
+if __name__ == "__main__":
+    while 1:
+        x = input()
+        print(word_index(x))
