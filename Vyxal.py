@@ -459,11 +459,11 @@ if __name__ == "__main__":
             code = open(file_location, "rb").read()
             code = encoding.vyxal_to_utf8(code)
         else:
-            code = open(filename, "r", encoding="utf-8").read()
+            code = open(file_location, "r", encoding="utf-8").read()
 
         code = VyCompile(code, header)
         _context_level = 1
-
+        
         exec(code)
 
         if not printed:
