@@ -11,10 +11,16 @@ _MAP_START = 0
 _MAP_OFFSET = 1
 _join = False
 
+_RIGHT = "RIGHT"
+_LEFT = "LEFT"
+
+codepage = "λ¬∧⟑∨⟇÷«»°\n․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß⎝⎠ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~⎡⎣⨥⨪∺❝ð£¥§¦¡∂ÐřŠč√∖ẊȦȮḊĖẸṙ∑Ṡİ•\t"
+codepage += "Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº"
+
 commands = {
     '!': 'stack.push(stack.len())',
-    '"': 'stack.shift(RIGHT)',
-    "'": 'stack.shift(LEFT)',
+    '"': 'stack.shift(_RIGHT)',
+    "'": 'stack.shift(_LEFT)',
     '$': 'stack.swap()',
     '%': 'lhs, rhs = stack.pop(2); stack.push(rhs % lhs)',
     '&': 'if VY_reg_reps % 2:VY_reg=stack.pop()\nelse:stack.push(VY_reg)\nVY_reg_reps += 1',
@@ -68,7 +74,6 @@ commands = {
     'h': 'stack.push(stack.pop()[0])',
     'i': 'lhs, rhs = stack.pop(2); stack.push(rhs[lhs])',
     'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in rhs])); ',
-    'k': 'TODO',
     'l': 'stack.push([])',
     'm': 'TODO',
     'n': 'stack.push(eval(f"_context_{_context_level}"))',
@@ -79,7 +84,6 @@ commands = {
     's': 'top = stack.pop(); stack.push(type(top)(sorted(top)))',
     't': 'stack.push(stack.pop()[-1])',
     'u': 'TODO',
-    'v': 'TODO',
     'w': 'stack.push([stack.pop()])',
     'x': '_context_level -= 1 * (1 - (_context_level == 0))',
     'y': 'TODO',
@@ -107,8 +111,9 @@ commands = {
     '∺': 'stack.push(stack.pop() % 2)',
     "∻": 'lhs, rhs = stack.pop(2); stack.push((rhs % lhs) == 0)',
     '\n': '',
-    '\t': ''
-}
+    '\t': '',
+    "Ĥ": "stack.push(100)"}
+
 
 class Stack(list):
     def __init__(self, prelist=None):
@@ -172,6 +177,15 @@ class Stack(list):
 
         self.contents.append(temp)
 
+    def shift(self, direction):
+        if direction == _LEFT:
+            self.contents = self.contents[::-1]
+            temp = self.pop()
+            self.contents = self.contents[::-1]
+            self.contents.append(temp)
+        else:
+            self.contents.insert(0, self.pop())
+
     def pop(self, n=1):
         if n == 1:
             if len(self.contents):
@@ -209,10 +223,18 @@ def get_input():
         return item
     else:
         try:
-            item = input()
-            return item
+            temp = input()
+            if type(eval(temp)) is float:
+                temp = float(temp)
+            elif type(eval(temp)) is int:
+                temp = int(temp)
+            elif type(eval(temp)) is list:
+                temp = Stack(eval(temp))
+            elif type(eval(temp)) is str:
+                temp = temp
         except Exception:
             return 0
+        return temp
 
 
 def Number(item):
@@ -372,6 +394,23 @@ def VyCompile(source, header=""):
             elif token[NAME] == VyParse.LIST_STMT:
                 for item in token[VALUE][VyParse.LIST_ITEMS]:
                     compiled  += VyCompile(item) + newline
+
+            elif token[NAME] == VyParse.CONSTANT_CHAR:
+                import string
+                import math
+                constants = {
+                    "A": string.ascii_uppercase,
+                    "e": math.e,
+                    "f": "Fizz",
+                    "b": "Buzz",
+                    "F": "FizzBuzz",
+                    "H": "Hello, World!",
+                    "h": "Hello World",
+                    "1": 1000
+                }
+
+                compiled += f"stack.push({repr(constants[token[VALUE]])})" + newline
+                    
                 
     return header + compiled
 
@@ -413,6 +452,8 @@ if __name__ == "__main__":
         code = file.read()
         code = VyCompile(code, header)
         _context_level = 1
+
+        exec(code)
 
         if not printed:
             if join:

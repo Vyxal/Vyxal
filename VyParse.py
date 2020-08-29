@@ -29,6 +29,12 @@ LAMBDA_BODY = "lambda_body"
 LIST_ITEM = "list_item"
 LIST_ITEMS = "list_items"
 
+ONE_CHARS = "kv․∆ø"
+
+CONSTANT_CHAR = "k"
+VECTORISATION_CHAR = "v"
+
+
 OPENING = {
     IF_STMT: "[",
     FOR_STMT: "(",
@@ -133,7 +139,12 @@ def Tokenise(source: str) -> [Token]:
                 structure_data = {}
                 structure = NO_STMT
 
-
+        elif structure in ONE_CHARS:
+            this_token = Token(structure, char)
+            tokens.append(this_token)
+            structure = NO_STMT
+            continue
+        
         if char in OPENING.values():
             if nest_level > 0:
                 if char != CLOSING[STRING_STMT]:
@@ -197,7 +208,7 @@ def Tokenise(source: str) -> [Token]:
 
                 elif structure == LAMBDA_MAP:
                     additional_token = Token(NO_STMT, "M")
-                    structure = LAMBDA_BODY
+                    structure = LAMBDA_STMT
 
                 elif structure == LIST_STMT:
                     structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
@@ -245,6 +256,9 @@ def Tokenise(source: str) -> [Token]:
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
+
+        elif char in ONE_CHARS:
+            structure = char
             
         else:
             this_token = Token(NO_STMT, char)
@@ -255,6 +269,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["⟨123|456|789⟩"]
+    tests = ["2ɽƛ3∻kf*n5∻kb*+n⟇"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
