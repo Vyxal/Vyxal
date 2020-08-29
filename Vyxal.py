@@ -10,6 +10,7 @@ _input_cycle = 0
 _MAP_START = 0
 _MAP_OFFSET = 1
 _join = False
+_use_encoding = False
 
 _RIGHT = "RIGHT"
 _LEFT = "LEFT"
@@ -447,16 +448,26 @@ if __name__ == "__main__":
                 _MAP_OFFSET = 0
 
             if 'j' in flags:
-                join = True
-        file = open(file_location, "r", encoding="utf-8")
-        code = file.read()
+                _join = True
+
+            if 'v' in flags:
+                _use_encoding = True
+
+        # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
+        if _use_encoding:
+            import encoding
+            code = open(file_location, "rb").read()
+            code = encoding.vyxal_to_utf8(code)
+        else:
+            code = open(filename, "r", encoding="utf-8").read()
+
         code = VyCompile(code, header)
         _context_level = 1
 
         exec(code)
 
         if not printed:
-            if join:
+            if _join:
                 print("\n".join([str(n) for n in stack[-1]]))
             else:
                 print(stack[-1])
