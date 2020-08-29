@@ -29,10 +29,14 @@ LAMBDA_BODY = "lambda_body"
 LIST_ITEM = "list_item"
 LIST_ITEMS = "list_items"
 
+ONE = "one"
+TWO = "two"
+
 ONE_CHARS = "kv․∆ø"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
+SINGLE_SCC_CHAR = "ı"
 
 
 OPENING = {
@@ -97,7 +101,7 @@ def Tokenise(source: str) -> [Token]:
     structure_data = {}
     escaped = False
     active_key = ""
-
+    scc_mode, scc = False, ""
     nest_level = 0
     
 
@@ -138,6 +142,17 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
+
+        elif scc_mode:
+            scc += char
+            if len(scc) == 2:
+                scc_mode = False
+                this_token = Token(SINGLE_SCC_CHAR, scc)
+                tokens.append(this_token)
+                scc = ""
+                structure = NO_STMT
+            continue
+                
 
         elif structure in ONE_CHARS:
             this_token = Token(structure, char)
@@ -258,7 +273,11 @@ def Tokenise(source: str) -> [Token]:
             active_key = INTEGER_CONTENTS
 
         elif char in ONE_CHARS:
+            char_mode = ONE
             structure = char
+
+        elif char == SINGLE_SCC_CHAR:
+            scc_mode = True
             
         else:
             this_token = Token(NO_STMT, char)
@@ -269,6 +288,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["2ɽƛ3∻kf*n5∻kb*+n⟇"]
+    tests = ["ı½¬"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

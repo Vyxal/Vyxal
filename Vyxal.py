@@ -411,6 +411,14 @@ def VyCompile(source, header=""):
                 }
 
                 compiled += f"stack.push({repr(constants[token[VALUE]])})" + newline
+
+            elif token[NAME] == VyParse.SINGLE_SCC_CHAR:
+                import words
+                import bases
+                import encoding
+                
+                if bases.to_ten(token[VALUE], encoding.compression) < len(words._words):
+                    compiled += f"stack.push({repr(words.extract_word(token[VALUE]))})" + newline
                     
                 
     return header + compiled
