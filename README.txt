@@ -158,3 +158,8 @@
 (Ĥ): Push (100)
 (⟨): Open a list ⟨...|...|...|...⟩
 (⟩): Close a list
+
+
+How to use the interpreter:
+
+python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>
