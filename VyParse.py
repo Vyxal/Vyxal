@@ -107,7 +107,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        #print(char, structure, structure_data, nest_level)
+        print(char, structure, structure_data, nest_level, tokens)
         if escaped:
             if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
@@ -283,11 +283,38 @@ def Tokenise(source: str) -> [Token]:
             this_token = Token(NO_STMT, char)
             tokens.append(this_token)
 
-    tokens.pop()
+    
+
+    if structure != NO_STMT:
+        additional_token = None
+
+        if structure == FUNCTION_STMT:
+            pass
+
+        elif structure == LAMBDA_MAP:
+            additional_token = Token(NO_STMT, "M")
+            structure = LAMBDA_STMT
+
+        elif structure == LIST_STMT:
+            structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
+            del structure_data[LIST_ITEM]
+        else:
+            if active_key != default_key:
+                structure_data[default_key] = structure_data[active_key]
+                del structure_data[active_key]
+
+            
+        this_token = Token(structure, structure_data)
+        tokens.append(this_token)
+        structure_data = {}
+        structure = NO_STMT
+
+        if additional_token:
+            tokens.append(additional_token)
     return tokens
 
 
 if __name__ == "__main__":
-    tests = ["ı½¬"]
+    tests = ["10(n."]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
