@@ -94,6 +94,7 @@
 (}): Close while loop
 (~): Push a random number
 (λ): Start an anonymous function (lambda)
+(ƛ): Start a mapping lambda
 (¬): Pop [x] Push (not x)
 (∧): Pop [x, y] Push (x and y)
 (⟑): Pop [x, y] Push (short-circuited x and y)
