@@ -396,8 +396,12 @@ def VyCompile(source, header=""):
                 _context_level -= 1
 
             elif token[NAME] == VyParse.LIST_STMT:
+                compiled += "_temp_list = []" + newline
                 for item in token[VALUE][VyParse.LIST_ITEMS]:
-                    compiled  += VyCompile(item) + newline
+                    compiled += VyCompile(item) + newline
+                    compiled += "_temp_list.append(stack.pop())" + newline
+                compiled += "stack.push(_temp_list)" + newline
+                
 
             elif token[NAME] == VyParse.CONSTANT_CHAR:
                 import string
