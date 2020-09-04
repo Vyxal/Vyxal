@@ -259,11 +259,21 @@ def add(lhs, rhs):
         else:
             return str(lhs) + str(rhs)
 
-    elif ts == [Stack, Number] or ts == [Stack, str] or ts == [Stack, Stack]:
+    elif ts == [Stack, Number] or ts == [Stack, str]:
         for n in range(len(lhs)):
             lhs[n] = add(lhs[n], rhs)
         return lhs
 
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = add(lhs[n], rhs[n])
+        return lhs
     else:
         return 0
             
