@@ -26,7 +26,7 @@ commands = {
     '%': 'lhs, rhs = stack.pop(2); stack.push(rhs % lhs)',
     '&': 'if VY_reg_reps % 2:VY_reg=stack.pop()\nelse:stack.push(VY_reg)\nVY_reg_reps += 1',
     '*': 'lhs, rhs = stack.pop(2); stack.push(rhs * lhs)',
-    '+': 'lhs, rhs = stack.pop(2); stack.push(rhs + lhs)',
+    '+': 'rhs, lhs = stack.pop(2); stack.push(add(lhs, rhs))',
     ',': 'pprint(stack.pop()); printed = True',
     '-': 'lhs, rhs = stack.pop(2); stack.push(rhs - lhs)',
     '.': 'print(stack.pop(), end=""); printed = True',
@@ -49,7 +49,7 @@ commands = {
     'K': 'stack.push({})',
     'L': 'stack.push(len(stack.pop()))',
     'M': 'stack.do_map(stack.pop())',
-    'N': 'top = stack.pop(); stack.push(Number(top))',
+    'N': 'top = stack.pop(); stack.push(to_number(top))',
     'O': 'lhs, rhs = stack.pop(2); stack.push(rhs.count(lhs))',
     'P': 'TODO',
     'Q': 'exit',
@@ -115,6 +115,28 @@ commands = {
     '\t': '',
     "Ĥ": "stack.push(100)"}
 
+class Number(int):
+    def __init__(self, value):
+        self.value = value
+
+    def __getitem__(self, pos):
+        temp = str(self.value)[pos]
+        return int(temp) if temp.isnumeric() else temp 
+
+    def __add__(self, rhs):
+        return Number(self.value + rhs)
+
+    def __sub__(self, rhs):
+        return Number(self.value - rhs)
+
+    def __mul__(self, rhs):
+        return Number(self.value * rhs)
+
+    def __div__(self, rhs):
+        return Number(self.value / rhs)
+
+    def __mod__(self, rhs):
+        return Number(self.value % rhs)
 
 class Stack(list):
     def __init__(self, prelist=None):
@@ -130,7 +152,7 @@ class Stack(list):
 
     def swap(self):
         self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
-    def len(self):
+    def __len__(self):
         return len(self.contents)
     def all(self):
         return all(self.contents)
@@ -145,6 +167,9 @@ class Stack(list):
 
     def __getitem__(self, n):
         return self.contents[n]
+
+    def __setitem__(self, index, value):
+        self.contents[index] = value
 
     def __iadd__(self, rhs):
         if type(rhs) == type(self):
@@ -206,6 +231,45 @@ class Stack(list):
                 items.append(get_input())
         return items
 
+
+def types(*args):
+    return list(map(type, args))
+
+def add(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts == [Number, Number] or ts == [str, str]:
+        return lhs + rhs
+
+    elif ts == [Number, str]:
+        rhs = to_number(rhs)
+        if type(rhs) is Number:
+            return lhs + rhs
+        else:
+            return str(lhs) + rhs
+
+    elif ts == [Number, Stack] or ts == [str, Stack]:
+        for n in range(len(rhs)):
+            rhs[n] = add(lhs, rhs[n])
+        return rhs
+
+    elif ts == [str, Number]:
+        lhs = to_number(lhs)
+        if type(lhs) is Number:
+            return lhs + rhs
+        else:
+            return str(lhs) + str(rhs)
+
+    elif ts == [Stack, Number] or ts == [Stack, str] or ts == [Stack, Stack]:
+        for n in range(len(lhs)):
+            lhs[n] = add(lhs[n], rhs)
+        return lhs
+
+    else:
+        return 0
+            
+    
+        
+
 def flatten(nested_list):
     flattened = []
     for item in nested_list:
@@ -238,15 +302,15 @@ def get_input():
         return temp
 
 
-def Number(item):
+def to_number(item):
     if type(item) in [float, int]:
-        return item
+        return Number(item)
 
     else:
         try:
-            x = float(str(item))
+            x = Number(float(str(item)))
             try:
-                y = int(str(item))
+                y = Number(int(str(item)))
                 return y if x == y else x
             except ValueError:
                 return x
@@ -293,7 +357,7 @@ def VyCompile(source, header=""):
 
         else:
             if token[NAME] == VyParse.INTEGER:
-                compiled += f"stack.push({token[VALUE]})" + newline
+                compiled += f"stack.push(Number({token[VALUE]}))" + newline
 
             elif token[NAME] == VyParse.STRING_STMT:
                 string = token[VALUE][VyParse.STRING_CONTENTS]
@@ -400,6 +464,7 @@ def VyCompile(source, header=""):
                 for item in token[VALUE][VyParse.LIST_ITEMS]:
                     compiled += VyCompile(item) + newline
                     compiled += "_temp_list.append(stack.pop())" + newline
+                compiled += "_temp_list = Stack(_temp_list)" + newline
                 compiled += "stack.push(_temp_list)" + newline
                 
 
