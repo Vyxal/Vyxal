@@ -158,7 +158,10 @@
 (Ĥ): Push (100)
 (⟨): Open a list ⟨...|...|...|...⟩
 (⟩): Close a list
-
+(ı): Push a single string compression code
+(Ĵ): Pop [x] Push (''.join(x))
+(Ĳ): Pop [x] Push ('\n'.join(x))
+(ĳ): Push (10)
 
 How to use the interpreter:
 
