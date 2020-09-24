@@ -218,21 +218,18 @@ def Tokenise(source: str) -> [Token]:
 
                 additional_token = None
 
-                if structure == FUNCTION_STMT:
-                    pass
-
-                elif structure == LAMBDA_MAP:
+                if structure == LAMBDA_MAP:
                     additional_token = Token(NO_STMT, "M")
                     structure = LAMBDA_STMT
 
                 elif structure == LIST_STMT:
                     structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
                     del structure_data[LIST_ITEM]
+
                 else:
-                    if active_key != default_key:
+                    if default_key not in structure_data:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
-
                     
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
@@ -288,21 +285,14 @@ def Tokenise(source: str) -> [Token]:
     if structure != NO_STMT:
         additional_token = None
 
-        if structure == FUNCTION_STMT:
-            pass
-
-        elif structure == LAMBDA_MAP:
+        if structure == LAMBDA_MAP:
             additional_token = Token(NO_STMT, "M")
             structure = LAMBDA_STMT
 
         elif structure == LIST_STMT:
             structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
             del structure_data[LIST_ITEM]
-        else:
-            if active_key != default_key:
-                structure_data[default_key] = structure_data[active_key]
-                del structure_data[active_key]
-
+        
             
         this_token = Token(structure, structure_data)
         tokens.append(this_token)
@@ -315,6 +305,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["10(n."]
+    tests = ["[.."]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

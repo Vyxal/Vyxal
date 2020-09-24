@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import VyParse
 from VyParse import NAME
 from VyParse import VALUE
@@ -19,7 +20,7 @@ codepage = "λ¬∧⟑∨⟇÷«»°\n․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß�
 codepage += "Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº"
 
 commands = {
-    '!': 'stack.push(stack.len())',
+    '!': 'stack.push(len(stack))',
     '"': 'stack.shift(_RIGHT)',
     "'": 'stack.shift(_LEFT)',
     '$': 'stack.swap()',
@@ -52,7 +53,7 @@ commands = {
     'N': 'top = stack.pop(); stack.push(to_number(top))',
     'O': 'lhs, rhs = stack.pop(2); stack.push(rhs.count(lhs))',
     'P': 'TODO',
-    'Q': 'exit',
+    'Q': 'exit()',
     'R': 'TODO',
     'S': 'stack.push(str(stack.pop()))',
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
@@ -95,7 +96,7 @@ commands = {
     '⟑': 'lhs, rhs = stack.pop(2); stack.push(rhs and lhs)',
     '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs or lhs))',
     '⟇': 'lhs, rhs = stack.pop(2); stack.push(rhs or lhs)',
-    '÷': 'TODO',
+    '÷': 'for item in stack.pop(): stack.push(item)',
     '⍎': 'stack += (stack.pop())(stack)',
     'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
     'Ï': 'lhs, rhs = stack.pop(2); stack.push(rhs.index(lhs))',
@@ -113,7 +114,11 @@ commands = {
     "∻": 'lhs, rhs = stack.pop(2); stack.push((rhs % lhs) == 0)',
     '\n': '',
     '\t': '',
-    "Ĥ": "stack.push(100)"}
+    "Ĥ": "stack.push(Number(100))",
+    "Ĵ": "stack.push(''.join(stack.pop())",
+    "Ĳ": "stack.push('\\n'.join(stack.pop()))",
+    "ĳ": "stack.push(Number(10))"
+    }
 
 class Number(int):
     def __init__(self, value):
@@ -184,8 +189,9 @@ class Stack(list):
     def do_map(self, fn):
         temp = []
         obj = self.contents.pop()
-        if type(obj) in [int, float]:
+        if type(obj) is Number:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
+            obj = [Number(x) for x in obj]
         for item in obj:
             temp.append(fn(item))
         self.contents.append(temp)
@@ -291,10 +297,10 @@ def flatten(nested_list):
     return flattened
 
 def get_input():
-    global input_cycle
+    global _input_cycle
     if inputs:
-        item = inputs[input_cycle % len(inputs)]
-        input_cycle += 1
+        item = inputs[_input_cycle % len(inputs)]
+        _input_cycle += 1
         return item
     else:
         try:
@@ -329,14 +335,14 @@ def to_number(item):
             return item
 
 def smart_range(item):
-    if type(item) is int:
+    if type(item) is Number and type(item.value) is int:
         x =  range(item)
-
-    elif type(item) is float:
-        x =  range(int(item))
-
+        x = [Number(y) for y in x]
+    elif type(item) is Number and type(item.value) is float:
+        x = range(int(item))
+        x = [Number(y) for y in x]
     else:
-        x =  item
+        x = item
     return x
 
 def pprint(item):
@@ -553,7 +559,7 @@ if __name__ == "__main__":
 
         code = VyCompile(code, header)
         _context_level = 1
-        
+        # print(code)
         exec(code)
 
         if not printed:
