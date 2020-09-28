@@ -95,7 +95,6 @@ class Token:
 
 
 def Tokenise(source: str) -> [Token]:
-    source += " "
     tokens = []
     structure = NO_STMT
     structure_data = {}
@@ -107,7 +106,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        #print(char, structure, structure_data, nest_level, tokens)
+        # print(char, structure, structure_data, nest_level, tokens)
         if escaped:
             if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
@@ -305,6 +304,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`x <ab> y`"]
+    tests = ["`∆ń, ∆Ņ!"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
