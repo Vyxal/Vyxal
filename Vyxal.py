@@ -265,9 +265,8 @@ class Stack(list):
     def do_map(self, fn):
         temp = []
         obj = self.pop()
-        if type(obj) is Number:
+        if type(obj) in [int, float]:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
-            obj = [Number(x) for x in obj]
         for item in obj:
             temp.append(fn(item))
         self.contents.append(temp)

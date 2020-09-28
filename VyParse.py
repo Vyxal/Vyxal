@@ -305,6 +305,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["[.."]
+    tests = ["`x <ab> y`"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
