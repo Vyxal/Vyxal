@@ -16,31 +16,209 @@ _use_encoding = False
 _RIGHT = "RIGHT"
 _LEFT = "LEFT"
 
+def as_iter(item):
+    if type(item) in [int, float]:
+        return str(item)
+    else:
+        return item
+
+def types(*args):
+    temp = list(map(type, args))
+    return [Number if item in [int, float] else item for item in temp]
+
+def get_input():
+    global _input_cycle
+    if inputs:
+        item = inputs[_input_cycle % len(inputs)]
+        _input_cycle += 1
+        return item
+    else:
+        temp = input()
+        return Vy_eval(temp)
+
+def add(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts in [[Number, Number], [str, str]]:
+        return lhs + rhs
+
+    elif ts == [Number, str]:
+        return str(lhs) + rhs
+
+    elif ts == [str, Number]:
+        return lhs + str(rhs)
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = add(lhs[n], rhs[n])
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = add(lhs, rhs[n])
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = add(lhs[n], rhs)
+        return lhs
+
+    else:
+        return 0
+
+def subtract(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts == [Number, Number]:
+        return lhs - rhs
+
+    elif ts == [Number, str]:
+        return str(lhs).replace(rhs, "")
+
+    elif ts == [str, Number]:
+        return lhs.replace(str(rhs), "")
+
+    elif ts == [str, str]:
+        return lhs.replace(rhs, "")
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = subtract(lhs[n], rhs[n])
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = subtract(lhs, rhs[n])
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = subtract(lhs[n], rhs)
+        return lhs
+
+def multiply(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts in [[Number, Number], [Number, str], [str, Number]]:
+        return lhs * rhs
+
+    elif ts == [str, str]:
+        result = ""
+        if len(lhs) > len(rhs):
+            for i in range(len(rhs)):
+                result += lhs[i] + rhs[i]
+            result += lhs[i + 1:]
+        elif len(lhs) > len(rhs):
+            for i in range(len(lhs)):
+                result += lhs[i] + rhs[i]
+            result += rhs[i + 1:]
+        else:
+            for i in range(len(lhs)):
+                result += lhs[i] + rhs[i]
+        return result
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = multiply(lhs[n], rhs[n])
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = multiply(lhs, rhs[n])
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = multiply(lhs[n], rhs)
+        return lhs
 
 
-class Number(int):
-    def __init__(self, value):
-        self.value = value
+def divide(lhs, rhs):
+    import textwrap
+    ts = types(lhs, rhs)
 
-    def __getitem__(self, pos):
-        temp = str(self.value)[pos]
-        return int(temp) if temp.isnumeric() else temp 
+    if ts == [Number, Number]:
+        return lhs / rhs
 
-    def __add__(self, rhs):
-        return Number(self.value + rhs)
+    elif ts == [Number, str]:
+        return Stack(textwrap.wrap(rhs, lhs))
 
-    def __sub__(self, rhs):
-        return Number(self.value - rhs)
+    elif ts == [str, Number]:
+        return Stack(textwrap.wrap(lhs, rhs))
 
-    def __mul__(self, rhs):
-        return Number(self.value * rhs)
+    elif ts == [str, str]:
+        return Stack(lhs.split(rhs))
 
-    def __div__(self, rhs):
-        return Number(self.value / rhs)
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
 
-    def __mod__(self, rhs):
-        return Number(self.value % rhs)
+        for n in range(len(lhs)):
+            lhs[n] = divide(lhs[n], rhs[n])
+        return lhs
 
+    elif ts[-1] == Stack:
+        for n in range(len(rhs)):
+            rhs[n] = divide(lhs, rhs[n])
+        return rhs
+
+    elif ts[0] == Stack:
+        for n in range(len(lhs)):
+            lhs[n] = divide(lhs[n], rhs)
+        return lhs
+
+def modulo(lhs, rhs):
+    ts = types(lhs, rhs)
+
+    if ts == [Number, Number]:
+        return lhs % rhs
+
+    elif ts in [[Number, str], [str, Number]]:
+        return divide(lhs, rhs)[-1]
+
+    elif ts == [str, str]:
+        return lhs.format(rhs)
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = modulo(lhs[n], rhs[n])
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = modulo(lhs, rhs[n])
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = modulo(lhs[n], rhs)
+        return lhs
+
+class Number: pass
 class Stack(list):
     def __init__(self, prelist=None):
         if prelist:
@@ -63,9 +241,9 @@ class Stack(list):
         self.contents = self.contents[::-1]
 
     def __repr__(self):
-        return repr(self.contents)
+        return "⟨" + "|".join([repr(x) for x in self.contents]) + "⟩"
 
-    def __self__(self):
+    def __str__(self):
         return str(self.contents)
 
     def __getitem__(self, n):
@@ -86,7 +264,7 @@ class Stack(list):
 
     def do_map(self, fn):
         temp = []
-        obj = self.contents.pop()
+        obj = self.pop()
         if type(obj) is Number:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
             obj = [Number(x) for x in obj]
@@ -130,59 +308,11 @@ class Stack(list):
         else:
             for i in range(len(self.contents)):
                 items.append(self.contents.pop())
-        
+
             while len(items) < n:
                 items.append(get_input())
         return items
 
-
-def types(*args):
-    return list(map(type, args))
-
-def add(lhs, rhs):
-    ts = types(lhs, rhs)
-    if ts == [Number, Number] or ts == [str, str]:
-        return lhs + rhs
-
-    elif ts == [Number, str]:
-        rhs = to_number(rhs)
-        if type(rhs) is Number:
-            return lhs + rhs
-        else:
-            return str(lhs) + rhs
-
-    elif ts == [Number, Stack] or ts == [str, Stack]:
-        for n in range(len(rhs)):
-            rhs[n] = add(lhs, rhs[n])
-        return rhs
-
-    elif ts == [str, Number]:
-        lhs = to_number(lhs)
-        if type(lhs) is Number:
-            return lhs + rhs
-        else:
-            return str(lhs) + str(rhs)
-
-    elif ts == [Stack, Number] or ts == [Stack, str]:
-        for n in range(len(lhs)):
-            lhs[n] = add(lhs[n], rhs)
-        return lhs
-
-    elif ts == [Stack, Stack]:
-        if len(lhs) != len(rhs):
-            if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
-            else:
-                rhs.extend([0] * len(lhs) - len(rhs))
-
-        for n in range(len(lhs)):
-            lhs[n] = add(lhs[n], rhs[n])
-        return lhs
-    else:
-        return 0
-            
-    
-        
 
 def flatten(nested_list):
     flattened = []
@@ -194,51 +324,40 @@ def flatten(nested_list):
 
     return flattened
 
-def get_input():
-    global _input_cycle
-    if inputs:
-        item = inputs[_input_cycle % len(inputs)]
-        _input_cycle += 1
-        return item
-    else:
+def Vy_eval(item):
         try:
-            temp = input()
-            if type(eval(temp)) is float:
-                temp = float(temp)
-            elif type(eval(temp)) is int:
-                temp = int(temp)
-            elif type(eval(temp)) is list:
-                temp = Stack(eval(temp))
-            elif type(eval(temp)) is str:
-                temp = temp
+            if type(eval(item)) in [float, int]:
+                item = int(item)
+            elif type(eval(item)) is list:
+                item = Stack(eval(item))
+            else:
+                pass
         except Exception:
-            return 0
-        return temp
-
+            return item
+        return item
 
 def to_number(item):
     if type(item) in [float, int]:
-        return Number(item)
-
+        return item
     else:
         try:
-            x = Number(float(str(item)))
+            x = (float(str(item)))
             try:
-                y = Number(int(str(item)))
+                y = (int(str(item)))
                 return y if x == y else x
             except ValueError:
                 return x
-        
+
         except ValueError:
             return item
 
 def smart_range(item):
-    if type(item) is Number and type(item.value) is int:
+    if type(item) is int and type(item.value) is int:
         x =  range(item)
-        x = [Number(y) for y in x]
-    elif type(item) is Number and type(item.value) is float:
+        x = [int(y) for y in x]
+    elif type(item) is int and type(item.value) is float:
         x = range(int(item))
-        x = [Number(y) for y in x]
+        x = [int(y) for y in x]
     else:
         x = item
     return x
@@ -271,7 +390,7 @@ def VyCompile(source, header=""):
 
         else:
             if token[NAME] == VyParse.INTEGER:
-                compiled += f"stack.push(Number({token[VALUE]}))" + newline
+                compiled += f"stack.push(int({token[VALUE]}))" + newline
 
             elif token[NAME] == VyParse.STRING_STMT:
                 string = token[VALUE][VyParse.STRING_CONTENTS]
@@ -313,7 +432,7 @@ def VyCompile(source, header=""):
                     var_name = strip_non_alphabet(token\
                                                   [VALUE][VyParse.FOR_VARIABLE])
 
-                            
+
                 compiled += f"for {var_name} in smart_range(stack.pop()):" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
@@ -338,7 +457,7 @@ def VyCompile(source, header=""):
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
                 _context_level += 1
-                
+
                 if _context_level > _max_context_level:
                     _max_context_level = _context_level
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
@@ -350,7 +469,7 @@ def VyCompile(source, header=""):
 
                     if len(function_data) == 2:
                         number_of_parameters = int(function_data[1])
-                        
+
                     compiled += f"def {name}(stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = stack[:-{number_of_paramters}]") + newline
@@ -380,7 +499,7 @@ def VyCompile(source, header=""):
                     compiled += "_temp_list.append(stack.pop())" + newline
                 compiled += "_temp_list = Stack(_temp_list)" + newline
                 compiled += "stack.push(_temp_list)" + newline
-                
+
 
             elif token[NAME] == VyParse.CONSTANT_CHAR:
                 import string
@@ -402,11 +521,11 @@ def VyCompile(source, header=""):
                 import words
                 import bases
                 import encoding
-                
+
                 if bases.to_ten(token[VALUE], encoding.compression) < len(words._words):
                     compiled += f"stack.push({repr(words.extract_word(token[VALUE]))})" + newline
-                    
-                
+
+
     return header + compiled
 
 if __name__ == "__main__":
@@ -419,11 +538,10 @@ if __name__ == "__main__":
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
-        
+
     if len(sys.argv) > 2:
         flags = sys.argv[2]
-        inputs = list(map(eval,sys.argv[3:]))
-
+        inputs = list(map(Vy_eval,sys.argv[3:]))
 
     if not file_location: #repl mode
         while 1:
