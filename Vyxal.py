@@ -262,6 +262,9 @@ class Stack(list):
     def __add__(self, rhs):
         return self.contents + rhs
 
+    def __mult__(self, rhs):
+        return self.contents * rhs
+
     def do_map(self, fn):
         temp = []
         obj = self.pop()

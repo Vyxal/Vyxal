@@ -92,6 +92,7 @@ commands = {
     'ƈ': 'TODO',
     '∞': 'TODO',
     'ß': 'TODO',
+    "ř": "lhs, rhs = stack.pop(2); stack.push(rhs * lhs)", 
     '∺': 'stack.push(stack.pop() % 2)',
     "∻": 'lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))',
     '\n': '',
