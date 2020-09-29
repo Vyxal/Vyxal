@@ -63,7 +63,7 @@ CLOSING = {
     LAMBDA_STMT: ";",
     LAMBDA_MAP: ";",
     LIST_STMT: "⟩"
-    
+
 }
 
 DEFAULT_KEYS = {
@@ -102,7 +102,7 @@ def Tokenise(source: str) -> [Token]:
     active_key = ""
     scc_mode, scc = False, ""
     nest_level = 0
-    
+
 
 
     for char in source:
@@ -151,21 +151,21 @@ def Tokenise(source: str) -> [Token]:
                 scc = ""
                 structure = NO_STMT
             continue
-                
+
 
         elif structure in ONE_CHARS:
             this_token = Token(structure, char)
             tokens.append(this_token)
             structure = NO_STMT
             continue
-        
+
         if char in OPENING.values():
             if nest_level > 0:
                 if char != CLOSING[STRING_STMT]:
                     nest_level += 1
                 structure_data[active_key] += char
                 continue
-            
+
             elif char == OPENING[IF_STMT]:
                 structure = IF_STMT
                 active_key = IF_ON_TRUE
@@ -208,7 +208,7 @@ def Tokenise(source: str) -> [Token]:
             nest_level += 1
             default_key = DEFAULT_KEYS[structure]
 
-            
+
         elif char in CLOSING.values():
             nest_level -= 1
             if nest_level > 0:
@@ -229,7 +229,7 @@ def Tokenise(source: str) -> [Token]:
                     if default_key not in structure_data:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
-                    
+
                 this_token = Token(structure, structure_data)
                 tokens.append(this_token)
                 structure_data = {}
@@ -274,12 +274,12 @@ def Tokenise(source: str) -> [Token]:
 
         elif char == SINGLE_SCC_CHAR:
             scc_mode = True
-            
+
         else:
             this_token = Token(NO_STMT, char)
             tokens.append(this_token)
 
-    
+
 
     if structure != NO_STMT:
         additional_token = None
@@ -291,8 +291,13 @@ def Tokenise(source: str) -> [Token]:
         elif structure == LIST_STMT:
             structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
             del structure_data[LIST_ITEM]
-        
-            
+
+        else:
+            if default_key not in structure_data:
+                structure_data[default_key] = structure_data[active_key]
+                del structure_data[active_key]
+
+
         this_token = Token(structure, structure_data)
         tokens.append(this_token)
         structure_data = {}
@@ -304,6 +309,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`∆ń, ∆Ņ!"]
+    tests = ["{\\a,"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
