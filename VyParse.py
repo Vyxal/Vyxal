@@ -98,7 +98,8 @@ def Tokenise(source: str) -> [Token]:
     tokens = []
     structure = NO_STMT
     structure_data = {}
-    escaped = False
+    default_key = ""
+    escaped = comment = False
     active_key = ""
     scc_mode, scc = False, ""
     nest_level = 0
@@ -107,6 +108,11 @@ def Tokenise(source: str) -> [Token]:
 
     for char in source:
         # print(char, structure, structure_data, nest_level, tokens)
+
+        if comment:
+            if char == "\n":
+                comment = False
+            continue
         if escaped:
             if structure != NO_STMT:
                 structure_data[active_key] += "\\" + char
@@ -119,6 +125,11 @@ def Tokenise(source: str) -> [Token]:
         if char == "\\":
             escaped = True
             continue
+
+        if char == "#":
+            comment = True
+            continue
+            
 
         elif structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
@@ -267,6 +278,7 @@ def Tokenise(source: str) -> [Token]:
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
+            default_key = DEFAULT_KEYS[INTEGER]
 
         elif char in ONE_CHARS:
             char_mode = ONE
@@ -282,6 +294,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     if structure != NO_STMT:
+        # print(structure_data, default_key, active_key)
         additional_token = None
 
         if structure == LAMBDA_MAP:
@@ -292,11 +305,13 @@ def Tokenise(source: str) -> [Token]:
             structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
             del structure_data[LIST_ITEM]
 
+        elif structure == INTEGER:
+            structure_data = int(structure_data[default_key])
+
         else:
             if default_key not in structure_data:
                 structure_data[default_key] = structure_data[active_key]
                 del structure_data[active_key]
-
 
         this_token = Token(structure, structure_data)
         tokens.append(this_token)
@@ -309,6 +324,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["{\\a,"]
+    tests = ["[1[1[1[1]]]]"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

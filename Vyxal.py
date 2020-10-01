@@ -108,6 +108,7 @@ def subtract(lhs, rhs):
 
 def multiply(lhs, rhs):
     ts = types(lhs, rhs)
+    print(lhs, rhs)
     if ts in [[Number, Number], [Number, str], [str, Number]]:
         return lhs * rhs
 
@@ -244,7 +245,7 @@ class Stack(list):
         return "⟨" + "|".join([repr(x) for x in self.contents]) + "⟩"
 
     def __str__(self):
-        return str(self.contents)
+        return "⟨" + "|".join([repr(x) for x in self.contents]) + "⟩"
 
     def __getitem__(self, n):
         return self.contents[n]
@@ -297,21 +298,11 @@ class Stack(list):
             self.contents.insert(0, self.pop())
 
     def pop(self, n=1):
-        if n == 1:
-            if len(self.contents):
-                return self.contents.pop()
-            else:
-                return get_input()
         items = []
-
-        if len(self.contents) >= n:
-            for i in range(n):
+        for _ in range(n):
+            if len(self.contents) != 0:
                 items.append(self.contents.pop())
-        else:
-            for i in range(len(self.contents)):
-                items.append(self.contents.pop())
-
-            while len(items) < n:
+            else:
                 items.append(get_input())
         return items
 
@@ -474,10 +465,11 @@ def VyCompile(source, header=""):
 
                     compiled += f"def {name}(stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
-                    compiled += tab(f"_context_{_context_level} = stack[:-{number_of_paramters}]") + newline
+                    compiled += tab(f"_context_{_context_level} = stack[:-{number_of_parameters}]") + newline
                     compiled += tab(f"temp = Stack(stack.pop({number_of_parameters}))") + newline
                     compiled += tab("stack = temp") + newline
-                    compiled += tab(VyCompile(token[VALUE][VyParse.FUNCTION_BODY])) + newline
+                    x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
+                    compiled += tab(x) + newline
                     compiled += tab("return stack") + newline
 
                 _context_level -= 1
@@ -577,7 +569,8 @@ if __name__ == "__main__":
 
         code = VyCompile(code, header)
         _context_level = 1
-        # print(code)
+        if flags and 'c' in flags:
+            print(code)
         exec(code)
 
         if not printed:
