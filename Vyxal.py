@@ -296,15 +296,19 @@ class Stack(list):
         else:
             self.contents.insert(0, self.pop())
 
-    def pop(self, n=1):
+    def pop(self, n=1, wrap=False):
+        # wrap tells us if we need to wrap lists of len 1 into a list
         items = []
         for _ in range(n):
             if len(self.contents) != 0:
                 items.append(self.contents.pop())
             else:
                 items.append(get_input())
-        
-        return items[0] if n == 1 else items
+        if n == 1:
+            if wrap == False:
+                return items[0]
+            
+        return items
 
 
 def flatten(nested_list):
@@ -466,7 +470,7 @@ def VyCompile(source, header=""):
                     compiled += f"def {name}(in_stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
-                    compiled += tab(f"stack = Stack([in_stack.pop({number_of_parameters})])") + newline
+                    compiled += tab(f"stack = Stack(in_stack.pop({number_of_parameters}, True))") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
 
