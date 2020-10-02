@@ -218,6 +218,19 @@ def modulo(lhs, rhs):
             lhs[n] = modulo(lhs[n], rhs)
         return lhs
 
+def join(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        lhs.push(rhs)
+        return lhs
+
+    elif ts[-1] == Stack:
+        rhs.contents.insert(0, lhs)
+        return rhs
+
+    else:
+        return str(lhs) + str(rhs)
+
 class Number: pass
 class Stack(list):
     def __init__(self, prelist=None):
