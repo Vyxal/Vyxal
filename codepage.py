@@ -28,7 +28,7 @@ commands = {
     'G': 'lhs, rhs = stack.pop(2); stack.push(math.gcd(rhs, lhs))',
     'H': 'stack.push(int(stack.pop(), 16))',
     'I': 'stack.push(int(stack.pop()))',
-    'J': 'lhs, rhs = stack.pop(2); stack.push(str(rhs) + str(lhs))',
+    'J': 'rhs, lhs = stack.pop(2); stack.push(join(lhs, rhs))',
     'K': 'stack.push({})',
     'L': 'stack.push(len(stack.pop()))',
     'M': 'stack.do_map(stack.pop())',
@@ -68,7 +68,7 @@ commands = {
     's': 'top = stack.pop(); stack.push(sorted(as_iter(top)))',
     't': 'stack.push(stack.pop()[-1])',
     'u': 'TODO',
-    'w': 'stack.push([stack.pop()])',
+    'w': 'stack.push(Stack([stack.pop()]))',
     'x': '_context_level -= 1 * (1 - (_context_level == 0))',
     'y': 'TODO',
     'z': 'TODO',
@@ -102,5 +102,6 @@ commands = {
     "Ĳ": "stack.push('\\n'.join(stack.pop()))",
     "ĳ": "stack.push(10)",
     "ĵ": "x = stack.pop(); stack.push(x * x)",
-    "∑": "stack.push(sum(stack.pop()))" # TODO: Ensure that this works with lists of mixed types. Essentially, reduction by addition.ß
+    "∑": "stack.push(sum(stack.pop()))", # TODO: Ensure that this works with lists of mixed types. Essentially, reduction by addition.
+    "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))"
     }
