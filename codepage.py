@@ -104,5 +104,8 @@ commands = {
     "ĵ": "x = stack.pop(); stack.push(x * x)",
     "∑": "stack.push(summate(stack.pop()))", 
     "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))",
-    "č": "stack.push(int(stack.pop() != 1))"
+    "č": "stack.push(int(stack.pop() != 1))",
+    "½": "stack.push(divide(stack.pop(), 2))",
+    "⨪": "stack.push(subtract(stack.pop(), 1))",
+    "⨥": "stack.push(add(stack.pop(), 1))"
     }
