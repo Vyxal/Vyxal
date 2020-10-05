@@ -334,6 +334,13 @@ def flatten(nested_list):
 
     return flattened
 
+def Vy_repr(item):
+    if type(item) is str:
+        return "`" + item + "`"
+
+    else:
+        return repr(item)
+
 def Vy_eval(item):
         try:
             if type(eval(item)) in [float, int]:
