@@ -10,9 +10,9 @@
 ()): End for loop
 (*): Pop [x, y] Push (y * x)
 (+): Pop [x, y] Push (y + x)
-(,): Print t.o.s. with newline
+(,): Print t.o.s
 (-): Pop [x, y] Push (y - x)
-(.): Print t.o.s
+(.): Print Vy_repr(t.o.s)
 (/): Pop [x, y] Push (y / x)
 (0): Push (0)
 (1): Push (1)
