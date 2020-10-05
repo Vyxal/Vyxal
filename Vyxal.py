@@ -18,7 +18,7 @@ _LEFT = "LEFT"
 
 def as_iter(item):
     if type(item) in [int, float]:
-        return str(item)
+        return [int(x) if x != "." else x for x in str(item)]
     else:
         return item
 
@@ -341,6 +341,18 @@ def Vy_repr(item):
     else:
         return repr(item)
 
+
+def chrord(item):
+    if type(item) in [int, float]:
+        return chr(int(item))
+
+    elif type(item) is str and len(item) == 1:
+        return ord(item)
+
+    else:
+        return Stack([chrord(x) for x in item])
+        
+
 def Vy_eval(item):
         try:
             if type(eval(item)) in [float, int]:
@@ -379,8 +391,13 @@ def smart_range(item):
         x = item
     return x
 
-def pprint(item):
-    print(item)
+def summate(item):
+    x = as_iter(item)
+    result = 0
+    for _ in x:
+        result = add(result, _)
+
+    return result
 
 def strip_non_alphabet(name):
     result = ""

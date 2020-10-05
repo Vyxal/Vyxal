@@ -21,7 +21,7 @@ commands = {
     '?': 'stack.push(get_input())',
     'A': 'stack.push(stack.all())',
     'B': 'stack.push(int(stack.pop(), 2))',
-    'C': 'stack.push("{}")',
+    'C': 'stack.push(chrord(stack.pop()))',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
     'E': 'x = stack.pop(); stack.push(eval(x))',
     'F': 'stack.do_filter(stack.pop())',
@@ -40,7 +40,7 @@ commands = {
     'S': 'stack.push(str(stack.pop()))',
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
     'U': 'TODO',
-    'V': 'stack.push("{}")',
+    'V': 'replacent, needle, haystack = stack.pop(3); stack.push(haystack.replace(needle, replacent))',
     'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(rhs, lhs))',
     'X': 'if _context_level + 1 < _max_context_level: _context_level += 1',
     'Y': 'TODO',
@@ -61,7 +61,7 @@ commands = {
     'l': 'stack.push([])',
     'm': 'TODO',
     'n': 'stack.push(eval(f"_context_{_context_level}"))',
-    'o': 'stack.push(type(stack.pop()))',
+    'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'TODO',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
     'r': 'lhs, rhs = stack.pop(2); stack.push(list(range(rhs, lhs)))',
@@ -102,6 +102,7 @@ commands = {
     "Ĳ": "stack.push('\\n'.join(stack.pop()))",
     "ĳ": "stack.push(10)",
     "ĵ": "x = stack.pop(); stack.push(x * x)",
-    "∑": "stack.push(sum(stack.pop()))", # TODO: Ensure that this works with lists of mixed types. Essentially, reduction by addition.
-    "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))"
+    "∑": "stack.push(summate(stack.pop()))", 
+    "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))",
+    "č": "stack.push(int(stack.pop() != 1))"
     }
