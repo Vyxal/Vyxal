@@ -346,6 +346,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["3º4"]
+    tests = ["3º12º34"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
