@@ -391,6 +391,12 @@ def smart_range(item):
         x = item
     return x
 
+def orderless_range(a, b, lift_factor=0):
+    if a < b:
+        return range(a, b + lift_factor)
+    else:
+        return range(b, a + lift_factor)
+
 def summate(item):
     x = as_iter(item)
     result = 0
@@ -615,7 +621,9 @@ if __name__ == "__main__":
         exec(code)
 
         if not printed:
-            if _join:
-                print("\n".join([str(n) for n in stack[-1]]))
+            if flags and 's' in flags:
+                print(summate(stack.pop()))
+            elif _join:
+                print("\n".join([str(n) for n in stack.pop()]))
             else:
-                print(stack[-1])
+                print(stack.pop())

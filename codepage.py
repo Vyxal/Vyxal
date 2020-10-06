@@ -64,7 +64,7 @@ commands = {
     'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'y, x = stack.pop(2); stack.push(int(str(x).startswith(str(y)))',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
-    'r': 'lhs, rhs = stack.pop(2); stack.push(list(range(rhs, lhs)))',
+    'r': 'lhs, rhs = stack.pop(2); stack.push(list(orderless_range(rhs, lhs)))',
     's': 'top = stack.pop(); stack.push(sorted(as_iter(top)))',
     't': 'stack.push(stack.pop()[-1])',
     'u': 'TODO',
@@ -107,5 +107,6 @@ commands = {
     "č": "stack.push(int(stack.pop() != 1))",
     "½": "stack.push(divide(stack.pop(), 2))",
     "⨪": "stack.push(subtract(stack.pop(), 1))",
-    "⨥": "stack.push(add(stack.pop(), 1))"
+    "⨥": "stack.push(add(stack.pop(), 1))",
+    "ķ": "rhs, lhs = stack.pop(2); stack.push(list(orderless_range(lhs, rhs, 1)))"
     }
