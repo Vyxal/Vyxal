@@ -162,7 +162,9 @@
 (Ĵ): Pop [x] Push (''.join(x))
 (Ĳ): Pop [x] Push ('\n'.join(x))
 (ĳ): Push (10)
-
+(ķ): Pop [x, y] Push (inclusive_range(x, y))
+(Ķ): Pop [x, y] Push ([x, y])
+(ĵ): Pop [x] Push (x * x) # Equivalent to x:*
 How to use the interpreter:
 
 python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>
