@@ -38,6 +38,8 @@ CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
 SINGLE_SCC_CHAR = "ı"
 
+DECIMAL = "º"
+
 
 OPENING = {
     IF_STMT: "[",
@@ -144,11 +146,21 @@ def Tokenise(source: str) -> [Token]:
             continue
 
         elif structure == INTEGER:
-            if char in "0123456789":
+            if char in "0123456789º":
                 structure_data[INTEGER_CONTENTS] += char
                 continue
             else:
-                this_token = Token(INTEGER, int(structure_data[active_key]))
+                value = structure_data[active_key]
+                end = value.find("º", value.find("º") + 1)
+
+                if end > -1:
+                    value = value[:value.find("º", value.find("º"))]
+
+                if value.isnumeric():                
+                    this_token = Token(INTEGER, int(value))
+
+                else:
+                    this_token = Token(INTEGER, float(value.replace("º", ".")))
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
@@ -274,7 +286,7 @@ def Tokenise(source: str) -> [Token]:
             structure_data[active_key] += char
 
 
-        elif char in "0123456789":
+        elif char in "0123456789º":
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
@@ -306,7 +318,17 @@ def Tokenise(source: str) -> [Token]:
             del structure_data[LIST_ITEM]
 
         elif structure == INTEGER:
-            structure_data = int(structure_data[default_key])
+            value = structure_data[default_key]
+            end = value.find("º", value.find("º") + 1)
+
+            if end > -1:
+                value = value[:end]
+
+            if value.isnumeric():
+                structure_data = int(value)
+
+            else:
+                structure_data = float(value.replace("º", "."))
 
         else:
             if default_key not in structure_data:
@@ -324,6 +346,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["[1[1[1[1]]]]"]
+    tests = ["3º4"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
