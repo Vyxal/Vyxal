@@ -46,13 +46,13 @@
 (M): Pop [x, f] Push (map(f, x))
 (N): Pop [x] Push (x as number)
 (O): Pop [x, y] Push (x.count(y))
-(P): Pop [x, y] Push (is_divisible(y, x))
+(P): Pop [x, y] Push (.strip(y))
 (Q): Halt execution
 (R): Pop [x, f] Push (reduce(f, x))
 (S): Pop [x] Push (x as string)
 (T): Pop [x] Push ([n for n in x if bool(n)])
 (U): Pop [x] Push (uniquified(x))
-(V): Push (Vyxal's code page)
+(V): Pop [x, y, z] Push (x.replace(y, z))
 (W): Pop [x -- string, y -- integer] Push (textwrap.wrap(x, y))
 (X): Context level up
 (Y): Pop [x, y] Push (interleave(x, y))
@@ -77,8 +77,8 @@
 (l): Push ([])
 (m): Pop [x] Push [x + x[::-1]]
 (n): Contextual variable
-(o): Pop [x, t -- type] Push (type(x))
-(p): Print t.o.s without popping
+(o): Pop [x, y] Push (x.replace(y, '')) # Equivalent to x y ❝ V
+(p): Pop [x, y] Push (x.startswith(y))
 (q): Pop [x] Push (str(x))
 (r): Pop [x, y] Push (range(y, x))
 (s): Pop [x] Push (sorted(x))
@@ -142,7 +142,7 @@
 (Ð): Pop [x, n] Push (x in direction n)
 (ř): Pop [x, n] Push (repeat(x, n))
 (Š): Pop [x, n] Push ([x[N] + x[N + 1] + ... + x[N + n]  for N in range(len(x) - n + 1)])
-(č): Pop [x] Push (ord(x))
+(č): Pop [x] Push (x != 1)
 (√): Pop [x] Push (x ** 1/2)
 (∖): Pop [x, y] Push (x // y)
 (Ẋ): Pop [x, y] Push (x xor y)
