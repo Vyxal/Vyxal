@@ -278,6 +278,9 @@ class Stack(list):
     def __mult__(self, rhs):
         return self.contents * rhs
 
+    def __iter__(self):
+        return iter(self.contents)
+
     def do_map(self, fn):
         temp = []
         obj = self.pop()
@@ -400,8 +403,8 @@ def orderless_range(a, b, lift_factor=0):
 def summate(item):
     x = as_iter(item)
     result = 0
-    for _ in x:
-        result = add(result, _)
+    for v in x:
+        result = add(result, v)
 
     return result
 
