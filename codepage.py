@@ -109,10 +109,11 @@ commands = {
     "⨪": "stack.push(subtract(stack.pop(), 1))",
     "⨥": "stack.push(add(stack.pop(), 1))",
     "ķ": "rhs, lhs = stack.pop(2); stack.push(list(orderless_range(lhs, rhs, 1)))",
-    "ṙ": "stack.push(round(stack.pop())",
+    "ṙ": "stack.push(VyRound(stack.pop()))",
     "√": "stack.push(stack.pop() ** (1 / 2))",
     "∖": "rhs, lhs = stack.pop(2); stack.push(lhs // rhs)",
     "Ẋ": "rhs, lhs = stack.pop(2); stack.push(int((a or b) and not (a and b)))",
     "Ȧ": "stack.push(abs(stack.pop()))",
-    "Ȯ": "stack.push(oct(stack.pop()))"
+    "Ȯ": "stack.push(oct(stack.pop()))",
+    "ĸ": "value, iterable = stack.pop(2); stack.push(distribute(iterable, value))"
     }

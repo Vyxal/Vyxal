@@ -400,6 +400,29 @@ def orderless_range(a, b, lift_factor=0):
     else:
         return range(b, a + lift_factor)
 
+def VyRound(item):
+    if type(item) is str:
+        return item
+    elif type(item) in [float, int]:
+        return round(item)
+    elif type(item) is Stack:
+        return Stack([VyRound(x) for x in item])
+    else:
+        return item
+
+
+def distribute(iterable, value):
+    # [1, 2, 3, 4] 4 => [2, 3, 4, 5]
+    # [1, 1, 1] 2 => [2, 2, 1]
+
+    remaining = value
+    index = 0
+    while remaining > 0:
+        iterable[index % len(iterable)] += 1
+        index += 1
+        remaining -= 1
+
+    return iterable
 def summate(item):
     x = as_iter(item)
     result = 0
