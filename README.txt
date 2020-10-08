@@ -104,17 +104,17 @@
 («): Start/close a base-255 string
 (»): Start/close a base-255 number
 (°): Function reference
-(•): Two letter function reference
+(•): Decimal separator 
 (․): Symbolic function reference
 (⍎): Execute a function reference (totally not stolen from APL... what gives you that idea?)
 (Ṛ): Pop [x, y] Push (random.randint(x, y))
 (½): Pop [x] Push (x / 2)
-(∆): Import library from BFL
-(ø): Call imported function f
+(∆): Two char math functions
+(ø): Two char string functions
 (Ï): Pop [x, y] Push (x.index(y))
 (Ô): Push (list of odd numbers)
 (Ç): Pop [x] Push (1 - x)
-(æ): Escape next character as a string
+(æ): Pop [x] Push (is_prime(x))
 (ʀ): Pop [x] Push (range(0, x + 1))
 (ʁ): Pop [x] Push (range(0, x))
 (ɾ): Pop [x] Push (range(1, x + 1))
@@ -141,7 +141,7 @@
 (∂): Set active variable
 (Ð): Pop [x, n] Push (x in direction n)
 (ř): Pop [x, n] Push (repeat(x, n))
-(Š): Pop [x, n] Push ([x[N] + x[N + 1] + ... + x[N + n]  for N in range(len(x) - n + 1)])
+(Š): Pop [x, y] Push (convert x from base 10 to base y (x_10 => x_y)))
 (č): Pop [x] Push (x != 1)
 (√): Pop [x] Push (x ** 1/2)
 (∖): Pop [x, y] Push (x // y)
