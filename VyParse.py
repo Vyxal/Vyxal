@@ -14,6 +14,10 @@ CHARACTER = "STRUCTURE_CHARACTER"
 LAMBDA_STMT = "LAMBDA_STMT"
 LAMBDA_MAP = "LAMBDA_MAP"
 LIST_STMT = "LIST_STMT"
+VARIABLE_GET = "VARIABLE_GET"
+VARIABLE_SET = "VARIABLE_SET"
+
+VARIABLES = [VARIABLE_GET, VARIABLE_SET]
 
 STRING_CONTENTS = "string_contents"
 INTEGER_CONTENTS = "integer_contents"
@@ -28,6 +32,7 @@ FUNCTION_BODY = "function_body"
 LAMBDA_BODY = "lambda_body"
 LIST_ITEM = "list_item"
 LIST_ITEMS = "list_items"
+VARIABLE_NAME = "variable_name"
 
 ONE = "one"
 TWO = "two"
@@ -165,6 +170,18 @@ def Tokenise(source: str) -> [Token]:
                 structure_data = {}
                 structure = NO_STMT
 
+        elif structure in VARIABLES:
+            import string
+            if char in string.ascii_letters + "_":
+                structure_data[active_key] += char
+                continue
+            else:
+                this_token = Token(structure, structure_data)
+                tokens.append(this_token)
+                structure_data = {}
+                structure = NO_STMT
+            
+
         elif scc_mode:
             scc += char
             if len(scc) == 2:
@@ -292,6 +309,19 @@ def Tokenise(source: str) -> [Token]:
             active_key = INTEGER_CONTENTS
             default_key = DEFAULT_KEYS[INTEGER]
 
+        elif char == "£":
+            structure = VARIABLE_SET
+            structure_data[VARIABLE_NAME] = ""
+            active_key = VARIABLE_NAME
+            default_key = VARIABLE_NAME
+
+        elif char == "¥":
+            structure = VARIABLE_GET
+            structure_data[VARIABLE_NAME] = ""
+            active_key = VARIABLE_NAME
+            default_key = VARIABLE_NAME
+
+
         elif char in ONE_CHARS:
             char_mode = ONE
             structure = char
@@ -346,6 +376,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["3º12º34"]
+    tests = ["1 £abc ¥abc ¥abc +"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

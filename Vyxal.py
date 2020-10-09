@@ -383,12 +383,12 @@ def to_number(item):
         except ValueError:
             return item
 
-def smart_range(item):
-    if type(item) is int and type(item.value) is int:
-        x =  range(item)
+def smart_range(item, start=0, lift_factor=0):
+    if type(item):
+        x =  range(start, item + lift_factor)
         x = [int(y) for y in x]
-    elif type(item) is int and type(item.value) is float:
-        x = range(int(item))
+    elif type(item) is float:
+        x = range(start, int(item) + lift_factor)
         x = [int(y) for y in x]
     else:
         x = item
@@ -410,6 +410,18 @@ def VyRound(item):
     else:
         return item
 
+def divisors_of(value):
+    if type(value) is Stack:
+        return Stack([divisors_of(x) for x in value])
+    
+    
+    divs = []
+
+    for item in smart_range(value, 1, 1):
+        if modulo(value, item) == 0:
+            divs.append(item)
+
+    return Stack(divs)
 
 def distribute(iterable, value):
     # [1, 2, 3, 4] 4 => [2, 3, 4, 5]
@@ -456,7 +468,7 @@ def VyCompile(source, header=""):
 
         else:
             if token[NAME] == VyParse.INTEGER:
-                compiled += f"stack.push(int({token[VALUE]}))" + newline
+                compiled += f"stack.push({token[VALUE]})" + newline
 
             elif token[NAME] == VyParse.STRING_STMT:
                 string = token[VALUE][VyParse.STRING_CONTENTS]
@@ -592,7 +604,13 @@ def VyCompile(source, header=""):
                 if bases.to_ten(token[VALUE], encoding.compression) < len(words._words):
                     compiled += f"stack.push({repr(words.extract_word(token[VALUE]))})" + newline
 
+            elif token[NAME] == VyParse.VARIABLE_SET:
+                compiled += "VAR_" + token[VALUE][VyParse.VARIABLE_NAME] +\
+                            " = stack.pop()" + newline
 
+            elif token[NAME] == VyParse.VARIABLE_GET:
+                compiled += "stack.push(VAR_" + token[VALUE][VyParse.VARIABLE_NAME] +\
+                            ")" + newline
     return header + compiled
 
 if __name__ == "__main__":
