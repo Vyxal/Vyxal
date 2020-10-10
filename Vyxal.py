@@ -323,7 +323,7 @@ class Stack(list):
         if n == 1:
             if wrap == False:
                 return items[0]
-            
+
         return items
 
 
@@ -354,7 +354,7 @@ def chrord(item):
 
     else:
         return Stack([chrord(x) for x in item])
-        
+
 
 def Vy_eval(item):
         try:
@@ -413,8 +413,8 @@ def VyRound(item):
 def divisors_of(value):
     if type(value) is Stack:
         return Stack([divisors_of(x) for x in value])
-    
-    
+
+
     divs = []
 
     for item in smart_range(value, 1, 1):
@@ -450,6 +450,20 @@ def strip_non_alphabet(name):
             result += char
 
     return result
+
+
+def vertical_join(iterable, padding=" "):
+    lengths = list(map(len, iterable))
+    iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
+    print(iterable)
+
+    out = ""
+    for i in range(max(lengths)):
+        for item in iterable:
+            out += item[i]
+        out += "\n"
+
+    return out
 
 newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")

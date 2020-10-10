@@ -92,7 +92,7 @@ commands = {
     'ƈ': 'TODO',
     '∞': 'TODO',
     'ß': 'TODO',
-    "ř": "lhs, rhs = stack.pop(2); stack.push(rhs * lhs)", 
+    "ř": "lhs, rhs = stack.pop(2); stack.push(rhs * lhs)",
     '∺': 'stack.push(stack.pop() % 2)',
     "∻": 'lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))',
     '\n': '',
@@ -102,7 +102,7 @@ commands = {
     "Ĳ": "stack.push('\\n'.join(stack.pop()))",
     "ĳ": "stack.push(10)",
     "ĵ": "x = stack.pop(); stack.push(x * x)",
-    "∑": "stack.push(summate(stack.pop()))", 
+    "∑": "stack.push(summate(stack.pop()))",
     "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))",
     "č": "stack.push(int(stack.pop() != 1))",
     "½": "stack.push(divide(stack.pop(), 2))",
@@ -116,5 +116,7 @@ commands = {
     "Ȧ": "stack.push(abs(stack.pop()))",
     "Ȯ": "stack.push(oct(stack.pop()))",
     "ĸ": "value, iterable = stack.pop(2); stack.push(distribute(iterable, value))",
-    "Ĺ": "stack.push('\n')"
+    "Ĺ": "stack.push('\n')",
+    "ĺ": "stack.push(vertical_join(stack.pop()))",
+    "Ļ": "padding, iterable = stack.pop(2); stack.push(vertical_join(iterable, padding))",
     }
