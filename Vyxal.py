@@ -455,7 +455,6 @@ def strip_non_alphabet(name):
 def vertical_join(iterable, padding=" "):
     lengths = list(map(len, iterable))
     iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
-    print(iterable)
 
     out = ""
     for i in range(max(lengths)):
