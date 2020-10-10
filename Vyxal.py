@@ -660,6 +660,9 @@ if __name__ == "__main__":
             if 'j' in flags:
                 _join = True
 
+            if 'L' in flags:
+                _vertical_join = True
+
             if 'v' in flags:
                 _use_encoding = True
 
@@ -680,6 +683,8 @@ if __name__ == "__main__":
         if not printed:
             if flags and 's' in flags:
                 print(summate(stack.pop()))
+            elif _vertical_join:
+                print(vertical_join(stack.pop()))
             elif _join:
                 print("\n".join([str(n) for n in stack.pop()]))
             else:
