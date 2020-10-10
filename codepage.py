@@ -119,4 +119,6 @@ commands = {
     "Ĺ": "stack.push('\n')",
     "ĺ": "stack.push(vertical_join(stack.pop()))",
     "Ļ": "padding, iterable = stack.pop(2); stack.push(vertical_join(iterable, padding))",
+    "Ń": "n, fn = stack.pop(2); stack.do_fixed_gen(fn, n)",
+    "ń": "stack.do_fixed_gen(stack.pop())"
     }

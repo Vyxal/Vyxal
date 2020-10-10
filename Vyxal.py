@@ -303,6 +303,18 @@ class Stack(list):
 
         self.contents.append(temp)
 
+
+    def do_fixed_gen(self, fn, n=1):
+        temp = []
+        curr = 0
+        while len(temp) < n:
+            result = fn(curr)
+            if result:
+                temp.append(curr)
+            curr += 1
+
+        self.contents.append(temp)
+
     def shift(self, direction):
         if direction == _LEFT:
             self.contents = self.contents[::-1]
