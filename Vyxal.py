@@ -360,6 +360,18 @@ def Vy_repr(item):
         return repr(item)
 
 
+def Vy_int(item, base=10):
+    if type(item) is Stack:
+        result = 0
+        for value in item:
+            result = multiply(result, base)
+            result = add(result, value)
+
+        return result
+    else:
+        return int(item, base)
+
+
 def chrord(item):
     if type(item) in [int, float]:
         return chr(int(item))
