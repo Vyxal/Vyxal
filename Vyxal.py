@@ -11,6 +11,7 @@ _input_cycle = 0
 _MAP_START = 0
 _MAP_OFFSET = 1
 _join = False
+_vertical_join = False
 _use_encoding = False
 
 _RIGHT = "RIGHT"
@@ -245,7 +246,9 @@ class Stack(list):
         self.contents.append(item)
 
     def swap(self):
-        self.contents[-1], self.contents[-2] = self.contents[-2], self.contents[-1]
+        top, topnt = stack.pop(2)
+        stack.push(top)
+        stack.push(topnt)
     def __len__(self):
         return len(self.contents)
     def all(self):
