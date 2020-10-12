@@ -235,7 +235,7 @@ def join(lhs, rhs):
 
 class Number: pass
 class Stack(list):
-    def __init__(self, prelist=None):
+    def __init__(self, prelist=None, inputs=[]):
         if prelist:
             if type(prelist) is list:
                 self.contents = prelist
@@ -243,6 +243,9 @@ class Stack(list):
                 self.contents = [prelist]
         else:
             self.contents = []
+
+        self.inputs = inputs
+        self.input_number = 0
     def push(self, item):
         self.contents.append(item)
 
@@ -335,7 +338,11 @@ class Stack(list):
             if len(self.contents) != 0:
                 items.append(self.contents.pop())
             else:
-                items.append(get_input())
+                if self.inputs:
+                    items.append(self.inputs[self.input_number % len(items)])
+                    self.input_number += 1
+                else:
+                    items.append(get_input())
         if n == 1:
             if wrap == False:
                 return items[0]
@@ -592,7 +599,8 @@ def VyCompile(source, header=""):
                     compiled += f"def {name}(in_stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
-                    compiled += tab(f"stack = Stack(in_stack.pop({number_of_parameters}, True))") + newline
+                    compiled += f"args = in_stack.pop({number_of_parameters}"
+                    compiled += tab(f"stack = Stack(args, args))") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
 
@@ -605,7 +613,7 @@ def VyCompile(source, header=""):
                 if _context_level > _max_context_level:
                     _max_context_level = _context_level
                 compiled += "def _lambda(item):" + newline
-                compiled += tab("global VY_reg_reps; stack = Stack([item])") + newline
+                compiled += tab("global VY_reg_reps; stack = Stack([item], [item])") + newline
                 compiled += tab(f"_context_{_context_level} = item") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
                 compiled += tab("return stack[-1]") + newline
@@ -639,10 +647,10 @@ def VyCompile(source, header=""):
 
             elif token[NAME] == VyParse.SINGLE_SCC_CHAR:
                 import words
-                import bases
+                import utilities
                 import encoding
 
-                if bases.to_ten(token[VALUE], encoding.compression) < len(words._words):
+                if utilities.to_ten(token[VALUE], encoding.compression) < len(words._words):
                     compiled += f"stack.push({repr(words.extract_word(token[VALUE]))})" + newline
 
             elif token[NAME] == VyParse.VARIABLE_SET:
