@@ -2,6 +2,7 @@ import VyParse
 from VyParse import NAME
 from VyParse import VALUE
 from codepage import *
+import math
 import string
 
 _context_level = 0

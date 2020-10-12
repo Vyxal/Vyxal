@@ -66,7 +66,7 @@ commands = {
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
     'r': 'lhs, rhs = stack.pop(2); stack.push(list(orderless_range(rhs, lhs)))',
     's': 'top = stack.pop(); stack.push(sorted(as_iter(top)))',
-    't': 'stack.push(stack.pop()[-1])',
+    't': 'stack.push(as_iter(stack.pop())[-1])',
     'u': 'TODO',
     'w': 'stack.push(Stack([stack.pop()]))',
     'x': '_context_level -= 1 * (1 - (_context_level == 0))',
@@ -120,5 +120,6 @@ commands = {
     "ĺ": "stack.push(vertical_join(stack.pop()))",
     "Ļ": "padding, iterable = stack.pop(2); stack.push(vertical_join(iterable, padding))",
     "Ń": "n, fn = stack.pop(2); stack.do_fixed_gen(fn, n)",
-    "ń": "stack.do_fixed_gen(stack.pop())"
+    "ń": "stack.do_fixed_gen(stack.pop())",
+    "Ň": "stack.push(math.factorial(stack.pop()))"
     }
