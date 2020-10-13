@@ -643,7 +643,7 @@ def VyCompile(source, header=""):
                 compiled += tab("global VY_reg_reps; stack = Stack([item], [item])") + newline
                 compiled += tab(f"_context_{_context_level} = item") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
-                compiled += tab("return Stack([stack[-1]])") + newline
+                compiled += tab("return stack[-1]") + newline
                 compiled += "_lambda.fn_type = LAMBDA" + newline
                 compiled += "stack.push(_lambda)" + newline
                 _context_level -= 1

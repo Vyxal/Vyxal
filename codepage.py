@@ -79,7 +79,7 @@ commands = {
     '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs or lhs))',
     '⟇': 'lhs, rhs = stack.pop(2); stack.push(rhs or lhs)',
     '÷': 'for item in as_iter(stack.pop()): stack.push(item)',
-    '⍎': 'fn = stack.pop(); stack += fn(stack) if fn.fn_type == STANDARD else fn(stack.pop())',
+    '⍎': 'fn = stack.pop(); stack += fn(stack) if fn.fn_type == STANDARD else Stack(fn(stack.pop()))',
     'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
     'Ï': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs).index(lhs))',
     'Ô': 'TODO',
