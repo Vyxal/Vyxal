@@ -41,7 +41,7 @@ commands = {
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
     'U': 'TODO',
     'V': 'replacent, needle, haystack = stack.pop(3); stack.push(haystack.replace(needle, replacent))',
-    'W': 'lhs, rhs = stack.pop(2); stack.push(textwrap.wrap(rhs, lhs))',
+    'W': 'stack = Stack([stack.contents])',
     'X': 'if _context_level + 1 < _max_context_level: _context_level += 1',
     'Y': 'TODO',
     'Z': 'lhs, rhs = stack.pop(2); stack.push(list(zip(rhs, lhs)))',
