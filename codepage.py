@@ -101,7 +101,7 @@ commands = {
     "Ĵ": "stack.push(''.join(stack.pop())",
     "Ĳ": "stack.push('\\n'.join(stack.pop()))",
     "ĳ": "stack.push(10)",
-    "ĵ": "x = stack.pop(); stack.push(x * x)",
+    "ĵ": "x = stack.pop(); stack.push(multiply(x, x))",
     "∑": "stack.push(summate(stack.pop()))",
     "Ķ": "rhs, lhs = stack.pop(2); stack.push(Stack([lhs, rhs]))",
     "č": "stack.push(int(stack.pop() != 1))",
