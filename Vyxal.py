@@ -418,6 +418,12 @@ def to_number(item):
         except ValueError:
             return item
 
+def sums(item):
+    new = Stack()
+    for i in range(len(item)):
+        new.push(summate(item[0:i+1]))
+    return new
+
 def smart_range(item, start=0, lift_factor=0):
     if type(item):
         x =  range(start, item + lift_factor)

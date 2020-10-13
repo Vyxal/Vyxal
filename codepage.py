@@ -78,7 +78,7 @@ commands = {
     '⟑': 'lhs, rhs = stack.pop(2); stack.push(rhs and lhs)',
     '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs or lhs))',
     '⟇': 'lhs, rhs = stack.pop(2); stack.push(rhs or lhs)',
-    '÷': 'for item in stack.pop(): stack.push(item)',
+    '÷': 'for item in as_iter(stack.pop()): stack.push(item)',
     '⍎': 'stack += (stack.pop())(stack)',
     'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
     'Ï': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs).index(lhs))',
@@ -121,5 +121,7 @@ commands = {
     "Ļ": "padding, iterable = stack.pop(2); stack.push(vertical_join(iterable, padding))",
     "Ń": "n, fn = stack.pop(2); stack.do_fixed_gen(fn, n)",
     "ń": "stack.do_fixed_gen(stack.pop())",
-    "Ň": "stack.push(math.factorial(stack.pop()))"
+    "Ň": "stack.push(math.factorial(stack.pop()))",
+    "ņ": "stack.push(sums(as_iter(stack.pop())))",
+    
     }
