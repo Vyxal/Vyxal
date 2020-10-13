@@ -47,7 +47,7 @@ def uncompress(s):
         elif char in encoding.compression:
             current_two += char
             if len(current_two) == 2:
-                if bases.to_ten(current_two, encoding.compression)\
+                if to_ten(current_two, encoding.compression)\
                    < len(words._words):
 
                     final += words.extract_word(current_two)
