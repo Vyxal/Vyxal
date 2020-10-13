@@ -53,7 +53,7 @@
 (T): Pop [x] Push ([n for n in x if bool(n)])
 (U): Pop [x] Push (uniquified(x))
 (V): Pop [x, y, z] Push (x.replace(y, z))
-(W): Pop [x -- string, y -- integer] Push (textwrap.wrap(x, y))
+(W): Wrap the entire stack into a single stack
 (X): Context level up
 (Y): Pop [x, y] Push (interleave(x, y))
 (Z): Pop [x, y] Push (zip(y, x))
