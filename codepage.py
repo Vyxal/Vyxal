@@ -123,5 +123,5 @@ commands = {
     "ń": "stack.do_fixed_gen(stack.pop())",
     "Ň": "stack.push(math.factorial(stack.pop()))",
     "ņ": "stack.push(sums(as_iter(stack.pop())))",
-    
+    "Ň": "stack.push(int(len(set(as_iter(stack.pop()))) == 1))"
     }
