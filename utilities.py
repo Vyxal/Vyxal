@@ -31,6 +31,8 @@ def uncompress(s):
     current_two = ""
     escaped = False
 
+    import encoding
+
     for char in s:
         if escaped:
             if char not in encoding.compression:

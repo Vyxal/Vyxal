@@ -155,7 +155,10 @@ def divide(lhs, rhs):
     ts = types(lhs, rhs)
 
     if ts == [Number, Number]:
-        return lhs / rhs
+        if (lhs / rhs) == int(lhs / rhs):
+            return int(lhs / rhs)
+        else:
+            return lhs / rhs
 
     elif ts == [Number, str]:
         return Stack(textwrap.wrap(rhs, lhs))
@@ -223,6 +226,8 @@ def modulo(lhs, rhs):
 def join(lhs, rhs):
     ts = types(lhs, rhs)
     if ts[0] == Stack:
+        if ts[-1] == Stack:
+            return lhs + rhs
         lhs.push(rhs)
         return lhs
 
@@ -280,10 +285,20 @@ class Stack(list):
         return self
 
     def __add__(self, rhs):
-        return self.contents + rhs
+        self.contents += rhs
+        return self
 
-    def __mult__(self, rhs):
-        return self.contents * rhs
+    def __ladd__(self, lhs):
+        self.contents = lhs + self.contents
+        return self
+
+    def __mul__(self, rhs):
+        self.contents *= rhs
+        return self
+
+    def __lmul__(self, lhs):
+        self.contents = lhs * self.contents
+        return self
 
     def __iter__(self):
         return iter(self.contents)
@@ -376,6 +391,8 @@ def Vy_int(item, base=10):
             result = add(result, value)
 
         return result
+    elif type(item) in [int, float]:
+        return int(item)
     else:
         return int(item, base)
 

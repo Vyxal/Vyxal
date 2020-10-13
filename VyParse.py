@@ -133,9 +133,7 @@ def Tokenise(source: str) -> [Token]:
             escaped = True
             continue
 
-        if char == "#":
-            comment = True
-            continue
+
             
 
         elif structure == STRING_STMT:
@@ -329,6 +327,10 @@ def Tokenise(source: str) -> [Token]:
         elif char == SINGLE_SCC_CHAR:
             scc_mode = True
 
+        elif char == "#":
+            comment = True
+            continue
+
         else:
             this_token = Token(NO_STMT, char)
             tokens.append(this_token)
@@ -376,6 +378,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["1 £abc ¥abc ¥abc +"]
+    tests = ["`#`"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
