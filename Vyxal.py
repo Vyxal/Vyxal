@@ -18,6 +18,9 @@ _use_encoding = False
 _RIGHT = "RIGHT"
 _LEFT = "LEFT"
 
+STANDARD = "standard"
+LAMBDA = "lambda"
+
 def as_iter(item):
     if type(item) in [int, float]:
         return [int(x) if x != "." else x for x in str(item)]
@@ -610,7 +613,7 @@ def VyCompile(source, header=""):
                 if _context_level > _max_context_level:
                     _max_context_level = _context_level
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
-                    compiled += f"stack += {token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
+                    compiled += f"stack += FN_{token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
                 else:
                     function_data = token[VALUE][VyParse.FUNCTION_NAME].split(":")
                     number_of_parameters = 0
@@ -619,15 +622,16 @@ def VyCompile(source, header=""):
                     if len(function_data) == 2:
                         number_of_parameters = int(function_data[1])
 
-                    compiled += f"def {name}(in_stack):" + newline
+                    compiled += f"def FN_{name}(in_stack):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
-                    compiled += f"args = in_stack.pop({number_of_parameters}"
-                    compiled += tab(f"stack = Stack(args, args))") + newline
+                    compiled += tab(f"args = in_stack.pop({number_of_parameters})") + newline
+                    compiled += tab(f"stack = Stack(args, args)") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
 
                     compiled += tab("return stack") + newline
+                    compiled += f"FN_{name}.fn_type = STANDARD" + newline
 
                 _context_level -= 1
 
@@ -639,7 +643,8 @@ def VyCompile(source, header=""):
                 compiled += tab("global VY_reg_reps; stack = Stack([item], [item])") + newline
                 compiled += tab(f"_context_{_context_level} = item") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
-                compiled += tab("return stack[-1]") + newline
+                compiled += tab("return Stack([stack[-1]])") + newline
+                compiled += "_lambda.fn_type = LAMBDA" + newline
                 compiled += "stack.push(_lambda)" + newline
                 _context_level -= 1
 
@@ -651,6 +656,9 @@ def VyCompile(source, header=""):
                 compiled += "_temp_list = Stack(_temp_list)" + newline
                 compiled += "stack.push(_temp_list)" + newline
 
+
+            elif token[NAME] == VyParse.FUNCTION_REFERENCE:
+                compiled += f"stack.push(FN_{token[VALUE][VyParse.FUNCTION_NAME]})" + newline
 
             elif token[NAME] == VyParse.CONSTANT_CHAR:
                 import string

@@ -16,6 +16,7 @@ LAMBDA_MAP = "LAMBDA_MAP"
 LIST_STMT = "LIST_STMT"
 VARIABLE_GET = "VARIABLE_GET"
 VARIABLE_SET = "VARIABLE_SET"
+FUNCTION_REFERENCE = "FUNCTION_REFERENCE"
 
 VARIABLES = [VARIABLE_GET, VARIABLE_SET]
 
@@ -56,7 +57,8 @@ OPENING = {
     STRING_STMT: "`",
     LAMBDA_STMT: "λ",
     LAMBDA_MAP: "ƛ",
-    LIST_STMT: "⟨"
+    LIST_STMT: "⟨",
+    FUNCTION_REFERENCE: "°"
 }
 
 CLOSING = {
@@ -69,7 +71,8 @@ CLOSING = {
     STRING_STMT: "`",
     LAMBDA_STMT: ";",
     LAMBDA_MAP: ";",
-    LIST_STMT: "⟩"
+    LIST_STMT: "⟩",
+    FUNCTION_REFERENCE: ";"
 
 }
 
@@ -82,7 +85,8 @@ DEFAULT_KEYS = {
     FUNCTION_STMT: FUNCTION_NAME,
     LAMBDA_STMT: LAMBDA_BODY,
     LAMBDA_MAP: LAMBDA_BODY,
-    LIST_STMT: LIST_ITEM
+    LIST_STMT: LIST_ITEM,
+    FUNCTION_REFERENCE: FUNCTION_NAME
 }
 
 class Token:
@@ -134,7 +138,7 @@ def Tokenise(source: str) -> [Token]:
             continue
 
 
-            
+
 
         elif structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
@@ -159,7 +163,7 @@ def Tokenise(source: str) -> [Token]:
                 if end > -1:
                     value = value[:value.find("º", value.find("º"))]
 
-                if value.isnumeric():                
+                if value.isnumeric():
                     this_token = Token(INTEGER, int(value))
 
                 else:
@@ -178,7 +182,7 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
-            
+
 
         elif scc_mode:
             scc += char
@@ -238,6 +242,9 @@ def Tokenise(source: str) -> [Token]:
                 active_key = LIST_ITEM
                 structure_data[LIST_ITEMS] = []
 
+            elif char == OPENING[FUNCTION_REFERENCE]:
+                structure = FUNCTION_REFERENCE
+                active_key = FUNCTION_NAME
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
