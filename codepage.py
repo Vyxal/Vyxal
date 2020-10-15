@@ -92,7 +92,7 @@ commands = {
     'ƈ': 'TODO',
     '∞': 'TODO',
     'ß': 'TODO',
-    "ř": "lhs, rhs = stack.pop(2); stack.push(rhs * lhs)",
+    "ř": "lhs, rhs = stack.pop(2); stack.push(repeat(rhs, lhs))",
     '∺': 'stack.push(stack.pop() % 2)',
     "∻": 'lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))',
     '\n': '',
@@ -116,7 +116,7 @@ commands = {
     "Ȧ": "stack.push(abs(stack.pop()))",
     "Ȯ": "stack.push(oct(stack.pop()))",
     "ĸ": "value, iterable = stack.pop(2); stack.push(distribute(iterable, value))",
-    "Ĺ": "stack.push('\n')",
+    "Ĺ": "stack.push('\\n')",
     "ĺ": "stack.push(vertical_join(stack.pop()))",
     "Ļ": "padding, iterable = stack.pop(2); stack.push(vertical_join(iterable, padding))",
     "Ń": "n, fn = stack.pop(2); stack.do_fixed_gen(fn, n)",
@@ -127,5 +127,6 @@ commands = {
     "ð": "stack.push(' ')",
     "ň": "stack.push(counts(stack.pop()))",
     "ŉ": "x = as_iter(stack.pop())[::-1]\nif type(x) is list: x = Stack(x)\nstack.push(x)",
-    "Ŋ": "stack.push(min(stack.pop(), key=lambda x: x[-1]))"
+    "Ŋ": "stack.push(min(stack.pop(), key=lambda x: x[-1]))",
+    "ŋ": "x = summate(stack); stack = Stack(x)"
     }

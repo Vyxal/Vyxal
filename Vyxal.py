@@ -487,7 +487,6 @@ def divisors_of(value):
     if type(value) is Stack:
         return Stack([divisors_of(x) for x in value])
 
-
     divs = []
 
     for item in smart_range(value, 1, 1):
@@ -495,6 +494,12 @@ def divisors_of(value):
             divs.append(item)
 
     return Stack(divs)
+
+def repeat(iterable, times):
+    if type(iterable) is Stack:
+        return Stack(iterable.contents * times)
+    else:
+        return iterable * times
 
 def distribute(iterable, value):
     # [1, 2, 3, 4] 4 => [2, 3, 4, 5]
@@ -510,7 +515,8 @@ def distribute(iterable, value):
     return iterable
 def summate(item):
     x = as_iter(item)
-    result = 0
+    if type(x[0]) is str: result = ""
+    else: result = 0
     for v in x:
         result = add(result, v)
 
@@ -558,12 +564,10 @@ def VyCompile(source, header=""):
 
             elif token[NAME] == VyParse.STRING_STMT:
                 string = token[VALUE][VyParse.STRING_CONTENTS]
-                string = string.replace("'", "\\'")
+                string = string.replace("\\", "\\\\")
                 string = string.replace('"', "\\\"")
-
                 import utilities
                 string = utilities.uncompress(string)
-                #string = string.replace("\\", "\\\\")
                 compiled += f"stack.push(\"{string}\")" \
                             + newline
 

@@ -60,4 +60,7 @@ def uncompress(s):
         else:
             final += char
 
+    if escaped:
+        final += char
+
     return final

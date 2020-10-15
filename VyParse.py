@@ -119,7 +119,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        # print(char, structure, structure_data, nest_level, tokens)
+        # print(char, structure, structure_data, nest_level, tokens, escaped)
 
         if comment:
             if char == "\n":
@@ -149,7 +149,10 @@ def Tokenise(source: str) -> [Token]:
                 structure_data = {}
                 structure = NO_STMT
             else:
-                structure_data[active_key] += char
+                if char == "\\":
+                    escaped = True
+                else:
+                    structure_data[active_key] += char
 
             continue
 
@@ -395,6 +398,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["vm"]
+    tests = [r"`\\`"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
