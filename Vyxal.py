@@ -241,6 +241,14 @@ def join(lhs, rhs):
     else:
         return str(lhs) + str(rhs)
 
+def counts(item):
+    ret = []
+    for i in set(as_iter(item)):
+        ret.append(Stack([i, as_iter(item).count(i)]))
+
+    return Stack(ret)
+
+
 class Number: pass
 class Stack(list):
     def __init__(self, prelist=None, inputs=[]):
@@ -367,6 +375,9 @@ class Stack(list):
 
         return items
 
+    def count(self, item):
+        return self.contents.count(item)
+
 
 def flatten(nested_list):
     flattened = []
@@ -409,6 +420,7 @@ def chrord(item):
 
     else:
         return Stack([chrord(x) for x in item])
+
 
 
 def Vy_eval(item):

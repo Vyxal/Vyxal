@@ -49,12 +49,12 @@ commands = {
     '_': 'stack.pop()',
     '`': 'stack.push("{}")',
     'a': 'stack.push(any(stack.pop()))',
-    'b': 'stack.push(bin(stack.pop()))',
+    'b': 'stack.push(bin(stack.pop())[2:])',
     'c': 'lhs, rhs = stack.pop(2); stack.push(rhs in lhs)',
     'd': 'stack.push(stack.pop() * 2)',
     'e': 'lhs, rhs = stack.pop(2); stack.push(rhs ** lhs)',
     'f': 'stack.push(flatten(stack.pop())',
-    'g': 'stack.push(VY_source[stack.pop()])',
+    'g': 'stack.push(min(stack.pop()))',
     'h': 'stack.push(stack.pop()[0])',
     'i': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs)[lhs])',
     'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in as_iter(rhs)])); ',
@@ -124,5 +124,8 @@ commands = {
     "Ň": "stack.push(math.factorial(stack.pop()))",
     "ņ": "stack.push(sums(as_iter(stack.pop())))",
     "Ň": "stack.push(int(len(set(as_iter(stack.pop()))) == 1))",
-    "ð": "stack.push(' ')"
+    "ð": "stack.push(' ')",
+    "ň": "stack.push(counts(stack.pop()))",
+    "ŉ": "x = as_iter(stack.pop())[::-1]\nif type(x) is list: x = Stack(x)\nstack.push(x)",
+    "Ŋ": "stack.push(min(stack.pop(), key=lambda x: x[-1]))"
     }

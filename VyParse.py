@@ -114,6 +114,7 @@ def Tokenise(source: str) -> [Token]:
     active_key = ""
     scc_mode, scc = False, ""
     nest_level = 0
+    vectorisation = False
 
 
 
@@ -327,6 +328,11 @@ def Tokenise(source: str) -> [Token]:
             default_key = VARIABLE_NAME
 
 
+        elif char == VECTORISATION_CHAR:
+            vectorisation = True
+            continue
+
+
         elif char in ONE_CHARS:
             char_mode = ONE
             structure = char
@@ -339,8 +345,12 @@ def Tokenise(source: str) -> [Token]:
             continue
 
         else:
-            this_token = Token(NO_STMT, char)
-            tokens.append(this_token)
+            if vectorisation:
+                tokens += Tokenise("ƛ" + char + ";")
+                vectorisation = False
+            else:
+                this_token = Token(NO_STMT, char)
+                tokens.append(this_token)
 
 
 
@@ -385,6 +395,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`#`"]
+    tests = ["vm"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
