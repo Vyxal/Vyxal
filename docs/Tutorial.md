@@ -65,5 +65,30 @@ Now, it's time to introduce a key data type common to most programming languages
 
 As indicated in the last string (albeit, in a memed fashion), strings don't use standard quotation marks (" and ') like other programming/golfing languages: backticks delimit strings.
 
+## Type Cohesion
+I present to you: The Ballad of the Types
 
+```
+There are three types: numbers, strings and lists
+If you add a number to a number you get a number
+But if you add a number to a string you get a string
+Adding two strings gives a concatenation
+And adding with lists performs vectorising
+Number minus number is a number
+But number minus string is still a string
+A string minus a number is the same as above
+And subtracting with lists still performs vectorising
+When you subtract a string from string it does replacement
+And when you multiply instead it does zipping
+Any string multiplied by a number is a string
+And multiplication with lists performs vectorising
+A number x a number is a number
+So is number over number (how interesting)
+Dividing strings by numbers splits them into lengthened chunks
+And division with lists still performs vectorising
+When you take a string and divide it by another string it splits
+It'd be stupid if the result was still a string.
+Now I know that you're saying "Lyxal, why did you have to make everything rhyme". And ngl, I kinda don't know why. But the one thing that I do know is:
+Anything done with lists performs vectorising
+```
 
