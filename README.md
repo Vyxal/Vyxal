@@ -1,3 +1,12 @@
+## How to use the interpreter:
+
+`python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>`
+
+For a list of command-line flags:
+`python3 Vyxal.py h`
+
+## Reference:
+```
 ( ): NOP
 (!): Push (length of stack)
 ("): Right shift stack
@@ -58,7 +67,7 @@
 (Y): Pop [x, y] Push (interleave(x, y))
 (Z): Pop [x, y] Push (zip(y, x))
 ([): Start if statement [ifTrue|ifFalse]
-(\): Escape the next character
+(\): Escape the next character OR create a single character string
 (]): Close if statement
 (^): Reverse stack
 (_): Pop [x]
@@ -165,6 +174,4 @@
 (ķ): Pop [x, y] Push (inclusive_range(x, y))
 (Ķ): Pop [x, y] Push ([x, y])
 (ĵ): Pop [x] Push (x * x) # Equivalent to x:*
-How to use the interpreter:
-
-python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>
+```
