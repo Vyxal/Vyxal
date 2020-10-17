@@ -732,6 +732,17 @@ if __name__ == "__main__":
             _context_level = 1
             exec(line)
             print(stack)
+    elif file_location == "h":
+        print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
+        print("ALL flags should be used as is (no '-' prefix)")
+        print("\tJ\tPrint top of stack joined by newlines")
+        print("\tL\tPrint top of stack joined by newlines(Vertically)")
+        print("\ts\tSum/concatenate top of stack on execution")
+        print("\tM\tUse 1-indexed range [1,n] for mapping integers")
+        print("\tM\tUse 0-indexed range [0,n) for mapping integers")
+        print("\tv\tUse Vyxal encoding for input file")
+        print("\tc\tOutput compiled code")
+        print("");
     else:
         if flags:
             if "M" in flags:
