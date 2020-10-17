@@ -1,6 +1,9 @@
 ## How to use the interpreter:
 
-python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>
+`python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>`
+
+For a list of command-line flags:
+`python3 Vyxal.py h`
 
 ## Reference:
 ```
