@@ -396,6 +396,15 @@ def Vy_repr(item):
     else:
         return repr(item)
 
+def Vy_reduce(fn, iterable):
+    if type(iterable) is not Stack: iterable = Stack(list(as_iter(iterable)))
+    iterable.reverse()
+    value = iterable.pop()
+    iterable.reverse()
+    for n in iterable.contents:
+        value = fn(Stack([value, n]))[0]
+    return Stack(value)
+
 
 def Vy_int(item, base=10):
     if type(item) is Stack:
@@ -647,7 +656,6 @@ def VyCompile(source, header=""):
                     compiled += tab(x) + newline
 
                     compiled += tab("return stack") + newline
-                    compiled += f"FN_{name}.fn_type = STANDARD" + newline
 
                 _context_level -= 1
 
@@ -655,12 +663,18 @@ def VyCompile(source, header=""):
                 _context_level += 1
                 if _context_level > _max_context_level:
                     _max_context_level = _context_level
-                compiled += "def _lambda(item):" + newline
-                compiled += tab("global VY_reg_reps; stack = Stack([item], [item])") + newline
-                compiled += tab(f"_context_{_context_level} = item") + newline
+
+                args = 1
+                if VyParse.LAMBDA_ARGUMENTS in token[VALUE]:
+                    if token[VALUE][VyParse.LAMBDA_ARGUMENTS].isnumeric():
+                        args = int(token[VALUE][VyParse.LAMBDA_ARGUMENTS])
+                compiled += "def _lambda(in_stack):" + newline
+                compiled += tab("global VY_reg_reps") + newline
+                compiled += tab(f"args = in_stack.pop({args})") + newline
+                compiled += tab("stack = Stack(args, args)") + newline
+                compiled += tab(f"_context_{_context_level} = args") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
-                compiled += tab("return stack[-1]") + newline
-                compiled += "_lambda.fn_type = LAMBDA" + newline
+                compiled += tab("return Stack(stack[-1])") + newline
                 compiled += "stack.push(_lambda)" + newline
                 _context_level -= 1
 

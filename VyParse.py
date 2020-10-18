@@ -34,6 +34,7 @@ LAMBDA_BODY = "lambda_body"
 LIST_ITEM = "list_item"
 LIST_ITEMS = "list_items"
 VARIABLE_NAME = "variable_name"
+LAMBDA_ARGUMENTS = "lambda_arguments"
 
 ONE = "one"
 TWO = "two"
@@ -86,7 +87,7 @@ DEFAULT_KEYS = {
     LAMBDA_STMT: LAMBDA_BODY,
     LAMBDA_MAP: LAMBDA_BODY,
     LIST_STMT: LIST_ITEM,
-    FUNCTION_REFERENCE: FUNCTION_NAME
+    FUNCTION_REFERENCE: FUNCTION_NAME,
 }
 
 class Token:
@@ -302,6 +303,10 @@ def Tokenise(source: str) -> [Token]:
             elif structure == FUNCTION_STMT:
                 active_key = FUNCTION_BODY
 
+            elif structure == LAMBDA_STMT:
+                structure_data[LAMBDA_ARGUMENTS] = structure_data[LAMBDA_BODY]
+                active_key = LAMBDA_BODY
+
             elif structure == LIST_STMT:
                 structure_data[LIST_ITEMS].append(structure_data[active_key])
 
@@ -398,6 +403,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = [r"`\\`"]
+    tests = ["λ2|+;"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
