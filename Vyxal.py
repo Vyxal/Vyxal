@@ -402,7 +402,7 @@ def Vy_reduce(fn, iterable):
     value = iterable.pop()
     iterable.reverse()
     for n in iterable.contents:
-        value = fn(Stack([value, n]))[0]
+        value = fn(Stack([value, n]), arity=2)[0]
     return Stack(value)
 
 
@@ -647,7 +647,7 @@ def VyCompile(source, header=""):
                     if len(function_data) == 2:
                         number_of_parameters = int(function_data[1])
 
-                    compiled += f"def FN_{name}(in_stack):" + newline
+                    compiled += f"def FN_{name}(in_stack, arity=None):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
                     compiled += tab(f"args = in_stack.pop({number_of_parameters})") + newline
@@ -668,9 +668,10 @@ def VyCompile(source, header=""):
                 if VyParse.LAMBDA_ARGUMENTS in token[VALUE]:
                     if token[VALUE][VyParse.LAMBDA_ARGUMENTS].isnumeric():
                         args = int(token[VALUE][VyParse.LAMBDA_ARGUMENTS])
-                compiled += "def _lambda(in_stack):" + newline
+                compiled += "def _lambda(in_stack, arity=None):" + newline
                 compiled += tab("global VY_reg_reps") + newline
-                compiled += tab(f"args = in_stack.pop({args})") + newline
+                compiled += tab(f"if arity and arity > {args}: args = in_stack.pop(arity)") + newline
+                compiled += tab(f"else: args = in_stack.pop({args})") + newline
                 compiled += tab("stack = Stack(args, args)") + newline
                 compiled += tab(f"_context_{_context_level} = args") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
