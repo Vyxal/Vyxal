@@ -419,6 +419,9 @@ def Vy_int(item, base=10):
     else:
         return int(item, base)
 
+def graded(iterable):
+    iterable = sorted(enumerate(iterable), key=lambda x: x[-1])
+    return Stack([x[0] for x in iterable])
 
 def chrord(item):
     if type(item) in [int, float]:

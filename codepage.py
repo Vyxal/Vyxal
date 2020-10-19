@@ -1,5 +1,5 @@
 codepage = "λ¬∧⟑∨⟇÷«»°\n․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß⎝⎠ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~⎡⎣⨥⨪∺❝ð£¥§¦¡∂ÐřŠč√∖ẊȦȮḊĖẸṙ∑Ṡİ•\t"
-codepage += "Ĥ2ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº"
+codepage += "Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº"
 
 commands = {
     '!': 'stack.push(len(stack))',
@@ -128,5 +128,6 @@ commands = {
     "ň": "stack.push(counts(stack.pop()))",
     "ŉ": "x = as_iter(stack.pop())[::-1]\nif type(x) is list: x = Stack(x)\nstack.push(x)",
     "Ŋ": "stack.push(min(stack.pop(), key=lambda x: x[-1]))",
-    "ŋ": "x = summate(stack); stack = Stack(x)"
+    "ŋ": "x = summate(stack); stack = Stack(x)",
+    "Ō": "stack.push(graded(stack.pop()))"
     }
