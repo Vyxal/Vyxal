@@ -252,7 +252,7 @@ def counts(item):
 class Number: pass
 class Stack(list):
     def __init__(self, prelist=None, inputs=[]):
-        if prelist:
+        if prelist is not None:
             if type(prelist) is list:
                 self.contents = prelist
             else:
@@ -320,8 +320,8 @@ class Stack(list):
         if type(obj) in [int, float]:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
         for item in obj:
-            temp.append(fn(item))
-        self.contents.append(temp)
+            temp.append(fn(Stack(item, item))[0])
+        self.contents.append(Stack(temp))
 
     def do_filter(self, fn):
         temp = []
