@@ -125,3 +125,37 @@ As seen above, Vyxal implements the 5 basic arithmetic operators: `+` (addition)
 | List      | [rhs % item for item in lhs] | [rhs % item for item in lhs] | [lhs[i] % rhs[i] for i in range(len(lhs))] |
 
 Note that when it's two lists, they are extended to be of the same length.
+
+## Program Flow
+### `If` Statements
+Like _Keg_, Vyxal has a readable and intuative way of expressing `if` statements, `for` and `while` loops. The form of an `if` statement is:
+
+    [...1|...2]
+
+When an `if` statement is run, the last item on the stack is popped, and if it is non-zero, `...1` is executed. If there is a `|...2`, it is executed if the popped value is 0.
+
+### `For` Loops
+The form of a `for` loop is:
+
+    (...1|...2)
+
+When a `for` loop is run, the top of the stack is popped and is iterated through, executing `...2` each time. If `...1` is present, the current iteration value is stored in the variable given. Otherwise, the iteration value is stored as a context variable, retrivable through `n`
+
+### `While` Loops
+The form of a `while` loop is:
+
+    {...1|...2}
+
+When a `while` loop is run,  `...1` (if given) will be the condition of the loop (if it isn't present, `1` will be used as the condition of the loop) and `...2` will be executed until the given condition is false.
+
+## User Defined Functions
+One of the special features of Vyxal is user-defined functions, which are defined using the following form:
+
+    @name:n|...;
+
+Where:
+`name` = the name of the function (note that it needs to be one full word, and that it can't contain any `@`'s)
+`n` = the number of items popped from the stack to use as arguments
+`...` = the body of the function
+
+If `n` isn't present, no items will be popped from the stack, consequently making the function a niladic function.
