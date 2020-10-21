@@ -159,3 +159,11 @@ Where:
 `...` = the body of the function
 
 If `n` isn't present, no items will be popped from the stack, consequently making the function a niladic function.
+
+- ![https://i.stack.imgur.com/um1Ve.jpg](https://i.stack.imgur.com/um1Ve.jpg)
+
+- ![https://i.stack.imgur.com/RGBWe.jpg](https://i.stack.imgur.com/RGBWe.jpg)
+
+- ![https://i.stack.imgur.com/GfSVK.jpg](https://i.stack.imgur.com/GfSVK.jpg)
+
+
