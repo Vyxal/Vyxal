@@ -431,6 +431,21 @@ def Vy_repr(item):
     else:
         return repr(item)
 
+def Vy_Uniquify(iterable):
+    all_items = []
+    seen_items = set()
+
+    for item in iterable:
+        if item in seen_items:
+            continue
+
+        all_items.append(item)
+        seen_items.add(item)
+
+    return Stack(all_items)
+
+def sort_unique(iterable):
+    return VySort(Vy_Uniquify(iterable))
 
 def Vy_zip(lhs, rhs):
     if len(lhs) != len(rhs):
