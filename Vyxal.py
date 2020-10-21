@@ -283,7 +283,32 @@ class Stack(list):
         return "⟨" + "|".join([repr(x) for x in self.contents]) + "⟩"
 
     def __getitem__(self, n):
-        return self.contents[n]
+        if type(n) is slice:
+            return Stack(self.contents[n])
+
+        elif type(n) is Stack:
+            length = len(n)
+            if length < 1:
+                return 0
+
+            elif length == 1:
+                return Stack(self.contents[slice(n[0])])
+
+            elif length == 2:
+                return Stack(self.contents[slice(n[0], n[1], None)])
+
+            else:
+                return Stack(self.contents[slice(n[0], n[1], n[2])])
+
+
+        elif type(n) is str:
+            return 0 #for now
+
+        elif type(n) is float:
+            return self.contents[int(n)]
+
+        else:
+            return self.contents[n]
 
     def __setitem__(self, index, value):
         self.contents[index] = value
@@ -321,6 +346,16 @@ class Stack(list):
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
         for item in obj:
             temp.append(fn(Stack(item, item))[0])
+        self.contents.append(Stack(temp))
+
+
+    def do_zipmap(self, fn):
+        temp = []
+        obj = self.pop()
+        if type(obj) in [int, float]:
+            obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
+        for item in obj:
+            temp.append(Stack([item, fn(Stack(item, item))[0]]))
         self.contents.append(Stack(temp))
 
     def do_filter(self, fn):
@@ -396,6 +431,16 @@ def Vy_repr(item):
     else:
         return repr(item)
 
+
+def Vy_zip(lhs, rhs):
+    if len(lhs) != len(rhs):
+        if len(lhs) < len(rhs):
+            lhs.extend([0] * len(rhs) - len(lhs))
+        else:
+            rhs.extend([0] * len(lhs) - len(rhs))
+
+
+
 def Vy_reduce(fn, iterable):
     if type(iterable) is not Stack: iterable = Stack(list(as_iter(iterable)))
     iterable.reverse()
@@ -433,7 +478,9 @@ def chrord(item):
     else:
         return Stack([chrord(x) for x in item])
 
-
+def deref(item):
+    if type(item) is Stack:
+        return Stack(item.contents.copy())
 
 def Vy_eval(item):
         try:
@@ -554,6 +601,21 @@ def vertical_join(iterable, padding=" "):
         out += "\n"
 
     return out
+
+
+def indexes_where(fn, iterable):
+    indexes = Stack()
+    for i in range(len(iterable)):
+        if bool(fn(Stack(item[i]))):
+            indexes.push(i)
+    return indexes
+
+def VySort(iterable, key=None):
+    if key:
+        iterable = [(x, key(x)) for x in iterable]
+        return Stack([m[0] for m in sorted(iterable, key=lambda x:x[-1])])
+    else:
+        return Stack(sorted(iterable))
 
 newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
