@@ -92,3 +92,36 @@ Now I know that you're saying "Lyxal, why did you have to make everything rhyme"
 Anything done with lists performs vectorising
 ```
 
+As seen above, Vyxal implements the 5 basic arithmetic operators: `+` (addition), `-` (subtraction), `*` (multiplication), `/` (division) and `%` (modulo). Here are tables summarising how they operate on different types:
+
+| lhs + rhs | Number                       | String                       | List                                       |
+|-----------|------------------------------|------------------------------|--------------------------------------------|
+| Number    | lhs + rhs                    | Concat(lhs, rhs)             | [lhs + item for item in rhs]               |
+| String    | Concat(lhs, rhs)             | Concat(lhs, rhs)             | [lhs + item for item in rhs]               |
+| List      | [rhs + item for item in lhs] | [rhs + item for item in lhs] | [lhs[i] + rhs[i] for i in range(len(lhs))] |
+
+| lhs - rhs | Number                       | String                              | List                                       |
+|-----------|------------------------------|-------------------------------------|--------------------------------------------|
+| Number    | lhs - rhs                    | str(lhs).replace(rhs, "")           | [lhs - item for item in rhs]               |
+| String    | lhs.replace(str(rhs), "")    | lhs.replace(rhs, "")                | [lhs.replace(item, "") for item in rhs]    |
+| List      | [rhs - item for item in lhs] | [rhs.replace(item) for item in lhs] | [lhs[i] - rhs[i] for i in range(len(lhs))] |
+
+| lhs * rhs | Number                       | String                       | List                                       |
+|-----------|------------------------------|------------------------------|--------------------------------------------|
+| Number    | lhs * rhs                    | lhs * rhs                    | [lhs * item for item in rhs]               |
+| String    | lhs * rhs                    | interleave(lhs, rhs)         | [lhs * item for item in rhs]               |
+| List      | [rhs * item for item in lhs] | [rhs * item for item in lhs] | [lhs[i] * rhs[i] for i in range(len(lhs))] |
+
+| lhs / rhs | Number                       | String                       | List                                       |
+|-----------|------------------------------|------------------------------|--------------------------------------------|
+| Number    | lhs / rhs                    | textwrap.wrap(rhs, lhs)      | [lhs / item for item in rhs]               |
+| String    | textwrap.wrap(lhs, rhs)      | lhs.split(rhs)               | [lhs / item for item in rhs]               |
+| List      | [rhs / item for item in lhs] | [rhs / item for item in lhs] | [lhs[i] / rhs[i] for i in range(len(lhs))] |
+
+| lhs % rhs | Number                       | String                       | List                                       |
+|-----------|------------------------------|------------------------------|--------------------------------------------|
+| Number    | lhs % rhs                    | textwrap.wrap(rhs, lhs)[-1]  | [lhs % item for item in rhs]               |
+| String    | textwrap.wrap(lhs, rhs)[-1]  | format(lhs, rhs)             | [lhs % item for item in rhs]               |
+| List      | [rhs % item for item in lhs] | [rhs % item for item in lhs] | [lhs[i] % rhs[i] for i in range(len(lhs))] |
+
+Note that when it's two lists, they are extended to be of the same length.
