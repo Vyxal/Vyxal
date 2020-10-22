@@ -43,7 +43,7 @@ commands = {
     'V': 'replacent, needle, haystack = stack.pop(3); stack.push(haystack.replace(needle, replacent))',
     'W': 'stack = Stack([stack.contents])',
     'X': 'if _context_level + 1 < _max_context_level: _context_level += 1',
-    'Y': 'TODO',
+    'Y': 'rhs, lhs = stack.pop(2); stack.push(interleave(as_iter(lhs), as_iter(rhs)))',
     'Z': 'lhs, rhs = stack.pop(2); stack.push(Stack(list(zip(rhs, lhs))))',
     '^': 'stack.reverse()',
     '_': 'stack.pop()',
@@ -70,7 +70,7 @@ commands = {
     'u': 'stack.push(sort_unique(as_iter(stack.pop())))',
     'w': 'stack.push(Stack([stack.pop()]))',
     'x': '_context_level -= 1 * (1 - (_context_level == 0))',
-    'y': 'TODO',
+    'y': 'x = uninterleave(stack.pop()); stack.push(x[0]), stack.push(x[1])',
     'z': 'stack.do_zipmap(stack.pop())',
     '~': 'stack.push(random.randint(-INT, INT))',
     '¬': 'stack.push(not stack.pop())',
@@ -83,7 +83,7 @@ commands = {
     'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
     'Ï': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs).index(lhs))',
     'Ô': 'TODO',
-    'Ç': 'TODO',
+    'Ç': 'stack.push(subtract(1, stack.pop()))',
     'ʀ': 'stack.push(Stack(list(range(0, stack.pop() + 1))))',
     'ʁ': 'stack.push(Stack(list(range(0, stack.pop()))))',
     'ɾ': 'stack.push(Stack(list(range(1, stack.pop() + 1))))',
@@ -134,5 +134,6 @@ commands = {
     "Ŏ": "stack.push(None)",
     "ŏ": "iterable, fn = stack.pop(2); stack.push(indexes_where(fn, iterable))",
     "Ő": "iterable, fn = stack.pop(2); stack.push(VySort(iterable, key=fn))",
-    "ő": "stack.push(max(stack.pop(), key=lambda x: x[-1]))"
+    "ő": "stack.push(max(stack.pop(), key=lambda x: x[-1]))",
+    "Œ": "stack.push(multiply(stack.pop(), -1))"
     }

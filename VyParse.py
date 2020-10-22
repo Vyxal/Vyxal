@@ -45,7 +45,7 @@ CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
 SINGLE_SCC_CHAR = "ı"
 
-DECIMAL = "º"
+DECIMAL = "•"
 
 
 OPENING = {
@@ -158,21 +158,21 @@ def Tokenise(source: str) -> [Token]:
             continue
 
         elif structure == INTEGER:
-            if char in "0123456789º":
+            if char in "0123456789•":
                 structure_data[INTEGER_CONTENTS] += char
                 continue
             else:
                 value = structure_data[active_key]
-                end = value.find("º", value.find("º") + 1)
+                end = value.find("•", value.find("•") + 1)
 
                 if end > -1:
-                    value = value[:value.find("º", value.find("º"))]
+                    value = value[:value.find("•", value.find("•"))]
 
                 if value.isnumeric():
                     this_token = Token(INTEGER, int(value))
 
                 else:
-                    this_token = Token(INTEGER, float(value.replace("º", ".")))
+                    this_token = Token(INTEGER, float(value.replace("•", ".")))
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
@@ -317,7 +317,7 @@ def Tokenise(source: str) -> [Token]:
             structure_data[active_key] += char
 
 
-        elif char in "0123456789º":
+        elif char in "0123456789•":
             structure = INTEGER
             structure_data[INTEGER_CONTENTS] = char
             active_key = INTEGER_CONTENTS
@@ -376,7 +376,7 @@ def Tokenise(source: str) -> [Token]:
 
         elif structure == INTEGER:
             value = structure_data[default_key]
-            end = value.find("º", value.find("º") + 1)
+            end = value.find("•", value.find("•") + 1)
 
             if end > -1:
                 value = value[:end]
@@ -385,7 +385,7 @@ def Tokenise(source: str) -> [Token]:
                 structure_data = int(value)
 
             else:
-                structure_data = float(value.replace("º", "."))
+                structure_data = float(value.replace("•", "."))
 
         else:
             if default_key not in structure_data:

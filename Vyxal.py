@@ -496,6 +496,8 @@ def chrord(item):
 def deref(item):
     if type(item) is Stack:
         return Stack(item.contents.copy())
+    else:
+        return item
 
 def Vy_eval(item):
         try:
@@ -631,6 +633,37 @@ def VySort(iterable, key=None):
         return Stack([m[0] for m in sorted(iterable, key=lambda x:x[-1])])
     else:
         return Stack(sorted(iterable))
+
+def interleave(lhs, rhs):
+    out = Stack() if Stack in types(lhs, rhs) else ""
+    t = type(out)
+    i = 0
+    for i in range(min(len(lhs), len(rhs))):
+        if t is Stack:
+            out.push(lhs[i])
+            out.push(rhs[i])
+
+        else:
+            out += str(lhs[i])
+            out += str(rhs[i])
+
+    if len(lhs) < len(rhs):
+        out += t(rhs[i:])
+    elif len(lhs) > len(rhs):
+        out += t(lhs[i:])
+
+    return out
+
+def uninterleave(item):
+    lhs, rhs = type(item)(), type(item)()
+    for i in range(len(item)):
+        if i % 2 == 0:
+            lhs += type(item)(item[i])
+        else:
+            rhs += type(item)(item[i])
+
+    return [lhs, rhs]
+
 
 newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
