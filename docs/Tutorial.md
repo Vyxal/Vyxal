@@ -53,6 +53,12 @@ A walkthrough:
 
 It's worth noting that, if during program execution, nothing has been printed explcitly (using either `,` or `.`), the top of the stack will be implicitally outputted.
 
+If you want decimals, use `•` instead of `.`:
+
+```
+3•1415926535897      # Pushes 3.1415926535897 (pi to a precision higher than most mathematical fields actually need)
+```
+
 ## Strings
 
 Now, it's time to introduce a key data type common to most programming languages: strings. Like integers, strings are simply pushed onto the stack. Here are some examples of strings:
