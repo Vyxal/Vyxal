@@ -403,6 +403,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["λ2|+;"]
+    tests = ["8 £term 0 £sum {¥term 122 =0=|¥sum ¥term + £sum ¥term 1 + £sum} ¥sum ."]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

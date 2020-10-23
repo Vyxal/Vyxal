@@ -74,7 +74,7 @@ def add(lhs, rhs):
         return lhs
 
     else:
-        return 0
+        return lhs + rhs
 
 def subtract(lhs, rhs):
     ts = types(lhs, rhs)
@@ -110,6 +110,9 @@ def subtract(lhs, rhs):
         for n in range(len(lhs)):
             lhs[n] = subtract(lhs[n], rhs)
         return lhs
+
+    else:
+        return lhs - rhs
 
 def multiply(lhs, rhs):
     ts = types(lhs, rhs)
@@ -152,6 +155,9 @@ def multiply(lhs, rhs):
             lhs[n] = multiply(lhs[n], rhs)
         return lhs
 
+    else:
+        return lhs * rhs
+
 
 def divide(lhs, rhs):
     import textwrap
@@ -193,6 +199,9 @@ def divide(lhs, rhs):
             lhs[n] = divide(lhs[n], rhs)
         return lhs
 
+    else:
+        return lhs / rhs
+
 def modulo(lhs, rhs):
     ts = types(lhs, rhs)
 
@@ -225,6 +234,9 @@ def modulo(lhs, rhs):
         for n in range(len(lhs)):
             lhs[n] = modulo(lhs[n], rhs)
         return lhs
+
+    else:
+        return lhs % rhs
 
 def join(lhs, rhs):
     ts = types(lhs, rhs)
@@ -413,7 +425,62 @@ class Stack(list):
     def count(self, item):
         return self.contents.count(item)
 
+class Infinite_List:
+    def __init__(self, function, init=0):
+        self.index = init
+        self.generated = Stack()
+        self.functions = [function]
 
+    def __next__(self):
+        value = self.index
+        for function in self.functions:
+            value = function(value)
+        self.generated.push(value)
+        self.index += 1
+        return self.generated[-1]
+
+    def __getitem__(self, index):
+        if index < len(self.generated):
+            return self.generated[index]
+        else:
+            while self.index < index:
+                self.__next__()
+
+            return self.__next__()
+
+    def __add__(self, rhs):
+        self.functions.append(lambda x: x + rhs)
+        self.generated = add(self.generated, rhs)
+        return self
+
+    def __mult__(self, rhs):
+        self.functions.append(lambda x: x * rhs)
+        self.generated = multiply(self.generated, rhs)
+        return self
+
+    def __sub__(self, rhs):
+        self.functions.append(lambda x: x - rhs)
+        self.generated = subtract(self.generated, rhs)
+        return self
+
+    def __div__(self, rhs):
+        self.functions.append(lambda x: x / rhs)
+        self.generated = divide(self.generated, rhs)
+        return self
+
+    def __str__(self):
+        print("⟨", end="")
+        for item in self.generated:
+            print(item, end="|")
+
+        while True:
+            print(self.__next__(), end="|")
+
+        print("⟩")  # This line will never run but it's for the sake of completion
+
+    def __repr__(self):
+        return str(self)
+        
 def flatten(nested_list):
     flattened = []
     for item in nested_list:
@@ -677,6 +744,7 @@ def VyCompile(source, header=""):
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
+        # print(token[NAME], token[VALUE], compiled)
         if token[NAME] == VyParse.NO_STMT and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + newline
 
@@ -737,8 +805,8 @@ def VyCompile(source, header=""):
                 else:
                     condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
 
-                compiled += f"_context_{_context_level} = stack[-1]"
-                compiled = f"{condition}\nwhile stack.pop():" + newline
+                compiled += f"{condition}\n_context_{_context_level} = stack[-1]" + newline
+                compiled += "while stack.pop():" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + newline
                 compiled += tab(condition) + newline
                 compiled += tab(f"_context_{_context_level} = stack[-1]") + newline
