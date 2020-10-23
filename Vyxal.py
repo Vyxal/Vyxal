@@ -377,18 +377,19 @@ class Stack(list):
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
 
         for item in obj:
-            x = fn(item)
+            x = fn(Stack(item))
+            if type(x) is Stack: x = x[-1]
             if bool(x):
                 temp.append(item)
 
-        self.contents.append(temp)
+        self.contents.append(Stack(temp))
 
 
     def do_fixed_gen(self, fn, n=1):
         temp = []
         curr = 0
         while len(temp) < n:
-            result = fn(curr)
+            result = fn(Stack(curr))
             if result:
                 temp.append(curr)
             curr += 1
@@ -480,7 +481,7 @@ class Infinite_List:
 
     def __repr__(self):
         return str(self)
-        
+
 def flatten(nested_list):
     flattened = []
     for item in nested_list:
@@ -612,9 +613,9 @@ def smart_range(item, start=0, lift_factor=0):
 
 def orderless_range(a, b, lift_factor=0):
     if a < b:
-        return range(a, b + lift_factor)
+        return Stack(list(range(a, b + lift_factor)))
     else:
-        return range(b, a + lift_factor)
+        return Stack(list(range(b, a + lift_factor)))
 
 def VyRound(item):
     if type(item) is str:
