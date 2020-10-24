@@ -50,7 +50,7 @@ commands = {
     '`': 'stack.push("{}")',
     'a': 'stack.push(any(stack.pop()))',
     'b': 'stack.push(bin(stack.pop())[2:])',
-    'c': 'lhs, rhs = stack.pop(2); stack.push(rhs in lhs)',
+    'c': 'lhs, rhs = stack.pop(2); stack.push(int(lhs in rhs))',
     'd': 'stack.push(stack.pop() * 2)',
     'e': 'lhs, rhs = stack.pop(2); stack.push(rhs ** lhs)',
     'f': 'stack.push(flatten(stack.pop())',
@@ -94,7 +94,7 @@ commands = {
     'ß': 'TODO',
     "ř": "lhs, rhs = stack.pop(2); stack.push(repeat(rhs, lhs))",
     '∺': 'stack.push(stack.pop() % 2)',
-    "œ": 'lhs, rhs = stack.pop(2); stack.push(int((rhs % lhs) == 0))',
+    "œ": 'lhs, rhs = stack.pop(2); stack.push(vectorising_equals(modulo(rhs, lhs), 0))',
     '\n': '',
     '\t': '',
     "Ĥ": "stack.push(100)",
@@ -135,5 +135,9 @@ commands = {
     "ŏ": "iterable, fn = stack.pop(2); stack.push(indexes_where(fn, iterable))",
     "Ő": "iterable, fn = stack.pop(2); stack.push(VySort(iterable, key=fn))",
     "ő": "stack.push(max(stack.pop(), key=lambda x: x[-1]))",
-    "Œ": "stack.push(multiply(stack.pop(), -1))"
+    "Œ": "stack.push(multiply(stack.pop(), -1))",
+    "Ŕ": "rhs, lhs = stack.pop(2); stack.push(vectorising_equals(lhs, rhs))",
+    "ŕ": "rhs, lhs = stack.pop(2); stack.push(lhs != rhs)",
+    "Ŗ": "stack.push(cumulative_sum(as_iter(stack.pop())))",
+    "ŗ": "lhs, rhs = stack.pop(2); stack.push(as_iter(rhs)[lhs:])"
     }

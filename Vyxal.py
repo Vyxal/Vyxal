@@ -238,6 +238,33 @@ def modulo(lhs, rhs):
     else:
         return lhs % rhs
 
+def vectorising_equals(lhs, rhs):
+    ts = types(lhs, rhs)
+
+    if ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.extend([0] * len(rhs) - len(lhs))
+            else:
+                rhs.extend([0] * len(lhs) - len(rhs))
+
+        for n in range(len(lhs)):
+            lhs[n] = int(lhs[n] == rhs[n])
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = int(lhs == rhs[n])
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = int(lhs[n] == rhs)
+        return lhs
+
+    else:
+        return int(lhs == rhs)
+
 def join(lhs, rhs):
     ts = types(lhs, rhs)
     if ts[0] == Stack:
@@ -252,6 +279,14 @@ def join(lhs, rhs):
 
     else:
         return str(lhs) + str(rhs)
+
+
+def cumulative_sum(item):
+    sums = Stack()
+    for i in range(len(item)):
+        sums.push(summate(item[:i + 1]))
+
+    return sums
 
 def counts(item):
     ret = []
@@ -350,6 +385,12 @@ class Stack(list):
 
     def __iter__(self):
         return iter(self.contents)
+
+    def __contains__(self, item):
+        return int(item in self.contents)
+
+    def index(self, item, start=0):
+        return self.contents.index(item, start)
 
     def do_map(self, fn):
         temp = []
@@ -755,7 +796,6 @@ def VyCompile(source, header=""):
 
             elif token[NAME] == VyParse.STRING_STMT:
                 string = token[VALUE][VyParse.STRING_CONTENTS]
-                string = string.replace("\\", "\\\\")
                 string = string.replace('"', "\\\"")
                 import utilities
                 string = utilities.uncompress(string)
@@ -825,14 +865,28 @@ def VyCompile(source, header=""):
                     function_data = token[VALUE][VyParse.FUNCTION_NAME].split(":")
                     number_of_parameters = 0
                     name = function_data[0]
-
-                    if len(function_data) == 2:
-                        number_of_parameters = int(function_data[1])
+                    arguments = []
+                    if len(function_data) >= 2:
+                        for argument in function_data[1:]:
+                            if argument.isnumeric():
+                                arguments.append(int(argument))
+                                number_of_parameters += arguments[-1]
+                            else:
+                                arguments.append(argument)
+                                number_of_parameters += 1
 
                     compiled += f"def FN_{name}(in_stack, arity=None):" + newline
                     compiled += tab("global VY_reg_reps") + newline
                     compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
-                    compiled += tab(f"args = in_stack.pop({number_of_parameters})") + newline
+                    compiled += tab("args = []") + newline
+                    for arg in arguments:
+                        if type(arg) is int:
+                            if arg == 1:
+                                compiled += tab(f"args.append(in_stack.pop())") + newline
+                            else:
+                                compiled += tab(f"args += in_stack.pop({arg}))") + newline
+                        else:
+                            compiled += tab(f"VAR_{arg} = in_stack.pop()") + newline
                     compiled += tab(f"stack = Stack(args, args)") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
