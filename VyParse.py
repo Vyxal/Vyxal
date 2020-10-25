@@ -403,6 +403,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`\\n`"]
+    tests = ["2 £xyz ¥xyz"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])

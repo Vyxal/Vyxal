@@ -313,9 +313,10 @@ class Stack(list):
         self.contents.append(item)
 
     def swap(self):
-        top, topnt = stack.pop(2)
-        stack.push(top)
-        stack.push(topnt)
+        top = self.pop();
+        topnt = self.pop();
+        self.push(top)
+        self.push(topnt)
     def __len__(self):
         return len(self.contents)
     def all(self):
@@ -868,7 +869,9 @@ def VyCompile(source, header=""):
                     arguments = []
                     if len(function_data) >= 2:
                         for argument in function_data[1:]:
-                            if argument.isnumeric():
+                            if argument == "*":
+                                arguments.append(-1)
+                            elif argument.isnumeric():
                                 arguments.append(int(argument))
                                 number_of_parameters += arguments[-1]
                             else:
@@ -881,7 +884,15 @@ def VyCompile(source, header=""):
                     compiled += tab("args = []") + newline
                     for arg in arguments:
                         if type(arg) is int:
-                            if arg == 1:
+                            if arg == -1:
+                                compiled += tab("arity = in_stack.pop()") + newline
+                                compiled += tab("if type(arity) is Stack:") + newline
+                                compiled += tab(tab("args = arity")) + newline
+                                compiled += tab("elif type(arity) is int:") + newline
+                                compiled += tab(tab("args = in_stack.pop(arity)")) + newline
+                                compiled += tab("else:") + newline
+                                compiled += tab(tab("args = Stack(arity, arity)")) + newline
+                            elif arg == 1:
                                 compiled += tab(f"args.append(in_stack.pop())") + newline
                             else:
                                 compiled += tab(f"args += in_stack.pop({arg}))") + newline
