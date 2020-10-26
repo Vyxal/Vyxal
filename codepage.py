@@ -139,5 +139,14 @@ commands = {
     "Ŕ": "rhs, lhs = stack.pop(2); stack.push(vectorising_equals(lhs, rhs))",
     "ŕ": "rhs, lhs = stack.pop(2); stack.push(lhs != rhs)",
     "Ŗ": "stack.push(cumulative_sum(as_iter(stack.pop())))",
-    "ŗ": "lhs, rhs = stack.pop(2); stack.push(as_iter(rhs)[lhs:])"
+    "ŗ": "lhs, rhs = stack.pop(2); stack.push(as_iter(rhs)[lhs:])",
+    "Ř": "rhs, lhs = stack.pop(2); stack.push(lshift(lhs, rhs))",
+    "Ś": "rhs, lhs = stack.pop(2); stack.push(rshift(lhs, rhs))",
+    "ś": "rhs, lhs = stack.pop(2); stack.push(bit_and(lhs, rhs))",
+    "Ŝ": "rhs, lhs = stack.pop(2); stack.push(bit_or(lhs, rhs))",
+    "ŝ": "rhs, lhs = stack.pop(2); stack.push(bit_xor(lhs, rhs))",
+    "Ş": "stack.push(bit_not(stack.pop()))",
+    "ş": "item, iterable = stack.pop(2); stack.push(prepend(as_iter(iterable), item))",
+    "š": "item, index, iterable = stack.pop(3); stack.push(inserted(as_iter(iterable), index, item))",
+    "Ţ": "stack.push(random_choice(as_iter(stack.pop())))"
     }

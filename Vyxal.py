@@ -21,6 +21,13 @@ _LEFT = "LEFT"
 STANDARD = "standard"
 LAMBDA = "lambda"
 
+def random_choice(item):
+    import random
+    if type(item) is Stack:
+        return random.choice(item)
+    else:
+        return random.choice(list(item))
+
 def as_iter(item):
     if type(item) in [int, float]:
         return [int(x) if x != "." else x for x in str(item)]
@@ -295,6 +302,186 @@ def counts(item):
 
     return Stack(ret)
 
+
+def lshift(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        if ts[-1] == Stack:
+            if len(lhs) != len(rhs):
+                if len(lhs) < len(rhs):
+                    lhs.extend([0] * len(rhs) - len(lhs))
+                else:
+                    rhs.extend([0] * len(lhs) - len(rhs))
+
+            for n in range(len(lhs)):
+                lhs[n] = lshift(lhs[n], rhs[n])
+            return lhs
+
+        else:
+            lhs = Stack([lshift(x, rhs) for x in lhs])
+            return lhs
+    elif ts[-1] == Stack:
+        rhs = Stack([lshift(lhs, x) for x in rhs])
+        return rhs
+
+    elif ts[0] == str:
+        return ''.join([chr(ord(x) << rhs) for x in lhs])
+
+    else:
+        return lhs << rhs
+
+def rshift(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        if ts[-1] == Stack:
+            if len(lhs) != len(rhs):
+                if len(lhs) < len(rhs):
+                    lhs.extend([0] * len(rhs) - len(lhs))
+                else:
+                    rhs.extend([0] * len(lhs) - len(rhs))
+
+            for n in range(len(lhs)):
+                lhs[n] = rshift(lhs[n], rhs[n])
+            return lhs
+
+        else:
+            lhs = Stack([rshift(x, rhs) for x in lhs])
+            return lhs
+    elif ts[-1] == Stack:
+        rhs = Stack([rshift(lhs, x) for x in rhs])
+        return rhs
+
+    elif ts[0] == str:
+        return ''.join([chr(ord(x) >> rhs) for x in lhs])
+
+    else:
+        return lhs >> rhs
+
+def bit_and(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        if ts[-1] == Stack:
+            if len(lhs) != len(rhs):
+                if len(lhs) < len(rhs):
+                    lhs.extend([0] * len(rhs) - len(lhs))
+                else:
+                    rhs.extend([0] * len(lhs) - len(rhs))
+
+            for n in range(len(lhs)):
+                lhs[n] = bit_and(lhs[n], rhs[n])
+            return lhs
+
+        else:
+            lhs = Stack([bit_and(x, rhs) for x in lhs])
+            return lhs
+    elif ts[-1] == Stack:
+        rhs = Stack([bit_and(lhs, x) for x in rhs])
+        return rhs
+
+    elif ts[0] == ts[-1] == str:
+        out = ""
+        for i in range(min(len(lhs), len(rhs))):
+            out += chr(ord(lhs[i]) & ord(rhs[i]))
+        return out
+
+    elif ts[0] == ts[-1] == Number:
+        return lhs & rhs
+
+    else:
+        return bit_and(str(lhs), str(rhs))
+
+def bit_or(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        if ts[-1] == Stack:
+            if len(lhs) != len(rhs):
+                if len(lhs) < len(rhs):
+                    lhs.extend([0] * len(rhs) - len(lhs))
+                else:
+                    rhs.extend([0] * len(lhs) - len(rhs))
+
+            for n in range(len(lhs)):
+                lhs[n] = bit_or(lhs[n], rhs[n])
+            return lhs
+
+        else:
+            lhs = Stack([bit_or(x, rhs) for x in lhs])
+            return lhs
+    elif ts[-1] == Stack:
+        rhs = Stack([bit_or(lhs, x) for x in rhs])
+        return rhs
+
+    elif ts[0] == ts[-1] == str:
+        out = ""
+        for i in range(min(len(lhs), len(rhs))):
+            out += chr(ord(lhs[i]) | ord(rhs[i]))
+        return out
+
+    elif ts[0] == ts[-1] == Number:
+        return lhs | rhs
+
+    else:
+        return bit_or(str(lhs), str(rhs))
+
+def bit_not(item):
+    if type(item) is Stack:
+        return Stack([bit_not(x) for x in item])
+
+    elif type(item) is str:
+        return Stack([~ord(x) for x in item])
+
+    else:
+        return ~item
+
+def bit_xor(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts[0] == Stack:
+        if ts[-1] == Stack:
+            if len(lhs) != len(rhs):
+                if len(lhs) < len(rhs):
+                    lhs.extend([0] * len(rhs) - len(lhs))
+                else:
+                    rhs.extend([0] * len(lhs) - len(rhs))
+
+            for n in range(len(lhs)):
+                lhs[n] = bit_xor(lhs[n], rhs[n])
+            return lhs
+
+        else:
+            lhs = Stack([bit_xor(x, rhs) for x in lhs])
+            return lhs
+    elif ts[-1] == Stack:
+        rhs = Stack([bit_xor(lhs, x) for x in rhs])
+        return rhs
+
+    elif ts[0] == ts[-1] == str:
+        out = ""
+        for i in range(min(len(lhs), len(rhs))):
+            out += chr(ord(lhs[i]) ^ ord(rhs[i]))
+        return out
+
+    elif ts[0] == ts[-1] == Number:
+        return lhs ^ rhs
+
+    else:
+        return bit_or(str(lhs), str(rhs))
+
+
+def prepend(iterable, item):
+    if type(iterable) is Stack:
+        iterable.contents.insert(0, item)
+        return iterable
+
+    elif type(iterable) is str:
+        return str(item) + iterable
+
+def inserted(iterable, index, item):
+    if type(iterable) is Stack:
+        iterable.contents.insert(index, item)
+        return iterable
+
+    else:
+        return iterable[:index] + str(item) + iterable[index:]
 
 class Number: pass
 class Stack(list):
