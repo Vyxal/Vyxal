@@ -830,7 +830,7 @@ def sums(item):
     return new
 
 def smart_range(item, start=0, lift_factor=0):
-    if type(item):
+    if type(item) is int:
         x =  range(start, item + lift_factor)
         x = [int(y) for y in x]
     elif type(item) is float:
@@ -1020,7 +1020,7 @@ def VyCompile(source, header=""):
                                                   [VALUE][VyParse.FOR_VARIABLE])
 
 
-                compiled += f"for {var_name} in smart_range(stack.pop()):" + newline
+                compiled += f"for VAR_{var_name} in smart_range(stack.pop()):" + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
 
                 _context_level -= 1

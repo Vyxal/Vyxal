@@ -49,6 +49,7 @@ DECIMAL = "•"
 
 
 OPENING = {
+    NO_STMT: "",
     IF_STMT: "[",
     FOR_STMT: "(",
     WHILE_STMT: "{",
@@ -63,6 +64,7 @@ OPENING = {
 }
 
 CLOSING = {
+    NO_STMT: "",
     IF_STMT: "]",
     FOR_STMT: ")",
     WHILE_STMT: "}",
@@ -117,10 +119,11 @@ def Tokenise(source: str) -> [Token]:
     nest_level = 0
     vectorisation = False
 
+    # print(source)
 
 
     for char in source:
-        # print(char, structure, structure_data, nest_level, tokens, escaped)
+        # print(char, structure, structure_data, nest_level)
 
         if comment:
             if char == "\n":
@@ -138,8 +141,6 @@ def Tokenise(source: str) -> [Token]:
         if char == "\\":
             escaped = True
             continue
-
-
 
 
         elif structure == STRING_STMT:
@@ -187,6 +188,8 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(this_token)
                 structure_data = {}
                 structure = NO_STMT
+                active_key = ""
+                default_key = ""
 
 
         elif scc_mode:
@@ -206,8 +209,8 @@ def Tokenise(source: str) -> [Token]:
             structure = NO_STMT
             continue
 
-        if char in OPENING.values():
-            if nest_level > 0:
+        if char in OPENING.values() :
+            if nest_level:
                 if char != CLOSING[STRING_STMT]:
                     nest_level += 1
                 structure_data[active_key] += char
@@ -276,7 +279,7 @@ def Tokenise(source: str) -> [Token]:
                     del structure_data[LIST_ITEM]
 
                 else:
-                    if default_key not in structure_data:
+                    if default_key not in structure_data and structure != NO_STMT:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
 
@@ -403,6 +406,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["`λ`"]
+    tests = ["([¥no])"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
