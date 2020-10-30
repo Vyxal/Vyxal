@@ -179,6 +179,7 @@ z       a,f    |zipmap the contents of a with function f
 Ő       a,f    |sorted(a, key=fn) # sort by function result
 ő       a      |* alias for ⎝ (to be changed)
 Œ       a      |a * -1 # negate
+œ       a,b    |a % b == 0
 Ŕ       a,b    |a == b (vectorising)
 ŕ       a,b    |a != b (non-vectorising)
 Ŗ       a      |* alias for ņ (to be changed)
