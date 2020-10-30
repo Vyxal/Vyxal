@@ -151,4 +151,44 @@ z       a,f    |zipmap the contents of a with function f
 Ĥ       a      |100
 ⟨              |* open a list ⟨⟩⟨...|...⟩
 ⟩              |* close a list
-[MORE TO COME]
+ı              |* 2 char compressed string
+Ĳ       a      |'\n'.join(a)
+ĳ              |10
+Ĵ       a      |''.join(a)
+ĵ       a      |a ^ 2
+Ķ       a,b    |[a, b]
+ķ       a,b    |inclusive_range(a, b)
+ĸ       a,b    |b evenly distributed over the elements of a
+Ĺ              |"\n"
+ĺ       a      |vertical_join(a)
+Ļ       a,b    |vertical_join(a, padding=b)
+Ń       f,a    |first n integers where function f is true
+ń       f      |first integer where function f is true
+Ň       a      |factorial(a)
+ņ       a      |cumulative_sums(a)
+Ň       a      |all_equal(a) # every item is the same
+ð              |" "
+ň       a      |counts_of_items(a)
+ŉ       a      |reversed(a)
+Ŋ       a      |* alias for ⎠ (to be changed)
+ŋ              |sum(entire_stack)
+Ō       a      |graded_up(a)
+ō       a      |graded_down(a) # short for Ōŉ
+Ŏ              |None # as in python's None type
+ŏ       a,f    |a.indexes_where_truthy(fn)
+Ő       a,f    |sorted(a, key=fn) # sort by function result
+ő       a      |* alias for ⎝ (to be changed)
+Œ       a      |a * -1 # negate
+Ŕ       a,b    |a == b (vectorising)
+ŕ       a,b    |a != b (non-vectorising)
+Ŗ       a      |* alias for ņ (to be changed)
+ŗ       a,b    |a[b:] #other forms of indexing use i
+Ř       a,b    |a << b
+Ś       a,b    |a >> b
+ś       a,b    |a and b (bitwise) # a & b
+Ŝ       a,b    |a or b (bitwise) # a | b
+ŝ       a,b    |a xor b (bitwise)
+Ş       a      |not a (bitwise) # ~a
+ş       a,b    |a.insert(0, b)
+š       a,b,c  |a.insert(b, c)
+Ţ       a      |random element from a
