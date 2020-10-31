@@ -1082,7 +1082,7 @@ def VyCompile(source, header=""):
                             elif arg == 1:
                                 compiled += tab(f"args.append(in_stack.pop())") + newline
                             else:
-                                compiled += tab(f"args += in_stack.pop({arg}))") + newline
+                                compiled += tab(f"args += in_stack.pop({arg})") + newline
                         else:
                             compiled += tab(f"VAR_{arg} = in_stack.pop()") + newline
                     compiled += tab(f"stack = Stack(args, args)") + newline
