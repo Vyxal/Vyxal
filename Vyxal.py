@@ -28,11 +28,6 @@ def random_choice(item):
     else:
         return random.choice(list(item))
 
-def as_iter(item):
-    if type(item) in [int, float]:
-        return [int(x) if x != "." else x for x in str(item)]
-    else:
-        return item
 
 def types(*args):
     temp = list(map(type, args))
@@ -623,7 +618,7 @@ class Stack(list):
                 temp.append(curr)
             curr += 1
 
-        self.contents.append(temp)
+        self.contents.append(Stack(temp))
 
     def shift(self, direction):
         if direction == _LEFT:
@@ -751,7 +746,13 @@ def Vy_zip(lhs, rhs):
         else:
             rhs.extend([0] * len(lhs) - len(rhs))
 
-
+def as_iter(item, t=Stack):
+    if type(item) in [int, float]:
+        if t is Stack:
+            return Stack([int(x) if x != "." else x for x in str(item)])
+        return t(item)
+    else:
+        return item
 
 def Vy_reduce(fn, iterable):
     if type(iterable) is not Stack: iterable = Stack(list(as_iter(iterable)))
@@ -1156,6 +1157,17 @@ def VyCompile(source, header=""):
             elif token[NAME] == VyParse.VARIABLE_GET:
                 compiled += "stack.push(VAR_" + token[VALUE][VyParse.VARIABLE_NAME] +\
                             ")" + newline
+
+            elif token[NAME] == VyParse.COMPRESSED_NUMBER:
+                import utilities, encoding
+                number = utilities.to_ten(token[VALUE][VyParse.COMPRESSED_NUMBER_VALUE], encoding.codepage_number_compress)
+                compiled += f"stack.push({number})" + newline
+
+            elif token[NAME] == VyParse.COMPRESSED_STRING:
+                import utilities, encoding
+                string = utilities.to_ten(token[VALUE][VyParse.COMPRESSED_STRING_VALUE], encoding.codepage_string_compress)
+                string = utilities.from_ten(string, utilities.base53alphabet)
+                compiled += f"stack.push('{string}')" + newline
     return header + compiled
 
 if __name__ == "__main__":

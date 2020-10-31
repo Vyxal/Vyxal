@@ -60,7 +60,18 @@ def uncompress(s):
         else:
             final += char
 
-    if escaped:
-        final += char
 
     return final
+
+
+base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
+
+if __name__ == "__main__":
+    import encoding
+    while 1:
+        word = input(">>> ")
+        if word.isnumeric():
+            print("»" + from_ten(int(word), encoding.codepage_number_compress) + "»")
+
+        else:
+            print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")

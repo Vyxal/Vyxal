@@ -17,6 +17,8 @@ LIST_STMT = "LIST_STMT"
 VARIABLE_GET = "VARIABLE_GET"
 VARIABLE_SET = "VARIABLE_SET"
 FUNCTION_REFERENCE = "FUNCTION_REFERENCE"
+COMPRESSED_NUMBER = "COMPRESSED_NUMBER"
+COMPRESSED_STRING = "COMPRESSED_STRING"
 
 VARIABLES = [VARIABLE_GET, VARIABLE_SET]
 
@@ -35,6 +37,8 @@ LIST_ITEM = "list_item"
 LIST_ITEMS = "list_items"
 VARIABLE_NAME = "variable_name"
 LAMBDA_ARGUMENTS = "lambda_arguments"
+COMPRESSED_NUMBER_VALUE = "compressed_number_value"
+COMPRESSED_STRING_VALUE = "compressed_string_value"
 
 ONE = "one"
 TWO = "two"
@@ -47,6 +51,7 @@ SINGLE_SCC_CHAR = "ı"
 
 DECIMAL = "•"
 
+OPEN_CLOSE_SAME = ["`", "«", "»"]
 
 OPENING = {
     NO_STMT: "",
@@ -60,7 +65,9 @@ OPENING = {
     LAMBDA_STMT: "λ",
     LAMBDA_MAP: "ƛ",
     LIST_STMT: "⟨",
-    FUNCTION_REFERENCE: "°"
+    FUNCTION_REFERENCE: "°",
+    COMPRESSED_NUMBER: "»",
+    COMPRESSED_STRING: "«"
 }
 
 CLOSING = {
@@ -75,8 +82,9 @@ CLOSING = {
     LAMBDA_STMT: ";",
     LAMBDA_MAP: ";",
     LIST_STMT: "⟩",
-    FUNCTION_REFERENCE: ";"
-
+    FUNCTION_REFERENCE: ";",
+    COMPRESSED_NUMBER: "»",
+    COMPRESSED_STRING: "«"
 }
 
 DEFAULT_KEYS = {
@@ -90,6 +98,8 @@ DEFAULT_KEYS = {
     LAMBDA_MAP: LAMBDA_BODY,
     LIST_STMT: LIST_ITEM,
     FUNCTION_REFERENCE: FUNCTION_NAME,
+    COMPRESSED_NUMBER: COMPRESSED_NUMBER_VALUE,
+    COMPRESSED_STRING: COMPRESSED_STRING_VALUE
 }
 
 class Token:
@@ -153,6 +163,17 @@ def Tokenise(source: str) -> [Token]:
 
             continue
 
+        elif structure in [COMPRESSED_NUMBER, COMPRESSED_STRING]:
+            if char == CLOSING[structure]:
+                nest_level -= 1
+                this_token = Token(structure, structure_data)
+                tokens.append(this_token)
+                structure_data = {}
+                structure = NO_STMT
+            else:
+                structure_data[active_key] += char
+            continue
+
         elif structure == INTEGER:
             if char in "0123456789•":
                 structure_data[INTEGER_CONTENTS] += char
@@ -210,7 +231,7 @@ def Tokenise(source: str) -> [Token]:
 
         if char in OPENING.values() :
             if nest_level:
-                if char != CLOSING[STRING_STMT]:
+                if char not in OPEN_CLOSE_SAME:
                     nest_level += 1
                 structure_data[active_key] += char
                 continue
@@ -252,6 +273,14 @@ def Tokenise(source: str) -> [Token]:
             elif char == OPENING[FUNCTION_REFERENCE]:
                 structure = FUNCTION_REFERENCE
                 active_key = FUNCTION_NAME
+
+            elif char == OPENING[COMPRESSED_NUMBER]:
+                structure = COMPRESSED_NUMBER
+                active_key = COMPRESSED_NUMBER_VALUE
+
+            elif char == OPENING[COMPRESSED_STRING]:
+                structure = COMPRESSED_STRING
+                active_key = COMPRESSED_STRING_VALUE
 
             else:
                 raise NotImplementedError("That structure isn't implemented yet")
@@ -405,6 +434,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["1\i"]
+    tests = ["[``]"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
