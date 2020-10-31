@@ -41,7 +41,7 @@ commands = {
     'T': 'stack.push([n for n in stack.pop() if bool(n)])',
     'U': 'stack.push(Vy_Uniquify(as_iter(stack.pop())))',
     'V': 'replacent, needle, haystack = stack.pop(3); stack.push(haystack.replace(needle, replacent))',
-    'W': 'stack = Stack([stack.contents])',
+    'W': 'stack = Stack(Stack(stack.contents))',
     'X': 'if _context_level + 1 < _max_context_level: _context_level += 1',
     'Y': 'rhs, lhs = stack.pop(2); stack.push(interleave(as_iter(lhs), as_iter(rhs)))',
     'Z': 'lhs, rhs = stack.pop(2); stack.push(Stack(list(zip(rhs, lhs))))',

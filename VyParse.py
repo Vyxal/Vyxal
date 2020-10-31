@@ -123,7 +123,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        # print(char, structure, structure_data, nest_level)
+        # print(char, structure, structure_data, escaped)
 
         if comment:
             if char == "\n":
@@ -137,11 +137,6 @@ def Tokenise(source: str) -> [Token]:
 
             escaped = False
             continue
-
-        if char == "\\":
-            escaped = True
-            continue
-
 
         elif structure == STRING_STMT:
             if char == CLOSING[STRING_STMT]:
@@ -207,6 +202,10 @@ def Tokenise(source: str) -> [Token]:
             this_token = Token(structure, char)
             tokens.append(this_token)
             structure = NO_STMT
+            continue
+
+        if char == "\\":
+            escaped = True
             continue
 
         if char in OPENING.values() :
@@ -406,6 +405,6 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["([¥no])"]
+    tests = ["1\i"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
