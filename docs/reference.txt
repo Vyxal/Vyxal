@@ -170,19 +170,19 @@ z       a,f    |zipmap the contents of a with function f
 ð              |" "
 ň       a      |counts_of_items(a)
 ŉ       a      |reversed(a)
-Ŋ       a      |* alias for ⎠ (to be changed)
+Ŋ       a      |a[:-1]
 ŋ              |sum(entire_stack)
 Ō       a      |graded_up(a)
 ō       a      |graded_down(a) # short for Ōŉ
 Ŏ              |None # as in python's None type
 ŏ       a,f    |a.indexes_where_truthy(fn)
 Ő       a,f    |sorted(a, key=fn) # sort by function result
-ő       a      |* alias for ⎝ (to be changed)
+ő              |set register without emptying
 Œ       a      |a * -1 # negate
 œ       a,b    |a % b == 0
 Ŕ       a,b    |a == b (vectorising)
 ŕ       a,b    |a != b (non-vectorising)
-Ŗ       a      |* alias for ņ (to be changed)
+Ŗ              |push register without emptying
 ŗ       a,b    |a[b:] #other forms of indexing use i
 Ř       a,b    |a << b
 Ś       a,b    |a >> b
