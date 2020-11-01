@@ -73,10 +73,10 @@ commands = {
     'y': 'x = uninterleave(stack.pop()); stack.push(x[0]), stack.push(x[1])',
     'z': 'stack.do_zipmap(stack.pop())',
     '~': 'stack.push(random.randint(-INT, INT))',
-    '¬': 'stack.push(not stack.pop())',
-    '∧': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs and lhs))',
+    '¬': 'stack.push(int(not stack.pop()))',
+    '∧': 'lhs, rhs = stack.pop(2); stack.push(int(bool(rhs and lhs)))',
     '⟑': 'lhs, rhs = stack.pop(2); stack.push(rhs and lhs)',
-    '∨': 'lhs, rhs = stack.pop(2); stack.push(bool(rhs or lhs))',
+    '∨': 'lhs, rhs = stack.pop(2); stack.push(int(bool(rhs or lhs)))',
     '⟇': 'lhs, rhs = stack.pop(2); stack.push(rhs or lhs)',
     '÷': 'for item in as_iter(stack.pop()): stack.push(item)',
     '⍎': 'fn = stack.pop(); stack += fn(stack)',
@@ -150,5 +150,7 @@ commands = {
     "Ş": "stack.push(bit_not(stack.pop()))",
     "ş": "item, iterable = stack.pop(2); stack.push(prepend(as_iter(iterable), item))",
     "š": "item, index, iterable = stack.pop(3); stack.push(inserted(as_iter(iterable), index, item))",
-    "Ţ": "stack.push(random_choice(as_iter(stack.pop())))"
+    "Ţ": "stack.push(random_choice(as_iter(stack.pop())))",
+    "ţ": "rhs, lhs = stack.pop(2); stack.push(int(lhs <= rhs))",
+    "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))"
     }
