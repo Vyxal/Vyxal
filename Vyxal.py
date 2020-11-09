@@ -4,9 +4,10 @@ from VyParse import VALUE
 from codepage import *
 import math
 import string
+import hashlib
 
 _context_level = 0
-_max_context_level = 0
+_context_values = []
 _input_cycle = 0
 
 _MAP_START = 0
@@ -970,8 +971,6 @@ tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("   
 def VyCompile(source, header=""):
     if not source:
         return "pass"
-    global _context_level
-    global _max_context_level
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
@@ -1010,44 +1009,54 @@ def VyCompile(source, header=""):
                     compiled += onFalse
 
             elif token[NAME] == VyParse.FOR_STMT:
-                _context_level += 1
-                if _context_level > _max_context_level:
-                    _max_context_level = _context_level
-
+                loopvar = str(hashlib.md5(bytes(compiled, "UTF-8")).hexdigest())
                 if not VyParse.FOR_VARIABLE in token[VALUE]:
-                    var_name = "_context_" + str(_context_level)
+                    var_name = "_CONTEXT_" + loopvar
                 else:
                     var_name = strip_non_alphabet(token\
                                                   [VALUE][VyParse.FOR_VARIABLE])
 
 
                 compiled += f"for VAR_{var_name} in smart_range(stack.pop()):" + newline
-                compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY]))
+                compiled += tab("_context_level += 1") + newline
+                compiled += tab("if len(_context_values) + 1 == _context_level - 1:") + newline
+                compiled += tab(\
+                tab("_context_values[(_context_level - 1) % (len(_context_values))] = VAR_" + var_name)) + newline
+                compiled += tab("else:") + newline
+                compiled += tab(\
+                tab("_context_values.append(VAR_" + var_name + ")")) + newline
+                compiled += tab(VyCompile(token[VALUE][VyParse.FOR_BODY])) + newline
+                compiled += tab("_context_level -= 1") + newline
+                compiled += tab("_context_values.pop()") + newline
 
-                _context_level -= 1
             elif token[NAME] == VyParse.WHILE_STMT:
-                _context_level += 1
-                if _context_level > _max_context_level:
-                    _max_context_level = _context_level
+
 
                 if not VyParse.WHILE_CONDITION in token[VALUE]:
                     condition = "stack.push(1)"
                 else:
                     condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
 
-                compiled += f"{condition}\n_context_{_context_level} = stack[-1]" + newline
+                compiled += f"{condition}" + newline
+                compiled += tab("if len(_context_values) + 1 == _context_level - 1:") + newline
+                compiled += tab(\
+                tab("_context_values[(_context_level - 1) % (len(_context_values))] = VAR_" + var_name)) + newline
+                compiled += tab("else:") + newline
+                compiled += tab(\
+                tab("_context_values.append(VAR_" + var_name + ")")) + newline
                 compiled += "while stack.pop():" + newline
+                compiled += tab("_context_level += 1")
                 compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + newline
                 compiled += tab(condition) + newline
-                compiled += tab(f"_context_{_context_level} = stack[-1]") + newline
-
-                _context_level -= 1
+                compiled += tab("if len(_context_values) + 1 == _context_level - 1:") + newline
+                compiled += tab(\
+                tab("_context_values[(_context_level - 1) % (len(_context_values))] = VAR_" + var_name)) + newline
+                compiled += tab("else:") + newline
+                compiled += tab(\
+                tab("_context_values.append(VAR_" + var_name + ")")) + newline
+                compiled += tab("_context_level -= 1") + newline
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
-                _context_level += 1
-
-                if _context_level > _max_context_level:
-                    _max_context_level = _context_level
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
                     compiled += f"stack += FN_{token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
                 else:
@@ -1068,7 +1077,13 @@ def VyCompile(source, header=""):
 
                     compiled += f"def FN_{name}(in_stack, arity=None):" + newline
                     compiled += tab("global VY_reg_reps") + newline
-                    compiled += tab(f"_context_{_context_level} = Stack(in_stack[:-{number_of_parameters}])") + newline
+                    compiled += tab("global _context_level") + newline
+                    compiled += tab("global _context_values") + newline
+                    compiled += tab("_context_level += 1") + newline
+                    if number_of_parameters == 1:
+                        compiled += tab("_context_values.append(in_stack[-1])") + newline
+                    else:
+                        compiled += tab(f"_context_values.append(Stack(in_stack[:-{number_of_parameters}]))") + newline
                     compiled += tab("args = []") + newline
                     for arg in arguments:
                         if type(arg) is int:
@@ -1089,36 +1104,38 @@ def VyCompile(source, header=""):
                     compiled += tab(f"stack = Stack(args, args)") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
-
+                    compiled += tab("_context_level -= 1") + newline
+                    compiled += tab("_context_values.pop()") + newline
                     compiled += tab("return stack") + newline
 
-                _context_level -= 1
-
             elif token[NAME] == VyParse.LAMBDA_STMT:
-                _context_level += 1
-                if _context_level > _max_context_level:
-                    _max_context_level = _context_level
-
                 args = 1
                 if VyParse.LAMBDA_ARGUMENTS in token[VALUE]:
                     if token[VALUE][VyParse.LAMBDA_ARGUMENTS].isnumeric():
                         args = int(token[VALUE][VyParse.LAMBDA_ARGUMENTS])
                 compiled += "def _lambda(in_stack, arity=None):" + newline
                 compiled += tab("global VY_reg_reps") + newline
+                compiled += tab("global _context_level") + newline
+                compiled += tab("global _context_values") + newline
+                compiled += tab("_context_level += 1") + newline
                 compiled += tab(f"if arity and arity > {args}: args = in_stack.pop(arity)") + newline
                 compiled += tab(f"else: args = in_stack.pop({args})") + newline
                 compiled += tab("stack = Stack(args, args)") + newline
-                compiled += tab(f"_context_{_context_level} = args") + newline
+                compiled += tab(f"_context_values.append(args)") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
+                compiled += tab("_context_values.pop()") + newline
                 compiled += tab("return Stack(stack[-1])") + newline
                 compiled += "stack.push(_lambda)" + newline
-                _context_level -= 1
 
             elif token[NAME] == VyParse.LIST_STMT:
                 compiled += "_temp_list = []" + newline
+
                 for item in token[VALUE][VyParse.LIST_ITEMS]:
-                    compiled += VyCompile(item) + newline
-                    compiled += "_temp_list.append(stack.pop())" + newline
+                    compiled += "def list_item(in_stack):" + newline
+                    compiled += tab("stack = in_stack") + newline
+                    compiled += tab(VyCompile(item)) + newline
+                    compiled += tab("return stack.pop()") + newline
+                    compiled += "_temp_list.append(list_item(stack))" + newline
                 compiled += "_temp_list = Stack(_temp_list)" + newline
                 compiled += "stack.push(_temp_list)" + newline
 
@@ -1190,17 +1207,16 @@ if __name__ == "__main__":
             line = input(">>> ")
             _context_level = 0
             line = VyCompile(line, header)
-            _context_level = 1
             exec(line)
             print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
-        print("\tJ\tPrint top of stack joined by newlines")
+        print("\tj\tPrint top of stack joined by newlines")
         print("\tL\tPrint top of stack joined by newlines(Vertically)")
         print("\ts\tSum/concatenate top of stack on execution")
         print("\tM\tUse 1-indexed range [1,n] for mapping integers")
-        print("\tM\tUse 0-indexed range [0,n) for mapping integers")
+        print("\tm\tUse 0-indexed range [0,n) for mapping integers")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
         print("");
@@ -1230,7 +1246,7 @@ if __name__ == "__main__":
             code = open(file_location, "r", encoding="utf-8").read()
 
         code = VyCompile(code, header)
-        _context_level = 1
+        _context_level = 0
         if flags and 'c' in flags:
             print(code)
         exec(code)

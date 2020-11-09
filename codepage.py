@@ -60,7 +60,7 @@ commands = {
     'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in as_iter(rhs)])); ',
     'l': 'stack.push([])',
     'm': 'TODO',
-    'n': 'stack.push(eval(f"VAR__context_{_context_level}"))',
+    'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values) + 1)])',
     'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'y, x = stack.pop(2); stack.push(int(str(x).startswith(str(y)))',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',
@@ -152,5 +152,6 @@ commands = {
     "š": "item, index, iterable = stack.pop(3); stack.push(inserted(as_iter(iterable), index, item))",
     "Ţ": "stack.push(random_choice(as_iter(stack.pop())))",
     "ţ": "rhs, lhs = stack.pop(2); stack.push(int(lhs <= rhs))",
-    "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))"
+    "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))",
+    "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())"
     }
