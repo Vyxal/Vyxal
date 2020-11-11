@@ -755,6 +755,10 @@ def as_iter(item, t=Stack):
     else:
         return item
 
+def try_cast(item, t):
+    try: return t(item)
+    except: return item
+
 def Vy_reduce(fn, iterable):
     if type(iterable) is not Stack: iterable = Stack(list(as_iter(iterable)))
     iterable.reverse()
@@ -931,7 +935,12 @@ def VySort(iterable, key=None):
         iterable = [(x, key(x)) for x in iterable]
         return Stack([m[0] for m in sorted(iterable, key=lambda x:x[-1])])
     else:
-        return Stack(sorted(iterable))
+        if type(iterable) is int:
+            return int("".join(sorted(str(iterable))))
+        elif type(iterable) in [str, float]:
+            return "".join(sorted(str(iterable)))
+        else:
+            return Stack(sorted(iterable))
 
 def interleave(lhs, rhs):
     out = Stack() if Stack in types(lhs, rhs) else ""
@@ -970,6 +979,8 @@ tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("   
 
 def VyCompile(source, header=""):
     if not source:
+        if header:
+            return header
         return "pass"
     tokens = VyParse.Tokenise(source)
     compiled = ""
@@ -1058,7 +1069,7 @@ def VyCompile(source, header=""):
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
-                    compiled += f"stack += FN_{token[VALUE][VyParse.FUNCTION_NAME]}(stack)" + newline
+                    compiled += f"res = FN_{token[VALUE][VyParse.FUNCTION_NAME]}(stack); stack += res" + newline
                 else:
                     function_data = token[VALUE][VyParse.FUNCTION_NAME].split(":")
                     number_of_parameters = 0
@@ -1096,12 +1107,12 @@ def VyCompile(source, header=""):
                                 compiled += tab("else:") + newline
                                 compiled += tab(tab("args = Stack(arity, arity)")) + newline
                             elif arg == 1:
-                                compiled += tab(f"args.append(in_stack.pop())") + newline
+                                compiled += tab("args += [in_stack.pop()]") + newline
                             else:
                                 compiled += tab(f"args += in_stack.pop({arg})") + newline
                         else:
                             compiled += tab(f"VAR_{arg} = in_stack.pop()") + newline
-                    compiled += tab(f"stack = Stack(args, args)") + newline
+                    compiled += tab(f"stack = Stack(args, args);") + newline
                     x = VyCompile(token[VALUE][VyParse.FUNCTION_BODY])
                     compiled += tab(x) + newline
                     compiled += tab("_context_level -= 1") + newline

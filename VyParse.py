@@ -1,3 +1,7 @@
+class stringlib:
+    ascii_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
 NAME = "CONSTANT_TOKEN_NAME"
 VALUE = "CONSTANT_TOKEN_VALUE"
 
@@ -195,8 +199,7 @@ def Tokenise(source: str) -> [Token]:
                 structure = NO_STMT
 
         elif structure in VARIABLES:
-            import string
-            if char in string.ascii_letters + "_":
+            if char in stringlib.ascii_letters + "_":
                 structure_data[active_key] += char
                 continue
             else:
@@ -434,6 +437,7 @@ def Tokenise(source: str) -> [Token]:
 
 
 if __name__ == "__main__":
-    tests = ["[``]"]
+    tests = ["⟨⟨1|2⟩|⟨3|4⟩|⟨5|6⟩⟩"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(test)])
+    input()

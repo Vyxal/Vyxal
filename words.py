@@ -14,11 +14,20 @@ def word_index(word):
     else:
         return -1
 
-import os
-prepend = os.path.dirname(__file__)
-_words = open(prepend + "/dictionary.txt").read().split("\n")
+import dictionary
+_words = dictionary.contents
 
 if __name__ == "__main__":
     while 1:
         x = input()
-        print(word_index(x))
+        if " " in x:
+            output = ""
+            words = x.split(" ")
+            for word in words:
+                if word_index(word) != -1:
+                    output += word_index(word) + " "
+                else:
+                    output += word + " "
+            print(output)
+        else:
+            print(word_index(x))
