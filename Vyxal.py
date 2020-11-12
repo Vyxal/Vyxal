@@ -582,7 +582,7 @@ class Stack(list):
         if type(obj) in [int, float]:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
         for item in obj:
-            temp.append(fn(Stack(item, item))[0])
+            temp.append(fn(Stack(item, item))[-1])
         self.contents.append(Stack(temp))
 
 
@@ -592,7 +592,7 @@ class Stack(list):
         if type(obj) in [int, float]:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
         for item in obj:
-            temp.append(Stack([item, fn(Stack(item, item))[0]]))
+            temp.append(Stack([item, fn(Stack(item, item))][-1]))
         self.contents.append(Stack(temp))
 
     def do_filter(self, fn):

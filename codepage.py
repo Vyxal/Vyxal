@@ -99,7 +99,7 @@ commands = {
     '\t': '',
     "Ĥ": "stack.push(100)",
     "Ĵ": "stack.push(''.join(stack.pop())",
-    "Ĳ": "stack.push('\\n'.join(stack.pop()))",
+    "Ĳ": "stack.push('\\n'.join([str(x) for x in stack.pop()]))",
     "ĳ": "stack.push(10)",
     "ĵ": "x = stack.pop(); stack.push(multiply(x, x))",
     "∑": "stack.push(summate(stack.pop()))",
