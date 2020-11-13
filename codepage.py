@@ -63,7 +63,7 @@ commands = {
     'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values))]);',
     'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'y, x = stack.pop(2); stack.push(int(str(x).startswith(str(y)))',
-    'q': 'stack.push('"' + str(stack.pop()) + '"')',
+    'q': 'stack.push("`" + str(stack.pop()) + "`")',
     'r': 'lhs, rhs = stack.pop(2); stack.push(orderless_range(rhs, lhs))',
     's': 'top = stack.pop(); stack.push(VySort(top))',
     't': 'stack.push(as_iter(stack.pop())[-1])',
