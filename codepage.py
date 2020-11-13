@@ -60,7 +60,7 @@ commands = {
     'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in as_iter(rhs)])); ',
     'l': 'stack.push([])',
     'm': 'p = stack.pop(); t = type(p); x = as_iter(p, str)[::-1]; stack.push(add(p, try_cast(x, t)))',
-    'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values) + 1)]);',
+    'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values))]);',
     'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'y, x = stack.pop(2); stack.push(int(str(x).startswith(str(y)))',
     'q': 'stack.push('"' + str(stack.pop()) + '"')',

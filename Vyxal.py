@@ -490,7 +490,10 @@ class Stack(list):
         else:
             self.contents = []
 
-        self.inputs = inputs
+        if inputs == [] or type(inputs) is list:
+            self.inputs = inputs
+        else:
+            self.inputs = [inputs]
         self.input_number = 0
     def push(self, item):
         self.contents.append(item)
