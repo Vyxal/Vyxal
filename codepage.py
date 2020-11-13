@@ -153,5 +153,6 @@ commands = {
     "Ţ": "stack.push(random_choice(as_iter(stack.pop())))",
     "ţ": "rhs, lhs = stack.pop(2); stack.push(int(lhs <= rhs))",
     "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))",
-    "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())"
+    "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())",
+    "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));"
     }

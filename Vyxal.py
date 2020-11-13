@@ -6,6 +6,12 @@ import math
 import string
 import hashlib
 
+import string
+import math
+from datetime import date
+from datetime import datetime as dt
+
+
 _context_level = 0
 _context_values = []
 _input_cycle = 0
@@ -975,10 +981,55 @@ def uninterleave(item):
 
     return [lhs, rhs]
 
+def assigned(iterable, index, value):
+    if type(iterable) is Stack:
+        iterable[index] = value
+        return iterable
+    elif type(iterable) is str:
+        iterable = list(iterable)
+        iterable[index] = value
+        iterable = "".join([str(x) for x in iterable])
+        return iterable
+    else:
+        return iterable
 
 newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
 
+constants = {
+    "A": "string.ascii_uppercase",
+    "e": "math.e",
+    "f": "'Fizz'",
+    "b": "'Buzz'",
+    "F": "FizzBuzz",
+    "H": "Hello, World!",
+    "h": "Hello World",
+    "1": 1000,
+    "2": 10000,
+    "3": 100000,
+    "4": 1000000,
+    "a": "string.ascii_lowercase",
+    "L": "string.ascii_letters",
+    "d": "string.digits",
+    "6": "string.hexdigits",
+    "o": "string.octdigits",
+    "p": "string.punctuation",
+    "P": "string.printable",
+    "w": "string.whitespace",
+    "D": "string.ascii_letters + string.digits",
+    "r": "string.digits + string.ascii_letters",
+    "B": "string.ascii_uppercase + string.ascii_lowercase",
+    "Z": "string.ascii_uppercase[::-1]",
+    "z": "string.ascii_lowercase[::-1]",
+    "l": "string.ascii_letters[::-1]",
+    "i": "math.pi",
+    "n": "math.nan",
+    "D": "date.today().isoformat()",
+    "N": "Stack([dt.now().hour, dt.now().minute, dt.now().second])",
+    "Ð": "date.today().strftime('%d/%m/%Y')",
+    "Ḋ": "date.today().strftime('%m/%d/%y')",
+    "ð": "Stack([date.today().day, date.today().month, date.today().year])"
+}
 
 def VyCompile(source, header=""):
     if not source:
@@ -1158,20 +1209,7 @@ def VyCompile(source, header=""):
                 compiled += f"stack.push(FN_{token[VALUE][VyParse.FUNCTION_NAME]})" + newline
 
             elif token[NAME] == VyParse.CONSTANT_CHAR:
-                import string
-                import math
-                constants = {
-                    "A": string.ascii_uppercase,
-                    "e": math.e,
-                    "f": "Fizz",
-                    "b": "Buzz",
-                    "F": "FizzBuzz",
-                    "H": "Hello, World!",
-                    "h": "Hello World",
-                    "1": 1000
-                }
-
-                compiled += f"stack.push({repr(constants[token[VALUE]])})" + newline
+                compiled += f"stack.push({constants[token[VALUE]]})" + newline
 
             elif token[NAME] == VyParse.SINGLE_SCC_CHAR:
                 import words
