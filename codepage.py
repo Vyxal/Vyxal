@@ -154,5 +154,7 @@ commands = {
     "ţ": "rhs, lhs = stack.pop(2); stack.push(int(lhs <= rhs))",
     "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))",
     "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())",
-    "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));"
+    "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));",
+    "ŧ": "stack.push(Stack([Stack(list(s)) for s in part(stack.pop())]))",
+    "Ũ": "stack.push(Stack([Stack(list(s)) for s in itertools.permutations(as_iter(stack.pop()))]))"
     }

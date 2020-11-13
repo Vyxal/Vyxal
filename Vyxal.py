@@ -11,6 +11,8 @@ import math
 from datetime import date
 from datetime import datetime as dt
 
+import itertools
+
 
 _context_level = 0
 _context_values = []
@@ -993,6 +995,13 @@ def assigned(iterable, index, value):
     else:
         return iterable
 
+def part(n, I=1):
+    # https://stackoverflow.com/a/44209393/9363594
+    yield (n,)
+    for i in range(I, n//2 + 1):
+        for p in part(n-i, i):
+            yield (i,) + p
+
 newline = "\n"
 tab = lambda x: newline.join(["    " + m for m in x.split(newline)]).rstrip("    ")
 
@@ -1030,6 +1039,7 @@ constants = {
     "Ḋ": "date.today().strftime('%m/%d/%y')",
     "ð": "Stack([date.today().day, date.today().month, date.today().year])"
 }
+
 
 def VyCompile(source, header=""):
     if not source:
