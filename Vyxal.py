@@ -66,9 +66,9 @@ def add(lhs, rhs):
     elif ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = add(lhs[n], rhs[n])
@@ -104,9 +104,9 @@ def subtract(lhs, rhs):
     elif ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = subtract(lhs[n], rhs[n])
@@ -148,9 +148,9 @@ def multiply(lhs, rhs):
     elif ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = multiply(lhs[n], rhs[n])
@@ -192,9 +192,9 @@ def divide(lhs, rhs):
     elif ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = divide(lhs[n], rhs[n])
@@ -228,9 +228,9 @@ def modulo(lhs, rhs):
     elif ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = modulo(lhs[n], rhs[n])
@@ -255,9 +255,9 @@ def vectorising_equals(lhs, rhs):
     if ts == [Stack, Stack]:
         if len(lhs) != len(rhs):
             if len(lhs) < len(rhs):
-                lhs.extend([0] * len(rhs) - len(lhs))
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
             else:
-                rhs.extend([0] * len(lhs) - len(rhs))
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
         for n in range(len(lhs)):
             lhs[n] = int(lhs[n] == rhs[n])
@@ -291,7 +291,37 @@ def join(lhs, rhs):
     else:
         return str(lhs) + str(rhs)
 
+def exponent(lhs, rhs):
+    ts = types(lhs, rhs)
+    if ts == [Number, Number]:
+        return lhs ** rhs
+    elif ts == [str, Number]:
+        return "".join([c * rhs for c in lhs])
 
+    elif ts == [Number, str]:
+        return "".join([c * lhs for c in rhs])
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
+            else:
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
+
+        for n in range(len(lhs)):
+            lhs[n] = exponent(lhs[n], rhs[n])
+        return lhs
+
+    elif ts[0] == Stack:
+        for n in range(len(lhs)):
+            lhs[n] = exponent(lhs[n], rhs)
+
+        return lhs
+
+    elif ts[-1] == Stack:
+        for n in range(len(rhs)):
+            rhs[n] = exponent(lhs, rhs[n])
+        return rhs
 def cumulative_sum(item):
     sums = Stack()
     for i in range(len(item)):
@@ -313,9 +343,9 @@ def lshift(lhs, rhs):
         if ts[-1] == Stack:
             if len(lhs) != len(rhs):
                 if len(lhs) < len(rhs):
-                    lhs.extend([0] * len(rhs) - len(lhs))
+                    lhs.contents.extend([0] * (len(rhs) - len(lhs)))
                 else:
-                    rhs.extend([0] * len(lhs) - len(rhs))
+                    rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
             for n in range(len(lhs)):
                 lhs[n] = lshift(lhs[n], rhs[n])
@@ -340,9 +370,9 @@ def rshift(lhs, rhs):
         if ts[-1] == Stack:
             if len(lhs) != len(rhs):
                 if len(lhs) < len(rhs):
-                    lhs.extend([0] * len(rhs) - len(lhs))
+                    lhs.contents.extend([0] * (len(rhs) - len(lhs)))
                 else:
-                    rhs.extend([0] * len(lhs) - len(rhs))
+                    rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
             for n in range(len(lhs)):
                 lhs[n] = rshift(lhs[n], rhs[n])
@@ -367,9 +397,9 @@ def bit_and(lhs, rhs):
         if ts[-1] == Stack:
             if len(lhs) != len(rhs):
                 if len(lhs) < len(rhs):
-                    lhs.extend([0] * len(rhs) - len(lhs))
+                    lhs.contents.extend([0] * (len(rhs) - len(lhs)))
                 else:
-                    rhs.extend([0] * len(lhs) - len(rhs))
+                    rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
             for n in range(len(lhs)):
                 lhs[n] = bit_and(lhs[n], rhs[n])
@@ -400,9 +430,9 @@ def bit_or(lhs, rhs):
         if ts[-1] == Stack:
             if len(lhs) != len(rhs):
                 if len(lhs) < len(rhs):
-                    lhs.extend([0] * len(rhs) - len(lhs))
+                    lhs.contents.extend([0] * (len(rhs) - len(lhs)))
                 else:
-                    rhs.extend([0] * len(lhs) - len(rhs))
+                    rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
             for n in range(len(lhs)):
                 lhs[n] = bit_or(lhs[n], rhs[n])
@@ -443,9 +473,9 @@ def bit_xor(lhs, rhs):
         if ts[-1] == Stack:
             if len(lhs) != len(rhs):
                 if len(lhs) < len(rhs):
-                    lhs.extend([0] * len(rhs) - len(lhs))
+                    lhs.contents.extend([0] * (len(rhs) - len(lhs)))
                 else:
-                    rhs.extend([0] * len(lhs) - len(rhs))
+                    rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
             for n in range(len(lhs)):
                 lhs[n] = bit_xor(lhs[n], rhs[n])
@@ -754,9 +784,9 @@ def sort_unique(iterable):
 def Vy_zip(lhs, rhs):
     if len(lhs) != len(rhs):
         if len(lhs) < len(rhs):
-            lhs.extend([0] * len(rhs) - len(lhs))
+            lhs.contents.extend([0] * (len(rhs) - len(lhs)))
         else:
-            rhs.extend([0] * len(lhs) - len(rhs))
+            rhs.contents.extend([0] * (len(lhs) - len(rhs)))
 
 def as_iter(item, t=Stack):
     if type(item) in [int, float]:
