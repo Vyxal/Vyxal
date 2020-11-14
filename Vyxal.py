@@ -322,6 +322,16 @@ def exponent(lhs, rhs):
         for n in range(len(rhs)):
             rhs[n] = exponent(lhs, rhs[n])
         return rhs
+
+def integer_list(o):
+    charmap = dict(zip("cetaoinshr ", "0123456789,"))
+    temp = "["
+    for c in o:
+        temp += charmap.get(c, "")
+    temp += "]"
+    return Stack(eval(temp))
+
+
 def cumulative_sum(item):
     sums = Stack()
     for i in range(len(item)):

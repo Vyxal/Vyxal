@@ -98,7 +98,7 @@ commands = {
     '\n': '',
     '\t': '',
     "Ĥ": "stack.push(100)",
-    "Ĵ": "stack.push(''.join(stack.pop())",
+    "Ĵ": "stack.push(''.join(stack.pop()))",
     "Ĳ": "stack.push('\\n'.join([str(x) for x in stack.pop()]))",
     "ĳ": "stack.push(10)",
     "ĵ": "x = stack.pop(); stack.push(multiply(x, x))",
@@ -156,5 +156,6 @@ commands = {
     "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())",
     "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));",
     "ŧ": "stack.push(Stack([Stack(list(s)) for s in part(stack.pop())]))",
-    "Ũ": "stack.push(Stack([Stack(list(s)) for s in itertools.permutations(as_iter(stack.pop()))]))"
+    "Ũ": "stack.push(Stack([Stack(list(s)) for s in itertools.permutations(as_iter(stack.pop()))]))",
+    "ũ": "stack.push(integer_list(stack.pop()))"
     }
