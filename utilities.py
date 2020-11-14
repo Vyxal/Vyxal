@@ -74,4 +74,18 @@ if __name__ == "__main__":
             print("»" + from_ten(int(word), encoding.codepage_number_compress) + "»")
 
         else:
-            print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")
+            try:
+                if type(eval(word)) is list:
+                    charmap = dict(zip("0123456789,", "cetaoinshr "))
+                    word = word.replace(" ", "").replace("[", "").replace("]", "")
+                    out = ""
+                    for char in word:
+                        out += charmap.get(char, "")
+                    c = from_ten(to_ten(out, base53alphabet), encoding.codepage_string_compress)
+                    print("«" + c + "«ũ")
+                    print()
+                    print(repr(c))
+                else:
+                    print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")
+            except:
+                    print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")
