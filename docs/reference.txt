@@ -193,3 +193,10 @@ z       a,f    |zipmap the contents of a with function f
 ş       a,b    |a.insert(0, b)
 š       a,b,c  |a.insert(b, c)
 Ţ       a      |random element from a
+ţ       a,b    |a <= b
+Ť       a,b    |a >= b
+ť              |stack[-2]
+Ŧ       a,b,c  |a[b] = c
+ŧ       a      |integer_partitions(a)
+Ũ       a      |permutations(a)
+ũ       a      |* treat compressed string as integer list
