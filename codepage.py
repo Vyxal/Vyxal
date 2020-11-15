@@ -157,5 +157,7 @@ commands = {
     "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));",
     "ŧ": "stack.push(Stack([Stack(list(s)) for s in part(stack.pop())]))",
     "Ũ": "stack.push(Stack([Stack(list(s)) for s in itertools.permutations(as_iter(stack.pop()))]))",
-    "ũ": "stack.push(integer_list(stack.pop()))"
+    "ũ": "stack.push(integer_list(stack.pop()))",
+    "Ū": "index, iterable = stack.pop(2); stack.push(as_iter(iterable)[0:index])",
+    "ū": "index, iterable = stack.pop(2); stack.push(as_iter(iterable)[1:index])"
     }

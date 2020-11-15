@@ -47,11 +47,12 @@ COMPRESSED_STRING_VALUE = "compressed_string_value"
 ONE = "one"
 TWO = "two"
 
-ONE_CHARS = "kv․∆ø"
+ONE_CHARS = "kv․∆øª"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
 SINGLE_SCC_CHAR = "ı"
+CODEPAGE_INDEX = "ª"
 
 DECIMAL = "•"
 

@@ -855,12 +855,12 @@ def deref(item):
 
 def Vy_eval(item):
         try:
-            if type(eval(item)) in [float, int]:
-                item = int(item)
+            if type(eval(item)) in [float, int, str]:
+                item = eval(item)
             elif type(eval(item)) is list:
                 item = Stack(eval(item))
             else:
-                pass
+                return item
         except Exception:
             return item
         return item
@@ -1261,6 +1261,10 @@ def VyCompile(source, header=""):
             elif token[NAME] == VyParse.CONSTANT_CHAR:
                 compiled += f"stack.push({constants[token[VALUE]]})" + newline
 
+            elif token[NAME] == VyParse.CODEPAGE_INDEX:
+                import codepage
+                compiled += f"stack.push({codepage.codepage.find(token[VALUE])})" + newline
+
             elif token[NAME] == VyParse.SINGLE_SCC_CHAR:
                 import words
                 import utilities
@@ -1287,6 +1291,7 @@ def VyCompile(source, header=""):
                 string = utilities.to_ten(token[VALUE][VyParse.COMPRESSED_STRING_VALUE], encoding.codepage_string_compress)
                 string = utilities.from_ten(string, utilities.base53alphabet)
                 compiled += f"stack.push('{string}')" + newline
+
     return header + compiled
 
 if __name__ == "__main__":
