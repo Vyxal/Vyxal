@@ -877,7 +877,7 @@ def group_consecutive(iterable):
             temp = Stack(item)
             last = item
 
-    if temp.contents != out[-1].contents:
+    if len(out) == 0 or temp.contents != out[-1].contents:
         out.append(temp)
 
     return Stack(out)
@@ -1115,7 +1115,7 @@ def VyCompile(source, header=""):
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
-        print(token[NAME], token[VALUE])
+        # print(token[NAME], token[VALUE])
         if token[NAME] == VyParse.NO_STMT and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + newline
 
