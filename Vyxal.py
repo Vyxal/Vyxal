@@ -865,6 +865,23 @@ def Vy_eval(item):
             return item
         return item
 
+def group_consecutive(iterable):
+    out = []
+    temp = Stack(iterable[0])
+    last = iterable[0]
+    for item in iterable[1:]:
+        if item == last:
+            temp.push(item)
+        else:
+            out.append(temp)
+            temp = Stack(item)
+            last = item
+
+    if temp.contents != out[-1].contents:
+        out.append(temp)
+
+    return Stack(out)
+
 def to_number(item):
     if type(item) in [float, int]:
         return item
@@ -903,6 +920,15 @@ def orderless_range(a, b, lift_factor=0):
     else:
         return Stack(list(range(b, a + lift_factor)))
 
+def transilterate(original_alphabet, new_alphabet, string):
+    out = ""
+    for char in string:
+        ind = original_alphabet.find(char)
+        if ind != -1:
+            out += new_alphabet[ind]
+        else:
+            out += char
+    return out
 def VyRound(item):
     if type(item) is str:
         return item
@@ -1089,7 +1115,7 @@ def VyCompile(source, header=""):
     tokens = VyParse.Tokenise(source)
     compiled = ""
     for token in tokens:
-        # print(token[NAME], token[VALUE], compiled)
+        print(token[NAME], token[VALUE])
         if token[NAME] == VyParse.NO_STMT and token[VALUE] in commands:
             compiled += commands[token[VALUE]] + newline
 

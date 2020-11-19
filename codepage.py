@@ -92,6 +92,8 @@ commands = {
     'ƈ': 'TODO',
     '∞': 'stack.push(Infinite_List(lambda x: x + 1))',
     'ß': 'TODO',
+    "Ð": "alphabet, number = stack.pop(2); stack.push(utilities.to_ten(number, alphabet))",
+    "Š": "alphabet, number = stack.pop(2); stack.push(utilities.from_ten(number, alphabet))",
     "ř": "lhs, rhs = stack.pop(2); stack.push(repeat(rhs, lhs))",
     '∺': 'stack.push(modulo(stack.pop(), 2))',
     "œ": 'lhs, rhs = stack.pop(2); stack.push(vectorising_equals(modulo(rhs, lhs), 0))',
@@ -159,5 +161,9 @@ commands = {
     "Ũ": "stack.push(Stack([Stack(list(s)) for s in itertools.permutations(as_iter(stack.pop()))]))",
     "ũ": "stack.push(integer_list(stack.pop()))",
     "Ū": "index, iterable = stack.pop(2); stack.push(as_iter(iterable)[0:index])",
-    "ū": "index, iterable = stack.pop(2); stack.push(as_iter(iterable)[1:index])"
+    "ū": "index, iterable = stack.pop(2); stack.push(as_iter(iterable)[1:index])",
+    "Ŭ": "code = VyCompile(stack.pop()); exec(code);",
+    "ŭ": "obj = as_iter(stack.pop()); stack.push(Stack(list(range(1, len(obj) + 1))))",
+    "Ů": "stack.push(group_consecutive(as_iter(stack.pop())))",
+    "ů": "string, new, original = stack.pop(3); stack.push(transilterate(original, new, string))"
     }
