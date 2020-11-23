@@ -15,9 +15,9 @@ commands = {
     '.': 'print(Vy_repr(stack.pop()), end=""); printed = True',
     '/': 'rhs, lhs = stack.pop(2); stack.push(divide(lhs, rhs))',
     ':': 'top = stack.pop(); stack.push(deref(top)); stack.push(deref(top))',
-    '<': 'lhs, rhs = stack.pop(2); stack.push(int(rhs < lhs))',
-    '=': 'lhs, rhs = stack.pop(2); stack.push(int(rhs == lhs))',
-    '>': 'lhs, rhs = stack.pop(2); stack.push(int(rhs > lhs))',
+    '<': 'rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, LESS_THAN))',
+    '=': 'rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, EQUALS))',
+    '>': 'rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, GREATER_THAN))',
     '?': 'stack.push(get_input())',
     'A': 'stack.push(stack.all())',
     'B': 'stack.push(Vy_int(stack.pop(), 2))',
@@ -153,8 +153,8 @@ commands = {
     "ş": "item, iterable = stack.pop(2); stack.push(prepend(as_iter(iterable), item))",
     "š": "item, index, iterable = stack.pop(3); stack.push(inserted(as_iter(iterable), index, item))",
     "Ţ": "stack.push(random_choice(as_iter(stack.pop())))",
-    "ţ": "rhs, lhs = stack.pop(2); stack.push(int(lhs <= rhs))",
-    "Ť": "rhs, lhs = stack.pop(2); stack.push(int(lhs >= rhs))",
+    "ţ": "rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, LESS_THAN_OR_EQUAL))",
+    "Ť": "rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, GREATER_THAN_OR_EQUAL))",
     "ť": "if len(stack) >= 2: stack.push(stack[-2])\nelse: stack.push(get_input())",
     "Ŧ": "value, index, iterable = stack.pop(3); stack.push(assigned(as_iter(iterable), index, value));",
     "ŧ": "stack.push(Stack([Stack(list(s)) for s in part(stack.pop())]))",
@@ -165,5 +165,6 @@ commands = {
     "Ŭ": "code = VyCompile(stack.pop()); exec(code);",
     "ŭ": "obj = as_iter(stack.pop()); stack.push(Stack(list(range(1, len(obj) + 1))))",
     "Ů": "stack.push(group_consecutive(as_iter(stack.pop())))",
-    "ů": "string, new, original = stack.pop(3); stack.push(transilterate(original, new, string))"
+    "ů": "string, new, original = stack.pop(3); stack.push(transilterate(original, new, string))",
+    "Ű": "stack.push(truthy_indexes(stack.pop()))"
     }

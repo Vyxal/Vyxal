@@ -27,6 +27,12 @@ _use_encoding = False
 _RIGHT = "RIGHT"
 _LEFT = "LEFT"
 
+LESS_THAN = 0
+EQUALS = 1
+GREATER_THAN = 2
+LESS_THAN_OR_EQUAL = 3
+GREATER_THAN_OR_EQUAL = 4
+
 STANDARD = "standard"
 LAMBDA = "lambda"
 
@@ -275,6 +281,40 @@ def vectorising_equals(lhs, rhs):
 
     else:
         return int(lhs == rhs)
+
+def comp(lhs, rhs, mode):
+    ts = types(lhs, rhs)
+    COMP = ["<", "==", ">", "<=", ">="][mode]
+    if ts in [[Number, Number], [str, str]]:
+        return int(eval(f"lhs {COMP} rhs"))
+
+    elif ts == [Number, str]:
+        return int(eval(f"str(lhs) {COMP} rhs"))
+
+    elif ts == [str, Number]:
+        return int(eval(f"lhs {COMP} str(rhs)"))
+
+    elif ts == [Stack, Stack]:
+        if len(lhs) != len(rhs):
+            if len(lhs) < len(rhs):
+                lhs.contents.extend([0] * (len(rhs) - len(lhs)))
+            else:
+                rhs.contents.extend([0] * (len(lhs) - len(rhs)))
+
+        for n in range(len(lhs)):
+            lhs[n] = comp(lhs[n], rhs[n], mode)
+        return lhs
+
+    elif ts[-1] is Stack:
+        for n in range(len(rhs)):
+            rhs[n] = comp(lhs, rhs[n], mode)
+        return rhs
+
+    elif ts[0] is Stack:
+        for n in range(len(lhs)):
+            lhs[n] = comp(lhs[n], rhs, mode)
+        return lhs
+
 
 def join(lhs, rhs):
     ts = types(lhs, rhs)
@@ -999,11 +1039,17 @@ def vertical_join(iterable, padding=" "):
 
     return out
 
+def truthy_indexes(iterable):
+    out = Stack()
+    for i in range(len(iterable)):
+        if bool(iterable[i]):
+            out.push(i)
+    return out
 
 def indexes_where(fn, iterable):
     indexes = Stack()
     for i in range(len(iterable)):
-        if bool(fn(Stack(item[i]))):
+        if bool(fn(Stack(iterable[i]))):
             indexes.push(i)
     return indexes
 
