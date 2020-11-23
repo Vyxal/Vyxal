@@ -43,7 +43,7 @@ J       a,b    |concat(a, b)
 K              |* push the constant at the next char K<char>
 L       a      |len(a)
 M       a,f    |f mapped to each element in a
-N       a      |--Need to replace--
+N       a      |number(a)
 O       a,b    |a.count(b)
 P       a,b    |a.strip(b)
 Q              |* end execution (exit())
@@ -80,7 +80,7 @@ q       a      |"`" + a + "`"
 r       a,b    |range(a, b)
 s       a      |sorted(a)
 t       a      |a[-1]
-u       a      |sorted(uniquified(a)) #same as Us (lol)
+u       a      |sorted(uniquified(a)) #same as US (lol)
 v              |* vectorise the next command
 w       a      |[a]
 x              |* context level down
@@ -111,6 +111,7 @@ z       a,f    |zipmap the contents of a with function f
 Ï       a,b    |a.index(b)
 Ô              |list of positive odd numbers
 Ç       a      |1 - a
+æ       a      |is_prime(a)
 ʀ       a      |range(0, a + 1)
 ʁ       a      |range(0, a)
 ɾ       a      |range(1, a + 1)
@@ -166,10 +167,11 @@ z       a,f    |zipmap the contents of a with function f
 Ň       a      |factorial(a)
 ņ       a      |cumulative_sums(a)
 Ň       a      |all_equal(a) # every item is the same
+ð              |" "
 ň       a      |counts_of_items(a)
 ŉ       a      |reversed(a)
 Ŋ       a      |a[:-1]
-ŋ              |--Need to replace--
+ŋ              |sum(entire_stack)
 Ō       a      |graded_up(a)
 ō       a      |graded_down(a) # short for Ōŉ
 Ŏ              |None # as in python's None type
@@ -205,3 +207,4 @@ z       a,f    |zipmap the contents of a with function f
 ŭ       a      |range(1, len(a) + 1)
 Ů       a      |group_consecutive(a)
 ů       a,b,c  |transilterate(a, b, c) # a: original b: new c: string
+Ű       a      |truthy_indexes(a)
