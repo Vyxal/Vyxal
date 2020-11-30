@@ -19,7 +19,7 @@ commands = {
     '=': 'rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, EQUALS))',
     '>': 'rhs, lhs = stack.pop(2); stack.push(comp(lhs, rhs, GREATER_THAN))',
     '?': 'stack.push(get_input())',
-    'A': 'stack.push(stack.all())',
+    'A': 'stack.push(as_iter(stack.pop()).all())',
     'B': 'stack.push(Vy_int(stack.pop(), 2))',
     'C': 'stack.push(chrord(stack.pop()))',
     'D': 'top = stack.pop(); stack.push(top); stack.push(top); stack.push(top)',
@@ -38,7 +38,7 @@ commands = {
     'Q': 'exit()',
     'R': 'function, iterable = stack.pop(2); stack.push(Vy_reduce(function, as_iter(iterable)))',
     'S': 'stack.push(str(stack.pop()))',
-    'T': 'stack.push([n for n in stack.pop() if bool(n)])',
+    'T': 'stack.push(Stack([n for n in stack.pop() if bool(n)]))',
     'U': 'stack.push(Vy_Uniquify(as_iter(stack.pop())))',
     'V': 'replacent, needle, haystack = stack.pop(3); stack.push(haystack.replace(needle, replacent))',
     'W': 'stack = Stack(Stack(stack.contents))',
@@ -48,7 +48,7 @@ commands = {
     '^': 'stack.reverse()',
     '_': 'stack.pop()',
     '`': 'stack.push("{}")',
-    'a': 'stack.push(any(stack.pop()))',
+    'a': 'stack.push(int(any(stack.pop())))',
     'b': 'stack.push(bin(stack.pop())[2:])',
     'c': 'lhs, rhs = stack.pop(2); stack.push(int(lhs in rhs))',
     'd': 'stack.push(stack.pop() * 2)',
@@ -60,7 +60,7 @@ commands = {
     'j': 'lhs, rhs = stack.pop(2); stack.push(lhs.join([str(_item) for _item in as_iter(rhs)])); ',
     'l': 'stack.push([])',
     'm': 'p = stack.pop(); t = type(p); x = as_iter(p, str)[::-1]; stack.push(add(p, try_cast(x, t)))',
-    'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values))]);',
+    'n': 'stack.push(_context_values[(_context_level - 1) % (len(_context_values))])',
     'o': 'needle, haystack = stack.pop(2); stack.push(haystack.replace(needle, ""))',
     'p': 'y, x = stack.pop(2); stack.push(int(str(x).startswith(str(y)))',
     'q': 'stack.push("`" + str(stack.pop()) + "`")',
@@ -166,5 +166,6 @@ commands = {
     "ŭ": "obj = as_iter(stack.pop()); stack.push(Stack(list(range(1, len(obj) + 1))))",
     "Ů": "stack.push(group_consecutive(as_iter(stack.pop())))",
     "ů": "string, new, original = stack.pop(3); stack.push(transilterate(original, new, string))",
-    "Ű": "stack.push(truthy_indexes(stack.pop()))"
+    "Ű": "stack.push(truthy_indexes(stack.pop()))",
+    "ű": "rhs, lhs = stack.pop(2); stack.push(cartesian(as_iter(lhs), as_iter(rhs)))"
     }

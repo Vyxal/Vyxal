@@ -58,6 +58,13 @@ def get_input():
         temp = input()
         return Vy_eval(temp)
 
+def cartesian(lhs, rhs):
+    out = Stack()
+    for left in lhs:
+        for right in rhs:
+            out.push(Stack([left, right]))
+    return out
+
 def add(lhs, rhs):
     ts = types(lhs, rhs)
     if ts in [[Number, Number], [str, str]]:
@@ -594,7 +601,7 @@ class Stack(list):
     def __len__(self):
         return len(self.contents)
     def all(self):
-        return all(self.contents)
+        return int(all(self.contents))
     def reverse(self):
         self.contents = self.contents[::-1]
 
@@ -683,7 +690,11 @@ class Stack(list):
         if type(obj) in [int, float]:
             obj = list(range(_MAP_START, int(obj) + _MAP_OFFSET))
         for item in obj:
-            temp.append(Stack([item, fn(Stack(item, item))][-1]))
+            res = fn(Stack(item, item))
+            if len(res) == 1:
+                temp.append(Stack([item, res[0]]))
+            else:
+                temp.append(Stack([item, res]))
         self.contents.append(Stack(temp))
 
     def do_filter(self, fn):
@@ -1311,6 +1322,7 @@ def VyCompile(source, header=""):
                 compiled += tab(f"_context_values.append(args)") + newline
                 compiled += tab(VyCompile(token[VALUE][VyParse.LAMBDA_BODY])) + newline
                 compiled += tab("_context_values.pop()") + newline
+                compiled += tab("_context_level -= 1") + newline
                 compiled += tab("return Stack(stack[-1])") + newline
                 compiled += "stack.push(_lambda)" + newline
 
