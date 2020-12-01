@@ -5,6 +5,7 @@ from codepage import *
 import math
 import string
 import hashlib
+import utilities
 
 import string
 import math
@@ -573,6 +574,32 @@ def inserted(iterable, index, item):
 
     else:
         return iterable[:index] + str(item) + iterable[index:]
+
+def vy_reversed(iterable):
+    if type(iterable) in [int, float]:
+        if iterable < 0:
+            return -eval(str(iterable)[1:][::-1])
+        else:
+            return eval(str(iterable)[::-1])
+    else:
+        return iterable[::-1]
+
+def deltas(iterable):
+    out = Stack()
+    for i in range(0, len(iterable) - 1):
+        out.push(subtract(iterable[i], iterable[i + 1]))
+
+    return out
+
+def sign_of(n):
+    if type(n) in [int, float]:
+        if n < 0: return -1
+        elif n == 0: return 0
+        return 1
+    elif type(n) is Stack:
+        return Stack([sign_of(i) for i in n])
+    else:
+        return n
 
 class Number: pass
 class Stack(list):

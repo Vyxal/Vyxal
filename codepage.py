@@ -81,7 +81,7 @@ commands = {
     '÷': 'for item in as_iter(stack.pop()): stack.push(item)',
     '⍎': 'fn = stack.pop(); stack += fn(stack)',
     'Ṛ': 'lhs, rhs = stack.pop(2); stack.push(random.randint(rhs, lhs))',
-    'Ï': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs).index(lhs))',
+    'Ï': 'lhs, rhs = stack.pop(2); stack.push(as_iter(rhs).find(lhs))',
     'Ô': 'stack.push(Infinite_List(lambda x: (2 * (x - 1)) + 1))',
     'Ç': 'stack.push(subtract(1, stack.pop()))',
     'ʀ': 'stack.push(Stack(list(range(0, stack.pop() + 1))))',
@@ -128,7 +128,7 @@ commands = {
     "Ň": "stack.push(int(len(set(as_iter(stack.pop()))) == 1))",
     "ð": "stack.push(' ')",
     "ň": "stack.push(counts(stack.pop()))",
-    "ŉ": "p = stack.pop(); t = type(p); x = as_iter(p, str)[::-1]; stack.push(try_cast(x, t))",
+    "ŉ": "p = stack.pop(); stack.push(vy_reversed(p))",
     "Ŋ": "stack.push(Stack(as_iter(stack.pop(), str)[:-1]))",
     "⎝": "stack.push(min(stack.pop(), key=lambda x: x[-1]))",
     "ŋ": "x = summate(stack); stack = Stack(x)",
@@ -167,5 +167,7 @@ commands = {
     "Ů": "stack.push(group_consecutive(as_iter(stack.pop())))",
     "ů": "string, new, original = stack.pop(3); stack.push(transilterate(original, new, string))",
     "Ű": "stack.push(truthy_indexes(stack.pop()))",
-    "ű": "rhs, lhs = stack.pop(2); stack.push(cartesian(as_iter(lhs), as_iter(rhs)))"
+    "ű": "rhs, lhs = stack.pop(2); stack.push(cartesian(as_iter(lhs), as_iter(rhs)))",
+    "Ų": "stack.push(deltas(stack.pop()))",
+    "ų": "stack.push(sign_of(stack.pop()))"
     }
