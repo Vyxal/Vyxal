@@ -169,5 +169,7 @@ commands = {
     "Ű": "stack.push(truthy_indexes(stack.pop()))",
     "ű": "rhs, lhs = stack.pop(2); stack.push(cartesian(as_iter(lhs), as_iter(rhs)))",
     "Ų": "stack.push(deltas(stack.pop()))",
-    "ų": "stack.push(sign_of(stack.pop()))"
+    "ų": "stack.push(sign_of(stack.pop()))",
+    "Ŵ": "length, iterable = stack.pop(2); iterable = as_iter(iterable); if type(iterable) is str: iterable = Stack(list(iterable))\nstack.push(Stack(list(itertools.combinations(iterable.contents, length))))",
+    "ŵ": "if inputs: stack.push(Stack(inputs))\nelse:\n    s, x = Stack(), input()\n    while x:\n        s.push(Vy_eval(x)); x = input()"
     }

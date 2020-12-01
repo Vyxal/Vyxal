@@ -1418,7 +1418,15 @@ if __name__ == "__main__":
 
     if len(sys.argv) > 2:
         flags = sys.argv[2]
-        inputs = list(map(Vy_eval,sys.argv[3:]))
+        if flags:
+            if 'f' in flags:
+                inputs = list(map(Vy_eval, open(sys.argv[3]).readlines()))
+            else:
+                inputs = list(map(Vy_eval,sys.argv[3:]))
+
+        if 'a' in flags:
+            inputs = [Stack(inputs)]
+
 
     if not file_location: #repl mode
         while 1:
@@ -1437,6 +1445,8 @@ if __name__ == "__main__":
         print("\tm\tUse 0-indexed range [0,n) for mapping integers")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
+        print("\tf\tGet input from file instead of arguments")
+        print("\ta\tTreat newline seperated values as a list")
         print("");
     else:
         if flags:

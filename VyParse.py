@@ -53,6 +53,7 @@ CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
 SINGLE_SCC_CHAR = "ı"
 CODEPAGE_INDEX = "ª"
+ONE_CHAR_FUNCTION_REFERENCE = "․"
 
 DECIMAL = "•"
 
@@ -224,7 +225,10 @@ def Tokenise(source: str) -> [Token]:
 
 
         elif structure in ONE_CHARS:
-            this_token = Token(structure, char)
+            if structure == ONE_CHAR_FUNCTION_REFERENCE:
+                this_token = Token(LAMBDA_STMT, {LAMBDA_BODY: char})
+            else:
+                this_token = Token(structure, char)
             tokens.append(this_token)
             structure = NO_STMT
             continue
