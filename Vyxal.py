@@ -1263,23 +1263,9 @@ def VyCompile(source, header=""):
                     condition = VyCompile(token[VALUE][VyParse.WHILE_CONDITION])
 
                 compiled += f"{condition}" + newline
-                compiled += tab("if len(_context_values) + 1 == _context_level - 1:") + newline
-                compiled += tab(\
-                tab("_context_values[(_context_level - 1) % (len(_context_values))] = VAR_" + var_name)) + newline
-                compiled += tab("else:") + newline
-                compiled += tab(\
-                tab("_context_values.append(VAR_" + var_name + ")")) + newline
                 compiled += "while stack.pop():" + newline
-                compiled += tab("_context_level += 1")
                 compiled += tab(VyCompile(token[VALUE][VyParse.WHILE_BODY])) + newline
                 compiled += tab(condition) + newline
-                compiled += tab("if len(_context_values) + 1 == _context_level - 1:") + newline
-                compiled += tab(\
-                tab("_context_values[(_context_level - 1) % (len(_context_values))] = VAR_" + var_name)) + newline
-                compiled += tab("else:") + newline
-                compiled += tab(\
-                tab("_context_values.append(VAR_" + var_name + ")")) + newline
-                compiled += tab("_context_level -= 1") + newline
 
             elif token[NAME] == VyParse.FUNCTION_STMT:
                 if VyParse.FUNCTION_BODY not in token[VALUE]:
