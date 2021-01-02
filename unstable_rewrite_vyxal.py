@@ -1,7 +1,3 @@
-#
-# DO NOT USE THIS FILE TO RUN YOUR PROGRAMS. IT'S UNDER HEAVY DEVELOPMENT. USE Vyxal.py FOR NOW.
-#
-
 # Python modules
 
 from datetime import date
@@ -13,6 +9,7 @@ import math
 import random
 import string
 import time
+import warnings
 
 # Vyxal modules
 import commands
@@ -33,9 +30,16 @@ inputs = []
 context_level = 0
 context_values = []
 input_level = 0
+register = 0
 input_scopes = {0: 0}
 stack = []
 printed = False
+
+MAP_START = 0
+MAP_OFFSET = 1
+_join = False
+_vertical_join = False
+use_encoding = False
 
 # Helper classes
 class Comparitors:
@@ -57,29 +61,26 @@ class Generator:
         else:
             self.gen = raw_generator
             self.backup = self.gen
-
+    def __index__(self, position):
+        warnings.warn("Can't index generators. Check what you're doing")
+        return self.gen
     def __next__(self):
         return next(self.gen)
-
     def _map(self, function):
         self.gen = map(function, self.gen)
         return self
-
     def _filter(self, function):
         self._map(function)
         self.gen = filter(None, self.gen)
         return self
-
     def _reduce(self, function):
         return functools.reduce(function, self.gen)
-
     def _dereference(self):
         '''
         Only call this when it is absolutely neccesary to convert to a list.
         '''
         temp = self.gen
         return list(temp)
-
     def _print(self):
         print("⟨", end="")
         try:
@@ -111,6 +112,14 @@ def add(lhs, rhs):
         (types[1], Generator): lambda: vectorise(add, lhs, rhs),
         (list, list): lambda: list(map(sum, zip(lhs, rhs)))
     }[types]()
+def assigned(vector, index, item):
+    if type(vector) is str:
+        vector = list(vector)
+        vector[index] = item
+        return "".join([str(x) for x in vector])
+    else:
+        vector[index] = item
+        return vector
 def bit_and(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
@@ -131,6 +140,8 @@ def bit_or(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) | rhs) for let in lhs]),
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
+        (Generator, types[1]): lambda: vectorise(bit_or, lhs, rhs),
+        (types[1], Generator): lambda: vectorise(bit_or, lhs, rhs),
         (list, list): lambda: list(map(lambda x: bit_or(*x), zip(lhs, rhs)))
     }[types](rhs)
 def bit_not(item):
@@ -138,6 +149,7 @@ def bit_not(item):
         list: lambda: [bit_not(x) for x in item],
         str: lambda: [~ord(let) for let in item],
         Number: lambda: ~item,
+        Generator: lambda: vectorise(bit_not, item)
     }[VY_type(item)]()
 def bit_xor(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
@@ -190,6 +202,16 @@ def deltas(vector):
 def deref(item):
         if type(item) not in [int, float, str]: return item[::]
         return item
+def distribute(vector, value):
+    vector = interable(vector)
+    remaining = value
+    index = 0
+    while remaining > 0:
+        vector[index % len(iterable)] += 1
+        index += 1
+        remaining -= 1
+
+    return vector
 def divide(lhs, rhs):
         import textwrap
         types = VY_type(lhs), VY_type(rhs)
@@ -226,6 +248,15 @@ def exponate(lhs, rhs):
         (list, types[1]): lambda: [exponate(item, rhs) for item in lhs],
         (list, list): lambda: list(map(exponate(*x), zip(lhs, rhs)))
     }[types]()
+def first_n(func, n=1):
+    ret = []
+    current_index = 0
+
+    while len(ret) < n:
+        result = fn([current_index])
+        if result: ret.append(current_index)
+
+    return ret
 def flatten(item):
     t_item = VY_type(item)
     if t_item is Generator:
@@ -239,14 +270,38 @@ def flatten(item):
                 ret.append(x)
         return ret
 def get_input(explicit=None):
-    global input_scopes
+    global input_index
     if inputs:
-        input_scopes[input_level] += 1
-        if explicit:
-            return explicit[(input_scopes[input_level] - 1) % len(explicit)]
+        if context_level:
+            return context_values[context_level % len(context_values)]
+        input_index += 1
         return inputs[(input_index - 1) % len(inputs)]
     else:
         return VY_eval(input())
+def graded(vector):
+    return Generator(sorted(enumerate(iterable), key=lambda x: x[-1]))
+def group_consecutive(vector):
+    ret = []
+    temp = [vector[0]]
+    last = vector[0]
+    for item in vector[1:]:
+        if item == last:
+            temp.append(item)
+        else:
+            ret.append(temp)
+            temp = [item]
+            last = item
+
+    if len(ret) == 0 or temp != ret[-1]:
+        ret.append(temp)
+
+    return ret
+def indexes_where(fn, vector):
+    ret = []
+    for i in range(len(vector)):
+        if fn(vector[i]):
+            ret.append(i)
+    return ret
 def inserted(vector, item, index):
     vector = iterable(vector, range)
     t_vector = type(vector)
@@ -285,11 +340,22 @@ def iterable_shift(vector, direction):
         else:
             # abc -> cab
             return vector[-1] + vector[:-1]
+def integer_list(string):
+    charmap = dict(zip("cetaoinshr ", "0123456789,"))
+    temp = "["
+    for c in o:
+        temp += charmap.get(c, "")
+    temp += "]"
+    return eval(temp)
 def interleave(lhs, rhs):
     interleaved = flatten(zip(iterable(lhs), iterable(rhs)))
     if len({VY_type(lhs), VY_type(rhs)} & {list, Generator}) == 0:
         return "".join([str(x) for x in interleaved._dereference()])
     return interleaved
+def is_prime(n):
+    if n % 2 == 0 and n > 2:
+        return False
+    return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
 def join(lhs, rhs):
     types = tuple(map(Vy_type, [lhs, rhs]))
     return {
@@ -333,6 +399,12 @@ def multiply(lhs, rhs):
     }[types]()
 def orderless_range(*args, lift_factor=0):
     return range(min(args), max(args) + lift_factor)
+def partition(item):
+    # https://stackoverflow.com/a/44209393/9363594
+    yield [n]
+    for i in range(I, n//2 + 1):
+        for p in partition(n-i, i):
+            yield [i] + p
 def prepend(vector, item):
     vector = iterable(vector, range)
     t_vector = type(vector)
@@ -352,6 +424,13 @@ def pop(vector, num=1, wrap=False, explicit=None):
     if num == 1 and not wrap:
         return ret[0]
     return ret
+def repeat(vector, times):
+    vector = iterable(vector)
+    t_vector = VY_type(vector)
+    if times < 0:
+        return vector[::-1] * times
+    else:
+        return vector * times
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:
@@ -412,7 +491,27 @@ def summate(vector):
         ret = add(ret, item)
 
     return ret
+def sums(vector):
+    ret = []
+    for i in range(len(item)):
+        ret.append(summate(item[0:i+1]))
+    return ret
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
+def transilterate(original, new, string):
+    ret = ""
+    for char in string:
+        ind = original.find(char)
+        if ind != -1:
+            ret += new[ind]
+        else:
+            ret += char
+    return ret
+def truthy_indexes(vector):
+    ret = []
+    for i in range(len(vector)):
+        if bool(vector[i]):
+            ret.append(i)
+    return ret
 def uninterleave(item):
     left, right = [], []
     for i in range(len(item)):
@@ -431,6 +530,19 @@ def vectorise(fn, left, right=None):
         if t_left is Generator:
             return left._map(fn)
         return list(map(fn, left))
+def vectorising_equals(lhs, rhs):
+    return all(map(lambda x: x[0] == x[1], zip(iterable(lhs), iterable(rhs))))
+def vertical_join(vector, padding=" "):
+    lengths = list(map(len, iterable))
+    iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
+
+    out = ""
+    for i in range(max(lengths)):
+        for item in iterable:
+            out += item[i]
+        out += "\n"
+
+    return out
 def VY_bin(item):
     t_item = VY_type(item)
     return {
@@ -660,7 +772,7 @@ else:
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
 
-            copmiled += "def _lambda(parameter_stack, arity=None):"
+            compiled += "def _lambda(parameter_stack, arity=None):" + NEWLINE
             compiled += tab(NEWLINE.join(map(lambda x: "global " + x,
              ["context_level", "context_values"]))) + NEWLINE
 
@@ -691,8 +803,10 @@ else:
         elif NAME == VyParse.TWO_BYTE_MATH:
             compiled += "# TODO: Implement the math stuff again"
         elif NAME == VyParse.SINGLE_SCC_CHAR:
-            if utilities.to_ten(token[VALUE], encoding.compression) < len(words._words):
-                compiled += f"stack.append({repr(words.extract_word(token[VALUE]))})"
+            import utilities
+            import encoding
+            if utilities.to_ten(VALUE, encoding.compression) < len(words._words):
+                compiled += f"stack.append({repr(words.extract_word(VALUE))})"
         elif NAME == VyParse.VARIABLE_SET:
             compiled += "VAR_" + VALUE[VyParse.VARIABLE_NAME] + " = pop(stack)"
         elif NAME == VyParse.VARIABLE_GET:
@@ -725,9 +839,9 @@ if __name__ == "__main__":
         flags = sys.argv[2]
         if flags:
             if 'f' in flags:
-                inputs = list(map(Vy_eval, open(sys.argv[3]).readlines()))
+                inputs = list(map(VY_eval, open(sys.argv[3]).readlines()))
             else:
-                inputs = list(map(Vy_eval,sys.argv[3:]))
+                inputs = list(map(VY_eval,sys.argv[3:]))
 
         if 'a' in flags:
             inputs = [[inputs]]
@@ -735,7 +849,7 @@ if __name__ == "__main__":
     if not file_location: #repl mode
         while 1:
             line = input(">>> ")
-            _context_level = 0
+            context_level = 0
             line = VY_compile(line, header)
             exec(line)
             VY_print(stack)
@@ -755,10 +869,10 @@ if __name__ == "__main__":
     else:
         if flags:
             if "M" in flags:
-                _MAP_START = 1
+                MAP_START = 1
 
             if "m" in flags:
-                _MAP_OFFSET = 0
+                MAP_OFFSET = 0
 
             if 'j' in flags:
                 _join = True
@@ -767,10 +881,10 @@ if __name__ == "__main__":
                 _vertical_join = True
 
             if 'v' in flags:
-                _use_encoding = True
+                use_encoding = True
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
-        if _use_encoding:
+        if use_encoding:
             import encoding
             code = open(file_location, "rb").read()
             code = encoding.vyxal_to_utf8(code)
@@ -778,7 +892,7 @@ if __name__ == "__main__":
             code = open(file_location, "r", encoding="utf-8").read()
 
         code = VY_compile(code, header)
-        _context_level = 0
+        context_level = 0
         if flags and 'c' in flags:
             print(code)
         exec(code)
