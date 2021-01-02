@@ -28,10 +28,10 @@ NEWLINE = "\n"
 # Execution variables
 inputs = []
 context_level = 0
-context_values = []
+context_values = [0]
 input_level = 0
+input_values = {0: [inputs, 0]} # input_level: [source, input_index]
 register = 0
-input_scopes = {0: 0}
 stack = []
 printed = False
 
@@ -173,14 +173,14 @@ def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
     types = tuple(map(VY_type, [lhs, rhs]))
 
-    return {
-        types: lambda: eval(f"lhs {op} rhs"),
-        (Number, str): lambda: eval(f"str(lhs) {op} rhs"),
-        (str, Number): lambda: eval(f"lhs {op} str(rhs)"),
-        (types[0], list): lambda: [compare(lhs, item, mode) for item in rhs],
-        (list, types[1]): lambda: [compare(item, rhs, mode) for item in lhs],
-        (list, list): lambda: list(map(lambda x: compare(*x, mode), zip(lhs, rhs)))
-    }[types]()
+    return int({
+        types: lambda lhs, rhs: eval(f"lhs {op} rhs"),
+        (Number, str): lambda lhs, rhs: eval(f"str(lhs) {op} rhs"),
+        (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
+        (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
+        (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
+        (list, list): lambda *y: list(map(lambda x: compare(*x, mode), zip(lhs, rhs)))
+    }[types](lhs, rhs))
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -269,13 +269,13 @@ def flatten(item):
             else:
                 ret.append(x)
         return ret
-def get_input(explicit=None):
-    global input_index
-    if inputs:
-        if context_level:
-            return context_values[context_level % len(context_values)]
-        input_index += 1
-        return inputs[(input_index - 1) % len(inputs)]
+def get_input():
+    global input_level
+    source, index = input_values[input_level]
+    if source:
+        ret = source[index % len(source)]
+        input_values[input_level][1] += 1
+        return ret
     else:
         return VY_eval(input())
 def graded(vector):
@@ -413,13 +413,13 @@ def prepend(vector, item):
         str: lambda: str(item) + vector,
         range: lambda: [item] + list(vector)
     }[t_vector]()
-def pop(vector, num=1, wrap=False, explicit=None):
+def pop(vector, num=1, wrap=False):
     ret = []
     for _ in range(num):
         if vector:
             ret.append(vector.pop())
         else:
-            ret.append(get_input(explicit))
+            ret.append(get_input())
 
     if num == 1 and not wrap:
         return ret[0]
@@ -723,14 +723,9 @@ def VY_compile(source, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack):" + NEWLINE
-                compiled += tab(NEWLINE.join(map(lambda x: "global " + x,
-                 ["context_level", "context_values"]))) + NEWLINE
-
-                # Yes I did get lazy and decide it better to write a lambda instead of having two seperate lines. Also, why isn't softwrap working like it supposed to?
-
-                # ^ I didn't have it toggled in Atom. Please ignore the implications of the above comment.
-
+                compiled += tab("global context_level, context_values, input_level") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
+                compiled += tab("input_level -= 1") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
                     # (which is kinda rather inconvienient), push it as a "scalar"
@@ -764,6 +759,7 @@ else:
                 compiled += tab("stack = parameters[::]") + NEWLINE
                 compiled += tab(VY_compile(VALUE[VyParse.FUNCTION_BODY])) + NEWLINE
                 compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
+                compiled += tab("input_level -= 1") + NEWLINE
                 compiled += tab("return stack")
         elif NAME == VyParse.LAMBDA_STMT:
             defined_arity = 1
@@ -772,18 +768,21 @@ else:
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
 
-            compiled += "def _lambda(parameter_stack, arity=None):" + NEWLINE
-            compiled += tab(NEWLINE.join(map(lambda x: "global " + x,
-             ["context_level", "context_values"]))) + NEWLINE
-
+            compiled += "def _lambda(parameter_stack, arity=1):" + NEWLINE
+            compiled += tab("global context_level, context_values, input_level") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
+            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"if arity < {defined_arity}: parameters = pop(parameter_stack, arity)") + NEWLINE
-            compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}, True)") + NEWLINE
-            compiled += tab("stack = parameters[::]") + NEWLINE
-            compiled += tab("context_values.append(parameters)") + NEWLINE
+            if defined_arity == 1:
+                compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
+            else:
+                compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
+            compiled += tab("context_values.append(parameters);") + NEWLINE
+            compiled += tab("input_values[input_level] = stack[::]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
-            compiled += tab("return stack[-1]") + NEWLINE
+            compiled += tab("input_level -= 1") + NEWLINE
+            compiled += tab("return [stack[-1]]") + NEWLINE
             compiled += "stack.append(_lambda)"
         elif NAME == VyParse.LIST_STMT:
             compiled += "temp_list = []" + NEWLINE
@@ -845,6 +844,7 @@ if __name__ == "__main__":
 
         if 'a' in flags:
             inputs = [[inputs]]
+            input_values[0] = inputs
 
     if not file_location: #repl mode
         while 1:
