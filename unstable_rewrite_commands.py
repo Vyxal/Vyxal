@@ -67,7 +67,7 @@ command_dict = {
     "w": "stack.append([pop(stack)])",
     "x": "context_level -= 1",
     "y": "stack += uninterleave(pop(stack))",
-    "z": "fn, vector = pop(stack, 2); stack.append(Generator(zip(vector, VY_map(fn, vector))))",
+    "z": "fn, vector = pop(stack, 2); stack.append(VY_zipmap(fn, vector))",
     "~": "stack.append(random.randint(-32768, 32768))",
     "¬": "stack.append(int(not pop(stack)))",
     "∧": "rhs, lhs = pop(stack, 2); stack.append(lhs and rhs)",
@@ -163,7 +163,7 @@ command_dict = {
     "ű": "rhs, lhs = pop(stack, 2); stack.append(Generator(itertools.product(iterable(lhs), iterable(rhs))))",
     "Ų": "stack.append(deltas(pop(stack)))",
     "ų": "stack.append(sign_of(pop(stack)))",
-    "Ŵ": "length, vector = pop(stack, 2); vector = iterable(vector)\nif type(vector) is str: vector = list(iterable)\nstack.append(Generator(itertools.combinations(iterable, length)))",
+    "Ŵ": "length, vector = pop(stack, 2); vector = iterable(vector)\nif type(vector) is str: vector = list(vector)\nstack.append(Generator(itertools.combinations(vector, length)))",
     "ŵ": "if inputs: stack.append([inputs])\nelse:\n    s, x = [], input()\n    while x:\n        s.append(Vy_eval(x)); x = input()",
     "Ŷ": "print(stack[-1])"
 }
