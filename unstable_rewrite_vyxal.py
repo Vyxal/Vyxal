@@ -1,5 +1,5 @@
 # Python modules
-
+import copy
 from datetime import date
 from datetime import datetime as dt
 import functools
@@ -59,22 +59,22 @@ class Generator:
                     index += 1
             self.gen = gen()
         else:
-            self.gen = raw_generator
+            self.gen = map(lambda x: list(x), raw_generator)
             self.backup = self.gen
-    def __index__(self, position):
-        warnings.warn("Can't index generators. Check what you're doing")
-        return self.gen
+    def __getitem__(self, position):
+        return list(self.gen)[position]
     def __next__(self):
         return next(self.gen)
+
+    def __iter__(self):
+        return iter(self.gen)
     def _map(self, function):
-        self.gen = map(function, self.gen)
+        self.gen = map(lambda x: function([x])[-1], self.gen)
         return self
     def _filter(self, function):
-        self._map(function)
-        self.gen = filter(None, self.gen)
-        return self
+        return filter(None, self._map(function))
     def _reduce(self, function):
-        return functools.reduce(function, self.gen)
+        return functools.reduce(lambda x: function(x)[-1], self.gen)
     def _dereference(self):
         '''
         Only call this when it is absolutely neccesary to convert to a list.
@@ -93,7 +93,13 @@ class Generator:
                 item = next(self.gen)
             except StopIteration:
                 print("⟩")
-            print("|" + str(item), end="")
+                break
+            else:
+                print("|" + str(item), end="")
+    def zip_with(self, other):
+        index = 0
+        while True:
+            yield [next(self.gen), next(other)]
 class ShiftDirections:
     LEFT = 1
     RIGHT = 2
@@ -173,14 +179,16 @@ def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
     types = tuple(map(VY_type, [lhs, rhs]))
 
-    return int({
+    boolean =  {
         types: lambda lhs, rhs: eval(f"lhs {op} rhs"),
         (Number, str): lambda lhs, rhs: eval(f"str(lhs) {op} rhs"),
         (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
         (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
         (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
         (list, list): lambda *y: list(map(lambda x: compare(*x, mode), zip(lhs, rhs)))
-    }[types](lhs, rhs))
+    }[types](lhs, rhs)
+
+    return 1 if boolean else 0
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -341,12 +349,14 @@ def iterable_shift(vector, direction):
             # abc -> cab
             return vector[-1] + vector[:-1]
 def integer_list(string):
-    charmap = dict(zip("cetaoinshr ", "0123456789,"))
-    temp = "["
-    for c in o:
-        temp += charmap.get(c, "")
-    temp += "]"
-    return eval(temp)
+    charmap = dict(zip("etaoinshrd", "0123456789"))
+    ret = []
+    for c in string.split():
+        temp = ""
+        for m in c:
+            temp += charmap[m]
+        ret.append(int(temp))
+    return ret
 def interleave(lhs, rhs):
     interleaved = flatten(zip(iterable(lhs), iterable(rhs)))
     if len({VY_type(lhs), VY_type(rhs)} & {list, Generator}) == 0:
@@ -636,7 +646,12 @@ def VY_type(item):
         return Number
     return ty
 def VY_zipmap(fn, vector):
-    if type(vector) in [int, float]:
+    t_vector = VY_type(vector)
+    if t_vector is Generator:
+        orig = copy.deepcopy(vector.gen)
+        new = vector._map(fn)
+        return orig.zip_with(new)
+    if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
 
     ret = []
@@ -781,7 +796,7 @@ else:
             compiled += tab("input_values[input_level] = stack[::]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
-            compiled += tab("input_level -= 1") + NEWLINE
+            compiled += tab("input_level -= 1;") + NEWLINE
             compiled += tab("return [stack[-1]]") + NEWLINE
             compiled += "stack.append(_lambda)"
         elif NAME == VyParse.LIST_STMT:
@@ -810,17 +825,17 @@ else:
             compiled += "VAR_" + VALUE[VyParse.VARIABLE_NAME] + " = pop(stack)"
         elif NAME == VyParse.VARIABLE_GET:
             compiled += "stack.append(VAR_" + VALUE[VyParse.VARIABLE_NAME] + ")"
-        elif token[NAME] == VyParse.COMPRESSED_NUMBER:
+        elif NAME == VyParse.COMPRESSED_NUMBER:
             import utilities, encoding
             number = utilities.to_ten(VALUE[VyParse.COMPRESSED_NUMBER_VALUE],
              encoding.codepage_number_compress)
-            compiled += f"stack.append({number})" + newline
-        elif token[NAME] == VyParse.COMPRESSED_STRING:
+            compiled += f"stack.append({number})" + NEWLINE
+        elif NAME == VyParse.COMPRESSED_STRING:
             import utilities, encoding
             string = utilities.to_ten(VALUE[VyParse.COMPRESSED_STRING_VALUE],
              encoding.codepage_string_compress)
             string = utilities.from_ten(string, utilities.base53alphabet)
-            compiled += f"stack.append('{string}')" + newline
+            compiled += f"stack.append('{string}')" + NEWLINE
         compiled += NEWLINE
     return header + compiled
 
@@ -843,8 +858,7 @@ if __name__ == "__main__":
                 inputs = list(map(VY_eval,sys.argv[3:]))
 
         if 'a' in flags:
-            inputs = [[inputs]]
-            input_values[0] = inputs
+            inputs = [inputs]
 
     if not file_location: #repl mode
         while 1:
@@ -890,7 +904,7 @@ if __name__ == "__main__":
             code = encoding.vyxal_to_utf8(code)
         else:
             code = open(file_location, "r", encoding="utf-8").read()
-
+        input_values[0] = [inputs, 0]
         code = VY_compile(code, header)
         context_level = 0
         if flags and 'c' in flags:
