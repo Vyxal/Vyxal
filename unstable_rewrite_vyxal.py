@@ -223,7 +223,6 @@ def distribute(vector, value):
 def divide(lhs, rhs):
         import textwrap
         types = VY_type(lhs), VY_type(rhs)
-
         return {
             (Number, Number): lambda: lhs / rhs,
             (str, str): lambda: lhs.split(rhs),
@@ -508,13 +507,14 @@ def sums(vector):
     return ret
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
 def transilterate(original, new, string):
-    ret = ""
+    t_string = type(string)
+    ret = t_string()
     for char in string:
-        ind = original.find(char)
-        if ind != -1:
-            ret += new[ind]
-        else:
-            ret += char
+        try:
+            ind = original.index(char)
+            ret += t_string(new[ind])
+        except:
+            ret += t_string(char)
     return ret
 def truthy_indexes(vector):
     ret = []
@@ -662,19 +662,18 @@ def VY_zipmap(fn, vector):
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
-
-    tokenifed_source = VyParse.Tokenise(source)
+    source = VyParse.Tokenise(VyParse.group_strings(source))
     compiled = ""
-
-    for token in tokenifed_source:
+    for token in source:
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
-
+        # print(NAME, VALUE)
         if NAME == VyParse.NO_STMT:
             compiled += commands.command_dict.get(VALUE, "")
 
         elif NAME == VyParse.INTEGER:
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
+            import utilities
             string = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
             compiled += f"stack.append(\"{utilities.uncompress(string)}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
