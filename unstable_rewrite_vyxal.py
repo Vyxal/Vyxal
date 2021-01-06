@@ -116,7 +116,7 @@ def add(lhs, rhs):
         (types[0], list): lambda: [add(lhs, item) for item in rhs],
         (Generator, types[1]): lambda: vectorise(add, lhs, rhs),
         (types[1], Generator): lambda: vectorise(add, lhs, rhs),
-        (list, list): lambda: list(map(sum, zip(lhs, rhs)))
+        (list, list): lambda: list(map(sum, VY_zip(lhs, rhs)))
     }[types]()
 def assigned(vector, index, item):
     if type(vector) is str:
@@ -136,7 +136,7 @@ def bit_and(lhs, rhs):
         (list, types[1]): lambda: [bit_and(item, rhs) for item in lhs],
         (Generator, types[1]): lambda: vectorise(bit_and, lhs, rhs),
         (types[1], Generator): lambda: vectorise(bit_and, lhs, rhs),
-        (list, list): lambda: list(map(lambda x: bit_and(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: bit_and(*x), VY_zip(lhs, rhs)))
     }[types](rhs)
 def bit_or(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
@@ -148,7 +148,7 @@ def bit_or(lhs, rhs):
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (Generator, types[1]): lambda: vectorise(bit_or, lhs, rhs),
         (types[1], Generator): lambda: vectorise(bit_or, lhs, rhs),
-        (list, list): lambda: list(map(lambda x: bit_or(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs)))
     }[types](rhs)
 def bit_not(item):
     return {
@@ -165,7 +165,7 @@ def bit_xor(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) ^ rhs) for let in lhs]),
         (types[0], list): lambda: [bit_xor(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_xor(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x: bit_xor(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: bit_xor(*x), VY_zip(lhs, rhs)))
     }[types](rhs)
 def chrord(item):
     t_item = VY_type(item)
@@ -185,7 +185,7 @@ def compare(lhs, rhs, mode):
         (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
         (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
         (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
-        (list, list): lambda *y: list(map(lambda x: compare(*x, mode), zip(lhs, rhs)))
+        (list, list): lambda *y: list(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs)))
     }[types](lhs, rhs)
 
     return 1 if boolean else 0
@@ -230,7 +230,7 @@ def divide(lhs, rhs):
             (Number, str): lambda: textwrap.wrap(rhs, lhs),
             (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
             (types[0], list): lambda: [divide(lhs, item) for item in rhs],
-            (list, list): lambda: list(map(lambda x: divide(*x), zip(lhs, rhs)))
+            (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs)))
         }[types]()
 def divisors_of(item):
     t_item = VY_type(stack)
@@ -253,7 +253,7 @@ def exponate(lhs, rhs):
         (Number, str): lambda: rhs * int(lhs),
         (types[0], list): lambda: [exponate(lhs, item) for item in rhs],
         (list, types[1]): lambda: [exponate(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(exponate(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(exponate(*x), VY_zip(lhs, rhs)))
     }[types]()
 def first_n(func, n=1):
     ret = []
@@ -381,7 +381,7 @@ def lshift(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) << rhs) for let in lhs]),
         (types[0], list): lambda: [lshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [lshift(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x:lshift(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x:lshift(*x), VY_zip(lhs, rhs)))
     }[types](rhs)
 def modulo(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
@@ -392,19 +392,19 @@ def modulo(lhs, rhs):
         (Number, str): lambda: divide(lhs, rhs)[-1],
         (list, types[1]): lambda: [modulo(item, rhs) for item in lhs],
         (types[0], list): lambda: [modulo(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: modulo(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: modulo(*x), VY_zip(lhs, rhs)))
     }[types]()
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
 
     return {
         (Number, Number): lambda: lhs * rhs,
-        (str, str): lambda: "".join(["".join(x) for x in zip(lhs, rhs)]),
+        (str, str): lambda: "".join(["".join(x) for x in VY_zip(lhs, rhs)]),
         (str, Number): lambda: lhs * rhs,
         (Number, str): lambda: lhs * rhs,
         (list, types[1]): lambda: [multiply(item, rhs) for item in lhs],
         (types[0], list): lambda: [multiply(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: multiply(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: multiply(*x), VY_zip(lhs, rhs)))
     }[types]()
 def orderless_range(*args, lift_factor=0):
     return range(min(args), max(args) + lift_factor)
@@ -465,7 +465,7 @@ def rshift(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) >> rhs) for let in lhs]),
         (types[0], list): lambda: [rshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [rshift(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x:rshift(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x:rshift(*x), VY_zip(lhs, rhs)))
     }[types](rhs)
 def sign_of(item):
     t = VY_type(item)
@@ -489,7 +489,7 @@ def subtract(lhs, rhs):
         (Number, str): lambda: str(lhs).replace(rhs, ""),
         (list, types[1]): lambda: [subtract(item, rhs) for item in lhs],
         (types[0], list): lambda: [subtract(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: subtract(*x), zip(lhs, rhs)))
+        (list, list): lambda: list(map(lambda x: subtract(*x), VY_zip(lhs, rhs)))
     }[types]()
 def summate(vector):
     vector = iterable(vector)
@@ -541,7 +541,7 @@ def vectorise(fn, left, right=None):
             return left._map(fn)
         return list(map(fn, left))
 def vectorising_equals(lhs, rhs):
-    return all(map(lambda x: x[0] == x[1], zip(iterable(lhs), iterable(rhs))))
+    return all(map(lambda x: x[0] == x[1], VY_zip(iterable(lhs), iterable(rhs))))
 def vertical_join(vector, padding=" "):
     lengths = list(map(len, iterable))
     iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
@@ -645,6 +645,28 @@ def VY_type(item):
     if ty in [int, float]:
         return Number
     return ty
+def VY_zip(lhs, rhs):
+    ind = 0
+    while True:
+        exhausted = 0
+        try:
+            l = lhs[ind]
+        except:
+            l = 0
+            exhausted += 1
+
+        try:
+            r = rhs[ind]
+        except:
+            r = 0
+            exhausted += 1
+
+        if exhausted == 2:
+            break
+        else:
+            yield [l, r]
+
+        ind += 1
 def VY_zipmap(fn, vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
@@ -659,6 +681,41 @@ def VY_zipmap(fn, vector):
         ret.append([item, fn(item)[-1]])
 
     return ret
+
+constants = {
+    "A": "string.ascii_uppercase",
+    "e": "math.e",
+    "f": "'Fizz'",
+    "b": "'Buzz'",
+    "F": "FizzBuzz",
+    "H": "Hello, World!",
+    "h": "Hello World",
+    "1": 1000,
+    "2": 10000,
+    "3": 100000,
+    "4": 1000000,
+    "a": "string.ascii_lowercase",
+    "L": "string.ascii_letters",
+    "d": "string.digits",
+    "6": "string.hexdigits",
+    "o": "string.octdigits",
+    "p": "string.punctuation",
+    "P": "string.printable",
+    "w": "string.whitespace",
+    "D": "string.ascii_letters + string.digits",
+    "r": "string.digits + string.ascii_letters",
+    "B": "string.ascii_uppercase + string.ascii_lowercase",
+    "Z": "string.ascii_uppercase[::-1]",
+    "z": "string.ascii_lowercase[::-1]",
+    "l": "string.ascii_letters[::-1]",
+    "i": "math.pi",
+    "n": "math.nan",
+    "D": "date.today().isoformat()",
+    "N": "Stack([dt.now().hour, dt.now().minute, dt.now().second])",
+    "Ð": "date.today().strftime('%d/%m/%Y')",
+    "Ḋ": "date.today().strftime('%m/%d/%y')",
+    "ð": "Stack([date.today().day, date.today().month, date.today().year])"
+}
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
