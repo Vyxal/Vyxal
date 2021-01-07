@@ -1,13 +1,24 @@
 import words
 
-def to_ten(n, alphabet):
-    from_base = len(alphabet)
+def to_ten(n, base):
+    '''
+    If both arguments are strings, then this is a bijective base conversion
+    If both arguments are integers, then you're doing something wrong.
+    If n is a stack and base is an integer, it's as if you had a string but as codepoints.
+    '''
+
     result = 0
     power = 0
-    for char in str(n)[::-1]:
-        index = alphabet.index(char)
-        result += index * (from_base ** power)
-        power += 1
+    if type(n) is str and type(base) is str:
+        from_base = len(base)
+        for char in str(n)[::-1]:
+            index = base.index(char)
+            result += index * (from_base ** power)
+            power += 1
+    elif list in type(n).__bases__ and type(base) is int:
+        for item in n[::-1]:
+            result += item * (base ** power)
+            power += 1
     return result
 
 def from_ten(n, alphabet):
@@ -16,10 +27,15 @@ def from_ten(n, alphabet):
     power = int(math.log(n if n else 1) / math.log(to_base))
 
     temp = n
-    result = ""
+    t = type(alphabet)
+    if t in [int, float]:
+        alphabet = Stack(list(range(0, int(alphabet))))
+    result = "" if t is str else Stack()
 
     while temp > 0:
-        result += alphabet[(temp // (to_base ** power))]
+        val = alphabet[(temp // (to_base ** power))]
+        if t is str: result += val
+        else: result.push(val)
         temp -= (temp // (to_base ** power)) * (to_base ** power)
         power -= 1
 
@@ -65,6 +81,8 @@ def uncompress(s):
 
 
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
+base27alphabet = "etaoinshrdlcumwfgypbvkjxqz "
+
 
 if __name__ == "__main__":
     import encoding

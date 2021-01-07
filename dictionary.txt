@@ -1,4 +1,4 @@
-the
+words = """the
 The
 and
 And
@@ -18935,4 +18935,4 @@ Vyxal
 lyxal
 Lyxal
 esolang
-Esolang
+Esolang""".split("\n")

@@ -304,6 +304,23 @@ def flatten(item):
             else:
                 ret.append(x)
         return ret
+def format_string(string, items):
+    ret = ""
+    index = 0
+    f_index = 0
+
+    while index < len(string):
+        if string[index] == "\\":
+            ret += "\\" + string[index + 1]
+            index += 1
+        elif string[index] == "¢":
+            #print(f_index, f_index % len(items))
+            ret += str(items[f_index % len(items)])
+            f_index += 1
+        else:
+            ret += string[index]
+        index += 1
+    return ret
 def get_input():
     global input_level
     source, index = input_values[input_level]
@@ -421,11 +438,12 @@ def modulo(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
         (Number, Number): lambda: lhs % rhs,
-        (str, str): lambda: lhs.format(rhs),
+        (str, str): lambda: format_string(lhs, [rhs]),
         (str, Number): lambda: divide(lhs, rhs)[-1],
         (Number, str): lambda: divide(lhs, rhs)[-1],
         (list, types[1]): lambda: [modulo(item, rhs) for item in lhs],
         (types[0], list): lambda: [modulo(lhs, item) for item in rhs],
+        (str, list): lambda: format_string(lhs, rhs),
         (list, list): lambda: list(map(lambda x: modulo(*x), VY_zip(lhs, rhs))),
         (list, Generator): lambda: _two_argument(modulo, lhs, rhs),
         (Generator, list): lambda: _two_argument(modulo, lhs, rhs),
@@ -644,13 +662,15 @@ def VY_map(fn, vector):
         result = fn([item])
         ret.append(result[-1])
     return ret
-def VY_print(item, end="\n"):
+def VY_print(item, end="\n", raw=False):
     t_item = type(item)
     if t_item is Generator:
         item._print()
-    elif t_item is list:
-        print(VY_repr(item))
-    else: print(item)
+    else:
+        if raw:
+            print(VY_repr(item))
+        else:
+            print(VY_str(item))
 def VY_sorted(vector, fn=None):
     if fn:
         return Generator(sorted(vector, key=fn))
@@ -681,6 +701,14 @@ def VY_repr(item):
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`"
+    }[t_item](item)
+def VY_str(item):
+    t_item = VY_type(item)
+    return {
+        Number: lambda x: x,
+        str: lambda x: x,
+        list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
+        Generator: lambda x: VY_str(x._dereference())
     }[t_item](item)
 def VY_type(item):
     ty = type(item)
