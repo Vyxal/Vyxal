@@ -59,7 +59,12 @@ class Generator:
                     index += 1
             self.gen = gen()
         else:
-            self.gen = map(lambda x: list(x), raw_generator)
+            def niceify(item):
+                t_item = type(item)
+                if t_item not in [Generator, list, int, float, str]:
+                    return list(item)
+                return item
+            self.gen = map(niceify, raw_generator)
             self.backup = self.gen
     def __getitem__(self, position):
         return list(self.gen)[position]
@@ -74,7 +79,13 @@ class Generator:
     def _filter(self, function):
         return filter(None, self._map(function))
     def _reduce(self, function):
-        return functools.reduce(lambda x: function(x)[-1], self.gen)
+        def ensure_singleton(function, left, right):
+            function_name = function.__name__
+            if function_name.startswith("FN_"):
+                return function([left, right])[-1]
+            else:
+                return function(left, right)
+        return functools.reduce(lambda x, y: ensure_singleton(function, x, y), self.gen)
     def _dereference(self):
         '''
         Only call this when it is absolutely neccesary to convert to a list.
@@ -105,6 +116,8 @@ class ShiftDirections:
     RIGHT = 2
 
 # Helper functions
+def _two_argument(function, lhs, rhs):
+    return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
@@ -114,10 +127,11 @@ def add(lhs, rhs):
         (Number, str): lambda: str(lhs) + rhs,
         (list, types[1]): lambda: [add(item, rhs) for item in lhs],
         (types[0], list): lambda: [add(lhs, item) for item in rhs],
-        (Generator, types[1]): lambda: vectorise(add, lhs, rhs),
-        (types[1], Generator): lambda: vectorise(add, lhs, rhs),
-        (list, list): lambda: list(map(sum, VY_zip(lhs, rhs)))
-    }[types]()
+        (list, list): lambda: list(map(lambda x: add(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(add, lhs, rhs),
+        (Generator, list): lambda: _two_argument(add, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(add, lhs, rhs)
+    }.get(types, lambda: vectorise(add, lhs, rhs))()
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -134,10 +148,11 @@ def bit_and(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) & rhs) for let in lhs]),
         (types[0], list): lambda: [bit_and(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_and(item, rhs) for item in lhs],
-        (Generator, types[1]): lambda: vectorise(bit_and, lhs, rhs),
-        (types[1], Generator): lambda: vectorise(bit_and, lhs, rhs),
-        (list, list): lambda: list(map(lambda x: bit_and(*x), VY_zip(lhs, rhs)))
-    }[types](rhs)
+        (list, list): lambda: list(map(lambda x: bit_and(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(bit_and, lhs, rhs),
+        (Generator, list): lambda: _two_argument(bit_and, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(bit_and, lhs, rhs)
+    }.get(types, lambda: vectorise(bit_and, lhs, rhs))()
 def bit_or(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
@@ -146,10 +161,11 @@ def bit_or(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) | rhs) for let in lhs]),
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
-        (Generator, types[1]): lambda: vectorise(bit_or, lhs, rhs),
-        (types[1], Generator): lambda: vectorise(bit_or, lhs, rhs),
-        (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs)))
-    }[types](rhs)
+        (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(bit_or, lhs, rhs),
+        (Generator, list): lambda: _two_argument(bit_or, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(bit_or, lhs, rhs)
+    }.get(types, lambda: vectorise(bit_or, lhs, rhs))()
 def bit_not(item):
     return {
         list: lambda: [bit_not(x) for x in item],
@@ -165,8 +181,11 @@ def bit_xor(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) ^ rhs) for let in lhs]),
         (types[0], list): lambda: [bit_xor(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_xor(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x: bit_xor(*x), VY_zip(lhs, rhs)))
-    }[types](rhs)
+        (list, list): lambda: list(map(lambda x: bit_xor(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(bit_xor, lhs, rhs),
+        (Generator, list): lambda: _two_argument(bit_xor, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(bit_xor, lhs, rhs)
+    }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
 def chrord(item):
     t_item = VY_type(item)
     if t_item is str and len(item) == 1:
@@ -185,7 +204,10 @@ def compare(lhs, rhs, mode):
         (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
         (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
         (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
-        (list, list): lambda *y: list(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs)))
+        (list, list): lambda *y: list(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
+        (list, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
+        (Generator, list): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
+        (Generator, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs)))
     }[types](lhs, rhs)
 
     return 1 if boolean else 0
@@ -230,8 +252,11 @@ def divide(lhs, rhs):
             (Number, str): lambda: textwrap.wrap(rhs, lhs),
             (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
             (types[0], list): lambda: [divide(lhs, item) for item in rhs],
-            (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs)))
-        }[types]()
+            (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs))),
+            (list, Generator): lambda: _two_argument(divide, lhs, rhs),
+            (Generator, list): lambda: _two_argument(divide, lhs, rhs),
+            (Generator, Generator): lambda: _two_argument(divide, lhs, rhs)
+        }.get(types, lambda: vectorise(divide, lhs, rhs))()
 def divisors_of(item):
     t_item = VY_type(stack)
     if t_item in [list, Generator]:
@@ -253,8 +278,11 @@ def exponate(lhs, rhs):
         (Number, str): lambda: rhs * int(lhs),
         (types[0], list): lambda: [exponate(lhs, item) for item in rhs],
         (list, types[1]): lambda: [exponate(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(exponate(*x), VY_zip(lhs, rhs)))
-    }[types]()
+        (list, list): lambda: list(map(exponate(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(exponate, lhs, rhs),
+        (Generator, list): lambda: _two_argument(exponate, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(exponate, lhs, rhs)
+    }.get(types, lambda: vectorise(exponate, lhs, rhs))()
 def first_n(func, n=1):
     ret = []
     current_index = 0
@@ -316,7 +344,7 @@ def inserted(vector, item, index):
         list: lambda: vector.insert(index, item),
         range: lambda: list(vector[:index]) + [item] + list(vector[index:]),
         str: lambda: vector[:index] + str(item) + vector[index:]
-    }[t_vector]()
+    }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
 def iterable(item, t=list):
     if VY_type(item) == Number:
         if t is list:
@@ -371,8 +399,11 @@ def join(lhs, rhs):
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
         (types[0], list): lambda: rhs.insert(0, lhs),
         (list, types[1]): lambda: lhs.append(rhs),
-        (list, list): lambda: lhs + rhs
-    }[types]()
+        (list, list): lambda: lhs + rhs,
+        (list, Generator): lambda: lambda: _two_argument(join, lhs, rhs),
+        (Generator, list): lambda: lambda: _two_argument(join, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(join, lhs, rhs)
+    }.get(types, lambda: vectorise(join, lhs, rhs))()
 def lshift(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
@@ -381,8 +412,11 @@ def lshift(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) << rhs) for let in lhs]),
         (types[0], list): lambda: [lshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [lshift(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x:lshift(*x), VY_zip(lhs, rhs)))
-    }[types](rhs)
+        (list, list): lambda: list(map(lambda x:lshift(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(lshift, lhs, rhs),
+        (Generator, list): lambda: _two_argument(lshift, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(lshift, lhs, rhs)
+    }.get(types, lambda: vectorise(lshift, lhs, rhs))()
 def modulo(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
@@ -392,11 +426,13 @@ def modulo(lhs, rhs):
         (Number, str): lambda: divide(lhs, rhs)[-1],
         (list, types[1]): lambda: [modulo(item, rhs) for item in lhs],
         (types[0], list): lambda: [modulo(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: modulo(*x), VY_zip(lhs, rhs)))
-    }[types]()
+        (list, list): lambda: list(map(lambda x: modulo(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(modulo, lhs, rhs),
+        (Generator, list): lambda: _two_argument(modulo, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(modulo, lhs, rhs)
+    }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
-
     return {
         (Number, Number): lambda: lhs * rhs,
         (str, str): lambda: "".join(["".join(x) for x in VY_zip(lhs, rhs)]),
@@ -404,8 +440,11 @@ def multiply(lhs, rhs):
         (Number, str): lambda: lhs * rhs,
         (list, types[1]): lambda: [multiply(item, rhs) for item in lhs],
         (types[0], list): lambda: [multiply(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: multiply(*x), VY_zip(lhs, rhs)))
-    }[types]()
+        (list, list): lambda: list(map(lambda x: multiply(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(multiply, lhs, rhs),
+        (Generator, list): lambda: _two_argument(multiply, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
+    }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def orderless_range(*args, lift_factor=0):
     return range(min(args), max(args) + lift_factor)
 def partition(item):
@@ -421,7 +460,7 @@ def prepend(vector, item):
         list: lambda: vector.insert(0, item),
         str: lambda: str(item) + vector,
         range: lambda: [item] + list(vector)
-    }[t_vector]()
+    }.get(t_vector, lambda: prepend(vector._dereference(), item))()
 def pop(vector, num=1, wrap=False):
     ret = []
     for _ in range(num):
@@ -465,8 +504,11 @@ def rshift(lhs, rhs):
         (str, Number): lambda: "".join([chr(ord(let) >> rhs) for let in lhs]),
         (types[0], list): lambda: [rshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [rshift(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(lambda x:rshift(*x), VY_zip(lhs, rhs)))
-    }[types](rhs)
+        (list, list): lambda: list(map(lambda x:rshift(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(rshift, lhs, rhs),
+        (Generator, list): lambda: _two_argument(rshift, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(rshift, lhs, rhs)
+    }.get(types, lambda: vectorise(rshift, lhs, rhs))()
 def sign_of(item):
     t = VY_type(item)
     if t == Number:
@@ -489,17 +531,14 @@ def subtract(lhs, rhs):
         (Number, str): lambda: str(lhs).replace(rhs, ""),
         (list, types[1]): lambda: [subtract(item, rhs) for item in lhs],
         (types[0], list): lambda: [subtract(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: subtract(*x), VY_zip(lhs, rhs)))
-    }[types]()
+        (list, list): lambda: list(map(lambda x: subtract(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(subtract, lhs, rhs),
+        (Generator, list): lambda: _two_argument(subtract, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(subtract, lhs, rhs)
+    }.get(types, lambda: vectorise(subtract, lhs, rhs))()
 def summate(vector):
     vector = iterable(vector)
-    ret = 0
-    if type(vector[0]) is str: ret = ""
-
-    for item in vector:
-        ret = add(ret, item)
-
-    return ret
+    return VY_reduce(add, vector)
 def sums(vector):
     ret = []
     for i in range(len(item)):
@@ -530,16 +569,19 @@ def uninterleave(item):
     return [left, right]
 uniquify = lambda item: list(dict.fromkeys(iterable(item)))
 def vectorise(fn, left, right=None):
-    left = iterable(left)
-    t_left = type(left)
     if right:
-        if t_left is Generator:
-            return left._map(lambda x: fn(x, right))
-        return [fn(x, right) for x in left]
+        types = (VY_type(left), VY_type(right))
+        return {
+            (Generator, types[1]): lambda: left._map(lambda x: fn(x, right)),
+            (types[0], Generator): lambda: right._map(lambda x: fn(left, x)),
+            (list, types[1]): lambda: [fn(x, right) for x in left],
+            (types[0], list): lambda: [fn(left, x) for x in right]
+        }[types]()
     else:
-        if t_left is Generator:
+        if VY_type(left) is Generator:
             return left._map(fn)
-        return list(map(fn, left))
+        else:
+            return Generator(map(fn, left))
 def vectorising_equals(lhs, rhs):
     return all(map(lambda x: x[0] == x[1], VY_zip(iterable(lhs), iterable(rhs))))
 def vertical_join(vector, padding=" "):
@@ -647,16 +689,18 @@ def VY_type(item):
     return ty
 def VY_zip(lhs, rhs):
     ind = 0
+    if type(lhs) is list: lhs = iter(lhs)
+    if type(rhs) is list: rhs = iter(rhs)
     while True:
         exhausted = 0
         try:
-            l = lhs[ind]
+            l = next(lhs)
         except:
             l = 0
             exhausted += 1
 
         try:
-            r = rhs[ind]
+            r = next(rhs)
         except:
             r = 0
             exhausted += 1
@@ -969,10 +1013,10 @@ if __name__ == "__main__":
 
         if not printed:
             if flags and 's' in flags:
-                print(summate(stack.pop()))
+                print(summate(pop(stack)))
             elif _vertical_join:
-                print(vertical_join(stack.pop()))
+                print(vertical_join(pop(stack)))
             elif _join:
-                print("\n".join([str(n) for n in stack.pop()]))
+                print("\n".join([str(n) for n in pop(stack)]))
             else:
-                VY_print(stack.pop())
+                VY_print(pop(stack))
