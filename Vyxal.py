@@ -573,6 +573,8 @@ def transilterate(original, new, string):
         except:
             ret += t_string(char)
     return ret
+def transpose(vector):
+    return Generator(map(list, zip(*vector)))
 def truthy_indexes(vector):
     ret = []
     for i in range(len(vector)):
@@ -759,9 +761,9 @@ constants = {
     "e": "math.e",
     "f": "'Fizz'",
     "b": "'Buzz'",
-    "F": "FizzBuzz",
-    "H": "Hello, World!",
-    "h": "Hello World",
+    "F": "'FizzBuzz'",
+    "H": "'Hello, World!'",
+    "h": "'Hello World'",
     "1": 1000,
     "2": 10000,
     "3": 100000,
@@ -783,10 +785,10 @@ constants = {
     "i": "math.pi",
     "n": "math.nan",
     "D": "date.today().isoformat()",
-    "N": "Stack([dt.now().hour, dt.now().minute, dt.now().second])",
+    "N": "[dt.now().hour, dt.now().minute, dt.now().second]",
     "Ð": "date.today().strftime('%d/%m/%Y')",
     "Ḋ": "date.today().strftime('%m/%d/%y')",
-    "ð": "Stack([date.today().day, date.today().month, date.today().year])"
+    "ð": "[date.today().day, date.today().month, date.today().year]"
 }
 
 def VY_compile(source, header=""):
