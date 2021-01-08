@@ -699,7 +699,7 @@ def VY_reduce(fn, vector):
 def VY_repr(item):
     t_item = VY_type(item)
     return {
-        Number: lambda x: x,
+        Number: lambda x: str(x),
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`"
@@ -707,7 +707,7 @@ def VY_repr(item):
 def VY_str(item):
     t_item = VY_type(item)
     return {
-        Number: lambda x: x,
+        Number: lambda x: str(x),
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference())
