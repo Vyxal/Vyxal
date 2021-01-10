@@ -116,7 +116,13 @@ class ShiftDirections:
     RIGHT = 2
 
 # Helper functions
+def _safe_apply(function, *args):
+    if function.__name__ == "_lambda":
+        return function(list(args), len(args))
+    return function(list(args))
 def _two_argument(function, lhs, rhs):
+    if function.__name__ == "_lambda":
+        return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
     return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
@@ -464,7 +470,7 @@ def multiply(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def orderless_range(*args, lift_factor=0):
-    return range(min(args), max(args) + lift_factor)
+    return Generator(range(min(args), max(args) + lift_factor))
 def partition(item):
     # https://stackoverflow.com/a/44209393/9363594
     yield [n]
@@ -574,6 +580,7 @@ def transilterate(original, new, string):
             ret += t_string(char)
     return ret
 def transpose(vector):
+    vector = iterable(vector); vector = list(vector)
     return Generator(map(list, zip(*vector)))
 def truthy_indexes(vector):
     ret = []
@@ -592,10 +599,11 @@ def vectorise(fn, left, right=None):
     if right:
         types = (VY_type(left), VY_type(right))
         return {
-            (Generator, types[1]): lambda: left._map(lambda x: fn(x, right)),
-            (types[0], Generator): lambda: right._map(lambda x: fn(left, x)),
-            (list, types[1]): lambda: [fn(x, right) for x in left],
-            (types[0], list): lambda: [fn(left, x) for x in right]
+            (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
+            (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
+            (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
+            (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x)),
+            (Generator, Generator): lambda: left._map(lambda x: _safe_apply(fn, x, right))
         }[types]()
     else:
         if VY_type(left) is Generator:
@@ -674,10 +682,18 @@ def VY_print(item, end="\n", raw=False):
         else:
             print(VY_str(item))
 def VY_sorted(vector, fn=None):
+    t_vector = type(vector)
+    vector = iterable(vector, str)
     if fn:
-        return Generator(sorted(vector, key=fn))
+        sorted_vector = sorted(vector, key=fn)
     else:
-        return Generator(sorted(vector))
+        sorted_vector = sorted(vector)
+
+    return {
+        int: lambda: int("".join(map(str, sorted_vector))),
+        float: lambda: float("".join(map(str, sorted_vector))),
+        str: lambda: "".join(map(str, sorted_vector))
+    }.get(t_vector, lambda: Generator(sorted_vector))()
 def VY_range(item, start=0, lift_factor=0):
     t_item = VY_type(item)
     if t_item == Number:
@@ -799,7 +815,7 @@ def VY_compile(source, header=""):
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
         # print(NAME, VALUE)
         if NAME == VyParse.NO_STMT:
-            compiled += commands.command_dict.get(VALUE, "")
+            compiled += commands.command_dict.get(VALUE, "\n\n")[0]
 
         elif NAME == VyParse.INTEGER:
             compiled += f"stack.append({VALUE})"
@@ -917,13 +933,13 @@ else:
             compiled += tab("global context_level, context_values, input_level") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
-            compiled += tab(f"if arity < {defined_arity}: parameters = pop(parameter_stack, arity)") + NEWLINE
+            compiled += tab(f"if arity != {defined_arity}: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
             if defined_arity == 1:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
-            compiled += tab("context_values.append(parameters);") + NEWLINE
-            compiled += tab("input_values[input_level] = stack[::]") + NEWLINE
+            compiled += tab("context_values.append(parameters); print(stack)") + NEWLINE
+            compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
             compiled += tab("input_level -= 1;") + NEWLINE
@@ -942,6 +958,15 @@ else:
             compiled += f"stack.append(FN_{VALUE[VyParse.FUNCTION_NAME]})"
         elif NAME == VyParse.CONSTANT_CHAR:
             compiled += f"stack.append({constants[VALUE]})"
+        elif NAME == VyParse.VECTORISATION_CHAR:
+            compiled += VY_compile("λ" + VALUE + ";") + NEWLINE
+            m = commands.command_dict.get(VALUE, "\n\n")[1]
+            if m == 0:
+                compiled += "fn = pop(stack); stack += fn(stack))"
+            elif m == 1:
+                compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack)))"
+            elif m == 2:
+                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)})"
         elif NAME == VyParse.TWO_BYTE_MATH:
