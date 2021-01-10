@@ -894,7 +894,7 @@ def VY_compile(source, header=""):
                             parameters.append(parameter)
                             parameter_count += 1
 
-                compiled += "def FN_" + function_name + "(parameter_stack, arity):" + NEWLINE
+                compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
                 compiled += tab("global context_level, context_values, input_level") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level -= 1") + NEWLINE
@@ -922,7 +922,7 @@ else:
 """)
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
-                    elif isintance(parameter, int):
+                    elif isinstance(parameter, int):
                         compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
