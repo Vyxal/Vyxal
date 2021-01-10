@@ -66,11 +66,19 @@ class Generator:
                 return item
             self.gen = map(niceify, raw_generator)
             self.backup = self.gen
+        self.generated = []
     def __getitem__(self, position):
-        return list(self.gen)[position]
-    def __next__(self):
-        return next(self.gen)
+        if position < len(self.generated):
+            return self.generated[position]
+        while len(self.generated) < position:
+            self.__next__()
 
+        return self.generated[position]
+
+    def __next__(self):
+        f = next(self.gen)
+        self.generated.append(f)
+        return f
     def __iter__(self):
         return iter(self.gen)
     def _map(self, function):
@@ -562,7 +570,10 @@ def subtract(lhs, rhs):
     }.get(types, lambda: vectorise(subtract, lhs, rhs))()
 def summate(vector):
     vector = iterable(vector)
-    return VY_reduce(add, vector)
+    ret = vector[0]
+    for item in vector[1:]:
+        ret = add(ret, item)
+    return ret
 def sums(vector):
     ret = []
     for i in range(len(item)):
@@ -883,7 +894,7 @@ def VY_compile(source, header=""):
                             parameters.append(parameter)
                             parameter_count += 1
 
-                compiled += "def FN_" + function_name + "(parameter_stack):" + NEWLINE
+                compiled += "def FN_" + function_name + "(parameter_stack, arity):" + NEWLINE
                 compiled += tab("global context_level, context_values, input_level") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level -= 1") + NEWLINE
