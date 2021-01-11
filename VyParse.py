@@ -416,7 +416,7 @@ def Tokenise(source: str) -> [Token]:
 
         else:
             if vectorisation:
-                tokens += Tokenise("ƛ" + char + ";")
+                tokens.append(Token(VECTORISATION_CHAR, char))
                 vectorisation = False
             else:
                 this_token = Token(NO_STMT, char)
@@ -464,7 +464,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["`¬¥(÷⨪(`ő`[(])U`⟨Ŗ|Ŗ`1+`+|`+1))`|`))`|`|`⟩"]
+    tests = ["1 2 3 W: v+"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_strings(test))])
     input()

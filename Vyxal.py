@@ -68,9 +68,11 @@ class Generator:
             self.backup = self.gen
         self.generated = []
     def __getitem__(self, position):
+        if type(position) is slice:
+            return list(self.gen)[position]
         if position < len(self.generated):
             return self.generated[position]
-        while len(self.generated) < position:
+        while len(self.generated) < position + 1:
             self.__next__()
 
         return self.generated[position]
@@ -127,7 +129,9 @@ class ShiftDirections:
 def _safe_apply(function, *args):
     if function.__name__ == "_lambda":
         return function(list(args), len(args))
-    return function(list(args))
+    elif function.__name__.startswith("FN_"):
+        return function(list(args))
+    return function(*args)
 def _two_argument(function, lhs, rhs):
     if function.__name__ == "_lambda":
         return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
@@ -570,6 +574,8 @@ def subtract(lhs, rhs):
     }.get(types, lambda: vectorise(subtract, lhs, rhs))()
 def summate(vector):
     vector = iterable(vector)
+    if type(vector) is Generator:
+        return vector._reduce(add)
     ret = vector[0]
     for item in vector[1:]:
         ret = add(ret, item)

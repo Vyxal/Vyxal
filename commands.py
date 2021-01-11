@@ -82,10 +82,10 @@ command_dict = {
     "∞": ("stack.append(Generator(lambda x: x))", 0),
     "Ç": ("stack.append(subtract(1, pop(stack)))", 1),
     "æ": ("stack.append(int(is_prime(pop(stack))))", 1),
-    "ʀ": ("stack.append(Generator(range(0, add(pop(stack), 1))))", 1),
-    "ʁ": ("stack.append(Generator(range(0, pop(stack))))", 1),
-    "ɾ": ("stack.append(Generator(range(1, add(pop(stack), 1))))", 1),
-    "ɽ": ("stack.append(Generator(range(1, pop(stack))))", 1),
+    "ʀ": ("stack.append(Generator(range(0, int(add(pop(stack), 1)))))", 1),
+    "ʁ": ("stack.append(Generator(range(0, int(pop(stack)))))", 1),
+    "ɾ": ("stack.append(Generator(range(1, int(add(pop(stack), 1)))))", 1),
+    "ɽ": ("stack.append(Generator(range(1, int(pop(stack)))))", 1),
     "Þ": ("tos = iterable(pop(stack)); stack.append(int(tos == tos[::-1]))", 1),
     "Ð": ("alphabet, number = pop(stack, 2); stack.append(utilities.to_ten(number, alphabet))", 2),
     "Š": ("alphabet, number = pop(stack, 2); stack.append(utilities.from_ten(number, alphabet))", 2),
@@ -168,4 +168,6 @@ command_dict = {
     "Ŷ": ("VY_print(stack[-1]); printed = True", 0),
     "ŷ": ("time.sleep(pop(stack))", 1),
     "Ÿ": ("transpose(iterable(pop(stack)))", 1),
+    "Ź": ("obj = iterable(pop(stack)); stack.append(Generator(range(0, len(obj))))", 1),
+    "ź": ("stack.append(input_values[input_level][0][-1])", 0)
 }
