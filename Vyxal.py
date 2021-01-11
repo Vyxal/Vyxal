@@ -26,14 +26,16 @@ Function = type(lambda: None)
 NEWLINE = "\n"
 
 # Execution variables
-inputs = []
 context_level = 0
 context_values = [0]
 input_level = 0
+inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
+online_version = False
+output = ""
+printed = False
 register = 0
 stack = []
-printed = False
 
 MAP_START = 0
 MAP_OFFSET = 1
@@ -103,20 +105,37 @@ class Generator:
         temp = self.gen
         return list(temp)
     def _print(self):
-        print("⟨", end="")
+        global output
+        if online_version:
+            output[1] += "⟨"
+        else:
+            print("⟨", end="")
         try:
-            print(next(self.gen), end="")
+            item = next(self.gen)
+            if online_version:
+                output[1] += str(item)
+            else:
+                print(item, end="")
         except:
-            print("⟩")
+            if online_version:
+                output[1] += "⟩"
+            else:
+                print("⟩")
             return
         while True:
             try:
                 item = next(self.gen)
             except StopIteration:
-                print("⟩")
+                if online_version:
+                    output[1] += "⟩"
+                else:
+                    print("⟩")
                 break
             else:
-                print("|" + str(item), end="")
+                if online_version:
+                    output[1] += "|" + str(item)
+                else:
+                    print("|" + str(item), end="")
     def zip_with(self, other):
         index = 0
         while True:
@@ -296,7 +315,7 @@ def exponate(lhs, rhs):
         (Number, str): lambda: rhs * int(lhs),
         (types[0], list): lambda: [exponate(lhs, item) for item in rhs],
         (list, types[1]): lambda: [exponate(item, rhs) for item in lhs],
-        (list, list): lambda: list(map(exponate(*x), VY_zip(lhs, rhs))),
+        (list, list): lambda: list(map(lambda x: exponate(*x), VY_zip(lhs, rhs))),
         (list, Generator): lambda: _two_argument(exponate, lhs, rhs),
         (Generator, list): lambda: _two_argument(exponate, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(exponate, lhs, rhs)
@@ -690,14 +709,21 @@ def VY_map(fn, vector):
         ret.append(result[-1])
     return ret
 def VY_print(item, end="\n", raw=False):
+    global output
     t_item = type(item)
     if t_item is Generator:
         item._print()
     else:
         if raw:
-            print(VY_repr(item))
+            if online_version:
+                output[1] += VY_repr(item) + end
+            else:
+                print(VY_repr(item), end)
         else:
-            print(VY_str(item))
+            if online_version:
+                output += VY_str(item) + end
+            else:
+                print(VY_str(item), end)
 def VY_sorted(vector, fn=None):
     t_vector = type(vector)
     vector = iterable(vector, str)
@@ -955,7 +981,7 @@ else:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
-            compiled += tab("context_values.append(parameters); print(stack)") + NEWLINE
+            compiled += tab("context_values.append(parameters);") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
@@ -1038,7 +1064,7 @@ if __name__ == "__main__":
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
-            VY_print(stack)
+            VY_print(stack, "")
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
