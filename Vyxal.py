@@ -18,6 +18,14 @@ import utilities
 import VyParse
 import words
 
+# Pipped modules
+
+try:
+    import numpy
+except:
+    import os
+    os.system("pip install -r requirements.txt")
+
 # Generic type constants
 Number = "NUMBER"
 Iterable = "ITERABLE"
@@ -284,7 +292,7 @@ def divide(lhs, rhs):
         types = VY_type(lhs), VY_type(rhs)
         return {
             (Number, Number): lambda: lhs / rhs,
-            (str, str): lambda: lhs.split(rhs),
+            (str, str): lambda: split(lhs, rhs),
             (str, Number): lambda: textwrap.wrap(lhs, rhs),
             (Number, str): lambda: textwrap.wrap(rhs, lhs),
             (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
@@ -516,6 +524,11 @@ def prepend(vector, item):
         str: lambda: str(item) + vector,
         range: lambda: [item] + list(vector)
     }.get(t_vector, lambda: prepend(vector._dereference(), item))()
+def polynomial(vector):
+    t_vector = VY_type(vector)
+    if t_vector is Generator:
+        vector = vector._dereference()
+    return numpy.roots(vector).tolist()
 def pop(vector, num=1, wrap=False):
     ret = []
     for _ in range(num):
@@ -573,6 +586,36 @@ def sign_of(item):
         return vectorise(sign_of, item)
     else:
         return item
+def solve_quadratic(a, b, cx=0):
+    neg_b = -b
+    roots = []
+
+    roots.append((neg_b + math.sqrt((b**2))))
+def split(haystack, needle, keep_needle=False):
+    t_haystack = VY_type(haystack)
+    if t_haystack in [Number, str]:
+        haystack, needle = str(haystack), str(needle)
+        if keep_needle:
+            import re
+            return re.split(f"({needle})", haystack) # I'm so glad Vyxal now uses built-in lists
+        return haystack.split(needle)
+    elif t_haystack is Generator:
+        return split(haystack._dereference(), needle, keep_needle)
+    else: #t_haystack is list
+        ret = []
+        temp = []
+        for item in haystack:
+            if item == needle:
+                ret.append(temp)
+                if keep_needle:
+                    ret.append([needle])
+                temp = []
+            else:
+                temp.append(item)
+        if temp:
+            ret.append(temp)
+        return ret
+
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters, name)
     return "".join(stripped)
@@ -773,7 +816,7 @@ def VY_str(item):
     }[t_item](item)
 def VY_type(item):
     ty = type(item)
-    if ty in [int, float]:
+    if ty in [int, float, complex]:
         return Number
     return ty
 def VY_zip(lhs, rhs):
@@ -1013,7 +1056,7 @@ else:
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)})"
         elif NAME == VyParse.TWO_BYTE_MATH:
-            compiled += "# TODO: Implement the math stuff again"
+            compiled += commands.math_command_dict.get(VALUE, "\n\n")[0]
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding
@@ -1039,7 +1082,6 @@ else:
 
 if __name__ == "__main__":
     import sys
-
     file_location = ""
     flags = ""
     inputs = []

@@ -169,5 +169,11 @@ command_dict = {
     "ŷ": ("time.sleep(pop(stack))", 1),
     "Ÿ": ("transpose(iterable(pop(stack)))", 1),
     "Ź": ("obj = iterable(pop(stack)); stack.append(Generator(range(0, len(obj))))", 1),
-    "ź": ("stack.append(input_values[input_level][0][-1])", 0)
+    "ź": ("stack.append(input_values[input_level][0][-1])", 0),
+    "Ż": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2)
+}
+
+math_command_dict = {
+    "q": ("coeff_a, coeff_b = pop(stack, 2); stack.append(numpy.roots([coeff_a, coeff_b, 0]).tolist())", 2),
+    "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff))", 1)
 }
