@@ -40,7 +40,7 @@ command_dict = {
     "T": ("stack.append([n for n in pop(stack) if bool(n)])", 1),
     "U": ("stack.append(uniquify(pop(stack)))", 1),
     "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(replace(haystack, needle, replacement))", 3),
-    "W": ("stack = [stack]", 0),
+    "W": ("stack = [deref(stack)]", 0),
     "X": ("context_level += 1", 0),
     "Y": ("rhs, lhs = pop(stack, 2); stack.append(interleave(lhs, rhs))", 2),
     "Z": ("rhs, lhs = pop(stack, 2); stack.append(Generator(zip(iterable(lhs), iterable(rhs))))", 2),
@@ -174,6 +174,7 @@ command_dict = {
 }
 
 math_command_dict = {
-    "q": ("coeff_a, coeff_b = pop(stack, 2); stack.append(numpy.roots([coeff_a, coeff_b, 0]).tolist())", 2),
-    "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff))", 1)
+    "q": ("coeff_a, coeff_b = pop(stack, 2); stack.append(polynomial([coeff_a, coeff_b, 0]))", 2),
+    "Q": ("coeff_b, coeff_c = pop(stack, 2); stack.append(polynomial([1, coeff_b, coeff_c]))", 2),
+    "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff));", 1)
 }

@@ -586,11 +586,7 @@ def sign_of(item):
         return vectorise(sign_of, item)
     else:
         return item
-def solve_quadratic(a, b, cx=0):
-    neg_b = -b
-    roots = []
 
-    roots.append((neg_b + math.sqrt((b**2))))
 def split(haystack, needle, keep_needle=False):
     t_haystack = VY_type(haystack)
     if t_haystack in [Number, str]:
