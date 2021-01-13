@@ -171,7 +171,7 @@ command_dict = {
     "Ź": ("obj = iterable(pop(stack)); stack.append(Generator(range(0, len(obj))))", 1),
     "ź": ("stack.append(input_values[input_level][0][-1])", 0),
     "Ż": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
-    "ż": ("rhs = pop(stack); if VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd([pop(stack), rhs]))", 1)
+    "ż": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd([pop(stack), rhs]))", 1)
 }
 
 math_command_dict = {
