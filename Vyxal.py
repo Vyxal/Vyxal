@@ -367,6 +367,11 @@ def format_string(string, items):
             ret += string[index]
         index += 1
     return ret
+def gcd(vector):
+        if VY_type(vector) is Generator:
+            vector = vector._dereference()
+
+            return int(numpy.gcd.reduce(vector))
 def get_input():
     global input_level
     source, index = input_values[input_level]
