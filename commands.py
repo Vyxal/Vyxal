@@ -22,7 +22,7 @@ command_dict = {
     "B": ("stack.append(VY_int(pop(stack), 2))", 1),
     "C": ("stack.append(chrord(pop(stack)))", 1),
     "D": ("temp = deref(pop(stack)); stack += [temp]*3", 1),
-    "E": ("stack.append(eval(pop(stack)))", 1),
+    "E": ("stack.append(VY_eval(pop(stack)))", 1),
     "F": ("fn, vector = pop(stack, 2); stack.append(VY_filter(fn, vector))", 2),
     "G": ("stack.append(max(iterable(pop(stack))))", 1),
     "H": ("stack.append(VY_int(pop(stack), 16))", 1),

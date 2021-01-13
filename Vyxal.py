@@ -22,6 +22,7 @@ import words
 
 try:
     import numpy
+    import regex
 except:
     import os
     os.system("pip install -r requirements.txt")
@@ -238,7 +239,7 @@ def chrord(item):
     elif t_item == Number:
         return chr(int(item))
     else:
-        return map(chrord, item)
+        return Generator(map(chrord, item))
 def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
     types = tuple(map(VY_type, [lhs, rhs]))
@@ -303,7 +304,7 @@ def divide(lhs, rhs):
             (Generator, Generator): lambda: _two_argument(divide, lhs, rhs)
         }.get(types, lambda: vectorise(divide, lhs, rhs))()
 def divisors_of(item):
-    t_item = VY_type(stack)
+    t_item = VY_type(item)
     if t_item in [list, Generator]:
         return vectorise(divisors_of, item)
 
@@ -311,7 +312,7 @@ def divisors_of(item):
 
     for value in VY_range(item, 1, 1):
         if modulo(item, value) == 0:
-            divisors.append(item)
+            divisors.append(value)
 
     return divisors
 def exponate(lhs, rhs):
@@ -586,14 +587,13 @@ def sign_of(item):
         return vectorise(sign_of, item)
     else:
         return item
-
 def split(haystack, needle, keep_needle=False):
     t_haystack = VY_type(haystack)
     if t_haystack in [Number, str]:
         haystack, needle = str(haystack), str(needle)
         if keep_needle:
             import re
-            return re.split(f"({needle})", haystack) # I'm so glad Vyxal now uses built-in lists
+            return re.split(f"({re.escape(needle)})", haystack) # I'm so glad Vyxal now uses built-in lists
         return haystack.split(needle)
     elif t_haystack is Generator:
         return split(haystack._dereference(), needle, keep_needle)
@@ -611,7 +611,6 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
-
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters, name)
     return "".join(stripped)
@@ -705,10 +704,19 @@ def VY_bin(item):
         str: lambda: [bin(ord(let))[2:] for let in item]
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_eval(item):
-    try:
-        return eval(item)
-    except:
-        return item
+    if online_version:
+        import regex
+        pobj = regex.compile(r"""(\[(((\d+(\.\d+)?)|(".+")|('.+')|\g<1>)(, +)?)*\])|\d+(\.\d+)?|".+"$|'.+'$""")
+        mobj = pobj.match(item)
+        if mobj:
+            return eval(item)
+        else:
+            return item
+    else:
+        try:
+            return eval(item)
+        except:
+            return item
 def VY_filter(fn, vector):
     t_vector = VY_type(vector)
     if t_vector == Number:
