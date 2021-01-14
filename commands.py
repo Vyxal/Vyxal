@@ -10,7 +10,7 @@ command_dict = {
     "%": ("rhs, lhs = pop(stack, 2); stack.append(modulo(lhs, rhs))", 2),
     "*": ("rhs, lhs = pop(stack, 2); stack.append(multiply(lhs, rhs))", 2),
     "+": ("rhs, lhs = pop(stack, 2); stack.append(add(lhs, rhs))", 2),
-    ",": ("VY_print(pop(stack), end=''); printed = True", 1),
+    ",": ("VY_print(pop(stack)); printed = True", 1),
     "-": ("rhs, lhs = pop(stack, 2); stack.append(subtract(lhs, rhs))", 2),
     "/": ("rhs, lhs = pop(stack, 2); stack.append(divide(lhs, rhs))", 2),
     ":": ("temp = deref(pop(stack)); stack += [temp]*2", 1),

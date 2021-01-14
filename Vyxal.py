@@ -1114,6 +1114,56 @@ else:
         compiled += NEWLINE
     return header + compiled
 
+def execute(code, flags, inputs, output_variable):
+    global stack, register, printed, output, MAP_START, MAP_OFFSET
+    global _join, _vertical_join, use_encoding, input_level
+    output = output_variable
+    output[1] = ""
+    output[2] = ""
+    flags = flags
+
+    if inputs:
+        inputs = list(map(VY_eval, inputs.split("\n")))
+
+    if 'a' in flags:
+        inputs = [inputs]
+
+    if flags:
+        if "M" in flags:
+            MAP_START = 1
+
+        if "m" in flags:
+            MAP_OFFSET = 0
+
+        if 'j' in flags:
+            _join = True
+
+        if 'L' in flags:
+            _vertical_join = True
+
+        if 'v' in flags:
+            use_encoding = True
+    input_values[0] = [inputs, 0]
+    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level\n")
+    context_level = 0
+    if flags and 'c' in flags:
+        output[2] = code
+
+    try:
+        exec(code) #
+    except Exception as e:
+        output[2] += "\n" + str(e.args[0])
+
+    if not printed:
+        if flags and 's' in flags:
+            output[1] = VY_str(summate(pop(stack)))
+        elif _vertical_join:
+            output[1] = VY_str(vertical_join(pop(stack)))
+        elif _join:
+            output[1] = VY_str("\n".join([str(n) for n in pop(stack)]))
+        else:
+            output[1] = VY_str(pop(stack))
+
 if __name__ == "__main__":
     import sys
     file_location = ""
