@@ -172,7 +172,16 @@ command_dict = {
     "ź": ("stack.append(input_values[input_level][0][-1])", 0),
     "Ż": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
     "ż": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd([pop(stack), rhs]))", 1),
-
+    "ž": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
+    "ſ": ("fn, n = pop(stack, 2);\nfor _ in range(n):stack += fn(stack)", 2),
+    "ƀ": ("""top = pop(stack)
+if VY_type(top) is Number:
+    limit = int(top)
+else:
+    limit = -1
+vector, fn = pop(stack, 2)
+stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
+""", 2)
 }
 
 math_command_dict = {

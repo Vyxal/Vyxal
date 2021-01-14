@@ -61,8 +61,20 @@ class Comparitors:
     LESS_THAN_EQUALS = 4
     GREATER_THAN_EQUALS = 5
 class Generator:
-    def __init__(self, raw_generator):
-        if type(raw_generator) is Function:
+    def __init__(self, raw_generator, limit=-1, initial=[]):
+        if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
+            # User defined function
+            def gen():
+                generated = initial
+                while True:
+                    if len(generated) >= limit and limit > 0:
+                        break
+                    else:
+                        ret = raw_generator(generated[::])
+                        generated.append(ret[-1])
+                        yield ret[-1]
+            self.gen = gen()
+        elif type(raw_generator) is Function:
             def gen():
                 index = 0
                 while True:
@@ -818,7 +830,8 @@ def VY_repr(item):
         Number: lambda x: str(x),
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
-        str: lambda x: "`" + x + "`"
+        str: lambda x: "`" + x + "`",
+        Function: lambda x: "@FUNCTION:" + x.__name__
     }[t_item](item)
 def VY_str(item):
     t_item = VY_type(item)
@@ -826,7 +839,8 @@ def VY_str(item):
         Number: lambda x: str(x),
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
-        Generator: lambda x: VY_str(x._dereference())
+        Generator: lambda x: VY_str(x._dereference()),
+        Function: lambda x: "@FUNCTION:" + x.__name__
     }[t_item](item)
 def VY_type(item):
     ty = type(item)
@@ -1028,11 +1042,11 @@ else:
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
 
-            compiled += "def _lambda(parameter_stack, arity=1):" + NEWLINE
+            compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level") + NEWLINE
-            compiled += tab("context_level += 1") + NEWLINE
+            compiled += tab("context_level += 1;") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
-            compiled += tab(f"if arity != {defined_arity}: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
+            compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
             if defined_arity == 1:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
