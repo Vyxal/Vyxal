@@ -43,11 +43,13 @@ VARIABLE_NAME = "variable_name"
 LAMBDA_ARGUMENTS = "lambda_arguments"
 COMPRESSED_NUMBER_VALUE = "compressed_number_value"
 COMPRESSED_STRING_VALUE = "compressed_string_value"
+TWO_CHAR_STUFF = "two_char_data_idk"
 
 ONE = "one"
 TWO = "two"
 
-ONE_CHARS = "kv․∆øª"
+ONE_CHARS = "kv․∆øªÞ"
+TWO_CHARS = "Ž"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
@@ -56,9 +58,12 @@ CODEPAGE_INDEX = "ª"
 ONE_CHAR_FUNCTION_REFERENCE = "․"
 TWO_BYTE_MATH = "∆"
 TWO_BYTE_STRING = "ø"
+TWO_BYTE_LIST = "Þ"
 STRING_DELIMITER = "`"
 
-DECIMAL = "•"
+PARA_APPLY = "Ž"
+
+DECIMAL = "."
 
 OPEN_CLOSE_SAME = ["`", "«", "»"]
 
@@ -262,6 +267,16 @@ def Tokenise(source: str) -> [Token]:
             structure = NO_STMT
             continue
 
+        elif structure in TWO_CHARS:
+            if len(structure_data[active_key]) == 1:
+                tokens.append(Token(structure, structure_data[active_key] + char))
+                structure = NO_STMT
+                structure_data = {}
+            else:
+                structure_data[active_key] = char
+            continue
+        
+
         if char == "\\":
             escaped = True
             continue
@@ -370,7 +385,7 @@ def Tokenise(source: str) -> [Token]:
 
             elif structure == LIST_STMT:
                 structure_data[LIST_ITEMS].append(structure_data[active_key])
-                
+
 
             structure_data[active_key] = ""
 
@@ -402,6 +417,11 @@ def Tokenise(source: str) -> [Token]:
             vectorisation = True
             continue
 
+        elif char in TWO_CHARS:
+            char_mode = TWO
+            structure = char
+            active_key = TWO_CHAR_STUFF
+            structure_data[active_key] = ""
 
         elif char in ONE_CHARS:
             char_mode = ONE
@@ -464,7 +484,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["1 2 3 W: v+"]
+    tests = ["3 4 Ž∆QQ"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_strings(test))])
     input()

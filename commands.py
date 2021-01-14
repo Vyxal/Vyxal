@@ -31,7 +31,7 @@ command_dict = {
     "K": ("stack.append(divisors_of(pop(stack)))", 1),
     "L": ("stack.append(len(iterable(pop(stack))))", 1),
     "M": ("fn, vector = pop(stack, 2); stack.append(VY_map(fn, vector))", 2),
-    "N": ("pass", 0),
+    "N": ("stack.append(multiply(pop(stack), -1))", 1),
     "O": ("needle, haystack = pop(stack, 2); stack.append(iterable(haystack).count(needle))", 2),
     "P": ("rhs, lhs = pop(stack, 2); stack.append(str(lhs).strip(str(rhs)))", 2),
     "Q": ("exit()", 0),
@@ -131,7 +131,7 @@ command_dict = {
     "ŏ": ("vector, fn = pop(stack, 2); stack.append(indexes_where(fn, iterable(vector)))", 2),
     "Ő": ("vector, fn = pop(stack, 2); stack.append(VY_sorted(iterable, key=fn))", 2),
     "ő": ("register = pop(stack)", 1),
-    "Œ": ("stack.append(multiply(pop(stack), -1))", 1),
+    "Œ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(iterable(vector), indexes))", 2),
     "œ": ("rhs, lhs = pop(stack, 2); stack.append(compare(modulo(lhs, rhs), 0, Comparitors.EQUALS))", 2),
     "Ŕ": ("rhs, lhs = pop(stack, 2); stack.append(vectorising_equals(lhs, rhs))", 2),
     "ŕ": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.NOT_EQUALS))", 2),
@@ -171,7 +171,8 @@ command_dict = {
     "Ź": ("obj = iterable(pop(stack)); stack.append(Generator(range(0, len(obj))))", 1),
     "ź": ("stack.append(input_values[input_level][0][-1])", 0),
     "Ż": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
-    "ż": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd([pop(stack), rhs]))", 1)
+    "ż": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd([pop(stack), rhs]))", 1),
+
 }
 
 math_command_dict = {

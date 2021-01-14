@@ -399,6 +399,11 @@ def group_consecutive(vector):
         ret.append(temp)
 
     return ret
+def indexed_into(vector, indexes):
+    ret = []
+    for ind in indexes:
+        ret.append(vector[ind % len(vector)])
+    return ret
 def indexes_where(fn, vector):
     ret = []
     for i in range(len(vector)):
@@ -910,8 +915,7 @@ def VY_compile(source, header=""):
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
         # print(NAME, VALUE)
         if NAME == VyParse.NO_STMT:
-            compiled += commands.command_dict.get(VALUE, "\n\n")[0]
-
+            compiled += commands.command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.INTEGER:
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
@@ -1086,6 +1090,13 @@ else:
              encoding.codepage_string_compress)
             string = utilities.from_ten(string, utilities.base53alphabet)
             compiled += f"stack.append('{string}')" + NEWLINE
+        elif NAME == VyParse.PARA_APPLY:
+            compiled += "temp_stack = stack[::]" + NEWLINE
+            compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
+            compiled += "def _para_lambda(stack):" + NEWLINE
+            compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
+            compiled += tab("return stack") + NEWLINE
+            compiled += "stack.append(_para_lambda(temp_stack)[-1])"
         compiled += NEWLINE
     return header + compiled
 
