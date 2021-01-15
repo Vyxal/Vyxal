@@ -40,7 +40,7 @@ G       a      |max(a) # max of iterable
 H       a      |int(a, 16) # hex to decimal
 I       a      |int(a)
 J       a,b    |concat(a, b)
-K              |* push the constant at the next char K<char>
+K              |factors_of(a)
 L       a      |len(a)
 M       a,f    |f mapped to each element in a
 N       a      |number(a)
@@ -70,7 +70,7 @@ g       a      |min(a) # min of iterable
 h       a      |a[0]
 i       a,b    |a[b]
 j       a,b    |a.join(b)
-k       a      |factors_of(a)
+k       a      |* push the constant at the next char k<char>
 l              |[]
 m       a      |a + a[::-1]
 n              |* contextual variable
@@ -206,5 +206,21 @@ z       a,f    |zipmap the contents of a with function f
 Ŭ       a      |exec(VyCompile(a))
 ŭ       a      |range(1, len(a) + 1)
 Ů       a      |group_consecutive(a)
-ů       a,b,c  |transilterate(a, b, c) # a: original b: new c: string
+ů       a,b,c  |transliterate(a, b, c) # a: original b: new c: string
 Ű       a      |truthy_indexes(a)
+ű       a,b    |cartesian_product(a, b)
+Ų       a      |deltas(a)
+ų       a      |sign_of(a)
+Ŵ       a,b    |all combinations with length b of a
+ŵ              |all inputs wrapped in a list
+Ŷ              |print t.o.s without popping
+ŷ       a      |time.sleep(a)
+Ÿ       a      |transpose(a)
+Ź       a      |range(0, len(a))
+ź              |most recent input
+Ż       a,b    |a.split_and_keep_delimiter(b)
+ż       a,(b)  |gcd(a) if a is a list, else gcd(a, b)
+Ž              |* apply the next two built-ins parallel 3 4 Ž+- -> 7 -1
+ž       a,b,c  |c,a,b
+ſ       f,a    |call function f, a times
+ƀ       f,a,(b)|push Generator of function f with intial vector a, limited to b items (if present)
