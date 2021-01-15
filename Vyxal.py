@@ -67,7 +67,7 @@ class Generator:
             def gen():
                 generated = initial
                 while True:
-                    if len(generated) >= limit and limit > 0:
+                    if len(generated) > limit and limit > 0:
                         break
                     else:
                         ret = raw_generator(generated[::])
