@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
-# I won't do any pulling until 12PM my time
 import multiprocessing
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'n3vagljfd;lkgern;glkn4erg]po_*&)#M(VNP#UC<P{M@OW#X*()R#M*R<JP(R'
