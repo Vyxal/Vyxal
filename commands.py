@@ -46,7 +46,7 @@ command_dict = {
     "Z": ("rhs, lhs = pop(stack, 2); stack.append(Generator(zip(iterable(lhs), iterable(rhs))))", 2),
     "a": ("stack.append(int(any(iterable(pop(stack)))))", 1),
     "b": ("stack.append(VY_bin(pop(stack)))", 1),
-    "c": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs in interable(rhs)))", 2),
+    "c": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs in iterable(rhs)))", 2),
     "d": ("stack.append(multiply(pop(stack), 2))", 1),
     "e": ("rhs, lhs = pop(stack, 2); stack.append(exponate(lhs, rhs))", 2),
     "f": ("stack.append(flatten(iterable(pop(stack))))", 1),
