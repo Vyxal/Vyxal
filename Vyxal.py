@@ -580,7 +580,7 @@ def replace(haystack, needle, replacement):
     elif t_haystack is Generator:
         return haystack # Not sure how to do replacement on generators yet
     else:
-        return str(haystack).replace(str(needle), str(haystack))
+        return str(haystack).replace(str(needle), str(replacement))
 def reverse(vector):
         if type(vector) in [float, int]:
             s_vector = str(vector)
