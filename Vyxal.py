@@ -392,7 +392,10 @@ def get_input():
         input_values[input_level][1] += 1
         return ret
     else:
-        return VY_eval(input())
+        try:
+            return VY_eval(input())
+        except:
+            return 0
 def graded(vector):
     return Generator(sorted(enumerate(iterable), key=lambda x: x[-1]))
 def group_consecutive(vector):
@@ -1150,7 +1153,7 @@ def execute(code, flags, inputs, output_variable):
         output[2] = code
 
     try:
-        exec(code) #
+        exec(code, globals())
     except Exception as e:
         output[2] += "\n" + str(e.args[0])
 
