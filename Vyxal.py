@@ -790,12 +790,12 @@ def VY_print(item, end="\n", raw=False):
             if online_version:
                 output[1] += VY_repr(item) + end
             else:
-                print(VY_repr(item), end)
+                print(VY_repr(item), end=end)
         else:
             if online_version:
                 output += VY_str(item) + end
             else:
-                print(VY_str(item), end)
+                print(VY_str(item), end=end)
 def VY_sorted(vector, fn=None):
     t_vector = type(vector)
     vector = iterable(vector, str)

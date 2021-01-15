@@ -181,7 +181,8 @@ else:
     limit = -1
 vector, fn = pop(stack, 2)
 stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
-""", 2)
+""", 2),
+"Ɓ": ("stack.append(int(bool(stack.pop())))", 1)
 }
 
 math_command_dict = {
