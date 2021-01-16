@@ -93,10 +93,10 @@ z       a,f    |zipmap the contents of a with function f
 λ              |* start a lambda
 ƛ              |* start a mapping lambda
 ¬       a      |not a
-∧       a,b    |a and b (logical)
-⟑       a,b    |a and b (short-circuited)
-∨       a,b    |a or b (logical)
-⟇       a,b    |a or b (short-circuited)
+∧       a,b    |a and b
+⟑       a,b    |a nand b
+∨       a,b    |a or b
+⟇       a,b    |a nor b
 ÷       a      |item_split(a)
 «              |* base 255 string
 »              |* base 255 number
