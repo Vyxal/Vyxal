@@ -285,7 +285,7 @@ def cumulative_sum(vector):
 def deltas(vector):
         ret = []
         vector = iterable(vector)
-        for i in range(len(iterable) - 1):
+        for i in range(len(vector) - 1):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
 def deref(item):
@@ -296,7 +296,7 @@ def distribute(vector, value):
     remaining = value
     index = 0
     while remaining > 0:
-        vector[index % len(iterable)] += 1
+        vector[index % len(vector)] += 1
         index += 1
         remaining -= 1
 
