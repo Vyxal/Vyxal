@@ -62,25 +62,26 @@ class Comparitors:
     GREATER_THAN_EQUALS = 5
 class Generator:
     def __init__(self, raw_generator, limit=-1, initial=[]):
-        if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
-            # User defined function
-            def gen():
-                generated = initial
-                while True:
-                    if len(generated) > limit and limit > 0:
-                        break
-                    else:
-                        ret = raw_generator(generated[::])
-                        generated.append(ret[-1])
-                        yield ret[-1]
-            self.gen = gen()
-        elif type(raw_generator) is Function:
-            def gen():
-                index = 0
-                while True:
-                    yield raw_generator(index)
-                    index += 1
-            self.gen = gen()
+        if "__name__" in dir(raw_generator):
+            if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
+                # User defined function
+                def gen():
+                    generated = initial
+                    while True:
+                        if len(generated) > limit and limit > 0:
+                            break
+                        else:
+                            ret = raw_generator(generated[::])
+                            generated.append(ret[-1])
+                            yield ret[-1]
+                self.gen = gen()
+            elif type(raw_generator) is Function:
+                def gen():
+                    index = 0
+                    while True:
+                        yield raw_generator(index)
+                        index += 1
+                self.gen = gen()
         else:
             def niceify(item):
                 t_item = type(item)
@@ -301,20 +302,19 @@ def distribute(vector, value):
 
     return vector
 def divide(lhs, rhs):
-        import textwrap
-        types = VY_type(lhs), VY_type(rhs)
-        return {
-            (Number, Number): lambda: lhs / rhs,
-            (str, str): lambda: split(lhs, rhs),
-            (str, Number): lambda: textwrap.wrap(lhs, rhs),
-            (Number, str): lambda: textwrap.wrap(rhs, lhs),
-            (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
-            (types[0], list): lambda: [divide(lhs, item) for item in rhs],
-            (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs))),
-            (list, Generator): lambda: _two_argument(divide, lhs, rhs),
-            (Generator, list): lambda: _two_argument(divide, lhs, rhs),
-            (Generator, Generator): lambda: _two_argument(divide, lhs, rhs)
-        }.get(types, lambda: vectorise(divide, lhs, rhs))()
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: lhs / rhs,
+        (str, str): lambda: split(lhs, rhs),
+        (str, Number): lambda: wrap(lhs, rhs),
+        (Number, str): lambda: wrap(rhs, lhs),
+        (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
+        (types[0], list): lambda: [divide(lhs, item) for item in rhs],
+        (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs))),
+        (list, Generator): lambda: _two_argument(divide, lhs, rhs),
+        (Generator, list): lambda: _two_argument(divide, lhs, rhs),
+        (Generator, Generator): lambda: _two_argument(divide, lhs, rhs)
+    }.get(types, lambda: vectorise(divide, lhs, rhs))()
 def divisors_of(item):
     t_item = VY_type(item)
     if t_item in [list, Generator]:
@@ -482,7 +482,7 @@ def is_prime(n):
         return False
     return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
 def join(lhs, rhs):
-    types = tuple(map(Vy_type, [lhs, rhs]))
+    types = tuple(map(VY_type, [lhs, rhs]))
     return {
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
         (types[0], list): lambda: rhs.insert(0, lhs),
@@ -722,6 +722,26 @@ def vertical_join(vector, padding=" "):
         out += "\n"
 
     return out
+def wrap(vector, width):
+    # Because textwrap.wrap doesn't consistently play nice with spaces
+    ret = []
+    temp = []
+    for item in vector:
+        temp.append(item)
+        if len(temp) == width:
+            if all([type(x) is str for x in temp]):
+                ret.append("".join(temp))
+            else:
+                ret.append(temp[::])
+            temp = []
+    if len(temp) < width and temp:
+        if all([type(x) is str for x in temp]):
+            ret.append("".join(temp))
+        else:
+            ret.append(temp[::])
+
+    return ret
+
 def VY_bin(item):
     t_item = VY_type(item)
     return {
@@ -1193,7 +1213,7 @@ if __name__ == "__main__":
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
-            VY_print(stack, "")
+            VY_print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")

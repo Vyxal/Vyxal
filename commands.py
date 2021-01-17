@@ -52,7 +52,7 @@ command_dict = {
     "f": ("stack.append(flatten(iterable(pop(stack))))", 1),
     "g": ("stack.append(min(iterable(pop(stack))))", 1),
     "h": ("stack.append(iterable(pop(stack))[0])", 1),
-    "i": ("rhs, lhs = pop(stack, 2); stack.append(iterable(lhs)[rhs])", 2),
+    "i": ("rhs, lhs = pop(stack, 2)\nif type(rhs) is list: stack.append(iterable(lhs)[slice(*rhs)])\nelse: stack.append(iterable(lhs)[rhs])", 2),
     "j": ("rhs, lhs = pop(stack, 2); stack.append(str(lhs).join([str(x) for x in rhs]))", 2),
     "l": ("stack.append([])", 0),
     "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),
@@ -182,7 +182,11 @@ else:
 vector, fn = pop(stack, 2)
 stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 """, 2),
-"Ɓ": ("stack.append(int(bool(stack.pop())))", 1)
+"Ɓ": ("stack.append(int(bool(stack.pop())))", 1),
+"Ƃ": ("vector = iterable(pop(stack)); stack.append(vector[:-1]); stack.append(vector[-1])", 1),
+"ƃ": ("stack.append(math.ceil(pop(stack)))", 1), #TODO: make sure its overloaded
+"Ƅ": ("stack.append(math.floor(pop(stack)))", 1), #^
+"ƅ": ("rhs, lhs = pop(stack, 2); stack.append(wrap(lhs, rhs))", 2)
 }
 
 math_command_dict = {
