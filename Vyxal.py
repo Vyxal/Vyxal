@@ -62,6 +62,7 @@ class Comparitors:
     GREATER_THAN_EQUALS = 5
 class Generator:
     def __init__(self, raw_generator, limit=-1, initial=[]):
+        self.next_index = 0
         if "__name__" in dir(raw_generator):
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
                 # User defined function
@@ -100,10 +101,15 @@ class Generator:
             self.__next__()
 
         return self.generated[position]
-
+    def __len__(self):
+        return len(self._dereference())
     def __next__(self):
-        f = next(self.gen)
-        self.generated.append(f)
+        try:
+            f = next(self.gen)
+            self.generated.append(f)
+        except StopIteration as e:
+            f = self.generated[self.next_index % len(self.generated)]
+            self.next_index += 1
         return f
     def __iter__(self):
         return iter(self.gen)
@@ -124,7 +130,8 @@ class Generator:
         '''
         Only call this when it is absolutely neccesary to convert to a list.
         '''
-        temp = self.gen
+        import copy
+        temp = copy.deepcopy(self.gen)
         return list(temp)
     def _print(self):
         global output
