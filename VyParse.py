@@ -49,7 +49,7 @@ ONE = "one"
 TWO = "two"
 
 ONE_CHARS = "kv․∆øªÞ"
-TWO_CHARS = "Ž"
+TWO_CHARS = "₌"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
@@ -61,7 +61,7 @@ TWO_BYTE_STRING = "ø"
 TWO_BYTE_LIST = "Þ"
 STRING_DELIMITER = "`"
 
-PARA_APPLY = "Ž"
+PARA_APPLY = "₌"
 
 DECIMAL = "."
 
@@ -275,7 +275,7 @@ def Tokenise(source: str) -> [Token]:
             else:
                 structure_data[active_key] = char
             continue
-        
+
 
         if char == "\\":
             escaped = True
@@ -400,13 +400,13 @@ def Tokenise(source: str) -> [Token]:
             active_key = INTEGER_CONTENTS
             default_key = DEFAULT_KEYS[INTEGER]
 
-        elif char == "£":
+        elif char == "→":
             structure = VARIABLE_SET
             structure_data[VARIABLE_NAME] = ""
             active_key = VARIABLE_NAME
             default_key = VARIABLE_NAME
 
-        elif char == "¥":
+        elif char == "←":
             structure = VARIABLE_GET
             structure_data[VARIABLE_NAME] = ""
             active_key = VARIABLE_NAME

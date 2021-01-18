@@ -23,14 +23,18 @@ import words
 try:
     import numpy
     import regex
+    import sympy
 except:
     import os
-    os.system("pip install -r requirements.txt")
+    os.system("pip install -r requirements.txt --quiet --disable-pip-version-check")
 
 # Generic type constants
 Number = "NUMBER"
 Iterable = "ITERABLE"
 Function = type(lambda: None)
+
+def ___(): yield None
+Python_Generator = type(___())
 
 NEWLINE = "\n"
 
@@ -63,7 +67,7 @@ class Comparitors:
 class Generator:
     def __init__(self, raw_generator, limit=-1, initial=[]):
         self.next_index = 0
-        if "__name__" in dir(raw_generator):
+        if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
                 # User defined function
                 def gen():
@@ -76,7 +80,7 @@ class Generator:
                             generated.append(ret[-1])
                             yield ret[-1]
                 self.gen = gen()
-            elif type(raw_generator) is Function:
+            else:
                 def gen():
                     index = 0
                     while True:
@@ -90,7 +94,6 @@ class Generator:
                     return list(item)
                 return item
             self.gen = map(niceify, raw_generator)
-            self.backup = self.gen
         self.generated = []
     def __getitem__(self, position):
         if type(position) is slice:
@@ -130,9 +133,8 @@ class Generator:
         '''
         Only call this when it is absolutely neccesary to convert to a list.
         '''
-        import copy
-        temp = copy.deepcopy(self.gen)
-        return list(temp)
+        self.gen = list(self.gen)
+        return self.gen
     def _print(self):
         global output
         if online_version:
@@ -166,9 +168,7 @@ class Generator:
                 else:
                     print("|" + str(item), end="")
     def zip_with(self, other):
-        index = 0
-        while True:
-            yield [next(self.gen), next(other)]
+        return Generator(zip(self.gen, iter(other)))
 class ShiftDirections:
     LEFT = 1
     RIGHT = 2
@@ -601,6 +601,20 @@ def pop(vector, num=1, wrap=False):
     if num == 1 and not wrap:
         return ret[0]
     return ret
+def powerset(vector):
+    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    if type(vector) is Generator:
+        vector = vector._dereference()
+    elif type(vector) is str:
+        vector = list(vector)
+    return Generator(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
+def product(vector):
+    if type(vector) is Generator:
+        return vector._reduce(multiply)
+    ret = vector[0]
+    for item in vector[1:]:
+        ret = multiply(ret, item)
+    return ret
 def remove(vector, item):
     return {
         str: lambda: vector.replace(str(item), ""),
@@ -766,7 +780,10 @@ def vectorise(fn, left, right=None):
         if VY_type(left) is Generator:
             return left._map(fn)
         else:
-            return Generator(map(fn, left))
+            ret =  [_safe_apply(fn, x) for x in left]
+            if fn.__name__ == "_lambda":
+                return [x[0] for x in ret]
+            return ret
 def vectorising_equals(lhs, rhs):
     return all(map(lambda x: x[0] == x[1], VY_zip(iterable(lhs), iterable(rhs))))
 def vertical_join(vector, padding=" "):
@@ -955,15 +972,15 @@ def VY_zip(lhs, rhs):
 def VY_zipmap(fn, vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
-        orig = copy.deepcopy(vector.gen)
-        new = vector._map(fn)
-        return orig.zip_with(new)
+        orig = copy.deepcopy(vector)
+        new = Generator(vector._map(fn))
+        return Generator(orig.zip_with(new))
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
 
     ret = []
     for item in vector:
-        ret.append([item, fn(item)[-1]])
+        ret.append([item, fn([item])[-1]])
 
     return ret
 

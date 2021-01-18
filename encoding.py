@@ -1,6 +1,4 @@
-codepage = "λ¬∧⟑∨⟇÷«»°\n․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß⎝⎠ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~⎡⎣⨥⨪∺❝ð£¥§¦¡∂ÐřŠč√∖ẊȦȮḊĖẸṙ∑Ṡİ•\t"
-codepage += "Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ¢≈Ωªº"
-
+from commands import codepage
 def vyxal_to_utf8(code):
     # Taken from the old 05AB1E interpreter
     processed_code = ""
@@ -18,8 +16,11 @@ def utf8_to_vyxal(code):
     return processed_code
 
 
-compression = "λ¬∧⟑∨⟇÷«»°․⍎½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ß⎝⎠Ĥ⟨⟩ƛıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘŚśŜŝŞşšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƊƋƌƍƎ≈Ωªº"
-compression += "⎡⎣⨥⨪∺❝ð£¥§¦¡∂ÐřŠč√∖ẊȦȮḊĖẸṙ∑Ṡİ•"
+compression = "λƛ¬∧⟑∨⟇÷«»°•․⍎Ṛ½∆øÏÔÇæʀʁɾɽÞƈ∞⫙"
+compression += "ß⎝⎠⎡⎣⨥⨪∺❝ð→←ÐřŠč√⳹ẊȦȮḊĖẸṙ∑ṠİĤ⟨⟩ı⁌"
+compression += "ΤĴ²‿⁂ĸ¶⁋⁑Ńń‼⨊≈ðʗ◁⊐∫⍋⍒ℕ∈ₛ£Œœ≕≠¥ⁱ‹›"
+compression += "⍲⍱‸¡⊑≀℅≤≥↜≗⋯⧢ũ⁰¹ªₑϊ≎⇿⊛×¯±⊂⍞፣₴⍉Ϊ₁⊘ᶢ₌"
+compression += "↭ſƀƁ⁚⌈⌊⊓⊣Ḟḟ∪∩⊍⁜⌑Ḇ₂⁾₦¼ƒɖ𝒫′₥α″βγΠ"
 
 codepage_number_compress = codepage.replace("»", "")
 codepage_string_compress = codepage.replace("«", "")
