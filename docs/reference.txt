@@ -93,10 +93,10 @@ z       a,f    |zipmap the contents of a with function f
 λ              |* start a lambda
 ƛ              |* start a mapping lambda
 ¬       a      |not a
-∧       a,b    |a and b
-⟑       a,b    |a nand b
-∨       a,b    |a or b
-⟇       a,b    |a nor b
+∧       a,b    |a and b (logical)
+⟑       a,b    |a and b (short-circuited)
+∨       a,b    |a or b (logical)
+⟇       a,b    |a or b (short-circuited)
 ÷       a      |item_split(a)
 «              |* base 255 string
 »              |* base 255 number
@@ -130,14 +130,14 @@ z       a,f    |zipmap the contents of a with function f
 ∺       a      |a % 2
 ❝              |""
 ð              |" "
-£       a      |* variable = a
-¥              |variable
+→       a      |* variable = a
+←              |variable
 Ð       a,b    |to_base_ten(a, b) #a_b => base 10
 ř       a,b    |repeat(a, b)
 Š       a,b    |from_base_ten(a, b) #a_10 => base_b
 č       a      |a != 1
 √       a      |sqrt(a)
-∖       a,b    |a // b
+⳹       a,b    |a // b
 Ẋ       a,b    |a xor b
 Ȧ       a      |abs(a)
 Ȯ       a      |oct(a)
@@ -152,75 +152,106 @@ z       a,f    |zipmap the contents of a with function f
 ⟨              |* open a list ⟨⟩⟨...|...⟩
 ⟩              |* close a list
 ı              |* 2 char compressed string
-Ĳ       a      |'\n'.join(a)
-ĳ              |10
+⁌       a      |'\n'.join(a)
+Τ              |10
 Ĵ       a      |''.join(a)
-ĵ       a      |a ^ 2
-Ķ       a,b    |[a, b]
-ķ       a,b    |inclusive_range(a, b)
+²       a      |a ^ 2
+‿       a,b    |[a, b]
+⁂       a,b    |inclusive_range(a, b)
 ĸ       a,b    |b evenly distributed over the elements of a
-Ĺ              |"\n"
-ĺ       a      |vertical_join(a)
-Ļ       a,b    |vertical_join(a, padding=b)
+¶              |"\n"
+⁋       a      |vertical_join(a)
+⁑       a,b    |vertical_join(a, padding=b)
 Ń       f,a    |first n integers where function f is true
 ń       f      |first integer where function f is true
-Ň       a      |factorial(a)
-ņ       a      |cumulative_sums(a)
-Ň       a      |all_equal(a) # every item is the same
+‼       a      |factorial(a)
+⨊       a      |cumulative_sums(a)
+≈       a      |all_equal(a) # every item is the same
 ð              |" "
-ň       a      |counts_of_items(a)
-ŉ       a      |reversed(a)
-Ŋ       a      |a[:-1]
-ŋ              |sum(entire_stack)
-Ō       a      |graded_up(a)
-ō       a      |graded_down(a) # short for Ōŉ
-Ŏ              |None # as in python's None type
-ŏ       a,f    |a.indexes_where_truthy(fn)
-Ő       a,f    |sorted(a, key=fn) # sort by function result
-ő              |set register without emptying
+ʗ       a      |counts_of_items(a)
+◁       a      |reversed(a)
+⊐       a      |a[:-1]
+∫              |sum(entire_stack)
+⍋       a      |graded_up(a)
+⍒       a      |graded_down(a) # short for Ōŉ
+ℕ              |None # as in python's None type
+∈       a,f    |a.indexes_where_truthy(fn)
+ₛ       a,f    |sorted(a, key=fn) # sort by function result
+£              |set register without emptying
 Œ       a      |a * -1 # negate
 œ       a,b    |a % b == 0
-Ŕ       a,b    |a == b (vectorising)
-ŕ       a,b    |a != b (non-vectorising)
-Ŗ              |push register without emptying
-ŗ       a,b    |a[b:] #other forms of indexing use i
-Ř       a,b    |a << b
-Ś       a,b    |a >> b
-ś       a,b    |a and b (bitwise) # a & b
-Ŝ       a,b    |a or b (bitwise) # a | b
-ŝ       a,b    |a xor b (bitwise)
-Ş       a      |not a (bitwise) # ~a
-ş       a,b    |a.insert(0, b)
-š       a,b,c  |a.insert(b, c)
-Ţ       a      |random element from a
-ţ       a,b    |a <= b
-Ť       a,b    |a >= b
-ť              |stack[-2]
-Ŧ       a,b,c  |a[b] = c
-ŧ       a      |integer_partitions(a)
-Ũ       a      |permutations(a)
+≕       a,b    |a == b (vectorising)
+≠       a,b    |a != b (non-vectorising)
+¥              |push register without emptying
+ⁱ       a,b    |a[b:] #other forms of indexing use i
+‹       a,b    |a << b
+›       a,b    |a >> b
+⍲       a,b    |a and b (bitwise) # a & b
+⍱       a,b    |a or b (bitwise) # a | b
+‸       a,b    |a xor b (bitwise)
+¡       a      |not a (bitwise) # ~a
+⊑       a,b    |a.insert(0, b)
+≀       a,b,c  |a.insert(b, c)
+℅       a      |random element from a
+≤       a,b    |a <= b
+≥       a,b    |a >= b
+↜              |stack[-2]
+≗       a,b,c  |a[b] = c
+⋯       a      |integer_partitions(a)
+⧢       a      |permutations(a)
 ũ       a      |* treat compressed string as integer list
-Ū       a,b    |a[0:b]
-ū       a,b    |a[1:b]
+⁰       a,b    |a[0:b]
+¹       a,b    |a[1:b]
 ª              |* push index of next character in Vyxal's codepage
-Ŭ       a      |exec(VyCompile(a))
-ŭ       a      |range(1, len(a) + 1)
-Ů       a      |group_consecutive(a)
-ů       a,b,c  |transliterate(a, b, c) # a: original b: new c: string
-Ű       a      |truthy_indexes(a)
-ű       a,b    |cartesian_product(a, b)
-Ų       a      |deltas(a)
-ų       a      |sign_of(a)
-Ŵ       a,b    |all combinations with length b of a
-ŵ              |all inputs wrapped in a list
-Ŷ              |print t.o.s without popping
-ŷ       a      |time.sleep(a)
-Ÿ       a      |transpose(a)
-Ź       a      |range(0, len(a))
-ź              |most recent input
-Ż       a,b    |a.split_and_keep_delimiter(b)
-ż       a,(b)  |gcd(a) if a is a list, else gcd(a, b)
-Ž              |* apply the next two built-ins parallel 3 4 Ž+- -> 7 -1
-ž       a,b,c  |c,a,b
+ₑ       a      |exec(VyCompile(a))
+ϊ       a      |range(1, len(a) + 1)
+≎       a      |group_consecutive(a)
+⇿       a,b,c  |transliterate(a, b, c) # a: original b: new c: string
+⊛       a      |truthy_indexes(a)
+×       a,b    |cartesian_product(a, b)
+¯       a      |deltas(a)
+±       a      |sign_of(a)
+⊂       a,b    |all combinations with length b of a
+⍞              |all inputs wrapped in a list
+፣              |print t.o.s without popping
+₴       a      |time.sleep(a)
+⍉       a      |transpose(a)
+Ϊ       a      |range(0, len(a))
+₁              |most recent input
+⊘       a,b    |a.split_and_keep_delimiter(b)
+ᶢ       a,(b)  |gcd(a) if a is a list, else gcd(a, b)
+₌              |* apply the next two built-ins parallel 3 4 Ž+- -> 7 -1
+↭       a,b,c  |c,a,b
 ſ       f,a    |call function f, a times
 ƀ       f,a,(b)|push Generator of function f with intial vector a, limited to b items (if present)
+Ɓ       a      |bool(a)
+⁚       a       |a[:-1], a[-1]
+⌈       a      |ceiling(a)
+⌊       a      |floor(a)
+⊓       a,b    |a wrapped in chunks of b
+⊣       a,b    |a.trim(b) # Like Jelly's trim
+Ḟ       a,b    |a.find(b)
+ḟ       a,b,c  |a.find(b, start=c)
+∪       a,b    |set union
+∩       a,b    |set intersection
+⊍       a,b    |set(a) ^ set(b)
+⁜       a      |1 / a
+⌑       a      |is_perfect_square(a)
+Ḇ       a      |bifuricate(a)
+₂              |*second most recent input
+⁾       a      |10 ** a
+₦       a      |a.split("\n")
+¼       a      |a / 4
+ƒ       a      |fractionify(a) # returns a two-item list of [numerator, denominator]
+ɖ       a      |decimalify(a) # opposite of ƒ
+𝒫       a      |powerset(a)
+′       a      |prime_factorisation(a)
+\n             |NOP
+\t             |NOP
+<space>        |NOP
+₥      a       |average(a)
+″      a       |ath prime
+α              |push 26
+β              |push 64
+γ              |push 128
+Π      a       |product(a)
