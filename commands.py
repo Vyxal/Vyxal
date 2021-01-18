@@ -57,7 +57,7 @@ command_dict = {
     "l": ("stack.append([])", 0),
     "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
-    "o": ("needle, haystack = pop(stack, 2); stack.append(str(haystack).replace(str(needle)))", 2),
+    "o": ("needle, haystack = pop(stack, 2); stack.append(remove(haystack, needle))", 2),
     "p": ("rhs, lhs = pop(stack, 2); stack.append(str(lhs).startswith(str(rhs)))", 2),
     "q": ("stack.append('`' + str(pop(stack)) + '`')", 1),
     "r": ("rhs, lhs = pop(stack, 2); stack.append(orderless_range(lhs, rhs))", 2),
@@ -116,7 +116,7 @@ command_dict = {
     "Ļ": ("padding, vector = pop(stack, 2); stack.append(vertical_join(vector, padding))", 2),
     "Ń": ("n, fn = pop(stack, 2); stack.append(first_n(fn, n))", 2),
     "ń": ("stack.append(first_n(pop(stack)))", 1),
-    "Ň": ("stack.append(math.factorial(pop(stack)))", 1),
+    "Ň": ("stack.append(factorial(pop(stack)))", 1),
     "ņ": ("stack.appned(sums(iterable(pop(stack))))", 1),
     "≈": ("stack.append(int(len(set(iterable(pop(stack)))) == 1))", 1),
     "ň": ("stack.append(counts(pop(stack)))", 1),
@@ -182,11 +182,22 @@ else:
 vector, fn = pop(stack, 2)
 stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 """, 2),
-"Ɓ": ("stack.append(int(bool(stack.pop())))", 1),
-"Ƃ": ("vector = iterable(pop(stack)); stack.append(vector[:-1]); stack.append(vector[-1])", 1),
-"ƃ": ("stack.append(math.ceil(pop(stack)))", 1), #TODO: make sure its overloaded
-"Ƅ": ("stack.append(math.floor(pop(stack)))", 1), #^
-"ƅ": ("rhs, lhs = pop(stack, 2); stack.append(wrap(lhs, rhs))", 2)
+    "Ɓ": ("stack.append(int(bool(stack.pop())))", 1),
+    "Ƃ": ("vector = iterable(pop(stack)); stack.append(vector[:-1]); stack.append(vector[-1])", 1),
+    "ƃ": ("stack.append(ceiling(pop(stack)))", 1),
+    "Ƅ": ("stack.append(floor(pop(stack)))", 1),
+    "ƅ": ("rhs, lhs = pop(stack, 2); stack.append(wrap(lhs, rhs))", 2),
+    "Ɔ": ("rhs, lhs = pop(stack, 2); stack.append(trim(lhs, rhs))", 2),
+    "Ƈ": ("needle, haystack = pop(stack, 2); stack.append(find(iterable(haystack), needle))", 2),
+    "Ɗ": ("start, needle, hastack = pop(stack, 3); stack.append(find(iterable(haystack), needle, start))", 3),
+    "Ƌ": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) | set(rhs)))", 2),
+    "ƌ": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) & set(rhs)))", 2),
+    "ƍ": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) ^ set(rhs)))", 2),
+    "Ǝ": ("stack.append(divide(1, pop(stack)))", 1),
+    "≈": ("top = pop(stack); stack.append(exponate(top, 0.5) == top)", 1),
+    "Ω": ("top = pop(stack); stack.append(top); stack.append(iterable(top)[::-1])", 1),
+    "º": ("stack.append(input_values[input_level][0][-2])", 0)
+
 }
 
 math_command_dict = {

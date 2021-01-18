@@ -252,6 +252,11 @@ def bit_xor(lhs, rhs):
         (Generator, list): lambda: _two_argument(bit_xor, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(bit_xor, lhs, rhs)
     }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
+def ceiling(item):
+    return {
+        Number: lambda: math.ceil(item),
+        str: lambda: item.upper()
+    }.get(VY_type(item), lambda: vectorise(ceiling, item))()
 def chrord(item):
     t_item = VY_type(item)
     if t_item is str and len(item) == 1:
@@ -348,6 +353,24 @@ def exponate(lhs, rhs):
         (Generator, list): lambda: _two_argument(exponate, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(exponate, lhs, rhs)
     }.get(types, lambda: vectorise(exponate, lhs, rhs))()
+def factorial(item):
+    t_item = VY_type(item)
+    if t_item == Number:
+        return math.factorial(item)
+    elif t_item == str:
+        return item.capitalize()
+    else:
+        return vectorise(factorial, item)
+def find(haystack, needle, start=0):
+    # It looks like something from 2001
+    index = 0
+    if start.isnumeric():
+        index = start
+    while index < len(haystack):
+        if haystack[index] == needle:
+            return index
+        index += 1
+    return -1
 def first_n(func, n=1):
     ret = []
     current_index = 0
@@ -369,6 +392,11 @@ def flatten(item):
             else:
                 ret.append(x)
         return ret
+def floor(item):
+    return {
+        Number: lambda: math.floor(item),
+        str: lambda: iten.lower()
+    }.get(VY_type(item), lambda: vectorise(floor, item))()
 def format_string(string, items):
     ret = ""
     index = 0
@@ -573,6 +601,13 @@ def pop(vector, num=1, wrap=False):
     if num == 1 and not wrap:
         return ret[0]
     return ret
+def remove(vector, item):
+    return {
+        str: lambda: vector.replace(str(item), ""),
+        Number: lambda: str(vector).replace(str(item)),
+        list: lambda: Generator(filter(lambda x: x != item, vector)),
+        Generator: lambda: remove(vector._dereference(), item)
+    }[VY_type(vector)]()
 def repeat(vector, times):
     vector = iterable(vector)
     t_vector = VY_type(vector)
@@ -585,7 +620,7 @@ def replace(haystack, needle, replacement):
     if t_haystack is list:
         return [replacement if value == needle else value for value in haystack]
     elif t_haystack is Generator:
-        return haystack # Not sure how to do replacement on generators yet
+        return replace(haystack._dereference(), needle, replacement) # Not sure how to do replacement on generators yet
     else:
         return str(haystack).replace(str(needle), str(replacement))
 def reverse(vector):
@@ -688,6 +723,22 @@ def transilterate(original, new, string):
 def transpose(vector):
     vector = iterable(vector); vector = list(vector)
     return Generator(map(list, zip(*vector)))
+def trim(lhs, rhs, left = False, right = False):
+    # I stole this from Jelly
+    #https://github.com/DennisMitchell/jellylanguage/blob/master/jelly/interpreter.py#L1131
+    if VY_type(lhs) == Number:
+        lhs = str(lhs)
+    if VY_type(rhs) == Number:
+        rhs = str(rhs)
+    lindex = 0
+    rindex = len(lhs)
+    if left:
+        while lindex < rindex and rhs[lindex] in lhs:
+            lindex += 1
+    if right:
+        while lindex < rindex and rhs[rindex - 1] in lhs:
+            rindex -= 1
+    return lhs[lindex:rindex]
 def truthy_indexes(vector):
     ret = []
     for i in range(len(vector)):
