@@ -304,7 +304,7 @@ def deref(item):
         if type(item) not in [int, float, str]: return item[::]
         return item
 def distribute(vector, value):
-    vector = interable(vector)
+    vector = iterable(vector)
     remaining = value
     index = 0
     while remaining > 0:
