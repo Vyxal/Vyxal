@@ -720,7 +720,7 @@ def summate(vector):
     return ret
 def sums(vector):
     ret = []
-    for i in range(len(item)):
+    for i in range(len(vector)):
         ret.append(summate(item[0:i+1]))
     return ret
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
