@@ -244,7 +244,7 @@ z       a,f    |zipmap the contents of a with function f
 ¼       a      |a / 4
 ƒ       a      |fractionify(a) # returns a two-item list of [numerator, denominator]
 ɖ       a      |decimalify(a) # opposite of ƒ
-𝒫       a      |powerset(a)
+Ꝓ       a      |powerset(a)
 ′       a      |prime_factorisation(a)
 \n             |NOP
 \t             |NOP
