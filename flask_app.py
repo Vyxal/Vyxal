@@ -18,7 +18,7 @@ def index():
         ret = manager.dict()
         ret[1] = ""
         ret[2] = ""
-        fcode = header + "\n" + code + "\n" + footer
+        fcode = header + code + footer
         process = multiprocessing.Process(target=Vyxal.execute, args=(fcode, flags, inputs, ret))
         process.start()
         process.join(60)
