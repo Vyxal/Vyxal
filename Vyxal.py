@@ -432,7 +432,7 @@ def get_input():
         except:
             return 0
 def graded(vector):
-    return Generator(sorted(enumerate(iterable), key=lambda x: x[-1]))
+    return Generator(sorted(enumerate(vector), key=lambda x: x[-1]))
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
@@ -787,12 +787,12 @@ def vectorise(fn, left, right=None):
 def vectorising_equals(lhs, rhs):
     return Generator(map(lambda x: int(x[0] == x[1]), VY_zip(iterable(lhs), iterable(rhs))))
 def vertical_join(vector, padding=" "):
-    lengths = list(map(len, iterable))
-    iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
+    lengths = list(map(len, vector))
+    vector = [padding * (max(lengths) - len(x)) + x for x in vector]
 
     out = ""
     for i in range(max(lengths)):
-        for item in iterable:
+        for item in vector:
             out += item[i]
         out += "\n"
 
