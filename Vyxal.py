@@ -721,7 +721,7 @@ def summate(vector):
 def sums(vector):
     ret = []
     for i in range(len(vector)):
-        ret.append(summate(item[0:i+1]))
+        ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
 def transilterate(original, new, string):
