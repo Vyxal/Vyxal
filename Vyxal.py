@@ -785,7 +785,7 @@ def vectorise(fn, left, right=None):
                 return [x[0] for x in ret]
             return ret
 def vectorising_equals(lhs, rhs):
-    return all(map(lambda x: x[0] == x[1], VY_zip(iterable(lhs), iterable(rhs))))
+    return Generator(map(lambda x: int(x[0] == x[1]), VY_zip(iterable(lhs), iterable(rhs))))
 def vertical_join(vector, padding=" "):
     lengths = list(map(len, iterable))
     iterable = [padding * (max(lengths) - len(x)) + x for x in iterable]
