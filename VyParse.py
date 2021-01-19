@@ -160,7 +160,7 @@ def group_strings(program):
             out.append(char)
 
     if flux_string[0]:
-        out.append(flux_string[1])
+        out.append([flux_string[1]])
 
     return out
 
@@ -484,7 +484,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = [""]
+    tests = ["`abc"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_strings(test))])
     input()
