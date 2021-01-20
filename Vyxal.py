@@ -547,13 +547,13 @@ def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
-        (types[0], list): lambda: rhs.insert(0, lhs),
-        (list, types[1]): lambda: lhs.append(rhs),
+        (types[0], list): lambda: [lhs] + rhs,
+        (list, types[1]): lambda: lhs + [rhs],
         (list, list): lambda: lhs + rhs,
         (list, Generator): lambda: lhs + rhs._dereference(),
         (Generator, list): lambda: lhs._dereference() + rhs,
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
-    }.get(types, lambda: vectorise(join, lhs, rhs))()
+    }[types]()
 def lshift(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
