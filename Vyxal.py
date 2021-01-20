@@ -294,6 +294,13 @@ def cumulative_sum(vector):
     for i in range(len(vector)):
         ret.append(summate(vector[:i]))
     return ret
+def decimalify(vector):
+    if VY_type(vector) == Number:
+        return iterable(vector)
+    elif VY_type(vector) is str:
+        return list(vector)
+    else:
+        return divide(vector[0], vector[1])
 def deltas(vector):
         ret = []
         vector = iterable(vector)
@@ -414,6 +421,17 @@ def format_string(string, items):
             ret += string[index]
         index += 1
     return ret
+def fractionify(item):
+    import re
+    if VY_type(item) == Number:
+        from fractions import Fraction
+        from decimal import Decimal
+        frac = Fraction(Decimal(str(item)))
+        return [frac.numerator, frac.denominator]
+    elif type(item) is str and re.match(r"\-?\d+(\.\d+)?", item):
+        return fractionify(eval(item))
+    else:
+        return item
 def gcd(vector):
     if VY_type(vector) is Generator:
         vector = vector._dereference()
