@@ -43,7 +43,7 @@ J       a,b    |concat(a, b)
 K              |factors_of(a)
 L       a      |len(a)
 M       a,f    |f mapped to each element in a
-N       a      |number(a)
+N       a      |a * -1
 O       a,b    |a.count(b)
 P       a,b    |a.strip(b)
 Q              |* end execution (exit())
@@ -178,7 +178,7 @@ z       a,f    |zipmap the contents of a with function f
 ∈       a,f    |a.indexes_where_truthy(fn)
 ₛ       a,f    |sorted(a, key=fn) # sort by function result
 £              |set register without emptying
-Œ       a      |a * -1 # negate
+Œ       a,b    |[a[n] for n in b]
 œ       a,b    |a % b == 0
 ≕       a,b    |a == b (vectorising)
 ≠       a,b    |a != b (non-vectorising)
