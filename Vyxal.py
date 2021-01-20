@@ -107,12 +107,8 @@ class Generator:
     def __len__(self):
         return len(self._dereference())
     def __next__(self):
-        try:
-            f = next(self.gen)
-            self.generated.append(f)
-        except StopIteration as e:
-            f = self.generated[self.next_index % len(self.generated)]
-            self.next_index += 1
+        f = next(self.gen)
+        self.generated.append(f)
         return f
     def __iter__(self):
         return iter(self.gen)
@@ -183,6 +179,7 @@ def _safe_apply(function, *args):
 def _two_argument(function, lhs, rhs):
     if function.__name__ == "_lambda":
         return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
+    print(lhs, rhs)
     return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
@@ -467,6 +464,11 @@ def group_consecutive(vector):
         ret.append(temp)
 
     return ret
+def inclusive_range(lhs, rhs):
+    if lhs < rhs:
+        return Generator(range(lhs, rhs + 1))
+    else:
+        return Generator(range(lhs, rhs - 1, -1))
 def indexed_into(vector, indexes):
     ret = []
     for ind in indexes:
@@ -486,6 +488,31 @@ def inserted(vector, item, index):
         range: lambda: list(vector[:index]) + [item] + list(vector[index:]),
         str: lambda: vector[:index] + str(item) + vector[index:]
     }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
+def integer_list(string):
+    charmap = dict(zip("etaoinshrd", "0123456789"))
+    ret = []
+    for c in string.split():
+        temp = ""
+        for m in c:
+            temp += charmap[m]
+        ret.append(int(temp))
+    return ret
+def interleave(lhs, rhs):
+    ret = []
+    for i in range(min(len(rhs), len(rhs))):
+        ret.append(lhs[i])
+        ret.append(rhs[i])
+    if len(lhs) != len(rhs):
+        if len(lhs) < len(rhs):
+            # The rhs is longer
+            ret += list(rhs[i + 1:])
+        else:
+            ret += list(lhs[i + 1:])
+    return ret
+def is_prime(n):
+    if n % 2 == 0 and n > 2:
+        return False
+    return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
 def iterable(item, t=list):
     if VY_type(item) == Number:
         if t is list:
@@ -516,31 +543,6 @@ def iterable_shift(vector, direction):
         else:
             # abc -> cab
             return vector[-1] + vector[:-1]
-def integer_list(string):
-    charmap = dict(zip("etaoinshrd", "0123456789"))
-    ret = []
-    for c in string.split():
-        temp = ""
-        for m in c:
-            temp += charmap[m]
-        ret.append(int(temp))
-    return ret
-def interleave(lhs, rhs):
-    ret = []
-    for i in range(min(len(rhs), len(rhs))):
-        ret.append(lhs[i])
-        ret.append(rhs[i])
-    if len(lhs) != len(rhs):
-        if len(lhs) < len(rhs):
-            # The rhs is longer
-            ret += list(rhs[i + 1:])
-        else:
-            ret += list(lhs[i + 1:])
-    return ret
-def is_prime(n):
-    if n % 2 == 0 and n > 2:
-        return False
-    return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
@@ -548,9 +550,9 @@ def join(lhs, rhs):
         (types[0], list): lambda: rhs.insert(0, lhs),
         (list, types[1]): lambda: lhs.append(rhs),
         (list, list): lambda: lhs + rhs,
-        (list, Generator): lambda: lambda: _two_argument(join, lhs, rhs),
-        (Generator, list): lambda: lambda: _two_argument(join, lhs, rhs),
-        (Generator, Generator): lambda: _two_argument(join, lhs, rhs)
+        (list, Generator): lambda: lhs + rhs._dereference(),
+        (Generator, list): lambda: lhs._dereference() + rhs,
+        (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }.get(types, lambda: vectorise(join, lhs, rhs))()
 def lshift(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
@@ -594,8 +596,11 @@ def multiply(lhs, rhs):
         (Generator, list): lambda: _two_argument(multiply, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
-def orderless_range(*args, lift_factor=0):
-    return Generator(range(min(args), max(args) + lift_factor))
+def orderless_range(lhs, rhs, lift_factor=0):
+    if lhs < rhs:
+        return Generator(range(lhs, rhs + lift_factor))
+    else:
+        return Generator(range(lhs, rhs + lift_factor, -1))
 def partition(item):
     # https://stackoverflow.com/a/44209393/9363594
     yield [n]
@@ -1355,7 +1360,7 @@ if __name__ == "__main__":
             code = encoding.vyxal_to_utf8(code)
         else:
             code = open(file_location, "r", encoding="utf-8").read()
-        input_values[0] = [inputs, 0]
+        input_values[0] = [inputs[::-1], 0]
         code = VY_compile(code, header)
         context_level = 0
         if flags and 'c' in flags:

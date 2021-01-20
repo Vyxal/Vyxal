@@ -107,7 +107,7 @@ command_dict = {
     "Ẋ": ("rhs, lhs = pop(stack, 2); stack.append(int((lhs or rhs) and not (lhs and rhs)))", 2),
     "Ȧ": ("stack.append(abs(pop(stack)))", 1),
     "Ȯ": ("stack.append(oct(pop(stack)))", 1),
-    "⁂":("rhs, lhs = pop(stack, 2); stack.append(Generator(range(lhs, rhs + 1)))", 2),
+    "⁂":("rhs, lhs = pop(stack, 2); stack.append(inclusive_range(lhs, rhs))", 2),
     "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
     "¶": ("stack.append('\\n')", 0),
     "⁋": ("stack.append(vertical_join(pop(stack)))", 1),
