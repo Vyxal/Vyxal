@@ -129,7 +129,7 @@ command_dict = {
     "∈": ("vector, fn = pop(stack, 2); stack.append(indexes_where(fn, iterable(vector)))", 2),
     "ₛ": ("vector, fn = pop(stack, 2); stack.append(VY_sorted(iterable, key=fn))", 2),
     "£": ("register = pop(stack)", 1),
-    "Œ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(iterable(vector), indexes))", 2),
+    "Œ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(iterable(vector), iterable(indexes)))", 2),
     "œ": ("rhs, lhs = pop(stack, 2); stack.append(vectorising_equals(modulo(lhs, rhs), 0))", 2),
     "≕": ("rhs, lhs = pop(stack, 2); stack.append(vectorising_equals(lhs, rhs))", 2),
     "≠": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.NOT_EQUALS))", 2),
