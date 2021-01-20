@@ -1257,7 +1257,8 @@ else:
 
 def execute(code, flags, inputs, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
-    global _join, _vertical_join, use_encoding, input_level
+    global _join, _vertical_join, use_encoding, input_level, online_version
+    online_version = True
     output = output_variable
     output[1] = ""
     output[2] = ""
