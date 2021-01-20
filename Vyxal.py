@@ -203,6 +203,13 @@ def assigned(vector, index, item):
     else:
         vector[index] = item
         return vector
+def bifuricate(item):
+    t_item = VY_type(item)
+    if t_item in (Number, list, str):
+        return [item, reverse(item)]
+    else:
+        g = item._dereference()
+        return [g, reverse(g)]
 def bit_and(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
