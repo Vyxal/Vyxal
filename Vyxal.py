@@ -395,7 +395,7 @@ def flatten(item):
         ret = []
         for x in item:
             if type(x) is list:
-                ret += x
+                ret += flatten(x)
             else:
                 ret.append(x)
         return ret
@@ -526,10 +526,17 @@ def integer_list(string):
         ret.append(int(temp))
     return ret
 def interleave(lhs, rhs):
-    interleaved = flatten(zip(iterable(lhs), iterable(rhs)))
-    if len({VY_type(lhs), VY_type(rhs)} & {list, Generator}) == 0:
-        return "".join([str(x) for x in interleaved._dereference()])
-    return interleaved
+    ret = []
+    for i in range(min(len(rhs), len(rhs))):
+        ret.append(lhs[i])
+        ret.append(rhs[i])
+    if len(lhs) != len(rhs):
+        if len(lhs) < len(rhs):
+            # The rhs is longer
+            ret += list(rhs[i + 1:])
+        else:
+            ret += list(lhs[i + 1:])
+    return ret
 def is_prime(n):
     if n % 2 == 0 and n > 2:
         return False
