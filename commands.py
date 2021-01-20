@@ -193,7 +193,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "⊍": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) ^ set(rhs)))", 2),
     "⁜": ("stack.append(divide(1, pop(stack)))", 1),
     "⌑": ("top = pop(stack); stack.append(exponate(top, 0.5) == top)", 1),
-    "Ḇ": ("top = pop(stack); stack.append(top); stack.append(iterable(top)[::-1])", 1),
+    "Ḇ": ("stack += bifuricate(pop(stack))", 1),
     "₂": ("stack.append(input_values[input_level][0][-2])", 0),
     "⁾": ("stack.append(exponate(10, pop(stack)))", 1),
     "₦": ("stack.append(str(pop(stack)).split('\n'))", 1),
