@@ -1360,7 +1360,7 @@ if __name__ == "__main__":
             code = encoding.vyxal_to_utf8(code)
         else:
             code = open(file_location, "r", encoding="utf-8").read()
-        input_values[0] = [inputs[::-1], 0]
+        input_values[0] = [inputs, 0]
         code = VY_compile(code, header)
         context_level = 0
         if flags and 'c' in flags:
