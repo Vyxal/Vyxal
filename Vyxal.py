@@ -931,7 +931,7 @@ def VY_print(item, end="\n", raw=False):
                 print(VY_repr(item), end=end)
         else:
             if online_version:
-                output += VY_str(item) + end
+                output[1] += VY_str(item) + end
             else:
                 print(VY_str(item), end=end)
 def VY_sorted(vector, fn=None):
