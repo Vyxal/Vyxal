@@ -483,10 +483,12 @@ def indexes_where(fn, vector):
 def inserted(vector, item, index):
     vector = iterable(vector, range)
     t_vector = type(vector)
+    if t_vector is list:
+        vector.insert(index, item)
+        return vector
     return {
-        list: lambda: vector.insert(index, item),
         range: lambda: list(vector[:index]) + [item] + list(vector[index:]),
-        str: lambda: vector[:index] + str(item) + vector[index:]
+        str: lambda: vector[:index] + str(item) + vector[index:],
     }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
 def integer_list(string):
     charmap = dict(zip("etaoinshrd", "0123456789"))
@@ -611,7 +613,7 @@ def prepend(vector, item):
     vector = iterable(vector, range)
     t_vector = type(vector)
     return {
-        list: lambda: vector.insert(0, item),
+        list: lambda: [item] + vector,
         str: lambda: str(item) + vector,
         range: lambda: [item] + list(vector)
     }.get(t_vector, lambda: prepend(vector._dereference(), item))()
