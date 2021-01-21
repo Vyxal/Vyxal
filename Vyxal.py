@@ -1139,7 +1139,7 @@ def VY_compile(source, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
-                compiled += tab("global context_level, context_values, input_level") + NEWLINE
+                compiled += tab("global context_level, context_values, input_level, input_values") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level += 1") + NEWLINE
                 if parameter_count == 1:
@@ -1185,7 +1185,7 @@ else:
                     defined_arity = int(lambda_argument)
 
             compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
-            compiled += tab("global context_level, context_values, input_level") + NEWLINE
+            compiled += tab("global context_level, context_values, input_level, input_values") + NEWLINE
             compiled += tab("context_level += 1;") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
