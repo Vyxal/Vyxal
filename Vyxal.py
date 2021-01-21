@@ -1141,7 +1141,7 @@ def VY_compile(source, header=""):
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
                 compiled += tab("global context_level, context_values, input_level") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
-                compiled += tab("input_level -= 1") + NEWLINE
+                compiled += tab("input_level += 1") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
                     # (which is kinda rather inconvienient), push it as a "scalar"
