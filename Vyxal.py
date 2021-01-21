@@ -1159,7 +1159,7 @@ def VY_compile(source, header=""):
                 for parameter in parameters:
                     if parameter == -1:
                         compiled += tab("""arity = pop(parameter_stack)
-if VY_type(arity) == NUMBER:
+if VY_type(arity) == Number:
     parameters += parameter_stack[:-int(arity)]
 else:
     parameters += [arity]
