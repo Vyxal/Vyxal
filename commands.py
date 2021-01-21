@@ -202,7 +202,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "ɖ": ("stack.append(decimalify(pop(stack)))", 1),
     "Ꝓ": ("stack.append(powerset(iterable(pop(stack))))", 1),
     "′": ("stack.append(sympy.ntheory.primefactors(pop(stack)))", 1),
-    "₥": ("top = iterable(pop(stack)); stack.append(divide(summate(top)), len(top))", 1),
+    "₥": ("top = iterable(pop(stack)); stack.append(divide(summate(top), len(top)))", 1),
     "″": ("stack.append(sympy.ntheory.prime(pop(stack) + 1))", 1),
     "α": ("stack.append(26)", 0),
     "β": ("stack.append(64)", 0),
