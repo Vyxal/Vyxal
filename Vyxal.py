@@ -1173,6 +1173,7 @@ else:
                     compiled += NEWLINE
 
                 compiled += tab("stack = parameters[::]") + NEWLINE
+                compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
                 compiled += tab(VY_compile(VALUE[VyParse.FUNCTION_BODY])) + NEWLINE
                 compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
                 compiled += tab("input_level -= 1") + NEWLINE
