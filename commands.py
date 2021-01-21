@@ -41,7 +41,7 @@ command_dict = {
     "W": ("stack = [deref(stack)]", 0),
     "X": ("context_level += 1", 0),
     "Y": ("rhs, lhs = pop(stack, 2); stack.append(interleave(lhs, rhs))", 2),
-    "Z": ("rhs, lhs = pop(stack, 2); stack.append(Generator(zip(iterable(lhs), iterable(rhs))))", 2),
+    "Z": ("rhs, lhs = pop(stack, 2); stack.append(Generator(VY_zip(iterable(lhs), iterable(rhs))))", 2),
     "a": ("stack.append(int(any(iterable(pop(stack)))))", 1),
     "b": ("stack.append(VY_bin(pop(stack)))", 1),
     "c": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs in iterable(rhs)))", 2),

@@ -130,7 +130,9 @@ class Generator:
         Only call this when it is absolutely neccesary to convert to a list.
         '''
         self.gen = list(self.gen)
-        return self.gen
+        d = list(self.gen)
+        self.gen = iter(d[::])
+        return d
     def _print(self):
         global output
         if online_version:
@@ -912,7 +914,6 @@ def VY_map(fn, vector):
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     if t_vector is Generator:
-        temp = Generator(vector)
         return vector._map(fn)
     for item in vector:
         result = fn([item])
