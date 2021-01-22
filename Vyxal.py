@@ -607,6 +607,13 @@ def multiply(lhs, rhs):
         (Generator, list): lambda: _two_argument(multiply, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
+def nwise_pair(lhs, rhs):
+    iters = itertools.tee(lhs, rhs)
+    for i in range(len(iters)):
+        for j in range(i):
+            next(iters[i], None)
+
+    return Generator(zip(*iters))
 def orderless_range(lhs, rhs, lift_factor=0):
     if lhs < rhs:
         return Generator(range(lhs, rhs + lift_factor))
@@ -618,14 +625,6 @@ def partition(item):
     for i in range(I, n//2 + 1):
         for p in partition(n-i, i):
             yield [i] + p
-def prepend(vector, item):
-    vector = iterable(vector, range)
-    t_vector = type(vector)
-    return {
-        list: lambda: [item] + vector,
-        str: lambda: str(item) + vector,
-        range: lambda: [item] + list(vector)
-    }.get(t_vector, lambda: prepend(vector._dereference(), item))()
 def polynomial(vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
@@ -649,6 +648,14 @@ def powerset(vector):
     elif type(vector) is str:
         vector = list(vector)
     return Generator(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
+def prepend(vector, item):
+    vector = iterable(vector, range)
+    t_vector = type(vector)
+    return {
+    list: lambda: [item] + vector,
+    str: lambda: str(item) + vector,
+    range: lambda: [item] + list(vector)
+    }.get(t_vector, lambda: prepend(vector._dereference(), item))()
 def product(vector):
     if type(vector) is Generator:
         return vector._reduce(multiply)
