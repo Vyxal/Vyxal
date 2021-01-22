@@ -1,3 +1,9 @@
+# Vyxal - Terse, Elegant and Readable
+
+**Vyxal** is the latest addition to the plethora of stack-based languages used for code golfing. But unlike its competitors, Vyxal has a special focus upon readability and elegancy. Indeed, the codepage has been specially chosen to be as mnemonic as possible. Further, constructs from practical languages (such as functions, lambdas and easy list manipulation) are present.
+
+(Vyxal is pronounced Vixal)
+
 ## How to use the interpreter:
 
 `python3 Vyxal.py <file> <flags (single string of flags)> <input(s)>`
@@ -5,173 +11,156 @@
 For a list of command-line flags:
 `python3 Vyxal.py h`
 
-## Reference:
+## Data Types
+
+There are 4 data types supported by Vyxal:
+
+- Numbers (integers and reals/floats)
+- Strings
+- Lists
+- Generators
+
+## Basic Operators
+
+- `+-*/%` perform addition, subtraction, multiplication, division and modulo respectively.
+- `,` prints the top of the stack
+- `:_` duplicates the top of the stack and pops the top of the stack respectively
+- `!` pushes the length of the stack
+
+## Syntax Constructs
+### If statements
+
 ```
-( ): NOP
-(!): Push (length of stack)
-("): Right shift stack
-(#): Comment
-($): Pop [x, y] Push [y, x]
-(%): Pop [x, y] Push (y % x)
-(&): Pop [x] Store (x) in register
-('): Left shift stack
-((): Start for loop (iter|var|code)
-()): End for loop
-(*): Pop [x, y] Push (y * x)
-(+): Pop [x, y] Push (y + x)
-(,): Print t.o.s
-(-): Pop [x, y] Push (y - x)
-(.): Print Vy_repr(t.o.s)
-(/): Pop [x, y] Push (y / x)
-(0): Push (0)
-(1): Push (1)
-(2): Push (2)
-(3): Push (3)
-(4): Push (4)
-(5): Push (5)
-(6): Push (6)
-(7): Push (7)
-(8): Push (8)
-(9): Push (9)
-(:): Pop [x] Push [x, x]
-(;): End a structure
-(<): Pop [x, y] Push (y > x)
-(=): Pop [x, y] Push (y == x)
-(>): Pop [x, y] Push (y > x)
-(?): Push (input)
-(@): Define/call a function @name n|code; @name;
-(A): Pop [x] Push (all(x))
-(B): Pop [x] Push (int(x, 2))
-(C): Pop [x] Push (chr(x))
-(D): Pop [x] Push [x, x, x]
-(E): Pop [x] Push (eval(x))
-(F): Pop [x, f] Push (filtered(f, x))
-(G): Pop [x] Push (max(x))
-(H): Pop [x] Push (int(x, 16))
-(I): Pop [x] Push (x as integer)
-(J): Pop [x, y] Push (x concatenated with y)
-(K): Push (constant x)
-(L): Pop [x] Push (len(x))
-(M): Pop [x, f] Push (map(f, x))
-(N): Pop [x] Push (x as number)
-(O): Pop [x, y] Push (x.count(y))
-(P): Pop [x, y] Push (.strip(y))
-(Q): Halt execution
-(R): Pop [x, f] Push (reduce(f, x))
-(S): Pop [x] Push (x as string)
-(T): Pop [x] Push ([n for n in x if bool(n)])
-(U): Pop [x] Push (uniquified(x))
-(V): Pop [x, y, z] Push (x.replace(y, z))
-(W): Wrap the entire stack into a single stack
-(X): Context level up
-(Y): Pop [x, y] Push (interleave(x, y))
-(Z): Pop [x, y] Push (zip(y, x))
-([): Start if statement [ifTrue|ifFalse]
-(\): Escape the next character OR create a single character string
-(]): Close if statement
-(^): Reverse stack
-(_): Pop [x]
-(`): Start/end string
-(a): Pop [x] Push (any(x))
-(b): Pop [x] Push (bin(x))
-(c): Pop [x, y] Push (y in x)
-(d): Pop [x] Push (x * 2)
-(e): Pop [x, y] Push (x ^ y)
-(f): Pop [x] Push (flattened(x))
-(g): Pop [x] Push (min(x))
-(h): Pop [x] Push (x[0])
-(i): Pop [x, y] Push x[y]
-(j): Pop [x, y] Push (x.join(y))
-(k): Pop [x] Push (factors_of(x))
-(l): Push ([])
-(m): Pop [x] Push [x + x[::-1]]
-(n): Contextual variable
-(o): Pop [x, y] Push (x.replace(y, '')) # Equivalent to x y ❝ V
-(p): Pop [x, y] Push (x.startswith(y))
-(q): Pop [x] Push (str(x))
-(r): Pop [x, y] Push (range(y, x))
-(s): Pop [x] Push (sorted(x))
-(t): Pop [x] Push (x[-1])
-(u): Pop [x] Push (sorted(uniquified(x)))
-(v): Vectorise the next operation
-(w): Pop [x] Push ([x])
-(x): Context level down
-(y): Pop [x] Push (uninterleave(x))
-(z): Pop [x, f] Push (zipmap(f, x))
-({): Start while loop {condition|code}
-(|): Branch to next section
-(}): Close while loop
-(~): Push a random number
-(λ): Start an anonymous function (lambda)
-(ƛ): Start a mapping lambda
-(¬): Pop [x] Push (not x)
-(∧): Pop [x, y] Push (x and y)
-(⟑): Pop [x, y] Push (short-circuited x and y)
-(∨): Pop [x, y] Push (x or y)
-(⟇): Pop [x, y] Push (short-circuited x or y)
-(÷): Pop [x] Push (item_split(x))
-(«): Start/close a base-255 string
-(»): Start/close a base-255 number
-(°): Function reference
-(•): Decimal separator 
-(․): Symbolic function reference
-(⍎): Execute a function reference (totally not stolen from APL... what gives you that idea?)
-(Ṛ): Pop [x, y] Push (random.randint(x, y))
-(½): Pop [x] Push (x / 2)
-(∆): Two char math functions
-(ø): Two char string functions
-(Ï): Pop [x, y] Push (x.index(y))
-(Ô): Push (list of odd numbers)
-(Ç): Pop [x] Push (1 - x)
-(æ): Pop [x] Push (is_prime(x))
-(ʀ): Pop [x] Push (range(0, x + 1))
-(ʁ): Pop [x] Push (range(0, x))
-(ɾ): Pop [x] Push (range(1, x + 1))
-(ɽ): Pop [x] Push (range(1, x))
-(Þ): Pop [x] Push (is_palindromic(x))
-(ƈ): Pop [x - list, y - integer] Push (ncr(x, y))
-(∞): Push (inf list 0...∞)
-(⫙): Pop [f], Map f to the entire stack
-(ß): Pop [x] Push ([bin(n) for n in range(x)])
-(⎝): Pop [x -- zipmap] Push (min(x))
-(⎠): Pop [x -- zipmap] Push (max(x))
-(⎡): Pop [x, y]  Push (max(x, y))
-(⎣): Pop [x, y]  Push (min(x, y))
-(⨥): Pop [x] Push (x + 1) / Used in regex
-(⨪): Pop [x] Push (x - 1)
-(∺): Pop [x] Push (x % 2)
-(❝): Push ("")
-(ð): Push (" ")
-(£): Pop [x] Assign x to var
-(¥): Push var
-(§): Switch statement §case¦code|case¦code¡default;
-(¦): Used in switches
-(¡): Used in switches
-(∂): Set active variable
-(Ð): Pop [x, n] Push (x in direction n)
-(ř): Pop [x, n] Push (repeat(x, n))
-(Š): Pop [x, y] Push (convert x from base 10 to base y (x_10 => x_y)))
-(č): Pop [x] Push (x != 1)
-(√): Pop [x] Push (x ** 1/2)
-(∖): Pop [x, y] Push (x // y)
-(Ẋ): Pop [x, y] Push (x xor y)
-(Ȧ): Pop [x] Push (abs(x))
-(Ȯ): Pop [x] Push (oct(x))
-(Ḋ): Pop [x, y] Push (divmod(x, y))
-(Ė): Pop [x] Push (enumerate(x))
-(Ẹ): Push (enumerate(stack))
-(ṙ): Pop [x] Push (round(x))
-(∑): Pop [x] Push (sum(x))
-(Ṡ): Push (sum of stack)
-(İ): Pop [x] Push (id(x))
-(Ĥ): Push (100)
-(⟨): Open a list ⟨...|...|...|...⟩
-(⟩): Close a list
-(ı): Push a single string compression code
-(Ĵ): Pop [x] Push (''.join(x))
-(Ĳ): Pop [x] Push ('\n'.join(x))
-(ĳ): Push (10)
-(ķ): Pop [x, y] Push (inclusive_range(x, y))
-(Ķ): Pop [x, y] Push ([x, y])
-(ĵ): Pop [x] Push (x * x) # Equivalent to x:*
+[truthy_branch|falsey_branch]
+[truthy_branch]
 ```
+
+The if statement pops the top of the stack, and if it is truthy, executes the truthy branch. Otherwise, if a falsey branch is present, it will branch to execute that.
+
+### For loop
+
+```
+(variable|body)
+(body)
+```
+
+The for loop pops the top of the stack and iterates through each item. If the value popped is an integer, it loops through the range `[0, n)`. If `variable` is present, the iteration value is stored in that. Otherwise, the iteration value is stored in the context variable `n`.
+
+### While loop
+
+```
+{condition|body}
+{body}
+```
+
+The while loop repeats `body` until `condition` evaluates as true. If there is no explicit condition, `1` is used as the condition, meaning that `{...}` is an infinite loop.
+
+### Functions
+
+```
+@name|code;
+@name:number_of_arguments|code;
+@name:variable|code;
+@name:argument_list|code;
+@name;
+```
+
+If `code` isn't present, the function with name `name` is called. Otherwise, the function is defined. The arguments can be a combination of variables and numbers. Numbers tell the function how many items to pop from the main stack as arguments, and variables store a single value in the variable. Numbered arguments are pushed to the function's stack -- functions operate on their own scoped stack with scoped variables (much like Python).
+
+For example:
+
+```
+@triple:1|3*;
+```
+
+Takes 1 parameter and pushes it to the function's stack
+
+```
+@triple:value|←value 3*;
+```
+
+Takes a single argument and stores it in variable `value`.
+
+```
+@add_and_halve:1:rhs|←rhs +2/;
+```
+
+Takes two arguments: pushes the first on to the stack and stores the second in variable `rhs`
+
+```
+@average:*|W:L$∑$/;
+```
+
+Takes however many arguments as defined by the first value popped from the stack. A function call of `2 3 3 3 @average;` would take three arguments.
+
+### Lambdas
+
+```
+λarity|code;
+λcode;
+```
+
+Where the `@...;` function stores the definition for infinite re-use, the lambda pushes a reference to the code inside it. This is similar to python's lambdas, which are temporary functions, or literal functions (for lack of better word).
+
+These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in `9`. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
+
+### Implicit input and output
+
+- At the end of program execution (eof), if nothing has been printed (using `,` or other printing commands), the top value on the stack is automatically printed.
+- If there isn't enough values on the stack to perform an operation, implicit input is taken. If input is passed through command line arguments, then the input used is cycled.
+- Input can be either through arguments or STDIN. STDIN is used if arguments aren't avaliable. If no input is avaliable at all, 0 is returned.
+- In functions (and lambdas), if implicit input is needed, the argument(s) passed are used as the input "list".
+
+### Commands
+
+Vyxal has so many commands that it is impractical to list them all here. [Here is the reference page](https://github.com/Lyxal/Vyxal/blob/master/docs/reference.txt)
+
+## Examples
+
+### Hello, World!
+
+```
+`Hello, World!`
+```
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%60Hello%2C%20World!%60&inputs=&header=&footer=)
+
+```
+`∞∧, ƛ⍎!
+```
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%60%E2%88%9E%E2%88%A7%2C%20%C6%9B%E2%8D%8E!&inputs=&header=&footer=)
+
+The above program uses dictionary compression: words in a predefined list are indexed using a subjective base-162 literal.
+
+```
+kH
+```
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=kH&inputs=&header=&footer=)
+
+### Fizzbuzz
+
+```
+Ĥƛ3œı⇿⌊*n5œıₛÔ*+⟇
+```
+[Try it Online!](http://lyxal.pythonanywhere.com/?flags=jM&code=%C4%A4%C6%9B3%C5%93%C4%B1%E2%87%BF%E2%8C%8A*n5%C5%93%C4%B1%E2%82%9B%C3%94*%2B%E2%9F%87&inputs=&header=&footer=)
+[Explanation](https://codegolf.stackexchange.com/a/210307/78850)
+
+### Prime Checking
+
+```
+æ
+```
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%C3%A6&inputs=31&header=&footer=)
+
+
+```
+KL2=
+```
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=KL2%3D&inputs=10&header=&footer=)
+
+## Links
+
+- [Repository](https://github.com/Lyxal/Vyxal)
+- [Online Interpreter](http://lyxal.pythonanywhere.com)
+- [Tutorial](https://github.com/Lyxal/Vyxal/blob/master/docs/Tutorial.md)
+- [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
+- [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
