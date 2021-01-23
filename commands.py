@@ -12,6 +12,7 @@ command_dict = {
     "-": ("rhs, lhs = pop(stack, 2); stack.append(subtract(lhs, rhs))", 2),
     "/": ("rhs, lhs = pop(stack, 2); stack.append(divide(lhs, rhs))", 2),
     ":": ("temp = deref(pop(stack)); stack += [temp]*2", 1),
+    "_": ("pop(stack)", 1),
     "<": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.LESS_THAN))", 2),
     ">": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN))", 2),
     "=": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.EQUALS))", 2),
