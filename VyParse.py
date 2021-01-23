@@ -164,7 +164,26 @@ def group_strings(program):
 
     return out
 
+def group_two_bytes(code):
+    # To be called after group_strings
+    ret = []
+    temp = ""
 
+    TWO_BYTE_DELIMS = "∆øÞ"
+
+    for item in code:
+        if type(item) is list:
+            ret.append(item)
+
+        if temp:
+            ret.append(temp + item)
+            temp = ""
+        elif item in TWO_BYTE_DELIMS:
+            temp = item
+        else:
+            ret.append(item)
+
+    return ret
 
 
 def Tokenise(source: str) -> [Token]:
@@ -182,7 +201,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        # print(char, structure, structure_data, escaped, nest_level)
+        print(char, structure, structure_data, escaped, nest_level)
 
         if comment:
             if char == "\n":
@@ -269,11 +288,11 @@ def Tokenise(source: str) -> [Token]:
 
         elif structure in TWO_CHARS:
             if len(structure_data[active_key]) == 1:
-                tokens.append(Token(structure, structure_data[active_key] + char))
+                tokens.append(Token(structure, structure_data[active_key][0] + char))
                 structure = NO_STMT
                 structure_data = {}
             else:
-                structure_data[active_key] = char
+                structure_data[active_key] = [char]
             continue
 
 
@@ -484,7 +503,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["`abc"]
+    tests = ["₌Þm+", "₌+-"]
     for test in tests:
-        print([(n[0], n[1]) for n in Tokenise(group_strings(test))])
+        print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
