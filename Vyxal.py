@@ -1068,7 +1068,14 @@ constants = {
     "N": "[dt.now().hour, dt.now().minute, dt.now().second]",
     "Ð": "date.today().strftime('%d/%m/%Y')",
     "Ḋ": "date.today().strftime('%m/%d/%y')",
-    "ð": "[date.today().day, date.today().month, date.today().year]"
+    "ð": "[date.today().day, date.today().month, date.today().year]",
+    "β": "{}[]<>()",
+    "Ḇ": "()[]{}",
+    "ß": "()[]",
+    "ƀ": "([{",
+    "Ɓ": ")]}",
+    "ʗ": "([{<",
+    "⊐": ")]}>"
 }
 
 def VY_compile(source, header=""):
