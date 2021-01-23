@@ -71,7 +71,7 @@ h       a      |a[0]
 i       a,b    |a[b]
 j       a,b    |a.join(b)
 k       a      |* push the constant at the next char k<char>
-l              |[]
+l       a,b    |nwise_group(a, b)
 m       a      |a + a[::-1]
 n              |* contextual variable
 o       a,b    |a.replace(b, '') # same as a b❝V
@@ -80,7 +80,7 @@ q       a      |"`" + a + "`"
 r       a,b    |range(a, b)
 s       a      |sorted(a)
 t       a      |a[-1]
-u       a      |sorted(uniquified(a)) #same as US (lol)
+u              |-1
 v              |* vectorise the next command
 w       a      |[a]
 x              |* context level down
@@ -94,9 +94,9 @@ z       a,f    |zipmap the contents of a with function f
 ƛ              |* start a mapping lambda
 ¬       a      |not a
 ∧       a,b    |a and b (logical)
-⟑       a,b    |a and b (short-circuited)
+⟑       a,b    |b and a
 ∨       a,b    |a or b (logical)
-⟇       a,b    |a or b (short-circuited)
+⟇       a,b    |b or a
 ÷       a      |item_split(a)
 «              |* base 255 string
 »              |* base 255 number
