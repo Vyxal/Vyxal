@@ -201,7 +201,7 @@ def Tokenise(source: str) -> [Token]:
 
 
     for char in source:
-        print(char, structure, structure_data, escaped, nest_level)
+        # print(char, structure, structure_data, escaped, nest_level)
 
         if comment:
             if char == "\n":
