@@ -118,13 +118,14 @@ class Generator:
     def _filter(self, function):
         return filter(None, self._map(function))
     def _reduce(self, function):
+        import copy
         def ensure_singleton(function, left, right):
             function_name = function.__name__
             if function_name.startswith("FN_"):
                 return function([left, right])[-1]
             else:
                 return function(left, right)
-        return functools.reduce(lambda x, y: ensure_singleton(function, x, y), self.gen)
+        return functools.reduce(lambda x, y: ensure_singleton(function, x, y), self._dereference())
     def _dereference(self):
         '''
         Only call this when it is absolutely neccesary to convert to a list.
@@ -1280,6 +1281,8 @@ def execute(code, flags, inputs, output_variable):
         inputs = [inputs]
 
     if flags:
+        if 'H' in flags:
+            stack = [100]
         if "M" in flags:
             MAP_START = 1
 
@@ -1327,6 +1330,8 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         flags = sys.argv[2]
         if flags:
+            if 'H' in flags:
+                stack = [100]
             if 'f' in flags:
                 inputs = list(map(VY_eval, open(sys.argv[3]).readlines()))
             else:
