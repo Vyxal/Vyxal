@@ -490,6 +490,16 @@ def indexes_where(fn, vector):
         if fn(vector[i]):
             ret.append(i)
     return ret
+def infinite_replace(haystack, needle, replacement):
+    import copy
+    loop = True
+    prev = copy.deepcopy(haystack)
+    while loop: # I intentionally used a post-test loop here to avoid making more calls to replace than neccesary
+        haystack = replace(haystack, needle, replacement)
+        loop = haystack != prev
+        prev = copy.deepcopy(haystack)
+
+    return haystack
 def inserted(vector, item, index):
     vector = iterable(vector, range)
     t_vector = type(vector)
@@ -1241,7 +1251,9 @@ else:
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)})"
         elif NAME == VyParse.TWO_BYTE_MATH:
-            compiled += commands.math_command_dict.get(VALUE, "\n\n")[0]
+            compiled += commands.math_command_dict.get(VALUE, "  ")[0]
+        elif NAME == VyParse.TWO_BYTE_STRING:
+            compiled += commands.string_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding

@@ -216,3 +216,8 @@ math_command_dict = {
     "Q": ("coeff_b, coeff_c = pop(stack, 2); stack.append(polynomial([1, coeff_b, coeff_c]))", 2),
     "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff));", 1)
 }
+
+string_command_dict = {
+    "o": ("needle, haystack = pop(stack, 2); stack.append(infinite_replace(haystack, needle, ''))", 2),
+    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3)
+}

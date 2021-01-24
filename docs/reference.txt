@@ -51,7 +51,7 @@ R       a,f    |reduce a by function f
 S       a      |str(a)
 T       a      |[_ for _ in a if bool(_)]
 U       a      |uniquify(a)
-V       a,b,c  |a.replace()
+V       a,b,c  |a.replace(b, c)
 W              |* wrap the entire stack into a single list
 X              |* context level up
 Y       a,b    |interleave(x, y)
