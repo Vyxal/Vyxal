@@ -531,7 +531,7 @@ def integer_list(string):
     return ret
 def interleave(lhs, rhs):
     ret = []
-    for i in range(min(len(rhs), len(rhs))):
+    for i in range(min(len(lhs), len(rhs))):
         ret.append(lhs[i])
         ret.append(rhs[i])
     if len(lhs) != len(rhs):
