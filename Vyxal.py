@@ -113,10 +113,16 @@ class Generator:
     def __iter__(self):
         return iter(self.gen)
     def _map(self, function):
-        self.gen = map(lambda x: function([x])[-1], self.gen)
-        return self
+        return Generator(map(lambda x: function([x])[-1], self.gen))
     def _filter(self, function):
-        return filter(None, self._map(function))
+        index = 0
+        while index < self.__len__():
+            obj = self[index]
+            ret = _safe_apply(function, [obj])[-1][-1]
+            if ret:
+                yield obj
+            index += 1
+        return self
     def _reduce(self, function):
         import copy
         def ensure_singleton(function, left, right):
@@ -908,7 +914,7 @@ def VY_filter(fn, vector):
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     elif t_vector is Generator:
-        return vector._filter(fn)
+        return Generator(vector._filter(fn))
     else:
         ret = []
         for item in vector:
