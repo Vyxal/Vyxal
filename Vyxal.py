@@ -420,7 +420,7 @@ def format_string(string, items):
         if string[index] == "\\":
             ret += "\\" + string[index + 1]
             index += 1
-        elif string[index] == "¢":
+        elif string[index] == "%":
             #print(f_index, f_index % len(items))
             ret += str(items[f_index % len(items)])
             f_index += 1
@@ -608,7 +608,7 @@ def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
         (Number, Number): lambda: lhs * rhs,
-        (str, str): lambda: "".join(["".join(x) for x in VY_zip(lhs, rhs)]),
+        (str, str): lambda: [lx + rhs for x in lhs],
         (str, Number): lambda: lhs * rhs,
         (Number, str): lambda: lhs * rhs,
         (list, types[1]): lambda: [multiply(item, rhs) for item in lhs],
@@ -1009,8 +1009,8 @@ def VY_type(item):
     return ty
 def VY_zip(lhs, rhs):
     ind = 0
-    if type(lhs) is list: lhs = iter(lhs)
-    if type(rhs) is list: rhs = iter(rhs)
+    if type(lhs) in [list, str]: lhs = iter(lhs)
+    if type(rhs) in [list, str]: rhs = iter(rhs)
     while True:
         exhausted = 0
         try:
@@ -1281,6 +1281,11 @@ else:
             compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
             compiled += tab("return stack") + NEWLINE
             compiled += "stack.append(_para_lambda(temp_stack)[-1])"
+        elif NAME == VyParse.REGISTER_MODIFIER:
+            compiled += "stack.append(register)" + NEWLINE
+            compiled += commands.command_dict["$"][0] + NEWLINE
+            compiled += VY_compile(VALUE)
+            compiled += "register = pop(stack)"
         compiled += NEWLINE
     return header + compiled
 

@@ -13,11 +13,6 @@ Pushes the length of the entire stack.
 ! ! !   ║ ⟨0|1|2⟩
 ```
 
-## Justification
-
-Finding the length of the whole stack is a core feature of most practical stack based
-languages, hence it's inclusion in Vyxal.
-
 ## Alternate Representations
 
-- `W:L&÷&`
+- `W:L£÷¥`

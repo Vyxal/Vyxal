@@ -48,7 +48,7 @@ TWO_CHAR_STUFF = "two_char_data_idk"
 ONE = "one"
 TWO = "two"
 
-ONE_CHARS = "kv․∆øªÞ"
+ONE_CHARS = "kv․∆øªÞ&"
 TWO_CHARS = "₌"
 
 CONSTANT_CHAR = "k"
@@ -60,6 +60,7 @@ TWO_BYTE_MATH = "∆"
 TWO_BYTE_STRING = "ø"
 TWO_BYTE_LIST = "Þ"
 STRING_DELIMITER = "`"
+REGISTER_MODIFIER = "&"
 
 PARA_APPLY = "₌"
 
@@ -174,6 +175,7 @@ def group_two_bytes(code):
     for item in code:
         if type(item) is list:
             ret.append(item)
+            continue
 
         if temp:
             ret.append(temp + item)
@@ -503,7 +505,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["₌Þm+", "₌+-"]
+    tests = ["`abc`"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

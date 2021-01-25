@@ -1,23 +1,28 @@
 # `character` - action
 
-Description 
+- Arity:
+- In:
+- Out:
 
-    Usage
+Description
 
-## Justification
+# Usage
+```
+║⟨⟩
+║⟨⟩
+║⟨⟩
+```
 
-(By challenges)
-### `tag`
+# Cohesion
 
-- challenge
-- challenge
-- challenge
-- challenge
-- challenge
+|a v          b >| Number | String | List/Generator |
+|----------------|--------|--------|----------------|
+| Number         |        |        |                |
+| String         |        |        |                |
+| List/Generator |        |        |                |
 
-(By commonality) 
+# Alternate Representations
 
-- other language
-- other language 
-- other language
-- other language
+...
+
+# Syntax
