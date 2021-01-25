@@ -116,13 +116,15 @@ class Generator:
         return Generator(map(lambda x: function([x])[-1], self.gen))
     def _filter(self, function):
         index = 0
-        while index < self.__len__():
-            obj = self[index]
+        l = self.__len__()
+        while True:
+            if index == l:
+                break
+            obj = self.__getitem__(index)
             ret = _safe_apply(function, [obj])[-1][-1]
             if ret:
                 yield obj
             index += 1
-        return self
     def _reduce(self, function):
         import copy
         def ensure_singleton(function, left, right):
