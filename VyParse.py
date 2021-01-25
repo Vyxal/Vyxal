@@ -155,8 +155,14 @@ def group_strings(program):
                 flux_string[1] += char
             else:
                 flux_string[1] += char
+        elif escaped:
+            escaped = False
+            out.append(char)
         elif char == STRING_DELIMITER:
             flux_string[0] = True
+        elif char == "\\":
+            escaped = True
+            out.append(char)
         else:
             out.append(char)
 
@@ -169,15 +175,21 @@ def group_two_bytes(code):
     # To be called after group_strings
     ret = []
     temp = ""
+    escaped = False
 
     TWO_BYTE_DELIMS = "∆øÞ"
 
     for item in code:
         if type(item) is list:
             ret.append(item)
-            continue
 
-        if temp:
+        elif escaped:
+            escaped = False
+            ret.append(item)
+        elif item == "\\":
+            escaped = True
+            ret.append(item)
+        elif temp:
             ret.append(temp + item)
             temp = ""
         elif item in TWO_BYTE_DELIMS:
@@ -505,7 +517,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["`abc`"]
+    tests = ["\\∆m∆m\\\\∆m"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
