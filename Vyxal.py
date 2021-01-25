@@ -275,7 +275,6 @@ def chrord(item):
 def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
     types = tuple(map(VY_type, [lhs, rhs]))
-
     boolean =  {
         types: lambda lhs, rhs: eval(f"lhs {op} rhs"),
         (Number, str): lambda lhs, rhs: eval(f"str(lhs) {op} rhs"),
@@ -288,7 +287,11 @@ def compare(lhs, rhs, mode):
         (Generator, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs)))
     }[types](lhs, rhs)
 
-    return 1 if boolean else 0
+    if type(boolean) is bool:
+        return int(boolean)
+    else:
+        return boolean
+
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -924,7 +927,7 @@ def VY_int(item, base=10):
         return ret
     elif t_item is not str:
         return int(item)
-    else:
+    elif t_item:
         return int(item, base)
 def VY_map(fn, vector):
     ret = []
