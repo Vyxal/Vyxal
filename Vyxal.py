@@ -128,11 +128,10 @@ class Generator:
     def _reduce(self, function):
         import copy
         def ensure_singleton(function, left, right):
-            function_name = function.__name__
-            if function_name.startswith("FN_"):
-                return function([left, right])[-1]
-            else:
-                return function(left, right)
+            ret = _safe_apply(function, left, right)
+            if type(ret) in [Generator, list]:
+                return ret[-1]
+            return ret
         return functools.reduce(lambda x, y: ensure_singleton(function, x, y), self._dereference())
     def _dereference(self):
         '''
