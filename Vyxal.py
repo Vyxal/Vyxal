@@ -197,8 +197,8 @@ def add(lhs, rhs):
     return {
         (Number, Number): lambda: lhs + rhs,
         (str, str): lambda: lhs + rhs,
-        (str, Number): lambda: lhs.rjust(rhs),
-        (Number, str): lambda: rhs.ljust(lhs),
+        (str, Number): lambda: str(lhs) + str(rhs),
+        (Number, str): lambda: str(lhs) + str(rhs),
         (list, types[1]): lambda: [add(item, rhs) for item in lhs],
         (types[0], list): lambda: [add(lhs, item) for item in rhs],
         (list, list): lambda: list(map(lambda x: add(*x), VY_zip(lhs, rhs))),
