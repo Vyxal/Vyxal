@@ -166,10 +166,29 @@ Where:
 
 If `n` isn't present, no items will be popped from the stack, consequently making the function a niladic function.
 
+## Lambdas
+```
+λarity|code;
+λcode;
+```
+
+`arity` = the number of arguments popped from the stack to use as arguments
+`code` = the body of the lambda.
+Where the `@...;` function stores the definition for infinite re-use, the lambda pushes a reference to the code inside it. This is similar to python's lambdas, which are temporary functions, or literal functions (for lack of better word).
+
+These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in 9. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
+
+## Summary of Structures
+
 - ![https://i.stack.imgur.com/um1Ve.jpg](https://i.stack.imgur.com/um1Ve.jpg)
 
 - ![https://i.stack.imgur.com/RGBWe.jpg](https://i.stack.imgur.com/RGBWe.jpg)
 
 - ![https://i.stack.imgur.com/GfSVK.jpg](https://i.stack.imgur.com/GfSVK.jpg)
 
+## The Context Variable
+
+One last thing to cover is the special context variable - a variable that pushes a value based on the _context_ of the current structure/scope. In a for-loop, the context variable is the current iteration value. In a function/lambda, the context variable is the arguments passed. In a while-loop, the context variable is the result of the condition.
+
+When there are nested contexts (for example, a for-loop in a lambda), the different values of the contexts can be accessed by modifying the contextual depth of `n`. Contextual depth starts at level `0` (the top-most context level) and spans all the way to the inner-most context (the bottom-most context level).  By default, `n` has the contextual depth of the inner-most structure. `X` moves the context level deeper (`+1`) and `x` moves the context level shallower (`-1`).
 
