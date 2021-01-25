@@ -121,7 +121,7 @@ class Generator:
             if index == l:
                 break
             obj = self.__getitem__(index)
-            ret = _safe_apply(function, [obj])[-1][-1]
+            ret = _safe_apply(function, obj)[-1]
             if ret:
                 yield obj
             index += 1
@@ -543,6 +543,8 @@ def interleave(lhs, rhs):
             ret += list(lhs[i + 1:])
     return ret
 def is_prime(n):
+    if type(n) is str: return False
+    if type(n) in [list, Generator]: return vectorise(is_prime, n)
     if n % 2 == 0 and n > 2:
         return False
     return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
