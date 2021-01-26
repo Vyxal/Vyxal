@@ -189,7 +189,6 @@ def _safe_apply(function, *args):
 def _two_argument(function, lhs, rhs):
     if function.__name__ == "_lambda":
         return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
-    print(lhs, rhs)
     return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
