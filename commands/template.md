@@ -24,5 +24,3 @@ Description
 # Alternate Representations
 
 ...
-
-# Syntax

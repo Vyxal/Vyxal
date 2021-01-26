@@ -54,6 +54,7 @@ def uncompress(s):
             if char not in encoding.compression:
                 final += "\\"
             final += char
+            escaped = False
             continue
 
         elif char == "\\":

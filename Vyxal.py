@@ -366,6 +366,11 @@ def divisors_of(item):
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
+    if types == (str, str):
+        pobj = regex.compile(lhs)
+        mobj = pobj.match(rhs)
+        return list(mobj.span()) if mobj else []
+
     return {
         (Number, Number): lambda: lhs ** rhs,
         (str, Number): lambda: lhs * int(rhs),
