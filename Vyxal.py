@@ -98,6 +98,8 @@ class Generator:
     def __getitem__(self, position):
         if type(position) is slice:
             return list(self.gen)[position]
+        if position < 0:
+            return list(self.gen)[position]
         if position < len(self.generated):
             return self.generated[position]
         while len(self.generated) < position + 1:
@@ -182,6 +184,7 @@ class ShiftDirections:
 # Helper functions
 def _safe_apply(function, *args):
     if function.__name__ == "_lambda":
+
         return function(list(args), len(args))
     elif function.__name__.startswith("FN_"):
         return function(list(args))
@@ -642,10 +645,17 @@ def nwise_pair(lhs, rhs):
 
     return Generator(zip(*iters))
 def orderless_range(lhs, rhs, lift_factor=0):
-    if lhs < rhs:
-        return Generator(range(lhs, rhs + lift_factor))
+    if (VY_type(lhs), VY_type(rhs)) == (Number, Number):
+        if lhs < rhs:
+            return Generator(range(lhs, rhs + lift_factor))
+        else:
+            return Generator(range(lhs, rhs + lift_factor, -1))
     else:
-        return Generator(range(lhs, rhs + lift_factor, -1))
+        lhs, rhs = VY_str(lhs), VY_str(rhs)
+        import regex
+        pobj = regex.compile(lhs)
+        mobj = pobj.match(rhs)
+        return int(bool(mobj.span()))
 def partition(item):
     # https://stackoverflow.com/a/44209393/9363594
     yield [n]
@@ -1259,11 +1269,11 @@ else:
             compiled += VY_compile("λ" + VALUE + ";") + NEWLINE
             m = commands.command_dict.get(VALUE, "\n\n")[1]
             if m == 0:
-                compiled += "fn = pop(stack); stack += fn(stack))"
+                compiled += "fn = pop(stack); stack += fn(stack)"
             elif m == 1:
                 compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack)))"
             elif m == 2:
-                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
+                compiled += "fn = pop(stack); lhs, rhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)})"
         elif NAME == VyParse.TWO_BYTE_MATH:
