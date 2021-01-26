@@ -693,7 +693,7 @@ def product(vector):
 def remove(vector, item):
     return {
         str: lambda: vector.replace(str(item), ""),
-        Number: lambda: str(vector).replace(str(item)),
+        Number: lambda: str(vector).replace(str(item), ""),
         list: lambda: Generator(filter(lambda x: x != item, vector)),
         Generator: lambda: remove(vector._dereference(), item)
     }[VY_type(vector)]()
