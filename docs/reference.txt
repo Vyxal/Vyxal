@@ -64,7 +64,7 @@ a       a      |any(a)
 b       a      |bin(a) #base 10 to binary
 c       a,b    |a in b (non-vectorising)
 d       a      |a * 2
-e       a,b    |a ^ b (exponation)
+e       a,b    |a ^ b (exponentiation)
 f       a      |flattened(a)
 g       a      |min(a) # min of iterable
 h       a      |a[0]
@@ -93,9 +93,9 @@ z       a,f    |zipmap the contents of a with function f
 λ              |* start a lambda
 ƛ              |* start a mapping lambda
 ¬       a      |not a
-∧       a,b    |a and b (logical)
+∧       a,b    |a and b
 ⟑       a,b    |b and a
-∨       a,b    |a or b (logical)
+∨       a,b    |a or b 
 ⟇       a,b    |b or a
 ÷       a      |item_split(a)
 «              |* base 255 string
