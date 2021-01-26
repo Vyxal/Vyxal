@@ -53,7 +53,7 @@ T       a      |[_ for _ in a if bool(_)]
 U       a      |uniquify(a)
 V       a,b,c  |a.replace(b, c)
 W              |* wrap the entire stack into a single list
-X              |* context level up
+X              |* context level down (+1)
 Y       a,b    |interleave(x, y)
 Z       a,b    |zip(x, y)
 [              |* if statement
@@ -83,7 +83,7 @@ t       a      |a[-1]
 u              |-1
 v              |* vectorise the next command
 w       a      |[a]
-x              |* context level down
+x              |* context level up (-1)
 y       a      |uninterleave(a)
 z       a,f    |zipmap the contents of a with function f
 {              |* open while loop
@@ -258,3 +258,5 @@ z       a,f    |zipmap the contents of a with function f
 ∆q     a,b     |roots of quadratic ax^2 + bx = 0
 ∆Q     a,b     |roots of quadratic x^2 + ax + b = 0
 ∆P     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
+øo     a,b     |a.remove_until_no_change(b)
+øV     a,b,c   |a.replace_until_no_change(b, c)

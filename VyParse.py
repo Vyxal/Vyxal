@@ -292,10 +292,7 @@ def Tokenise(source: str) -> [Token]:
             continue
 
         elif structure in ONE_CHARS:
-            if structure == ONE_CHAR_FUNCTION_REFERENCE:
-                this_token = Token(LAMBDA_STMT, {LAMBDA_BODY: char})
-            else:
-                this_token = Token(structure, char)
+            this_token = Token(structure, char)
             tokens.append(this_token)
             structure = NO_STMT
             continue
@@ -517,7 +514,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["`\\d+`"]
+    tests = ["․+"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

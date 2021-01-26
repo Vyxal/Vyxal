@@ -547,6 +547,7 @@ def interleave(lhs, rhs):
             ret += list(rhs[i + 1:])
         else:
             ret += list(lhs[i + 1:])
+    if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
 def is_prime(n):
     if type(n) is str: return False
@@ -847,8 +848,10 @@ def truthy_indexes(vector):
 def uninterleave(item):
     left, right = [], []
     for i in range(len(item)):
-        if i % 2: left.append(item[i])
+        if i % 2 == 0: left.append(item[i])
         else: right.append(item[i])
+    if type(item) is str:
+        return ["".join(left), "".join(right)]
     return [left, right]
 uniquify = lambda item: list(dict.fromkeys(iterable(item)))
 def vectorise(fn, left, right=None):
@@ -1312,6 +1315,8 @@ else:
             compiled += commands.command_dict["$"][0] + NEWLINE
             compiled += VY_compile(VALUE)
             compiled += "register = pop(stack)"
+        elif NAME == VyParse.ONE_CHAR_FUNCTION_REFERENCE:
+            compiled += VY_compile("λ" + str(commands.command_dict[VALUE][1]) + "|" + VALUE)
         compiled += NEWLINE
     return header + compiled
 
