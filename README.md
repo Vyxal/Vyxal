@@ -164,3 +164,10 @@ KL2=
 - [Tutorial](https://github.com/Lyxal/Vyxal/blob/master/docs/Tutorial.md)
 - [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
 - [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
+
+## Very Special Contributors
+
+- Massive thanks to @Razetime for helping me with the online interpreter's design
+- Massive thanks to @ysthakur for making the reference.md file and making an automated process to do so.
+- Massive thanks to code-golf se user @2x-1 for helping me establish the fundamentals of Vyxal and being my first collaborator on this journey.
+- Massive thanks to @8dion8 for language suggestions and motivation in the MAWP discord group. 
