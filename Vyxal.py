@@ -1114,7 +1114,11 @@ constants = {
     "ƀ": "'([{'",
     "Ɓ": "')]}'",
     "ʗ": "'([{<'",
-    "⊐": "')]}>'"
+    "⊐": "')]}>'",
+    "v": "aeiou",
+    "V": "AEIOU",
+    "∨": "aeiouAEIOU",
+    "⟇": "commands.codepage"
 }
 
 def VY_compile(source, header=""):
