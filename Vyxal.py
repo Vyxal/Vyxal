@@ -1115,9 +1115,9 @@ constants = {
     "Ɓ": "')]}'",
     "ʗ": "'([{<'",
     "⊐": "')]}>'",
-    "v": "aeiou",
-    "V": "AEIOU",
-    "∨": "aeiouAEIOU",
+    "v": "'aeiou'",
+    "V": "'AEIOU'",
+    "∨": "'aeiouAEIOU'",
     "⟇": "commands.codepage"
 }
 
