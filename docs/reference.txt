@@ -101,7 +101,7 @@ z       a,f    |zipmap the contents of a with function f
 «              |* base 255 string
 »              |* base 255 number
 °              |* function reference
-•              |* decimal separator
+•       a,b    |log(a, base=b)
 ․              |* function reference of a built-in
 ⍎       a      |* call function a
 Ṛ       a,b    |random.randint(a,b)
