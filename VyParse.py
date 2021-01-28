@@ -469,8 +469,11 @@ def Tokenise(source: str) -> [Token]:
                 tokens.append(Token(VECTORISATION_CHAR, char))
                 vectorisation = False
             else:
-                this_token = Token(NO_STMT, char)
-                tokens.append(this_token)
+                if len(char) == 2:
+                    tokens.append(Token(char[0], char[1]))
+                else:
+                    this_token = Token(NO_STMT, char)
+                    tokens.append(this_token)
 
 
 
@@ -514,7 +517,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["․+"]
+    tests = ["v∆c"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

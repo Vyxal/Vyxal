@@ -596,6 +596,32 @@ def join(lhs, rhs):
         (Generator, list): lambda: lhs._dereference() + rhs,
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }[types]()
+def log(lhs, rhs):
+    types = (VY_type(lhs), VY_type(rhs))
+    if types == (str, str):
+        ret = ""
+        for i in range(min(len(lhs), len(rhs))):
+            if rhs[i].isupper():
+                ret += lhs[i].upper()
+            elif rhs[i].islower():
+                ret += lhs[i].lower()
+            else:
+                ret += lhs[i]
+
+        if len(lhs) > len(rhs):
+            ret += lhs[i + 1:]
+
+        return ret
+    
+    return {
+        (Number, Number): lambda: math.log(lhs, rhs),
+        (str, Number): lambda: "".join([c * rhs for c in lhs]),
+        (Number, str): lambda: "".join([c * lhs for c in rhs]),
+        (list, list): lambda: mold(lhs, rhs),
+        (list, Generator): lambda: mold(lhs, list(rhs)),
+        (Generator, list): lambda: mold(list(lhs), rhs),
+        (Generator, Generator): lambda: mold(list(lhs), list(rhs)) #There's a chance molding raw generators won't work
+    }.get(types, lambda: vectorise(log, lhs, rhs))()
 def lshift(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
@@ -624,6 +650,16 @@ def modulo(lhs, rhs):
         (Generator, list): lambda: _two_argument(modulo, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(modulo, lhs, rhs)
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
+def mold(content, shape):
+    #https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
+    for index in range(len(shape)):
+        if type(shape[index]) == list:
+            mold(content, shape[index])
+        else:
+            item = content.pop(0)
+            shape[index] = item
+            content.append(item)
+    return shape
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
@@ -1305,7 +1341,7 @@ else:
             import utilities, encoding
             string = utilities.to_ten(VALUE[VyParse.COMPRESSED_STRING_VALUE],
              encoding.codepage_string_compress)
-            string = utilities.from_ten(string, utilities.base53alphabet)
+            string = utilities.from_ten(string, utilities.base27alphabet)
             compiled += f"stack.append('{string}')" + NEWLINE
         elif NAME == VyParse.PARA_APPLY:
             compiled += "temp_stack = stack[::]" + NEWLINE

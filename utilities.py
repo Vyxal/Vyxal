@@ -82,7 +82,7 @@ def uncompress(s):
 
 
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
-base27alphabet = "etaoinshrdlcumwfgypbvkjxqz "
+base27alphabet = "¡etaoinshrdlcumwfgypbvkjxqz "
 
 
 if __name__ == "__main__":
@@ -100,11 +100,11 @@ if __name__ == "__main__":
                     out = ""
                     for char in word:
                         out += charmap.get(char, "")
-                    c = from_ten(to_ten(out, base53alphabet), encoding.codepage_string_compress)
+                    c = from_ten(to_ten(out, base27alphabet), encoding.codepage_string_compress)
                     print("«" + c + "«ũ")
                     print()
                     print(repr(c))
                 else:
-                    print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")
+                    print("«" + from_ten(to_ten(word, base27alphabet), encoding.codepage_string_compress) + "«")
             except:
-                    print("«" + from_ten(to_ten(word, base53alphabet), encoding.codepage_string_compress) + "«")
+                    print("«" + from_ten(to_ten(word, base27alphabet), encoding.codepage_string_compress) + "«")

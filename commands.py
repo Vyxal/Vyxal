@@ -74,6 +74,7 @@ command_dict = {
     "∨": ("rhs, lhs = pop(stack, 2); stack.append(lhs or rhs)", 2),
     "⟇": ("rhs, lhs = pop(stack, 2); stack.append(rhs or lhs)", 2),
     "÷": ("for item in iterable(pop(stack)): stack.append(item)", 1),
+    "•": ("rhs, lhs = pop(stack, 2); stack.append(log(lhs, rhs))", 2),
     "⍎": ("fn = pop(stack); stack += fn(stack)", 1),
     "Ṛ": ("rhs, lhs = pop(stack, 2); stack.append(random.randint(lhs, rhs))", 2),
     "Ï": ("rhs, lhs = pop(stack, 2); stack.append(iterable(lhs).find(rhs))", 2),
@@ -219,5 +220,7 @@ math_command_dict = {
 
 string_command_dict = {
     "o": ("needle, haystack = pop(stack, 2); stack.append(infinite_replace(haystack, needle, ''))", 2),
-    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3)
+    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
+    "c": ("string = pop(stack); stack.append('«' + utilities.from_ten(utilities.to_ten(string, utilities.base27alphabet), encoding.codepage_string_compress) + '«')", 1),
+    "C": ("number = pop(stack); stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')", 1)
 }
