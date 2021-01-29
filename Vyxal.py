@@ -139,7 +139,6 @@ class Generator:
         '''
         Only call this when it is absolutely neccesary to convert to a list.
         '''
-        self.gen = list(self.gen)
         d = list(self.gen)
         self.gen = iter(d[::])
         return d
@@ -177,6 +176,9 @@ class Generator:
                     print("|" + str(item), end="")
     def zip_with(self, other):
         return Generator(zip(self.gen, iter(other)))
+    def safe(self):
+        import copy
+        return copy.deepcopy(self)
 class ShiftDirections:
     LEFT = 1
     RIGHT = 2
@@ -893,12 +895,13 @@ uniquify = lambda item: list(dict.fromkeys(iterable(item)))
 def vectorise(fn, left, right=None):
     if right:
         types = (VY_type(left), VY_type(right))
+        if types == (Generator, Generator):
+            return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
         return {
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
             (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x)),
-            (Generator, Generator): lambda: left._map(lambda x: _safe_apply(fn, x, right))
         }[types]()
     else:
         if VY_type(left) is Generator:
