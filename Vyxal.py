@@ -1324,7 +1324,7 @@ else:
             elif m == 2:
                 compiled += "fn = pop(stack); lhs, rhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
         elif NAME == VyParse.CODEPAGE_INDEX:
-            compiled += f"stack.append({commands.codepage.find(VALUE)})"
+            compiled += f"stack.append({commands.codepage.find(VALUE)} + 101)"
         elif NAME == VyParse.TWO_BYTE_MATH:
             compiled += commands.math_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.TWO_BYTE_STRING:
