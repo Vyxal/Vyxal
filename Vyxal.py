@@ -716,7 +716,7 @@ def pop(vector, num=1, wrap=False):
             ret.append(get_input())
 
     if retain_items:
-        vector += ret
+        vector += ret[::-1]
     if num == 1 and not wrap:
         return ret[0]
     return ret
