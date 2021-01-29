@@ -8,7 +8,7 @@ cmd  |  stack   |out/*effect
 | ' |              |* rotate entire stack left
 | ( |              |* open a for loop: (variable|code)
 | ) |              |* close a for loop
-| \* |       a,b    |a * b
+| \*|       a,b    |a * b
 | + |       a,b    |a + b
 | , |       a      |print(a)
 | - |       a,b    |a - b
@@ -26,9 +26,9 @@ cmd  |  stack   |out/*effect
 | 9 |              |* integer literal
 | : |       a      |a,a
 | ; |              |* end a structure
-| \< |       a,b    |a < b
+| \<|       a,b    |a < b
 | = |       a,b    |a == b (non-vectorising)
-| \> |       a,b    |a > b
+| \>|       a,b    |a > b
 | ? |              |* take input from either cmd line or stdin, whichever is first
 | @ |              |* define / call a function
 | A |       a      |all(a)
@@ -54,13 +54,13 @@ cmd  |  stack   |out/*effect
 | U |       a      |uniquify(a)
 | V |       a,b,c  |a.replace(b, c)
 | W |              |* wrap the entire stack into a single list
-| X |              |* context level up
+| X |              |* context level down (+1)
 | Y |       a,b    |interleave(x, y)
 | Z |       a,b    |zip(x, y)
 | [ |              |* if statement
-| \\ |              |* one char string
+| \\|              |* one char string
 | ] |              |* close if statement
-| ` |              |* string delimiter
+| \`|              |* string delimiter
 | a |       a      |any(a)
 | b |       a      |bin(a) #base 10 to binary
 | c |       a,b    |a in b (non-vectorising)
@@ -84,25 +84,25 @@ cmd  |  stack   |out/*effect
 | u |              |-1
 | v |              |* vectorise the next command
 | w |       a      |[a]
-| x |              |* context level down
+| x |              |* context level up (-1)
 | y |       a      |uninterleave(a)
 | z |       a,f    |zipmap the contents of a with function f
 | { |              |* open while loop
 | \| |              |* structure branch
 | } |              |* close while loop
-| ~ |              |random.randint(-INT, INT)
+| ~ |              |* perform next operation without popping anything
 | λ |              |* start a lambda
 | ƛ |              |* start a mapping lambda
 | ¬ |       a      |not a
 | ∧ |       a,b    |a and b
 | ⟑ |       a,b    |b and a
-| ∨ |       a,b    |a or b 
+| ∨ |       a,b    |a or b
 | ⟇ |       a,b    |b or a
 | ÷ |       a      |item_split(a)
 | « |              |* base 255 string
 | » |              |* base 255 number
 | ° |              |* function reference
-| • |              |* decimal separator
+| • |       a,b    |* multi-command
 | ․ |              |* function reference of a built-in
 | ⍎ |       a      |* call function a
 | Ṛ |       a,b    |random.randint(a,b)
@@ -259,3 +259,5 @@ cmd  |  stack   |out/*effect
 | ∆q |     a,b     |roots of quadratic ax^2 + bx = 0
 | ∆Q |     a,b     |roots of quadratic x^2 + ax + b = 0
 | ∆P |     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
+| øo |     a,b     |a.remove_until_no_change(b)
+| øV |     a,b,c   |a.replace_until_no_change(b, c)

@@ -48,6 +48,7 @@ online_version = False
 output = ""
 printed = False
 register = 0
+retain_items = False
 stack = []
 
 MAP_START = 0
@@ -714,6 +715,8 @@ def pop(vector, num=1, wrap=False):
         else:
             ret.append(get_input())
 
+    if retain_items:
+        vector += ret
     if num == 1 and not wrap:
         return ret[0]
     return ret
@@ -1236,7 +1239,7 @@ def VY_compile(source, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
-                compiled += tab("global context_level, context_values, input_level, input_values") + NEWLINE
+                compiled += tab("global context_level, context_values, input_level, input_values, retain_items") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level += 1") + NEWLINE
                 if parameter_count == 1:
@@ -1283,7 +1286,7 @@ else:
                     defined_arity = int(lambda_argument)
 
             compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
-            compiled += tab("global context_level, context_values, input_level, input_values") + NEWLINE
+            compiled += tab("global context_level, context_values, input_level, input_values, retain_items") + NEWLINE
             compiled += tab("context_level += 1;") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
@@ -1360,6 +1363,10 @@ else:
             compiled += "register = pop(stack)"
         elif NAME == VyParse.ONE_CHAR_FUNCTION_REFERENCE:
             compiled += VY_compile("λ" + str(commands.command_dict[VALUE][1]) + "|" + VALUE)
+        elif NAME == VyParse.DONT_POP:
+            compiled += "retain_items = True" + NEWLINE
+            compiled += VY_compile(VALUE) + NEWLINE
+            compiled += "retain_items = False"
         compiled += NEWLINE
     return header + compiled
 
@@ -1396,7 +1403,7 @@ def execute(code, flags, inputs, output_variable):
         if 'v' in flags:
             use_encoding = True
     input_values[0] = [inputs, 0]
-    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level\n")
+    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items\n")
     context_level = 0
     if flags and 'c' in flags:
         output[2] = code

@@ -89,7 +89,7 @@ z       a,f    |zipmap the contents of a with function f
 {              |* open while loop
 |              |* structure branch
 }              |* close while loop
-~              |random.randint(-INT, INT)
+~              |* perform next operation without popping anything
 λ              |* start a lambda
 ƛ              |* start a mapping lambda
 ¬       a      |not a
