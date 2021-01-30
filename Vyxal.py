@@ -143,38 +143,27 @@ class Generator:
         d = list(self.gen)
         self.gen = iter(d[::])
         return d
-    def _print(self):
-        global output
-        if online_version:
-            output[1] += "⟨"
-        else:
-            print("⟨", end="")
+    def _print(self, end="\n"):
+        main = self.generated
         try:
-            item = next(self.gen)
-            if online_version:
-                output[1] += str(item)
-            else:
-                print(item, end="")
+            f = next(self)
+            # If we're still going, there's stuff in main that needs printing before printing the generator
+            VY_print("⟨", end="")
+            for i in range(len(main)):
+                VY_print(main[i], end="|"*(i >= len(main)))
+            while True:
+                try:
+                    f = next(self)
+                    VY_print("|", end="")
+                    VY_print(f, end="")
+                except:
+                    break
+            VY_print("⟩", end=end)
+            
         except:
-            if online_version:
-                output[1] += "⟩"
-            else:
-                print("⟩")
-            return
-        while True:
-            try:
-                item = next(self.gen)
-            except StopIteration:
-                if online_version:
-                    output[1] += "⟩"
-                else:
-                    print("⟩")
-                break
-            else:
-                if online_version:
-                    output[1] += "|" + str(item)
-                else:
-                    print("|" + str(item), end="")
+            VY_print(main, end=end)
+        
+
     def zip_with(self, other):
         return Generator(zip(self.gen, iter(other)))
     def safe(self):
@@ -347,8 +336,8 @@ def divide(lhs, rhs):
     return {
         (Number, Number): lambda: lhs / rhs,
         (str, str): lambda: split(lhs, rhs),
-        (str, Number): lambda: wrap(lhs, rhs),
-        (Number, str): lambda: wrap(rhs, lhs),
+        (str, Number): lambda: wrap(lhs, len(lhs) // rhs),
+        (Number, str): lambda: wrap(rhs, len(rhs) // lhs),
         (list, types[1]): lambda: [divide(item, rhs) for item in lhs],
         (types[0], list): lambda: [divide(lhs, item) for item in rhs],
         (list, list): lambda: list(map(lambda x: divide(*x), VY_zip(lhs, rhs))),
@@ -398,7 +387,7 @@ def factorial(item):
 def find(haystack, needle, start=0):
     # It looks like something from 2001
     index = 0
-    if start.isnumeric():
+    if type(start) is int or (type(start) is str and start.isnumeric()):
         index = start
     while index < len(haystack):
         if haystack[index] == needle:
@@ -742,6 +731,12 @@ def product(vector):
     for item in vector[1:]:
         ret = multiply(ret, item)
     return ret
+def rand_between(lhs, rhs):
+    if type(lhs) is int and type(rhs) is int:
+        return random.randint(lhs, rhs)
+
+    else:
+        return random.choice([lhs, rhs])
 def remove(vector, item):
     return {
         str: lambda: vector.replace(str(item), ""),
@@ -1012,7 +1007,7 @@ def VY_print(item, end="\n", raw=False):
     global output
     t_item = type(item)
     if t_item is Generator:
-        item._print()
+        item._print(end)
     else:
         if raw:
             if online_version:
