@@ -351,7 +351,8 @@ def divisors_of(item):
         return vectorise(divisors_of, item)
 
     divisors = []
-
+    if t_item == str:
+        return [item[0:n] for n in range(1, len(item) + 1)]
     for value in VY_range(item, 1, 1):
         if modulo(item, value) == 0:
             divisors.append(value)
@@ -451,7 +452,7 @@ def fractionify(item):
 def gcd(vector):
     if VY_type(vector) is Generator:
         vector = vector._dereference()
-
+    
     return int(numpy.gcd.reduce(vector))
 def get_input():
     global input_level
@@ -542,11 +543,11 @@ def interleave(lhs, rhs):
     if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
 def is_prime(n):
-    if type(n) is str: return False
-    if type(n) in [list, Generator]: return vectorise(is_prime, n)
+    if type(n) is str: return int(list(set(n)) == list(n))
+    if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
     if n % 2 == 0 and n > 2:
-        return False
-    return all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2))
+        return 0
+    return int(all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2)))
 def iterable(item, t=list):
     if VY_type(item) == Number:
         if t is list:
@@ -666,6 +667,16 @@ def multiply(lhs, rhs):
         (Generator, list): lambda: _two_argument(multiply, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
+def ncr(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: math.gcd(int(lhs), int(rhs)),
+        (str, Number): lambda: iterable_shift(list(lhs), [ShiftDirections.LEFT, ShiftDirections.RIGHT][rhs > 0]),
+        (Number, str): lambda: iterable_shift(list(rhs), [ShiftDirections.LEFT, ShiftDirections.RIGHT][lhs > 0]),
+        (str, str): lambda: max(set(divisors_of(lhs)) & set(divisors_of(rhs))),
+        (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
+        (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
+    }.get(types, lambda: vectorise(ncr, lhs, rhs))()
 def nwise_pair(lhs, rhs):
     iters = itertools.tee(lhs, rhs)
     for i in range(len(iters)):
