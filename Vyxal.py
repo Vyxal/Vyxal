@@ -319,8 +319,9 @@ def deltas(vector):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
 def deref(item):
-        if type(item) not in [int, float, str]: return item[::]
-        return item
+    if VY_type(item) is Generator: return item._dereference()
+    if type(item) not in [int, float, str]: return item[::]
+    return item
 def distribute(vector, value):
     vector = iterable(vector)
     remaining = value
@@ -1018,14 +1019,21 @@ def VY_max(item, *others):
     if others:
         biggest = item
         for sub in others:
-            if compare(sub, biggest, Comparitors.GREATER_THAN):
+            res = compare(deref(sub), deref(biggest), Comparitors.GREATER_THAN)
+            if VY_type(res) in [list, Generator]:
+                res = any(res)
+            if res:
                 biggest = sub
         return biggest
     else:
+        item = flatten(item)
         if item:
             biggest = item[0]
-            for i in item:
-                if compare(sub, biggest, Comparitors.GREATER_THAN):
+            for sub in item[1:]:
+                res = compare(deref(sub), deref(biggest), Comparitors.GREATER_THAN)
+                if VY_type(res) in [list, Generator]:
+                    res = any(res)
+                if res:
                     biggest = sub
             return biggest
         return item
@@ -1033,14 +1041,21 @@ def VY_min(item, *others):
     if others:
         smallest = item
         for sub in others:
-            if compare(sub, smallest, Comparitors.LESS_THAN):
+            res = compare(deref(sub), deref(smallest), Comparitors.LESS_THAN)
+            if VY_type(res) in [list, Generator]:
+                res = any(res)
+            if res:
                 smallest = sub
         return smallest
     else:
+        item = flatten(item)
         if item:
             smallest = item[0]
-            for i in item:
-                if compare(sub, smallest, Comparitors.GREATER_THAN):
+            for sub in item[1:]:
+                res = compare(deref(sub), deref(smallest), Comparitors.GREATER_THAN)
+                if VY_type(res) in [list, Generator]:
+                    res = any(res)
+                if res:
                     smallest = sub
             return smallest
         return item

@@ -89,6 +89,7 @@ command_dict = {
     "Þ": ("tos = iterable(pop(stack)); stack.append(int(tos == tos[::-1]))", 1),
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(ncr(lhs, rhs))", 2),
     "⎡": ("rhs, lhs = pop(stack, 2); stack.append(VY_max(lhs, rhs))", 2),
+    "⎣": ("rhs, lhs = pop(stack, 2); stack.append(VY_min(lhs, rhs))", 2),
     "Ð": ("alphabet, number = pop(stack, 2); stack.append(utilities.to_ten(number, alphabet))", 2),
     "Š": ("alphabet, number = pop(stack, 2); stack.append(utilities.from_ten(number, alphabet))", 2),
     "ř": ("rhs, lhs = pop(stack, 2); stack.append(repeat(lhs, rhs))", 2),
