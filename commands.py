@@ -222,5 +222,9 @@ string_command_dict = {
     "o": ("needle, haystack = pop(stack, 2); stack.append(infinite_replace(haystack, needle, ''))", 2),
     "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
     "c": ("string = pop(stack); stack.append('«' + utilities.from_ten(utilities.to_ten(string, utilities.base27alphabet), encoding.codepage_string_compress) + '«')", 1),
-    "C": ("number = pop(stack); stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')", 1)
+    "C": ("number = pop(stack); stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')", 1),
+    "l": ("stack.append(str(pop(stack)).lower())", 1),
+    "U": ("stack.append(str(pop(stack)).upper())", 1),
+    "t": ("stack.append(str(pop(stack)).title())", 1),
+    "$": ("stack.append(str(pop(stack)).swapcase())", 1)
 }
