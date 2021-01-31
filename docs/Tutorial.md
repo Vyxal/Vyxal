@@ -8,7 +8,7 @@ So you want to use Vyxal as a golfing language? Well, lucky for you, you've reac
 
 ## The Stack
 
-Vyxal's main mode of storage is stacks: one main stack and sub-stacks used within functions and lambdas. A stack works by the principle of Last In, First Out (LIFO). What is pushed onto the stack first, will be popped off last. 
+Vyxal's main mode of storage is stacks: one main stack and sub-stacks used within functions and lambdas. A stack works by the principle of Last In, First Out (LIFO). What is pushed onto the stack first, will be popped off last.
 This leads to the two primary stack operations: PUSH, which adds something to the top of the stack, and POP, which removes something from the top and returns it. Popping from an empty stack attempts to take input, otherwise returning 0 (more on that later).
 
 To push integers, you simply write the integer followed by a non-digit character.
@@ -188,7 +188,20 @@ These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in 9. L
 
 ## The Context Variable
 
-One last thing to cover is the special context variable - a variable that pushes a value based on the _context_ of the current structure/scope. In a for-loop, the context variable is the current iteration value. In a function/lambda, the context variable is the arguments passed. In a while-loop, the context variable is the result of the condition.
+Another thing to cover is the special context variable - a variable that pushes a value based on the _context_ of the current structure/scope. In a for-loop, the context variable is the current iteration value. In a function/lambda, the context variable is the arguments passed. In a while-loop, the context variable is the result of the condition.
 
 When there are nested contexts (for example, a for-loop in a lambda), the different values of the contexts can be accessed by modifying the contextual depth of `n`. Contextual depth starts at level `0` (the top-most context level) and spans all the way to the inner-most context (the bottom-most context level).  By default, `n` has the contextual depth of the inner-most structure. `X` moves the context level deeper (`+1`) and `x` moves the context level shallower (`-1`).
 
+## Variables
+
+Unlike most golfing languages, Vyxal allows for variable-length variable names. These names can contain uppercase and lowercase letters and underscores. They are set with `→` and retrieved with `←`.
+
+For example:
+
+```
+`string a` →a # a = "string a"
+`string b` →b # b = "string b"
+←a →temp      # temp = a
+←b →a         # a = b
+←temp →b      # b = temp (swapping the values of a and b)
+```
