@@ -671,9 +671,9 @@ def ncr(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
         (Number, Number): lambda: math.gcd(int(lhs), int(rhs)),
-        (str, Number): lambda: iterable_shift(list(lhs), [ShiftDirections.LEFT, ShiftDirections.RIGHT][rhs > 0]),
-        (Number, str): lambda: iterable_shift(list(rhs), [ShiftDirections.LEFT, ShiftDirections.RIGHT][lhs > 0]),
-        (str, str): lambda: max(set(divisors_of(lhs)) & set(divisors_of(rhs))),
+        (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
+        (Number, str): lambda: [random.choice(rhs) for c in range(lhs)],
+        (str, str): int(set(lhs) == set(rhs)),
         (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
         (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
