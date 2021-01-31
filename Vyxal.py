@@ -1338,8 +1338,11 @@ else:
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding
-            if utilities.to_ten(VALUE, encoding.compression) < len(words._words):
+            if -1 < utilities.to_ten(VALUE, encoding.compression) < len(words._words):
                 compiled += f"stack.append({repr(words.extract_word(VALUE))})"
+            else:
+                compiled += f"stack.append({repr(VALUE)})"
+                
         elif NAME == VyParse.VARIABLE_SET:
             compiled += "VAR_" + VALUE[VyParse.VARIABLE_NAME] + " = pop(stack)"
         elif NAME == VyParse.VARIABLE_GET:
@@ -1364,8 +1367,10 @@ else:
             compiled += "stack.append(_para_lambda(temp_stack)[-1])"
         elif NAME == VyParse.REGISTER_MODIFIER:
             compiled += "stack.append(register)" + NEWLINE
-            compiled += commands.command_dict["$"][0] + NEWLINE
-            compiled += VY_compile(VALUE)
+            built_in = commands.command_dict[VALUE]
+            if built_in[1] > 1:
+                compiled += commands.command_dict["$"][0] + NEWLINE
+            compiled += built_in[0] + NEWLINE
             compiled += "register = pop(stack)"
         elif NAME == VyParse.ONE_CHAR_FUNCTION_REFERENCE:
             compiled += VY_compile("λ" + str(commands.command_dict[VALUE][1]) + "|" + VALUE)

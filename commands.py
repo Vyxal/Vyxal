@@ -68,7 +68,6 @@ command_dict = {
     "x": ("context_level -= 1", 0),
     "y": ("stack += uninterleave(pop(stack))", 1),
     "z": ("fn, vector = pop(stack, 2); stack.append(VY_zipmap(fn, vector))", 2),
-    "~": ("stack.append(random.randint(-32768, 32768))", 0),
     "¬": ("stack.append(int(not pop(stack)))", 1),
     "∧": ("rhs, lhs = pop(stack, 2); stack.append(lhs and rhs)", 2),
     "⟑": ("rhs, lhs = pop(stack, 2); stack.append(rhs and lhs)", 2),
@@ -96,8 +95,8 @@ command_dict = {
     "⨥": ("stack.append(add(pop(stack), 1))", 1),
     "⨪": ("stack.append(subtract(pop(stack), 1))", 1),
     "Ĥ": ("stack.append(100)", 0),
-    "Ĵ": ("stack.append(''.join([str(x) for x in pop(stack)]))", 1),
-    "⁌": ("stack.append('\\n'.join([str(x) for x in pop(stack)]))", 1),
+    "Ĵ": ("stack.append(''.join([VY_str(x) for x in pop(stack)]))", 1),
+    "⁌": ("stack.append('\\n'.join([VY_str(x) for x in pop(stack)]))", 1),
     "Τ": ("stack.append(10)", 0),
     "²": ("x = pop(stack); stack.append(multiply(x, x))", 1),
     "∑": ("stack.append(summate(pop(stack)))", 0),
@@ -151,7 +150,7 @@ command_dict = {
     "≥": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN_EQUALS))", 2),
     "↜": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input())", 0),
     "≗": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
-    "⋯": ("stack.append(Generator(partition(pop(stack))))", 1), #---------------------------
+    "⋯": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(pop(stack))))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
     "⧢": ("stack.append(Generator(itertools.permutations(iterable(pop(stack)))))", 1),
     "ũ": ("stack.append(integer_list(pop(stack)))", 1),
     "⁰": ("index, vector = pop(stack, 2); stack.append(iterable(vector)[0:index])", 2),
