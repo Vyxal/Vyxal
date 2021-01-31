@@ -1014,6 +1014,36 @@ def VY_map(fn, vector):
         result = fn([item])
         ret.append(result[-1])
     return ret
+def VY_max(item, *others):
+    if others:
+        biggest = item
+        for sub in others:
+            if compare(sub, biggest, Comparitors.GREATER_THAN):
+                biggest = sub
+        return biggest
+    else:
+        if item:
+            biggest = item[0]
+            for i in item:
+                if compare(sub, biggest, Comparitors.GREATER_THAN):
+                    biggest = sub
+            return biggest
+        return item
+def VY_min(item, *others):
+    if others:
+        smallest = item
+        for sub in others:
+            if compare(sub, smallest, Comparitors.LESS_THAN):
+                smallest = sub
+        return smallest
+    else:
+        if item:
+            smallest = item[0]
+            for i in item:
+                if compare(sub, smallest, Comparitors.GREATER_THAN):
+                    smallest = sub
+            return smallest
+        return item
 def VY_print(item, end="\n", raw=False):
     global output
     t_item = type(item)
@@ -1378,6 +1408,9 @@ else:
             compiled += "retain_items = True" + NEWLINE
             compiled += VY_compile(VALUE) + NEWLINE
             compiled += "retain_items = False"
+        elif NAME == VyParse.CONDITIONAL_EXECUTION:
+            compiled += "if bool(pop(stack)):" + NEWLINE
+            compiled += tab(VY_compile(VALUE))
         compiled += NEWLINE
     return header + compiled
 

@@ -120,7 +120,7 @@ z       a,f    |zipmap the contents of a with function f
 ƈ       a,b    |ncr(a, b)
 ∞              |infinite list of positive integers (0 included)
 ⫙              |* two byte misc functions
-ß       a      |[bin(_) for _ in a]
+ß       a      |* perform next command if a is truthy
 ⎝       a      |min(a, key=lambda x: x[-1])
 ⎠       a      |max(a, key=lambda x: x[-1])
 ⎡       a,b    |max(a, b)

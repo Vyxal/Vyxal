@@ -8,7 +8,7 @@ cmd  |  stack   |out/*effect
 | ' |              |* rotate entire stack left
 | ( |              |* open a for loop: (variable|code)
 | ) |              |* close a for loop
-| \*|       a,b    |a * b
+| \* |       a,b    |a * b
 | + |       a,b    |a + b
 | , |       a      |print(a)
 | - |       a,b    |a - b
@@ -26,9 +26,9 @@ cmd  |  stack   |out/*effect
 | 9 |              |* integer literal
 | : |       a      |a,a
 | ; |              |* end a structure
-| \<|       a,b    |a < b
+| \< |       a,b    |a < b
 | = |       a,b    |a == b (non-vectorising)
-| \>|       a,b    |a > b
+| \> |       a,b    |a > b
 | ? |              |* take input from either cmd line or stdin, whichever is first
 | @ |              |* define / call a function
 | A |       a      |all(a)
@@ -58,9 +58,9 @@ cmd  |  stack   |out/*effect
 | Y |       a,b    |interleave(x, y)
 | Z |       a,b    |zip(x, y)
 | [ |              |* if statement
-| \\|              |* one char string
+| \\ |              |* one char string
 | ] |              |* close if statement
-| \`|              |* string delimiter
+| ` |              |* string delimiter
 | a |       a      |any(a)
 | b |       a      |bin(a) #base 10 to binary
 | c |       a,b    |a in b (non-vectorising)
@@ -96,7 +96,7 @@ cmd  |  stack   |out/*effect
 | ¬ |       a      |not a
 | ∧ |       a,b    |a and b
 | ⟑ |       a,b    |b and a
-| ∨ |       a,b    |a or b
+| ∨ |       a,b    |a or b 
 | ⟇ |       a,b    |b or a
 | ÷ |       a      |item_split(a)
 | « |              |* base 255 string
@@ -121,7 +121,7 @@ cmd  |  stack   |out/*effect
 | ƈ |       a,b    |ncr(a, b)
 | ∞ |              |infinite list of positive integers (0 included)
 | ⫙ |              |* two byte misc functions
-| ß |       a      |[bin(_) for _ in a]
+| ß |       a      |* perform next command if a is truthy
 | ⎝ |       a      |min(a, key=lambda x: x[-1])
 | ⎠ |       a      |max(a, key=lambda x: x[-1])
 | ⎡ |       a,b    |max(a, b)
