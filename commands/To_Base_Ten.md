@@ -8,7 +8,7 @@ Returns `a` converted to decimal from a custom base `b`. If `b` is a string, the
 
 # Usage
 ```
-║⟨⟩
-║⟨⟩
-║⟨⟩
+`dab`k6Ð         ║⟨3499⟩
+`heck``HhEeCcKk`Ð║⟨751⟩
+1 10r 4Ð         ║⟨116505⟩
 ```

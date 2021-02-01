@@ -25,19 +25,20 @@ def to_ten(n, base):
 
 def from_ten(n, alphabet):
     import math
-    to_base = len(alphabet)
-    power = int(math.log(n if n else 1) / math.log(to_base))
 
     temp = n
     t = type(alphabet)
     if t in [int, float]:
         alphabet = list(range(0, int(alphabet)))
     result = "" if t is str else []
+    to_base = len(alphabet)
+    power = int(math.log(n if n else 1) / math.log(to_base))
+
 
     while temp > 0:
         val = alphabet[(temp // (to_base ** power))]
         if t is str: result += val
-        else: result.push(val)
+        else: result.append(val)
         temp -= (temp // (to_base ** power)) * (to_base ** power)
         power -= 1
 

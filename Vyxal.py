@@ -760,9 +760,11 @@ def repeat(vector, times):
     vector = iterable(vector)
     t_vector = VY_type(vector)
     if times < 0:
-        return vector[::-1] * times
+        if t_vector is str: return vector[::-1] * times
+        return Generator(itertools.repeat(reversed(vector), times))
     else:
-        return vector * times
+        if t_vector is str: return vector * times
+        return Generator(itertools.repeat(vector, times))
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:
