@@ -205,3 +205,7 @@ For example:
 ←b →a         # a = b
 ←temp →b      # b = temp (swapping the values of a and b)
 ```
+
+## Generators
+
+Another thing Vyxal supports is Generators: functions that, given an initial function, keep producing results until a condition is met. There are several commands that allow for the generation of values.

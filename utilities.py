@@ -15,7 +15,8 @@ def to_ten(n, base):
             index = base.find(char)
             result += index * (from_base ** power)
             power += 1
-    elif list in type(n).__bases__ and type(base) is int:
+
+    elif type(n) not in [int, float] and type(base) is int:
         for item in n[::-1]:
             result += item * (base ** power)
             power += 1
@@ -30,8 +31,8 @@ def from_ten(n, alphabet):
     temp = n
     t = type(alphabet)
     if t in [int, float]:
-        alphabet = Stack(list(range(0, int(alphabet))))
-    result = "" if t is str else Stack()
+        alphabet = list(range(0, int(alphabet)))
+    result = "" if t is str else []
 
     while temp > 0:
         val = alphabet[(temp // (to_base ** power))]
