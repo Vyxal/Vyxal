@@ -1144,6 +1144,14 @@ def VY_repr(item):
         str: lambda x: "`" + x + "`",
         Function: lambda x: "@FUNCTION:" + x.__name__
     }[t_item](item)
+def VY_round(item):
+    t_item = VY_type(item)
+    if t_item == Number:
+        return round(item)
+
+    elif t_item is str:
+        return [item[n:] for n in range(len(item) - 1, -1, -1)]
+    return vectorise(VY_round, item)
 def VY_str(item):
     t_item = VY_type(item)
     return {

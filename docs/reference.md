@@ -147,8 +147,6 @@ cmd  |  stack   |out/*effect
 | Ẹ |              |enumerate(stack)
 | ṙ |       a      |round(a)
 | ∑ |       a      |sum(a)
-| Ṡ |       a      |sum of stack
-| İ |       a      |id(x)
 | Ĥ |       a      |100
 | ⟨ |              |* open a list ⟨⟩⟨...|...⟩
 | ⟩ |              |* close a list
@@ -168,7 +166,6 @@ cmd  |  stack   |out/*effect
 | ‼ |       a      |factorial(a)
 | ⨊ |       a      |cumulative_sums(a)
 | ≈ |       a      |all_equal(a) # every item is the same
-| ð |              |" "
 | ʗ |       a      |counts_of_items(a)
 | ◁ |       a      |reversed(a)
 | ⊐ |       a      |a[:-1]
