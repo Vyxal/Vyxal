@@ -367,10 +367,18 @@ def exponate(lhs, rhs):
         mobj = pobj.match(rhs)
         return list(mobj.span()) if mobj else []
 
+    if types == (str, Number):
+        if 0 < rhs < 1:
+            factor = int(1 / rhs)
+            return lhs[::factor]
+        else:
+            ret = lhs
+            for _ in range(rhs):
+                ret = multiply(ret, lhs)
+            return ret
+
     return {
         (Number, Number): lambda: lhs ** rhs,
-        (str, Number): lambda: lhs * int(rhs),
-        (Number, str): lambda: rhs * int(lhs),
         (types[0], list): lambda: [exponate(lhs, item) for item in rhs],
         (list, types[1]): lambda: [exponate(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: exponate(*x), VY_zip(lhs, rhs))),
@@ -521,6 +529,16 @@ def inserted(vector, item, index):
         range: lambda: list(vector[:index]) + [item] + list(vector[index:]),
         str: lambda: vector[:index] + str(item) + vector[index:],
     }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
+def integer_divide(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    if set(types) in ({str, Number}, {str}):
+        return divide(lhs, rhs)[0]
+
+    elif types == (Number, Number):
+        return lhs // rhs
+
+    return vectorise(integer_divide, lhs, rhs)
+
 def integer_list(string):
     charmap = dict(zip("etaoinshrd", "0123456789"))
     ret = []
@@ -658,7 +676,7 @@ def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
         (Number, Number): lambda: lhs * rhs,
-        (str, str): lambda: [lx + rhs for x in lhs],
+        (str, str): lambda: [x + rhs for x in lhs],
         (str, Number): lambda: lhs * rhs,
         (Number, str): lambda: lhs * rhs,
         (list, types[1]): lambda: [multiply(item, rhs) for item in lhs],
@@ -959,7 +977,11 @@ def wrap(vector, width):
             ret.append(temp[::])
 
     return ret
-
+def VY_abs(item):
+    return {
+        Number: lambda: abs(item),
+        str: lambda: remove(remove(remove(item, " "), "\n"), "\t"),
+    }.get(VY_type(item), lambda: vectorise(VY_abs, item))()
 def VY_bin(item):
     t_item = VY_type(item)
     return {
@@ -1061,6 +1083,11 @@ def VY_min(item, *others):
                     smallest = sub
             return smallest
         return item
+def VY_oct(item):
+    return {
+        Number: lambda: oct(item)[2:],
+        str: lambda: (lambda: item, lambda: oct(int(item)))[item.isnumeric()]()[2:]
+    }.get(VY_type(item), lambda:vectorise(VY_oct, item))()
 def VY_print(item, end="\n", raw=False):
     global output
     t_item = type(item)
