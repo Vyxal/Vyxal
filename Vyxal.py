@@ -494,10 +494,15 @@ def group_consecutive(vector):
 
     return ret
 def inclusive_range(lhs, rhs):
+    if (VY_type(lhs), VY_type(rhs)) != (Number, Number):
+        lhs, rhs = str(lhs), str(rhs)
+        pobj = regex.compile(lhs)
+        return pobj.split(rhs)
+        
     if lhs < rhs:
-        return Generator(range(lhs, rhs + 1))
+        return Generator(range(int(lhs), int(rhs) + 1))
     else:
-        return Generator(range(lhs, rhs - 1, -1))
+        return Generator(range(int(lhs), int(rhs) - 1, -1))
 def indexed_into(vector, indexes):
     ret = []
     for ind in indexes:
