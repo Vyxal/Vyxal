@@ -416,8 +416,9 @@ def first_n(func, n=1):
     current_index = 0
 
     while len(ret) < n:
-        result = fn([current_index])
+        result = fn([current_index])[-1]
         if result: ret.append(current_index)
+        current_index += 1
 
     return ret
 def flatten(item):
@@ -960,7 +961,7 @@ def vectorising_equals(lhs, rhs):
     else:
         return int(lhs == rhs)
 def vertical_join(vector, padding=" "):
-    lengths = list(map(len, vector))
+    lengths = list(map(len, deref(vector)))
     vector = [padding * (max(lengths) - len(x)) + x for x in vector]
 
     out = ""
