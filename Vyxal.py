@@ -107,6 +107,12 @@ class Generator:
             self.__next__()
 
         return self.generated[position]
+    def __setitem__(self, position, value):
+        if position >= len(self.generated):
+            temp = self.__getitem__(position)
+        self.generated[position] = value
+
+        
     def __len__(self):
         return len(self._dereference())
     def __next__(self):
@@ -140,8 +146,9 @@ class Generator:
         '''
         Only call this when it is absolutely neccesary to convert to a list.
         '''
-        d = list(self.gen)
+        d = self.generated + list(self.gen)
         self.gen = iter(d[::])
+        self.generated = []
         return d
     def _print(self, end="\n"):
         main = self.generated
@@ -495,9 +502,9 @@ def group_consecutive(vector):
     return ret
 def inclusive_range(lhs, rhs):
     if (VY_type(lhs), VY_type(rhs)) != (Number, Number):
-        lhs, rhs = str(lhs), str(rhs)
-        pobj = regex.compile(lhs)
-        return pobj.split(rhs)
+        lhs, rhs = VY_str(lhs), VY_str(rhs)
+        pobj = regex.compile(rhs)
+        return pobj.split(lhs)
         
     if lhs < rhs:
         return Generator(range(int(lhs), int(rhs) + 1))
