@@ -170,7 +170,7 @@ z       a,f    |zipmap the contents of a with function f
 ⊐       a      |a[:-1]
 ∫              |sum(entire_stack)
 ⍋       a      |graded_up(a)
-⍒       a      |graded_down(a) # short for Ōŉ
+⍒       a      |graded_down(a) # short for ⍋◁
 ℕ              |None # as in python's None type
 ∈       a,f    |a.indexes_where_truthy(fn)
 ₛ       a,f    |sorted(a, key=fn) # sort by function result

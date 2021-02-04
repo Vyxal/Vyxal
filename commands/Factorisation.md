@@ -4,7 +4,7 @@
 - In: a
 - Out: factors_of(a)
 
-Returns the divisors of a. Vectorises if needed
+Returns the divisors of a. Vectorises if needed. If `a` is a string, return all substrings that split the `a` into more than two parts.
 
 # Usage
 ```

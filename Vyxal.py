@@ -98,13 +98,25 @@ class Generator:
         self.generated = []
     def __getitem__(self, position):
         if type(position) is slice:
-            return list(self.gen)[position]
+            ret = []
+            stop = position.stop
+            if position.stop < 0:
+                stop = self.__len__() - position.stop - 2
+
+            # print(position.start or 0, stop or self.__len__(), position.step or 1)
+            
+            for i in range(position.start or 0, stop or self.__len__(), position.step or 1):
+                ret.append(self.__getitem__(i))
+            return ret
         if position < 0:
             return list(self.gen)[position]
         if position < len(self.generated):
             return self.generated[position]
         while len(self.generated) < position + 1:
-            self.__next__()
+            try:
+                self.__next__()
+            except:
+                position = position % len(self.generated) 
 
         return self.generated[position]
     def __setitem__(self, position, value):
@@ -309,8 +321,9 @@ def counts(vector):
 def cumulative_sum(vector):
     ret = []
     vector = iterable(vector)
+    # if VY_type(vector) is Generator: vector = vector._dereference()
     for i in range(len(vector)):
-        ret.append(summate(vector[:i]))
+        ret.append(summate(vector[:i + 1]))
     return ret
 def decimalify(vector):
     if VY_type(vector) == Number:
@@ -495,7 +508,7 @@ def get_input():
         except:
             return 0
 def graded(vector):
-    return Generator(sorted(enumerate(vector), key=lambda x: x[-1]))
+    return Generator(map(lambda x: x[0], sorted(enumerate(vector), key=lambda x: x[-1])))
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
