@@ -4,7 +4,7 @@
 - In: a
 - Out: graded_up(a)
 
-Returns a list of integers, which represent the order the elements of `a`. Operates like the same symbol in APL.
+Returns a list of integers, which represent the order the elements of `a` which make the list sorted in ascending order. Operates like the same symbol in APL.
 
 # Usage
 ```

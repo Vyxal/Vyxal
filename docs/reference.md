@@ -171,8 +171,7 @@ cmd  |  stack   |out/*effect
 | ⊐ |       a      |a[:-1]
 | ∫ |              |sum(entire_stack)
 | ⍋ |       a      |graded_up(a)
-| ⍒ |       a      |graded_down(a) # short for Ōŉ
-| ℕ |              |None # as in python's None type
+| ⍒ |       a      |graded_down(a) # short for ⍋◁
 | ∈ |       a,f    |a.indexes_where_truthy(fn)
 | ₛ |       a,f    |sorted(a, key=fn) # sort by function result
 | £ |              |set register without emptying

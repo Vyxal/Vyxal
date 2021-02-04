@@ -99,14 +99,21 @@ class Generator:
     def __getitem__(self, position):
         if type(position) is slice:
             ret = []
-            stop = position.stop
-            if position.stop < 0:
+            stop = position.stop or self.__len__()
+            start = position.start or 0
+            
+            if stop < 0:
                 stop = self.__len__() - position.stop - 2
 
-            # print(position.start or 0, stop or self.__len__(), position.step or 1)
             
-            for i in range(position.start or 0, stop or self.__len__(), position.step or 1):
+            if position.step and position.step < 0:
+                start, stop = stop, start
+                stop -= 1
+                start -= 1
+            # print(start, stop, position.step or 1)
+            for i in range(start, stop, position.step or 1):
                 ret.append(self.__getitem__(i))
+                # print(self.__getitem__(i))
             return ret
         if position < 0:
             return list(self.gen)[position]
@@ -829,14 +836,13 @@ def replace(haystack, needle, replacement):
     else:
         return str(haystack).replace(str(needle), str(replacement))
 def reverse(vector):
-        if type(vector) in [float, int]:
-            s_vector = str(vector)
-            if vector < 0:
-                return -int(s_vector[1:][::-1])
-            else:
-                return int(s_vector[::-1])
+    if type(vector) in [float, int]:
+        s_vector = str(vector)
+        if vector < 0:
+            return -int(s_vector[1:][::-1])
         else:
-            return vector[::-1]
+            return int(s_vector[::-1])
+    return vector[::-1]
 def rshift(lhs, rhs):
     types = (VY_type(lhs), Vy_type(rhs))
     return {
