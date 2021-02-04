@@ -360,7 +360,18 @@ def divisors_of(item):
 
     divisors = []
     if t_item == str:
-        return [item[0:n] for n in range(1, len(item) + 1)]
+        def gen():
+            s = list(item)
+            i = itertools.chain.from_iterable(\
+                itertools.combinations(s, r) for r in range(1,len(s)+1))
+
+            for sub in i:
+                sub = "".join(sub)
+                if len(item.split(sub)) == 2:
+                    yield sub
+
+        return Generator(gen())
+            
     for value in VY_range(item, 1, 1):
         if modulo(item, value) == 0:
             divisors.append(value)
@@ -398,7 +409,7 @@ def factorial(item):
     if t_item == Number:
         return math.factorial(item)
     elif t_item == str:
-        return item.capitalize()
+        return sentence_case(item)
     else:
         return vectorise(factorial, item)
 def find(haystack, needle, start=0):
@@ -826,6 +837,15 @@ def rshift(lhs, rhs):
         (Generator, list): lambda: _two_argument(rshift, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(rshift, lhs, rhs)
     }.get(types, lambda: vectorise(rshift, lhs, rhs))()
+def sentence_case(item):
+    ret = ""
+    capitalise = True
+    for char in item:
+        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise and char != " ": capitalise = False
+        capitalise = capitalise or char in "!?."
+    return ret
+    
 def sign_of(item):
     t = VY_type(item)
     if t == Number:
