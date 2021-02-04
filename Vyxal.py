@@ -550,7 +550,7 @@ def indexed_into(vector, indexes):
 def indexes_where(fn, vector):
     ret = []
     for i in range(len(vector)):
-        if fn(vector[i]):
+        if fn([vector[i]])[-1]:
             ret.append(i)
     return ret
 def infinite_replace(haystack, needle, replacement):
@@ -561,7 +561,6 @@ def infinite_replace(haystack, needle, replacement):
         haystack = replace(haystack, needle, replacement)
         loop = haystack != prev
         prev = copy.deepcopy(haystack)
-
     return haystack
 def inserted(vector, item, index):
     vector = iterable(vector, range)
@@ -1159,10 +1158,13 @@ def VY_print(item, end="\n", raw=False):
 def VY_sorted(vector, fn=None):
     t_vector = type(vector)
     vector = iterable(vector, str)
+    if t_vector is Generator:
+        vector = vector.gen
     if fn:
-        sorted_vector = sorted(vector, key=fn)
+        sorted_vector = sorted(vector, key=lambda x: fn([x]))
     else:
         sorted_vector = sorted(vector)
+        
 
     return {
         int: lambda: int("".join(map(str, sorted_vector))),
