@@ -995,7 +995,7 @@ def vectorise(fn, left, right=None):
 def vectorising_equals(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if types not in ((Number, str), (str, Number), (str, str), (Number, Number)):
-        return Generator(map(lambda x: int(x[0] == x[1]), VY_zip(iterable(lhs), iterable(rhs))))
+        return vectorise(lambda x, y: compare(x, y, Comparitors.EQUALS), lhs, rhs)
     else:
         return int(lhs == rhs)
 def vertical_join(vector, padding=" "):
