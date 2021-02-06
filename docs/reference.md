@@ -27,7 +27,7 @@ cmd  |  stack   |out/*effect
 | : |       a      |a,a
 | ; |              |* end a structure
 | \< |       a,b    |a < b
-| = |       a,b    |a == b (non-vectorising)
+| = |       a,b    |a == b (vectorising)
 | \> |       a,b    |a > b
 | ? |              |* take input from either cmd line or stdin, whichever is first
 | @ |              |* define / call a function
@@ -96,7 +96,7 @@ cmd  |  stack   |out/*effect
 | ¬ |       a      |not a
 | ∧ |       a,b    |a and b
 | ⟑ |       a,b    |b and a
-| ∨ |       a,b    |a or b 
+| ∨ |       a,b    |a or b
 | ⟇ |       a,b    |b or a
 | ÷ |       a      |item_split(a)
 | « |              |* base 255 string
@@ -177,8 +177,8 @@ cmd  |  stack   |out/*effect
 | £ |              |set register without emptying
 | Œ |       a,b    |[a[n] for n in b]
 | œ |       a,b    |a % b == 0
-| ≕ |       a,b    |a == b (vectorising)
-| ≠ |       a,b    |a != b (non-vectorising)
+| ≕ |       a,b    |a == b (Non-vectorising)
+| ≠ |       a,b    |a != b (vectorising)
 | ¥ |              |push register without emptying
 | ⁱ |       a,b    |a[b:] #other forms of indexing use i
 | ‹ |       a,b    |a << b
