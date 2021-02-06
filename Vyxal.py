@@ -301,6 +301,7 @@ def chrord(item):
         return Generator(map(chrord, item))
 def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
+    
     types = tuple(map(VY_type, [lhs, rhs]))
     boolean =  {
         types: lambda lhs, rhs: eval(f"lhs {op} rhs"),
@@ -308,12 +309,13 @@ def compare(lhs, rhs, mode):
         (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
         (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
         (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
+        (Generator, types[1]): lambda *y: vectorise(lambda x: compare(x, rhs, mode), lhs),
+        (types[0], Generator): lambda *y: vectorise(lambda x: compare(lhs, x, mode), rhs),
         (list, list): lambda *y: list(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
         (list, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
         (Generator, list): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
-        (Generator, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs)))
+        (Generator, Generator): lambda *y: Generator(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
     }[types](lhs, rhs)
-
     if type(boolean) is bool:
         return int(boolean)
     else:
@@ -992,12 +994,6 @@ def vectorise(fn, left, right=None):
             if fn.__name__ == "_lambda":
                 return [x[0] for x in ret]
             return ret
-def vectorising_equals(lhs, rhs):
-    types = VY_type(lhs), VY_type(rhs)
-    if types not in ((Number, str), (str, Number), (str, str), (Number, Number)):
-        return vectorise(lambda x: compare(x[0], x[1], Comparitors.EQUALS), VY_zip(lhs, rhs))
-    else:
-        return int(lhs == rhs)
 def vertical_join(vector, padding=" "):
     lengths = list(map(len, deref(vector)))
     vector = [padding * (max(lengths) - len(x)) + x for x in vector]
