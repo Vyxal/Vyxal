@@ -101,11 +101,11 @@ class Generator:
             ret = []
             stop = position.stop or self.__len__()
             start = position.start or 0
-            
+
             if stop < 0:
                 stop = self.__len__() - position.stop - 2
 
-            
+
             if position.step and position.step < 0:
                 start, stop = stop, start
                 stop -= 1
@@ -123,7 +123,7 @@ class Generator:
             try:
                 self.__next__()
             except:
-                position = position % len(self.generated) 
+                position = position % len(self.generated)
 
         return self.generated[position]
     def __setitem__(self, position, value):
@@ -131,7 +131,7 @@ class Generator:
             temp = self.__getitem__(position)
         self.generated[position] = value
 
-        
+
     def __len__(self):
         return len(self._dereference())
     def __next__(self):
@@ -185,10 +185,10 @@ class Generator:
                 except:
                     break
             VY_print("⟩", end=end)
-            
+
         except:
             VY_print(main, end=end)
-        
+
 
     def zip_with(self, other):
         return Generator(zip(self.gen, iter(other)))
@@ -241,11 +241,12 @@ def bifuricate(item):
         g = item._dereference()
         return [g, reverse(g)]
 def bit_and(lhs, rhs):
-    types = (VY_type(lhs), Vy_type(rhs))
+    types = (VY_type(lhs), VY_type(rhs))
     return {
         (Number, Number): lambda: lhs & rhs,
-        (Number, str): lambda: "".join([chr(lhs & ord(let)) for let in rhs]),
-        (str, Number): lambda: "".join([chr(ord(let) & rhs) for let in lhs]),
+        (Number, str): lambda: rhs.centre(lhs),
+        (str, Number): lambda: lhs.centre(rhs),
+        (str, str): lhs.centre(len(rhs) - len(lhs)),
         (types[0], list): lambda: [bit_and(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_and(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_and(*x), VY_zip(lhs, rhs))),
@@ -254,11 +255,16 @@ def bit_and(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(bit_and, lhs, rhs)
     }.get(types, lambda: vectorise(bit_and, lhs, rhs))()
 def bit_or(lhs, rhs):
-    types = (VY_type(lhs), Vy_type(rhs))
+    types = (VY_type(lhs), VY_type(rhs))
+    if types == (str, str):
+        suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
+        prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
+        common = (suffixes & prefixes).pop()
+        return lhs[:-len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
-        (Number, str): lambda: "".join([chr(lhs | ord(let)) for let in rhs]),
-        (str, Number): lambda: "".join([chr(ord(let) | rhs) for let in lhs]),
+        (Number, str): lambda: "".join([c * lhs for c in rhs]),
+        (str, Number): lambda:  "".join([c * rhs for c in lhs]),
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs))),
@@ -269,16 +275,17 @@ def bit_or(lhs, rhs):
 def bit_not(item):
     return {
         list: lambda: [bit_not(x) for x in item],
-        str: lambda: [~ord(let) for let in item],
+        str: lambda: item.swapcase(),
         Number: lambda: ~item,
         Generator: lambda: vectorise(bit_not, item)
     }[VY_type(item)]()
 def bit_xor(lhs, rhs):
-    types = (VY_type(lhs), Vy_type(rhs))
+    types = (VY_type(lhs), VY_type(rhs))
     return {
         (Number, Number): lambda: lhs ^ rhs,
-        (Number, str): lambda: "".join([chr(lhs ^ ord(let)) for let in rhs]),
-        (str, Number): lambda: "".join([chr(ord(let) ^ rhs) for let in lhs]),
+        (Number, str): lambda: "".join([rhs[n] for n in range(0, len(rhs), lhs)]),
+        (str, Number): lambda: "".join([lhs[n] for n in range(0, len(lhs), rhs)]),
+        (str, str): lambda: levenshtein_distance(lhs, rhs)
         (types[0], list): lambda: [bit_xor(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_xor(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_xor(*x), VY_zip(lhs, rhs))),
@@ -301,7 +308,7 @@ def chrord(item):
         return Generator(map(chrord, item))
 def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
-    
+
     types = tuple(map(VY_type, [lhs, rhs]))
     boolean =  {
         types: lambda lhs, rhs: eval(f"lhs {op} rhs"),
@@ -393,7 +400,7 @@ def divisors_of(item):
                     yield sub
 
         return Generator(gen())
-            
+
     for value in VY_range(item, 1, 1):
         if modulo(item, value) == 0:
             divisors.append(value)
@@ -502,7 +509,7 @@ def fractionify(item):
 def gcd(vector):
     if VY_type(vector) is Generator:
         vector = vector._dereference()
-    
+
     return int(numpy.gcd.reduce(vector))
 def get_input():
     global input_level
@@ -539,7 +546,7 @@ def inclusive_range(lhs, rhs):
         lhs, rhs = VY_str(lhs), VY_str(rhs)
         pobj = regex.compile(rhs)
         return pobj.split(lhs)
-        
+
     if lhs < rhs:
         return Generator(range(int(lhs), int(rhs) + 1))
     else:
@@ -653,6 +660,21 @@ def join(lhs, rhs):
         (Generator, list): lambda: lhs._dereference() + rhs,
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }[types]()
+def levenshtein_distance(s1, s2):
+    # https://stackoverflow.com/a/32558749
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
 def log(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
     if types == (str, str):
@@ -669,7 +691,7 @@ def log(lhs, rhs):
             ret += lhs[i + 1:]
 
         return ret
-    
+
     return {
         (Number, Number): lambda: math.log(lhs, rhs),
         (str, Number): lambda: "".join([c * rhs for c in lhs]),
@@ -680,11 +702,12 @@ def log(lhs, rhs):
         (Generator, Generator): lambda: mold(list(lhs), list(rhs)) #There's a chance molding raw generators won't work
     }.get(types, lambda: vectorise(log, lhs, rhs))()
 def lshift(lhs, rhs):
-    types = (VY_type(lhs), Vy_type(rhs))
+    types = (VY_type(lhs), VY_type(rhs))
     return {
         (Number, Number): lambda: lhs << rhs,
-        (Number, str): lambda: "".join([chr(lhs << ord(let)) for let in rhs]),
-        (str, Number): lambda: "".join([chr(ord(let) << rhs) for let in lhs]),
+        (Number, str): lambda: rhs.ljust(lhs),
+        (str, Number): lambda: lhs.ljust(rhs),
+        (str, str): lambda: lhs.ljust(len(rhs) - len(lhs)),
         (types[0], list): lambda: [lshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [lshift(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x:lshift(*x), VY_zip(lhs, rhs))),
@@ -845,11 +868,12 @@ def reverse(vector):
             return int(s_vector[::-1])
     return vector[::-1]
 def rshift(lhs, rhs):
-    types = (VY_type(lhs), Vy_type(rhs))
+    types = (VY_type(lhs), VY_type(rhs))
     return {
         (Number, Number): lambda: lhs >> rhs,
-        (Number, str): lambda: "".join([chr(lhs >> ord(let)) for let in rhs]),
-        (str, Number): lambda: "".join([chr(ord(let) >> rhs) for let in lhs]),
+        (Number, str): lambda: rhs.rjust(lhs),
+        (str, Number): lambda: lhs.rjust(rhs),
+        (str, str): lambda: lhs.rjust(len(lhs) - len(rhs)),
         (types[0], list): lambda: [rshift(lhs, item) for item in rhs],
         (list, types[1]): lambda: [rshift(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x:rshift(*x), VY_zip(lhs, rhs))),
@@ -865,7 +889,7 @@ def sentence_case(item):
         if capitalise and char != " ": capitalise = False
         capitalise = capitalise or char in "!?."
     return ret
-    
+
 def sign_of(item):
     t = VY_type(item)
     if t == Number:
@@ -1160,7 +1184,7 @@ def VY_sorted(vector, fn=None):
         sorted_vector = sorted(vector, key=lambda x: fn([x]))
     else:
         sorted_vector = sorted(vector)
-        
+
 
     return {
         int: lambda: int("".join(map(str, sorted_vector))),
@@ -1475,7 +1499,7 @@ else:
                 compiled += f"stack.append({repr(words.extract_word(VALUE))})"
             else:
                 compiled += f"stack.append({repr(VALUE)})"
-                
+
         elif NAME == VyParse.VARIABLE_SET:
             compiled += "VAR_" + VALUE[VyParse.VARIABLE_NAME] + " = pop(stack)"
         elif NAME == VyParse.VARIABLE_GET:
