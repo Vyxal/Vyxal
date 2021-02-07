@@ -285,7 +285,7 @@ def bit_xor(lhs, rhs):
         (Number, Number): lambda: lhs ^ rhs,
         (Number, str): lambda: "".join([rhs[n] for n in range(0, len(rhs), lhs)]),
         (str, Number): lambda: "".join([lhs[n] for n in range(0, len(lhs), rhs)]),
-        (str, str): lambda: levenshtein_distance(lhs, rhs)
+        (str, str): lambda: levenshtein_distance(lhs, rhs),
         (types[0], list): lambda: [bit_xor(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_xor(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_xor(*x), VY_zip(lhs, rhs))),
@@ -572,13 +572,12 @@ def infinite_replace(haystack, needle, replacement):
         prev = copy.deepcopy(haystack)
     return haystack
 def inserted(vector, item, index):
-    vector = iterable(vector, range)
+    vector = iterable(vector)
     t_vector = type(vector)
     if t_vector is list:
         vector.insert(index, item)
         return vector
     return {
-        range: lambda: list(vector[:index]) + [item] + list(vector[index:]),
         str: lambda: vector[:index] + str(item) + vector[index:],
     }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
 def integer_divide(lhs, rhs):
@@ -783,11 +782,11 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.match(rhs)
         return int(bool(mobj.span()))
-def partition(item):
+def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
-    yield [n]
-    for i in range(I, n//2 + 1):
-        for p in partition(n-i, i):
+    yield [item]
+    for i in range(I, item//2 + 1):
+        for p in partition(item-i, i):
             yield [i] + p
 def polynomial(vector):
     t_vector = VY_type(vector)

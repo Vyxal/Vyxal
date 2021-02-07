@@ -156,7 +156,7 @@ command_dict = {
     "≥": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN_EQUALS))", 2),
     "↜": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input())", 0),
     "≗": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
-    "⋯": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(pop(stack))))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
+    "⋯": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
     "⧢": ("stack.append(Generator(itertools.permutations(iterable(pop(stack)))))", 1),
     "ũ": ("stack.append(integer_list(pop(stack)))", 1),
     "⁰": ("index, vector = pop(stack, 2); stack.append(iterable(vector)[0:index])", 2),
