@@ -203,7 +203,7 @@ cmd  |  stack   |out/*effect
 | ₑ |       a      |exec(VyCompile(a))
 | ϊ |       a      |range(1, len(a) + 1)
 | ≎ |       a      |group_consecutive(a)
-| ⇿ |       a,b,c  |transliterate(a, b, c) # a: original b: new c: string
+| ⇿ |       a,b,c  |transliterate(a, b, c) # a, b: mapping (a: old, b: new), c: string to transliterate
 | ⊛ |       a      |truthy_indexes(a)
 | × |       a,b    |cartesian_product(a, b)
 | ¯ |       a      |deltas(a)

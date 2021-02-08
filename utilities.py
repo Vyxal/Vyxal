@@ -98,7 +98,7 @@ if __name__ == "__main__":
         else:
             try:
                 if type(eval(word)) is list:
-                    charmap = dict(zip("0123456789,", "cetaoinshr "))
+                    charmap = dict(zip("0123456789,", "etaoinshrd "))
                     word = word.replace(" ", "").replace("[", "").replace("]", "")
                     out = ""
                     for char in word:
