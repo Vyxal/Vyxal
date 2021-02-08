@@ -257,3 +257,9 @@ cmd  |  stack   |out/*effect
 | ∆P |     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
 | øo |     a,b     |a.remove_until_no_change(b)
 | øV |     a,b,c   |a.replace_until_no_change(b, c)
+| øc |     a       |base_255_string_compressed(a)
+| øC |     a       |base_255_number_compressed(a)
+| øl |     a       |a.lower()
+| øU |     a       |a.upper()
+| øt |     a       |a.titlecase()
+| ø$ |     a       |a.swapcase()
