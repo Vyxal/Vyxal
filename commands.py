@@ -164,7 +164,7 @@ command_dict = {
     "ₑ": ("code = VyCompile(pop(stack)); exec(code);", 1),
     "ϊ": ("obj = iterable(pop(stack)); stack.append(Generator(range(1, len(obj) + 1)))", 1),
     "≎": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
-    "⇿": ("string, new, original = pop(stack, 3); stack.append(transilterate(iterable(original), iterable(new), iterable(string)))", 3),
+    "⇿": ("string, new, original = pop(stack, 3); stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
     "⊛": ("stack.append(truthy_indexes(pop(stack)))", 1),
     "×": ("rhs, lhs = pop(stack, 2); stack.append(Generator(itertools.product(iterable(lhs), iterable(rhs))))", 2),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
