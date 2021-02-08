@@ -20,4 +20,4 @@ For example, `«∞ø_«ũ`
 
 # Usage
 
-[This](http://lyxal.pythonanywhere.com?flags=&code=%C6%9B%600123456789%60%60etaoinshrd%60n%E2%87%BF%C4%B4%3B%E2%8B%AF%C3%B8c%5C%C5%A9%2B&inputs=%5B5290%2C%202342%5D&header=&footer=) program turns a list of positive integers into a compressed list.
+[This](http://lyxal.pythonanywhere.com?flags=&code=%C6%9B%600123456789%60%60etaoinshrd%60n%E2%87%BF%3B%E2%8B%AF%C3%B8c%5C%C5%A9%2B&inputs=%5B5290%2C%202342%5D&header=&footer=) program turns a list of positive integers into a compressed list.
