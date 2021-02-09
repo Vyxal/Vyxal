@@ -139,7 +139,8 @@ class Generator:
         self.generated.append(f)
         return f
     def __iter__(self):
-        return iter(self.gen)
+        import copy
+        return iter(copy.deepcopy(self.gen))
     def _map(self, function):
         return Generator(map(lambda x: function([x])[-1], self.gen))
     def _filter(self, function):
@@ -154,7 +155,6 @@ class Generator:
                 yield obj
             index += 1
     def _reduce(self, function):
-        import copy
         def ensure_singleton(function, left, right):
             ret = _safe_apply(function, left, right)
             if type(ret) in [Generator, list]:
@@ -621,7 +621,7 @@ def is_prime(n):
 def iterable(item, t=list):
     if VY_type(item) == Number:
         if t is list:
-            return [int(let) if let != "." else let for let in str(item)]
+            return [int(let) if let not in "-." else let for let in str(item)]
         if t is range:
             return range(int(item))
         return t(item)
