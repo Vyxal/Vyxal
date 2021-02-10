@@ -956,11 +956,12 @@ def sums(vector):
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
 def transilterate(original, new, string):
     t_string = type(string)
+    original = deref(original)
     if t_string == Generator:
         t_string = list
     ret = t_string()
     for char in string:
-        char = str(char)
+        if t_string is str: char = str(char)
         try:
             ind = original.index(char)
             ret += t_string(new[ind])
