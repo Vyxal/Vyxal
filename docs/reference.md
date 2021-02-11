@@ -219,7 +219,7 @@ cmd  |  stack   |out/*effect
 | ᶢ |       a,(b)  |gcd(a) if a is a list, else gcd(a, b)
 | ₌ |              |* apply the next two built-ins parallel 3 4 Ž+- -> 7 -1
 | ↭ |       a,b,c  |c,a,b
-| ſ |       f,a    |call function f, a times
+| ſ |              |69
 | ƀ |       f,a,(b)|push Generator of function f with intial vector a, limited to b items (if present)
 | Ɓ |       a      |bool(a)
 | ⁚ |       a       |a[:-1], a[-1]
