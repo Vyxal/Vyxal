@@ -2,7 +2,7 @@
 
 **Vyxal** is the latest addition to the plethora of stack-based languages used for code golfing. But unlike its competitors, Vyxal has a special focus upon readability and elegancy. Indeed, the codepage has been specially chosen to be as mnemonic as possible. Further, constructs from practical languages (such as functions, lambdas and easy list manipulation) are present.
 
-(Vyxal is pronounced Vixal)
+(Vyxal is pronounced Vikesal)
 
 ## How to use the interpreter:
 
