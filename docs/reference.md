@@ -204,7 +204,7 @@ cmd  |  stack   |out/*effect
 | ϊ |       a      |range(1, len(a) + 1)
 | ≎ |       a      |group_consecutive(a)
 | ⇿ |       a,b,c  |transliterate(a, b, c) # a: string to transliterate, b/c: mapping
-| ⊛ |       a      |truthy_indexes(a)
+| ⊛ |       a      |stack[0], stack[1:]
 | × |       a,b    |cartesian_product(a, b)
 | ¯ |       a      |deltas(a)
 | ± |       a      |sign_of(a)
