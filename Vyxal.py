@@ -1544,7 +1544,7 @@ else:
         compiled += NEWLINE
     return header + compiled
 
-def execute(code, flags, inputs, output_variable):
+def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version
     global inputs
@@ -1554,8 +1554,8 @@ def execute(code, flags, inputs, output_variable):
     output[2] = ""
     flags = flags
 
-    if inputs:
-        inputs = list(map(VY_eval, inputs.split("\n")))
+    if input_list:
+        inputs = list(map(VY_eval, input_list.split("\n")))
 
     if 'a' in flags:
         inputs = [inputs]

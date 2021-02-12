@@ -9,7 +9,7 @@ def index():
         print('starting')
         flags = request.form['flags']
         code = request.form['code']
-        inputs = request.form["inputs"]
+        input_list = request.form["inputs"]
         header = request.form["header"]
         footer = request.form["footer"]
         # print(inputs)
@@ -19,7 +19,7 @@ def index():
         ret[1] = ""
         ret[2] = ""
         fcode = header + code + footer
-        process = multiprocessing.Process(target=Vyxal.execute, args=(fcode, flags, inputs, ret))
+        process = multiprocessing.Process(target=Vyxal.execute, args=(fcode, flags, input_list, ret))
         process.start()
         process.join(60)
 
@@ -30,6 +30,6 @@ def index():
         # print(ret)
         output = ret[1]
         # print(code, flags, output)
-        return render_template('index.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=inputs, errors=ret[2])
+        return render_template('index.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, errors=ret[2])
 
     return render_template('index.html', code="", flags="", output="", header="", footer="", inputs="", errors="")
