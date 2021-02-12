@@ -213,7 +213,7 @@ cmd  |  stack   |out/*effect
 | ፣ |              |print t.o.s without popping
 | ₴ |       a      |time.sleep(a)
 | ⍉ |       a      |transpose(a)
-| Ϊ |       a      |range(0, len(a))
+| ΐ |       a      |range(0, len(a))
 | ₁ |              |most recent input
 | ⊘ |       a,b    |a.split_and_keep_delimiter(b)
 | ᶢ |       a,(b)  |gcd(a) if a is a list, else gcd(a, b)

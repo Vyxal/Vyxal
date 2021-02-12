@@ -812,7 +812,7 @@ def powerset(vector):
         vector = vector._dereference()
     elif type(vector) is str:
         vector = list(vector)
-    return Generator(itertools.chain.from_iterable(itertools.combinations(s, r) for r in range(len(s)+1)))
+    return Generator(itertools.chain.from_iterable(itertools.combinations(vector, r) for r in range(len(vector)+1)))
 def prepend(vector, item):
     vector = iterable(vector, range)
     t_vector = type(vector)
