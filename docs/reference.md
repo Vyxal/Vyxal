@@ -109,7 +109,7 @@ cmd  |  stack   |out/*effect
 | ½ |       a      |a / 2
 | ∆ |              |* two byte math functions
 | ø |              |* two byte string functions
-| Ï |       a,b    |a.index(b)
+| Ï |       a,b    |combinations_with_replacement(a, length=b)
 | Ô |              |list of positive odd numbers
 | Ç |       a      |1 - a
 | æ |       a      |is_prime(a)
