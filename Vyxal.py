@@ -1080,12 +1080,12 @@ def VY_filter(fn, vector):
     t_vector = VY_type(vector)
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
-    elif t_vector is Generator:
+    if t_vector is Generator:
         return Generator(vector._filter(fn))
     else:
         ret = []
         for item in vector:
-            val = fn(item)
+            val = fn([item])[-1]
             if bool(val):
                 ret.append(item)
 
