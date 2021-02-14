@@ -506,11 +506,20 @@ def fractionify(item):
         return fractionify(eval(item))
     else:
         return item
-def gcd(vector):
-    if VY_type(vector) is Generator:
-        vector = vector._dereference()
+def gcd(lhs, rhs=None):
+    if rhs:
+        return {
+            (Number, Number): lambda: math.gcd(lhs, rhs),
+            (Number, str): lambda: max(set(divisors_of(str(lhs))) & set(divisors_of(rhs))),
+            (str, Number): lambda: max(set(divisors_of(lhs)) & set(divisors_of(str(rhs)))),
+            (str, str): lambda: max(set(divisors_of(lhs)) & set(divisors_of(rhs))),
+        }.get((VY_type(lhs), VY_type(rhs)), lambda: vectorise(gcd, lhs, rhs))()
 
-    return int(numpy.gcd.reduce(vector))
+    else:
+        # I can't use VY_reduce because ugh reasons
+        lhs = deref(lhs)
+        return functools.reduce(gcd, lhs)
+        
 def get_input():
     global input_level
     source, index = input_values[input_level]

@@ -211,7 +211,7 @@ cmd  |  stack   |out/*effect
 | ⊂ |       a,b    |all combinations with length b of a
 | ⍞ |              |all inputs wrapped in a list
 | ፣ |              |print t.o.s without popping
-| ₴ |       a      |time.sleep(a)
+| ₴ |       a      |print(a, end="")
 | ⍉ |       a      |transpose(a)
 | ΐ |       a      |range(0, len(a))
 | ₁ |              |most recent input
