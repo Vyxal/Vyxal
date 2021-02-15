@@ -217,7 +217,7 @@ cmd  |  stack   |out/*effect
 | ₁ |              |most recent input
 | ⊘ |       a,b    |a.split_and_keep_delimiter(b)
 | ᶢ |       a,(b)  |gcd(a) if a is a list, else gcd(a, b)
-| ₌ |              |* apply the next two built-ins parallel 3 4 Ž+- -> 7 -1
+| ₌ |              |* apply the next two built-ins parallel 3 4 ₌+- -> 7 -1
 | ↭ |       a,b,c  |c,a,b
 | ſ |              |69
 | ƀ |       f,a,(b)|push Generator of function f with intial vector a, limited to b items (if present)
