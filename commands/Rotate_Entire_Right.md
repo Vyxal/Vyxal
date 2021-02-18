@@ -1,4 +1,4 @@
-# `"` - Rotate stack right
+# `⫙"` - Rotate stack right
 
 - Arity: 0
 - In: NA
@@ -9,7 +9,7 @@ Rotates the entire stack right. If there aren't any values on the stack, take im
 ## Usage
 
 ```
-1 2 3 " ║ ⟨3|1|2⟩
-2 3 1 " ║ ⟨1|2|3⟩
-"       ║ ⟨<input>⟩
+1 2 3 ⫙" ║ ⟨3|1|2⟩
+2 3 1 ⫙" ║ ⟨1|2|3⟩
+⫙"       ║ ⟨<input>⟩
 ```

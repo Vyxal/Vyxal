@@ -1,11 +1,11 @@
 cmd  |  stack   |out/*effect
 ---|---|---
 | ! |              |len(stack)
-| " |              |* rotate entire stack right
+| " |              |* 3 character lambda
 | $ |       a,b    |b,a
 | % |       a,b    |a % b
 | & |       a      |* register = a
-| ' |              |* rotate entire stack left
+| ' |              |* filter lambda
 | ( |              |* open a for loop: (variable|code)
 | ) |              |* close a for loop
 | \* |       a,b    |a * b
@@ -233,7 +233,7 @@ cmd  |  stack   |out/*effect
 | ∩ |       a,b    |set intersection
 | ⊍ |       a,b    |set(a) ^ set(b)
 | ⁜ |       a      |1 / a
-| ⌑ |       a      |is_perfect_square(a)
+| ⌑ |              |* 2 character lambda
 | Ḇ |       a      |bifuricate(a)
 | ₂ |              |*second most recent input
 | ⁾ |       a      |10 ** a
@@ -263,3 +263,5 @@ cmd  |  stack   |out/*effect
 | øU |     a       |a.upper()
 | øt |     a       |a.titlecase()
 | ø$ |     a       |a.swapcase()
+| ⫙' |             |* rotate entire stack left
+| ⫙" |             |* rotate entire stack right

@@ -73,11 +73,14 @@ class Generator:
                 # User defined function
                 def gen():
                     generated = initial
+                    factor = len(initial)
+                    for item in initial:
+                        yield item
                     while True:
-                        if len(generated) > limit and limit > 0:
+                        if len(generated) >= (limit + factor) and limit > 0:
                             break
                         else:
-                            ret = raw_generator(generated[::])
+                            ret = raw_generator(generated[::], arity=len(generated))
                             generated.append(ret[-1])
                             yield ret[-1]
                 self.gen = gen()
@@ -641,7 +644,9 @@ def iterable_shift(vector, direction):
     if direction == ShiftDirections.LEFT:
         if t_vector is list:
             # [1, 2, 3] -> [2, 3, 1]
-            temp = pop(vector[::-1])
+            vector = vector[::-1]
+            temp = pop(vector)
+            vector = vector[::-1]
             vector.append(temp)
             return vector
         else:
@@ -1461,7 +1466,7 @@ else:
 
             compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items") + NEWLINE
-            compiled += tab("context_level += 1;") + NEWLINE
+            compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
             if defined_arity == 1:
@@ -1478,11 +1483,12 @@ else:
         elif NAME == VyParse.LIST_STMT:
             compiled += "temp_list = []" + NEWLINE
             for element in VALUE[VyParse.LIST_ITEMS]:
-                compiled += "def list_item(parameter_stack):" + NEWLINE
-                compiled += tab("stack = parameter_stack[::]") + NEWLINE
-                compiled += tab(VY_compile(element)) + NEWLINE
-                compiled += tab("return pop(stack)") + NEWLINE
-                compiled += "temp_list.append(list_item(stack))" + NEWLINE
+                if element:
+                    compiled += "def list_item(parameter_stack):" + NEWLINE
+                    compiled += tab("stack = parameter_stack[::]") + NEWLINE
+                    compiled += tab(VY_compile(element)) + NEWLINE
+                    compiled += tab("return pop(stack)") + NEWLINE
+                    compiled += "temp_list.append(list_item(stack))" + NEWLINE
             compiled += "stack.append(temp_list[::])"
         elif NAME == VyParse.FUNCTION_REFERENCE:
             compiled += f"stack.append(FN_{VALUE[VyParse.FUNCTION_NAME]})"
@@ -1503,6 +1509,10 @@ else:
             compiled += commands.math_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.TWO_BYTE_STRING:
             compiled += commands.string_command_dict.get(VALUE, "  ")[0]
+        elif NAME == VyParse.TWO_BYTE_LIST:
+            compiled += commands.list_command_dict.get(VALUE, "  ")[0]
+        elif NAME == VyParse.TWO_BYTE_MISC:
+            compiled += commands.misc_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding

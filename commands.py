@@ -1,9 +1,7 @@
 codepage = "λƛ¬∧⟑∨⟇÷«\n»°•․⍎Ṛ½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ß⎝⎠⎡⎣⨥⨪∺❝ð→←ÐřŠč√⳹ẊȦȮḊĖẸṙ∑Ĥ⟨⟩ı⁌\tΤĴ²‿⁂ĸ¶⁋⁑Ńń‼⨊≈ðʗ◁⊐∫⍋⍒∈ₛ£Œœ≕≠¥ⁱ‹›⍲⍱‸¡⊑≀℅≤≥↜≗⋯⧢ũ⁰¹ªₑϊ≎⇿⊛×¯±⊂⍞፣₴⍉ΐ₁⊘ᶢ₌↭ſƀƁ⁚⌈⌊⊓⊣Ḟḟ∪∩⊍⁜⌑Ḇ₂⁾₦¼ƒɖꝒ′₥α″βγΠ"
 command_dict = {
 
-    "!": ("stack.push(len(stack))", 0),
-    '"': ("stack = iterable_shift(stack, ShiftDirections.RIGHT)", 0),
-    "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0),
+    "!": ("stack.append(len(stack))", 0),
     "$": ("top = pop(stack); over = pop(stack); stack += [top, over]", 2),
     "%": ("rhs, lhs = pop(stack, 2); stack.append(modulo(lhs, rhs))", 2),
     "*": ("rhs, lhs = pop(stack, 2); stack.append(multiply(lhs, rhs))", 2),
@@ -182,10 +180,10 @@ command_dict = {
     "ſ": ("stack.append(69)", 0),
     "ƀ": ("""top = pop(stack)
 if VY_type(top) is Number:
-    limit = int(top)
+    limit = int(top); vector = pop(stack)
 else:
-    limit = -1
-vector, fn = pop(stack, 2)
+    limit = -1; vector = top
+fn = pop(stack)
 stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 """, 2),
     "Ɓ": ("stack.append(int(bool(stack.pop())))", 1),
@@ -200,7 +198,6 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "∩": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) & set(rhs)))", 2),
     "⊍": ("rhs, lhs = map(iterable, pop(stack, 2)); stack.append(list(set(lhs) ^ set(rhs)))", 2),
     "⁜": ("stack.append(divide(1, pop(stack)))", 1),
-    "⌑": ("top = pop(stack); stack.append(exponate(top, 0.5) == top)", 1),
     "Ḇ": ("stack += bifuricate(pop(stack))", 1),
     "₂": ("stack.append(input_values[input_level][0][-2])", 0),
     "⁾": ("stack.append(exponate(10, pop(stack)))", 1),
@@ -233,4 +230,11 @@ string_command_dict = {
     "U": ("stack.append(str(pop(stack)).upper())", 1),
     "t": ("stack.append(str(pop(stack)).title())", 1),
     "$": ("stack.append(str(pop(stack)).swapcase())", 1)
+}
+
+list_command_dict = {}
+
+misc_command_dict = {
+    '"': ("stack = iterable_shift(stack, ShiftDirections.RIGHT)", 0),
+    "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0)
 }

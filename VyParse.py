@@ -17,6 +17,7 @@ INTEGER = "STRUCTURE_INTEGER"
 CHARACTER = "STRUCTURE_CHARACTER"
 LAMBDA_STMT = "LAMBDA_STMT"
 LAMBDA_MAP = "LAMBDA_MAP"
+LAMBDA_FILTER = "LAMBDA_FILTER"
 LIST_STMT = "LIST_STMT"
 VARIABLE_GET = "VARIABLE_GET"
 VARIABLE_SET = "VARIABLE_SET"
@@ -44,12 +45,14 @@ LAMBDA_ARGUMENTS = "lambda_arguments"
 COMPRESSED_NUMBER_VALUE = "compressed_number_value"
 COMPRESSED_STRING_VALUE = "compressed_string_value"
 TWO_CHAR_STUFF = "two_char_data_idk"
+THREE_CHAR_LAMBDA = "three_char_because_i_made_a_69_constant"
 
 ONE = "one"
 TWO = "two"
+THREE = "three"
 
-ONE_CHARS = "kv․∆øªÞ&~ß"
-TWO_CHARS = "₌"
+ONE_CHARS = "kv․∆øªÞ⫙&~ß"
+TWO_CHARS = "₌⌑"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
@@ -59,12 +62,15 @@ ONE_CHAR_FUNCTION_REFERENCE = "․"
 TWO_BYTE_MATH = "∆"
 TWO_BYTE_STRING = "ø"
 TWO_BYTE_LIST = "Þ"
+TWO_BYTE_MISC = "⫙"
 STRING_DELIMITER = "`"
 REGISTER_MODIFIER = "&"
 DONT_POP = "~"
 CONDITIONAL_EXECUTION = "ß"
 
 PARA_APPLY = "₌"
+TWO_CHAR_LAMBDA = "⌑"
+THREE_CHAR_LAMBDA = "'"
 
 DECIMAL = "."
 
@@ -80,6 +86,7 @@ OPENING = {
     SWITCH_STMT: "§",
     LAMBDA_STMT: "λ",
     LAMBDA_MAP: "ƛ",
+    LAMBDA_FILTER: '"',
     LIST_STMT: "⟨",
     FUNCTION_REFERENCE: "°",
     COMPRESSED_NUMBER: "»",
@@ -98,6 +105,7 @@ CLOSING = {
     SWITCH_STMT: ";",
     LAMBDA_STMT: ";",
     LAMBDA_MAP: ";",
+    LAMBDA_FILTER: ";",
     LIST_STMT: "⟩",
     FUNCTION_REFERENCE: ";",
     COMPRESSED_NUMBER: "»",
@@ -114,6 +122,7 @@ DEFAULT_KEYS = {
     FUNCTION_STMT: FUNCTION_NAME,
     LAMBDA_STMT: LAMBDA_BODY,
     LAMBDA_MAP: LAMBDA_BODY,
+    LAMBDA_FILTER: LAMBDA_BODY,
     LIST_STMT: LIST_ITEM,
     FUNCTION_REFERENCE: FUNCTION_NAME,
     COMPRESSED_NUMBER: COMPRESSED_NUMBER_VALUE,
@@ -308,6 +317,15 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[active_key] = [char]
             continue
 
+        elif structure == THREE_CHAR_LAMBDA:
+            if len(structure_data[active_key]) == 2:
+                tokens.append(Token(LAMBDA_STMT, structure_data[active_key] + char))
+                structure = NO_STMT
+                structure_data = {}
+            else:
+                structure_data[active_key] += char
+            continue
+
 
         if char == "\\":
             escaped = True
@@ -344,6 +362,10 @@ def Tokenise(source: str) -> [Token]:
                 structure = LAMBDA_MAP
                 active_key = LAMBDA_BODY
 
+            elif char == OPENING[LAMBDA_FILTER]:
+                structure = LAMBDA_FILTER
+                active_key = LAMBDA_BODY
+
             elif char == OPENING[LIST_STMT]:
                 structure = LIST_STMT
                 active_key = LIST_ITEM
@@ -378,6 +400,10 @@ def Tokenise(source: str) -> [Token]:
 
                 if structure == LAMBDA_MAP:
                     additional_token = Token(NO_STMT, "M")
+                    structure = LAMBDA_STMT
+
+                elif structure == LAMBDA_FILTER:
+                    additional_token = Token(NO_STMT, "F")
                     structure = LAMBDA_STMT
 
                 elif structure == LIST_STMT:
@@ -455,6 +481,12 @@ def Tokenise(source: str) -> [Token]:
             active_key = TWO_CHAR_STUFF
             structure_data[active_key] = ""
 
+        elif char == THREE_CHAR_LAMBDA:
+            char_mode = THREE
+            structure = THREE_CHAR_LAMBDA
+            active_key = LAMBDA_BODY
+            structure_data[active_key] = ""
+
         elif char in ONE_CHARS:
             char_mode = ONE
             structure = char
@@ -519,7 +551,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["ßL"]
+    tests = ["'5*∆L", "₌+-", "₌*∆L", "⟨⟩", "1 2 3 ⫙'"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
