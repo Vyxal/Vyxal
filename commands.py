@@ -75,7 +75,7 @@ command_dict = {
     "•": ("rhs, lhs = pop(stack, 2); stack.append(log(lhs, rhs))", 2),
     "⍎": ("fn = pop(stack); stack += fn(stack)", 1),
     "Ṛ": ("rhs, lhs = pop(stack, 2); stack.append(rand_between(lhs, rhs))", 2),
-    "Ï": ("rhs, lhs = pop(stack, 2); stack.append(Generator(itertools.combinations_with_replacement(iterable(lhs), rhs)))", 2),
+    "Ï": ("rhs, lhs = pop(stack, 2); stack.append(combinations_replace_generate(lhs, rhs))", 2),
     "Ô": ("stack.append(Generator(lambda x: (2 * (x + 1)) + 1))", 0),
     "∞": ("stack.append(Generator(lambda x: x))", 0),
     "Ç": ("stack.append(subtract(1, pop(stack)))", 1),

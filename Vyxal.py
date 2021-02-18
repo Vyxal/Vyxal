@@ -66,7 +66,7 @@ class Comparitors:
     LESS_THAN_EQUALS = 4
     GREATER_THAN_EQUALS = 5
 class Generator:
-    def __init__(self, raw_generator, limit=-1, initial=[]):
+    def __init__(self, raw_generator, limit=-1, initial=[], condition=None):
         self.next_index = 0
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
@@ -77,7 +77,9 @@ class Generator:
                     for item in initial:
                         yield item
                     while True:
-                        if len(generated) >= (limit + factor) and limit > 0:
+                        if condition and len(generated) >= 2 and generated[-1] == generated[-2]:
+                            break
+                        elif len(generated) >= (limit + factor) and limit > 0:
                             break
                         else:
                             ret = raw_generator(generated[::], arity=len(generated))
@@ -329,7 +331,11 @@ def compare(lhs, rhs, mode):
         return int(boolean)
     else:
         return boolean
-
+def combinations_replace_generate(lhs, rhs):
+    if VY_type(rhs) == Number and VY_type(lhs) != Function:
+        return Generator(itertools.combinations_with_replacement(iterable(lhs), rhs))
+    else:
+        return Generator(lhs, initial=[rhs], condition=True)
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -520,8 +526,7 @@ def gcd(lhs, rhs=None):
     else:
         # I can't use VY_reduce because ugh reasons
         lhs = deref(lhs)
-        return int(numpy.gcd.reduce(lhs))
-        
+        return int(numpy.gcd.reduce(lhs))   
 def get_input():
     global input_level
     source, index = input_values[input_level]
@@ -600,7 +605,6 @@ def integer_divide(lhs, rhs):
         return lhs // rhs
 
     return vectorise(integer_divide, lhs, rhs)
-
 def integer_list(string):
     charmap = dict(zip("etaoinshrd", "0123456789"))
     ret = []
@@ -901,7 +905,6 @@ def sentence_case(item):
         if capitalise and char != " ": capitalise = False
         capitalise = capitalise or char in "!?."
     return ret
-
 def sign_of(item):
     t = VY_type(item)
     if t == Number:
