@@ -74,7 +74,7 @@ command_dict = {
     "÷": ("for item in iterable(pop(stack)): stack.append(item)", 1),
     "•": ("rhs, lhs = pop(stack, 2); stack.append(log(lhs, rhs))", 2),
     "⍎": ("fn = pop(stack); stack += fn(stack)", 1),
-    "Ṛ": ("rhs, lhs = pop(stack, 2); stack.append(rand_between(lhs, rhs))", 2),
+    "Ṛ": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs))", 2),
     "Ï": ("rhs, lhs = pop(stack, 2); stack.append(combinations_replace_generate(lhs, rhs))", 2),
     "Ô": ("stack.append(Generator(lambda x: (2 * (x + 1)) + 1))", 0),
     "∞": ("stack.append(Generator(lambda x: x))", 0),
