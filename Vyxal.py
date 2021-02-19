@@ -77,9 +77,7 @@ class Generator:
                     for item in initial:
                         yield item
                     while True:
-                        if condition and len(generated) >= 2 and generated[-1] == generated[-2]:
-                            break
-                        elif len(generated) >= (limit + factor) and limit > 0:
+                        if len(generated) >= (limit + factor) and limit > 0:
                             break
                         else:
                             ret = raw_generator(generated[::], arity=len(generated))
@@ -335,7 +333,18 @@ def combinations_replace_generate(lhs, rhs):
     if VY_type(rhs) == Number and VY_type(lhs) != Function:
         return Generator(itertools.combinations_with_replacement(iterable(lhs), rhs))
     else:
-        return Generator(lhs, initial=[rhs], condition=True)
+        if VY_type(lhs) is Function:
+            fn, init = lhs, rhs
+        else:
+            fn, init = rhs, lhs
+        def gen():
+            prev = None
+            curr = init
+            while prev != curr:
+                yield curr
+                prev = deref(curr)
+                curr = fn([curr])[-1]
+        return Generator(gen())
 def counts(vector):
     ret = []
     vector = iterable(vector)
