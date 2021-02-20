@@ -177,7 +177,7 @@ command_dict = {
     "⊘": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
     "ᶢ": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd(pop(stack), rhs))", 1),
     "↭": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
-    "ſ": ("temp = pop(stack)\nif VY_type(temp) in [Generator, list]: stack.append(temp[1:])\nelse: stack.append(temp); stack.append(69)", 0),
+    "ſ": ("temp = pop(stack)\nif VY_type(temp) in [Generator, list, str]: stack.append(temp[1:])\nelse: stack.append(temp); stack.append(69)", 0),
     "ƀ": ("""top = pop(stack)
 if VY_type(top) is Number:
     limit = int(top); vector = pop(stack)
