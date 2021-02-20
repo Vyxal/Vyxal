@@ -1330,7 +1330,6 @@ constants = {
     "p": "string.punctuation",
     "P": "string.printable",
     "w": "string.whitespace",
-    "D": "string.ascii_letters + string.digits",
     "r": "string.digits + string.ascii_letters",
     "B": "string.ascii_uppercase + string.ascii_lowercase",
     "Z": "string.ascii_uppercase[::-1]",
