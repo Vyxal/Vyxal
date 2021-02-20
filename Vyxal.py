@@ -330,8 +330,10 @@ def compare(lhs, rhs, mode):
     else:
         return boolean
 def combinations_replace_generate(lhs, rhs):
-    if VY_type(rhs) == Number and VY_type(lhs) != Function:
-        return Generator(itertools.combinations_with_replacement(iterable(lhs), rhs))
+    types = VY_type(lhs), VY_type(rhs)
+    if Function not in types:
+        vector, n = (lhs, rhs) if types == (types[0], Number) else (rhs, lhs)
+        return Generator(itertools.product(iterable(lhs), repeat=rhs))
     else:
         if VY_type(lhs) is Function:
             fn, init = lhs, rhs
