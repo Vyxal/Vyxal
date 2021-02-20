@@ -1623,6 +1623,8 @@ def execute(code, flags, input_list, output_variable):
     if not printed:
         if flags and 's' in flags:
             output[1] = VY_str(summate(pop(stack)))
+        elif flags and 'd' in flags:
+            output[1] = VY_str(summate(flatten(pop(stack))))
         elif _vertical_join:
             output[1] = VY_str(vertical_join(pop(stack)))
         elif _join:
