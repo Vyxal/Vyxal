@@ -517,10 +517,12 @@ def fractionify(item):
     if VY_type(item) == Number:
         from fractions import Fraction
         from decimal import Decimal
-        frac = Fraction(Decimal(str(item)))
+        frac = Fraction(item).limit_denominator()
         return [frac.numerator, frac.denominator]
     elif type(item) is str and re.match(r"\-?\d+(\.\d+)?", item):
         return fractionify(eval(item))
+    elif type(item) in [list, Generator] and len(item) == 2:
+        return fractionify(item[0] / item[1])
     else:
         return item
 def gcd(lhs, rhs=None):
@@ -1661,14 +1663,15 @@ if __name__ == "__main__":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
         print("\tj\tPrint top of stack joined by newlines")
-        print("\tL\tPrint top of stack joined by newlines(Vertically)")
-        print("\ts\tSum/concatenate top of stack on execution")
+        print("\tL\tPrint top of stack joined by newlines (Vertically)")
+        print("\ts\tSum/concatenate top of stack on end of execution")
         print("\tM\tUse 1-indexed range [1,n] for mapping integers")
         print("\tm\tUse 0-indexed range [0,n) for mapping integers")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
         print("\tf\tGet input from file instead of arguments")
         print("\ta\tTreat newline seperated values as a list")
+        print("\td\tDeep sum of top of stack")
         print("");
     else:
         if flags:
@@ -1704,6 +1707,8 @@ if __name__ == "__main__":
         if not printed:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
+            elif flags and 'd' in flags:
+                print(summate(flatten(pop(stack))))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
