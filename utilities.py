@@ -85,7 +85,7 @@ def uncompress(s):
 
 
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
-base27alphabet = "¡etaoinshrdlcumwfgypbvkjxqz "
+base27alphabet = " etaoinshrdlcumwfgypbvkjxqz"
 
 
 if __name__ == "__main__":
