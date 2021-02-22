@@ -1600,6 +1600,7 @@ def execute(code, flags, input_list, output_variable):
 
     if input_list:
         inputs = list(map(VY_eval, input_list.split("\n")))
+        print(inputs)
 
     if 'a' in flags:
         inputs = [inputs]
