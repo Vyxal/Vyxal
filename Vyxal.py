@@ -49,6 +49,7 @@ output = ""
 printed = False
 register = 0
 retain_items = False
+reverse_args = False
 stack = []
 
 MAP_START = 0
@@ -835,6 +836,9 @@ def pop(vector, num=1, wrap=False):
         vector += ret[::-1]
     if num == 1 and not wrap:
         return ret[0]
+    
+    if reverse_args:
+        return ret[::-1]
     return ret
 def powerset(vector):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
@@ -1580,7 +1584,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version
-    global inputs
+    global inputs, reverse_args
     online_version = True
     output = output_variable
     output[1] = ""
@@ -1610,8 +1614,11 @@ def execute(code, flags, input_list, output_variable):
 
         if 'v' in flags:
             use_encoding = True
+        
+        if 'r' in flags:
+            reverse_args = True
     input_values[0] = [inputs, 0]
-    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items\n")
+    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
     context_level = 0
     if flags and 'c' in flags:
         output[2] = code
@@ -1675,6 +1682,7 @@ if __name__ == "__main__":
         print("\tf\tGet input from file instead of arguments")
         print("\ta\tTreat newline seperated values as a list")
         print("\td\tDeep sum of top of stack")
+        print("\tr\tMakes all operations happen with reverse arguments")
         print("");
     else:
         if flags:
@@ -1692,6 +1700,9 @@ if __name__ == "__main__":
 
             if 'v' in flags:
                 use_encoding = True
+            
+            if 'r' in flags:
+                reverse_args = True
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
