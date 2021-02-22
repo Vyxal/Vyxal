@@ -812,7 +812,7 @@ def orderless_range(lhs, rhs, lift_factor=0):
         import regex
         pobj = regex.compile(lhs)
         mobj = pobj.match(rhs)
-        return int(bool(mobj.span()))
+        return int(bool(mobj))
 def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
     yield [item]
