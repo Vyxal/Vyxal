@@ -1602,7 +1602,7 @@ def execute(code, flags, input_list, output_variable):
     flags = flags
 
     if input_list:
-        inputs = list(map(VY_eval, input_list.split("\n\r")))
+        inputs = list(map(VY_eval, input_list.split("\r\n")))
         print(inputs)
 
     if 'a' in flags:
