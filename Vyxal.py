@@ -819,6 +819,13 @@ def partition(item, I=1):
     for i in range(I, item//2 + 1):
         for p in partition(item-i, i):
             yield [i] + p
+def permutations(vector):
+    t_vector = VY_type(vector)
+    vector = itertools.permutations(vector)
+
+    if t_vector is str:
+        return Generator(map(lambda x: "".join(x), vector))
+    return Generator(vector)
 def polynomial(vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
