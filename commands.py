@@ -173,7 +173,7 @@ command_dict = {
     "₴": ("VY_print(pop(stack), end=''); printed = True", 1),
     "⍉": ("stack.append(transpose(iterable(pop(stack))))", 1),
     "ΐ": ("obj = iterable(pop(stack)); stack.append(Generator(range(0, len(obj))))", 1),
-    "₁": ("stack.append(input_values[input_level][0][-1])", 0),
+    "₁": ("stack.append(input_values[0][0][-1])", 0),
     "⊘": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
     "ᶢ": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd(pop(stack), rhs))", 1),
     "↭": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),

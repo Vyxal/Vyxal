@@ -543,6 +543,7 @@ def gcd(lhs, rhs=None):
         return int(numpy.gcd.reduce(lhs))   
 def get_input():
     global input_level
+    global input_values
     source, index = input_values[input_level]
     if source:
         ret = source[index % len(source)]
@@ -550,7 +551,9 @@ def get_input():
         return ret
     else:
         try:
-            return VY_eval(input())
+            temp = VY_eval(input())
+            input_values[input_level][0].append(deref(temp))
+            return temp
         except:
             return 0
 def graded(vector):
@@ -1599,7 +1602,7 @@ def execute(code, flags, input_list, output_variable):
     flags = flags
 
     if input_list:
-        inputs = list(map(VY_eval, input_list.split("\n")))
+        inputs = list(map(VY_eval, input_list.split("\n\r")))
         print(inputs)
 
     if 'a' in flags:
