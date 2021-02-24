@@ -186,7 +186,7 @@ else:
 fn = pop(stack)
 stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 """, 2),
-    "Ɓ": ("stack.append(int(bool(stack.pop())))", 1),
+    "Ɓ": ("stack.append(int(not compare(pop(stack), 0, Comparitors.EQUALS)))", 1),
     "⁚": ("vector = iterable(pop(stack)); stack.append(vector[:-1]); stack.append(vector[-1])", 1),
     "⌈": ("stack.append(ceiling(pop(stack)))", 1),
     "⌊": ("stack.append(floor(pop(stack)))", 1),
