@@ -1644,6 +1644,8 @@ def execute(code, flags, input_list, output_variable):
             output[1] = VY_str(summate(pop(stack)))
         elif flags and 'd' in flags:
             output[1] = VY_str(summate(flatten(pop(stack))))
+        elif flags and "S" in flags:
+            output[1] = VY_str(" ".join([str(n) for n in pop(stack)]))
         elif _vertical_join:
             output[1] = VY_str(vertical_join(pop(stack)))
         elif _join:
@@ -1694,6 +1696,7 @@ if __name__ == "__main__":
         print("\ta\tTreat newline seperated values as a list")
         print("\td\tDeep sum of top of stack")
         print("\tr\tMakes all operations happen with reverse arguments")
+        print("\tS\tPrint top of stack joined by spaces")
         print("");
     else:
         if flags:
@@ -1734,6 +1737,8 @@ if __name__ == "__main__":
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
+            elif flags and "S" in flags:
+                print(" ".join([str(n) for n in pop(stack)]))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
