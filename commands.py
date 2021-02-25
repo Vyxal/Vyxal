@@ -90,7 +90,7 @@ command_dict = {
     "⎣": ("rhs, lhs = pop(stack, 2); stack.append(VY_min(lhs, rhs))", 2),
     "Ð": ("alphabet, number = pop(stack, 2); stack.append(utilities.to_ten(number, alphabet))", 2),
     "Š": ("alphabet, number = pop(stack, 2); stack.append(utilities.from_ten(number, alphabet))", 2),
-    "ř": ("rhs, lhs = pop(stack, 2); stack.append(repeat(lhs, rhs))", 2),
+    "ř": ("rhs, lhs = pop(stack, 2); main = None;\nif VY_type(rhs) is Function: main = pop(stack)\nstack.append(repeat(lhs, rhs, main))", 2),
     "∺": ("stack.append(modulo(pop(stack), 2))", 1),
     "⨥": ("stack.append(add(pop(stack), 1))", 1),
     "⨪": ("stack.append(subtract(pop(stack), 1))", 1),

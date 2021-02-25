@@ -529,6 +529,10 @@ def Tokenise(source: str) -> [Token]:
             additional_token = Token(NO_STMT, "M")
             structure = LAMBDA_STMT
 
+        elif structure == LAMBDA_FILTER:
+            additional_token = Token(NO_STMT, "F")
+            structure = LAMBDA_STMT
+
         elif structure == LIST_STMT:
             structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
             del structure_data[LIST_ITEM]
@@ -561,7 +565,9 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["'5*∆L", "₌+-", "₌*∆L", "⟨⟩", "1 2 3 ⫙'", "'bL⨪Ï", "⌑++", "«Að⊂»V∑«"]
+    tests = ["'5*∆L", "₌+-", "₌*∆L",
+             "⟨⟩", "1 2 3 ⫙'", "'bL⨪Ï", "⌑++", "«Að⊂»V∑«",
+             '"1+']
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

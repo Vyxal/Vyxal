@@ -344,9 +344,9 @@ def combinations_replace_generate(lhs, rhs):
             prev = None
             curr = init
             while prev != curr:
-                yield curr
                 prev = deref(curr)
                 curr = fn([curr])[-1]
+                yield curr
         return Generator(gen())
 def counts(vector):
     ret = []
@@ -885,10 +885,18 @@ def remove(vector, item):
         list: lambda: Generator(filter(lambda x: x != item, vector)),
         Generator: lambda: remove(vector._dereference(), item)
     }[VY_type(vector)]()
-def repeat(vector, times):
+def repeat(vector, times, extra=None):
     vector = iterable(vector)
     t_vector = VY_type(vector)
-    if times < 0:
+    if t_vector is Function and VY_type(times) is Function:
+        def gen():
+            item = extra
+            while vector([item])[-1]:
+                item = times([item])[-1]
+                yield item
+        return Generator(gen())
+    
+    elif times < 0:
         if t_vector is str: return vector[::-1] * times
         return Generator(itertools.repeat(reversed(vector), times))
     else:
