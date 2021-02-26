@@ -301,6 +301,9 @@ def ceiling(item):
         Number: lambda: math.ceil(item),
         str: lambda: item.upper()
     }.get(VY_type(item), lambda: vectorise(ceiling, item))()
+def centre(vector):
+    focal = max(map(len, vector))
+    return Generator(map(lambda x: x.center(focal), vector))
 def chrord(item):
     t_item = VY_type(item)
     if t_item is str and len(item) == 1:
@@ -816,6 +819,9 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.match(rhs)
         return int(bool(mobj))
+def palindromise(item):
+    # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
+    return join(item, reverse(item)[1:])
 def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
     yield [item]
@@ -1654,6 +1660,8 @@ def execute(code, flags, input_list, output_variable):
             output[1] = VY_str(summate(flatten(pop(stack))))
         elif flags and "S" in flags:
             output[1] = VY_str(" ".join([str(n) for n in pop(stack)]))
+        elif flags and "C" in flags:
+            output[1] = VY_str("\n".join(centre(pop(stack))))
         elif _vertical_join:
             output[1] = VY_str(vertical_join(pop(stack)))
         elif _join:
@@ -1705,6 +1713,7 @@ if __name__ == "__main__":
         print("\td\tDeep sum of top of stack")
         print("\tr\tMakes all operations happen with reverse arguments")
         print("\tS\tPrint top of stack joined by spaces")
+        print("\tC\tCentre the output and join on newlines")
         print("");
     else:
         if flags:
@@ -1747,9 +1756,11 @@ if __name__ == "__main__":
                 print(summate(flatten(pop(stack))))
             elif flags and "S" in flags:
                 print(" ".join([str(n) for n in pop(stack)]))
+            elif flags and "C" in flags:
+                print("\n".join(centre(pop(stack))))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
-                print("\n".join([str(n) for n in pop(stack)]))
+                print("\n".join([VY_str(n) for n in pop(stack)]))
             else:
                 VY_print(pop(stack))
