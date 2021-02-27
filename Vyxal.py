@@ -81,7 +81,7 @@ class Generator:
                         if len(generated) >= (limit + factor) and limit > 0:
                             break
                         else:
-                            ret = raw_generator(generated[::], arity=len(generated))
+                            ret = raw_generator(generated[::-1], arity=len(generated))
                             generated.append(ret[-1])
                             yield ret[-1]
                 self.gen = gen()
@@ -1623,7 +1623,6 @@ def execute(code, flags, input_list, output_variable):
 
     if input_list:
         inputs = list(map(VY_eval, input_list.split("\r\n")))
-        print(inputs)
 
     if 'a' in flags:
         inputs = [inputs]
