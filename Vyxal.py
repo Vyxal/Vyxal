@@ -1224,17 +1224,24 @@ def VY_print(item, end="\n", raw=False):
     t_item = type(item)
     if t_item is Generator:
         item._print(end)
+    
+    elif t_item is list:
+        VY_print("⟨", "", raw)
+        for value in item[:-1]:
+            VY_print(value, "|", raw)
+        VY_print(item[-1], "", raw)
+        VY_print("⟩", end, raw)
     else:
         if raw:
             if online_version:
                 output[1] += VY_repr(item) + end
             else:
-                print(VY_repr(item, do_print=True), end=end)
+                print(VY_repr(item), end=end)
         else:
             if online_version:
                 output[1] += VY_str(item) + end
             else:
-                print(VY_str(item, do_print=True), end=end)
+                print(VY_str(item), end=end)
 def VY_sorted(vector, fn=None):
     t_vector = type(vector)
     vector = iterable(vector, str)
@@ -1269,13 +1276,11 @@ def VY_reduce(fn, vector):
         working_value = fn([working_value, item], arity=2)[-1]
 
     return working_value
-def VY_repr(item, do_print=False):
+def VY_repr(item):
     t_item = VY_type(item)
-    if t_item is Generator and do_print:
-        item._print()
     return {
         Number: lambda x: str(x),
-        list: lambda x: "⟨" + "|".join([str(VY_repr(y, do_print)) for y in x]) + "⟩",
+        list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`",
         Function: lambda x: "@FUNCTION:" + x.__name__
@@ -1288,16 +1293,12 @@ def VY_round(item):
     elif t_item is str:
         return [item[n:] for n in range(len(item) - 1, -1, -1)]
     return vectorise(VY_round, item)
-def VY_str(item, do_print=False):
-    
+def VY_str(item):  
     t_item = VY_type(item)
-
-    if t_item is Generator and do_print:
-        item._print()
     return {
         Number: lambda x: str(x),
         str: lambda x: x,
-        list: lambda x: "⟨" + "|".join([VY_repr(y, do_print) for y in x]) + "⟩",
+        list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
         Function: lambda x: "@FUNCTION:" + x.__name__
     }[t_item](item)
