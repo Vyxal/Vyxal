@@ -1229,12 +1229,12 @@ def VY_print(item, end="\n", raw=False):
             if online_version:
                 output[1] += VY_repr(item) + end
             else:
-                print(VY_repr(item), end=end)
+                print(VY_repr(item, do_print=True), end=end)
         else:
             if online_version:
                 output[1] += VY_str(item) + end
             else:
-                print(VY_str(item), end=end)
+                print(VY_str(item, do_print=True), end=end)
 def VY_sorted(vector, fn=None):
     t_vector = type(vector)
     vector = iterable(vector, str)
@@ -1269,11 +1269,13 @@ def VY_reduce(fn, vector):
         working_value = fn([working_value, item], arity=2)[-1]
 
     return working_value
-def VY_repr(item):
+def VY_repr(item, do_print=False):
     t_item = VY_type(item)
+    if t_item is Generator and do_print:
+        item._print()
     return {
         Number: lambda x: str(x),
-        list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
+        list: lambda x: "⟨" + "|".join([str(VY_repr(y, do_print)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`",
         Function: lambda x: "@FUNCTION:" + x.__name__
@@ -1286,12 +1288,16 @@ def VY_round(item):
     elif t_item is str:
         return [item[n:] for n in range(len(item) - 1, -1, -1)]
     return vectorise(VY_round, item)
-def VY_str(item):
+def VY_str(item, do_print=False):
+    
     t_item = VY_type(item)
+
+    if t_item is Generator and do_print:
+        item._print()
     return {
         Number: lambda x: str(x),
         str: lambda x: x,
-        list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
+        list: lambda x: "⟨" + "|".join([VY_repr(y, do_print) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
         Function: lambda x: "@FUNCTION:" + x.__name__
     }[t_item](item)
