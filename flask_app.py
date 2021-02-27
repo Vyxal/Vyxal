@@ -16,17 +16,24 @@ def index():
         import Vyxal
         manager = multiprocessing.Manager()
         ret = manager.dict()
+
+        if "b" in flags:
+            time = 15
+        elif "B" in flags:
+            time = 30
+        else:
+            time = 60
         ret[1] = ""
         ret[2] = ""
         fcode = header + code + footer
         process = multiprocessing.Process(target=Vyxal.execute, args=(fcode, flags, input_list, ret))
         process.start()
-        process.join(60)
+        process.join(time)
 
         if process.is_alive():
             process.kill()
             if 2 in ret:
-                ret[2] += "\n" + "Code timed out after 60 seconds"
+                ret[2] += "\n" + f"Code timed out after {time} seconds"
         # print(ret)
         output = ret[1]
         # print(code, flags, output)
