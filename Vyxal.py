@@ -1711,7 +1711,7 @@ if __name__ == "__main__":
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
-            VY_print(stack)
+            VY_print(stack  )
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
