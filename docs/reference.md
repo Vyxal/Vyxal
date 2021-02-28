@@ -263,5 +263,7 @@ cmd  |  stack   |out/*effect
 | øU |     a       |a.upper()
 | øt |     a       |a.titlecase()
 | ø$ |     a       |a.swapcase()
+| øe |     a       |run_length_encoded(a)
+| ød |     a       |run_length_decoded(a)
 | ⫙' |             |* rotate entire stack left
 | ⫙" |             |* rotate entire stack right

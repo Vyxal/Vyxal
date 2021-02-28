@@ -938,6 +938,14 @@ def rshift(lhs, rhs):
         (Generator, list): lambda: _two_argument(rshift, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(rshift, lhs, rhs)
     }.get(types, lambda: vectorise(rshift, lhs, rhs))()
+def run_length_decode(vector):
+    ret = ""
+    for item in vector:
+        ret += item[0] * item[1]
+    return ret
+def run_length_encode(item):
+    item = group_consecutive(iterable(item))
+    return Generator(map(lambda x: [x[0], len(x)], item))
 def sentence_case(item):
     ret = ""
     capitalise = True
@@ -1226,10 +1234,10 @@ def VY_print(item, end="\n", raw=False):
         item._print(end)
     
     elif t_item is list:
-        VY_print("⟨", "", raw)
+        VY_print("⟨", "", False)
         for value in item[:-1]:
-            VY_print(value, "|", raw)
-        VY_print(item[-1], "", raw)
+            VY_print(value, "|", True)
+        VY_print(item[-1], "", True)
         VY_print("⟩", end, raw)
     else:
         if raw:

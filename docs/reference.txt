@@ -262,5 +262,7 @@ z       a,f    |zipmap the contents of a with function f
 øU     a       |a.upper()
 øt     a       |a.titlecase()
 ø$     a       |a.swapcase()
+øe     a       |run_length_encoded(a)
+ød     a       |run_length_decoded(a)
 ⫙'             |* rotate entire stack left
 ⫙"             |* rotate entire stack right
