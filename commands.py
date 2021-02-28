@@ -219,6 +219,7 @@ math_command_dict = {
     "q": ("coeff_a, coeff_b = pop(stack, 2); stack.append(polynomial([coeff_a, coeff_b, 0]))", 2),
     "Q": ("coeff_b, coeff_c = pop(stack, 2); stack.append(polynomial([1, coeff_b, coeff_c]))", 2),
     "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff));", 1),
+    "s": ("arg = pop(stack); stack.append(math.sin(arg))", 1),
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(divide(factorial(lhs), factorial(subtract(lhs, rhs))))", 2),
     "±": ("rhs, lhs = pop(stack, 2); stack.append(math.copysign(lhs, rhs))", 2)
 }
