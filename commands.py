@@ -226,7 +226,8 @@ math_command_dict = {
     "c": ("arg = pop(stack); stack.append(vectorise(math.cos, arg))", 1),
     "t": ("arg = pop(stack); stack.append(vectorise(math.tan, arg))", 1),
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(divide(factorial(lhs), factorial(subtract(lhs, rhs))))", 2),
-    "±": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(math.copysign, lhs, rhs))", 2)
+    "±": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(math.copysign, lhs, rhs))", 2),
+    "K": ("arg = pop(stack); stack.append(join(divisors(arg), arg))", 1)
 }
 
 string_command_dict = {
