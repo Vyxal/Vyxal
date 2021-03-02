@@ -4,6 +4,7 @@
 - In: a, b
 - Out: b distributed evenly over a
 
+If a and b are numbers, returns the absolute difference of a and b (`abs(a - b)`)
 Returns `a` with `b` spread over each element: think of it as incrementing each element of `a` until the number of increments equals `b`.
 
 E.g. `1 6r 14ĸ`

@@ -1663,6 +1663,24 @@ def execute(code, flags, input_list, output_variable):
         
         if 'r' in flags:
             reverse_args = True
+        
+        if 'h' in flags:
+            output[1] = """
+ALL flags should be used as is (no '-' prefix)
+\tj\tPrint top of stack joined by newlines
+\tL\tPrint top of stack joined by newlines (Vertically)
+\ts\tSum/concatenate top of stack on end of execution
+\tM\tUse 1-indexed range [1,n] for mapping integers
+\tm\tUse 0-indexed range [0,n) for mapping integers
+\tv\tUse Vyxal encoding for input file
+\tc\tOutput compiled code
+\tf\tGet input from file instead of arguments
+\ta\tTreat newline seperated values as a list
+\td\tDeep sum of top of stack
+\tr\tMakes all operations happen with reverse arguments
+\tS\tPrint top of stack joined by spaces
+\tC\tCentre the output and join on newlines
+"""
     input_values[0] = [inputs, 0]
     code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
     context_level = 0
