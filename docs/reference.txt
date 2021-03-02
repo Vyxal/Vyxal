@@ -1,18 +1,18 @@
 cmd     stack   out/*effect
-!              |len(stack) # Length of the stack
+!              |len(stack)
 "              |* 3 character lambda
-$       a,b    |b, a # Swaps top two items of the stack
-%       a,b    |a % b # Modulo / Modulus
+$       a,b    |b, a
+%       a,b    |a % b
 &       a      |* register = a
 '              |* filter lambda
 (              |* open a for loop: (variable|code)
 )              |* close a for loop
-*       a,b    |a * b # Multiply / Product
-+       a,b    |a + b # Add / Sum
-,       a      |print(a) # Print with trailing newline (consumes value)
--       a,b    |a - b # Subtract / Difference
-.       a      |print(vyrepr(a)) # Uneval / Un-Eval the given input
-/       a,b    |a / b # Divide
+*       a,b    |a * b
++       a,b    |a + b
+,       a      |print(a
+-       a,b    |a - b
+.       a      |print(vyrepr(a))
+/       a,b    |a / b
 0              |* integer literal
 1              |* integer literal
 2              |* integer literal
@@ -23,45 +23,45 @@ $       a,b    |b, a # Swaps top two items of the stack
 7              |* integer literal
 8              |* integer literal
 9              |* integer literal
-:       a      |a,a # Duplicate the stack
+:       a      |a, a
 ;              |* end a structure
 <       a,b    |a < b # Less than
-=       a,b    |a == b (vectorising) # Equal to
->       a,b    |a > b # More than
+=       a,b    |a == b (vectorising)
+>       a,b    |a > b
 ?              |* take input from either cmd line or stdin, whichever is first
 @              |* define / call a function
 A       a      |all(a)
 B       a      |int(a, 2) # binary to base 10
 C       a      |chr(a) if a is int/ord(a) is a is chr
-D       a      |a,a,a # Triplicate the stack
-E       a      |eval(a) # Evaluate the a as a Vyxal program (result is pushed onto stack)
+D       a      |a, a, a
+E       a      |eval(a)
 F       a,f    |* a with elements that give truthy results when f is applied
 G       a      |max(a) # max of iterable
 H       a      |int(a, 16) # hex to decimal
-I       a      |int(a) # Parse string as an integer
-J       a,b    |concat(a, b) # Concatenate a and b, coercing whenever necessary
-K       a      |factors_of(a) # Yields a list of all factors of a
-L       a      |len(a) # Yields the length of a
+I       a      |int(a)
+J       a,b    |concat(a, b)
+K       a      |factors_of(a)
+L       a      |len(a)
 M       a,f    |* f mapped to each element in a
-N       a      |a * -1 # Negation of a
-O       a,b    |a.count(b) # Count occurances of b in a
-P       a,b    |a.strip(b) # Strip out starting/ending characters in b
+N       a      |a * -1
+O       a,b    |a.count(b)
+P       a,b    |a.strip(b)
 Q              |* end execution/stop execution/halt (exit())
 R       a,f    |* reduce a by function f
 S       a      |str(a) # Convert a to a string
 T       a      |[_ for _ in a if bool(_)] # Remove all falsy values in the inputted list
-U       a      |uniquify(a)  # Uniquify the inputted list
-V       a,b,c  |a.replace(b, c) # Replace occurances of substring b with substring c in a
+U       a      |uniquify(a)
+V       a,b,c  |a.replace(b, c)
 W              |* wrap the entire stack into a single list
-X              |* context level down # refer to https://github.com/Lyxal/Vyxal/blob/master/commands/Context_Level_Down.md
+X              |* context level down
 Y       a,b    |interleave(x, y)
 Z       a,b    |zip(x, y)
-[              |* if statement
+[              |* if statement [iftrue | iffalse]
 \              |* one char string
 ]              |* close if statement
 `              |* string delimiter
 a       a      |any(a)
-b       a      |bin(a) #base 10 to binary
+b       a      |bin(a) # base 10 to binary
 c       a,b    |a in b (non-vectorising)
 d       a      |a * 2
 e       a,b    |a ^ b (exponentiation)
@@ -262,38 +262,38 @@ k1             |1000
 k2             |10000
 k3             |100000
 k4             |1000000
-ka             |"abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
-kL             |"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (lowercase alphabet + uppercase alphabet)
-kd             |"0123456789" (All base-10 decimal digits)
-k6             |"0123456789abcdef" (All base-16 hex digits (lowercase))
-k^             |"0123456789ABCDEF" (All base-16 hex digits (uppercase))
-ko             |"01234567" (All base-8 octal digits)
-kp             |"!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~" (All Symbols / Punctuation in ASCII)
-kP             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 	" (All printable characters)
+ka             |"abcdefghijklmnopqrstuvwxyz"
+kL             |"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+kd             |"0123456789"
+k6             |"0123456789abcdef"
+k^             |"0123456789ABCDEF"
+ko             |"01234567"
+kp             |"!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+kP             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 	"
 kw             |All ASCII whitespace
-kr             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (All base 10 decimal digits + uppercase alphabet + lowercase alphabet)
-kB             |"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (Uppercase alphabet + lowercase alphabet)
-kZ             |"ZYXWVUTSRQPONMLKJIHGFEDCBA" (reversed uppercase alphabet)
-kz             |"zyxwvutsrqponmlkjihgfedcba" (reversed lowercase alphabet)
-kl             |"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (reversed upercase alphabet + reversed lowercase alphabet)
-ki             |3.141592653589793 (Constant Pi)
+kr             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+kB             |"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+kZ             |"ZYXWVUTSRQPONMLKJIHGFEDCBA"
+kz             |"zyxwvutsrqponmlkjihgfedcba"
+kl             |"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
+ki             |3.141592653589793
 kn             |math.nan
-kD             |Today's date, in the format YYYY-MM-DD
-kN             |Today's time, as a list of ⟨hh|mm|ss⟩
-kÐ             |Today's date, in the format DD/MM/YYYY
-kḊ             |Today's date, in the format MM/DD/YYYY
-kð             |Today's date, in the format ⟨DD|MM|YYYY⟩
-kβ             |"{}[]<>()" (All brackets)
-kḆ             |"()[]{}" (All brackets, without angle braces)
-kß             |"()[]" (All brackets, without pointy braces)
-kƀ             |"([{" (Starting brackets without angle braces)
-kƁ             |")]}" (Ending brackets without angle braces)
-kʗ             |"([{<" (Starting brackets)
-k⊐             |")]}>" (Ending brackets)
-kv             |"aeiou" (Lowercase Vowels)
-kV             |"AEIOU" (Uppercase Vowels)
-k∨             |"aeiouAEIOU" (Lowercase + Uppercase vowels)
-k⟇             |Yields the Vyxal codepage
+kD             |* Today's date, in the format YYYY-MM-DD
+kN             |* Today's time, as a list of ⟨hh|mm|ss⟩
+kÐ             |* Today's date, in the format DD/MM/YYYY
+kḊ             |* Today's date, in the format MM/DD/YYYY
+kð             |* Today's date, in the format ⟨DD|MM|YYYY⟩
+kβ             |"{}[]<>()"
+kḆ             |"()[]{}"
+kß             |"()[]"
+kƀ             |"([{"
+kƁ             |")]}"
+kʗ             |"([{<"
+k⊐             |")]}>"
+kv             |"aeiou"
+kV             |"AEIOU"
+k∨             |"aeiouAEIOU"
+k⟇             |* Yields the Vyxal codepage
 Δc     a       |math.cos(a)
 ΔC     a       |math.arccos(a)
 ∆q     a,b     |roots of quadratic ax^2 + bx = 0
