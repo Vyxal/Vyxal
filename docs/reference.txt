@@ -272,28 +272,28 @@ kp             |"!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~" (All Symbols / Punctuation in
 kP             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 	" (All printable characters)
 kw             |All ASCII whitespace
 kr             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (All base 10 decimal digits + uppercase alphabet + lowercase alphabet)
-    "B": "string.ascii_uppercase + string.ascii_lowercase",
-    "Z": "string.ascii_uppercase[::-1]",
-    "z": "string.ascii_lowercase[::-1]",
-    "l": "string.ascii_letters[::-1]",
-    "i": "math.pi",
-    "n": "math.nan",
-    "D": "date.today().isoformat()",
-    "N": "[dt.now().hour, dt.now().minute, dt.now().second]",
-    "Ð": "date.today().strftime('%d/%m/%Y')",
-    "Ḋ": "date.today().strftime('%m/%d/%y')",
-    "ð": "[date.today().day, date.today().month, date.today().year]",
-    "β": "'{}[]<>()'",
-    "Ḇ": "'()[]{}'",
-    "ß": "'()[]'",
-    "ƀ": "'([{'",
-    "Ɓ": "')]}'",
-    "ʗ": "'([{<'",
-    "⊐": "')]}>'",
-    "v": "'aeiou'",
-    "V": "'AEIOU'",
-    "∨": "'aeiouAEIOU'",
-    "⟇": "commands.codepage"
+kB             |"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (Uppercase alphabet + lowercase alphabet)
+kZ             |"ZYXWVUTSRQPONMLKJIHGFEDCBA" (reversed uppercase alphabet)
+kz             |"zyxwvutsrqponmlkjihgfedcba" (reversed lowercase alphabet)
+kl             |"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (reversed upercase alphabet + reversed lowercase alphabet)
+ki             |3.141592653589793 (Constant Pi)
+kn             |math.nan
+kD             |Today's date, in the format YYYY-MM-DD
+kN             |Today's time, as a list of ⟨hh|mm|ss⟩
+kÐ             |Today's date, in the format DD/MM/YYYY
+kḊ             |Today's date, in the format MM/DD/YYYY
+kð             |Today's date, in the format ⟨DD|MM|YYYY⟩
+kβ             |"{}[]<>()" (All brackets)
+kḆ             |"()[]{}" (All brackets, without angle braces)
+kß             |"()[]" (All brackets, without pointy braces)
+kƀ             |"([{" (Starting brackets without angle braces)
+kƁ             |")]}" (Ending brackets without angle braces)
+kʗ             |"([{<" (Starting brackets)
+k⊐             |")]}>" (Ending brackets)
+kv             |"aeiou" (Lowercase Vowels)
+kV             |"AEIOU" (Uppercase Vowels)
+k∨             |"aeiouAEIOU" (Lowercase + Uppercase vowels)
+k⟇             |Yields the Vyxal codepage
 Δc     a       |math.cos(a)
 ΔC     a       |math.arccos(a)
 ∆q     a,b     |roots of quadratic ax^2 + bx = 0
