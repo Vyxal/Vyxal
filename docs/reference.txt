@@ -48,12 +48,12 @@ O       a,b    |a.count(b) # Count occurances of b in a
 P       a,b    |a.strip(b) # Strip out starting/ending characters in b
 Q              |* end execution/stop execution/halt (exit())
 R       a,f    |* reduce a by function f
-S       a      |str(a)
-T       a      |[_ for _ in a if bool(_)]
-U       a      |uniquify(a)
-V       a,b,c  |a.replace(b, c)
+S       a      |str(a) # Convert a to a string
+T       a      |[_ for _ in a if bool(_)] # Remove all falsy values in the inputted list
+U       a      |uniquify(a)  # Uniquify the inputted list
+V       a,b,c  |a.replace(b, c) # Replace occurances of substring b with substring c in a
 W              |* wrap the entire stack into a single list
-X              |* context level down (+1)
+X              |* context level down # refer to https://github.com/Lyxal/Vyxal/blob/master/commands/Context_Level_Down.md
 Y       a,b    |interleave(x, y)
 Z       a,b    |zip(x, y)
 [              |* if statement
