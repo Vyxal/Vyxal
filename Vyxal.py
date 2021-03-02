@@ -1681,7 +1681,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces
 \tC\tCentre the output and join on newlines
 """
-        return
+            return
     input_values[0] = [inputs, 0]
     code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
     context_level = 0
