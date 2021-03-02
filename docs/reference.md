@@ -157,7 +157,7 @@ cmd  |  stack   |out/*effect
 | ² |       a      |a ^ 2
 | ‿ |       a,b    |[a, b]
 | ⁂ |       a,b    |inclusive_range(a, b)
-| ĸ |       a,b    |b evenly distributed over the elements of a
+| ĸ |       a,b    |if a and b are integers, absolute difference, else b evenly distributed over the elements of a
 | ¶ |              |"\n"
 | ⁋ |       a      |vertical_join(a)
 | ⁑ |       a,b    |vertical_join(a, padding=b)
