@@ -428,7 +428,7 @@ def divisors_of(item):
 
         return Generator(gen())
 
-    for value in VY_range(item, 1, 1):
+    for value in VY_range(item - 1, 1, 1):
         if modulo(item, value) == 0:
             divisors.append(value)
 
