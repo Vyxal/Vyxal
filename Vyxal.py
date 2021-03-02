@@ -52,7 +52,7 @@ retain_items = False
 reverse_args = False
 stack = []
 
-MAP_START = 0
+MAP_START = 1
 MAP_OFFSET = 1
 _join = False
 _vertical_join = False
@@ -1647,7 +1647,7 @@ def execute(code, flags, input_list, output_variable):
         if 'H' in flags:
             stack = [100]
         if "M" in flags:
-            MAP_START = 1
+            MAP_START = 0
 
         if "m" in flags:
             MAP_OFFSET = 0
@@ -1670,7 +1670,7 @@ ALL flags should be used as is (no '-' prefix)
 \tj\tPrint top of stack joined by newlines
 \tL\tPrint top of stack joined by newlines (Vertically)
 \ts\tSum/concatenate top of stack on end of execution
-\tM\tUse 1-indexed range [1,n] for mapping integers
+\tM\tUse 0-indexed range [0,n] for mapping integers
 \tm\tUse 0-indexed range [0,n) for mapping integers
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
@@ -1681,7 +1681,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces
 \tC\tCentre the output and join on newlines
 """
-    return
+        return
     input_values[0] = [inputs, 0]
     code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
     context_level = 0
@@ -1745,7 +1745,7 @@ if __name__ == "__main__":
         print("\tj\tPrint top of stack joined by newlines")
         print("\tL\tPrint top of stack joined by newlines (Vertically)")
         print("\ts\tSum/concatenate top of stack on end of execution")
-        print("\tM\tUse 1-indexed range [1,n] for mapping integers")
+        print("\tM\tUse 1-indexed range [0,n] for mapping integers")
         print("\tm\tUse 0-indexed range [0,n) for mapping integers")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
@@ -1759,7 +1759,7 @@ if __name__ == "__main__":
     else:
         if flags:
             if "M" in flags:
-                MAP_START = 1
+                MAP_START = 0
 
             if "m" in flags:
                 MAP_OFFSET = 0
