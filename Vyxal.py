@@ -52,7 +52,7 @@ retain_items = False
 reverse_args = False
 stack = []
 
-MAP_START = 0
+MAP_START = 1
 MAP_OFFSET = 1
 _join = False
 _vertical_join = False
@@ -205,7 +205,6 @@ class ShiftDirections:
 # Helper functions
 def _safe_apply(function, *args):
     if function.__name__ == "_lambda":
-
         return function(list(args), len(args))
     elif function.__name__.startswith("FN_"):
         return function(list(args))
@@ -382,7 +381,12 @@ def deref(item):
     if type(item) not in [int, float, str]: return item[::]
     return item
 def distribute(vector, value):
+    types = VY_type(vector), VY_type(value)
+    if types == (Number, Number):
+        return abs(vector - value)
     vector = iterable(vector)
+    if VY_type(vector) is Generator:
+        vector = vector._dereference()
     remaining = value
     index = 0
     while remaining > 0:
@@ -1073,6 +1077,7 @@ def vectorise(fn, left, right=None):
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
         return {
+            (types[0], types[1]): lambda: _safe_apply(fn, left, right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
@@ -1081,6 +1086,8 @@ def vectorise(fn, left, right=None):
     else:
         if VY_type(left) is Generator:
             return left._map(fn)
+        elif VY_type(left) in (str, Number):
+            return _safe_apply(fn, left)
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             if fn.__name__ == "_lambda":
@@ -1130,7 +1137,7 @@ def VY_bin(item):
 def VY_eval(item):
     if online_version:
         import regex
-        pobj = regex.compile(r"""(\[(((\d+(\.\d+)?)|(".+")|('.+')|\g<1>)(, +)?)*\])|\d+(\.\d+)?|".+"$|'.+'$""")
+        pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|-?\d+(\.\d+)?|"[^"]*"|'[^']*'""")
         mobj = pobj.match(item)
         if mobj:
             return eval(item)
@@ -1238,7 +1245,7 @@ def VY_print(item, end="\n", raw=False):
         for value in item[:-1]:
             VY_print(value, "|", True)
         VY_print(item[-1], "", True)
-        VY_print("⟩", end, raw)
+        VY_print("⟩", end, False)
     else:
         if raw:
             if online_version:
@@ -1640,7 +1647,7 @@ def execute(code, flags, input_list, output_variable):
         if 'H' in flags:
             stack = [100]
         if "M" in flags:
-            MAP_START = 1
+            MAP_START = 0
 
         if "m" in flags:
             MAP_OFFSET = 0
@@ -1656,6 +1663,25 @@ def execute(code, flags, input_list, output_variable):
         
         if 'r' in flags:
             reverse_args = True
+        
+        if 'h' in flags:
+            output[1] = """
+ALL flags should be used as is (no '-' prefix)
+\tj\tPrint top of stack joined by newlines
+\tL\tPrint top of stack joined by newlines (Vertically)
+\ts\tSum/concatenate top of stack on end of execution
+\tM\tUse 0-indexed range [0,n] for mapping integers
+\tm\tUse 0-indexed range [0,n) for mapping integers
+\tv\tUse Vyxal encoding for input file
+\tc\tOutput compiled code
+\tf\tGet input from file instead of arguments
+\ta\tTreat newline seperated values as a list
+\td\tDeep sum of top of stack
+\tr\tMakes all operations happen with reverse arguments
+\tS\tPrint top of stack joined by spaces
+\tC\tCentre the output and join on newlines
+"""
+            return
     input_values[0] = [inputs, 0]
     code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
     context_level = 0
@@ -1684,6 +1710,7 @@ def execute(code, flags, input_list, output_variable):
             output[1] = VY_str(pop(stack))
 
 if __name__ == "__main__":
+    ### Debugging area
     import sys
     file_location = ""
     flags = ""
@@ -1711,14 +1738,14 @@ if __name__ == "__main__":
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
-            VY_print(stack  )
+            VY_print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
         print("\tj\tPrint top of stack joined by newlines")
         print("\tL\tPrint top of stack joined by newlines (Vertically)")
         print("\ts\tSum/concatenate top of stack on end of execution")
-        print("\tM\tUse 1-indexed range [1,n] for mapping integers")
+        print("\tM\tUse 1-indexed range [0,n] for mapping integers")
         print("\tm\tUse 0-indexed range [0,n) for mapping integers")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
@@ -1732,7 +1759,7 @@ if __name__ == "__main__":
     else:
         if flags:
             if "M" in flags:
-                MAP_START = 1
+                MAP_START = 0
 
             if "m" in flags:
                 MAP_OFFSET = 0

@@ -157,7 +157,7 @@ cmd  |  stack   |out/*effect
 | ² |       a      |a ^ 2
 | ‿ |       a,b    |[a, b]
 | ⁂ |       a,b    |inclusive_range(a, b)
-| ĸ |       a,b    |b evenly distributed over the elements of a
+| ĸ |       a,b    |if a and b are integers, absolute difference, else b evenly distributed over the elements of a
 | ¶ |              |"\n"
 | ⁋ |       a      |vertical_join(a)
 | ⁑ |       a,b    |vertical_join(a, padding=b)
@@ -252,9 +252,17 @@ cmd  |  stack   |out/*effect
 | β |              |push 64
 | γ |              |push 128
 | Π |      a       |product(a)
+| Δc |     a       |math.cos(a)
+| ΔC |     a       |math.arccos(a)
 | ∆q |     a,b     |roots of quadratic ax^2 + bx = 0
 | ∆Q |     a,b     |roots of quadratic x^2 + ax + b = 0
+| Δs |     a       |math.sin(a)
+| ΔS |     a       |math.arcsin(a)
+| Δt |     a       |math.tan(a)
+| ΔT |     a       |math.arctan(a)
 | ∆P |     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
+| ∆ƈ |     a,b     |n pick r (npr)
+| ∆± |     a,b     |math.copysign(a, b)
 | øo |     a,b     |a.remove_until_no_change(b)
 | øV |     a,b,c   |a.replace_until_no_change(b, c)
 | øc |     a       |base_255_string_compressed(a)
