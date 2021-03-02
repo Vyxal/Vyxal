@@ -1,18 +1,18 @@
 cmd     stack   out/*effect
-!              |len(stack)
+!              |len(stack) # Length of the stack
 "              |* 3 character lambda
-$       a,b    |b,a
-%       a,b    |a % b
+$       a,b    |b, a # Swaps top two items of the stack
+%       a,b    |a % b # Modulo / Modulus
 &       a      |* register = a
 '              |* filter lambda
 (              |* open a for loop: (variable|code)
 )              |* close a for loop
-*       a,b    |a * b
-+       a,b    |a + b
-,       a      |print(a)
--       a,b    |a - b
-.       a      |print(vyrepr(a))
-/       a,b    |a / b
+*       a,b    |a * b # Multiply / Product
++       a,b    |a + b # Add / Sum
+,       a      |print(a) # Print with trailing newline (consumes value)
+-       a,b    |a - b # Subtract / Difference
+.       a      |print(vyrepr(a)) # Uneval / Un-Eval the given input
+/       a,b    |a / b # Divide
 0              |* integer literal
 1              |* integer literal
 2              |* integer literal
@@ -23,31 +23,31 @@ $       a,b    |b,a
 7              |* integer literal
 8              |* integer literal
 9              |* integer literal
-:       a      |a,a
+:       a      |a,a # Duplicate the stack
 ;              |* end a structure
-<       a,b    |a < b
-=       a,b    |a == b (vectorising)
->       a,b    |a > b
+<       a,b    |a < b # Less than
+=       a,b    |a == b (vectorising) # Equal to
+>       a,b    |a > b # More than
 ?              |* take input from either cmd line or stdin, whichever is first
 @              |* define / call a function
 A       a      |all(a)
 B       a      |int(a, 2) # binary to base 10
 C       a      |chr(a) if a is int/ord(a) is a is chr
-D       a      |a,a,a
-E       a      |eval(a)
-F       a,f    |a with elements that give truthy results when f is applied
+D       a      |a,a,a # Triplicate the stack
+E       a      |eval(a) # Evaluate the a as a Vyxal program (result is pushed onto stack)
+F       a,f    |* a with elements that give truthy results when f is applied
 G       a      |max(a) # max of iterable
 H       a      |int(a, 16) # hex to decimal
-I       a      |int(a)
-J       a,b    |concat(a, b)
-K              |factors_of(a)
-L       a      |len(a)
-M       a,f    |f mapped to each element in a
-N       a      |a * -1
-O       a,b    |a.count(b)
-P       a,b    |a.strip(b)
-Q              |* end execution (exit())
-R       a,f    |reduce a by function f
+I       a      |int(a) # Parse string as an integer
+J       a,b    |concat(a, b) # Concatenate a and b, coercing whenever necessary
+K       a      |factors_of(a) # Yields a list of all factors of a
+L       a      |len(a) # Yields the length of a
+M       a,f    |* f mapped to each element in a
+N       a      |a * -1 # Negation of a
+O       a,b    |a.count(b) # Count occurances of b in a
+P       a,b    |a.strip(b) # Strip out starting/ending characters in b
+Q              |* end execution/stop execution/halt (exit())
+R       a,f    |* reduce a by function f
 S       a      |str(a)
 T       a      |[_ for _ in a if bool(_)]
 U       a      |uniquify(a)
