@@ -205,7 +205,6 @@ class ShiftDirections:
 # Helper functions
 def _safe_apply(function, *args):
     if function.__name__ == "_lambda":
-
         return function(list(args), len(args))
     elif function.__name__.startswith("FN_"):
         return function(list(args))
@@ -382,7 +381,12 @@ def deref(item):
     if type(item) not in [int, float, str]: return item[::]
     return item
 def distribute(vector, value):
+    types = VY_type(vector), VY_type(value)
+    if types == (Number, Number):
+        return abs(vector - value)
     vector = iterable(vector)
+    if VY_type(vector) is Generator:
+        vector = vector._dereference()
     remaining = value
     index = 0
     while remaining > 0:
@@ -1073,6 +1077,7 @@ def vectorise(fn, left, right=None):
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
         return {
+            (types[0], types[1]): lambda: _safe_apply(fn, left, right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
@@ -1081,6 +1086,8 @@ def vectorise(fn, left, right=None):
     else:
         if VY_type(left) is Generator:
             return left._map(fn)
+        elif VY_type(left) in (str, Number):
+            return _safe_apply(fn, left)
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             if fn.__name__ == "_lambda":
@@ -1238,7 +1245,7 @@ def VY_print(item, end="\n", raw=False):
         for value in item[:-1]:
             VY_print(value, "|", True)
         VY_print(item[-1], "", True)
-        VY_print("⟩", end, raw)
+        VY_print("⟩", end, False)
     else:
         if raw:
             if online_version:
@@ -1684,6 +1691,7 @@ def execute(code, flags, input_list, output_variable):
             output[1] = VY_str(pop(stack))
 
 if __name__ == "__main__":
+    ### Debugging area
     import sys
     file_location = ""
     flags = ""
@@ -1711,7 +1719,7 @@ if __name__ == "__main__":
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
-            VY_print(stack  )
+            VY_print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
