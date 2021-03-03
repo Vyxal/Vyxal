@@ -157,7 +157,7 @@ cmd  |  stack   |out/*effect
 | ² |       a      |a ^ 2
 | ‿ |       a,b    |[a, b]
 | ⁂ |       a,b    |inclusive_range(a, b)
-| ĸ |       a,b    |if a and b are integers, absolute difference, else b evenly distributed over the elements of a
+| ĸ |       a,b    |absolute_difference(a, b) # abs(a - b)
 | ¶ |              |"\n"
 | ⁋ |       a      |vertical_join(a)
 | ⁑ |       a,b    |vertical_join(a, padding=b)
@@ -317,5 +317,6 @@ cmd  |  stack   |out/*effect
 | ø$ |     a       |a.swapcase()
 | øe |     a       |run_length_encoded(a)
 | ød |     a       |run_length_decoded(a)
+| Þĸ |     a,b     |b evenly distributed over the elements of a
 | ⫙' |             |* rotate entire stack left
 | ⫙" |             |* rotate entire stack right

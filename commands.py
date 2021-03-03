@@ -115,7 +115,7 @@ command_dict = {
     "Ẹ": ("stack = [Generator(enumerate(stack))]", 0),
     "ṙ": ("stack.append(VY_round(pop(stack)))", 1),
     "⁂":("rhs, lhs = pop(stack, 2); stack.append(inclusive_range(lhs, rhs))", 2),
-    "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
+    "ĸ": ("rhs, lhs = pop(stack, 2); stack.append(VY_abs(subtract(lhs, rhs)))", 2),
     "¶": ("stack.append('\\n')", 0),
     "⁋": ("stack.append(vertical_join(pop(stack)))", 1),
     "⁑": ("padding, vector = pop(stack, 2); stack.append(vertical_join(vector, padding))", 2),
@@ -245,9 +245,12 @@ string_command_dict = {
     "d": ("stack.append(run_length_decode(pop(stack)))", 1) #TODO: Implement
 }
 
-list_command_dict = {}
+list_command_dict = {
+    "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2)
+}
 
 misc_command_dict = {
     '"': ("stack = iterable_shift(stack, ShiftDirections.RIGHT)", 0),
     "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0)
+    
 }
