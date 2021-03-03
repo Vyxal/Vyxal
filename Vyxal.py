@@ -1242,9 +1242,10 @@ def VY_print(item, end="\n", raw=False):
     
     elif t_item is list:
         VY_print("⟨", "", False)
-        for value in item[:-1]:
-            VY_print(value, "|", True)
-        VY_print(item[-1], "", True)
+        if item:
+            for value in item[:-1]:
+                VY_print(value, "|", True)
+            VY_print(item[-1], "", True)
         VY_print("⟩", end, False)
     else:
         if raw:
