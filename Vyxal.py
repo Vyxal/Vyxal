@@ -1137,7 +1137,7 @@ def VY_bin(item):
 def VY_eval(item):
     if online_version:
         import regex
-        pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|-?\d+(\.\d+)?|"[^"]*"|'[^']*'""")
+        pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|(-?\d+(\.\d+)?$)|"[^"]*"|'[^']*'""")
         mobj = pobj.match(item)
         if mobj:
             return eval(item)
