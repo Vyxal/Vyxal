@@ -44,6 +44,7 @@ context_values = [0]
 input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
+interactive_input = False
 online_version = False
 output = ""
 printed = False
@@ -552,7 +553,8 @@ def get_input():
     global input_level
     global input_values
     source, index = input_values[input_level]
-    if source:
+    
+    if (not interactive_input) and source:
         ret = source[index % len(source)]
         input_values[input_level][1] += 1
         return ret
@@ -846,14 +848,17 @@ def polynomial(vector):
     return numpy.roots(vector).tolist()
 def pop(vector, num=1, wrap=False):
     ret = []
+
     for _ in range(num):
         if vector:
             ret.append(vector.pop())
         else:
-            ret.append(get_input())
+            x = get_input()
+            ret.append(x)
 
     if retain_items:
         vector += ret[::-1]
+    
     if num == 1 and not wrap:
         return ret[0]
     
@@ -1732,13 +1737,19 @@ if __name__ == "__main__":
 
         if 'a' in flags:
             inputs = [inputs]
+        
+    
+    if not inputs:
+        interactive_input = True
 
     if not file_location: #repl mode
+
         while 1:
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
             exec(line)
+            
             VY_print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
