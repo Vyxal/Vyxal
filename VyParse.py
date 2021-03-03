@@ -10,7 +10,6 @@ FOR_STMT = "STRUCTURE_FOR"
 WHILE_STMT = "STRUCTURE_WHILE"
 FUNCTION_STMT = "STRUCTURE_FUNCTION"
 LAMBDA_STMT = "STRUCTURE_LAMBDA"
-SWITCH_STMT = "STRUCTURE_SWITCH"
 NO_STMT = "STRUCTURE_NONE"
 STRING_STMT = "STRUCTURE_STRING"
 INTEGER = "STRUCTURE_INTEGER"
@@ -18,6 +17,7 @@ CHARACTER = "STRUCTURE_CHARACTER"
 LAMBDA_STMT = "LAMBDA_STMT"
 LAMBDA_MAP = "LAMBDA_MAP"
 LAMBDA_FILTER = "LAMBDA_FILTER"
+LAMBDA_SORT = "LAMBDA_SORT"
 LIST_STMT = "LIST_STMT"
 VARIABLE_GET = "VARIABLE_GET"
 VARIABLE_SET = "VARIABLE_SET"
@@ -84,10 +84,9 @@ OPENING = {
     WHILE_STMT: "{",
     FUNCTION_STMT: "@",
     LAMBDA_STMT: "λ",
-    SWITCH_STMT: "§",
-    LAMBDA_STMT: "λ",
     LAMBDA_MAP: "ƛ",
     LAMBDA_FILTER: '"',
+    LAMBDA_SORT: "µ",
     LIST_STMT: "⟨",
     FUNCTION_REFERENCE: "°",
     COMPRESSED_NUMBER: "»",
@@ -103,10 +102,9 @@ CLOSING = {
     WHILE_STMT: "}",
     FUNCTION_STMT: ";",
     LAMBDA_STMT: ";",
-    SWITCH_STMT: ";",
-    LAMBDA_STMT: ";",
     LAMBDA_MAP: ";",
     LAMBDA_FILTER: ";",
+    LAMBDA_SORT: ";",
     LIST_STMT: "⟩",
     FUNCTION_REFERENCE: ";",
     COMPRESSED_NUMBER: "»",
@@ -415,6 +413,10 @@ def Tokenise(source: str) -> [Token]:
                 elif structure == LAMBDA_FILTER:
                     additional_token = Token(NO_STMT, "F")
                     structure = LAMBDA_STMT
+                
+                elif structure == LAMBDA_SORT:
+                    additional_token = Token(NO_STMT, "ₛ")
+                    structure = LAMBDA_STMT
 
                 elif structure == LIST_STMT:
                     structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
@@ -531,6 +533,10 @@ def Tokenise(source: str) -> [Token]:
 
         elif structure == LAMBDA_FILTER:
             additional_token = Token(NO_STMT, "F")
+            structure = LAMBDA_STMT
+        
+        elif structure == LAMBDA_SORT:
+            additional_token = Token(NO_STMT, "ₛ")
             structure = LAMBDA_STMT
 
         elif structure == LIST_STMT:

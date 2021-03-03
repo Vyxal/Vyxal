@@ -165,6 +165,7 @@ z       a,f    |zipmap the contents of a with function f
 ‼       a      |factorial(a)
 ⨊       a      |cumulative_sums(a)
 ≈       a      |all_equal(a) # every item is the same
+µ       a      |* sorting lambda # equivalent to λ...;ₛ
 ʗ       a      |counts_of_items(a)
 ◁       a      |reversed(a)
 ⊐       a      |a[:-1]
@@ -237,7 +238,7 @@ z       a,f    |zipmap the contents of a with function f
 ₂              |*second most recent input
 ⁾       a      |10 ** a
 ₦       a      |a.split("\n")
-¼       a      |a / 4
+¼       a      |a[0], a[1:]
 ƒ       a      |fractionify(a) # returns a two-item list of [numerator, denominator]
 ɖ       a      |decimalify(a) # opposite of ƒ
 Ꝓ       a      |powerset(a)
