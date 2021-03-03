@@ -373,6 +373,10 @@ def Tokenise(source: str) -> [Token]:
             elif char == OPENING[LAMBDA_FILTER]:
                 structure = LAMBDA_FILTER
                 active_key = LAMBDA_BODY
+            
+            elif char == OPENING[LAMBDA_SORT]:
+                structure = LAMBDA_SORT
+                active_key = LAMBDA_BODY
 
             elif char == OPENING[LIST_STMT]:
                 structure = LIST_STMT

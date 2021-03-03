@@ -552,7 +552,10 @@ def gcd(lhs, rhs=None):
 def get_input():
     global input_level
     global input_values
-    source, index = input_values[input_level]
+    if input_level in input_values:
+        source, index = input_values[input_level]
+    else:
+        source, index = [], -1
     
     if (not interactive_input) and source:
         ret = source[index % len(source)]
@@ -1748,8 +1751,8 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
+            print(line)
             exec(line)
-            
             VY_print(stack)
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")

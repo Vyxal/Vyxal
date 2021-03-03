@@ -246,7 +246,9 @@ string_command_dict = {
 }
 
 list_command_dict = {
-    "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2)
+    "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
+    "⎝": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
+    "⎠": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector)))", 2)
 }
 
 misc_command_dict = {
