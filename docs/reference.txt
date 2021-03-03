@@ -1,7 +1,7 @@
 cmd     stack   out/*effect
 !              |len(stack)
 "              |* 3 character lambda
-$       a,b    |b,a
+$       a,b    |b, a
 %       a,b    |a % b
 &       a      |* register = a
 '              |* filter lambda
@@ -9,7 +9,7 @@ $       a,b    |b,a
 )              |* close a for loop
 *       a,b    |a * b
 +       a,b    |a + b
-,       a      |print(a)
+,       a      |print(a
 -       a,b    |a - b
 .       a      |print(vyrepr(a))
 /       a,b    |a / b
@@ -23,9 +23,9 @@ $       a,b    |b,a
 7              |* integer literal
 8              |* integer literal
 9              |* integer literal
-:       a      |a,a
+:       a      |a, a
 ;              |* end a structure
-<       a,b    |a < b
+<       a,b    |a < b # Less than
 =       a,b    |a == b (vectorising)
 >       a,b    |a > b
 ?              |* take input from either cmd line or stdin, whichever is first
@@ -33,35 +33,35 @@ $       a,b    |b,a
 A       a      |all(a)
 B       a      |int(a, 2) # binary to base 10
 C       a      |chr(a) if a is int/ord(a) is a is chr
-D       a      |a,a,a
+D       a      |a, a, a
 E       a      |eval(a)
-F       a,f    |a with elements that give truthy results when f is applied
+F       a,f    |* a with elements that give truthy results when f is applied
 G       a      |max(a) # max of iterable
 H       a      |int(a, 16) # hex to decimal
 I       a      |int(a)
 J       a,b    |concat(a, b)
-K              |factors_of(a)
+K       a      |factors_of(a)
 L       a      |len(a)
-M       a,f    |f mapped to each element in a
+M       a,f    |* f mapped to each element in a
 N       a      |a * -1
 O       a,b    |a.count(b)
 P       a,b    |a.strip(b)
-Q              |* end execution (exit())
-R       a,f    |reduce a by function f
-S       a      |str(a)
-T       a      |[_ for _ in a if bool(_)]
+Q              |* end execution/stop execution/halt (exit())
+R       a,f    |* reduce a by function f
+S       a      |str(a) # Convert a to a string
+T       a      |[_ for _ in a if bool(_)] # Remove all falsy values in the inputted list
 U       a      |uniquify(a)
 V       a,b,c  |a.replace(b, c)
 W              |* wrap the entire stack into a single list
-X              |* context level down (+1)
+X              |* context level down
 Y       a,b    |interleave(x, y)
 Z       a,b    |zip(x, y)
-[              |* if statement
+[              |* if statement [iftrue | iffalse]
 \              |* one char string
 ]              |* close if statement
 `              |* string delimiter
 a       a      |any(a)
-b       a      |bin(a) #base 10 to binary
+b       a      |bin(a) # base 10 to binary
 c       a,b    |a in b (non-vectorising)
 d       a      |a * 2
 e       a,b    |a ^ b (exponentiation)
@@ -251,6 +251,49 @@ z       a,f    |zipmap the contents of a with function f
 β              |push 64
 γ              |push 128
 Π      a       |product(a)
+kA             |"ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
+ke             |2.718281828459045            (math.e)
+kf             |"Fizz"
+kb             |"Buzz"
+kF             |"FizzBuzz"
+kH             |"Hello, World!"
+kh             |"Hello World"
+k1             |1000
+k2             |10000
+k3             |100000
+k4             |1000000
+ka             |"abcdefghijklmnopqrstuvwxyz"
+kL             |"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+kd             |"0123456789"
+k6             |"0123456789abcdef"
+k^             |"0123456789ABCDEF"
+ko             |"01234567"
+kp             |"!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"
+kP             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 	"
+kw             |All ASCII whitespace
+kr             |"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+kB             |"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+kZ             |"ZYXWVUTSRQPONMLKJIHGFEDCBA"
+kz             |"zyxwvutsrqponmlkjihgfedcba"
+kl             |"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
+ki             |3.141592653589793
+kn             |math.nan
+kD             |* Today's date, in the format YYYY-MM-DD
+kN             |* Today's time, as a list of ⟨hh|mm|ss⟩
+kÐ             |* Today's date, in the format DD/MM/YYYY
+kḊ             |* Today's date, in the format MM/DD/YYYY
+kð             |* Today's date, in the format ⟨DD|MM|YYYY⟩
+kβ             |"{}[]<>()"
+kḆ             |"()[]{}"
+kß             |"()[]"
+kƀ             |"([{"
+kƁ             |")]}"
+kʗ             |"([{<"
+k⊐             |")]}>"
+kv             |"aeiou"
+kV             |"AEIOU"
+k∨             |"aeiouAEIOU"
+k⟇             |* Yields the Vyxal codepage
 Δc     a       |math.cos(a)
 ΔC     a       |math.arccos(a)
 ∆q     a,b     |roots of quadratic ax^2 + bx = 0
