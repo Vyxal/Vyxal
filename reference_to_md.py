@@ -10,3 +10,5 @@ with open('docs/reference.txt', 'r', encoding='utf8') as txt:
     space = line.index(' ')
     line = '| ' + line[:space] + ' |' + line[space:]
     md.write(line)
+
+md.close()
