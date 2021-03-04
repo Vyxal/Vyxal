@@ -1689,6 +1689,8 @@ ALL flags should be used as is (no '-' prefix)
 \tr\tMakes all operations happen with reverse arguments
 \tS\tPrint top of stack joined by spaces
 \tC\tCentre the output and join on newlines
+\tO\tDisable implicit output
+\tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting) [not actually implemented yet]
 """
             return
     input_values[0] = [inputs, 0]
@@ -1702,7 +1704,7 @@ ALL flags should be used as is (no '-' prefix)
     except Exception as e:
         output[2] += "\n" + str(e.args[0])
 
-    if not printed:
+    if not printed and (flags and not "O" in flags):
         if flags and 's' in flags:
             output[1] = VY_str(summate(pop(stack)))
         elif flags and 'd' in flags:
@@ -1770,6 +1772,7 @@ if __name__ == "__main__":
         print("\tr\tMakes all operations happen with reverse arguments")
         print("\tS\tPrint top of stack joined by spaces")
         print("\tC\tCentre the output and join on newlines")
+        print("\tO\tDisable implicit output")
         print("");
     else:
         if flags:
@@ -1805,7 +1808,7 @@ if __name__ == "__main__":
             print(code)
         exec(code)
 
-        if not printed:
+        if not printed and (flags and "O" not in flags):
             if flags and 's' in flags:
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
