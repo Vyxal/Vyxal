@@ -1704,7 +1704,7 @@ ALL flags should be used as is (no '-' prefix)
     except Exception as e:
         output[2] += "\n" + str(e.args[0])
 
-    if not printed and (flags and not "O" in flags):
+    if not printed and ("O" not in flags):
         if flags and 's' in flags:
             output[1] = VY_str(summate(pop(stack)))
         elif flags and 'd' in flags:
@@ -1808,7 +1808,7 @@ if __name__ == "__main__":
             print(code)
         exec(code)
 
-        if not printed and (flags and "O" not in flags):
+        if not printed and ("O" not in flags):
             if flags and 's' in flags:
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
