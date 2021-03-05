@@ -13,12 +13,13 @@ For a list of command-line flags:
 
 ## Data Types
 
-There are 4 data types supported by Vyxal:
+There are 5 data types supported by Vyxal:
 
 - Numbers (integers and reals/floats)
 - Strings
 - Lists
 - Generators
+- Functions
 
 ## Basic Operators
 
