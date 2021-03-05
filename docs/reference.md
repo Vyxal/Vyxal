@@ -79,6 +79,7 @@ cmd  |  stack   |out/*effect
 | p |       a,b    |a.startswith(b)
 | q |       a      |"`" + a + "`"
 | r |       a,b    |range(a, b)
+|  |        a,b    |bool(a.regex_match(b)) # if either argument is not a number
 | s |       a      |sorted(a)
 | t |       a      |a[-1]
 | u |              |-1
@@ -110,6 +111,7 @@ cmd  |  stack   |out/*effect
 | ∆ |              |* two byte math functions
 | ø |              |* two byte string functions
 | Ï |       a,b    |combinations_with_replacement(a, length=b)
+|  |        f,a    |collect_until_no_change(function=f, inital_value=a) # Collects values into a list until applying function on a doesn't change
 | Ô |              |list of positive odd numbers
 | Ç |       a      |1 - a
 | æ |       a      |is_prime(a)
@@ -135,6 +137,7 @@ cmd  |  stack   |out/*effect
 | ← |              |variable
 | Ð |       a,b    |to_base_ten(a, b) #a_b => base 10
 | ř |       a,b    |repeat(a, b)
+|  |        f,g,a  |collect_until_false(predicate=f, modifying_function=g, inital=a) # Collect the results of apply g on a while f(a) is truthy
 | Š |       a,b    |from_base_ten(a, b) #a_10 => base_b
 | č |       a      |a != 1
 | √ |       a      |sqrt(a)
@@ -157,6 +160,7 @@ cmd  |  stack   |out/*effect
 | ² |       a      |a ^ 2
 | ‿ |       a,b    |[a, b]
 | ⁂ |       a,b    |inclusive_range(a, b)
+|  |        a,b    |a.split(regex_pattern=b) # If either argument isn't a string
 | ĸ |       a,b    |absolute_difference(a, b) # abs(a - b)
 | ¶ |              |"\n"
 | ⁋ |       a      |vertical_join(a)
