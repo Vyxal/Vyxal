@@ -45,6 +45,7 @@ input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
 interactive_input = False
+keg_mode = False
 online_version = False
 output = ""
 printed = False
@@ -560,11 +561,16 @@ def get_input():
     if (not interactive_input) and source:
         ret = source[index % len(source)]
         input_values[input_level][1] += 1
+
+        if keg_mode and type(ret) is str:
+            return [ord(c) for c in ret]
         return ret
     else:
         try:
             temp = VY_eval(input())
             input_values[input_level][0].append(deref(temp))
+            if keg_mode and type(temp) is str:
+                return [ord(c) for c in temp]
             return temp
         except:
             return 0
@@ -1256,6 +1262,8 @@ def VY_print(item, end="\n", raw=False):
             VY_print(item[-1], "", True)
         VY_print("⟩", end, False)
     else:
+        if t_item is int and keg_mode:
+            item = chr(item)
         if raw:
             if online_version:
                 output[1] += VY_repr(item) + end
@@ -1639,7 +1647,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version
-    global inputs, reverse_args
+    global inputs, reverse_args, keg_mode
     online_version = True
     output = output_variable
     output[1] = ""
@@ -1672,6 +1680,9 @@ def execute(code, flags, input_list, output_variable):
         
         if 'r' in flags:
             reverse_args = True
+        
+        if "K" in flags:
+            keg_mode = True
         
         if 'h' in flags:
             output[1] = """
@@ -1793,6 +1804,9 @@ if __name__ == "__main__":
             
             if 'r' in flags:
                 reverse_args = True
+            
+            if 'K' in flags:
+                keg_mode = True
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
