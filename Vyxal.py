@@ -831,6 +831,12 @@ def ncr(lhs, rhs):
         (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
         (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
+def nth_prime(item):
+    t_item = VY_type(item)
+    return {
+        Number: lambda: sympy.ntheory.prime(int(item) + 1),
+        str: lambda: int(all([c.isupper() for c in item]))
+    }.get(t_item, lambda: vectorise(nth_prime, item))()
 def nwise_pair(lhs, rhs):
     iters = itertools.tee(lhs, rhs)
     for i in range(len(iters)):
@@ -897,6 +903,12 @@ def powerset(vector):
     elif type(vector) is str:
         vector = list(vector)
     return Generator(itertools.chain.from_iterable(itertools.combinations(vector, r) for r in range(len(vector)+1)))
+def prime_factors(item):
+    t_item = VY_type(item)
+    return {
+        Number: lambda: sympy.ntheory.primefactors(int(item)),
+        str: lambda: int(all([c.islower() for c in item]))
+    }.get(t_item, lambda: vectorise(prime_factors, item))()
 def prepend(vector, item):
     vector = iterable(vector, range)
     t_vector = type(vector)
@@ -1402,10 +1414,11 @@ constants = {
     "F": "'FizzBuzz'",
     "H": "'Hello, World!'",
     "h": "'Hello World'",
-    "1": 1000,
-    "2": 10000,
-    "3": 100000,
-    "4": 1000000,
+    "1": "1000",
+    "2": "10000",
+    "3": "100000",
+    "4": "1000000",
+    "5": "10000000",
     "a": "string.ascii_lowercase",
     "L": "string.ascii_letters",
     "d": "string.digits",
@@ -1437,7 +1450,38 @@ constants = {
     "v": "'aeiou'",
     "V": "'AEIOU'",
     "∨": "'aeiouAEIOU'",
-    "⟇": "commands.codepage"
+    "⟇": "commands.codepage",
+    "½": "[1, 2]",
+    "ⁱ": "2 ** 32",
+    "+": "[1, -1]",
+    "-": "[-1, 1]",
+    ".": "[0, 1]",
+    "/": "'/\\'",
+    "R": "360",
+    "W": "'https://'",
+    "℅": "'http://'",
+    "Ĵ": "'https://www.'",
+    "²": "'http://www.'",
+    "‿": "16",
+    "⁂": "32",
+    "ĸ": "64",
+    "¶": "512",
+    "⁋": "1024",
+    "⁑": "2048",
+    "Ń": "4096",
+    "ń": "8192",
+    "‼": "16384",
+    "⨊": "32768",
+    "₴": "65536",
+    "Ϊ": "2147483648",
+    "⁰": "'bcfghjklmnpqrstvwxyz'",
+    "¹": "'bcfghjklmnpqrstvwxz'",
+    "⍞": "string.printable",
+    "•": "['qwertyuiop', 'asdfghjkl', 'zxcvbnm']",
+    "Ṡ": "dt.now().second",
+    "₥": "dt.now().minute",
+    "Ĥ": "dt.now().hour",
+    "Τ": "int(dt.now().strftime('%j'))"
 }
 
 def VY_compile(source, header=""):
@@ -1780,7 +1824,6 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
-            print(line)
             exec(line)
             VY_print(stack)
     elif file_location == "h":

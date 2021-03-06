@@ -300,6 +300,37 @@ kv             |"aeiou"
 kV             |"AEIOU"
 k∨             |"aeiouAEIOU"
 k⟇             |* Yields the Vyxal codepage
+k½             | [1, 2],
+kⁱ             | 2 ** 32,
+k+             | [1, -1],
+k-             | [-1, 1],
+k.             | [0, 1],
+k/             | '/\\',
+kR             | 360,
+kW             | 'https://',
+k℅             | 'http://',
+kĴ             | 'https://www.',
+k²             | 'http://www.,
+k‿             | 16,
+k⁂             | 32,
+kĸ             | 64,
+k¶             | 512,
+k⁋             | 1024,
+k⁑             | 2048,
+kŃ             | 4096,
+kń             | 8192,
+k‼             | 16384,
+k⨊             | 32768,
+k₴             | 65536,
+kΪ             | 2147483648,
+k⁰             | 'bcfghjklmnpqrstvwxyz',
+k¹             | 'bcfghjklmnpqrstvwxz',
+k⍞             | string.printable,
+k•             | ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'],
+kṠ             | dt.now().second,
+k₥             | dt.now().minute,
+kĤ             | dt.now().hour,
+kΤ             | int(dt.now().strftime('%j'))
 ∆c     a       |math.cos(a)
 ∆C     a       |math.arccos(a)
 ∆q     a,b     |roots of quadratic ax^2 + bx = 0
