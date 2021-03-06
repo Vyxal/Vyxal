@@ -147,7 +147,7 @@ class Generator:
     def __iter__(self):
         return self
     def _map(self, function):
-        return Generator(map(lambda x: function([x])[-1], self.gen))
+        return Generator(map(lambda x: _safe_apply(function, x) , self.gen))
     def _filter(self, function):
         index = 0
         l = self.__len__()
@@ -297,6 +297,22 @@ def bit_xor(lhs, rhs):
         (Generator, list): lambda: _two_argument(bit_xor, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(bit_xor, lhs, rhs)
     }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
+def cartesian_product(lhs, rhs):
+    if Function not in (VY_type(lhs), VY_type(rhs)):
+        return Generator(itertools.product(iterable(lhs), iterable(rhs)))
+    
+    if VY_type(lhs) is Function:
+        fn, init = lhs, rhs
+    else:
+        fn, init = rhs, lhs
+    def gen():
+        prev = None
+        curr = init
+        while prev != curr:
+            prev = deref(curr)
+            curr = fn([curr])[-1]
+        yield curr
+    return Generator(gen())
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
@@ -1701,7 +1717,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces
 \tC\tCentre the output and join on newlines
 \tO\tDisable implicit output
-\tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting) [not actually implemented yet]
+\tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting
 """
             return
     input_values[0] = [inputs, 0]
@@ -1784,6 +1800,7 @@ if __name__ == "__main__":
         print("\tS\tPrint top of stack joined by spaces")
         print("\tC\tCentre the output and join on newlines")
         print("\tO\tDisable implicit output")
+        print("\tK\tEnable Keg mode")
         print("");
     else:
         if flags:

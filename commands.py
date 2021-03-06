@@ -139,7 +139,7 @@ command_dict = {
     "œ": ("rhs, lhs = pop(stack, 2); stack.append(compare(modulo(lhs, rhs), 0, Comparitors.EQUALS))", 2),
     "≕": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs == rhs))", 2),
     "≠": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.NOT_EQUALS))", 2),
-    "¥": ("stack.append(register)", 0), #---------------------------
+    "¥": ("stack.append(register)", 0),
     "ⁱ": ("rhs, lhs = pop(stack, 2); stack.append(iterable(lhs)[rhs:])", 2),
     "‹": ("rhs, lhs = pop(stack, 2); stack.append(lshift(lhs, rhs))", 2),
     "›": ("rhs, lhs = pop(stack, 2); stack.append(rshift(lhs, rhs))", 2),
@@ -164,7 +164,7 @@ command_dict = {
     "≎": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "⇿": ("new, original, string = pop(stack, 3); stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
     "⊛": ("stack = [stack[0], stack[1:]]", 1),
-    "×": ("rhs, lhs = pop(stack, 2); stack.append(Generator(itertools.product(iterable(lhs), iterable(rhs))))", 2),
+    "×": ("rhs, lhs = pop(stack, 2); cartesian_product(lhs, rhs)", 2),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
     "±": ("stack.append(sign_of(pop(stack)))", 1),
     "⊂": ("length, vector = pop(stack, 2); vector = iterable(vector)\nif type(vector) is str: vector = list(vector)\nstack.append(Generator(itertools.combinations(vector, length)))", 2),
