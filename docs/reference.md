@@ -211,6 +211,7 @@ cmd  |  stack   |out/*effect
 | ⇿ |       a,b,c  |transliterate(a, b, c) # a: string to transliterate, b/c: mapping
 | ⊛ |       a      |stack[0], stack[1:]
 | × |       a,b    |cartesian_product(a, b)
+|  |        f,a    |* repeatedly apply function on a until the result doesn't change
 | ¯ |       a      |deltas(a)
 | ± |       a      |sign_of(a)
 | ⊂ |       a,b    |all combinations with length b of a
@@ -300,14 +301,14 @@ cmd  |  stack   |out/*effect
 | kV |             |"AEIOU"
 | k∨ |             |"aeiouAEIOU"
 | k⟇ |             |* Yields the Vyxal codepage
-| Δc |     a       |math.cos(a)
-| ΔC |     a       |math.arccos(a)
+| ∆c |     a       |math.cos(a)
+| ∆C |     a       |math.arccos(a)
 | ∆q |     a,b     |roots of quadratic ax^2 + bx = 0
 | ∆Q |     a,b     |roots of quadratic x^2 + ax + b = 0
-| Δs |     a       |math.sin(a)
-| ΔS |     a       |math.arcsin(a)
-| Δt |     a       |math.tan(a)
-| ΔT |     a       |math.arctan(a)
+| ∆s |     a       |math.sin(a)
+| ∆S |     a       |math.arcsin(a)
+| ∆t |     a       |math.tan(a)
+| ∆T |     a       |math.arctan(a)
 | ∆P |     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
 | ∆ƈ |     a,b     |n pick r (npr)
 | ∆± |     a,b     |math.copysign(a, b)
