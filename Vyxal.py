@@ -920,6 +920,7 @@ def prepend(vector, item):
 def product(vector):
     if type(vector) is Generator:
         return vector._reduce(multiply)
+    if not vector: return vector
     ret = vector[0]
     for item in vector[1:]:
         ret = multiply(ret, item)
