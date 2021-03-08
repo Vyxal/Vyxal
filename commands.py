@@ -241,14 +241,15 @@ string_command_dict = {
     "$": ("stack.append(str(pop(stack)).swapcase())", 1),
     "Ç": ("stack.append(centre(iterable(pop(stack))))", 1),
     "m": ("stack.append(palindromise(iterable(pop(stack))))", 1),
-    "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), #TODO: Implement
-    "d": ("stack.append(run_length_decode(pop(stack)))", 1) #TODO: Implement
+    "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), 
+    "d": ("stack.append(run_length_decode(pop(stack)))", 1)
 }
 
 list_command_dict = {
     "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
     "⎝": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
-    "⎠": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2)
+    "⎠": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
+    "Ï": ("vector = pop(stack); stack.append(all_combinations(vector));", 1)
 }
 
 misc_command_dict = {

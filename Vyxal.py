@@ -231,6 +231,11 @@ def add(lhs, rhs):
         (Generator, list): lambda: _two_argument(add, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(add, lhs, rhs)
     }.get(types, lambda: vectorise(add, lhs, rhs))()
+def all_combinations(vector):
+    ret = []
+    for i in range(len(vector) + 1):
+        ret = join(ret, combinations_replace_generate(vector, i))
+    return ret
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -969,9 +974,9 @@ def reverse(vector):
     if type(vector) in [float, int]:
         s_vector = str(vector)
         if vector < 0:
-            return -int(s_vector[1:][::-1])
+            return -eval(s_vector[1:][::-1])
         else:
-            return int(s_vector[::-1])
+            return eval(s_vector[::-1])
     return vector[::-1]
 def rshift(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
