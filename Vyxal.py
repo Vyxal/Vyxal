@@ -423,6 +423,7 @@ def distribute(vector, value):
 def divide(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
+        (int, int): lambda: lhs // rhs,
         (Number, Number): lambda: lhs / rhs,
         (str, str): lambda: split(lhs, rhs),
         (str, Number): lambda: wrap(lhs, len(lhs) // rhs),
