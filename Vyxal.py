@@ -422,9 +422,11 @@ def distribute(vector, value):
     return vector
 def divide(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+    def handle_numbers(lhs, rhs):
+        normal, int_div = lhs / rhs, lhs // rhs
+        return [normal, int_div][normal == int_div]
     return {
-        (int, int): lambda: lhs // rhs,
-        (Number, Number): lambda: lhs / rhs,
+        (Number, Number): lambda: handle_numbers(lhs, rhs),
         (str, str): lambda: split(lhs, rhs),
         (str, Number): lambda: wrap(lhs, len(lhs) // rhs),
         (Number, str): lambda: wrap(rhs, len(rhs) // lhs),
