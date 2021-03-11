@@ -257,7 +257,7 @@ def bit_and(lhs, rhs):
         (Number, Number): lambda: lhs & rhs,
         (Number, str): lambda: rhs.centre(lhs),
         (str, Number): lambda: lhs.centre(rhs),
-        (str, str): lhs.centre(len(rhs) - len(lhs)),
+        (str, str): lambda: lhs.centre(len(rhs) - len(lhs)),
         (types[0], list): lambda: [bit_and(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_and(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_and(*x), VY_zip(lhs, rhs))),
