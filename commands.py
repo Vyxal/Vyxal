@@ -15,7 +15,7 @@ command_dict = {
     "<": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.LESS_THAN))", 2),
     ">": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN))", 2),
     "=": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.EQUALS))", 2),
-    "?": ("stack.append(get_input())", 0),
+    "?": ("stack.append(get_input(True))", 0),
     "A": ("stack.append(int(all(iterable(pop(stack)))))", 1),
     "B": ("stack.append(VY_int(pop(stack), 2))", 1),
     "C": ("stack.append(chrord(pop(stack)))", 1),
@@ -254,6 +254,6 @@ list_command_dict = {
 
 misc_command_dict = {
     '"': ("stack = iterable_shift(stack, ShiftDirections.RIGHT)", 0),
-    "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0)
-    
+    "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0),
+    "=": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs == rhs))", 2)
 }

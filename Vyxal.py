@@ -1101,6 +1101,15 @@ def transpose(vector):
 def trim(lhs, rhs, left = False, right = False):
     # I stole this from Jelly
     #https://github.com/DennisMitchell/jellylanguage/blob/master/jelly/interpreter.py#L1131
+
+    if type(rhs) is Function:
+        lhs = iterable(lhs)
+        def gen():
+            for index, item in enumerate(lhs):
+                if index % 2:
+                    yield _safe_apply(rhs, item)
+        return gen()
+
     if VY_type(lhs) == Number:
         lhs = str(lhs)
     if VY_type(rhs) == Number:

@@ -102,7 +102,10 @@ z       a,f    |zipmap the contents of a with function f
 «              |* base 255 string
 »              |* base 255 number
 °              |* function reference
-•       a,b    |* multi-command
+•       a,b    |math.log(a, b) # Number, Number
+        a,b    |"".join([c * a for c in b]) # Number, String
+        a,b    |a.with_capitalisation_of(b) # String, String
+        a,b    |a.mold(b)
 ․              |* function reference of a built-in
 ⍎       a      |* call function a
 Ṛ       a,b    |random.randint(a,b)

@@ -103,7 +103,10 @@ cmd  |  stack   |out/*effect
 | « |              |* base 255 string
 | » |              |* base 255 number
 | ° |              |* function reference
-| • |       a,b    |* multi-command
+| • |       a,b    |math.log(a, b) # Number, Number
+|  |        a,b    |"".join([c * a for c in b]) # Number, String
+|  |        a,b    |a.with_capitalisation_of(b) # String, String
+|  |        a,b    |a.mold(b)
 | ․ |              |* function reference of a built-in
 | ⍎ |       a      |* call function a
 | Ṛ |       a,b    |random.randint(a,b)
@@ -343,7 +346,7 @@ cmd  |  stack   |out/*effect
 | ∆P |     a       |roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
 | ∆ƈ |     a,b     |n pick r (npr)
 | ∆± |     a,b     |math.copysign(a, b)
-| ∆K |     a       |sum(proper_divisors(a)) 
+| ∆K |     a       |sum(proper_divisors(a))
 | øo |     a,b     |a.remove_until_no_change(b)
 | øV |     a,b,c   |a.replace_until_no_change(b, c)
 | øc |     a       |base_255_string_compressed(a)
