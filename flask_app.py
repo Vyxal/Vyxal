@@ -40,3 +40,7 @@ def index():
         return render_template('index.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, errors=ret[2])
 
     return render_template('index.html', code="", flags="", output="", header="", footer="", inputs="", errors="")
+
+@app.route("/ash")
+def ash():
+    return render_template("ash.html")
