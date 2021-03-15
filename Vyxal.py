@@ -52,6 +52,7 @@ printed = False
 register = 0
 retain_items = False
 reverse_args = False
+safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
 
 MAP_START = 1
@@ -1202,7 +1203,7 @@ def VY_bin(item):
         str: lambda: [bin(ord(let))[2:] for let in item]
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_eval(item):
-    if online_version:
+    if online_version or safe_mode:
         import regex
         pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|(-?\d+(\.\d+)?$)|"[^"]*"|'[^']*'""")
         mobj = pobj.match(item)
@@ -1869,6 +1870,7 @@ if __name__ == "__main__":
         print("\tC\tCentre the output and join on newlines")
         print("\tO\tDisable implicit output")
         print("\tK\tEnable Keg mode")
+        print("\tE\tEnable safe evaluation (offline interpreter only)")
         print("");
     else:
         if flags:
@@ -1892,6 +1894,9 @@ if __name__ == "__main__":
             
             if 'K' in flags:
                 keg_mode = True
+            
+            if 'E' in flags:
+                safe_mode = True
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
