@@ -1017,6 +1017,36 @@ def sentence_case(item):
         if capitalise and char != " ": capitalise = False
         capitalise = capitalise or char in "!?."
     return ret
+def set_caret(lhs, rhs):
+    # Why make my own function instead of using standard ^? Because numbers and strings. that's why.
+    types = VY_type(lhs), VY_type(rhs)
+    new_lhs, new_rhs = {
+        (Number, Number): lambda: (iterable(lhs), iterable(rhs)),
+        (Number, str): lambda: (str(lhs), rhs),
+        (str, Number): lambda: (lhs, str(rhs))
+    }.get(types, lambda: (iterable(lhs), iterable(rhs)))()
+
+    return list(set(new_lhs) ^ set(new_rhs))
+def set_intersection(lhs, rhs):
+    # Why make my own function instead of using standard &? Because numbers and strings. that's why.
+    types = VY_type(lhs), VY_type(rhs)
+    new_lhs, new_rhs = {
+        (Number, Number): lambda: (iterable(lhs), iterable(rhs)),
+        (Number, str): lambda: (str(lhs), rhs),
+        (str, Number): lambda: (lhs, str(rhs))
+    }.get(types, lambda: (iterable(lhs), iterable(rhs)))()
+
+    return list(set(new_lhs) & set(new_rhs))
+def set_union(lhs, rhs):
+    # Why make my own function instead of using standard |? Because numbers and strings. that's why.
+    types = VY_type(lhs), VY_type(rhs)
+    new_lhs, new_rhs = {
+        (Number, Number): lambda: (iterable(lhs), iterable(rhs)),
+        (Number, str): lambda: (str(lhs), rhs),
+        (str, Number): lambda: (lhs, str(rhs))
+    }.get(types, lambda: (iterable(lhs), iterable(rhs)))()
+
+    return list(set(new_lhs) | set(new_rhs))
 def sign_of(item):
     t = VY_type(item)
     if t == Number:
