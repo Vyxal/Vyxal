@@ -1818,6 +1818,7 @@ ALL flags should be used as is (no '-' prefix)
 \tC\tCentre the output and join on newlines
 \tO\tDisable implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting
+\tl\tPrint length of top of stack
 """
             return
     input_values[0] = [inputs, 0]
@@ -1840,6 +1841,8 @@ ALL flags should be used as is (no '-' prefix)
             output[1] = VY_str(" ".join([str(n) for n in pop(stack)]))
         elif flags and "C" in flags:
             output[1] = VY_str("\n".join(centre(pop(stack))))
+        elif flags and "l" in flags:
+            output[1] = str(len(pop(stack)))
         elif _vertical_join:
             output[1] = VY_str(vertical_join(pop(stack)))
         elif _join:
@@ -1901,6 +1904,7 @@ if __name__ == "__main__":
         print("\tO\tDisable implicit output")
         print("\tK\tEnable Keg mode")
         print("\tE\tEnable safe evaluation (offline interpreter only)")
+        print("\tl\tPrint length of top of stack")
         print("");
     else:
         if flags:
@@ -1951,6 +1955,8 @@ if __name__ == "__main__":
                 print(" ".join([str(n) for n in pop(stack)]))
             elif flags and "C" in flags:
                 print("\n".join(centre(pop(stack))))
+            elif flags and "l" in flags:
+                print(len(pop(stack)))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
