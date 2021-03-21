@@ -44,7 +44,6 @@ context_values = [0]
 input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
-interactive_input = False
 keg_mode = False
 online_version = False
 output = ""
@@ -584,13 +583,15 @@ def get_input(override=False):
         source, index = input_values[input_level]
     else:
         source, index = [], -1
+    
     if override:
         temp = input_level
         input_level = 0
         ret = get_input()
         input_level = temp
         return ret
-    if (not interactive_input) and source:
+    
+    if source and input_level != 0:
         ret = source[index % len(source)]
         input_values[input_level][1] += 1
 
@@ -1873,10 +1874,6 @@ if __name__ == "__main__":
         if 'a' in flags:
             inputs = [inputs]
         
-    
-    if not inputs:
-        interactive_input = True
-
     if not file_location: #repl mode
 
         while 1:
@@ -1931,6 +1928,9 @@ if __name__ == "__main__":
             
             if 'E' in flags:
                 safe_mode = True
+            
+            if 'H' in flags:
+                header = "stack = [100]\nregister = 0\nprinted = False\n"
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
