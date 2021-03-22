@@ -227,7 +227,8 @@ math_command_dict = {
     "t": ("arg = pop(stack); stack.append(vectorise(math.tan, arg))", 1),
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(divide(factorial(lhs), factorial(subtract(lhs, rhs))))", 2),
     "±": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(math.copysign, lhs, rhs))", 2),
-    "K": ("arg = pop(stack); stack.append(summate(join(0, divisors_of(arg)[:-1])))", 1)
+    "K": ("arg = pop(stack); stack.append(summate(join(0, divisors_of(arg)[:-1])))", 1),
+    "²": ("arg = pop(stack); stack.append(compare(exponate(exponate(arg, 0.5), 2), arg, Comparitors.EQUALS))", 1)
 }
 
 string_command_dict = {
@@ -249,7 +250,9 @@ list_command_dict = {
     "ĸ": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
     "⎝": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
     "⎠": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
-    "Ï": ("vector = pop(stack); stack.append(all_combinations(vector));", 1)
+    "Ï": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
+    "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
+    "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0)
 }
 
 misc_command_dict = {
