@@ -613,22 +613,14 @@ def gcd(lhs, rhs=None):
         # I can't use VY_reduce because ugh reasons
         lhs = deref(lhs)
         return int(numpy.gcd.reduce(lhs))   
-def get_input(override=False):
+def get_input():
     global input_level
     global input_values
     if input_level in input_values:
         source, index = input_values[input_level]
     else:
         source, index = [], -1
-    
-    if override:
-        temp = input_level
-        input_level = 0
-        ret = get_input()
-        input_level = temp
-        return ret
-    
-    if source and input_level != 0:
+    if source:
         ret = source[index % len(source)]
         input_values[input_level][1] += 1
 
