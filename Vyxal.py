@@ -219,16 +219,29 @@ class ShiftDirections:
 
 # Helper functions
 def _safe_apply(function, *args):
+    '''
+    Applies function to args that adapts to the input style of the passed function.
+
+    If the function is a _lambda (it's been defined within λ...;), it passes a list of arguments and length of argument list
+    Otherwise, if the function is a user-defined function (starts with FN_), it simply passes the argument list
+    Otherwise, unpack args and call as usual
+    '''
     if function.__name__ == "_lambda":
         return function(list(args), len(args))
     elif function.__name__.startswith("FN_"):
         return function(list(args))
     return function(*args)
 def _two_argument(function, lhs, rhs):
+    '''
+    Used for vectorising user-defined lambas/dyads over generators
+    '''
     if function.__name__ == "_lambda":
         return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
     return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
+    '''
+    Returns lhs + rhs. Check command docs for type cohesion.
+    '''
     types = VY_type(lhs), VY_type(rhs)
     return {
         (Number, Number): lambda: lhs + rhs,
@@ -554,6 +567,9 @@ def first_n(func, n=1):
 
     return ret
 def flatten(item):
+    '''
+    Returns a deep-flattened (all sublists expanded) version of the input
+    '''
     t_item = VY_type(item)
     if t_item is Generator:
         return Generator(functools.reduce(list.__add__, item))
@@ -1879,6 +1895,7 @@ ALL flags should be used as is (no '-' prefix)
             output[1] = VY_str("\n".join([str(n) for n in pop(stack)]))
         else:
             output[1] = VY_str(pop(stack))
+
 
 if __name__ == "__main__":
     ### Debugging area
