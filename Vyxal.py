@@ -330,6 +330,7 @@ def bit_xor(lhs, rhs):
     }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
 def cartesian_product(lhs, rhs):
     if Function not in (VY_type(lhs), VY_type(rhs)):
+        lhs, rhs = iterable(lhs), iterable(rhs)
         return Generator(itertools.product(iterable(lhs), iterable(rhs)))
     
     if VY_type(lhs) is Function:

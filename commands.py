@@ -164,7 +164,7 @@ command_dict = {
     "≎": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "⇿": ("new, original, string = pop(stack, 3); stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
     "⊛": ("stack = [stack[0], stack[1:]]", 1),
-    "×": ("rhs, lhs = pop(stack, 2); cartesian_product(lhs, rhs)", 2),
+    "×": ("rhs, lhs = pop(stack, 2); stack.append(cartesian_product(lhs, rhs))", 2),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
     "±": ("stack.append(sign_of(pop(stack)))", 1),
     "⊂": ("length, vector = pop(stack, 2); vector = iterable(vector)\nif type(vector) is str: vector = list(vector)\nstack.append(Generator(itertools.combinations(vector, length)))", 2),
