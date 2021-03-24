@@ -634,16 +634,20 @@ def gcd(lhs, rhs=None):
         # I can't use VY_reduce because ugh reasons
         lhs = deref(lhs)
         return int(numpy.gcd.reduce(lhs))   
-def get_input():
-    global input_level
+def get_input(predefined_level=None):
     global input_values
-    if input_level in input_values:
-        source, index = input_values[input_level]
+
+    level = input_level
+    if predefined_level is not None:
+        level = predefined_level
+
+    if level in input_values:
+        source, index = input_values[level]
     else:
         source, index = [], -1
     if source:
         ret = source[index % len(source)]
-        input_values[input_level][1] += 1
+        input_values[level][1] += 1
 
         if keg_mode and type(ret) is str:
             return [ord(c) for c in ret]
@@ -651,7 +655,6 @@ def get_input():
     else:
         try:
             temp = VY_eval(input())
-            input_values[input_level][0].append(deref(temp))
             if keg_mode and type(temp) is str:
                 return [ord(c) for c in temp]
             return temp
