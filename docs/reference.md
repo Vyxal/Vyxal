@@ -367,5 +367,11 @@ cmd  |  stack   |out/*effect
 | øe |     a       |run_length_encoded(a)
 | ød |     a       |run_length_decoded(a)
 | Þĸ |     a,b     |b evenly distributed over the elements of a
+| Þ⎝ |      f,a     |* minimum of a by function f
+| Þ⎠ |      f,a     |* maximum of a by function f
+| ÞÏ |     a       |all_combinations(a) # This is all lengths
+| ÞF |             |* every fibonacci number
+| Þ! |             |* every factorial
 | ⫙' |             |* rotate entire stack left
 | ⫙" |             |* rotate entire stack right
+| ⫙= |     a,b     |non_vectorising_equals(a, b)

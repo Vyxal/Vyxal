@@ -1854,8 +1854,8 @@ def execute(code, flags, input_list, output_variable):
         if 'h' in flags:
             output[1] = """
 ALL flags should be used as is (no '-' prefix)
-\tj\tPrint top of stack joined by newlines
-\tL\tPrint top of stack joined by newlines (Vertically)
+\tj\tPrint top of stack joined by newlines on end of execution
+\tL\tPrint top of stack joined by newlines (Vertically) on end of execution
 \ts\tSum/concatenate top of stack on end of execution
 \tM\tUse 0-indexed range [0,n] for mapping integers
 \tm\tUse 0-indexed range [0,n) for mapping integers
@@ -1863,13 +1863,16 @@ ALL flags should be used as is (no '-' prefix)
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
 \ta\tTreat newline seperated values as a list
-\td\tDeep sum of top of stack
+\td\tPrint deep sum of top of stack on end of execution
 \tr\tMakes all operations happen with reverse arguments
-\tS\tPrint top of stack joined by spaces
-\tC\tCentre the output and join on newlines
+\tS\tPrint top of stack joined by spaces on end of execution
+\tC\tCentre the output and join on newlines on end of execution
 \tO\tDisable implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting
-\tl\tPrint length of top of stack
+\tl\tPrint length of top of stack on end of execution
+\tG\tPrint the maximum item of the top of stack on end of execution
+\tg\tPrint the minimum item of the top of the stack on end of execution
+\tW\tPrint the entire stack on end of execution
 """
             return
     input_values[0] = [inputs, 0]
@@ -1894,6 +1897,12 @@ ALL flags should be used as is (no '-' prefix)
             output[1] = VY_str("\n".join(centre(pop(stack))))
         elif flags and "l" in flags:
             output[1] = str(len(pop(stack)))
+        elif flags and "G" in flags:
+            output[1] = VY_max(pop(stack))
+        elif flags and "g" in flags:
+            output[1] = VY_min(pop(stack))
+        elif flags and "W" in flags:
+            output[1] = VY_str(stack)
         elif _vertical_join:
             output[1] = VY_str(vertical_join(pop(stack)))
         elif _join:
@@ -1953,7 +1962,10 @@ if __name__ == "__main__":
         print("\tK\tEnable Keg mode")
         print("\tE\tEnable safe evaluation (offline interpreter only)")
         print("\tl\tPrint length of top of stack")
-        print("");
+        print("\tG\tPrint the maximum item of the top of stack on end of execution")
+        print("\tg\tPrint the minimum item of the top of the stack on end of execution")
+        print("\tW\tPrint the entire stack on end of execution")
+        print("")
     else:
         if flags:
             if "M" in flags:
@@ -2008,6 +2020,12 @@ if __name__ == "__main__":
                 print("\n".join(centre(pop(stack))))
             elif flags and "l" in flags:
                 print(len(pop(stack)))
+            elif flags and "G" in flags:
+                print(VY_max(pop(stack)))
+            elif flags and "g" in flags:
+                print(VY_min(pop(stack)))
+            elif flags and "W" in flags:
+                print(VY_str(stack))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
