@@ -1,4 +1,4 @@
-codepage = "λƛ¬∧⟑∨⟇÷«\n»°•․⍎Ṛ½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ß⎝⎠⎡⎣⨥⨪∺❝ð→←ÐřŠč√⳹ẊȦȮḊĖẸṙ∑Ĥ⟨⟩ı⁌\tΤĴ²‿⁂ĸ¶⁋⁑Ńń‼⨊≈µʗ◁⊐∫⍋⍒∈ₛ£Œœ≕≠¥ⁱ‹›⍲⍱‸¡⊑≀℅≤≥↜≗⋯⧢ũ⁰¹ªₑϊ≎⇿⊛×¯±⊂⍞፣₴⍉ΐ₁⊘ᶢ₌↭ſƀƁ⁚⌈⌊⊓⊣Ḟḟ∪∩⊍⁜⌑Ḇ₂⁾₦¼ƒɖꝒ′₥α″βγΠ"
+codepage = "λƛ¬∧⟑∨⟇÷«\n»°•․⍎Ṛ½∆øÏÔÇæʀʁɾɽÞƈ∞⫙ !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~ß⎝⎠⎡⎣⨥⨪∺❝ð→←ÐřŠč√⳹ẊȦȮḊĖẸṙ∑Ĥ⟨⟩ı⁌\tτĴ²‿⁂ĸ¶⁋⁑Ńń‼⨊≈µʗ◁⊐∫⍋⍒∈ₛ£Œœ≕≠¥ⁱ‹›⍲⍱‸¡⊑≀℅≤≥↜≗⋯⧢ũ⁰¹ªₑϊ≎⇿⊛×¯±⊂⍞፣₴⍉ΐ₁⊘ᶢ₌↭ſƀƁ⁚⌈⌊⊓⊣Ḟḟ∪∩⊍⁜⌑Ḇ₂⁾₦¼ƒɖꝒ′₥α″βγΠ"
 command_dict = {
 
     "!": ("stack.append(len(stack))", 0),
@@ -97,7 +97,7 @@ command_dict = {
     "Ĥ": ("stack.append(100)", 0),
     "Ĵ": ("stack.append(''.join([VY_str(x) for x in iterable(pop(stack))]))", 1),
     "⁌": ("stack.append('\\n'.join([VY_str(x) for x in iterable(pop(stack))]))", 1),
-    "Τ": ("stack.append(10)", 0),
+    "τ": ("stack.append(10)", 0),
     "²": ("x = pop(stack); stack.append(multiply(deref(x), deref(x)))", 1),
     "∑": ("stack.append(summate(pop(stack)))", 0),
     "‿": ("rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])", 2),
@@ -228,7 +228,15 @@ math_command_dict = {
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(divide(factorial(lhs), factorial(subtract(lhs, rhs))))", 2),
     "±": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(math.copysign, lhs, rhs))", 2),
     "K": ("arg = pop(stack); stack.append(summate(join(0, divisors_of(arg)[:-1])))", 1),
-    "²": ("arg = pop(stack); stack.append(compare(exponate(exponate(arg, 0.5), 2), arg, Comparitors.EQUALS))", 1)
+    "²": ("arg = pop(stack); stack.append(compare(exponate(exponate(arg, 0.5), 2), arg, Comparitors.EQUALS))", 1),
+    "e": ("arg = pop(stack); stack.append(vectorise(math.exp, arg))", 1),
+    "E": ("arg = pop(stack); stack.append(vectorise(math.expm1, arg))", 1),
+    "L": ("arg = pop(stack); stack.append(vectorise(math.log, arg))", 1),
+    "l": ("arg = pop(stack); stack.append(vectorise(math.log2, arg))", 1),
+    "τ": ("arg = pop(stack); stack.append(vectorise(math.log10, arg))", 1),
+    "d": ("rhs, lhs = pop(stack, 2); stack.append(distance_between(lhs, rhs))", 2),
+    "D": ("arg = pop(stack); stack.append(vectorise(math.degrees, arg))", 1),
+    "R": ("arg = pop(stack); stack.append(vectorise(math.radians, arg))", 1)
 }
 
 string_command_dict = {

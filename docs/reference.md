@@ -158,7 +158,7 @@ cmd  |  stack   |out/*effect
 | ⟩ |              |* close a list
 | ı |              |* 2 char compressed string
 | ⁌ |       a      |'\n'.join(a)
-| Τ |              |10
+| τ |              |10
 | Ĵ |       a      |''.join(a)
 | ² |       a      |a ^ 2
 | ‿ |       a,b    |[a, b]
@@ -334,7 +334,7 @@ cmd  |  stack   |out/*effect
 | kṠ |             | dt.now().second,
 | k₥ |             | dt.now().minute,
 | kĤ |             | dt.now().hour,
-| kΤ |             | int(dt.now().strftime('%j'))
+| kτ |             | int(dt.now().strftime('%j'))
 | ∆c |     a       |math.cos(a)
 | ∆C |     a       |math.arccos(a)
 | ∆q |     a,b     |roots of quadratic ax^2 + bx = 0
@@ -347,6 +347,15 @@ cmd  |  stack   |out/*effect
 | ∆ƈ |     a,b     |n pick r (npr)
 | ∆± |     a,b     |math.copysign(a, b)
 | ∆K |     a       |sum(proper_divisors(a))
+| ∆² |     a       |is_perfect_square(a)
+| ∆e |     a       |e ** a
+| ∆E |     a       |(e ** a) - 1 # uses python's math.expm1()
+| ∆L |     a       |ln(a)
+| ∆l |     a       |log_2(a)
+| ∆τ |     a       |log_10(a)
+| ∆d |     a,b     |euclidian_distance(a, b) # Straight line distance
+| ∆D |     a       |math.degrees(a)
+| ∆R |     a       |math.radians(a)
 | øo |     a,b     |a.remove_until_no_change(b)
 | øV |     a,b,c   |a.replace_until_no_change(b, c)
 | øc |     a       |base_255_string_compressed(a)

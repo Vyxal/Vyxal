@@ -429,6 +429,10 @@ def deref(item):
     if VY_type(item) is Generator: return item._dereference()
     if type(item) not in [int, float, str]: return item[::]
     return item
+def distance_between(lhs, rhs):
+    inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
+    inner = summate(inner)
+    return exponate(inner, 0.5)
 def distribute(vector, value):
     types = VY_type(vector), VY_type(value)
     if types == (Number, Number):
@@ -1537,6 +1541,7 @@ constants = {
     "l": "string.ascii_letters[::-1]",
     "i": "math.pi",
     "n": "math.nan",
+    "t": "math.tau",
     "D": "date.today().isoformat()",
     "N": "[dt.now().hour, dt.now().minute, dt.now().second]",
     "Ð": "date.today().strftime('%d/%m/%Y')",
