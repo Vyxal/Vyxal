@@ -148,7 +148,7 @@ command_dict = {
     "‸": ("rhs, lhs = pop(stack, 2); stack.append(bit_xor(lhs, rhs))", 2),
     "¡": ("stack.append(bit_not(pop(stack)))", 1),
     "⊑": ("item, vector = pop(stack, 2); stack.append(prepend(iterable(vector), item))", 2),
-    "≀": ("item, index, vector = pop(stack, 3); stack.append(inserted(vector, item, index))", 3),
+    "≀": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "℅": ("stack.append(random.choice(iterable(pop(stack))))", 1),
     "≤": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.LESS_THAN_EQUALS))", 2),
     "≥": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN_EQUALS))", 2),
