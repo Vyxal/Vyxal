@@ -266,5 +266,6 @@ list_command_dict = {
 misc_command_dict = {
     '"': ("stack = iterable_shift(stack, ShiftDirections.RIGHT)", 0),
     "'": ("stack = iterable_shift(stack, ShiftDirections.LEFT)", 0),
-    "=": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs == rhs))", 2)
+    "=": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs == rhs))", 2),
+    "U": ("stack.append(urllib.request.urlopen(pop(stack)).read().decode())", 1)
 }
