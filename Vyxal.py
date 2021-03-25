@@ -680,7 +680,8 @@ def group_consecutive(vector):
 
     return ret
 def inclusive_range(lhs, rhs):
-    if (VY_type(lhs), VY_type(rhs)) != (Number, Number):
+    types = (VY_type(lhs), VY_type(rhs))
+    if types != (Number, Number):
         lhs, rhs = VY_str(lhs), VY_str(rhs)
         pobj = regex.compile(rhs)
         return pobj.split(lhs)
