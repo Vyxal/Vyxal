@@ -1049,6 +1049,13 @@ def repeat(vector, times, extra=None):
     else:
         if t_vector is str: return vector * times
         return Generator(itertools.repeat(vector, times))
+def repeat_no_collect(predicate, modifier, value):
+    def gen():
+        item = value
+        while predicate([item])[-1]:
+            item = modifier([item])[-1]
+        yield item
+    return gen()
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:

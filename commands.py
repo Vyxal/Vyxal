@@ -162,7 +162,7 @@ command_dict = {
     "ₑ": ("code = VY_compile(pop(stack)); exec(code);", 1),
     "ϊ": ("obj = iterable(pop(stack)); stack.append(Generator(range(1, len(obj) + 1)))", 1),
     "≎": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
-    "⇿": ("new, original, string = pop(stack, 3); stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
+    "⇿": ("new, original, string = pop(stack, 3); if Function in map(type, (new, original, string)): stack.append(repeat_no_collect(original, new, string))\nelse: stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
     "⊛": ("stack = [stack[0], stack[1:]]", 1),
     "×": ("rhs, lhs = pop(stack, 2); stack.append(cartesian_product(lhs, rhs))", 2),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
