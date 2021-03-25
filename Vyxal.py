@@ -681,6 +681,20 @@ def group_consecutive(vector):
     return ret
 def inclusive_range(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
+    if Function in types:
+        if types[0] is Function:
+            func, vector = lhs, rhs
+        else:
+            func, vector = rhs, lhs
+        
+        def gen():
+            for index, item in enumerate(vector):
+                if index % 2 == 0:
+                    yield item
+                else:
+                    yield func([item])[-1]
+        
+        return Generator(gen())
     if types != (Number, Number):
         lhs, rhs = VY_str(lhs), VY_str(rhs)
         pobj = regex.compile(rhs)
