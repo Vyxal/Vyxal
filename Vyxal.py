@@ -1610,7 +1610,7 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            string = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"").replace("\n", "\\n")
+            string = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
             compiled += f"stack.append(\"{utilities.uncompress(string)}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"

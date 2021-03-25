@@ -81,7 +81,7 @@ def uncompress(s):
             final += char
 
 
-    return final
+    return final.replace("\n", "\\n")
 
 
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
