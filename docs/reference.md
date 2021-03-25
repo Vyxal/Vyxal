@@ -164,6 +164,8 @@ cmd  |  stack   |out/*effect
 | ‿ |       a,b    |[a, b]
 | ⁂ |       a,b    |inclusive_range(a, b)
 |  |        a,b    |a.split(regex_pattern=b) # If either argument isn't a string
+|  |        a,f    |* apply function f to every second item of a
+|  |        f,a    |* apply function f to every second item of a
 | ĸ |       a,b    |absolute_difference(a, b) # abs(a - b)
 | ¶ |              |"\n"
 | ⁋ |       a      |vertical_join(a)
@@ -197,6 +199,7 @@ cmd  |  stack   |out/*effect
 | ¡ |       a      |not a (bitwise) # ~a
 | ⊑ |       a,b    |a.insert(0, b)
 | ≀ |       a,b,c  |a.insert(b, c)
+|  |       a,f,b   |* function f mapped to every bth item in a
 | ℅ |       a      |random element from a
 | ≤ |       a,b    |a <= b
 | ≥ |       a,b    |a >= b
@@ -212,6 +215,7 @@ cmd  |  stack   |out/*effect
 | ϊ |       a      |range(1, len(a) + 1)
 | ≎ |       a      |group_consecutive(a)
 | ⇿ |       a,b,c  |transliterate(a, b, c) # a: string to transliterate, b/c: mapping
+|  |        f,g,a  |repeat_until_false(predicate=f, modifying_function=g, inital=a) # equivalent to řt
 | ⊛ |       a      |stack[0], stack[1:]
 | × |       a,b    |cartesian_product(a, b)
 |  |        f,a    |* repeatedly apply function on a until the result doesn't change
@@ -375,3 +379,5 @@ cmd  |  stack   |out/*effect
 | ⫙' |             |* rotate entire stack left
 | ⫙" |             |* rotate entire stack right
 | ⫙= |     a,b     |non_vectorising_equals(a, b)
+| ⫙U |     a       |* URL get request with url=a
+- `a`, `b`, `c` are items that aren't functions (Numbers, Strings and Lists/Generators)- `f`, `g`    are items that are functions (lambdas/function references)
