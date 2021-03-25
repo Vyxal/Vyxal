@@ -163,6 +163,7 @@ z       a,f    |zipmap the contents of a with function f
 ‿       a,b    |[a, b]
 ⁂       a,b    |inclusive_range(a, b)
         a,b    |a.split(regex_pattern=b) # If either argument isn't a string
+        a,f    |* apply function f to every second item of a # [Function, Iterable] or [Iterable, Function]
 ĸ       a,b    |absolute_difference(a, b) # abs(a - b)
 ¶              |"\n"
 ⁋       a      |vertical_join(a)
