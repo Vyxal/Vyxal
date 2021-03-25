@@ -689,7 +689,7 @@ def inclusive_range(lhs, rhs):
         
         def gen():
             for index, item in enumerate(vector):
-                if index % 2:
+                if (index + 1) % 2:
                     yield item
                 else:
                     yield func([item])[-1]
@@ -871,7 +871,7 @@ def lshift(lhs, rhs):
 def map_every_n(vector, function, index):
     def gen():
         for pos, element in enumerate(vector):
-            if pos % index:
+            if (pos + 1) % index:
                 yield element
             else:
                 yield function([element])[-1]
