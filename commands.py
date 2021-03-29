@@ -201,7 +201,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ḇ": ("stack += bifuricate(pop(stack))", 1),
     "₂": ("stack.append(input_values[0][0][-2])", 0),
     "⁾": ("stack.append(exponate(10, pop(stack)))", 1),
-    "₦": ("stack.append(str(pop(stack)).split('\n'))", 1),
+    "₦": ("stack.append(str(pop(stack)).split('\\n'))", 1),
     "¼": ("top = iterable(pop(stack)); stack.append(top[0]); stack.append(top[1:])", 1),
     "ƒ": ("stack.append(fractionify(pop(stack)))", 1),
     "ɖ": ("stack.append(decimalify(pop(stack)))", 1),
