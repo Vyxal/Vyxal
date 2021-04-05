@@ -244,6 +244,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ṁ (a: any)                           = arithmetic_mean(a)  # average
 ṅ (a: function)                      = first integer where a(x) is truthy
 ȯ (a: function, b: number)           = first n integers where a(x) is truthy
+  (a: any, b: number)                = a[b:]
 ṗ (a: any)                           = powerset(a)
 ṙ (a: number)                        = round(a)
 ṡ (a: any, b: function)              = sorted(a, key=b)
@@ -397,8 +398,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (otherwise)                        = vectorised
 Ǒ (a: number, b: number)             = how many times does b divide a?  # order
   (a: string, b: string)             = remove b from a until a doesn't change
-  (a: iterable, b: number)           = len(a) % b == 0
-ǒ (a: number)                        = round_up(a)
+ǒ (a: number)                        = a % 3
   (a: string)                        = is string empty?
   (otherwise)                        = vectorised
 Ǔ (a: any, b: number)                = rotate a b units to the left

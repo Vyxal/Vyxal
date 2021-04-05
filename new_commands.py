@@ -215,10 +215,11 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "⇧": ("stack.append(graded(pop(stack)))", 1),
     "⇩": ("stack.append(graded_down(pop(stack)))", 1),
     "Ǎ": ("stack.append(two_power(pop(stack)))", 1),
-    "ǎ": ("stack.append(nth_prime(pop(stack)))", 1)
+    "ǎ": ("stack.append(nth_prime(pop(stack)))", 1),
+    "Ǐ": ("stack.append(prime_factors(pop(stack)))", 1),
+    "ǐ": ("stack.append(all_prime_factors(pop(stack)))", 1),
+    "Ǒ": ("rhs, lhs = pop(stack, 2); stack.append(order(lhs, rhs))", 2),
     #----
-    "∈": ("fn, vector = pop(stack, 2); stack.append(indexes_where(fn, iterable(vector)))", 2),
-    "ⁱ": ("rhs, lhs = pop(stack, 2); stack.append(iterable(lhs)[rhs:])", 2),
     "⊑": ("item, vector = pop(stack, 2); stack.append(prepend(iterable(vector), item))", 2),
     "ũ": ("stack.append(integer_list(pop(stack)))", 1),
     "⊛": ("stack = [stack[0], stack[1:]]", 1),
@@ -229,8 +230,6 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "⊣": ("rhs, lhs = pop(stack, 2); stack.append(trim(lhs, rhs))", 2),
     "⁜": ("stack.append(divide(1, pop(stack)))", 1),
     "₦": ("stack.append(str(pop(stack)).split('\\n'))", 1),
-    "′": ("stack.append(prime_factors(pop(stack)))", 1),
-    "″": ("stack.append(nth_prime(pop(stack)))", 1),
     "β": ("stack.append(64)", 0),
     "γ": ("stack.append(128)", 0),
     "Π": ("stack.append(product(iterable(pop(stack))))", 1)

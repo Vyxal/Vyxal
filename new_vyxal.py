@@ -261,6 +261,16 @@ def all_combinations(vector):
     for i in range(len(vector) + 1):
         ret = join(ret, combinations_replace_generate(vector, i))
     return ret
+def all_prime_factors(item):
+    if VY_type(item) == Number:
+        m = sympy.ntheory.factorint(int(item))
+        out = []
+        for key in sorted(m.keys()):
+            out += [key] * m[key]
+        return out
+    elif VY_type(item) is str:
+        return sentence_case(item)
+    return vectorise(all_prime_factors, item)
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -584,6 +594,8 @@ def find(haystack, needle, start=0):
         index += 1
     return -1
 def first_n(func, n=1):
+    if type(func) is not Function:
+        return iterable(func)[n:]
     ret = []
     current_index = 0
 
@@ -972,7 +984,7 @@ def nth_prime(item):
     t_item = VY_type(item)
     return {
         Number: lambda: sympy.ntheory.prime(int(item) + 1),
-        str: lambda: int(all([c.isupper() for c in item]))
+        str: lambda: Generator(substrings(item))
     }.get(t_item, lambda: vectorise(nth_prime, item))()
 def nwise_pair(lhs, rhs):
     if VY_type(rhs) != Number:
@@ -983,6 +995,20 @@ def nwise_pair(lhs, rhs):
             next(iters[i], None)
 
     return Generator(zip(*iters))
+def order(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    if types == (Number, Number):
+        if rhs == 0 or abs(rhs) == 1: return "Infinite"
+        elif lhs == 0: return 0
+        temp, remainder = lhs, 0
+        count = 0
+        while True:
+            temp, remainder = divmod(temp, rhs)
+            if remainder: break
+            count += 1
+        return count
+    else:
+        return infinite_replace(iterable(lhs, str), iterable(rhs, str), "")
 def orderless_range(lhs, rhs, lift_factor=0):
     if (VY_type(lhs), VY_type(rhs)) == (Number, Number):
         if lhs < rhs:
@@ -1046,7 +1072,7 @@ def prime_factors(item):
     t_item = VY_type(item)
     return {
         Number: lambda: sympy.ntheory.primefactors(int(item)),
-        str: lambda: int(all([c.islower() for c in item]))
+        str: lambda: item.title()
     }.get(t_item, lambda: vectorise(prime_factors, item))()
 def prepend(vector, item):
     vector = iterable(vector, range)
@@ -1210,11 +1236,18 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
+def string_empty(item):
+    return {
+        Number: lambda: item % 3,
+        str: len(item) == 0
+    }.get(VY_type(item), lambda: vectorise(string_empty, item))()
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters, name)
     return "".join(stripped)
 def substrings(item):
-    for i in range
+    for i in range(0, len(item) + 1):
+        for j in range(1, len(item) + 1):
+            yield item[i:j]
 def subtract(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
 
