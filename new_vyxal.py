@@ -302,8 +302,8 @@ def bit_or(lhs, rhs):
         return lhs[:-len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
-        (Number, str): lambda: "".join([c * lhs for c in rhs]),
-        (str, Number): lambda:  "".join([c * rhs for c in lhs]),
+        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1:],
+        (str, Number): lambda:  rhs[:lhs] + rhs[lhs + 1:],
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs))),
@@ -314,7 +314,7 @@ def bit_or(lhs, rhs):
 def bit_not(item):
     return {
         list: lambda: [bit_not(x) for x in item],
-        str: lambda: item.swapcase(),
+        str: lambda: int(any(map(lambda x: x.isupper(), item))),
         Number: lambda: ~item,
         Generator: lambda: vectorise(bit_not, item)
     }[VY_type(item)]()
@@ -442,7 +442,7 @@ def decimalify(vector):
     elif VY_type(vector) is str:
         return list(vector)
     else:
-        return divide(vector[0], vector[1])
+        return functools.reduce(lambda x, y: divide(x, y), vector)
 def deltas(vector):
         ret = []
         vector = iterable(vector)
@@ -687,8 +687,18 @@ def get_input(predefined_level=None):
             return temp
         except:
             return 0
-def graded(vector):
-    return Generator(map(lambda x: x[0], sorted(enumerate(vector), key=lambda x: x[-1])))
+def graded(item):
+    return {
+        Number: lambda: item + 2,
+        str: lambda: item.upper(),
+
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1]))))()
+def graded_down(item):
+       return {
+        Number: lambda: item - 2,
+        str: lambda: item.lower(),
+
+    }.get(VY_type(item), lambda: reverse(Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1])))))()
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
@@ -1203,6 +1213,8 @@ def split(haystack, needle, keep_needle=False):
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters, name)
     return "".join(stripped)
+def substrings(item):
+    for i in range
 def subtract(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
 
@@ -1280,6 +1292,16 @@ def truthy_indexes(vector):
         if bool(vector[i]):
             ret.append(i)
     return ret
+def two_power(item):
+    if VY_type(item) == Number: return 2 ** item
+    elif VY_type(item) is str:
+        out = ""
+        for char in item:
+            if char not in string.ascii_letters:
+                out += char
+        return out
+    else:
+        return vectorise(two_power, item)
 def uninterleave(item):
     left, right = [], []
     for i in range(len(item)):
