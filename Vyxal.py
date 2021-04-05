@@ -295,7 +295,10 @@ def bit_or(lhs, rhs):
     if types == (str, str):
         suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
         prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
-        common = (suffixes & prefixes).pop()
+        common = suffixes & prefixes
+        if len(common) == 0:
+            return lhs + rhs
+        common = common.pop()
         return lhs[:-len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
@@ -622,6 +625,11 @@ def fractionify(item):
         return fractionify(item[0] / item[1])
     else:
         return item
+def function_call(fn, vector):
+    if type(fn) is Function:
+        return fn(vector)
+    else:
+        return [exec(VY_compile(fn))]
 def gcd(lhs, rhs=None):
     if rhs:
         return {
