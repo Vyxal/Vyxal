@@ -37,6 +37,7 @@ Function = type(lambda: None)
 Python_Generator = type(i for i in(0,)) # https://chat.stackexchange.com/transcript/message/57555979#57555979
 
 NEWLINE = "\n"
+ONE_TWO_EIGHT_KB = 1024000
 
 # Execution variables
 context_level = 0
@@ -323,11 +324,9 @@ def bit_or(lhs, rhs):
     }.get(types, lambda: vectorise(bit_or, lhs, rhs))()
 def bit_not(item):
     return {
-        list: lambda: [bit_not(x) for x in item],
         str: lambda: int(any(map(lambda x: x.isupper(), item))),
-        Number: lambda: ~item,
-        Generator: lambda: vectorise(bit_not, item)
-    }[VY_type(item)]()
+        Number: lambda: ~item
+    }.get(VY_type(item), lambda: Generator(itertools.cycle(item)))()
 def bit_xor(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
     return {
@@ -1588,6 +1587,8 @@ def VY_print(item, end="\n", raw=False):
                 output[1] += VY_str(item) + end
             else:
                 print(VY_str(item), end=end)
+    if online_version and len(output) > ONE_TWO_EIGHT_KB:
+        exit()
 def VY_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
         return inclusive_range(vector, fn)
@@ -2134,7 +2135,6 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
-            print(line)
             exec(line)
             VY_print(stack)
     elif file_location == "h":

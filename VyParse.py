@@ -336,15 +336,6 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[active_key] += char
             continue
 
-        elif structure == FOUR_CHAR_LAMBDA:
-            if len(structure_data[active_key]) == 3:
-                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: structure_data[active_key] + char}))
-                structure = NO_STMT
-                structure_data = {}
-            else:
-                structure_data[active_key] += char
-            continue
-
 
         if char == "\\":
             escaped = True
