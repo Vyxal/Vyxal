@@ -430,7 +430,7 @@ def combinations_replace_generate(lhs, rhs):
         return Generator(gen())
 def const_divisibility(item, n, string_overload):
     return {
-        Number: lambda: item % n == 0,
+        Number: lambda: int(item % n == 0),
         str: lambda: int(string_overload(item))
     }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n))()
 def counts(vector):
@@ -1978,6 +1978,14 @@ else:
             compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
             compiled += tab("return stack") + NEWLINE
             compiled += "stack.append(_para_lambda(temp_stack)[-1])"
+        elif NAME == VyParse.PARA_APPLY_COLLECT:
+            compiled += "temp_stack = stack[::]" + NEWLINE
+            compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
+            compiled += "def _para_lambda(stack):" + NEWLINE
+            compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
+            compiled += tab("return stack") + NEWLINE
+            compiled += "stack.append(_para_lambda(temp_stack)[-1])" + NEWLINE
+            compiled += "rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])"
         elif NAME == VyParse.REGISTER_MODIFIER:
             compiled += "stack.append(register)" + NEWLINE
             built_in = commands.command_dict[VALUE]
@@ -2126,6 +2134,7 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
+            print(line)
             exec(line)
             VY_print(stack)
     elif file_location == "h":

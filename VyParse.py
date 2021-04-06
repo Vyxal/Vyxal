@@ -593,9 +593,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["'5*∆L", "₌+-", "₌*∆L",
-             "⟨⟩", "1 2 3 ⫙'", "'bL⨪Ï", "⌑++", "«Að⊂»V∑«",
-             '"1+', "9ɾvɾvøÇ", "1 5r∆t", "∆t"]
+    tests = ["₍+-"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

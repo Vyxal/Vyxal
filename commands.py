@@ -146,7 +146,7 @@ command_dict = {
     "₈": ("stack.append(256)", 0),
     "₉": ("stack.append(16)", 0),
     "¶": ("stack.append('\\n')", 0),
-    "⁋": ("stack.append('\\n'.join(iterable(pop(stack))))", 1),
+    "⁋": ("stack.append('\\n'.join([VY_str(x) for x in iterable(pop(stack))]))", 1),
     "§": ("stack.append(vertical_join(pop(stack)))", 1),
     "ε": ("padding, vector = pop(stack, 2); stack.append(vertical_join(vector, padding))", 2),
     "¡": ("stack.append(factorial(pop(stack)))", 1),
