@@ -45,33 +45,35 @@ LAMBDA_ARGUMENTS = "lambda_arguments"
 COMPRESSED_NUMBER_VALUE = "compressed_number_value"
 COMPRESSED_STRING_VALUE = "compressed_string_value"
 TWO_CHAR_STUFF = "two_char_data_idk"
-TWO_CHAR_LAMBDA = "two_char_lambda"
-THREE_CHAR_LAMBDA = "three_char_because_i_made_a_69_constant"
 
 ONE = "one"
 TWO = "two"
 THREE = "three"
+FOUR = "four"
 
-ONE_CHARS = "kv․∆øªÞ⫙&~ß"
-TWO_CHARS = "₌⌑"
+ONE_CHARS = "kv⁽∆ø⁺Þ¨&~ß‘"
+TWO_CHARS = "₌‡₍"
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
-SINGLE_SCC_CHAR = "ı"
-CODEPAGE_INDEX = "ª"
-ONE_CHAR_FUNCTION_REFERENCE = "․"
+SINGLE_SCC_CHAR = "‛"
+CODEPAGE_INDEX = "⁺"
+ONE_CHAR_FUNCTION_REFERENCE = "⁽"
 TWO_BYTE_MATH = "∆"
 TWO_BYTE_STRING = "ø"
 TWO_BYTE_LIST = "Þ"
-TWO_BYTE_MISC = "⫙"
+TWO_BYTE_MISC = "¨"
 STRING_DELIMITER = "`"
 REGISTER_MODIFIER = "&"
+ONE_BYTE_DICTIONARY = "‘"
 DONT_POP = "~"
 CONDITIONAL_EXECUTION = "ß"
 
 PARA_APPLY = "₌"
-TWO_CHAR_LAMBDA = "⌑"
-THREE_CHAR_LAMBDA = "'"
+PARA_APPLY_COLLECT = "₍"
+TWO_CHAR_LAMBDA = "‡"
+THREE_CHAR_LAMBDA = "≬"
+FOUR_CHAR_LAMBDA = "∂"
 
 DECIMAL = "."
 
@@ -335,6 +337,15 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[active_key] += char
             continue
 
+        elif structure == FOUR_CHAR_LAMBDA:
+            if len(structure_data[active_key]) == 3:
+                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: structure_data[active_key] + char}))
+                structure = NO_STMT
+                structure_data = {}
+            else:
+                structure_data[active_key] += char
+            continue
+
 
         if char == "\\":
             escaped = True
@@ -501,6 +512,12 @@ def Tokenise(source: str) -> [Token]:
         elif char == THREE_CHAR_LAMBDA:
             char_mode = THREE
             structure = THREE_CHAR_LAMBDA
+            active_key = LAMBDA_BODY
+            structure_data[active_key] = ""
+        
+        elif char == THREE_CHAR_LAMBDA:
+            char_mode = FOUR
+            structure = FOUR_CHAR_LAMBDA
             active_key = LAMBDA_BODY
             structure_data[active_key] = ""
 

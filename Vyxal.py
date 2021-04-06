@@ -34,14 +34,14 @@ Number = "NUMBER"
 Iterable = "ITERABLE"
 Function = type(lambda: None)
 
-def ___(): yield None
-Python_Generator = type(___())
+Python_Generator = type(i for i in(0,)) # https://chat.stackexchange.com/transcript/message/57555979#57555979
 
 NEWLINE = "\n"
 
 # Execution variables
 context_level = 0
 context_values = [0]
+global_stack = []
 input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
@@ -261,6 +261,16 @@ def all_combinations(vector):
     for i in range(len(vector) + 1):
         ret = join(ret, combinations_replace_generate(vector, i))
     return ret
+def all_prime_factors(item):
+    if VY_type(item) == Number:
+        m = sympy.ntheory.factorint(int(item))
+        out = []
+        for key in sorted(m.keys()):
+            out += [key] * m[key]
+        return out
+    elif VY_type(item) is str:
+        return sentence_case(item)
+    return vectorise(all_prime_factors, item)
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -302,8 +312,8 @@ def bit_or(lhs, rhs):
         return lhs[:-len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
-        (Number, str): lambda: "".join([c * lhs for c in rhs]),
-        (str, Number): lambda:  "".join([c * rhs for c in lhs]),
+        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1:],
+        (str, Number): lambda:  rhs[:lhs] + rhs[lhs + 1:],
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_or(*x), VY_zip(lhs, rhs))),
@@ -314,7 +324,7 @@ def bit_or(lhs, rhs):
 def bit_not(item):
     return {
         list: lambda: [bit_not(x) for x in item],
-        str: lambda: item.swapcase(),
+        str: lambda: int(any(map(lambda x: x.isupper(), item))),
         Number: lambda: ~item,
         Generator: lambda: vectorise(bit_not, item)
     }[VY_type(item)]()
@@ -386,11 +396,25 @@ def compare(lhs, rhs, mode):
         return int(boolean)
     else:
         return boolean
+def complement(item):
+    return {
+        Number: lambda: 1 - item,
+        str: lambda: item.split(",")
+    }.get(VY_type(item), lambda: vectorise(complement, item))()
 def combinations_replace_generate(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if Function not in types:
-        vector, n = (lhs, rhs) if types == (types[0], Number) else (rhs, lhs)
-        return Generator(itertools.product(iterable(vector), repeat=n))
+        ret = {
+            (Number, types[1]): Generator(itertools.product(iterable(rhs), repeat=lhs)),
+            (types[0], Number): lambda: Generator(itertools.product(iterable(lhs), repeat=rhs))
+        }.get(types, lambda: -1)()
+        if ret != -1: return ret
+        out = "" if type(lhs) is str else []
+        for item in lhs:
+            if item in rhs:
+                if type(lhs) is str: out += item
+                else: out.append(item)
+        return out
     else:
         if VY_type(lhs) is Function:
             fn, init = lhs, rhs
@@ -404,6 +428,11 @@ def combinations_replace_generate(lhs, rhs):
                 curr = fn([curr])[-1]
                 yield curr
         return Generator(gen())
+def const_divisibility(item, n, string_overload):
+    return {
+        Number: lambda: item % n == 0,
+        str: lambda: int(string_overload(item))
+    }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n))()
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -423,7 +452,7 @@ def decimalify(vector):
     elif VY_type(vector) is str:
         return list(vector)
     else:
-        return divide(vector[0], vector[1])
+        return functools.reduce(lambda x, y: divide(x, y), vector)
 def deltas(vector):
         ret = []
         vector = iterable(vector)
@@ -503,15 +532,10 @@ def exponate(lhs, rhs):
         return list(mobj.span()) if mobj else []
 
     if types == (str, Number):
+        factor = rhs
         if 0 < rhs < 1:
             factor = int(1 / rhs)
-            return lhs[::factor]
-        else:
-            ret = lhs
-            for _ in range(rhs):
-                ret = multiply(ret, lhs)
-            return ret
-
+        return lhs[::factor]
     return {
         (Number, Number): lambda: lhs ** rhs,
         (types[0], list): lambda: [exponate(lhs, item) for item in rhs],
@@ -556,8 +580,12 @@ def fibonacci():
         memory.append(temp)
         yield temp
 def find(haystack, needle, start=0):
+    if type(needle) is Function:
+        return indexes_where(haystack, needle)
     # It looks like something from 2001
     index = 0
+    haystack = iterable(haystack)
+    needle = iterable(haystack, type(haystack))
     if type(start) is int or (type(start) is str and start.isnumeric()):
         index = start
     while index < len(haystack):
@@ -566,6 +594,8 @@ def find(haystack, needle, start=0):
         index += 1
     return -1
 def first_n(func, n=1):
+    if type(func) is not Function:
+        return iterable(func)[n:]
     ret = []
     current_index = 0
 
@@ -669,8 +699,18 @@ def get_input(predefined_level=None):
             return temp
         except:
             return 0
-def graded(vector):
-    return Generator(map(lambda x: x[0], sorted(enumerate(vector), key=lambda x: x[-1])))
+def graded(item):
+    return {
+        Number: lambda: item + 2,
+        str: lambda: item.upper(),
+
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1]))))()
+def graded_down(item):
+       return {
+        Number: lambda: item - 2,
+        str: lambda: item.lower(),
+
+    }.get(VY_type(item), lambda: reverse(Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1])))))()
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
@@ -773,7 +813,9 @@ def interleave(lhs, rhs):
     if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
 def is_prime(n):
-    if type(n) is str: return int(list(set(n)) == list(n))
+    if type(n) is str:
+        if n.upper() == n.lower(): return -1
+        else: return n.upper() == n
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
     if n % 2 == 0 and n > 2:
         return 0
@@ -787,29 +829,30 @@ def iterable(item, t=list):
         return t(item)
     else:
         return item
-def iterable_shift(vector, direction):
+def iterable_shift(vector, direction, times=1):
     vector = iterable(vector)
     t_vector = type(vector)
-    if direction == ShiftDirections.LEFT:
-        if t_vector is list:
-            # [1, 2, 3] -> [2, 3, 1]
-            vector = vector[::-1]
-            temp = pop(vector)
-            vector = vector[::-1]
-            vector.append(temp)
-            return vector
-        else:
-            # abc -> bca
-            return vector[1:] + vector[0]
-    elif direction == ShiftDirections.RIGHT:
-        if t_vector is list:
-            # [1, 2, 3] -> [3, 1, 2]
-            temp = pop(vector)
-            vector.insert(0, temp)
-            return vector
-        else:
-            # abc -> cab
-            return vector[-1] + vector[:-1]
+    for _ in range(times):
+        if direction == ShiftDirections.LEFT:
+            if t_vector is list:
+                # [1, 2, 3] -> [2, 3, 1]
+                vector = vector[::-1]
+                temp = pop(vector)
+                vector = vector[::-1]
+                vector.append(temp)
+                return vector
+            else:
+                # abc -> bca
+                return vector[1:] + vector[0]
+        elif direction == ShiftDirections.RIGHT:
+            if t_vector is list:
+                # [1, 2, 3] -> [3, 1, 2]
+                temp = pop(vector)
+                vector.insert(0, temp)
+                return vector
+            else:
+                # abc -> cab
+                return vector[-1] + vector[:-1]
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
@@ -933,19 +976,40 @@ def ncr(lhs, rhs):
         (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
         (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
+def negate(item):
+    return {
+        Number: lambda: -item,
+        str: lambda: item.swapcase()
+    }.get(VY_type(item), lambda: vectorise(negate, item))()
 def nth_prime(item):
     t_item = VY_type(item)
     return {
         Number: lambda: sympy.ntheory.prime(int(item) + 1),
-        str: lambda: int(all([c.isupper() for c in item]))
+        str: lambda: Generator(substrings(item))
     }.get(t_item, lambda: vectorise(nth_prime, item))()
 def nwise_pair(lhs, rhs):
-    iters = itertools.tee(lhs, rhs)
+    if VY_type(rhs) != Number:
+        return len(iterable(lhs)) == len(rhs)
+    iters = itertools.tee(iterable(lhs), rhs)
     for i in range(len(iters)):
         for j in range(i):
             next(iters[i], None)
 
     return Generator(zip(*iters))
+def order(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    if types == (Number, Number):
+        if rhs == 0 or abs(rhs) == 1: return "Infinite"
+        elif lhs == 0: return 0
+        temp, remainder = lhs, 0
+        count = 0
+        while True:
+            temp, remainder = divmod(temp, rhs)
+            if remainder: break
+            count += 1
+        return count
+    else:
+        return infinite_replace(iterable(lhs, str), iterable(rhs, str), "")
 def orderless_range(lhs, rhs, lift_factor=0):
     if (VY_type(lhs), VY_type(rhs)) == (Number, Number):
         if lhs < rhs:
@@ -958,6 +1022,11 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.match(rhs)
         return int(bool(mobj))
+def overloaded_iterable_shift(lhs, rhs, direction):
+    if type(rhs) is not int:
+        return [lhs, iterable_shift(rhs, direction)]
+    else:
+        return [iterable_shift(lhs, direction, rhs)]  
 def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
@@ -1009,7 +1078,7 @@ def prime_factors(item):
     t_item = VY_type(item)
     return {
         Number: lambda: sympy.ntheory.primefactors(int(item)),
-        str: lambda: int(all([c.islower() for c in item]))
+        str: lambda: item.title()
     }.get(t_item, lambda: vectorise(prime_factors, item))()
 def prepend(vector, item):
     vector = iterable(vector, range)
@@ -1173,17 +1242,31 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
+def split_newlines_or_is_integer(item):
+    return {
+        Number: lambda: int(isinstance(type(item), int)),
+        str: lambda: item.split("\n")
+    }.get(VY_type(item), lambda: vectorise(split_newlines_or_is_integer, item))()
+def string_empty(item):
+    return {
+        Number: lambda: item % 3,
+        str: len(item) == 0
+    }.get(VY_type(item), lambda: vectorise(string_empty, item))()
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters, name)
     return "".join(stripped)
+def substrings(item):
+    for i in range(0, len(item) + 1):
+        for j in range(1, len(item) + 1):
+            yield item[i:j]
 def subtract(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
 
     return {
         (Number, Number): lambda: lhs - rhs,
         (str, str): lambda: lhs.replace(rhs, ""),
-        (str, Number): lambda: lhs.replace(str(rhs), ""),
-        (Number, str): lambda: str(lhs).replace(rhs, ""),
+        (str, Number): lambda: lhs + ("-" * rhs),
+        (Number, str): lambda: ("-" * lhs) + rhs,
         (list, types[1]): lambda: [subtract(item, rhs) for item in lhs],
         (types[0], list): lambda: [subtract(lhs, item) for item in rhs],
         (list, list): lambda: list(map(lambda x: subtract(*x), VY_zip(lhs, rhs))),
@@ -1253,6 +1336,16 @@ def truthy_indexes(vector):
         if bool(vector[i]):
             ret.append(i)
     return ret
+def two_power(item):
+    if VY_type(item) == Number: return 2 ** item
+    elif VY_type(item) is str:
+        out = ""
+        for char in item:
+            if char not in string.ascii_letters:
+                out += char
+        return out
+    else:
+        return vectorise(two_power, item)
 def uninterleave(item):
     left, right = [], []
     for i in range(len(item)):
@@ -1285,6 +1378,9 @@ def vectorise(fn, left, right=None):
                 return [x[0] for x in ret]
             return ret
 def vertical_join(vector, padding=" "):
+    if VY_type(padding) == VY_type(vector) == Number:
+        return abs(vector - padding)
+
     lengths = list(map(len, deref(vector)))
     vector = [padding * (max(lengths) - len(x)) + x for x in vector]
 
@@ -1296,6 +1392,12 @@ def vertical_join(vector, padding=" "):
 
     return out
 def wrap(vector, width):
+    types = VY_type(vector), VY_type(width)
+    if types == (Function, types[1]):
+        return map_every_n(width, vector, 2)
+    elif types == (types[0], Function):
+        return map_every_n(vector, width, 2)
+
     # Because textwrap.wrap doesn't consistently play nice with spaces
     ret = []
     temp = []
@@ -1325,7 +1427,16 @@ def VY_bin(item):
         Number: lambda: bin(int(item))[2:],
         str: lambda: [bin(ord(let))[2:] for let in item]
     }.get(t_item, lambda: vectorise(VY_bin, item))()
+def VY_divmod(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: [lhs // rhs, lhs % rhs],
+        (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
+        (str, str): lambda: trim(lhs, rhs)
+    }[types]()
 def VY_eval(item):
+    if VY_type(item) is Number: return 2 ** item
+    elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
     if online_version or safe_mode:
         import regex
         pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|(-?\d+(\.\d+)?$)|"[^"]*"|'[^']*'""")
@@ -1339,8 +1450,28 @@ def VY_eval(item):
             return eval(item)
         except:
             return item
+def VY_exec(item):
+    if type(item) is str:
+        exec(VY_compile(item))
+    elif type(item) == Number:
+        return divide(1, item)
+    else:
+        return vectorise(VY_exec, item)
 def VY_filter(fn, vector):
     t_vector = VY_type(vector)
+    t_function = VY_type(function)
+    if t_function != Function:
+        # remove elements from a that are in b
+        lhs, rhs = iterable(fn, str), iterable(vector, str)
+        out = "" if type(lhs) is str else []
+        for item in lhs:
+            if item not in rhs:
+                if type(out) is str:
+                    out += str(item)
+                else:
+                    out.append(item)
+        return out
+
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     if t_vector is Generator:
@@ -1368,6 +1499,12 @@ def VY_int(item, base=10):
 def VY_map(fn, vector):
     ret = []
     t_vector = VY_type(vector)
+    t_function = VY_type(fn)
+    if t_function is not Function:
+        def gen():
+            for item in vector:
+                yield [fn, item]
+        return Generator(gen())
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     if t_vector is Generator:
@@ -1452,6 +1589,8 @@ def VY_print(item, end="\n", raw=False):
             else:
                 print(VY_str(item), end=end)
 def VY_sorted(vector, fn=None):
+    if fn is not None and type(fn) is not Function:
+        return inclusive_range(vector, fn)
     t_vector = type(vector)
     vector = iterable(vector, str)
     if t_vector is Generator:
@@ -1474,6 +1613,8 @@ def VY_range(item, start=0, lift_factor=0):
     return item
 def VY_reduce(fn, vector):
     t_type = VY_type(vector)
+    if type(fn) != Function:
+        return [fn, vectorise(reverse, vector)]
     if t_type is Generator: return Generator(vector)._reduce(fn)
     if t_type is Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
@@ -1484,7 +1625,7 @@ def VY_reduce(fn, vector):
     for item in vector:
         working_value = fn([working_value, item], arity=2)[-1]
 
-    return working_value
+    return [working_value]
 def VY_repr(item):
     t_item = VY_type(item)
     return {
@@ -1541,6 +1682,8 @@ def VY_zip(lhs, rhs):
 
         ind += 1
 def VY_zipmap(fn, vector):
+    if type(fn) is not Function:
+        return [fn, VY_zip(vector, vector)]
     t_vector = VY_type(vector)
     if t_vector is Generator:
         orig = copy.deepcopy(vector)
@@ -1553,7 +1696,7 @@ def VY_zipmap(fn, vector):
     for item in vector:
         ret.append([item, fn([item])[-1]])
 
-    return ret
+    return [ret]
 
 constants = {
     "A": "string.ascii_uppercase",
