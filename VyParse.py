@@ -336,7 +336,6 @@ def Tokenise(source: str) -> [Token]:
                 structure_data[active_key] += char
             continue
 
-
         if char == "\\":
             escaped = True
             continue
@@ -504,12 +503,6 @@ def Tokenise(source: str) -> [Token]:
             structure = THREE_CHAR_LAMBDA
             active_key = LAMBDA_BODY
             structure_data[active_key] = ""
-        
-        elif char == THREE_CHAR_LAMBDA:
-            char_mode = FOUR
-            structure = FOUR_CHAR_LAMBDA
-            active_key = LAMBDA_BODY
-            structure_data[active_key] = ""
 
         elif char in ONE_CHARS:
             char_mode = ONE
@@ -583,7 +576,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["₍+-"]
+    tests = ["∂+-"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

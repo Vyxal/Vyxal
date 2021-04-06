@@ -251,7 +251,7 @@ math_command_dict = {
     "d": ("rhs, lhs = pop(stack, 2); stack.append(distance_between(lhs, rhs))", 2),
     "D": ("arg = pop(stack); stack.append(vectorise(math.degrees, arg))", 1),
     "R": ("arg = pop(stack); stack.append(vectorise(math.radians, arg))", 1),
-    "ĸ": ("arg = pop(stack); stack.append(compare(VY_abs(arg), 1, Comparitors.LESS_THAN_EQUALS))", 1)
+    "≤": ("arg = pop(stack); stack.append(compare(VY_abs(arg), 1, Comparitors.LESS_THAN_EQUALS))", 1)
 }
 
 string_command_dict = {
