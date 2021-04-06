@@ -484,6 +484,7 @@ def distribute(vector, value):
 def divide(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     def handle_numbers(lhs, rhs):
+        if rhs == 0: return 0
         normal, int_div = lhs / rhs, lhs // rhs
         return [normal, int_div][normal == int_div]
     return {

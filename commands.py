@@ -263,7 +263,7 @@ string_command_dict = {
     "U": ("stack.append(str(pop(stack)).upper())", 1),
     "t": ("stack.append(str(pop(stack)).title())", 1),
     "$": ("stack.append(str(pop(stack)).swapcase())", 1),
-    "Ç": ("stack.append(centre(iterable(pop(stack))))", 1),
+    "Ċ": ("stack.append(centre(iterable(pop(stack))))", 1),
     "m": ("stack.append(palindromise(iterable(pop(stack))))", 1),
     "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), 
     "d": ("stack.append(run_length_decode(pop(stack)))", 1)
