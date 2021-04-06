@@ -17,7 +17,11 @@ def index():
         manager = multiprocessing.Manager()
         ret = manager.dict()
 
-        if "b" in flags:
+        if "5" in flags:
+            time = 5
+        elif "T" in flags:
+            time = 10
+        elif "b" in flags:
             time = 15
         elif "B" in flags:
             time = 30
