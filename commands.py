@@ -1,19 +1,19 @@
 codepage  = "λƛ¬∧⟑∨⟇÷«\n»°•‘†€"
-codepage += "½∆ø↔Ø⌐æʀʁɾɽÞƈ∞¨ "
+codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"
-codepage += "RSTUVWXYZ[\\]`abc"
+codepage += "RSTUVWXYZ[\\]`^_abc"
 codepage += "defghijklmnopqrs"
 codepage += "tuvwxyz{|}ß↑↓∴∵›"
 codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
 codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
-codepage += "‛₀₁₂₃₄₅₆₇₈₉¶⁋§ε¡"
+codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
 codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 codepage += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-codepage += "ǒǓǔ⁽‡≬×⁺¢↵⅛¼¾Π„‟"
+codepage += "ǒǓǔ⁽‡≬×⁺↵⅛¼¾Π„‟"
 
 command_dict = {
     "¬": ("stack.append(int(not pop(stack)))", 1),
@@ -27,7 +27,6 @@ command_dict = {
     "€": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs))", 2),
     "½": ("stack.append(divide(pop(stack), 2))", 1),
     "↔": ("rhs, lhs = pop(stack, 2); stack.append(combinations_replace_generate(lhs, rhs))", 2),
-    "Ø": ("stack.append(Generator(lambda x: (2 * (x + 1)) + 1))", 0),
     "⌐": ("stack.append(complement(pop(stack)))", 1),
     "æ": ("stack.append(is_prime(pop(stack)))", 1),
     "ʀ": ("stack.append(orderless_range(0, int(add(pop(stack), 1))))", 1),
@@ -144,7 +143,6 @@ command_dict = {
     "₆": ("stack.append(64)", 0),
     "₇": ("stack.append(128)", 0),
     "₈": ("stack.append(256)", 0),
-    "₉": ("stack.append(16)", 0),
     "¶": ("stack.append('\\n')", 0),
     "⁋": ("stack.append('\\n'.join([VY_str(x) for x in iterable(pop(stack))]))", 1),
     "§": ("stack.append(vertical_join(pop(stack)))", 1),
