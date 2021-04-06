@@ -420,7 +420,7 @@ def Tokenise(source: str) -> [Token]:
                     structure = LAMBDA_STMT
                 
                 elif structure == LAMBDA_SORT:
-                    additional_token = Token(NO_STMT, "ₛ")
+                    additional_token = Token(NO_STMT, "ṡ")
                     structure = LAMBDA_STMT
 
                 elif structure == LIST_STMT:
@@ -541,7 +541,7 @@ def Tokenise(source: str) -> [Token]:
             structure = LAMBDA_STMT
         
         elif structure == LAMBDA_SORT:
-            additional_token = Token(NO_STMT, "ₛ")
+            additional_token = Token(NO_STMT, "ṡ")
             structure = LAMBDA_STMT
 
         elif structure == LIST_STMT:
