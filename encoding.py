@@ -17,7 +17,7 @@ def utf8_to_vyxal(code):
 
 
 compression  = "λƛ¬∧⟑∨⟇÷«\n»°•‘†€"
-compression += "½∆ø↔Ø⌐æʀʁɾɽÞƈ∞¨"
+compression += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨"
 compression += "ß↑↓∴∵›"
 compression += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
 compression += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
@@ -26,7 +26,7 @@ compression += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 compression += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 compression += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 compression += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-compression += "ǒǓǔ⁽‡≬×⁺¢↵⅛¼¾Π„‟"
+compression += "ǒǓǔ⁽‡≬×⁺↵⅛¼¾Π„‟"
 
 codepage_number_compress = codepage.replace("»", "")
 codepage_string_compress = codepage.replace("«", "")
