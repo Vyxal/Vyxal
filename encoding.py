@@ -26,7 +26,7 @@ compression += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 compression += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 compression += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 compression += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-compression += "ǒǓǔ⁽‡≬∂⁺¢↵⅛¼¾Π„‟"
+compression += "ǒǓǔ⁽‡≬×⁺¢↵⅛¼¾Π„‟"
 
 codepage_number_compress = codepage.replace("»", "")
 codepage_string_compress = codepage.replace("«", "")

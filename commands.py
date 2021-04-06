@@ -13,7 +13,7 @@ codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 codepage += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-codepage += "ǒǓǔ⁽‡≬∂⁺¢↵⅛¼¾Π„‟"
+codepage += "ǒǓǔ⁽‡≬×⁺¢↵⅛¼¾Π„‟"
 
 command_dict = {
     "¬": ("stack.append(int(not pop(stack)))", 1),
