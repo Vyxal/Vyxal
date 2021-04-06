@@ -34,14 +34,14 @@ Number = "NUMBER"
 Iterable = "ITERABLE"
 Function = type(lambda: None)
 
-def ___(): yield None
-Python_Generator = type(___())
+Python_Generator = type(i for i in(0,)) # https://chat.stackexchange.com/transcript/message/57555979#57555979
 
 NEWLINE = "\n"
 
 # Execution variables
 context_level = 0
 context_values = [0]
+global_stack = []
 input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
@@ -428,10 +428,10 @@ def combinations_replace_generate(lhs, rhs):
                 curr = fn([curr])[-1]
                 yield curr
         return Generator(gen())
-def const_divisibility(item, n):
+def const_divisibility(item, n, string_overload):
     return {
         Number: lambda: item % n == 0,
-        str: lambda: len(item) % n == 0
+        str: lambda: int(string_overload(item))
     }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n))()
 def counts(vector):
     ret = []
@@ -829,29 +829,30 @@ def iterable(item, t=list):
         return t(item)
     else:
         return item
-def iterable_shift(vector, direction):
+def iterable_shift(vector, direction, times=1):
     vector = iterable(vector)
     t_vector = type(vector)
-    if direction == ShiftDirections.LEFT:
-        if t_vector is list:
-            # [1, 2, 3] -> [2, 3, 1]
-            vector = vector[::-1]
-            temp = pop(vector)
-            vector = vector[::-1]
-            vector.append(temp)
-            return vector
-        else:
-            # abc -> bca
-            return vector[1:] + vector[0]
-    elif direction == ShiftDirections.RIGHT:
-        if t_vector is list:
-            # [1, 2, 3] -> [3, 1, 2]
-            temp = pop(vector)
-            vector.insert(0, temp)
-            return vector
-        else:
-            # abc -> cab
-            return vector[-1] + vector[:-1]
+    for _ in range(times):
+        if direction == ShiftDirections.LEFT:
+            if t_vector is list:
+                # [1, 2, 3] -> [2, 3, 1]
+                vector = vector[::-1]
+                temp = pop(vector)
+                vector = vector[::-1]
+                vector.append(temp)
+                return vector
+            else:
+                # abc -> bca
+                return vector[1:] + vector[0]
+        elif direction == ShiftDirections.RIGHT:
+            if t_vector is list:
+                # [1, 2, 3] -> [3, 1, 2]
+                temp = pop(vector)
+                vector.insert(0, temp)
+                return vector
+            else:
+                # abc -> cab
+                return vector[-1] + vector[:-1]
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
@@ -1021,6 +1022,11 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.match(rhs)
         return int(bool(mobj))
+def overloaded_iterable_shift(lhs, rhs, direction):
+    if type(rhs) is not int:
+        return [lhs, iterable_shift(rhs, direction)]
+    else:
+        return [iterable_shift(lhs, direction, rhs)]  
 def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
@@ -1236,6 +1242,11 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
+def split_newlines_or_is_integer(item):
+    return {
+        Number: lambda: int(isinstance(type(item), int)),
+        str: lambda: item.split("\n")
+    }.get(VY_type(item), lambda: vectorise(split_newlines_or_is_integer, item))()
 def string_empty(item):
     return {
         Number: lambda: item % 3,

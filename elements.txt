@@ -272,8 +272,8 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ₃ (a: number)                        = a % 3 == 0
   (a: string)                        = len(a) == 1
 ₄                                    = 26
-₅                                    = a % 5 == 0
-  (a: string)                        = len(a) == 2
+₅ (a: number)                        = a % 5 == 0
+  (a: string)                        = a, len(a)
 ₆                                    = 64
 ₇                                    = 128
 ₈                                    = 256
