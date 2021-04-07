@@ -597,7 +597,7 @@ def first_n(func, n=None):
     if type(func) is not Function:
         if n:
             return iterable(func)[n:]
-        return "".join([VY_str(n) for n in pop(stack)])
+        return "".join([VY_str(n) for n in iterable(func)])
     ret = []
     current_index = 0
     n = n or 1
