@@ -16,7 +16,7 @@ def utf8_to_vyxal(code):
     return processed_code
 
 
-compression  = "λƛ¬∧⟑∨⟇÷«\n»°•‘†€"
+compression  = "λƛ¬∧⟑∨⟇÷«»°•‘†€"
 compression += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨"
 compression += "ß↑↓∴∵›"
 compression += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
