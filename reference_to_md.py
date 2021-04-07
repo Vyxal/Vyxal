@@ -2,7 +2,6 @@ md = open("docs/elements.md", "w+", encoding="utf8")
 
 md.write(
     "# Functions and constants\n"
-    "<sub>See legend at bottom.</sub>\n"
     "cmd | inputs | out/effect\n"
     "---|---|---\n"
 )
@@ -25,8 +24,4 @@ with open("docs/elements.txt", "r", encoding="utf8") as txt:
             f"| {line[effect_ind+1:-1]} |\n"
         )
 
-md.write(
-    "- `a`, `b`, `c` are items that aren't functions (Numbers, Strings and Lists/Generators)\n"
-    "- `f`, `g`    are items that are functions (lambdas/function references)"
-)
 md.close()
