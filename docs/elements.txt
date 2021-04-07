@@ -277,7 +277,6 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ₆                                    = 64
 ₇                                    = 128
 ₈                                    = 256
-₉                                    = 16
 ¶                                    = "\n" # newline
 ⁋ (a: any)                           = "\n".join(a) # join on newlines
 § (a: any)                           = vertical_join(a) # vertical join
