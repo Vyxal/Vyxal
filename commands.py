@@ -155,7 +155,7 @@ command_dict = {
     "Ḃ": ("stack += bifuricate(pop(stack))", 1),
     "Ċ": ("stack.append(counts(pop(stack)))", 1),
     "Ḋ": ("rhs, lhs = pop(stack, 2); stack.append(compare(modulo(lhs, rhs), 0, Comparitors.EQUALS))", 2),
-    "Ė": ("code = VY_exec(pop(stack));", 1),
+    "Ė": ("code = VY_exec(pop(stack)); stack.append(code)", 1),
     "Ḟ": ("""top = pop(stack)
 if VY_type(top) is Number:
     limit = int(top); vector = pop(stack)
