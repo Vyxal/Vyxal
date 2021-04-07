@@ -114,7 +114,7 @@ These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in `9`.
 
 ### Commands
 
-Vyxal has so many commands that it is impractical to list them all here. [Here is the reference page](https://github.com/Lyxal/Vyxal/blob/master/docs/reference.txt)
+Vyxal has so many commands that it is impractical to list them all here. [Here is the reference page](https://github.com/Lyxal/Vyxal/blob/master/docs/elements.txt) ([markdown](https://github.com/Lyxal/Vyxal/blob/master/docs/elements.md)).
 
 ## Examples
 
