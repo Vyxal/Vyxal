@@ -1,5 +1,4 @@
 # Functions and constants
-<sub>See legend at bottom.</sub>
 cmd | inputs | out/effect
 ---|---|---
 | ƛ |   |  * lambda map: ƛ...; |
@@ -535,5 +534,3 @@ cmd | inputs | out/effect
 | Þ× |   |  all_combinations(a) # This is all lengths |
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
-- `a`, `b`, `c` are items that aren't functions (Numbers, Strings and Lists/Generators)
-- `f`, `g`    are items that are functions (lambdas/function references)
