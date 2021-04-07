@@ -85,7 +85,7 @@ command_dict = {
     "f": ("stack.append(flatten(iterable(pop(stack))))", 1),
     "g": ("stack.append(VY_min(iterable(pop(stack))))", 1),
     "h": ("stack.append(iterable(pop(stack))[0])", 1),
-    "i": ("rhs, lhs = pop(stack, 2)\nif type(rhs) is list: stack.append(iterable(lhs)[slice(*rhs)])\nelse: stack.append(iterable(lhs)[rhs])", 2),
+    "i": ("rhs, lhs = pop(stack, 2)\nstack.append(index(lhs, rhs))", 2),
     "j": ("rhs, lhs = pop(stack, 2); stack.append(str(rhs).join([str(x) for x in iterable(lhs)]))", 2),
     "l": ("rhs, lhs = pop(stack, 2); stack.append(nwise_pair(lhs, rhs))", 2),
     "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),

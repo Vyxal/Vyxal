@@ -754,6 +754,13 @@ def inclusive_range(lhs, rhs):
         return Generator(range(int(lhs), int(rhs) + 1))
     else:
         return Generator(range(int(lhs), int(rhs) - 1, -1))
+def index(vector, index):
+    if VY_type(index) == Number:
+        return vector[int(index) % len(vector)]
+    elif VY_type(index) in (list, Generator):
+        return vector[slice(*index)]
+    else:
+        return [vector, index, join(vector, index)]
 def indexed_into(vector, indexes):
     ret = []
     for ind in indexes:
