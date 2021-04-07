@@ -86,7 +86,7 @@ OPENING = {
     FUNCTION_STMT: "@",
     LAMBDA_STMT: "λ",
     LAMBDA_MAP: "ƛ",
-    LAMBDA_FILTER: '"',
+    LAMBDA_FILTER: "'",
     LAMBDA_SORT: "µ",
     LIST_STMT: "⟨",
     FUNCTION_REFERENCE: "°",
