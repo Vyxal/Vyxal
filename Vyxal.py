@@ -1145,9 +1145,9 @@ def reverse(vector):
     if type(vector) in [float, int]:
         s_vector = str(vector)
         if vector < 0:
-            return -eval(s_vector[1:][::-1])
+            return -type(vector)(s_vector[1:][::-1])
         else:
-            return eval(s_vector[::-1])
+            return type(vector)(s_vector[::-1])
     return vector[::-1]
 def rshift(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
