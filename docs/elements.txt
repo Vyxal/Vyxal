@@ -243,6 +243,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ŀ (a: any, b: any, c: number)        = a.find(b, start=c)
 ṁ (a: any)                           = arithmetic_mean(a)  # average
 ṅ (a: function)                      = first integer where a(x) is truthy
+  (otherwise)                        = "".join(a)
 ȯ (a: function, b: number)           = first n integers where a(x) is truthy
   (a: any, b: number)                = a[b:]
 ṗ (a: any)                           = powerset(a)

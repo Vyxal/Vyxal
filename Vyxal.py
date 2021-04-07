@@ -593,12 +593,14 @@ def find(haystack, needle, start=0):
             return index
         index += 1
     return -1
-def first_n(func, n=1):
+def first_n(func, n=None):
     if type(func) is not Function:
-        return iterable(func)[n:]
+        if n:
+            return iterable(func)[n:]
+        return "".join([VY_str(n) for n in pop(stack)])
     ret = []
     current_index = 0
-
+    n = n or 1
     while len(ret) < n:
         result = fn([current_index])[-1]
         if result: ret.append(current_index)
@@ -2211,7 +2213,7 @@ if __name__ == "__main__":
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
             elif flags and "S" in flags:
-                print(" ".join([str(n) for n in pop(stack)]))
+                print(" ".join([VY_str(n) for n in pop(stack)]))
             elif flags and "C" in flags:
                 print("\n".join(centre(pop(stack))))
             elif flags and "l" in flags:
