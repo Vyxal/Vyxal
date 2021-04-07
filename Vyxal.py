@@ -1459,7 +1459,7 @@ def VY_exec(item):
         return vectorise(VY_exec, item)
 def VY_filter(fn, vector):
     t_vector = VY_type(vector)
-    t_function = VY_type(function)
+    t_function = VY_type(fn)
     if t_function != Function:
         # remove elements from a that are in b
         lhs, rhs = iterable(fn, str), iterable(vector, str)
