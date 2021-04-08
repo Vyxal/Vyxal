@@ -528,7 +528,7 @@ def exponate(lhs, rhs):
 
     if types == (str, str):
         pobj = regex.compile(lhs)
-        mobj = pobj.match(rhs)
+        mobj = pobj.search(rhs)
         return list(mobj.span()) if mobj else []
 
     if types == (str, Number):
@@ -868,6 +868,8 @@ def join(lhs, rhs):
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
         (types[0], list): lambda: [lhs] + rhs,
         (list, types[1]): lambda: lhs + [rhs],
+        (types[0], Generator): lambda: [lhs] + rhs._dereference(),
+        (Generator, types[1]): lambda: lhs._dereference() + [rhs],
         (list, list): lambda: lhs + rhs,
         (list, Generator): lambda: lhs + rhs._dereference(),
         (Generator, list): lambda: lhs._dereference() + rhs,
@@ -981,7 +983,7 @@ def ncr(lhs, rhs):
         (Number, Number): lambda: math.gcd(int(lhs), int(rhs)),
         (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
         (Number, str): lambda: [random.choice(rhs) for c in range(lhs)],
-        (str, str): int(set(lhs) == set(rhs)),
+        (str, str): lambda: int(set(lhs) == set(rhs)),
         (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
         (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
@@ -1488,7 +1490,7 @@ def VY_filter(fn, vector):
     t_function = VY_type(fn)
     if t_function != Function:
         # remove elements from a that are in b
-        lhs, rhs = iterable(fn, str), iterable(vector, str)
+        rhs, lhs = iterable(fn, str), iterable(vector, str)
         out = "" if type(lhs) is str else []
         for item in lhs:
             if item not in rhs:
@@ -1528,8 +1530,8 @@ def VY_map(fn, vector):
     t_function = VY_type(fn)
     if t_function is not Function:
         def gen():
-            for item in vector:
-                yield [fn, item]
+            for item in iterable(fn):
+                yield [vector, item]
         return Generator(gen())
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
@@ -1642,7 +1644,7 @@ def VY_range(item, start=0, lift_factor=0):
 def VY_reduce(fn, vector):
     t_type = VY_type(vector)
     if type(fn) != Function:
-        return [fn, vectorise(reverse, vector)]
+        return [vector, vectorise(reverse, fn)]
     if t_type is Generator: return Generator(vector)._reduce(fn)
     if t_type is Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
