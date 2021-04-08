@@ -173,7 +173,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input())", 0),
     "Ṗ": ("stack.append(Generator(permutations(iterable(pop(stack)))))", 1),
     "Ṙ": ("stack.append(reverse(pop(stack)))", 1),
-    "Ṡ": ("stack = [summate(stack)]", 0),
+    "Ṡ": ("stack.append(summate(stack))", 0),
     "Ṫ": ("stack.append(iterable(pop(stack), str)[:-1])", 1),
     "Ẇ": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
     "Ẋ": ("rhs, lhs = pop(stack, 2); stack.append(cartesian_product(lhs, rhs))", 2),
