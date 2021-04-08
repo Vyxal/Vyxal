@@ -30,7 +30,6 @@ cmd | inputs | out/effect
 | ↔ | (a: any, b: number)                 |  ations_with_replacement(a, length=b) |
 |  | (a: any, b: non-number)             |  remove elements in a that are not in b |
 |  | (a: function, b: any)               |  apply a on b until the result doesn't change. Collects intermittent values |
-| Ø |   |  infinite list of odd numbers |
 | ⌐ | (a: number)                         |  1 - a |
 |  | (a: string)                         |  a.split(",") |
 |  | (otherwise)                         |  vectorised |
@@ -56,6 +55,7 @@ cmd | inputs | out/effect
 | \<space> |   |  * NOP |
 | ! |   |  length(stack) |
 | " | (a: any, b: any)                    |  [a, b] # pair |
+| # |   |  * comment |
 | $ | (a: any, b: any)                    |  b, a |
 | % | (a: number, b: number)              |  a % b # modulo, modulus |
 |  | (a: number, b: string)              |  (b split into a equal pieces)[-1] |
@@ -169,7 +169,7 @@ cmd | inputs | out/effect
 | e | (a: number, b: number)              |  a ** b # exponent, exponentiation |
 |  | (a: number, b: string)              |  every ath letter of b |
 |  | (a: string, b: number)              |  every bth letter of a |
-|  | (a: string, b: string)              |  regex.match(pattern=a, string=b).span() |
+|  | (a: string, b: string)              |  regex.search(pattern=a, string=b).span() |
 |  | (otherwise)                         |  vectorised |
 | f | (a: any)                            |  flattened(a) # flatten, deep flatten |
 | g | (a: any)                            |  min(a) # monadic minimum, minimum iterable |
@@ -214,7 +214,7 @@ cmd | inputs | out/effect
 |  | (a: string)                         |  a + "-" |
 |  | (otherwise)                         |  vectorised |
 | ∷ | (a: number)                         |  a % 2 # parity, bit |
-|  | (a: string)                         |  [a / 2][-1] |
+|  | (a: string)                         |  last half of a |
 |  | (otherwise)                         |  vectorised |
 | ¤ |   |  "" # empty string |
 | ð |   |  " " # space string |
@@ -226,7 +226,7 @@ cmd | inputs | out/effect
 |  | (a: number, b: string)              |  a from base 10 to custom base b |
 |  | (a: number, b: list)                |  a from base 10 to custom base b |
 | ȧ | (a: number)                         |  abs(a) |
-|  | (a: string)                         |  lowercase(a) |
+|  | (a: string)                         |  remove whitespace from a |
 |  | (otherwise)                         |  vectorised |
 | ḃ | (a: any)                            |  bool(a) |
 | ċ | (a: any)                            |  a != 1 # falsey |
@@ -243,7 +243,7 @@ cmd | inputs | out/effect
 | ḣ | (a: any)                            |  a[0], a[1:] # head extract |
 | ḭ | (a: number, b: number)              |  a // b  # integer divison |
 | ŀ | (a: any, b: any, c: number)         |  a.find(b, start=c) |
-| ṁ | (a: any)                            |  arithmetic_mean(a)  # average |
+| ṁ | (a: any)                            |  arithmetic_mean(a)  # average -> sum(a) / length(a) |
 | ṅ | (a: function)                       |  first integer where a(x) is truthy |
 |  | (otherwise)                         |  "".join(a) |
 | ȯ | (a: function, b: number)            |  first n integers where a(x) is truthy |
@@ -330,7 +330,6 @@ cmd | inputs | out/effect
 | ∇ | (a: any, b: any, c: any)            |  c, a, b |
 | ⌈ | (a: number)                         |  ceiling(a) |
 | ⌊ | (a: number)                         |  floor(a) |
-| ⁾ | (a: number)                         |  10 ** a |
 | ¯ | (a: any)                            |  deltas(a) |
 | ± | (a: number)                         |  sign_of(a) # negative = -1, 0 = 0, positive = 1 |
 |  | (a: string)                         |  a |
@@ -359,8 +358,8 @@ cmd | inputs | out/effect
 |  | (a: string, b: string)              |  a and b joined on longest common prefix and suffix # `abc``cabc`⋎ -> `abcabc` |
 |  | (otherwise)                         |  vectorised |
 | ꘍ | (a: number, b: number)              |  a xor b (bitwise) |
-|  | (a: string, b: number)              |  every bth character of a |
-|  | (a: number, b: string)              |  every ath character of b |
+|  | (a: string, b: number)              |  a + " " * b |
+|  | (a: number, b: string)              |  " " * a + b |
 |  | (a: string, b: string)              |  levenshtein_distance(a, b) |
 |  | (otherwise)                         |  vectorised |
 | ꜝ | (a: number)                         |  not a (bitwise) # ~a |
@@ -372,7 +371,7 @@ cmd | inputs | out/effect
 | ≠ | (a: any, b: any)                    |  a != b (non-vectorising) |
 | ⁼ | (a: any, b: any)                    |  a == b (non-vectorising) |
 | ƒ | (a: number)                         |  fractionify(a) # returns a two-item list of [numerator, denominator] |
-|  | (a: string)                         |  can a be evaluated as a float? |
+|  | (a: string)                         |  fractionify(a) if a is numeric string |
 | ɖ | (a: list)                           |  decimalify(a) # opposite of ƒ, reduce by division |
 | × |   |  "*" |
 | ∪ | (a: any, b: any)                    |  set union |
@@ -392,7 +391,7 @@ cmd | inputs | out/effect
 | ǎ | (a: number)                         |  push ath prime |
 |  | (a: string)                         |  substrings(a) |
 |  | (otherwise)                         |  vectorised |
-| Ǐ | (a: number)                         |  prime factorisation of a |
+| Ǐ | (a: number)                         |  prime factorisation of a	# ǐU |
 |  | (a: string)                         |  a + a[0] # enclosed a |
 |  | (otherwise)                         |  vectorised |
 | ǐ | (a: number)                         |  all prime factors of a (includes duplicates) |
@@ -410,11 +409,10 @@ cmd | inputs | out/effect
 | ⁽ |   |  * one-byte lambda: ⁽<element> |
 | ‡ |   |  * two-byte lambda: ‡<element><element> |
 | ≬ |   |  * three-byte lambda: ≬<element><element><element> |
-| ∂ |   |  * two-byte dyad: ∂<element><element> |
 | ⁺ |   |  * index of next character in codepage + 101: ⁺<character> |
 | ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn't change |
 | ↵ | (a: string)                         |  a.split("\n") |
-|  | (a: number)                         |  is a an integer? |
+|  | (a: number)                         |  10 ** a |
 |  | (otherwise)                         |  vectorised |
 | ⅛ | (a: any)                            |  push a to global array |
 | ¼ |   |  pop from global array and push to stack |
