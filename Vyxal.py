@@ -1463,7 +1463,8 @@ def VY_eval(item):
         mobj = pobj.match(item)
         if mobj:
             try:
-                return eval(item)
+                ret = eval(item)
+                return item
             except:
                 return item
         else:
@@ -2042,7 +2043,9 @@ def execute(code, flags, input_list, output_variable):
     flags = flags
 
     if input_list:
-        inputs = list(map(VY_eval, input_list.split("\r\n")))
+        eval_function = VY_eval
+        if 'S' in flags: eval_function = str
+        inputs = list(map(eval_function, input_list.split("\r\n")))
 
     if 'a' in flags:
         inputs = [inputs]
@@ -2093,6 +2096,7 @@ ALL flags should be used as is (no '-' prefix)
 \tG\tPrint the maximum item of the top of stack on end of execution
 \tg\tPrint the minimum item of the top of the stack on end of execution
 \tW\tPrint the entire stack on end of execution
+\tS\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
 """
             return
     input_values[0] = [inputs, 0]
@@ -2144,12 +2148,15 @@ if __name__ == "__main__":
     if len(sys.argv) > 2:
         flags = sys.argv[2]
         if flags:
+            eval_function = VY_eval
+            if "S" in flags:
+                eval_function = str
             if 'H' in flags:
                 stack = [100]
             if 'f' in flags:
-                inputs = list(map(VY_eval, open(sys.argv[3]).readlines()))
+                inputs = list(map(eval_function, open(sys.argv[3]).readlines()))
             else:
-                inputs = list(map(VY_eval,sys.argv[3:]))
+                inputs = list(map(eval_function,sys.argv[3:]))
 
         if 'a' in flags:
             inputs = [inputs]
@@ -2185,6 +2192,7 @@ if __name__ == "__main__":
         print("\tG\tPrint the maximum item of the top of stack on end of execution")
         print("\tg\tPrint the minimum item of the top of the stack on end of execution")
         print("\tW\tPrint the entire stack on end of execution")
+        print("\tS\tTreat all inputs as strings")
         print("")
     else:
         if flags:
