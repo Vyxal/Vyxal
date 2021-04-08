@@ -1462,7 +1462,10 @@ def VY_eval(item):
         pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|(-?\d+(\.\d+)?$)|"[^"]*"|'[^']*'""")
         mobj = pobj.match(item)
         if mobj:
-            return eval(item)
+            try:
+                return eval(item)
+            except:
+                return item
         else:
             return item
     else:
