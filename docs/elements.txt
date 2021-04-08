@@ -532,3 +532,4 @@ kτ                                   = int(dt.now().strftime('%j'))
 Þ×     a                             = all_combinations(a) # This is all lengths
 ÞF                                   = * every fibonacci number
 Þ!                                   = * every factorial
+
