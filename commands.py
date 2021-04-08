@@ -170,10 +170,10 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ŀ": ("new, original, string = pop(stack, 3)\nif Function in map(type, (new, original, string)): stack.append(repeat_no_collect(original, new, string))\nelse: stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(string, str)))", 3),
     "Ṁ": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "Ṅ": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
-    "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input())", 0),
+    "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input(0))", 0),
     "Ṗ": ("stack.append(Generator(permutations(iterable(pop(stack)))))", 1),
     "Ṙ": ("stack.append(reverse(pop(stack)))", 1),
-    "Ṡ": ("stack.append(summate(stack))", 0),
+    "Ṡ": ("stack = [summate(stack)]", 0),
     "Ṫ": ("stack.append(iterable(pop(stack), str)[:-1])", 1),
     "Ẇ": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs, True))", 2),
     "Ẋ": ("rhs, lhs = pop(stack, 2); stack.append(cartesian_product(lhs, rhs))", 2),
