@@ -8,10 +8,10 @@ def index():
     if request.method == 'POST':
         print('starting')
         flags = request.form['flags']
-        code = request.form['code']
+        code = request.form['code'].replace("\r", "")
         input_list = request.form["inputs"]
-        header = request.form["header"]
-        footer = request.form["footer"]
+        header = request.form["header"].replace("\r", "")
+        footer = request.form["footer"].replace("\r", "")
         # print(inputs)
         import Vyxal
         manager = multiprocessing.Manager()
