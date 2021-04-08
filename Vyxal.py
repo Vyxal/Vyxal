@@ -1464,14 +1464,15 @@ def VY_eval(item):
         if mobj:
             try:
                 ret = eval(item)
-                return item
+                return ret
             except:
                 return item
         else:
             return item
     else:
         try:
-            return eval(item)
+            ret = eval(item)
+            return ret
         except:
             return item
 def VY_exec(item):
