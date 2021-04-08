@@ -1031,7 +1031,7 @@ def orderless_range(lhs, rhs, lift_factor=0):
         lhs, rhs = VY_str(lhs), VY_str(rhs)
         import regex
         pobj = regex.compile(lhs)
-        mobj = pobj.match(rhs)
+        mobj = pobj.search(rhs)
         return int(bool(mobj))
 def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
@@ -1253,11 +1253,11 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
-def split_newlines_or_is_integer(item):
+def split_newlines_or_pow_10(item):
     return {
-        Number: lambda: int(isinstance(type(item), int)),
+        Number: lambda: 10 ** item,
         str: lambda: item.split("\n")
-    }.get(VY_type(item), lambda: vectorise(split_newlines_or_is_integer, item))()
+    }.get(VY_type(item), lambda: vectorise(split_newlines_or_pow_10, item))()
 def string_empty(item):
     return {
         Number: lambda: item % 3,

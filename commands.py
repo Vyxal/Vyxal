@@ -1,6 +1,6 @@
 codepage  = "λƛ¬∧⟑∨⟇÷«\n»°•‘†€"
 codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
-codepage += "!\"$%&'()*+,-./01"
+codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"
 codepage += "RSTUVWXYZ[\\]`^_abc"
@@ -11,9 +11,11 @@ codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
 codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
 codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
-codepage += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
+codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬×⁺↵⅛¼¾Π„‟"
+
+assert len(codepage) == 256
 
 command_dict = {
     "¬": ("stack.append(int(not pop(stack)))", 1),
@@ -185,7 +187,6 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "∇": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
     "⌈": ("stack.append(ceiling(pop(stack)))", 1),
     "⌊": ("stack.append(floor(pop(stack)))", 1),
-    "⁾": ("stack.append(exponate(10, pop(stack)))", 1),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
     "±": ("stack.append(sign_of(pop(stack)))", 1),
     "₴": ("VY_print(pop(stack), end=''); printed = True", 1),
@@ -220,7 +221,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.LEFT)", 2),
     "ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.RIGHT)", 2),
     "¢": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
-    "↵": ("stack.append(split_newlines_or_is_integer(pop(stack))", 1),
+    "↵": ("stack.append(split_newlines_or_pow_10(pop(stack))", 1),
     "⅛": ("global_stack.append(pop(stack))", 1),
     "¼": ("stack.append(pop(global_stack))", 0),
     "¾": ("stack.append(deref(global_stack))", 0),
