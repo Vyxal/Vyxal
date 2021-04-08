@@ -423,9 +423,9 @@ def combinations_replace_generate(lhs, rhs):
             prev = None
             curr = init
             while prev != curr:
+                yield curr
                 prev = deref(curr)
                 curr = fn([curr])[-1]
-                yield curr
         return Generator(gen())
 def const_divisibility(item, n, string_overload):
     return {
