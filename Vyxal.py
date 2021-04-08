@@ -431,7 +431,7 @@ def const_divisibility(item, n, string_overload):
     return {
         Number: lambda: int(item % n == 0),
         str: lambda: int(string_overload(item))
-    }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n))()
+    }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n, string_overload))()
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -1364,8 +1364,19 @@ def uninterleave(item):
         return ["".join(left), "".join(right)]
     return [left, right]
 uniquify = lambda item: list(dict.fromkeys(iterable(item)))
-def vectorise(fn, left, right=None):
-    if right:
+def vectorise(fn, left, right=None, third=None):
+    if third:
+        types = (VY_type(left), VY_type(right))
+        if types == (Generator, Generator):
+            return Generator(map(lambda x: _safe_apply(fn, left.safe(), x, third), right))
+        return {
+            (types[0], types[1]): lambda: _safe_apply(fn, left, right, third),
+            (list, types[1]): lambda: [_safe_apply(fn, x, right, third) for x in left],
+            (types[0], list): lambda: [_safe_apply(fn, left, x, third) for x in right],
+            (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right, third)),
+            (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x, third)),
+        }[types]()
+    elif right:
         types = (VY_type(left), VY_type(right))
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
