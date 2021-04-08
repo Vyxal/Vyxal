@@ -1,4 +1,4 @@
-codepage  = "λƛ¬∧⟑∨⟇÷«\n»°•‘†€"
+codepage  = "λƛ¬∧⟑∨⟇÷×«\n»°•‘†€"
 codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
@@ -13,10 +13,10 @@ codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
 codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
 codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-codepage += "ǒǓǔ⁽‡≬×⁺↵⅛¼¾Π„‟"
+codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
 assert len(codepage) == 256
-
+ 
 command_dict = {
     "¬": ("stack.append(int(not pop(stack)))", 1),
     "∧": ("rhs, lhs = pop(stack, 2); stack.append(lhs and rhs)", 2),
