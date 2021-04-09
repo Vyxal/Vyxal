@@ -519,10 +519,6 @@ cmd | inputs | out/effect
 | øV |   |  a.replace_until_no_change(b, c) |
 | øc |   |  base_255_string_compressed(a) |
 | øC |   |  base_255_number_compressed(a) |
-| øl |   |  a.lower() |
-| øU |   |  a.upper() |
-| øt |   |  a.titlecase() |
-| ø$ |   |  a.swapcase() |
 | øĊ |   |  centre(a) |
 | øe |   |  run_length_encoded(a) |
 | ød |   |  run_length_decoded(a) |
