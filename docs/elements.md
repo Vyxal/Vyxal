@@ -27,7 +27,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ∆ |   |  * mathematic digraphs |
 | ø |   |  * string digraphs |
-| ↔ | (a: any, b: number)                 |  ations_with_replacement(a, length=b) |
+| ↔ | (a: any, b: number)                 |  combinations_with_replacement(a, length=b) |
 |  | (a: any, b: non-number)             |  remove elements in a that are not in b |
 |  | (a: function, b: any)               |  apply a on b until the result doesn't change. Collects intermittent values |
 | ⌐ | (a: number)                         |  1 - a |
