@@ -364,7 +364,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ꜝ | (a: number)                         |  not a (bitwise) # ~a |
 |  | (a: string)                         |  are any letters in a uppercase? |
-|  | (a: list)                           |  infinitely cycle list |
+|  | (a: list)                           |  vectorised |
 | ℅ | (a: any)                            |  random.choice(a) |
 | ≤ | (a: any, b: any)                    |  a <= b |
 | ≥ | (a: any, b: any)                    |  a >= b |

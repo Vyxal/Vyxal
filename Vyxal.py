@@ -100,8 +100,8 @@ class Generator:
                 self.gen = gen()
         else:
             def niceify(item):
-                t_item = type(item)
-                if t_item not in [Generator, list, int, float, str]:
+                t_item = VY_type(item)
+                if t_item not in [Generator, list, Number, str]:
                     return list(item)
                 return item
             self.gen = map(niceify, raw_generator)
@@ -326,7 +326,7 @@ def bit_not(item):
     return {
         str: lambda: int(any(map(lambda x: x.isupper(), item))),
         Number: lambda: ~item
-    }.get(VY_type(item), lambda: Generator(itertools.cycle(item)))()
+    }.get(VY_type(item), lambda: vectorise(bit_not, item))()
 def bit_xor(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
     return {
