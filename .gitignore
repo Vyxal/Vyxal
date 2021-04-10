@@ -2,3 +2,9 @@
 update_server.txt
 *.vy
 *.pyc
+static/
+templates/
+Scripts/
+share/
+Lib/
+pyvenv.cfg

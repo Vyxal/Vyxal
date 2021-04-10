@@ -2115,27 +2115,27 @@ ALL flags should be used as is (no '-' prefix)
 
     if not printed and ("O" not in flags):
         if flags and 's' in flags:
-            output[1] = VY_str(summate(pop(stack)))
+            VY_print(summate(pop(stack)))
         elif flags and 'd' in flags:
-            output[1] = VY_str(summate(flatten(pop(stack))))
+            VY_print(summate(flatten(pop(stack))))
         elif flags and "S" in flags:
-            output[1] = VY_str(" ".join([str(n) for n in pop(stack)]))
+            VY_print(" ".join([str(n) for n in pop(stack)]))
         elif flags and "C" in flags:
-            output[1] = VY_str("\n".join(centre(pop(stack))))
+            VY_print("\n".join(centre(pop(stack))))
         elif flags and "l" in flags:
-            output[1] = str(len(pop(stack)))
+            VY_print(len(pop(stack)))
         elif flags and "G" in flags:
-            output[1] = VY_max(pop(stack))
+            VY_print(VY_max(pop(stack)))
         elif flags and "g" in flags:
-            output[1] = VY_min(pop(stack))
+            VY_print(VY_min(pop(stack)))
         elif flags and "W" in flags:
-            output[1] = VY_str(stack)
+            VY_print(stack)
         elif _vertical_join:
-            output[1] = VY_str(vertical_join(pop(stack)))
+            VY_print(vertical_join(pop(stack)))
         elif _join:
-            output[1] = VY_str("\n".join([str(n) for n in pop(stack)]))
+            VY_print("\n".join([str(n) for n in pop(stack)]))
         else:
-            output[1] = VY_str(pop(stack))
+            VY_print(pop(stack))
 
 
 if __name__ == "__main__":

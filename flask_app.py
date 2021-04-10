@@ -41,9 +41,9 @@ def index():
         # print(ret)
         output = ret[1]
         # print(code, flags, output)
-        return render_template('index.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, errors=ret[2])
+        return render_template('main.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, debug=ret[2])
 
-    return render_template('index.html', code="", flags="", output="", header="", footer="", inputs="", errors="")
+    return render_template('main.html', code="", flags="", output="", header="", footer="", inputs="", debug="")
 
 @app.route("/ash")
 def ash():
