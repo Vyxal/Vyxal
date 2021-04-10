@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Vyxal Interpreter</title>
+    <style>
+        .right {
+            float: right;
+            display: flex;
+        }
+
+        button {
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+
+        }
+        body {
+            background-color: #353535;
+            color: #C0C0C0;
+        }
+
+        pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+
+        }
+
+        input, textarea, pre {color: white;
+            background-color: #181a1b !important;
+            font-family: 'DejaVu Sans Mono', monospace;
+            
+            font-size: medium;
+        }
+
+        textarea, pre {
+            min-height: 3em;
+            width: 100%;
+        }
+
+        details {
+            color: white;
+            font-size: large;
+            font-family: 'Montserrat', sans-serif;
+
+        }
+        
+        summary {
+            padding-bottom: 10px;
+        }
+
+        #keyboard {
+	        border: 1px solid #eee;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .key {
+            padding:2px;
+            cursor:crosshair;
+            font-family: 'DejaVu Sans Mono', monospace;
+            color: white;
+
+        }
+        .key:hover {
+            background-color: rgba(255, 255, 255, 0.596);
+            color: #000;
+        }
+
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png" />
+    <script>
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var codepage  = "λƛ¬∧⟑∨⟇÷×«\n»°•‘†€"
+            codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
+            codepage += "!\"$%&'()*+,-./01"
+            codepage += "23456789:;<=>?@A"
+            codepage += "BCDEFGHIJKLMNOPQ"
+            codepage += "RSTUVWXYZ[\\]^_`abc"
+            codepage += "defghijklmnopqrs"
+            codepage += "tuvwxyz{|}ß↑↓∴∵›"
+            codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
+            codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
+            codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
+            codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
+            codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
+            codepage += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
+            codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
+            codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+            var kb = document.getElementById("keyboard");
+            for (var i = 0; i < codepage.length; i++) {
+                kb.innerHTML += "<span class=\"key\">" + codepage[i] + "</span>";
+            }
+            document.querySelectorAll('.key').forEach(item => {
+                item.addEventListener('click', event => {
+                    var box = document.getElementById("code-box")
+                    var start = box.selectionStart;
+                    var end = box.selectionEnd;
+                    var char = event.target.innerHTML;
+                    var str = box.value.slice(0, start) + char + box.value.slice(end);
+                    box.value = str
+                    box.focus()
+                    updateCount();
+                    box.selectionStart = end + 1;
+                    box.selectionEnd = end + 1;
+                    
+                })
+            })
+        });
+        function resizeCodeBox(id) {
+            // Resize the code box with the given id
+            var element = document.getElementById(id);
+            element.style.height = "";
+            element.style.height = element.scrollHeight + "px";
+        }
+        function updateCount() {
+            var byte_box = document.getElementById("code-count");
+            var code = document.getElementById("code-box").value.length;
+
+            byte_box.innerText = `${code} byte` + "s".repeat(code != 1);
+        }
+        function generateURL() {
+            var flags = document.getElementById("flag-box").value;
+            var code = document.getElementById("code-box").value;
+            var inputs = document.getElementById("inputs").value;
+            var header = document.getElementById("header").value;
+            var footer = document.getElementById("footer").value;
+            var undone_url = "?flags=" + flags + "&code=" + encodeURIComponent(code) + "&inputs=" + encodeURIComponent(inputs);
+            undone_url += "&header=" + encodeURIComponent(header) + "&footer=" + encodeURIComponent(footer)
+
+            var url = "http://lyxal.pythonanywhere.com" + undone_url
+            url = url.replace(/\(/g, "%28")
+            url = url.replace(/\[/g, "%5B")
+            url = url.replace(/\]/g, "%5D")
+            url = url.replace(/\)/g, "%29")
+            return url
+
+        }
+        function shareOptions() {
+            var code = document.getElementById("code-box").value
+            var url = generateURL()
+            var flags = document.getElementById("flag-box").value
+            var flag_appendage = ""
+            if (flags) {
+                flag_appendage = "`" + flags + "`, "
+            }
+            var output = `Link: ${url}
+Markdown: [Try it Online!](${url})
+CMC (bytes): [Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})
+CMC (code): [Vyxal, ${"`" + code.replace("`", "\\`") + "`"}](${url})
+CGCC Post:
+
+# [Vyxal](https://github.com/Lyxal/Vyxal), ${flag_appendage}${code.length} byte${"s".repeat(code.length != 1)}
+
+\`\`\`
+${code}
+\`\`\`
+
+[Try it Online!](${url})
+
+...
+
+## Explained
+`
+            var outputBox = document.getElementById("output");
+            outputBox.innerHTML = output;
+        }
+        function decodeURL() {
+            const queryString = window.location.search;
+            console.log(queryString);
+            const urlParams = new URLSearchParams(queryString)
+            code = urlParams.get("code");
+            flags = urlParams.get("flags");
+            inputs = urlParams.get("inputs");
+            footer = urlParams.get("footer");
+            header = urlParams.get("header");
+
+            var flag_box = document.getElementById("flag-box");
+            var code_box = document.getElementById("code-box");
+            var inputs_box = document.getElementById("inputs");
+            var header_box = document.getElementById("header");
+            var footer_box = document.getElementById("footer");
+
+            if ((code || flags || inputs || header || footer) && !(flag_box.value || code_box.value || inputs_box.value || header_box.value || footer_box.value)) {
+                flag_box.value = flags;
+                code_box.value = code;
+                inputs_box.value = inputs;
+                header_box.value = header;
+                footer_box.value = footer;
+                var form = document.getElementById("overall-form");
+                form.submit();
+            }
+        }
+        function restyleButton() {
+            var the_button = document.getElementById("run_button");
+            the_button.innerHTML = '<i class="fa fa-spinner fa-spin"></i>Executing';
+            the_button.disabled = true;
+            the_button.style.cursor = "progress";
+            document.getElementById('overall-form').submit()
+        }
+    </script>
+</head>
+
+<body onload="decodeURL(); updateCount()">
+    <form method="post" style="padding: 10px;" onload="resizeCodeBox('code-box')" id="overall-form">
+        <h2><a href="https://github.com/Lyxal/Vyxal" style="text-decoration: none; color: white">Vyxal</a></h2>
+        <button id="run_button" type="submit" style="color:white" onclick="restyleButton()">Execute</button>
+        <button id="share" type="button" style="color: white" onclick="shareOptions()">Share</button>
+
+        <div class="row" style="width:100%; padding-bottom: 1em;">
+            <div class="twelve columns">
+                <div id="keyboard">
+                </div>
+            </div>
+        </div>
+        <details open>
+            <summary>Flags</summary>
+            <input type="text" name="flags" id="flag-box" value="{{flags}}"></input>
+        </details>
+        <details>
+            <summary>Header</summary>
+            <textarea id="header" name="header" oninput="resizeCodeBox('header')">{{header}}</textarea>
+        </details>
+
+        <details open>
+            <summary style="display: inline-block;">Code</summary>
+            <p class="right" id="code-count">0 bytes</p>
+            <textarea id="code-box" name="code" oninput="resizeCodeBox('code-box'); updateCount()" onkeyup="updateCount()">{{code}}</textarea>
+        </details>
+
+        <details>
+            <summary>Footer</summary>
+            <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')" >{{footer}}</textarea>
+        </details>
+
+        <details open>
+            <summary>Inputs</summary>
+            <textarea id="inputs" name="inputs" oninput="resizeCodeBox('inputs')">{{inputs}}</textarea>
+        </details>
+
+        <details open>
+            <summary>Output</summary>
+            <pre id="output" value="" style="white-space: pre-wrap; width: 100%">{{output}}</pre>
+        </details>
+
+        <details>
+            <summary>Debug</summary>
+            <pre value="" id="debug" style="white-space: pre-wrap; width: 100%">{{debug}}</pre>
+        </details>
+        
+    </form>
+</body>
