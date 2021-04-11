@@ -55,9 +55,10 @@ def ash():
 def parse_file():
     import os
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    file = os.path.join(THIS_FOLDER, 'docs\\elements.txt')
+    file = os.path.join(THIS_FOLDER, 'docs/elements.txt')
+    print(file)
     ret = []
-    with open(sys.path + "mysite/docs/elements.txt", "r", encoding="utf8") as txt:
+    with open(file, "r", encoding="utf8") as txt:
         for line in txt:
             if line == "\n" or (line[0] == "k" and line[1] != " ") : #Finished
                 break
