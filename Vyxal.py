@@ -585,7 +585,8 @@ def find(haystack, needle, start=0):
     # It looks like something from 2001
     index = 0
     haystack = iterable(haystack)
-    needle = iterable(haystack, type(haystack))
+    if type(haystack) is str:
+        needle = str(needle)
     if type(start) is int or (type(start) is str and start.isnumeric()):
         index = start
     while index < len(haystack):
