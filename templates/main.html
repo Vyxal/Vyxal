@@ -87,6 +87,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png" />
     <script>
+        this.prevQuery = "";
         var codepage  = "λƛ¬∧⟑∨⟇÷×«\n»°•ß†€"
             codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
             codepage += "!\"#$%&'()*+,-./01"
@@ -219,7 +220,7 @@ ${code}
             document.getElementById('overall-form').submit()
         }
         function glyphSearch() {
-            var query = document.getElementById("filterBox").value;
+            var query = document.getElementById("filterBox").value.toLowerCase();
             var descriptions = {{codepage_info |safe}};
             
             yesGlyph = []
@@ -229,7 +230,7 @@ ${code}
                 var description = descriptions[index];
                 var glyph = codepage[index];
 
-                var raw = query.split().map((char) => "[^" + char + "]*" + char).join("");
+                var raw = query.split().map((char) => `[^${char}]*${char}`).join("");
                 var pattern = new RegExp(raw);
                 console.log(descriptions.length)
 
@@ -270,7 +271,7 @@ ${code}
         <button id="share" type="button" style="color: white" onclick="shareOptions()">Share</button>
 
         <div class="row" style="width:100%; padding-bottom: 1em;">
-            <input id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
+            <label for="filterBox" style="display:inline-block; color: white; font-family: 'Montserrat', sans-serif; padding-right: 1%;">Search elements:&nbsp;</label><input style="display:inline-block" id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
             <div class="twelve columns">
                 <div id="keyboard">
                 </div>
