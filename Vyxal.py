@@ -1639,6 +1639,8 @@ def VY_sorted(vector, fn=None):
 def VY_range(item, start=0, lift_factor=0):
     t_item = VY_type(item)
     if t_item == Number:
+        if item < 0:
+            return range(start, int(item) + lift_factor, -1)
         return range(start, int(item) + lift_factor)
     return item
 def VY_reduce(fn, vector):
