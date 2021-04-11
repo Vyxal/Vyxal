@@ -5,6 +5,7 @@ app.config['SECRET_KEY'] = 'n3vagljfd;lkgern;glkn4erg]po_*&)#M(VNP#UC<P{M@OW#X*(
 
 @app.route('/', methods=('GET', 'POST'))
 def index():
+    descriptions = parse_file()
     if request.method == 'POST':
         print('starting')
         flags = request.form['flags']
@@ -41,10 +42,26 @@ def index():
         # print(ret)
         output = ret[1]
         # print(code, flags, output)
-        return render_template('main.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, debug=ret[2])
+        return render_template('main.html', code=code, header=header, footer=footer, flags=flags, output=output, inputs=input_list, debug=ret[2],
+        codepage_info=descriptions)
 
-    return render_template('main.html', code="", flags="", output="", header="", footer="", inputs="", debug="")
+    return render_template('main.html', code="", flags="", output="", header="", footer="", inputs="", debug="", codepage_info=descriptions)
 
 @app.route("/ash")
 def ash():
     return render_template("ash.html")
+
+
+def parse_file():
+    ret = []
+    with open("docs/elements.txt", "r", encoding="utf8") as txt:
+        for line in txt:
+            if line == "\n" or (line[0] == "k" and line[1] != " ") : #Finished
+                break
+            else:
+                if line[0] == " ":
+                    ret[-1] += "\n" + line[line.find("=", 1) + 1:-1]
+                else:
+                    ret.append(line[line.find("=", 1) + 1:-1])
+    print(len(ret))
+    return ret

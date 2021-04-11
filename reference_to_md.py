@@ -7,7 +7,6 @@ md.write(
 )
 
 with open("docs/elements.txt", "r", encoding="utf8") as txt:
-    txt.readline()
     for line in txt:
         if line == "\n":  # Reached the last line
             break

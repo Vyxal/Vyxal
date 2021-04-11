@@ -87,26 +87,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png" />
     <script>
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var codepage  = "λƛ¬∧⟑∨⟇÷×«\n»°•‘†€"
+        var codepage  = "λƛ¬∧⟑∨⟇÷×«\n»°•ß†€"
             codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
-            codepage += "!\"$%&'()*+,-./01"
+            codepage += "!\"#$%&'()*+,-./01"
             codepage += "23456789:;<=>?@A"
             codepage += "BCDEFGHIJKLMNOPQ"
-            codepage += "RSTUVWXYZ[\\]^_`abc"
+            codepage += "RSTUVWXYZ[\\]`^_abc"
             codepage += "defghijklmnopqrs"
-            codepage += "tuvwxyz{|}ß↑↓∴∵›"
+            codepage += "tuvwxyz{|}~↑↓∴∵›"
             codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
             codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
             codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
             codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
             codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
-            codepage += "⌊⁾¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
+            codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
             codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
             codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+        window.addEventListener('DOMContentLoaded', (event) => {
+            
+
+            codepage_descriptions = {{codepage_info |safe}};
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += "<span class=\"key\" title='apioform'>" + codepage[i] + "</span>";
+                kb.innerHTML += `<span class=\"key\" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
@@ -215,6 +218,48 @@ ${code}
             the_button.style.cursor = "progress";
             document.getElementById('overall-form').submit()
         }
+        function glyphSearch() {
+            var query = document.getElementById("filterBox").value;
+            var descriptions = {{codepage_info |safe}};
+            
+            yesGlyph = []
+            yesDescription = []
+            console.log("starting filter")
+            for (var index = 0; index < codepage.length; index++){
+                var description = descriptions[index];
+                var glyph = codepage[index];
+
+                var raw = query.split().map((char) => "[^" + char + "]*" + char).join("");
+                var pattern = new RegExp(raw);
+                console.log(descriptions.length)
+
+                if (description.match(pattern)){
+                    yesGlyph.push(glyph);
+                    yesDescription.push(description);
+                }
+            }
+                var kb = document.getElementById("keyboard");
+                kb.innerHTML = ""
+                for (var i = 0; i < yesGlyph.length; i++) {
+                    kb.innerHTML += `<span class=\"key\" title='${yesDescription[i]}'>${yesGlyph[i]}</span>`;
+                }
+
+                document.querySelectorAll('.key').forEach(item => {
+                item.addEventListener('click', event => {
+                    var box = document.getElementById("code-box")
+                    var start = box.selectionStart;
+                    var end = box.selectionEnd;
+                    var char = event.target.innerHTML;
+                    var str = box.value.slice(0, start) + char + box.value.slice(end);
+                    box.value = str
+                    box.focus()
+                    updateCount();
+                    box.selectionStart = end + 1;
+                    box.selectionEnd = end + 1;
+                    
+                });
+            });
+        }
     </script>
 </head>
 
@@ -225,6 +270,7 @@ ${code}
         <button id="share" type="button" style="color: white" onclick="shareOptions()">Share</button>
 
         <div class="row" style="width:100%; padding-bottom: 1em;">
+            <input id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
             <div class="twelve columns">
                 <div id="keyboard">
                 </div>

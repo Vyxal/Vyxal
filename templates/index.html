@@ -173,17 +173,14 @@
             </div>
             <textarea class="u-full-width" id="header" name="header" placeholder="Enter code..." oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'>{{header}}</textarea>
             <div class="row">
-                <details>
-                    <summary>
-                        <div > <!-- class="twelve columns" -->
+
+                        <div class="twelve columns">
                             <div style="display:flex; justify-content: space-between;">
                                 <h5><label style="display: inline-block;">Code</label></h5>
                             </div>
                         </div>
-                    </summary>
                         <p id="code_count">0 characters/0 bytes</p><br>
                         <textarea class="u-full-width" id="code_box" name="code" placeholder="Enter code..." oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"; update_count()' onkeyup="update_count()">{{code}}</textarea>
-                </details>
             </div>
 
             <div class="row">

@@ -6,8 +6,9 @@
 ∨ (a: any, b: any)                   = a or b
 ⟇ (a: any, b: any)                   = b or a
 ÷ (a: any)                           = stack += iterable(a)
+×                                    = "*"
 «                                    = * base-255 compressed string: «...«
-<newline>                            = * NOP
+<newline>                            = * newline
 »                                    = * base-255 compressed number: »...»
 °                                    = * function reference: °defined_function_name;
 • (a: number, b: number)             = log_a(b)
@@ -16,7 +17,7 @@
   (a: string, b: string)             = a.with_capitalisation_of(b)
   (a: list, b: list)                 = a molded to the shape of b
   (otherwise)                        = vectorised
-‘                                    = * one-byte dictionary
+ß (a: any)                           = * execute element if a is truthy: ß<element>
 † (a: function)                      = * call function reference
   (a: non-function)                  = exec(a)
 € (a: any, b: any)                   = a.split_on(b)
@@ -28,6 +29,7 @@
 ↔ (a: any, b: number)                = combinations_with_replacement(a, length=b)
   (a: any, b: non-number)            = remove elements in a that are not in b
   (a: function, b: any)              = apply a on b until the result doesn't change. Collects intermittent values
+¢ (a: string, b: string, c: string)  = replace b in a with c until a doesn't change
 ⌐ (a: number)                        = 1 - a
   (a: string)                        = a.split(",")
   (otherwise)                        = vectorised
@@ -156,7 +158,9 @@ Z (a: any, b: any)                   = zip(a, b)
 \                                    = * one character literal: \<letter>
 ]                                    = * close if statement
 `                                    = * string: `...`
-a (a: any)                           = any(a)  # irony.
+^                                    = * reverse stack
+_ (a: any)                           = discard item
+a (a: any)                           = any(a)
 b (a: number)                        = bin(a) # binary representation, base 10 to 2
   (a: string)                        = [bin(ord(char)) for char in a]
   (otherwise)                        = vectorised
@@ -200,7 +204,6 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 }                                    = * close while loop
 ~                                    = * filter by element (monad)
                                      = * execute element without popping (dyad)
-ß (a: any)                           = * execute element if a is truthy: ß<element>
 ↑ (a: any)                           = max(a, key=lambda x: x[-1])
 ↓ (a: any)                           = min(a, key=lambda x: x[-1])
 ∴ (a: any, b: any)                   = max(a, b)
@@ -371,7 +374,6 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ƒ (a: number)                        = fractionify(a) # returns a two-item list of [numerator, denominator]
   (a: string)                        = fractionify(a) if a is numeric string
 ɖ (a: list)                          = decimalify(a) # opposite of ƒ, reduce by division
-×                                    = "*"
 ∪ (a: any, b: any)                   = set union
 ∩ (a: any, b: any)                   = set intersection
 ⊍ (a: any, b: any)                   = set(a) ^ set(b)
@@ -408,7 +410,6 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ‡                                    = * two-byte lambda: ‡<element><element>
 ≬                                    = * three-byte lambda: ≬<element><element><element>
 ⁺                                    = * index of next character in codepage + 101: ⁺<character>
-¢ (a: string, b: string, c: string)  = replace b in a with c until a doesn't change
 ↵ (a: string)                        = a.split("\n")
   (a: number)                        = 10 ** a
   (otherwise)                        = vectorised
