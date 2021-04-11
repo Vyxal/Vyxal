@@ -67,24 +67,24 @@ $ (a: any, b: any)                   = b, a
 '                                    = * lambda filter: '...;
 (                                    = * open for loop: (variable|...)
 )                                    = * close for loop
-* (a: number, b: number)             = a * b
+* (a: number, b: number)             = a * b # mutliplication
   (a: number, b: string)             = b repeated a times
   (a: string, b: number)             = a repeated b times
   (a: string, b: string)             = [char + b for char in a]
   (otherwise)                        = vectorised
-+ (a: number, b: number)             = a + b
++ (a: number, b: number)             = a + b # addition
   (a: number, b: string)             = concat(a, b)
   (a: string, b: number)             = concat(a, b)
   (a: string, b: string)             = concat(a, b)
   (otherwise)                        = vectorised
 , (a: any)                           = print(a)
-- (a: number, b: number)             = a - b
+- (a: number, b: number)             = a - b # subtraction
   (a: number, string)                = ("-" * a) + b
   (a: string, b: number)             = a + ("-" * b)
   (a: string, b: string)             = a.remove(b)
   (otherwise)                        = vectorised
 .                                    = * decimal seperator
-/ (a: number, b: number)             = a / b
+/ (a: number, b: number)             = a / b # division
   (a: number, b: string)             = b split into a even length pieces. There may be an extra part if the string is too long.
   (a: string, b: number)             = a split into b even length pieces. There may be an extra part if the string is too long.
   (a: string, b: string)             = a.split(b)
@@ -101,11 +101,11 @@ $ (a: any, b: any)                   = b, a
 9                                    = * numeric literal
 : (a: any)                           = a, a  # duplicate
 ;                                    = * closes a structure
-< (a: non-list, b: non-list)         = a < b # (numbers converted to strings)
+< (a: non-list, b: non-list)         = a < b # less than (numbers converted to strings)
   (a: list, b: any)                  = vectorised
 = (a: non-list, b: non-list)         = a == b
   (a: list, b: any)                  = a == b # vectorising equals
-> (a: non-list, b: non-list)         = a > b # (numbers converted to strings)
+> (a: non-list, b: non-list)         = a > b # greater than (numbers converted to strings)
   (a: list, b: any)                  = vectorised
 ?                                    = input()
 @                                    = * define a function: @name:parameters|...;
@@ -367,10 +367,10 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (a: string)                        = are any letters in a uppercase?
   (a: list)                          = vectorised
 ℅ (a: any)                           = random.choice(a)
-≤ (a: any, b: any)                   = a <= b
-≥ (a: any, b: any)                   = a >= b
-≠ (a: any, b: any)                   = a != b (non-vectorising)
-⁼ (a: any, b: any)                   = a == b (non-vectorising)
+≤ (a: any, b: any)                   = a <= b # less than or equal to
+≥ (a: any, b: any)                   = a >= b # greater than or equal to
+≠ (a: any, b: any)                   = a != b (non-vectorising) # not equals
+⁼ (a: any, b: any)                   = a == b (non-vectorising) # non-vectorising equals
 ƒ (a: number)                        = fractionify(a) # returns a two-item list of [numerator, denominator]
   (a: string)                        = fractionify(a) if a is numeric string
 ɖ (a: list)                          = decimalify(a) # opposite of ƒ, reduce by division
