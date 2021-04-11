@@ -54,7 +54,7 @@ def ash():
 
 def parse_file():
     ret = []
-    with open("./docs/elements.txt", "r", encoding="utf8") as txt:
+    with open("elements.txt", "r", encoding="utf8") as txt:
         for line in txt:
             if line == "\n" or (line[0] == "k" and line[1] != " ") : #Finished
                 break
