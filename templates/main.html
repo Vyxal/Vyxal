@@ -106,7 +106,7 @@
             codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += "<span class=\"key\">" + codepage[i] + "</span>";
+                kb.innerHTML += "<span class=\"key\" title='apioform'>" + codepage[i] + "</span>";
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
