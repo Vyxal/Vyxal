@@ -11,6 +11,11 @@
             display: flex;
         }
 
+        .left {
+            float: right;
+            display: flex;
+        }
+
         button {
             color: white;
             font-family: 'Montserrat', sans-serif;
@@ -129,7 +134,7 @@
             var byte_box = document.getElementById("code-count");
             var code = document.getElementById("code-box").value.length;
 
-            byte_box.innerText = `${code} byte` + "s".repeat(code != 1);
+            byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
         }
         function generateURL() {
             var flags = document.getElementById("flag-box").value;
@@ -235,8 +240,7 @@ ${code}
         </details>
 
         <details open>
-            <summary style="display: flex;">Code</summary>
-            <p class="right" id="code-count">0 bytes</p>
+            <summary id="code-count">Code: 0 bytes</summary>
             <textarea id="code-box" name="code" oninput="resizeCodeBox('code-box'); updateCount()" onkeyup="updateCount()">{{code}}</textarea>
         </details>
 
