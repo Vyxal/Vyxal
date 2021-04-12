@@ -654,10 +654,8 @@ def fractionify(item):
         return [frac.numerator, frac.denominator]
     elif type(item) is str and re.match(r"\-?\d+(\.\d+)?", item):
         return fractionify(eval(item))
-    elif type(item) in [list, Generator] and len(item) == 2:
-        return fractionify(item[0] / item[1])
     else:
-        return item
+        return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
         return fn(vector)
@@ -793,13 +791,13 @@ def inserted(vector, item, index):
     }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
 def integer_divide(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
-    if set(types) in ({str, Number}, {str}):
-        return divide(lhs, rhs)[0]
-
-    elif types == (Number, Number):
-        return lhs // rhs
-
-    return vectorise(integer_divide, lhs, rhs)
+    return {
+        (Number, Number): lambda: lhs // rhs,
+        (Number, str): lambda: divide(lhs, rhs)[0],
+        (str, Number): lambda: divide(lhs, rhs)[0],
+        (Function, types[1]): lambda: VY_reduce(lhs, reverse(rhs))[0],
+        (types[0], Function): lambda: VY_reduce(rhs, reverse(lhs))[0]
+    }.get(types, lambda: vectorise(integer_divide, lhs, rhs))()
 def integer_list(string):
     charmap = dict(zip("etaoinshrd", "0123456789"))
     ret = []
@@ -1008,6 +1006,14 @@ def nwise_pair(lhs, rhs):
             next(iters[i], None)
 
     return Generator(zip(*iters))
+def one_argument_tail_index(vector, index, start):
+    types = (VY_type(vector), VY_type(index))
+    return {
+        types: lambda: start,
+        (Number, Number): lambda: iterable(vector)[start:index],
+        (Number, types[1]): lambda: index[start:vector],
+        (types[0], Number): lambda: vector[start:index]
+    }[types]()
 def order(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if types == (Number, Number):
