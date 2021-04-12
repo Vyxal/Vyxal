@@ -652,8 +652,9 @@ def fractionify(item):
         from decimal import Decimal
         frac = Fraction(item).limit_denominator()
         return [frac.numerator, frac.denominator]
-    elif type(item) is str and re.match(r"\-?\d+(\.\d+)?", item):
-        return fractionify(eval(item))
+    elif type(item) is str:
+        if re.match(r"\-?\d+(\.\d+)?", item): return fractionify(eval(item))
+        else: return item
     else:
         return vectorise(fractionify, item)
 def function_call(fn, vector):
