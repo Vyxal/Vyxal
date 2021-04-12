@@ -1,47 +1,58 @@
 import words
 
-def to_ten(n, base):
-    '''
-    If both arguments are strings, then this is a bijective base conversion
-    If both arguments are integers, then you're doing something wrong.
-    If n is a stack and base is an integer, it's as if you had a string but as codepoints.
-    '''
+def to_ten(number, custom_base):
+    # custom to ten
+    # Turns something like 20 in base 5 to 10 in base 10
+    # (int, int): uses an arbitrary base, and treats as a list of digits
+    # (str, str): uses the provided base
+    # (list, int): uses an arbitrary base, and treats as a list of digits
+    # (str, int): uses an arbitrary base, and treats as a list of codepoints
+    # (int, str): what the actual frick.
+    # always returns Number
 
     result = 0
+    alphabet = (lambda: custom_base, lambda: range(0, int(custom_base)))[type(custom_base) in (int, float)]()
+    base_exponent = len(alphabet)
+    number = list((lambda: number, lambda: map(int, str(int(number))))[type(number) in (int, float)]())
     power = 0
-    if type(n) is str and type(base) is str:
-        from_base = len(base)
-        for char in str(n)[::-1]:
-            index = base.find(char)
-            result += index * (from_base ** power)
-            power += 1
-
-    elif type(n) not in [int, float] and type(base) is int:
-        for item in n[::-1]:
-            result += item * (base ** power)
-            power += 1
+    for digit in reversed(number):
+        if digit in alphabet:
+            result += alphabet.index(digit) * (base_exponent ** power)
+        else:
+            result += 0
+        power += 1
+    
     return result
 
+def from_ten(number, custom_base):
+    # ten to custom
+    # Turns something like 10 in base 10 to 20 in base 5
+    # (int, int): use an arbitrary base, return a list of digits
+    # (int, str): use provided base, return a string
+    # (int, list): use provided base, return a list of "digits"
+    # (non-int, any): what the actual frick.
 
-def from_ten(n, alphabet):
     import math
 
-    temp = n
-    t = type(alphabet)
-    if t in [int, float]:
-        alphabet = list(range(0, int(alphabet)))
-    result = "" if t is str else []
-    to_base = len(alphabet)
-    power = int(math.log(n if n else 1) / math.log(to_base))
+    if type(number) not in (int, float):
+        return number
 
+    if type(custom_base) in (int, float):
+        custom_base = range(0, int(custom_base))
+    
+    result = ([], "")[isinstance(custom_base, str)]
+    append = (lambda x: result + [x], lambda x: result + x)[isinstance(result, str)]
+    base_exponent = len(custom_base)
+    temp = number
+    power = int(math.log(number if number else 1) / math.log(base_exponent))
 
-    while temp > 0:
-        val = alphabet[(temp // (to_base ** power))]
-        if t is str: result += val
-        else: result.append(val)
-        temp -= (temp // (to_base ** power)) * (to_base ** power)
+    while power >= 0:
+        interesting_part, temp = divmod(temp, base_exponent ** power)
+        result = append(custom_base[interesting_part])
         power -= 1
-
+    
+    if temp == 0: result
+    
     return result
 
 
@@ -87,6 +98,7 @@ def uncompress(s):
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
 base27alphabet = " etaoinshrdlcumwfgypbvkjxqz"
 
+print(from_ten(16, 5))
 
 if __name__ == "__main__":
     import encoding
