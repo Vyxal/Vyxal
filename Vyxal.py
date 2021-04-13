@@ -228,6 +228,8 @@ def _safe_apply(function, *args):
     Otherwise, if the function is a user-defined function (starts with FN_), it simply passes the argument list
     Otherwise, unpack args and call as usual
     '''
+    args = reverse(args)
+    print(args)
     if function.__name__ == "_lambda":
         return function(list(args), len(args))
     elif function.__name__.startswith("FN_"):
@@ -1376,6 +1378,7 @@ def uninterleave(item):
 uniquify = lambda item: list(dict.fromkeys(iterable(item)))
 def vectorise(fn, left, right=None, third=None):
     if third:
+        left = iterable(left)
         types = (VY_type(left), VY_type(right))
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x, third), right))
@@ -1387,6 +1390,7 @@ def vectorise(fn, left, right=None, third=None):
             (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x, third)),
         }[types]()
     elif right:
+        left = iterable(left)
         types = (VY_type(left), VY_type(right))
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
@@ -1977,7 +1981,7 @@ else:
             elif m == 1:
                 compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack)))"
             elif m == 2:
-                compiled += "fn = pop(stack); lhs, rhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
+                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)} + 101)"
         elif NAME == VyParse.TWO_BYTE_MATH:

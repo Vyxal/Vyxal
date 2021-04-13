@@ -33,7 +33,6 @@ def from_ten(number, custom_base):
     # (non-int, any): what the actual frick.
 
     import math
-
     if type(number) not in (int, float):
         return number
 
@@ -98,7 +97,6 @@ def uncompress(s):
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
 base27alphabet = " etaoinshrdlcumwfgypbvkjxqz"
 
-print(from_ten(16, 5))
 
 if __name__ == "__main__":
     import encoding
