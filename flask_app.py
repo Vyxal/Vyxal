@@ -67,5 +67,4 @@ def parse_file():
                     ret[-1] += "\n" + line[line.find("=", 1) + 1:-1]
                 else:
                     ret.append(line[line.find("=", 1) + 1:-1])
-    print(len(ret))
     return ret

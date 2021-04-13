@@ -113,7 +113,7 @@
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
-                    var box = document.getElementById("code-box")
+                    var box = document.getElementById("code")
                     var start = box.selectionStart;
                     var end = box.selectionEnd;
                     var char = event.target.innerHTML;
@@ -140,7 +140,7 @@
         }
         function updateCount() {
             var byte_box = document.getElementById("code-count");
-            var code = document.getElementById("code-box").value.length;
+            var code = document.getElementById("code").value.length;
 
             byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
         }
@@ -162,9 +162,9 @@
 
         }
         function shareOptions(shareType) {
-            var code = document.getElementById("code-box").value
+            var code = document.getElementById("code").value
             var url = generateURL()
-            var flags = document.getElementById("flag-box").value
+            var flags = document.getElementById("flag").value
             var flag_appendage = ""
             if (flags) {
                 flag_appendage = "`" + flags + "`, "
@@ -201,8 +201,8 @@ ${code}
             footer = urlParams.get("footer");
             header = urlParams.get("header");
 
-            var flag_box = document.getElementById("flag-box");
-            var code_box = document.getElementById("code-box");
+            var flag_box = document.getElementById("flag");
+            var code_box = document.getElementById("code");
             var inputs_box = document.getElementById("inputs");
             var header_box = document.getElementById("header");
             var footer_box = document.getElementById("footer");
@@ -215,6 +215,22 @@ ${code}
                 footer_box.value = footer;
                 var form = document.getElementById("overall-form");
                 form.submit();
+            } else {
+                ["flag", "header", "footer", "inputs", "output", "extra"].forEach(function(n){
+                console.log(n)
+                   var boxToExpand = document.getElementById(n + "-detail");
+                   var actualBox = document.getElementById(n);
+                   
+                   if (actualBox.value){
+                       boxToExpand.open = true;
+                       
+                   } else {
+                       boxToExpand.open = false;
+                   }
+
+                   resizeCodeBox(n);
+
+                });
             }
         }
         function restyleButton() {
@@ -252,7 +268,7 @@ ${code}
 
                 document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
-                    var box = document.getElementById("code-box")
+                    var box = document.getElementById("code")
                     var start = box.selectionStart;
                     var end = box.selectionEnd;
                     var char = event.target.innerHTML;
@@ -274,7 +290,7 @@ ${code}
     </script>
 </head>
 
-<body onload="decodeURL(); updateCount(); resizeCodeBox('output')">
+<body onload="decodeURL(); updateCount();">
     <form method="post" style="padding: 10px;" onload="resizeCodeBox('code-box')" id="overall-form">
         <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal" style="text-decoration: none; color: white;">Vyxal</a></h2>
         <button id="run_button" title="Run Program" type="submit" style="color:white" onclick="restyleButton()"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -301,39 +317,39 @@ ${code}
             </div>
         </details>
         
-        <details open>
+        <details id="flag-detail"> 
             <summary>Flags</summary>
-            <input type="text" name="flags" id="flag-box" value="{{flags}}"></input>
+            <input type="text" name="flags" id="flag" value="{{flags}}"></input>
         </details>
-        <details>
+        <details id="header-detail">
             <summary>Header</summary>
             <textarea id="header" name="header" oninput="resizeCodeBox('header')">{{header}}</textarea>
         </details>
 
-        <details open>
+        <details open id="code-detail">
             <summary id="code-count">Code: 0 bytes</summary>
-            <textarea id="code-box" name="code" oninput="resizeCodeBox('code-box'); updateCount()" onkeyup="updateCount()">{{code}}</textarea>
+            <textarea id="code" name="code" oninput="resizeCodeBox('code'); updateCount()" onkeyup="updateCount()">{{code}}</textarea>
         </details>
 
-        <details>
+        <details id="footer-detail">
             <summary>Footer</summary>
             <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')" >{{footer}}</textarea>
         </details>
 
-        <details open>
+        <details open id="inputs-detail">
             <summary>Inputs</summary>
             <textarea id="inputs" name="inputs" oninput="resizeCodeBox('inputs')">{{inputs}}</textarea>
         </details>
 
-        <details open>
+        <details id="output-detail">
             <summary style="display: inline-block;">Output</summary>
             <button onclick="copyToClipboard('output')" style="color: white; height:auto; display: inline-block;" type="button">click to copy</button>
             <textarea id="output" value="" readonly style="white-space: pre-wrap; width: 100%">{{output}}</textarea>
         </details>
 
-        <details>
+        <details id="extra-detail">
             <summary>Debug</summary>
-            <textarea value="" id="debug" readonly style="white-space: pre-wrap; width: 100%">{{debug}}</textarea>
+            <textarea value="" id="extra" readonly style="white-space: pre-wrap; width: 100%">{{debug}}</textarea>
         </details>
         
     </form>
