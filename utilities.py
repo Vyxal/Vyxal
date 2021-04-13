@@ -19,7 +19,7 @@ def to_ten(number, custom_base):
         if digit in alphabet:
             result += alphabet.index(digit) * (base_exponent ** power)
         else:
-            result += 0
+            result += -1 * (base_exponent ** power)
         power += 1
     
     return result
