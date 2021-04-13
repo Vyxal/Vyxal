@@ -376,6 +376,10 @@ def chrord(item):
         return chr(int(item))
     else:
         return Generator(map(chrord, item))
+def closest_prime(item):
+    up, down = next_prime(item), prev_prime(item)
+    if abs(item - down) < abs(item - up): return down
+    return up
 def compare(lhs, rhs, mode):
     op = ["==", "<", ">", "!=", "<=", ">="][mode]
 
@@ -828,6 +832,7 @@ def is_prime(n):
         if n.upper() == n.lower(): return -1
         else: return n.upper() == n
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
+    if n < 2: return 0
     if n % 2 == 0 and n > 2:
         return 0
     return int(all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2)))
@@ -994,6 +999,15 @@ def negate(item):
         Number: lambda: -item,
         str: lambda: item.swapcase()
     }.get(VY_type(item), lambda: vectorise(negate, item))()
+def next_prime(item):
+    if not isinstance(item, int):
+        return item
+    
+    factor = 1
+    while not is_prime(item + factor):
+        factor += 1
+    
+    return item + factor
 def nth_prime(item):
     t_item = VY_type(item)
     return {
@@ -1109,6 +1123,15 @@ def prepend(vector, item):
     str: lambda: str(item) + vector,
     range: lambda: [item] + list(vector)
     }.get(t_vector, lambda: prepend(vector._dereference(), item))()
+def prev_prime(item):
+    if not isinstance(item, int):
+        return item
+    
+    factor = 1
+    while not is_prime(item - factor) and item - factor >= 2:
+        factor += 1
+    
+    return item - factor
 def product(vector):
     if type(vector) is Generator:
         return vector._reduce(multiply)

@@ -18,7 +18,7 @@ with open("docs/elements.txt", "r", encoding="utf8") as txt:
         # The index of the equal sign, where the description starts
         effect_ind = line[1:].index("=") + 1
         md.write(
-            f"| `{line[:space_ind]}` "
+            f"| {line[:space_ind]} "
             f"| {' ' if type_ind == -1 else line[type_ind+space_ind:effect_ind]} "
             f"| {line[effect_ind+1:-1]} |\n"
         )
