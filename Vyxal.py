@@ -1126,7 +1126,7 @@ def prepend(vector, item):
 def prev_prime(item):
     if not isinstance(item, int):
         return item
-    
+    if item <= 2: return 0
     factor = 1
     while not is_prime(item - factor) and item - factor >= 2:
         factor += 1
