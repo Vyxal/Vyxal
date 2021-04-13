@@ -229,11 +229,10 @@ def _safe_apply(function, *args):
     Otherwise, unpack args and call as usual
     '''
     args = reverse(args)
-    print(args)
     if function.__name__ == "_lambda":
-        return function(list(args), len(args))
+        return function(list(args), len(args))[-1]
     elif function.__name__.startswith("FN_"):
-        return function(list(args))
+        return function(list(args))[-1]
     return function(*args)
 def _two_argument(function, lhs, rhs):
     '''
