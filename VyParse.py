@@ -311,11 +311,11 @@ def Tokenise(source: str) -> [Token]:
 
         elif structure == TWO_CHAR_LAMBDA:
             if len(structure_data[active_key]) == 1:
-                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: structure_data[active_key] + char}))
+                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: "".join(structure_data[active_key] + [char])}))
                 structure = NO_STMT
                 structure_data = {}
             else:
-                structure_data[active_key] += char
+                structure_data[active_key].append(char)
             continue
 
         elif structure in TWO_CHARS:
@@ -329,11 +329,11 @@ def Tokenise(source: str) -> [Token]:
 
         elif structure == THREE_CHAR_LAMBDA:
             if len(structure_data[active_key]) == 2:
-                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: structure_data[active_key] + char}))
+                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: "".join(structure_data[active_key] + [char])}))
                 structure = NO_STMT
                 structure_data = {}
             else:
-                structure_data[active_key] += char
+                structure_data[active_key].append(char)
             continue
 
         if char == "\\":
@@ -496,13 +496,13 @@ def Tokenise(source: str) -> [Token]:
             char_mode = TWO
             structure = char
             active_key = TWO_CHAR_STUFF
-            structure_data[active_key] = ""
+            structure_data[active_key] = []
 
         elif char == THREE_CHAR_LAMBDA:
             char_mode = THREE
             structure = THREE_CHAR_LAMBDA
             active_key = LAMBDA_BODY
-            structure_data[active_key] = ""
+            structure_data[active_key] = []
 
         elif char in ONE_CHARS:
             char_mode = ONE
@@ -576,7 +576,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["∂+-", "‘ab"]
+    tests = ["‡∆p-Ẋ1="] #"∂+-", "‘ab", "‡∆p-Ẋ1=", "‡ab", 
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
