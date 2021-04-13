@@ -1,6 +1,7 @@
 # Functions and constants
 cmd | inputs | out/effect
 ---|---|---
+| λ |   |  * lambda: λ...; λarity|...; |
 | ƛ |   |  * lambda map: ƛ...; |
 | ¬ | (a: any)                            |  not a |
 | ∧ | (a: any, b: any)                    |  a and b |
@@ -8,8 +9,9 @@ cmd | inputs | out/effect
 | ∨ | (a: any, b: any)                    |  a or b |
 | ⟇ | (a: any, b: any)                    |  b or a |
 | ÷ | (a: any)                            |  stack += iterable(a) |
+| × |   |  "*" |
 | « |   |  * base-255 compressed string: «...« |
-| \<newline> |   |  * NOP |
+| \<newline> |   |  * newline |
 | » |   |  * base-255 compressed number: »...» |
 | ° |   |  * function reference: °defined_function_name; |
 | • | (a: number, b: number)              |  log_a(b) |
@@ -18,7 +20,7 @@ cmd | inputs | out/effect
 |  | (a: string, b: string)              |  a.with_capitalisation_of(b) |
 |  | (a: list, b: list)                  |  a molded to the shape of b |
 |  | (otherwise)                         |  vectorised |
-| ‘ |   |  * one-byte dictionary |
+| ß | (a: any)                            |  * execute element if a is truthy: ß<element> |
 | † | (a: function)                       |  * call function reference |
 |  | (a: non-function)                   |  exec(a) |
 | € | (a: any, b: any)                    |  a.split_on(b) |
@@ -30,6 +32,7 @@ cmd | inputs | out/effect
 | ↔ | (a: any, b: number)                 |  combinations_with_replacement(a, length=b) |
 |  | (a: any, b: non-number)             |  remove elements in a that are not in b |
 |  | (a: function, b: any)               |  apply a on b until the result doesn't change. Collects intermittent values |
+| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn't change |
 | ⌐ | (a: number)                         |  1 - a |
 |  | (a: string)                         |  a.split(",") |
 |  | (otherwise)                         |  vectorised |
@@ -67,24 +70,24 @@ cmd | inputs | out/effect
 | ' |   |  * lambda filter: '...; |
 | ( |   |  * open for loop: (variable|...) |
 | ) |   |  * close for loop |
-| \* | (a: number, b: number)              |  a * b |
+| \* | (a: number, b: number)              |  a * b # mutliplication |
 |  | (a: number, b: string)              |  b repeated a times |
 |  | (a: string, b: number)              |  a repeated b times |
 |  | (a: string, b: string)              |  [char + b for char in a] |
 |  | (otherwise)                         |  vectorised |
-| + | (a: number, b: number)              |  a + b |
+| + | (a: number, b: number)              |  a + b # addition |
 |  | (a: number, b: string)              |  concat(a, b) |
 |  | (a: string, b: number)              |  concat(a, b) |
 |  | (a: string, b: string)              |  concat(a, b) |
 |  | (otherwise)                         |  vectorised |
 | , | (a: any)                            |  print(a) |
-| - | (a: number, b: number)              |  a - b |
+| - | (a: number, b: number)              |  a - b # subtraction |
 |  | (a: number, string)                 |  ("-" * a) + b |
 |  | (a: string, b: number)              |  a + ("-" * b) |
 |  | (a: string, b: string)              |  a.remove(b) |
 |  | (otherwise)                         |  vectorised |
 | . |   |  * decimal seperator |
-| / | (a: number, b: number)              |  a / b |
+| / | (a: number, b: number)              |  a / b # division |
 |  | (a: number, b: string)              |  b split into a even length pieces. There may be an extra part if the string is too long. |
 |  | (a: string, b: number)              |  a split into b even length pieces. There may be an extra part if the string is too long. |
 |  | (a: string, b: string)              |  a.split(b) |
@@ -101,11 +104,11 @@ cmd | inputs | out/effect
 | 9 |   |  * numeric literal |
 | : | (a: any)                            |  a, a  # duplicate |
 | ; |   |  * closes a structure |
-| \< | (a: non-list, b: non-list)          |  a < b # (numbers converted to strings) |
+| \< | (a: non-list, b: non-list)          |  a < b # less than (numbers converted to strings) |
 |  | (a: list, b: any)                   |  vectorised |
 | = | (a: non-list, b: non-list)          |  a == b |
 |  | (a: list, b: any)                   |  a == b # vectorising equals |
-| \> | (a: non-list, b: non-list)          |  a > b # (numbers converted to strings) |
+| \> | (a: non-list, b: non-list)          |  a > b # greater than (numbers converted to strings) |
 |  | (a: list, b: any)                   |  vectorised |
 | ? |   |  input() |
 | @ |   |  * define a function: @name:parameters|...; |
@@ -158,7 +161,9 @@ cmd | inputs | out/effect
 | \\ |   |  * one character literal: \<letter> |
 | ] |   |  * close if statement |
 | ` |   |  * string: `...` |
-| a | (a: any)                            |  any(a)  # irony. |
+| ^ |   |  * reverse stack |
+| _ | (a: any)                            |  discard item |
+| a | (a: any)                            |  any(a) |
 | b | (a: number)                         |  bin(a) # binary representation, base 10 to 2 |
 |  | (a: string)                         |  [bin(ord(char)) for char in a] |
 |  | (otherwise)                         |  vectorised |
@@ -202,7 +207,6 @@ cmd | inputs | out/effect
 | } |   |  * close while loop |
 | ~ |   |  * filter by element (monad) |
 |  |   |  * execute element without popping (dyad) |
-| ß | (a: any)                            |  * execute element if a is truthy: ß<element> |
 | ↑ | (a: any)                            |  max(a, key=lambda x: x[-1]) |
 | ↓ | (a: any)                            |  min(a, key=lambda x: x[-1]) |
 | ∴ | (a: any, b: any)                    |  max(a, b) |
@@ -366,14 +370,13 @@ cmd | inputs | out/effect
 |  | (a: string)                         |  are any letters in a uppercase? |
 |  | (a: list)                           |  vectorised |
 | ℅ | (a: any)                            |  random.choice(a) |
-| ≤ | (a: any, b: any)                    |  a <= b |
-| ≥ | (a: any, b: any)                    |  a >= b |
-| ≠ | (a: any, b: any)                    |  a != b (non-vectorising) |
-| ⁼ | (a: any, b: any)                    |  a == b (non-vectorising) |
+| ≤ | (a: any, b: any)                    |  a <= b # less than or equal to |
+| ≥ | (a: any, b: any)                    |  a >= b # greater than or equal to |
+| ≠ | (a: any, b: any)                    |  a != b (non-vectorising) # not equals |
+| ⁼ | (a: any, b: any)                    |  a == b (non-vectorising) # non-vectorising equals |
 | ƒ | (a: number)                         |  fractionify(a) # returns a two-item list of [numerator, denominator] |
 |  | (a: string)                         |  fractionify(a) if a is numeric string |
 | ɖ | (a: list)                           |  decimalify(a) # opposite of ƒ, reduce by division |
-| × |   |  "*" |
 | ∪ | (a: any, b: any)                    |  set union |
 | ∩ | (a: any, b: any)                    |  set intersection |
 | ⊍ | (a: any, b: any)                    |  set(a) ^ set(b) |
@@ -410,7 +413,6 @@ cmd | inputs | out/effect
 | ‡ |   |  * two-byte lambda: ‡<element><element> |
 | ≬ |   |  * three-byte lambda: ≬<element><element><element> |
 | ⁺ |   |  * index of next character in codepage + 101: ⁺<character> |
-| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn't change |
 | ↵ | (a: string)                         |  a.split("\n") |
 |  | (a: number)                         |  10 ** a |
 |  | (otherwise)                         |  vectorised |
