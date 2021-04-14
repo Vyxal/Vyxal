@@ -36,7 +36,7 @@
 
         }
 
-        input, textarea, pre {color: white;
+        input, textarea {color: white;
             background-color: #181a1b !important;
             font-family: 'DejaVu Sans Mono', monospace;
             min-height: 1em !important;
@@ -224,12 +224,13 @@ ${code}
                    
                    if (actualBox.value){
                        boxToExpand.open = true;
+                       resizeCodeBox(n);
+
                        
                    } else {
                        boxToExpand.open = false;
                    }
 
-                   resizeCodeBox(n);
 
                 });
             }
@@ -292,7 +293,7 @@ ${code}
 </head>
 
 <body onload="decodeURL(); updateCount();">
-    <form method="post" style="padding: 10px;" onload="resizeCodeBox('code-box')" id="overall-form">
+    <form method="post" style="padding: 10px;" onload="resizeCodeBox('code')" id="overall-form">
         <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal" style="text-decoration: none; color: white;">Vyxal</a></h2>
         <button id="run_button" title="Run Program" type="submit" style="color:white" onclick="restyleButton()"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
@@ -320,7 +321,7 @@ ${code}
         
         <details id="flag-detail"> 
             <summary>Flags</summary>
-            <input type="text" name="flags" id="flag" value="{{flags}}"></input>
+            <input type="text" name="flags" id="flag" value="{{flags}}" style="min-height: 2em;"></input>
         </details>
         <details id="header-detail">
             <summary>Header</summary>
