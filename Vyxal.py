@@ -160,8 +160,6 @@ class Generator:
     def __iter__(self):
         return self
     def _map(self, function):
-        if function.__name__ == "_lambda":
-            return Generator(map(lambda x: _safe_apply(function, x)[-1], self.gen))
         return Generator(map(lambda x: _safe_apply(function, x) , self.gen))
     def _filter(self, function):
         index = 0
@@ -170,7 +168,7 @@ class Generator:
             if index == l:
                 break
             obj = self.__getitem__(index)
-            ret = _safe_apply(function, obj)[-1]
+            ret = _safe_apply(function, obj)
             if ret:
                 yield obj
             index += 1

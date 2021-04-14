@@ -64,7 +64,7 @@ command_dict = {
     "I": ("stack.append(VY_int(pop(stack)))", 1),
     "J": ("rhs, lhs = pop(stack, 2); stack.append(join(lhs, rhs))", 2),
     "K": ("stack.append(divisors_of(pop(stack)))", 1),
-    "L": ("stack.append(len(iterable(pop(stack))))", 1),
+    "L": ("top = pop(stack); stack.append(len(iterable(top)))", 1),
     "M": ("fn, vector = pop(stack, 2); stack.append(VY_map(fn, vector))", 2),
     "N": ("stack.append(negate(pop(stack)))", 1),
     "O": ("needle, haystack = pop(stack, 2); stack.append(iterable(haystack).count(needle))", 2),
