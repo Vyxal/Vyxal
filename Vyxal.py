@@ -1430,8 +1430,6 @@ def vectorise(fn, left, right=None, third=None):
             return _safe_apply(fn, left)
         else:
             ret =  [_safe_apply(fn, x) for x in left]
-            if fn.__name__ == "_lambda":
-                return [x[0] for x in ret]
             return ret
 def vertical_join(vector, padding=" "):
     if VY_type(padding) == VY_type(vector) == Number:
