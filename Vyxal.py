@@ -601,7 +601,9 @@ def first_n(func, n=None):
     if type(func) is not Function:
         if n:
             return iterable(func)[n:]
-        return "".join([VY_str(n) for n in iterable(func)])
+        
+        ret = "".join([VY_str(n) for n in iterable(func)])
+        return VY_eval(ret)
     ret = []
     current_index = 0
     n = n or 1
@@ -873,6 +875,7 @@ def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
+        (Number, Number): lambda: VY_eval(str(lhs) + str(rhs)),
         (types[0], list): lambda: [lhs] + rhs,
         (list, types[1]): lambda: lhs + [rhs],
         (types[0], Generator): lambda: [lhs] + rhs._dereference(),
