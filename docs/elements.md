@@ -22,7 +22,9 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ß | (a: any)                            |  * execute element if a is truthy: ß<element> |
 | † | (a: function)                       |  * call function reference |
-|  | (a: non-function)                   |  exec(a) |
+|  | (a: string)                         |  exec(a) |
+|  | (a: number)                         |  len(prime_factors(a)) |
+|  | (a: list)                           |  vectorised not a |
 | € | (a: any, b: any)                    |  a.split_on(b) |
 | ½ | (a: number)                         |  a / 2 |
 |  | (a: string)                         |  a split into two strings of equal lengths (as close as possible) |
@@ -150,7 +152,7 @@ cmd | inputs | out/effect
 | R | (a: any, b: function)               |  reduce a by b # reduction, reduce |
 |  | (a: any, b: any)                    |  a, vectorised_reverse(b) |
 | S | (a: any)                            |  str(a) # string, to string, stringify |
-| T | (a: any)                            |  [item for item in a if bool(item)] # truthy elements only |
+| T | (a: any)                            |  truthy indexes in a |
 | U | (a: any)                            |  uniquifed(a) # uniquify, unique items |
 | V | (a: any, b: any, c: any)            |  a.replace(needle=b, replacement=c) # replace |
 | W |   |  [stack] # wrap stack |
@@ -496,31 +498,31 @@ cmd | inputs | out/effect
 | kṀ |   |  dt.now().minute, |
 | kḢ |   |  dt.now().hour, |
 | kτ |   |  int(dt.now().strftime('%j')) |
-| ∆c |   |  math.cos(a) |
-| ∆C |   |  math.arccos(a) |
-| ∆q |   |  roots of quadratic ax^2 + bx = 0 |
-| ∆Q |   |  roots of quadratic x^2 + ax + b = 0 |
-| ∆s |   |  math.sin(a) |
-| ∆S |   |  math.arcsin(a) |
-| ∆t |   |  math.tan(a) |
-| ∆T |   |  math.arctan(a) |
-| ∆P |   |  roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0 |
-| ∆ƈ |   |  n pick r (npr) |
-| ∆± |   |  math.copysign(a, b) |
-| ∆K |   |  sum(proper_divisors(a)) |
-| ∆² |   |  is_perfect_square(a) |
-| ∆e |   |  e ** a |
-| ∆E |   |  (e ** a) - 1 # uses python's math.expm1() |
-| ∆L |   |  ln(a) |
-| ∆l |   |  log_2(a) |
-| ∆τ |   |  log_10(a) |
-| ∆d |   |  euclidian_distance(a, b) # Straight line distance |
-| ∆D |   |  math.degrees(a) |
-| ∆R |   |  math.radians(a) |
-| ∆Ṗ |   |  next prime after a |
-| ∆ṗ |   |  first prime before a |
-| ∆p |   |  nearest prime to a (highest prime if lowest prime is just as close) |
-| øo |   |  a.remove_until_no_change(b) |
+| ∆c | (a: number)                        |  math.cos(a) |
+| ∆C | (a: number)                        |  math.arccos(a) |
+| ∆q | (a: number, b: number)             |  roots of quadratic ax^2 + bx = 0 |
+| ∆Q | (a: number, b: number)             |  roots of quadratic x^2 + ax + b = 0 |
+| ∆s | (a: number)                        |  math.sin(a) |
+| ∆S | (a: number)                        |  math.arcsin(a) |
+| ∆t | (a: number)                        |  math.tan(a) |
+| ∆T | (a: number)                        |  math.arctan(a) |
+| ∆P | (a: list)                          |  roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0 |
+| ∆ƈ | (a: number, b: number)             |  n pick r (npr) |
+| ∆± | (a: number, b: number)             |  math.copysign(a, b) |
+| ∆K | (a: number)                        |  sum(proper_divisors(a)) |
+| ∆² | (a: number)                        |  is_perfect_square(a) |
+| ∆e | (a: number)                        |  e ** a |
+| ∆E | (a: number)                        |  (e ** a) - 1 # uses python's math.expm1() |
+| ∆L | (a: number)                        |  ln(a) |
+| ∆l | (a: number)                        |  log_2(a) |
+| ∆τ | (a: number)                        |  log_10(a) |
+| ∆d | (a: list, b: list)                 |  euclidian_distance(a, b) # Straight line distance |
+| ∆D | (a: number)                        |  math.degrees(a) |
+| ∆R | (a: number)                        |  math.radians(a) |
+| ∆Ṗ | (a: number)                        |  next prime after a |
+| ∆ṗ | (a: number)                        |  first prime before a |
+| ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
+| øo | (a: string, b: string)             |  a.remove_until_no_change(b) |
 | øV |   |  a.replace_until_no_change(b, c) |
 | øc |   |  base_255_string_compressed(a) |
 | øC |   |  base_255_number_compressed(a) |

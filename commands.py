@@ -72,7 +72,7 @@ command_dict = {
     "Q": ("exit()", 0),
     "R": ("fn, vector = pop(stack, 2); stack += VY_reduce(fn, vector)", 2),
     "S": ("stack.append(VY_str(pop(stack)))", 1),
-    "T": ("stack.append([n for n in iterable(pop(stack)) if bool(n)])", 1),
+    "T": ("stack.append([i for (i, x) in enumerate(pop(stack)) if bool(x)])", 1),
     "U": ("stack.append(uniquify(pop(stack)))", 1),
     "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(replace(haystack, needle, replacement))", 3),
     "W": ("stack = [deref(stack)]", 0),
@@ -275,7 +275,8 @@ list_command_dict = {
     "↑": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
     "ḋ": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
     "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
-    "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0)
+    "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0),
+    "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1)
 }
 
 misc_command_dict = {

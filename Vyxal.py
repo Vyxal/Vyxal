@@ -664,7 +664,10 @@ def function_call(fn, vector):
     if type(fn) is Function:
         return fn(vector)
     else:
-        return [exec(VY_compile(fn))]
+        return [{
+            Number: lambda: len(prime_factors(fn)),
+            str: lambda: exec(VY_compile(fn))
+        }.get(VY_type(fn), lambda: vectorise(lambda x: int(not x), fn))()]
 def gcd(lhs, rhs=None):
     if rhs:
         return {
@@ -1020,6 +1023,14 @@ def nwise_pair(lhs, rhs):
             next(iters[i], None)
 
     return Generator(zip(*iters))
+def nub_sieve(vector):
+    def gen():
+        occurances = {}
+        for item in vector:
+            yield int(item not in occurances)
+            if item in occurances: occurances[item] += 1
+            else: occurances[item] = 1
+    return Generator(gen())
 def one_argument_tail_index(vector, index, start):
     types = (VY_type(vector), VY_type(index))
     return {
