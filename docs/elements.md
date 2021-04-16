@@ -523,15 +523,15 @@ cmd | inputs | out/effect
 | ∆ṗ | (a: number)                        |  first prime before a |
 | ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
 | øo | (a: string, b: string)             |  a.remove_until_no_change(b) |
-| øV |   |  a.replace_until_no_change(b, c) |
-| øc |   |  base_255_string_compressed(a) |
-| øC |   |  base_255_number_compressed(a) |
-| øĊ |   |  centre(a) |
-| øe |   |  run_length_encoded(a) |
-| ød |   |  run_length_decoded(a) |
-| Þ… |   |  b evenly distributed over the elements of a |
-| Þ↓ |   |  * minimum of a by function f |
-| Þ↑ |   |  * maximum of a by function f |
-| Þ× |   |  all_combinations(a) # This is all lengths |
+| øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) |
+| øc | (a: string)                        |  base_255_string_compressed(a) |
+| øC | (a: number)                        |  base_255_number_compressed(a) |
+| øĊ | (a: list)                          |  centre(a) |
+| øe | (a: any)                           |  run_length_encoded(a) |
+| ød | (a: any)                           |  run_length_decoded(a) |
+| Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
+| Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
+| Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
+| Þ× | (a: any)                           |  all_combinations(a) # This is all lengths |
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
