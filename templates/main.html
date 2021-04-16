@@ -80,6 +80,11 @@
         h2 {
             font-family: 'Montserrat', sans-serif;
         }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -88,26 +93,30 @@
     <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png" />
     <script>
         this.prevQuery = "";
-        var codepage  = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
-            codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
-            codepage += "!\"#$%&'()*+,-./01"
-            codepage += "23456789:;<=>?@A"
-            codepage += "BCDEFGHIJKLMNOPQ"
-            codepage += "RSTUVWXYZ[\\]`^_abc"
-            codepage += "defghijklmnopqrs"
-            codepage += "tuvwxyz{|}~↑↓∴∵›"
-            codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
-            codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
-            codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
-            codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
-            codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
-            codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
-            codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
-            codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+        var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
+        codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
+        codepage += "!\"#$%&'()*+,-./01"
+        codepage += "23456789:;<=>?@A"
+        codepage += "BCDEFGHIJKLMNOPQ"
+        codepage += "RSTUVWXYZ[\\]`^_abc"
+        codepage += "defghijklmnopqrs"
+        codepage += "tuvwxyz{|}~↑↓∴∵›"
+        codepage += "‹∷¤ð→←βτȧḃċḋėḟġḣ"
+        codepage += "ḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩"
+        codepage += "‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡"
+        codepage += "∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄ"
+        codepage += "ȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈"
+        codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
+        codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
+        codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
         window.addEventListener('DOMContentLoaded', (event) => {
-            
 
-            codepage_descriptions = {{codepage_info |safe}};
+
+            codepage_descriptions = {
+                {
+                    codepage_info | safe
+                }
+            };
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
                 kb.innerHTML += `<span class=\"key\" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
@@ -118,9 +127,9 @@
                     var start = box.selectionStart;
                     var end = box.selectionEnd;
                     var char = event.target.innerHTML;
-                    if (char === "␤"){
+                    if (char === "␤") {
                         char = "\n"
-                    } else if (char === "␠"){
+                    } else if (char === "␠") {
                         char = " "
                     }
                     var str = box.value.slice(0, start) + char + box.value.slice(end);
@@ -129,22 +138,25 @@
                     updateCount();
                     box.selectionStart = end + 1;
                     box.selectionEnd = end + 1;
-                    
+
                 })
             })
         });
+
         function resizeCodeBox(id) {
             // Resize the code box with the given id
             var element = document.getElementById(id);
             element.style.height = "";
             element.style.height = element.scrollHeight + "px";
         }
+
         function updateCount() {
             var byte_box = document.getElementById("code-count");
             var code = document.getElementById("code").value.length;
 
             byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
         }
+
         function generateURL() {
             var flags = document.getElementById("flag").value;
             var code = document.getElementById("code").value;
@@ -162,6 +174,7 @@
             return url
 
         }
+
         function shareOptions(shareType) {
             var code = document.getElementById("code").value
             var url = generateURL()
@@ -171,27 +184,30 @@
                 flag_appendage = "`" + flags + "`, "
             }
             var output = ""
-            switch (shareType){
-                case "permalink": output = url; break;
-                case "cmc": output = `[Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})`; break;
-                case "post-template": output = `# [Vyxal](https://github.com/Lyxal/Vyxal), ${flag_appendage}${code.length} byte${"s".repeat(code.length != 1)}
-
+            switch (shareType) {
+                case "permalink":
+                    output = url;
+                    break;
+                case "cmc":
+                    output = `[Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})`;
+                    break;
+                case "post-template":
+                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal), ${flag_appendage}${code.length} byte${"s".repeat(code.length != 1)}
 \`\`\`
 ${code}
-\`\`\`
+ \`\`\`
 
-[Try it Online!](${url})
-
-...
-
-## Explained
-`; break
-                case "markdown": output = `[Try it Online!](${url})`; break
+[Try it Online!](${url})`;
+                    break
+                case "markdown":
+                    output = `[Try it Online!](${url})`;
+                    break
             }
             var outputBox = document.getElementById("output");
             outputBox.innerHTML = output;
             copyToClipboard("output")
         }
+
         function decodeURL() {
             const queryString = window.location.search;
             console.log(queryString);
@@ -217,24 +233,25 @@ ${code}
                 var form = document.getElementById("overall-form");
                 form.submit();
             } else {
-                ["flag", "header", "footer", "inputs", "output", "extra"].forEach(function(n){
-                console.log(n)
-                   var boxToExpand = document.getElementById(n + "-detail");
-                   var actualBox = document.getElementById(n);
-                   
-                   if (actualBox.value){
-                       boxToExpand.open = true;
-                       resizeCodeBox(n);
+                ["flag", "header", "footer", "inputs", "output", "extra"].forEach(function(n) {
+                    console.log(n)
+                    var boxToExpand = document.getElementById(n + "-detail");
+                    var actualBox = document.getElementById(n);
 
-                       
-                   } else {
-                       boxToExpand.open = false;
-                   }
+                    if (actualBox.value) {
+                        boxToExpand.open = true;
+                        resizeCodeBox(n);
+
+
+                    } else {
+                        boxToExpand.open = false;
+                    }
 
 
                 });
             }
         }
+
         function restyleButton() {
             var the_button = document.getElementById("run_button");
             the_button.innerHTML = '<i class="fa fa-spinner fa-spin"></i>Executing';
@@ -242,33 +259,40 @@ ${code}
             the_button.style.cursor = "progress";
             document.getElementById('overall-form').submit()
         }
+
         function glyphSearch() {
             var query = document.getElementById("filterBox").value.toLowerCase();
-            var descriptions = {{codepage_info |safe}};
-            
+            var descriptions = {
+                {
+                    codepage_info | safe
+                }
+            };
+
             yesGlyph = []
             yesDescription = []
             console.log("starting filter")
-            for (var index = 0; index < codepage.length; index++){
-                var description = descriptions[index];
-                var glyph = codepage[index];
+            if (query) {
+                for (var index = 0; index < codepage.length; index++) {
+                    var description = descriptions[index];
+                    var glyph = codepage[index];
 
-                var raw = query.split().map((char) => `[^${char}]*${char}`).join("");
-                var pattern = new RegExp(raw);
-                console.log(descriptions.length)
+                    var raw = query.split().map((char) => `[^${char}]*${char}`).join("");
+                    var pattern = new RegExp(raw);
 
-                if (description.match(pattern)){
-                    yesGlyph.push(glyph);
-                    yesDescription.push(description);
+
+                    if (description.match(pattern)) {
+                        yesGlyph.push(glyph);
+                        yesDescription.push(description);
+                    }
                 }
             }
-                var kb = document.getElementById("keyboard");
-                kb.innerHTML = ""
-                for (var i = 0; i < yesGlyph.length; i++) {
-                    kb.innerHTML += `<span class=\"key\" title='${yesDescription[i]}'>${yesGlyph[i]}</span>`;
-                }
+            var kb = document.getElementById("keyboard");
+            kb.innerHTML = ""
+            for (var i = 0; i < yesGlyph.length; i++) {
+                kb.innerHTML += `<span class=\"key\" title='${yesDescription[i]}'>${yesGlyph[i]}</span>`;
+            }
 
-                document.querySelectorAll('.key').forEach(item => {
+            document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
                     var box = document.getElementById("code")
                     var start = box.selectionStart;
@@ -280,10 +304,11 @@ ${code}
                     updateCount();
                     box.selectionStart = end + 1;
                     box.selectionEnd = end + 1;
-                    
+
                 });
             });
         }
+
         function copyToClipboard(arg) {
             var el = document.getElementById(arg);
             el.select();
@@ -294,7 +319,7 @@ ${code}
 
 <body onload="decodeURL(); updateCount(); resizeCodeBox('code')">
     <form method="post" style="padding: 10px;" onload="resizeCodeBox('code')" id="overall-form">
-        <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal" style="text-decoration: none; color: white;">Vyxal</a></h2>
+        <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal">Vyxal</a></h2>
         <button id="run_button" title="Run Program" type="submit" style="color:white" onclick="restyleButton()"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
         </svg></button>
@@ -311,15 +336,15 @@ ${code}
         <details>
             <summary>Keyboard</summary>
             <div class="row" style="width:100%; padding-bottom: 1em;">
-                <label for="filterBox" style="display:inline-block; color: white; font-family: 'Montserrat', sans-serif; padding-right: 1%;">Search elements:&nbsp;</label><input style="display:inline-block" id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
+                <label for="filterBox" style="display:inline-block; color: white; font-family: 'Montserrat', sans-serif; padding-right: 1%;">Search <a href="https://github.com/Lyxal/Vyxal/blob/master/docs/elements.txt">elements</a>:&nbsp;</label><input style="display:inline-block" id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
                 <div class="twelve columns">
                     <div id="keyboard">
                     </div>
                 </div>
             </div>
         </details>
-        
-        <details id="flag-detail"> 
+
+        <details id="flag-detail">
             <summary>Flags</summary>
             <input type="text" name="flags" id="flag" value="{{flags}}" style="min-height: 2em;"></input>
         </details>
@@ -335,7 +360,7 @@ ${code}
 
         <details id="footer-detail">
             <summary>Footer</summary>
-            <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')" >{{footer}}</textarea>
+            <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')">{{footer}}</textarea>
         </details>
 
         <details open id="inputs-detail">
@@ -353,6 +378,6 @@ ${code}
             <summary>Debug</summary>
             <textarea value="" id="extra" readonly style="white-space: pre-wrap; width: 100%">{{debug}}</textarea>
         </details>
-        
+
     </form>
 </body>
