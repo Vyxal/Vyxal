@@ -303,6 +303,26 @@ ${code}
                 });
             } else {
                 document.getElementById("keyboard").innerHTML = og_keyboard_html;
+                document.querySelectorAll('.key').forEach(item => {
+                item.addEventListener('click', event => {
+                    var box = document.getElementById("code")
+                    var start = box.selectionStart;
+                    var end = box.selectionEnd;
+                    var char = event.target.innerHTML;
+                    if (char === "␤") {
+                        char = "\n"
+                    } else if (char === "␠") {
+                        char = " "
+                    }
+                    var str = box.value.slice(0, start) + char + box.value.slice(end);
+                    box.value = str
+                    box.focus()
+                    updateCount();
+                    box.selectionStart = end + 1;
+                    box.selectionEnd = end + 1;
+
+                })
+            })
             }
         }
 
