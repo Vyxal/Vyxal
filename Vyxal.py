@@ -47,6 +47,7 @@ input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
 keg_mode = False
+number_iterable = list
 online_version = False
 output = ""
 printed = False
@@ -838,7 +839,8 @@ def is_prime(n):
     if n % 2 == 0 and n > 2:
         return 0
     return int(all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2)))
-def iterable(item, t=list):
+def iterable(item, t=None):
+    t = t or number_iterable
     if VY_type(item) == Number:
         if t is list:
             return [int(let) if let not in "-." else let for let in str(item)]
@@ -2084,7 +2086,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version
-    global inputs, reverse_args, keg_mode
+    global inputs, reverse_args, keg_mode, number_iterable
     online_version = True
     output = output_variable
     output[1] = ""
@@ -2123,6 +2125,9 @@ def execute(code, flags, input_list, output_variable):
         if "K" in flags:
             keg_mode = True
         
+        if 'R' in flags:
+            number_iterable = range
+        
         if 'h' in flags:
             output[1] = """
 ALL flags should be used as is (no '-' prefix)
@@ -2146,6 +2151,7 @@ ALL flags should be used as is (no '-' prefix)
 \tg\tPrint the minimum item of the top of the stack on end of execution
 \tW\tPrint the entire stack on end of execution
 \tS\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
+\tR\tTreat numbers as ranges if ever used as an iterable
 """
             return
     input_values[0] = [inputs, 0]
@@ -2271,6 +2277,9 @@ if __name__ == "__main__":
             
             if 'H' in flags:
                 header = "stack = [100]\nregister = 0\nprinted = False\n"
+            
+            if 'R' in flags:
+                number_iterable = range
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
