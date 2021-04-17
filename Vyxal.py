@@ -1853,7 +1853,7 @@ constants = {
     "Ṁ": "dt.now().minute",
     "Ḣ": "dt.now().hour",
     "τ": "int(dt.now().strftime('%j'))",
-    "ṡ": "time.time"
+    "ṡ": "time.time()"
 }
 
 def VY_compile(source, header=""):
