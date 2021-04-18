@@ -58,7 +58,7 @@
 !                                    = length(stack)
 " (a: any, b: any)                   = [a, b] # pair
 #                                    = * comment
-$ (a: any, b: any)                   = b, a
+$ (a: any, b: any)                   = b, a # swap
 % (a: number, b: number)             = a % b # modulo, modulus
   (a: number, b: string)             = (b split into a equal pieces)[-1]
   (a: string, b: number)             = (a split into b equal pieces)[-1]
@@ -161,7 +161,7 @@ Z (a: any, b: any)                   = zip(a, b)
 ]                                    = * close if statement
 `                                    = * string: `...`
 ^                                    = * reverse stack
-_ (a: any)                           = discard item
+_ (a: any)                           = discard/pop item
 a (a: any)                           = any(a)
 b (a: number)                        = bin(a) # binary representation, base 10 to 2
   (a: string)                        = [bin(ord(char)) for char in a]
