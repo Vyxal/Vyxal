@@ -61,7 +61,7 @@ cmd | inputs | out/effect
 | ! |   |  length(stack) |
 | " | (a: any, b: any)                    |  [a, b] # pair |
 | # |   |  * comment |
-| $ | (a: any, b: any)                    |  b, a |
+| $ | (a: any, b: any)                    |  b, a # swap |
 | % | (a: number, b: number)              |  a % b # modulo, modulus |
 |  | (a: number, b: string)              |  (b split into a equal pieces)[-1] |
 |  | (a: string, b: number)              |  (a split into b equal pieces)[-1] |
@@ -164,7 +164,7 @@ cmd | inputs | out/effect
 | ] |   |  * close if statement |
 | ` |   |  * string: `...` |
 | ^ |   |  * reverse stack |
-| _ | (a: any)                            |  discard item |
+| _ | (a: any)                            |  discard/pop/remove item |
 | a | (a: any)                            |  any(a) |
 | b | (a: number)                         |  bin(a) # binary representation, base 10 to 2 |
 |  | (a: string)                         |  [bin(ord(char)) for char in a] |
@@ -534,5 +534,6 @@ cmd | inputs | out/effect
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
 | Þ× | (a: any)                           |  all_combinations(a) # This is all lengths |
+| ÞT | (a: any)                           |  transpose(a) |
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
