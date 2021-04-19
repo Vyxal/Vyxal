@@ -599,7 +599,7 @@ def find(haystack, needle, start=0):
         index += 1
     return -1
 def first_n(func, n=None):
-    if type(func) is not Function:
+    if Function not in (type(func), type(n)):
         if n:
             return iterable(func)[n:]
         
@@ -608,8 +608,12 @@ def first_n(func, n=None):
     ret = []
     current_index = 0
     n = n or 1
-    while len(ret) < n:
-        result = fn([current_index])[-1]
+    if isinstance(n, Function):
+        call, limit = n, func
+    else:
+        call, limit = func, n
+    while len(ret) < limit:
+        result = call([current_index])[-1]
         if result: ret.append(current_index)
         current_index += 1
 
