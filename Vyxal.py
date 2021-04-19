@@ -175,7 +175,7 @@ class Generator:
             index += 1
     def _reduce(self, function):
         def ensure_singleton(function, left, right):
-            ret = _safe_apply(function, left, right)
+            ret = _safe_apply(function, right, left)
             if type(ret) in [Generator, list]:
                 return ret[-1]
             return ret
