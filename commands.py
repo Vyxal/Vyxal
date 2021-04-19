@@ -221,7 +221,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.LEFT)", 2),
     "ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.RIGHT)", 2),
     "¢": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
-    "↵": ("stack.append(split_newlines_or_pow_10(pop(stack))", 1),
+    "↵": ("stack.append(split_newlines_or_pow_10(pop(stack)))", 1),
     "⅛": ("global_stack.append(pop(stack))", 1),
     "¼": ("stack.append(pop(global_stack))", 0),
     "¾": ("stack.append(deref(global_stack))", 0),
