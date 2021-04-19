@@ -361,7 +361,7 @@ def cartesian_product(lhs, rhs):
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
-        str: lambda: item.upper()
+        str: lambda: item.replace(" ", "0")
     }.get(VY_type(item), lambda: vectorise(ceiling, item))()
 def centre(vector):
     focal = max(map(len, vector))
@@ -636,7 +636,7 @@ def flatten(item):
 def floor(item):
     return {
         Number: lambda: math.floor(item),
-        str: lambda: iten.lower()
+        str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
 def format_string(string, items):
     ret = ""

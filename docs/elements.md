@@ -339,7 +339,9 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ∇ | (a: any, b: any, c: any)            |  c, a, b |
 | ⌈ | (a: number)                         |  ceiling(a) |
+|  | (a: string)                         |  a.replace(" ", "0")  |
 | ⌊ | (a: number)                         |  floor(a) |
+|  | (a: string)                         |  int(keep only digits of a) |
 | ¯ | (a: any)                            |  deltas(a) |
 | ± | (a: number)                         |  sign_of(a) # negative = -1, 0 = 0, positive = 1 |
 |  | (a: string)                         |  a |
