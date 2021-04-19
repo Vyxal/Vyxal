@@ -27,7 +27,7 @@ command_dict = {
     "•": ("rhs, lhs = pop(stack, 2); stack.append(log(lhs, rhs))", 2),
     "†": ("fn = pop(stack); stack += function_call(fn, stack)", 1),
     "€": ("rhs, lhs = pop(stack, 2); stack.append(split(lhs, rhs))", 2),
-    "½": ("stack.append(divide(pop(stack), 2))", 1),
+    "½": ("stack.append(halve(pop(stack)))", 1),
     "↔": ("rhs, lhs = pop(stack, 2); stack.append(combinations_replace_generate(lhs, rhs))", 2),
     "⌐": ("stack.append(complement(pop(stack)))", 1),
     "æ": ("stack.append(is_prime(pop(stack)))", 1),
@@ -276,7 +276,8 @@ list_command_dict = {
     "ḋ": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
     "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
     "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0),
-    "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1)
+    "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1),
+    "T": ("stack.append(transpose(pop(stack)))", 1)
 }
 
 misc_command_dict = {

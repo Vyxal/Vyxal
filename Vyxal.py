@@ -742,6 +742,11 @@ def group_consecutive(vector):
         ret.append(temp)
 
     return ret
+def halve(item):
+    return {
+        Number: lambda: divide(item, 2),
+        str: lambda: wrap(item, ceiling(len(item) / 2))
+    }.get(VY_type(item), lambda: vectorise(halve, item))()
 def inclusive_range(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
     if Function in types:
@@ -1364,8 +1369,9 @@ def transilterate(original, new, string):
             ret += t_string(char)
     return ret
 def transpose(vector):
+    # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1311
     vector = iterable(vector); vector = list(vector)
-    return Generator(map(list, zip(*vector)))
+    return Generator(map(lambda t: filter(None.__ne__, t), itertools.zip_longest(*map(iterable, vector))))
 def trim(lhs, rhs, left = False, right = False):
     # I stole this from Jelly
     #https://github.com/DennisMitchell/jellylanguage/blob/master/jelly/interpreter.py#L1131
