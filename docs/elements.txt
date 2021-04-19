@@ -245,6 +245,10 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (a: string, b: any)                = longest common suffix(a, str(b))
 ḣ (a: any)                           = a[0], a[1:] # head extract
 ḭ (a: number, b: number)             = a // b  # integer divison
+  (a: number, b: string)             = (b / a)[0] # head of string wrapping
+  (a: string, b: number)             = (a / b)[0] # head of string wrapping
+  (a: function, b: any)              = * right reduce b by a # foldr
+  (a: any, b: function)              = * right reduce a by b # foldr
 ŀ (a: any, b: any, c: number)        = a.find(b, start=c)
 ṁ (a: any)                           = arithmetic_mean(a)  # average -> sum(a) / length(a)
 ṅ (a: function)                      = first integer where a(x) is truthy
