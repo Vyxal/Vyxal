@@ -408,7 +408,7 @@ def combinations_replace_generate(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if Function not in types:
         ret = {
-            (Number, types[1]): Generator(itertools.product(iterable(rhs), repeat=lhs)),
+            (Number, types[1]): lambda: Generator(itertools.product(iterable(rhs), repeat=lhs)),
             (types[0], Number): lambda: Generator(itertools.product(iterable(lhs), repeat=rhs))
         }.get(types, lambda: -1)()
         if ret != -1: return ret
