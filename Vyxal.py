@@ -1542,11 +1542,8 @@ def VY_exec(item):
     else:
         return vectorise(VY_exec, item)
 def VY_filter(fn, vector):
-    t_vector = VY_type(vector)
-    t_function = VY_type(fn)
-    if t_function != Function:
+    def default_case(lhs, rhs):
         # remove elements from a that are in b
-        rhs, lhs = iterable(fn, str), iterable(vector, str)
         out = "" if type(lhs) is str else []
         for item in lhs:
             if item not in rhs:
@@ -1555,19 +1552,21 @@ def VY_filter(fn, vector):
                 else:
                     out.append(item)
         return out
-
-    if t_vector == Number:
-        vector = range(MAP_START, int(vector) + MAP_OFFSET)
-    if t_vector is Generator:
-        return Generator(vector._filter(fn))
-    else:
-        ret = []
-        for item in vector:
-            val = fn([item])[-1]
+    
+    def _filter(function, vec):
+        for item in vec:
+            val = function([item])[-1]
             if bool(val):
-                ret.append(item)
+                yield item
+    types = (VY_type(fn), VY_type(vector))
+    return {
+        types: lambda: default_case(iterable(fn, str), iterable(vector, str)),
+        (Function, Generator): lambda: Generator(vector._filter(fn)),
+        (Generator, Function): lambda: Generator(fn._filter(fn)),
+        (Function, types[1]): lambda: Generator(_filter(fn, iterable(vector, range))),
+        (types[0], Function): lambda: Generator(_filter(vector, iterable(fn, range)))
 
-        return ret
+    }[types]()
 def VY_int(item, base=10):
     t_item = type(item)
     if t_item not in [str, float, int]:
@@ -2145,8 +2144,8 @@ ALL flags should be used as is (no '-' prefix)
 \tj\tPrint top of stack joined by newlines on end of execution
 \tL\tPrint top of stack joined by newlines (Vertically) on end of execution
 \ts\tSum/concatenate top of stack on end of execution
-\tM\tUse 0-indexed range [0,n] for mapping integers
-\tm\tUse 0-indexed range [0,n) for mapping integers
+\tM\tMake implicit range generation start at 0 instead of 1
+\tm\tMake implicit range generation end at n-1 instead of n
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
@@ -2241,8 +2240,8 @@ if __name__ == "__main__":
         print("\tj\tPrint top of stack joined by newlines")
         print("\tL\tPrint top of stack joined by newlines (Vertically)")
         print("\ts\tSum/concatenate top of stack on end of execution")
-        print("\tM\tUse 1-indexed range [0,n] for mapping integers")
-        print("\tm\tUse 0-indexed range [0,n) for mapping integers")
+        print("\tM\tMake implicit range generation start at 0 instead of 1")
+        print("\tm\tMake implicit range generation end at n-1 instead of n")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
         print("\tf\tGet input from file instead of arguments")
