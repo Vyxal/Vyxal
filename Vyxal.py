@@ -2155,7 +2155,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces on end of execution
 \tC\tCentre the output and join on newlines on end of execution
 \tO\tDisable implicit output
-\tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting
+\tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting)
 \tl\tPrint length of top of stack on end of execution
 \tG\tPrint the maximum item of the top of stack on end of execution
 \tg\tPrint the minimum item of the top of the stack on end of execution
