@@ -1633,7 +1633,7 @@ def VY_min(item, *others):
         if item:
             smallest = item[0]
             for sub in item[1:]:
-                res = compare(deref(sub), deref(smallest), Comparitors.GREATER_THAN)
+                res = compare(deref(sub), deref(smallest), Comparitors.LESS_THAN)
                 if VY_type(res) in [list, Generator]:
                     res = any(res)
                 if res:
