@@ -839,6 +839,11 @@ def interleave(lhs, rhs):
             ret += list(lhs[i + 1:])
     if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
+def is_empty(item):
+    return {
+        Number: lambda: item % 3,
+        str: lambda: int(item == "")
+    }.get(VY_type(item), lambda: vectorise(is_empty, item))()
 def is_prime(n):
     if type(n) is str:
         if n.upper() == n.lower(): return -1
@@ -1429,7 +1434,7 @@ def vectorise(fn, left, right=None, third=None):
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x, third), right))
         return {
-            (types[0], types[1]): lambda: _safe_apply(fn, left, right, third),
+            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right, third),
             (list, types[1]): lambda: [_safe_apply(fn, x, right, third) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x, third) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right, third)),
@@ -1441,7 +1446,7 @@ def vectorise(fn, left, right=None, third=None):
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
         return {
-            (types[0], types[1]): lambda: _safe_apply(fn, left, right),
+            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
@@ -1451,7 +1456,7 @@ def vectorise(fn, left, right=None, third=None):
         if VY_type(left) is Generator:
             return left._map(fn)
         elif VY_type(left) in (str, Number):
-            return _safe_apply(fn, left)
+            return _safe_apply(fn, iterable(left))
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             return ret

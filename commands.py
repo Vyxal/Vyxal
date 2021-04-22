@@ -218,6 +218,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ǐ": ("stack.append(prime_factors(pop(stack)))", 1),
     "ǐ": ("stack.append(all_prime_factors(pop(stack)))", 1),
     "Ǒ": ("rhs, lhs = pop(stack, 2); stack.append(order(lhs, rhs))", 2),
+    "ǒ": ("stack.append(is_empty(pop(stack)))", 1),
     "Ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.LEFT)", 2),
     "ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.RIGHT)", 2),
     "¢": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
