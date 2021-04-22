@@ -56,11 +56,6 @@ def parse_file():
     import os
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     file = os.path.join(THIS_FOLDER, 'docs/elements.txt')
-def parse_file():
-    ret = []
-    keys = {}
-    THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
-    file = os.path.join(THIS_FOLDER, 'docs/elements.txt')
     with open(file, "r", encoding="utf8") as txt:
         for line in txt:
             if line == "\n": #Finished
