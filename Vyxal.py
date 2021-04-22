@@ -2110,7 +2110,7 @@ def execute(code, flags, input_list, output_variable):
 
     if input_list:
         eval_function = VY_eval
-        if 'S' in flags: eval_function = str
+        if 'Ṡ' in flags: eval_function = str
         inputs = list(map(eval_function, input_list.split("\r\n")))
 
     if 'a' in flags:
@@ -2165,7 +2165,7 @@ ALL flags should be used as is (no '-' prefix)
 \tG\tPrint the maximum item of the top of stack on end of execution
 \tg\tPrint the minimum item of the top of the stack on end of execution
 \tW\tPrint the entire stack on end of execution
-\tS\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
+\tṠ\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
 \tR\tTreat numbers as ranges if ever used as an iterable
 """
             return
@@ -2219,7 +2219,7 @@ if __name__ == "__main__":
         flags = sys.argv[2]
         if flags:
             eval_function = VY_eval
-            if "S" in flags:
+            if "Ṡ" in flags:
                 eval_function = str
             if 'H' in flags:
                 stack = [100]
@@ -2262,8 +2262,8 @@ if __name__ == "__main__":
         print("\tG\tPrint the maximum item of the top of stack on end of execution")
         print("\tg\tPrint the minimum item of the top of the stack on end of execution")
         print("\tW\tPrint the entire stack on end of execution")
-        print("\tS\tTreat all inputs as strings")
-        print("")
+        print("\tṠ\tTreat all inputs as strings")
+        print("\tR\tTreat numbers as ranges if ever used as an iterable")
     else:
         if flags:
             if "M" in flags:

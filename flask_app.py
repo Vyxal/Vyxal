@@ -56,15 +56,35 @@ def parse_file():
     import os
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     file = os.path.join(THIS_FOLDER, 'docs/elements.txt')
-    print(file)
+def parse_file():
     ret = []
-    with open(file, "r", encoding="utf8") as txt:
+    keys = {}
+    with open("docs/elements.txt", "r", encoding="utf8") as txt:
         for line in txt:
-            if line == "\n" or (line[0] == "k" and line[1] != " ") : #Finished
+            if line == "\n": #Finished
                 break
             else:
-                if line[0] == " ":
-                    ret[-1] += "\n" + line[line.find("=", 1) + 1:-1]
+                is_digraph = line[0] in "k∆øÞ¨" and line[1] != " "
+                if is_digraph:
+                    letter = line[1]
                 else:
-                    ret.append(line[line.find("=", 1) + 1:-1])
+                    letter = line[0]
+                
+                if letter in keys and letter != " ":
+                    index = keys[letter]
+                else:
+                    index = -1
+                    keys[letter] = len(ret)
+                
+                if line[0] == " ":
+                    if is_digraph:
+                        print(letter, line)
+                        ret[index] += "\n" + line[0] + ": " + line[3:-1]
+                    else:
+                        ret[index] += "\n" + line[1:-1]
+                else:
+                    if is_digraph:
+                        ret[index] += "\n" + line[0] + ": " + line[3:-1]
+                    else:
+                        ret.append("\n" + line[1:-1])
     return ret

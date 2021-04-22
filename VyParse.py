@@ -189,7 +189,7 @@ def group_two_bytes(code):
     temp = ""
     escaped = False
 
-    TWO_BYTE_DELIMS = "∆øÞ"
+    TWO_BYTE_DELIMS = "k∆øÞ¨"
 
     for item in code:
         if type(item) is list:
@@ -198,7 +198,7 @@ def group_two_bytes(code):
         elif escaped:
             escaped = False
             ret.append(item)
-        elif item in "\\ª":
+        elif item in "\\⁺":
             escaped = True
             ret.append(item)
         elif temp:
