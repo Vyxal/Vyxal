@@ -53,10 +53,10 @@ A walkthrough:
 
 It's worth noting that, if during program execution, nothing has been printed explcitly (using either `,` or `.`), the top of the stack will be implicitally outputted.
 
-If you want decimals, use `•` instead of `.`:
+If you want decimals, use `.`:
 
 ```
-3•1415926535897      # Pushes 3.1415926535897 (pi to a precision higher than most mathematical fields actually need)
+3.1415926535897      # Pushes 3.1415926535897 (pi to a precision higher than most mathematical fields actually need)
 ```
 
 ## Strings
@@ -176,7 +176,7 @@ If `n` isn't present, no items will be popped from the stack, consequently makin
 `code` = the body of the lambda.
 Where the `@...;` function stores the definition for infinite re-use, the lambda pushes a reference to the code inside it. This is similar to python's lambdas, which are temporary functions, or literal functions (for lack of better word).
 
-These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in 9. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
+These can be applied using `†`. For example: `3 λ3*; †` will result in 9. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
 
 ## Summary of Structures
 
