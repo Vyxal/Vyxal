@@ -51,9 +51,10 @@ def index():
 def ash():
     return render_template("ash.html")
 
-
 def parse_file():
     import os
+    ret = []
+    keys = {}
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     file = os.path.join(THIS_FOLDER, 'docs/elements.txt')
     with open(file, "r", encoding="utf8") as txt:
