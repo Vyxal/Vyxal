@@ -270,7 +270,7 @@ def all_prime_factors(item):
             out += [key] * m[key]
         return out
     elif VY_type(item) is str:
-        return sentence_case(item)
+        return item.title()
     return vectorise(all_prime_factors, item)
 def assigned(vector, index, item):
     if type(vector) is str:
@@ -1140,7 +1140,7 @@ def prime_factors(item):
     t_item = VY_type(item)
     return {
         Number: lambda: sympy.ntheory.primefactors(int(item)),
-        str: lambda: item.title()
+        str: lambda: item + item[0]
     }.get(t_item, lambda: vectorise(prime_factors, item))()
 def prepend(vector, item):
     vector = iterable(vector, range)
