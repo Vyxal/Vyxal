@@ -157,6 +157,8 @@ def group_strings(program):
     for char in program:
         if flux_string[0]:
             if escaped:
+                if char == "`":
+                    flux_string[1] = flux_string[1][:-1]
                 flux_string[1] += char
                 escaped = False
             elif char == STRING_DELIMITER:
@@ -172,7 +174,7 @@ def group_strings(program):
             out.append(char)
         elif char == STRING_DELIMITER:
             flux_string[0] = True
-        elif char in "\\ª":
+        elif char in "\\⁺":
             escaped = True
             out.append(char)
         else:
@@ -576,7 +578,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["‡∆p-Ẋ1="] #"∂+-", "‘ab", "‡∆p-Ẋ1=", "‡ab", 
+    tests = ["‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
