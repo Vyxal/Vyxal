@@ -33,8 +33,8 @@ cmd | inputs | out/effect
 | ø |   |  * string digraphs |
 | ↔ | (a: any, b: number)                 |  combinations_with_replacement(a, length=b) |
 |  | (a: any, b: non-number)             |  remove elements in a that are not in b |
-|  | (a: function, b: any)               |  apply a on b until the result doesn't change. Collects intermittent values |
-| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn't change |
+|  | (a: function, b: any)               |  apply a on b until the result doesn"t change. Collects intermittent values |
+| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn"t change |
 | ⌐ | (a: number)                         |  1 - a |
 |  | (a: string)                         |  a.split(",") |
 |  | (otherwise)                         |  vectorised |
@@ -44,7 +44,7 @@ cmd | inputs | out/effect
 | ʀ | (a: number)                         |  range(0, a + 1) |
 |  | (a: otherwise)                      |  str(a) == "0" |
 | ʁ | (a: number)                         |  range(0, a) |
-|  | (a: otherwise)                      |  str(a) == "0" # that's because of the way this is implemented - it's literally just 0ar |
+|  | (a: otherwise)                      |  str(a) == "0" # that is because of the way this is implemented - it is literally just 0ar |
 | ɾ | (a: number)                         |  range(1, a + 1) |
 |  | (a: otherwise)                      |  str(a) == "1" |
 | ɽ | (a: number)                         |  range(1, a) |
@@ -69,7 +69,7 @@ cmd | inputs | out/effect
 |  | (a: string, b: list)                |  a.format(b) |
 |  | (otherwise)                         |  vectorised |
 | & |   |  * apply next element to register: &<element> |
-| ' |   |  * lambda filter: '...; |
+| ' |   |  * lambda filter |
 | ( |   |  * open for loop: (variable|...) |
 | ) |   |  * close for loop |
 | \* | (a: number, b: number)              |  a * b # mutliplication |
@@ -327,7 +327,7 @@ cmd | inputs | out/effect
 | Ṫ | (a: any)                            |  a[:-1] |
 | Ẇ | (a: any, b: any)                    |  a.split_and_keep_delimiter(b) |
 | Ẋ | (a: any, b: any)                    |  cartesian_product(a, b) |
-|  | (a: function, b: any)               |  repeatedly apply a on b until b doesn't change |
+|  | (a: function, b: any)               |  repeatedly apply a on b until b doesn"t change |
 | Ẏ | (a: any, b: number)                 |  a[0:b] |
 | Ż | (a: any, b: number)                 |  a[1:b] |
 | ₌ |   |  * parallel apply next two elements: ₌<element><element> |
@@ -339,7 +339,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ∇ | (a: any, b: any, c: any)            |  c, a, b |
 | ⌈ | (a: number)                         |  ceiling(a) |
-|  | (a: string)                         |  a.replace(" ", "0")  |
+|  | (a: string)                         |  a.replace(" ", "0") |
 | ⌊ | (a: number)                         |  floor(a) |
 |  | (a: string)                         |  int(keep only digits of a) |
 | ¯ | (a: any)                            |  deltas(a) |
@@ -409,7 +409,7 @@ cmd | inputs | out/effect
 |  | (a: string)                         |  a.titlecase() |
 |  | (otherwise)                         |  vectorised |
 | Ǒ | (a: number, b: number)              |  how many times does b divide a?  # order |
-|  | (a: string, b: string)              |  remove b from a until a doesn't change |
+|  | (a: string, b: string)              |  remove b from a until a doesn"t change |
 | ǒ | (a: number)                         |  a % 3 |
 |  | (a: string)                         |  is string empty? |
 |  | (otherwise)                         |  vectorised |
@@ -431,7 +431,7 @@ cmd | inputs | out/effect
 | „ |   |  * rotate stack left |
 | ‟ |   |  * rotate stack right |
 | kA |   |  "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet) |
-| ke |   |  2.718281828459045            (math.e) |
+| ke |   |  2.718281828459045 (math.e) |
 | kf |   |  "Fizz" |
 | kb |   |  "Buzz" |
 | kF |   |  "FizzBuzz" |
@@ -447,8 +447,8 @@ cmd | inputs | out/effect
 | k6 |   |  "0123456789abcdef" |
 | k^ |   |  "0123456789ABCDEF" |
 | ko |   |  "01234567" |
-| kp |   |  "!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~" |
-| kP |   |  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ 	" |
+| kp |   |  string.punctuation |
+| kP |   |  printable ascii |
 | kw |   |  All ASCII whitespace |
 | kr |   |  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" |
 | kB |   |  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" |
@@ -457,11 +457,11 @@ cmd | inputs | out/effect
 | kl |   |  "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" |
 | ki |   |  3.141592653589793 |
 | kn |   |  math.nan |
-| kD |   |  * Today's date, in the format YYYY-MM-DD |
-| kN |   |  * Today's time, as a list of ⟨hh|mm|ss⟩ |
-| kḋ |   |  * Today's date, in the format DD/MM/YYYY |
-| kḊ |   |  * Today's date, in the format MM/DD/YYYY |
-| kð |   |  * Today's date, in the format ⟨DD|MM|YYYY⟩ |
+| kD |   |  * Current day in the format YYYY-MM-DD |
+| kN |   |  * Current time as a list of ⟨hh|mm|ss⟩ |
+| kḋ |   |  * Current day in the format DD/MM/YYYY |
+| kḊ |   |  * Current day in the format MM/DD/YYYY |
+| kð |   |  * Current day in the format ⟨DD|MM|YYYY⟩ |
 | kβ |   |  "{}[]<>()" |
 | kḂ |   |  "()[]{}" |
 | kß |   |  "()[]" |
@@ -473,35 +473,35 @@ cmd | inputs | out/effect
 | kV |   |  "AEIOU" |
 | k∨ |   |  "aeiouAEIOU" |
 | k⟇ |   |  * Yields the Vyxal codepage |
-| k½ |   |  [1, 2], |
-| kḭ |   |  2 ** 32, |
-| k+ |   |  [1, -1], |
-| k- |   |  [-1, 1], |
-| k≈ |   |  [0, 1], |
-| k/ |   |  '/\\', |
-| kR |   |  360, |
-| kW |   |  'https://', |
-| k℅ |   |  'http://', |
-| k↳ |   |  'https://www.', |
-| k² |   |  'http://www., |
-| k" |   |  16, |
-| k∴ |   |  32, |
-| k… |   |  64, |
-| k¶ |   |  512, |
-| k⁋ |   |  1024, |
-| k¦ |   |  2048, |
-| kṄ |   |  4096, |
-| kṅ |   |  8192, |
-| k¡ |   |  16384, |
-| kε |   |  32768, |
-| k₴ |   |  65536, |
-| k× |   |  2147483648, |
-| k⁰ |   |  'bcfghjklmnpqrstvwxyz', |
-| k¹ |   |  'bcfghjklmnpqrstvwxz', |
+| k½ |   |  [1, 2] |
+| kḭ |   |  2 ** 32 |
+| k+ |   |  [1, -1] |
+| k- |   |  [-1, 1] |
+| k≈ |   |  [0, 1] |
+| k/ |   |  "/\\" |
+| kR |   |  360 |
+| kW |   |  "https://" |
+| k℅ |   |  "http://" |
+| k↳ |   |  "https://www." |
+| k² |   |  "http://www. |
+| k" |   |  16 |
+| k∴ |   |  32 |
+| k… |   |  64 |
+| k¶ |   |  512 |
+| k⁋ |   |  1024 |
+| k¦ |   |  2048 |
+| kṄ |   |  4096 |
+| kṅ |   |  8192 |
+| k¡ |   |  16384 |
+| kε |   |  32768 |
+| k₴ |   |  65536 |
+| k× |   |  2147483648 |
+| k⁰ |   |  "bcfghjklmnpqrstvwxyz" |
+| k¹ |   |  "bcfghjklmnpqrstvwxz" |
 | k□ |   |  printable ascii |
-| k• |   |  ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'], |
-| kṠ |   |  current second, |
-| kṀ |   |  current minute, |
+| k• |   |  ["qwertyuiop", "asdfghjkl", "zxcvbnm"] |
+| kṠ |   |  current second |
+| kṀ |   |  current minute |
 | kḢ |   |  curren hour |
 | kτ |   |  day number of the year |
 | kṡ |   |  seconds since epoch |
@@ -519,7 +519,7 @@ cmd | inputs | out/effect
 | ∆K | (a: number)                        |  sum(proper_divisors(a)) |
 | ∆² | (a: number)                        |  is_perfect_square(a) |
 | ∆e | (a: number)                        |  e ** a |
-| ∆E | (a: number)                        |  (e ** a) - 1 # uses python's math.expm1() |
+| ∆E | (a: number)                        |  (e ** a) - 1 # uses math.expm1() |
 | ∆L | (a: number)                        |  ln(a) |
 | ∆l | (a: number)                        |  log_2(a) |
 | ∆τ | (a: number)                        |  log_10(a) |
@@ -529,6 +529,7 @@ cmd | inputs | out/effect
 | ∆Ṗ | (a: number)                        |  next prime after a |
 | ∆ṗ | (a: number)                        |  first prime before a |
 | ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
+| ∆ṙ | (a: list)                          |  polynomial from roots a |
 | øo | (a: string, b: string)             |  a.remove_until_no_change(b) |
 | øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) |
 | øc | (a: string)                        |  base_255_string_compressed(a) |

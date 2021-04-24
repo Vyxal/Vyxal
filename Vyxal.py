@@ -1427,6 +1427,11 @@ def uninterleave(item):
         return ["".join(left), "".join(right)]
     return [left, right]
 uniquify = lambda item: list(dict.fromkeys(iterable(item)))
+def unsympy(item):
+    if type(item) in (list, Generator): return vectorise(unsympy, item)
+    if item.is_Integer: return int(item)
+    elif item.is_Float: return float(item)
+    else: return item
 def vectorise(fn, left, right=None, third=None):
     if third:
         left = iterable(left)

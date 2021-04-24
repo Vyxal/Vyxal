@@ -256,7 +256,8 @@ math_command_dict = {
     "≤": ("arg = pop(stack); stack.append(compare(VY_abs(arg), 1, Comparitors.LESS_THAN_EQUALS))", 1),
     "Ṗ": ("stack.append(next_prime(pop(stack)))", 1),
     "ṗ": ("stack.append(prev_prime(pop(stack)))", 1),
-    "p": ("stack.append(closest_prime(pop(stack)))", 1)
+    "p": ("stack.append(closest_prime(pop(stack)))", 1),
+    "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1)
 }
 
 string_command_dict = {

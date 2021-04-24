@@ -526,6 +526,7 @@ kṡ                                   = seconds since epoch
 ∆Ṗ (a: number)                       = next prime after a
 ∆ṗ (a: number)                       = first prime before a
 ∆p (a: number)                       = nearest prime to a (highest prime if lowest prime is just as close)
+∆ṙ (a: list)                         = polynomial from roots a
 øo (a: string, b: string)            = a.remove_until_no_change(b)
 øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c)
 øc (a: string)                       = base_255_string_compressed(a)
