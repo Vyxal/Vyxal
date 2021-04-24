@@ -229,9 +229,13 @@ def _safe_apply(function, *args):
     '''
     args = reverse(args)
     if function.__name__ == "_lambda":
-        return function(list(args), len(args))[-1]
+        ret = function(list(args), len(args))
+        if len(ret): return ret[-1]
+        else: return []
     elif function.__name__.startswith("FN_"):
-        return function(list(args))[-1]
+        ret = function(list(args))[-1]
+        if len(ret): return ret[-1]
+        else: return []
     return function(*args)
 def _two_argument(function, lhs, rhs):
     '''
@@ -2009,9 +2013,10 @@ else:
             compiled += tab("context_values.append(parameters);") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
+            compiled += tab("ret = [pop(stack)]") + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
             compiled += tab("input_level -= 1;") + NEWLINE
-            compiled += tab("return [stack[-1]]") + NEWLINE
+            compiled += tab("return ret") + NEWLINE
             compiled += "stack.append(_lambda)"
         elif NAME == VyParse.LIST_STMT:
             compiled += "temp_list = []" + NEWLINE
