@@ -1413,7 +1413,7 @@ def two_power(item):
     elif VY_type(item) is str:
         out = ""
         for char in item:
-            if char not in string.ascii_letters:
+            if char in string.ascii_letters:
                 out += char
         return out
     else:
