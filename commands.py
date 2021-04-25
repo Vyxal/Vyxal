@@ -268,7 +268,9 @@ string_command_dict = {
     "Ċ": ("stack.append(centre(iterable(pop(stack))))", 1),
     "m": ("stack.append(palindromise(iterable(pop(stack))))", 1),
     "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), 
-    "d": ("stack.append(run_length_decode(pop(stack)))", 1)
+    "d": ("stack.append(run_length_decode(pop(stack)))", 1),
+    "D": ("stack.append(dictionary_compress(pop(stack)))", 1),
+    "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1)
 }
 
 list_command_dict = {

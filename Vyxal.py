@@ -470,6 +470,17 @@ def deref(item):
     if VY_type(item) is Generator: return item._dereference()
     if type(item) not in [int, float, str]: return item[::]
     return item
+def dictionary_compress(item):
+    item = split_on_words(VY_str(item))
+    out = ""
+
+    for word in item:
+        temp = words.word_index(word)
+        if temp == -1:
+            out += word
+        else:
+            out += temp
+    return "`" + out + "`"
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -1322,6 +1333,20 @@ def split_newlines_or_pow_10(item):
         Number: lambda: 10 ** item,
         str: lambda: item.split("\n")
     }.get(VY_type(item), lambda: vectorise(split_newlines_or_pow_10, item))()
+def split_on_words(item):
+    parts = []
+    word = ""
+
+    for char in item:
+        if char not in string.ascii_letters:
+            if word: parts.append(word)
+            word = ""
+            parts.append(char)
+        else:
+            word += char
+    
+    if word: parts.append(word)
+    return parts
 def string_empty(item):
     return {
         Number: lambda: item % 3,
