@@ -191,7 +191,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "±": ("stack.append(sign_of(pop(stack)))", 1),
     "₴": ("VY_print(pop(stack), end=''); printed = True", 1),
     "…": ("top = pop(stack); stack.append(top); VY_print(top); printed = True", 0),
-    "□": ("if inputs: stack.append([inputs])\nelse:\n    s, x = [], input()\n    while x:\n        s.append(Vy_eval(x)); x = input()", 0),
+    "□": ("if inputs: stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(Vy_eval(x)); x = input()", 0),
     "↳": ("rhs, lhs = pop(stack, 2); stack.append(rshift(lhs, rhs))", 2),
     "↲": ("rhs, lhs = pop(stack, 2); stack.append(lshift(lhs, rhs))", 2),
     "⋏": ("rhs, lhs = pop(stack, 2); stack.append(bit_and(lhs, rhs))", 2),
