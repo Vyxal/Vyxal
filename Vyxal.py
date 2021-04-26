@@ -854,6 +854,13 @@ def interleave(lhs, rhs):
             ret += list(lhs[i + 1:])
     if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
+def is_divisble(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: lhs % rhs == 0,
+        (types[0], str): lambda: rhs.split(" "),
+        (str, Number): lambda: len(lhs) % rhs == 0
+    }.get(types, lambda: vectorise(is_divisble, lhs, rhs))()
 def is_empty(item):
     return {
         Number: lambda: item % 3,
@@ -1980,7 +1987,7 @@ def VY_compile(source, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
-                compiled += tab("global context_level, context_values, input_level, input_values, retain_items") + NEWLINE
+                compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level += 1") + NEWLINE
                 if parameter_count == 1:
@@ -2027,7 +2034,7 @@ else:
                     defined_arity = int(lambda_argument)
 
             compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
-            compiled += tab("global context_level, context_values, input_level, input_values, retain_items") + NEWLINE
+            compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE

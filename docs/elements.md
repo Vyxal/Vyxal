@@ -306,6 +306,9 @@ cmd | inputs | out/effect
 | Ḃ | (a: any)                            |  a, reversed(a) # bifurcate |
 | Ċ | (a: any)                            |  counts_of_items(a) |
 | Ḋ | (a: number, b: number)              |  a % b == 0 |
+|  | (a: string, b: number)              |  len(a) % b |
+|  | (a: any, b: string)                 |  a, b.split(" ") |
+|  | (otherwise)                         |  vectorised |
 | Ė | (a: string)                         |  Vyxal_exec(a) |
 |  | (a: number)                         |  1 / a  # reciprocal |
 |  | (otherwise)                         |  vectorise |
@@ -537,6 +540,8 @@ cmd | inputs | out/effect
 | øĊ | (a: list)                          |  centre(a) |
 | øe | (a: any)                           |  run_length_encoded(a) |
 | ød | (a: any)                           |  run_length_decoded(a) |
+| øD | (a: string)                        |  dictionary_compressed(a) |
+| øW | (a: string)                        |  group_on_words(a) |
 | Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |

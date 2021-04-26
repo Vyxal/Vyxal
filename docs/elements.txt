@@ -303,6 +303,9 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 Ḃ (a: any)                           = a, reversed(a) # bifurcate
 Ċ (a: any)                           = counts_of_items(a)
 Ḋ (a: number, b: number)             = a % b == 0
+  (a: string, b: number)             = len(a) % b
+  (a: any, b: string)                = a, b.split(" ")
+  (otherwise)                        = vectorised
 Ė (a: string)                        = Vyxal_exec(a)
   (a: number)                        = 1 / a  # reciprocal
   (otherwise)                        = vectorise
