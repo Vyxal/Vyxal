@@ -156,7 +156,7 @@ command_dict = {
     "Ȧ": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
     "Ḃ": ("stack += bifuricate(pop(stack))", 1),
     "Ċ": ("stack.append(counts(pop(stack)))", 1),
-    "Ḋ": ("rhs, lhs = pop(stack, 2); stack.append(is_divisble(lhs, rhs))", 2),
+    "Ḋ": ("rhs, lhs = pop(stack, 2); stack += is_divisble(lhs, rhs)", 2),
     "Ė": ("code = VY_exec(pop(stack)); stack.append(code)", 1),
     "Ḟ": ("""top = pop(stack)
 if VY_type(top) is Number:

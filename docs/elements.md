@@ -306,8 +306,9 @@ cmd | inputs | out/effect
 | Ḃ | (a: any)                            |  a, reversed(a) # bifurcate |
 | Ċ | (a: any)                            |  counts_of_items(a) |
 | Ḋ | (a: number, b: number)              |  a % b == 0 |
-|  | (a: string, b: number)              |  len(a) % b |
-|  | (a: any, b: string)                 |  a, b.split(" ") |
+|  | (a: string, b: number)              |  b copies of a |
+|  | (a: string, b: string)              |  len(b) copies of a |
+|  | (a: number, b: string)              |  a copies of b |
 |  | (otherwise)                         |  vectorised |
 | Ė | (a: string)                         |  Vyxal_exec(a) |
 |  | (a: number)                         |  1 / a  # reciprocal |
@@ -342,7 +343,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ∇ | (a: any, b: any, c: any)            |  c, a, b |
 | ⌈ | (a: number)                         |  ceiling(a) |
-|  | (a: string)                         |  a.replace(" ", "0") |
+|  | (a: string)                         |  a.split(" ") |
 | ⌊ | (a: number)                         |  floor(a) |
 |  | (a: string)                         |  int(keep only digits of a) |
 | ¯ | (a: any)                            |  deltas(a) |

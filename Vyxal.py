@@ -365,7 +365,7 @@ def cartesian_product(lhs, rhs):
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
-        str: lambda: item.replace(" ", "0")
+        str: lambda: item.split(" ")
     }.get(VY_type(item), lambda: vectorise(ceiling, item))()
 def centre(vector):
     focal = max(map(len, vector))
@@ -857,9 +857,10 @@ def interleave(lhs, rhs):
 def is_divisble(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
-        (Number, Number): lambda: lhs % rhs == 0,
-        (types[0], str): lambda: rhs.split(" "),
-        (str, Number): lambda: len(lhs) % rhs == 0
+        (Number, Number): lambda: [int(lhs % rhs == 0)],
+        (str, str): lambda: [lhs] * len(rhs),
+        (str, Number): lambda: [lhs] * rhs,
+        (Number, str): lambda: [rhs] * lhs
     }.get(types, lambda: vectorise(is_divisble, lhs, rhs))()
 def is_empty(item):
     return {
@@ -2209,6 +2210,11 @@ ALL flags should be used as is (no '-' prefix)
 \tW\tPrint the entire stack on end of execution
 \tṠ\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
 \tR\tTreat numbers as ranges if ever used as an iterable
+\tṪ\tPrint the sum of the entire stack
+\t5\tMake the interpreter timeout after 5 seconds
+\tT\tMake the interpreter timeout after 10 seconds
+\tb\tMake the interpreter timeout after 15 seconds
+\tB\tMake the interpreter timeout after 30 seconds
 """
             return
     input_values[0] = [inputs, 0]
@@ -2227,6 +2233,8 @@ ALL flags should be used as is (no '-' prefix)
             VY_print(summate(pop(stack)))
         elif flags and 'd' in flags:
             VY_print(summate(flatten(pop(stack))))
+        elif flags and 'Ṫ' in flags:
+            VY_print(summate(stack))
         elif flags and "S" in flags:
             VY_print(" ".join([str(n) for n in pop(stack)]))
         elif flags and "C" in flags:
@@ -2306,6 +2314,7 @@ if __name__ == "__main__":
         print("\tW\tPrint the entire stack on end of execution")
         print("\tṠ\tTreat all inputs as strings")
         print("\tR\tTreat numbers as ranges if ever used as an iterable")
+        print("\tṪ\tPrint the sum of the entire stack")
     else:
         if flags:
             if "M" in flags:
@@ -2357,6 +2366,8 @@ if __name__ == "__main__":
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
+            elif flags and 'Ṫ' in flags:
+                VY_print(summate(stack))
             elif flags and "S" in flags:
                 print(" ".join([VY_str(n) for n in pop(stack)]))
             elif flags and "C" in flags:
