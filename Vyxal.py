@@ -2200,6 +2200,7 @@ def execute(code, flags, input_list, output_variable):
         if 'h' in flags:
             output[1] = """
 ALL flags should be used as is (no '-' prefix)
+\tH\tPreset stack to 100
 \tj\tPrint top of stack joined by newlines on end of execution
 \tL\tPrint top of stack joined by newlines (Vertically) on end of execution
 \ts\tSum/concatenate top of stack on end of execution
@@ -2303,6 +2304,7 @@ if __name__ == "__main__":
     elif file_location == "h":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
+        print("\tH\tPreset stack to 100")
         print("\tj\tPrint top of stack joined by newlines")
         print("\tL\tPrint top of stack joined by newlines (Vertically)")
         print("\ts\tSum/concatenate top of stack on end of execution")
