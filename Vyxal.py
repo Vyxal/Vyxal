@@ -466,7 +466,7 @@ def deltas(vector):
         for i in range(len(vector) - 1):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
-def deref(item, generator_to_list=False):
+def deref(item, generator_to_list=True):
     if VY_type(item) is Generator:return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
@@ -693,7 +693,7 @@ def function_call(fn, vector):
 def gcd(lhs, rhs=None):
     if rhs:
         return {
-            (Number, Number): lambda: math.gcd(lhs, rhs),
+            (Number, Number): lambda: math.gcd(int(lhs), int(rhs)),
             (Number, str): lambda: max(set(divisors_of(str(lhs))) & set(divisors_of(rhs)), key=lambda x: len(x)),
             (str, Number): lambda: max(set(divisors_of(lhs)) & set(divisors_of(str(rhs))), key=lambda x: len(x)),
             (str, str): lambda: max(set(divisors_of(lhs)) & set(divisors_of(rhs)), key=lambda x: len(x)),

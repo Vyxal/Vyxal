@@ -150,7 +150,7 @@ command_dict = {
     "§": ("stack.append(vertical_join(pop(stack)))", 1),
     "ε": ("padding, vector = pop(stack, 2); stack.append(vertical_join(vector, padding))", 2),
     "¡": ("stack.append(factorial(pop(stack)))", 1),
-    "∑": ("stack.append(summate(pop(stack)))", 0),
+    "∑": ("stack.append(summate(pop(stack)))", 1),
     "¦": ("stack.append(cumulative_sum(iterable(pop(stack))))", 1),
     "≈": ("stack.append(int(len(set(iterable(pop(stack)))) == 1))", 1),
     "Ȧ": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
