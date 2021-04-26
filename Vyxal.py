@@ -466,9 +466,9 @@ def deltas(vector):
         for i in range(len(vector) - 1):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
-def deref(item):
-    if VY_type(item) is Generator: return item._dereference()
-    if type(item) not in [int, float, str]: return item[::]
+def deref(item, generator_to_list=True):
+    if VY_type(item) is Generator:return [item.safe, item._dereference][generator_to_list]()
+    if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
 def dictionary_compress(item):
     item = split_on_words(VY_str(item))
@@ -701,7 +701,7 @@ def gcd(lhs, rhs=None):
 
     else:
         # I can't use VY_reduce because ugh reasons
-        lhs = deref(lhs)
+        lhs = deref(lhs, True)
         return int(numpy.gcd.reduce(lhs))   
 def get_input(predefined_level=None):
     global input_values
@@ -1018,13 +1018,7 @@ def multiply(lhs, rhs):
         (Number, Number): lambda: lhs * rhs,
         (str, str): lambda: [x + rhs for x in lhs],
         (str, Number): lambda: lhs * rhs,
-        (Number, str): lambda: lhs * rhs,
-        (list, types[1]): lambda: [multiply(item, rhs) for item in lhs],
-        (types[0], list): lambda: [multiply(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: multiply(*x), VY_zip(lhs, rhs))),
-        (list, Generator): lambda: _two_argument(multiply, lhs, rhs),
-        (Generator, list): lambda: _two_argument(multiply, lhs, rhs),
-        (Generator, Generator): lambda: _two_argument(multiply, lhs, rhs)
+        (Number, str): lambda: lhs * rhs
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def ncr(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
@@ -1398,7 +1392,7 @@ def sums(vector):
 tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
 def transilterate(original, new, string):
     t_string = type(string)
-    original = deref(original)
+    original = deref(original, True)
     if t_string == Generator:
         t_string = list
     ret = t_string()
@@ -1475,25 +1469,46 @@ def vectorise(fn, left, right=None, third=None):
         types = (VY_type(left), VY_type(right))
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x, third), right))
+
+        def gen():
+            for pair in VY_zip(left, right):
+                yield _safe_apply(fn, *pair, third)
+
+        gen_lambda = lambda: Generator(gen())
         return {
             (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right, third),
             (list, types[1]): lambda: [_safe_apply(fn, x, right, third) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x, third) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right, third)),
             (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x, third)),
+            (list, list): lambda: gen_lambda,
+            (Generator, Generator): gen_lambda,
+            (list, Generator): gen_lambda,
+            (Generator, list): gen_lambda
         }[types]()
     elif right:
         left = iterable(left)
         types = (VY_type(left), VY_type(right))
         if types == (Generator, Generator):
             return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
+
+        def gen():
+            for pair in VY_zip(left, right): yield _safe_apply(fn, *pair)
+
+        gen_lambda = lambda: Generator(gen())
+
         return {
-            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right),
+            (types[0], types[1]): lambda: safe_apply(fn, iterable(left), right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
             (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x)),
+            (list, list): gen_lambda,
+            (Generator, Generator): gen_lambda,
+            (list, Generator): gen_lambda,
+            (Generator, list): gen_lambda
         }[types]()
+            
     else:
         if VY_type(left) is Generator:
             return left._map(fn)
@@ -1506,7 +1521,7 @@ def vertical_join(vector, padding=" "):
     if VY_type(padding) == VY_type(vector) == Number:
         return abs(vector - padding)
 
-    lengths = list(map(len, deref(vector)))
+    lengths = list(map(len, deref(vector, True)))
     vector = [padding * (max(lengths) - len(x)) + x for x in vector]
 
     out = ""
@@ -1808,7 +1823,6 @@ def VY_zip(lhs, rhs):
         except:
             r = 0
             exhausted += 1
-
         if exhausted == 2:
             break
         else:
