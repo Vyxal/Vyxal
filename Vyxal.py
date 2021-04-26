@@ -466,7 +466,7 @@ def deltas(vector):
         for i in range(len(vector) - 1):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
-def deref(item, generator_to_list=True):
+def deref(item, generator_to_list=False):
     if VY_type(item) is Generator:return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
@@ -1467,8 +1467,6 @@ def vectorise(fn, left, right=None, third=None):
     if third:
         left = iterable(left)
         types = (VY_type(left), VY_type(right))
-        if types == (Generator, Generator):
-            return Generator(map(lambda x: _safe_apply(fn, left.safe(), x, third), right))
 
         def gen():
             for pair in VY_zip(left, right):
@@ -1489,11 +1487,10 @@ def vectorise(fn, left, right=None, third=None):
     elif right:
         left = iterable(left)
         types = (VY_type(left), VY_type(right))
-        if types == (Generator, Generator):
-            return Generator(map(lambda x: _safe_apply(fn, left.safe(), x), right))
 
         def gen():
-            for pair in VY_zip(left, right): yield _safe_apply(fn, *pair)
+            for pair in VY_zip(left, right):
+                yield _safe_apply(fn, *pair)
 
         gen_lambda = lambda: Generator(gen())
 
