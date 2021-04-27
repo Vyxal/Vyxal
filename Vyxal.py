@@ -335,7 +335,7 @@ def bit_xor(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
     return {
         (Number, Number): lambda: lhs ^ rhs,
-        (Number, str): lambda: (" " * rhs) + lhs,
+        (Number, str): lambda: (" " * lhs) + rhs,
         (str, Number): lambda: lhs + (" " * rhs),
         (str, str): lambda: levenshtein_distance(lhs, rhs),
         (types[0], list): lambda: [bit_xor(lhs, item) for item in rhs],
