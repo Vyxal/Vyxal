@@ -547,6 +547,7 @@ cmd | inputs | out/effect
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
 | Þ× | (a: any)                           |  all_combinations(a) # This is all lengths |
+| ÞU | (a: any)                           |  nub_sieve(a) # uniquify mask, which items would remain after uniqified(a) |
 | ÞT | (a: any)                           |  transpose(a) |
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
