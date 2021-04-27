@@ -888,7 +888,7 @@ def is_empty(item):
 def is_prime(n):
     if type(n) is str:
         if n.upper() == n.lower(): return -1
-        else: return n.upper() == n
+        else: return int(n.upper() == n)
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
     if n < 2: return 0
     if n % 2 == 0 and n > 2:
