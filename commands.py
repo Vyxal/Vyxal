@@ -183,7 +183,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ż": ("index, vector = pop(stack, 2); stack.append(one_argument_tail_index(vector, index, 1))", 2),
     "⁰": ("stack.append(input_values[0][0][-1])", 0),
     "¹": ("stack.append(input_values[0][0][-2])", 0),
-    "²": ("x = pop(stack); stack.append(multiply(deref(x), deref(x)))", 1),
+    "²": ("x = pop(stack); stack.append(multiply(x, deref(x)))", 1),
     "∇": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
     "⌈": ("stack.append(ceiling(pop(stack)))", 1),
     "⌊": ("stack.append(floor(pop(stack)))", 1),
@@ -281,9 +281,10 @@ list_command_dict = {
     "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
     "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0),
     "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1),
-    "T": ("stack.append(transpose(pop(stack)))", 1)
+    "T": ("stack.append(transpose(pop(stack)))", 1),
+    "D": ("stack.append(Generator(diagonals(iterable(pop(stack), list))))", 1),
 }
 
 misc_command_dict = {
-    "U": ("if not online_version: stack.append(urllib.request.urlopen(pop(stack)).read().decode())", 1)
+    "U": ("if not online_version: stack.append(urllib.request.urlopen(urlify(pop(stack))).read().decode())", 1)
 }

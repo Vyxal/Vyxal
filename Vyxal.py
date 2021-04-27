@@ -481,6 +481,24 @@ def dictionary_compress(item):
         else:
             out += temp
     return "`" + out + "`"
+def diagonals(vector):
+    # Getting real heavy Mornington Crescent vibes from this
+    vector = numpy.asarray(vector)
+    diag_num = 0
+    diagonal = numpy.diag(vector)
+    # postive diags first
+    while len(diagonal):
+        yield vectorise(lambda x: x.item(), list(diagonal))
+        diag_num += 1
+        diagonal = numpy.diag(vector, k=diag_num)
+    
+    diag_num = -1
+    diagonal = numpy.diag(vector, k=diag_num)
+    # now the other diagonals
+    while len(diagonal):
+        yield vectorise(lambda x: x.item(), list(diagonal))
+        diag_num -= 1
+        diagonal = numpy.diag(vector, k=diag_num)
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -1463,6 +1481,10 @@ def unsympy(item):
     if item.is_Integer: return int(item)
     elif item.is_Float: return float(item)
     else: return item
+def urlify(item):
+    if not (item.startswith("http://") or item.startswith("https://")):
+        return "https://" + item
+    return item
 def vectorise(fn, left, right=None, third=None):
     if third:
         left = iterable(left)

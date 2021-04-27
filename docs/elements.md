@@ -550,3 +550,5 @@ cmd | inputs | out/effect
 | ÞT | (a: any)                           |  transpose(a) |
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
+| ÞD | (a: list)                          |  diagonals of a - starts with main diagonal. |
+| ¨U | (a: string)                        |  GET request with url= |
