@@ -1373,7 +1373,7 @@ def string_empty(item):
         str: len(item) == 0
     }.get(VY_type(item), lambda: vectorise(string_empty, item))()
 def strip_non_alphabet(name):
-    stripped = filter(lambda char: char in string.ascii_letters, name)
+    stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
 def substrings(item):
     for i in range(0, len(item) + 1):
@@ -1475,7 +1475,7 @@ def uninterleave(item):
     if type(item) is str:
         return ["".join(left), "".join(right)]
     return [left, right]
-uniquify = lambda item: list(dict.fromkeys(iterable(item)))
+uniquify = lambda item: list(dict.fromkeys(tuple(iterable(item))))
 def unsympy(item):
     if type(item) in (list, Generator): return vectorise(unsympy, item)
     if item.is_Integer: return int(item)
