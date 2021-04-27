@@ -277,7 +277,7 @@ list_command_dict = {
     "…": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
     "↓": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
     "↑": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
-    "ḋ": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
+    "×": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
     "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
     "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0),
     "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1),
