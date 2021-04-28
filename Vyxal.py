@@ -2205,6 +2205,10 @@ def execute(code, flags, input_list, output_variable):
 
         if "m" in flags:
             MAP_OFFSET = 0
+        
+        if "Ṁ" in flags:
+            MAP_START = 0
+            MAP_OFFSET = 0
 
         if 'j' in flags:
             _join = True
@@ -2363,6 +2367,10 @@ if __name__ == "__main__":
                 MAP_START = 0
 
             if "m" in flags:
+                MAP_OFFSET = 0
+            
+            if "Ṁ" in flags:
+                MAP_START = 0
                 MAP_OFFSET = 0
 
             if 'j' in flags:
