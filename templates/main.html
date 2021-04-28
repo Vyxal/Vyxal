@@ -188,7 +188,7 @@
             var flags = document.getElementById("flag").value
             var flag_appendage = ""
             if (flags) {
-                flag_appendage = "`" + flags + "`, "
+                flag_appendage = "`" + flags + "`"
             }
             var output = ""
             switch (shareType) {
@@ -199,7 +199,7 @@
                     output = `[Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})`;
                     break;
                 case "post-template":
-                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal), ${flag_appendage}${code.length} byte${"s".repeat(code.length != 1)}
+                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal) ${flag_appendage}${code.length} byte${"s".repeat(code.length != 1)}
 \`\`\`
 ${code}
  \`\`\`
