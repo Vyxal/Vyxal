@@ -2254,6 +2254,7 @@ ALL flags should be used as is (no '-' prefix)
 \tT\tMake the interpreter timeout after 10 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
+\tṀ\tEquivalent to having both m and M flags
 """
             return
     input_values[0] = [inputs, 0]
@@ -2355,6 +2356,7 @@ if __name__ == "__main__":
         print("\tṠ\tTreat all inputs as strings")
         print("\tR\tTreat numbers as ranges if ever used as an iterable")
         print("\tṪ\tPrint the sum of the entire stack")
+        print("\tṀ\tEquivalent to having both m and M flags")
     else:
         if flags:
             if "M" in flags:
