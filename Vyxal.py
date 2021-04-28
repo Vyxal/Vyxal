@@ -1475,7 +1475,12 @@ def uninterleave(item):
     if type(item) is str:
         return ["".join(left), "".join(right)]
     return [left, right]
-uniquify = lambda item: list(dict.fromkeys(tuple(iterable(item))))
+def uniquify(vector):
+    seen = []
+    for item in vector:
+        if not item in seen:
+            yield item
+            seen.append(item)
 def unsympy(item):
     if type(item) in (list, Generator): return vectorise(unsympy, item)
     if item.is_Integer: return int(item)

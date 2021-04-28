@@ -73,7 +73,7 @@ command_dict = {
     "R": ("fn, vector = pop(stack, 2); stack += VY_reduce(fn, vector)", 2),
     "S": ("stack.append(VY_str(pop(stack)))", 1),
     "T": ("stack.append([i for (i, x) in enumerate(pop(stack)) if bool(x)])", 1),
-    "U": ("stack.append(uniquify(pop(stack)))", 1),
+    "U": ("stack.append(Generator(uniquify(pop(stack))))", 1),
     "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(replace(haystack, needle, replacement))", 3),
     "W": ("stack = [deref(stack)]", 0),
     "X": ("context_level += 1", 0),
