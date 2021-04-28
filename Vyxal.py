@@ -1622,7 +1622,6 @@ def VY_eval(item):
 def VY_exec(item):
     if type(item) is str:
         exec(VY_compile(item))
-        return 0
     elif VY_type(item) == Number:
         return divide(1, item)
     else:
