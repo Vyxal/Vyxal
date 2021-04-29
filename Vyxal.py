@@ -282,7 +282,7 @@ def _safe_apply(function, *args):
     '''
     args = reverse(args)
     if function.__name__ == "_lambda":
-        ret = function(list(args), len(args))
+        ret = function(list(args), len(args), function)
         if len(ret): return ret[-1]
         else: return []
     elif function.__name__.startswith("FN_"):
@@ -758,7 +758,7 @@ def fractionify(item):
         return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
-        return fn(vector)
+        return fn(vector, self=fn)
     else:
         return [{
             Number: lambda: len(prime_factors(fn)),
@@ -1088,11 +1088,17 @@ def mold(content, shape):
     return shape
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+    if types == (Function, Number):
+        lhs.stored_arity = rhs
+        return lhs
+    elif types == (Number, Function):
+        rhs.stored_arity = lhs
+        return rhs
     return {
         (Number, Number): lambda: lhs * rhs,
         (str, str): lambda: [x + rhs for x in lhs],
         (str, Number): lambda: lhs * rhs,
-        (Number, str): lambda: lhs * rhs
+        (Number, str): lambda: lhs * rhs,
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def ncr(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
@@ -2127,11 +2133,14 @@ else:
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
 
-            compiled += "def _lambda(parameter_stack, arity=-1):" + NEWLINE
+            compiled += "def _lambda(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
+            compiled += tab("stored = False") + NEWLINE
+            compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
+            compiled += tab("elif stored: parameters = pop(parameter_stack, stored); stack = parameters[::]") + NEWLINE
             if defined_arity == 1:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
