@@ -257,7 +257,8 @@ math_command_dict = {
     "Ṗ": ("stack.append(next_prime(pop(stack)))", 1),
     "ṗ": ("stack.append(prev_prime(pop(stack)))", 1),
     "p": ("stack.append(closest_prime(pop(stack)))", 1),
-    "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1)
+    "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1),
+    "Ṙ": ("stack.append(random.random())", 0)
 }
 
 string_command_dict = {
