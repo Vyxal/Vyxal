@@ -1682,12 +1682,13 @@ def VY_eval(item):
         except:
             return item
 def VY_exec(item):
-    if type(item) is str:
+    if VY_type(item) is str:
         exec(VY_compile(item))
+        return []
     elif VY_type(item) == Number:
-        return divide(1, item)
+        return [divide(1, item)]
     else:
-        return vectorise(VY_exec, item)
+        return [vectorise(VY_exec, item)]
 def VY_filter(fn, vector):
     def default_case(lhs, rhs):
         # remove elements from a that are in b
