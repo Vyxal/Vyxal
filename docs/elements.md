@@ -536,6 +536,7 @@ cmd | inputs | out/effect
 | ∆ṗ | (a: number)                        |  first prime before a |
 | ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
 | ∆ṙ | (a: list)                          |  polynomial from roots a |
+| ∆Ṙ |                                    |  random.random() # random float in the range [0, 1)
 | øo | (a: string, b: string)             |  a.remove_until_no_change(b) |
 | øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) |
 | øc | (a: string)                        |  base_255_string_compressed(a) |
