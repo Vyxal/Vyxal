@@ -947,10 +947,7 @@ def is_prime(n):
         if n.upper() == n.lower(): return -1
         else: return int(n.upper() == n)
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
-    if n < 2: return 0
-    if n % 2 == 0 and n > 2:
-        return 0
-    return int(all(n % i for i in range(3, int(math.sqrt(n)) + 1, 2)))
+    return sympy.ntheory.isprime(n)
 def iterable(item, t=None):
     t = t or number_iterable
     if VY_type(item) == Number:
