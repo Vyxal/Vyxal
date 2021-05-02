@@ -14,4 +14,4 @@ def run_code(code):
 # overload of every single command
 def test_not():
     stack = run_code("2¬")
-	assert pop(stack) == 0
+    assert pop(stack) == 0
