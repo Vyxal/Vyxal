@@ -1739,9 +1739,9 @@ def VY_map(fn, vector):
     
     vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
     if VY_type(vec) == Number:
-        vec = range(MAP_START, int(vector) + MAP_OFFSET)
+        vec = range(MAP_START, int(vec) + MAP_OFFSET)
     if VY_type(vec) is Generator:
-        return vector._map(function)
+        return vec._map(function)
     for item in vec:
         result = function([item])
         ret.append(result[-1])
