@@ -56,6 +56,7 @@ retain_items = False
 reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
+this_function = lambda x: VY_print(stack)or x
 
 MAP_START = 1
 MAP_OFFSET = 1
@@ -130,7 +131,7 @@ class Generator:
         self.next_index = 0
         self.is_numeric_sequence = is_numeric_sequence
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
-            if raw_generator.__name__.startswith("FN_") or raw_generator.__name__ == "_lambda":
+            if raw_generator.__name__.startswith("FN_") or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
                 def gen():
                     generated = initial
@@ -281,7 +282,7 @@ def _safe_apply(function, *args):
     Otherwise, unpack args and call as usual
     '''
     args = reverse(args)
-    if function.__name__ == "_lambda":
+    if function.__name__.startswith("_lambda"):
         ret = function(list(args), len(args), function)
         if len(ret): return ret[-1]
         else: return []
@@ -294,7 +295,7 @@ def _two_argument(function, lhs, rhs):
     '''
     Used for vectorising user-defined lambas/dyads over generators
     '''
-    if function.__name__ == "_lambda":
+    if function.__name__.startswith("_lambda"):
         return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
     return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
 def add(lhs, rhs):
@@ -2093,6 +2094,7 @@ def VY_compile(source, header=""):
                 compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level += 1") + NEWLINE
+                compiled += tab(f"this_function = {function_name}") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
                     # (which is kinda rather inconvienient), push it as a "scalar"
@@ -2135,11 +2137,12 @@ else:
                 lambda_argument = VALUE[VyParse.LAMBDA_ARGUMENTS]
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
-
-            compiled += "def _lambda(parameter_stack, arity=-1, self=None):" + NEWLINE
+            time_signature = int(time.time())
+            compiled += f"def _lambda_{time_signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
+            compiled += tab(f"this_function = _lambda_{time_signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
@@ -2155,7 +2158,7 @@ else:
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
             compiled += tab("input_level -= 1;") + NEWLINE
             compiled += tab("return ret") + NEWLINE
-            compiled += "stack.append(_lambda)"
+            compiled += f"stack.append(_lambda_{time_signature})"
         elif NAME == VyParse.LIST_STMT:
             compiled += "temp_list = []" + NEWLINE
             for element in VALUE[VyParse.LIST_ITEMS]:
@@ -2249,7 +2252,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version
-    global inputs, reverse_args, keg_mode, number_iterable
+    global inputs, reverse_args, keg_mode, number_iterable, this_function
     online_version = True
     output = output_variable
     output[1] = ""
@@ -2329,7 +2332,7 @@ ALL flags should be used as is (no '-' prefix)
 """
             return
     input_values[0] = [inputs, 0]
-    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args\n")
+    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args, this_function\n")
     context_level = 0
     if flags and 'c' in flags:
         output[2] = code
@@ -2372,7 +2375,7 @@ if __name__ == "__main__":
     file_location = ""
     flags = ""
     inputs = []
-    header = "stack = []\nregister = 0\nprinted = False\n"
+    header = "stack = []\nregister = 0\nprinted = False"
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
