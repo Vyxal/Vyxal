@@ -1582,7 +1582,7 @@ def vectorise(fn, left, right=None, third=None):
         gen_lambda = lambda: Generator(gen())
 
         return {
-            (types[0], types[1]): lambda: safe_apply(fn, iterable(left), right),
+            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
             (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
