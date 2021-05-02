@@ -1731,17 +1731,19 @@ def VY_map(fn, vector):
     ret = []
     t_vector = VY_type(vector)
     t_function = VY_type(fn)
-    if t_function is not Function:
+    if not Function in (t_vector, t_function):
         def gen():
             for item in iterable(fn):
                 yield [vector, item]
         return Generator(gen())
-    if t_vector == Number:
-        vector = range(MAP_START, int(vector) + MAP_OFFSET)
-    if t_vector is Generator:
-        return vector._map(fn)
-    for item in vector:
-        result = fn([item])
+    
+    vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
+    if VY_type(vec) == Number:
+        vec = range(MAP_START, int(vector) + MAP_OFFSET)
+    if VY_type(vec) is Generator:
+        return vector._map(function)
+    for item in vec:
+        result = function([item])
         ret.append(result[-1])
     return ret
 def VY_max(item, *others):
