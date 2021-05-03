@@ -281,7 +281,7 @@ def _safe_apply(function, *args):
     Otherwise, if the function is a user-defined function (starts with FN_), it simply passes the argument list
     Otherwise, unpack args and call as usual
     '''
-    args = reverse(args)
+
     if function.__name__.startswith("_lambda"):
         ret = function(list(args), len(args), function)
         if len(ret): return ret[-1]
@@ -291,13 +291,13 @@ def _safe_apply(function, *args):
         if len(ret): return ret[-1]
         else: return []
     return function(*args)
-def _two_argument(function, lhs, rhs):
+def _two_argument(function, left, right):
     '''
     Used for vectorising user-defined lambas/dyads over generators
     '''
     if function.__name__.startswith("_lambda"):
-        return Generator(map(lambda x: function(x, arity=2), VY_zip(lhs, rhs)))
-    return Generator(map(lambda x: function(*x), VY_zip(lhs, rhs)))
+        return Generator(map(lambda x: function(x, arity=2), VY_zip(left, right)))
+    return Generator(map(lambda x: function(*x), VY_zip(left, right)))
 def add(lhs, rhs):
     '''
     Returns lhs + rhs. Check command docs for type cohesion.
