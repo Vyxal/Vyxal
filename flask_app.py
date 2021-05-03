@@ -6,8 +6,8 @@ app = Flask(__name__)
 CORS(app)
 
 import os
-os.system("rm -rf sessions")
-os.system("mkdir sessions")
+os.system("rmdir /Q /S sessions")
+os.system("md sessions")
 
 sessions = {}
 terminated = set()
@@ -30,14 +30,14 @@ def execute():
     if session not in sessions:
       return {"stdout": "", "stderr": "The session was invalid! You may need to reload your tab."}
 
-    os.system(f"mkdir sessions/{session}")
+    os.system(f"md sessions\\{session}")
 
-    with open(f"sessions/{session}/.stdin", "w") as f:
+    with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
       f.write(input_list)
     
-    with open(f"sessions/{session}/.stdin", "r") as x:
-      with open(f"sessions/{session}/.stdout", "w") as y:
-        with open(f"sessions/{session}/.stderr", "w") as z:
+    with open(f"sessions/{session}/.stdin", "r", encoding="utf-8") as x:
+      with open(f"sessions/{session}/.stdout", "w", encoding="utf-8") as y:
+        with open(f"sessions/{session}/.stderr", "w", encoding="utf-8") as z:
             manager = multiprocessing.Manager()
             ret = manager.dict()
 
@@ -70,16 +70,16 @@ def execute():
             output = ret[1]
             y.write(ret[1])
             z.write(ret[2])
-    with open(f"sessions/{session}/.stdout", "r") as x:
-        with open(f"sessions/{session}/.stderr", "r") as y:
+    with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:
+        with open(f"sessions/{session}/.stderr", "r", encoding="utf-8") as y:
             val = {"stdout": x.read(), "stderr": y.read()}
-    os.system(f"rm -rf sessions/{session}")
+    os.system(f"rmdir /Q /S sessions\\{session}")
     return val
 
 
 @app.route("/kill", methods=("POST",))
 def kill():
-  session = int(request.form["session"])
+  session = request.form["session"]
   if sessions.get(session) is None: return ""
   sessions[session].kill()
   terminated.add(session)
