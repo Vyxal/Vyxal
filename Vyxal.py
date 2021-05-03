@@ -2259,7 +2259,7 @@ def execute(code, flags, input_list, output_variable):
     if input_list:
         eval_function = VY_eval
         if 'Ṡ' in flags: eval_function = str
-        inputs = list(map(eval_function, input_list.split("\r\n")))
+        inputs = list(map(eval_function, input_list.split("\n")))
 
     if 'a' in flags:
         inputs = [inputs]
