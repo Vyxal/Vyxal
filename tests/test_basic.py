@@ -1,6 +1,9 @@
 # Simple tests
 
-from ..Vyxal import *
+import os, sys
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+sys.path.insert(1, THIS_FOLDER)
+from Vyxal import *
 
 header = "stack = []\nregister = 0\nprinted = False"
 
@@ -15,3 +18,4 @@ def run_code(code):
 def test_not():
     stack = run_code("2¬")
     assert pop(stack) == 0
+
