@@ -1820,7 +1820,7 @@ def VY_print(item, end="\n", raw=False):
             else:
                 print(VY_str(item), end=end)
     if online_version and len(output) > ONE_TWO_EIGHT_KB:
-        exit(code=1)
+        exit()
 def VY_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
         return inclusive_range(vector, fn)

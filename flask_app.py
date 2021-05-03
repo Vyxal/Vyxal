@@ -5,12 +5,12 @@ import Vyxal
 app = Flask(__name__)
 CORS(app)
 
-import os, sys, shutil
+import os, sys
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-shutil.rmtree("sessions", ignore_errors=True)
+os.system("rm -rf sessions")
 os.system("mkdir sessions")
 
 sessions = {}
@@ -36,7 +36,7 @@ def execute():
     if session not in sessions:
       return {"stdout": "", "stderr": "The session was invalid! You may need to reload your tab."}
 
-    shutil.rmtree(f"sessions/{session}", ignore_errors=True)
+    os.system(f"rm -rf sessions/{session}")
     os.mkdir(f"sessions/{session}")
 
     with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
@@ -80,7 +80,7 @@ def execute():
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:
         with open(f"sessions/{session}/.stderr", "r", encoding="utf-8") as y:
             val = {"stdout": x.read(), "stderr": y.read()}
-    shutil.rmtree(f"sessions/{session}", ignore_errors=True)
+    os.system(f"rm -rf sessions/{session}")
     return val
 
 
