@@ -1,6 +1,6 @@
 # Simple tests
 
-from Vyxal import *
+from ..Vyxal import *
 
 header = "stack = []\nregister = 0\nprinted = False"
 
