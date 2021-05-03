@@ -6,6 +6,10 @@ app = Flask(__name__)
 CORS(app)
 
 import os
+
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+sys.path.insert(1, THIS_FOLDER)
+
 os.system("rm -rf sessions")
 os.system("md sessions")
 
