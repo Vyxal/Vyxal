@@ -24,8 +24,6 @@ def index():
 
 @app.route("/execute", methods=('POST',))
 def execute():
-
-    print(sessions)
     flags = request.form['flags']
     code = request.form['code'].replace("\r", "")
     input_list = request.form["inputs"].replace("\r", "")
@@ -37,7 +35,7 @@ def execute():
       return {"stdout": "", "stderr": "The session was invalid! You may need to reload your tab."}
 
     os.system(f"rm -rf sessions/{session}")
-    os.mkdir(f"sessions/{session}")
+    os.system(f"mkdir sessions/{session}")
 
     with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
       f.write(input_list)
