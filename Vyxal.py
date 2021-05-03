@@ -1820,7 +1820,7 @@ def VY_print(item, end="\n", raw=False):
             else:
                 print(VY_str(item), end=end)
     if online_version and len(output) > ONE_TWO_EIGHT_KB:
-        exit()
+        exit(code=1)
 def VY_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
         return inclusive_range(vector, fn)
@@ -2259,7 +2259,7 @@ def execute(code, flags, input_list, output_variable):
     if input_list:
         eval_function = VY_eval
         if 'Ṡ' in flags: eval_function = str
-        inputs = list(map(eval_function, input_list.split("\r\n")))
+        inputs = list(map(eval_function, input_list.split("\n")))
 
     if 'a' in flags:
         inputs = [inputs]
