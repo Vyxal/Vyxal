@@ -87,13 +87,8 @@
             text-decoration: none !important;
             color: white !important;
         }
-
-        session-code {
-            display: none;
-        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -243,14 +238,11 @@ ${code}
                 inputs_box.value = inputs;
                 header_box.value = header;
                 footer_box.value = footer;
-                run_button.click();
+                var form = document.getElementById("overall-form");
+                form.submit();
             } else {
-                expandBoxes()
-            }
-        }
-
-        function expandBoxes(){
-            ["flag", "header", "footer", "inputs", "output", "extra"].forEach(function(n) {
+                ["flag", "header", "footer", "inputs", "output", "extra"].forEach(function(n) {
+                    console.log(n)
                     var boxToExpand = document.getElementById(n + "-detail");
                     var actualBox = document.getElementById(n);
 
@@ -265,6 +257,15 @@ ${code}
 
 
                 });
+            }
+        }
+
+        function restyleButton() {
+            var the_button = document.getElementById("run_button");
+            the_button.innerHTML = '<i class="fa fa-spinner fa-spin"></i>Executing';
+            the_button.disabled = true;
+            the_button.style.cursor = "progress";
+            document.getElementById('overall-form').submit()
         }
 
         function glyphSearch() {
@@ -339,48 +340,13 @@ ${code}
             el.select();
             document.execCommand("copy");
         }
-
-        $(document).ready(e => {
-            const run = document.getElementById("run_button");
-            const session = $("session-code")[0].innerHTML;
-            const code = document.getElementById("code");
-            const stdin = document.getElementById("inputs");
-            const flags = document.getElementById("flag");
-            const output = document.getElementById("output");
-            const extra = document.getElementById("extra");
-            const header = document.getElementById("header");
-            const footer = document.getElementById("footer");
-
-            function do_run() {
-                if (run.innerHTML.includes("svg")) {
-                run.innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
-                $.post("/execute", {
-                    code: code.value,
-                    inputs: stdin.value,
-                    flags: flags.value,
-                    session: session,
-                    footer: footer.value,
-                    header: header.value
-                }, res => {
-                    output.value = res.stdout;
-                    extra.value = res.stderr;
-                    run.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" /></svg>';
-                    expandBoxes();
-                });
-                } else {
-                $.post("/kill", { session: session }, res => 0);
-                }
-        };
-            $("#run_button").on("click", e => {do_run();});
-
-        });
     </script>
 </head>
 
 <body onload="decodeURL(); updateCount(); resizeCodeBox('code')">
-    <session-code>{{session}}</session-code>
+    <form method="post" style="padding: 10px;" onload="resizeCodeBox('code')" id="overall-form">
         <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal">Vyxal</a></h2>
-        <button id="run_button" title="Run Program" type="submit" style="color:white"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <button id="run_button" title="Run Program" type="submit" style="color:white" onclick="restyleButton()"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
         </svg></button>
         <button id="permalink" title="Generate Permalink" type="button" style="color: white" onclick="shareOptions('permalink')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
@@ -406,37 +372,37 @@ ${code}
 
         <details id="flag-detail">
             <summary>Flags</summary>
-            <input type="text" name="flags" id="flag" style="min-height: 2em;"></input>
+            <input type="text" name="flags" id="flag" value="{{flags}}" style="min-height: 2em;"></input>
         </details>
         <details id="header-detail">
             <summary>Header</summary>
-            <textarea id="header" name="header" oninput="resizeCodeBox('header')"></textarea>
+            <textarea id="header" name="header" oninput="resizeCodeBox('header')">{{header}}</textarea>
         </details>
 
         <details open id="code-detail">
             <summary id="code-count">Code: 0 bytes</summary>
-            <textarea id="code" name="code" oninput="resizeCodeBox('code'); updateCount()" onkeyup="updateCount()"></textarea>
+            <textarea id="code" name="code" oninput="resizeCodeBox('code'); updateCount()" onkeyup="updateCount()">{{code}}</textarea>
         </details>
 
         <details id="footer-detail">
             <summary>Footer</summary>
-            <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')"></textarea>
+            <textarea id="footer" name="footer" oninput="resizeCodeBox('footer')">{{footer}}</textarea>
         </details>
 
         <details open id="inputs-detail">
             <summary>Inputs</summary>
-            <textarea id="inputs" name="inputs" oninput="resizeCodeBox('inputs')"></textarea>
+            <textarea id="inputs" name="inputs" oninput="resizeCodeBox('inputs')">{{inputs}}</textarea>
         </details>
 
         <details id="output-detail">
             <summary style="display: inline-block;">Output</summary>
             <button onclick="copyToClipboard('output')" style="color: white; height:auto; display: inline-block;" type="button">click to copy</button>
-            <textarea id="output" value="" readonly style="white-space: pre-wrap; width: 100%"></textarea>
+            <textarea id="output" value="" readonly style="white-space: pre-wrap; width: 100%">{{output}}</textarea>
         </details>
 
         <details id="extra-detail">
             <summary>Debug</summary>
-            <textarea value="" id="extra" readonly style="white-space: pre-wrap; width: 100%"></textarea>
+            <textarea value="" id="extra" readonly style="white-space: pre-wrap; width: 100%">{{debug}}</textarea>
         </details>
 
     </form>
