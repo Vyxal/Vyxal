@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 
 import os
-os.system("rmdir /Q /S sessions")
+os.system("rm -rf sessions")
 os.system("md sessions")
 
 sessions = {}
@@ -30,7 +30,8 @@ def execute():
     if session not in sessions:
       return {"stdout": "", "stderr": "The session was invalid! You may need to reload your tab."}
 
-    os.system(f"md sessions\\{session}")
+    os.system(f"rm -rf sessions/{session}")
+    os.system(f"mkdir sessions/{session}")
 
     with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
       f.write(input_list)
@@ -73,7 +74,7 @@ def execute():
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:
         with open(f"sessions/{session}/.stderr", "r", encoding="utf-8") as y:
             val = {"stdout": x.read(), "stderr": y.read()}
-    os.system(f"rmdir /Q /S sessions\\{session}")
+    os.system(f"rm -rf sessions/{session}")
     return val
 
 
