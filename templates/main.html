@@ -122,7 +122,7 @@
             codepage_descriptions = {{codepage_info |safe}};
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += `<span class=\"key\" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
+                kb.innerHTML += `<span class=\"key\" style="text-align:center;" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
@@ -218,7 +218,8 @@ ${code}
             }
             var outputBox = document.getElementById("output");
             outputBox.value = output;
-            copyToClipboard("output")
+            copyToClipboard("output");
+	    resizeCodeBox("output")
         }
 
         function decodeURL() {
@@ -383,13 +384,13 @@ ${code}
         <button id="run_button" title="Run Program" type="submit" style="color:white"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
         </svg></button>
-        <button id="permalink" title="Generate Permalink" type="button" style="color: white" onclick="shareOptions('permalink')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <button id="permalink" title="Generate Permalink" type="button" style="color: white" onclick="shareOptions('permalink'); resizeCodeBox('output')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
     <path fill="currentColor" d="M10.59,13.41C11,13.8 11,14.44 10.59,14.83C10.2,15.22 9.56,15.22 9.17,14.83C7.22,12.88 7.22,9.71 9.17,7.76V7.76L12.71,4.22C14.66,2.27 17.83,2.27 19.78,4.22C21.73,6.17 21.73,9.34 19.78,11.29L18.29,12.78C18.3,11.96 18.17,11.14 17.89,10.36L18.36,9.88C19.54,8.71 19.54,6.81 18.36,5.64C17.19,4.46 15.29,4.46 14.12,5.64L10.59,9.17C9.41,10.34 9.41,12.24 10.59,13.41M13.41,9.17C13.8,8.78 14.44,8.78 14.83,9.17C16.78,11.12 16.78,14.29 14.83,16.24V16.24L11.29,19.78C9.34,21.73 6.17,21.73 4.22,19.78C2.27,17.83 2.27,14.66 4.22,12.71L5.71,11.22C5.7,12.04 5.83,12.86 6.11,13.65L5.64,14.12C4.46,15.29 4.46,17.19 5.64,18.36C6.81,19.54 8.71,19.54 9.88,18.36L13.41,14.83C14.59,13.66 14.59,11.76 13.41,10.59C13,10.2 13,9.56 13.41,9.17Z" />
 </svg></button>
-        <button id="post-template" title="Generate Code Golf Submission" type="button" style="color: white" onclick="shareOptions('post-template')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <button id="post-template" title="Generate Code Golf Submission" type="button" style="color: white" onclick="shareOptions('post-template'); resizeCodeBox('output')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M20.56 18H3.44C2.65 18 2 17.37 2 16.59V7.41C2 6.63 2.65 6 3.44 6H20.56C21.35 6 22 6.63 22 7.41V16.59C22 17.37 21.35 18 20.56 18M3.44 6.94C3.18 6.94 2.96 7.15 2.96 7.41V16.6C2.96 16.85 3.18 17.06 3.44 17.06H20.56C20.82 17.06 21.04 16.85 21.04 16.6V7.41C21.04 7.15 20.82 6.94 20.56 6.94H3.44M4.89 15.19V8.81H6.81L8.73 11.16L10.65 8.81H12.58V15.19H10.65V11.53L8.73 13.88L6.81 11.53V15.19H4.89M16.9 15.19L14 12.09H15.94V8.81H17.86V12.09H19.79L16.9 15.19" />
         </svg></button>
-        <button id="markdown" title="Genreate Inline Markdown" type="button" style="color: white" onclick="shareOptions('markdown')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <button id="markdown" title="Genreate Inline Markdown" type="button" style="color: white" onclick="shareOptions('markdown'); resizeCodeBox('output')"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="currentColor" d="M2,3H8V5H4V19H8V21H2V3M7,17V15H9V17H7M11,17V15H13V17H11M15,17V15H17V17H15M22,3V21H16V19H20V5H16V3H22Z" />
         </svg></button>
 
