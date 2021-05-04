@@ -9,6 +9,6 @@ Returns the reverse of `a`. If `a` is an integer, the sign is kept.
 # Usage
 ```
 321◁      ║⟨123⟩
-321N◁     ║⟨-321⟩
+321N◁     ║⟨-123⟩
 `racecar`◁║⟨`racecar`⟩
 ```
