@@ -1715,16 +1715,18 @@ def VY_filter(fn, vector):
     }[types]()
 def VY_int(item, base=10):
     t_item = type(item)
-    if t_item not in [str, float, int]:
+    if t_item not in [str, float, int, complex]:
         ret = 0
         for element in item:
             ret = multiply(ret, base)
             ret = add(ret, element)
         return ret
-    elif t_item is not str:
-        return int(item)
-    elif t_item:
+    elif t_item is str:
         return int(item, base)
+    elif t_item is complex:
+        return numpy.real(item)
+    elif t_item:
+        return int(item)
 def VY_map(fn, vector):
     ret = []
     t_vector = VY_type(vector)
