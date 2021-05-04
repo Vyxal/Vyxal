@@ -2372,7 +2372,7 @@ if __name__ == "__main__":
     file_location = ""
     flags = ""
     inputs = []
-    header = "stack = []\nregister = 0\nprinted = False"
+    header = "stack = []\nregister = 0\nprinted = False\n"
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
