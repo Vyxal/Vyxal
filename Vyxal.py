@@ -768,7 +768,7 @@ def function_call(fn, vector):
         return [{
             Number: lambda: len(prime_factors(fn)),
             str: lambda: exec(VY_compile(fn))
-        }.get(VY_type(fn), lambda: vectorise(lambda x: int(not x), fn))()]
+        }.get(VY_type(fn), lambda: vectorised_not(fn)))()]
 def gcd(lhs, rhs=None):
     if rhs:
         return {
@@ -1617,6 +1617,11 @@ def vectorise(fn, left, right=None, third=None):
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             return ret
+def vectorised_not(item):
+    return {
+        Number: lambda: int(not item),
+        str: lambda: int(not item)
+    }.get(VY_type(item), lambda: vectorise(vectorised_not, item))()
 def vertical_join(vector, padding=" "):
     if VY_type(padding) == VY_type(vector) == Number:
         return abs(vector - padding)
