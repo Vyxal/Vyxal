@@ -1059,6 +1059,14 @@ def lshift(lhs, rhs):
         (Generator, list): lambda: _two_argument(lshift, lhs, rhs),
         (Generator, Generator): lambda: _two_argument(lshift, lhs, rhs)
     }.get(types, lambda: vectorise(lshift, lhs, rhs))()
+def map_at(function, vector, indexes):
+    def gen():
+        for pos, element in enumerate(vector):
+            if pos in indexes:
+                yield function([element])[-1]
+            else:
+                yield element
+    return Generator(gen())
 def map_every_n(vector, function, index):
     def gen():
         for pos, element in enumerate(vector):

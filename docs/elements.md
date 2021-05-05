@@ -138,7 +138,7 @@ cmd | inputs | out/effect
 |  | (a: list, b: list)                  |  merged(a, b) |
 |  | (a: non-list, b: non-list)          |  concatenated(a, b) |
 | K | (a: number)                         |  divisors(a) |
-|  | (a: string)                         |  prefixes(a) |
+|  | (a: string)                         |  all substrings of a that occur more than once # they "divide" a into more than one piece |
 |  | (otherwise)                         |  vectorised |
 | L | (a: any)                            |  len(a)  # length |
 | M | (a: any, b: function)               |  map(b, a) # map, apply to each |
@@ -200,7 +200,7 @@ cmd | inputs | out/effect
 | u |   |  -1 |
 | v |   |  * vectorise next element: v<element> |
 | w | (a: any)                            |  [a] # single wrap |
-| x |   |  * context level up |
+| x |   |  * call current function # recursion. Prints entire stack if not in a function/lambda |
 | y | (a: any)                            |  uninterleave(a) |
 | z | (a: any, b: function)               |  zip(a, map(b, a)) #zipmap, map and zip |
 |  | (a: any, b: any)                    |  a, zip(b, b) |
@@ -344,10 +344,8 @@ cmd | inputs | out/effect
 | ∇ | (a: any, b: any, c: any)            |  c, a, b |
 | ⌈ | (a: number)                         |  ceiling(a) |
 |  | (a: string)                         |  a.split(" ") |
-|  | (otherwise)                         |  vectorised |
 | ⌊ | (a: number)                         |  floor(a) |
 |  | (a: string)                         |  int(keep only digits of a) |
-|  | (otherwise)                         |  vectorised |
 | ¯ | (a: any)                            |  deltas(a) |
 | ± | (a: number)                         |  sign_of(a) # negative = -1, 0 = 0, positive = 1 |
 |  | (a: string)                         |  a |
@@ -536,7 +534,7 @@ cmd | inputs | out/effect
 | ∆ṗ | (a: number)                        |  first prime before a |
 | ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
 | ∆ṙ | (a: list)                          |  polynomial from roots a |
-| ∆Ṙ |                                    |  random.random() # random float in the range [0, 1)
+| ∆Ṙ |   |  random.random() # random float in the range [0, 1) |
 | øo | (a: string, b: string)             |  a.remove_until_no_change(b) |
 | øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) |
 | øc | (a: string)                        |  base_255_string_compressed(a) |
@@ -555,4 +553,5 @@ cmd | inputs | out/effect
 | ÞF |   |  * every fibonacci number |
 | Þ! |   |  * every factorial |
 | ÞD | (a: list)                          |  diagonals of a - starts with main diagonal. |
-| ¨U | (a: string)                        |  GET request with url= |
+| ¨U | (a: string)                        |  GET request with url=a |
+| ¨M | (a: list, b: list, c: function)    |  map function c to every item in a who's index is in b |
