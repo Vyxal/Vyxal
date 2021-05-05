@@ -11,6 +11,7 @@ import string
 import time
 import urllib.request
 import warnings
+import base64
 
 # Vyxal modules
 import commands
@@ -291,6 +292,9 @@ def _safe_apply(function, *args):
         if len(ret): return ret[-1]
         else: return []
     return function(*args)
+def _mangle(string):
+    byte_list = bytes(string, encoding="utf-8")
+    return base64.b32encode(byte_list).decode().replace("=", "_")
 def _two_argument(function, left, right):
     '''
     Used for vectorising user-defined lambas/dyads over generators
@@ -2050,7 +2054,7 @@ def VY_compile(source, header=""):
                 compiled += NEWLINE + "else:" + NEWLINE
                 compiled += false_branch
         elif NAME == VyParse.FOR_STMT:
-            loop_variable = "LOOP_" + str(int(time.time()))
+            loop_variable = "LOOP_" + _mangle(compiled)
             if VyParse.FOR_VARIABLE in VALUE:
                 loop_variable = "VAR_" + strip_non_alphabet(VALUE[VyParse.FOR_VARIABLE])
 
@@ -2142,12 +2146,12 @@ else:
                 lambda_argument = VALUE[VyParse.LAMBDA_ARGUMENTS]
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
-            time_signature = int(time.time())
-            compiled += f"def _lambda_{time_signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
+            signature = _mangle(compiled)
+            compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
-            compiled += tab(f"this_function = _lambda_{time_signature}") + NEWLINE
+            compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
@@ -2163,7 +2167,7 @@ else:
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
             compiled += tab("input_level -= 1;") + NEWLINE
             compiled += tab("return ret") + NEWLINE
-            compiled += f"stack.append(_lambda_{time_signature})"
+            compiled += f"stack.append(_lambda_{signature})"
         elif NAME == VyParse.LIST_STMT:
             compiled += "temp_list = []" + NEWLINE
             for element in VALUE[VyParse.LIST_ITEMS]:
