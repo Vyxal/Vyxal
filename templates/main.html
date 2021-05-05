@@ -375,7 +375,7 @@ ${code}
             $("#run_button").on("click", e => {do_run();});
 
             $("#clear").on("click", e => {
-                code.value = ""; stdin.value = ""; output.value = ""; extra.value = ""; footer.value = ""; header.value = "";
+                code.value = ""; stdin.value = ""; output.value = ""; extra.value = ""; footer.value = ""; header.value = ""; updateCount()
             });
 
         });
