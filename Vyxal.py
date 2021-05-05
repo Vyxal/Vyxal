@@ -948,6 +948,10 @@ def is_prime(n):
         else: return int(n.upper() == n)
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
     return sympy.ntheory.isprime(n)
+def is_square(n):
+    if type(n) in (float, str): return 0
+    elif isinstance(n, int): return int(any([exponate(y, 2) == n for y in range(1, math.ceil(n / 2) + 1)])) or int(n == 0)
+    else: return vectorise(is_square, n)
 def iterable(item, t=None):
     t = t or number_iterable
     if VY_type(item) == Number:
@@ -2005,7 +2009,6 @@ constants = {
     "×": "2147483648",
     "⁰": "'bcfghjklmnpqrstvwxyz'",
     "¹": "'bcfghjklmnpqrstvwxz'",
-    "□": "string.printable",
     "•": "['qwertyuiop', 'asdfghjkl', 'zxcvbnm']",
     "Ṡ": "dt.now().second",
     "Ṁ": "dt.now().minute",
@@ -2174,7 +2177,14 @@ else:
             compiled += f"stack.append({constants[VALUE]})"
         elif NAME == VyParse.VECTORISATION_CHAR:
             compiled += VY_compile("λ" + VALUE + ";") + NEWLINE
-            m = commands.command_dict.get(VALUE, "\n\n")[1]
+            m = [0, -1]
+            if len(VALUE) == 1 and VALUE in commands.command_dict: m = commands.command_dict[VALUE]
+            elif VALUE[1] in commands.math_command_dict: m = commands.math_command_dict[VALUE[1]]
+            elif VALUE[1] in commands.string_command_dict: m = commands.string_command_dict[VALUE[1]]
+            elif VALUE[1] in commands.list_command_dict: m = commands.list_command_dict[VALUE[1]]
+            elif VALUE[1] in commands.misc_command_dict: m = commands.misc_command_dict[VALUE[1]]
+
+            m = m[-1]
             if m == 0:
                 compiled += "fn = pop(stack); stack += fn(stack)"
             elif m == 1:

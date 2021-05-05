@@ -244,7 +244,7 @@ math_command_dict = {
     "ƈ": ("rhs, lhs = pop(stack, 2); stack.append(divide(factorial(lhs), factorial(subtract(lhs, rhs))))", 2),
     "±": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(math.copysign, lhs, rhs))", 2),
     "K": ("arg = pop(stack); stack.append(summate(join(0, divisors_of(arg)[:-1])))", 1),
-    "²": ("arg = pop(stack); stack.append(int(any([exponate(n, 2) == arg for n in range(1, math.ceil(arg / 2))])))", 1),
+    "²": ("arg = pop(stack); stack.append(is_square(arg))", 1),
     "e": ("arg = pop(stack); stack.append(vectorise(math.exp, arg))", 1),
     "E": ("arg = pop(stack); stack.append(vectorise(math.expm1, arg))", 1),
     "L": ("arg = pop(stack); stack.append(vectorise(math.log, arg))", 1),
