@@ -351,6 +351,7 @@ ${code}
             const extra = document.getElementById("extra");
             const header = document.getElementById("header");
             const footer = document.getElementById("footer");
+            const filter = document.getElementById("filterBox");
 
             function do_run() {
                 if (!run.innerHTML.includes("fa-spin")) {
@@ -375,7 +376,8 @@ ${code}
             $("#run_button").on("click", e => {do_run();});
 
             $("#clear").on("click", e => {
-                code.value = ""; stdin.value = ""; output.value = ""; extra.value = ""; footer.value = ""; header.value = ""; updateCount()
+                code.value = ""; stdin.value = ""; output.value = ""; extra.value = ""; footer.value = ""; header.value = ""; updateCount();
+                flags.value = ""; filter.value = ""; glyphSearch()
             });
 
         });
