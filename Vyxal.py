@@ -1163,8 +1163,9 @@ def nub_sieve(vector):
     return Generator(gen())
 def one_argument_tail_index(vector, index, start):
     types = (VY_type(vector), VY_type(index))
+    if Number not in types:
+
     return {
-        types: lambda: start,
         (Number, Number): lambda: iterable(vector)[start:index],
         (Number, types[1]): lambda: index[start:vector],
         (types[0], Number): lambda: vector[start:index]
