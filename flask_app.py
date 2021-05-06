@@ -92,6 +92,9 @@ def kill():
   terminated.add(session)
   return ""
 
+@app.route("/oeis", methods=("GET", ))
+def oeis():
+    return render_template('oeis.html')
 def parse_file():
     import os
     ret = []
@@ -127,5 +130,6 @@ def parse_file():
                     else:
                         ret.append("\n" + line[1:-1])
     return ret
+
 
 descriptions = parse_file()
