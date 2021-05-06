@@ -333,7 +333,9 @@ cmd | inputs | out/effect
 | Ẋ | (a: any, b: any)                    |  cartesian_product(a, b) |
 |  | (a: function, b: any)               |  repeatedly apply a on b until b doesn"t change |
 | Ẏ | (a: any, b: number)                 |  a[0:b] |
+|  | (a: any, b: non-number)             |  regex.findall(pattern=a, string=b) |
 | Ż | (a: any, b: number)                 |  a[1:b] |
+|  | (a: any, b: non-number)             |  regex.match(pattern=a, string=b).groups() # regex groups |
 | ₌ |   |  * parallel apply next two elements: ₌<element><element> |
 | ₍ |   |  * parallel apply next two elements and put into list: ₍<element><element>. Equivalent to ₌..≬ |
 | ⁰ |   |  first item from input history |
