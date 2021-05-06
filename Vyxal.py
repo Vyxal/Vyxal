@@ -1289,6 +1289,23 @@ def rand_between(lhs, rhs):
 
     else:
         return random.choice([lhs, rhs])
+def regex_replace(source, pattern, replacent):
+    if type(replacent) is not Function: 
+        return regex.sub(pattern, VY_str(replacent), source)
+    
+    parts = regex.split("(" + pattern + ")", source)
+    out = ""
+    switch = 1
+    for item in parts:
+        
+        if switch % 2:
+            out += item
+        else:
+            out += replacent([item])[-1]
+        switch += 1
+    
+    return out
+
 def remove(vector, item):
     return {
         str: lambda: vector.replace(str(item), ""),

@@ -271,7 +271,8 @@ string_command_dict = {
     "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), 
     "d": ("stack.append(run_length_decode(pop(stack)))", 1),
     "D": ("stack.append(dictionary_compress(pop(stack)))", 1),
-    "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1)
+    "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
+    "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3)
 }
 
 list_command_dict = {
