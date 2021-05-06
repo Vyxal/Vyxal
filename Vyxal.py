@@ -1669,8 +1669,8 @@ def VY_abs(item):
 def VY_bin(item):
     t_item = VY_type(item)
     return {
-        Number: lambda: bin(int(item))[2:],
-        str: lambda: [bin(ord(let))[2:] for let in item]
+        Number: lambda: [int(x) for x in bin(int(item))[2:]],
+        str: lambda: [[int (x) for x in bin(ord(let))[2:]] for let in item]
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_divmod(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
