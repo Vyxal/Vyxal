@@ -1164,7 +1164,12 @@ def nub_sieve(vector):
 def one_argument_tail_index(vector, index, start):
     types = (VY_type(vector), VY_type(index))
     if Number not in types:
-
+        lhs, rhs = VY_str(vector), VY_str(index)
+        pobj = regex.compile(lhs)
+        if start == 0:
+            return pobj.findall(rhs)
+        else:
+            return pobj.match(rhs).groups()
     return {
         (Number, Number): lambda: iterable(vector)[start:index],
         (Number, types[1]): lambda: index[start:vector],
@@ -1192,7 +1197,6 @@ def orderless_range(lhs, rhs, lift_factor=0):
             return Generator(range(lhs, rhs + lift_factor, -1))
     else:
         lhs, rhs = VY_str(lhs), VY_str(rhs)
-        import regex
         pobj = regex.compile(lhs)
         mobj = pobj.search(rhs)
         return int(bool(mobj))
