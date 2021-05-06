@@ -168,7 +168,8 @@ KL2=
 
 ## Very Special Contributors
 
-- Massive thanks to @Razetime for helping me with the online interpreter's design
-- Massive thanks to @ysthakur for making the reference.md file and making an automated process to do so.
-- Massive thanks to code-golf se user @2x-1 for helping me establish the fundamentals of Vyxal and being my first collaborator on this journey.
-- Massive thanks to @8dion8 for language suggestions and motivation in the MAWP discord group. 
+- @Razetime for helping me with the online interpreter's design
+- @ysthakur for making the reference.md file and making an automated process to do so.
+- code-golf se user @2x-1 for helping me establish the fundamentals of Vyxal and being my first collaborator on this journey.
+- @8dion8 for language suggestions and motivation in the MAWP discord group. 
+- @Amiller42 for pointing out bugs and fixing bugfixes
