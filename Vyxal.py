@@ -215,8 +215,6 @@ class Generator:
         return f
     def __iter__(self):
         return self
-    def _map(self, function):
-        return Generator(map(lambda x: _safe_apply(function, x) , self.gen))
     def _filter(self, function):
         index = 0
         l = self.__len__()
@@ -936,10 +934,10 @@ def interleave(lhs, rhs):
 def is_divisble(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
-        (Number, Number): lambda: [int(lhs % rhs == 0)],
-        (str, str): lambda: [lhs] * len(rhs),
-        (str, Number): lambda: [lhs] * rhs,
-        (Number, str): lambda: [rhs] * lhs
+        (Number, Number): lambda: int(modulo(lhs, rhs) == 0 and rhs != 0),
+        (str, str): lambda: (lhs, ) * len(rhs),
+        (str, Number): lambda: (lhs, ) * rhs,
+        (Number, str): lambda: (rhs, ) * lhs
     }.get(types, lambda: vectorise(is_divisble, lhs, rhs))()
 def is_empty(item):
     return {
@@ -1077,6 +1075,8 @@ def map_every_n(vector, function, index):
     return Generator(gen())
 def modulo(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+
+    if types[1] is Number and rhs == 0: return 0
     return {
         (Number, Number): lambda: lhs % rhs,
         (str, str): lambda: format_string(lhs, [rhs]),
@@ -1305,7 +1305,6 @@ def regex_replace(source, pattern, replacent):
         switch += 1
     
     return out
-
 def remove(vector, item):
     return {
         str: lambda: vector.replace(str(item), ""),
@@ -1590,32 +1589,38 @@ def urlify(item):
     return item
 def vectorise(fn, left, right=None, third=None):
     if third:
-        left = iterable(left)
         types = (VY_type(left), VY_type(right))
 
         def gen():
             for pair in VY_zip(left, right):
                 yield _safe_apply(fn, *pair, third)
+            
+        def with_generator(left, right):
+            for item in left:
+                yield _safe_apply(fn, item, right, third)
 
         gen_lambda = lambda: Generator(gen())
         return {
             (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right, third),
             (list, types[1]): lambda: [_safe_apply(fn, x, right, third) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x, third) for x in right],
-            (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right, third)),
-            (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x, third)),
+            (Generator, types[1]): lambda: Generator(with_generator(left, right)),
+            (types[0], Generator): lambda: Generator(with_generator(right, left)),
             (list, list): lambda: gen_lambda,
             (Generator, Generator): gen_lambda,
             (list, Generator): gen_lambda,
             (Generator, list): gen_lambda
         }[types]()
     elif right:
-        left = iterable(left)
         types = (VY_type(left), VY_type(right))
 
         def gen():
             for pair in VY_zip(left, right):
                 yield _safe_apply(fn, *pair)
+        
+        def with_generator(l, r):
+            for item in l:
+                yield _safe_apply(fn, item, r)
 
         gen_lambda = lambda: Generator(gen())
 
@@ -1623,8 +1628,8 @@ def vectorise(fn, left, right=None, third=None):
             (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right),
             (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
             (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
-            (Generator, types[1]): lambda: left._map(lambda x: _safe_apply(fn, x, right)),
-            (types[0], Generator): lambda: right._map(lambda x: _safe_apply(fn, left, x)),
+            (Generator, types[1]): lambda: Generator(with_generator(left, right)),
+            (types[0], Generator): lambda: Generator(with_generator(right, left)),
             (list, list): gen_lambda,
             (Generator, Generator): gen_lambda,
             (list, Generator): gen_lambda,
@@ -1633,7 +1638,10 @@ def vectorise(fn, left, right=None, third=None):
             
     else:
         if VY_type(left) is Generator:
-            return left._map(fn)
+            def gen():
+                for item in left:
+                    yield _safe_apply(fn, item)
+            return Generator(gen())
         elif VY_type(left) in (str, Number):
             return _safe_apply(fn, iterable(left))
         else:
@@ -1750,8 +1758,6 @@ def VY_filter(fn, vector):
     types = (VY_type(fn), VY_type(vector))
     return {
         types: lambda: default_case(iterable(fn, str), iterable(vector, str)),
-        (Function, Generator): lambda: Generator(vector._filter(fn)),
-        (Generator, Function): lambda: Generator(fn._filter(fn)),
         (Function, types[1]): lambda: Generator(_filter(fn, iterable(vector, range))),
         (types[0], Function): lambda: Generator(_filter(vector, iterable(fn, range)))
 
@@ -1784,7 +1790,11 @@ def VY_map(fn, vector):
     if VY_type(vec) == Number:
         vec = range(MAP_START, int(vec) + MAP_OFFSET)
     if VY_type(vec) is Generator:
-        return vec._map(function)
+        def gen():
+            for item in vec:
+                print(vec)
+                yield _safe_apply(function, item)
+        return Generator(gen())
     for item in vec:
         result = function([item])
         ret.append(result[-1])
@@ -2195,12 +2205,12 @@ else:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
-            compiled += tab("context_values.append(parameters);") + NEWLINE
+            compiled += tab("context_values.append(parameters)") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("ret = [pop(stack)]") + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
-            compiled += tab("input_level -= 1;") + NEWLINE
+            compiled += tab("input_level -= 1") + NEWLINE
             compiled += tab("return ret") + NEWLINE
             compiled += f"stack.append(_lambda_{signature})"
         elif NAME == VyParse.LIST_STMT:

@@ -39,7 +39,7 @@ command_dict = {
     "∞": ("stack.append(Generator(lambda x: x))", 0),
     "!": ("stack.append(len(stack))", 0),
     '"': ("rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])", 2),
-    "$": ("top = pop(stack); over = pop(stack); stack += [top, over]", 2),
+    "$": ("top, over = pop(stack, 2); stack.append(top); stack.append(over)", 2),
     "%": ("rhs, lhs = pop(stack, 2); stack.append(modulo(lhs, rhs))", 2),
     "*": ("rhs, lhs = pop(stack, 2); stack.append(multiply(lhs, rhs))", 2),
     "+": ("rhs, lhs = pop(stack, 2); stack.append(add(lhs, rhs))", 2),
@@ -156,7 +156,7 @@ command_dict = {
     "Ȧ": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
     "Ḃ": ("stack += bifuricate(pop(stack))", 1),
     "Ċ": ("stack.append(counts(pop(stack)))", 1),
-    "Ḋ": ("rhs, lhs = pop(stack, 2); stack += is_divisble(lhs, rhs)", 2),
+    "Ḋ": ("rhs, lhs = pop(stack, 2); ret = is_divisble(lhs, rhs)\nif type(ret) is tuple: stack += list(ret)\nelse: stack.append(ret)", 2),
     "Ė": ("stack += VY_exec(pop(stack))", 1),
     "Ḟ": ("""top = pop(stack)
 if VY_type(top) is Number:
