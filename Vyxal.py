@@ -174,6 +174,7 @@ class Generator:
                 if item == temp: return True
             return False
     def __getitem__(self, position):
+        print(position)
         if type(position) is slice:
             ret = []
             stop = position.stop or self.__len__()
@@ -866,6 +867,8 @@ def inclusive_range(lhs, rhs):
         return Generator(range(int(lhs), int(rhs) - 1, -1))
 def index(vector, index):
     if VY_type(index) == Number:
+        if VY_type(vector) is Generator:
+            return vector[int(index)]
         return vector[int(index) % len(vector)]
     elif VY_type(index) in (list, Generator):
         return vector[slice(*index)]
