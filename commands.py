@@ -123,7 +123,7 @@ command_dict = {
     "ġ": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd(pop(stack), rhs))", 1),
     "ḣ": ("top = iterable(pop(stack)); stack.append(top[0]); stack.append(top[1:])", 1),
     "ḭ": ("rhs, lhs = pop(stack, 2); stack.append(integer_divide(lhs, rhs))", 2),
-    "ŀ": ("start, needle, hastack = pop(stack, 3); stack.append(find(haystack, needle, start))", 3),
+    "ŀ": ("start, needle, haystack = pop(stack, 3); stack.append(find(haystack, needle, start))", 3),
     "ṁ": ("top = iterable(pop(stack)); stack.append(divide(summate(top), len(top)))", 1),
     "ṅ": ("stack.append(first_n(pop(stack)))", 1),
     "ȯ": ("n, fn = pop(stack, 2); stack.append(first_n(fn, n))", 2),
