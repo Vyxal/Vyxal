@@ -1119,13 +1119,12 @@ def multiply(lhs, rhs):
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def ncr(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+    print(lhs, rhs)
     return {
-        (Number, Number): lambda: math.gcd(int(lhs), int(rhs)),
+        (Number, Number): lambda: unsympy(sympy.functions.combinatorial.numbers.nC(int(lhs), int(rhs))),
         (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
         (Number, str): lambda: [random.choice(rhs) for c in range(lhs)],
-        (str, str): lambda: int(set(lhs) == set(rhs)),
-        (types[0], list): lambda: [ncr(lhs, item) for item in rhs],
-        (list, types[1]): lambda: [ncr(item, rhs) for item in lhs],
+        (str, str): lambda: int(set(lhs) == set(rhs))
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
 def negate(item):
     return {
@@ -1619,6 +1618,7 @@ def vectorise(fn, left, right=None, third=None):
 
         def gen():
             for pair in VY_zip(left, right):
+                
                 yield _safe_apply(fn, *pair)
         
         def with_generator(l, r):
@@ -1979,7 +1979,7 @@ def VY_zipmap(fn, vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
         orig = copy.deepcopy(vector)
-        new = Generator(vector._map(fn))
+        new = VY_map(fn, vector)
         return Generator(orig.zip_with(new))
     if t_vector == Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
