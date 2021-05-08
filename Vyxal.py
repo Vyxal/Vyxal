@@ -1789,7 +1789,7 @@ def VY_int(item, base=10):
     elif t_item is complex:
         return numpy.real(item)
     elif t_item:
-        return int(item)
+        return VY_int(iterable(item), base)
 def VY_map(fn, vector):
     ret = []
     t_vector = VY_type(vector)
