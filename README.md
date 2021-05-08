@@ -126,9 +126,9 @@ Vyxal has so many commands that it is impractical to list them all here. [Here i
 [Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%60Hello%2C%20World!%60&inputs=&header=&footer=)
 
 ```
-`∞∧, ƛ⍎!
+`ƈṡ, ƛ€!
 ```
-[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%60%E2%88%9E%E2%88%A7%2C%20%C6%9B%E2%8D%8E!&inputs=&header=&footer=)
+[Try it Online!](http://lyxal.pythonanywhere.com?flags=&code=%60%C6%88%E1%B9%A1%2C%20%C6%9B%E2%82%AC!&inputs=&header=&footer=)
 
 The above program uses dictionary compression: words in a predefined list are indexed using a subjective base-162 literal.
 
@@ -140,9 +140,9 @@ kH
 ### Fizzbuzz
 
 ```
-Ĥƛ3œı⇿⌊*n5œıₛÔ*+⟇
+₁ƛ₍₃₅kF½*∑⟇
 ```
-[Try it Online!](http://lyxal.pythonanywhere.com/?flags=jM&code=%C4%A4%C6%9B3%C5%93%C4%B1%E2%87%BF%E2%8C%8A*n5%C5%93%C4%B1%E2%82%9B%C3%94*%2B%E2%9F%87&inputs=&header=&footer=)
+[Try it Online!](http://lyxal.pythonanywhere.com/?flags=j&code=%E2%82%81%C6%9B%E2%82%8D%E2%82%83%E2%82%85kF%C2%BD*%E2%88%91%E2%9F%87&inputs=&header=&footer=)
 [Explanation](https://codegolf.stackexchange.com/a/210307/78850)
 
 ### Prime Checking
