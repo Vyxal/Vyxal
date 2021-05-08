@@ -1591,27 +1591,38 @@ def urlify(item):
 def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         types = (VY_type(left), VY_type(right))
-
         def gen():
             for pair in VY_zip(left, right):
                 yield _safe_apply(fn, *pair, third)
-            
-        def with_generator(left, right):
-            for item in left:
-                yield _safe_apply(fn, item, right, third)
+        
+        def expl(l, r):
+            for item in l:
+                yield _safe_apply(fn, item, r, third)
 
-        gen_lambda = lambda: Generator(gen())
-        return {
-            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right, third),
-            (list, types[1]): lambda: [_safe_apply(fn, x, right, third) for x in left],
-            (types[0], list): lambda: [_safe_apply(fn, left, x, third) for x in right],
-            (Generator, types[1]): lambda: Generator(with_generator(left, right)),
-            (types[0], Generator): lambda: Generator(with_generator(right, left)),
-            (list, list): lambda: gen_lambda,
-            (Generator, Generator): gen_lambda,
-            (list, Generator): gen_lambda,
-            (Generator, list): gen_lambda
-        }[types]()
+        def swapped_expl(l, r):
+            for item in r:
+                yield _safe_apply(fn, l, item, third)
+
+        return Generator({
+            (types[0], types[1]): (lambda: _safe_apply(fn, iterable(left), right),
+                                   lambda: expl(iterable(left), right)),
+            (list, types[1]): (lambda: [_safe_apply(fn, x, right) for x in left],
+                               lambda: expl(left, right)),
+            (types[0], list): (lambda: [_safe_apply(fn, left, x) for x in right],
+                               lambda: swapped_expl(left, right)),
+            (Generator, types[1]): (lambda: expl(left, right),
+                                    lambda: expl(left, right)),
+            (types[0], Generator): (lambda: swapped_expl(left, right),
+                                    lambda: swapped_expl(left, right)),
+            (list, list): (lambda: gen(),
+                           lambda: expl(left, right)),
+            (Generator, Generator): (lambda: gen(),
+                                     lambda: expl(left, right)),
+            (list, Generator): (lambda: gen(),
+                                lambda: expl(left, right)),
+            (Generator, list): (lambda: gen(),
+                                lambda: expl(left, right))
+        }[types][explicit]())
     elif right:
         types = (VY_type(left), VY_type(right))
 
@@ -1626,9 +1637,6 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def swapped_expl(l, r):
             for item in r:
                 yield _safe_apply(fn, l, item)
-
-        gen_lambda = lambda: Generator(gen())
-
         return Generator({
             (types[0], types[1]): (lambda: _safe_apply(fn, iterable(left), right),
                                    lambda: expl(iterable(left), right)),
