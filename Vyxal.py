@@ -1119,7 +1119,6 @@ def multiply(lhs, rhs):
     }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 def ncr(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
-    print(lhs, rhs)
     return {
         (Number, Number): lambda: unsympy(sympy.functions.combinatorial.numbers.nC(int(lhs), int(rhs))),
         (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
@@ -1589,7 +1588,7 @@ def urlify(item):
     if not (item.startswith("http://") or item.startswith("https://")):
         return "https://" + item
     return item
-def vectorise(fn, left, right=None, third=None):
+def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         types = (VY_type(left), VY_type(right))
 
@@ -1618,26 +1617,38 @@ def vectorise(fn, left, right=None, third=None):
 
         def gen():
             for pair in VY_zip(left, right):
-                
                 yield _safe_apply(fn, *pair)
         
-        def with_generator(l, r):
+        def expl(l, r):
             for item in l:
                 yield _safe_apply(fn, item, r)
 
+        def swapped_expl(l, r):
+            for item in r:
+                yield _safe_apply(fn, l, item)
+
         gen_lambda = lambda: Generator(gen())
 
-        return {
-            (types[0], types[1]): lambda: _safe_apply(fn, iterable(left), right),
-            (list, types[1]): lambda: [_safe_apply(fn, x, right) for x in left],
-            (types[0], list): lambda: [_safe_apply(fn, left, x) for x in right],
-            (Generator, types[1]): lambda: Generator(with_generator(left, right)),
-            (types[0], Generator): lambda: Generator(with_generator(right, left)),
-            (list, list): gen_lambda,
-            (Generator, Generator): gen_lambda,
-            (list, Generator): gen_lambda,
-            (Generator, list): gen_lambda
-        }[types]()
+        return Generator({
+            (types[0], types[1]): (lambda: _safe_apply(fn, iterable(left), right),
+                                   lambda: expl(iterable(left), right)),
+            (list, types[1]): (lambda: [_safe_apply(fn, x, right) for x in left],
+                               lambda: expl(left, right)),
+            (types[0], list): (lambda: [_safe_apply(fn, left, x) for x in right],
+                               lambda: swapped_expl(left, right)),
+            (Generator, types[1]): (lambda: expl(left, right),
+                                    lambda: expl(left, right)),
+            (types[0], Generator): (lambda: swapped_expl(left, right),
+                                    lambda: swapped_expl(left, right)),
+            (list, list): (lambda: gen(),
+                           lambda: expl(left, right)),
+            (Generator, Generator): (lambda: gen(),
+                                     lambda: expl(left, right)),
+            (list, Generator): (lambda: gen(),
+                                lambda: expl(left, right)),
+            (Generator, list): (lambda: gen(),
+                                lambda: expl(left, right))
+        }[types][explicit]())
             
     else:
         if VY_type(left) is Generator:
@@ -2243,9 +2254,11 @@ else:
             if m == 0:
                 compiled += "fn = pop(stack); stack += fn(stack)"
             elif m == 1:
-                compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack)))"
+                compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack), explicit=True))"
             elif m == 2:
-                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs))"
+                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs, explicit=True))"
+            elif m == 3:
+                compiled += "fn = pop(stack); other, rhs, lhs = pop(stack, 3); stack.append(vectorise(fn, lhs, rhs, other, explicit=True))"
         elif NAME == VyParse.CODEPAGE_INDEX:
             compiled += f"stack.append({commands.codepage.find(VALUE)} + 101)"
         elif NAME == VyParse.TWO_BYTE_MATH:
