@@ -981,7 +981,7 @@ def iterable_shift(vector, direction, times=1):
                 return vector
             else:
                 # abc -> bca
-                return vector[1:] + vector[0]
+                return join(vector[1:], vector[0]) 
         elif direction == ShiftDirections.RIGHT:
             if t_vector is list:
                 # [1, 2, 3] -> [3, 1, 2]
@@ -990,7 +990,7 @@ def iterable_shift(vector, direction, times=1):
                 return vector
             else:
                 # abc -> cab
-                return vector[-1] + vector[:-1]
+                return join(vector[-1], vector[:-1]) 
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
