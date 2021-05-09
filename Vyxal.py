@@ -268,6 +268,7 @@ class Generator:
     def safe(self):
         import copy
         return copy.deepcopy(self)
+
 class ShiftDirections:
     LEFT = 1
     RIGHT = 2
@@ -968,7 +969,7 @@ def iterable(item, t=None):
     else:
         return item
 def iterable_shift(vector, direction, times=1):
-    vector = iterable(vector)
+    vector = deref(iterable(vector))
     t_vector = type(vector)
     for _ in range(times):
         if direction == ShiftDirections.LEFT:
@@ -978,19 +979,19 @@ def iterable_shift(vector, direction, times=1):
                 temp = pop(vector)
                 vector = vector[::-1]
                 vector.append(temp)
-                return vector
             else:
                 # abc -> bca
-                return join(vector[1:], vector[0]) 
+                vector = join(vector[1:], vector[0]) 
         elif direction == ShiftDirections.RIGHT:
             if t_vector is list:
                 # [1, 2, 3] -> [3, 1, 2]
                 temp = pop(vector)
                 vector.insert(0, temp)
-                return vector
             else:
                 # abc -> cab
-                return join(vector[-1], vector[:-1]) 
+                vector = join(vector[-1], vector[:-1]) 
+    
+    return vector
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
     return {
