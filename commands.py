@@ -201,7 +201,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "℅": ("stack.append(random.choice(iterable(pop(stack))))", 1),
     "≤": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.LESS_THAN_EQUALS))", 2),
     "≥": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN_EQUALS))", 2),
-    "≠": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.NOT_EQUALS))", 2),
+    "≠": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs != rhs))", 2),
     "⁼": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs == rhs))", 2),
     "ƒ": ("stack.append(fractionify(pop(stack)))", 1),
     "ɖ": ("stack.append(decimalify(pop(stack)))", 1),
