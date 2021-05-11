@@ -548,6 +548,7 @@ cmd | inputs | out/effect
 | øW | (a: string)                        |  group_on_words(a) |
 | øṙ | (a: any, b: any, c: non-function)  |  regex.replace(pattern=a, source=b, replacent=c) |
 |  | (a: any, b: any, c: function)      |  regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace  |
+| øm | (a: any)                           |  palindromised(a) # doesn't duplicate middle
 | Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
