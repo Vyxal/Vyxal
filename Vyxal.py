@@ -426,8 +426,13 @@ def ceiling(item):
         str: lambda: item.split(" ")
     }.get(VY_type(item), lambda: vectorise(ceiling, item))()
 def centre(vector):
+    vector = deref(iterable(vector), True)
     focal = max(map(len, vector))
-    return Generator(map(lambda x: x.center(focal), vector))
+    def gen():
+        for item in vector:
+            yield item.center(focal)
+
+    return Generator(gen())
 def chrord(item):
     t_item = VY_type(item)
     if t_item is str and len(item) == 1:

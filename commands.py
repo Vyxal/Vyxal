@@ -266,7 +266,7 @@ string_command_dict = {
     "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
     "c": ("string = pop(stack); stack.append('«' + utilities.from_ten(utilities.to_ten(string, utilities.base27alphabet), encoding.codepage_string_compress) + '«')", 1),
     "C": ("number = pop(stack); stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')", 1),
-    "Ċ": ("stack.append(centre(iterable(pop(stack))))", 1),
+    "Ċ": ("stack.append(centre(pop(stack)))", 1),
     "m": ("stack.append(palindromise(iterable(pop(stack))))", 1),
     "e": ("stack.append(run_length_encode(iterable(pop(stack), str)))", 1), 
     "d": ("stack.append(run_length_decode(pop(stack)))", 1),
