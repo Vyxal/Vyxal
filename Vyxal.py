@@ -292,8 +292,8 @@ def _safe_apply(function, *args):
         if len(ret): return ret[-1]
         else: return []
     return function(*args)
-def _mangle(string):
-    byte_list = bytes(string, encoding="utf-8")
+def _mangle(value):
+    byte_list = bytes(value, encoding="utf-8")
     return base64.b32encode(byte_list).decode().replace("=", "_")
 def _two_argument(function, left, right):
     '''
@@ -737,21 +737,21 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
-def format_string(string, items):
+def format_string(value, items):
     ret = ""
     index = 0
     f_index = 0
 
-    while index < len(string):
-        if string[index] == "\\":
-            ret += "\\" + string[index + 1]
+    while index < len(value):
+        if value[index] == "\\":
+            ret += "\\" + value[index + 1]
             index += 1
-        elif string[index] == "%":
+        elif value[index] == "%":
             #print(f_index, f_index % len(items))
             ret += str(items[f_index % len(items)])
             f_index += 1
         else:
-            ret += string[index]
+            ret += value[index]
         index += 1
     return ret
 def fractionify(item):
@@ -918,10 +918,10 @@ def integer_divide(lhs, rhs):
         (Function, types[1]): lambda: VY_reduce(lhs, reverse(rhs))[0],
         (types[0], Function): lambda: VY_reduce(rhs, reverse(lhs))[0]
     }.get(types, lambda: vectorise(integer_divide, lhs, rhs))()
-def integer_list(string):
+def integer_list(value):
     charmap = dict(zip("etaoinshrd", "0123456789"))
     ret = []
-    for c in string.split():
+    for c in value.split():
         temp = ""
         for m in c:
             temp += charmap[m]
@@ -1511,14 +1511,14 @@ def sums(vector):
     for i in range(len(vector)):
         ret.append(summate(vector[0:i+1]))
     return ret
-tab = lambda string: NEWLINE.join(["    " + item for item in string.split(NEWLINE)]).rstrip("    ")
-def transilterate(original, new, string):
-    t_string = type(string)
+tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
+def transilterate(original, new, value):
+    t_string = type(value)
     original = deref(original, True)
     if t_string == Generator:
         t_string = list
     ret = t_string()
-    for char in string:
+    for char in value:
         if t_string is str: char = str(char)
         try:
             ind = original.index(char)
@@ -2110,8 +2110,8 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            string = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
-            compiled += f"stack.append(\"{utilities.uncompress(string)}\")" + NEWLINE
+            value = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
+            compiled += f"stack.append(\"{utilities.uncompress(value)}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"
         elif NAME == VyParse.IF_STMT:
@@ -2302,10 +2302,10 @@ else:
             compiled += f"stack.append({number})" + NEWLINE
         elif NAME == VyParse.COMPRESSED_STRING:
             import utilities, encoding
-            string = utilities.to_ten(VALUE[VyParse.COMPRESSED_STRING_VALUE],
+            value = utilities.to_ten(VALUE[VyParse.COMPRESSED_STRING_VALUE],
              encoding.codepage_string_compress)
-            string = utilities.from_ten(string, utilities.base27alphabet)
-            compiled += f"stack.append('{string}')" + NEWLINE
+            value = utilities.from_ten(value, utilities.base27alphabet)
+            compiled += f"stack.append('{value}')" + NEWLINE
         elif NAME == VyParse.PARA_APPLY:
             compiled += "temp_stack = stack[::]" + NEWLINE
             compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
