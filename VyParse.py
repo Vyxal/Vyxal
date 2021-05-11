@@ -156,12 +156,14 @@ def group_strings(program):
 
     flux_string = [False, "", STANDARD] # [in_string, temp_string, string_type]
     for char in program:
+
         if flux_string[0]:
+
             if escaped:
                 if char == STANDARD:
                     flux_string[1] = flux_string[1][:-1]
                 flux_string[1] += char
-                escaped = flux_string[2]
+                escaped = False
             elif char == flux_string[2]:
                 out.append([flux_string[1], flux_string[2]])
                 flux_string = [False, "", STANDARD]
@@ -576,7 +578,8 @@ def Tokenise(source: str):
     return tokens
 
 if __name__ == "__main__":
-    tests = ["‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD", "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
+    tests = ["«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
+    # "‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD", 
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
