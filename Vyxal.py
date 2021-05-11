@@ -969,7 +969,7 @@ def iterable(item, t=None):
         if t is list:
             return [int(let) if let not in "-." else let for let in str(item)]
         if t is range:
-            return range(MAP_START, int(item) + MAP_OFFSET)
+            return Generator(range(MAP_START, int(item) + MAP_OFFSET))
         return t(item)
     else:
         return item
