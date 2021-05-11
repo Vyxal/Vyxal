@@ -152,18 +152,19 @@ def group_strings(program):
     out = []
     temp = ""
     escaped = False
+    STANDARD, INTEGER, ALPHA = "`", "»", "«"
 
-    flux_string = [False, ""] # [in_string, temp_string]
+    flux_string = [False, "", STANDARD] # [in_string, temp_string, string_type]
     for char in program:
         if flux_string[0]:
             if escaped:
-                if char == "`":
+                if char == STANDARD:
                     flux_string[1] = flux_string[1][:-1]
                 flux_string[1] += char
-                escaped = False
-            elif char == STRING_DELIMITER:
-                out.append([flux_string[1]])
-                flux_string = [False, ""]
+                escaped = flux_string[2]
+            elif char == flux_string[2]:
+                out.append([flux_string[1], flux_string[2]])
+                flux_string = [False, "", STANDARD]
             elif char in "\\":
                 escaped = True
                 flux_string[1] += char
@@ -172,8 +173,10 @@ def group_strings(program):
         elif escaped:
             escaped = False
             out.append(char)
-        elif char == STRING_DELIMITER:
+        elif char in (STANDARD, INTEGER, ALPHA):
             flux_string[0] = True
+            flux_string[1] = ""
+            flux_string[2] = char
         elif char in "\\⁺":
             escaped = True
             out.append(char)
@@ -181,7 +184,7 @@ def group_strings(program):
             out.append(char)
 
     if flux_string[0]:
-        out.append([flux_string[1]])
+        out.append([flux_string[1], flux_string[2]])
 
     return out
 
@@ -214,7 +217,7 @@ def group_two_bytes(code):
     return ret
 
 
-def Tokenise(source: str) -> [Token]:
+def Tokenise(source: str):
     tokens = []
     structure = NO_STMT
     structure_data = {}
@@ -246,20 +249,15 @@ def Tokenise(source: str) -> [Token]:
 
         elif type(char) is list:
             if structure != NO_STMT:
-                structure_data[active_key] += "`" + char[0] + "`"
+                structure_data[active_key] += char[1] + char[0] + char[1]
             else:
-                tokens.append(Token(STRING_STMT, {STRING_CONTENTS: char[0]}))
-            continue
-
-        elif structure in [COMPRESSED_NUMBER, COMPRESSED_STRING]:
-            if char == CLOSING[structure]:
-                nest_level -= 1
-                this_token = Token(structure, structure_data)
-                tokens.append(this_token)
-                structure_data = {}
-                structure = NO_STMT
-            else:
-                structure_data[active_key] += char
+                yes = ({"`": STRING_STMT,
+                    "«": COMPRESSED_STRING,
+                    "»": COMPRESSED_NUMBER
+                }[char[1]], {"`": STRING_CONTENTS,
+                    "«": COMPRESSED_STRING_VALUE,
+                    "»": COMPRESSED_NUMBER_VALUE}[char[1]])
+                tokens.append(Token(yes[0], {yes[1]: char[0]}))
             continue
 
         elif structure == INTEGER:
@@ -578,7 +576,7 @@ def Tokenise(source: str) -> [Token]:
     return tokens
 
 if __name__ == "__main__":
-    tests = ["‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD"]
+    tests = ["‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD", "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
