@@ -49,6 +49,7 @@ inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
 keg_mode = False
 number_iterable = list
+raw_strings = False
 online_version = False
 output = ""
 printed = False
@@ -2111,7 +2112,10 @@ def VY_compile(source, header=""):
         elif NAME == VyParse.STRING_STMT:
             import utilities
             value = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
-            compiled += f"stack.append(\"{utilities.uncompress(value)}\")" + NEWLINE
+            if raw_strings:
+                compiled += f"stack.append(\"{value}\")" + NEWLINE
+            else:
+                compiled += f"stack.append(\"{utilities.uncompress(value)}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"
         elif NAME == VyParse.IF_STMT:
@@ -2361,13 +2365,13 @@ def execute(code, flags, input_list, output_variable):
     if flags:
         if 'H' in flags:
             stack = [100]
-        if "M" in flags:
+        if 'M' in flags:
             MAP_START = 0
 
-        if "m" in flags:
+        if 'm' in flags:
             MAP_OFFSET = 0
         
-        if "Ṁ" in flags:
+        if 'Ṁ' in flags:
             MAP_START = 0
             MAP_OFFSET = 0
 
@@ -2383,11 +2387,14 @@ def execute(code, flags, input_list, output_variable):
         if 'r' in flags:
             reverse_args = True
         
-        if "K" in flags:
+        if 'K' in flags:
             keg_mode = True
         
         if 'R' in flags:
             number_iterable = range
+
+        if 'D' in flags:
+            raw_strings = True
         
         if 'h' in flags:
             output[1] = """
@@ -2414,6 +2421,7 @@ ALL flags should be used as is (no '-' prefix)
 \tW\tPrint the entire stack on end of execution
 \tṠ\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
 \tR\tTreat numbers as ranges if ever used as an iterable
+\tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
 \t5\tMake the interpreter timeout after 5 seconds
 \tT\tMake the interpreter timeout after 10 seconds
@@ -2433,24 +2441,24 @@ ALL flags should be used as is (no '-' prefix)
     except Exception as e:
         output[2] += "\n" + str(e.args[0])
 
-    if not printed and ("O" not in flags):
+    if not printed and ('O' not in flags):
         if flags and 's' in flags:
             VY_print(summate(pop(stack)))
         elif flags and 'd' in flags:
             VY_print(summate(flatten(pop(stack))))
         elif flags and 'Ṫ' in flags:
             VY_print(summate(stack))
-        elif flags and "S" in flags:
+        elif flags and 'S' in flags:
             VY_print(" ".join([str(n) for n in pop(stack)]))
-        elif flags and "C" in flags:
+        elif flags and 'C' in flags:
             VY_print("\n".join(centre(pop(stack))))
-        elif flags and "l" in flags:
+        elif flags and 'l' in flags:
             VY_print(len(pop(stack)))
-        elif flags and "G" in flags:
+        elif flags and 'G' in flags:
             VY_print(VY_max(pop(stack)))
-        elif flags and "g" in flags:
+        elif flags and 'g' in flags:
             VY_print(VY_min(pop(stack)))
-        elif flags and "W" in flags:
+        elif flags and 'W' in flags:
             VY_print(stack)
         elif _vertical_join:
             VY_print(vertical_join(pop(stack)))
@@ -2474,7 +2482,7 @@ if __name__ == "__main__":
         flags = sys.argv[2]
         if flags:
             eval_function = VY_eval
-            if "Ṡ" in flags:
+            if 'Ṡ' in flags:
                 eval_function = str
             if 'H' in flags:
                 stack = [100]
@@ -2520,17 +2528,18 @@ if __name__ == "__main__":
         print("\tW\tPrint the entire stack on end of execution")
         print("\tṠ\tTreat all inputs as strings")
         print("\tR\tTreat numbers as ranges if ever used as an iterable")
+        print("\tD\tTreat all strings as raw strings (don't decompress strings)")
         print("\tṪ\tPrint the sum of the entire stack")
         print("\tṀ\tEquivalent to having both m and M flags")
     else:
         if flags:
-            if "M" in flags:
+            if 'M' in flags:
                 MAP_START = 0
 
-            if "m" in flags:
+            if 'm' in flags:
                 MAP_OFFSET = 0
             
-            if "Ṁ" in flags:
+            if 'Ṁ' in flags:
                 MAP_START = 0
                 MAP_OFFSET = 0
 
@@ -2557,6 +2566,9 @@ if __name__ == "__main__":
             
             if 'R' in flags:
                 number_iterable = range
+
+            if 'D' in flags:
+                raw_strings = True
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
