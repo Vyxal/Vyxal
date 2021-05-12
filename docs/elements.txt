@@ -555,5 +555,6 @@ kṡ                                   = seconds since epoch
 ÞF                                   = * every fibonacci number
 Þ!                                   = * every factorial
 ÞD (a: list)                         = diagonals of a - starts with main diagonal.
+ÞS (a: any)                          = sublists(a)
 ¨U (a: string)                       = GET request with url=a
 ¨M (a: list, b: list, c: function)   = map function c to every item in a who's index is in b

@@ -1480,6 +1480,12 @@ def string_empty(item):
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
+def sublists(item):
+    yield []
+    length = len(item)
+    for size in range(1, length + 1):
+        for sub in range((length - size) + 1):
+            yield item[sub:sub+size]
 def substrings(item):
     for i in range(0, len(item) + 1):
         for j in range(1, len(item) + 1):

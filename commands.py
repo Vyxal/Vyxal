@@ -285,6 +285,7 @@ list_command_dict = {
     "U": ("stack.append(nub_sieve(iterable(pop(stack))))", 1),
     "T": ("stack.append(transpose(pop(stack)))", 1),
     "D": ("stack.append(Generator(diagonals(iterable(pop(stack), list))))", 1),
+    "S": ("stack.append(Generator(sublists(iterable(pop(stack), list))))", 1),
 }
 
 misc_command_dict = {
