@@ -2346,7 +2346,7 @@ else:
 
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
-    global _join, _vertical_join, use_encoding, input_level, online_version
+    global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings
     global inputs, reverse_args, keg_mode, number_iterable, this_function
     online_version = True
     output = output_variable
@@ -2431,7 +2431,7 @@ ALL flags should be used as is (no '-' prefix)
 """
             return
     input_values[0] = [inputs, 0]
-    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args, this_function\n")
+    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, raw_strings, retain_items, reverse_args, this_function\n")
     context_level = 0
     if flags and 'c' in flags:
         output[2] = code
