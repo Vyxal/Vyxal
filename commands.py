@@ -100,7 +100,7 @@ command_dict = {
     "t": ("stack.append(iterable(pop(stack))[-1])", 1),
     "u": ("stack.append(-1)", 0),
     "w": ("stack.append([pop(stack)])", 1),
-    "x": ("context_level -= 1", 0),
+    "x": ("stack += this_function(stack)", 0),
     "y": ("stack += uninterleave(pop(stack))", 1),
     "z": ("fn, vector = pop(stack, 2); stack += VY_zipmap(fn, vector)", 2),
     "↑": ("stack.append(max(pop(stack), key=lambda x: x[-1]))", 1),
