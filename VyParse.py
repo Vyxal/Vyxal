@@ -271,7 +271,7 @@ def Tokenise(source: str):
                 end = value.find(".", value.find(".") + 1)
 
                 if end > -1:
-                    value = value[:value.find(".", value.find("."))]
+                    value = value[:end]
 
                 if value.isnumeric():
                     this_token = Token(INTEGER, int(value))
