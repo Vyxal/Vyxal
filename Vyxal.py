@@ -1955,7 +1955,7 @@ def VY_reduce(fn, vector):
     t_type = VY_type(vector)
     if type(fn) != Function:
         return [vector, vectorise(reverse, fn)]
-    if t_type is Generator: return Generator(vector)._reduce(fn)
+    if t_type is Generator: return Generator(vector)._reduce(fn)[-1]
     if t_type is Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     vector = vector[::-1]
