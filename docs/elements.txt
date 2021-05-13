@@ -136,7 +136,7 @@ J (a: list, b: non-list)             = a.append(b)
   (a: non-list, b: non-list)         = concatenated(a, b)
 K (a: number)                        = divisors(a)
   (a: string)                        = all substrings of a that occur more than once # they "divide" a into more than one piece
-  (otherwise)                        = vectorised
+  (otherwise)                        = prefixes(a)
 L (a: any)                           = len(a)  # length
 M (a: any, b: function)              = map(b, a) # map, apply to each
   (a: any, b: any)                   = [[a, item] for item in b]
@@ -191,6 +191,7 @@ o (a: any, b: any)                   = a.replace(b, "") # equivalent to b``V
 p (a: any, b: any)                   = a.startswith(b) # has prefix, starts with
 q (a: any)                           = "`" + a + "`" # uneval, quotify
 r (a: number, b: number)             = range(a, b)
+  (a: any, b: function)              = cumulative_reduce(a, function=b) # also works with (a: any, b: function)
   (otherwise)                        = regex.has_match(pattern=a, string=b) # regex match
 s (a: any)                           = sorted(a) # min → max, sort
 t (a: any)                           = a[-1] # tail, last item

@@ -603,7 +603,7 @@ def divide(lhs, rhs):
 def divisors_of(item):
     t_item = VY_type(item)
     if t_item in [list, Generator]:
-        return vectorise(divisors_of, item)
+        return Generator(prefixes(item))
 
     divisors = []
     if t_item == str:
@@ -1198,11 +1198,23 @@ def order(lhs, rhs):
     else:
         return infinite_replace(iterable(lhs, str), iterable(rhs, str), "")
 def orderless_range(lhs, rhs, lift_factor=0):
-    if (VY_type(lhs), VY_type(rhs)) == (Number, Number):
+    types = (VY_type(lhs), VY_type(rhs))
+    if types == (Number, Number):
         if lhs < rhs:
             return Generator(range(lhs, rhs + lift_factor))
         else:
             return Generator(range(lhs, rhs + lift_factor, -1))
+    elif Function in types:
+        if types[0] is Function:
+            func, vector = lhs, rhs
+        else:
+            func, vector = rhs, lhs
+
+        def gen():
+            for pre in prefixes(vector):
+                yield VY_reduce(func, pre)
+        
+        return Generator(gen())
     else:
         lhs, rhs = VY_str(lhs), VY_str(rhs)
         pobj = regex.compile(lhs)
@@ -1260,6 +1272,9 @@ def powerset(vector):
     elif type(vector) is str:
         vector = list(vector)
     return Generator(itertools.chain.from_iterable(itertools.combinations(vector, r) for r in range(len(vector)+1)))
+def prefixes(vector):
+    for i in range(len(iterable(vector))):
+        yield iterable(vector)[0:i+1]
 def prime_factors(item):
     t_item = VY_type(item)
     return {
@@ -1538,7 +1553,7 @@ def transpose(vector):
     vector = iterable(vector); vector = list(vector)
     return Generator(map(lambda t: filter(None.__ne__, t), itertools.zip_longest(*map(iterable, vector))))
 def trim(lhs, rhs, left = False, right = False):
-    # I stole this from Jelly
+    # I stole this from Jelly (but I overloaded it)
     #https://github.com/DennisMitchell/jellylanguage/blob/master/jelly/interpreter.py#L1131
 
     if type(rhs) is Function:

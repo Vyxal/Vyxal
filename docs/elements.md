@@ -139,7 +139,7 @@ cmd | inputs | out/effect
 |  | (a: non-list, b: non-list)          |  concatenated(a, b) |
 | K | (a: number)                         |  divisors(a) |
 |  | (a: string)                         |  all substrings of a that occur more than once # they "divide" a into more than one piece |
-|  | (otherwise)                         |  vectorised |
+|  | (otherwise)                         |  prefixes(a) |
 | L | (a: any)                            |  len(a)  # length |
 | M | (a: any, b: function)               |  map(b, a) # map, apply to each |
 |  | (a: any, b: any)                    |  [[a, item] for item in b] |
@@ -194,6 +194,7 @@ cmd | inputs | out/effect
 | p | (a: any, b: any)                    |  a.startswith(b) # has prefix, starts with |
 | q | (a: any)                            |  "`" + a + "`" # uneval, quotify |
 | r | (a: number, b: number)              |  range(a, b) |
+|  | (a: any, b: function)               |  cumulative_reduce(a, function=b) # also works with (a: any, b: function) |
 |  | (otherwise)                         |  regex.has_match(pattern=a, string=b) # regex match |
 | s | (a: any)                            |  sorted(a) # min → max, sort |
 | t | (a: any)                            |  a[-1] # tail, last item |
@@ -541,14 +542,14 @@ cmd | inputs | out/effect
 | øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) |
 | øc | (a: string)                        |  base_255_string_compressed(a) |
 | øC | (a: number)                        |  base_255_number_compressed(a) |
-| øĊ | (a: list)                          |  centre(a) |
+| øĊ | (a: list)                          |  center(a) |
 | øe | (a: any)                           |  run_length_encoded(a) |
 | ød | (a: any)                           |  run_length_decoded(a) |
 | øD | (a: string)                        |  dictionary_compressed(a) |
 | øW | (a: string)                        |  group_on_words(a) |
 | øṙ | (a: any, b: any, c: non-function)  |  regex.replace(pattern=a, source=b, replacent=c) |
 |  | (a: any, b: any, c: function)      |  regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace  |
-| øm | (a: any)                           |  palindromised(a) # doesn't duplicate middle
+| øm | (a: any)                           |  palindromised(a) # doesn't duplicate middle |
 | Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
