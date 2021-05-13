@@ -340,8 +340,9 @@ def assigned(vector, index, item):
         vector[index] = item
         return "".join([str(x) for x in vector])
     else:
-        vector[index] = item
-        return vector
+        temp = deref(vector, False)
+        temp[index] = item
+        return temp
 def bifuricate(item):
     t_item = VY_type(item)
     if t_item in (Number, list, str):
@@ -1100,15 +1101,16 @@ def modulo(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(modulo, lhs, rhs)
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 def mold(content, shape):
+    temp = deref(shape, False)
     #https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
-    for index in range(len(shape)):
-        if type(shape[index]) == list:
-            mold(content, shape[index])
+    for index in range(len(temp)):
+        if type(temp[index]) == list:
+            mold(content, temp[index])
         else:
             item = content.pop(0)
-            shape[index] = item
+            temp[index] = item
             content.append(item)
-    return shape
+    return temp
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if types == (Function, Number):
