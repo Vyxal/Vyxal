@@ -2518,7 +2518,6 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
-            print(line)
             exec(line)
             VY_print(stack)
     elif file_location == "h":
