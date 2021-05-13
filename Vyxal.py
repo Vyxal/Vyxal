@@ -1953,16 +1953,15 @@ def VY_reduce(fn, vector):
     t_type = VY_type(vector)
     if type(fn) != Function:
         return [vector, vectorise(reverse, fn)]
-    if t_type is Generator: return Generator(vector)._reduce(fn)
+    if t_type is Generator: return [Generator(vector)._reduce(fn)]
     if t_type is Number:
-        vector = range(MAP_START, int(vector) + MAP_OFFSET)
+        vector = list(range(MAP_START, int(vector) + MAP_OFFSET))
     vector = vector[::-1]
     working_value = pop(vector)
     vector = vector[::-1]
 
     for item in vector:
         working_value = fn([working_value, item], arity=2)[-1]
-
     return [working_value]
 def VY_repr(item):
     t_item = VY_type(item)
@@ -2519,6 +2518,7 @@ if __name__ == "__main__":
             line = input(">>> ")
             context_level = 0
             line = VY_compile(line, header)
+            print(line)
             exec(line)
             VY_print(stack)
     elif file_location == "h":
