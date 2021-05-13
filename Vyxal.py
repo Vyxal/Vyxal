@@ -902,14 +902,14 @@ def infinite_replace(haystack, needle, replacement):
         prev = copy.deepcopy(haystack)
     return haystack
 def inserted(vector, item, index):
-    vector = iterable(vector)
-    t_vector = type(vector)
+    temp = deref(iterable(vector), False)
+    t_vector = type(temp)
     if t_vector is list:
-        vector.insert(index, item)
-        return vector
+        temp.insert(index, item)
+        return temp
     return {
-        str: lambda: vector[:index] + str(item) + vector[index:],
-    }.get(t_vector, lambda: inserted(vector._dereference(), item, index))()
+        str: lambda: temp[:index] + str(item) + temp[index:],
+    }.get(t_vector, lambda: inserted(temp._dereference(), item, index))()
 def integer_divide(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {

@@ -191,7 +191,7 @@ cmd | inputs | out/effect
 | m | (a: any)                            |  a + reversed(a) # mirror, mirrored, palindromised |
 | n |   |  * context variable |
 | o | (a: any, b: any)                    |  a.replace(b, "") # equivalent to b``V |
-| p | (a: any, b: any)                    |  a.startswith(b) # has prefix, starts with |
+| p | (a: any, b: any)                    |  prepend a to b # a.insert(b, 0) |
 | q | (a: any)                            |  "`" + a + "`" # uneval, quotify |
 | r | (a: number, b: number)              |  range(a, b) |
 |  | (a: any, b: function)               |  cumulative_reduce(a, function=b) # also works with (a: any, b: function) |
@@ -550,6 +550,7 @@ cmd | inputs | out/effect
 | øṙ | (a: any, b: any, c: non-function)  |  regex.replace(pattern=a, source=b, replacent=c) |
 |  | (a: any, b: any, c: function)      |  regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace  |
 | øm | (a: any)                           |  palindromised(a) # doesn't duplicate middle |
+| øp | (a: string, b: string)             |  a.startswith(b) |
 | Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |
