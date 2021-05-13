@@ -1901,7 +1901,8 @@ def VY_oct(item):
         str: lambda: (lambda: item, lambda: oct(int(item)))[item.isnumeric()]()[2:]
     }.get(VY_type(item), lambda:vectorise(VY_oct, item))()
 def VY_print(item, end="\n", raw=False):
-    global output
+    global output, printed
+    printed = True
     t_item = type(item)
     if t_item is Generator:
         item._print(end)
