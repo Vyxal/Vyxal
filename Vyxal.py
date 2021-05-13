@@ -175,7 +175,6 @@ class Generator:
                 if item == temp: return True
             return False
     def __getitem__(self, position):
-        print(position)
         if type(position) is slice:
             ret = []
             stop = position.stop or self.__len__()
@@ -1206,13 +1205,13 @@ def orderless_range(lhs, rhs, lift_factor=0):
             return Generator(range(lhs, rhs + lift_factor, -1))
     elif Function in types:
         if types[0] is Function:
-            func, vector = lhs, rhs
+            func, vector = lhs, iterable(rhs, range)
         else:
-            func, vector = rhs, lhs
+            func, vector = rhs, iterable(lhs, range)
 
         def gen():
             for pre in prefixes(vector):
-                yield VY_reduce(func, pre)
+                yield VY_reduce(func, pre)[-1]
         
         return Generator(gen())
     else:
@@ -1842,7 +1841,6 @@ def VY_map(fn, vector):
     if VY_type(vec) is Generator:
         def gen():
             for item in vec:
-                print(vec)
                 yield _safe_apply(function, item)
         return Generator(gen())
     for item in vec:
@@ -1955,7 +1953,7 @@ def VY_reduce(fn, vector):
     t_type = VY_type(vector)
     if type(fn) != Function:
         return [vector, vectorise(reverse, fn)]
-    if t_type is Generator: return Generator(vector)._reduce(fn)[-1]
+    if t_type is Generator: return Generator(vector)._reduce(fn)
     if t_type is Number:
         vector = range(MAP_START, int(vector) + MAP_OFFSET)
     vector = vector[::-1]
