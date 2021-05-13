@@ -407,6 +407,8 @@ def bit_xor(lhs, rhs):
 def cartesian_product(lhs, rhs):
     if Function not in (VY_type(lhs), VY_type(rhs)):
         lhs, rhs = iterable(lhs), iterable(rhs)
+        if (VY_type(lhs), VY_type(rhs)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
+            return Generator(map(first_n, itertools.product(iterable(lhs), iterable(rhs))))
         return Generator(itertools.product(iterable(lhs), iterable(rhs)))
     
     if VY_type(lhs) is Function:
