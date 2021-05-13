@@ -250,9 +250,31 @@ def Tokenise(source: str):
             continue
 
         elif type(char) is list:
-            if structure != NO_STMT:
+            if structure not in [NO_STMT, INTEGER, VARIABLE_GET, VARIABLE_SET]:
                 structure_data[active_key] += char[1] + char[0] + char[1]
             else:
+                if structure == INTEGER:
+                    value = structure_data[active_key]
+                    end = value.find(".", value.find(".") + 1)
+
+                    if end > -1:
+                        value = value[:end]
+
+                    if value.isnumeric():
+                        this_token = Token(INTEGER, int(value))
+
+                    else:
+                        this_token = Token(INTEGER, float(value))
+                    tokens.append(this_token)
+                    structure_data = {}
+                    structure = NO_STMT
+                elif structure in VARIABLES:
+                    this_token = Token(structure, structure_data)
+                    tokens.append(this_token)
+                    structure_data = {}
+                    structure = NO_STMT
+                    active_key = ""
+                    default_key = ""
                 yes = ({"`": STRING_STMT,
                     "«": COMPRESSED_STRING,
                     "»": COMPRESSED_NUMBER
@@ -578,8 +600,8 @@ def Tokenise(source: str):
     return tokens
 
 if __name__ == "__main__":
-    tests = ["«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
-    # "‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD", 
+    # tests = ["«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
+    tests = ["123.456`hello`789 42→x`world` ←x", "‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD"]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()
