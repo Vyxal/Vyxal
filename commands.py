@@ -43,7 +43,7 @@ command_dict = {
     "%": ("rhs, lhs = pop(stack, 2); stack.append(modulo(lhs, rhs))", 2),
     "*": ("rhs, lhs = pop(stack, 2); stack.append(multiply(lhs, rhs))", 2),
     "+": ("rhs, lhs = pop(stack, 2); stack.append(add(lhs, rhs))", 2),
-    ",": ("VY_print(pop(stack)); printed = True", 1),
+    ",": ("VY_print(pop(stack))", 1),
     "-": ("rhs, lhs = pop(stack, 2); stack.append(subtract(lhs, rhs))", 2),
     "/": ("rhs, lhs = pop(stack, 2); stack.append(divide(lhs, rhs))", 2),
     ":": ("temp = pop(stack); stack.append(temp); stack.append(deref(temp))", 1),
@@ -189,8 +189,8 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "⌊": ("stack.append(floor(pop(stack)))", 1),
     "¯": ("stack.append(deltas(pop(stack)))", 1),
     "±": ("stack.append(sign_of(pop(stack)))", 1),
-    "₴": ("VY_print(pop(stack), end=''); printed = True", 1),
-    "…": ("top = pop(stack); stack.append(top); VY_print(top); printed = True", 0),
+    "₴": ("VY_print(pop(stack), end='')", 1),
+    "…": ("top = pop(stack); stack.append(top); VY_print(top)", 0),
     "□": ("if inputs: stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(Vy_eval(x)); x = input()", 0),
     "↳": ("rhs, lhs = pop(stack, 2); stack.append(rshift(lhs, rhs))", 2),
     "↲": ("rhs, lhs = pop(stack, 2); stack.append(lshift(lhs, rhs))", 2),
@@ -292,8 +292,8 @@ list_command_dict = {
 misc_command_dict = {
     "U": ("if not online_version: stack.append(urllib.request.urlopen(urlify(pop(stack))).read().decode())", 1),
     "M": ("function, indexes, original = pop(stack, 3); stack.append(map_at(function, iterable(original), iterable(indexes)))", 3),
-    ",": ("VY_print(pop(stack), end=' '); printed = True", 1),
-    "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' '); printed = True", 1)
+    ",": ("VY_print(pop(stack), end=' ')", 1),
+    "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' ')", 1)
 
 
 }
