@@ -422,7 +422,7 @@ def cartesian_product(lhs, rhs):
             prev = deref(curr)
             curr = fn([curr])[-1]
         yield curr
-    return Generator(gen())
+    return Generator(gen())[-1]
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
@@ -875,7 +875,21 @@ def inclusive_range(lhs, rhs):
     else:
         return Generator(range(int(lhs), int(rhs) - 1, -1))
 def index(vector, index):
-    if VY_type(index) == Number:
+    types = VY_type(vector), VY_type(index)
+    if Function in types:
+        if types[0] is Function:
+            fn, init = vector, index
+        else:
+            fn, init = index, vector
+        def gen():
+            seen = []
+            curr = deref(init)
+            while curr not in seen:
+                yield curr
+                seen.append(curr)
+                curr = deref(fn([curr])[-1])
+        return Generator(gen())
+    elif VY_type(index) == Number:
         if VY_type(vector) is Generator:
             return vector[int(index)]
         return vector[int(index) % len(vector)]
@@ -884,10 +898,26 @@ def index(vector, index):
     else:
         return [vector, index, join(vector, index)]
 def indexed_into(vector, indexes):
-    ret = []
-    for ind in indexes:
-        ret.append(vector[ind % len(vector)])
-    return ret
+    types = (VY_type(vector), VY_type(indexes))
+    if Function not in types:
+        ret = []
+        vector = iterable(vector)
+        for ind in iterable(indexes):
+            ret.append(vector[ind % len(vector)])
+        return ret
+    else:
+        if VY_type(vector) is Function:
+            fn, init = vector, indexes
+        else:
+            fn, init = indexes, vector
+        def gen():
+            seen = []
+            curr = deref(init)
+            while curr not in seen:
+                curr = deref(fn([curr])[-1])
+                seen.append(curr)
+            yield curr
+        return Generator(gen())[-1]
 def indexes_where(fn, vector):
     ret = []
     for i in range(len(vector)):
