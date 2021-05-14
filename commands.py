@@ -168,7 +168,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 """, 2),
     "Ġ": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "Ḣ": ("stack.append(iterable(pop(stack))[1:])", 1),
-    "İ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(iterable(vector), iterable(indexes)))", 2),
+    "İ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(vector, indexes))", 2),
     "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
     "Ṁ": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "Ṅ": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
