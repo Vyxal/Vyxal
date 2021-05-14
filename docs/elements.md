@@ -33,8 +33,8 @@ cmd | inputs | out/effect
 | ø |   |  * string digraphs |
 | ↔ | (a: any, b: number)                 |  combinations_with_replacement(a, length=b) |
 |  | (a: any, b: non-number)             |  remove elements in a that are not in b |
-|  | (a: function, b: any)               |  apply a on b until the result doesn"t change. Collects intermittent values |
-| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a doesn"t change |
+|  | (a: function, b: any)               |  apply a on b until the result does not change. Collects intermittent values |
+| ¢ | (a: string, b: string, c: string)   |  replace b in a with c until a does not change |
 | ⌐ | (a: number)                         |  1 - a |
 |  | (a: string)                         |  a.split(",") |
 |  | (otherwise)                         |  vectorised |
@@ -319,6 +319,7 @@ cmd | inputs | out/effect
 | Ġ | (a: any)                            |  group_consecutive(a) |
 | Ḣ | (a: any)                            |  a[1:] |
 | İ | (a: any, b: list)                   |  [a[item] for item in b]  # indexed into |
+|  | (a: any, b: function)               |  repeat funciton b on a while the function results are not-unique |
 | Ŀ | (a: any, b: any, c: any)            |  transliterate(a, b, c) |
 |  | (a: function, b: function, c: any)  |  repeat_until_false(predicate=a, modifying_function=b, inital=c) # equivalent to ẋt |
 | Ṁ | (a: list, b: number, c: any)        |  a.insert(b, c) |
@@ -332,7 +333,7 @@ cmd | inputs | out/effect
 | Ṫ | (a: any)                            |  a[:-1] |
 | Ẇ | (a: any, b: any)                    |  a.split_and_keep_delimiter(b) |
 | Ẋ | (a: any, b: any)                    |  cartesian_product(a, b) |
-|  | (a: function, b: any)               |  repeatedly apply a on b until b doesn"t change |
+|  | (a: function, b: any)               |  repeatedly apply a on b until b does not change |
 | Ẏ | (a: any, b: number)                 |  a[0:b] |
 |  | (a: any, b: non-number)             |  regex.findall(pattern=a, string=b) |
 | Ż | (a: any, b: number)                 |  a[1:b] |
@@ -416,7 +417,7 @@ cmd | inputs | out/effect
 |  | (a: string)                         |  a.titlecase() |
 |  | (otherwise)                         |  vectorised |
 | Ǒ | (a: number, b: number)              |  how many times does b divide a?  # order |
-|  | (a: string, b: string)              |  remove b from a until a doesn"t change |
+|  | (a: string, b: string)              |  remove b from a until a does not change |
 | ǒ | (a: number)                         |  a % 3 |
 |  | (a: string)                         |  is string empty? |
 |  | (otherwise)                         |  vectorised |
@@ -563,3 +564,5 @@ cmd | inputs | out/effect
 | ÞS | (a: any)                           |  sublists(a) |
 | ¨U | (a: string)                        |  GET request with url=a |
 | ¨M | (a: list, b: list, c: function)    |  map function c to every item in a who's index is in b |
+| ¨, | (a: any)                           |  print(a, end=" ") |
+| ¨… |   |  print(stack[-1], end=" " |
