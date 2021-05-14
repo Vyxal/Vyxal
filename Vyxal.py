@@ -494,12 +494,12 @@ def combinations_replace_generate(lhs, rhs):
         else:
             fn, init = rhs, lhs
         def gen():
-            prev = []
-            curr = deref(init)
-            while curr not in prev:
+            prev = None
+            curr = init
+            while prev != curr:
                 yield curr
-                prev.append(deref(curr))
-                curr = deref(fn([curr])[-1])
+                prev = deref(curr)
+                curr = fn([curr])[-1]
         return Generator(gen())
 def const_divisibility(item, n, string_overload):
     return {
@@ -884,15 +884,10 @@ def index(vector, index):
     else:
         return [vector, index, join(vector, index)]
 def indexed_into(vector, indexes):
-    types = (VY_type(vector), VY_type(indexes))
-    if Function not in types:
-        ret = []
-        vector = iterable(vector)
-        for ind in iterable(indexes):
-            ret.append(vector[ind % len(vector)])
-        return ret
-    else:
-        return combinations_replace_generate(vector, indexes)[-1]
+    ret = []
+    for ind in indexes:
+        ret.append(vector[ind % len(vector)])
+    return ret
 def indexes_where(fn, vector):
     ret = []
     for i in range(len(vector)):
