@@ -377,10 +377,16 @@ ${code}
 
             $("#clear").on("click", e => {
                 code.value = ""; stdin.value = ""; output.value = ""; extra.value = ""; footer.value = ""; header.value = ""; updateCount();
-                flags.value = ""; filter.value = ""; glyphSearch()
+                flags.value = ""; filter.value = ""; glyphSearch(); expandBoxes()
             });
 
         });
+		
+		document.addEventListener('keydown', (event) => {
+			if (event.ctrlKey && event.keyCode == 13) {
+				$("#run_button").click();
+			}
+		});
     </script>
 </head>
 
