@@ -1369,7 +1369,7 @@ def remove(vector, item):
         Generator: lambda: remove(vector._dereference(), item)
     }[VY_type(vector)]()
 def repeat(vector, times, extra=None):
-    vector = iterable(vector)
+    global safe_mode
     t_vector = VY_type(vector)
     if t_vector is Function and VY_type(times) is Function:
         def gen():
@@ -1381,9 +1381,19 @@ def repeat(vector, times, extra=None):
     
     elif times < 0:
         if t_vector is str: return vector[::-1] * times
+        elif t_vector is Number:
+            safe_mode = True
+            temp = VY_eval(str(reverse(vector)) * times)
+            safe_mode = False
+            return temp
         return Generator(itertools.repeat(reversed(vector), times))
     else:
         if t_vector is str: return vector * times
+        elif t_vector is Number:
+            safe_mode = True
+            temp = VY_eval(str(reverse(vector)) * times)
+            safe_mode = False
+            return temp
         return Generator(itertools.repeat(vector, times))
 def repeat_no_collect(predicate, modifier, value):
     def gen():
