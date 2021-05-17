@@ -179,6 +179,7 @@ f (a: any)                           = flattened(a) # flatten, deep flatten
 g (a: any)                           = min(a) # monadic minimum, minimum iterable
 h (a: any)                           = a[0] # head, first item
 i (a: any, b: number)                = a[b] # index
+  (a: any, b: [x])                   = a[:b] # use ȯ for a[b:]
   (a: any, b: [x, y])                = a[x:y] # index
   (a: any, b: [x, y, m])             = a[x:y:m] # index
 j (a: any, b: any)                   = a.join(b) # join
