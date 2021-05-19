@@ -33,7 +33,7 @@ try:
     import pwnlib.util as pUtil
 except:
     import os
-    os.system("pip install -r requirements.txt --quiet --disable-pip-version-check")
+    os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
 
 # Generic type constants
 Number = "NUMBER"
