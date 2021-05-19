@@ -32,7 +32,7 @@ try:
     import numpy
     import regex
     import sympy
-    import pwnlib.util as pUtil
+    import pwntools.util as pUtil
 except:
     import os
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
