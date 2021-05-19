@@ -32,10 +32,14 @@ try:
     import numpy
     import regex
     import sympy
-    import pwnlib.util as pUtil
+    import pwn
 except:
     import os
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
+    import numpy
+    import regex
+    import sympy
+    import pwn
 
 # Generic type constants
 Number = "NUMBER"
@@ -1814,7 +1818,7 @@ def VY_eval(item):
     elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
     if online_version or safe_mode:
         try:
-            return pUtil.safeeval.const(item)
+            return pwn.safeeval.const(item)
         except:
             return item
             
