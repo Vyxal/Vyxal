@@ -26,6 +26,7 @@ try:
     import numpy
     import regex
     import sympy
+    import pwnlib.util as pUtil
 except:
     import os
     os.system("pip install -r requirements.txt --quiet --disable-pip-version-check")
@@ -1806,17 +1807,11 @@ def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
     elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
     if online_version or safe_mode:
-        import regex
-        pobj = regex.compile(r"""(\[(((-?\d+(\.\d+)?)|\g<1>|"[^"]*"|'[^']*')(, *)?)*\])|(-?\d+(\.\d+)?$)|"[^"]*"|'[^']*'""")
-        mobj = pobj.match(item)
-        if mobj:
-            try:
-                ret = eval(item)
-                return ret
-            except:
-                return item
-        else:
+        try:
+            return pUtil.safeeval.const(item)
+        except:
             return item
+            
     else:
         try:
             ret = eval(item)
