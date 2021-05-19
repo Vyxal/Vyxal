@@ -12,6 +12,8 @@ import time
 import urllib.request
 import warnings
 import base64
+import os
+import sys
 
 # Vyxal modules
 import commands
