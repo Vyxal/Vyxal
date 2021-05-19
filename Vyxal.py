@@ -421,7 +421,7 @@ def cartesian_product(lhs, rhs):
         if (VY_type(lhs), VY_type(rhs)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
             return Generator(map(first_n, itertools.product(iterable(lhs), iterable(rhs))))
         return Generator(itertools.product(iterable(lhs), iterable(rhs)))
-    
+
     if VY_type(lhs) is Function:
         fn, init = lhs, rhs
     else:
@@ -568,7 +568,7 @@ def diagonals(vector):
         yield vectorise(lambda x: x.item(), list(diagonal))
         diag_num += 1
         diagonal = numpy.diag(vector, k=diag_num)
-    
+
     diag_num = -1
     diagonal = numpy.diag(vector, k=diag_num)
     # now the other diagonals
@@ -675,7 +675,7 @@ def factorials():
     # Different to factorial because this is a list of all factorials
     for i in range(1,101):
         yield FIRST_100_FACTORIALS[i]
-    
+
     temp = FIRST_100_FACTORIALS[100]
     n = 101
 
@@ -687,10 +687,10 @@ def factorials():
 def fibonacci():
     # A generator of all the fibonacci numbers
     # Pro-tip: wrap in a generator before pushing to stack
-    
+
     yield 0
     yield 1
-    
+
     memory = [0, 1]
     while True:
         temp = memory[-1] + memory[-2]
@@ -715,7 +715,7 @@ def first_n(func, n=None):
     if Function not in (type(func), type(n)):
         if n:
             return iterable(func)[n:]
-        
+
         ret = "".join([VY_str(n) for n in iterable(func)])
         return VY_eval(ret)
     ret = []
@@ -800,7 +800,7 @@ def gcd(lhs, rhs=None):
     else:
         # I can't use VY_reduce because ugh reasons
         lhs = deref(lhs, True)
-        return int(numpy.gcd.reduce(lhs))   
+        return int(numpy.gcd.reduce(lhs))
 def get_input(predefined_level=None):
     global input_values
 
@@ -867,14 +867,14 @@ def inclusive_range(lhs, rhs):
             func, vector = lhs, rhs
         else:
             func, vector = rhs, lhs
-        
+
         def gen():
             for index, item in enumerate(vector):
                 if (index + 1) % 2:
                     yield item
                 else:
                     yield func([item])[-1]
-        
+
         return Generator(gen())
     if types != (Number, Number):
         lhs, rhs = VY_str(lhs), VY_str(rhs)
@@ -1030,7 +1030,7 @@ def iterable_shift(vector, direction, times=1):
                 vector.append(temp)
             else:
                 # abc -> bca
-                vector = join(vector[1:], vector[0]) 
+                vector = join(vector[1:], vector[0])
         elif direction == ShiftDirections.RIGHT:
             if t_vector is list:
                 # [1, 2, 3] -> [3, 1, 2]
@@ -1038,8 +1038,8 @@ def iterable_shift(vector, direction, times=1):
                 vector.insert(0, temp)
             else:
                 # abc -> cab
-                vector = join(vector[-1], vector[:-1]) 
-    
+                vector = join(vector[-1], vector[:-1])
+
     return vector
 def join(lhs, rhs):
     types = tuple(map(VY_type, [lhs, rhs]))
@@ -1184,11 +1184,11 @@ def negate(item):
 def next_prime(item):
     if not isinstance(item, int):
         return item
-    
+
     factor = 1
     while not is_prime(item + factor):
         factor += 1
-    
+
     return item + factor
 def nth_prime(item):
     t_item = VY_type(item)
@@ -1257,7 +1257,7 @@ def orderless_range(lhs, rhs, lift_factor=0):
         def gen():
             for pre in prefixes(vector):
                 yield VY_reduce(func, pre)[-1]
-        
+
         return Generator(gen())
     else:
         lhs, rhs = VY_str(lhs), VY_str(rhs)
@@ -1268,7 +1268,7 @@ def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
         return [lhs, iterable_shift(rhs, direction)]
     else:
-        return [iterable_shift(lhs, direction, rhs)]  
+        return [iterable_shift(lhs, direction, rhs)]
 def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
@@ -1302,10 +1302,10 @@ def pop(vector, num=1, wrap=False):
 
     if retain_items:
         vector += ret[::-1]
-    
+
     if num == 1 and not wrap:
         return ret[0]
-    
+
     if reverse_args:
         return ret[::-1]
     return ret
@@ -1340,7 +1340,7 @@ def prev_prime(item):
     factor = 1
     while not is_prime(item - factor) and item - factor >= 2:
         factor += 1
-    
+
     return item - factor
 def product(vector):
     if type(vector) is Generator:
@@ -1357,20 +1357,20 @@ def rand_between(lhs, rhs):
     else:
         return random.choice([lhs, rhs])
 def regex_replace(source, pattern, replacent):
-    if type(replacent) is not Function: 
+    if type(replacent) is not Function:
         return regex.sub(pattern, VY_str(replacent), source)
-    
+
     parts = regex.split("(" + pattern + ")", source)
     out = ""
     switch = 1
     for item in parts:
-        
+
         if switch % 2:
             out += item
         else:
             out += replacent([item])[-1]
         switch += 1
-    
+
     return out
 def remove(vector, item):
     return {
@@ -1389,7 +1389,7 @@ def repeat(vector, times, extra=None):
                 item = times([item])[-1]
                 yield item
         return Generator(gen())
-    
+
     elif times < 0:
         if t_vector is str: return vector[::-1] * times
         elif t_vector is Number:
@@ -1538,7 +1538,7 @@ def split_on_words(item):
             parts.append(char)
         else:
             word += char
-    
+
     if word: parts.append(word)
     return parts
 def string_empty(item):
@@ -1676,7 +1676,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def gen():
             for pair in VY_zip(left, right):
                 yield _safe_apply(fn, *pair, third)
-        
+
         def expl(l, r):
             for item in l:
                 yield _safe_apply(fn, item, r, third)
@@ -1711,7 +1711,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def gen():
             for pair in VY_zip(left, right):
                 yield _safe_apply(fn, *pair)
-        
+
         def expl(l, r):
             for item in l:
                 yield _safe_apply(fn, item, r)
@@ -1739,7 +1739,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
             (Generator, list): (lambda: gen(),
                                 lambda: expl(left, right))
         }[types][explicit]())
-            
+
     else:
         if VY_type(left) is Generator:
             def gen():
@@ -1821,7 +1821,7 @@ def VY_eval(item):
             return pwn.safeeval.const(item)
         except:
             return item
-            
+
     else:
         try:
             ret = eval(item)
@@ -1847,7 +1847,7 @@ def VY_filter(fn, vector):
                 else:
                     out.append(item)
         return out
-    
+
     def _filter(function, vec):
         for item in vec:
             val = function([item])[-1]
@@ -1883,7 +1883,7 @@ def VY_map(fn, vector):
             for item in iterable(fn):
                 yield [vector, item]
         return Generator(gen())
-    
+
     vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
     if VY_type(vec) == Number:
         vec = range(MAP_START, int(vec) + MAP_OFFSET)
@@ -1951,7 +1951,7 @@ def VY_print(item, end="\n", raw=False):
     t_item = type(item)
     if t_item is Generator:
         item._print(end)
-    
+
     elif t_item is list:
         VY_print("⟨", "", False)
         if item:
@@ -2030,7 +2030,7 @@ def VY_round(item):
     elif t_item is str:
         return [item[n:] for n in range(len(item) - 1, -1, -1)]
     return vectorise(VY_round, item)
-def VY_str(item):  
+def VY_str(item):
     t_item = VY_type(item)
     return {
         Number: lambda x: str(x),
@@ -2438,7 +2438,7 @@ def execute(code, flags, input_list, output_variable):
 
         if 'm' in flags:
             MAP_OFFSET = 0
-        
+
         if 'Ṁ' in flags:
             MAP_START = 0
             MAP_OFFSET = 0
@@ -2451,19 +2451,19 @@ def execute(code, flags, input_list, output_variable):
 
         if 'v' in flags:
             use_encoding = True
-        
+
         if 'r' in flags:
             reverse_args = True
-        
+
         if 'K' in flags:
             keg_mode = True
-        
+
         if 'R' in flags:
             number_iterable = range
 
         if 'D' in flags:
             raw_strings = True
-        
+
         if 'h' in flags:
             output[1] = """
 ALL flags should be used as is (no '-' prefix)
@@ -2561,7 +2561,7 @@ if __name__ == "__main__":
 
         if 'a' in flags:
             inputs = [inputs]
-        
+
     if not file_location: #repl mode
 
         while 1:
@@ -2606,7 +2606,7 @@ if __name__ == "__main__":
 
             if 'm' in flags:
                 MAP_OFFSET = 0
-            
+
             if 'Ṁ' in flags:
                 MAP_START = 0
                 MAP_OFFSET = 0
@@ -2619,19 +2619,19 @@ if __name__ == "__main__":
 
             if 'v' in flags:
                 use_encoding = True
-            
+
             if 'r' in flags:
                 reverse_args = True
-            
+
             if 'K' in flags:
                 keg_mode = True
-            
+
             if 'E' in flags:
                 safe_mode = True
-            
+
             if 'H' in flags:
                 header = "stack = [100]\nregister = 0\nprinted = False\n"
-            
+
             if 'R' in flags:
                 number_iterable = range
 
