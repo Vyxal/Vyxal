@@ -59,6 +59,7 @@ global_stack = []
 input_level = 0
 inputs = []
 input_values = {0: [inputs, 0]} # input_level: [source, input_index]
+last_popped = []
 keg_mode = False
 number_iterable = list
 raw_strings = False
@@ -143,6 +144,7 @@ class Comparitors:
 class Generator:
     def __init__(self, raw_generator, limit=-1, initial=[], condition=None, is_numeric_sequence=False):
         self.next_index = 0
+        self.end_reached = False
         self.is_numeric_sequence = is_numeric_sequence
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__.startswith("_lambda"):
@@ -213,6 +215,7 @@ class Generator:
             try:
                 self.__next__()
             except:
+                self.end_reached = True
                 position = position % len(self.generated)
 
         return self.generated[position]
@@ -280,6 +283,23 @@ class Generator:
     def safe(self):
         import copy
         return copy.deepcopy(self)
+    
+    def __str__(self):
+        return "⟨" + "|".join(str(item for item in self.generated)) + "...⟩"
+    def limit_to_items(self, n):
+        out = "⟨"
+        item_count = 0
+        while not self.end_reached and item_count <= n: 
+            item = self.__getitem__(item_count)
+            if self.end_reached: break
+            out += str(item) if VY_type(item) is not Generator else item.limit_to_items(n)
+            item_count += 1
+            out += "|"
+        
+        if item_count > n:
+            out += "..."
+        
+        return out + "⟩"
 
 class ShiftDirections:
     LEFT = 1
@@ -544,8 +564,11 @@ def deltas(vector):
         for i in range(len(vector) - 1):
             ret.append(subtract(vector[i], vector[i + 1]))
         return ret
-def deref(item, generator_to_list=True):
-    if VY_type(item) is Generator:return [item.safe, item._dereference][generator_to_list]()
+def deref(item, generator_to_list=True, limit=-1):
+    if VY_type(item) is Generator:
+        if limit != -1:
+            return item.limit_to_items(limit)
+        return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
 def dictionary_compress(item):
@@ -1292,6 +1315,7 @@ def polynomial(vector):
         vector = vector._dereference()
     return numpy.roots(vector).tolist()
 def pop(vector, num=1, wrap=False):
+    global last_popped
     ret = []
 
     for _ in range(num):
@@ -1304,7 +1328,9 @@ def pop(vector, num=1, wrap=False):
     if retain_items:
         vector += ret[::-1]
 
+    last_popped = ret
     if num == 1 and not wrap:
+
         return ret[0]
 
     if reverse_args:
@@ -2508,7 +2534,10 @@ ALL flags should be used as is (no '-' prefix)
     try:
         exec(code, globals())
     except Exception as e:
-        output[2] += "\n" + str(e.args[0])
+        output[2] += "\n" + str(e)
+        output[2] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
+        output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
+        print(e)
 
     if not printed and ('O' not in flags):
         if flags and 's' in flags:
@@ -2532,7 +2561,7 @@ ALL flags should be used as is (no '-' prefix)
         elif _vertical_join:
             VY_print(vertical_join(pop(stack)))
         elif _join:
-            VY_print("\n".join([str(n) for n in pop(stack)]))
+            VY_print("\n".join([VY_str(n) for n in pop(stack)]))
         else:
             VY_print(pop(stack))
 
