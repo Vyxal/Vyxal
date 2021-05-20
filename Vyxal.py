@@ -14,6 +14,7 @@ import warnings
 import base64
 import os
 import sys
+import secrets
 
 # Vyxal modules
 import commands
@@ -2291,7 +2292,7 @@ else:
                 lambda_argument = VALUE[VyParse.LAMBDA_ARGUMENTS]
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
-            signature = _mangle(compiled)
+            signature = _mangle(compiled or secrets.token_hex(64))
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
