@@ -2272,7 +2272,7 @@ def VY_compile(source, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
-                compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
+                compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
                 compiled += tab("context_level += 1") + NEWLINE
                 compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab(f"this_function = FN_{function_name}") + NEWLINE
@@ -2320,7 +2320,7 @@ else:
                     defined_arity = int(lambda_argument)
             signature = _mangle(compiled or secrets.token_hex(64))
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
-            compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed") + NEWLINE
+            compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
