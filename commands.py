@@ -287,6 +287,7 @@ list_command_dict = {
     "T": ("stack.append(transpose(pop(stack)))", 1),
     "D": ("stack.append(Generator(diagonals(iterable(pop(stack), list))))", 1),
     "S": ("stack.append(Generator(sublists(iterable(pop(stack), list))))", 1),
+    "Ṫ": ("rhs, lhs = pop(stack, 2); print(lhs, rhs) ;stack.append(Generator(itertools.zip_longest(*iterable(lhs), fillvalue=rhs)))", 2)
 }
 
 misc_command_dict = {
