@@ -182,6 +182,7 @@ cmd | inputs | out/effect
 | g | (a: any)                            |  min(a) # monadic minimum, minimum iterable |
 | h | (a: any)                            |  a[0] # head, first item |
 | i | (a: any, b: number)                 |  a[b] # index |
+|  | (a: any, b: [x])                    |  a[:b] # use ȯ for a[b:] |
 |  | (a: any, b: [x, y])                 |  a[x:y] # index |
 |  | (a: any, b: [x, y, m])              |  a[x:y:m] # index |
 | j | (a: any, b: any)                    |  a.join(b) # join |
@@ -562,7 +563,8 @@ cmd | inputs | out/effect
 | Þ! |   |  * every factorial |
 | ÞD | (a: list)                          |  diagonals of a - starts with main diagonal. |
 | ÞS | (a: any)                           |  sublists(a) |
+| ÞṪ | (a: list, b: any)                  |  transpose(a, filler=b) |
 | ¨U | (a: string)                        |  GET request with url=a |
 | ¨M | (a: list, b: list, c: function)    |  map function c to every item in a who's index is in b |
 | ¨, | (a: any)                           |  print(a, end=" ") |
-| ¨… |   |  print(stack[-1], end=" " |
+| ¨… |   |  print(stack[-1], end=" ") |
