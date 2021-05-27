@@ -1448,6 +1448,12 @@ def replace(haystack, needle, replacement):
         return replace(haystack._dereference(), needle, replacement) # Not sure how to do replacement on generators yet
     else:
         return str(haystack).replace(str(needle), str(replacement))
+def request(url):
+    x = urllib.request.urlopen(urlify(url)).read()
+    try:
+        return x.decode('utf-8')
+    except:
+        return x.decode('latin-1')
 def reverse(vector):
     if type(vector) in [float, int]:
         s_vector = str(vector)

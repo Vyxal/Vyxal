@@ -291,7 +291,7 @@ list_command_dict = {
 }
 
 misc_command_dict = {
-    "U": ("if not online_version: stack.append(urllib.request.urlopen(urlify(pop(stack))).read().decode())", 1),
+    "U": ("if not online_version: stack.append(request(pop(stack)))", 1),
     "M": ("function, indexes, original = pop(stack, 3); stack.append(map_at(function, iterable(original), iterable(indexes)))", 3),
     ",": ("VY_print(pop(stack), end=' ')", 1),
     "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' ')", 1)
