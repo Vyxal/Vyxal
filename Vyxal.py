@@ -1680,6 +1680,12 @@ def two_power(item):
         return out
     else:
         return vectorise(two_power, item)
+def uneval(item):
+    item = [char for char in item]
+    indexes = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
+    for i in indexes:
+        item.insert(i, "\\")
+    return "`" + "".join(item) + "`"
 def uninterleave(item):
     left, right = [], []
     for i in range(len(item)):
