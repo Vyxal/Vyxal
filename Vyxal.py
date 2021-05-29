@@ -1611,10 +1611,13 @@ def summate(vector):
     vector = iterable(vector)
     if type(vector) is Generator:
         return vector._reduce(add)
-    ret = vector[0]
-    for item in vector[1:]:
-        ret = add(ret, item)
-    return ret
+    if len(vector) > 0:
+        ret = vector[0]
+        for item in vector[1:]:
+            ret = add(ret, item)
+        return ret
+    else:
+        return 0
 def sums(vector):
     ret = []
     for i in range(len(vector)):
