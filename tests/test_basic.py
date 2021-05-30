@@ -1,7 +1,7 @@
 # Simple tests
 
 import os, sys
-import multiprocessing import Manager
+from multiprocessing import Manager
 from Vyxal import *
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
