@@ -1,17 +1,19 @@
 # Simple tests
 
 import os, sys
+import multiprocessing import Manager
+from Vyxal import *
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
-from Vyxal import *
 
 header = "stack = []\nregister = 0\nprinted = False\n"
+manager = Manager()
 
-def run_code(code, flags, input_list, output_variable):
+def run_code(code, flags=[], input_list=[], output_variable=manager.dict()):
     code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args, this_function\n")
     context_level = 0
     
-    execute(code, globals())
+    execute(code, flags, input_list, output_variable)
     
     return stack
 
@@ -28,6 +30,6 @@ def test_is_square():
 
 fizzbuzz_output = [1,2,"Fizz",4,"Buzz","Fizz",7,8,"Fizz","Buzz",11,"Fizz",13,14,"FizzBuzz",16,17,"Fizz",19,"Buzz","Fizz",22,23,"Fizz","Buzz",26,"Fizz",28,29,"FizzBuzz",31,32,"Fizz",34,"Buzz","Fizz",37,38,"Fizz","Buzz",41,"Fizz",43,44,"FizzBuzz",46,47,"Fizz",49,"Buzz","Fizz",52,53,"Fizz","Buzz",56,"Fizz",58,59,"FizzBuzz",61,62,"Fizz",64,"Buzz","Fizz",67,68,"Fizz","Buzz",71,"Fizz",73,74,"FizzBuzz",76,77,"Fizz",79,"Buzz","Fizz",82,83,"Fizz","Buzz",86,"Fizz",88,89,"FizzBuzz",91,92,"Fizz",94,"Buzz","Fizz",97,98,"Fizz","Buzz"]
 def test_fizzbuzz():
-    stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇")
+    stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=['j'])
     f = pop(stack)._dereference()
     assert f == fizzbuzz_output
