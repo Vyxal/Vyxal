@@ -10,11 +10,8 @@ header = "stack = []\nregister = 0\nprinted = False\n"
 manager = Manager()
 
 def run_code(code, flags=[], input_list=[], output_variable=manager.dict()):
-    code = VY_compile(code, "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, retain_items, reverse_args, this_function\n")
     context_level = 0
-    
     execute(code, flags, input_list, output_variable)
-    
     return stack
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
