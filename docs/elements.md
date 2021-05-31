@@ -570,6 +570,7 @@ cmd | inputs | out/effect
 | ÞD | (a: list)                          |  diagonals of a - starts with main diagonal. |
 | ÞS | (a: any)                           |  sublists(a) |
 | ÞṪ | (a: list, b: any)                  |  transpose(a, filler=b) |
+| Þ℅ | (a: any)                           |  random permutation of a (but faster than Ṗ℅) |
 | ¨U | (a: string)                        |  GET request with url=a |
 | ¨M | (a: list, b: list, c: function)    |  map function c to every item in a who's index is in b |
 | ¨, | (a: any)                           |  print(a, end=" ") |
