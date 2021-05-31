@@ -761,11 +761,11 @@ def flatten(item):
     '''
     t_item = VY_type(item)
     if t_item is Generator:
-        return Generator(functools.reduce(list.__add__, item))
+        return flatten(item._dereference())
     else:
         ret = []
         for x in item:
-            if type(x) is list:
+            if type(x) in [list, Generator]:
                 ret += flatten(x)
             else:
                 ret.append(x)
