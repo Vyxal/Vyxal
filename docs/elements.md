@@ -559,6 +559,7 @@ cmd | inputs | out/effect
 |  | (a: any, b: any, c: function)      |  regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace  |
 | øm | (a: any)                           |  palindromised(a) # doesn't duplicate middle |
 | øp | (a: string, b: string)             |  a.startswith(b) |
+| øP | (a: number, b: string)             |  a + " " + b + (s if a != 1 else "") |
 | Þ… | (a: list, b: number)               |  b evenly distributed over the elements of a |
 | Þ↓ | (a: function, b: any)              |  * minimum of b by function a |
 | Þ↑ | (a: function, b: any)              |  * maximum of b by function a |

@@ -1851,8 +1851,8 @@ def VY_bin(item):
 def VY_divmod(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
-        (Number, Number): lambda: [lhs // rhs, lhs % rhs],
         (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
+        (Number, Number): lambda: [lhs // rhs, lhs % rhs],
         (str, str): lambda: trim(lhs, rhs)
     }[types]()
 def VY_eval(item):

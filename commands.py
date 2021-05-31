@@ -273,7 +273,8 @@ string_command_dict = {
     "D": ("stack.append(dictionary_compress(pop(stack)))", 1),
     "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
     "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3),
-    "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2)
+    "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2)
 }
 
 list_command_dict = {
