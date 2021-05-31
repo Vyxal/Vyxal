@@ -1,3 +1,5 @@
+import dictionary
+
 def extract_word(code):
     import encoding
     import utilities
@@ -17,7 +19,6 @@ def word_index(word):
     else:
         return -1
 
-import dictionary
 _words = dictionary.contents
 
 if __name__ == "__main__":
