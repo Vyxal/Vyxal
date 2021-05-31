@@ -42,11 +42,14 @@
         }
 
         function dothecmc() {
-            var output = document.getElementById("output_area");
-            var code = document.getElementById("code_box").value
-            output.innerText = "[Vyxal, " + code.length + " byte" + "s".repeat(code.length != 1) + "](" + generate_query() + ")\n";
-            output.innerText += "[Vyxal, `" + code.replace("`", "\\`") + "`](" + generate_query() + ")\n"
-            output.innerText += "[Try it Online!](" + generate_query() + ")"
+            var output = document.getElementById("output_area")
+            var code = document.getElementById("code_box").value;
+            var generated_query = generate_query();
+            output.innerText = `
+                [Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${generated_query})
+                [Vyxal, \`${code.replace("`", "\\`")}\`](${generated_query})
+                [Try it Online!](${generated_query})
+                `.replace(/(\n)\s*/g, '$1');
         }
 
         function decode_the_share() {
@@ -78,17 +81,15 @@
             var output = document.getElementById("output_area");
             var code = document.getElementById("code_box").value
             var flags = document.getElementById("interpreter_flags").value
-            var flag_appendage = ""
-            if (flags) {
-                flag_appendage = "`" + flags + "`, "
-            }
             var len = document.getElementById("code_box").value.length
-            var out = "# [Vyxal](https://github.com/Lyxal/Vyxal), " + flag_appendage + len + " byte" + "s".repeat(len != 1) + "\n\n";
-            out += "```\n";
-            out += code + "\n";
-            out += "```" + "\n";
-            out += "[Try it Online!](" + generate_query() + ")";
-            output.innerText = out;
+            
+            output.innerText = `
+                # [Vyxal](https://github.com/Lyxal/Vyxal), ${flags ? `\`${flags}\`, ` : ""}${len} byte${"s".repeat(len != 1)}
+                ${"```"}
+                ${code}
+                ${"```"}
+                [Try it Online!](${generate_query()})
+                `.replace(/(\n)\s+/g, '$1');
             navigator.clipboard.writeText(out)
 
         }
