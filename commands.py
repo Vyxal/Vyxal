@@ -93,7 +93,7 @@ command_dict = {
     "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
     "o": ("needle, haystack = pop(stack, 2); stack.append(remove(haystack, needle))", 2),
-    "p": ("rhs, lhs = pop(stack, 2); stack.append(join(rhs, lhs))", 2),
+    "p": ("rhs, lhs = pop(stack, 2); stack.append(join([rhs], lhs))", 2),
     "q": ("stack.append(uneval(VY_str(pop(stack))))", 1),
     "r": ("rhs, lhs = pop(stack, 2); stack.append(orderless_range(lhs, rhs))", 2),
     "s": ("stack.append(VY_sorted(pop(stack)))", 1),
