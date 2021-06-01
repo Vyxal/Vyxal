@@ -1352,14 +1352,13 @@ def prime_factors(item):
         Number: lambda: sympy.ntheory.primefactors(int(item)),
         str: lambda: item + item[0]
     }.get(t_item, lambda: vectorise(prime_factors, item))()
-def prepend(vector, item):
-    vector = iterable(vector, range)
-    t_vector = type(vector)
+def prepend(lhs, rhs):
+    types = (VY_type(lhs), VY_type(rhs))
     return {
-    list: lambda: [item] + vector,
-    str: lambda: str(item) + vector,
-    range: lambda: [item] + list(vector)
-    }.get(t_vector, lambda: prepend(vector._dereference(), item))()
+        (types[0], types[1]): lambda: join(rhs, lhs),
+        (list, types[1]): lambda: [rhs] + lhs,
+        (Generator, types[1]): lambda: [rhs] +lhs._dereference()
+    }[types]()
 def prev_prime(item):
     if not isinstance(item, int):
         return item
