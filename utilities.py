@@ -1,5 +1,6 @@
 import words
 
+
 def to_ten(number, custom_base):
     # custom to ten
     # Turns something like 20 in base 5 to 10 in base 10
@@ -11,9 +12,15 @@ def to_ten(number, custom_base):
     # always returns Number
 
     result = 0
-    alphabet = (lambda: custom_base, lambda: range(0, int(custom_base)))[type(custom_base) in (int, float)]()
+    alphabet = (lambda: custom_base, lambda: range(0, int(custom_base)))[
+        type(custom_base) in (int, float)
+    ]()
     base_exponent = len(alphabet)
-    number = list((lambda: number, lambda: map(int, str(int(number))))[type(number) in (int, float)]())
+    number = list(
+        (lambda: number, lambda: map(int, str(int(number))))[
+            type(number) in (int, float)
+        ]()
+    )
     power = 0
     for digit in reversed(number):
         if digit in alphabet:
@@ -21,8 +28,9 @@ def to_ten(number, custom_base):
         else:
             result += -1 * (base_exponent ** power)
         power += 1
-    
+
     return result
+
 
 def from_ten(number, custom_base):
     # ten to custom
@@ -33,12 +41,13 @@ def from_ten(number, custom_base):
     # (non-int, any): what the actual frick.
 
     import math
+
     if type(number) not in (int, float):
         return number
 
     if type(custom_base) in (int, float):
         custom_base = range(0, int(custom_base))
-    
+
     result = ([], "")[isinstance(custom_base, str)]
     append = (lambda x: result + [x], lambda x: result + x)[isinstance(result, str)]
     base_exponent = len(custom_base)
@@ -49,9 +58,10 @@ def from_ten(number, custom_base):
         interesting_part, temp = divmod(temp, base_exponent ** power)
         result = append(custom_base[interesting_part])
         power -= 1
-    
-    if temp == 0: result
-    
+
+    if temp == 0:
+        result
+
     return result
 
 
@@ -77,8 +87,7 @@ def uncompress(s):
         elif char in encoding.compression:
             current_two += char
             if len(current_two) == 2:
-                if to_ten(current_two, encoding.compression)\
-                   < len(words._words):
+                if to_ten(current_two, encoding.compression) < len(words._words):
 
                     final += words.extract_word(current_two)
                 else:
@@ -90,7 +99,6 @@ def uncompress(s):
         else:
             final += char
 
-
     return final.replace("\n", "\\n").replace("\r", "")
 
 
@@ -100,6 +108,7 @@ base27alphabet = " etaoinshrdlcumwfgypbvkjxqz"
 
 if __name__ == "__main__":
     import encoding
+
     while 1:
         word = input(">>> ")
         if word.isnumeric():
@@ -113,11 +122,26 @@ if __name__ == "__main__":
                     out = ""
                     for char in word:
                         out += charmap.get(char, "")
-                    c = from_ten(to_ten(out, base27alphabet), encoding.codepage_string_compress)
+                    c = from_ten(
+                        to_ten(out, base27alphabet), encoding.codepage_string_compress
+                    )
                     print("«" + c + "«ũ")
                     print()
                     print(repr(c))
                 else:
-                    print("«" + from_ten(to_ten(word, base27alphabet), encoding.codepage_string_compress) + "«")
+                    print(
+                        "«"
+                        + from_ten(
+                            to_ten(word, base27alphabet),
+                            encoding.codepage_string_compress,
+                        )
+                        + "«"
+                    )
             except:
-                    print("«" + from_ten(to_ten(word, base27alphabet), encoding.codepage_string_compress) + "«")
+                print(
+                    "«"
+                    + from_ten(
+                        to_ten(word, base27alphabet), encoding.codepage_string_compress
+                    )
+                    + "«"
+                )
