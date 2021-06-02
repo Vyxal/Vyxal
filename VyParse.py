@@ -208,7 +208,7 @@ def group_two_chars(program):
             escaped = True
             ret.append(item)
         elif temp:
-            ret.append([temp + item,  "`"])
+            ret.append([temp + item,  "`"]) # Am I really that lazy? Yes.
             temp = ""
             in_strign = False
         elif in_string:
@@ -219,7 +219,6 @@ def group_two_chars(program):
             ret.append(item)
     if temp:
         ret.append(temp)
-    print(ret)
     return ret
 def group_digraphs(code):
     # To be called after group_strings and after group_two_char
@@ -264,7 +263,7 @@ def Tokenise(source: str):
     # print(source)
 
     for char in source:
-        print(char, structure, structure_data, escaped, nest_level, scc_mode)
+        # print(char, structure, structure_data, escaped, nest_level, scc_mode)
 
         if comment:
             if char == "\n":

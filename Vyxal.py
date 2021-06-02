@@ -2217,7 +2217,7 @@ constants = {
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
-    source = VyParse.Tokenise(VyParse.group_two_bytes(VyParse.group_strings(source)))
+    source = VyParse.Tokenise(VyParse.group_digraphs(VyParse.group_two_chars(VyParse.group_strings(source))))
     compiled = ""
     for token in source:
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
