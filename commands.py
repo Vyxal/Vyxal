@@ -93,7 +93,7 @@ command_dict = {
     "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
     "o": ("needle, haystack = pop(stack, 2); stack.append(remove(haystack, needle))", 2),
-    "p": ("rhs, lhs = pop(stack, 2); stack.append(join(rhs, lhs))", 2),
+    "p": ("rhs, lhs = pop(stack, 2); stack.append(prepend(lhs, rhs))", 2),
     "q": ("stack.append(uneval(VY_str(pop(stack))))", 1),
     "r": ("rhs, lhs = pop(stack, 2); stack.append(orderless_range(lhs, rhs))", 2),
     "s": ("stack.append(VY_sorted(pop(stack)))", 1),
@@ -273,7 +273,8 @@ string_command_dict = {
     "D": ("stack.append(dictionary_compress(pop(stack)))", 1),
     "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
     "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3),
-    "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2)
+    "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2)
 }
 
 list_command_dict = {
@@ -287,7 +288,8 @@ list_command_dict = {
     "T": ("stack.append(transpose(pop(stack)))", 1),
     "D": ("stack.append(Generator(diagonals(iterable(pop(stack), list))))", 1),
     "S": ("stack.append(Generator(sublists(iterable(pop(stack), list))))", 1),
-    "Ṫ": ("rhs, lhs = pop(stack, 2); print(lhs, rhs) ;stack.append(Generator(itertools.zip_longest(*iterable(lhs), fillvalue=rhs)))", 2)
+    "Ṫ": ("rhs, lhs = pop(stack, 2); print(lhs, rhs) ;stack.append(Generator(itertools.zip_longest(*iterable(lhs), fillvalue=rhs)))", 2),
+    "℅": ("top = iterable(pop(stack)); stack.append(random.sample(top, len(top)))", 1)
 }
 
 misc_command_dict = {

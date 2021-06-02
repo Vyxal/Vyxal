@@ -1,6 +1,7 @@
 class stringlib:
-    ascii_letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    ascii_uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    ascii_letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    ascii_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 
 NAME = "CONSTANT_TOKEN_NAME"
 VALUE = "CONSTANT_TOKEN_VALUE"
@@ -91,10 +92,10 @@ OPENING = {
     LIST_STMT: "⟨",
     FUNCTION_REFERENCE: "°",
     COMPRESSED_NUMBER: "»",
-    COMPRESSED_STRING: "«"
+    COMPRESSED_STRING: "«",
 }
 
-inv_OPENING = {v: k for k,v in OPENING.items()}
+inv_OPENING = {v: k for k, v in OPENING.items()}
 
 CLOSING = {
     NO_STMT: "",
@@ -109,10 +110,10 @@ CLOSING = {
     LIST_STMT: "⟩",
     FUNCTION_REFERENCE: ";",
     COMPRESSED_NUMBER: "»",
-    COMPRESSED_STRING: "«"
+    COMPRESSED_STRING: "«",
 }
 
-inv_CLOSING = {v: k for k,v in CLOSING.items()}
+inv_CLOSING = {v: k for k, v in CLOSING.items()}
 
 DEFAULT_KEYS = {
     IF_STMT: IF_ON_TRUE,
@@ -127,8 +128,9 @@ DEFAULT_KEYS = {
     LIST_STMT: LIST_ITEM,
     FUNCTION_REFERENCE: FUNCTION_NAME,
     COMPRESSED_NUMBER: COMPRESSED_NUMBER_VALUE,
-    COMPRESSED_STRING: COMPRESSED_STRING_VALUE
+    COMPRESSED_STRING: COMPRESSED_STRING_VALUE,
 }
+
 
 class Token:
     def __init__(self, name: str, value: object):
@@ -148,13 +150,14 @@ class Token:
     def __str__(self):
         return str(self.name) + "|" + str(self.value)
 
+
 def group_strings(program):
     out = []
     temp = ""
     escaped = False
     STANDARD, INTEGER, ALPHA = "`", "»", "«"
 
-    flux_string = [False, "", STANDARD] # [in_string, temp_string, string_type]
+    flux_string = [False, "", STANDARD]  # [in_string, temp_string, string_type]
     for char in program:
 
         if flux_string[0]:
@@ -189,6 +192,7 @@ def group_strings(program):
         out.append([flux_string[1], flux_string[2]])
 
     return out
+
 
 def group_two_bytes(code):
     # To be called after group_strings
@@ -231,7 +235,6 @@ def Tokenise(source: str):
     vectorisation = False
     bracket_stack = []
     # print(source)
-
 
     for char in source:
         # print(char, structure, structure_data, escaped, nest_level)
@@ -278,12 +281,16 @@ def Tokenise(source: str):
                     structure = NO_STMT
                     active_key = ""
                     default_key = ""
-                yes = ({"`": STRING_STMT,
-                    "«": COMPRESSED_STRING,
-                    "»": COMPRESSED_NUMBER
-                }[char[1]], {"`": STRING_CONTENTS,
-                    "«": COMPRESSED_STRING_VALUE,
-                    "»": COMPRESSED_NUMBER_VALUE}[char[1]])
+                yes = (
+                    {"`": STRING_STMT, "«": COMPRESSED_STRING, "»": COMPRESSED_NUMBER}[
+                        char[1]
+                    ],
+                    {
+                        "`": STRING_CONTENTS,
+                        "«": COMPRESSED_STRING_VALUE,
+                        "»": COMPRESSED_NUMBER_VALUE,
+                    }[char[1]],
+                )
                 tokens.append(Token(yes[0], {yes[1]: char[0]}))
             continue
 
@@ -322,7 +329,6 @@ def Tokenise(source: str):
                 active_key = ""
                 default_key = ""
 
-
         elif scc_mode:
             scc += char
             if len(scc) == 2:
@@ -341,7 +347,12 @@ def Tokenise(source: str):
 
         elif structure == TWO_CHAR_LAMBDA:
             if len(structure_data[active_key]) == 1:
-                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: "".join(structure_data[active_key] + [char])}))
+                tokens.append(
+                    Token(
+                        LAMBDA_STMT,
+                        {LAMBDA_BODY: "".join(structure_data[active_key] + [char])},
+                    )
+                )
                 structure = NO_STMT
                 structure_data = {}
             else:
@@ -359,7 +370,12 @@ def Tokenise(source: str):
 
         elif structure == THREE_CHAR_LAMBDA:
             if len(structure_data[active_key]) == 2:
-                tokens.append(Token(LAMBDA_STMT, {LAMBDA_BODY: "".join(structure_data[active_key] + [char])}))
+                tokens.append(
+                    Token(
+                        LAMBDA_STMT,
+                        {LAMBDA_BODY: "".join(structure_data[active_key] + [char])},
+                    )
+                )
                 structure = NO_STMT
                 structure_data = {}
             else:
@@ -404,7 +420,7 @@ def Tokenise(source: str):
             elif char == OPENING[LAMBDA_FILTER]:
                 structure = LAMBDA_FILTER
                 active_key = LAMBDA_BODY
-            
+
             elif char == OPENING[LAMBDA_SORT]:
                 structure = LAMBDA_SORT
                 active_key = LAMBDA_BODY
@@ -433,7 +449,6 @@ def Tokenise(source: str):
             nest_level += 1
             default_key = DEFAULT_KEYS[structure]
 
-
         elif char in CLOSING.values():
             nest_level -= 1
             if nest_level > 0:
@@ -448,7 +463,7 @@ def Tokenise(source: str):
                 elif structure == LAMBDA_FILTER:
                     additional_token = Token(NO_STMT, "F")
                     structure = LAMBDA_STMT
-                
+
                 elif structure == LAMBDA_SORT:
                     additional_token = Token(NO_STMT, "ṡ")
                     structure = LAMBDA_STMT
@@ -469,8 +484,7 @@ def Tokenise(source: str):
                 if additional_token:
                     tokens.append(additional_token)
 
-
-        elif char == "|" and  nest_level == 1:
+        elif char == "|" and nest_level == 1:
             # Oh, the magical pipe which makes Vyxal and Keg unique
             if structure == IF_STMT:
                 active_key = IF_ON_FALSE
@@ -491,13 +505,10 @@ def Tokenise(source: str):
             elif structure == LIST_STMT:
                 structure_data[LIST_ITEMS].append(structure_data[active_key])
 
-
             structure_data[active_key] = ""
-
 
         elif structure != NO_STMT:
             structure_data[active_key] += char
-
 
         elif char in "0123456789.":
             structure = INTEGER
@@ -516,7 +527,6 @@ def Tokenise(source: str):
             structure_data[VARIABLE_NAME] = ""
             active_key = VARIABLE_NAME
             default_key = VARIABLE_NAME
-
 
         elif char == VECTORISATION_CHAR:
             vectorisation = True
@@ -556,8 +566,6 @@ def Tokenise(source: str):
                     this_token = Token(NO_STMT, char)
                     tokens.append(this_token)
 
-
-
     if structure != NO_STMT:
         # print(structure_data, default_key, active_key)
         additional_token = None
@@ -569,7 +577,7 @@ def Tokenise(source: str):
         elif structure == LAMBDA_FILTER:
             additional_token = Token(NO_STMT, "F")
             structure = LAMBDA_STMT
-        
+
         elif structure == LAMBDA_SORT:
             additional_token = Token(NO_STMT, "ṡ")
             structure = LAMBDA_STMT
@@ -608,9 +616,20 @@ def Tokenise(source: str):
             tokens.append(additional_token)
     return tokens
 
+
 if __name__ == "__main__":
     # tests = ["«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
-    tests = ["123.456`hello`789 42→x`world` ←x", "‡∆p-Ẋ1=", "‘ab", "‡∆p-Ẋ1=", "‡ab", "`\\``", "‡kAkA", "vøD", "."]
+    tests = [
+        "123.456`hello`789 42→x`world` ←x",
+        "‡∆p-Ẋ1=",
+        "‘ab",
+        "‡∆p-Ẋ1=",
+        "‡ab",
+        "`\\``",
+        "‡kAkA",
+        "vøD",
+        ".",
+    ]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
     input()

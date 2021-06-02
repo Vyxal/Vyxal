@@ -490,9 +490,6 @@ kW                                   = "https://"
 k℅                                   = "http://"
 k↳                                   = "https://www."
 k²                                   = "http://www.
-k"                                   = 16
-k∴                                   = 32
-k…                                   = 64
 k¶                                   = 512
 k⁋                                   = 1024
 k¦                                   = 2048
@@ -513,7 +510,7 @@ kτ                                   = day number of the year
 kṡ                                   = seconds since epoch
 k□                                   = [[0,1],[1,0],[0,-1],[-1,0]]
 k…                                   = [[0,1],[1,0]]
-k¹                                   = [-1,0,1]
+kɽ                                   = [-1,0,1]
 k[                                   = "[]"
 k]                                   = "]["
 k(                                   = "()"
@@ -559,6 +556,7 @@ k}                                   = "}{"
    (a: any, b: any, c: function)     = regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace 
 øm (a: any)                          = palindromised(a) # doesn't duplicate middle
 øp (a: string, b: string)            = a.startswith(b)
+øP (a: number, b: string)            = a + " " + b + (s if a != 1 else "")
 Þ… (a: list, b: number)              = b evenly distributed over the elements of a
 Þ↓ (a: function, b: any)             = * minimum of b by function a
 Þ↑ (a: function, b: any)             = * maximum of b by function a
@@ -570,6 +568,7 @@ k}                                   = "}{"
 ÞD (a: list)                         = diagonals of a - starts with main diagonal.
 ÞS (a: any)                          = sublists(a)
 ÞṪ (a: list, b: any)                 = transpose(a, filler=b)
+Þ℅ (a: any)                          = random permutation of a (but faster than Ṗ℅)
 ¨U (a: string)                       = GET request with url=a
 ¨M (a: list, b: list, c: function)   = map function c to every item in a who's index is in b
 ¨, (a: any)                          = print(a, end=" ")

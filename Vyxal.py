@@ -179,7 +179,8 @@ class Generator:
         self.generated = []
     def __contains__(self, item):
         if self.is_numeric_sequence:
-            if item in self.generated: return True
+            if item in self.generated:
+                return True
             temp = next(self)
             while temp <= item:
                 temp = next(self)
@@ -289,7 +290,7 @@ class Generator:
     def limit_to_items(self, n):
         out = "⟨"
         item_count = 0
-        while not self.end_reached and item_count <= n: 
+        while not self.end_reached and item_count <= n:
             item = self.__getitem__(item_count)
             if self.end_reached: break
             out += str(item) if VY_type(item) is not Generator else item.limit_to_items(n)
@@ -489,7 +490,7 @@ def compare(lhs, rhs, mode):
         (Number, str): lambda lhs, rhs: eval(f"str(lhs) {op} rhs"),
         (str, Number): lambda lhs, rhs: eval(f"lhs {op} str(rhs)"),
         (types[0], list): lambda *x: [compare(lhs, item, mode) for item in rhs],
-        (list, types[1]): lambda *x : [compare(item, rhs, mode) for item in lhs],
+        (list, types[1]): lambda *x: [compare(item, rhs, mode) for item in lhs],
         (Generator, types[1]): lambda *y: vectorise(lambda x: compare(x, rhs, mode), lhs),
         (types[0], Generator): lambda *y: vectorise(lambda x: compare(lhs, x, mode), rhs),
         (list, list): lambda *y: list(map(lambda x: compare(*x, mode), VY_zip(lhs, rhs))),
@@ -761,11 +762,11 @@ def flatten(item):
     '''
     t_item = VY_type(item)
     if t_item is Generator:
-        return Generator(functools.reduce(list.__add__, item))
+        return flatten(item._dereference())
     else:
         ret = []
         for x in item:
-            if type(x) is list:
+            if type(x) in [list, Generator]:
                 ret += flatten(x)
             else:
                 ret.append(x)
@@ -796,7 +797,6 @@ def fractionify(item):
     import re
     if VY_type(item) == Number:
         from fractions import Fraction
-        from decimal import Decimal
         frac = Fraction(item).limit_denominator()
         return [frac.numerator, frac.denominator]
     elif type(item) is str:
@@ -858,7 +858,7 @@ def graded(item):
 
     }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1]))))()
 def graded_down(item):
-       return {
+    return {
         Number: lambda: item - 2,
         str: lambda: item.lower(),
 
@@ -1352,14 +1352,13 @@ def prime_factors(item):
         Number: lambda: sympy.ntheory.primefactors(int(item)),
         str: lambda: item + item[0]
     }.get(t_item, lambda: vectorise(prime_factors, item))()
-def prepend(vector, item):
-    vector = iterable(vector, range)
-    t_vector = type(vector)
+def prepend(lhs, rhs):
+    types = (VY_type(lhs), VY_type(rhs))
     return {
-    list: lambda: [item] + vector,
-    str: lambda: str(item) + vector,
-    range: lambda: [item] + list(vector)
-    }.get(t_vector, lambda: prepend(vector._dereference(), item))()
+        (types[0], types[1]): lambda: join(rhs, lhs),
+        (list, types[1]): lambda: [rhs] + lhs,
+        (Generator, types[1]): lambda: [rhs] +lhs._dereference()
+    }[types]()
 def prev_prime(item):
     if not isinstance(item, int):
         return item
@@ -1700,7 +1699,7 @@ def uninterleave(item):
 def uniquify(vector):
     seen = []
     for item in vector:
-        if not item in seen:
+        if item not in seen:
             yield item
             seen.append(item)
 def unsympy(item):
@@ -1846,13 +1845,13 @@ def VY_bin(item):
     t_item = VY_type(item)
     return {
         Number: lambda: [int(x) for x in bin(int(item))[2:]],
-        str: lambda: [[int (x) for x in bin(ord(let))[2:]] for let in item]
+        str: lambda: [[int(x) for x in bin(ord(let))[2:]] for let in item]
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_divmod(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
-        (Number, Number): lambda: [lhs // rhs, lhs % rhs],
         (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
+        (Number, Number): lambda: [lhs // rhs, lhs % rhs],
         (str, str): lambda: trim(lhs, rhs)
     }[types]()
 def VY_eval(item):
@@ -1920,7 +1919,7 @@ def VY_map(fn, vector):
     ret = []
     t_vector = VY_type(vector)
     t_function = VY_type(fn)
-    if not Function in (t_vector, t_function):
+    if Function not in (t_vector, t_function):
         def gen():
             for item in iterable(fn):
                 yield [vector, item]
@@ -2183,9 +2182,6 @@ constants = {
     "℅": "'http://'",
     "↳": "'https://www.'",
     "²": "'http://www.'",
-    '"': "16",
-    "∴": "32",
-    "…": "64",
     "¶": "512",
     "⁋": "1024",
     "¦": "2048",
@@ -2205,7 +2201,7 @@ constants = {
     "ṡ": "time.time()",
     "□": "[[0,1],[1,0],[0,-1],[-1,0]]",
     "…": "[[0,1],[1,0]]",
-    "¹": "[-1,0,1]",
+    "ɽ": "[-1,0,1]",
     "[": "'[]'",
     "]": "']['",
     "(": "'()'",
