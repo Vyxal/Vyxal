@@ -1,3 +1,7 @@
+from re import S
+from typing import ItemsView
+
+
 class stringlib:
     ascii_letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     ascii_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -66,7 +70,6 @@ TWO_BYTE_LIST = "Þ"
 TWO_BYTE_MISC = "¨"
 STRING_DELIMITER = "`"
 REGISTER_MODIFIER = "&"
-ONE_BYTE_DICTIONARY = "‘"
 DONT_POP = "~"
 CONDITIONAL_EXECUTION = "ß"
 
@@ -192,10 +195,34 @@ def group_strings(program):
         out.append([flux_string[1], flux_string[2]])
 
     return out
-
-
-def group_two_bytes(code):
-    # To be called after group_strings
+def group_two_chars(program):
+    ret = []
+    temp, in_string, escaped  = "", False, False
+    for item in program:
+        if type(item) is list:
+            ret.append(item)
+        elif escaped:
+            escaped = False
+            ret.append(item)
+        elif item in "\\⁺":
+            escaped = True
+            ret.append(item)
+        elif temp:
+            ret.append([temp + item,  "`"])
+            temp = ""
+            in_strign = False
+        elif in_string:
+            temp = item
+        elif item == SINGLE_SCC_CHAR:
+            in_string = True
+        else:
+            ret.append(item)
+    if temp:
+        ret.append(temp)
+    print(ret)
+    return ret
+def group_digraphs(code):
+    # To be called after group_strings and after group_two_char
     ret = []
     temp = ""
     escaped = False
@@ -237,7 +264,7 @@ def Tokenise(source: str):
     # print(source)
 
     for char in source:
-        # print(char, structure, structure_data, escaped, nest_level)
+        print(char, structure, structure_data, escaped, nest_level, scc_mode)
 
         if comment:
             if char == "\n":
@@ -486,6 +513,8 @@ def Tokenise(source: str):
 
         elif char == "|" and nest_level == 1:
             # Oh, the magical pipe which makes Vyxal and Keg unique
+            # and a major causer of pain.
+            # the above comment is mostly to do with strings.
             if structure == IF_STMT:
                 active_key = IF_ON_FALSE
 
@@ -629,7 +658,8 @@ if __name__ == "__main__":
         "‡kAkA",
         "vøD",
         ".",
+        "[‛| ]"
     ]
     for test in tests:
-        print([(n[0], n[1]) for n in Tokenise(group_two_bytes(group_strings(test)))])
+        print([(n[0], n[1]) for n in Tokenise(group_digraphs(group_two_chars(group_strings(test))))])
     input()
