@@ -90,7 +90,7 @@ command_dict = {
     "i": ("rhs, lhs = pop(stack, 2)\nstack.append(index(lhs, rhs))", 2),
     "j": ("rhs, lhs = pop(stack, 2); stack.append(str(rhs).join([str(x) for x in iterable(lhs)]))", 2),
     "l": ("rhs, lhs = pop(stack, 2); stack.append(nwise_pair(lhs, rhs))", 2),
-    "m": ("item = pop(stack); stack.append(add(item, reverse(item)))", 1),
+    "m": ("item = pop(stack); stack.append(join(item, reverse(item)))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
     "o": ("needle, haystack = pop(stack, 2); stack.append(remove(haystack, needle))", 2),
     "p": ("rhs, lhs = pop(stack, 2); stack.append(prepend(lhs, rhs))", 2),
