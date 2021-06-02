@@ -1150,6 +1150,11 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def mirror(item):
+    if VY_type(item) in (str, Number):
+        return add(item, reverse(item))
+    else:
+        return join(item, reverse(item))
 def modulo(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
 
