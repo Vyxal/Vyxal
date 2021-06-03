@@ -103,7 +103,7 @@ Takes however many arguments as defined by the first value popped from the stack
 
 Where the `@...;` function stores the definition for infinite re-use, the lambda pushes a reference to the code inside it. This is similar to python's lambdas, which are temporary functions, or literal functions (for lack of better word).
 
-These can be applied using `⍎`. For example: `3 λ3*; ⍎` will result in `9`. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
+These can be applied using `†`. For example: `3 λ3*; †` will result in `9`. Lambdas are also useful for mapping/filtering/reducing a vector according to the lambda's code.
 
 ### Implicit input and output
 

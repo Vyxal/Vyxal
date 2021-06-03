@@ -283,12 +283,12 @@ cmd | inputs | out/effect
 | ₀ |   |  10 |
 | ₁ |   |  100 |
 | ₂ | (a: number)                         |  a % 2 == 0 |
-|  | (a: string)                         |  len(a) % 2 == 0 |
+|  | (otherwise)                         |  len(a) % 2 == 0 |
 | ₃ | (a: number)                         |  a % 3 == 0 |
-|  | (a: string)                         |  len(a) == 1 |
+|  | (otherwise)                         |  len(a) == 1 |
 | ₄ |   |  26 |
 | ₅ | (a: number)                         |  a % 5 == 0 |
-|  | (a: string)                         |  a, len(a) |
+|  | (otherwise)                         |  a, len(a) |
 | ₆ |   |  64 |
 | ₇ |   |  128 |
 | ₈ |   |  256 |
