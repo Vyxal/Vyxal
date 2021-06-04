@@ -535,9 +535,16 @@ def combinations_replace_generate(lhs, rhs):
                 curr = fn([curr])[-1]
         return Generator(gen())
 def const_divisibility(item, n, string_overload):
+    def int_if_not_tuple():
+        a = string_overload(item)
+        if type(a) is tuple: 
+            return a
+        else:
+            return int(a)
     return {
         Number: lambda: int(item % n == 0),
-        str: lambda: int(string_overload(item))
+        str: int_if_not_tuple,
+        list: int_if_not_tuple
     }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n, string_overload))()
 def counts(vector):
     ret = []
