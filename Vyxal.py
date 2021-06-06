@@ -2712,7 +2712,7 @@ if __name__ == "__main__":
         if flags and 'c' in flags:
             print(code)
         exec(code)
-        if not printed and ("O" not in flags or "o" in flags):
+        if (not printed and "O" not in flags) or "o" in flags:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
