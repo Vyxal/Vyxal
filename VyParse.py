@@ -210,7 +210,7 @@ def group_two_chars(program):
         elif temp:
             ret.append([temp + item,  "`"]) # Am I really that lazy? Yes.
             temp = ""
-            in_strign = False
+            in_string = False
         elif in_string:
             temp = item
         elif item == SINGLE_SCC_CHAR:
@@ -657,7 +657,7 @@ if __name__ == "__main__":
         "‡kAkA",
         "vøD",
         ".",
-        "[‛| ]"
+        "‛| mm"
     ]
     for test in tests:
         print([(n[0], n[1]) for n in Tokenise(group_digraphs(group_two_chars(group_strings(test))))])
