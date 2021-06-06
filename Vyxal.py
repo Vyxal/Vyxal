@@ -1635,7 +1635,7 @@ def sums(vector):
         ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
-def transilterate(original, new, value):
+def transliterate(original, new, value):
     t_string = type(value)
     original = deref(original, True)
     if t_string == Generator:
@@ -1823,6 +1823,17 @@ def vertical_join(vector, padding=" "):
         out += "\n"
 
     return out
+def vertical_mirror(item, mapping=None):
+    if type(item) is str:
+        if mapping:
+            temp = [s + transliterate(mapping[0], mapping[1], s[::-1]) for s in item.split("\n")]
+            return "\n".join(temp)
+        else:
+            return "\n".join([mirror(s) for s in item.split("\n")])
+    elif VY_type(item) is Number:
+        return mirror(item)
+    else:
+        return vectorise(vertical_mirror, item, mapping)
 def wrap(vector, width):
     types = VY_type(vector), VY_type(width)
     if types == (Function, types[1]):

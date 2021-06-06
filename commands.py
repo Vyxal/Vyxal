@@ -169,7 +169,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ġ": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "Ḣ": ("stack.append(iterable(pop(stack))[1:])", 1),
     "İ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(vector, indexes))", 2),
-    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
+    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transliterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
     "Ṁ": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "Ṅ": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
     "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input(0))", 0),
@@ -274,7 +274,10 @@ string_command_dict = {
     "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
     "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3),
     "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
-    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2)
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2),
+    "ṁ": ("stack.append(vertical_mirror(pop(stack)))", 1),
+    "Ṁ": ("stack.append(vertical_mirror(pop(stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/')])", 1),
+    "¦": ("rhs, lhs = pop(stack, 2); stack.append(vertical_mirror(lhs, rhs))", 2)
 }
 
 list_command_dict = {
