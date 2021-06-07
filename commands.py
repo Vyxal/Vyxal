@@ -153,7 +153,7 @@ command_dict = {
     "∑": ("stack.append(summate(pop(stack)))", 1),
     "¦": ("stack.append(cumulative_sum(iterable(pop(stack))))", 1),
     "≈": ("stack.append(int(len(set(iterable(pop(stack)))) == 1))", 1),
-    "Ȧ": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
+    "Ȧ": ("value, lst_index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), lst_index, value))", 3),
     "Ḃ": ("stack += bifuricate(pop(stack))", 1),
     "Ċ": ("stack.append(counts(pop(stack)))", 1),
     "Ḋ": ("rhs, lhs = pop(stack, 2); ret = is_divisble(lhs, rhs)\nif type(ret) is tuple: stack += list(ret)\nelse: stack.append(ret)", 2),
