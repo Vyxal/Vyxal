@@ -258,7 +258,8 @@ math_command_dict = {
     "ṗ": ("stack.append(prev_prime(pop(stack)))", 1),
     "p": ("stack.append(closest_prime(pop(stack)))", 1),
     "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1),
-    "Ṙ": ("stack.append(random.random())", 0)
+    "Ṙ": ("stack.append(random.random())", 0),
+    "W": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(round, lhs, rhs))", 2) # if you think I'm making this work with strings, then you can go commit utter go awayance. smh.
 }
 
 string_command_dict = {
@@ -274,7 +275,7 @@ string_command_dict = {
     "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
     "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3),
     "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
-    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2),
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(pluralise(lhs, rhs))", 2),
     "ṁ": ("stack.append(vertical_mirror(pop(stack)))", 1),
     "Ṁ": ("stack.append(vertical_mirror(pop(stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/']))", 1),
     "¦": ("rhs, lhs = pop(stack, 2); stack.append(vertical_mirror(lhs, rhs))", 2)
