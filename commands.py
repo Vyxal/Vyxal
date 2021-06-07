@@ -276,7 +276,7 @@ string_command_dict = {
     "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
     "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2),
     "ṁ": ("stack.append(vertical_mirror(pop(stack)))", 1),
-    "Ṁ": ("stack.append(vertical_mirror(pop(stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/')])", 1),
+    "Ṁ": ("stack.append(vertical_mirror(pop(stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/']))", 1),
     "¦": ("rhs, lhs = pop(stack, 2); stack.append(vertical_mirror(lhs, rhs))", 2)
 }
 
