@@ -57,13 +57,13 @@ def execute():
                 if "5" in flags:
                     time = 5
                 elif "T" in flags:
-                    time = 10
+                    time = 60
                 elif "b" in flags:
                     time = 15
                 elif "B" in flags:
                     time = 30
                 else:
-                    time = 60
+                    time = 10
                 ret[1] = ""
                 ret[2] = ""
                 fcode = header + code + footer
