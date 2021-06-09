@@ -142,7 +142,7 @@ def parse_file():
                 index = -1
                 keys[previous[LETTER]] = len(ret)
             
-            print(char, index, previous[LETTER])
+            # print(char, index, previous[LETTER])
             if index == -1:
                 ret.append("\n" + line[1:-1])
             
@@ -152,37 +152,5 @@ def parse_file():
             else:
                 ret[index] += "\n" + line[1:-1]
     return ret
-
-def test():
-    keys = {}
-    txt = "\n"
-    ret = []
-
-    LETTER, MODIFIER = "LETTER", "MODIFIER"
-
-    previous = {LETTER: "", MODIFIER: ""}
-    for line in txt:
-        if line == "\n": break # Reached EOF
-        char = line[:2]
-        if char != "  ": previous = {LETTER: line[0], MODIFIER: line[1]}
-
-        if previous[LETTER] in keys:
-            index = keys[previous[LETTER]]
-        else:
-            index = -1
-            keys[previous[LETTER]] = len(ret)
-        
-        if index == -1:
-            ret.append("\n" + line[1:-1])
-        
-        elif previous[MODIFIER]:
-            ret[index] += "\n" + previous[MODIFIER] + ": " + line[3:-1]
-        
-        else:
-            ret[index] += "\n" + line[1:-1]
-            
-
-
-
 
 descriptions = parse_file()
