@@ -2579,9 +2579,9 @@ ALL flags should be used as is (no '-' prefix)
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
 \t5\tMake the interpreter timeout after 5 seconds
-\tT\tMake the interpreter timeout after 10 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
+\tT\tMake the interpreter timeout after 60 seconds
 \tṀ\tEquivalent to having both m and M flags
 """
             return
