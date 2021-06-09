@@ -1641,13 +1641,17 @@ def sums(vector):
         ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
-def transliterate(original, new, value):
-    t_string = type(value)
-    original = deref(original, True)
-    if t_string == Generator:
-        t_string = list
+def transliterate(original, new, transliterant):
+    transliterant = deref(transliterant)
+    t_string = type(transliterant)
+    if t_string is list:
+        transliterant = list(map(str, transliterant))
+    original = deref(original)
+    if type(original) is list:
+        original = list(map(str, original))
     ret = t_string()
-    for char in value:
+    for char in transliterant:
+        if VY_type(char) is Number: char = str(char)
         if t_string is str: char = str(char)
         try:
             ind = original.index(char)
