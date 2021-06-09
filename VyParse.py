@@ -162,9 +162,12 @@ def group_strings(program):
 
     flux_string = [False, "", STANDARD]  # [in_string, temp_string, string_type]
     for char in program:
-
-        if flux_string[0]:
-
+        if type(char) is list:
+            if flux_string[0]:
+                flux_string[1] += char
+            else:
+                out.append(char)
+        elif flux_string[0]:
             if escaped:
                 if char == STANDARD:
                     flux_string[1] = flux_string[1][:-1]
@@ -181,13 +184,14 @@ def group_strings(program):
         elif escaped:
             escaped = False
             out.append(char)
+        elif char in "\\⁺":
+            escaped = True
+            out.append(char)
         elif char in (STANDARD, INTEGER, ALPHA):
             flux_string[0] = True
             flux_string[1] = ""
             flux_string[2] = char
-        elif char in "\\⁺":
-            escaped = True
-            out.append(char)
+
         else:
             out.append(char)
 
@@ -204,15 +208,15 @@ def group_two_chars(program):
         elif escaped:
             escaped = False
             ret.append(item)
-        elif item in "\\⁺":
-            escaped = True
-            ret.append(item)
         elif temp:
             ret.append([temp + item,  "`"]) # Am I really that lazy? Yes.
             temp = ""
-            in_strign = False
+            in_string = False
         elif in_string:
             temp = item
+        elif item in "\\⁺":
+            escaped = True
+            ret.append(item)
         elif item == SINGLE_SCC_CHAR:
             in_string = True
         else:
@@ -650,15 +654,16 @@ if __name__ == "__main__":
     tests = [
         "123.456`hello`789 42→x`world` ←x",
         "‡∆p-Ẋ1=",
-        "‘ab",
+        "‛`a",
         "‡∆p-Ẋ1=",
         "‡ab",
         "`\\``",
         "‡kAkA",
         "vøD",
         ".",
-        "[‛| ]"
+        "‛| mm"
     ]
     for test in tests:
-        print([(n[0], n[1]) for n in Tokenise(group_digraphs(group_two_chars(group_strings(test))))])
+        print(test, group_two_chars(test))
+        print([(n[0], n[1]) for n in Tokenise(group_digraphs(group_strings(group_two_chars(test))))])
     input()

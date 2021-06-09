@@ -153,7 +153,7 @@ command_dict = {
     "∑": ("stack.append(summate(pop(stack)))", 1),
     "¦": ("stack.append(cumulative_sum(iterable(pop(stack))))", 1),
     "≈": ("stack.append(int(len(set(iterable(pop(stack)))) == 1))", 1),
-    "Ȧ": ("value, index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), index, value))", 3),
+    "Ȧ": ("value, lst_index, vector = pop(stack, 3); stack.append(assigned(iterable(vector), lst_index, value))", 3),
     "Ḃ": ("stack += bifuricate(pop(stack))", 1),
     "Ċ": ("stack.append(counts(pop(stack)))", 1),
     "Ḋ": ("rhs, lhs = pop(stack, 2); ret = is_divisble(lhs, rhs)\nif type(ret) is tuple: stack += list(ret)\nelse: stack.append(ret)", 2),
@@ -169,7 +169,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ġ": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "Ḣ": ("stack.append(iterable(pop(stack))[1:])", 1),
     "İ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(vector, indexes))", 2),
-    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transilterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
+    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transliterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
     "Ṁ": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "Ṅ": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
     "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input(0))", 0),
@@ -258,7 +258,8 @@ math_command_dict = {
     "ṗ": ("stack.append(prev_prime(pop(stack)))", 1),
     "p": ("stack.append(closest_prime(pop(stack)))", 1),
     "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1),
-    "Ṙ": ("stack.append(random.random())", 0)
+    "Ṙ": ("stack.append(random.random())", 0),
+    "W": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(round, lhs, rhs))", 2) # if you think I'm making this work with strings, then you can go commit utter go awayance. smh.
 }
 
 string_command_dict = {
@@ -274,7 +275,10 @@ string_command_dict = {
     "W": ("stack.append(split_on_words(VY_str(pop(stack))))", 1),
     "ṙ": ("replacent, pattern, source = pop(stack, 3); stack.append(regex_replace(VY_str(source), VY_str(pattern), replacent))", 3),
     "p": ("rhs, lhs = pop(stack, 2); stack.append(int(str(lhs).startswith(str(rhs))))", 2),
-    "P": ("rhs, lhs = pop(stack, 2); stack.append(f'{lhs} {rhs}{\"s\" * (lhs != 1)}')", 2)
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(pluralise(lhs, rhs))", 2),
+    "ṁ": ("stack.append(vertical_mirror(pop(stack)))", 1),
+    "Ṁ": ("stack.append(vertical_mirror(pop(stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/']))", 1),
+    "¦": ("rhs, lhs = pop(stack, 2); stack.append(vertical_mirror(lhs, rhs))", 2)
 }
 
 list_command_dict = {

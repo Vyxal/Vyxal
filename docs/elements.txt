@@ -557,6 +557,12 @@ k}                                   = "}{"
 øm (a: any)                          = palindromised(a) # doesn't duplicate middle
 øp (a: string, b: string)            = a.startswith(b)
 øP (a: number, b: string)            = a + " " + b + (s if a != 1 else "")
+øṁ (a: string)                       = vertical_mirror(a)
+   (a: number)                       = mirror(a)
+   (otherwise)                       = vectorises
+øṀ (a: string)                       = vertical_mirror(a, mapping=flip_slashes_and_brackets) # [ <-> ], ( <-> ), { <-> }, < <-> >, / <-> \
+   (otherwise)                       = vectorises
+ø¦ (a: string, b: string)            = vertical_mirror(a, mapping=b) # mapping in the form of ["normal", "flipped"] - custom mapping
 Þ… (a: list, b: number)              = b evenly distributed over the elements of a
 Þ↓ (a: function, b: any)             = * minimum of b by function a
 Þ↑ (a: function, b: any)             = * maximum of b by function a

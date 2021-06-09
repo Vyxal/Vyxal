@@ -1321,6 +1321,12 @@ def permutations(vector):
     if t_vector is str:
         return Generator(map(lambda x: "".join(x), vector))
     return Generator(vector)
+def pluralise(lhs, rhs):
+    return {
+        (Number, Number): lambda: rhs,
+        (str, Number): lambda: f'{rhs} {lhs}{"s" * (lhs != 1)}',
+        (Number, str): lambda: f'{lhs} {rhs}{"s" * (lhs != 1)}',
+    }.get((VY_type(lhs), VY_type(rhs)), lambda: vectorise(pluralise, lhs, rhs))()
 def polynomial(vector):
     t_vector = VY_type(vector)
     if t_vector is Generator:
@@ -1635,13 +1641,17 @@ def sums(vector):
         ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
-def transilterate(original, new, value):
-    t_string = type(value)
-    original = deref(original, True)
-    if t_string == Generator:
-        t_string = list
+def transliterate(original, new, transliterant):
+    transliterant = deref(transliterant)
+    t_string = type(transliterant)
+    if t_string is list:
+        transliterant = list(map(str, transliterant))
+    original = deref(original)
+    if type(original) is list:
+        original = list(map(str, original))
     ret = t_string()
-    for char in value:
+    for char in transliterant:
+        if VY_type(char) is Number: char = str(char)
         if t_string is str: char = str(char)
         try:
             ind = original.index(char)
@@ -1738,8 +1748,8 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
             for item in r:
                 yield _safe_apply(fn, l, item, third)
 
-        return Generator({
-            (types[0], types[1]): (lambda: _safe_apply(fn, iterable(left), right),
+        ret =  {
+            (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
             (list, types[1]): (lambda: [_safe_apply(fn, x, right) for x in left],
                                lambda: expl(left, right)),
@@ -1757,7 +1767,10 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                                 lambda: expl(left, right)),
             (Generator, list): (lambda: gen(),
                                 lambda: expl(left, right))
-        }[types][explicit]())
+        }[types][explicit]()
+
+        if type(ret) is Python_Generator: return Generator(ret)
+        else: return ret
     elif right:
         types = (VY_type(left), VY_type(right))
 
@@ -1772,8 +1785,8 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def swapped_expl(l, r):
             for item in r:
                 yield _safe_apply(fn, l, item)
-        return Generator({
-            (types[0], types[1]): (lambda: _safe_apply(fn, iterable(left), right),
+        ret = {
+            (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
             (list, types[1]): (lambda: [_safe_apply(fn, x, right) for x in left],
                                lambda: expl(left, right)),
@@ -1791,7 +1804,10 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                                 lambda: expl(left, right)),
             (Generator, list): (lambda: gen(),
                                 lambda: expl(left, right))
-        }[types][explicit]())
+        }[types][explicit]()
+
+        if type(ret) is Python_Generator: return Generator(ret)
+        else: return ret
 
     else:
         if VY_type(left) is Generator:
@@ -1823,6 +1839,17 @@ def vertical_join(vector, padding=" "):
         out += "\n"
 
     return out
+def vertical_mirror(item, mapping=None):
+    if type(item) is str:
+        if mapping:
+            temp = [s + transliterate(mapping[0], mapping[1], s[::-1]) for s in item.split("\n")]
+            return "\n".join(temp)
+        else:
+            return "\n".join([mirror(s) for s in item.split("\n")])
+    elif VY_type(item) is Number:
+        return mirror(item)
+    else:
+        return vectorise(vertical_mirror, item, mapping)
 def wrap(vector, width):
     types = VY_type(vector), VY_type(width)
     if types == (Function, types[1]):

@@ -115,34 +115,42 @@ def parse_file():
     THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
     file = os.path.join(THIS_FOLDER, "docs/elements.txt")
     with open(file, "r", encoding="utf8") as txt:
+        LETTER, MODIFIER = "LETTER", "MODIFIER"
+
+        previous = {LETTER: "", MODIFIER: ""}
         for line in txt:
-            if line == "\n":  # Finished
-                break
+            if line == "\n": break # Reached EOF
+            char = line[:2]
+            if char != "  ": 
+                if char[-1] != " " and char[0] != "<":
+                    previous = {LETTER: line[1], MODIFIER: line[0]}
+                else:
+                    previous[LETTER] = line[0]
+                    previous[MODIFIER] = ""
+            
+            if char[0] == "<" and char[1] in "ns":
+                if "<newline>" in line:
+                    previous[LETTER] = "␤"
+                if "<space>" in line:
+                    previous[LETTER] = "␠"
+                
+                previous[MODIFIER] = ""
+
+            if previous[LETTER] in keys:
+                index = keys[previous[LETTER]]
             else:
-                is_digraph = line[0] in "k∆øÞ¨" and line[1] != " "
-                if is_digraph:
-                    letter = line[1]
-                else:
-                    letter = line[0]
-
-                if letter in keys and letter != " ":
-                    index = keys[letter]
-                else:
-                    index = -1
-                    keys[letter] = len(ret)
-
-                if line[0] == " ":
-                    if is_digraph:
-                        print(letter, line)
-                        ret[index] += "\n" + line[0] + ": " + line[3:-1]
-                    else:
-                        ret[index] += "\n" + line[1:-1]
-                else:
-                    if is_digraph:
-                        ret[index] += "\n" + line[0] + ": " + line[3:-1]
-                    else:
-                        ret.append("\n" + line[1:-1])
+                index = -1
+                keys[previous[LETTER]] = len(ret)
+            
+            # print(char, index, previous[LETTER])
+            if index == -1:
+                ret.append("\n" + line[1:-1])
+            
+            elif previous[MODIFIER]:
+                ret[index] += "\n" + previous[MODIFIER] + ": " + line[3:-1]
+            
+            else:
+                ret[index] += "\n" + line[1:-1]
     return ret
-
 
 descriptions = parse_file()
