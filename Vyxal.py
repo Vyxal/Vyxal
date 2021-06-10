@@ -405,7 +405,7 @@ def bit_or(lhs, rhs):
         common = suffixes & prefixes
         if len(common) == 0:
             return lhs + rhs
-        common = common.pop()
+        common = sorted(common, key=lambda x: len(x))[-1]
         return lhs[:-len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
