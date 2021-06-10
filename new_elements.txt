@@ -30,6 +30,285 @@
    (a: string)                                         = * execute as Vyxal
    (a: function)                                       = * call function
    (otherwise)                                         = vectorise
-μ                                                      = * last two elements as a single element - <element><element>μ
-ξ                                                      = * last three elements as a single element - <element><element><element>ξ
-π                                                      = * last four elements as a single element - ....π
+μ                                                      = * last element as a function - <element>μ
+ξ                                                      = * last two elements as a single element - <element><element>ξ
+π                                                      = * last three elements as a single element - <element><element><element>π
+ρ                                                      = * last four elements as a single element - ....ρ
+ς  (a: any)                                            = * inner product - <element>ς
+σ  (a: any)                                            = * outer product - <element>σ
+φ  (a: any)                                            = * repeat element infinitely, returning a generator - <element>φ
+χ                                                      = * everything to the start of the line as a single element
+ψ  (a: any, [b: any, c: any])                          = * apply last two elements "parallel" - 3 4 +-ψ -> 7, -1
+ω  (a: any, [b: any, c: any])                          = * apply last two elements "parallel" and collect - equivalent to ψ"
+ɓ                                                      = * last element double vectorised - <element>ɓ
+ƈ  (a: any)                                            = * collect while applying last element is truthy - <element>ƈ
+ɗ  (a: any)                                            = * maximum by last element - <element>ɗ
+ƒ  (a: any)                                            = * filter by last element - <element>ƒ
+ɠ  (a: any)                                            = * minimum by last element - <element>ɠ
+ɦ  (a: any)                                            = * map last element over prefixes - <element>ɦ
+                                                       = * NOP
+!  (a: number)                                         = factorial(a)
+   (a: string)                                         = sentence_case(a)
+   (otherwise)                                         = vectorise
+"  (a: any, b: any)                                    = [a, b] # pair
+#                                                      = * comment
+$  (a: any, b: any)                                    = b, a # swap
+%  (a: number, b: number)                              = a % b # modulo
+   (a: number, b: string)                              = (b split into a equal pieces)[-1]
+   (a: string, b: number)                              = (a split into b equal pieces)[-1]
+   (a: string, b: string)                              = a.format(b)
+   (a: string, b: list)                                = a.format(b)
+   (otherwise)                                         = vectorise
+&                                                      = * apply last element to the register - <element>&
+'                                                      = * single character string
+(                                                      = * open for loop: (variable|...)
+)                                                      = * close for loop
+*  (a: number, b: number)                              = a ** b # exponent, exponentiation
+   (a: number, b: string)                              = every ath letter of b
+   (a: string, b: number)                              = every bth letter of a
+   (a: string, b: string)                              = regex.search(pattern=a, string=b).span()
+   (otherwise)                                         = vectorise
++  (a: number, b: number)                              = a + b # addition
+   (a: number, b: string)                              = concat(a, b)
+   (a: string, b: number)                              = concat(a, b)
+   (a: string, b: string)                              = concat(a, b)
+   (otherwise)                                         = vectorised
+,  (a: any)                                            = print(a)
+-  (a: number, b: number)                              = a - b # subtraction
+   (a: number, string)                                 = ("-" * a) + b
+   (a: string, b: number)                              = a + ("-" * b)
+   (a: string, b: string)                              = a.remove(b)
+   (otherwise)                                         = vectorise
+.                                                      = * decimal seperator
+/  (a: any)                                            = * reduce by last element - <element>/
+0                                                      = * numeric literal
+1                                                      = * numeric literal
+2                                                      = * numeric literal
+3                                                      = * numeric literal
+4                                                      = * numeric literal
+5                                                      = * numeric literal
+6                                                      = * numeric literal
+7                                                      = * numeric literal
+8                                                      = * numeric literal
+9                                                      = * numeric literal
+:  (a: any)                                            = a, a  # duplicate
+;                                                      = * closes a structure
+<  (a: non-list, b: non-list)                          = a < b # less than (numbers converted to strings)
+   (a: list, b: any)                                   = vectorise
+=  (a: non-list, b: non-list)                          = a == b
+   (a: list, b: any)                                   = a == b # vectorising equals
+>  (a: non-list, b: non-list)                          = a > b # greater than (numbers converted to strings)
+   (a: list, b: any)                                   = vectorise
+?                                                      = input()
+@                                                      = * define a function: @name:parameters|...;
+                                                       = * call a function: @name;
+A  (a: any)                                            = all(a) # all truthy
+B  (a: number)                                         = int(a, 2) # from binary
+   (a: string)                                         = int(a, 2) # from binary
+   (otherwise)                                         = vectorise
+C  (a: number)                                         = chr(a)
+   (a: string)                                         = ord(a) if len(a) == 1 else map(ord, a)
+   (otherwise)                                         = vectorise
+D  (a: any)                                            = a, a, a # triplicate
+E  (a: number)                                         = 2 ** a # 2 power, two power
+   (a: string)                                         = eval(a)
+   (otherwise)                                         = vectorise
+F  (a: number)                                         = list of a's digits
+   (a: string)                                         = list of a's characters
+   (otherwise)                                         = flattened(a) # flatten, deep flatten
+G  (a: any)                                            = max(a) # monadic maximum, maximum iterable
+H  (a: any)                                            = a[0]
+I  (a: number)                                         = int(a)
+   (a: string)                                         = int(a)
+   (otherwise)                                         = int(a) using list items as digits
+J  (a: any)                                            = ''.join(a)
+K  (a: number)                                         = divisors(a)
+   (a: string)                                         = all substrings of a that occur more than once # they "divide" a into more than one piece
+   (otherwise)                                         = prefixes(a)
+L  (a: any)                                            = len(a)
+M  (a: any)                                            = mirror(a) # numbers are reversed and added                                        
+N  (a: number)                                         = -a # negate, * -1
+   (a: string)                                         = swap_case(a)
+   (otherwise)                                         = vectorise
+O  (a: any)                                            = vectorised sum of a
+P  (a: any, b: any)                                    = prepend a to b
+Q                                                      = * quit the program
+R  (a: any)                                            = reversed(a)
+S  (a: any)                                            = sorted(a)
+T  (a: any)                                            = a[-1]
+U  (a: any)                                            = uniquifed(a) # uniquify, unique items
+V  (a: number)                                         = 10 ** a
+   (a: string)                                         = a.split("\n")
+   (otherwise)                                         = vectorise
+W  (a: any)                                            = [a] # wrap
+X  (a: number)                                         = random.choice(range(a))
+   (otherwise)                                         = random.choice(a)
+Y  (a: any)                                            = uninterleave(a)
+Z  (a: string)                                         = remove all non-letters of a
+   (a: number)                                         = 2 ** a
+   (otherwise)                                         = vectorise
+[                                                      = * open if statement: [truthy|falsey]
+\                                                      = * cumulative reduce by last element - <element>\
+]                                                      = * close if statement
+`                                                      = * string - `...`
+^                                                      = * reverse stack
+_  (a: any)                                            = discard # pop, remove, trash
+a  (a: any, b: number, c: any)                         = a[b] = c
+b  
+c
+d
+e
+f
+g
+h
+i
+j
+k
+l
+m
+n
+o
+p
+q
+r
+s
+t
+u
+v
+w
+x
+y
+z
+{
+|
+}
+~
+½
+Ȧ
+Ḃ
+Ċ
+Ḋ
+Ė
+Ḟ
+Ġ
+Ḣ
+İ
+Ŀ
+Ṁ
+Ṅ
+Ȯ
+Ṗ
+Ṙ
+Ṡ
+Ṫ
+Ẇ
+Ẋ
+Ẏ
+Ż
+ȧ
+ḃ
+ċ
+ḋ
+ė
+ḟ
+ġ
+ḣ
+ŀ
+ṁ
+ṅ
+ȯ
+ṗ
+ṙ
+ṡ
+ṫ
+ẇ
+ẋ
+ẏ
+ż
+≤
+≥
+≠
+⁼
+©
+®
+∞
+₀
+₁
+₂
+₃
+₄
+₅
+₆
+₇
+₈
+₉
+⁰
+¹
+²
+³
+⁴
+⁵
+∑
+¦
+⌈
+⌊
+¯
+±
+↳
+↲
+⋏
+⋎
+꘍
+ꜝ
+”
+‡
+⇧
+⇩
+∆
+ø
+Þ
+¨
+‘
+“
+ð
+□
+↑
+↓
+∴
+∵
+›
+‹
+β
+τ
+¶
+§
+ε
+ʀ
+ʁ
+ɾ
+ɽ
+Π
+⁽
+↕
+⁾
+⁺
+Ɓ
+Ƈ
+Ɗ
+Ƒ
+Ɠ
+Ƙ
+Ɱ
+Ɲ
+Ƥ
+Ƭ
+Ʋ
+Ȥ
+δ
+⟨
+⟩
+→
+←
+∪
+∩
+⊍
