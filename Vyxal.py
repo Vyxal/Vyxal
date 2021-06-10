@@ -2560,6 +2560,7 @@ ALL flags should be used as is (no '-' prefix)
 \ts\tSum/concatenate top of stack on end of execution
 \tM\tMake implicit range generation start at 0 instead of 1
 \tm\tMake implicit range generation end at n-1 instead of n
+\tṀ\tEquivalent to having both m and M flags
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
@@ -2578,11 +2579,11 @@ ALL flags should be used as is (no '-' prefix)
 \tR\tTreat numbers as ranges if ever used as an iterable
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
+\tJ\tPrint the entire stack, separated by newlines.
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
 \tT\tMake the interpreter timeout after 60 seconds
-\tṀ\tEquivalent to having both m and M flags
 """
             return
     input_values[0] = [inputs, 0]
@@ -2599,7 +2600,7 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
 
-    if not printed and ('O' not in flags):
+    if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
             VY_print(summate(pop(stack)))
         elif flags and 'd' in flags:
@@ -2622,6 +2623,8 @@ ALL flags should be used as is (no '-' prefix)
             VY_print(vertical_join(pop(stack)))
         elif _join:
             VY_print("\n".join([VY_str(n) for n in pop(stack)]))
+        elif flags and 'J' in flags:
+            VY_print("\n".join([VY_str(n) for n in stack]))
         else:
             VY_print(pop(stack))
 
@@ -2743,30 +2746,30 @@ if __name__ == "__main__":
         if flags and 'c' in flags:
             print(code)
         exec(code)
-        if (not printed and "O" not in flags) or "o" in flags:
+        if (not printed and 'O' not in flags) or 'o' in flags:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
             elif flags and 'Ṫ' in flags:
                 VY_print(summate(stack))
-            elif flags and "S" in flags:
+            elif flags and 'S' in flags:
                 print(" ".join([VY_str(n) for n in pop(stack)]))
-            elif flags and "C" in flags:
+            elif flags and 'C' in flags:
                 print("\n".join(centre(pop(stack))))
-            elif flags and "l" in flags:
+            elif flags and 'l' in flags:
                 print(len(pop(stack)))
-            elif flags and "G" in flags:
+            elif flags and 'G' in flags:
                 print(VY_max(pop(stack)))
-            elif flags and "g" in flags:
+            elif flags and 'g' in flags:
                 print(VY_min(pop(stack)))
-            elif flags and "W" in flags:
+            elif flags and 'W' in flags:
                 print(VY_str(stack))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
                 print("\n".join([VY_str(n) for n in pop(stack)]))
-            elif flags and "J" in flags:
+            elif flags and 'J' in flags:
                 print("\n".join([VY_str(n) for n in stack]))
             else:
                 VY_print(pop(stack))
