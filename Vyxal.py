@@ -817,7 +817,7 @@ def function_call(fn, vector):
     else:
         return [{
             Number: lambda: len(prime_factors(fn)),
-            str: lambda: exec(VY_compile(fn))
+            str: lambda: exec(VY_compile(fn)) or []
         }.get(VY_type(fn), lambda: vectorised_not(fn))()]
 def gcd(lhs, rhs=None):
     if rhs:
