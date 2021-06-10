@@ -126,7 +126,11 @@ K  (a: number)                                         = divisors(a)
    (a: string)                                         = all substrings of a that occur more than once # they "divide" a into more than one piece
    (otherwise)                                         = prefixes(a)
 L  (a: any)                                            = len(a)
+<<<<<<< Updated upstream
 M  (a: any)                                            = mirror(a) # numbers are reversed and added                                        
+=======
+M  (a: any)                                            = mirror(a) # numbers are reversed and added
+>>>>>>> Stashed changes
 N  (a: number)                                         = -a # negate, * -1
    (a: string)                                         = swap_case(a)
    (otherwise)                                         = vectorise
@@ -154,8 +158,15 @@ Z  (a: string)                                         = remove all non-letters 
 ^                                                      = * reverse stack
 _  (a: any)                                            = discard # pop, remove, trash
 a  (a: any, b: number, c: any)                         = a[b] = c
+<<<<<<< Updated upstream
 b  
 c
+=======
+b  (a: number)                                         = to binary
+   (a: string)                                         = [bin(ord(char)) for char in a]
+   (otherwise)                                         = vectorise
+c 
+>>>>>>> Stashed changes
 d
 e
 f
