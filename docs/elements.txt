@@ -178,7 +178,6 @@ e (a: number, b: number)             = a ** b # exponent, exponentiation
 f (a: number)                        = list of digits of a
   (a: string)                        = list of characters of a
   (otherwise)                        = flattened(a) # flatten, deep flatten
-  
 g (a: any)                           = min(a) # monadic minimum, minimum iterable
 h (a: any)                           = a[0] # head, first item
 i (a: any, b: number)                = a[b] # index
