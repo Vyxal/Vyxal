@@ -178,7 +178,9 @@ cmd | inputs | out/effect
 |  | (a: string, b: number)              |  every bth letter of a |
 |  | (a: string, b: string)              |  regex.search(pattern=a, string=b).span() |
 |  | (otherwise)                         |  vectorised |
-| f | (a: any)                            |  flattened(a) # flatten, deep flatten |
+| f | (a: number)                         |  list of digits of a |
+|  | (a: string)                         |  list of characters of a |
+|  | (otherwise)                         |  flattened(a) # flatten, deep flatten |
 | g | (a: any)                            |  min(a) # monadic minimum, minimum iterable |
 | h | (a: any)                            |  a[0] # head, first item |
 | i | (a: any, b: number)                 |  a[b] # index |
