@@ -1087,6 +1087,7 @@ def join(lhs, rhs):
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }[types]()
 def join_on(vector, item):
+    types = VY_type(vector), VY_type(item)
     return {
         (Number, Number): lambda: VY_eval(str(item).join(str(vector))),
         (Number, str): lambda: item.join(str(vector)),
