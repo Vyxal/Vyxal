@@ -1086,6 +1086,13 @@ def join(lhs, rhs):
         (Generator, list): lambda: lhs._dereference() + rhs,
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }[types]()
+def join_on(vector, item):
+    return {
+        (Number, Number): lambda: VY_eval(str(item).join(str(vector))),
+        (Number, str): lambda: item.join(str(vector)),
+        (str, str): lambda: item.join(vector),
+        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector])
+    }
 def levenshtein_distance(s1, s2):
     # https://stackoverflow.com/a/32558749
     if len(s1) > len(s2):
@@ -1816,7 +1823,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                     yield _safe_apply(fn, item)
             return Generator(gen())
         elif VY_type(left) in (str, Number):
-            return _safe_apply(fn, iterable(left))
+            return _safe_apply(fn, list(iterable(left)))
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             return ret
