@@ -244,8 +244,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
 ė (a: any)                           = enumerate(a) # Enumerate, Zip with range to length
 ḟ (a: any, b: any)                   = a.find(b) # Index of
   (a: any, b: function)              = truthy_indexes(map(b, a)) # Map over truthy indices
-ġ (a: list)                          = gcd(a)  # greatest common denominato
-r
+ġ (a: list)                          = gcd(a)  # greatest common denominator
   (a: number, b: number)             = gcd(a, b) # greatest common denominator
   (a: string, b: any)                = longest common suffix(a, str(b))
 ḣ (a: any)                           = a[0], a[1:] # head extract
@@ -534,7 +533,6 @@ k}                                   = "}{"
 ∆± (a: number, b: number)            = math.copysign(a, b)
 ∆K (a: number)                       = sum(proper_divisors(a)) # Sum of proper divisors
 ∆² (a: number)                       = is_perfect_square(a) # Perfect square?
- 
 ∆e (a: number)                       = e ** a # e raised to power a, e^a
 ∆E (a: number)                       = (e ** a) - 1 # uses math.expm1()
 ∆L (a: number)                       = ln(a) # ln, e based log, natural logarithm
