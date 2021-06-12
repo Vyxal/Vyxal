@@ -231,21 +231,27 @@ z  (a: any, b: any)                                    = zip(a, b) # Zip
 ½  (a: number)                                         = a / 2 # half, halve
    (a: string)                                         = a split into two strings of equal lengths (as close as possible)
    (otherwise)                                         = vectorised
-Ȧ  
-Ḃ
-Ċ
-Ḋ
-Ė
-Ḟ
-Ġ
-Ḣ
-İ
+Ȧ  (a: any)                                            = any(a)
+Ḃ  (a: any)                                            = a, reversed(a) # bifurcate, push a and its reversed copy
+Ċ  (a: any)                                            = counts_of_items(a) # Counter of each distinct item of a in itself
+Ḋ  (a: number)                                         = a * 2 # double
+   (a: string)                                         = a * 2 # double
+   (otherwise)                                         = vectorised
+Ė  (a: any)                                            = enumerate(a) # Enumerate, Zip with range to length
+Ḟ  (a: number)                                         = prime factorisation of a	# ǐU, without duplicates
+   (a: string)                                         = a + a[0] # enclosed a
+   (otherwise)                                         = vectorised
+Ġ  (a: any)                                            = min(a) # monadic minimum, minimum iterable
+Ḣ  (a: any)                                            = a[1:] # All but first item
+İ  (a: any, b: list)                                   = [a[item] for item in b]  # indexed into
+   (a: any, b: function)                               = repeat function b on a while the function results are not-unique
 Ŀ
 Ṁ
-Ṅ
+Ṅ  (a: number)                                         = integer_paritions(a) # Integer partitions 
+   (otherwise)                                         = " ".join(a) # Join by space
 Ȯ
-Ṗ
-Ṙ
+Ṗ  (a: any)                                            = permutations(a) # Permutations
+Ṙ  (a: any)                                            = reversed(a) # Reversed, a[::-1]
 Ṡ
 Ṫ
 Ẇ
