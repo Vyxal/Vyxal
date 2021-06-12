@@ -146,6 +146,7 @@ class Generator:
         self.next_index = 0
         self.end_reached = False
         self.is_numeric_sequence = is_numeric_sequence
+        self.do_print = True
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
@@ -259,24 +260,24 @@ class Generator:
         self.generated = []
         return d
     def _print(self, end="\n"):
-        main = self.generated
-        try:
-            f = next(self)
-            # If we're still going, there's stuff in main that needs printing before printing the generator
-            VY_print("⟨", end="")
-            for i in range(len(main)):
-                VY_print(main[i], end="|"*(i >= len(main)))
-            while True:
-                try:
-                    f = next(self)
-                    VY_print("|", end="")
-                    VY_print(f, end="")
-                except:
-                    break
-            VY_print("⟩", end=end)
+            main = self.generated
+            try:
+                f = next(self)
+                # If we're still going, there's stuff in main that needs printing before printing the generator
+                VY_print("⟨", end="")
+                for i in range(len(main)):
+                    VY_print(main[i], end="|"*(i >= len(main)))
+                while True:
+                    try:
+                        f = next(self)
+                        VY_print("|", end="")
+                        VY_print(f, end="")
+                    except:
+                        break
+                VY_print("⟩", end=end)
 
-        except:
-            VY_print(main, end=end)
+            except:
+                VY_print(main, end=end)
 
 
     def zip_with(self, other):
@@ -301,6 +302,7 @@ class Generator:
             out += "..."
         
         return out + "⟩"
+
 
 class ShiftDirections:
     LEFT = 1
@@ -1092,8 +1094,9 @@ def join_on(vector, item):
         (Number, Number): lambda: VY_eval(str(item).join(str(vector))),
         (Number, str): lambda: item.join(str(vector)),
         (str, str): lambda: item.join(vector),
-        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector])
-    }
+        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector]),
+        (Generator, types[1]): lambda: VY_str(item).join([VY_str(n) for n in deref(vector)])
+    }[types]()
 def levenshtein_distance(s1, s2):
     # https://stackoverflow.com/a/32558749
     if len(s1) > len(s2):
@@ -1308,6 +1311,14 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.search(rhs)
         return int(bool(mobj))
+def osabie_newline_join(item):
+    ret = []
+    for n in item:
+        if VY_type(n) in [list, Generator]:
+            ret.append(join_on(n, " "))
+        else:
+            ret.append(n)
+    return "\n".join(ret)
 def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
         return [lhs, iterable_shift(rhs, direction)]
