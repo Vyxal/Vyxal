@@ -126,11 +126,7 @@ K  (a: number)                                         = divisors(a)
    (a: string)                                         = all substrings of a that occur more than once # they "divide" a into more than one piece
    (otherwise)                                         = prefixes(a)
 L  (a: any)                                            = len(a)
-<<<<<<< Updated upstream
 M  (a: any)                                            = mirror(a) # numbers are reversed and added                                        
-=======
-M  (a: any)                                            = mirror(a) # numbers are reversed and added
->>>>>>> Stashed changes
 N  (a: number)                                         = -a # negate, * -1
    (a: string)                                         = swap_case(a)
    (otherwise)                                         = vectorise
@@ -158,24 +154,36 @@ Z  (a: string)                                         = remove all non-letters 
 ^                                                      = * reverse stack
 _  (a: any)                                            = discard # pop, remove, trash
 a  (a: any, b: number, c: any)                         = a[b] = c
-<<<<<<< Updated upstream
-b  
-c
-=======
 b  (a: number)                                         = to binary
    (a: string)                                         = [bin(ord(char)) for char in a]
    (otherwise)                                         = vectorise
-c 
->>>>>>> Stashed changes
-d
-e
-f
-g
-h
-i
-j
-k
-l
+c  (a: any, b: any)                                    = a in b # non-vectorising contains
+d  (a: number, b: number)                              = a % b == 0
+   (a: number, b: string)                              = a copies of b
+   (a: string, b: number)                              = b copies of a
+   (otherwise)                                         = vectorise
+e  (a: non-function, b: number)                        = a[b:]
+   (a: number, b: string)                              = Split b into two sections, the first of which has length a.
+   (a: string, b: number)                              = Split a into two sections, the first of which has length b.
+   (a: string, b: string)                              = Split a on the first occurance of b
+   (a: function, b: number)                            = first b integers where a() is truthy
+   (otherwise)                                         = vectorise
+f  (a: any, b: any)                                    = remove elements of a that are in b
+   (a: any, b: function)                               = filter(b, a) # filter, keep, python filter
+g  (a: number, b: number)                              = gcd(a, b) # greatest common denominator
+   (a: string, b: non-list)                            = longest common suffix(a, str(b))
+   (a: list)                                           = gcd(a)
+   (otherwise)                                         = vectorise
+h  (a: non-list)                                       = int(a, 16) # convert from hexadecimal, hexadecimal to ten, 16 to 10
+   (a: list)                                           = int(a, 16) # treats the items in the list as digits
+i  (a: any, b: number)                                 = a[b] # index
+   (a: any, b: [x])                                    = a[:b] # 0 to bth item of a, use ȯ for a[b:], needs wrapping index
+   (a: any, b: [x, y])                                 = a[x:y] # index, xth to yth item, needs wrapping index
+   (a: any, b: [x, y, m])                              = a[x:y:m] # index, xth to yth item step m items, needs wrapping index
+j  (a: any, b: any)                                    = a.join(b) # join
+k                                                      = * constant digraphs (see near the end of docs)
+l  (a: any, b: number)                                 = n-wise_group(a, b) # Cummulative grouping/pairing
+   (a: any, b: non-number)                             = length(a) == length(b) # Length of a and b are same?
 m
 n
 o
