@@ -174,8 +174,8 @@ g  (a: number, b: number)                              = gcd(a, b) # greatest co
    (a: string, b: non-list)                            = longest common suffix(a, str(b))
    (a: list)                                           = gcd(a)
    (otherwise)                                         = vectorise
-h  (a: non-list)                                       = int(a, 16) # convert from hexadecimal, hexadecimal to ten, 16 to 10
-   (a: list)                                           = int(a, 16) # treats the items in the list as digits
+h  (a: any, b: number)                                 = a[0:b] # Slice until b
+   (a: any, b: non-number)                             = regex.findall(pattern=a, string=b) # re.findall
 i  (a: any, b: number)                                 = a[b] # index
    (a: any, b: [x])                                    = a[:b] # 0 to bth item of a, use ȯ for a[b:], needs wrapping index
    (a: any, b: [x, y])                                 = a[x:y] # index, xth to yth item, needs wrapping index
