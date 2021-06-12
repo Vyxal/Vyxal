@@ -132,7 +132,7 @@ N  (a: number)                                         = -a # negate, * -1
    (otherwise)                                         = vectorise
 O  (a: any)                                            = vectorised sum of a
 P  (a: any, b: any)                                    = prepend a to b
-Q                                                      = * quit the program
+Q  (a: any)                                            = "`" + a + "`" # uneval, quotify
 R  (a: any)                                            = reversed(a)
 S  (a: any)                                            = sorted(a)
 T  (a: any)                                            = a[-1]
@@ -184,26 +184,54 @@ j  (a: any, b: any)                                    = a.join(b) # join
 k                                                      = * constant digraphs (see near the end of docs)
 l  (a: any, b: number)                                 = n-wise_group(a, b) # Cummulative grouping/pairing
    (a: any, b: non-number)                             = length(a) == length(b) # Length of a and b are same?
-m
-n
-o
-p
-q
-r
-s
-t
-u
-v
-w
-x
-y
-z
-{
-|
-}
-~
-½
-Ȧ
+m  (a: any, b: any)                                    = [[a, item] for item in b] # Vectorised pair
+   (a: any, b: function)                               = map(b, a) # map, apply to each
+n                                                      = * context variable
+o  (a: number, b: number)                              = how many times does b divide a?  # order
+   (a: number, b: string)                              = (b / a)[0] # head of string wrapping
+   (a: string, b: number)                              = (a / b)[0] # head of string wrapping
+   (a: string, b: string)                              = remove b from a until a does not change
+   (otherwise)                                         = vectorise
+p  (a: number, b: number)                              = range(a, b + 1)  # inclusive range from a to b
+   (a: number, b: iterable)                            = cartesian_power(b, times=a)
+   (a: iterable, b: number)                            = cartesian_power(a, times=b)
+   (a: string, b: string)                              = a.strip(b)
+   (otherwise)                                         = vectorise
+q                                                      = * quit the program
+r  (a: number, b: number)                              = range(a, b)
+   (a: number, b: string)                              = stretch left; repeat the first character of b enough times to make it at least length a. Use spaces if b is empty.	
+   (a: string, b: number)                              = stretch left; repeat the first character of a enough times to make it at least length b. Use spaces if a is empty.
+   (a: string, b: string)                              = regex.has_match(pattern=a, string=b) # regex match
+   (a: non-function, b: list)                          = a, vectorised_reverse(b)
+   (a: function, b: any)                               = reduce b by a # reduction, reduce
+   (a: any, b: function)                               = reduce a by b # reduction, reduce
+   (otherwise)                                         = vectorise
+s  (a: number, b: number)                              = a choose b (n choose r, ncr, n c r), Binomial Coefficient
+   (a: number, b: string)                              = split b at index a
+   (a: string, b: number)                              = split a at index b
+   (a: string, b: string)                              = regex.split(string=a, pattern=str(b)) # split on regex match
+   (a: any, b: function)                               = sorted(a, key=b) # Sort a by b
+   (a: function, b: any)                               = sorted(b, key=a) # Sort b by a
+   (otherwise)                                         = vectorise
+t  (a: any)                                            = truthy indexes in a
+u  (a: any, b: number)                                 = rotate a b units to the left
+   (a: any, b: any)                                    = a, b rotated to the left once
+v  (a: any, b: number)                                 = a wrapped in chunks of length b
+   (a: any, b: non-number)                             = split a on b, discarding empty items
+   (a: any, b: function)                               = apply b to every second item of a
+   (a: function, b: any)                               = apply a to every second item of b
+w  (a: any, b: any)                                    = a.split_and_keep_delimiter(b) # Split, but not remove delimiter
+x                                                      = * call current function # recursion. Prints entire stack if not in a function/lambda
+y  (a: any, b: any)                                    = interleave(a, b) # Interleave
+z  (a: any, b: any)                                    = zip(a, b) # Zip
+{                                                      = * open while loop: {condition|...}
+|                                                      = * branch in structure (syntax), Used to seperate blocks in If/For/While/Lambda/Function definition
+}                                                      = * close while loop
+~                                                      = * execute element without popping - <element>~
+½  (a: number)                                         = a / 2 # half, halve
+   (a: string)                                         = a split into two strings of equal lengths (as close as possible)
+   (otherwise)                                         = vectorised
+Ȧ  
 Ḃ
 Ċ
 Ḋ
