@@ -146,6 +146,7 @@ class Generator:
         self.next_index = 0
         self.end_reached = False
         self.is_numeric_sequence = is_numeric_sequence
+        self.do_print = True
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
@@ -259,24 +260,24 @@ class Generator:
         self.generated = []
         return d
     def _print(self, end="\n"):
-        main = self.generated
-        try:
-            f = next(self)
-            # If we're still going, there's stuff in main that needs printing before printing the generator
-            VY_print("⟨", end="")
-            for i in range(len(main)):
-                VY_print(main[i], end="|"*(i >= len(main)))
-            while True:
-                try:
-                    f = next(self)
-                    VY_print("|", end="")
-                    VY_print(f, end="")
-                except:
-                    break
-            VY_print("⟩", end=end)
+            main = self.generated
+            try:
+                f = next(self)
+                # If we're still going, there's stuff in main that needs printing before printing the generator
+                VY_print("⟨", end="")
+                for i in range(len(main)):
+                    VY_print(main[i], end="|"*(i >= len(main)))
+                while True:
+                    try:
+                        f = next(self)
+                        VY_print("|", end="")
+                        VY_print(f, end="")
+                    except:
+                        break
+                VY_print("⟩", end=end)
 
-        except:
-            VY_print(main, end=end)
+            except:
+                VY_print(main, end=end)
 
 
     def zip_with(self, other):
@@ -301,6 +302,7 @@ class Generator:
             out += "..."
         
         return out + "⟩"
+
 
 class ShiftDirections:
     LEFT = 1
@@ -817,7 +819,7 @@ def function_call(fn, vector):
     else:
         return [{
             Number: lambda: len(prime_factors(fn)),
-            str: lambda: exec(VY_compile(fn))
+            str: lambda: exec(VY_compile(fn)) or []
         }.get(VY_type(fn), lambda: vectorised_not(fn))()]
 def gcd(lhs, rhs=None):
     if rhs:
@@ -1086,6 +1088,15 @@ def join(lhs, rhs):
         (Generator, list): lambda: lhs._dereference() + rhs,
         (Generator, Generator): lambda: lhs._dereference() + rhs._dereference()
     }[types]()
+def join_on(vector, item):
+    types = VY_type(vector), VY_type(item)
+    return {
+        (Number, Number): lambda: VY_eval(str(item).join(str(vector))),
+        (Number, str): lambda: item.join(str(vector)),
+        (str, str): lambda: item.join(vector),
+        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector]),
+        (Generator, types[1]): lambda: VY_str(item).join([VY_str(n) for n in deref(vector)])
+    }[types]()
 def levenshtein_distance(s1, s2):
     # https://stackoverflow.com/a/32558749
     if len(s1) > len(s2):
@@ -1300,6 +1311,14 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.search(rhs)
         return int(bool(mobj))
+def osabie_newline_join(item):
+    ret = []
+    for n in item:
+        if VY_type(n) in [list, Generator]:
+            ret.append(join_on(n, " "))
+        else:
+            ret.append(n)
+    return "\n".join(ret)
 def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
         return [lhs, iterable_shift(rhs, direction)]
@@ -1816,7 +1835,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                     yield _safe_apply(fn, item)
             return Generator(gen())
         elif VY_type(left) in (str, Number):
-            return _safe_apply(fn, iterable(left))
+            return _safe_apply(fn, list(iterable(left)))
         else:
             ret =  [_safe_apply(fn, x) for x in left]
             return ret
@@ -2560,6 +2579,7 @@ ALL flags should be used as is (no '-' prefix)
 \ts\tSum/concatenate top of stack on end of execution
 \tM\tMake implicit range generation start at 0 instead of 1
 \tm\tMake implicit range generation end at n-1 instead of n
+\tṀ\tEquivalent to having both m and M flags
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
@@ -2578,11 +2598,11 @@ ALL flags should be used as is (no '-' prefix)
 \tR\tTreat numbers as ranges if ever used as an iterable
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
+\tJ\tPrint the entire stack, separated by newlines.
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
 \tT\tMake the interpreter timeout after 60 seconds
-\tṀ\tEquivalent to having both m and M flags
 """
             return
     input_values[0] = [inputs, 0]
@@ -2599,7 +2619,7 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
 
-    if not printed and ('O' not in flags):
+    if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
             VY_print(summate(pop(stack)))
         elif flags and 'd' in flags:
@@ -2622,6 +2642,8 @@ ALL flags should be used as is (no '-' prefix)
             VY_print(vertical_join(pop(stack)))
         elif _join:
             VY_print("\n".join([VY_str(n) for n in pop(stack)]))
+        elif flags and 'J' in flags:
+            VY_print("\n".join([VY_str(n) for n in stack]))
         else:
             VY_print(pop(stack))
 
@@ -2743,30 +2765,30 @@ if __name__ == "__main__":
         if flags and 'c' in flags:
             print(code)
         exec(code)
-        if (not printed and "O" not in flags) or "o" in flags:
+        if (not printed and 'O' not in flags) or 'o' in flags:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
             elif flags and 'Ṫ' in flags:
                 VY_print(summate(stack))
-            elif flags and "S" in flags:
+            elif flags and 'S' in flags:
                 print(" ".join([VY_str(n) for n in pop(stack)]))
-            elif flags and "C" in flags:
+            elif flags and 'C' in flags:
                 print("\n".join(centre(pop(stack))))
-            elif flags and "l" in flags:
+            elif flags and 'l' in flags:
                 print(len(pop(stack)))
-            elif flags and "G" in flags:
+            elif flags and 'G' in flags:
                 print(VY_max(pop(stack)))
-            elif flags and "g" in flags:
+            elif flags and 'g' in flags:
                 print(VY_min(pop(stack)))
-            elif flags and "W" in flags:
+            elif flags and 'W' in flags:
                 print(VY_str(stack))
             elif _vertical_join:
                 print(vertical_join(pop(stack)))
             elif _join:
                 print("\n".join([VY_str(n) for n in pop(stack)]))
-            elif flags and "J" in flags:
+            elif flags and 'J' in flags:
                 print("\n".join([VY_str(n) for n in stack]))
             else:
                 VY_print(pop(stack))
