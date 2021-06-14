@@ -549,7 +549,7 @@ cmd | inputs | out/effect
 | ∆p | (a: number)                        |  nearest prime to a (highest prime if lowest prime is just as close) |
 | ∆ṙ | (a: list)                          |  polynomial from roots a |
 | ∆Ṙ |   |  random.random() # random float in the range [0, 1), pseudo random number |
-| ∆W | (a: number, b: number)             |  round(a, no_dec_places=b) # Round to b decimal places |
+| ∆W | (a: number, b: number)             |  round(a, no_dec_places=b) # Round a to b decimal places |
 | øo | (a: string, b: string)             |  a.remove_until_no_change(b) # Remove until no change |
 | øV | (a: string, b: string, c: string)  |  a.replace_until_no_change(b, c) # Replace until no change |
 | øc | (a: string)                        |  base_255_string_compressed(a) # Base 255 compressed number |
