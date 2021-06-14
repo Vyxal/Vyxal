@@ -6,6 +6,7 @@ import functools
 import hashlib
 import itertools
 import math
+import numbers
 import random
 import string
 import time
@@ -440,13 +441,14 @@ def bit_xor(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(bit_xor, lhs, rhs)
     }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
 def cartesian_product(lhs, rhs):
-    if Function not in (VY_type(lhs), VY_type(rhs)):
+    types = (VY_type(lhs), VY_type(rhs))
+    if Function not in types:
         lhs, rhs = iterable(lhs), iterable(rhs)
-        if (VY_type(lhs), VY_type(rhs)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
+        if types in ((Number, Number), (Number, str), (str, Number), (str, str)):
             return Generator(map(first_n, itertools.product(iterable(lhs), iterable(rhs))))
         return Generator(itertools.product(iterable(lhs), iterable(rhs)))
 
-    if VY_type(lhs) is Function:
+    if types[0] is Function:
         fn, init = lhs, rhs
     else:
         fn, init = rhs, lhs
@@ -458,6 +460,44 @@ def cartesian_product(lhs, rhs):
             curr = fn([curr])[-1]
         yield curr
     return Generator(gen())[-1]
+def cartesian_square(matrix):
+    return cartesian_product(matrix, matrix)
+def cartesian_power(matrix, power):
+    """
+    If power is a function, do cartesian power until power(acc) is false.
+    Otherwise, if power is a number:
+      if power >= 2, multiply matrix by itself those many times
+      if power == 1, return matrix
+      if power == 0, return identity matrix
+      if power <= -1, inverse of cartesian_power(matrix, -power)
+    """
+    power_type = VY_type(power)
+    
+    if power_type is Function:
+        np_matrix = numpy.asarray(matrix)
+        acc = np_matrix
+        while power(acc):
+            acc = acc @ np_matrix
+        return acc
+    elif power_type is Number:
+        if power == 1:
+            return matrix
+        elif power == 0:
+            return numpy.identity(len(matrix)).tolist()
+        
+        np_matrix = numpy.asarray(matrix)
+        if power >= 2:
+            acc = np_matrix
+            while power > 1:
+                acc = acc @ np_matrix
+                power -= 1
+            return acc
+        else:
+            acc = np_matrix
+            while power > 1:
+                acc = acc @ np_matrix
+                power -= 1
+            return numpy.linalg.inv(acc).tolist()
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
@@ -581,17 +621,13 @@ def deref(item, generator_to_list=True, limit=-1):
         return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
-def dictionary_compress(item):
-    item = split_on_words(VY_str(item))
-    out = ""
-
-    for word in item:
-        temp = words.word_index(word)
-        if temp == -1:
-            out += word
-        else:
-            out += temp
-    return "`" + out + "`"
+def determinant(matrix):
+    det = numpy.linalg.det(numpy.asarray(matrix))
+    # If it's a number, don't convert to list
+    if isinstance(det, numbers.Number):
+        return det
+    else:
+        return det.tolist()
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
     vector = numpy.asarray(vector)
@@ -610,6 +646,21 @@ def diagonals(vector):
         yield vectorise(lambda x: x.item(), list(diagonal))
         diag_num -= 1
         diagonal = numpy.diag(vector, k=diag_num)
+def diagonal_main(matrix):
+    return numpy.asarray(matrix).diagonal().tolist()
+def diagonal_anti(matrix):
+    flipped = numpy.flipr(numpy.asarray(vector)).diagonal().tolist()
+def dictionary_compress(item):
+    item = split_on_words(VY_str(item))
+    out = ""
+
+    for word in item:
+        temp = words.word_index(word)
+        if temp == -1:
+            out += word
+        else:
+            out += temp
+    return "`" + out + "`"
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -785,6 +836,50 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
+def foldl_vector(vector, fn, init=None):
+    if type(vector) is Generator:
+        acc = next(vector) if init == None else init
+        while not vector.end_reached:
+            acc = fn(acc, next(vector))
+        return acc
+    else:
+        if init == None:
+            acc = vector[0]
+            start = 1
+        else:
+            acc = init
+            start = 0
+        for i in range(start, len(vector)):
+            acc = fn(acc, vector[i])
+        return acc
+def foldl_rows(fn, matrix, init=None):
+    VY_map(matrix, lambda row: foldl_vector(row, fn, init=init))
+def foldl_cols(fn, matrix, init=None):
+    if type(vector) is Generator:
+        if vector.end_reached:
+            return []
+        if init == None:
+            res = next(vector)
+        else:
+            res = [init] * num_cols
+        while not vector.end_reached:
+            res = zip_with(fn, res, next(vector))
+        return res
+    else:
+        num_rows = len(vector)
+        if not num_rows:
+            return []
+        num_cols = len(vector[0])
+        cs = range(num_cols)
+        if init == None:
+            res = vector[0]
+            start = 1
+        else:
+            res = [init] * num_cols
+            start = 0
+        for r in range(start, num_rows):
+            res = zip_with(fn, res, vector[r])
+        return res
 def format_string(value, items):
     ret = ""
     index = 0
@@ -1017,6 +1112,8 @@ def interleave(lhs, rhs):
             ret += list(lhs[i + 1:])
     if type(lhs) is str and type(rhs) is str: return "".join(ret)
     return ret
+def inverse_matrix(matrix):
+    return numpy.linalg.inv(numpy.asarray(matrix)).tolist()
 def is_divisble(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     return {
@@ -1656,9 +1753,16 @@ def summate(vector):
         return 0
 def sums(vector):
     ret = []
-    for i in range(len(vector)):
-        ret.append(summate(vector[0:i+1]))
+    prev = 0
+    for x in vector:
+        next = add(prev, x)
+        ret.append(next)
+        prev = next
     return ret
+def sum_rows(matrix):
+    return foldl_rows(add, matrix, init=0)
+def sum_cols(matrix):
+    return foldl_cols(add, matrix, init=0)
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
 def transliterate(original, new, transliterant):
     transliterant = deref(transliterant)
@@ -1894,6 +1998,15 @@ def wrap(vector, width):
             ret.append(temp[::])
 
     return ret
+def zip_with(fn, xs, ys):
+    xs_type, ys_type = VY_type(xs), VY_type(ys)
+    # Convert both to Generators if not already
+    xs = Generator(x for x in xs) if xs_type == list else xs
+    ys = Generator(y for y in ys) if ys_type == list else ys
+    def gen():
+        while not (xs.end_reached or ys.end_reached):
+            yield fn(next(xs), next(ys))
+    return Generator(gen())
 def VY_abs(item):
     return {
         Number: lambda: abs(item),
