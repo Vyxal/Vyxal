@@ -5,7 +5,7 @@
 ⟑ (a: any, b: any)                   = b and a (non-vectorising)
 ∨ (a: any, b: any)                   = a or b (non-vectorising)
 ⟇ (a: any, b: any)                   = b or a (non-vectorising)
-÷ (a: any)                           = stack += iterable(a)
+÷ (a: any)                           = stack += iterable(a) # item split/unwrap
 ×                                    = "*"
 «                                    = * base_255 compressed string: «...«
 <newline>                            = * newline
