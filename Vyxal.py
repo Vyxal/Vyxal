@@ -462,42 +462,23 @@ def cartesian_product(lhs, rhs):
     return Generator(gen())[-1]
 def cartesian_square(matrix):
     return cartesian_product(matrix, matrix)
-def cartesian_power(matrix, power):
+def cartesian_power(vector, power):
     """
     If power is a function, do cartesian power until power(acc) is false.
-    Otherwise, if power is a number:
-      if power >= 2, multiply matrix by itself those many times
-      if power == 1, return matrix
-      if power == 0, return identity matrix
-      if power <= -1, inverse of cartesian_power(matrix, -power)
     """
     power_type = VY_type(power)
     
     if power_type is Function:
-        np_matrix = numpy.asarray(matrix)
-        acc = np_matrix
+        acc = VY_map(lambda x: x, vector)
         while power(acc):
-            acc = acc @ np_matrix
+            acc = [prev + [x] for x in vector for prev in acc]
         return acc
     elif power_type is Number:
-        if power == 1:
-            return matrix
-        elif power == 0:
-            return numpy.identity(len(matrix)).tolist()
-        
-        np_matrix = numpy.asarray(matrix)
-        if power >= 2:
-            acc = np_matrix
-            while power > 1:
-                acc = acc @ np_matrix
-                power -= 1
-            return acc
-        else:
-            acc = np_matrix
-            while power > 1:
-                acc = acc @ np_matrix
-                power -= 1
-            return numpy.linalg.inv(acc).tolist()
+        acc = VY_map(lambda x: x, vector)
+        while power > 1:
+            acc = [prev + [x] for x in vector for prev in acc]
+            power -= 1
+        return acc
 def ceiling(item):
     return {
         Number: lambda: math.ceil(item),
