@@ -8,7 +8,7 @@ cmd | inputs | out/effect
 | ⟑ | (a: any, b: any)                    |  b and a (non-vectorising) |
 | ∨ | (a: any, b: any)                    |  a or b (non-vectorising) |
 | ⟇ | (a: any, b: any)                    |  b or a (non-vectorising) |
-| ÷ | (a: any)                            |  stack += iterable(a) |
+| ÷ | (a: any)                            |  stack += iterable(a) # item split/unwrap |
 | × |   |  "*" |
 | « |   |  * base_255 compressed string: «...« |
 | \<newline> |   |  * newline |
@@ -585,4 +585,4 @@ cmd | inputs | out/effect
 | ¨U | (a: string)                        |  GET request with url=a |
 | ¨M | (a: list, b: list, c: function)    |  map function c to every item in a whos index is in b |
 | ¨, | (a: any)                           |  print(a, end=" ") # Print with a space at end |
-| ¨… |   |  print(stack[-1], end=" ") # Print top of stack with a space at end, but not po |
+| ¨… |   |  print(stack[-1], end=" ") # Print top of stack with a space at end, but not pop |
