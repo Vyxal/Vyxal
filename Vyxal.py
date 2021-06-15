@@ -865,13 +865,13 @@ def graded(item):
         Number: lambda: item + 2,
         str: lambda: item.upper(),
 
-    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1]))))()
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(deref(item)), key=lambda x: x[-1]))))()
 def graded_down(item):
     return {
         Number: lambda: item - 2,
         str: lambda: item.lower(),
 
-    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1], reverse=True))))()
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(deref(item)), key=lambda x: x[-1], reverse=True))))()
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
@@ -1995,16 +1995,14 @@ def VY_map(fn, vector):
         result = function([item])
         ret.append(result[-1])
     return ret
-def VY_max(item, *others):
-    if others:
-        biggest = item
-        for sub in others:
-            res = compare(deref(sub), deref(biggest), Comparitors.GREATER_THAN)
-            if VY_type(res) in [list, Generator]:
-                res = any(res)
-            if res:
-                biggest = sub
-        return biggest
+def VY_max(item, other=None):
+    if other is not None:
+        return {
+            (Number, Number): lambda: max(item, other),
+            (Number, str): lambda: max(str(item), other),
+            (str, Number): lambda: max(item, str(other)),
+            (str, str): lambda: max(item, other)
+        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_max, item, other))()
     else:
         item = flatten(item)
         if item:
@@ -2017,16 +2015,16 @@ def VY_max(item, *others):
                     biggest = sub
             return biggest
         return item
-def VY_min(item, *others):
-    if others:
-        smallest = item
-        for sub in others:
-            res = compare(deref(sub), deref(smallest), Comparitors.LESS_THAN)
-            if VY_type(res) in [list, Generator]:
-                res = any(res)
-            if res:
-                smallest = sub
-        return smallest
+def VY_min(item, other=None):
+    if other is not None:
+        ret = {
+            (Number, Number): lambda: min(item, other),
+            (Number, str): lambda: min(str(item), other),
+            (str, Number): lambda: min(item, str(other)),
+            (str, str): lambda: min(item, other)
+        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_min, deref(item), deref(other)))()
+        
+        return ret
     else:
         item = flatten(item)
         if item:
