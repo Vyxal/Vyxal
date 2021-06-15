@@ -107,6 +107,18 @@ def oeis():
     return render_template("oeis.html")
 
 
+@app.route("/update", methods=("GET", ))
+def update():
+    # Updates the server after a commit
+
+    if request.method == 'POST':
+        repo = git.Repo('/home/Lyxal/mysite')
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
+
 def parse_file():
     import os
 
