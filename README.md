@@ -166,10 +166,14 @@ KL2=
 - [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
 - [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 
-## Very Special Contributors
+## Very Special Contributors (alphabetically sorted)
 
-- @Razetime for helping me with the online interpreter's design
-- @ysthakur for making the reference.md file and making an automated process to do so.
 - code-golf se user @2x-1 for helping me establish the fundamentals of Vyxal and being my first collaborator on this journey.
 - @8dion8 for language suggestions and motivation in the MAWP discord group. 
 - @Amiller42 for pointing out bugs and fixing bugfixes
+- @chunkybanana for also bug fixing and making PRs
+- @detectivewasif for adding detail to the reference sheet.
+- @Razetime for helping me with the online interpreter's design
+- @ysthakur for making the reference.md file and making an automated process to do so.
+
+
