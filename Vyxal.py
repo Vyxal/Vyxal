@@ -1553,7 +1553,7 @@ def repeat_no_collect(predicate, modifier, value):
         while predicate([item])[-1]:
             item = modifier([item])[-1]
         yield item
-    return gen()
+    return Generator(gen())
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:
