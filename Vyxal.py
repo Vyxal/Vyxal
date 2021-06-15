@@ -2270,8 +2270,8 @@ constants = {
     "\\": "'\\\\/'",
     "<": "'<>'",
     ">": "'><'",
-    "ẇ": "dt.weekday()",
-    "Ẇ": "dt.isoweekday()",
+    "ẇ": "dt.now().weekday()",
+    "Ẇ": "dt.now().isoweekday()",
     "§": "['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']",
     "ɖ": "['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']",
 }
