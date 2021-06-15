@@ -304,6 +304,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ∑ | (a: any)                            |  sum(a) # Sum |
 | ¦ | (a: any)                            |  cumulative_sum(a)  # cumulative sum |
+|  | (a: string)                         |  prefixes of a |
 | ≈ | (a: any)                            |  are all elements the same? |
 | µ |   |  * lambda sort: µ...;. The same as λ...;ṡ |
 | Ȧ | (a: list, b: number, c: any)        |  a[b] = c # Assign bth index to value c |
