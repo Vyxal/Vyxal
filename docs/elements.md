@@ -523,6 +523,10 @@ cmd | inputs | out/effect
 | k) |   |  ")(" |
 | k{ |   |  "{}" |
 | k} |   |  "}{" |
+| kẇ |   |  day of the week - 0 indexed |
+| kẆ |   |  day of the week - 1 indexed |
+| k§ |   |  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] |
+| kɖ |   |  ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] |
 | ∆c | (a: number)                        |  math.cos(a) # Cosine |
 | ∆C | (a: number)                        |  math.arccos(a) # Arc cosine |
 | ∆q | (a: number, b: number)             |  roots of quadratic ax^2 + bx = 0 # Solve quadratic equation |
