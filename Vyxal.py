@@ -871,7 +871,7 @@ def graded_down(item):
         Number: lambda: item - 2,
         str: lambda: item.lower(),
 
-    }.get(VY_type(item), lambda: reverse(Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1])))))()
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1], reverse=True))))()
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
