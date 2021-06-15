@@ -113,7 +113,7 @@ def update():
     # Updates the server after a commit
     # this comment is to test to see if i did the stuff right ;p
     if request.method == 'POST':
-        repo = git.Repo('/home/Lyxal/mysite')
+        repo = git.Repo('/home/Lyxal/mysite/.git')
         origin = repo.remotes.origin
         origin.pull()
         return 'Updated PythonAnywhere successfully', 200
