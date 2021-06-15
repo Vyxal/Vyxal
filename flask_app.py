@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from flask_cors import CORS
 import multiprocessing, secrets
 import Vyxal
+import git
 
 app = Flask(__name__)
 CORS(app)
