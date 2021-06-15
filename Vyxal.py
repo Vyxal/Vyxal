@@ -1035,7 +1035,7 @@ def is_prime(n):
         if n.upper() == n.lower(): return -1
         else: return int(n.upper() == n)
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
-    return sympy.ntheory.isprime(n)
+    return 1 if sympy.ntheory.isprime(n) else 0
 def is_square(n):
     if type(n) in (float, str): return 0
     elif isinstance(n, int): return int(any([exponate(y, 2) == n for y in range(1, math.ceil(n / 2) + 1)])) or int(n == 0)
