@@ -285,14 +285,23 @@ z  (any a, any b) -> any, [any]        = a, zip(b, b)
 Ṙ  (any a) -> any                      = reverse a
 Ṡ  (num a) -> [num]                    = list from −abs(a) to abs(a) inclusive
    (str a) -> any                      = exec(a) # Execute python code, Python exec
-   ([any] a) -> [any]                  = sums of columns of a 
+   ([any] a) -> [any]                  = sums of columns of a
 Ṫ  (num a) -> num                      = len(prime_factors(a)) # Number of prime factors
    (str a) -> str                      = read from file a
    ([any] a) -> [any]                  = transpose a
-Ẇ  ()
-Ẋ
-Ẏ
-Ż
+Ẇ  (num a, num b) -> [num]             = a * b array of 0s
+   (num a, str b) -> str               = stretch right; repeat the first character of b enough times to make it at least length a. Use spaces if b is empty.
+   (str a, num b) -> str               = stretch right; repeat the first character of a enough times to make it at least length b. Use spaces if a is empty.
+   (str a, str b) -> num               = insert b between each character of a
+   ([any] a, [any] b) -> [any]         = dot product of a and b
+   ([any] a, fun b) -> [any]           = map b over prefixes of a
+   (fun a, [any] b) -> [any]           = map a over prefixes of b
+   (otherwise) -> [any]                = vectorise
+Ẋ  ([any] a, [any] b) -> [any]         = cartesian product
+   ([any] a, fun b) -> [any]           = map b over suffixes of a
+   (fun a, [any] b) -> [any]           = map a over suffixes of b
+Ẏ  ([any] a) -> [any]                  = cartesian product with self (:Ẋ)
+Ż  ([any] a) -> [any]                  = zip(a, a)
 ȧ
 ḃ
 ċ
@@ -395,7 +404,7 @@ z  (any a, any b) -> any, [any]        = a, zip(b, b)
 δ
 ⟨
 ⟩
-→
+->
 ←
 ∪
 ∩
