@@ -26,7 +26,7 @@ def test_not():
 
 def test_is_prime():
     stack = run_code("10ɾƛæ;")
-    assert pop(stack) == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
+    assert pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
     
 
 def test_is_square():
