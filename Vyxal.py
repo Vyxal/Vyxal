@@ -2598,6 +2598,7 @@ ALL flags should be used as is (no '-' prefix)
 \tR\tTreat numbers as ranges if ever used as an iterable
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
+\tṡ\tPrint the entire stack, joined on spaces
 \tJ\tPrint the entire stack, separated by newlines.
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
@@ -2622,6 +2623,8 @@ ALL flags should be used as is (no '-' prefix)
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
             VY_print(summate(pop(stack)))
+        elif flags and "ṡ" in flags:
+            VY_print(" ".join([VY_str(n) for n in stack]))
         elif flags and 'd' in flags:
             VY_print(summate(flatten(pop(stack))))
         elif flags and 'Ṫ' in flags:
@@ -2713,6 +2716,7 @@ if __name__ == "__main__":
         print("\tṀ\tEquivalent to having both m and M flags")
         print("\tJ\tPrint stack joined by newlines")
         print("\to\tForce implicit output, even when something has been outputted.")
+        print("\tṡ\tPrint stack joined on spaces")
     else:
         if flags:
             if 'M' in flags:
@@ -2768,6 +2772,8 @@ if __name__ == "__main__":
         if (not printed and 'O' not in flags) or 'o' in flags:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
+            elif flags and "ṡ" in flags:
+                print(" ".join([VY_str(n) for n in stack]))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
             elif flags and 'Ṫ' in flags:
