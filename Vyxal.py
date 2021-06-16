@@ -1915,6 +1915,7 @@ def VY_divmod(lhs, rhs):
 def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
     elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
+    
     if online_version or safe_mode:
         try:
             return pwn.safeeval.const(item)
