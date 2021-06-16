@@ -116,6 +116,9 @@ def update():
     if request.method == 'POST':
         repo = git.Repo('/home/Lyxal/mysite')
         origin = repo.remotes.origin
+        with repo.config_writer() as git_config:
+            git_config.set_value('user', 'email', "36217120+Lyxal@users.noreply.github.com")
+            git_config.set_value('user', 'name', "Lyxal")
         origin.pull()
         return 'Updated PythonAnywhere successfully', 200
     else:
