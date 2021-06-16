@@ -161,6 +161,7 @@ X  (num a) -> num                      = random.choice(range(a))
    ([any] a) -> any                    = random.choice(a)
 Y  (any a) -> [any], [any]             = uninterleave(a)
 Z  (any a, any b) -> [[any, any]]      = zip(a, b)
+   (any a, fun b) -> [any]             = zip(a, map(b, a)) #zipmap, map and zip
 [                                      = open if statement: [truthy|falsey]
 \                                      = cumulative reduce by last element - <element>\
 ]                                      = close if statement
@@ -196,7 +197,7 @@ i  (any a, num b) -> any               = a[b] # index
 j  (any a, any b) -> str               = a.join(b)
 k                                      = constant digraphs (see near the end of docs)
 l  (any a, num b) -> [[any]]           = n-wise_group(a, b) # Cummulative grouping/pairing
-   (any a, [any] b) -> num               = length(a) == length(b) # Length of a and b are same?
+   (any a, [any] b) -> num             = length(a) == length(b) # Length of a and b are same?
 m  (any a)                             = mirror(a) # numbers are reversed and added
 n                                      = context variable
 o  (num a, num b) -> num               = how many times does b divide a?  # order
@@ -230,8 +231,7 @@ w  (any a, num b) -> [any]             = a wrapped in chunks of length b
    (fun a, [any] b) -> [any]           = apply a to every second item of b
 x                                      = call current function # recursion. Prints entire stack if not in a function/lambda
 y  (any a, any b) -> any               = interleave(a, b) # Interleave
-z  (any a, any b) -> any, [any]        = a, zip(b, b)
-   (any a, fun b) -> [any]             = zip(a, map(b, a)) #zipmap, map and zip
+z  (any a) -> [any]                    = zip(a, a)
 {                                      = open while loop: {condition|...}
 |                                      = branch in structure (syntax), Used to seperate blocks in If/For/While/Lambda/Function definition
 }                                      = close while loop
@@ -302,15 +302,38 @@ z  (any a, any b) -> any, [any]        = a, zip(b, b)
    (fun a, [any] b) -> [any]           = map a over suffixes of b
 Ẏ  ([any] a) -> [any]                  = cartesian product with self (:Ẋ)
 Ż  ([any] a) -> [any]                  = zip(a, a)
-ȧ
-ḃ
-ċ
-ḋ
-ė
-ḟ
-ġ
-ḣ
-ŀ
+ȧ  (num a) -> num                      = abs(a)
+   (str a) -> str                      = remove whitespace from a
+   ([any] a) -> [any]                  = vectorise
+ḃ  (num a) -> num                      = a != 0
+   (str a) -> num                      = len(a) != 0
+   ([any] a) -> [num]                  = vectorise
+ċ  (num a, num b) -> num               = a choose b
+   (num a, str b) -> [str]             = l but sublists are joined as a string instead
+   (str a, num b) -> [str]             = l but sublists are joined as a string instead
+   (str a, str b) -> str               = replace spaces in a with b
+   (otherwise) -> [any]                = vectorise
+ḋ  (num a, num b) -> [num]             = [a / b, a % b]  # divmod, div mod, [div, mod], Quotient and modulo
+   ([any] a, num b) -> [any]           = combinations of a with length b
+   (num a, [any] b) -> [any]           = combinations of b with length a
+   (str a, str b) -> str               = a.trim(b)
+ė  (any a) -> [any]                    = enumerate(a) # :ʀZ
+ḟ  (fun a, [any] b) -> [any]           = push Generator of function a with initial vector b
+   (fun a, [any] b, num c) -> [any]    = push Generator of function a with initial vector b, limited to c items (if present)
+ġ  (num a) -> num                      = (e ** a) - 1 # uses math.expm1()
+   (otherwise) -> [any]                = format a as grid
+ḣ  (num a) -> str                      = a to base 16
+   (str a) -> num                      = a from base 16
+   (otherwise) -> [any]                = vectorise
+ŀ  (num a, num b, num c) -> num        = a <= c <= b
+   (num a, num b, str c) -> str        = a by b grid of c
+   (num a, str b, num c) -> str        = a by c grid of b
+   (num a, str b, str c) -> str        = b.ljust(a,filler=c)
+   (str a, num b, num c) -> str        = b by c grid of a
+   (str a, num b, str c) -> str        = a.ljust(c,filler=b)
+   (str a, str b, num c) -> str        = a.ljust(b,filler=c)
+   (str a, str b, str c) -> str        = a.infinite_replace(b, c)
+   (otherwise) -> [any]                = vectorise
 ṁ
 ṅ
 ȯ
