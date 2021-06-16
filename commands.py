@@ -302,6 +302,6 @@ misc_command_dict = {
     ",": ("VY_print(pop(stack), end=' ')", 1),
     "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' ')", 1),
     "t": ("vectorise(time.sleep, pop(stack))"),
-    "X": ("VY_print('Random stuff to see if the webhooks are working')
+    "X": ("VY_print('Random stuff to see if the webhooks are working')")
 
 }
