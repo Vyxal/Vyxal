@@ -2078,9 +2078,10 @@ def VY_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
         return inclusive_range(vector, fn)
     t_vector = type(vector)
-    vector = iterable(vector, str)
+    vector = iterable(vector, range)
     if t_vector is Generator:
         vector = vector.gen
+    
     if fn:
         sorted_vector = sorted(vector, key=lambda x: fn([x]))
     else:
@@ -2088,7 +2089,6 @@ def VY_sorted(vector, fn=None):
 
 
     return {
-        int: lambda: int("".join(map(str, sorted_vector))),
         float: lambda: float("".join(map(str, sorted_vector))),
         str: lambda: "".join(map(str, sorted_vector))
     }.get(t_vector, lambda: Generator(sorted_vector))()
