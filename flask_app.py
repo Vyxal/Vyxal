@@ -112,6 +112,7 @@ def oeis():
 def update():
     # Updates the server after a commit
     # this comment is to test to see if i did the stuff right ;p
+    # It's possible that it is now working.
     if request.method == 'POST':
         repo = git.Repo('/home/Lyxal/mysite')
         origin = repo.remotes.origin
