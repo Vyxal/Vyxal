@@ -1906,12 +1906,18 @@ def VY_bin(item):
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_divmod(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+    def niceify(item, function):
+        # turns a groupby object into a generator
+        item = VY_sorted(item, function)
+        for k, g in itertools.groupby(VY_zipmap(function, item), key=lambda x: x[0]):
+            p = list(g)
+            yield p[0][0]
     return {
         (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
         (Number, Number): lambda: [lhs // rhs, lhs % rhs],
         (str, str): lambda: trim(lhs, rhs),
-        (Function, types[1]): lambda: Generator(itertools.groupby(rhs, key=lambda x: _safe_apply(lhs, x))),
-        (types[0], Function): lambda: Generator(itertools.groupby(lhs, key=lambda x: _safe_apply(rhs, x))),
+        (Function, types[1]): lambda: Generator(niceify(rhs, lhs)),
+        (types[0], Function): lambda: Generator(niceify(lhs, rhs)),
     }[types]()
 def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
