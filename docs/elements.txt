@@ -554,7 +554,7 @@ kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesd
 ∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round a to b decimal places
 øo (a: string, b: string)            = a.remove_until_no_change(b) # Remove until no change
 øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c) # Replace until no change
-øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed number
+øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed string
 øC (a: number)                       = base_255_number_compressed(a) # Base 255 compressed number
 øĊ (a: list)                         = center(a) # Center align, ASCII art
 øe (a: any)                          = run_length_encoded(a) # Run length encoding
