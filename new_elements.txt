@@ -334,11 +334,16 @@ z  (any a) -> [any]                    = zip(a, a)
    (str a, str b, num c) -> str        = a.ljust(b,filler=c)
    (str a, str b, str c) -> str        = a.infinite_replace(b, c)
    (otherwise) -> [any]                = vectorise
-ṁ
-ṅ
-ȯ
-ṗ
-ṙ
+ṁ  (num a) -> [num]                    = mixed fraction representation of a
+   (str a) -> str                      = rot 13 a
+   ([any] a) -> any                    = determinant of matrix a. For non-square a, computes det(aa^T)^½; if z is a row vector, this is its norm.
+ṅ  (num a) -> [num]                    = integer_paritions(a) # Integer partitions
+   (str a) -> str                      = insert newlines between characters
+   ([any] a) -> str                    = join on newlines
+   (fun a) -> [num]                    = all integers where a() is truthy
+ȯ  (any a, any b) -> [any]             = a.split_before(b) # https://chat.stackexchange.com/transcript/message/58361993#58361993 
+ṗ  (any a) -> [any]                    = powerset(a)
+ṙ  (num a, num b) -> num               = round a to b decimal places
 ṡ
 ṫ
 ẇ
