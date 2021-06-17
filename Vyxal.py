@@ -1583,8 +1583,9 @@ def split(haystack, needle, keep_needle=False):
             if item == needle:
                 ret.append(temp)
                 if keep_needle:
-                    ret.append([needle])
-                temp = []
+                    temp = [needle]
+                else:
+                    temp = []
             else:
                 temp.append(item)
         if temp:
