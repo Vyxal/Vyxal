@@ -1191,16 +1191,15 @@ def modulo(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(modulo, lhs, rhs)
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 def mold(content, shape):
-    temp = deref(shape, False)
     #https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
-    for index in range(len(temp)):
-        if type(temp[index]) == list:
-            mold(content, temp[index])
+    for index in range(len(shape)):
+        if type(shape[index]) == list:
+            mold(content, shape[index])
         else:
             item = content.pop(0)
-            temp[index] = item
+            shape[index] = item
             content.append(item)
-    return temp
+    return shape
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if types == (Function, Number):
@@ -1910,7 +1909,9 @@ def VY_divmod(lhs, rhs):
     return {
         (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
         (Number, Number): lambda: [lhs // rhs, lhs % rhs],
-        (str, str): lambda: trim(lhs, rhs)
+        (str, str): lambda: trim(lhs, rhs),
+        (Function, types[1]): lambda: Generator(itertools.groupby(rhs, key=lambda x: _safe_apply(lhs, x))),
+        (types[0], Function): lambda: Generator(itertools.groupby(lhs, key=lambda x: _safe_apply(rhs, x))),
     }[types]()
 def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
