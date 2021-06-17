@@ -196,9 +196,11 @@ class Generator:
             stop = position.stop or self.__len__()
             start = position.start or 0
 
+            if start < 0 or stop < 0:
+                self.generated += list(self.gen)
+                return self.generated[position]
             if stop < 0:
                 stop = self.__len__() - position.stop - 2
-
 
             if position.step and position.step < 0:
                 start, stop = stop, start
@@ -209,8 +211,6 @@ class Generator:
                 ret.append(self.__getitem__(i))
                 # print(self.__getitem__(i))
             return ret
-        if position < 0:
-            return list(self.gen)[position]
         if position < len(self.generated):
             return self.generated[position]
         while len(self.generated) < position + 1:
