@@ -52,7 +52,7 @@
   (a: string, b: number)             = [random.choice(a) for _ in range(b)] # Randomly choose b items from a
   (a: string, b: string)             = set(a) == set(b) # Check if two lists are same except duplicates
   (otherwise)                        = vectorised
-∞                                    = list of all positive integers, starting at 0
+∞                                    = list of all non-negative integers, starting at 0
 ¨                                    = * other digraphs (see near the end of docs)
 <space>                              = * NOP (Do nothing)
 !                                    = length(stack) # Number of items in stack
