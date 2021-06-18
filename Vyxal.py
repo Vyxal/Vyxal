@@ -211,6 +211,9 @@ class Generator:
                 ret.append(self.__getitem__(i))
                 # print(self.__getitem__(i))
             return ret
+        if position < 0:
+            self.generated += list(self.gen)
+            return self.generated[position]
         if position < len(self.generated):
             return self.generated[position]
         while len(self.generated) < position + 1:

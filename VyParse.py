@@ -239,12 +239,12 @@ def group_digraphs(code):
         elif escaped:
             escaped = False
             ret.append(item)
-        elif item in "\\⁺":
-            escaped = True
-            ret.append(item)
         elif temp:
             ret.append(temp + item)
             temp = ""
+        elif item in "\\⁺":
+            escaped = True
+            ret.append(item)
         elif item in TWO_BYTE_DELIMS:
             temp = item
         else:
@@ -666,7 +666,8 @@ if __name__ == "__main__":
         "vøD",
         ".",
         "‛| mm",
-        "‛`0`\`0`"
+        "‛`0`\`0`",
+        "k\\"
     ]
     for test in tests:
         print(test, group_strings(group_two_chars(test)))
