@@ -360,19 +360,20 @@ z  (any a) -> [*any]                      = zip(a, a)
    (fun a, [*any b]) -> [*any]            = sort b by function a
 ṫ  (num a) -> num                         = a > 0
    ([*any a]) -> [*any], any              = a[:-1], a[-1] # tail extract
-ẇ  (num a, num b, num c) ->               =
-   (num a, num b, str c) ->               =
-   (num a, str b, num c) ->               =
-   (num a, str b, str c) ->               =
-   (str a, num b, num c) ->               =
-   (str a, num b, str c) ->               =
-   (str a, str b, num c) ->               =
-   (str a, str b, str c) ->               =
+ẇ  (num a, num b, num c) ->               = range from a to b with step c
+   (num a, num b, str c) ->               = shape c as an a * b rectangle
+   (num a, str b, num c) ->               = shape b as an a * c rectangle
+   (num a, str b, str c) ->               = pad b on both sides with a prefix of repeated copies of c to a length of the nearest multiple of a
+   (str a, num b, num c) ->               = shape a as a b * c rectangle
+   (str a, num b, str c) ->               = pad c on the left with a prefix of repeated copies of a to a length of the nearest multiple of b
+   (str a, str b, num c) ->               = pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
+   (str a, str b, str c) ->               = regex substitution. In a, replace b with c
    ([*any] a, fun b, num c) -> [*any]     = b() applied to every cth element of a
    ([*any] a, fun b, [*num] c) -> [*any]  = b() applied to items in a with indexes in c
-   (otherwise) -> [*any]                  =
-ẋ
-ẏ
+   (otherwise) -> [*any]                  = vectorise
+ẋ  (any a, num b) -> [*any]               = repeat(a, times=b) # Repeat a b times
+   (any a, str b) -> [*any]               = can each item of a be found in b?
+ẏ 
 ż
 ≤
 ≥
