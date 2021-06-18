@@ -1319,7 +1319,7 @@ def osabie_newline_join(item):
         if VY_type(n) in [list, Generator]:
             ret.append(join_on(n, " "))
         else:
-            ret.append(n)
+            ret.append(str(n))
     return "\n".join(ret)
 def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
