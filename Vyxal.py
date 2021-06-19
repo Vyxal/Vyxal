@@ -736,13 +736,20 @@ def fibonacci():
 def find(haystack, needle, start=0):
     if type(needle) is Function:
         return indexes_where(haystack, needle)
+
+    
+    
     # It looks like something from 2001
     index = 0
     haystack = iterable(haystack)
     if type(haystack) is str:
         needle = str(needle)
     if type(start) is int or (type(start) is str and start.isnumeric()):
-        index = start
+        index = int(start)
+    
+    if (VY_type(haystack), VY_type(needle)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
+        return str(haystack).find(str(needle), start=index)
+
     while index < len(haystack):
         if haystack[index] == needle:
             return index
