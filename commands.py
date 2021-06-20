@@ -88,7 +88,7 @@ command_dict = {
     "g": ("stack.append(VY_min(iterable(pop(stack))))", 1),
     "h": ("stack.append(iterable(pop(stack))[0])", 1),
     "i": ("rhs, lhs = pop(stack, 2)\nstack.append(index(lhs, rhs))", 2),
-    "j": ("rhs, lhs = pop(stack, 2); stack.append(str(rhs).join([str(x) for x in iterable(lhs)]))", 2),
+    "j": ("rhs, lhs = pop(stack, 2); stack.append(join_on(lhs, rhs)))", 2),
     "l": ("rhs, lhs = pop(stack, 2); stack.append(nwise_pair(lhs, rhs))", 2),
     "m": ("item = pop(stack); stack.append(mirror(item))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
@@ -146,7 +146,7 @@ command_dict = {
     "₇": ("stack.append(128)", 0),
     "₈": ("stack.append(256)", 0),
     "¶": ("stack.append('\\n')", 0),
-    "⁋": ("stack.append('\\n'.join([VY_str(x) for x in iterable(pop(stack))]))", 1),
+    "⁋": ("stack.append(osabie_newline_join(pop(stack)))", 1),
     "§": ("stack.append(vertical_join(pop(stack)))", 1),
     "ε": ("padding, vector = pop(stack, 2); stack.append(vertical_join(vector, padding))", 2),
     "¡": ("stack.append(factorial(pop(stack)))", 1),
@@ -169,7 +169,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ġ": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "Ḣ": ("stack.append(iterable(pop(stack))[1:])", 1),
     "İ": ("indexes, vector = pop(stack, 2); stack.append(indexed_into(vector, indexes))", 2),
-    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(original, new, value))\nelse: stack.append(transliterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
+    "Ŀ": ("new, original, value = pop(stack, 3)\nif Function in map(type, (new, original, value)): stack.append(repeat_no_collect(value, original, new))\nelse: stack.append(transliterate(iterable(original, str), iterable(new, str), iterable(value, str)))", 3),
     "Ṁ": ("item, index, vector = pop(stack, 3);\nif Function in map(type, (item, index, vector)): stack.append(map_every_n(vector, item, index))\nelse: stack.append(inserted(vector, item, index))", 3),
     "Ṅ": ("top = pop(stack);\nif VY_type(top) == Number:stack.append(Generator(partition(top)))\nelse: stack.append(' '.join([VY_str(x) for x in top]))", 1), #---------------------------
     "Ȯ": ("if len(stack) >= 2: stack.append(stack[-2])\nelse: stack.append(get_input(0))", 0),
@@ -183,7 +183,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ż": ("index, vector = pop(stack, 2); stack.append(one_argument_tail_index(vector, index, 1))", 2),
     "⁰": ("stack.append(input_values[0][0][-1])", 0),
     "¹": ("stack.append(input_values[0][0][-2])", 0),
-    "²": ("x = pop(stack); stack.append(multiply(x, deref(x)))", 1),
+    "²": ("x = pop(stack); stack.append(square(x))", 1),
     "∇": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
     "⌈": ("stack.append(ceiling(pop(stack)))", 1),
     "⌊": ("stack.append(floor(pop(stack)))", 1),
@@ -221,7 +221,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "ǒ": ("stack.append(is_empty(pop(stack)))", 1),
     "Ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.LEFT)", 2),
     "ǔ": ("rhs, lhs = pop(stack, 2); stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.RIGHT)", 2),
-    "¢": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
+    "¢": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement))", 3),
     "↵": ("stack.append(split_newlines_or_pow_10(pop(stack)))", 1),
     "⅛": ("global_stack.append(pop(stack))", 1),
     "¼": ("stack.append(pop(global_stack))", 0),
@@ -264,7 +264,7 @@ math_command_dict = {
 
 string_command_dict = {
     "o": ("needle, haystack = pop(stack, 2); stack.append(infinite_replace(haystack, needle, ''))", 2),
-    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement)", 3),
+    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(infinite_replace(haystack, needle, replacement))", 3),
     "c": ("value = pop(stack); stack.append('«' + utilities.from_ten(utilities.to_ten(value, utilities.base27alphabet), encoding.codepage_string_compress) + '«')", 1),
     "C": ("number = pop(stack); stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')", 1),
     "Ċ": ("stack.append(centre(pop(stack)))", 1),
@@ -300,7 +300,7 @@ misc_command_dict = {
     "U": ("if not online_version: stack.append(request(pop(stack)))", 1),
     "M": ("function, indexes, original = pop(stack, 3); stack.append(map_at(function, iterable(original), iterable(indexes)))", 3),
     ",": ("VY_print(pop(stack), end=' ')", 1),
-    "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' ')", 1)
-
+    "…": ("top = pop(stack); stack.append(top); VY_print(top, end=' ')", 1),
+    "t": ("vectorise(time.sleep, pop(stack))")
 
 }

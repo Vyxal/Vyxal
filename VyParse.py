@@ -239,12 +239,12 @@ def group_digraphs(code):
         elif escaped:
             escaped = False
             ret.append(item)
-        elif item in "\\⁺":
-            escaped = True
-            ret.append(item)
         elif temp:
             ret.append(temp + item)
             temp = ""
+        elif item in "\\⁺":
+            escaped = True
+            ret.append(item)
         elif item in TWO_BYTE_DELIMS:
             temp = item
         else:
@@ -265,6 +265,10 @@ def Tokenise(source: str):
     vectorisation = False
     bracket_stack = []
     # print(source)
+
+    source = group_two_chars(source)
+    source = group_strings(source)
+    source = group_digraphs(source)
 
     for char in source:
         # print(char, structure, structure_data, escaped, nest_level, scc_mode)
@@ -661,9 +665,11 @@ if __name__ == "__main__":
         "‡kAkA",
         "vøD",
         ".",
-        "‛| mm"
+        "‛| mm",
+        "‛`0`\`0`",
+        "k\\"
     ]
     for test in tests:
-        print(test, group_two_chars(test))
-        print([(n[0], n[1]) for n in Tokenise(group_digraphs(group_strings(group_two_chars(test))))])
+        print(test, group_strings(group_two_chars(test)))
+        print([(n[0], n[1]) for n in Tokenise(test)])
     input()

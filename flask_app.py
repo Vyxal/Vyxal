@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 from flask_cors import CORS
 import multiprocessing, secrets
 import Vyxal
+import git
 
 app = Flask(__name__)
 CORS(app)
@@ -106,6 +107,22 @@ def kill():
 def oeis():
     return render_template("oeis.html")
 
+
+@app.route("/update", methods=("GET", "POST"))
+def update():
+    # Updates the server after a commit
+    # this comment is to test to see if i did the stuff right ;p
+    # It's possible that it is now working.
+    if request.method == 'POST':
+        repo = git.Repo('/home/Lyxal/mysite')
+        origin = repo.remotes.origin
+        with repo.config_writer() as git_config:
+            git_config.set_value('user', 'email', "36217120+Lyxal@users.noreply.github.com")
+            git_config.set_value('user', 'name', "Lyxal")
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
 
 def parse_file():
     import os

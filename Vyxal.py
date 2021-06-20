@@ -146,6 +146,7 @@ class Generator:
         self.next_index = 0
         self.end_reached = False
         self.is_numeric_sequence = is_numeric_sequence
+        self.do_print = True
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith("FN_") or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
@@ -195,9 +196,11 @@ class Generator:
             stop = position.stop or self.__len__()
             start = position.start or 0
 
+            if start < 0 or stop < 0:
+                self.generated += list(self.gen)
+                return self.generated[position]
             if stop < 0:
                 stop = self.__len__() - position.stop - 2
-
 
             if position.step and position.step < 0:
                 start, stop = stop, start
@@ -209,7 +212,8 @@ class Generator:
                 # print(self.__getitem__(i))
             return ret
         if position < 0:
-            return list(self.gen)[position]
+            self.generated += list(self.gen)
+            return self.generated[position]
         if position < len(self.generated):
             return self.generated[position]
         while len(self.generated) < position + 1:
@@ -301,6 +305,7 @@ class Generator:
             out += "..."
         
         return out + "⟩"
+
 
 class ShiftDirections:
     LEFT = 1
@@ -749,13 +754,20 @@ def fibonacci():
 def find(haystack, needle, start=0):
     if type(needle) is Function:
         return indexes_where(haystack, needle)
+
+    
+    
     # It looks like something from 2001
     index = 0
     haystack = iterable(haystack)
     if type(haystack) is str:
         needle = str(needle)
     if type(start) is int or (type(start) is str and start.isnumeric()):
-        index = start
+        index = int(start)
+    
+    if (VY_type(haystack), VY_type(needle)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
+        return str(haystack).find(str(needle), start=index)
+
     while index < len(haystack):
         if haystack[index] == needle:
             return index
@@ -881,13 +893,13 @@ def graded(item):
         Number: lambda: item + 2,
         str: lambda: item.upper(),
 
-    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1]))))()
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(deref(item)), key=lambda x: x[-1]))))()
 def graded_down(item):
     return {
         Number: lambda: item - 2,
         str: lambda: item.lower(),
 
-    }.get(VY_type(item), lambda: reverse(Generator(map(lambda x: x[0], sorted(enumerate(item), key=lambda x: x[-1])))))()
+    }.get(VY_type(item), lambda: Generator(map(lambda x: x[0], sorted(enumerate(deref(item)), key=lambda x: x[-1], reverse=True))))()
 def group_consecutive(vector):
     ret = []
     temp = [vector[0]]
@@ -1051,7 +1063,7 @@ def is_prime(n):
         if n.upper() == n.lower(): return -1
         else: return int(n.upper() == n)
     if VY_type(n) in [list, Generator]: return vectorise(is_prime, n)
-    return sympy.ntheory.isprime(n)
+    return 1 if sympy.ntheory.isprime(n) else 0
 def is_square(n):
     if type(n) in (float, str): return 0
     elif isinstance(n, int): return int(any([exponate(y, 2) == n for y in range(1, math.ceil(n / 2) + 1)])) or int(n == 0)
@@ -1110,8 +1122,9 @@ def join_on(vector, item):
         (Number, Number): lambda: VY_eval(str(item).join(str(vector))),
         (Number, str): lambda: item.join(str(vector)),
         (str, str): lambda: item.join(vector),
-        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector])
-    }
+        (list, types[1]): lambda: VY_str(item).join([VY_str(n) for n in vector]),
+        (Generator, types[1]): lambda: VY_str(item).join([VY_str(n) for n in deref(vector)])
+    }[types]()
 def levenshtein_distance(s1, s2):
     # https://stackoverflow.com/a/32558749
     if len(s1) > len(s2):
@@ -1206,16 +1219,15 @@ def modulo(lhs, rhs):
         (Generator, Generator): lambda: _two_argument(modulo, lhs, rhs)
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 def mold(content, shape):
-    temp = deref(shape, False)
     #https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
-    for index in range(len(temp)):
-        if type(temp[index]) == list:
-            mold(content, temp[index])
+    for index in range(len(shape)):
+        if type(shape[index]) == list:
+            mold(content, shape[index])
         else:
             item = content.pop(0)
-            temp[index] = item
+            shape[index] = item
             content.append(item)
-    return temp
+    return shape
 def multiply(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
     if types == (Function, Number):
@@ -1326,6 +1338,14 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.search(rhs)
         return int(bool(mobj))
+def osabie_newline_join(item):
+    ret = []
+    for n in item:
+        if VY_type(n) in [list, Generator]:
+            ret.append(join_on(n, " "))
+        else:
+            ret.append(str(n))
+    return "\n".join(ret)
 def overloaded_iterable_shift(lhs, rhs, direction):
     if type(rhs) is not int:
         return [lhs, iterable_shift(rhs, direction)]
@@ -1482,7 +1502,7 @@ def repeat_no_collect(predicate, modifier, value):
         while predicate([item])[-1]:
             item = modifier([item])[-1]
         yield item
-    return gen()
+    return Generator(gen())
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:
@@ -1591,8 +1611,9 @@ def split(haystack, needle, keep_needle=False):
             if item == needle:
                 ret.append(temp)
                 if keep_needle:
-                    ret.append([needle])
-                temp = []
+                    temp = [needle]
+                else:
+                    temp = []
             else:
                 temp.append(item)
         if temp:
@@ -1617,6 +1638,15 @@ def split_on_words(item):
 
     if word: parts.append(word)
     return parts
+def square(item):
+    def grid_helper(s):
+        temp = s
+        while not is_square(len(temp)): temp += " "
+        return wrap(temp, int(exponate(len(temp), 0.5)))
+    return {
+        Number: lambda: item * item,
+        str: lambda: grid_helper(item),
+    }.get(VY_type(item), lambda: multiply(item, deref(item)))()
 def string_empty(item):
     return {
         Number: lambda: item % 3,
@@ -1914,14 +1944,23 @@ def VY_bin(item):
     }.get(t_item, lambda: vectorise(VY_bin, item))()
 def VY_divmod(lhs, rhs):
     types = VY_type(lhs), VY_type(rhs)
+    def niceify(item, function):
+        # turns a groupby object into a generator
+        item = VY_sorted(item, function)
+        for k, g in itertools.groupby(VY_zipmap(function, item), key=lambda x: x[0]):
+            p = list(g)
+            yield p[0][0]
     return {
         (types[0], Number): lambda: Generator(itertools.combinations(lhs, rhs)),
         (Number, Number): lambda: [lhs // rhs, lhs % rhs],
-        (str, str): lambda: trim(lhs, rhs)
+        (str, str): lambda: trim(lhs, rhs),
+        (Function, types[1]): lambda: Generator(niceify(rhs, lhs)),
+        (types[0], Function): lambda: Generator(niceify(lhs, rhs)),
     }[types]()
 def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
     elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
+    
     if online_version or safe_mode:
         try:
             return pwn.safeeval.const(item)
@@ -2002,16 +2041,14 @@ def VY_map(fn, vector):
         result = function([item])
         ret.append(result[-1])
     return ret
-def VY_max(item, *others):
-    if others:
-        biggest = item
-        for sub in others:
-            res = compare(deref(sub), deref(biggest), Comparitors.GREATER_THAN)
-            if VY_type(res) in [list, Generator]:
-                res = any(res)
-            if res:
-                biggest = sub
-        return biggest
+def VY_max(item, other=None):
+    if other is not None:
+        return {
+            (Number, Number): lambda: max(item, other),
+            (Number, str): lambda: max(str(item), other),
+            (str, Number): lambda: max(item, str(other)),
+            (str, str): lambda: max(item, other)
+        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_max, item, other))()
     else:
         item = flatten(item)
         if item:
@@ -2024,16 +2061,16 @@ def VY_max(item, *others):
                     biggest = sub
             return biggest
         return item
-def VY_min(item, *others):
-    if others:
-        smallest = item
-        for sub in others:
-            res = compare(deref(sub), deref(smallest), Comparitors.LESS_THAN)
-            if VY_type(res) in [list, Generator]:
-                res = any(res)
-            if res:
-                smallest = sub
-        return smallest
+def VY_min(item, other=None):
+    if other is not None:
+        ret = {
+            (Number, Number): lambda: min(item, other),
+            (Number, str): lambda: min(str(item), other),
+            (str, Number): lambda: min(item, str(other)),
+            (str, str): lambda: min(item, other)
+        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_min, deref(item), deref(other)))()
+        
+        return ret
     else:
         item = flatten(item)
         if item:
@@ -2084,9 +2121,10 @@ def VY_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
         return inclusive_range(vector, fn)
     t_vector = type(vector)
-    vector = iterable(vector, str)
+    vector = iterable(vector, range)
     if t_vector is Generator:
         vector = vector.gen
+    
     if fn:
         sorted_vector = sorted(vector, key=lambda x: fn([x]))
     else:
@@ -2094,7 +2132,6 @@ def VY_sorted(vector, fn=None):
 
 
     return {
-        int: lambda: int("".join(map(str, sorted_vector))),
         float: lambda: float("".join(map(str, sorted_vector))),
         str: lambda: "".join(map(str, sorted_vector))
     }.get(t_vector, lambda: Generator(sorted_vector))()
@@ -2276,12 +2313,16 @@ constants = {
     "/": "'/\\\\'",
     "\\": "'\\\\/'",
     "<": "'<>'",
-    ">": "'><'"
+    ">": "'><'",
+    "ẇ": "dt.now().weekday()",
+    "Ẇ": "dt.now().isoweekday()",
+    "§": "['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']",
+    "ɖ": "['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']",
 }
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
-    source = VyParse.Tokenise(VyParse.group_digraphs(VyParse.group_two_chars(VyParse.group_strings(source))))
+    source = VyParse.Tokenise(source)
     compiled = ""
     for token in source:
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
@@ -2605,6 +2646,7 @@ ALL flags should be used as is (no '-' prefix)
 \tR\tTreat numbers as ranges if ever used as an iterable
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
+\tṡ\tPrint the entire stack, joined on spaces
 \tJ\tPrint the entire stack, separated by newlines.
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
@@ -2629,6 +2671,8 @@ ALL flags should be used as is (no '-' prefix)
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
             VY_print(summate(pop(stack)))
+        elif flags and "ṡ" in flags:
+            VY_print(" ".join([VY_str(n) for n in stack]))
         elif flags and 'd' in flags:
             VY_print(summate(flatten(pop(stack))))
         elif flags and 'Ṫ' in flags:
@@ -2720,6 +2764,7 @@ if __name__ == "__main__":
         print("\tṀ\tEquivalent to having both m and M flags")
         print("\tJ\tPrint stack joined by newlines")
         print("\to\tForce implicit output, even when something has been outputted.")
+        print("\tṡ\tPrint stack joined on spaces")
     else:
         if flags:
             if 'M' in flags:
@@ -2775,6 +2820,8 @@ if __name__ == "__main__":
         if (not printed and 'O' not in flags) or 'o' in flags:
             if flags and 's' in flags:
                 print(summate(pop(stack)))
+            elif flags and "ṡ" in flags:
+                print(" ".join([VY_str(n) for n in stack]))
             elif flags and 'd' in flags:
                 print(summate(flatten(pop(stack))))
             elif flags and 'Ṫ' in flags:
