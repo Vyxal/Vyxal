@@ -183,7 +183,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ż": ("index, vector = pop(stack, 2); stack.append(one_argument_tail_index(vector, index, 1))", 2),
     "⁰": ("stack.append(input_values[0][0][-1])", 0),
     "¹": ("stack.append(input_values[0][0][-2])", 0),
-    "²": ("x = pop(stack); stack.append(multiply(x, deref(x)))", 1),
+    "²": ("x = pop(stack); stack.append(square(x))", 1),
     "∇": ("c, b, a = pop(stack, 3); stack.append(c); stack.append(a); stack.append(b)", 3),
     "⌈": ("stack.append(ceiling(pop(stack)))", 1),
     "⌊": ("stack.append(floor(pop(stack)))", 1),

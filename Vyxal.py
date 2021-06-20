@@ -1620,6 +1620,16 @@ def split_on_words(item):
 
     if word: parts.append(word)
     return parts
+def square(item):
+    def grid_helper(s):
+        length = int(exponate(len(item), 0.5))
+        temp = wrap(item, length)
+        if len(temp[-1]) != length: return temp[:-1]
+        else: return temp
+    return {
+        Number: lambda: item * item,
+        str: lambda: grid_helper(item),
+    }.get(VY_type(item), lambda: multiply(item, deref(item)))()
 def string_empty(item):
     return {
         Number: lambda: item % 3,
