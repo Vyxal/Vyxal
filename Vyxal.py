@@ -589,12 +589,30 @@ def dictionary_compress(item):
     out = ""
 
     for word in item:
-        temp = words.word_index(word)
-        if temp == -1:
-            out += word
-        else:
-            out += temp
+        out += better_compress(word)
     return "`" + out + "`"
+
+def better_compress(word):
+    str_so_far = ''
+    while word:
+        ctr = len(word)
+        found = False
+        while ctr > 2:
+            temp = words.word_index(word[:ctr])
+            if temp == -1:
+                ctr -= 1
+            else:
+                str_so_far += temp
+                print(temp,word,word[:ctr])
+                found = word[:ctr]
+                break
+        if found:
+            word = word[len(found)+1:]
+        else:
+            str_so_far += word[0]
+            word = word[1:]
+    return str_so_far
+        
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
     vector = numpy.asarray(vector)
