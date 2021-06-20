@@ -1622,10 +1622,9 @@ def split_on_words(item):
     return parts
 def square(item):
     def grid_helper(s):
-        length = int(exponate(len(item), 0.5))
-        temp = wrap(item, length)
-        if len(temp[-1]) != length: return temp[:-1]
-        else: return temp
+        temp = s
+        while not is_square(len(temp)): temp += " "
+        return wrap(temp, int(exponate(len(temp), 0.5)))
     return {
         Number: lambda: item * item,
         str: lambda: grid_helper(item),
