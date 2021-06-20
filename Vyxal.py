@@ -2017,6 +2017,8 @@ def VY_int(item, base=10):
         return int(item, base)
     elif t_item is complex:
         return numpy.real(item)
+    elif t_item is float:
+        return int(item)
     elif t_item:
         return VY_int(iterable(item), base)
 def VY_map(fn, vector):
