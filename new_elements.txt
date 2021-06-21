@@ -303,7 +303,7 @@ z  (any a) -> [*any]                      = zip(a, a)
    ([*any] a, fun b) -> [*any]            = map b over suffixes of a
    (fun a, [*any] b) -> [*any]            = map a over suffixes of b
 Ẏ  ([*any] a) -> [*any]                   = cartesian product with self (:Ẋ)
-Ż  ([*any] a) -> [*any]                   = zip(a, a)
+Ż  ([*any] a, any b) -> [*any]            = zip(a, filler=b)
 ȧ  (num a) -> num                         = abs(a)
    (str a) -> str                         = remove whitespace from a
    ([*any] a) -> [*any]                   = vectorise
@@ -373,15 +373,28 @@ z  (any a) -> [*any]                      = zip(a, a)
    (otherwise) -> [*any]                  = vectorise
 ẋ  (any a, num b) -> [*any]               = repeat(a, times=b) # Repeat a b times
    (any a, str b) -> [*any]               = can each item of a be found in b?
-ẏ 
-ż
+ẏ  (num a, num b) -> num                  = are a and b coprime?
+   (num a, str b) -> str                  = b repeated a times joined on newlines
+   (str a, num b) -> str                  = a repeated b times joined on newlines
+   (str a, str b) -> str                  = vertically merge a and b
+   (otherwise) -> [*any]                  = vectorise
+ż  (num a, num b, num c) -> num           = a >= c >= b
+   (num a, num b, str c) -> str           = line of c of length a in direction b (0: north, 1: north-east, 2: east, 3: south-east, etc)
+   (num a, str b, num c) -> str           = line of b of length a in direction c
+   (num a, str b, str c) -> num, str      = spaces in b replaced with corresponding chars in c
+   (str a, num b, num c) -> str           = line of a of length b in direction c
+   (str a, num b, str c) -> str           = first b spaces in a replaced with corresponding chars in c
+   (str a, str b, num c) -> str           = last c spaces in a replaced with corresponding chars in b
+   (str a, str b, str c) -> num           = vertically mirror a using the mapping b->c
+   (scl a, [*any b], [*num c]) -> [*any]  = stencil any-d
+   ([*any a], num b, num c) -> [*any]     = stencil 2d (stencil takes overlapping submatrices from a matrix)
 ≤
 ≥
 ≠
 ⁼
-©
-®
-∞
+©  (any a)                                = put a into the register
+®         -> any                          = push register
+∞         -> [*num]                       = infinite list of integers, starting at 0
 ₀
 ₁
 ₂
@@ -411,7 +424,7 @@ z  (any a) -> [*any]                      = zip(a, a)
 ꘍
 ꜝ
 ”
-‡
+‡ (any a, any b, any c) -> any, any, any  = c, a, b # shift
 ⇧
 ⇩
 ∆
@@ -421,7 +434,7 @@ z  (any a) -> [*any]                      = zip(a, a)
 ‘
 “
 ð ([*any] a, [*num] b) -> [*any]          = [a[n] for a in b]
-□
+□                      -> [*any]          = [stack]
 ↑
 ↓
 ∴
