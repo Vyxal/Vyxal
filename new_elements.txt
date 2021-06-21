@@ -341,8 +341,8 @@ z  (any a) -> [*any]                      = zip(a, a)
    (str a, str b, str c) -> str           = a.infinite_replace(b, c)
    (fun a, fun b, any c) -> any           = collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply a on c while b(c) is truthy
    (otherwise) -> [*any]                  = vectorise
-ṁ  (num a) -> [*num]                      = mixed fraction representation of a
-   (str a) -> str                         = rot 13 a
+ṁ  (num a) -> [*num]                      = all prime factors of a (includes duplicates)
+   (str a) -> str                         = remove all non-letters of a `^[A-Za-z]`
    ([*any] a) -> any                      = determinant of matrix a. For non-square a, computes det(aa^T)^½; if z is a row vector, this is its norm.
 ṅ  (num a) -> [*num]                      = integer_paritions(a) # Integer partitions
    (str a) -> str                         = insert newlines between characters
@@ -358,7 +358,7 @@ z  (any a) -> [*any]                      = zip(a, a)
    ([*any a], val b) -> [*any]            = split a on b
    ([*any a], fun b) -> [*any]            = sort a by function b
    (fun a, [*any b]) -> [*any]            = sort b by function a
-ṫ  (num a) -> num                         = a > 0
+ṫ  (num a) -> num                         = prime factorisation of a
    ([*any a]) -> [*any], any              = a[:-1], a[-1] # tail extract
 ẇ  (num a, num b, num c) ->               = range from a to b with step c
    (num a, num b, str c) ->               = shape c as an a * b rectangle
@@ -388,89 +388,144 @@ z  (any a) -> [*any]                      = zip(a, a)
    (str a, str b, str c) -> num           = vertically mirror a using the mapping b->c
    (scl a, [*any b], [*num c]) -> [*any]  = stencil any-d
    ([*any a], num b, num c) -> [*any]     = stencil 2d (stencil takes overlapping submatrices from a matrix)
-≤
-≥
-≠
-⁼
+≤  (any a, any b) -> [*num]               = a <= b (similar to <=ψ∨)
+≥  (any a, any b) -> [*num]               = a >= b (similar to >=ψ∨)
+≠  (any a, any b) -> num                  = a != b (non-vectorising)
+⁼  (any a, any b) -> num                  = a == b (non-vectorising)
 ©  (any a)                                = put a into the register
 ®         -> any                          = push register
 ∞         -> [*num]                       = infinite list of integers, starting at 0
-₀
-₁
-₂
-₃
-₄
-₅
-₆
-₇
-₈
-₉
-⁰
-¹
-²
-³
-⁴
-⁵
-∑
-¦
-⌈
-⌊
-¯
-±
-↳
-↲
-⋏
-⋎
-꘍
-ꜝ
-”
-‡ (any a, any b, any c) -> any, any, any  = c, a, b # shift
-⇧
-⇩
-∆
-ø
-Þ
-¨
-‘
-“
-ð ([*any] a, [*num] b) -> [*any]          = [a[n] for a in b]
+₀         -> num                          = 10
+₁         -> num                          = 100
+₂  (num a) -> num                         = a % 2 == 0
+   (str a) -> str                         = quad palindromize with overlap
+   ([*any] a) -> [*any]                   = vectorise
+₃  (num a) -> num                         = a % 3 == 0
+   (str a) -> str                         = quad palindromize without overlap
+₄          -> num                         = 26
+₅  (num a) -> num                         = a % 5 == 0
+   (str a) -> str                         = len(a) == 1
+   ([*any] a) -> [*any]                   = vectorise
+₆         -> num                          = 64
+₇         -> num                          = 128
+₈         -> num                          = 256
+₉         -> num                          = 16
+⁰         -> any                          = first input or "abcdefghijklmnopqrstuvwxyz"
+¹         -> any                          = second input or "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+²  (num a) -> num                         = a ** 2
+   (str a) -> [*str]                      = a formatted as a square
+   ([*any] a) -> [*any]                   = vectorise
+³         -> any                          = third input or 512
+⁴         -> any                          = fourth input or []
+⁵         -> any                          = fifth input or " "
+∑  ([*any] a) -> any                      = sum(a) # Sum
+¦  ([*any] a) -> [*any]                   = cumulative_sum(a)  # cumulative sum
+⌈  (num a) -> num                         = ceiling(a) # Ceiling, ceil
+   (str a) -> [*str]                      = a.split(" ") # Split on space
+⌊  (num a) -> num                         = floor(a)
+   (str a) -> str                         = int(keep only digits of a)
+¯  ([*any] a) -> [*any]                   = deltas(a) # differences, cumulative subtraction
+±  (num a) -> num                         = sign_of(a) # negative = -1, 0 = 0, positive = 1, signum
+   (str a) -> str                         = a formatted into rectangle with smallest perimeter
+↳  (num a, num b) -> num                  = a >> b # Right bit shift, right shift
+   (str a, num b) -> str                  = a.rjust(b) # right justify
+   (num a, str b) -> str                  = b.rjust(a) # right justify
+   (str a, str b) -> str                  = a.rjust(len(b) - len(a)) # right justify by length
+   (otherwise) -> [*any]                  = vectorised
+↲  (num a, num b) -> num                  = a << b # Left bit shift, left shift
+   (str a, num b) -> str                  = a.ljust(b) # left justify
+   (num a, str b) -> str                  = b.ljust(a) # left justify
+   (str a, str b) -> str                  = a.ljust(len(b) - len(a)) # left justify by length
+   (otherwise) -> [*any]                  = vectorised
+⋏  (num a, num b) -> num                  = a and b (bitwise) # a & b
+   (str a, num b) -> str                  = a.center(b) # center
+   (num a, str b) -> str                  = b.center(a) # center
+   (str a, str b) -> str                  = a.center(len(b) - len(a)) # center by length
+   (otherwise) -> [*any]                  = vectorised
+⋎  (num a, num b) -> num                  = a or b (bitwise) # a | b
+   (str a, num b) -> num                  = remove bth character of a
+   (num a, str b) -> str                  = remove ath character of b
+   (str a, str b) -> str                  = a and b joined on longest common prefix and suffix # `abc``cabc`⋎ -> `abcabc`
+   (otherwise) -> [*any]                  = vectorised
+꘍  (num a, num b) -> num                  = a xor b (bitwise)
+   (str a, num b) -> str                  = a + " " * b # append b spaces to a
+   (num a, str b) -> str                  = " " * a + b # prepend a spaces to b
+   (str a, str b) -> num                  = levenshtein_distance(a, b) # Levenshtein distance of two strings
+   (otherwise) -> [*any]                  = vectorised
+ꜝ  (num a) -> num                         = not a (bitwise) # ~a
+   (str a) -> num                         = are any letters in a uppercase?
+   ([*any] a) -> [*any]                   = vectorised
+”                                         = ""
+‡  (any a, any b, any c) -> any, any, any = c, a, b # shift
+⇧  (num a) -> num                         = a + 2
+   (str a) -> str                         = a.uppercase()
+   ([*any] a) -> [*num]                   = a graded up
+⇩  (num a) -> num                         = a - 2
+   (str a) -> str                         = a.lowercase()
+   ([*any] a) -> [*num]                   = a graded down
+∆                                         = mathematical digraphs
+ø                                         = string digraphs
+Þ                                         = list digraphs
+¨                                         = misc./transformer digraphs
+‘                                         = two char string
+“                                         = dictionary string
+ð  ([*any] a, [*num] b) -> [*any]         = [a[n] for a in b]
 □                      -> [*any]          = [stack]
-↑
-↓
-∴
-∵
-›
-‹
-β
-τ
-¶
-§
-ε
-ʀ
-ʁ
-ɾ
-ɽ
-Π
-⁽
-↕
-⁾
-⁺
-Ɓ
-Ƈ
-Ɗ
-Ƒ
-Ɠ
-Ƙ
-Ɱ
+↑  (num a) -> num                         = next prime
+   (str a) -> str                         = a.titlecase() # To title case
+   ([*scl]) -> [*scl]                     = vectorise
+   ([[any, any]] a) -> any                = max(a, key=lambda x: x[-1]) # Maximum by tail/last element
+↓  (num a) -> num                         = ath prime
+   (str a) -> str                         = substrings(a) # All substrings
+   ([*scl]) -> [*scl]                     = vectorise
+   ([[any, any]] a) -> any                = min(a, key=lambda x: x[-1]) # Minimum by tail/last element
+∴  (any a, any b) -> any                  = max(a, b) # Maximum between a and b
+∵  (any a, any b) -> any                  = min(a, b) # Minimum between a and b
+›  (num a) -> num                         = a + 1
+   (str a) -> str                         = last half of a
+   ([*any] a) -> [*any]                   = vectorise
+‹  (num a) -> num                         = a - 1
+   (str a) -> str                         = a + "-"
+   ([*any] a) -> [*any]                   = vectorise
+β  (any a, num b) -> num                  = a to base 10 from arbitrary base b # Base conversion
+   (str a, str b) -> num                  = a to base 10 from custom base b # Base conversion
+τ  (num a, num b) -> [*num]               = a from base 10 to arbitrary base b # Base conversion
+   (num a, str b) -> str                  = a from base 10 to custom base b # Base conversion
+   (num a, [*any] b) -> [*num]            = a from base 10 to custom base b # Base conversion
+¶                     -> str              = "\n"
+§  (any a)                                = print(a, end="") # Print without newline
+ε  (num a, num b) -> num                  = abs(a - b)
+   (non-num a, num b) -> [*any]           = rotate a b units to the right
+   (any a, [*any] b) -> any, [*any]       = a, b rotated to the right once
+ʀ  (num a) -> [*num]                      = range(0, a + 1)
+   (otherwise) -> [*num]                  = range(0, len(a) + 1)
+ʁ  (num a) -> [*num]                      = range(0, a)
+   (otherwise) -> [*num]                  = range(0, len(a))
+ɾ  (num a) -> [*num]                      = range(1, a + 1)
+   (otherwise) -> [*num]                  = range(1, len(a) + 1)
+ɽ  (num a) -> [*num]                      = range(1, a)
+   (otherwise) -> [*num]                  = range(1, len(a))
+Π  (any a) -> any                         = product(a) # reduce by multiplication, product
+⁽  (any a)                                = push a to global array
+↕          -> [*any]                      = push global array
+⁾          -> any                         = pop from global array and push to stack
+⁺          -> num                         = index of next character in codepage + 101: ⁺<character>
+Ɓ  ([*any] a) -> any                      = cycle reduce between two elements over a: <elementA><elementB>Ɓ -> ((a[0] elementA a[1]) elementB a[2] elementA a[3] ...
+Ƈ  ([*any] a) -> any                      = foldr by last element: <element>Ƈ
+Ɗ  ([*any] a) -> [*any]                   = cycle map last two elements over a: <elementA><elementB>Ɗ -> [A(a[0]), B(a[1]), A(a[2]), B(a[3])...]
+Ƒ  ([*any] a) -> [*any]                   = map last element over pairs: <element>Ƒ
+Ɠ  (any a, any... b)                      = if a is truthy, element B, else element A: ABƓ -> if a: A(b) else B(b)
+Ƙ  ([*any] a) -> [*any]                   = map last element over suffixes
+Ɱ                                         = under
 Ɲ
 Ƥ
 Ƭ
 Ʋ
-Ȥ
-δ
+Ȥ  ([*any] a) -> [*any]                   = zipwith: <element>
+δ                 -> any                  = stack[-2]
 ⟨
 ⟩
-->
+→
 ←
 ∪
 ∩
