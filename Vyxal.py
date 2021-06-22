@@ -1965,7 +1965,19 @@ def VY_eval(item):
         try:
             return pwn.safeeval.const(item)
         except:
-            return item
+            if VyParse.Tokenise(item)[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
+                try:
+                    temp = VY_compile(item)
+                    stack = []
+                    exec(temp)
+                    return stack[-1]
+                except Exception as e:
+                    print(e)
+                    return item
+            else:
+                return item
+
+
 
     else:
         try:
