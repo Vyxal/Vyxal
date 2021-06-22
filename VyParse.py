@@ -162,7 +162,7 @@ def parse(source: str) -> list[tuple]:
     nest_level = 0 # How far deep we are, as in, are we at the uppermost level of the program?
 
     for character in source:
-        # print(character, escaped, structure, tokens)
+        print(character, escaped, structure, tokens, active_key, default_key)
 
         # First, we do all the conditions that require immediant moving onto the next character (hence the continue)
         if escaped:
@@ -217,8 +217,8 @@ def parse(source: str) -> list[tuple]:
                 structure_data[active_key] += 1
                 continue # That is, we're already in a structure, so we go deeper m'dude.
 
-            structure = tuple(k for k,v in structure_dictionary if character == v)[0] # there's guaranteed to only be 1, because we have determined that it is in the dictionary
-            default_key = structure_data[structure][2]
+            structure = tuple(k for k in structure_dictionary if character == structure_dictionary[k][0])[0] # there's guaranteed to only be 1, because we have determined that it is in the dictionary
+            default_key = structure_dictionary[structure][2]
             active_key = default_key 
             structure_data[active_key] = ""
 
@@ -258,6 +258,8 @@ def parse(source: str) -> list[tuple]:
         elif character == "#":
             comment = True
         
+        elif structure != Structure.NONE:
+            structure_data[active_key] += character
         elif character in Monadic_Transformers:
             tokens.append((Structure.MONAD_TRANSFORMER, (character, (tokens.pop(),))))
         
@@ -307,8 +309,10 @@ if __name__ == "__main__":
         "123.456`hello`789 42→x`world` ←x ",
         "'h'e'c'k",
         "1 2 3W 4 5\" 6J +v",
-        "ABƝ"
+        "ABƝ",
+        "1[23|45]"
     ]
 
     for test in tests:
         print(test, parse(test))
+
