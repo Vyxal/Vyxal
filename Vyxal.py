@@ -1793,16 +1793,16 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         types = (VY_type(left), VY_type(right))
         def gen():
-            for pair in VY_zip(left, right):
-                yield _safe_apply(fn, *pair, third)
+            for pair in VY_zip(right, left):
+                yield _safe_apply(fn, third, *pair)
 
         def expl(l, r):
             for item in l:
-                yield _safe_apply(fn, item, r, third)
+                yield _safe_apply(fn, third, r, item)
 
         def swapped_expl(l, r):
             for item in r:
-                yield _safe_apply(fn, l, item, third)
+                yield _safe_apply(fn, third, item, l)
 
         ret =  {
             (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
@@ -1836,11 +1836,11 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
         def expl(l, r):
             for item in l:
-                yield _safe_apply(fn, item, r)
+                yield _safe_apply(fn, r, item)
 
         def swapped_expl(l, r):
             for item in r:
-                yield _safe_apply(fn, l, item)
+                yield _safe_apply(fn, item, l)
         ret = {
             (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
