@@ -235,7 +235,7 @@ z  (any a) -> [*any]                      = zip(a, a)
 {                                         = open while loop: {condition|...}
 |                                         = branch in structure (syntax), Used to seperate blocks in If/For/While/Lambda/Function definition
 }                                         = close while loop
-~                                         = execute element without popping - <element>~
+~  ([*any] a) -> any...                   = push each item of a onto the stack
 ½  (num a) -> num                         = a / 2 # half, halve
    (str a)  -> [*str]                     = a split into two strings of equal lengths (as close as possible)
    ([*any] a) -> [*any]                   = vectorised
@@ -517,16 +517,101 @@ z  (any a) -> [*any]                      = zip(a, a)
 Ɠ  (any a, any... b)                      = if a is truthy, element B, else element A: ABƓ -> if a: A(b) else B(b)
 Ƙ  ([*any] a) -> [*any]                   = map last element over suffixes
 Ɱ                                         = under
-Ɲ
-Ƥ
-Ƭ
-Ʋ
+Ɲ  (any a)                                = S combinator: ABƝ -> A(a, B(a))
+Ƥ  (any... a)                             = parallel apply last N elements: ABCD...ZnƤ
+Ƭ  (num a)                                = first a numbers where last element is truthy: <element>Ƭ
+Ʋ  ([*any] a) -> [*any]                   = apply last element to each item, treating the item as a stack: <element>Ʋ -> ƛ~<element>;
 Ȥ  ([*any] a) -> [*any]                   = zipwith: <element>
 δ                 -> any                  = stack[-2]
-⟨
-⟩
-→
-←
-∪
-∩
-⊍
+⟨                                         = open a list: ⟨...⟩
+⟩                                         = close a list
+→  (any a)                                = variable set (= a): →name
+←         -> any                          = variable get: ←name
+∪ (any a, any b) -> [*any]                = set union # Merge without duplicates
+∩ (any a, any b) -> [*any]                = set intersection # Common elements
+⊍ (any a, any b) -> [*any]                = set(a) ^ set(b)
+kA                                   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
+ke                                   = 2.718281828459045 (math.e, Eulers number)
+kf                                   = "Fizz"
+kb                                   = "Buzz"
+kF                                   = "FizzBuzz"
+kH                                   = "Hello, World!"
+kh                                   = "Hello World"
+k1                                   = 1000
+k2                                   = 10000
+k3                                   = 100000
+k4                                   = 1000000
+ka                                   = "abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
+kL                                   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
+kd                                   = "0123456789" (Digits 0-9)
+k6                                   = "0123456789abcdef" (Hex digits)
+k^                                   = "0123456789ABCDEF" (Hex digits uppercase)
+ko                                   = "01234567" (Octal digits)
+kp                                   = string.punctuation (Punctuations)
+kP                                   = printable ascii
+kw                                   = All ASCII whitespace
+kr                                   = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
+kB                                   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
+kZ                                   = "ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
+kz                                   = "zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
+kl                                   = "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
+ki                                   = 3.141592653589793 (Pi)
+kn                                   = math.nan
+kD                                   = * Current day in the format YYYY-MM-DD
+kN                                   = * Current time as a list of ⟨hh|mm|ss⟩
+kḋ                                   = * Current day in the format DD/MM/YYYY
+kḊ                                   = * Current day in the format MM/DD/YYYY
+kð                                   = * Current day in the format ⟨DD|MM|YYYY⟩
+kβ                                   = "{}[]<>()"
+kḂ                                   = "()[]{}" (Brackets)
+kƁ                                   = "()[]"
+kḃ                                   = "([{" (Open brackets)
+k≥                                   = ")]}" (Close brackets)
+k≤                                   = "([{<" (Fish bones :P)
+kΠ                                   = ")]}>"
+kv                                   = "aeiou" (Vowels lowercase)
+kV                                   = "AEIOU" (Vowels uppercase)
+k∨                                   = "aeiouAEIOU" (vowelsVOWELS)
+k⟇                                   = * Yields the Vyxal codepage
+k½                                   = [1, 2]
+k¦                                   = 2 ** 32, 2^32, 4294967296
+k+                                   = [1, -1]
+k-                                   = [-1, 1]
+k⁼                                   = [0, 1]
+k/                                   = "/\\"
+kW                                   = "https://"
+kẋ                                   = "http://"
+k↳                                   = "https://www."
+k²                                   = "http://www.
+k₀                                   = 2048
+k₁                                   = 4096
+k₂                                   = 8192
+k₃                                   = 16384
+k₄                                   = 32768
+k₅                                   = 65536
+k₆                                   = 2147483648
+k₇                                   = 1024
+k₈                                   = 512
+k₉                                   = 360
+k⁰                                   = "bcfghjklmnpqrstvwxyz"
+k¹                                   = "bcfghjklmnpqrstvwxz"
+k□                                   = printable ascii
+k•                                   = ["qwertyuiop", "asdfghjkl", "zxcvbnm"] (Qwerty keyboard)
+kṠ                                   = current second
+kṀ                                   = current minute
+kḢ                                   = current hour
+kτ                                   = day number of the year, day of year
+kṡ                                   = seconds since epoch
+k□                                   = [[0,1],[1,0],[0,-1],[-1,0]]
+k‡                                   = [[0,1],[1,0]]
+kɽ                                   = [-1,0,1]
+k[                                   = "[]"
+k]                                   = "]["
+k(                                   = "()"
+k)                                   = ")("
+k{                                   = "{}"
+k}                                   = "}{"
+kẇ                                   = day of the week - 0 indexed
+kẆ                                   = day of the week - 1 indexed
+k§                                   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
