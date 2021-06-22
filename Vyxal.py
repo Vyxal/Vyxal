@@ -1965,7 +1965,8 @@ def VY_eval(item):
         try:
             return pwn.safeeval.const(item)
         except:
-            if VyParse.Tokenise(item)[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
+            f = VyParse.Tokenise(item)
+            if len(f) and f[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
                 try:
                     temp = VY_compile(item)
                     stack = []
@@ -2681,6 +2682,7 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
+
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
