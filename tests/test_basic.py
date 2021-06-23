@@ -219,14 +219,17 @@ def test_trailing_zeroes():
         
 def test_quit():
     global print
-    trip = None
     def print(first, *args):
-        nonlocal trip
-        trip = first
-    run_code("69 Q", flags="o")
-    assert trip != None
-    def print(first, *args):
-        raise Error("Shouldn't print anything")
+        raise ValueError("Shouldn't print anything")
+        real_print(first, *args)
     run_code("69 Q")
     run_code("69 Q", flags="O")
-    run_code("69 Q")
+    real_print = print
+    trip = []
+    def print(first, *args):
+        nonlocal trip
+        trip.append(first)
+        real_print(first, *args)
+    run_code("69 Q", flags="o")
+    assert trip
+    print = real_print
