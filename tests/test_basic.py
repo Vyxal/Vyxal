@@ -218,9 +218,8 @@ def test_trailing_zeroes():
         assert f == out
         
 def test_quit():
-    global print, _join
+    global print
     trip = None
-    assert not _join
     def print(first, *args):
         nonlocal trip
         trip = first
