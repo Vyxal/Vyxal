@@ -5,7 +5,6 @@ class Structure:
     LIST = 9; VAR_GET = 10; VAR_SET = 11; FUNC_REF = 12; COMPRESSED_NUMBER = 13; COMPRESSED_STRING = 14; CHARACTER = 15
     DICTIONARY_STRING = 16; MONAD_TRANSFORMER = 17; DYAD_TRANSFORMER = 18; TRIAD_TRANSFORMER = 19; FOUR_ARITY_TRANSFORMER = 20; VARY_TRANSFORMER = 21
     PARA_APPLY = 22; LAMBDA_NEWLINE = 23
-
 class Keys:
     STRING = 1; NUMBER = 2; IF_TRUE = 3; IF_FALSE = 4; FOR_VAR = 5; FOR_BODY = 6; WHILE_COND = 7; WHILE_BODY = 8; FUNC_NAME = 9
     FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17
@@ -20,20 +19,12 @@ COLLECT_UNTIL_NEWLINE = "χ"
 PARA_APPLY_VARIADIC = "Ƥ"
 
 class Digraphs:
-    NUMERIC = "∆"
-    STRING = "ø"
-    LIST = "Þ"
-    MISC = "¨"
-    CONSTANT = "k"
-    ALL_DIGRAPHS = "k∆øÞ¨"
-
+    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ"
+    MISC = "¨"; CONSTANT = "k"; ALL_DIGRAPHS = "k∆øÞ¨"
 class StringDelimiters:
     NORMAL = "`"
-    DICTIONARY = "“"
-    COM_NUMBER = "»"
-    COM_STRING = "«"
-    TWO_CHAR = "‘"
-    DELIM_TUPLE = (NORMAL, DICTIONARY, COM_NUMBER, COM_STRING, TWO_CHAR)
+    DICTIONARY = "“"; COM_NUMBER = "»"; COM_STRING = "«"
+    TWO_CHAR = "‘"; DELIM_TUPLE = (NORMAL, DICTIONARY, COM_NUMBER, COM_STRING, TWO_CHAR)
 
 structure_dictionary = { # (open, close, default_key, starting_active_key, secondary_key)
     Structure.IF: ("[", "]", Keys.IF_TRUE, Keys.IF_TRUE, Keys.IF_FALSE),
@@ -112,7 +103,6 @@ def group_digraphs(source: list[str]) -> list[str]:
         else: components.append(character)
     
     return components
-
 def parse(source: str) -> list[tuple]:
     tokens = []
     
