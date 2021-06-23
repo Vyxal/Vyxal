@@ -2686,7 +2686,7 @@ ALL flags should be used as is (no '-' prefix)
         if 'o' not in flags:
             return
         else:
-            raise Error('intercepted Q, join=' + str(_join))
+            raise ValueError('intercepted Q, join=' + str(_join))
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
