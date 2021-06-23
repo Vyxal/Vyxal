@@ -5,6 +5,7 @@ from multiprocessing import Manager
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
+import Vyxal
 from Vyxal import *
 
 header = "stack = []\nregister = 0\nprinted = False\n"
@@ -20,11 +21,14 @@ def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
     number_iterable = list
     MAP_START = 1
     MAP_OFFSET = 1
+    Vyxal._join = False
     _join = False
     _vertical_join = False
     use_encoding = False
     # context_level = 0
     execute(code, flags, "\n".join(input_list), output_variable)
+    Vyxal._join = False
+    _join = False
     return stack
 
 
