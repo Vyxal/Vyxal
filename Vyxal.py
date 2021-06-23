@@ -2694,9 +2694,9 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and 'Ṫ' in flags:
             VY_print(summate(stack))
         elif flags and 'S' in flags:
-            VY_print(" ".join([str(n) for n in pop(stack)]))
+            VY_print(" ".join([VY_str(n) for n in pop(stack)]))
         elif flags and 'C' in flags:
-            VY_print("\n".join(centre(pop(stack))))
+            VY_print("\n".join(centre([VY_str(n) for n in pop(stack)])))
         elif flags and 'l' in flags:
             VY_print(len(pop(stack)))
         elif flags and 'G' in flags:
@@ -2845,7 +2845,7 @@ if __name__ == "__main__":
             elif flags and 'S' in flags:
                 print(" ".join([VY_str(n) for n in pop(stack)]))
             elif flags and 'C' in flags:
-                print("\n".join(centre(pop(stack))))
+                print("\n".join(centre([VY_str(n) for n in pop(stack)])))
             elif flags and 'l' in flags:
                 print(len(pop(stack)))
             elif flags and 'G' in flags:
