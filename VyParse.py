@@ -42,7 +42,7 @@ structure_dictionary = { # (open, close, default_key, starting_active_key, secon
 
 OPEN = tuple(structure_dictionary[k][0] for k in structure_dictionary)
 CLOSE = tuple(structure_dictionary[k][1] for k in structure_dictionary)
-def group_two_byte_strings(source: str) -> list[str]:
+def group_two_byte_strings(source):
     components = []
     temp, in_string, escaped = "", False, False
 
@@ -56,7 +56,7 @@ def group_two_byte_strings(source: str) -> list[str]:
     
     if temp: components.append(temp)
     return components
-def group_strings(source: list[str]) -> list[str]:
+def group_strings(source):
     components = []
     temp = ""
     escaped = False
@@ -89,7 +89,7 @@ def group_strings(source: list[str]) -> list[str]:
 
     if flux_string[0]: components.append([flux_string[1], flux_string[2]])
     return components
-def group_digraphs(source: list[str]) -> list[str]:
+def group_digraphs(source):
     components = []
     temp = ""
     escaped = False
@@ -103,7 +103,7 @@ def group_digraphs(source: list[str]) -> list[str]:
         else: components.append(character)
     
     return components
-def parse(source: str) -> list[tuple]:
+def parse(source):
     tokens = []
     
     source = group_two_byte_strings(source)
