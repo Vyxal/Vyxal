@@ -2685,8 +2685,6 @@ ALL flags should be used as is (no '-' prefix)
     except SystemExit:
         if 'o' not in flags:
             return
-        else:
-            raise ValueError(f'intercepted Q, join={_join}, flags={flags}, stack={stack}')
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
