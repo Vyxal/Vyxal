@@ -71,7 +71,7 @@ retain_items = False
 reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
-this_function = lambda x: VY_print(stack)or x
+this_function = lambda x: VY_print(stack) or x
 
 MAP_START = 1
 MAP_OFFSET = 1
@@ -2682,7 +2682,9 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
-
+    except SystemExit:
+        if 'o' not in flags:
+            return
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:

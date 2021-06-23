@@ -1,17 +1,30 @@
 # Simple tests
 
 import os, sys
+import builtins
 from multiprocessing import Manager
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
+import Vyxal
 from Vyxal import *
 
 header = "stack = []\nregister = 0\nprinted = False\n"
 manager = Manager()
 
 
-def run_code(code, flags=[], input_list=[], output_variable=manager.dict()):
+def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
+    global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings, number_iterable, MAP_START, MAP_OFFSET
+    Vyxal.keg_mode = False
+    Vyxal.raw_strings = False
+    Vyxal.online_version = False
+    Vyxal.input_level = 0
+    Vyxal.number_iterable = list
+    Vyxal.MAP_START = 1
+    Vyxal.MAP_OFFSET = 1
+    Vyxal._join = False
+    Vyxal._vertical_join = False
+    Vyxal.use_encoding = False
     # context_level = 0
     execute(code, flags, "\n".join(input_list), output_variable)
     return stack
@@ -201,6 +214,25 @@ trailing_zero_testcases = [
 # from https://codegolf.stackexchange.com/a/224288
 def test_trailing_zeroes():
     for [n, b, out] in trailing_zero_testcases:
-        stack = run_code("Ǒ", flags=["j"], input_list=[b, n])
+        stack = run_code("Ǒ", flags="j", input_list=[b, n])
         f = pop(stack)
         assert f == out
+        
+def test_quit():
+    global print
+    real_print = Vyxal.VY_print
+    def shouldnt_print(first, *args):
+        raise ValueError("Shouldn't print anything")
+        real_print(first, *args)
+    Vyxal.VY_print = shouldnt_print
+    run_code("69 Q")
+    run_code("69 Q", flags="O")
+    trip = []
+    def should_print(first, *args):
+        nonlocal trip
+        trip.append(first)
+        real_print(first, *args)
+    Vyxal.VY_print = should_print
+    run_code("69 Q", flags="o")
+    assert trip
+    Vyxal.VY_print = real_print
