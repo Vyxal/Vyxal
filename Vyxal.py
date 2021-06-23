@@ -2682,7 +2682,9 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
-
+    except SystemExit:
+        if 'o' not in flags:
+            return
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
