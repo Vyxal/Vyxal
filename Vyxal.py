@@ -2686,7 +2686,7 @@ ALL flags should be used as is (no '-' prefix)
         if 'o' not in flags:
             return
         else:
-            raise ValueError('intercepted Q, join=' + str(_join))
+            raise ValueError(f'intercepted Q, join={_join}, flags={flags}, stack={stack}')
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
@@ -2712,7 +2712,6 @@ ALL flags should be used as is (no '-' prefix)
         elif _vertical_join:
             VY_print(vertical_join(pop(stack)))
         elif _join:
-            print(stack)
             VY_print("\n".join([VY_str(n) for n in pop(stack)]))
         elif flags and 'J' in flags:
             VY_print("\n".join([VY_str(n) for n in stack]))
