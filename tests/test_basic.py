@@ -1,6 +1,7 @@
 # Simple tests
 
 import os, sys
+import builtins
 from multiprocessing import Manager
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
@@ -219,17 +220,19 @@ def test_trailing_zeroes():
         
 def test_quit():
     global print
-    def print(first, *args):
+    real_print = builtins.print
+    def shouldnt_print(first, *args):
         raise ValueError("Shouldn't print anything")
         real_print(first, *args)
+    builtins.print = shouldnt_print
     run_code("69 Q")
     run_code("69 Q", flags="O")
-    real_print = print
     trip = []
-    def print(first, *args):
+    def should_print(first, *args):
         nonlocal trip
         trip.append(first)
         real_print(first, *args)
+    builtins.print = should_print
     run_code("69 Q", flags="o")
     assert trip
-    print = real_print
+    builtins.print = real_print
