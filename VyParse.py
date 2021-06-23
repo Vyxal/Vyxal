@@ -48,7 +48,9 @@ def group_two_byte_strings(source):
 
     for character in source:
         if escaped: escaped = components.append(character) or False
-        elif temp: temp = components.append([temp + character, "`"]) or ""
+        elif temp: 
+            temp = components.append([temp + character, "`"]) or ""
+            in_string = False
         elif in_string: temp = character
         elif character in "'⁺": escaped = components.append(character) or True
         elif character == StringDelimiters.TWO_CHAR: in_string = True
@@ -280,8 +282,6 @@ def parse(source):
     
     return tokens
 
-
-    
 if __name__ == "__main__":
     tests = [
         "123.456`hello`789 42→x`world` ←x ",
@@ -290,9 +290,14 @@ if __name__ == "__main__":
         "ABƝ",
         "1[23|45]",
         "++-%3Ƥ",
-        "abc\ndefχ"
+        "abc\ndefχ",
+        "`abc`",
+        "«abcdef«",
+        "»abcdef»",
+        "“abcdef“",
+        "‘he‘ll‘o "
+
     ]
 
     for test in tests:
         print(test, parse(test))
-
