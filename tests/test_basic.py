@@ -11,7 +11,18 @@ header = "stack = []\nregister = 0\nprinted = False\n"
 manager = Manager()
 
 
-def run_code(code, flags=[], input_list=[], output_variable=manager.dict()):
+def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
+    global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings, number_iterable, MAP_START, MAP_OFFSET
+    keg_mode = False
+    raw_strings = False
+    online_version = False
+    input_level = 0
+    number_iterable = list
+    MAP_START = 1
+    MAP_OFFSET = 1
+    _join = False
+    _vertical_join = False
+    use_encoding = False
     # context_level = 0
     execute(code, flags, "\n".join(input_list), output_variable)
     return stack
@@ -201,7 +212,7 @@ trailing_zero_testcases = [
 # from https://codegolf.stackexchange.com/a/224288
 def test_trailing_zeroes():
     for [n, b, out] in trailing_zero_testcases:
-        stack = run_code("Ǒ", flags=["j"], input_list=[b, n])
+        stack = run_code("Ǒ", flags="j", input_list=[b, n])
         f = pop(stack)
         assert f == out
         
@@ -211,10 +222,10 @@ def test_quit():
     def print(first, *args):
         nonlocal trip
         trip = first
-    run_code("69 Q", flags=["o"])
+    run_code("69 Q", flags="o")
     assert trip != None
     def print(first, *args):
         raise Error("Shouldn't print anything")
     run_code("69 Q")
-    run_code("69 Q", flags=["O"])
+    run_code("69 Q", flags="O")
     run_code("69 Q")
