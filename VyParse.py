@@ -4,6 +4,7 @@ class Structure:
     NONE = 0; IF = 1; FOR = 2; WHILE = 3; FUNCTION = 4; LAMBDA = 5; STRING = 6; NUMBER = 7; MAP = 8
     LIST = 9; VAR_GET = 10; VAR_SET = 11; FUNC_REF = 12; COMPRESSED_NUMBER = 13; COMPRESSED_STRING = 14; CHARACTER = 15
     DICTIONARY_STRING = 16; MONAD_TRANSFORMER = 17; DYAD_TRANSFORMER = 18; TRIAD_TRANSFORMER = 19; FOUR_ARITY_TRANSFORMER = 20; VARY_TRANSFORMER = 21
+    PARA_APPLY = 22; LAMBDA_NEWLINE = 23
 
 class Keys:
     STRING = 1; NUMBER = 2; IF_TRUE = 3; IF_FALSE = 4; FOR_VAR = 5; FOR_BODY = 6; WHILE_COND = 7; WHILE_BODY = 8; FUNC_NAME = 9
@@ -14,6 +15,9 @@ Dyadic_Transformers = list("ξψωƁƊƓⱮƝ")
 Triadic_Transformers = list("π")
 Tetradic_Transformers = list("ρ")
 Variadic_Transformers = list("χƤ")
+
+COLLECT_UNTIL_NEWLINE = "χ"
+PARA_APPLY_VARIADIC = "Ƥ"
 
 class Digraphs:
     NUMERIC = "∆"
@@ -135,7 +139,9 @@ def parse(source: str) -> list[tuple]:
             escaped = False
             continue
         if comment:
-            comment = character == "\n"
+            if character == "\n":
+                comment = False
+                tokens.append("\n")
             continue
         if structure == Structure.NUMBER:
             if type(character) is str and character in (string.digits + "."): # If the character is a digit, we keep adding to the flux number
@@ -242,8 +248,24 @@ def parse(source: str) -> list[tuple]:
             tokens.append((Structure.FOUR_ARITY_TRANSFORMER, (character, elements)))
 
         elif character in Variadic_Transformers:
-            raise NotImplementedError("Lyxal hasn't done those yet. Don't do that.")
-        
+            if character == COLLECT_UNTIL_NEWLINE:
+                token_list = []
+                while tokens[-1][1] != "\n":
+                    token_list.append(tokens.pop())
+                tokens.pop()
+                tokens.append((Structure.LAMBDA_NEWLINE, token_list[::-1][::]))
+            
+            elif character == PARA_APPLY_VARIADIC:
+                count = tokens.pop()
+                if count[0] != Structure.NUMBER:
+                    raise Exception("Count passed to Ƥ isn't a number")
+                else:
+                    token_list = []
+                    for _ in range(int(count[-1])):
+                        token_list.append(tokens.pop())
+                    
+                    
+                    tokens.append((Structure.PARA_APPLY, token_list[::-1][::]))
         else:
             tokens.append((Structure.NONE, character))
         
@@ -276,8 +298,11 @@ if __name__ == "__main__":
         "'h'e'c'k",
         "1 2 3W 4 5\" 6J +v",
         "ABƝ",
-        "1[23|45]"
+        "1[23|45]",
+        "++-%3Ƥ",
+        "abc\ndefχ"
     ]
 
     for test in tests:
         print(test, parse(test))
+
