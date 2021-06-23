@@ -2685,6 +2685,8 @@ ALL flags should be used as is (no '-' prefix)
     except SystemExit:
         if 'o' not in flags:
             return
+        else:
+            raise Error('intercepted Q, join=' + str(_join))
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
@@ -2710,6 +2712,7 @@ ALL flags should be used as is (no '-' prefix)
         elif _vertical_join:
             VY_print(vertical_join(pop(stack)))
         elif _join:
+            print(stack)
             VY_print("\n".join([VY_str(n) for n in pop(stack)]))
         elif flags and 'J' in flags:
             VY_print("\n".join([VY_str(n) for n in stack]))
