@@ -204,3 +204,16 @@ def test_trailing_zeroes():
         stack = run_code("Ǒ", flags=["j"], input_list=[b, n])
         f = pop(stack)
         assert f == out
+        
+def test_quit():
+    global print
+    def print(*args):
+        trip = args
+    run_code("69 Q", flags=["o"])
+    trip = None
+    assert trip != None
+    def print(*args):
+        raise Error("Shouldn't print anything")
+    run_code("69 Q")
+    run_code("69 Q", flags=["O"])
+    run_code("69 Q")
