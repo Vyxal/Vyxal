@@ -14,21 +14,18 @@ manager = Manager()
 
 def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
     global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings, number_iterable, MAP_START, MAP_OFFSET
-    keg_mode = False
-    raw_strings = False
-    online_version = False
-    input_level = 0
-    number_iterable = list
-    MAP_START = 1
-    MAP_OFFSET = 1
+    Vyxal.keg_mode = False
+    Vyxal.raw_strings = False
+    Vyxal.online_version = False
+    Vyxal.input_level = 0
+    Vyxal.number_iterable = list
+    Vyxal.MAP_START = 1
+    Vyxal.MAP_OFFSET = 1
     Vyxal._join = False
-    _join = False
-    _vertical_join = False
-    use_encoding = False
+    Vyxal._vertical_join = False
+    Vyxal.use_encoding = False
     # context_level = 0
     execute(code, flags, "\n".join(input_list), output_variable)
-    Vyxal._join = False
-    _join = False
     return stack
 
 
