@@ -36,7 +36,7 @@
 ρ                                         = last four elements as a single element - ....ρ
 ς  (any a) -> [*any]                      = inner product - <element>ς
 σ  (any a) -> [*any]                      = sort by element - <element>σ
-φ  (any a) -> [*any]                      = repeat element infinitely, returning a generator - <element>φ
+φ  (any a) -> [*any]                      = everything until last φ as an element. if no previous φ, until newline
 χ                                         = everything to the start of the line as a single element
 ψ  (any a, any b?, any c?) -> any, any    = apply last two elements "parallel" - 3 4 +-ψ -> 7, -1
 ω  (any a, any b?, any c?) -> [*any]      = apply last two elements "parallel" and collect - equivalent to ψ"
