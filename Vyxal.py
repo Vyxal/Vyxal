@@ -2195,7 +2195,7 @@ def VY_str(item):
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
-        Function: lambda x: "@FUNCTION:" + x.__name__
+        Function: lambda x: VY_str(function_call(item, stack)[0])
     }[t_item](item)
 def VY_type(item):
     ty = type(item)
