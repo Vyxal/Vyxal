@@ -603,11 +603,10 @@ def better_compress(word):
                 ctr -= 1
             else:
                 str_so_far += temp
-                print(temp,word,word[:ctr])
                 found = word[:ctr]
                 break
         if found:
-            word = word[len(found)+1:]
+            word = word[len(found):]
         else:
             str_so_far += word[0]
             word = word[1:]
