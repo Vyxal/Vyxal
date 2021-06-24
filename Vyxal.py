@@ -1,29 +1,32 @@
-from typing import NamedTuple
 from VyParse import *
 from commands import *
 import encoding
 import utilities
 
 import base64
+import secrets
 import string
 import sympy
 
 newline = "\n"
 
-
-def _mangle(value):
-    byte_list = bytes(value, encoding="utf-8")
-    return base64.b32encode(byte_list).decode().replace("=", "_")
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
 tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstrip("    ")
+def wrap_in_lambda(tokens):
+    if tokens[0] == Structure.NONE:
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict[tokens[1]][1])})]
+    else:
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
 def transpile(program, header=""):
     if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
 
-    program = parse(program)
+    if isinstance(program, str):
+        program = parse(program)
     for token in program:
+        print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             compiled += command_dict.get(token[1], "  ")[0]
@@ -155,7 +158,7 @@ else:
                 lambda_argument = token_value[Keys.LAMBDA_ARGS]
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
-            signature = _mangle(compiled or secrets.token_hex(64))
+            signature = secrets.token_hex(16)
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + newline
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + newline
             compiled += tab("context_level += 1") + newline
@@ -179,7 +182,7 @@ else:
             compiled += f"stack.append(_lambda_{signature})"
         elif token_name == Structure.LIST:
             compiled += "temp_list = []" + newline
-            for element in token_vale[Keys.LIST_ITEMS]:
+            for element in token_value[Keys.LIST_ITEMS]:
                 if element:
                     compiled += "def list_item(parameter_stack):" + newline
                     compiled += tab("stack = parameter_stack[::]") + newline
@@ -193,10 +196,16 @@ else:
             compiled += "VAR_" + token_value[Keys.VAR_NAME] + " = pop(stack)"
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
+        elif token_name == Structure.MONAD_TRANSFORMER:
+            print(token_value)
+            grouped = transpile(wrap_in_lambda(token_value[1][0]))
+            compiled += grouped + newline
+            compiled += "function_A = pop(stack)\n"
+            compiled += transformers[token_value[0]] + newline
         compiled += "\n"
 
     
     return header + compiled
 
 if __name__ == "__main__":
-    print(transpile("@a:1:2:3|1 1+; @a;"))
+    print(transpile("+&"))
