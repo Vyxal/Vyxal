@@ -40,7 +40,7 @@
 χ                                         = everything to the start of the line as a single element
 ψ  (any a, any b?, any c?) -> any, any    = apply last two elements "parallel" - 3 4 +-ψ -> 7, -1
 ω  (any a, any b?, any c?) -> [*any]      = apply last two elements "parallel" and collect - equivalent to ψ"
-ɓ                                         = last element double vectorised - <element>ɓ
+ɓ                                         = perform last element without popping - <element>ɓ
 ƈ  (any a) -> [*any]                      = collect while applying last element is truthy - <element>ƈ
 ɗ  ([*any] a) -> any                      = maximum by last element - <element>ɗ
 ƒ  ([*any] a) -> [*any]                   = filter by last element - <element>ƒ
