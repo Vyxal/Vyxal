@@ -263,24 +263,24 @@ class Generator:
         self.generated = []
         return d
     def _print(self, end="\n"):
-        main = self.generated
-        try:
-            f = next(self)
-            # If we're still going, there's stuff in main that needs printing before printing the generator
-            VY_print("⟨", end="")
-            for i in range(len(main)):
-                VY_print(main[i], end="|"*(i >= len(main)))
-            while True:
-                try:
-                    f = next(self)
-                    VY_print("|", end="")
-                    VY_print(f, end="")
-                except:
-                    break
-            VY_print("⟩", end=end)
+            main = self.generated
+            try:
+                f = next(self)
+                # If we're still going, there's stuff in main that needs printing before printing the generator
+                VY_print("⟨", end="")
+                for i in range(len(main)):
+                    VY_print(main[i], end="|"*(i >= len(main)))
+                while True:
+                    try:
+                        f = next(self)
+                        VY_print("|", end="")
+                        VY_print(f, end="")
+                    except:
+                        break
+                VY_print("⟩", end=end)
 
-        except:
-            VY_print(main, end=end)
+            except:
+                VY_print(main, end=end)
 
 
     def zip_with(self, other):
