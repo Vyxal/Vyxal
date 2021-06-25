@@ -251,5 +251,12 @@ transformers = { # the {} is where the t_lambda goes
     "Ƙ": "stack.append(VY_map(function_A, suffixes(pop(stack))))",
     "Ƭ": "stack.append(first_n_where(function_A, pop(stack)))",
     "Ʋ": "stack.append(stack_map(function_A, pop(stack)))",
-    "Ȥ": "stack.appemd(zipwith(function_A, pop(stack)))"
+    "Ȥ": "stack.append(zipwith(function_A, pop(stack)))",
+    "ψ": "stack.append(para_apply(function_A, function_B, stack))",
+    "ω": "stack.append(para_apply(function_A, function_B, stack)); rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])",
+    "Ɓ": "stack.append(cyclical_reduce(function_A, function_B, pop(stack)))",
+    "Ɗ": "stack.append(cyclical_map(function_A, function_B, pop(stack)))",
+    "Ɠ": "if pop(stack): stack += function_call(function_A, stack)\nelse: stack += function(function_B, stack)",
+    "Ɱ": "rhs, lhs = pop(stack, 2); stack.append(VY_reduce(function_B, VY_map(function_A, [lhs, rhs])))",
+    "Ɲ": "top = pop(stack); stack.append(VY_reduce(function_A, VY_map(function_B)))",
 }
