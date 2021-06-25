@@ -7,13 +7,15 @@ class Structure:
     PARA_APPLY = 22; LAMBDA_NEWLINE = 23
 class Keys:
     STRING = 1; NUMBER = 2; IF_TRUE = 3; IF_FALSE = 4; FOR_VAR = 5; FOR_BODY = 6; WHILE_COND = 7; WHILE_BODY = 8; FUNC_NAME = 9
-    FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17
+    FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17,
+    LAMBDA_GROUP = 18
 
-Monadic_Transformers = list("¿μςσφɓƈɗƒɠɦƇƑƘƬƲȤv/\\&")
+Monadic_Transformers = list("¿μςσɓƈɗƒɠɦƇƑƘƬƲȤv/\\&")
 Dyadic_Transformers = list("ξψωƁƊƓⱮƝ")
 Triadic_Transformers = list("π")
 Tetradic_Transformers = list("ρ")
-Variadic_Transformers = list("χƤ")
+Variadic_Transformers = list("χƤφ")
+Grouping_Transformers = list("μξπρ")
 
 COLLECT_UNTIL_NEWLINE = "χ"
 PARA_APPLY_VARIADIC = "Ƥ"
@@ -209,8 +211,9 @@ def parse(source):
         
         elif structure != Structure.NONE:
             structure_data[active_key] += character
+
         elif character in Monadic_Transformers:
-            tokens.append((Structure.MONAD_TRANSFORMER, (character, (tokens.pop(),))))
+            tokens.append((Structure.MONAD_TRANSFORMER, (character, [tokens.pop()])))
         
         elif character in (string.digits + "."):
             structure = Structure.NUMBER
@@ -228,15 +231,15 @@ def parse(source):
             structure_data[active_key] = ""
         
         elif character in Dyadic_Transformers:
-            elements = (tokens.pop(), tokens.pop())[::-1]
+            elements = [tokens.pop(), tokens.pop()][::-1]
             tokens.append((Structure.DYAD_TRANSFORMER, (character, elements)))
         
         elif character in Triadic_Transformers:
-            elements = (tokens.pop(), tokens.pop(), tokens.pop())[::-1]
+            elements = [tokens.pop(), tokens.pop(), tokens.pop()][::-1]
             tokens.append((Structure.TRIAD_TRANSFORMER, (character, elements)))
         
         elif character in Tetradic_Transformers:
-            elements = (tokens.pop(), tokens.pop(), tokens.pop(), tokens.pop())[::-1]
+            elements = [tokens.pop(), tokens.pop(), tokens.pop(), tokens.pop()][::-1]
             tokens.append((Structure.FOUR_ARITY_TRANSFORMER, (character, elements)))
 
         elif character in Variadic_Transformers:
@@ -295,7 +298,9 @@ if __name__ == "__main__":
         "«abcdef«",
         "»abcdef»",
         "“abcdef“",
-        "‘he‘ll‘o "
+        "‘he‘ll‘o ",
+        "+¿",
+        "λ2|ancd;"
 
     ]
 
