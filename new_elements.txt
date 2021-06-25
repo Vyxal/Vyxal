@@ -2,9 +2,9 @@
 ƛ                                         = lambda that automatically gets mapped - ƛ...;
 ¬  (any a) -> num                         = logical NOT (non-vectorising)
 ∧  (any a, any b) -> num                  = logical AND
-⟑  (any a, any b) -> num                  = logical AND with reverse arguments
+Œ                                         = 
 ∨  (any a, any b) -> num                  = logical OR
-⟇  (any a, any b) -> num                  = logical OR with reverse arguments
+œ                                         = 
 ÷  (num a, num b) -> num                  = a / b # division
    (num a, str b) -> [*str]               = b split into a even length pieces. There may be an extra part if the string is too long.
    (str a, num b) -> [*str]               = a split into b even length pieces. There may be an extra part if the string is too long.
