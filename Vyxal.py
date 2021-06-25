@@ -17,6 +17,8 @@ tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstri
 def wrap_in_lambda(tokens):
     if tokens[0] == Structure.NONE:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict[tokens[1]][1])})]
+    elif tokens[0] == Structure.LAMBDA:
+        return tokens
     else:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
 def transpile(program, header=""):
@@ -26,7 +28,6 @@ def transpile(program, header=""):
     if isinstance(program, str):
         program = parse(program)
     for token in program:
-        print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             compiled += command_dict.get(token[1], "  ")[0]
@@ -197,15 +198,45 @@ else:
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
-            print(token_value)
-            grouped = transpile(wrap_in_lambda(token_value[1][0]))
-            compiled += grouped + newline
+            function_A = transpile(wrap_in_lambda(token_value[1][0]))
+            compiled += function_A + newline
             compiled += "function_A = pop(stack)\n"
             compiled += transformers[token_value[0]] + newline
+        elif token_name == Structure.DYAD_TRANSFORMER:
+            if token_value[0] in Grouping_Transformers:
+                compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + newline
+            else:
+                function_A = transpile(wrap_in_lambda(token_value[1][0]))
+                function_B = transpile(wrap_in_lambda(token_value[1][1]))
+                compiled += function_A + newline + function_B + newline
+                compiled += "function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += transformers[token_value[0]] + newline
+        elif token_name == Structure.TRIAD_TRANSFORMER:
+            if token_value[0] in Grouping_Transformers:
+                compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: [token_value[1]]})]) + newline
+            else:
+                function_A = transpile(wrap_in_lambda(token_value[1][0]))
+                function_B = transpile(wrap_in_lambda(token_value[1][1]))
+                function_C = transpile(wrap_in_lambda(token_value[1][2]))
+                compiled += function_A + newline + function_B + newline + function_C + newline
+                compiled += "function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += transformers[token_value[0]] + newline
+        elif token_name == Structure.FOUR_ARITY_TRANSFORMER:
+            if token_value[0] in Grouping_Transformers:
+                compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + newline
+            else:
+                function_A = transpile(wrap_in_lambda(token_value[1][0]))
+                function_B = transpile(wrap_in_lambda(token_value[1][1]))
+                function_C = transpile(wrap_in_lambda(token_value[1][2]))
+                function_D = transpile(wrap_in_lambda(token_value[1][3]))
+                compiled += function_A + newline + function_B + newline + function_C + newline
+                compiled += "function_D = pop(stack); function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += transformers[token_value[0]] + newline
+
         compiled += "\n"
 
     
     return header + compiled
 
 if __name__ == "__main__":
-    print(transpile("+&"))
+    print(transpile("*+-ξψ"))
