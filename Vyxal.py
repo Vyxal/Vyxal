@@ -2347,7 +2347,7 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            value = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
+            value = VALUE[VyParse.STRING_CONTENTS].replace("\\", "\\\\").replace("\"", "\\\"")
             if raw_strings:
                 compiled += f"stack.append(\"{value}\")" + NEWLINE
             else:
