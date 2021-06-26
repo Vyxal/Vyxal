@@ -164,9 +164,13 @@
 
         function updateCount() {
             var byte_box = document.getElementById("code-count");
-            var code = document.getElementById("code").value.length;
-
-            byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
+            var code = document.getElementById("code").value;
+	    if([...code].every(x => (codepage + ' ').includes(x))){
+	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
+	    } else {
+	    	byte_box.innerText = `Code: ${new Blob([code]).size} bytes` + ' (UTF-8)';
+		console.log("s".repeat(code.length != 1))
+	    }
         }
 
         function generateURL() {
@@ -196,15 +200,17 @@
                 flag_appendage = " `" + flags + "`,"
             }
             var output = ""
+	    var utfable = [...code].every(x => (codepage + ' ').includes(x));
+	    var len = utfable?code.length:new Blob([code]).size
             switch (shareType) {
                 case "permalink":
                     output = url;
                     break;
                 case "cmc":
-                    output = `[Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})`;
+                    output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable?'':' (UTF-8)'}](${url})`;
                     break;
                 case "post-template":
-                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${code.length} byte${"s".repeat(code.length != 1)}
+                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable?'':' (UTF-8)'}
                     
 \`\`\`
 ${code}
@@ -367,6 +373,7 @@ ${code}
                     output.value = res.stdout;
                     extra.value = res.stderr;
                     run.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" /></svg>';
+		    if(code.value == 'lyxal') location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                     expandBoxes();
                 });
                 } else {
@@ -459,5 +466,5 @@ ${code}
 
 </br></br></br></br></br></br></br></br></br>
 <iframe height="50" src="https://george.gh0.pw/embed.cgi?lyxal" style="border:none;width:100%"></iframe>
-<iframe src="https://john.mondecitronne.com/embed?ref=http://www.lyxal.pythonanywhere.com" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe> 
+<!--<iframe src="https://john.mondecitronne.com/embed?ref=http://www.lyxal.pythonanywhere.com" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe> !-->
 </body>
