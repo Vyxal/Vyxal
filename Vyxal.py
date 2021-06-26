@@ -841,9 +841,9 @@ def foldl_vector(vector, fn, init=None):
         for i in range(start, len(vector)):
             acc = fn(acc, vector[i])
         return acc
-def foldl_rows(fn, matrix, init=None):
-    VY_map(matrix, lambda row: foldl_vector(row, fn, init=init))
-def foldl_cols(fn, matrix, init=None):
+def foldl_rows(fn, vector, init=None):
+    VY_map(vector, lambda row: foldl_vector(row, fn, init=init))
+def foldl_cols(fn, vector, init=None):
     if type(vector) is Generator:
         if vector.end_reached:
             return []

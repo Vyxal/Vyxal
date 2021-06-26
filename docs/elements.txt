@@ -584,6 +584,13 @@ kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesd
 ÞS (a: any)                          = sublists(a)
 ÞṪ (a: list, b: any)                 = transpose(a, filler=b) # Transpose with filler
 Þ℅ (a: any)                          = random permutation of a (but faster than Ṗ℅)
+Þ• (a: list, b: list)                = dot product of a and b
+ÞṀ (a: list, b: list)                = matrix multiply a and b
+ÞḊ (a: list)                         = matrix determinant of a
+Þ/ (a: list)                         = the main diagonal of a
+Þ\ (a: list)                         = the anti-diagonal of a
+ÞR (a: list, b: function)            = reduce rows of a by function b
+ÞC (a: list, b: function)            = reduce columns of a by function b
 ¨U (a: string)                       = GET request with url=a
 ¨M (a: list, b: list, c: function)   = map function c to every item in a whos index is in b
 ¨, (a: any)                          = print(a, end=" ") # Print with a space at end
