@@ -381,6 +381,25 @@ def assigned(vector, index, item):
         temp = deref(vector, False)
         temp[index] = item
         return temp
+def better_compress(word):
+    str_so_far = ''
+    while word:
+        ctr = len(word)
+        found = False
+        while ctr > 2:
+            temp = words.word_index(word[:ctr])
+            if temp == -1:
+                ctr -= 1
+            else:
+                str_so_far += temp
+                found = word[:ctr]
+                break
+        if found:
+            word = word[len(found):]
+        else:
+            str_so_far += word[0]
+            word = word[1:]
+    return str_so_far
 def bifuricate(item):
     t_item = VY_type(item)
     if t_item in (Number, list, str):
@@ -584,36 +603,23 @@ def deref(item, generator_to_list=True, limit=-1):
         return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
+def determinant(matrix):
+    det = numpy.linalg.det(numpy.asarray(deref(matrix)))
+    # If it's a number, don't convert to list
+    if isinstance(matrix, numpy.number):
+        return det
+    else:
+        return det.tolist()
 def dictionary_compress(item):
     item = split_on_words(VY_str(item))
     out = ""
 
     for word in item:
         out += better_compress(word)
-    return "`" + out + "`"
-
-def better_compress(word):
-    str_so_far = ''
-    while word:
-        ctr = len(word)
-        found = False
-        while ctr > 2:
-            temp = words.word_index(word[:ctr])
-            if temp == -1:
-                ctr -= 1
-            else:
-                str_so_far += temp
-                found = word[:ctr]
-                break
-        if found:
-            word = word[len(found):]
-        else:
-            str_so_far += word[0]
-            word = word[1:]
-    return str_so_far
-        
+    return "`" + out + "`"        
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
+    # joke explanation: the diagonals are the most important part of the game
     vector = numpy.asarray(vector)
     diag_num = 0
     diagonal = numpy.diag(vector)
@@ -630,6 +636,11 @@ def diagonals(vector):
         yield vectorise(lambda x: x.item(), list(diagonal))
         diag_num -= 1
         diagonal = numpy.diag(vector, k=diag_num)
+def diagonal_main(matrix):
+    return numpy.asarray(matrix).diagonal().tolist()
+def diagonal_anti(matrix):
+    flipped = numpy.fliplr(numpy.asarray(matrix)).diagonal().tolist()
+    return flipped
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -691,6 +702,8 @@ def divisors_of(item):
             divisors.append(value)
 
     return divisors
+def dot_product(lhs, rhs):
+    return summate(multiply(lhs, rhs))
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -812,6 +825,39 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
+def foldl_vector(vector, fn, init=None):
+    if type(vector) is Generator:
+        acc = next(vector) if init == None else init
+        while not vector.end_reached:
+            acc = fn(acc, next(vector))
+        return acc
+    else:
+        if init == None:
+            acc = vector[0]
+            start = 1
+        else:
+            acc = init
+            start = 0
+        for i in range(start, len(vector)):
+            acc = fn(acc, vector[i])
+        return acc
+def foldl_rows(fn, vector, init=None):
+    VY_map(vector, lambda row: foldl_vector(row, fn, init=init))
+def foldl_cols(fn, vector, init=None):
+        num_rows = len(vector)
+        if not num_rows:
+            return []
+        num_cols = len(vector[0])
+        cs = range(num_cols)
+        if init == None:
+            res = vector[0]
+            start = 1
+        else:
+            res = [init] * num_cols
+            start = 0
+        for r in range(start, num_rows):
+            res = zip_with(fn, res, vector[r])
+        return res
 def format_string(value, items):
     ret = ""
     index = 0
@@ -1195,6 +1241,16 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def matrix_multiply(lhs, rhs):
+    transformed_right = deref(transpose(rhs))
+    ret = []
+
+    for row in lhs:
+        temp = []
+        for col in transformed_right:
+            temp.append(summate(multiply(row, col)))
+        ret.append(temp[::])
+    return ret
 def mirror(item):
     if VY_type(item) in (str, Number):
         return add(item, reverse(item))
@@ -2240,7 +2296,15 @@ def VY_zipmap(fn, vector):
         ret.append([item, fn([item])[-1]])
 
     return [ret]
-
+def zip_with(fn, xs, ys):
+    xs_type, ys_type = VY_type(xs), VY_type(ys)
+    # Convert both to Generators if not already
+    xs = Generator(x for x in xs) if xs_type is list else xs
+    ys = Generator(y for y in ys) if ys_type is list else ys
+    def gen():
+        while not (xs.end_reached or ys.end_reached):
+            yield fn(next(xs), next(ys))
+    return Generator(gen())
 constants = {
     "A": "string.ascii_uppercase",
     "e": "math.e",
@@ -2347,7 +2411,7 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            value = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
+            value = VALUE[VyParse.STRING_CONTENTS].replace("\\", "\\\\").replace("\"", "\\\"")
             if raw_strings:
                 compiled += f"stack.append(\"{value}\")" + NEWLINE
             else:
@@ -2442,7 +2506,7 @@ else:
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
                     elif isinstance(parameter, int):
-                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
+                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})[::-1]; print(parameters)")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
