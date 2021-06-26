@@ -844,17 +844,6 @@ def foldl_vector(vector, fn, init=None):
 def foldl_rows(fn, vector, init=None):
     VY_map(vector, lambda row: foldl_vector(row, fn, init=init))
 def foldl_cols(fn, vector, init=None):
-    if type(vector) is Generator:
-        if vector.end_reached:
-            return []
-        if init == None:
-            res = next(vector)
-        else:
-            res = [init] * num_cols
-        while not vector.end_reached:
-            res = zip_with(fn, res, next(vector))
-        return res
-    else:
         num_rows = len(vector)
         if not num_rows:
             return []

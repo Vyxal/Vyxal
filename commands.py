@@ -299,8 +299,8 @@ list_command_dict = {
     "Ḋ": ("stack.append(determinant(pop(stack)))", 1),
     "/": ("stack.append(diagonal_main(deref(pop(stack))))", 1),
     "\\": ("stack.append(diagonal_anti(deref(pop(stack))))", 1),
-    "R": ("fn, vector = pop(stack, 2); stack.append(foldl_rows(fn, vector))", 2),
-    "C": ("fn, vector = pop(stack, 2); stack.append(foldl_cols(fn, vector))", 2)
+    "R": ("fn, vector = pop(stack, 2); stack.append(foldl_rows(fn, deref(vector)))", 2),
+    "C": ("fn, vector = pop(stack, 2); stack.append(foldl_cols(fn, deref(vector)))", 2)
 }
 
 misc_command_dict = {
