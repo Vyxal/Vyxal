@@ -165,7 +165,7 @@
         function updateCount() {
             var byte_box = document.getElementById("code-count");
             var code = document.getElementById("code").value;
-	    if([...code].every(x => codepage.includes(x))){
+	    if([...code].every(x => (codepage + ' ').includes(x))){
 	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
 	    } else {
 	    	byte_box.innerText = `Code: ${new Blob([code]).size} bytes` + ' (UTF-8)';
@@ -200,7 +200,7 @@
                 flag_appendage = " `" + flags + "`,"
             }
             var output = ""
-	    var utfable = [...code].every(x => codepage.includes(x));
+	    var utfable = [...code].every(x => (codepage + ' ').includes(x));
 	    var len = utfable?code.length:new Blob([code]).size
             switch (shareType) {
                 case "permalink":
