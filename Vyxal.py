@@ -381,6 +381,25 @@ def assigned(vector, index, item):
         temp = deref(vector, False)
         temp[index] = item
         return temp
+def better_compress(word):
+    str_so_far = ''
+    while word:
+        ctr = len(word)
+        found = False
+        while ctr > 2:
+            temp = words.word_index(word[:ctr])
+            if temp == -1:
+                ctr -= 1
+            else:
+                str_so_far += temp
+                found = word[:ctr]
+                break
+        if found:
+            word = word[len(found):]
+        else:
+            str_so_far += word[0]
+            word = word[1:]
+    return str_so_far
 def bifuricate(item):
     t_item = VY_type(item)
     if t_item in (Number, list, str):
@@ -590,28 +609,7 @@ def dictionary_compress(item):
 
     for word in item:
         out += better_compress(word)
-    return "`" + out + "`"
-
-def better_compress(word):
-    str_so_far = ''
-    while word:
-        ctr = len(word)
-        found = False
-        while ctr > 2:
-            temp = words.word_index(word[:ctr])
-            if temp == -1:
-                ctr -= 1
-            else:
-                str_so_far += temp
-                found = word[:ctr]
-                break
-        if found:
-            word = word[len(found):]
-        else:
-            str_so_far += word[0]
-            word = word[1:]
-    return str_so_far
-        
+    return "`" + out + "`"        
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
     vector = numpy.asarray(vector)
@@ -691,6 +689,8 @@ def divisors_of(item):
             divisors.append(value)
 
     return divisors
+def dot_product(lhs, rhs):
+    return summate(multiply(lhs, rhs))
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -1195,6 +1195,16 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def matrix_multiply(lhs, rhs):
+    transformed_right = deref(transpose(rhs))
+    ret = []
+
+    for row in lhs:
+        temp = []
+        for col in transformed_right:
+            temp.append(summate(multiply(row, col)))
+        ret.append(temp[::])
+    return ret
 def mirror(item):
     if VY_type(item) in (str, Number):
         return add(item, reverse(item))
