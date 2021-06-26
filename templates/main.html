@@ -168,7 +168,7 @@
 	    if([...code].every(x => codepage.includes(x))){
 	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
 	    } else {
-	    	byte_box.innerText = `Code: ${new Blob([code]).size} byte` + "s".repeat(code.length != 1) + ' (UTF-8)';
+	    	byte_box.innerText = `Code: ${new Blob([code]).size} bytes` + ' (UTF-8)';
 		console.log("s".repeat(code.length != 1))
 	    }
         }
