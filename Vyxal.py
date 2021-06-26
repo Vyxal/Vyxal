@@ -827,37 +827,37 @@ def floor(item):
     }.get(VY_type(item), lambda: vectorise(floor, item))()
 def foldl_vector(vector, fn, init=None):
     if type(vector) is Generator:
-        acc = next(vector) if init == None else init
+        acc = next(vector) if init is None else init
         while not vector.end_reached:
-            acc = fn(acc, next(vector))
+            acc = _safe_apply(fn, acc, next(vector))
         return acc
     else:
-        if init == None:
+        if init is None:
             acc = vector[0]
             start = 1
         else:
             acc = init
             start = 0
         for i in range(start, len(vector)):
-            acc = fn(acc, vector[i])
+            acc = _safe_apply(fn, acc, vector[i])
         return acc
 def foldl_rows(fn, vector, init=None):
-    VY_map(vector, lambda row: foldl_vector(row, fn, init=init))
+    return map_norm(lambda row: foldl_vector(row, fn, init=init), vector)
 def foldl_cols(fn, vector, init=None):
-        num_rows = len(vector)
-        if not num_rows:
-            return []
-        num_cols = len(vector[0])
-        cs = range(num_cols)
-        if init == None:
-            res = vector[0]
-            start = 1
-        else:
-            res = [init] * num_cols
-            start = 0
-        for r in range(start, num_rows):
-            res = zip_with(fn, res, vector[r])
-        return res
+    num_rows = len(vector)
+    if not num_rows:
+        return []
+    num_cols = len(vector[0])
+    cs = range(num_cols)
+    if init is None:
+        res = vector[0]
+        start = 1
+    else:
+        res = [init] * num_cols
+        start = 0
+    for r in range(start, num_rows):
+        res = zip_with(fn, res, vector[r])
+    return res
 def format_string(value, items):
     ret = ""
     index = 0
@@ -1241,6 +1241,17 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def map_norm(fn, vector):
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        def gen():
+            for item in vector:
+                yield fn(item)
+        return Generator(gen())
+    elif vec_type is Number:
+        pass #idk what to do here, make a range or use it as a singleton?
+    else:
+        return Generator(map(fn, vector))
 def matrix_multiply(lhs, rhs):
     transformed_right = deref(transpose(rhs))
     ret = []
@@ -2099,7 +2110,7 @@ def VY_map(fn, vector):
                 yield [vector, item]
         return Generator(gen())
 
-    vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
+    vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if VY_type(vec) == Number:
         vec = range(MAP_START, int(vec) + MAP_OFFSET)
     if VY_type(vec) is Generator:
