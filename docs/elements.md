@@ -273,7 +273,7 @@ cmd | inputs | out/effect
 |  | (a: any, b: function)               |  apply b to every second item of a |
 |  | (a: function, b: any)               |  apply a to every second item of b |
 | ẋ | (a: any, b: number)                 |  repeat(a, times=b) # Repeat a b times |
-|  | (a: function, b: function, c: any)  |  collect_until_false(predicate=f, modifying_function=g, inital=a) # Collect the results of apply g on a while f(a) is truthy |
+|  | (a: function, b: function, c: any)  |  collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply b on c while a(c) is truthy |
 | ẏ | (a: any)                            |  range(0, len(a)) # Exclusive range from 0 to length of a |
 | ż | (a: any)                            |  range(1, len(a) + 1) # Inclusive range from 1 to length of a |
 | √ | (a: number)                         |  sqrt(a)  # square root |
