@@ -603,6 +603,13 @@ def deref(item, generator_to_list=True, limit=-1):
         return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
+def determinant(matrix):
+    det = numpy.linalg.det(numpy.asarray(deref(matrix)))
+    # If it's a number, don't convert to list
+    if isinstance(matrix, numpy.number):
+        return det
+    else:
+        return det.tolist()
 def dictionary_compress(item):
     item = split_on_words(VY_str(item))
     out = ""
@@ -612,6 +619,7 @@ def dictionary_compress(item):
     return "`" + out + "`"        
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
+    # joke explanation: the diagonals are the most important part of the game
     vector = numpy.asarray(vector)
     diag_num = 0
     diagonal = numpy.diag(vector)
@@ -628,6 +636,11 @@ def diagonals(vector):
         yield vectorise(lambda x: x.item(), list(diagonal))
         diag_num -= 1
         diagonal = numpy.diag(vector, k=diag_num)
+def diagonal_main(matrix):
+    return numpy.asarray(matrix).diagonal().tolist()
+def diagonal_anti(matrix):
+    flipped = numpy.fliplr(numpy.asarray(matrix)).diagonal().tolist()
+    return flipped
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -812,6 +825,50 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
+def foldl_vector(vector, fn, init=None):
+    if type(vector) is Generator:
+        acc = next(vector) if init == None else init
+        while not vector.end_reached:
+            acc = fn(acc, next(vector))
+        return acc
+    else:
+        if init == None:
+            acc = vector[0]
+            start = 1
+        else:
+            acc = init
+            start = 0
+        for i in range(start, len(vector)):
+            acc = fn(acc, vector[i])
+        return acc
+def foldl_rows(fn, matrix, init=None):
+    VY_map(matrix, lambda row: foldl_vector(row, fn, init=init))
+def foldl_cols(fn, matrix, init=None):
+    if type(vector) is Generator:
+        if vector.end_reached:
+            return []
+        if init == None:
+            res = next(vector)
+        else:
+            res = [init] * num_cols
+        while not vector.end_reached:
+            res = zip_with(fn, res, next(vector))
+        return res
+    else:
+        num_rows = len(vector)
+        if not num_rows:
+            return []
+        num_cols = len(vector[0])
+        cs = range(num_cols)
+        if init == None:
+            res = vector[0]
+            start = 1
+        else:
+            res = [init] * num_cols
+            start = 0
+        for r in range(start, num_rows):
+            res = zip_with(fn, res, vector[r])
+        return res
 def format_string(value, items):
     ret = ""
     index = 0
@@ -2250,7 +2307,15 @@ def VY_zipmap(fn, vector):
         ret.append([item, fn([item])[-1]])
 
     return [ret]
-
+def zip_with(fn, xs, ys):
+    xs_type, ys_type = VY_type(xs), VY_type(ys)
+    # Convert both to Generators if not already
+    xs = Generator(x for x in xs) if xs_type is list else xs
+    ys = Generator(y for y in ys) if ys_type is list else ys
+    def gen():
+        while not (xs.end_reached or ys.end_reached):
+            yield fn(next(xs), next(ys))
+    return Generator(gen())
 constants = {
     "A": "string.ascii_uppercase",
     "e": "math.e",
