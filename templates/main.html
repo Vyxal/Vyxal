@@ -200,7 +200,7 @@
             }
             var output = ""
 	    var utfable = code.every(x => codepage.includes(x));
-	    var len = codepage?code.length:new Blob([code]).size
+	    var len = utfable?code.length:new Blob([code]).size
             switch (shareType) {
                 case "permalink":
                     output = url;
