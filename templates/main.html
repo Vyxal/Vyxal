@@ -165,7 +165,7 @@
         function updateCount() {
             var byte_box = document.getElementById("code-count");
             var code = document.getElementById("code").value;
-	    if(code.every(x => codepage.includes(x)){
+	    if(code.every(x => codepage.includes(x))){
 	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
 	    } else {
 	    	byte_box.innerText = `Code: ${new Blob([code]).size} byte` + "s".repeat(code.length != 1) + ' (UTF-8)';
