@@ -2452,7 +2452,7 @@ else:
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
                     elif isinstance(parameter, int):
-                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
+                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})[::-1]; print(parameters)")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
