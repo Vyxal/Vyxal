@@ -1,3 +1,5 @@
+from numpy.lib.arraysetops import isin
+from sympy.simplify.fu import L
 from VyParse import *
 from commands import *
 import encoding
@@ -10,6 +12,7 @@ import sympy
 import types
 
 newline = "\n"
+number = "number"
 class LazyList():
     def __call__(self, *args, **kwargs):
         return self
@@ -86,13 +89,34 @@ class LazyList():
                 item = self.__next__()
         except:
             print("⟩")
+def apply(function, *args):
+    if function.__name__.startswith("_lambda"):
+        ret = function(list(args), len(args), function)
+        if len(ret): return ret[-1]
+        else: return []
+    elif function.__name__.startswith("FN_"):
+        ret = function(list(args))[-1]
+        if len(ret): return ret[-1]
+        else: return []
+    return function(*args)
+def divide(lhs, rhs):
+    return {
+        (number, number): lambda: realify(sympy.Rational(lhs, rhs)),
+        (number, str): lambda: rhs * int(lhs),
+        (str, number): lambda: lhs * int(rhs),
+        (str, str): lambda: lhs.split(rhs, maxsplit=1),
+    }.get((VY_type(lhs), VY_type(rhs)), lambda: vectorise(divide, lhs, rhs))()
+def realify(lhs):
+    if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
+        return 0
+    else: return lhs
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
 tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstrip("    ")
 def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
-        types = (VY_type(left), VY_type(right))
+        ts = (VY_type(left), VY_type(right))
         def gen():
             for pair in VY_zip(right, left):
                 yield apply(fn, third, *pair)
@@ -104,15 +128,15 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                 yield apply(fn, third, item, l)
 
         ret =  {
-            (types[0], types[1]): (lambda: apply(fn, left, right),
+            (ts[0], ts[1]): (lambda: apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
-            (list, types[1]): (lambda: [apply(fn, x, right) for x in left],
+            (list, ts[1]): (lambda: [apply(fn, x, right) for x in left],
                                lambda: expl(left, right)),
-            (types[0], list): (lambda: [apply(fn, left, x) for x in right],
+            (ts[0], list): (lambda: [apply(fn, left, x) for x in right],
                                lambda: swapped_expl(left, right)),
-            (LazyList, types[1]): (lambda: expl(left, right),
+            (LazyList, ts[1]): (lambda: expl(left, right),
                                     lambda: expl(left, right)),
-            (types[0], LazyList): (lambda: swapped_expl(left, right),
+            (ts[0], LazyList): (lambda: swapped_expl(left, right),
                                     lambda: swapped_expl(left, right)),
             (list, list): (lambda: gen(),
                            lambda: expl(left, right)),
@@ -122,12 +146,12 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                                 lambda: expl(left, right)),
             (LazyList, list): (lambda: gen(),
                                 lambda: expl(left, right))
-        }[types][explicit]()
+        }[ts][explicit]()
 
-        if type(ret) is Python_LazyList: return LazyList(ret)
+        if type(ret) is types.GeneratorType: return LazyList(ret)
         else: return ret
     elif right:
-        types = (VY_type(left), VY_type(right))
+        ts = (VY_type(left), VY_type(right))
         def gen():
             for pair in VY_zip(left, right): yield apply(fn, *pair)
         def expl(l, r):
@@ -136,15 +160,15 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
             for item in r:
                 yield apply(fn, item, l)
         ret = {
-            (types[0], types[1]): (lambda: apply(fn, left, right),
+            (ts[0], ts[1]): (lambda: apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
-            (list, types[1]): (lambda: [apply(fn, x, right) for x in left],
+            (list, ts[1]): (lambda: [apply(fn, x, right) for x in left],
                                lambda: expl(left, right)),
-            (types[0], list): (lambda: [apply(fn, left, x) for x in right],
+            (ts[0], list): (lambda: [apply(fn, left, x) for x in right],
                                lambda: swapped_expl(left, right)),
-            (LazyList, types[1]): (lambda: expl(left, right),
+            (LazyList, ts[1]): (lambda: expl(left, right),
                                     lambda: expl(left, right)),
-            (types[0], LazyList): (lambda: swapped_expl(left, right),
+            (ts[0], LazyList): (lambda: swapped_expl(left, right),
                                     lambda: swapped_expl(left, right)),
             (list, list): (lambda: gen(),
                            lambda: expl(left, right)),
@@ -154,9 +178,9 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                                 lambda: expl(left, right)),
             (LazyList, list): (lambda: gen(),
                                 lambda: expl(left, right))
-        }[types][explicit]()
+        }[ts][explicit]()
 
-        if type(ret) is Python_LazyList: return LazyList(ret)
+        if type(ret) is types.GeneratorType: return LazyList(ret)
         else: return ret
 
     else:
@@ -177,6 +201,31 @@ def wrap_in_lambda(tokens):
         return tokens
     else:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
+def VY_type(item):
+    if isinstance(item, int) or isinstance(item, sympy.core.numbers.Rational):
+        return number
+    else:
+        return type(item)
+def VY_zip(lhs, rhs):
+    ind = 0
+    if type(lhs) in [list, str]: lhs = iter(lhs)
+    if type(rhs) in [list, str]: rhs = iter(rhs)
+    while True:
+        exhausted = 0
+        try: left = next(lhs)
+        except: left = 0; exhausted += 1
+
+        try:
+            right = next(rhs)
+        except:
+            right = 0
+            exhausted += 1
+        if exhausted == 2:
+            break
+        else:
+            yield [left, right]
+
+        ind += 1
 def transpile(program, header=""):
     if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
@@ -395,4 +444,6 @@ else:
     return header + compiled
 
 if __name__ == "__main__":
-    print(transpile("*+-ξψ"))
+    # print(transpile("*+-ξψ"))
+    print(divide(1, 2))
+    print(divide(1, [1, 2, 3, 4, 5, 6, 7]))
