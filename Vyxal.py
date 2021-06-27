@@ -381,6 +381,19 @@ def assigned(vector, index, item):
         temp = deref(vector, False)
         temp[index] = item
         return temp
+def atleast_ndims(vector, n):
+    """Check if an array has at least n dimensions"""
+    if n == 0:
+        return 1
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        try:
+            return atleast_ndims(next(vector), n - 1)
+        except StopIteration:
+            return 1
+    if vec_type is list:
+        return not vector or atleast_ndims(vector[0], n - 1)
+    return 0
 def better_compress(word):
     str_so_far = ''
     while word:
@@ -825,39 +838,158 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
-def foldl_vector(vector, fn, init=None):
-    if type(vector) is Generator:
-        acc = next(vector) if init == None else init
-        while not vector.end_reached:
-            acc = fn(acc, next(vector))
-        return acc
+def foldl_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: foldl_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if init is None:
+        acc = next(vector) if vec_type is Generator else vector.pop(0)
     else:
-        if init == None:
-            acc = vector[0]
+        acc = init
+    for inner_arr in vector:
+        acc = vectorise(fn, inner_arr, acc)
+    return acc
+def foldl_cols(fn, vector, init=None):
+    """
+    Fold each column of a matrix from top to bottom, possibly with a starting value.
+    TODO generalize to multiple dimensions
+    """
+    vec_type = VY_type(vector)
+    print(f'vector={vector}')
+    if vec_type is Generator:
+        if vector.end_reached:
+            return []
+        first_row = next(vector)
+        if atleast_ndims(first_row, 2):
+            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
+        num_cols = len(first_row)
+        cs = range(num_cols)
+        if init is None:
+            res = next(vector)
             start = 1
         else:
-            acc = init
+            res = [init] * num_cols
             start = 0
-        for i in range(start, len(vector)):
-            acc = fn(acc, vector[i])
-        return acc
-def foldl_rows(fn, vector, init=None):
-    VY_map(vector, lambda row: foldl_vector(row, fn, init=init))
-def foldl_cols(fn, vector, init=None):
+        while not vector.end_reached:
+            res = zip_with2(fn, res, next(vector))
+        return res
+    elif vec_type is list:
         num_rows = len(vector)
         if not num_rows:
             return []
+        if atleast_ndims(vector[0], 2):
+            print('recursioning')
+            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
         num_cols = len(vector[0])
         cs = range(num_cols)
-        if init == None:
+        if init is None:
             res = vector[0]
             start = 1
         else:
             res = [init] * num_cols
             start = 0
         for r in range(start, num_rows):
-            res = zip_with(fn, res, vector[r])
+            res = zip_with2(fn, res, vector[r])
         return res
+    raise ValueError('Expected list or generator, cannot fold the columns of an atom')
+def foldl_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    if not vector:
+        return []
+    vec_type = VY_type(vector)
+    first_row = vector[0] if vec_type is list else next(vector)
+    inner_type = VY_type(first_row)
+    if inner_type is list:
+        return [foldl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield foldl_rows(fn, first_row, init=init)
+            for row in vector:
+                yield foldl_rows(fn, row, init=init)
+        return Generator(gen())
+    else: # 1D fold/reduction
+        if vec_type is Generator:
+            acc = next(vector) if init is None else init
+            while not vector.end_reached:
+                acc = _safe_apply(fn, acc, next(vector))
+            return acc
+        else:
+            if init is None:
+                acc = vector[0]
+                start = 1
+            else:
+                acc = init
+                start = 0
+            for i in range(start, len(vector)):
+                acc = _safe_apply(fn, vector[i], acc)
+            return acc
+def foldr_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: foldr_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if init is None:
+        acc = vector[-1]
+        start = len(vector) - 2
+    else:
+        acc = init
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc = vectorise(fn, acc, vector[i])
+    return acc
+def foldr_cols(fn, vector, init=None):
+    """
+    Fold each column of a matrix from top to bottom, possibly with a starting value.
+    TODO generalize to multiple dimensions
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()    
+    num_rows = len(vector)
+    if not num_rows:
+        return []
+    num_cols = len(vector[0])
+    cs = range(num_cols)
+    if init is None:
+        res = vector[-1]
+        start = len(vector) - 2
+    else:
+        res = [init] * num_cols
+        start = len(vector) - 1
+    for r in range(start, -1, -1):
+        res = zip_with2(fn, vector[r], res)
+    return res
+def foldr_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if not vector:
+        return []
+    inner_type = VY_type(vector[0])
+    if inner_type is list:
+        return [foldr_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield foldr_rows(fn, vector[0], init=init)
+            for row in vector:
+                yield foldr_rows(fn, row, init=init)
+        return Generator(gen())
+    # 1D fold/reduction
+    if init is None:
+        acc = vector[-1]
+        start = len(vector) - 2
+    else:
+        acc = init
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc = _safe_apply(fn, acc, vector[i])
+    return acc
 def format_string(value, items):
     ret = ""
     index = 0
@@ -1241,6 +1373,17 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def map_norm(fn, vector):
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        def gen():
+            for item in vector:
+                yield fn(item)
+        return Generator(gen())
+    elif vec_type is Number:
+        pass #idk what to do here, make a range or use it as a singleton?
+    else:
+        return Generator(map(fn, vector))
 def matrix_multiply(lhs, rhs):
     transformed_right = deref(transpose(rhs))
     ret = []
@@ -1602,6 +1745,93 @@ def run_length_decode(vector):
 def run_length_encode(item):
     item = group_consecutive(iterable(item))
     return Generator(map(lambda x: [x[0], len(x)], item))
+def scanl_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: scanl_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if init is None:
+        acc = [next(vector) if vec_type is Generator else vector.pop(0)]
+    else:
+        acc = [init]
+    for inner_arr in vector:
+        acc.append(vectorise(fn, inner_arr, acc[-1]))
+    return acc
+def scanl_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    if not vector:
+        return []
+    vec_type = VY_type(vector)
+    first_row = vector[0] if vec_type is list else next(vector)
+    inner_type = VY_type(first_row)
+    if inner_type is list:
+        return [scanl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield scanl_rows(fn, first_row, init=init)
+            for row in vector:
+                yield scanl_rows(fn, row, init=init)
+        return Generator(gen())
+    else: # 1D fold/reduction
+        if vec_type is Generator:
+            acc = [next(vector)] if init is None else [init]
+            while not vector.end_reached:
+                acc.append(_safe_apply(fn, acc[-1], next(vector)))
+            return acc
+        else:
+            if init is None:
+                acc = [vector[0]]
+                start = 1
+            else:
+                acc = [init]
+                start = 0
+            for i in range(start, len(vector)):
+                acc.append(_safe_apply(fn, vector[i], acc[-1]))
+            return acc
+def scanr_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: scanr_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if init is None:
+        acc = [vector[-1]]
+        start = len(vector) - 2
+    else:
+        acc = [init]
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc.append(vectorise(fn, acc[-1], vector[i]))
+    return acc
+def scanr_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if not vector:
+        return []
+    inner_type = VY_type(vector[0])
+    if inner_type is list:
+        return [scanl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield scanr_rows(fn, vector[0], init=init)
+            for row in vector:
+                yield scanr_rows(fn, row, init=init)
+        return Generator(gen())
+    # 1D fold/reduction
+    if init is None:
+        acc = [vector[-1]]
+        start = len(vector) - 2
+    else:
+        acc = [init]
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc.append(_safe_apply(fn, acc[-1], vector[i]))
+    return acc
 def sentence_case(item):
     ret = ""
     capitalise = True
@@ -2099,7 +2329,7 @@ def VY_map(fn, vector):
                 yield [vector, item]
         return Generator(gen())
 
-    vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
+    vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if VY_type(vec) == Number:
         vec = range(MAP_START, int(vec) + MAP_OFFSET)
     if VY_type(vec) is Generator:
@@ -2229,7 +2459,7 @@ def VY_reduce(fn, vector):
 def VY_repr(item):
     t_item = VY_type(item)
     return {
-        Number: lambda x: str(x),
+        Number: str,
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`",
@@ -2246,7 +2476,7 @@ def VY_round(item):
 def VY_str(item):
     t_item = VY_type(item)
     return {
-        Number: lambda x: str(x),
+        Number: str,
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
@@ -2276,9 +2506,7 @@ def VY_zip(lhs, rhs):
             exhausted += 1
         if exhausted == 2:
             break
-        else:
-            yield [l, r]
-
+        yield [l, r]
         ind += 1
 def VY_zipmap(fn, vector):
     if type(fn) is not Function:
@@ -2296,14 +2524,26 @@ def VY_zipmap(fn, vector):
         ret.append([item, fn([item])[-1]])
 
     return [ret]
-def zip_with(fn, xs, ys):
+def zip_with2(fn, xs, ys):
     xs_type, ys_type = VY_type(xs), VY_type(ys)
     # Convert both to Generators if not already
-    xs = Generator(x for x in xs) if xs_type is list else xs
-    ys = Generator(y for y in ys) if ys_type is list else ys
+    xs = xs if xs_type is Generator else Generator((x for x in xs))
+    ys = ys if ys_type is Generator else Generator((y for y in ys))
     def gen():
-        while not (xs.end_reached or ys.end_reached):
-            yield fn(next(xs), next(ys))
+        try:
+            while not (xs.end_reached or ys.end_reached):
+                yield _safe_apply(fn, next(ys), next(xs))
+        except StopIteration:
+            pass
+    return Generator(gen())
+def zip_with_multi(fn, lists):
+    lists = [lst if VY_type(lst) is Generator else Generator((x for x in lst)) for lst in lists]
+    def gen():
+        try:
+            while not any(lst.end_reached for lst in lists):
+                yield _safe_apply(fn, *map(next, lists))
+        except StopIteration:
+            pass
     return Generator(gen())
 constants = {
     "A": "string.ascii_uppercase",
@@ -2715,6 +2955,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces on end of execution
 \tC\tCentre the output and join on newlines on end of execution
 \tO\tDisable implicit output
+\to\tForce implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting)
 \tl\tPrint length of top of stack on end of execution
 \tG\tPrint the maximum item of the top of stack on end of execution
