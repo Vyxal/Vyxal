@@ -1,15 +1,14 @@
 # Simple tests
 
+from test_utils import *
+import Vyxal
 import os
 import sys
 import builtins
 from multiprocessing import Manager
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
-sys.path.insert(1, THIS_FOLDER)
-
-import Vyxal
-from test_utils import run_code
+# THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+# sys.path.insert(1, THIS_FOLDER)
 
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
@@ -60,6 +59,7 @@ def test_is_square():
         900,
         961,
     ]
+
 
 trailing_zero_testcases = [
     ["512", "2", 9],
@@ -116,5 +116,25 @@ def test_quit():
 
 
 def test_foldl_rows():
-    stack = run_code("⟨⟨1|2|3⟩|⟨4|5|6⟩⟩λ+;ÞR")
-    assert Vyxal.pop(stack) == [6, 15]
+    tests = [
+        (list(range(1, 6)), 'λ*;', 120),
+        (reshape(list(range(12)), [3, 4]), 'λ-;', [-6, -14, -22]),
+        (reshape(list(range(37)), [3, 3, 4]), 'λ+;',
+         [[6, 22, 38],  [54, 70, 86],  [102, 118, 134]])
+    ]
+    for input_array, fn, expected in tests:
+        stack = run_code(fn + "ÞR", input_list=[input_array])
+        assert Vyxal.pop(stack) == expected
+
+
+def test_foldl_cols():
+    #todo add more complicated test cases
+    tests = [
+        (reshape(list(range(1, 10)), [3, 3]), 'λ+;', [12, 15, 18]),
+        (reshape(list(range(12)), [3, 4]), 'λ-;', [-12, -13, -14, -15]),
+        (reshape(list(range(36)), [3, 3, 4]), 'λ-;',
+         [[-12, -13, -14, -15], [-24, -25, -26, -27], [-36, -37, -38, -39]])
+    ]
+    for input_array, fn, expected in tests:
+        stack = run_code(fn + "ÞC", input_list=[input_array])
+        assert to_list(Vyxal.pop(stack)) == expected
