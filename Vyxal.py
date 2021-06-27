@@ -7,16 +7,172 @@ import base64
 import secrets
 import string
 import sympy
+import types
 
 newline = "\n"
+class LazyList():
+    def __call__(self, *args, **kwargs):
+        return self
+    def __contains__(self, item):
+        if self.infinite:
+            if len(self.generated):
+                last = self.generated[-1]
+            else:
+                last = 0 
+        
+            while last <= item:
+                last = next(self)
+                if last == item:
+                    return 1
+            return 0
+        else:
+            for temp in self:
+                if temp == item: return 1
+            return 0
+    def __getitem__(self, position):
+        if isinstance(position, slice):
+            start, stop, step = position.start or 0, position.stop, position.step or 1
+            if stop is None:
+                @LazyList
+                def infinite_index():
+                    if len(self.generated):
+                        for item in self.generated[position::step]: yield item
+                        temp = next(self)
+                        while temp:
+                            yield temp; temp = next(self)
+                return infinite_index()
+            else:
+                ret = []
+                for i in range(start, stop, step):
+                    ret.append(self.__getitem__(i))
+                return ret
+        else:
+            if position < 0: self.generated += list(self); return self.generated[position]
+            elif position < len(self.generated): return self.generated[position]
+            else:
+                while len(self.generated) < position + 1:
+                    try: self.__next__()
+                    except: break
+                return self.generated[position % len(self.generated)]
+    def __init__(self, source, isinf=False):
+        self.raw_object = source
+        if isinstance(self.raw_object, types.FunctionType): self.raw_object = self.raw_object()
+        self.generated = []
+        self.infinite = isinf
+    def __iter__(self):
+        return self
+    def __len__(self):
+        return len(self.listify())
+    def __next__(self):
+        item = next(self.raw_object)
+        self.generated.append(item)
+        return item
+    def listify(self):
+        temp = self.generated + list(self)
+        self.raw_object = iter(temp[::])
+        self.generated = []
+        return temp
+    def output(self):
+        print("⟨", end="")
+        for item in self.generated[:-1]:
+            print(item, end=", ")
+        if len(self.generated): print(self.generated[-1], end="")
 
+        try:
+            item = self.__next__()
+            if len(self.generated) > 1: print(", ", end="")
+            while True:
+                print(item, end=", ")
+                item = self.__next__()
+        except:
+            print("⟩")
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
 tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstrip("    ")
+def vectorise(fn, left, right=None, third=None, explicit=False):
+    if third:
+        types = (VY_type(left), VY_type(right))
+        def gen():
+            for pair in VY_zip(right, left):
+                yield apply(fn, third, *pair)
+        def expl(l, r):
+            for item in l:
+                yield apply(fn, third, r, item)
+        def swapped_expl(l, r):
+            for item in r:
+                yield apply(fn, third, item, l)
+
+        ret =  {
+            (types[0], types[1]): (lambda: apply(fn, left, right),
+                                   lambda: expl(iterable(left), right)),
+            (list, types[1]): (lambda: [apply(fn, x, right) for x in left],
+                               lambda: expl(left, right)),
+            (types[0], list): (lambda: [apply(fn, left, x) for x in right],
+                               lambda: swapped_expl(left, right)),
+            (LazyList, types[1]): (lambda: expl(left, right),
+                                    lambda: expl(left, right)),
+            (types[0], LazyList): (lambda: swapped_expl(left, right),
+                                    lambda: swapped_expl(left, right)),
+            (list, list): (lambda: gen(),
+                           lambda: expl(left, right)),
+            (LazyList, LazyList): (lambda: gen(),
+                                     lambda: expl(left, right)),
+            (list, LazyList): (lambda: gen(),
+                                lambda: expl(left, right)),
+            (LazyList, list): (lambda: gen(),
+                                lambda: expl(left, right))
+        }[types][explicit]()
+
+        if type(ret) is Python_LazyList: return LazyList(ret)
+        else: return ret
+    elif right:
+        types = (VY_type(left), VY_type(right))
+        def gen():
+            for pair in VY_zip(left, right): yield apply(fn, *pair)
+        def expl(l, r):
+            for item in l: yield apply(fn, r, item)
+        def swapped_expl(l, r):
+            for item in r:
+                yield apply(fn, item, l)
+        ret = {
+            (types[0], types[1]): (lambda: apply(fn, left, right),
+                                   lambda: expl(iterable(left), right)),
+            (list, types[1]): (lambda: [apply(fn, x, right) for x in left],
+                               lambda: expl(left, right)),
+            (types[0], list): (lambda: [apply(fn, left, x) for x in right],
+                               lambda: swapped_expl(left, right)),
+            (LazyList, types[1]): (lambda: expl(left, right),
+                                    lambda: expl(left, right)),
+            (types[0], LazyList): (lambda: swapped_expl(left, right),
+                                    lambda: swapped_expl(left, right)),
+            (list, list): (lambda: gen(),
+                           lambda: expl(left, right)),
+            (LazyList, LazyList): (lambda: gen(),
+                                     lambda: expl(left, right)),
+            (list, LazyList): (lambda: gen(),
+                                lambda: expl(left, right)),
+            (LazyList, list): (lambda: gen(),
+                                lambda: expl(left, right))
+        }[types][explicit]()
+
+        if type(ret) is Python_LazyList: return LazyList(ret)
+        else: return ret
+
+    else:
+        if VY_type(left) is LazyList:
+            def gen():
+                for item in left:
+                    yield apply(fn, item)
+            return LazyList(gen())
+        elif VY_type(left) in (str, Number):
+            return apply(fn, list(iterable(left)))
+        else:
+            ret =  [apply(fn, x) for x in left]
+            return ret
 def wrap_in_lambda(tokens):
     if tokens[0] == Structure.NONE:
-        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict[tokens[1]][1])})]
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict.get(tokens[1], (0,0))[1])})]
     elif tokens[0] == Structure.LAMBDA:
         return tokens
     else:
