@@ -1,5 +1,6 @@
-from numpy.lib.arraysetops import isin
-from sympy.simplify.fu import L
+from operator import mul
+
+from sympy.utilities.iterables import multiset_partitions
 from VyParse import *
 from commands import *
 import encoding
@@ -71,21 +72,21 @@ class LazyList():
         self.generated.append(item)
         return item
     def listify(self):
-        temp = self.generated + list(self)
+        temp = self.generated + list(self.raw_object)
         self.raw_object = iter(temp[::])
         self.generated = []
         return temp
     def output(self):
         print("⟨", end="")
         for item in self.generated[:-1]:
-            print(item, end=", ")
+            print(item, end="| ")
         if len(self.generated): print(self.generated[-1], end="")
 
         try:
             item = self.__next__()
-            if len(self.generated) > 1: print(", ", end="")
+            if len(self.generated) > 1: print("| ", end="")
             while True:
-                print(item, end=", ")
+                print(item, end="| ")
                 item = self.__next__()
         except:
             print("⟩")
@@ -105,11 +106,72 @@ def divide(lhs, rhs):
         (number, str): lambda: rhs * int(lhs),
         (str, number): lambda: lhs * int(rhs),
         (str, str): lambda: lhs.split(rhs, maxsplit=1),
-    }.get((VY_type(lhs), VY_type(rhs)), lambda: vectorise(divide, lhs, rhs))()
+    }.get(VY_type(lhs, rhs), lambda: vectorise(divide, lhs, rhs))()
+def factorial(lhs):
+    return {
+        number: lambda: realify(sympy.gamma(lhs)),
+        str: lambda: sentence_case(lhs)
+    }.get(VY_type(lhs), lambda: vectorise(factorial, lhs))()
+def function_call(fn, vector):
+    if type(fn) is types.FunctionType:
+        return fn(vector, self=fn)
+    else:
+        return [{
+            number: lambda: len(prime_factors(fn)),
+            str: lambda: exec(VY_compile(fn)) or []
+        }.get(VY_type(fn), lambda: vectorised_not(fn))()]
+def log(lhs, rhs):
+    ts = (VY_type(lhs), VY_type(rhs))
+    if ts == (str, str):
+        ret = ""
+        for i in range(min(len(lhs), len(rhs))):
+            if rhs[i].isupper():
+                ret += lhs[i].upper()
+            elif rhs[i].islower():
+                ret += lhs[i].lower()
+            else:
+                ret += lhs[i]
+
+        if len(lhs) > len(rhs):
+            ret += lhs[i + 1:]
+
+        return ret
+
+    return {
+        (number, number): lambda: Sympy.Rational(str(math.log(lhs, rhs))),
+        (str, number): lambda: "".join([c * rhs for c in lhs]),
+        (number, str): lambda: "".join([c * lhs for c in rhs]),
+        (list, list): lambda: mold(lhs, rhs),
+        (list, LazyList): lambda: mold(lhs, list(rhs)),
+        (LazyList, list): lambda: mold(list(lhs), rhs),
+        (LazyList, LazyList): lambda: mold(list(lhs), list(rhs)) #There's a chance molding raw generators won't work
+    }.get(ts, lambda: vectorise(log, lhs, rhs))()
+def multiply(lhs, rhs):
+    ts = VY_type(lhs, rhs)
+    if ts == (types.FunctionType, number):
+        lhs.stored_arity = int(rhs)
+        return lhs
+    elif ts == (number, types.FunctionType):
+        rhs.stored_arity = int(lhs)
+        return rhs
+    return {
+        (number, number): lambda: lhs * rhs,
+        (number, str): lambda: int(lhs) * rhs,
+        (str, number): lambda: lhs * rhs,
+        (str, str): lambda: [x + rhs for x in lhs]
+    }.get(ts, lambda: vectorise(multiply, lhs, rhs))
 def realify(lhs):
     if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
         return 0
     else: return lhs
+def sentence_case(lhs):
+    ret = ""
+    capitalise = True
+    for char in lhs:
+        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise and char != " ": capitalise = False
+        capitalise = capitalise or char in "!?."
+    return ret
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
@@ -201,31 +263,30 @@ def wrap_in_lambda(tokens):
         return tokens
     else:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
-def VY_type(item):
-    if isinstance(item, int) or isinstance(item, sympy.core.numbers.Rational):
+def VY_type(lhs, rhs=None, simple=False):
+    if rhs is not None:
+        return (VY_type(lhs), VY_type(rhs))
+    elif isinstance(lhs, int) or isinstance(lhs, sympy.core.numbers.Rational):
         return number
+    elif isinstance(lhs, LazyList):
+        return (LazyList, list)[simple]
     else:
         return type(item)
 def VY_zip(lhs, rhs):
-    ind = 0
-    if type(lhs) in [list, str]: lhs = iter(lhs)
-    if type(rhs) in [list, str]: rhs = iter(rhs)
-    while True:
-        exhausted = 0
-        try: left = next(lhs)
-        except: left = 0; exhausted += 1
-
-        try:
-            right = next(rhs)
-        except:
-            right = 0
-            exhausted += 1
-        if exhausted == 2:
-            break
-        else:
+    @LazyList
+    def f():
+        lengths = (len(lhs), len(rhs))
+        for i in range(max(lengths)):
+            left = lhs[i] if i < lengths[0] else 0
+            right = rhs[i] if i < lengths[1] else 0
             yield [left, right]
-
-        ind += 1
+    return f()
+def zipwith(function, lhs, rhs):
+    @LazyList
+    def f():
+        for pair in VY_zip(lhs, rhs):
+            yield apply(function, *pair)
+    return f()
 def transpile(program, header=""):
     if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
@@ -445,5 +506,4 @@ else:
 
 if __name__ == "__main__":
     # print(transpile("*+-ξψ"))
-    print(divide(1, 2))
-    print(divide(1, [1, 2, 3, 4, 5, 6, 7]))
+    print(list(VY_zip([1, 2, 3], [4, 5])))
