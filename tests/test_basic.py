@@ -1,51 +1,32 @@
 # Simple tests
 
-import os, sys
+from test_utils import *
+import Vyxal
+import os
+import sys
 import builtins
 from multiprocessing import Manager
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
-sys.path.insert(1, THIS_FOLDER)
-import Vyxal
-from Vyxal import *
-
-header = "stack = []\nregister = 0\nprinted = False\n"
-manager = Manager()
-
-
-def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
-    global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings, number_iterable, MAP_START, MAP_OFFSET
-    Vyxal.keg_mode = False
-    Vyxal.raw_strings = False
-    Vyxal.online_version = False
-    Vyxal.input_level = 0
-    Vyxal.number_iterable = list
-    Vyxal.MAP_START = 1
-    Vyxal.MAP_OFFSET = 1
-    Vyxal._join = False
-    Vyxal._vertical_join = False
-    Vyxal.use_encoding = False
-    # context_level = 0
-    execute(code, flags, "\n".join(input_list), output_variable)
-    return stack
+# THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+# sys.path.insert(1, THIS_FOLDER)
 
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
 # overload of every single command
 def test_not():
     stack = run_code("2¬")
-    assert pop(stack) == 0
+    assert Vyxal.pop(stack) == 0
 
 
 def test_is_prime():
     stack = run_code("10ɾƛæ;")
-    assert pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
-    
+    assert Vyxal.pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
+
 
 def test_is_square():
     stack = run_code("1000'∆²;")
-    f = pop(stack)._dereference()
-    assert f == [
+    res = Vyxal.pop(stack)._dereference()
+    assert res == [
         1,
         4,
         9,
@@ -80,117 +61,6 @@ def test_is_square():
     ]
 
 
-# from from https://codegolf.stackexchange.com/a/210307
-fizzbuzz_output = [
-    1,
-    2,
-    "Fizz",
-    4,
-    "Buzz",
-    "Fizz",
-    7,
-    8,
-    "Fizz",
-    "Buzz",
-    11,
-    "Fizz",
-    13,
-    14,
-    "FizzBuzz",
-    16,
-    17,
-    "Fizz",
-    19,
-    "Buzz",
-    "Fizz",
-    22,
-    23,
-    "Fizz",
-    "Buzz",
-    26,
-    "Fizz",
-    28,
-    29,
-    "FizzBuzz",
-    31,
-    32,
-    "Fizz",
-    34,
-    "Buzz",
-    "Fizz",
-    37,
-    38,
-    "Fizz",
-    "Buzz",
-    41,
-    "Fizz",
-    43,
-    44,
-    "FizzBuzz",
-    46,
-    47,
-    "Fizz",
-    49,
-    "Buzz",
-    "Fizz",
-    52,
-    53,
-    "Fizz",
-    "Buzz",
-    56,
-    "Fizz",
-    58,
-    59,
-    "FizzBuzz",
-    61,
-    62,
-    "Fizz",
-    64,
-    "Buzz",
-    "Fizz",
-    67,
-    68,
-    "Fizz",
-    "Buzz",
-    71,
-    "Fizz",
-    73,
-    74,
-    "FizzBuzz",
-    76,
-    77,
-    "Fizz",
-    79,
-    "Buzz",
-    "Fizz",
-    82,
-    83,
-    "Fizz",
-    "Buzz",
-    86,
-    "Fizz",
-    88,
-    89,
-    "FizzBuzz",
-    91,
-    92,
-    "Fizz",
-    94,
-    "Buzz",
-    "Fizz",
-    97,
-    98,
-    "Fizz",
-    "Buzz",
-]
-
-
-def test_fizzbuzz():
-    stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=["j"])
-    f = pop(stack)
-    assert f == fizzbuzz_output
-
-
 trailing_zero_testcases = [
     ["512", "2", 9],
     ["248", "2", 3],
@@ -211,28 +81,60 @@ trailing_zero_testcases = [
     ["18", "3", 2],
     ["107", "43", 0],
 ]
-# from https://codegolf.stackexchange.com/a/224288
+
+
 def test_trailing_zeroes():
-    for [n, b, out] in trailing_zero_testcases:
-        stack = run_code("Ǒ", flags="j", input_list=[b, n])
-        f = pop(stack)
-        assert f == out
-        
+    """
+    From https://codegolf.stackexchange.com/a/224288
+    Test the command to find number of trailing zeroes in a base
+    """
+    for [num, base, expected] in trailing_zero_testcases:
+        stack = run_code("Ǒ", input_list=[base, num])
+        print(num, base, expected, stack)
+        assert stack == [expected]
+
+
 def test_quit():
-    global print
     real_print = Vyxal.VY_print
+
     def shouldnt_print(first, *args):
         raise ValueError("Shouldn't print anything")
-        real_print(first, *args)
+
     Vyxal.VY_print = shouldnt_print
     run_code("69 Q")
     run_code("69 Q", flags="O")
     trip = []
+
     def should_print(first, *args):
         nonlocal trip
         trip.append(first)
-        real_print(first, *args)
+
     Vyxal.VY_print = should_print
     run_code("69 Q", flags="o")
     assert trip
     Vyxal.VY_print = real_print
+
+
+def test_foldl_rows():
+    tests = [
+        (list(range(1, 6)), 'λ*;', 120),
+        (reshape(list(range(12)), [3, 4]), 'λ-;', [-6, -14, -22]),
+        (reshape(list(range(37)), [3, 3, 4]), 'λ+;',
+         [[6, 22, 38],  [54, 70, 86],  [102, 118, 134]])
+    ]
+    for input_array, fn, expected in tests:
+        stack = run_code(fn + "ÞR", input_list=[input_array])
+        assert Vyxal.pop(stack) == expected
+
+
+def test_foldl_cols():
+    #todo add more complicated test cases
+    tests = [
+        (reshape(list(range(1, 10)), [3, 3]), 'λ+;', [12, 15, 18]),
+        (reshape(list(range(12)), [3, 4]), 'λ-;', [-12, -13, -14, -15]),
+        (reshape(list(range(36)), [3, 3, 4]), 'λ-;',
+         [[-12, -13, -14, -15], [-24, -25, -26, -27], [-36, -37, -38, -39]])
+    ]
+    for input_array, fn, expected in tests:
+        stack = run_code(fn + "ÞC", input_list=[input_array])
+        assert to_list(Vyxal.pop(stack)) == expected
