@@ -32,6 +32,9 @@ safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
 this_function = lambda x: VY_print(stack) or x
 
+MAP_START = 1
+MAP_OFFSET = 1
+
 newline = "\n"
 number = "number"
 class LazyList():
@@ -114,10 +117,10 @@ class LazyList():
             VY_print("⟩")
 def add(lhs, rhs):
     return {
-        (Number, Number): lambda: lhs + rhs,
+        (number, number): lambda: lhs + rhs,
         (str, str): lambda: lhs + rhs,
-        (str, Number): lambda: str(lhs) + str(rhs),
-        (Number, str): lambda: str(lhs) + str(rhs)
+        (str, number): lambda: str(lhs) + str(rhs),
+        (number, str): lambda: str(lhs) + str(rhs)
     }.get(VY_type(lhs, rhs), lambda: vectorise(add, lhs, rhs))()
 def apply(function, *args):
     if function.__name__.startswith("_lambda"):
@@ -192,7 +195,7 @@ def function_call(function, vector):
     else:
         return [{
             number: lambda: len(prime_factors(function)),
-            str: lambda: exec(VY_compile(function)) or []
+            str: lambda: exec(transpile(function)) or []
         }.get(VY_type(function), lambda: vectorised_not(function))()]
 def get_input(predefined_level=None):
     global input_values
@@ -293,6 +296,19 @@ def multiply(lhs, rhs):
         (str, number): lambda: lhs * rhs,
         (str, str): lambda: [x + rhs for x in lhs]
     }.get(ts, lambda: vectorise(multiply, lhs, rhs))
+def pop(vector, num=1, wrap=False):
+    global last_popped
+    ret = []
+    for _ in range(num):
+        if vector: ret.append(vector.pop())
+        else: x = get_input(); ret.append(x)
+
+    if retain_items: vector += ret[::-1]
+
+    last_popped = ret
+    if num == 1 and not wrap: return ret[0]
+    if reverse_args: return ret[::-1]
+    return ret
 def realify(lhs):
     if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
         return 0
@@ -440,7 +456,7 @@ def VY_eval(lhs):
             t = parse(lhs)
             if len(t) and t[-1][0] in (Structure.NUMBER, Structure.STRING, Structure.LIST):
                 try:
-                    temp = VY_compile(lhs)
+                    temp = transpile(lhs)
                     stack = []
                     exec(temp)
                     return stack[-1]
@@ -452,7 +468,7 @@ def VY_eval(lhs):
     else:
         try: ret = eval(lhs); return ret
         except: return lhs
-def VY_print(item, end=""):
+def VY_print(item, end="\n"):
     if isinstance(item, LazyList):
         item.output()
     elif isinstance(item, list):
@@ -462,6 +478,24 @@ def VY_print(item, end=""):
             output[1] += str(item) + end
         else:
             print(item, end=end)
+def VY_str(item):
+    t_item = VY_type(item)
+    return {
+        number: str,
+        str: lambda x: x,
+        list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
+        LazyList: lambda x: VY_str(x._dereference()),
+        types.FunctionType: lambda x: VY_str(function_call(item, stack)[0])
+    }[t_item](item)
+def VY_repr(item):
+    t_item = VY_type(item)
+    return {
+        number: str,
+        list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
+        LazyList: lambda x: VY_repr(x._dereference()),
+        str: lambda x: "`" + x + "`",
+        types.FunctionType: lambda x: "@FUNCTION:" + x.__name__
+    }[t_item](item)
 def VY_type(lhs, rhs=None, simple=False):
     if rhs is not None:
         return (VY_type(lhs, simple=simple), VY_type(rhs, simple=simple))
@@ -717,7 +751,65 @@ if __name__ == "__main__":
         else:
             inputs = list(map(eval_function,sys.argv[3:]))
 
+    if not filepath:
+        while True:
+            repl_line = input("   ")
+            context_level = 0
+            repl_line = transpile(repl_line, header)
+            exec(repl_line)
+            VY_print(stack)
+
     # Handle all the other flags now
     inputs = [inputs] if 'a' in flags else inputs
     reverse_args = 'r' in flags
+    use_encoding = 'v' in flags
+    MAP_START = 0 if 'M' in flags or 'Ṁ' in flags else 1
+    MAP_OFFSET = 0 if 'm' in flags or 'Ṁ' in flags else 1
+    safe_mode = 'E' in flags
+    keg_mode = 'K' in flags
+    number_iterable = 'R' in flags
+    if 'H' in flags: header += "stack = [100]\n"
     
+    if use_encoding:
+        import encoding
+        code = open(filepath, "rb").read()
+        code = encoding.vyxal_to_utf8(code)
+    else:
+        code = open(filepath, "r", encoding="utf-8").read()
+    
+    input_values[0] = [inputs, 0]
+    code = transpile(code, header)
+    context_level = 0
+    if flags and 'c' in flags:
+        print(code)
+    exec(code)
+
+    if (not printed and 'O' not in flags) or 'o' in flags:
+        if flags and 's' in flags:
+            print(summate(pop(stack)))
+        elif flags and "ṡ" in flags:
+            print(" ".join([VY_str(n) for n in stack]))
+        elif flags and 'd' in flags:
+            print(summate(flatten(pop(stack))))
+        elif flags and 'Ṫ' in flags:
+            VY_print(summate(stack))
+        elif flags and 'S' in flags:
+            print(" ".join([VY_str(n) for n in pop(stack)]))
+        elif flags and 'C' in flags:
+            print("\n".join(centre([VY_str(n) for n in pop(stack)])))
+        elif flags and 'l' in flags:
+            print(len(pop(stack)))
+        elif flags and 'G' in flags:
+            print(VY_max(pop(stack)))
+        elif flags and 'g' in flags:
+            print(VY_min(pop(stack)))
+        elif flags and 'W' in flags:
+            print(VY_str(stack))
+        elif _vertical_join:
+            print(vertical_join(pop(stack)))
+        elif _join:
+            print("\n".join([VY_str(n) for n in pop(stack)]))
+        elif flags and 'J' in flags:
+            print("\n".join([VY_str(n) for n in stack]))
+        else:
+            VY_print(pop(stack))
