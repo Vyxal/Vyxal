@@ -1,16 +1,36 @@
-from operator import mul
-
-from sympy.utilities.iterables import multiset_partitions
 from VyParse import *
 from commands import *
 import encoding
 import utilities
 
-import base64
+import regex
 import secrets
 import string
 import sympy
+import sys
 import types
+
+import pwn
+
+context_level = 0
+context_values = [0]
+global_stack = []
+input_level = 0
+inputs = []
+input_values = {0: [inputs, 0]} # input_level: [source, input_index]
+last_popped = []
+keg_mode = False
+number_iterable = list
+raw_strings = False
+online_version = False
+output = ""
+printed = False
+register = 0
+retain_items = False
+reverse_args = False
+safe_mode = False # You may want to have safe evaluation but not be online.
+stack = []
+this_function = lambda x: VY_print(stack) or x
 
 newline = "\n"
 number = "number"
@@ -61,6 +81,7 @@ class LazyList():
     def __init__(self, source, isinf=False):
         self.raw_object = source
         if isinstance(self.raw_object, types.FunctionType): self.raw_object = self.raw_object()
+        elif isinstance(self.raw_object, list): self.raw_object = iter(self.raw_object)
         self.generated = []
         self.infinite = isinf
     def __iter__(self):
@@ -77,19 +98,27 @@ class LazyList():
         self.generated = []
         return temp
     def output(self):
-        print("⟨", end="")
+        VY_print("⟨", end="")
         for item in self.generated[:-1]:
-            print(item, end="| ")
+            VY_print(item, end="|")
         if len(self.generated): print(self.generated[-1], end="")
 
         try:
             item = self.__next__()
-            if len(self.generated) > 1: print("| ", end="")
+            if len(self.generated) > 1: print("|", end="")
             while True:
-                print(item, end="| ")
+                VY_print(item, end="")
                 item = self.__next__()
+                VY_print("|", end="")
         except:
-            print("⟩")
+            VY_print("⟩")
+def add(lhs, rhs):
+    return {
+        (Number, Number): lambda: lhs + rhs,
+        (str, str): lambda: lhs + rhs,
+        (str, Number): lambda: str(lhs) + str(rhs),
+        (Number, str): lambda: str(lhs) + str(rhs)
+    }.get(VY_type(lhs, rhs), lambda: vectorise(add, lhs, rhs))()
 def apply(function, *args):
     if function.__name__.startswith("_lambda"):
         ret = function(list(args), len(args), function)
@@ -100,26 +129,104 @@ def apply(function, *args):
         if len(ret): return ret[-1]
         else: return []
     return function(*args)
+def chrord(lhs):
+    return {
+        number: lambda: chr(lhs),
+        str: lambda: ord(lhs) if len(lhs) == 1 else vectorise(chrord, list(lhs))
+    }.get(VY_type(lhs), lambda: vectorise(chrord, lhs))()
 def divide(lhs, rhs):
     return {
         (number, number): lambda: realify(sympy.Rational(lhs, rhs)),
-        (number, str): lambda: rhs * int(lhs),
-        (str, number): lambda: lhs * int(rhs),
+        (number, str): lambda: wrap(rhs, len(rhs) // lhs),
+        (str, number): lambda: wrap(lhs, len(lhs) // rhs),
         (str, str): lambda: lhs.split(rhs, maxsplit=1),
     }.get(VY_type(lhs, rhs), lambda: vectorise(divide, lhs, rhs))()
+def eq(lhs, rhs):
+    return {
+        (number, number): lambda: int(lhs == rhs),
+        (number, str): lambda: int(str(lhs) == rhs),
+        (str, number): lambda: int(lhs == str(rhs)),
+        (str, str): lambda: int(lhs == rhs)
+    }.get(VY_type(lhs, rhs), lambda: vectorise(eq, lhs, rhs))()
+def exponate(lhs, rhs):
+    ts = (VY_type(lhs), VY_type(rhs))
+
+    if ts == (str, str):
+        pobj = regex.compile(lhs)
+        mobj = pobj.search(rhs)
+        return list(mobj.span()) if mobj else []
+
+    elif ts == (str, number):
+        factor = rhs
+        if 0 < rhs < 1:
+            factor = int(1 / rhs)
+        return lhs[::factor]
+    return {
+        (number, number): lambda: lhs ** rhs,
+    }.get(ts, lambda: vectorise(exponate, lhs, rhs))()
 def factorial(lhs):
     return {
         number: lambda: realify(sympy.gamma(lhs)),
         str: lambda: sentence_case(lhs)
     }.get(VY_type(lhs), lambda: vectorise(factorial, lhs))()
-def function_call(fn, vector):
-    if type(fn) is types.FunctionType:
-        return fn(vector, self=fn)
+def format_string(value, items):
+    ret = ""
+    index = 0
+    f_index = 0
+
+    while index < len(value):
+        if value[index] == "\\":
+            ret += "\\" + value[index + 1]
+            index += 1
+        elif value[index] == "%":
+            #print(f_index, f_index % len(items))
+            ret += str(items[f_index % len(items)])
+            f_index += 1
+        else:
+            ret += value[index]
+        index += 1
+    return ret
+def function_call(function, vector):
+    if type(function) is types.FunctionType:
+        return function(vector, self=function)
     else:
         return [{
-            number: lambda: len(prime_factors(fn)),
-            str: lambda: exec(VY_compile(fn)) or []
-        }.get(VY_type(fn), lambda: vectorised_not(fn))()]
+            number: lambda: len(prime_factors(function)),
+            str: lambda: exec(VY_compile(function)) or []
+        }.get(VY_type(function), lambda: vectorised_not(function))()]
+def get_input(predefined_level=None):
+    global input_values
+
+    level = input_level
+    if predefined_level is not None:
+        level = predefined_level
+
+    if level in input_values:
+        source, index = input_values[level]
+    else:
+        source, index = [], -1
+    if source:
+        ret = source[index % len(source)]
+        input_values[level][1] += 1
+
+        if keg_mode and type(ret) is str:
+            return [ord(c) for c in ret]
+        return ret
+    else:
+        try:
+            temp = VY_eval(input())
+            if keg_mode and type(temp) is str:
+                return [ord(c) for c in temp]
+            return temp
+        except:
+            return 0
+def gt(lhs, rhs):
+    return {
+        (number, number): lambda: int(lhs > rhs),
+        (number, str): lambda: int(str(lhs) > rhs),
+        (str, number): lambda: int(lhs > str(rhs)),
+        (str, str): lambda: int(lhs > rhs)
+    }.get(VY_type(lhs, rhs), lambda: vectorise(gt, lhs, rhs))()
 def log(lhs, rhs):
     ts = (VY_type(lhs), VY_type(rhs))
     if ts == (str, str):
@@ -146,6 +253,32 @@ def log(lhs, rhs):
         (LazyList, list): lambda: mold(list(lhs), rhs),
         (LazyList, LazyList): lambda: mold(list(lhs), list(rhs)) #There's a chance molding raw generators won't work
     }.get(ts, lambda: vectorise(log, lhs, rhs))()
+def lt(lhs, rhs):
+    return {
+        (number, number): lambda: int(lhs < rhs),
+        (number, str): lambda: int(str(lhs) < rhs),
+        (str, number): lambda: int(lhs < str(rhs)),
+        (str, str): lambda: int(lhs < rhs)
+    }.get(VY_type(lhs, rhs), lambda: vectorise(lt, lhs, rhs))()
+def map_every_n(function, lhs, index):
+    @LazyList
+    def f():
+        for pos, element in enumerate(lhs):
+            if (pos + 1) % index:
+                yield element
+            else:
+                yield function([element])[-1]
+    return f()
+def modulo(lhs, rhs):
+    ts = VY_type(lhs, rhs, simple=True)
+    if ts[0] == number and rhs == 0: return 0
+    return {
+        (number, number): lambda: lhs % rhs,
+        (number, str): lambda: divide(lhs, rhs)[-1],
+        (str, number): lambda: divide(lhs, rhs)[-1],
+        (str, str): lambda: format_string(lhs, [rhs]),
+        (str, list): lambda: format_string(lhs, rhs)
+    }.get(ts, lambda: vectorise(modulo, lhs, rhs))()
 def multiply(lhs, rhs):
     ts = VY_type(lhs, rhs)
     if ts == (types.FunctionType, number):
@@ -175,6 +308,13 @@ def sentence_case(lhs):
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
     return "".join(stripped)
+def subtract(lhs, rhs):
+    return {
+        (number, number): lambda: lhs - rhs,
+        (number, str): lambda: ("-" * lhs) + rhs,
+        (str, number): lambda: lhs + ("-" * rhs),
+        (str, str): lambda: lhs.replace(rhs, "")
+    }.get(VY_type(lhs, rhs), lambda: vectorise(subtract, lhs, rhs))()
 tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstrip("    ")
 def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
@@ -256,6 +396,31 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         else:
             ret =  [apply(fn, x) for x in left]
             return ret
+def wrap(lhs, rhs):
+    ts = VY_type(lhs, rhs)
+    if ts == (types.FunctionType, ts[1]):
+        return map_every_n(rhs, lhs, 2)
+    elif ts == (ts[0], types.FunctionType):
+        return map_every_n(lhs, rhs, 2)
+
+    # Because textwrap.wrap doesn't consistently play nice with spaces
+    ret = []
+    temp = []
+    for item in lhs:
+        temp.append(item)
+        if len(temp) == rhs:
+            if all([type(x) is str for x in temp]):
+                ret.append("".join(temp))
+            else:
+                ret.append(temp[::])
+            temp = []
+    if len(temp) < rhs and temp:
+        if all([type(x) is str for x in temp]):
+            ret.append("".join(temp))
+        else:
+            ret.append(temp[::])
+
+    return ret
 def wrap_in_lambda(tokens):
     if tokens[0] == Structure.NONE:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict.get(tokens[1], (0,0))[1])})]
@@ -263,15 +428,49 @@ def wrap_in_lambda(tokens):
         return tokens
     else:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
+def VY_bin(lhs):
+    return {
+        number: lambda: [int(x) for x in bin(int(item))[2:]],
+        str: lambda: [[int(x) for x in bin(ord(let))[2:]] for let in item]
+    }.get(VY_type(lhs), lambda: vectorise(VY_bin, item))()
+def VY_eval(lhs):
+    if online_version or safe_mode:
+        try: return pwn.safeeval.const(lhs)
+        except:
+            t = parse(lhs)
+            if len(t) and t[-1][0] in (Structure.NUMBER, Structure.STRING, Structure.LIST):
+                try:
+                    temp = VY_compile(lhs)
+                    stack = []
+                    exec(temp)
+                    return stack[-1]
+                except Exception as e:
+                    print(e)
+                    return lhs
+            else:
+                return lhs
+    else:
+        try: ret = eval(lhs); return ret
+        except: return lhs
+def VY_print(item, end=""):
+    if isinstance(item, LazyList):
+        item.output()
+    elif isinstance(item, list):
+        VY_print(LazyList(item), end=end)
+    else:
+        if online_version:
+            output[1] += str(item) + end
+        else:
+            print(item, end=end)
 def VY_type(lhs, rhs=None, simple=False):
     if rhs is not None:
-        return (VY_type(lhs), VY_type(rhs))
+        return (VY_type(lhs, simple=simple), VY_type(rhs, simple=simple))
     elif isinstance(lhs, int) or isinstance(lhs, sympy.core.numbers.Rational):
         return number
     elif isinstance(lhs, LazyList):
         return (LazyList, list)[simple]
     else:
-        return type(item)
+        return type(lhs)
 def VY_zip(lhs, rhs):
     @LazyList
     def f():
@@ -505,5 +704,20 @@ else:
     return header + compiled
 
 if __name__ == "__main__":
-    # print(transpile("*+-ξψ"))
-    print(list(VY_zip([1, 2, 3], [4, 5])))
+    filepath = flags = ""
+    inputs = []
+    header = "stack = []\nregister = 0\nprinted = False\n"
+
+    if len(sys.argv) > 1: filepath = sys.argv[1]
+    if len(sys.argv) > 2: 
+        flags = sys.argv[2]
+        eval_function = str if 'Ṡ' in flags else VY_eval
+        if 'f' in flags: # where do we get the input from?
+            inputs = list(map(eval_function, open(sys.argv[3]).readlines()))
+        else:
+            inputs = list(map(eval_function,sys.argv[3:]))
+
+    # Handle all the other flags now
+    inputs = [inputs] if 'a' in flags else inputs
+    reverse_args = 'r' in flags
+    
