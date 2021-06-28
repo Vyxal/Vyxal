@@ -45,6 +45,10 @@ command_dict = {
     "B": ("stack.append(VY_bin(pop(stack), 2))", 1),
     "C": ("stack.append(chrord(pop(stack)))", 1),
     "D": ("lhs = pop(stack); stack.append(lhs); stack.append(deref(lhs)), stack.append(deref(deref(lhs)))", 1),
+    "E": ("lhs = pop(stack); stack.append(VY_eval(lhs))", 1),
+    "F": ("rhs, lhs = pop(stack, 2); stack.append(VY_filter(lhs, rhs))", 2),
+    "G": ("stack.append(VY_max(pop(stack)))", 1),
+    "H": ("stack.append(iterable(pop(stack))[0])", 1)
 }
 
 transformers = { # the {} is where the t_lambda goes
