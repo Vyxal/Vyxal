@@ -37,12 +37,14 @@ command_dict = {
     ",": ("VY_print(pop(stack))", 1),
     "-": ("rhs, lhs = pop(stack, 2); stack.append(subtract(lhs, rhs))", 2),
     ":": ("temp = pop(stack); stack.append(temp); stack.append(deref(temp))", 1),
-    "<": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.LESS_THAN))", 2),
-    ">": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN))", 2),
-    "=": ("rhs, lhs = pop(stack, 2); stack.append(compare(lhs, rhs, Comparitors.EQUALS))", 2),
+    "<": ("rhs, lhs = pop(stack, 2); stack.append(lt(lhs, rhs))", 2),
+    ">": ("rhs, lhs = pop(stack, 2); stack.append(gt(lhs, rhs))", 2),
+    "=": ("rhs, lhs = pop(stack, 2); stack.append(eq(lhs, rhs))", 2),
     "?": ("stack.append(get_input(0))", 0),
     "A": ("stack.append(int(all(iterable(pop(stack)))))", 1),
     "B": ("stack.append(VY_bin(pop(stack), 2))", 1),
+    "C": ("stack.append(chrord(pop(stack)))", 1),
+    "D": ("lhs = pop(stack); stack.append(lhs); stack.append(deref(lhs)), stack.append(deref(deref(lhs)))", 1),
 }
 
 transformers = { # the {} is where the t_lambda goes
