@@ -100,7 +100,7 @@ class LazyList():
         self.raw_object = iter(temp[::])
         self.generated = []
         return temp
-    def output(self):
+    def output(self, end='\n'):
         VY_print("⟨", end="")
         for item in self.generated[:-1]:
             VY_print(item, end="|")
@@ -114,7 +114,7 @@ class LazyList():
                 item = self.__next__()
                 VY_print("|", end="")
         except:
-            VY_print("⟩")
+            VY_print("⟩", end=end)
 def add(lhs, rhs):
     return {
         (number, number): lambda: lhs + rhs,
@@ -230,6 +230,16 @@ def gt(lhs, rhs):
         (str, number): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs)
     }.get(VY_type(lhs, rhs), lambda: vectorise(gt, lhs, rhs))()
+def iterable(item, t=None):
+    t = t or number_iterable
+    if VY_type(item) == number:
+        if t is list:
+            return [int(let) if let not in "-." else let for let in str(item)]
+        if t is range:
+            return LazyList(range(MAP_START, int(item) + MAP_OFFSET))
+        return t(item)
+    else:
+        return item
 def log(lhs, rhs):
     ts = (VY_type(lhs), VY_type(rhs))
     if ts == (str, str):
@@ -468,6 +478,44 @@ def VY_eval(lhs):
     else:
         try: ret = eval(lhs); return ret
         except: return lhs
+def VY_filter(lhs, rhs):
+    def default_case(left, right):
+        # remove elements from a that are in b
+        out = "" if type(left) is str else []
+        for item in left:
+            if item not in right:
+                if type(out) is str:
+                    out += str(item)
+                else:
+                    out.append(item)
+        return out
+
+    def _filter(function, vec):
+        for item in vec:
+            val = function([item])[-1]
+            if bool(val):
+                yield item
+    ts = (VY_type(fn), VY_type(vector))
+    return {
+        ts: lambda: default_case(iterable(lhs, str), iterable(rhs, str)),
+        (types.FunctionType, types[1]): lambda: LazyList(_filter(lhs, iterable(rhs, range))),
+        (types[0], types.FunctionType): lambda: LazyList(_filter(rhs, iterable(lhs, range)))
+    }[ts]()
+def VY_max(lhs, rhs=None):
+    if rhs is not None:
+        return {
+            (number, number): lambda: max(item, other),
+            (number, str): lambda: max(str(item), other),
+            (str, Number): lambda: max(item, str(other)),
+            (str, str): lambda: max(item, other)
+        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_max, item, other))()
+    else:
+        obj = iterable(lhs)
+        maximum = obj[0]
+        for item in obj[1:]:
+            if gt(item, maximum):
+                maximum = item
+        return maximum
 def VY_print(item, end="\n"):
     if isinstance(item, LazyList):
         item.output()
