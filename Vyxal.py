@@ -2638,6 +2638,7 @@ constants = {
     "Ẇ": "dt.now().isoweekday()",
     "§": "['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']",
     "ɖ": "['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']",
+    "ṁ": "[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]"
 }
 
 def VY_compile(source, header=""):
