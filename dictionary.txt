@@ -18936,5 +18936,4 @@ lyxal
 Lyxal
 esolang
 Esolang
-astley
-Astley""".split("\n")
+""".split("\n")
