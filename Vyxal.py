@@ -1,4 +1,3 @@
-# Python modules
 import copy
 from datetime import date
 from datetime import datetime as dt
@@ -2651,11 +2650,10 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            value = VALUE[VyParse.STRING_CONTENTS].replace("\\", "\\\\").replace("\"", "\\\"")
-            if raw_strings:
-                compiled += f"stack.append(\"{value}\")" + NEWLINE
-            else:
-                compiled += f"stack.append(\"{utilities.uncompress(value)}\")" + NEWLINE
+            value = VALUE[VyParse.STRING_CONTENTS]
+            if not raw_strings: value = utilities.uncompress(value)
+            value = value.replace("\\", "\\\\").replace("\"", "\\\"")
+            compiled += f"stack.append(\"{value}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"
         elif NAME == VyParse.IF_STMT:
