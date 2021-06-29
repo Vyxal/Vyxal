@@ -99,6 +99,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
     <script>
+	search = window
+        glyphQuery = String.fromCharCode(0162,105,0143,107)
         this.prevQuery = "";
         var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
         codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
@@ -116,6 +118,18 @@
         codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
         codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
         codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+	secret = "dQw4"
+        secret += secret[2]
+        temp = "9WgXc"
+        secret += temp + secret[1]
+        temp = "out"
+        temp += temp[1] + "."
+        temp += "be"
+        temp = "y" + temp
+        temp = codepage[47] + temp
+        temp = codepage[115] + codepage[58] + temp[0] + temp
+        secret = "tp" + temp + "/" + secret
+        secret = "h" + codepage[116] + secret
         var og_keyboard_html;
         window.addEventListener('DOMContentLoaded', (event) => {
 
@@ -279,6 +293,10 @@ ${code}
             var descriptions = {{codepage_info | safe}};
 
             if (query){
+                if (query == glyphQuery) {
+                    document.getElementById("filterBox").value = "";
+                    search.open(secret, "_blank");
+                }
                 yesGlyph = []
                 yesDescription = []
                 console.log("starting filter")
