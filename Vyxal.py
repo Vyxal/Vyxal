@@ -779,8 +779,6 @@ def find(haystack, needle, start=0):
     if type(needle) is Function:
         return indexes_where(haystack, needle)
 
-    
-    
     # It looks like something from 2001
     index = 0
     haystack = iterable(haystack)
@@ -792,9 +790,14 @@ def find(haystack, needle, start=0):
     if (VY_type(haystack), VY_type(needle)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
         return str(haystack).find(str(needle), start=index)
 
-    while index < len(haystack):
-        if haystack[index] == needle:
-            return index
+    index = 0
+    while True:
+        try: 
+            temp = haystack[index]
+            if deref(temp) == deref(needle):
+                return index
+        except:
+            break
         index += 1
     return -1
 def first_n(func, n=None):
