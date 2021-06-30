@@ -66,6 +66,7 @@ command_dict = {
     "W": ("stack.append([pop(stack)])", 1),
     "X": ("stack.append(random.choice(iterable(pop(stack), range)))", 1),
     "Y": ("stack += uninterleave(pop(stack))", 1),
+    "Z": ("rhs, lhs = pop(stack, 2); stack.append(zipmap(lhs, rhs))", 2)
 }
 
 transformers = { # the {} is where the t_lambda goes

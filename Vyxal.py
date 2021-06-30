@@ -343,7 +343,7 @@ def multiply(lhs, rhs):
         (number, str): lambda: int(lhs) * rhs,
         (str, number): lambda: lhs * rhs,
         (str, str): lambda: [x + rhs for x in lhs]
-    }.get(ts, lambda: vectorise(multiply, lhs, rhs))
+    }.get(ts, lambda: vectorise(multiply, lhs, rhs))()
 def negate(lhs):
     return {
         number: lambda: -lhs,
@@ -536,7 +536,7 @@ def wrap_in_lambda(tokens):
     elif tokens[0] == Structure.LAMBDA:
         return tokens
     else:
-        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
+        return (Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})
 def VY_bin(lhs):
     return {
         number: lambda: [int(x) for x in bin(int(lhs))[2:]],
@@ -663,7 +663,7 @@ def VY_reduce(lhs, rhs):
     if types.FunctionType not in VY_type(lhs, rhs):
         return [lhs, vectorise(reverse, rhs)]
     
-    function = vector = working_value =  None
+    function = vector = working_value = None
     if isinstance(rhs, types.FunctionType):
         function, vector = rhs, iterable(lhs, range)
     else:
@@ -702,6 +702,16 @@ def VY_zip(lhs, rhs):
             right = rhs[i] if i < lengths[1] else 0
             yield [left, right]
     return f()
+def zipmap(lhs, rhs):
+    if types.FunctionType not in VY_type(lhs, rhs):
+        return VY_zip(lhs, rhs)
+    
+    function = vector = None
+    if isinstance(rhs, types.FunctionType):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range) 
+    return VY_zip(vector, VY_map(function, deref(vector)))
 def zipwith(function, lhs, rhs):
     @LazyList
     def f():
@@ -870,7 +880,7 @@ else:
             compiled += f"stack.append(_lambda_{signature})"
         elif token_name == Structure.LIST:
             compiled += "temp_list = []" + newline
-            for element in token_value[Keys.LIST_lhsS]:
+            for element in token_value[Keys.LIST_ITEMS]:
                 if element:
                     compiled += "def list_lhs(parameter_stack):" + newline
                     compiled += tab("stack = parameter_stack[::]") + newline
@@ -900,7 +910,7 @@ else:
                 compiled += transformers[token_value[0]] + newline
         elif token_name == Structure.TRIAD_TRANSFORMER:
             if token_value[0] in Grouping_Transformers:
-                compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: [token_value[1]]})]) + newline
+                compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + newline
             else:
                 function_A = transpile(wrap_in_lambda(token_value[1][0]))
                 function_B = transpile(wrap_in_lambda(token_value[1][1]))
@@ -916,7 +926,7 @@ else:
                 function_B = transpile(wrap_in_lambda(token_value[1][1]))
                 function_C = transpile(wrap_in_lambda(token_value[1][2]))
                 function_D = transpile(wrap_in_lambda(token_value[1][3]))
-                compiled += function_A + newline + function_B + newline + function_C + newline
+                compiled += function_A + newline + function_B + newline + function_C + newline + function_D + newline
                 compiled += "function_D = pop(stack); function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
                 compiled += transformers[token_value[0]] + newline
 
@@ -926,6 +936,7 @@ else:
     return header + compiled
 
 if __name__ == "__main__":
+
     filepath = flags = ""
     inputs = []
     header = "stack = []\nregister = 0\nprinted = False\n"
