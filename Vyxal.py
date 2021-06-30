@@ -1022,6 +1022,7 @@ def fractionify(item):
         return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
+        print(vector)
         return fn(vector, self=fn)
     else:
         return [{
@@ -2391,7 +2392,7 @@ def VY_oct(item):
         str: lambda: (lambda: item, lambda: oct(int(item)))[item.isnumeric()]()[2:]
     }.get(VY_type(item), lambda:vectorise(VY_oct, item))()
 def VY_print(item, end="\n", raw=False):
-    global output, printed
+    global output, printed, stack
     printed = True
     t_item = type(item)
     if t_item is Generator:
@@ -2404,6 +2405,10 @@ def VY_print(item, end="\n", raw=False):
                 VY_print(value, "|", True)
             VY_print(item[-1], "", True)
         VY_print("⟩", end, False)
+    elif t_item is Function:
+        pop(stack)
+        s = function_call(item, stack)
+        VY_print(s[0], end=end, raw=raw)
     else:
         if t_item is int and keg_mode:
             item = chr(item)
@@ -2476,6 +2481,7 @@ def VY_round(item):
         return [item[n:] for n in range(len(item) - 1, -1, -1)]
     return vectorise(VY_round, item)
 def VY_str(item):
+    global stack
     t_item = VY_type(item)
     return {
         Number: str,
@@ -2720,8 +2726,6 @@ def VY_compile(source, header=""):
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
                 compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
-                compiled += tab("context_level += 1") + NEWLINE
-                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab(f"this_function = FN_{function_name}") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
@@ -2754,6 +2758,8 @@ else:
                     compiled += NEWLINE
 
                 compiled += tab("stack = parameters[::]") + NEWLINE
+                compiled += tab("context_level += 1") + NEWLINE
+                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
                 compiled += tab(VY_compile(VALUE[VyParse.FUNCTION_BODY])) + NEWLINE
                 compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
@@ -2768,8 +2774,6 @@ else:
             signature = _mangle(compiled or secrets.token_hex(64))
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
-            compiled += tab("context_level += 1") + NEWLINE
-            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
@@ -2780,7 +2784,9 @@ else:
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
             compiled += tab("context_values.append(parameters)") + NEWLINE
+            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
+            compiled += tab("context_level += 1") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("ret = [pop(stack)]") + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
@@ -3020,7 +3026,7 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and 'J' in flags:
             VY_print("\n".join([VY_str(n) for n in stack]))
         else:
-            VY_print(pop(stack))
+            VY_print(VY_str(pop(stack)))
 
 
 if __name__ == "__main__":
