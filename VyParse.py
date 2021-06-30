@@ -262,7 +262,8 @@ def parse(source):
                     
                     tokens.append((Structure.PARA_APPLY, token_list[::-1][::]))
         else:
-            tokens.append((Structure.NONE, character))
+            if character != " ":
+                tokens.append((Structure.NONE, character))
         
     
     if structure != Structure.NONE:
