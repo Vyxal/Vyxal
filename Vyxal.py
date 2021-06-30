@@ -3,6 +3,7 @@ from commands import *
 import encoding
 import utilities
 
+import random
 import regex
 import secrets
 import string
@@ -240,6 +241,19 @@ def gt(lhs, rhs):
         (str, number): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs)
     }.get(VY_type(lhs, rhs), lambda: vectorise(gt, lhs, rhs))()
+def interleave(lhs, rhs):
+    ret = []
+    for i in range(min(len(lhs), len(rhs))):
+        ret.append(lhs[i])
+        ret.append(rhs[i])
+    if len(lhs) != len(rhs):
+        if len(lhs) < len(rhs):
+            # The rhs is longer
+            ret += list(rhs[i + 1:])
+        else:
+            ret += list(lhs[i + 1:])
+    if type(lhs) is str and type(rhs) is str: return "".join(ret)
+    return ret
 def iterable(lhs, t=None):
     t = t or number_iterable
     if VY_type(lhs) == number:
@@ -362,6 +376,14 @@ def realify(lhs):
     if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
         return 0
     else: return lhs
+def replace(haystack, needle, replacement):
+    t_haystack = VY_type(haystack)
+    if t_haystack is list:
+        return [replacement if value == needle else value for value in haystack]
+    elif t_haystack is LazyList:
+        return replace(haystack.listify(), needle, replacement) # Not sure how to do replacement on generators yet
+    else:
+        return str(haystack).replace(str(needle), str(replacement))
 def reverse(vector):
     if type(vector) in [float, int]:
         s_vector = str(vector)
@@ -389,6 +411,20 @@ def subtract(lhs, rhs):
         (str, str): lambda: lhs.replace(rhs, "")
     }.get(VY_type(lhs, rhs), lambda: vectorise(subtract, lhs, rhs))()
 tab = lambda x: newline.join(["    " + lhs for lhs in x.split(newline)]).rstrip("    ")
+def uninterleave(lhs):
+    left, right = [], []
+    for i in range(len(lhs)):
+        if i % 2 == 0: left.append(lhs[i])
+        else: right.append(lhs[i])
+    if type(lhs) is str:
+        return ["".join(left), "".join(right)]
+    return [left, right]
+def uniquify(vector):
+    seen = []
+    for item in vector:
+        if item not in seen:
+            yield item
+            seen.append(item)
 def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         ts = (VY_type(left), VY_type(right))

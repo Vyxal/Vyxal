@@ -59,7 +59,13 @@ command_dict = {
     "P": ("rhs, lhs = pop(stack, 2); stack.append(prepend(lhs, rhs))", 2),
     "Q": ("exit(1)", 0),
     "R": ("rhs, lhs = pop(stack, 2); stack += VY_reduce(lhs, rhs)", 2),
-    "S": ("lhs = pop(stack);\nif isinstance(lhs, str): stack.append(lhs.split('\\n'))\nelse: stack.append(VY_str(lhs))", 1)
+    "S": ("lhs = pop(stack);\nif isinstance(lhs, str): stack.append(lhs.split('\\n'))\nelse: stack.append(VY_str(lhs))", 1),
+    "T": ("stack.append(iterable(pop(stack))[-1])", 1),
+    "U": ("stack.append(LazyList(uniquify(pop(stack))))", 1),
+    "V": ("replacement, needle, haystack = pop(stack, 3); stack.append(replace(haystack, needle, replacement))", 3),
+    "W": ("stack.append([pop(stack)])", 1),
+    "X": ("stack.append(random.choice(iterable(pop(stack), range)))", 1),
+    "Y": ("stack += uninterleave(pop(stack))", 1),
 }
 
 transformers = { # the {} is where the t_lambda goes
