@@ -301,8 +301,7 @@ if __name__ == "__main__":
         "“abcdef“",
         "‘he‘ll‘o ",
         "+¿",
-        "λ2|ancd;"
-
+        "λ2|ancd;",
     ]
 
     for test in tests:

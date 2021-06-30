@@ -141,6 +141,18 @@ def chrord(lhs):
         number: lambda: chr(lhs),
         str: lambda: ord(lhs) if len(lhs) == 1 else vectorise(chrord, list(lhs))
     }.get(VY_type(lhs), lambda: vectorise(chrord, lhs))()
+def cumulative_reduce(lhs, rhs):
+    function = vector = None
+    if isinstance(rhs, types.FunctionType):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range)
+
+    @LazyList
+    def f():
+        for prefix in prefixes(vector):
+            yield VY_reduce(prefix, function)[0]
+    return f()
 def deref(lhs, listify=True):
     if VY_type(lhs) is LazyList: return [lhs.safe, lhs.listify][listify]()
     if type(lhs) not in [int, float, str]: return list(map(deref, lhs))
