@@ -54,11 +54,12 @@ command_dict = {
     "K": ("stack.append(divisors(pop(stack)))", 1),
     "L": ("stack.append(len(iterable(pop(stack))))", 1),
     "M": ("rhs, lhs = pop(stack, 2); stack.append(VY_map(lhs, rhs))", 2),
-    "N": ("stack.append(negate(pop(stack))))", 1),
+    "N": ("stack.append(negate(pop(stack)))", 1),
     "O": ("needle, haystack = pop(stack, 2); stack.append(iterable(haystack).count(needle))", 2),
     "P": ("rhs, lhs = pop(stack, 2); stack.append(prepend(lhs, rhs))", 2),
     "Q": ("exit(1)", 0),
-    "R": ("rhs, lhs = pop(stack, 2); stack += VY_reduce(lhs, rhs)", 2)
+    "R": ("rhs, lhs = pop(stack, 2); stack += VY_reduce(lhs, rhs)", 2),
+    "S": ("lhs = pop(stack);\nif isinstance(lhs, str): stack.append(lhs.split('\\n'))\nelse: stack.append(VY_str(lhs))", 1)
 }
 
 transformers = { # the {} is where the t_lambda goes
@@ -71,7 +72,7 @@ transformers = { # the {} is where the t_lambda goes
     "ɗ": "stack.append(max_by_function(function_A, pop(stack)))",
     "ƒ": "stack.append(VY_filter(function_A, pop(stack)))",
     "ɠ": "stack.append(min_by_function(function_A, pop(stack)))",
-    "ɦ": "stack.append(VY_map(function_A, prefixes(pop(stack))))",
+    "ɦ": "stack.append(VY_map(prefixes(pop(stack)), function_A, ))",
     "&": "stack.append(apply_to_register(function_A, stack))",
     "/": "stack += VY_reduce(pop(stack), function_A)",
     "\\": "stack.append(cumulative_reduce(function_A, pop(stack)))",
@@ -88,5 +89,5 @@ transformers = { # the {} is where the t_lambda goes
     "Ɗ": "stack.append(cyclical_map(function_A, function_B, pop(stack)))",
     "Ɠ": "if pop(stack): stack += function_call(function_A, stack)\nelse: stack += function(function_B, stack)",
     "Ɱ": "rhs, lhs = pop(stack, 2); stack.append(VY_reduce(function_B, VY_map(function_A, [lhs, rhs])))",
-    "Ɲ": "top = pop(stack); stack.append(VY_reduce(function_A, VY_map(function_B)))",
+    "Ɲ": "top = pop(stack); stack += VY_reduce(function_A, [top, apply(function_B, top)])",
 }

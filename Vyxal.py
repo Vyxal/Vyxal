@@ -334,7 +334,7 @@ def negate(lhs):
     return {
         number: lambda: -lhs,
         str: lambda: lhs.swapcase()
-    }.get(VY_type(lhs), lambda: vectorise(negate, lhs))
+    }.get(VY_type(lhs), lambda: vectorise(negate, lhs))()
 def pop(vector, num=1, wrap=False):
     global last_popped
     ret = []
@@ -632,7 +632,6 @@ def VY_reduce(lhs, rhs):
         function, vector = rhs, iterable(lhs, range)
     else:
         function, vector = lhs, iterable(rhs, range)
-
     if not isinstance(vector, LazyList): vector = iter(vector)
     working_value = next(vector)
     
