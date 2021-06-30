@@ -48,7 +48,17 @@ command_dict = {
     "E": ("lhs = pop(stack); stack.append(VY_eval(lhs))", 1),
     "F": ("rhs, lhs = pop(stack, 2); stack.append(VY_filter(lhs, rhs))", 2),
     "G": ("stack.append(VY_max(pop(stack)))", 1),
-    "H": ("stack.append(iterable(pop(stack))[0])", 1)
+    "H": ("stack.append(iterable(pop(stack))[0])", 1),
+    "I": ("stack.append(VY_int(pop(stack)))", 1),
+    "J": ("rhs, lhs = pop(stack, 2); stack.append(merge(lhs, rhs))", 2),
+    "K": ("stack.append(divisors(pop(stack)))", 1),
+    "L": ("stack.append(len(iterable(pop(stack))))", 1),
+    "M": ("rhs, lhs = pop(stack, 2); stack.append(VY_map(lhs, rhs))", 2),
+    "N": ("stack.append(negate(pop(stack))))", 1),
+    "O": ("needle, haystack = pop(stack, 2); stack.append(iterable(haystack).count(needle))", 2),
+    "P": ("rhs, lhs = pop(stack, 2); stack.append(prepend(lhs, rhs))", 2),
+    "Q": ("exit(1)", 0),
+    "R": ("rhs, lhs = pop(stack, 2); stack += VY_reduce(lhs, rhs)", 2)
 }
 
 transformers = { # the {} is where the t_lambda goes
@@ -63,7 +73,7 @@ transformers = { # the {} is where the t_lambda goes
     "ɠ": "stack.append(min_by_function(function_A, pop(stack)))",
     "ɦ": "stack.append(VY_map(function_A, prefixes(pop(stack))))",
     "&": "stack.append(apply_to_register(function_A, stack))",
-    "/": "stack.append(VY_reduce(function_A, pop(stack)))",
+    "/": "stack += VY_reduce(pop(stack), function_A)",
     "\\": "stack.append(cumulative_reduce(function_A, pop(stack)))",
     "v": "stack.append(vectorise(function_A, stack))",
     "Ƈ": "stack.append(foldr(function_A, pop(stack)))",
