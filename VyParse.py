@@ -56,8 +56,8 @@ TWO = "two"
 THREE = "three"
 FOUR = "four"
 
-ONE_CHARS = "kv⁽∆ø⁺Þ¨&~ß‘"
-TWO_CHARS = "₌‡₍"
+ONE_CHARS = list("kv⁽∆ø⁺Þ¨&~ß‘")
+TWO_CHARS = list("₌‡₍")
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
@@ -603,7 +603,6 @@ def Tokenise(source: str):
                     tokens.append(this_token)
 
     if structure != NO_STMT:
-        # print(structure_data, default_key, active_key)
         additional_token = None
 
         if structure == LAMBDA_MAP:
@@ -668,7 +667,8 @@ if __name__ == "__main__":
         "‛| mm",
         "‛`0`\`0`",
         "k\\",
-        "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"
+        "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
+        "kv"
     ]
     for test in tests:
         print(test, group_strings(group_two_chars(test)))
