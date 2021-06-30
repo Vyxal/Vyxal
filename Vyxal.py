@@ -26,7 +26,7 @@ online_version = False
 output = ""
 printed = False
 register = 0
-retain_items = False
+retaIn_items = False
 reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
@@ -40,21 +40,21 @@ number = "number"
 class LazyList():
     def __call__(self, *args, **kwargs):
         return self
-    def __contains__(self, item):
+    def __contains__(self, lhs):
         if self.infinite:
             if len(self.generated):
                 last = self.generated[-1]
             else:
                 last = 0 
         
-            while last <= item:
+            while last <= lhs:
                 last = next(self)
-                if last == item:
+                if last == lhs:
                     return 1
             return 0
         else:
             for temp in self:
-                if temp == item: return 1
+                if temp == lhs: return 1
             return 0
     def __getitem__(self, position):
         if isinstance(position, slice):
@@ -63,7 +63,7 @@ class LazyList():
                 @LazyList
                 def infinite_index():
                     if len(self.generated):
-                        for item in self.generated[position::step]: yield item
+                        for lhs in self.generated[position::step]: yield lhs
                         temp = next(self)
                         while temp:
                             yield temp; temp = next(self)
@@ -71,7 +71,7 @@ class LazyList():
             else:
                 ret = []
                 for i in range(start, stop, step):
-                    ret.append(self.__getitem__(i))
+                    ret.append(self.__getlhs__(i))
                 return ret
         else:
             if position < 0: self.generated += list(self); return self.generated[position]
@@ -84,7 +84,7 @@ class LazyList():
     def __init__(self, source, isinf=False):
         self.raw_object = source
         if isinstance(self.raw_object, types.FunctionType): self.raw_object = self.raw_object()
-        elif isinstance(self.raw_object, list): self.raw_object = iter(self.raw_object)
+        elif not isinstance(self.raw_object, types.GeneratorType): self.raw_object = iter(self.raw_object)
         self.generated = []
         self.infinite = isinf
     def __iter__(self):
@@ -92,9 +92,9 @@ class LazyList():
     def __len__(self):
         return len(self.listify())
     def __next__(self):
-        item = next(self.raw_object)
-        self.generated.append(item)
-        return item
+        lhs = next(self.raw_object)
+        self.generated.append(lhs)
+        return lhs
     def listify(self):
         temp = self.generated + list(self.raw_object)
         self.raw_object = iter(temp[::])
@@ -102,19 +102,22 @@ class LazyList():
         return temp
     def output(self, end='\n'):
         VY_print("⟨", end="")
-        for item in self.generated[:-1]:
-            VY_print(item, end="|")
+        for lhs in self.generated[:-1]:
+            VY_print(lhs, end="|")
         if len(self.generated): print(self.generated[-1], end="")
 
         try:
-            item = self.__next__()
+            lhs = self.__next__()
             if len(self.generated) > 1: print("|", end="")
             while True:
-                VY_print(item, end="")
-                item = self.__next__()
+                VY_print(lhs, end="")
+                lhs = self.__next__()
                 VY_print("|", end="")
         except:
             VY_print("⟩", end=end)
+    def safe(self):
+        import copy
+        return copy.deepcopy(self)
 def add(lhs, rhs):
     return {
         (number, number): lambda: lhs + rhs,
@@ -137,6 +140,10 @@ def chrord(lhs):
         number: lambda: chr(lhs),
         str: lambda: ord(lhs) if len(lhs) == 1 else vectorise(chrord, list(lhs))
     }.get(VY_type(lhs), lambda: vectorise(chrord, lhs))()
+def deref(lhs, listify=True):
+    if VY_type(lhs) is LazyList: return [lhs.safe, lhs.listify][listify]()
+    if type(lhs) not in [int, float, str]: return list(map(deref, lhs))
+    return lhs
 def divide(lhs, rhs):
     return {
         (number, number): lambda: realify(sympy.Rational(lhs, rhs)),
@@ -144,6 +151,9 @@ def divide(lhs, rhs):
         (str, number): lambda: wrap(lhs, len(lhs) // rhs),
         (str, str): lambda: lhs.split(rhs, maxsplit=1),
     }.get(VY_type(lhs, rhs), lambda: vectorise(divide, lhs, rhs))()
+def divisors(lhs):
+    if VY_type(lhs) == number: return sympy.divisors(int(lhs))
+    else: return prefixes(lhs)
 def eq(lhs, rhs):
     return {
         (number, number): lambda: int(lhs == rhs),
@@ -172,7 +182,7 @@ def factorial(lhs):
         number: lambda: realify(sympy.gamma(lhs)),
         str: lambda: sentence_case(lhs)
     }.get(VY_type(lhs), lambda: vectorise(factorial, lhs))()
-def format_string(value, items):
+def format_string(value, lhss):
     ret = ""
     index = 0
     f_index = 0
@@ -182,8 +192,8 @@ def format_string(value, items):
             ret += "\\" + value[index + 1]
             index += 1
         elif value[index] == "%":
-            #print(f_index, f_index % len(items))
-            ret += str(items[f_index % len(items)])
+            #print(f_index, f_index % len(lhss))
+            ret += str(lhss[f_index % len(lhss)])
             f_index += 1
         else:
             ret += value[index]
@@ -230,16 +240,16 @@ def gt(lhs, rhs):
         (str, number): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs)
     }.get(VY_type(lhs, rhs), lambda: vectorise(gt, lhs, rhs))()
-def iterable(item, t=None):
+def iterable(lhs, t=None):
     t = t or number_iterable
-    if VY_type(item) == number:
+    if VY_type(lhs) == number:
         if t is list:
-            return [int(let) if let not in "-." else let for let in str(item)]
+            return [int(let) if let not in "-." else let for let in str(lhs)]
         if t is range:
-            return LazyList(range(MAP_START, int(item) + MAP_OFFSET))
-        return t(item)
+            return LazyList(range(MAP_START, int(lhs) + MAP_OFFSET))
+        return t(lhs)
     else:
-        return item
+        return lhs
 def log(lhs, rhs):
     ts = (VY_type(lhs), VY_type(rhs))
     if ts == (str, str):
@@ -282,6 +292,20 @@ def map_every_n(function, lhs, index):
             else:
                 yield function([element])[-1]
     return f()
+def merge(lhs, rhs):
+    ts = VY_type(lhs, rhs)
+    return {
+        (ts[0], ts[1]): lambda: str(lhs) + str(rhs),
+        (number, number): lambda: VY_eval(str(lhs) + str(rhs)),
+        (ts[0], list): lambda: [lhs] + rhs,
+        (list, ts[1]): lambda: lhs + [rhs],
+        (ts[0], LazyList): lambda: [lhs] + rhs._dereference(),
+        (LazyList, ts[1]): lambda: lhs._dereference() + [rhs],
+        (list, list): lambda: lhs + rhs,
+        (list, LazyList): lambda: lhs + rhs._dereference(),
+        (LazyList, list): lambda: lhs._dereference() + rhs,
+        (LazyList, LazyList): lambda: lhs._dereference() + rhs._dereference()
+    }[ts]()
 def modulo(lhs, rhs):
     ts = VY_type(lhs, rhs, simple=True)
     if ts[0] == number and rhs == 0: return 0
@@ -306,6 +330,11 @@ def multiply(lhs, rhs):
         (str, number): lambda: lhs * rhs,
         (str, str): lambda: [x + rhs for x in lhs]
     }.get(ts, lambda: vectorise(multiply, lhs, rhs))
+def negate(lhs):
+    return {
+        number: lambda: -lhs,
+        str: lambda: lhs.swapcase()
+    }.get(VY_type(lhs), lambda: vectorise(negate, lhs))
 def pop(vector, num=1, wrap=False):
     global last_popped
     ret = []
@@ -313,16 +342,34 @@ def pop(vector, num=1, wrap=False):
         if vector: ret.append(vector.pop())
         else: x = get_input(); ret.append(x)
 
-    if retain_items: vector += ret[::-1]
+    if retaIn_items: vector += ret[::-1]
 
     last_popped = ret
     if num == 1 and not wrap: return ret[0]
     if reverse_args: return ret[::-1]
     return ret
+def prefixes(vector):
+    for i in range(len(iterable(vector))):
+        yield iterable(vector)[0:i+1]
+def prepend(lhs, rhs):
+    types = (VY_type(lhs), VY_type(rhs))
+    return {
+        (types[0], types[1]): lambda: merge(rhs, lhs),
+        (list, types[1]): lambda: [rhs] + lhs,
+        (LazyList, types[1]): lambda: [rhs] +lhs.listify()
+    }[types]()
 def realify(lhs):
     if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
         return 0
     else: return lhs
+def reverse(vector):
+    if type(vector) in [float, int]:
+        s_vector = str(vector)
+        if vector < 0:
+            return -type(vector)(s_vector[1:][::-1])
+        else:
+            return type(vector)(s_vector[::-1])
+    return vector[::-1]
 def sentence_case(lhs):
     ret = ""
     capitalise = True
@@ -341,7 +388,7 @@ def subtract(lhs, rhs):
         (str, number): lambda: lhs + ("-" * rhs),
         (str, str): lambda: lhs.replace(rhs, "")
     }.get(VY_type(lhs, rhs), lambda: vectorise(subtract, lhs, rhs))()
-tab = lambda x: newline.join(["    " + item for item in x.split(newline)]).rstrip("    ")
+tab = lambda x: newline.join(["    " + lhs for lhs in x.split(newline)]).rstrip("    ")
 def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         ts = (VY_type(left), VY_type(right))
@@ -383,7 +430,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def gen():
             for pair in VY_zip(left, right): yield apply(fn, *pair)
         def expl(l, r):
-            for item in l: yield apply(fn, r, item)
+            for item in l: yield apply(fn, item, lhs)
         def swapped_expl(l, r):
             for item in r:
                 yield apply(fn, item, l)
@@ -417,7 +464,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
                 for item in left:
                     yield apply(fn, item)
             return LazyList(gen())
-        elif VY_type(left) in (str, Number):
+        elif VY_type(left) in (str, number):
             return apply(fn, list(iterable(left)))
         else:
             ret =  [apply(fn, x) for x in left]
@@ -432,8 +479,8 @@ def wrap(lhs, rhs):
     # Because textwrap.wrap doesn't consistently play nice with spaces
     ret = []
     temp = []
-    for item in lhs:
-        temp.append(item)
+    for lhs in lhs:
+        temp.append(lhs)
         if len(temp) == rhs:
             if all([type(x) is str for x in temp]):
                 ret.append("".join(temp))
@@ -456,9 +503,9 @@ def wrap_in_lambda(tokens):
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens]})]
 def VY_bin(lhs):
     return {
-        number: lambda: [int(x) for x in bin(int(item))[2:]],
-        str: lambda: [[int(x) for x in bin(ord(let))[2:]] for let in item]
-    }.get(VY_type(lhs), lambda: vectorise(VY_bin, item))()
+        number: lambda: [int(x) for x in bin(int(lhs))[2:]],
+        str: lambda: [[int(x) for x in bin(ord(let))[2:]] for let in lhs]
+    }.get(VY_type(lhs), lambda: vectorise(VY_bin, lhs))()
 def VY_eval(lhs):
     if online_version or safe_mode:
         try: return pwn.safeeval.const(lhs)
@@ -485,65 +532,123 @@ def VY_filter(lhs, rhs):
         for item in left:
             if item not in right:
                 if type(out) is str:
-                    out += str(item)
+                    out += str(lhs)
                 else:
-                    out.append(item)
+                    out.append(lhs)
         return out
 
     def _filter(function, vec):
-        for item in vec:
-            val = function([item])[-1]
+        for lhs in vec:
+            val = function([lhs])[-1]
             if bool(val):
-                yield item
+                yield lhs
     ts = (VY_type(fn), VY_type(vector))
     return {
         ts: lambda: default_case(iterable(lhs, str), iterable(rhs, str)),
         (types.FunctionType, types[1]): lambda: LazyList(_filter(lhs, iterable(rhs, range))),
         (types[0], types.FunctionType): lambda: LazyList(_filter(rhs, iterable(lhs, range)))
     }[ts]()
+def VY_int(lhs, base=10):
+    t_lhs = type(lhs)
+    if t_lhs not in [str, sympy.core.numbers.Rational, int, complex]:
+        ret = 0
+        for element in lhs:
+            ret = multiply(ret, base)
+            ret = add(ret, element)
+        return ret
+    elif t_lhs is str:
+        return int(lhs, base)
+    elif t_lhs is complex:
+        return numpy.real(lhs)
+    elif t_lhs is sympy.core.numbers.Rational:
+        return int(lhs)
+    elif t_lhs:
+        return VY_int(iterable(lhs), base)
 def VY_max(lhs, rhs=None):
     if rhs is not None:
         return {
-            (number, number): lambda: max(item, other),
-            (number, str): lambda: max(str(item), other),
-            (str, Number): lambda: max(item, str(other)),
-            (str, str): lambda: max(item, other)
-        }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_max, item, other))()
+            (number, number): lambda: max(lhs, other),
+            (number, str): lambda: max(str(lhs), other),
+            (str, number): lambda: max(lhs, str(other)),
+            (str, str): lambda: max(lhs, other)
+        }.get((VY_type(lhs), VY_type(other)), lambda: vectorise(VY_max, lhs, other))()
     else:
         obj = iterable(lhs)
         maximum = obj[0]
-        for item in obj[1:]:
-            if gt(item, maximum):
-                maximum = item
+        for lhs in obj[1:]:
+            if gt(lhs, maximum):
+                maximum = lhs
         return maximum
-def VY_print(item, end="\n"):
-    if isinstance(item, LazyList):
-        item.output()
-    elif isinstance(item, list):
-        VY_print(LazyList(item), end=end)
+def VY_map(lhs, rhs, indicies=None):
+    if types.FunctionType not in VY_type(lhs, rhs):
+        @LazyList
+        def f(): 
+            for item in iterable(lhs): yield [rhs, item]
+        return f()
+    
+    function = vector = None
+    if isinstance(rhs, types.FunctionType):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range)
+    
+    @LazyList
+    def g():
+        for item in vector:
+            yield apply(function, item)
+    return g()
+def VY_print(lhs, end="\n"):
+    if isinstance(lhs, LazyList):
+        lhs.output(end)
+    elif isinstance(lhs, list):
+        VY_print(LazyList(lhs), end=end)
     else:
         if online_version:
-            output[1] += str(item) + end
+            output[1] += str(lhs) + end
         else:
-            print(item, end=end)
-def VY_str(item):
-    t_item = VY_type(item)
+            print(lhs, end=end)
+def VY_str(lhs):
+    t_lhs = VY_type(lhs)
     return {
         number: str,
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         LazyList: lambda x: VY_str(x._dereference()),
-        types.FunctionType: lambda x: VY_str(function_call(item, stack)[0])
-    }[t_item](item)
-def VY_repr(item):
-    t_item = VY_type(item)
+        types.FunctionType: lambda x: VY_str(function_call(lhs, stack)[0])
+    }[t_lhs](lhs)
+def VY_range(lhs, start=0, lift_factor=0):
+    t_lhs = VY_type(lhs)
+    if t_lhs == number:
+        if lhs < 0:
+            return range(start, int(lhs) + lift_factor, -1)
+        return range(start, int(lhs) + lift_factor)
+    return lhs
+def VY_reduce(lhs, rhs):
+    if types.FunctionType not in VY_type(lhs, rhs):
+        return [lhs, vectorise(reverse, rhs)]
+    
+    function = vector = working_value =  None
+    if isinstance(rhs, types.FunctionType):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range)
+
+    if not isinstance(vector, LazyList): vector = iter(vector)
+    working_value = next(vector)
+    
+
+    for item in vector:
+        working_value = function([working_value, item], arity=2)[-1]
+    return [working_value]
+def VY_repr(lhs):
+    t_lhs = VY_type(lhs)
     return {
         number: str,
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         LazyList: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`",
         types.FunctionType: lambda x: "@FUNCTION:" + x.__name__
-    }[t_item](item)
+    }[t_lhs](lhs)
 def VY_type(lhs, rhs=None, simple=False):
     if rhs is not None:
         return (VY_type(lhs, simple=simple), VY_type(rhs, simple=simple))
@@ -614,7 +719,7 @@ def transpile(program, header=""):
             compiled += "if temp_value:\n" + tab(transpile(token_value[Keys.IF_TRUE])) + newline
             if Keys.IF_FALSE in token_value: compiled += "else:\n" + tab(transpile(token_value[Keys.IF_FALSE]))
         elif token_name == Structure.FOR:
-            loop_variable = "LOOP_" + _mangle(compiled)
+            loop_variable = "LOOP_" + secrets.token_hex(16)
             if Keys.FOR_VAR in token_value:
                 loop_variable = "VAR_" + strip_non_alphabet(token_value[Keys.FOR_VAR])
             compiled += "for " + loop_variable + " in VY_range(pop(stack)):" + newline
@@ -660,7 +765,7 @@ def transpile(program, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):\n"
-                compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + newline
+                compiled += tab("global context_level, context_values, input_level, input_values, retaIn_items, printed, register") + newline
                 compiled += tab("context_level += 1") + newline
                 compiled += tab("input_level += 1") + newline
                 compiled += tab(f"this_function = FN_{function_name}") + newline
@@ -708,7 +813,7 @@ else:
                     defined_arity = int(lambda_argument)
             signature = secrets.token_hex(16)
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + newline
-            compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + newline
+            compiled += tab("global context_level, context_values, input_level, input_values, retaIn_items, printed, register") + newline
             compiled += tab("context_level += 1") + newline
             compiled += tab("input_level += 1") + newline
             compiled += tab(f"this_function = _lambda_{signature}") + newline
@@ -730,13 +835,13 @@ else:
             compiled += f"stack.append(_lambda_{signature})"
         elif token_name == Structure.LIST:
             compiled += "temp_list = []" + newline
-            for element in token_value[Keys.LIST_ITEMS]:
+            for element in token_value[Keys.LIST_lhsS]:
                 if element:
-                    compiled += "def list_item(parameter_stack):" + newline
+                    compiled += "def list_lhs(parameter_stack):" + newline
                     compiled += tab("stack = parameter_stack[::]") + newline
                     compiled += tab(transpile(element)) + newline
                     compiled += tab("return pop(stack)") + newline
-                    compiled += "temp_list.append(list_item(stack))" + newline
+                    compiled += "temp_list.append(list_lhs(stack))" + newline
             compiled += "stack.append(temp_list[::])"
         elif token_name == Structure.FUNC_REF:
             compiled += f"stack.append(FN_{token_value[Keys.FUNC_NAME]})"
