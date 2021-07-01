@@ -42,7 +42,7 @@ command_dict = {
     "=": ("rhs, lhs = pop(stack, 2); stack.append(eq(lhs, rhs))", 2),
     "?": ("stack.append(get_input(0))", 0),
     "A": ("stack.append(int(all(iterable(pop(stack)))))", 1),
-    "B": ("stack.append(VY_bin(pop(stack), 2))", 1),
+    "B": ("stack.append(VY_int(pop(stack), 2))", 1),
     "C": ("stack.append(chrord(pop(stack)))", 1),
     "D": ("lhs = pop(stack); stack.append(lhs); stack.append(deref(lhs)), stack.append(deref(deref(lhs)))", 1),
     "E": ("lhs = pop(stack); stack.append(VY_eval(lhs))", 1),
@@ -68,6 +68,9 @@ command_dict = {
     "Y": ("stack += uninterleave(pop(stack))", 1),
     "Z": ("rhs, lhs = pop(stack, 2); stack.append(zipmap(lhs, rhs))", 2),
     "_": ("pop(stack)", 1),
+    "^": ("stack = stack[::-1]", 0),
+    "a": ("stack.append(int(any(iterable(pop(stack)))))", 1),
+    "b": ("stack.append(VY_bin(pop(stack)))", 1),
     
 }
 
