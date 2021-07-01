@@ -423,7 +423,7 @@ def subtract(lhs, rhs):
     }.get(VY_type(lhs, rhs), lambda: vectorise(subtract, lhs, rhs))()
 tab = lambda x: newline.join(["    " + lhs for lhs in x.split(newline)]).rstrip("    ")
 def transformer_vectorise(function, vector):
-    return vectorise(function, *pop(vector, function.stored_arity))
+    return vectorise(function, *pop(vector, function.stored_arity), explicit=True)
 def uninterleave(lhs):
     left, right = [], []
     for i in range(len(lhs)):
@@ -890,6 +890,7 @@ else:
             compiled += tab("context_level -= 1; context_values.pop()") + newline
             compiled += tab("input_level -= 1") + newline
             compiled += tab("return ret") + newline
+            compiled += f"_lambda_{signature}.stored_arity = {defined_arity}" + newline
             compiled += f"stack.append(_lambda_{signature})"
         elif token_name == Structure.LIST:
             compiled += "temp_list = []" + newline
