@@ -1,12 +1,6 @@
-from re import S
-from typing import ItemsView
+import string
 
-
-class stringlib:
-    ascii_letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    ascii_uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-
+from numpy.core.fromnumeric import var
 NAME = "CONSTANT_TOKEN_NAME"
 VALUE = "CONSTANT_TOKEN_VALUE"
 
@@ -56,8 +50,8 @@ TWO = "two"
 THREE = "three"
 FOUR = "four"
 
-ONE_CHARS = "kv⁽∆ø⁺Þ¨&~ß‘"
-TWO_CHARS = "₌‡₍"
+ONE_CHARS = list("kv⁽∆ø⁺Þ¨&~ß‘")
+TWO_CHARS = list("₌‡₍")
 
 CONSTANT_CHAR = "k"
 VECTORISATION_CHAR = "v"
@@ -72,6 +66,8 @@ STRING_DELIMITER = "`"
 REGISTER_MODIFIER = "&"
 DONT_POP = "~"
 CONDITIONAL_EXECUTION = "ß"
+VAR_SET = "→"
+VAR_GET = "←"
 
 PARA_APPLY = "₌"
 PARA_APPLY_COLLECT = "₍"
@@ -133,6 +129,7 @@ DEFAULT_KEYS = {
     COMPRESSED_NUMBER: COMPRESSED_NUMBER_VALUE,
     COMPRESSED_STRING: COMPRESSED_STRING_VALUE,
 }
+
 
 
 class Token:
@@ -224,13 +221,14 @@ def group_two_chars(program):
     if temp:
         ret.append(temp)
     return ret
-def group_digraphs(code):
+def group_digraphs(code, variables_are_digraphs=False):
     # To be called after group_strings and after group_two_char
     ret = []
     temp = ""
     escaped = False
 
     TWO_BYTE_DELIMS = "k∆øÞ¨"
+    if variables_are_digraphs: TWO_BYTE_DELIMS += "→←"
 
     for item in code:
         if type(item) is list:
@@ -253,7 +251,7 @@ def group_digraphs(code):
     return ret
 
 
-def Tokenise(source: str):
+def Tokenise(source: str, variables_are_digraphs=False):
     tokens = []
     structure = NO_STMT
     structure_data = {}
@@ -268,7 +266,7 @@ def Tokenise(source: str):
 
     source = group_two_chars(source)
     source = group_strings(source)
-    source = group_digraphs(source)
+    source = group_digraphs(source, variables_are_digraphs)
 
     for char in source:
         # print(char, structure, structure_data, escaped, nest_level, scc_mode)
@@ -352,7 +350,7 @@ def Tokenise(source: str):
                 structure = NO_STMT
 
         elif structure in VARIABLES:
-            if char in stringlib.ascii_letters + "_":
+            if char in string.ascii_letters + "_":
                 structure_data[active_key] += char
                 continue
             else:
@@ -603,7 +601,6 @@ def Tokenise(source: str):
                     tokens.append(this_token)
 
     if structure != NO_STMT:
-        # print(structure_data, default_key, active_key)
         additional_token = None
 
         if structure == LAMBDA_MAP:
@@ -650,6 +647,7 @@ def Tokenise(source: str):
 
         if additional_token:
             tokens.append(additional_token)
+    # print([(n[0], n[1]) for n in tokens])
     return tokens
 
 
@@ -667,7 +665,9 @@ if __name__ == "__main__":
         ".",
         "‛| mm",
         "‛`0`\`0`",
-        "k\\"
+        "k\\",
+        "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
+        "kv"
     ]
     for test in tests:
         print(test, group_strings(group_two_chars(test)))

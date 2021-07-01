@@ -88,7 +88,7 @@ command_dict = {
     "g": ("stack.append(VY_min(iterable(pop(stack))))", 1),
     "h": ("stack.append(iterable(pop(stack))[0])", 1),
     "i": ("rhs, lhs = pop(stack, 2)\nstack.append(index(lhs, rhs))", 2),
-    "j": ("rhs, lhs = pop(stack, 2); stack.append(join_on(lhs, rhs)))", 2),
+    "j": ("rhs, lhs = pop(stack, 2); stack.append(join_on(lhs, rhs))", 2),
     "l": ("rhs, lhs = pop(stack, 2); stack.append(nwise_pair(lhs, rhs))", 2),
     "m": ("item = pop(stack); stack.append(mirror(item))", 1),
     "n": ("stack.append(context_values[context_level % len(context_values)])", 0),
@@ -283,8 +283,8 @@ string_command_dict = {
 
 list_command_dict = {
     "…": ("value, vector = pop(stack, 2); stack.append(distribute(vector, value))", 2),
-    "↓": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
-    "↑": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1]))", 2),
+    "↓": ("fn, vector = pop(stack, 2); stack.append(min(VY_zipmap(fn, vector), key=lambda x: x[-1])[0])", 2),
+    "↑": ("fn, vector = pop(stack, 2); stack.append(max(VY_zipmap(fn, vector), key=lambda x: x[-1])[0])", 2),
     "×": ("vector = pop(stack); stack.append(all_combinations(vector));", 1),
     "F": ("stack.append(Generator(fibonacci(), is_numeric_sequence=True))", 0),
     "!": ("stack.append(Generator(factorials(), is_numeric_sequence=True))", 0),
@@ -293,7 +293,14 @@ list_command_dict = {
     "D": ("stack.append(Generator(diagonals(iterable(pop(stack), list))))", 1),
     "S": ("stack.append(Generator(sublists(iterable(pop(stack), list))))", 1),
     "Ṫ": ("rhs, lhs = pop(stack, 2); print(lhs, rhs) ;stack.append(Generator(itertools.zip_longest(*iterable(lhs), fillvalue=rhs)))", 2),
-    "℅": ("top = iterable(pop(stack)); stack.append(random.sample(top, len(top)))", 1)
+    "℅": ("top = iterable(pop(stack)); stack.append(random.sample(top, len(top)))", 1),
+    "•": ("rhs, lhs = pop(stack, 2); stack.append(dot_product(iterable(lhs), iterable(rhs)))", 2),
+    "Ṁ": ("rhs, lhs = pop(stack, 2); stack.append(matrix_multiply(iterable(lhs), iterable(rhs)))", 2),
+    "Ḋ": ("stack.append(determinant(pop(stack)))", 1),
+    "/": ("stack.append(diagonal_main(deref(pop(stack))))", 1),
+    "\\": ("stack.append(diagonal_anti(deref(pop(stack))))", 1),
+    "R": ("fn, vector = pop(stack, 2); stack.append(foldl_rows(fn, deref(vector)))", 2),
+    "C": ("fn, vector = pop(stack, 2); stack.append(foldl_cols(fn, deref(vector)))", 2)
 }
 
 misc_command_dict = {

@@ -18935,4 +18935,5 @@ Vyxal
 lyxal
 Lyxal
 esolang
-Esolang""".split("\n")
+Esolang
+""".split("\n")

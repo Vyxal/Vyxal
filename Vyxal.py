@@ -1,4 +1,3 @@
-# Python modules
 import copy
 from datetime import date
 from datetime import datetime as dt
@@ -71,7 +70,8 @@ retain_items = False
 reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
-this_function = lambda x: VY_print(stack)or x
+this_function = lambda x: VY_print(stack) or x
+variables_are_digraphs = False
 
 MAP_START = 1
 MAP_OFFSET = 1
@@ -263,24 +263,24 @@ class Generator:
         self.generated = []
         return d
     def _print(self, end="\n"):
-        main = self.generated
-        try:
-            f = next(self)
-            # If we're still going, there's stuff in main that needs printing before printing the generator
-            VY_print("⟨", end="")
-            for i in range(len(main)):
-                VY_print(main[i], end="|"*(i >= len(main)))
-            while True:
-                try:
-                    f = next(self)
-                    VY_print("|", end="")
-                    VY_print(f, end="")
-                except:
-                    break
-            VY_print("⟩", end=end)
+            main = self.generated
+            try:
+                f = next(self)
+                # If we're still going, there's stuff in main that needs printing before printing the generator
+                VY_print("⟨", end="")
+                for i in range(len(main)):
+                    VY_print(main[i], end="|"*(i >= len(main)))
+                while True:
+                    try:
+                        f = next(self)
+                        VY_print("|", end="")
+                        VY_print(f, end="")
+                    except:
+                        break
+                VY_print("⟩", end=end)
 
-        except:
-            VY_print(main, end=end)
+            except:
+                VY_print(main, end=end)
 
 
     def zip_with(self, other):
@@ -381,6 +381,38 @@ def assigned(vector, index, item):
         temp = deref(vector, False)
         temp[index] = item
         return temp
+def atleast_ndims(vector, n):
+    """Check if an array has at least n dimensions"""
+    if n == 0:
+        return 1
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        try:
+            return atleast_ndims(next(vector), n - 1)
+        except StopIteration:
+            return 1
+    if vec_type is list:
+        return not vector or atleast_ndims(vector[0], n - 1)
+    return 0
+def better_compress(word):
+    str_so_far = ''
+    while word:
+        ctr = len(word)
+        found = False
+        while ctr > 2:
+            temp = words.word_index(word[:ctr])
+            if temp == -1:
+                ctr -= 1
+            else:
+                str_so_far += temp
+                found = word[:ctr]
+                break
+        if found:
+            word = word[len(found):]
+        else:
+            str_so_far += word[0]
+            word = word[1:]
+    return str_so_far
 def bifuricate(item):
     t_item = VY_type(item)
     if t_item in (Number, list, str):
@@ -584,37 +616,23 @@ def deref(item, generator_to_list=True, limit=-1):
         return [item.safe, item._dereference][generator_to_list]()
     if type(item) not in [int, float, str]: return list(map(deref, item))
     return item
+def determinant(matrix):
+    det = numpy.linalg.det(numpy.asarray(deref(matrix)))
+    # If it's a number, don't convert to list
+    if isinstance(matrix, numpy.number):
+        return det
+    else:
+        return det.tolist()
 def dictionary_compress(item):
     item = split_on_words(VY_str(item))
     out = ""
 
     for word in item:
         out += better_compress(word)
-    return "`" + out + "`"
-
-def better_compress(word):
-    str_so_far = ''
-    while word:
-        ctr = len(word)
-        found = False
-        while ctr > 2:
-            temp = words.word_index(word[:ctr])
-            if temp == -1:
-                ctr -= 1
-            else:
-                str_so_far += temp
-                print(temp,word,word[:ctr])
-                found = word[:ctr]
-                break
-        if found:
-            word = word[len(found)+1:]
-        else:
-            str_so_far += word[0]
-            word = word[1:]
-    return str_so_far
-        
+    return "`" + out + "`"        
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
+    # joke explanation: the diagonals are the most important part of the game
     vector = numpy.asarray(vector)
     diag_num = 0
     diagonal = numpy.diag(vector)
@@ -631,6 +649,11 @@ def diagonals(vector):
         yield vectorise(lambda x: x.item(), list(diagonal))
         diag_num -= 1
         diagonal = numpy.diag(vector, k=diag_num)
+def diagonal_main(matrix):
+    return numpy.asarray(matrix).diagonal().tolist()
+def diagonal_anti(matrix):
+    flipped = numpy.fliplr(numpy.asarray(matrix)).diagonal().tolist()
+    return flipped
 def distance_between(lhs, rhs):
     inner = Generator(map(lambda x: exponate(subtract(x[0], x[1]), 2), VY_zip(lhs, rhs)))
     inner = summate(inner)
@@ -692,6 +715,8 @@ def divisors_of(item):
             divisors.append(value)
 
     return divisors
+def dot_product(lhs, rhs):
+    return summate(multiply(lhs, rhs))
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -755,8 +780,6 @@ def find(haystack, needle, start=0):
     if type(needle) is Function:
         return indexes_where(haystack, needle)
 
-    
-    
     # It looks like something from 2001
     index = 0
     haystack = iterable(haystack)
@@ -768,9 +791,14 @@ def find(haystack, needle, start=0):
     if (VY_type(haystack), VY_type(needle)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
         return str(haystack).find(str(needle), start=index)
 
-    while index < len(haystack):
-        if haystack[index] == needle:
-            return index
+    index = 0
+    while True:
+        try: 
+            temp = haystack[index]
+            if deref(temp) == deref(needle):
+                return index
+        except:
+            break
         index += 1
     return -1
 def first_n(func, n=None):
@@ -813,6 +841,158 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"]))
     }.get(VY_type(item), lambda: vectorise(floor, item))()
+def foldl_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: foldl_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if init is None:
+        acc = next(vector) if vec_type is Generator else vector.pop(0)
+    else:
+        acc = init
+    for inner_arr in vector:
+        acc = vectorise(fn, inner_arr, acc)
+    return acc
+def foldl_cols(fn, vector, init=None):
+    """
+    Fold each column of a matrix from top to bottom, possibly with a starting value.
+    TODO generalize to multiple dimensions
+    """
+    vec_type = VY_type(vector)
+    print(f'vector={vector}')
+    if vec_type is Generator:
+        if vector.end_reached:
+            return []
+        first_row = next(vector)
+        if atleast_ndims(first_row, 2):
+            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
+        num_cols = len(first_row)
+        cs = range(num_cols)
+        if init is None:
+            res = next(vector)
+            start = 1
+        else:
+            res = [init] * num_cols
+            start = 0
+        while not vector.end_reached:
+            res = zip_with2(fn, res, next(vector))
+        return res
+    elif vec_type is list:
+        num_rows = len(vector)
+        if not num_rows:
+            return []
+        if atleast_ndims(vector[0], 2):
+            print('recursioning')
+            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
+        num_cols = len(vector[0])
+        cs = range(num_cols)
+        if init is None:
+            res = vector[0]
+            start = 1
+        else:
+            res = [init] * num_cols
+            start = 0
+        for r in range(start, num_rows):
+            res = zip_with2(fn, res, vector[r])
+        return res
+    raise ValueError('Expected list or generator, cannot fold the columns of an atom')
+def foldl_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    if not vector:
+        return []
+    vec_type = VY_type(vector)
+    first_row = vector[0] if vec_type is list else next(vector)
+    inner_type = VY_type(first_row)
+    if inner_type is list:
+        return [foldl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield foldl_rows(fn, first_row, init=init)
+            for row in vector:
+                yield foldl_rows(fn, row, init=init)
+        return Generator(gen())
+    else: # 1D fold/reduction
+        if vec_type is Generator:
+            acc = next(vector) if init is None else init
+            while not vector.end_reached:
+                acc = _safe_apply(fn, acc, next(vector))
+            return acc
+        else:
+            if init is None:
+                acc = vector[0]
+                start = 1
+            else:
+                acc = init
+                start = 0
+            for i in range(start, len(vector)):
+                acc = _safe_apply(fn, vector[i], acc)
+            return acc
+def foldr_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: foldr_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if init is None:
+        acc = vector[-1]
+        start = len(vector) - 2
+    else:
+        acc = init
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc = vectorise(fn, acc, vector[i])
+    return acc
+def foldr_cols(fn, vector, init=None):
+    """
+    Fold each column of a matrix from top to bottom, possibly with a starting value.
+    TODO generalize to multiple dimensions
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()    
+    num_rows = len(vector)
+    if not num_rows:
+        return []
+    num_cols = len(vector[0])
+    cs = range(num_cols)
+    if init is None:
+        res = vector[-1]
+        start = len(vector) - 2
+    else:
+        res = [init] * num_cols
+        start = len(vector) - 1
+    for r in range(start, -1, -1):
+        res = zip_with2(fn, vector[r], res)
+    return res
+def foldr_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if not vector:
+        return []
+    inner_type = VY_type(vector[0])
+    if inner_type is list:
+        return [foldr_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield foldr_rows(fn, vector[0], init=init)
+            for row in vector:
+                yield foldr_rows(fn, row, init=init)
+        return Generator(gen())
+    # 1D fold/reduction
+    if init is None:
+        acc = vector[-1]
+        start = len(vector) - 2
+    else:
+        acc = init
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc = _safe_apply(fn, acc, vector[i])
+    return acc
 def format_string(value, items):
     ret = ""
     index = 0
@@ -843,6 +1023,7 @@ def fractionify(item):
         return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
+        print(vector)
         return fn(vector, self=fn)
     else:
         return [{
@@ -1196,6 +1377,27 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
     return Generator(gen())
+def map_norm(fn, vector):
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        def gen():
+            for item in vector:
+                yield fn(item)
+        return Generator(gen())
+    elif vec_type is Number:
+        pass #idk what to do here, make a range or use it as a singleton?
+    else:
+        return Generator(map(fn, vector))
+def matrix_multiply(lhs, rhs):
+    transformed_right = deref(transpose(rhs))
+    ret = []
+
+    for row in lhs:
+        temp = []
+        for col in transformed_right:
+            temp.append(summate(multiply(row, col)))
+        ret.append(temp[::])
+    return ret
 def mirror(item):
     if VY_type(item) in (str, Number):
         return add(item, reverse(item))
@@ -1547,6 +1749,93 @@ def run_length_decode(vector):
 def run_length_encode(item):
     item = group_consecutive(iterable(item))
     return Generator(map(lambda x: [x[0], len(x)], item))
+def scanl_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: scanl_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if init is None:
+        acc = [next(vector) if vec_type is Generator else vector.pop(0)]
+    else:
+        acc = [init]
+    for inner_arr in vector:
+        acc.append(vectorise(fn, inner_arr, acc[-1]))
+    return acc
+def scanl_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    if not vector:
+        return []
+    vec_type = VY_type(vector)
+    first_row = vector[0] if vec_type is list else next(vector)
+    inner_type = VY_type(first_row)
+    if inner_type is list:
+        return [scanl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield scanl_rows(fn, first_row, init=init)
+            for row in vector:
+                yield scanl_rows(fn, row, init=init)
+        return Generator(gen())
+    else: # 1D fold/reduction
+        if vec_type is Generator:
+            acc = [next(vector)] if init is None else [init]
+            while not vector.end_reached:
+                acc.append(_safe_apply(fn, acc[-1], next(vector)))
+            return acc
+        else:
+            if init is None:
+                acc = [vector[0]]
+                start = 1
+            else:
+                acc = [init]
+                start = 0
+            for i in range(start, len(vector)):
+                acc.append(_safe_apply(fn, vector[i], acc[-1]))
+            return acc
+def scanr_by_axis(fn, vector, axis, init=None):
+    if axis > 0:
+        return map_norm(lambda inner_arr: scanr_by_axis(fn, inner_arr, axis - 1, init=init), vector)
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if init is None:
+        acc = [vector[-1]]
+        start = len(vector) - 2
+    else:
+        acc = [init]
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc.append(vectorise(fn, acc[-1], vector[i]))
+    return acc
+def scanr_rows(fn, vector, init=None):
+    """
+    Fold each row of a matrix from the left, possibly with a starting value.
+    """
+    vec_type = VY_type(vector)
+    if vec_type is Generator:
+        vector = vector._dereference()
+    if not vector:
+        return []
+    inner_type = VY_type(vector[0])
+    if inner_type is list:
+        return [scanl_rows(fn, row, init=init) for row in vector]
+    elif inner_type is Generator:
+        def gen():
+            yield scanr_rows(fn, vector[0], init=init)
+            for row in vector:
+                yield scanr_rows(fn, row, init=init)
+        return Generator(gen())
+    # 1D fold/reduction
+    if init is None:
+        acc = [vector[-1]]
+        start = len(vector) - 2
+    else:
+        acc = [init]
+        start = len(vector) - 1
+    for i in range(start, -1, -1):
+        acc.append(_safe_apply(fn, acc[-1], vector[i]))
+    return acc
 def sentence_case(item):
     ret = ""
     capitalise = True
@@ -1793,16 +2082,16 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
     if third:
         types = (VY_type(left), VY_type(right))
         def gen():
-            for pair in VY_zip(left, right):
-                yield _safe_apply(fn, *pair, third)
+            for pair in VY_zip(right, left):
+                yield _safe_apply(fn, third, *pair)
 
         def expl(l, r):
             for item in l:
-                yield _safe_apply(fn, item, r, third)
+                yield _safe_apply(fn, third, r, item)
 
         def swapped_expl(l, r):
             for item in r:
-                yield _safe_apply(fn, l, item, third)
+                yield _safe_apply(fn, third, item, l)
 
         ret =  {
             (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
@@ -1840,7 +2129,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
         def swapped_expl(l, r):
             for item in r:
-                yield _safe_apply(fn, l, item)
+                yield _safe_apply(fn, item, l)
         ret = {
             (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
@@ -1965,7 +2254,20 @@ def VY_eval(item):
         try:
             return pwn.safeeval.const(item)
         except:
-            return item
+            f = VyParse.Tokenise(item, variables_are_digraphs)
+            if len(f) and f[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
+                try:
+                    temp = VY_compile(item)
+                    stack = []
+                    exec(temp)
+                    return stack[-1]
+                except Exception as e:
+                    print(e)
+                    return item
+            else:
+                return item
+
+
 
     else:
         try:
@@ -2017,6 +2319,8 @@ def VY_int(item, base=10):
         return int(item, base)
     elif t_item is complex:
         return numpy.real(item)
+    elif t_item is float:
+        return int(item)
     elif t_item:
         return VY_int(iterable(item), base)
 def VY_map(fn, vector):
@@ -2029,7 +2333,7 @@ def VY_map(fn, vector):
                 yield [vector, item]
         return Generator(gen())
 
-    vec, function = ((vector, fn), (fn, vector))[t_vector is Function]
+    vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if VY_type(vec) == Number:
         vec = range(MAP_START, int(vec) + MAP_OFFSET)
     if VY_type(vec) is Generator:
@@ -2089,7 +2393,7 @@ def VY_oct(item):
         str: lambda: (lambda: item, lambda: oct(int(item)))[item.isnumeric()]()[2:]
     }.get(VY_type(item), lambda:vectorise(VY_oct, item))()
 def VY_print(item, end="\n", raw=False):
-    global output, printed
+    global output, printed, stack
     printed = True
     t_item = type(item)
     if t_item is Generator:
@@ -2102,6 +2406,10 @@ def VY_print(item, end="\n", raw=False):
                 VY_print(value, "|", True)
             VY_print(item[-1], "", True)
         VY_print("⟩", end, False)
+    elif t_item is Function:
+        pop(stack)
+        s = function_call(item, stack)
+        VY_print(s[0], end=end, raw=raw)
     else:
         if t_item is int and keg_mode:
             item = chr(item)
@@ -2159,7 +2467,7 @@ def VY_reduce(fn, vector):
 def VY_repr(item):
     t_item = VY_type(item)
     return {
-        Number: lambda x: str(x),
+        Number: str,
         list: lambda x: "⟨" + "|".join([str(VY_repr(y)) for y in x]) + "⟩",
         Generator: lambda x: VY_repr(x._dereference()),
         str: lambda x: "`" + x + "`",
@@ -2174,13 +2482,14 @@ def VY_round(item):
         return [item[n:] for n in range(len(item) - 1, -1, -1)]
     return vectorise(VY_round, item)
 def VY_str(item):
+    global stack
     t_item = VY_type(item)
     return {
-        Number: lambda x: str(x),
+        Number: str,
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
-        Function: lambda x: "@FUNCTION:" + x.__name__
+        Function: lambda x: VY_str(function_call(item, stack)[0])
     }[t_item](item)
 def VY_type(item):
     ty = type(item)
@@ -2206,27 +2515,42 @@ def VY_zip(lhs, rhs):
             exhausted += 1
         if exhausted == 2:
             break
-        else:
-            yield [l, r]
-
+        yield [l, r]
         ind += 1
-def VY_zipmap(fn, vector):
-    if type(fn) is not Function:
-        return [fn, VY_zip(vector, vector)]
-    t_vector = VY_type(vector)
-    if t_vector is Generator:
-        orig = copy.deepcopy(vector)
-        new = VY_map(fn, vector)
-        return Generator(orig.zip_with(new))
-    if t_vector == Number:
-        vector = range(MAP_START, int(vector) + MAP_OFFSET)
-
-    ret = []
-    for item in vector:
-        ret.append([item, fn([item])[-1]])
-
-    return [ret]
-
+def VY_zipmap(lhs, rhs):
+    if Function not in (VY_type(lhs), VY_type(rhs)):
+        return [lhs, VY_zip(rhs, rhs)]
+    
+    function = vector = None
+    if type(rhs) is Function:
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range) 
+    def f():
+        for item in vector:
+            yield [item, _safe_apply(function, item)]
+    return Generator(f())
+def zip_with2(fn, xs, ys):
+    xs_type, ys_type = VY_type(xs), VY_type(ys)
+    # Convert both to Generators if not already
+    xs = xs if xs_type is Generator else Generator((x for x in xs))
+    ys = ys if ys_type is Generator else Generator((y for y in ys))
+    def gen():
+        try:
+            while not (xs.end_reached or ys.end_reached):
+                yield _safe_apply(fn, next(ys), next(xs))
+        except StopIteration:
+            pass
+    return Generator(gen())
+def zip_with_multi(fn, lists):
+    lists = [lst if VY_type(lst) is Generator else Generator((x for x in lst)) for lst in lists]
+    def gen():
+        try:
+            while not any(lst.end_reached for lst in lists):
+                yield _safe_apply(fn, *map(next, lists))
+        except StopIteration:
+            pass
+    return Generator(gen())
 constants = {
     "A": "string.ascii_uppercase",
     "e": "math.e",
@@ -2318,11 +2642,12 @@ constants = {
     "Ẇ": "dt.now().isoweekday()",
     "§": "['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']",
     "ɖ": "['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']",
+    "ṁ": "[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]"
 }
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
-    source = VyParse.Tokenise(source)
+    source = VyParse.Tokenise(source, variables_are_digraphs)
     compiled = ""
     for token in source:
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
@@ -2333,11 +2658,10 @@ def VY_compile(source, header=""):
             compiled += f"stack.append({VALUE})"
         elif NAME == VyParse.STRING_STMT:
             import utilities
-            value = VALUE[VyParse.STRING_CONTENTS].replace('"', "\\\"")
-            if raw_strings:
-                compiled += f"stack.append(\"{value}\")" + NEWLINE
-            else:
-                compiled += f"stack.append(\"{utilities.uncompress(value)}\")" + NEWLINE
+            value = VALUE[VyParse.STRING_CONTENTS]
+            if not raw_strings: value = utilities.uncompress(value)
+            value = value.replace("\\", "\\\\").replace("\"", "\\\"")
+            compiled += f"stack.append(\"{value}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"
         elif NAME == VyParse.IF_STMT:
@@ -2400,8 +2724,6 @@ def VY_compile(source, header=""):
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
                 compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
-                compiled += tab("context_level += 1") + NEWLINE
-                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab(f"this_function = FN_{function_name}") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
@@ -2428,12 +2750,14 @@ else:
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
                     elif isinstance(parameter, int):
-                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
+                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})[::-1]; print(parameters)")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
 
                 compiled += tab("stack = parameters[::]") + NEWLINE
+                compiled += tab("context_level += 1") + NEWLINE
+                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
                 compiled += tab(VY_compile(VALUE[VyParse.FUNCTION_BODY])) + NEWLINE
                 compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
@@ -2448,8 +2772,6 @@ else:
             signature = _mangle(compiled or secrets.token_hex(64))
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
-            compiled += tab("context_level += 1") + NEWLINE
-            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
@@ -2460,7 +2782,9 @@ else:
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
             compiled += tab("context_values.append(parameters)") + NEWLINE
+            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
+            compiled += tab("context_level += 1") + NEWLINE
             compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
             compiled += tab("ret = [pop(stack)]") + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
@@ -2509,6 +2833,10 @@ else:
             compiled += commands.list_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.TWO_BYTE_MISC:
             compiled += commands.misc_command_dict.get(VALUE, "  ")[0]
+        elif NAME == VyParse.VAR_SET:
+            compiled += "VAR_" + str(ord(VALUE)) + " = pop(stack)"
+        elif NAME == VyParse.VAR_GET:
+            compiled += "stack.append(VAR_" + str(ord(VALUE)) + ")"
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding
@@ -2569,7 +2897,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings
-    global inputs, reverse_args, keg_mode, number_iterable, this_function
+    global inputs, reverse_args, keg_mode, number_iterable, this_function, variables_are_digraphs
     online_version = True
     output = output_variable
     output[1] = ""
@@ -2617,6 +2945,9 @@ def execute(code, flags, input_list, output_variable):
 
         if 'D' in flags:
             raw_strings = True
+        
+        if 'V' in flags:
+            variables_are_digraphs = True
 
         if 'h' in flags:
             output[1] = """
@@ -2637,6 +2968,7 @@ ALL flags should be used as is (no '-' prefix)
 \tS\tPrint top of stack joined by spaces on end of execution
 \tC\tCentre the output and join on newlines on end of execution
 \tO\tDisable implicit output
+\to\tForce implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting)
 \tl\tPrint length of top of stack on end of execution
 \tG\tPrint the maximum item of the top of stack on end of execution
@@ -2648,6 +2980,7 @@ ALL flags should be used as is (no '-' prefix)
 \tṪ\tPrint the sum of the entire stack
 \tṡ\tPrint the entire stack, joined on spaces
 \tJ\tPrint the entire stack, separated by newlines.
+\tV\tVariables are only one letter long
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
@@ -2667,6 +3000,9 @@ ALL flags should be used as is (no '-' prefix)
         output[2] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
         output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
         print(e)
+    except SystemExit:
+        if 'o' not in flags:
+            return
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
@@ -2678,9 +3014,9 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and 'Ṫ' in flags:
             VY_print(summate(stack))
         elif flags and 'S' in flags:
-            VY_print(" ".join([str(n) for n in pop(stack)]))
+            VY_print(" ".join([VY_str(n) for n in pop(stack)]))
         elif flags and 'C' in flags:
-            VY_print("\n".join(centre(pop(stack))))
+            VY_print("\n".join(centre([VY_str(n) for n in pop(stack)])))
         elif flags and 'l' in flags:
             VY_print(len(pop(stack)))
         elif flags and 'G' in flags:
@@ -2696,7 +3032,7 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and 'J' in flags:
             VY_print("\n".join([VY_str(n) for n in stack]))
         else:
-            VY_print(pop(stack))
+            VY_print(VY_str(pop(stack)))
 
 
 if __name__ == "__main__":
@@ -2829,7 +3165,7 @@ if __name__ == "__main__":
             elif flags and 'S' in flags:
                 print(" ".join([VY_str(n) for n in pop(stack)]))
             elif flags and 'C' in flags:
-                print("\n".join(centre(pop(stack))))
+                print("\n".join(centre([VY_str(n) for n in pop(stack)])))
             elif flags and 'l' in flags:
                 print(len(pop(stack)))
             elif flags and 'G' in flags:

@@ -101,13 +101,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png">
-    <!--Codemirror stuff-->
+<link rel="shortcut icon" type="image/jpg" href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
+<!--Codemirror stuff-->
     <script src='codemirror.js'></script>
     <script src='mode-vyxal.js'></script>
     <link rel="stylesheet" href="codemirror.css">
     <link rel="stylesheet" href="mode-vyxal.css">
     <script>
+	search = window
+        glyphQuery = String.fromCharCode(0162,105,0143,107)
         this.prevQuery = "";
         var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
         codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
@@ -125,6 +127,18 @@
         codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
         codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
         codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
+	secret = "dQw4"
+        secret += secret[2]
+        temp = "9WgXc"
+        secret += temp + secret[1]
+        temp = "out"
+        temp += temp[1] + "."
+        temp += "be"
+        temp = "y" + temp
+        temp = codepage[47] + temp
+        temp = codepage[115] + codepage[58] + temp[0] + temp
+        secret = "tp" + temp + "/" + secret
+        secret = "h" + codepage[116] + secret
         var og_keyboard_html;
         window.addEventListener('DOMContentLoaded', (event) => {
 
@@ -174,9 +188,14 @@
 
         function updateCount() {
             var byte_box = document.getElementById("code-count");
-            var code = e_code.doc.getValue().length;
 
-            byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
+        var code = e_code.doc.getValue().length;
+	    if([...code].every(x => (codepage + ' ' + '\n').includes(x))){
+	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
+	    } else {
+	    	byte_box.innerText = `Code: ${new Blob([code]).size} bytes` + ' (UTF-8)';
+		console.log("s".repeat(code.length != 1))
+	    }
         }
 
         function generateURL() {
@@ -188,7 +207,7 @@
             var undone_url = "?flags=" + flags + "&code=" + encodeURIComponent(code) + "&inputs=" + encodeURIComponent(inputs);
             undone_url += "&header=" + encodeURIComponent(header) + "&footer=" + encodeURIComponent(footer)
 
-            var url = "http://lyxal.pythonanywhere.com" + undone_url
+            var url = "https://lyxal.pythonanywhere.com" + undone_url
             url = url.replace(/\(/g, "%28")
             url = url.replace(/\[/g, "%5B")
             url = url.replace(/\]/g, "%5D")
@@ -206,15 +225,17 @@
                 flag_appendage = " `" + flags + "`,"
             }
             var output = ""
+	    var utfable = [...code].every(x => (codepage + ' ').includes(x));
+	    var len = utfable?code.length:new Blob([code]).size
             switch (shareType) {
                 case "permalink":
                     output = url;
                     break;
                 case "cmc":
-                    output = `[Vyxal, ${code.length} byte${"s".repeat(code.length != 1)}](${url})`;
+                    output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable?'':' (UTF-8)'}](${url})`;
                     break;
                 case "post-template":
-                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${code.length} byte${"s".repeat(code.length != 1)}
+                    output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable?'':' (UTF-8)'}
                     
 \`\`\`
 ${code}
@@ -283,6 +304,10 @@ ${code}
             var descriptions = ''//{{codepage_info | safe}};
 
             if (query){
+                if (query == glyphQuery) {
+                    document.getElementById("filterBox").value = "";
+                    search.open(secret, "_blank");
+                }
                 yesGlyph = []
                 yesDescription = []
                 console.log("starting filter")
@@ -377,6 +402,7 @@ ${code}
                     output.value = res.stdout;
                     extra.value = res.stderr;
                     run.innerHTML = '<svg style="width:24px;height:24px" viewBox="0 0 24 24"><path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" /></svg>';
+		    if(code.value == 'lyxal') location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                     expandBoxes();
                 });
                 } else {
@@ -504,5 +530,5 @@ ${code}
 
 </br></br></br></br></br></br></br></br></br>
 <iframe height="50" src="https://george.gh0.pw/embed.cgi?lyxal" style="border:none;width:100%"></iframe>
-<iframe src="https://john.mondecitronne.com/embed?ref=http://www.lyxal.pythonanywhere.com" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe> 
+<!--<iframe src="https://john.mondecitronne.com/embed?ref=http://www.lyxal.pythonanywhere.com" style="margin-left:auto;display:block;margin-right:auto;max-width:732px;width:100%;height:94px;border:none;"></iframe> !-->
 </body>
