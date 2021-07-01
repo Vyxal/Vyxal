@@ -72,8 +72,8 @@ command_dict = {
     "a": ("stack.append(int(any(iterable(pop(stack)))))", 1),
     "b": ("stack.append(VY_bin(pop(stack)))", 1),
     "c": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs in rhs))", 2),
-    "d": ("lhs = pop(stack, 2); stack.append(multiply(lhs, 2))", 1)
-    
+    "d": ("lhs = pop(stack, 2); stack.append(multiply(lhs, 2))", 1),
+    "e": ("rhs, lhs = pop(stack, 2); stack.append(copy_sign(lhs, rhs))", 2),
 }
 
 transformers = { # the {} is where the t_lambda goes
