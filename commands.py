@@ -71,6 +71,8 @@ command_dict = {
     "^": ("stack = stack[::-1]", 0),
     "a": ("stack.append(int(any(iterable(pop(stack)))))", 1),
     "b": ("stack.append(VY_bin(pop(stack)))", 1),
+    "c": ("rhs, lhs = pop(stack, 2); stack.append(int(lhs in rhs))", 2),
+    "d": ("lhs = pop(stack, 2); stack.append(multiply(lhs, 2))", 1)
     
 }
 
@@ -88,7 +90,7 @@ transformers = { # the {} is where the t_lambda goes
     "&": "stack.append(apply_to_register(function_A, stack))",
     "/": "stack += VY_reduce(pop(stack), function_A)",
     "\\": "stack.append(cumulative_reduce(function_A, pop(stack)))",
-    "v": "stack.append(vectorise(function_A, stack))",
+    "v": "print(function_A);stack.append(transformer_vectorise(function_A, stack))",
     "Ƈ": "stack.append(foldr(function_A, pop(stack)))",
     "Ƒ": "stack.append(VY_map(function_A, pairs(pop(stack))))",
     "Ƙ": "stack.append(VY_map(function_A, suffixes(pop(stack))))",

@@ -195,7 +195,7 @@ def factorial(lhs):
         number: lambda: realify(sympy.gamma(lhs)),
         str: lambda: sentence_case(lhs)
     }.get(VY_type(lhs), lambda: vectorise(factorial, lhs))()
-def format_string(value, lhss):
+def format_string(value, items):
     ret = ""
     index = 0
     f_index = 0
@@ -205,8 +205,7 @@ def format_string(value, lhss):
             ret += "\\" + value[index + 1]
             index += 1
         elif value[index] == "%":
-            #print(f_index, f_index % len(lhss))
-            ret += str(lhss[f_index % len(lhss)])
+            ret += str(items[f_index % len(items)])
             f_index += 1
         else:
             ret += value[index]
@@ -423,6 +422,8 @@ def subtract(lhs, rhs):
         (str, str): lambda: lhs.replace(rhs, "")
     }.get(VY_type(lhs, rhs), lambda: vectorise(subtract, lhs, rhs))()
 tab = lambda x: newline.join(["    " + lhs for lhs in x.split(newline)]).rstrip("    ")
+def transformer_vectorise(function, vector):
+    return vectorise(function, *pop(vector, function.stored_arity))
 def uninterleave(lhs):
     left, right = [], []
     for i in range(len(lhs)):
