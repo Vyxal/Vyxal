@@ -2125,7 +2125,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
         def expl(l, r):
             for item in l:
-                yield _safe_apply(fn, r, item)
+                yield _safe_apply(fn, item, r)
 
         def swapped_expl(l, r):
             for item in r:
