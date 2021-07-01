@@ -2516,22 +2516,19 @@ def VY_zip(lhs, rhs):
             break
         yield [l, r]
         ind += 1
-def VY_zipmap(fn, vector):
-    if type(fn) is not Function:
-        return [fn, VY_zip(vector, vector)]
-    t_vector = VY_type(vector)
-    if t_vector is Generator:
-        orig = copy.deepcopy(vector)
-        new = VY_map(fn, vector)
-        return Generator(orig.zip_with(new))
-    if t_vector == Number:
-        vector = range(MAP_START, int(vector) + MAP_OFFSET)
-
-    ret = []
-    for item in vector:
-        ret.append([item, fn([item])[-1]])
-
-    return [ret]
+def VY_zipmap(lhs, rhs):
+    if Function not in (VY_type(lhs), VY_type(rhs)):
+        return [lhs, VY_zip(rhs, rhs)]
+    
+    function = vector = None
+    if type(rhs) is Function:
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range) 
+    def f():
+        for item in vector:
+            yield [item, _safe_apply(function, item)]
+    return Generator(f())
 def zip_with2(fn, xs, ys):
     xs_type, ys_type = VY_type(xs), VY_type(ys)
     # Convert both to Generators if not already
