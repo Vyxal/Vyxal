@@ -37,14 +37,18 @@
 
         }
 
-        input, textarea {color: white;
-            background-color: #181a1b !important;
+        input, textarea {
+            color: white;
+            background-color: #1e1e1e !important;
             font-family: 'DejaVu Sans Mono', monospace;
             min-height: 1em !important;
             height: 1em;
-
+            border: none !important;
+            border-radius: 0px !important;
         }
-
+        input:focus,textarea:focus{
+            border: none;
+        }
         textarea {
             width: 100%;
         }
@@ -98,6 +102,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="shortcut icon" type="image/jpg" href="https://www.pythonanywhere.com/user/Lyxal/files/home/Lyxal/mysite/favicon.png">
+    <!--Codemirror stuff-->
+    <script src='codemirror.js'></script>
+    <script src='mode-vyxal.js'></script>
+    <link rel="stylesheet" href="codemirror.css">
+    <link rel="stylesheet" href="mode-vyxal.css">
     <script>
         this.prevQuery = "";
         var codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
@@ -119,16 +128,18 @@
         var og_keyboard_html;
         window.addEventListener('DOMContentLoaded', (event) => {
 
-            codepage_descriptions = {{codepage_info |safe}};
+            codepage_descriptions = ''//{{codepage_info |safe}};
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
                 kb.innerHTML += `<span class=\"key\" style="text-align:center;" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
+                    /*
                     var box = document.getElementById("code")
                     var start = box.selectionStart;
                     var end = box.selectionEnd;
+                    */
                     var char = event.target.innerHTML;
                     if (char === "␤") {
                         char = "\n"
@@ -141,12 +152,11 @@
                     } else if (char === "&amp;"){
                         char = "&"
                     }
-                    var str = box.value.slice(0, start) + char + box.value.slice(end);
-                    box.value = str
-                    box.focus()
+                    e_code.doc.replaceSelection(char)
+                    e_code.focus()
                     updateCount();
-                    box.selectionStart = end + 1;
-                    box.selectionEnd = end + 1;
+                    //box.selectionStart = end + 1;
+                    //box.selectionEnd = end + 1;
 
                 })
             })
@@ -164,7 +174,7 @@
 
         function updateCount() {
             var byte_box = document.getElementById("code-count");
-            var code = document.getElementById("code").value.length;
+            var code = e_code.doc.getValue().length;
 
             byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
         }
@@ -270,7 +280,7 @@ ${code}
 
         function glyphSearch() {
             var query = document.getElementById("filterBox").value.toLowerCase();
-            var descriptions = {{codepage_info | safe}};
+            var descriptions = ''//{{codepage_info | safe}};
 
             if (query){
                 yesGlyph = []
@@ -387,10 +397,45 @@ ${code}
 				$("#run_button").click();
 			}
 		});
+        // Codemirror stuff begins here
+        function initCodeMirror(){
+            var $$$ = x  => document.querySelector(x)
+            globalThis.e_code = CodeMirror.fromTextArea($$$('#code'), {
+                mode: 'vyxal',
+                lineWrapping:  true
+            });
+            function resize(elem) {
+    	        var dummy = $$$("#dummy");
+	            dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily;
+                dummy.style.fontSize = '16px'//getComputedStyle($$$('.CodeMirror.cm-s-default')).fontSize;
+                dummy.style.lineHeight = '25.6px'
+	            dummy.style.width = innerWidth - 16 + 'px';
+    	        dummy.value = elem.doc.getValue();
+	            elem.setSize(null,Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27));
+	            dummy.value = "";
+                updateCount();
+            }
+            e_code.on('change',_ => {resize(e_code)})
+            resize(e_code)
+            /* Am I really this lazy? Yes. */
+            globalThis.e_header = CodeMirror.fromTextArea($$$('#header'), {
+                mode: 'vyxal',
+                lineWrapping:  true
+            });
+            e_header.on('change',_ => {resize(e_header)})
+            resize(e_header)
+            globalThis.e_footer = CodeMirror.fromTextArea($$$('#footer'), {
+                mode: 'vyxal',
+                lineWrapping:  true
+            });
+            e_footer.on('change',_ => {resize(e_footer)})
+            resize(e_footer)
+        }
     </script>
 </head>
 
-<body onload="decodeURL(); updateCount(); resizeCodeBox('code')">
+<body onload="initCodeMirror(); decodeURL();  updateCount()">
+    <textarea id=dummy style="visibility: hidden;position:absolute; height: 0px; font: size 20px;"></textarea>
     <session-code>{{session}}</session-code>
         <h2 style="display: inline-block;"><a href="https://github.com/Lyxal/Vyxal">Vyxal</a></h2>
         <button id="run_button" title="Run Program" type="button" style="color:white"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
