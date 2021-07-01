@@ -71,6 +71,7 @@ reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
 this_function = lambda x: VY_print(stack) or x
+variables_are_digraphs = False
 
 MAP_START = 1
 MAP_OFFSET = 1
@@ -2253,7 +2254,7 @@ def VY_eval(item):
         try:
             return pwn.safeeval.const(item)
         except:
-            f = VyParse.Tokenise(item)
+            f = VyParse.Tokenise(item, variables_are_digraphs)
             if len(f) and f[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
                 try:
                     temp = VY_compile(item)
@@ -2646,7 +2647,7 @@ constants = {
 
 def VY_compile(source, header=""):
     if not source: return header or "pass"
-    source = VyParse.Tokenise(source)
+    source = VyParse.Tokenise(source, variables_are_digraphs)
     compiled = ""
     for token in source:
         NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
@@ -2832,6 +2833,10 @@ else:
             compiled += commands.list_command_dict.get(VALUE, "  ")[0]
         elif NAME == VyParse.TWO_BYTE_MISC:
             compiled += commands.misc_command_dict.get(VALUE, "  ")[0]
+        elif NAME == VyParse.VAR_SET:
+            compiled += "VAR_" + str(ord(VALUE)) + " = pop(stack)"
+        elif NAME == VyParse.VAR_GET:
+            compiled += "stack.append(VAR_" + str(ord(VALUE)) + ")"
         elif NAME == VyParse.SINGLE_SCC_CHAR:
             import utilities
             import encoding
@@ -2892,7 +2897,7 @@ else:
 def execute(code, flags, input_list, output_variable):
     global stack, register, printed, output, MAP_START, MAP_OFFSET
     global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings
-    global inputs, reverse_args, keg_mode, number_iterable, this_function
+    global inputs, reverse_args, keg_mode, number_iterable, this_function, variables_are_digraphs
     online_version = True
     output = output_variable
     output[1] = ""
@@ -2940,6 +2945,9 @@ def execute(code, flags, input_list, output_variable):
 
         if 'D' in flags:
             raw_strings = True
+        
+        if 'V' in flags:
+            variables_are_digraphs = True
 
         if 'h' in flags:
             output[1] = """
@@ -2972,6 +2980,7 @@ ALL flags should be used as is (no '-' prefix)
 \tṪ\tPrint the sum of the entire stack
 \tṡ\tPrint the entire stack, joined on spaces
 \tJ\tPrint the entire stack, separated by newlines.
+\tV\tVariables are only one letter long
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
