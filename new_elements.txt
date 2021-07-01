@@ -176,7 +176,7 @@ c  (any a, any b) -> num                  = a in b (contains)
 d  (num a) -> num                         = a × 2
    (str a) -> str                         = a + a
    ([*any] a) -> [*any]                   = vectorise
-e  (num a, num b) -> [num, num]           = [a + b, a - b]
+e  (num a, num b) -> num                  = copysign(a, b)
    (num a, str b) -> [*str]               = Split b into two sections, the first of which has length a.
    (str a, num b) -> [*str]               = Split a into two sections, the first of which has length b.
    (str a, str b) -> [*str]               = Split a on the first occurance of b
@@ -241,7 +241,7 @@ z  (any a) -> [*any]                      = zip(a, a)
    ([*any] a) -> [*any]                   = vectorised
 Ȧ  ([*any] a, num b, any c) -> [*any]     = a[b] = c
 Ḃ  (any a) -> any, any                    = a, reversed(a)
-Ċ  (num a, num b) -> [num, num]           = [a + b, a - b]
+Ċ  (num a, num b) -> [num, num]           = a choose b
    (num a, str b) -> str                  = diagonal of char b of length a - 5`/`Ċ -> `    /\n   / \n  / \n /   \n/    `
    (str a, num b) -> str                  = diagonal of char a of length b
    (str a, str b) -> str                  = a.partition(b)
