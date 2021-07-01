@@ -647,7 +647,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
 
         if additional_token:
             tokens.append(additional_token)
-    print([(n[0], n[1]) for n in tokens])
+    # print([(n[0], n[1]) for n in tokens])
     return tokens
 
 
