@@ -443,13 +443,13 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         ts = (VY_type(left), VY_type(right))
         def gen():
             for pair in VY_zip(right, left):
-                yield apply(fn, third, *pair)
+                yield apply(fn, *pair, third)
         def expl(l, r):
             for item in l:
-                yield apply(fn, third, r, item)
+                yield apply(fn, item, r, third)
         def swapped_expl(l, r):
             for item in r:
-                yield apply(fn, third, item, l)
+                yield apply(fn, l, item, third)
 
         ret =  {
             (ts[0], ts[1]): (lambda: apply(fn, left, right),
@@ -479,7 +479,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         def gen():
             for pair in VY_zip(left, right): yield apply(fn, *pair)
         def expl(l, r):
-            for item in l: yield apply(fn, item, lhs)
+            for item in l: yield apply(fn, item, r)
         def swapped_expl(l, r):
             for item in r:
                 yield apply(fn, item, l)
