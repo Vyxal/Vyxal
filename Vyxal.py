@@ -2868,7 +2868,7 @@ else:
             compiled += tab("return stack") + NEWLINE
             compiled += "stack.append(_para_lambda(temp_stack)[-1])"
         elif NAME == VyParse.PARA_APPLY_COLLECT:
-            compiled += "temp_stack = stack[::]" + NEWLINE
+            compiled += "temp_stack = [deref(x, False) for x in stack[::]]" + NEWLINE
             compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
             compiled += "def _para_lambda(stack):" + NEWLINE
             compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
