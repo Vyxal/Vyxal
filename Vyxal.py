@@ -582,7 +582,7 @@ def const_divisibility(item, n, string_overload):
         Number: lambda: int(item % n == 0),
         str: int_if_not_tuple,
         list: int_if_not_tuple
-    }.get(VY_type(item), lambda: vectorise(const_divisibility, item, n, string_overload))()
+    }.get(VY_type(item), lambda: vectorise(lambda x: const_divisibility(x, n, string_overload), item))()
 def counts(vector):
     ret = []
     vector = iterable(vector)
@@ -2861,7 +2861,7 @@ else:
             value = utilities.from_ten(value, utilities.base27alphabet)
             compiled += f"stack.append('{value}')" + NEWLINE
         elif NAME == VyParse.PARA_APPLY:
-            compiled += "temp_stack = stack[::]" + NEWLINE
+            compiled += "temp_stack = [deref(x, False) for x in stack[::]]" + NEWLINE
             compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
             compiled += "def _para_lambda(stack):" + NEWLINE
             compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
