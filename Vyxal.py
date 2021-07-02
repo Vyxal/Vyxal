@@ -2121,7 +2121,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
         def gen():
             for pair in VY_zip(left, right):
-                yield _safe_apply(fn, *pair)
+                yield _safe_apply(fn, *pair[::-1])
 
         def expl(l, r):
             for item in l:
@@ -2129,7 +2129,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
         def swapped_expl(l, r):
             for item in r:
-                yield _safe_apply(fn, item, l)
+                yield _safe_apply(fn, l, item)
         ret = {
             (types[0], types[1]): (lambda: _safe_apply(fn, left, right),
                                    lambda: expl(iterable(left), right)),
