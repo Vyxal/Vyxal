@@ -45,6 +45,7 @@
             height: 1em;
             border: none !important;
             border-radius: 0px !important;
+            padding: 1em;
         }
         input:focus,textarea:focus{
             border: none;
@@ -261,7 +262,7 @@ ${code}
             var flag_box = document.getElementById("flag");
             var inputs_box = document.getElementById("inputs");
 
-            if ((code || flags || inputs || header || footer) && !(flag_box.value || code_box.value || inputs_box.value || header_box.value || footer_box.value)) {
+            if ((code || flags || inputs || header || footer) && !(flag_box.value || e_code.getValue() || inputs_box.value || e_header.getValue() || e_footer.getValue())) {
                 flag_box.value = flags;
                 e_code.doc.setValue(code);
                 inputs_box.value = inputs;
@@ -424,6 +425,7 @@ ${code}
                 dummy.style.fontSize = '15px'
                 dummy.style.lineHeight = '22.4px'
 	            dummy.style.width = innerWidth - 16 + 'px';
+                dummy.style.padding = '1em'
     	        dummy.value = elem.doc.getValue();
 	            elem.setSize(null,Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27));
 	            dummy.value = "";
