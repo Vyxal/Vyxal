@@ -97,7 +97,7 @@
             display: none;
         }
 	.CodeMirror { 
-	    font-size: 15px;
+	    font-size: 16px;
 	}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" />
@@ -433,8 +433,8 @@ ${code}
             function resize(elem) {
     	        var dummy = $$$("#dummy");
 	        dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily;
-                dummy.style.fontSize = '15px'
-                dummy.style.lineHeight = '24px'
+                dummy.style.fontSize = '16px'
+                dummy.style.lineHeight = '25.6px'
 	        dummy.style.width = innerWidth - 16 + 'px';
     	        dummy.value = elem.doc.getValue();
 	        elem.setSize(null,Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27));
