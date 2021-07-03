@@ -245,9 +245,9 @@ def parse(source):
         elif character in Variadic_Transformers:
             if character == COLLECT_UNTIL_NEWLINE:
                 token_list = []
-                while tokens[-1][1] != "\n":
+                while len(tokens) and tokens[-1][1] != "\n":
                     token_list.append(tokens.pop())
-                tokens.pop()
+                if len(tokens): tokens.pop()
                 tokens.append((Structure.LAMBDA_NEWLINE, token_list[::-1][::]))
             
             elif character == PARA_APPLY_VARIADIC:
@@ -302,6 +302,7 @@ if __name__ == "__main__":
         "‘he‘ll‘o ",
         "+¿",
         "λ2|ancd;",
+        "2%0=χ 5$e"
     ]
 
     for test in tests:

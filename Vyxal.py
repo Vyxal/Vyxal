@@ -141,6 +141,15 @@ def chrord(lhs):
         number: lambda: chr(lhs),
         str: lambda: ord(lhs) if len(lhs) == 1 else vectorise(chrord, list(lhs))
     }.get(VY_type(lhs), lambda: vectorise(chrord, lhs))()
+def copy_sign(lhs, rhs):
+    return {
+        (number, number): lambda: [-lhs, lhs][rhs >= 0],
+        (number, str): lambda: [rhs[:lhs], rhs[lhs:]],
+        (str, number): lambda: [lhs[:rhs], lhs[rhs:]],
+        (str, str): lambda: lhs.split(rhs, 1),
+        (number, types.FunctionType): lambda: LazyList(first_n_integers(rhs, lhs)),
+        (types.FunctionType, number): lambda: LazyList(first_n_integers(lhs, rhs)),
+    }.get(VY_type(lhs, rhs), lambda: vectorise(copy_sign, lhs, rhs))()
 def cumulative_reduce(lhs, rhs):
     function = vector = None
     if isinstance(rhs, types.FunctionType):
@@ -211,6 +220,31 @@ def format_string(value, items):
             ret += value[index]
         index += 1
     return ret
+def first_n_integers(function, limit):
+    generated = 0
+    n = 1
+    while generated < limit:
+        temp = apply(function, n)
+        
+        if bool(temp):
+            yield n
+            generated += 1
+        n += 1
+def flatten(item):
+    '''
+    Returns a deep-flattened (all sublists expanded) version of the input
+    '''
+    t_item = VY_type(item)
+    if isinstance(item, LazyList):
+        return flatten(item.listify())
+    else:
+        ret = []
+        for x in item:
+            if type(x) in [list, LazyList]:
+                ret += flatten(x)
+            else:
+                ret.append(x)
+        return ret
 def function_call(function, vector):
     if type(function) is types.FunctionType:
         return function(vector, self=function)
@@ -252,6 +286,12 @@ def gt(lhs, rhs):
         (str, number): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs)
     }.get(VY_type(lhs, rhs), lambda: vectorise(gt, lhs, rhs))()
+def head_extract(lhs, rhs):
+    ts = VY_type(lhs, rhs)
+    return {
+        (ts[0], number): lambda: iterable(lhs)[0:rhs],
+        (str, str): lambda: regex.compile(lhs).findall(rhs)
+    }.get(ts, lambda: vectorise(head_extract, lhs, rhs))()
 def interleave(lhs, rhs):
     ret = []
     for i in range(min(len(lhs), len(rhs))):
@@ -628,6 +668,21 @@ def VY_max(lhs, rhs=None):
             if gt(lhs, maximum):
                 maximum = lhs
         return maximum
+def VY_min(lhs, rhs=None):
+    if rhs is not None:
+        return {
+            (number, number): lambda: min(lhs, other),
+            (number, str): lambda: min(str(lhs), other),
+            (str, number): lambda: min(lhs, str(other)),
+            (str, str): lambda: min(lhs, other)
+        }.get((VY_type(lhs), VY_type(other)), lambda: vectorise(VY_min, lhs, other))()
+    else:
+        obj = iterable(lhs)
+        minimum = obj[0]
+        for lhs in obj[1:]:
+            if lt(lhs, minimum):
+                minimum = lhs
+        return minimum
 def VY_map(lhs, rhs, indicies=None):
     if types.FunctionType not in VY_type(lhs, rhs):
         @LazyList
@@ -876,9 +931,9 @@ else:
             compiled += tab("input_level += 1") + newline
             compiled += tab(f"this_function = _lambda_{signature}") + newline
             compiled += tab("stored = False") + newline
-            compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + newline
+            compiled += tab(f"if self.stored_arity != {defined_arity}: stored = self.stored_arity;") + newline
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + newline
-            compiled += tab("elif stored: parameters = pop(parameter_stack, stored); stack = parameters[::]") + newline
+            compiled += tab("elif stored: parameters = pop(parameter_stack, stored); print(parameters); stack = parameters[::]") + newline
             if defined_arity == 1:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + newline
             else:
@@ -943,6 +998,8 @@ else:
                 compiled += function_A + newline + function_B + newline + function_C + newline + function_D + newline
                 compiled += "function_D = pop(stack); function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
                 compiled += transformers[token_value[0]] + newline
+        elif token_name == Structure.LAMBDA_NEWLINE:
+            compiled += transpile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value})]) + newline
 
         compiled += "\n"
 
@@ -969,6 +1026,7 @@ if __name__ == "__main__":
             repl_line = input("   ")
             context_level = 0
             repl_line = transpile(repl_line, header)
+            print(repl_line)
             exec(repl_line)
             VY_print(stack)
 
