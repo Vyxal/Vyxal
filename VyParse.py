@@ -1,6 +1,5 @@
 import string
 
-from numpy.core.fromnumeric import var
 NAME = "CONSTANT_TOKEN_NAME"
 VALUE = "CONSTANT_TOKEN_VALUE"
 
