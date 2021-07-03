@@ -439,7 +439,6 @@ ${code}
 	        dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily;
                 dummy.style.fontSize = '15px'
                 dummy.style.lineHeight = '24px'
-	        dummy.style.width = innerWidth - 16 + 'px';
     	        dummy.value = elem.doc.getValue();
 	        elem.setSize(null,Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27));
 	        dummy.value = "";
