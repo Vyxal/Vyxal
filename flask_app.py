@@ -69,7 +69,7 @@ def execute():
                     time = 10
                 ret[1] = ""
                 ret[2] = ""
-                fcode = header + code + footer
+                fcode = header + "\n" + code + "\n" + footer
                 sessions[session] = multiprocessing.Process(
                     target=Vyxal.execute, args=(fcode, flags, input_list, ret)
                 )
