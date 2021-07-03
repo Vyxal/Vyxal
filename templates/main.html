@@ -268,6 +268,8 @@ ${code}
                 inputs_box.value = inputs;
                 e_header.doc.setValue(header);
                 e_footer.doc.setValue(footer);
+		e_header.refresh();
+		e_footer.refresh();
                 run_button.click();
             } else {
                 expandBoxes()
