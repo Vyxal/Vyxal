@@ -717,6 +717,21 @@ def divisors_of(item):
     return divisors
 def dot_product(lhs, rhs):
     return summate(multiply(lhs, rhs))
+def escape(item):
+    ret = ""
+    escaped = False
+    for char in item:
+        if escaped:
+            ret += "\\" + char
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char == '"':
+            ret += "\\\""
+        else:
+            ret += char
+    return ret
+        
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -2660,7 +2675,7 @@ def VY_compile(source, header=""):
             import utilities
             value = VALUE[VyParse.STRING_CONTENTS]
             if not raw_strings: value = utilities.uncompress(value)
-            value = value.replace("\\", "\\\\").replace("\"", "\\\"")
+            value = escape(value)
             compiled += f"stack.append(\"{value}\")" + NEWLINE
         elif NAME == VyParse.CHARACTER:
             compiled += f"stack.append({repr(VALUE[0])})"
