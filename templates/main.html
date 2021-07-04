@@ -164,7 +164,7 @@
 
         function updateCount() {
             var byte_box = document.getElementById("code-count");
-            var code = document.getElementById("code").value.length;
+            var code = document.getElementById("code").getValue().length;
 
             byte_box.innerText = `Code: ${code} byte` + "s".repeat(code != 1);
         }

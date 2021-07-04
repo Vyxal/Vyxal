@@ -76,7 +76,10 @@ command_dict = {
     "e": ("rhs, lhs = pop(stack, 2); stack.append(copy_sign(lhs, rhs))", 2),
     "f": ("stack.append(flatten(iterable(pop(stack))))", 1),
     "g": ("stack.append(VY_min(pop(stack)))", 1),
-    "h": ("rhs, lhs = pop(stack, 2); stack.append(head_extract(lhs, rhs))", 2)
+    "h": ("rhs, lhs = pop(stack, 2); stack.append(head_extract(lhs, rhs))", 2),
+    "i": ("rhs, lhs = pop(stack, 2); stack.append(index(lhs, rhs))", 2),
+    "j": ("rhs, lhs = pop(stack, 2); stack.append(join(lhs, rhs))", 2),
+    "l": ("rhs, lhs = pop(stack, 2); stack.append(overlaps(lhs, rhs))", 2)
 }
 
 transformers = { # the {} is where the t_lambda goes

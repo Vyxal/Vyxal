@@ -292,6 +292,13 @@ def head_extract(lhs, rhs):
         (ts[0], number): lambda: iterable(lhs)[0:rhs],
         (str, str): lambda: regex.compile(lhs).findall(rhs)
     }.get(ts, lambda: vectorise(head_extract, lhs, rhs))()
+def index(lhs, rhs):
+    ts = VY_type(lhs, rhs, simple=True)
+    return {
+        (ts[0], number): lambda: iterable(lhs)[rhs % len(iterable(lhs))],
+        (ts[0], str): lambda: iterable(lhs),
+        (ts[0], list): lambda: iterable(lhs)[slice(*rhs)]
+    }.get(ts, lambda: vectorise(index, lhs, rhs))()
 def interleave(lhs, rhs):
     ret = []
     for i in range(min(len(lhs), len(rhs))):
@@ -315,6 +322,11 @@ def iterable(lhs, t=None):
         return t(lhs)
     else:
         return lhs
+def join(lhs, rhs):
+    ts = VY_type(lhs, rhs, simple=True)
+    if ts[0] is list:
+        return VY_str(rhs).join(map(VY_str, lhs))
+    return VY_str(rhs).join(VY_str(lhs))
 def log(lhs, rhs):
     ts = (VY_type(lhs), VY_type(rhs))
     if ts == (str, str):
@@ -400,6 +412,10 @@ def negate(lhs):
         number: lambda: -lhs,
         str: lambda: lhs.swapcase()
     }.get(VY_type(lhs), lambda: vectorise(negate, lhs))()
+def overlaps(lhs, rhs):
+    @LazyList
+    def f():
+        pass
 def pop(vector, num=1, wrap=False):
     global last_popped
     ret = []
