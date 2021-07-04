@@ -802,6 +802,52 @@ def zipwith(function, lhs, rhs):
         for pair in VY_zip(lhs, rhs):
             yield apply(function, *pair)
     return f()
+def mirror(val):
+    return val + reverse(val)
+def remove(vector, item):
+    return {
+        str: lambda: vector.replace(str(item), ""),
+        Number: lambda: str(vector).replace(str(item), ""),
+        list: lambda: LazyList(filter(lambda x: x != item, vector)),
+        LazyList: lambda: remove(vector._dereference(), item)
+    }[VY_type(vector)]()
+def prepend(lhs, rhs):
+    types = (VY_type(lhs), VY_type(rhs))
+    return {
+        (types[0], types[1]): lambda: join(rhs, lhs),
+        (list, types[1]): lambda: [rhs] + lhs,
+        (LazyList, types[1]): lambda: [rhs] +lhs._dereference()
+    }[types]()
+def uneval(item):
+    item = [char for char in item]
+    indexes = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
+    for i in indexes:
+        item.insert(i, "\\")
+    return "`" + "".join(item) + "`"
+def orderless_range(lhs, rhs, lift_factor=0):
+    types = (VY_type(lhs), VY_type(rhs))
+    if types == (Number, Number):
+        if lhs < rhs:
+            return LazyList(range(lhs, rhs + lift_factor))
+        else:
+            return LazyList(range(lhs, rhs + lift_factor, -1))
+    elif Function in types:
+        if types[0] is Function:
+            func, vector = lhs, iterable(rhs, range)
+        else:
+            func, vector = rhs, iterable(lhs, range)
+
+        def gen():
+            for pre in prefixes(vector):
+                yield VY_reduce(func, pre)[-1]
+
+        return LazyList(gen())
+    else:
+        lhs, rhs = VY_str(lhs), VY_str(rhs)
+        pobj = regex.compile(lhs)
+        mobj = pobj.search(rhs)
+        return int(bool(mobj))
+
 def transpile(program, header=""):
     if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
