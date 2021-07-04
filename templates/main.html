@@ -188,13 +188,13 @@
         function updateCount() {
             var byte_box = document.getElementById("code-count");
 
-        var code = e_code.doc.getValue();
-	    if([...code].every(x => (codepage + ' ' + '\n').includes(x))){
-	        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
-	    } else {
-	    	byte_box.innerText = `Code: ${new Blob([code]).size} bytes` + ' (UTF-8)';
-		console.log("s".repeat(code.length != 1))
-	    }
+            var code = e_code.getValue();
+            if([...code].every(x => (codepage + ' ' + '\n').includes(x))){
+                byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
+            } else {
+                var x = new Blob([code]).size
+                byte_box.innerText = `Code: ${x} byte${"s".repeat(code.length != 1)}` + ' (UTF-8)';
+            }
         }
 
         function generateURL() {
