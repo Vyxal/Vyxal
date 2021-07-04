@@ -63,7 +63,17 @@
                     }
                     return 'function'
                 }
-                if (char == '`') {
+                if (state.structure == 'STRING') {
+                    return 'string'
+                }
+                if (state.structure == 'CHAR') {
+                    state.structure = 'NONE';
+                    return 'string'
+                }
+                if ((state.structure == 'COMP_STRING' && char !== '«') || (state.structure == 'COMP_INT' && char !== '»')) {
+                    return 'comp'
+                }
+                if (char == '`' && (state.structure == 'NONE' || state.structure == 'STRING')) {
                     if (state.structure == 'STRING') {
                         state.structure = 'NONE'
                     } else {
@@ -71,12 +81,9 @@
                     }
                     return 'string'
                 }
-                if (state.structure == 'STRING') {
-                    return 'string'
-                }
-                if (state.structure == 'CHAR') {
+                if (state.structure == 'DIGRAPH') {
                     state.structure = 'NONE';
-                    return 'string'
+                    return 'digraph'
                 }
                 if (char == '\\' && state.structure == 'NONE') {
                     state.structure = 'CHAR';
@@ -87,16 +94,8 @@
                     state.scc = 2;
                     return 'string'
                 }
-                if (state.structure == 'SCC') {
-                    state.scc -= 1;
-                    if (state.scc == 0) {
-                        state.structure = 'NONE'
-                    }
-                    return 'string'
-                }
-                if ((state.structure == 'COMP_STRING' && char !== '«') || (state.structure == 'COMP_INT' && char !== '»')) {
-                    return 'comp'
-                }
+                
+                
                 if (char == '«') {
                     if (state.structure == 'COMP_STRING') {
                         state.structure = 'NONE'
@@ -175,10 +174,6 @@
                 }
                 if (DIGRAPHS.includes(char)) {
                     state.structure = 'DIGRAPH';
-                    return 'digraph'
-                }
-                if (state.structure == 'DIGRAPH') {
-                    state.structure = 'NONE';
                     return 'digraph'
                 }
                 if (char == 'k') {
