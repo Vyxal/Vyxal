@@ -443,7 +443,7 @@ def pop(vector, num=1, wrap=False):
         if vector: ret.append(vector.pop())
         else: x = get_input(); ret.append(x)
 
-    if retaIn_items: vector += ret[::-1]
+    if retain_items: vector += ret[::-1]
 
     last_popped = ret
     if num == 1 and not wrap: return ret[0]
