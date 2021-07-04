@@ -72,7 +72,7 @@ class LazyList():
             else:
                 ret = []
                 for i in range(start, stop, step):
-                    ret.append(self.__getlhs__(i))
+                    ret.append(self.__getitem__(i))
                 return ret
         else:
             if position < 0: self.generated += list(self); return self.generated[position]
@@ -159,7 +159,7 @@ def cumulative_reduce(lhs, rhs):
 
     @LazyList
     def f():
-        for prefix in prefixes(vector):
+        for prefix in prefixes(deref(vector, False)):
             yield VY_reduce(prefix, function)[0]
     return f()
 def deref(lhs, listify=True):
@@ -369,6 +369,12 @@ def map_every_n(function, lhs, index):
             else:
                 yield function([element])[-1]
     return f()
+def mirror(lhs):
+    return {
+        number: lambda: add(lhs, reverse(lhs)),
+        str: lambda: lhs + lhs[::-1],
+        list: lambda: merge(lhs, reverse(deref(lhs)))
+    }.get(VY_type(lhs, simple=True))()
 def merge(lhs, rhs):
     ts = VY_type(lhs, rhs)
     return {
@@ -412,10 +418,24 @@ def negate(lhs):
         number: lambda: -lhs,
         str: lambda: lhs.swapcase()
     }.get(VY_type(lhs), lambda: vectorise(negate, lhs))()
+def orderless_range(lhs, rhs):
+    ts = VY_type(lhs, rhs)
+    return {
+        (number, number): lambda: LazyList(range(lhs, rhs, (-1, 1)[lhs < rhs])),
+        (number, str): lambda: stretch(rhs, lhs),
+        (str, number): lambda: stretch(lhs, rhs),
+        (ts[0], types.FunctionType): lambda: cumulative_reduce(lhs, rhs),
+        (types.FunctionType, ts[1]): lambda: cumulative_reduce(lhs, rhs)
+    }.get(ts, lambda: int(bool(regex.compile(lhs).search(rhs))))()
 def overlaps(lhs, rhs):
+    if VY_type(rhs) != number:
+        return int(len(iterable(lhs)) == len(iterable(rhs)))
     @LazyList
     def f():
-        pass
+        vector = iterable(lhs)
+        for i in range(0, len(lhs) - rhs + 1):
+            yield vector[i:i+rhs]
+    return f()
 def pop(vector, num=1, wrap=False):
     global last_popped
     ret = []
@@ -466,6 +486,11 @@ def sentence_case(lhs):
         ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
         if capitalise and char != " ": capitalise = False
         capitalise = capitalise or char in "!?."
+    return ret
+def stretch(string, length):
+    ret = string
+    while len(ret) < length:
+        ret += " " if len(ret) == 0 else ret[0]
     return ret
 def strip_non_alphabet(name):
     stripped = filter(lambda char: char in string.ascii_letters + "_", name)
@@ -757,7 +782,7 @@ def VY_reduce(lhs, rhs):
     
 
     for item in vector:
-        working_value = function([working_value, item], arity=2)[-1]
+        working_value = function([working_value, item], arity=2, self=function)[-1]
     return [working_value]
 def VY_repr(lhs):
     t_lhs = VY_type(lhs)
