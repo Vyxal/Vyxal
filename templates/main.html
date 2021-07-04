@@ -176,7 +176,7 @@
             og_keyboard_html = document.getElementById("keyboard").innerHTML;
         });
 
-         
+
 
         function resizeCodeBox(id) {
             // Resize the code box with the given id
@@ -193,7 +193,7 @@
                 byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1);
             } else {
                 var x = new Blob([code]).size
-                byte_box.innerText = `Code: ${x} byte${"s".repeat(code.length != 1)}` + ' (UTF-8)';
+                byte_box.innerText = `Code: ${x} byte${"s".repeat(x.length != 1)}` + ' (UTF-8)';
             }
         }
 
@@ -235,7 +235,7 @@
                     break;
                 case "post-template":
                     output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable?'':' (UTF-8)'}
-                    
+
 \`\`\`
 ${code}
  \`\`\`
@@ -293,7 +293,7 @@ ${code}
                         boxToExpand.open = false;
                     }
                 });
-            
+
             if (e_header.getValue()){
                 document.getElementById("header-detail").open = true
                 e_header.refresh()
@@ -421,7 +421,7 @@ ${code}
             });
 
         });
-		
+
 		document.addEventListener('keydown', (event) => {
 			if (event.ctrlKey && event.keyCode == 13) {
 				$("#run_button").click();
