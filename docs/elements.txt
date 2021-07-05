@@ -553,6 +553,7 @@ kṁ                                   = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31
 ∆ṙ (a: list)                         = polynomial from roots a
 ∆Ṙ                                   = random.random() # random float in the range [0, 1), pseudo random number
 ∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round a to b decimal places
+∆Ŀ (a: number, b: number)            = lcm(a, b)
 øo (a: string, b: string)            = a.remove_until_no_change(b) # Remove until no change
 øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c) # Replace until no change
 øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed string
