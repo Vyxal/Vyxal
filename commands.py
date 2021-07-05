@@ -259,7 +259,8 @@ math_command_dict = {
     "p": ("stack.append(closest_prime(pop(stack)))", 1),
     "ṙ": ("stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(stack)))).all_coeffs()[::-1]))",1),
     "Ṙ": ("stack.append(random.random())", 0),
-    "W": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(round, lhs, rhs))", 2) # if you think I'm making this work with strings, then you can go commit utter go awayance. smh.
+    "W": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(round, lhs, rhs))", 2), # if you think I'm making this work with strings, then you can go commit utter go awayance. smh.
+    "Ŀ": ("rhs, lhs = pop(stack, 2); stack.append(vectorise(lambda x, y: int(numpy.lcm(x, y)), lhs, rhs))", 2)
 }
 
 string_command_dict = {
