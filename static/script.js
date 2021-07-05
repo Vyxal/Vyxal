@@ -9,7 +9,7 @@
 })(function (CodeMirror) {
     "use strict";
     const NUMBER_CHARS = '0123456789.';
-    const MOD_CHARS = 'vß⁺₌₍';
+    const MOD_CHARS = 'vß⁺₌₍~&';
     const DIGRAPHS = '¨ø∆Þ';
     const CONSTANTS = '₀₁₄₆₇₈¶∞¤ð×';
     const FUNC_CHARS = 'ƛ\'λµ⁽‡≬;';
@@ -63,7 +63,7 @@
                     }
                     return 'function'
                 }
-                if (state.structure == 'STRING') {
+                if (state.structure == 'STRING' && char !== '`') {
                     return 'string'
                 }
                 if (state.structure == 'CHAR') {
