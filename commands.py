@@ -234,7 +234,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 math_command_dict = {
     "S": ("arg = pop(stack); stack.append(vectorise(math.asin, arg))", 1),
     "C": ("arg = pop(stack); stack.append(vectorise(math.acos, arg))", 1),
-    "T": ("arg = pop(stack); stack.append(vectorise(math.atan, arg))", 1),
+    "T": ("arg = pop(stack); stack.append(math.atan(arg))", 1),
     "q": ("coeff_a, coeff_b = pop(stack, 2); stack.append(polynomial([coeff_a, coeff_b, 0]))", 2),
     "Q": ("coeff_b, coeff_c = pop(stack, 2); stack.append(polynomial([1, coeff_b, coeff_c]))", 2),
     "P": ("coeff = iterable(pop(stack)); stack.append(polynomial(coeff));", 1),
