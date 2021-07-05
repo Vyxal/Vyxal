@@ -145,6 +145,7 @@
         secret = "tp" + temp + "/" + secret
         secret = "h" + codepage[116] + secret
         var og_keyboard_html;
+    	var selectedBox = 'code'; //whether 'header', 'code', or 'footer' are selected
         window.addEventListener('DOMContentLoaded', (event) => {
 
             codepage_descriptions = {{codepage_info |safe}};
@@ -174,6 +175,12 @@
                 })
             })
             og_keyboard_html = document.getElementById("keyboard").innerHTML;
+	    
+            for (boxId of ['header', 'code', 'footer']) {
+                box = document.getElementById(boxId);
+                const capturedId = boxId;
+                box.addEventListener('focusin', event => selectedBox = capturedId)
+            }
         });
 
 
@@ -338,7 +345,7 @@ ${code}
 
                 document.querySelectorAll('.key').forEach(item => {
                     item.addEventListener('click', event => {
-                        var box = document.getElementById("code")
+                        var box = document.getElementById(selectedBox)
                         var start = box.selectionStart;
                         var end = box.selectionEnd;
                         var char = event.target.innerHTML;
@@ -355,7 +362,7 @@ ${code}
                 document.getElementById("keyboard").innerHTML = og_keyboard_html;
                 document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
-                    var box = document.getElementById("code")
+                    var box = document.getElementById(selectedBox)
                     var start = box.selectionStart;
                     var end = box.selectionEnd;
                     var char = event.target.innerHTML;
