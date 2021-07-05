@@ -27,7 +27,7 @@ online_version = False
 output = ""
 printed = False
 register = 0
-retaIn_items = False
+retain_items = False
 reverse_args = False
 safe_mode = False # You may want to have safe evaluation but not be online.
 stack = []
@@ -463,6 +463,13 @@ def realify(lhs):
     if isinstance(lhs, sympy.core.numbers.ComplexInfinity) or isinstance(lhs, sympy.core.numbers.NaN):
         return 0
     else: return lhs
+def remove(vector, item):
+    return {
+        str: lambda: vector.replace(str(item), ""),
+        number: lambda: str(vector).replace(str(item), ""),
+        list: lambda: LazyList(filter(lambda x: x != item, vector)),
+        LazyList: lambda: remove(vector.listify(), item)
+    }[VY_type(vector)]()
 def replace(haystack, needle, replacement):
     t_haystack = VY_type(haystack)
     if t_haystack is list:
@@ -505,6 +512,12 @@ def subtract(lhs, rhs):
 tab = lambda x: newline.join(["    " + lhs for lhs in x.split(newline)]).rstrip("    ")
 def transformer_vectorise(function, vector):
     return vectorise(function, *pop(vector, function.stored_arity), explicit=True)
+def uneval(item):
+    item = [char for char in item]
+    indexes = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
+    for i in indexes:
+        item.insert(i, "\\")
+    return "`" + "".join(item) + "`"
 def uninterleave(lhs):
     left, right = [], []
     for i in range(len(lhs)):
@@ -761,6 +774,24 @@ def VY_str(lhs):
         LazyList: lambda x: VY_str(x._dereference()),
         types.FunctionType: lambda x: VY_str(function_call(lhs, stack)[0])
     }[t_lhs](lhs)
+def VY_sorted(vector, fn=None):
+    if fn is not None and type(fn) is not types.FunctionType:
+        return inclusive_range(vector, fn)
+    t_vector = type(vector)
+    vector = iterable(vector, range)
+    if t_vector is LazyList:
+        vector = vector.gen
+    
+    if fn:
+        sorted_vector = sorted(vector, key=lambda x: fn([x]))
+    else:
+        sorted_vector = sorted(vector)
+
+
+    return {
+        float: lambda: float("".join(map(str, sorted_vector))),
+        str: lambda: "".join(map(str, sorted_vector))
+    }.get(t_vector, lambda: LazyList(sorted_vector))()
 def VY_range(lhs, start=0, lift_factor=0):
     t_lhs = VY_type(lhs)
     if t_lhs == number:
@@ -827,51 +858,6 @@ def zipwith(function, lhs, rhs):
         for pair in VY_zip(lhs, rhs):
             yield apply(function, *pair)
     return f()
-def mirror(val):
-    return val + reverse(val)
-def remove(vector, item):
-    return {
-        str: lambda: vector.replace(str(item), ""),
-        Number: lambda: str(vector).replace(str(item), ""),
-        list: lambda: LazyList(filter(lambda x: x != item, vector)),
-        LazyList: lambda: remove(vector._dereference(), item)
-    }[VY_type(vector)]()
-def prepend(lhs, rhs):
-    types = (VY_type(lhs), VY_type(rhs))
-    return {
-        (types[0], types[1]): lambda: join(rhs, lhs),
-        (list, types[1]): lambda: [rhs] + lhs,
-        (LazyList, types[1]): lambda: [rhs] +lhs._dereference()
-    }[types]()
-def uneval(item):
-    item = [char for char in item]
-    indexes = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
-    for i in indexes:
-        item.insert(i, "\\")
-    return "`" + "".join(item) + "`"
-def orderless_range(lhs, rhs, lift_factor=0):
-    types = (VY_type(lhs), VY_type(rhs))
-    if types == (Number, Number):
-        if lhs < rhs:
-            return LazyList(range(lhs, rhs + lift_factor))
-        else:
-            return LazyList(range(lhs, rhs + lift_factor, -1))
-    elif Function in types:
-        if types[0] is Function:
-            func, vector = lhs, iterable(rhs, range)
-        else:
-            func, vector = rhs, iterable(lhs, range)
-
-        def gen():
-            for pre in prefixes(vector):
-                yield VY_reduce(func, pre)[-1]
-
-        return LazyList(gen())
-    else:
-        lhs, rhs = VY_str(lhs), VY_str(rhs)
-        pobj = regex.compile(lhs)
-        mobj = pobj.search(rhs)
-        return int(bool(mobj))
 
 def transpile(program, header=""):
     if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
@@ -965,7 +951,7 @@ def transpile(program, header=""):
                             parameter_count += 1
 
                 compiled += "def FN_" + function_name + "(parameter_stack, arity=None):\n"
-                compiled += tab("global context_level, context_values, input_level, input_values, retaIn_items, printed, register") + newline
+                compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + newline
                 compiled += tab("context_level += 1") + newline
                 compiled += tab("input_level += 1") + newline
                 compiled += tab(f"this_function = FN_{function_name}") + newline
@@ -1013,7 +999,7 @@ else:
                     defined_arity = int(lambda_argument)
             signature = secrets.token_hex(16)
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + newline
-            compiled += tab("global context_level, context_values, input_level, input_values, retaIn_items, printed, register") + newline
+            compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + newline
             compiled += tab("context_level += 1") + newline
             compiled += tab("input_level += 1") + newline
             compiled += tab(f"this_function = _lambda_{signature}") + newline
@@ -1113,7 +1099,7 @@ if __name__ == "__main__":
             repl_line = input("   ")
             context_level = 0
             repl_line = transpile(repl_line, header)
-            print(repl_line)
+            # print(repl_line)
             exec(repl_line)
             VY_print(stack)
 
