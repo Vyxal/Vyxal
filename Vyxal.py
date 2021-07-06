@@ -413,6 +413,18 @@ def better_compress(word):
             str_so_far += word[0]
             word = word[1:]
     return str_so_far
+def optimal_compress(word):
+    DP = [" " * (len(word) + 1)] * (len(word) + 1)
+    DP[0] = ""
+    max_word_len = max(map(len, dictionary.contents))
+    for index in range(1, len(word) + 1):
+        for left in range(max(0, index - max_word_len), index - 1):
+            i = words.word_index(word[left:index])
+            if i != -1:
+                DP[index] = min([DP[index], DP[left] + i], key = len)
+                break
+        DP[index] = min([DP[index], DP[index - 1] + word[index - 1]], key = len)
+    return DP[-1]
 def bifuricate(item):
     t_item = VY_type(item)
     if t_item in (Number, list, str):
