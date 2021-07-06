@@ -416,7 +416,7 @@ def better_compress(word):
 def optimal_compress(word):
     DP = [" " * (len(word) + 1)] * (len(word) + 1)
     DP[0] = ""
-    max_word_len = max(map(len, dictionary.contents))
+    max_word_len = max(map(len, words.dictionary.contents))
     for index in range(1, len(word) + 1):
         for left in range(max(0, index - max_word_len), index - 1):
             i = words.word_index(word[left:index])
@@ -636,12 +636,7 @@ def determinant(matrix):
     else:
         return det.tolist()
 def dictionary_compress(item):
-    item = split_on_words(VY_str(item))
-    out = ""
-
-    for word in item:
-        out += better_compress(word)
-    return "`" + out + "`"        
+    return "`" + optimal_compress(VY_str(item)) + "`"
 def diagonals(vector):
     # Getting real heavy Mornington Crescent vibes from this
     # joke explanation: the diagonals are the most important part of the game
