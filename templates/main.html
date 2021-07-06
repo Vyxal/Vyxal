@@ -155,34 +155,16 @@
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
-
-                    var char = event.target.innerHTML;
-                    if (char === "␤") {
-                        char = "\n"
-                    } else if (char === "␠") {
-                        char = " "
-                    } else if (char === "&lt;"){
-                        char = "<"
-                    } else if (char === "&gt;"){
-                        char = ">"
-                    } else if (char === "&amp;"){
-                        char = "&"
-                    }
-                    e_code.doc.replaceSelection(char)
-                    e_code.focus()
-                    updateCount();
-
+                    var char = replaceHTMLChar(event.target.innerHTML)
+                    var cm = globalThis[`e_${selectedBox}`]
+                    cm.replaceSelection(char)
+                    cm.save()
+                    cm.focus()
+                    updateCount()
                 })
             })
             og_keyboard_html = document.getElementById("keyboard").innerHTML;
-	    
-            for (boxId of ['header', 'code', 'footer']) {
-                box = document.getElementById(boxId);
-                const capturedId = boxId;
-                box.addEventListener('focusin', event => selectedBox = capturedId)
-            }
         });
-
 
 
         function resizeCodeBox(id) {
@@ -317,7 +299,9 @@ ${code}
             var query = document.getElementById("filterBox").value.toLowerCase();
             var descriptions = {{codepage_info | safe}};
 
-            if (query){
+            console.log('in glyphsearch, selectedBox=' + selectedBox)
+
+            if (query) {
                 if (query == glyphQuery) {
                     document.getElementById("filterBox").value = "";
                     search.open(secret, "_blank");
@@ -325,19 +309,19 @@ ${code}
                 yesGlyph = []
                 yesDescription = []
                 console.log("starting filter")
-                    for (var index = 0; index < codepage.length; index++) {
-                        var description = descriptions[index];
-                        var glyph = codepage[index];
+                for (var index = 0; index < codepage.length; index++) {
+                    var description = descriptions[index];
+                    var glyph = codepage[index];
 
-                        var raw = query.split().map((char) => `[^${char}]*${char}`).join("");
-                        var pattern = new RegExp(raw);
+                    var raw = query.split().map(char => `[^${char}]*${char}`).join("");
+                    var pattern = new RegExp(raw);
 
 
-                        if (description.match(pattern)) {
-                            yesGlyph.push(glyph);
-                            yesDescription.push(description);
-                        }
+                    if (description.match(pattern)) {
+                        yesGlyph.push(glyph);
+                        yesDescription.push(description);
                     }
+                }
                 var kb = document.getElementById("keyboard");
                 kb.innerHTML = ""
                 for (var i = 0; i < yesGlyph.length; i++) {
@@ -346,48 +330,46 @@ ${code}
 
                 document.querySelectorAll('.key').forEach(item => {
                     item.addEventListener('click', event => {
-                        var box = document.getElementById(selectedBox)
-                        var start = box.selectionStart;
-                        var end = box.selectionEnd;
-                        var char = event.target.innerHTML;
-                        var str = box.value.slice(0, start) + char + box.value.slice(end);
-                        box.value = str
-                        box.focus()
-                        updateCount();
-                        box.selectionStart = end + 1;
-                        box.selectionEnd = end + 1;
-
+                        var char = replaceHTMLChar(event.target.innerHTML)
+                        var cm = globalThis[`e_${selectedBox}`]
+                        cm.replaceSelection(char)
+                        cm.save()
+                        cm.focus()
+                        updateCount()
                     });
                 });
             } else {
                 document.getElementById("keyboard").innerHTML = og_keyboard_html;
                 document.querySelectorAll('.key').forEach(item => {
-                item.addEventListener('click', event => {
-                    var box = document.getElementById(selectedBox)
-                    var start = box.selectionStart;
-                    var end = box.selectionEnd;
-                    var char = event.target.innerHTML;
-                    if (char === "␤") {
-                        char = "\n"
-                    } else if (char === "␠") {
-                        char = " "
-                    }
-                    var str = box.value.slice(0, start) + char + box.value.slice(end);
-                    box.value = str
-                    box.focus()
-                    updateCount();
-                    box.selectionStart = end + 1;
-                    box.selectionEnd = end + 1;
-
+                    item.addEventListener('click', event => {
+                        var char = replaceHTMLChar(event.target.innerHTML)
+                        var cm = globalThis[`e_${selectedBox}`]
+                        cm.replaceSelection(char)
+                        cm.save()
+                        cm.focus()
+                        updateCount()
+                    })
                 })
-            })
             }
+        }
+
+        function replaceHTMLChar(char) {
+            return char === "␤" ? "\n" :
+                char === "␠" ? " " :
+                char === "&lt;" ? "<" :
+                char === "&gt;" ? ">" :
+                char === "&amp;" ? "&" : char
         }
 
         function copyToClipboard(arg) {
             var el = document.getElementById(arg);
             el.select();
             document.execCommand("copy");
+        }
+
+        //Get the corresponding codemirror textarea for any of 'code', 'header', and 'footer'
+        function getCodeMirrorTextArea(boxId) {
+            return $('#' + boxId).parent().children('div').children().not('[class]').children()[0]
         }
 
         $(document).ready(e => {
@@ -424,8 +406,17 @@ ${code}
             $("#run_button").on("click", e => {do_run();});
 
             $("#clear").on("click", e => {
-                e_code.doc.setValue(''); stdin.value = ""; output.value = ""; extra.value = ""; e_footer.doc.setValue(''); e_header.doc.setValue(''); updateCount();
-                flags.value = ""; filter.value = ""; glyphSearch(); expandBoxes()
+                e_code.doc.setValue('');
+                stdin.value = "";
+                output.value = "";
+                extra.value = "";
+                e_footer.doc.setValue('');
+                e_header.doc.setValue('');
+                updateCount();
+                flags.value = "";
+                filter.value = "";
+                glyphSearch();
+                expandBoxes()
             });
 
         });
@@ -452,21 +443,39 @@ ${code}
 	        dummy.value = "";
                 updateCount();
             }
-            e_code.on('change',_ => {resize(e_code)})
+            e_code.on('change', cm => {
+                resize(e_code)
+                e_code.value = cm.getValue()
+            })
             resize(e_code)
             /* Am I really this lazy? Yes. */
             globalThis.e_header = CodeMirror.fromTextArea($$$('#header'), {
                 mode: 'vyxal',
                 lineWrapping:  true
             });
-            e_header.on('change',_ => {resize(e_header)})
+            e_header.on('change', cm => {
+                resize(e_header)
+                e_header.value = cm.getValue()
+            })
             resize(e_header)
             globalThis.e_footer = CodeMirror.fromTextArea($$$('#footer'), {
                 mode: 'vyxal',
                 lineWrapping:  true
             });
-            e_footer.on('change',_ => {resize(e_footer)})
+            e_footer.on('change', cm => {
+                e_footer.value = cm.getValue()
+                resize(e_footer)
+            })
             resize(e_footer)
+
+            for (boxId of ['header', 'code', 'footer']) {
+                box = $('#' + boxId).parent().children('div').children().not('[class]').children()[0];
+                const capturedId = boxId;
+                console.log(`${box}, ${boxId}`)
+                box.addEventListener('focusin', event => {
+                    selectedBox = capturedId
+                })
+            }
         }
     </script>
 </head>
