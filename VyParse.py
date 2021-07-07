@@ -44,11 +44,6 @@ COMPRESSED_NUMBER_VALUE = "compressed_number_value"
 COMPRESSED_STRING_VALUE = "compressed_string_value"
 TWO_CHAR_STUFF = "two_char_data_idk"
 
-ONE = "one"
-TWO = "two"
-THREE = "three"
-FOUR = "four"
-
 ONE_CHARS = list("kv⁽∆ø⁺Þ¨&~ß‘")
 TWO_CHARS = list("₌‡₍")
 
@@ -566,19 +561,16 @@ def Tokenise(source: str, variables_are_digraphs=False):
             continue
 
         elif char in TWO_CHARS:
-            char_mode = TWO
             structure = char
             active_key = TWO_CHAR_STUFF
             structure_data[active_key] = []
 
         elif char == THREE_CHAR_LAMBDA:
-            char_mode = THREE
             structure = THREE_CHAR_LAMBDA
             active_key = LAMBDA_BODY
             structure_data[active_key] = []
 
         elif char in ONE_CHARS:
-            char_mode = ONE
             structure = char
 
         elif char == SINGLE_SCC_CHAR:
