@@ -31,25 +31,7 @@ secret = "tp" + temp + "/" + secret
 secret = "h" + codepage[116] + secret
 var og_keyboard_html;
 var selectedBox = 'code'; //whether 'header', 'code', or 'footer' are selected
-window.addEventListener('DOMContentLoaded', (event) => {
 
-    codepage_descriptions = {{codepage_info |safe}};
-    var kb = document.getElementById("keyboard");
-    for (var i = 0; i < codepage.length; i++) {
-        kb.innerHTML += `<span class=\"key\" style="text-align:center;" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
-    }
-    document.querySelectorAll('.key').forEach(item => {
-        item.addEventListener('click', event => {
-            var char = replaceHTMLChar(event.target.innerHTML)
-            var cm = globalThis[`e_${selectedBox}`]
-            cm.replaceSelection(char)
-            cm.save()
-            cm.focus()
-            updateCount()
-        })
-    })
-    og_keyboard_html = document.getElementById("keyboard").innerHTML;
-});
 
 
 function resizeCodeBox(id) {
@@ -180,63 +162,6 @@ function expandBoxes(){
     }
 }
 
-function glyphSearch() {
-    var query = document.getElementById("filterBox").value.toLowerCase();
-    var descriptions = {{codepage_info | safe}};
-
-    console.log('in glyphsearch, selectedBox=' + selectedBox)
-
-    if (query) {
-        if (query == glyphQuery) {
-            document.getElementById("filterBox").value = "";
-            search.open(secret, "_blank");
-        }
-        yesGlyph = []
-        yesDescription = []
-        console.log("starting filter")
-        for (var index = 0; index < codepage.length; index++) {
-            var description = descriptions[index];
-            var glyph = codepage[index];
-
-            var raw = query.split().map(char => `[^${char}]*${char}`).join("");
-            var pattern = new RegExp(raw);
-
-
-            if (description.match(pattern)) {
-                yesGlyph.push(glyph);
-                yesDescription.push(description);
-            }
-        }
-        var kb = document.getElementById("keyboard");
-        kb.innerHTML = ""
-        for (var i = 0; i < yesGlyph.length; i++) {
-            kb.innerHTML += `<span class=\"key\" title='${yesDescription[i]}'>${yesGlyph[i]}</span>`;
-        }
-
-        document.querySelectorAll('.key').forEach(item => {
-            item.addEventListener('click', event => {
-                var char = replaceHTMLChar(event.target.innerHTML)
-                var cm = globalThis[`e_${selectedBox}`]
-                cm.replaceSelection(char)
-                cm.save()
-                cm.focus()
-                updateCount()
-            });
-        });
-    } else {
-        document.getElementById("keyboard").innerHTML = og_keyboard_html;
-        document.querySelectorAll('.key').forEach(item => {
-            item.addEventListener('click', event => {
-                var char = replaceHTMLChar(event.target.innerHTML)
-                var cm = globalThis[`e_${selectedBox}`]
-                cm.replaceSelection(char)
-                cm.save()
-                cm.focus()
-                updateCount()
-            })
-        })
-    }
-}
 
 function replaceHTMLChar(char) {
     return char === "␤" ? "\n" :
