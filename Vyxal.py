@@ -288,7 +288,7 @@ class Generator:
     def safe(self):
         import copy
         return copy.deepcopy(self)
-    
+
     def __str__(self):
         return "⟨" + "|".join(str(item for item in self.generated)) + "...⟩"
     def limit_to_items(self, n):
@@ -300,10 +300,10 @@ class Generator:
             out += str(item) if VY_type(item) is not Generator else item.limit_to_items(n)
             item_count += 1
             out += "|"
-        
+
         if item_count > n:
             out += "..."
-        
+
         return out + "⟩"
 
 
@@ -394,31 +394,11 @@ def atleast_ndims(vector, n):
     if vec_type is list:
         return not vector or atleast_ndims(vector[0], n - 1)
     return 0
-def better_compress(word):
-    str_so_far = ''
-    while word:
-        ctr = len(word)
-        found = False
-        while ctr > 2:
-            temp = words.word_index(word[:ctr])
-            if temp == -1:
-                ctr -= 1
-            else:
-                str_so_far += temp
-                found = word[:ctr]
-                break
-        if found:
-            word = word[len(found):]
-        else:
-            str_so_far += word[0]
-            word = word[1:]
-    return str_so_far
 def optimal_compress(word):
     DP = [" " * (len(word) + 1)] * (len(word) + 1)
     DP[0] = ""
-    max_word_len = max(map(len, words.dictionary.contents))
     for index in range(1, len(word) + 1):
-        for left in range(max(0, index - max_word_len), index - 1):
+        for left in range(max(0, index - words.dictionary.max_word_len), index - 1):
             i = words.word_index(word[left:index])
             if i != -1:
                 DP[index] = min([DP[index], DP[left] + i], key = len)
@@ -586,7 +566,7 @@ def combinations_replace_generate(lhs, rhs):
 def const_divisibility(item, n, string_overload):
     def int_if_not_tuple():
         a = string_overload(item)
-        if type(a) is tuple: 
+        if type(a) is tuple:
             return a
         else:
             return int(a)
@@ -738,7 +718,7 @@ def escape(item):
         else:
             ret += char
     return ret
-        
+
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -809,13 +789,13 @@ def find(haystack, needle, start=0):
         needle = str(needle)
     if type(start) is int or (type(start) is str and start.isnumeric()):
         index = int(start)
-    
+
     if (VY_type(haystack), VY_type(needle)) in ((Number, Number), (Number, str), (str, Number), (str, str)):
         return str(haystack).find(str(needle), start=index)
 
     index = 0
     while True:
-        try: 
+        try:
             temp = haystack[index]
             if deref(temp) == deref(needle):
                 return index
@@ -972,7 +952,7 @@ def foldr_cols(fn, vector, init=None):
     """
     vec_type = VY_type(vector)
     if vec_type is Generator:
-        vector = vector._dereference()    
+        vector = vector._dereference()
     num_rows = len(vector)
     if not num_rows:
         return []
@@ -2271,7 +2251,7 @@ def VY_divmod(lhs, rhs):
 def VY_eval(item):
     if VY_type(item) is Number: return 2 ** item
     elif VY_type(item) in [list, Generator]: return vectorise(VY_eval, item)
-    
+
     if online_version or safe_mode:
         try:
             return pwn.safeeval.const(item)
@@ -2395,7 +2375,7 @@ def VY_min(item, other=None):
             (str, Number): lambda: min(item, str(other)),
             (str, str): lambda: min(item, other)
         }.get((VY_type(item), VY_type(other)), lambda: vectorise(VY_min, deref(item), deref(other)))()
-        
+
         return ret
     else:
         item = flatten(item)
@@ -2454,7 +2434,7 @@ def VY_sorted(vector, fn=None):
     vector = iterable(vector, range)
     if t_vector is Generator:
         vector = vector.gen
-    
+
     if fn:
         sorted_vector = sorted(vector, key=lambda x: fn([x]))
     else:
@@ -2542,12 +2522,12 @@ def VY_zip(lhs, rhs):
 def VY_zipmap(lhs, rhs):
     if Function not in (VY_type(lhs), VY_type(rhs)):
         return [lhs, VY_zip(rhs, rhs)]
-    
+
     function = vector = None
     if type(rhs) is Function:
         function, vector = rhs, iterable(lhs, range)
     else:
-        function, vector = lhs, iterable(rhs, range) 
+        function, vector = lhs, iterable(rhs, range)
     def f():
         for item in vector:
             yield [item, _safe_apply(function, item)]
@@ -2967,7 +2947,7 @@ def execute(code, flags, input_list, output_variable):
 
         if 'D' in flags:
             raw_strings = True
-        
+
         if 'V' in flags:
             variables_are_digraphs = True
 
