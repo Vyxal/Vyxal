@@ -279,7 +279,7 @@ function initCodeMirror(){
     resize(e_footer)
 
     for (boxId of ['header', 'code', 'footer']) {
-        box = $('#' + boxId).parent().children('div').children().not('[class]').children()[0];
+        box  =globalThis["e_"+boxId].getTextArea()
         const capturedId = boxId;
         console.log(`${box}, ${boxId}`)
         box.addEventListener('focusin', event => {
