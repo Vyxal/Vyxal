@@ -2592,7 +2592,7 @@ def VY_compile(program, header=""):
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
-                compiled += f"stack.append({codepage.find(token_value[1])})"
+                compiled += f"stack.append({codepage.find(token_value[1])} + 101)"
             else:
                 compiled += command_dict.get(token[1], "  ")[0]
         elif token_name == Structure.NUMBER:
@@ -2706,7 +2706,7 @@ else:
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
                     elif isinstance(parameter, int):
-                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
+                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})[::-1]")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
