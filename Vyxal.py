@@ -1576,8 +1576,8 @@ def para_apply(fn_A, fn_B, vector):
     temp = deref(vector)[::]
     args_A = pop(vector, fn_A.stored_arity, True)
     args_B = pop(temp, fn_B.stored_arity, True)
-    vector.append(_safe_apply(fn_A, args_A[::-1]))
-    vector.append(_safe_apply(fn_B, args_B[::-1]))
+    vector.append(fn_A(args_A)[-1])
+    vector.append(fn_B(args_B)[-1])
 def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
     yield [item]
@@ -2279,7 +2279,7 @@ def VY_eval(item):
             return pwn.safeeval.const(item)
         except:
             f = Tokenise(item, variables_are_digraphs)
-            if len(f) and f[-1].name in (STRING_STMT, INTEGER, LIST_STMT):
+            if len(f) and f[-1][-1] in (Structure.STRING, Structure.NUMBER, Structure.LIST):
                 try:
                     temp = VY_compile(item)
                     stack = []
@@ -2290,9 +2290,6 @@ def VY_eval(item):
                     return item
             else:
                 return item
-
-
-
     else:
         try:
             ret = eval(item)
@@ -2891,6 +2888,7 @@ ALL flags should be used as is (no '-' prefix)
     if flags and 'c' in flags:
         output[2] = code
 
+
     try:
         exec(code, globals())
     except Exception as e:
@@ -2901,6 +2899,7 @@ ALL flags should be used as is (no '-' prefix)
     except SystemExit:
         if 'o' not in flags:
             return
+    
 
     if (not printed and 'O' not in flags) or 'o' in flags:
         if flags and 's' in flags:
