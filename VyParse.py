@@ -34,7 +34,9 @@ structure_dictionary = { # (open, close, default_key, starting_active_key, secon
     Structure.FUNC_REF: ("°", ";", Keys.FUNC_NAME, Keys.FUNC_NAME, Keys.FUNC_NAME),
     Structure.NUMBER: ("", "", Keys.NUMBER, Keys.NUMBER, Keys.NUMBER),
     Structure.VAR_GET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME),
-    Structure.VAR_SET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME)
+    Structure.VAR_SET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME),
+    Structure.FILTER: ("'", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_BODY, Keys.LAMBDA_BODY),
+    Structure.SORT: ("µ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_BODY, Keys.LAMBDA_BODY)
 }
 
 OPEN = tuple(structure_dictionary[k][0] for k in structure_dictionary)
@@ -206,7 +208,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
                 if default_key not in structure_data and structure != Structure.NONE:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
-            tokens.append((structure, structure_data))
+                tokens.append((structure, structure_data))
             structure, structure_data, active_key, default_key = Structure.NONE, {}, "", ""
         
         elif character == "|" and nest_level == 1:
@@ -311,7 +313,8 @@ if __name__ == "__main__":
         "5 £ 3 &+ ¥",
         "₁ƛ₍₃₅kF½*∑∴",
         "₍₃₅kF½*∑∴",
-        "[11|11]"
+        "[11|11]",
+        "1000'∆²;"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
