@@ -16,7 +16,7 @@ Triadic_Transformers = list("≬")
 Grouping_Transformers = list("⁽‡≬")
 
 class Digraphs:
-    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ", CODEPAGE = "⁺"
+    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ"; CODEPAGE = "⁺"
     MISC = "¨"; CONSTANT = "k"; ALL_DIGRAPHS = "k∆øÞ¨"
 class StringDelimiters:
     NORMAL = "`"
@@ -229,7 +229,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
 
         elif character in Monadic_Transformers:
             everything_after = Tokenise(source[token_pointer + 1:])
-            tokens.append((character, everything_after[0]))
+            tokens.append((Structure.MONAD_TRANSFORMER, (character, [everything_after[0]])))
             tokens += everything_after[1:]
             break
         elif character in Dyadic_Transformers:
@@ -239,7 +239,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
                 structure = Structure.NONE
                 structure_data = {}
             else:
-                tokens.append((character, everything_after[0:2]))
+                tokens.append((Structure.DYAD_TRANSFORMER, (character, everything_after[0:2])))
             tokens += everything_after[2:]
             break
         elif character == Structure.TRIAD_TRANSFORMER:
@@ -254,7 +254,8 @@ def Tokenise(source: str, variables_are_digraphs=False):
             token_pointer += 1
             continue
         else:
-            tokens.append((Structure.NONE, character))
+            if character != " ":
+                tokens.append((Structure.NONE, character))
         token_pointer += 1
     if structure != Structure.NONE:
         if structure == Structure.MAP:
@@ -298,7 +299,8 @@ if __name__ == "__main__":
         "k\\",
         "₌+-",
         "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
-        "kv"
+        "kv",
+        "5 £ 3 &+ ¥"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))

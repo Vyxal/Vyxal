@@ -372,6 +372,13 @@ def all_prime_factors(item):
     elif VY_type(item) is str:
         return item.title()
     return vectorise(all_prime_factors, item)
+def apply_to_register(function, vector):
+    global register
+    vector.append(register)
+    if function.stored_arity > 1:
+        top, over = pop(stack, 2); stack.append(top); stack.append(over)
+    vector += function_call(function, vector)
+    register = pop(vector)
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -2711,7 +2718,7 @@ else:
             compiled += tab("stored = False") + NEWLINE
             compiled += tab(f"if self.stored_arity != {defined_arity}: stored = self.stored_arity;") + NEWLINE
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + NEWLINE
-            compiled += tab("elif stored: parameters = pop(parameter_stack, stored); print(parameters); stack = parameters[::]") + NEWLINE
+            compiled += tab("elif stored: parameters = pop(parameter_stack, stored); stack = parameters[::]") + NEWLINE
             if defined_arity == 1:
                 compiled += tab(f"else: parameters = pop(parameter_stack); stack = [parameters]") + NEWLINE
             else:
@@ -2765,19 +2772,6 @@ else:
                 compiled += function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 compiled += "function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
-        elif token_name == Structure.FOUR_ARITY_TRANSFORMER:
-            if token_value[0] in Grouping_Transformers:
-                compiled += VY_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + NEWLINE
-            else:
-                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
-                function_C = VY_compile(wrap_in_lambda(token_value[1][2]))
-                function_D = VY_compile(wrap_in_lambda(token_value[1][3]))
-                compiled += function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE + function_D + NEWLINE
-                compiled += "function_D = pop(stack); function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
-                compiled += transformers[token_value[0]] + NEWLINE
-        elif token_name == Structure.LAMBDA_NEWLINE:
-            compiled += VY_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value})]) + NEWLINE
 
         compiled += "\n"
 

@@ -392,9 +392,9 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
 }
 
 transformers = {
-    "⁽": "stack.append(function_A)"
+    "⁽": "stack.append(function_A)",
     "v": "stack.append(transformer_vectorise(function_A, stack))",
-    "&": "stack.append(apply_to_register(function_A, stack))",
+    "&": "apply_to_register(function_A, stack)",
 
 
 }
