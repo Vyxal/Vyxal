@@ -1,11 +1,11 @@
 λ                                    = * lambda: λ...; λarity|...;  (Function definition)
-ƛ                                    = * lambda map: ƛ...;    (Map a series of functions over top of stack)
-¬ (a: any)                           = not a
-∧ (a: any, b: any)                   = a and b
-⟑ (a: any, b: any)                   = b and a
-∨ (a: any, b: any)                   = a or b
-⟇ (a: any, b: any)                   = b or a
-÷ (a: any)                           = stack += iterable(a)
+ƛ                                    = * lambda map: ƛ...;  (Map a series of functions over top of stack)
+¬ (a: any)                           = not a (non-vectorising)
+∧ (a: any, b: any)                   = a and b (non-vectorising)
+⟑ (a: any, b: any)                   = b and a (non-vectorising)
+∨ (a: any, b: any)                   = a or b (non-vectorising)
+⟇ (a: any, b: any)                   = b or a (non-vectorising)
+÷ (a: any)                           = stack += iterable(a) # item split/unwrap
 ×                                    = "*"
 «                                    = * base_255 compressed string: «...«
 <newline>                            = * newline
@@ -52,7 +52,7 @@
   (a: string, b: number)             = [random.choice(a) for _ in range(b)] # Randomly choose b items from a
   (a: string, b: string)             = set(a) == set(b) # Check if two lists are same except duplicates
   (otherwise)                        = vectorised
-∞                                    = list of all positive integers, starting at 0
+∞                                    = list of all non-negative integers, starting at 0
 ¨                                    = * other digraphs (see near the end of docs)
 <space>                              = * NOP (Do nothing)
 !                                    = length(stack) # Number of items in stack
@@ -69,7 +69,7 @@ $ (a: any, b: any)                   = b, a # swap
 '                                    = * lambda filter, map or apply a series of functions over top of stack, and filter out the truthy ones
 (                                    = * open for loop: (variable|...)
 )                                    = * close for loop
-* (a: number, b: number)             = a * b # mutliplication
+* (a: number, b: number)             = a * b # multiplication
   (a: number, b: string)             = b repeated a times
   (a: string, b: number)             = a repeated b times
   (a: string, b: string)             = [char + b for char in a] # vectorised concatenation
@@ -270,7 +270,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (a: any, b: function)              = apply b to every second item of a
   (a: function, b: any)              = apply a to every second item of b
 ẋ (a: any, b: number)                = repeat(a, times=b) # Repeat a b times
-  (a: function, b: function, c: any) = collect_until_false(predicate=f, modifying_function=g, inital=a) # Collect the results of apply g on a while f(a) is truthy
+  (a: function, b: function, c: any) = collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply b on c while a(c) is truthy
 ẏ (a: any)                           = range(0, len(a)) # Exclusive range from 0 to length of a
 ż (a: any)                           = range(1, len(a) + 1) # Inclusive range from 1 to length of a
 √ (a: number)                        = sqrt(a)  # square root
@@ -301,6 +301,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (otherwise)                        = vectorised
 ∑ (a: any)                           = sum(a) # Sum
 ¦ (a: any)                           = cumulative_sum(a)  # cumulative sum
+  (a: string)                        = prefixes of a
 ≈ (a: any)                           = are all elements the same?
 µ                                    = * lambda sort: µ...;. The same as λ...;ṡ
 Ȧ (a: list, b: number, c: any)       = a[b] = c # Assign bth index to value c
@@ -520,6 +521,11 @@ k(                                   = "()"
 k)                                   = ")("
 k{                                   = "{}"
 k}                                   = "}{"
+kẇ                                   = day of the week - 0 indexed
+kẆ                                   = day of the week - 1 indexed
+k§                                   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+kṁ                                   = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 ∆c (a: number)                       = math.cos(a) # Cosine
 ∆C (a: number)                       = math.arccos(a) # Arc cosine
 ∆q (a: number, b: number)            = roots of quadratic ax^2 + bx = 0 # Solve quadratic equation
@@ -546,10 +552,11 @@ k}                                   = "}{"
 ∆p (a: number)                       = nearest prime to a (highest prime if lowest prime is just as close)
 ∆ṙ (a: list)                         = polynomial from roots a
 ∆Ṙ                                   = random.random() # random float in the range [0, 1), pseudo random number
-∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round to b decimal places
+∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round a to b decimal places
+∆Ŀ (a: number, b: number)            = lcm(a, b)
 øo (a: string, b: string)            = a.remove_until_no_change(b) # Remove until no change
 øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c) # Replace until no change
-øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed number
+øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed string
 øC (a: number)                       = base_255_number_compressed(a) # Base 255 compressed number
 øĊ (a: list)                         = center(a) # Center align, ASCII art
 øe (a: any)                          = run_length_encoded(a) # Run length encoding
@@ -579,6 +586,13 @@ k}                                   = "}{"
 ÞS (a: any)                          = sublists(a)
 ÞṪ (a: list, b: any)                 = transpose(a, filler=b) # Transpose with filler
 Þ℅ (a: any)                          = random permutation of a (but faster than Ṗ℅)
+Þ• (a: list, b: list)                = dot product of a and b
+ÞṀ (a: list, b: list)                = matrix multiply a and b
+ÞḊ (a: list)                         = matrix determinant of a
+Þ/ (a: list)                         = the main diagonal of a
+Þ\ (a: list)                         = the anti-diagonal of a
+ÞR (a: list, b: function)            = reduce rows of a by function b
+ÞC (a: list, b: function)            = reduce columns of a by function b
 ¨U (a: string)                       = GET request with url=a
 ¨M (a: list, b: list, c: function)   = map function c to every item in a whos index is in b
 ¨, (a: any)                          = print(a, end=" ") # Print with a space at end

@@ -23101,3 +23101,11 @@ mne
 mni
 mnu
 mny""".split("\n")
+
+lookup = {}
+
+max_word_len = 0
+
+for index, word in enumerate(contents):
+    lookup[word] = index
+    max_word_len = max(max_word_len, len(word))
