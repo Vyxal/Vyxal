@@ -709,6 +709,14 @@ def divisors_of(item):
             divisors.append(value)
 
     return divisors
+def dont_pop(function, vector):
+    global retain_items
+    if function.stored_arity == 1:
+        vector.append(VY_filter(function, pop(vector)))
+    else:
+        retain_items = True
+        vector += function_call(function, vector)
+        retain_items = False
 def dot_product(lhs, rhs):
     return summate(multiply(lhs, rhs))
 def escape(item):
@@ -1031,7 +1039,6 @@ def fractionify(item):
         return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
-        print(vector)
         return fn(vector, self=fn)
     else:
         return [{

@@ -395,6 +395,7 @@ transformers = {
     "⁽": "stack.append(function_A)",
     "v": "stack.append(transformer_vectorise(function_A, stack))",
     "&": "apply_to_register(function_A, stack)",
+    "~": "dont_pop(function_A, stack)"
 
 
 }
