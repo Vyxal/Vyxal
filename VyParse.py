@@ -49,7 +49,7 @@ def group_two_byte_strings(source):
 
     for character in source:
         if escaped: escaped = components.append(character) or False
-        if type(character) is list: components.append(character)
+        elif type(character) is list: components.append(character)
         elif temp: 
             temp = components.append([temp + character, "`"]) or ""
             in_string = False
@@ -131,13 +131,14 @@ def Tokenise(source: str, variables_are_digraphs=False):
     while token_pointer < len(source):
         
         character = source[token_pointer]
-        print(character, nest_level, escaped, structure, tokens, active_key, default_key)
+        # print(character, nest_level, escaped, structure, tokens, active_key, default_key)
         if comment: comment = character == "\n"; continue
         if escaped:
             if structure != Structure.NONE:
                 structure_data[active_key] += "\\" + character
             else:
                 tokens.append((Structure.CHARACTER, character))
+            token_pointer += 1
             escaped = False; continue
         
         if structure == Structure.NUMBER:
@@ -316,7 +317,9 @@ if __name__ == "__main__":
         "₍₃₅kF½*∑∴",
         "[11|11]",
         "1000'∆²;",
-        "3 4 ₌+- `abcde`"
+        "3 4 ₌+- `abcde`",
+        "₍Ǔǔ⁰\\r=i",
+        "\\s"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
