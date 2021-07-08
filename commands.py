@@ -390,3 +390,11 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "kɖ": ("stack.append(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'])", 0),
     "kṁ": ("stack.append([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)]", 0)
 }
+
+transformers = {
+    "⁽": "stack.append(function_A)"
+    "v": "stack.append(transformer_vectorise(function_A, stack))",
+    "&": "stack.append(apply_to_register(function_A, stack))",
+
+
+}

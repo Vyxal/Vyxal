@@ -10,13 +10,13 @@ class Keys:
     FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17,
     LAMBDA_GROUP = 18
 
-Monadic_Transformers = list("v⁽⁺Þ&~ß‘")
+Monadic_Transformers = list("v⁽&~ß‘")
 Dyadic_Transformers = list("₌‡₍")
 Triadic_Transformers = list("≬")
-
+Grouping_Transformers = list("⁽‡≬")
 
 class Digraphs:
-    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ"
+    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ", CODEPAGE = "⁺"
     MISC = "¨"; CONSTANT = "k"; ALL_DIGRAPHS = "k∆øÞ¨"
 class StringDelimiters:
     NORMAL = "`"

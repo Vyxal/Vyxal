@@ -1987,6 +1987,8 @@ def sums(vector):
         ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
+def transformer_vectorise(function, vector):
+    return vectorise(function, *pop(vector, function.stored_arity), explicit=True)
 def transliterate(original, new, transliterant):
     transliterant = deref(transliterant)
     t_string = type(transliterant)
@@ -2552,7 +2554,6 @@ def zip_with_multi(fn, lists):
         except StopIteration:
             pass
     return Generator(gen())
-
 def wrap_in_lambda(tokens):
     if tokens[0] == Structure.NONE:
         return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict.get(tokens[1], (0,0))[1])})]
@@ -2569,7 +2570,10 @@ def VY_compile(program, header=""):
     for token in program:
         token_name, token_value = token
         if token_name == Structure.NONE:
-            compiled += command_dict.get(token[1], "  ")[0]
+            if token_value[0] == Digraphs.CODEPAGE:
+                compiled += f"stack.append({codepage.find(token_value[1])})"
+            else:
+                compiled += command_dict.get(token[1], "  ")[0]
         elif token_name == Structure.NUMBER:
             value = token[-1]
             end = value.find(".", value.find(".") + 1)
