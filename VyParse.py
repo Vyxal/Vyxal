@@ -126,7 +126,9 @@ def Tokenise(source: str, variables_are_digraphs=False):
 
     token_pointer = 0
     while token_pointer < len(source):
+        
         character = source[token_pointer]
+        # print(character, nest_level, escaped, structure, tokens, active_key, default_key)
         if comment: comment = character == "\n"; continue
         if escaped:
             if structure != Structure.NONE:
@@ -151,8 +153,9 @@ def Tokenise(source: str, variables_are_digraphs=False):
             else:
                 tokens.append((structure, structure_data[active_key]))
                 structure, structure_data, active_key, default_key = Structure.NONE, {}, "", ""
-        if character == "'":
+        if character == "\\":
             escaped = True
+            token_pointer += 1
             continue
         if type(character) is list:
             tokens.append((Structure.STRING, character))
@@ -167,6 +170,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
             if nest_level:
                 nest_level += 1
                 structure_data[active_key] += character
+                token_pointer += 1
                 continue # That is, we're already in a structure, so we go deeper m'dude.
 
             structure = tuple(k for k in structure_dictionary if character == structure_dictionary[k][0])[0] # there's guaranteed to only be 1, because we have determined that it is in the dictionary
@@ -183,6 +187,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
             nest_level -= 1
             if nest_level:
                 structure_data[active_key] += character
+                token_pointer += 1
                 continue # We still have things to close m'dude.
 
             if structure == Structure.MAP:
@@ -212,6 +217,12 @@ def Tokenise(source: str, variables_are_digraphs=False):
                 structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
             
             structure_data[active_key] = ""
+        elif character == "#":
+            comment = True
+            token_pointer += 1
+            continue
+        elif structure != Structure.NONE:
+            structure_data[active_key] += character
         elif character in (string.digits + "."):
             structure = Structure.NUMBER
             active_key = structure_dictionary[Structure.NUMBER][2]
@@ -249,10 +260,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
                 {Keys.LAMBDA_BODY: everything_after[0:3]}
             ))
             tokens += everything_after[3:]
-        elif character == "#":
-            comment = True
-            token_pointer += 1
-            continue
+
         else:
             if character != " ":
                 tokens.append((Structure.NONE, character))
@@ -302,6 +310,7 @@ if __name__ == "__main__":
         "kv",
         "5 £ 3 &+ ¥",
         "₁ƛ₍₃₅kF½*∑∴",
+        "₍₃₅kF½*∑∴",
         "[11|11]"
     ]
     for test in tests:
