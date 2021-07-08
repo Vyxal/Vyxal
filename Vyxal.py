@@ -2278,8 +2278,8 @@ def VY_eval(item):
         try:
             return pwn.safeeval.const(item)
         except:
-            f = VyParse.Tokenise(item, variables_are_digraphs)
-            if len(f) and f[-1].name in (VyParse.STRING_STMT, VyParse.INTEGER, VyParse.LIST_STMT):
+            f = Tokenise(item, variables_are_digraphs)
+            if len(f) and f[-1].name in (STRING_STMT, INTEGER, LIST_STMT):
                 try:
                     temp = VY_compile(item)
                     stack = []
