@@ -1004,7 +1004,7 @@ else:
             compiled += tab("input_level += 1") + newline
             compiled += tab(f"this_function = _lambda_{signature}") + newline
             compiled += tab("stored = False") + newline
-            compiled += tab(f"if self.stored_arity != {defined_arity}: stored = self.stored_arity;") + newline
+            compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + newline
             compiled += tab(f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity); stack = parameters[::]") + newline
             compiled += tab("elif stored: parameters = pop(parameter_stack, stored); print(parameters); stack = parameters[::]") + newline
             if defined_arity == 1:
