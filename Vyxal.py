@@ -16,10 +16,10 @@ import sys
 import secrets
 
 # Vyxal modules
-import commands
+from commands import *
 import encoding
 import utilities
-import VyParse
+from VyParse import *
 import words
 
 # Pipped modules
@@ -372,6 +372,13 @@ def all_prime_factors(item):
     elif VY_type(item) is str:
         return item.title()
     return vectorise(all_prime_factors, item)
+def apply_to_register(function, vector):
+    global register
+    vector.append(register)
+    if function.stored_arity > 1:
+        top, over = pop(stack, 2); stack.append(top); stack.append(over)
+    vector += function_call(function, vector)
+    register = pop(vector)
 def assigned(vector, index, item):
     if type(vector) is str:
         vector = list(vector)
@@ -702,6 +709,15 @@ def divisors_of(item):
             divisors.append(value)
 
     return divisors
+def dont_pop(function, vector):
+    global retain_items
+    if function.stored_arity == 1:
+        vector.append(VY_filter(function, pop(vector)))
+    else:
+        retain_items = True
+        args = pop(vector, function.stored_arity)
+        vector.append(_safe_apply(function, args[::-1]))
+        retain_items = False
 def dot_product(lhs, rhs):
     return summate(multiply(lhs, rhs))
 def escape(item):
@@ -718,7 +734,6 @@ def escape(item):
         else:
             ret += char
     return ret
-
 def exponate(lhs, rhs):
     types = (VY_type(lhs), VY_type(rhs))
 
@@ -1557,6 +1572,12 @@ def overloaded_iterable_shift(lhs, rhs, direction):
 def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
+def para_apply(fn_A, fn_B, vector):
+    temp = deref(vector)[::]
+    args_A = pop(vector, fn_A.stored_arity, True)
+    args_B = pop(temp, fn_B.stored_arity, True)
+    vector.append(_safe_apply(fn_A, args_A[::-1]))
+    vector.append(_safe_apply(fn_B, args_B[::-1]))
 def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
     yield [item]
@@ -1909,11 +1930,11 @@ def split(haystack, needle, keep_needle=False):
         if temp:
             ret.append(temp)
         return ret
-def split_newlines_or_pow_10(item):
+def split_NEWLINEs_or_pow_10(item):
     return {
         Number: lambda: 10 ** item,
         str: lambda: item.split("\n")
-    }.get(VY_type(item), lambda: vectorise(split_newlines_or_pow_10, item))()
+    }.get(VY_type(item), lambda: vectorise(split_NEWLINEs_or_pow_10, item))()
 def split_on_words(item):
     parts = []
     word = ""
@@ -1987,6 +2008,8 @@ def sums(vector):
         ret.append(summate(vector[0:i+1]))
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
+def transformer_vectorise(function, vector):
+    return vectorise(function, *pop(vector, function.stored_arity), explicit=True)
 def transliterate(original, new, transliterant):
     transliterant = deref(transliterant)
     t_string = type(transliterant)
@@ -2552,157 +2575,87 @@ def zip_with_multi(fn, lists):
         except StopIteration:
             pass
     return Generator(gen())
-constants = {
-    "A": "string.ascii_uppercase",
-    "e": "math.e",
-    "f": "'Fizz'",
-    "b": "'Buzz'",
-    "F": "'FizzBuzz'",
-    "H": "'Hello, World!'",
-    "h": "'Hello World'",
-    "1": "1000",
-    "2": "10000",
-    "3": "100000",
-    "4": "1000000",
-    "5": "10000000",
-    "a": "string.ascii_lowercase",
-    "L": "string.ascii_letters",
-    "d": "string.digits",
-    "6": "'0123456789abcdef'",
-    "^": "'0123456789ABCDEF'",
-    "o": "string.octdigits",
-    "p": "string.punctuation",
-    "P": "string.printable",
-    "w": "string.whitespace",
-    "r": "string.digits + string.ascii_letters",
-    "B": "string.ascii_uppercase + string.ascii_lowercase",
-    "Z": "string.ascii_uppercase[::-1]",
-    "z": "string.ascii_lowercase[::-1]",
-    "l": "string.ascii_letters[::-1]",
-    "i": "math.pi",
-    "n": "math.nan",
-    "t": "math.tau",
-    "D": "date.today().isoformat()",
-    "N": "[dt.now().hour, dt.now().minute, dt.now().second]",
-    "ḋ": "date.today().strftime('%d/%m/%Y')",
-    "Ḋ": "date.today().strftime('%m/%d/%y')",
-    "ð": "[date.today().day, date.today().month, date.today().year]",
-    "β": "'{}[]<>()'",
-    "Ḃ": "'()[]{}'",
-    "ß": "'()[]'",
-    "ḃ": "'([{'",
-    "≥": "')]}'",
-    "≤": "'([{<'",
-    "Π": "')]}>'",
-    "v": "'aeiou'",
-    "V": "'AEIOU'",
-    "∨": "'aeiouAEIOU'",
-    "⟇": "commands.codepage",
-    "½": "[1, 2]",
-    "ḭ": "2 ** 32",
-    "+": "[1, -1]",
-    "-": "[-1, 1]",
-    "≈": "[0, 1]",
-    "/": "'/\\\\'",
-    "R": "360",
-    "W": "'https://'",
-    "℅": "'http://'",
-    "↳": "'https://www.'",
-    "²": "'http://www.'",
-    "¶": "512",
-    "⁋": "1024",
-    "¦": "2048",
-    "Ṅ": "4096",
-    "ṅ": "8192",
-    "¡": "16384",
-    "ε": "32768",
-    "₴": "65536",
-    "×": "2147483648",
-    "⁰": "'bcfghjklmnpqrstvwxyz'",
-    "¹": "'bcfghjklmnpqrstvwxz'",
-    "•": "['qwertyuiop', 'asdfghjkl', 'zxcvbnm']",
-    "Ṡ": "dt.now().second",
-    "Ṁ": "dt.now().minute",
-    "Ḣ": "dt.now().hour",
-    "τ": "int(dt.now().strftime('%j'))",
-    "ṡ": "time.time()",
-    "□": "[[0,1],[1,0],[0,-1],[-1,0]]",
-    "…": "[[0,1],[1,0]]",
-    "ɽ": "[-1,0,1]",
-    "[": "'[]'",
-    "]": "']['",
-    "(": "'()'",
-    ")": "')('",
-    "{": "'{}'",
-    "}": "'}{'",
-    "/": "'/\\\\'",
-    "\\": "'\\\\/'",
-    "<": "'<>'",
-    ">": "'><'",
-    "ẇ": "dt.now().weekday()",
-    "Ẇ": "dt.now().isoweekday()",
-    "§": "['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']",
-    "ɖ": "['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']",
-    "ṁ": "[31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]"
-}
-
-def VY_compile(source, header=""):
-    if not source: return header or "pass"
-    source = VyParse.Tokenise(source, variables_are_digraphs)
+def wrap_in_lambda(tokens):
+    if tokens[0] == Structure.NONE:
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: [tokens], Keys.LAMBDA_ARGS: str(command_dict.get(tokens[1], (0,0))[1])})]
+    elif tokens[0] == Structure.LAMBDA:
+        return tokens
+    else:
+        return (Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})
+def VY_compile(program, header=""):
+    if not program: return header or "pass" # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
-    for token in source:
-        NAME, VALUE = token[VyParse.NAME], token[VyParse.VALUE]
-        # print(NAME, VALUE)
-        if NAME == VyParse.NO_STMT:
-            compiled += commands.command_dict.get(VALUE, "  ")[0]
-        elif NAME == VyParse.INTEGER:
-            compiled += f"stack.append({VALUE})"
-        elif NAME == VyParse.STRING_STMT:
-            import utilities
-            value = VALUE[VyParse.STRING_CONTENTS]
-            if not raw_strings: value = utilities.uncompress(value)
-            value = escape(value)
-            compiled += f"stack.append(\"{value}\")" + NEWLINE
-        elif NAME == VyParse.CHARACTER:
-            compiled += f"stack.append({repr(VALUE[0])})"
-        elif NAME == VyParse.IF_STMT:
-            true_branch = VALUE[VyParse.IF_ON_TRUE]
-            true_branch = tab(VY_compile(true_branch))
 
-            compiled += "_IF_condition = bool(pop(stack))" + NEWLINE
-            compiled += "if _IF_condition:" + NEWLINE + true_branch
+    if isinstance(program, str):
+        program = Tokenise(program)
+    for token in program:
+        token_name, token_value = token
+        if token_name == Structure.NONE:
+            if token_value[0] == Digraphs.CODEPAGE:
+                compiled += f"stack.append({codepage.find(token_value[1])})"
+            else:
+                compiled += command_dict.get(token[1], "  ")[0]
+        elif token_name == Structure.NUMBER:
+            value = token[-1]
+            end = value.find(".", value.find(".") + 1)
 
-            if VyParse.IF_ON_FALSE in VALUE:
-                false_branch = VALUE[VyParse.IF_ON_FALSE]
-                false_branch = tab(VY_compile(false_branch))
-                compiled += NEWLINE + "else:" + NEWLINE
-                compiled += false_branch
-        elif NAME == VyParse.FOR_STMT:
-            loop_variable = "LOOP_" + _mangle(compiled)
-            if VyParse.FOR_VARIABLE in VALUE:
-                loop_variable = "VAR_" + strip_non_alphabet(VALUE[VyParse.FOR_VARIABLE])
+            if end != -1: value = value[:end]
 
+            if value.isnumeric():
+                compiled += f"stack.append({value})"
+            else:
+                try:
+                    float(value)
+                    compiled += f"stack.append(sympy.Rational({value}))"
+                except:
+                    compiled += f"stack.append(sympy.Rational('0.5'))"
+        elif token_name == Structure.STRING:
+            string, string_type = token_value[0], token_value[1]
+            if string_type == StringDelimiters.NORMAL:
+                value = string.replace('"', "\\\"")
+                compiled += f"stack.append(\"{value}\")"
+            elif string_type == StringDelimiters.DICTIONARY:
+                value = string.replace('"', "\\\"")
+                compiled += f"stack.append(\"{utilities.uncompress(value)}\")"
+            elif string_type == StringDelimiters.COM_NUMBER:
+                number = utilities.to_ten(string, encoding.codepage_number_compress)
+                compiled += f"stack.append({number})"
+            elif string_type == StringDelimiters.COM_STRING:
+                value = utilities.to_ten(string, encoding.codepage_string_compress)
+                value = utilities.from_ten(value, utilities.base27alphabet)
+                compiled += f"stack.append('{value}')"
+        elif token_name == Structure.CHARACTER:
+            compiled += f"stack.append({repr(token[1])})"
+        elif token_name == Structure.IF:
+            compiled += "temp_value = pop(stack)\n"
+            compiled += "if temp_value:\n" + tab(VY_compile(token_value[Keys.IF_TRUE])) + NEWLINE
+            if Keys.IF_FALSE in token_value: compiled += "else:\n" + tab(VY_compile(token_value[Keys.IF_FALSE]))
+        elif token_name == Structure.FOR:
+            loop_variable = "LOOP_" + secrets.token_hex(16)
+            if Keys.FOR_VAR in token_value:
+                loop_variable = "VAR_" + strip_non_alphabet(token_value[Keys.FOR_VAR])
             compiled += "for " + loop_variable + " in VY_range(pop(stack)):" + NEWLINE
             compiled += tab("context_level += 1") + NEWLINE
             compiled += tab("context_values.append(" + loop_variable + ")") + NEWLINE
-            compiled += tab(VY_compile(VALUE[VyParse.FOR_BODY])) + NEWLINE
+            compiled += tab(VY_compile(token_value[Keys.FOR_BODY])) + NEWLINE
             compiled += tab("context_level -= 1") + NEWLINE
             compiled += tab("context_values.pop()")
-        elif NAME == VyParse.WHILE_STMT:
+        elif token_name == Structure.WHILE:
             condition = "stack.append(1)"
-            if VyParse.WHILE_CONDITION in VALUE:
-                condition = VY_compile(VALUE[VyParse.WHILE_CONDITION])
-
+            if Keys.WHILE_COND in value:
+                condition = VY_compile(token_value[Keys.WHILE_COND])
+            
             compiled += condition + NEWLINE
-            compiled += "while pop(stack):" + NEWLINE
-            compiled += tab(VY_compile(VALUE[VyParse.WHILE_BODY])) + NEWLINE
+            compiled += "while pop(stack):\n"
+            compiled += tab(VY_compile(token_value[Keys.WHILE_BODY])) + NEWLINE
             compiled += tab(condition)
-        elif NAME == VyParse.FUNCTION_STMT:
-            if VyParse.FUNCTION_BODY not in VALUE:
+        elif token_name == Structure.FUNCTION:
+            # Determine if it's a function call or definition
+            if Keys.FUNC_BODY not in token_value:
                 # Function call
-                compiled += "stack += FN_" + VALUE[VyParse.FUNCTION_NAME] + "(stack)"
+                compiled += "stack += FN_" + token_value[Keys.FUNC_NAME] + "(stack)"
             else:
-                function_information = VALUE[VyParse.FUNCTION_NAME].split(":")
+                function_information = token_value[Keys.FUNC_NAME].split(":")
                 # This will either be a single name, or name and parameter information
 
                 parameter_count = 0
@@ -2723,8 +2676,10 @@ def VY_compile(source, header=""):
                             parameters.append(parameter)
                             parameter_count += 1
 
-                compiled += "def FN_" + function_name + "(parameter_stack, arity=None):" + NEWLINE
+                compiled += "def FN_" + function_name + "(parameter_stack, arity=None):\n"
                 compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
+                compiled += tab("context_level += 1") + NEWLINE
+                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab(f"this_function = FN_{function_name}") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
@@ -2751,28 +2706,28 @@ else:
                     elif parameter == 1:
                         compiled += tab("parameters.append(pop(parameter_stack))")
                     elif isinstance(parameter, int):
-                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})[::-1]")
+                        compiled += tab(f"parameters += pop(parameter_stack, {parameter})")
                     else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
 
                 compiled += tab("stack = parameters[::]") + NEWLINE
-                compiled += tab("context_level += 1") + NEWLINE
-                compiled += tab("input_level += 1") + NEWLINE
                 compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
-                compiled += tab(VY_compile(VALUE[VyParse.FUNCTION_BODY])) + NEWLINE
+                compiled += tab(VY_compile(token_value[Keys.FUNC_BODY])) + NEWLINE
                 compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
                 compiled += tab("input_level -= 1") + NEWLINE
                 compiled += tab("return stack")
-        elif NAME == VyParse.LAMBDA_STMT:
+        elif token_name == Structure.LAMBDA:
             defined_arity = 1
-            if VyParse.LAMBDA_ARGUMENTS in VALUE:
-                lambda_argument = VALUE[VyParse.LAMBDA_ARGUMENTS]
+            if Keys.LAMBDA_ARGS in token_value:
+                lambda_argument = token_value[Keys.LAMBDA_ARGS]
                 if lambda_argument.isnumeric():
                     defined_arity = int(lambda_argument)
-            signature = _mangle(compiled or secrets.token_hex(64))
+            signature = secrets.token_hex(16)
             compiled += f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):" + NEWLINE
             compiled += tab("global context_level, context_values, input_level, input_values, retain_items, printed, register") + NEWLINE
+            compiled += tab("context_level += 1") + NEWLINE
+            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += tab("if 'stored_arity' in dir(self): stored = self.stored_arity;") + NEWLINE
@@ -2783,116 +2738,58 @@ else:
             else:
                 compiled += tab(f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]") + NEWLINE
             compiled += tab("context_values.append(parameters)") + NEWLINE
-            compiled += tab("input_level += 1") + NEWLINE
             compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
-            compiled += tab("context_level += 1") + NEWLINE
-            compiled += tab(VY_compile(VALUE[VyParse.LAMBDA_BODY])) + NEWLINE
+            compiled += tab(VY_compile(token_value[Keys.LAMBDA_BODY])) + NEWLINE
             compiled += tab("ret = [pop(stack)]") + NEWLINE
             compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
             compiled += tab("input_level -= 1") + NEWLINE
             compiled += tab("return ret") + NEWLINE
+            compiled += f"_lambda_{signature}.stored_arity = {defined_arity}" + NEWLINE
             compiled += f"stack.append(_lambda_{signature})"
-        elif NAME == VyParse.LIST_STMT:
+        elif token_name == Structure.LIST:
             compiled += "temp_list = []" + NEWLINE
-            for element in VALUE[VyParse.LIST_ITEMS]:
+            for element in token_value[Keys.LIST_ITEMS]:
                 if element:
-                    compiled += "def list_item(parameter_stack):" + NEWLINE
+                    compiled += "def list_lhs(parameter_stack):" + NEWLINE
                     compiled += tab("stack = parameter_stack[::]") + NEWLINE
                     compiled += tab(VY_compile(element)) + NEWLINE
                     compiled += tab("return pop(stack)") + NEWLINE
-                    compiled += "temp_list.append(list_item(stack))" + NEWLINE
+                    compiled += "temp_list.append(list_lhs(stack))" + NEWLINE
             compiled += "stack.append(temp_list[::])"
-        elif NAME == VyParse.FUNCTION_REFERENCE:
-            compiled += f"stack.append(FN_{VALUE[VyParse.FUNCTION_NAME]})"
-        elif NAME == VyParse.CONSTANT_CHAR:
-            compiled += f"stack.append({constants[VALUE]})"
-        elif NAME == VyParse.VECTORISATION_CHAR:
-            compiled += VY_compile("λ" + VALUE + ";") + NEWLINE
-            m = [0, -1]
-            if len(VALUE) == 1 and VALUE in commands.command_dict: m = commands.command_dict[VALUE]
-            elif VALUE[1] in commands.math_command_dict: m = commands.math_command_dict[VALUE[1]]
-            elif VALUE[1] in commands.string_command_dict: m = commands.string_command_dict[VALUE[1]]
-            elif VALUE[1] in commands.list_command_dict: m = commands.list_command_dict[VALUE[1]]
-            elif VALUE[1] in commands.misc_command_dict: m = commands.misc_command_dict[VALUE[1]]
-
-            m = m[-1]
-            if m == 0:
-                compiled += "fn = pop(stack); stack += fn(stack)"
-            elif m == 1:
-                compiled += "fn = pop(stack); stack.append(vectorise(fn, pop(stack), explicit=True))"
-            elif m == 2:
-                compiled += "fn = pop(stack); rhs, lhs = pop(stack, 2); stack.append(vectorise(fn, lhs, rhs, explicit=True))"
-            elif m == 3:
-                compiled += "fn = pop(stack); other, rhs, lhs = pop(stack, 3); stack.append(vectorise(fn, lhs, rhs, other, explicit=True))"
-        elif NAME == VyParse.CODEPAGE_INDEX:
-            compiled += f"stack.append({commands.codepage.find(VALUE)} + 101)"
-        elif NAME == VyParse.TWO_BYTE_MATH:
-            compiled += commands.math_command_dict.get(VALUE, "  ")[0]
-        elif NAME == VyParse.TWO_BYTE_STRING:
-            compiled += commands.string_command_dict.get(VALUE, "  ")[0]
-        elif NAME == VyParse.TWO_BYTE_LIST:
-            compiled += commands.list_command_dict.get(VALUE, "  ")[0]
-        elif NAME == VyParse.TWO_BYTE_MISC:
-            compiled += commands.misc_command_dict.get(VALUE, "  ")[0]
-        elif NAME == VyParse.VAR_SET:
-            compiled += "VAR_" + str(ord(VALUE)) + " = pop(stack)"
-        elif NAME == VyParse.VAR_GET:
-            compiled += "stack.append(VAR_" + str(ord(VALUE)) + ")"
-        elif NAME == VyParse.SINGLE_SCC_CHAR:
-            import utilities
-            import encoding
-            if -1 < utilities.to_ten(VALUE, encoding.compression) < len(words._words):
-                compiled += f"stack.append({repr(words.extract_word(VALUE))})"
+        elif token_name == Structure.FUNC_REF:
+            compiled += f"stack.append(FN_{token_value[Keys.FUNC_NAME]})"
+        elif token_name == Structure.VAR_SET:
+            compiled += "VAR_" + token_value[Keys.VAR_NAME] + " = pop(stack)"
+        elif token_name == Structure.VAR_GET:
+            compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
+        elif token_name == Structure.MONAD_TRANSFORMER:
+            function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+            compiled += function_A + NEWLINE
+            compiled += "function_A = pop(stack)\n"
+            compiled += transformers[token_value[0]] + NEWLINE
+        elif token_name == Structure.DYAD_TRANSFORMER:
+            if token_value[0] in Grouping_Transformers:
+                compiled += VY_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + NEWLINE
             else:
-                compiled += f"stack.append({repr(VALUE)})"
+                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
+                compiled += function_A + NEWLINE + function_B + NEWLINE
+                compiled += "function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += transformers[token_value[0]] + NEWLINE
+        elif token_name == Structure.TRIAD_TRANSFORMER:
+            if token_value[0] in Grouping_Transformers:
+                compiled += VY_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})]) + NEWLINE
+            else:
+                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
+                function_C = VY_compile(wrap_in_lambda(token_value[1][2]))
+                compiled += function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
+                compiled += "function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += transformers[token_value[0]] + NEWLINE
 
-        elif NAME == VyParse.VARIABLE_SET:
-            compiled += "VAR_" + VALUE[VyParse.VARIABLE_NAME] + " = pop(stack)"
-        elif NAME == VyParse.VARIABLE_GET:
-            compiled += "stack.append(VAR_" + VALUE[VyParse.VARIABLE_NAME] + ")"
-        elif NAME == VyParse.COMPRESSED_NUMBER:
-            import utilities, encoding
-            number = utilities.to_ten(VALUE[VyParse.COMPRESSED_NUMBER_VALUE],
-             encoding.codepage_number_compress)
-            compiled += f"stack.append({number})" + NEWLINE
-        elif NAME == VyParse.COMPRESSED_STRING:
-            import utilities, encoding
-            value = utilities.to_ten(VALUE[VyParse.COMPRESSED_STRING_VALUE],
-             encoding.codepage_string_compress)
-            value = utilities.from_ten(value, utilities.base27alphabet)
-            compiled += f"stack.append('{value}')" + NEWLINE
-        elif NAME == VyParse.PARA_APPLY:
-            compiled += "temp_stack = [deref(x, False) for x in stack[::]]" + NEWLINE
-            compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
-            compiled += "def _para_lambda(stack):" + NEWLINE
-            compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
-            compiled += tab("return stack") + NEWLINE
-            compiled += "stack.append(_para_lambda(temp_stack)[-1])"
-        elif NAME == VyParse.PARA_APPLY_COLLECT:
-            compiled += "temp_stack = [deref(x, False) for x in stack[::]]" + NEWLINE
-            compiled += commands.command_dict.get(VALUE[0], "  ")[0] + NEWLINE
-            compiled += "def _para_lambda(stack):" + NEWLINE
-            compiled += tab(commands.command_dict.get(VALUE[1], "  ")[0]) + NEWLINE
-            compiled += tab("return stack") + NEWLINE
-            compiled += "stack.append(_para_lambda(temp_stack)[-1])" + NEWLINE
-            compiled += "rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])"
-        elif NAME == VyParse.REGISTER_MODIFIER:
-            compiled += "stack.append(register)" + NEWLINE
-            built_in = commands.command_dict[VALUE]
-            if built_in[1] > 1:
-                compiled += commands.command_dict["$"][0] + NEWLINE
-            compiled += built_in[0] + NEWLINE
-            compiled += "register = pop(stack)"
-        elif NAME == VyParse.ONE_CHAR_FUNCTION_REFERENCE:
-            compiled += VY_compile("λ" + str(commands.command_dict[VALUE][1]) + "|" + VALUE)
-        elif NAME == VyParse.DONT_POP:
-            compiled += "retain_items = True" + NEWLINE
-            compiled += VY_compile(VALUE) + NEWLINE
-            compiled += "retain_items = False"
-        elif NAME == VyParse.CONDITIONAL_EXECUTION:
-            compiled += "if bool(pop(stack)):" + NEWLINE
-            compiled += tab(VY_compile(VALUE))
-        compiled += NEWLINE
+        compiled += "\n"
+
+    
     return header + compiled
 
 def execute(code, flags, input_list, output_variable):
@@ -2954,8 +2851,8 @@ def execute(code, flags, input_list, output_variable):
             output[1] = """
 ALL flags should be used as is (no '-' prefix)
 \tH\tPreset stack to 100
-\tj\tPrint top of stack joined by newlines on end of execution
-\tL\tPrint top of stack joined by newlines (Vertically) on end of execution
+\tj\tPrint top of stack joined by NEWLINEs on end of execution
+\tL\tPrint top of stack joined by NEWLINEs (Vertically) on end of execution
 \ts\tSum/concatenate top of stack on end of execution
 \tM\tMake implicit range generation start at 0 instead of 1
 \tm\tMake implicit range generation end at n-1 instead of n
@@ -2963,11 +2860,11 @@ ALL flags should be used as is (no '-' prefix)
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
-\ta\tTreat newline seperated values as a list
+\ta\tTreat NEWLINE seperated values as a list
 \td\tPrint deep sum of top of stack on end of execution
 \tr\tMakes all operations happen with reverse arguments
 \tS\tPrint top of stack joined by spaces on end of execution
-\tC\tCentre the output and join on newlines on end of execution
+\tC\tCentre the output and join on NEWLINEs on end of execution
 \tO\tDisable implicit output
 \to\tForce implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting)
@@ -2980,7 +2877,7 @@ ALL flags should be used as is (no '-' prefix)
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
 \tṡ\tPrint the entire stack, joined on spaces
-\tJ\tPrint the entire stack, separated by newlines.
+\tJ\tPrint the entire stack, separated by NEWLINEs.
 \tV\tVariables are only one letter long
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
@@ -3074,19 +2971,19 @@ if __name__ == "__main__":
         print("\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>")
         print("ALL flags should be used as is (no '-' prefix)")
         print("\tH\tPreset stack to 100")
-        print("\tj\tPrint top of stack joined by newlines")
-        print("\tL\tPrint top of stack joined by newlines (Vertically)")
+        print("\tj\tPrint top of stack joined by NEWLINEs")
+        print("\tL\tPrint top of stack joined by NEWLINEs (Vertically)")
         print("\ts\tSum/concatenate top of stack on end of execution")
         print("\tM\tMake implicit range generation start at 0 instead of 1")
         print("\tm\tMake implicit range generation end at n-1 instead of n")
         print("\tv\tUse Vyxal encoding for input file")
         print("\tc\tOutput compiled code")
         print("\tf\tGet input from file instead of arguments")
-        print("\ta\tTreat newline seperated values as a list")
+        print("\ta\tTreat NEWLINE seperated values as a list")
         print("\td\tDeep sum of top of stack")
         print("\tr\tMakes all operations happen with reverse arguments")
         print("\tS\tPrint top of stack joined by spaces")
-        print("\tC\tCentre the output and join on newlines")
+        print("\tC\tCentre the output and join on NEWLINEs")
         print("\tO\tDisable implicit output")
         print("\tK\tEnable Keg mode")
         print("\tE\tEnable safe evaluation (offline interpreter only)")
@@ -3099,7 +2996,7 @@ if __name__ == "__main__":
         print("\tD\tTreat all strings as raw strings (don't decompress strings)")
         print("\tṪ\tPrint the sum of the entire stack")
         print("\tṀ\tEquivalent to having both m and M flags")
-        print("\tJ\tPrint stack joined by newlines")
+        print("\tJ\tPrint stack joined by NEWLINEs")
         print("\to\tForce implicit output, even when something has been outputted.")
         print("\tṡ\tPrint stack joined on spaces")
     else:
