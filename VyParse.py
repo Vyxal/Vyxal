@@ -1,646 +1,296 @@
 import string
 
-NAME = "CONSTANT_TOKEN_NAME"
-VALUE = "CONSTANT_TOKEN_VALUE"
+class Structure:
+    NONE = 0; IF = 1; FOR = 2; WHILE = 3; FUNCTION = 4; LAMBDA = 5; STRING = 6; NUMBER = 7; MAP = 8
+    LIST = 9; VAR_GET = 10; VAR_SET = 11; FUNC_REF = 12; COMPRESSED_NUMBER = 13; COMPRESSED_STRING = 14; CHARACTER = 15
+    DICTIONARY_STRING = 16; MONAD_TRANSFORMER = 17; DYAD_TRANSFORMER = 18; TRIAD_TRANSFORMER = 19
+    PARA_APPLY = 20; LAMBDA_NEWLINE = 21; FILTER = 23; SORT = 24
+class Keys:
+    STRING = 1; NUMBER = 2; IF_TRUE = 3; IF_FALSE = 4; FOR_VAR = 5; FOR_BODY = 6; WHILE_COND = 7; WHILE_BODY = 8; FUNC_NAME = 9
+    FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17,
+    LAMBDA_GROUP = 18
 
-IF_STMT = "STRUCTURE_IF"
-FOR_STMT = "STRUCTURE_FOR"
-WHILE_STMT = "STRUCTURE_WHILE"
-FUNCTION_STMT = "STRUCTURE_FUNCTION"
-LAMBDA_STMT = "STRUCTURE_LAMBDA"
-NO_STMT = "STRUCTURE_NONE"
-STRING_STMT = "STRUCTURE_STRING"
-INTEGER = "STRUCTURE_INTEGER"
-CHARACTER = "STRUCTURE_CHARACTER"
-LAMBDA_STMT = "LAMBDA_STMT"
-LAMBDA_MAP = "LAMBDA_MAP"
-LAMBDA_FILTER = "LAMBDA_FILTER"
-LAMBDA_SORT = "LAMBDA_SORT"
-LIST_STMT = "LIST_STMT"
-VARIABLE_GET = "VARIABLE_GET"
-VARIABLE_SET = "VARIABLE_SET"
-FUNCTION_REFERENCE = "FUNCTION_REFERENCE"
-COMPRESSED_NUMBER = "COMPRESSED_NUMBER"
-COMPRESSED_STRING = "COMPRESSED_STRING"
+Monadic_Transformers = list("v⁽&~ß")
+Dyadic_Transformers = list("₌‡₍")
+Triadic_Transformers = list("≬")
+Grouping_Transformers = list("⁽‡≬")
 
-VARIABLES = [VARIABLE_GET, VARIABLE_SET]
+class Digraphs:
+    NUMERIC = "∆"; STRING = "ø"; LIST = "Þ"; CODEPAGE = "⁺"
+    MISC = "¨"; CONSTANT = "k"; ALL_DIGRAPHS = "k∆øÞ¨"
+class StringDelimiters:
+    NORMAL = "`"
+    DICTIONARY = "“"; COM_NUMBER = "»"; COM_STRING = "«"
+    TWO_CHAR = "‘"; DELIM_TUPLE = (NORMAL, DICTIONARY, COM_NUMBER, COM_STRING, TWO_CHAR)
 
-STRING_CONTENTS = "string_contents"
-INTEGER_CONTENTS = "integer_contents"
-IF_ON_TRUE = "if_on_true"
-IF_ON_FALSE = "if_on_false"
-FOR_VARIABLE = "for_variable"
-FOR_BODY = "for_body"
-WHILE_CONDITION = "while_condition"
-WHILE_BODY = "while_body"
-FUNCTION_NAME = "function_name"
-FUNCTION_BODY = "function_body"
-LAMBDA_BODY = "lambda_body"
-LIST_ITEM = "list_item"
-LIST_ITEMS = "list_items"
-VARIABLE_NAME = "variable_name"
-LAMBDA_ARGUMENTS = "lambda_arguments"
-COMPRESSED_NUMBER_VALUE = "compressed_number_value"
-COMPRESSED_STRING_VALUE = "compressed_string_value"
-TWO_CHAR_STUFF = "two_char_data_idk"
-
-ONE_CHARS = list("kv⁽∆ø⁺Þ¨&~ß‘")
-TWO_CHARS = list("₌‡₍")
-
-CONSTANT_CHAR = "k"
-VECTORISATION_CHAR = "v"
-SINGLE_SCC_CHAR = "‛"
-CODEPAGE_INDEX = "⁺"
-ONE_CHAR_FUNCTION_REFERENCE = "⁽"
-TWO_BYTE_MATH = "∆"
-TWO_BYTE_STRING = "ø"
-TWO_BYTE_LIST = "Þ"
-TWO_BYTE_MISC = "¨"
-STRING_DELIMITER = "`"
-REGISTER_MODIFIER = "&"
-DONT_POP = "~"
-CONDITIONAL_EXECUTION = "ß"
-VAR_SET = "→"
-VAR_GET = "←"
-
-PARA_APPLY = "₌"
-PARA_APPLY_COLLECT = "₍"
-TWO_CHAR_LAMBDA = "‡"
-THREE_CHAR_LAMBDA = "≬"
-
-DECIMAL = "."
-
-OPEN_CLOSE_SAME = ["`", "«", "»"]
-
-OPENING = {
-    NO_STMT: "",
-    IF_STMT: "[",
-    FOR_STMT: "(",
-    WHILE_STMT: "{",
-    FUNCTION_STMT: "@",
-    LAMBDA_STMT: "λ",
-    LAMBDA_MAP: "ƛ",
-    LAMBDA_FILTER: "'",
-    LAMBDA_SORT: "µ",
-    LIST_STMT: "⟨",
-    FUNCTION_REFERENCE: "°",
-    COMPRESSED_NUMBER: "»",
-    COMPRESSED_STRING: "«",
+structure_dictionary = { # (open, close, default_key, starting_active_key, secondary_key)
+    Structure.IF: ("[", "]", Keys.IF_TRUE, Keys.IF_TRUE, Keys.IF_FALSE),
+    Structure.FOR: ("(", ")", Keys.FOR_BODY, Keys.FOR_VAR, Keys.FOR_BODY),
+    Structure.WHILE:  ("{", "}", Keys.WHILE_BODY, Keys.WHILE_COND, Keys.WHILE_BODY),
+    Structure.FUNCTION: ("@", ";", Keys.FUNC_NAME, Keys.FUNC_NAME, Keys.FUNC_BODY),
+    Structure.LAMBDA: ("λ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_ARGS, Keys.LAMBDA_BODY),
+    Structure.MAP: ("ƛ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_ARGS, Keys.LAMBDA_BODY), # y'know what, I will let y'all have custom map arities
+    Structure.LIST: ("⟨", "⟩", Keys.LIST_ITEM, Keys.LIST_ITEM, Keys.LIST_ITEM),
+    Structure.FUNC_REF: ("°", ";", Keys.FUNC_NAME, Keys.FUNC_NAME, Keys.FUNC_NAME),
+    Structure.NUMBER: ("", "", Keys.NUMBER, Keys.NUMBER, Keys.NUMBER),
+    Structure.VAR_GET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME),
+    Structure.VAR_SET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME),
+    Structure.FILTER: ("'", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_BODY, Keys.LAMBDA_BODY),
+    Structure.SORT: ("µ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_BODY, Keys.LAMBDA_BODY)
 }
 
-inv_OPENING = {v: k for k, v in OPENING.items()}
-
-CLOSING = {
-    NO_STMT: "",
-    IF_STMT: "]",
-    FOR_STMT: ")",
-    WHILE_STMT: "}",
-    FUNCTION_STMT: ";",
-    LAMBDA_STMT: ";",
-    LAMBDA_MAP: ";",
-    LAMBDA_FILTER: ";",
-    LAMBDA_SORT: ";",
-    LIST_STMT: "⟩",
-    FUNCTION_REFERENCE: ";",
-    COMPRESSED_NUMBER: "»",
-    COMPRESSED_STRING: "«",
-}
-
-inv_CLOSING = {v: k for k, v in CLOSING.items()}
-
-DEFAULT_KEYS = {
-    IF_STMT: IF_ON_TRUE,
-    FOR_STMT: FOR_BODY,
-    WHILE_STMT: WHILE_BODY,
-    INTEGER: INTEGER_CONTENTS,
-    FUNCTION_STMT: FUNCTION_NAME,
-    LAMBDA_STMT: LAMBDA_BODY,
-    LAMBDA_MAP: LAMBDA_BODY,
-    LAMBDA_FILTER: LAMBDA_BODY,
-    LAMBDA_SORT: LAMBDA_BODY,
-    LIST_STMT: LIST_ITEM,
-    FUNCTION_REFERENCE: FUNCTION_NAME,
-    COMPRESSED_NUMBER: COMPRESSED_NUMBER_VALUE,
-    COMPRESSED_STRING: COMPRESSED_STRING_VALUE,
-}
+OPEN = tuple(structure_dictionary[k][0] for k in structure_dictionary)
+CLOSE = tuple(structure_dictionary[k][1] for k in structure_dictionary)
 
 
+def group_two_byte_strings(source):
+    components = []
+    temp, in_string, escaped = "", False, False
 
-class Token:
-    def __init__(self, name: str, value: object):
-        self.name = name
-        self.value = value
-
-    def __getitem__(self, key: int):
-        if key in (0, NAME):
-            return self.name
-
-        elif key in (1, VALUE):
-            return self.value
-
-        else:
-            raise IndexError("Token value not in the range of 0/1")
-
-    def __str__(self):
-        return str(self.name) + "|" + str(self.value)
-
-
-def group_strings(program):
-    out = []
+    for character in source:
+        if escaped: escaped = components.append(character) or False
+        elif temp: 
+            temp = components.append([temp + character, "`"]) or ""
+            in_string = False
+        elif in_string: temp = character
+        elif character in "\\⁺": escaped = components.append(character) or True
+        elif character == StringDelimiters.TWO_CHAR: in_string = True
+        else: components.append(character)
+    
+    if temp: components.append(temp)
+    return components
+def group_strings(source):
+    components = []
     temp = ""
     escaped = False
-    STANDARD, INTEGER, ALPHA = "`", "»", "«"
 
-    flux_string = [False, "", STANDARD]  # [in_string, temp_string, string_type]
-    for char in program:
-        if type(char) is list:
-            if flux_string[0]:
-                flux_string[1] += char
-            else:
-                out.append(char)
+    flux_string = [False, "", StringDelimiters.NORMAL]
+
+    for character in source:
+        if type(character) is list:
+            if flux_string[0]: flux_string[1] += character
+            else: components.append(character)
+        
         elif flux_string[0]:
             if escaped:
-                if char == STANDARD:
+                if character in (StringDelimiters.NORMAL, StringDelimiters.DICTIONARY):
                     flux_string[1] = flux_string[1][:-1]
-                flux_string[1] += char
+                flux_string[1] += character
                 escaped = False
-            elif char == flux_string[2]:
-                out.append([flux_string[1], flux_string[2]])
-                flux_string = [False, "", STANDARD]
-            elif char in "\\":
+            elif character == flux_string[2]:
+                components.append([flux_string[1], flux_string[2]])
+                flux_string = [False, "", StringDelimiters.NORMAL]
+            elif character == "\\":
                 escaped = True
-                flux_string[1] += char
+                flux_string[1] += character
             else:
-                flux_string[1] += char
-        elif escaped:
-            escaped = False
-            out.append(char)
-        elif char in "\\⁺":
-            escaped = True
-            out.append(char)
-        elif char in (STANDARD, INTEGER, ALPHA):
-            flux_string[0] = True
-            flux_string[1] = ""
-            flux_string[2] = char
+                flux_string[1] += character
+        elif escaped: escaped = components.append(character) or False
+        elif character in "\\⁺": escaped = components.append(character) or True
+        elif character in StringDelimiters.DELIM_TUPLE: flux_string = [True, "", character]
+        else: components.append(character)
 
-        else:
-            out.append(char)
-
-    if flux_string[0]:
-        out.append([flux_string[1], flux_string[2]])
-
-    return out
-def group_two_chars(program):
-    ret = []
-    temp, in_string, escaped  = "", False, False
-    for item in program:
-        if type(item) is list:
-            ret.append(item)
-        elif escaped:
-            escaped = False
-            ret.append(item)
-        elif temp:
-            ret.append([temp + item,  "`"]) # Am I really that lazy? Yes.
-            temp = ""
-            in_string = False
-        elif in_string:
-            temp = item
-        elif item in "\\⁺":
-            escaped = True
-            ret.append(item)
-        elif item == SINGLE_SCC_CHAR:
-            in_string = True
-        else:
-            ret.append(item)
-    if temp:
-        ret.append(temp)
-    return ret
-def group_digraphs(code, variables_are_digraphs=False):
-    # To be called after group_strings and after group_two_char
-    ret = []
+    if flux_string[0]: components.append([flux_string[1], flux_string[2]])
+    return components
+def group_digraphs(source, vars=False):
+    components = []
     temp = ""
     escaped = False
 
-    TWO_BYTE_DELIMS = "k∆øÞ¨"
-    if variables_are_digraphs: TWO_BYTE_DELIMS += "→←"
+    ALL_DIGRAPHS = "k∆ø¨"
+    if vars: ALL_DIGRAPHS += "→←"
 
-    for item in code:
-        if type(item) is list:
-            ret.append(item)
-
-        elif escaped:
-            escaped = False
-            ret.append(item)
-        elif temp:
-            ret.append(temp + item)
-            temp = ""
-        elif item in "\\⁺":
-            escaped = True
-            ret.append(item)
-        elif item in TWO_BYTE_DELIMS:
-            temp = item
-        else:
-            ret.append(item)
-
-    return ret
-
-
+    for character in source:
+        if type(character) is list: components.append(character)
+        elif escaped: escaped = components.append(character) or False
+        elif temp: temp = components.append(temp + character) or ""
+        elif character in "\\⁺": escaped = components.append(character) or True
+        elif character in ALL_DIGRAPHS: temp = character
+        else: components.append(character)
+    
+    return components
 def Tokenise(source: str, variables_are_digraphs=False):
     tokens = []
-    structure = NO_STMT
-    structure_data = {}
-    default_key = ""
-    escaped = comment = False
-    active_key = ""
-    scc_mode, scc = False, ""
-    nest_level = 0
-    vectorisation = False
-    bracket_stack = []
-    # print(source)
+    
+    escaped = False
+    comment = False
 
-    source = group_two_chars(source)
+    structure = Structure.NONE
+    structure_data = {}
+
+    active_key = "" # The key which is currently being dealt with
+    default_key = "" # The key that is used if there is only one component in an element that can have branches (|)
+    nest_level = 0 # How far deep we are, as in, are we at the uppermost level of the program?
+
+    source = group_two_byte_strings(source)
     source = group_strings(source)
     source = group_digraphs(source, variables_are_digraphs)
 
-    for char in source:
-        # print(char, structure, structure_data, escaped, nest_level, scc_mode)
-
-        if comment:
-            if char == "\n":
-                comment = False
-            continue
+    token_pointer = 0
+    while token_pointer < len(source):
+        
+        character = source[token_pointer]
+        # print(character, nest_level, escaped, structure, tokens, active_key, default_key)
+        if comment: comment = character == "\n"; continue
         if escaped:
-            if structure != NO_STMT:
-                structure_data[active_key] += "\\" + char
+            if structure != Structure.NONE:
+                structure_data[active_key] += "\\" + character
             else:
-                tokens.append(Token(CHARACTER, char))
-
-            escaped = False
-            continue
-
-        elif type(char) is list:
-            if structure not in [NO_STMT, INTEGER, VARIABLE_GET, VARIABLE_SET]:
-                structure_data[active_key] += char[1] + char[0] + char[1]
-            else:
-                if structure == INTEGER:
-                    value = structure_data[active_key]
-                    end = value.find(".", value.find(".") + 1)
-
-                    if end > -1:
-                        value = value[:end]
-
-                    if value.isnumeric():
-                        this_token = Token(INTEGER, int(value))
-
-                    else:
-                        try:
-                            this_token = Token(INTEGER, float(value))
-                        except:
-                            this_token = Token(INTEGER, 0.5)
-                    tokens.append(this_token)
-                    structure_data = {}
-                    structure = NO_STMT
-                elif structure in VARIABLES:
-                    this_token = Token(structure, structure_data)
-                    tokens.append(this_token)
-                    structure_data = {}
-                    structure = NO_STMT
-                    active_key = ""
-                    default_key = ""
-                yes = (
-                    {"`": STRING_STMT, "«": COMPRESSED_STRING, "»": COMPRESSED_NUMBER}[
-                        char[1]
-                    ],
-                    {
-                        "`": STRING_CONTENTS,
-                        "«": COMPRESSED_STRING_VALUE,
-                        "»": COMPRESSED_NUMBER_VALUE,
-                    }[char[1]],
-                )
-                tokens.append(Token(yes[0], {yes[1]: char[0]}))
-            continue
-
-        elif structure == INTEGER:
-            if char in "0123456789.":
-                structure_data[INTEGER_CONTENTS] += char
+                tokens.append((Structure.CHARACTER, character))
+            escaped = False; continue
+        
+        if structure == Structure.NUMBER:
+            if type(character) is str and character in (string.digits + "."): # If the character is a digit, we keep adding to the flux number
+                structure_data[active_key] += character
+                token_pointer += 1
                 continue
             else:
-                value = structure_data[active_key]
-                end = value.find(".", value.find(".") + 1)
-
-                if end > -1:
-                    value = value[:end]
-
-                if value.isnumeric():
-                    this_token = Token(INTEGER, int(value))
-
-                else:
-                    try:
-                        this_token = Token(INTEGER, float(value))
-                    except:
-                        this_token = Token(INTEGER, 0.5)
-                tokens.append(this_token)
-                structure_data = {}
-                structure = NO_STMT
-
-        elif structure in VARIABLES:
-            if char in string.ascii_letters + "_":
-                structure_data[active_key] += char
+                tokens.append((Structure.NUMBER, structure_data[active_key]))
+                structure, structure_data, active_key, default_key = Structure.NONE, {}, "", ""
+        if structure == Structure.VAR_GET or structure == Structure.VAR_SET:
+            if type(character) is str and character in string.ascii_letters + "_": # If the character is a valid variable name letter, we keep adding to the name
+                structure_data[active_key] += character
+                token_pointer += 1
                 continue
             else:
-                this_token = Token(structure, structure_data)
-                tokens.append(this_token)
-                structure_data = {}
-                structure = NO_STMT
-                active_key = ""
-                default_key = ""
-
-        elif scc_mode:
-            scc += char
-            if len(scc) == 2:
-                scc_mode = False
-                this_token = Token(SINGLE_SCC_CHAR, scc)
-                tokens.append(this_token)
-                scc = ""
-                structure = NO_STMT
-            continue
-
-        elif structure in ONE_CHARS:
-            this_token = Token(structure, char)
-            tokens.append(this_token)
-            structure = NO_STMT
-            continue
-
-        elif structure == TWO_CHAR_LAMBDA:
-            if len(structure_data[active_key]) == 1:
-                tokens.append(
-                    Token(
-                        LAMBDA_STMT,
-                        {LAMBDA_BODY: "".join(structure_data[active_key] + [char])},
-                    )
-                )
-                structure = NO_STMT
-                structure_data = {}
-            else:
-                structure_data[active_key].append(char)
-            continue
-
-        elif structure in TWO_CHARS:
-            if len(structure_data[active_key]) == 1:
-                tokens.append(Token(structure, structure_data[active_key][0] + char))
-                structure = NO_STMT
-                structure_data = {}
-            else:
-                structure_data[active_key] = [char]
-            continue
-
-        elif structure == THREE_CHAR_LAMBDA:
-            if len(structure_data[active_key]) == 2:
-                tokens.append(
-                    Token(
-                        LAMBDA_STMT,
-                        {LAMBDA_BODY: "".join(structure_data[active_key] + [char])},
-                    )
-                )
-                structure = NO_STMT
-                structure_data = {}
-            else:
-                structure_data[active_key].append(char)
-            continue
-
-        if char == "\\":
+                tokens.append((structure, structure_data[active_key]))
+                structure, structure_data, active_key, default_key = Structure.NONE, {}, "", ""
+        if character == "\\":
             escaped = True
+            token_pointer += 1
+            continue
+        if type(character) is list:
+            tokens.append((Structure.STRING, character))
+            token_pointer += 1
             continue
 
-        if char in OPENING.values():
+        # Now we move onto the possibility that we are starting a new kind of token        
+        if character in OPEN:
+            # Opening character. Note that this won't be variable stuff because I just handeled it. kekw very cool kanye. very cool.
+            # no I'm not stalling with comments because I don't want to write the logic here. what gives you that impression?
+            # totally not directly ripped from the experimental branch
             if nest_level:
-                if char not in OPEN_CLOSE_SAME:
-                    nest_level += 1
-                structure_data[active_key] += char
-                continue
+                nest_level += 1
+                structure_data[active_key] += character
+                token_pointer += 1
+                continue # That is, we're already in a structure, so we go deeper m'dude.
 
-            elif char == OPENING[IF_STMT]:
-                structure = IF_STMT
-                active_key = IF_ON_TRUE
-
-            elif char == OPENING[WHILE_STMT]:
-                structure = WHILE_STMT
-                active_key = WHILE_CONDITION
-
-            elif char == OPENING[FOR_STMT]:
-                structure = FOR_STMT
-                active_key = FOR_VARIABLE
-
-            elif char == OPENING[FUNCTION_STMT]:
-                structure = FUNCTION_STMT
-                active_key = FUNCTION_NAME
-
-            elif char == OPENING[LAMBDA_STMT]:
-                structure = LAMBDA_STMT
-                active_key = LAMBDA_BODY
-
-            elif char == OPENING[LAMBDA_MAP]:
-                structure = LAMBDA_MAP
-                active_key = LAMBDA_BODY
-
-            elif char == OPENING[LAMBDA_FILTER]:
-                structure = LAMBDA_FILTER
-                active_key = LAMBDA_BODY
-
-            elif char == OPENING[LAMBDA_SORT]:
-                structure = LAMBDA_SORT
-                active_key = LAMBDA_BODY
-
-            elif char == OPENING[LIST_STMT]:
-                structure = LIST_STMT
-                active_key = LIST_ITEM
-                structure_data[LIST_ITEMS] = []
-
-            elif char == OPENING[FUNCTION_REFERENCE]:
-                structure = FUNCTION_REFERENCE
-                active_key = FUNCTION_NAME
-
-            elif char == OPENING[COMPRESSED_NUMBER]:
-                structure = COMPRESSED_NUMBER
-                active_key = COMPRESSED_NUMBER_VALUE
-
-            elif char == OPENING[COMPRESSED_STRING]:
-                structure = COMPRESSED_STRING
-                active_key = COMPRESSED_STRING_VALUE
-
-            else:
-                raise NotImplementedError("That structure isn't implemented yet")
-
+            structure = tuple(k for k in structure_dictionary if character == structure_dictionary[k][0])[0] # there's guaranteed to only be 1, because we have determined that it is in the dictionary
+            default_key = structure_dictionary[structure][2]
+            active_key = default_key 
             structure_data[active_key] = ""
             nest_level += 1
-            default_key = DEFAULT_KEYS[structure]
 
-        elif char in CLOSING.values():
+            # We have to special case lists though
+            if structure == Structure.LIST:
+                structure_data[Keys.LIST_ITEMS] = []
+        
+        elif character in CLOSE:
             nest_level -= 1
-            if nest_level > 0:
-                structure_data[active_key] += char
+            if nest_level:
+                structure_data[active_key] += character
+                token_pointer += 1
+                continue # We still have things to close m'dude.
+
+            if structure == Structure.MAP:
+                tokens.append((Structure.LAMBDA, structure_data))
+                tokens.append((Structure.NONE, "M")) # Yes, lambda maps really are just lambda followed by M
+            elif structure == Structure.FILTER:
+                tokens.append((Structure.LAMBDA, structure_data))
+                tokens.append((Structure.NONE, "F")) # Yes, lambda filters really are just lambda followed by F
+            elif structure == Structure.SORT:
+                tokens.append((Structure.LAMBDA, structure_data))
+                tokens.append((Structure.NONE, "ṡ")) # Yes, lambda sorts really are just lambda followed by ṡ
+            elif structure == Structure.LIST:
+                structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
+                del structure_data[Keys.LIST_ITEM]
             else:
-                additional_token = None
-
-                if structure == LAMBDA_MAP:
-                    additional_token = Token(NO_STMT, "M")
-                    structure = LAMBDA_STMT
-
-                elif structure == LAMBDA_FILTER:
-                    additional_token = Token(NO_STMT, "F")
-                    structure = LAMBDA_STMT
-
-                elif structure == LAMBDA_SORT:
-                    additional_token = Token(NO_STMT, "ṡ")
-                    structure = LAMBDA_STMT
-
-                elif structure == LIST_STMT:
-                    structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
-                    del structure_data[LIST_ITEM]
-                else:
-                    if default_key not in structure_data and structure != NO_STMT:
+                if default_key not in structure_data and structure != Structure.NONE:
                         structure_data[default_key] = structure_data[active_key]
                         del structure_data[active_key]
-
-                this_token = Token(structure, structure_data)
-                tokens.append(this_token)
-                structure_data = {}
-                structure = NO_STMT
-
-                if additional_token:
-                    tokens.append(additional_token)
-
-        elif char == "|" and nest_level == 1:
-            # Oh, the magical pipe which makes Vyxal and Keg unique
-            # and a major causer of pain.
-            # the above comment is mostly to do with strings.
-            if structure == IF_STMT:
-                active_key = IF_ON_FALSE
-
-            elif structure == WHILE_STMT:
-                active_key = WHILE_BODY
-
-            elif structure == FOR_STMT:
-                active_key = FOR_BODY
-
-            elif structure == FUNCTION_STMT:
-                active_key = FUNCTION_BODY
-
-            elif structure == LAMBDA_STMT:
-                structure_data[LAMBDA_ARGUMENTS] = structure_data[LAMBDA_BODY]
-                active_key = LAMBDA_BODY
-
-            elif structure == LIST_STMT:
-                structure_data[LIST_ITEMS].append(structure_data[active_key])
-
+                tokens.append((structure, structure_data))
+            structure, structure_data, active_key, default_key = Structure.NONE, {}, "", ""
+        
+        elif character == "|" and nest_level == 1:
+            active_key = structure_dictionary[structure][-1]
+            if structure == Structure.LAMBDA:
+                structure_data[Keys.LAMBDA_ARGS] = structure_data[Keys.LAMBDA_BODY]
+            if structure == Structure.LIST:
+                structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
+            
+            structure_data[active_key] = ""
+        elif character == "#":
+            comment = True
+            token_pointer += 1
+            continue
+        elif structure != Structure.NONE:
+            structure_data[active_key] += character
+        elif character in (string.digits + "."):
+            structure = Structure.NUMBER
+            active_key = structure_dictionary[Structure.NUMBER][2]
+            structure_data[active_key] = character
+        
+        elif character == "←":
+            structure = Structure.VAR_GET
+            active_key = structure_dictionary[Structure.VAR_GET][2]
+            structure_data[active_key] = ""
+        
+        elif character == "→":
+            structure = Structure.VAR_SET
+            active_key = structure_dictionary[Structure.VAR_SET][2]
             structure_data[active_key] = ""
 
-        elif structure != NO_STMT:
-            structure_data[active_key] += char
-
-        elif char in "0123456789.":
-            structure = INTEGER
-            structure_data[INTEGER_CONTENTS] = char
-            active_key = INTEGER_CONTENTS
-            default_key = DEFAULT_KEYS[INTEGER]
-
-        elif char == "→":
-            structure = VARIABLE_SET
-            structure_data[VARIABLE_NAME] = ""
-            active_key = VARIABLE_NAME
-            default_key = VARIABLE_NAME
-
-        elif char == "←":
-            structure = VARIABLE_GET
-            structure_data[VARIABLE_NAME] = ""
-            active_key = VARIABLE_NAME
-            default_key = VARIABLE_NAME
-
-        elif char == VECTORISATION_CHAR:
-            vectorisation = True
-            continue
-
-        elif char in TWO_CHARS:
-            structure = char
-            active_key = TWO_CHAR_STUFF
-            structure_data[active_key] = []
-
-        elif char == THREE_CHAR_LAMBDA:
-            structure = THREE_CHAR_LAMBDA
-            active_key = LAMBDA_BODY
-            structure_data[active_key] = []
-
-        elif char in ONE_CHARS:
-            structure = char
-
-        elif char == SINGLE_SCC_CHAR:
-            scc_mode = True
-
-        elif char == "#":
-            comment = True
-            continue
+        elif character in Monadic_Transformers:
+            everything_after = Tokenise(source[token_pointer + 1:])
+            tokens.append((Structure.MONAD_TRANSFORMER, (character, [everything_after[0]])))
+            tokens += everything_after[1:]
+            break
+        elif character in Dyadic_Transformers:
+            everything_after = Tokenise(source[token_pointer + 1:])
+            if character == "‡":
+                tokens.append((Structure.LAMBDA, {Keys.LAMBDA_BODY: everything_after[0:2]}))
+                structure = Structure.NONE
+                structure_data = {}
+            else:
+                tokens.append((Structure.DYAD_TRANSFORMER, (character, everything_after[0:2])))
+            tokens += everything_after[2:]
+            break
+        elif character == Structure.TRIAD_TRANSFORMER:
+            everything_after = Tokenise(source[token_pointer + 1:])
+            tokens.append((
+                Structure.LAMBDA,
+                {Keys.LAMBDA_BODY: everything_after[0:3]}
+            ))
+            tokens += everything_after[3:]
 
         else:
-            if vectorisation:
-                tokens.append(Token(VECTORISATION_CHAR, char))
-                vectorisation = False
-            else:
-                if len(char) == 2:
-                    tokens.append(Token(char[0], char[1]))
-                else:
-                    this_token = Token(NO_STMT, char)
-                    tokens.append(this_token)
-
-    if structure != NO_STMT:
-        additional_token = None
-
-        if structure == LAMBDA_MAP:
-            additional_token = Token(NO_STMT, "M")
-            structure = LAMBDA_STMT
-
-        elif structure == LAMBDA_FILTER:
-            additional_token = Token(NO_STMT, "F")
-            structure = LAMBDA_STMT
-
-        elif structure == LAMBDA_SORT:
-            additional_token = Token(NO_STMT, "ṡ")
-            structure = LAMBDA_STMT
-
-        elif structure == LIST_STMT:
-            structure_data[LIST_ITEMS].append(structure_data[LIST_ITEM])
-            del structure_data[LIST_ITEM]
-
-        elif structure == INTEGER:
-            value = structure_data[default_key]
-            end = value.find(".", value.find(".") + 1)
-
-            if end > -1:
-                value = value[:end]
-
-            if value.isnumeric():
-                structure_data = int(value)
-
-            else:
-                try:
-                    structure_data = float(value)
-                except:
-                    structure_data = 0.5
-
+            if character != " ":
+                tokens.append((Structure.NONE, character))
+        token_pointer += 1
+    if structure != Structure.NONE:
+        if structure == Structure.MAP:
+            tokens.append((Structure.LAMBDA, structure_data))
+            tokens.append((Structure.NONE, "M")) # Yes, lambda maps really are just lambda followed by M
+        elif structure == Structure.FILTER:
+            tokens.append((Structure.LAMBDA, structure_data))
+            tokens.append((Structure.NONE, "F")) # Yes, lambda filters really are just lambda followed by F
+        elif structure == Structure.SORT:
+            tokens.append((Structure.LAMBDA, structure_data))
+            tokens.append((Structure.NONE, "ṡ")) # Yes, lambda sorts really are just lambda followed by ṡ
+        elif structure == Structure.NUMBER:
+            tokens.append((Structure.NUMBER, structure_data[active_key]))
+        elif structure == Structure.LIST:
+            structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
+            del structure_data[Keys.LIST_ITEM]
+            tokens.append((structure, structure_data))
+        elif structure == Structure.VAR_GET or structure == Structure.VAR_SET:
+            tokens.append((structure, structure_data[Keys.VAR_NAME]))
         else:
-            if default_key not in structure_data:
-                structure_data[default_key] = structure_data[active_key]
-                del structure_data[active_key]
-
-        this_token = Token(structure, structure_data)
-        tokens.append(this_token)
-        structure_data = {}
-        structure = NO_STMT
-
-        if additional_token:
-            tokens.append(additional_token)
-    # print([(n[0], n[1]) for n in tokens])
+            if default_key not in structure_data and structure != Structure.NONE:
+                    structure_data[default_key] = structure_data[active_key]
+                    del structure_data[active_key]
+            tokens.append((structure, structure_data))
     return tokens
-
 
 if __name__ == "__main__":
     # tests = ["«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«"]
@@ -657,10 +307,16 @@ if __name__ == "__main__":
         "‛| mm",
         "‛`0`\`0`",
         "k\\",
+        "₌+-",
         "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
-        "kv"
+        "kv",
+        "5 £ 3 &+ ¥",
+        "₁ƛ₍₃₅kF½*∑∴",
+        "₍₃₅kF½*∑∴",
+        "[11|11]",
+        "1000'∆²;"
     ]
     for test in tests:
-        print(test, group_strings(group_two_chars(test)))
+        print(test, group_strings(group_two_byte_strings(test)))
         print([(n[0], n[1]) for n in Tokenise(test)])
     input()
