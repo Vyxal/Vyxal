@@ -395,7 +395,9 @@ transformers = {
     "⁽": "stack.append(function_A)",
     "v": "stack.append(transformer_vectorise(function_A, stack))",
     "&": "apply_to_register(function_A, stack)",
-    "~": "dont_pop(function_A, stack)"
-
+    "~": "dont_pop(function_A, stack)",
+    "ß": "cond = pop(stack)\nif cond: stack += function_call(function_A, stack)",
+    "₌": "para_apply(function_A, function_B, stack)",
+    "₍": "para_apply(function_A, function_B, stack); rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])",
 
 }

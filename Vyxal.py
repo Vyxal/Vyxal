@@ -715,7 +715,8 @@ def dont_pop(function, vector):
         vector.append(VY_filter(function, pop(vector)))
     else:
         retain_items = True
-        vector += function_call(function, vector)
+        args = pop(vector, function.stored_arity)
+        vector.append(_safe_apply(function, args[::-1]))
         retain_items = False
 def dot_product(lhs, rhs):
     return summate(multiply(lhs, rhs))
@@ -1555,7 +1556,7 @@ def orderless_range(lhs, rhs, lift_factor=0):
         pobj = regex.compile(lhs)
         mobj = pobj.search(rhs)
         return int(bool(mobj))
-def osabie_NEWLINE_join(item):
+def osabie_newline_join(item):
     ret = []
     for n in item:
         if VY_type(n) in [list, Generator]:
@@ -1571,6 +1572,12 @@ def overloaded_iterable_shift(lhs, rhs, direction):
 def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
+def para_apply(fn_A, fn_B, vector):
+    temp = deref(vector)
+    args_A = pop(vector, fn_A.stored_arity, True)
+    args_B = pop(temp, fn_B.stored_arity, True)
+    vector.append(_safe_apply(fn_A, args_A[::-1]))
+    vector.append(_safe_apply(fn_B, args_B[::-1]))
 def partition(item, I=1):
     # https://stackoverflow.com/a/44209393/9363594
     yield [item]

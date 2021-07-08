@@ -10,7 +10,7 @@ class Keys:
     FUNC_BODY = 10; LAMBDA_BODY = 11; LIST_ITEM = 12; LIST_ITEMS = 13; VAR_NAME = 14; LAMBDA_ARGS = 15; COM_NUM_VALUE = 16; COM_STR_VALUE = 17,
     LAMBDA_GROUP = 18
 
-Monadic_Transformers = list("v⁽&~ß‘")
+Monadic_Transformers = list("v⁽&~ß")
 Dyadic_Transformers = list("₌‡₍")
 Triadic_Transformers = list("≬")
 Grouping_Transformers = list("⁽‡≬")
@@ -300,7 +300,9 @@ if __name__ == "__main__":
         "₌+-",
         "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
         "kv",
-        "5 £ 3 &+ ¥"
+        "5 £ 3 &+ ¥",
+        "₁ƛ₍₃₅kF½*∑∴",
+        "[11|11]"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
