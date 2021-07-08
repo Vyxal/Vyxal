@@ -1025,7 +1025,6 @@ def fractionify(item):
         return vectorise(fractionify, item)
 def function_call(fn, vector):
     if type(fn) is Function:
-        print(vector)
         return fn(vector, self=fn)
     else:
         return [{
