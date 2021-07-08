@@ -1,0 +1,34 @@
+Apply at specific indices -> element
+foldl -> transformer
+"    " n-wise -> transformer
+foldr -> transformer
+Cumulative reduce -> transformer [t: done, e: ]
+Ternary if -> transformer
+First n where -> element
+Vectorise -> transformer
+outer product -> transformer [t: done, e: ]
+dyad => monad -> transformer
+sort by -> transformer
+map over prefixes -> transformer
+filter -> transformer
+perform to register -> transformer
+collect while unique -> element
+loop while unique -> element
+map over suffixes -> element
+---
+zip with -> transformer
+apply twice -> element
+---
+collect while truthy -> element
+para Apply -> transformer
+"        " and collect -> transformer
+maximum by -> transformer
+minimum by -> transformer
+----
+deep vectorise -> transformer
+split by function -> element
+permutations by function -> element
+group by -> transformer
+first where truthy -> element
+first where falsey -> element
+applied to every bth term -> transformer
