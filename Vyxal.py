@@ -1573,7 +1573,7 @@ def palindromise(item):
     # This is different to m or bifuricate and join because it doesn't have two duplicate in the middle
     return join(item, reverse(item)[1:])
 def para_apply(fn_A, fn_B, vector):
-    temp = deref(vector)
+    temp = deref(vector)[::]
     args_A = pop(vector, fn_A.stored_arity, True)
     args_B = pop(temp, fn_B.stored_arity, True)
     vector.append(_safe_apply(fn_A, args_A[::-1]))

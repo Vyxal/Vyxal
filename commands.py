@@ -120,7 +120,7 @@ command_dict = {
     "ḋ": ("rhs, lhs = pop(stack, 2); stack.append(VY_divmod(lhs, rhs))", 2), # Dereference because generators could accidentally get exhausted.
     "ė": ("stack.append(Generator(enumerate(iterable(pop(stack)))))", 1),
     "ḟ": ("rhs, lhs = pop(stack, 2); stack.append(find(lhs, rhs))", 2),
-    "ġ": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd(pop(stack), rhs))", 1),
+    "ġ": ("rhs = pop(stack)\nif VY_type(rhs) in [list, Generator]: stack.append(gcd(rhs))\nelse: stack.append(gcd(pop(stack), rhs))", 2),
     "ḣ": ("top = iterable(pop(stack)); stack.append(top[0]); stack.append(top[1:])", 1),
     "ḭ": ("rhs, lhs = pop(stack, 2); stack.append(integer_divide(lhs, rhs))", 2),
     "ŀ": ("start, needle, haystack = pop(stack, 3); stack.append(find(haystack, needle, start))", 3),
