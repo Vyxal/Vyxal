@@ -69,7 +69,7 @@ $ (a: any, b: any)                   = b, a # swap
 '                                    = * lambda filter, map or apply a series of functions over top of stack, and filter out the truthy ones
 (                                    = * open for loop: (variable|...)
 )                                    = * close for loop
-* (a: number, b: number)             = a * b # mutliplication
+* (a: number, b: number)             = a * b # multiplication
   (a: number, b: string)             = b repeated a times
   (a: string, b: number)             = a repeated b times
   (a: string, b: string)             = [char + b for char in a] # vectorised concatenation
@@ -525,6 +525,7 @@ kẇ                                   = day of the week - 0 indexed
 kẆ                                   = day of the week - 1 indexed
 k§                                   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+kṁ                                   = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 ∆c (a: number)                       = math.cos(a) # Cosine
 ∆C (a: number)                       = math.arccos(a) # Arc cosine
 ∆q (a: number, b: number)            = roots of quadratic ax^2 + bx = 0 # Solve quadratic equation
@@ -552,6 +553,7 @@ kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesd
 ∆ṙ (a: list)                         = polynomial from roots a
 ∆Ṙ                                   = random.random() # random float in the range [0, 1), pseudo random number
 ∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round a to b decimal places
+∆Ŀ (a: number, b: number)            = lcm(a, b)
 øo (a: string, b: string)            = a.remove_until_no_change(b) # Remove until no change
 øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c) # Replace until no change
 øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed string

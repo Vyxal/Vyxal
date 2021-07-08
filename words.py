@@ -11,8 +11,8 @@ def extract_word(code):
 def word_index(word):
     import utilities
     import encoding
-    if word in _words:
-        ret = utilities.from_ten(_words.index(word), encoding.compression)
+    if word in dictionary.lookup:
+        ret = utilities.from_ten(dictionary.lookup[word], encoding.compression)
         if len(ret) == 1:
             ret = "λ" + ret
         return ret

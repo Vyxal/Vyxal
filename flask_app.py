@@ -29,13 +29,15 @@ def index():
 @app.route("/execute", methods=("POST",))
 def execute():
 
-    print(sessions)
+    print(sessions, request.form)
     flags = request.form["flags"]
     code = request.form["code"].replace("\r", "")
     input_list = request.form["inputs"].replace("\r", "")
     header = request.form["header"].replace("\r", "")
     footer = request.form["footer"].replace("\r", "")
     session = request.form["session"]
+
+    print(code)
 
     if session not in sessions:
         return {
@@ -67,7 +69,7 @@ def execute():
                     time = 10
                 ret[1] = ""
                 ret[2] = ""
-                fcode = header + code + footer
+                fcode = (header and (header + "\n")) + code + (footer and ("\n" + footer))
                 sessions[session] = multiprocessing.Process(
                     target=Vyxal.execute, args=(fcode, flags, input_list, ret)
                 )
@@ -111,7 +113,6 @@ def oeis():
 @app.route("/update", methods=("GET", "POST"))
 def update():
     # Updates the server after a commit
-    # this comment is to test to see if i did the stuff right ;p
     # It's possible that it is now working.
     if request.method == 'POST':
         repo = git.Repo('/home/Lyxal/mysite')

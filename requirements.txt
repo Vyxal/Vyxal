@@ -2,3 +2,5 @@ numpy
 regex
 sympy
 pwn
+gitpython
+flask-cors
