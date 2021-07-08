@@ -399,5 +399,4 @@ transformers = {
     "ß": "cond = pop(stack)\nif cond: stack += function_call(function_A, stack)",
     "₌": "para_apply(function_A, function_B, stack)",
     "₍": "para_apply(function_A, function_B, stack); rhs, lhs = pop(stack, 2); stack.append([lhs, rhs])",
-
 }
