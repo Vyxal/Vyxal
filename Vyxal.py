@@ -2009,7 +2009,16 @@ def sums(vector):
     return ret
 tab = lambda x: NEWLINE.join(["    " + item for item in x.split(NEWLINE)]).rstrip("    ")
 def transformer_vectorise(function, vector):
-    return vectorise(function, *pop(vector, function.stored_arity), explicit=True)
+    if function.stored_arity == 1:
+        return vectorise(function, pop(vector), explicit=True)
+    elif function.stored_arity == 2:
+        rhs, lhs = pop(vector, 2)
+        return vectorise(function, lhs, rhs, explicit=True)
+    elif function.stored_arity == 3:
+        other, rhs, lhs = pop(vector, 3)
+        return vectorise(function, lhs, rhs, other, explicit=True)
+    else:
+        return vectorise(function, pop(vector, function.stored_arity), explicit=True) # idk how you'd vectorise over arity >3
 def transliterate(original, new, transliterant):
     transliterant = deref(transliterant)
     t_string = type(transliterant)
