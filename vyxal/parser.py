@@ -1,5 +1,6 @@
 import string
 
+from vyxal.utilities import _safe_apply
 
 class Structure:
     NONE = 0
