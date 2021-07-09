@@ -97,7 +97,7 @@ def group_digraphs(source, vars=False):
     temp = ""
     escaped = False
 
-    ALL_DIGRAPHS = "k∆ø¨"
+    ALL_DIGRAPHS = "k∆ø¨Þ"
     if vars: ALL_DIGRAPHS += "→←"
 
     for character in source:
@@ -325,7 +325,8 @@ if __name__ == "__main__":
         "₍Ǔǔ⁰\\r=i",
         "\\s",
         "[kN|`ʀβ`",
-        "⟨1|2⟩"
+        "⟨1|2⟩",
+        "⟨1|2|3|4|5|6|7|8|9⟩ ÞD"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
