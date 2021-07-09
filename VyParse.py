@@ -29,7 +29,7 @@ structure_dictionary = { # (open, close, default_key, starting_active_key, secon
     Structure.FUNCTION: ("@", ";", Keys.FUNC_NAME, Keys.FUNC_NAME, Keys.FUNC_BODY),
     Structure.LAMBDA: ("λ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_ARGS, Keys.LAMBDA_BODY),
     Structure.MAP: ("ƛ", ";", Keys.LAMBDA_BODY, Keys.LAMBDA_ARGS, Keys.LAMBDA_BODY), # y'know what, I will let y'all have custom map arities
-    Structure.LIST: ("⟨", "⟩", Keys.LIST_ITEM, Keys.LIST_ITEM, Keys.LIST_ITEM),
+    Structure.LIST: ("⟨", "⟩", Keys.LIST_ITEM, Keys.LIST_ITEMS, Keys.LIST_ITEM),
     Structure.FUNC_REF: ("°", ";", Keys.FUNC_NAME, Keys.FUNC_NAME, Keys.FUNC_NAME),
     Structure.NUMBER: ("", "", Keys.NUMBER, Keys.NUMBER, Keys.NUMBER),
     Structure.VAR_GET: ("", "", Keys.VAR_NAME, Keys.VAR_NAME, Keys.VAR_NAME),
@@ -130,7 +130,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
     while token_pointer < len(source):
         
         character = source[token_pointer]
-        # print(character, nest_level, escaped, structure, tokens, active_key, default_key)
+        # print(character, nest_level, structure, structure_data, active_key)
         if comment: comment = character == "\n"; continue
         if escaped:
             if structure != Structure.NONE:
@@ -188,6 +188,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
             # We have to special case lists though
             if structure == Structure.LIST:
                 structure_data[Keys.LIST_ITEMS] = []
+
         
         elif character in CLOSE:
             nest_level -= 1
@@ -208,6 +209,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
             elif structure == Structure.LIST:
                 structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
                 del structure_data[Keys.LIST_ITEM]
+                tokens.append((structure, structure_data))
             else:
                 if default_key not in structure_data and structure != Structure.NONE:
                         structure_data[default_key] = structure_data[active_key]
@@ -322,7 +324,8 @@ if __name__ == "__main__":
         "3 4 ₌+- `abcde`",
         "₍Ǔǔ⁰\\r=i",
         "\\s",
-        "[kN|`ʀβ`"
+        "[kN|`ʀβ`",
+        "⟨1|2⟩"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
