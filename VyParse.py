@@ -162,7 +162,10 @@ def Tokenise(source: str, variables_are_digraphs=False):
             token_pointer += 1
             continue
         if type(character) is list:
-            tokens.append((Structure.STRING, character))
+            if structure != Structure.NONE:
+                structure_data[active_key] += character[1] +  character[0] + character[1] # wrap string in it's quotes
+            else:
+                tokens.append((Structure.STRING, character))
             token_pointer += 1
             continue
 
@@ -319,7 +322,8 @@ if __name__ == "__main__":
         "1000'∆²;",
         "3 4 ₌+- `abcde`",
         "₍Ǔǔ⁰\\r=i",
-        "\\s"
+        "\\s",
+        "[kN|`ʀβ`"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
