@@ -70,7 +70,7 @@ def uncompress(s):
     current_two = ""
     escaped = False
 
-    import encoding
+    from vyxal import encoding
 
     for char in s:
         if escaped:
