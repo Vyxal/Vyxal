@@ -131,7 +131,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
         
         character = source[token_pointer]
         # print(character, nest_level, structure, structure_data, active_key)
-        if comment: comment = character == "\n"; continue
+        if comment: comment = character != "\n"; token_pointer += 1;  continue
         if escaped:
             if structure != Structure.NONE:
                 structure_data[active_key] += "\\" + character
@@ -326,7 +326,8 @@ if __name__ == "__main__":
         "\\s",
         "[kN|`ʀβ`",
         "⟨1|2⟩",
-        "⟨1|2|3|4|5|6|7|8|9⟩ ÞD"
+        "⟨1|2|3|4|5|6|7|8|9⟩ ÞD",
+        "123 # `abc`"
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
