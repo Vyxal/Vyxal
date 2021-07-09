@@ -2618,11 +2618,12 @@ def VY_compile(program, header=""):
         elif token_name == Structure.STRING:
             string, string_type = token_value[0], token_value[1]
             if string_type == StringDelimiters.NORMAL:
-                value = string.replace('"', "\\\"")
-                compiled += f"stack.append(\"{value}\")"
-            elif string_type == StringDelimiters.DICTIONARY:
-                value = string.replace('"', "\\\"")
-                compiled += f"stack.append(\"{utilities.uncompress(value)}\")"
+                if raw_strings:
+                    value = string.replace("\\", "\\\\").replace("\"", "\\\"")
+                    compiled += f"stack.append(\"{value}\")"
+                else:
+                    value = string.replace("\\", "\\\\").replace("\"", "\\\"")
+                    compiled += f"stack.append(\"{utilities.uncompress(value)}\")"
             elif string_type == StringDelimiters.COM_NUMBER:
                 number = utilities.to_ten(string, encoding.codepage_number_compress)
                 compiled += f"stack.append({number})"
