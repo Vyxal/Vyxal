@@ -15,23 +15,23 @@ manager = Manager()
 def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
     reset_globals()
     # context_level = 0
-    vyxal.interpreter.execute(code, flags, "\n".join(
+    interpreter.execute(code, flags, "\n".join(
         map(str, input_list)), output_variable)
-    return vyxal.interpreter.stack
+    return interpreter.stack
 
 
 def reset_globals():
-    vyxal.interpreter.keg_mode = False
-    vyxal.interpreter.raw_strings = False
-    vyxal.interpreter.online_version = False
-    vyxal.interpreter.input_level = 0
-    vyxal.interpreter.number_iterable = list
-    vyxal.interpreter.MAP_START = 1
-    vyxal.interpreter.MAP_OFFSET = 1
-    vyxal.interpreter._join = False
-    vyxal.interpreter._vertical_join = False
-    vyxal.interpreter.use_encoding = False
-    vyxal.interpreter.stack = []
+    interpreter.keg_mode = False
+    interpreter.raw_strings = False
+    interpreter.online_version = False
+    interpreter.input_level = 0
+    interpreter.number_iterable = list
+    interpreter.MAP_START = 1
+    interpreter.MAP_OFFSET = 1
+    interpreter._join = False
+    interpreter._vertical_join = False
+    interpreter.use_encoding = False
+    interpreter.stack = []
 
 
 def reshape(arr, shape):
@@ -43,12 +43,12 @@ def reshape(arr, shape):
 
 
 def to_list(vector):
-    typ = vyxal.interpreter.VY_type(vector)
-    if typ in (list, vyxal.interpreter.Generator):
+    typ = interpreter.VY_type(vector)
+    if typ in (list, interpreter.Generator):
         return list(
             map(
                 to_list,
-                vector._dereference() if typ is vyxal.interpreter.Generator else vector
+                vector._dereference() if typ is interpreter.Generator else vector
             )
         )
     return vector
