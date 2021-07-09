@@ -606,7 +606,7 @@ def deltas(vector):
         ret = []
         vector = iterable(vector)
         for i in range(len(vector) - 1):
-            ret.append(subtract(vector[i], vector[i + 1]))
+            ret.append(subtract(vector[i + 1], vector[i]))
         return ret
 def deref(item, generator_to_list=True, limit=-1):
     if VY_type(item) is Generator:
