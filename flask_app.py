@@ -69,7 +69,9 @@ def execute():
                     time = 10
                 ret[1] = ""
                 ret[2] = ""
-                fcode = (header and (header + "\n")) + code + (footer and ("\n" + footer))
+                fcode = (
+                    (header and (header + "\n")) + code + (footer and ("\n" + footer))
+                )
                 sessions[session] = multiprocessing.Process(
                     target=Vyxal.execute, args=(fcode, flags, input_list, ret)
                 )
@@ -114,16 +116,19 @@ def oeis():
 def update():
     # Updates the server after a commit
     # It's possible that it is now working.
-    if request.method == 'POST':
-        repo = git.Repo('/home/Lyxal/mysite')
+    if request.method == "POST":
+        repo = git.Repo("/home/Lyxal/mysite")
         origin = repo.remotes.origin
         with repo.config_writer() as git_config:
-            git_config.set_value('user', 'email', "36217120+Lyxal@users.noreply.github.com")
-            git_config.set_value('user', 'name', "Lyxal")
+            git_config.set_value(
+                "user", "email", "36217120+Lyxal@users.noreply.github.com"
+            )
+            git_config.set_value("user", "name", "Lyxal")
         origin.pull()
-        return 'Updated PythonAnywhere successfully', 200
+        return "Updated PythonAnywhere successfully", 200
     else:
-        return 'Wrong event type', 400
+        return "Wrong event type", 400
+
 
 def parse_file():
     import os
@@ -137,21 +142,22 @@ def parse_file():
 
         previous = {LETTER: "", MODIFIER: ""}
         for line in txt:
-            if line == "\n": break # Reached EOF
+            if line == "\n":
+                break  # Reached EOF
             char = line[:2]
-            if char != "  ": 
+            if char != "  ":
                 if char[-1] != " " and char[0] != "<":
                     previous = {LETTER: line[1], MODIFIER: line[0]}
                 else:
                     previous[LETTER] = line[0]
                     previous[MODIFIER] = ""
-            
+
             if char[0] == "<" and char[1] in "ns":
                 if "<newline>" in line:
                     previous[LETTER] = "␤"
                 if "<space>" in line:
                     previous[LETTER] = "␠"
-                
+
                 previous[MODIFIER] = ""
 
             if previous[LETTER] in keys:
@@ -159,16 +165,17 @@ def parse_file():
             else:
                 index = -1
                 keys[previous[LETTER]] = len(ret)
-            
+
             # print(char, index, previous[LETTER])
             if index == -1:
                 ret.append("\n" + line[1:-1])
-            
+
             elif previous[MODIFIER]:
                 ret[index] += "\n" + previous[MODIFIER] + ": " + line[3:-1]
-            
+
             else:
                 ret[index] += "\n" + line[1:-1]
     return ret
+
 
 descriptions = parse_file()

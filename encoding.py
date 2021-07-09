@@ -1,5 +1,7 @@
 from commands import codepage
 import string
+
+
 def vyxal_to_utf8(code):
     # Taken from the old 05AB1E interpreter
     processed_code = ""
@@ -7,6 +9,7 @@ def vyxal_to_utf8(code):
         processed_code += codepage[char]
 
     return processed_code
+
 
 def utf8_to_vyxal(code):
     # Taken from the old 05AB1E interpreter
