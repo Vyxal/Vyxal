@@ -1,7 +1,7 @@
 # Test more complex snippets of code, taken from Vyxal answers
 
 from test_utils import run_code
-import Vyxal
+import vyxal.interpreter
 import os
 import sys
 import builtins
@@ -118,5 +118,5 @@ fizzbuzz_output = [
 
 def test_fizzbuzz():
     stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=["j"])
-    res = Vyxal.pop(stack)
+    res = vyxal.interpreter.pop(stack)
     assert res == fizzbuzz_output

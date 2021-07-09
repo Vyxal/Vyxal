@@ -15,11 +15,11 @@ import warnings
 from datetime import date
 from datetime import datetime as dt
 
-import encoding
-import utilities
-import words
-from commands import *
-from VyParse import *
+from vyxal import encoding
+from vyxal import utilities
+from vyxal import words
+from vyxal.commands import *
+from vyxal.parser import *
 
 # Pipped modules
 
@@ -3802,10 +3802,10 @@ if __name__ == "__main__":
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:
-            import encoding
+            import vyxal.encoding
 
             code = open(file_location, "rb").read()
-            code = encoding.vyxal_to_utf8(code)
+            code = vyxal.encoding.vyxal_to_utf8(code)
         else:
             code = open(file_location, "r", encoding="utf-8").read()
         input_values[0] = [inputs, 0]

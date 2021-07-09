@@ -5,7 +5,7 @@ import git
 from flask import Flask, flash, redirect, render_template, request, url_for
 from flask_cors import CORS
 
-import Vyxal
+import vyxal.interpreter
 
 app = Flask(__name__)
 CORS(app)
@@ -78,7 +78,7 @@ def execute():
                     (header and (header + "\n")) + code + (footer and ("\n" + footer))
                 )
                 sessions[session] = multiprocessing.Process(
-                    target=Vyxal.execute, args=(fcode, flags, input_list, ret)
+                    target=vyxal.interpreter.execute, args=(fcode, flags, input_list, ret)
                 )
                 sessions[session].start()
                 sessions[session].join(time)
