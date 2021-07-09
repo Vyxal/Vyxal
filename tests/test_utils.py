@@ -6,7 +6,7 @@ from multiprocessing import Manager
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-import vyxal.interpreter
+from vyxal import interpreter
 
 header = "stack = []\nregister = 0\nprinted = False\n"
 manager = Manager()
