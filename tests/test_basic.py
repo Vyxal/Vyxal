@@ -95,12 +95,12 @@ def test_trailing_zeroes():
 
 
 def test_quit():
-    real_print = vyxal.interpreter.VY_print
+    real_print = vyxal.interpreter.vy_print
 
     def shouldnt_print(first, *args):
         raise ValueError("Shouldn't print anything")
 
-    vyxal.interpreter.VY_print = shouldnt_print
+    vyxal.interpreter.vy_print = shouldnt_print
     run_code("69 Q")
     run_code("69 Q", flags="O")
     trip = []
@@ -109,10 +109,10 @@ def test_quit():
         nonlocal trip
         trip.append(first)
 
-    vyxal.interpreter.VY_print = should_print
+    vyxal.interpreter.vy_print = should_print
     run_code("69 Q", flags="o")
     assert trip
-    vyxal.interpreter.VY_print = real_print
+    vyxal.interpreter.vy_print = real_print
 
 '''
 def test_foldl_rows():
