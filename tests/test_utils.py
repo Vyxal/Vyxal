@@ -15,8 +15,7 @@ manager = Manager()
 def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
     reset_globals()
     # context_level = 0
-    interp.execute(code, flags, "\n".join(
-        map(str, input_list)), output_variable)
+    interp.execute(code, flags, "\n".join(map(str, input_list)), output_variable)
     return interp.stack
 
 
@@ -39,16 +38,13 @@ def reshape(arr, shape):
         return arr
     rest = shape[1:]
     size = len(arr) // shape[0]
-    return [reshape(arr[i * size:(i + 1) * size], rest) for i in range(shape[0])]
+    return [reshape(arr[i * size : (i + 1) * size], rest) for i in range(shape[0])]
 
 
 def to_list(vector):
     typ = interp.vy_type(vector)
     if typ in (list, interp.Generator):
         return list(
-            map(
-                to_list,
-                vector._dereference() if typ is interp.Generator else vector
-            )
+            map(to_list, vector._dereference() if typ is interp.Generator else vector)
         )
     return vector

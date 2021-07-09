@@ -1,3 +1,6 @@
+import base64
+import functools
+
 from vyxal import words
 from vyxal.globals import *
 
@@ -149,14 +152,14 @@ class Generator:
             if index == l:
                 break
             obj = self.__getitem__(index)
-            ret = _safe_apply(function, obj)
+            ret = safe_apply(function, obj)
             if ret:
                 yield obj
             index += 1
 
     def _reduce(self, function):
         def ensure_singleton(function, left, right):
-            ret = _safe_apply(function, left, right)
+            ret = safe_apply(function, left, right)
             if type(ret) in [Generator, list]:
                 return ret[-1]
             return ret
@@ -230,7 +233,7 @@ class ShiftDirections:
 
 
 # Helper functions
-def _safe_apply(function, *args):
+def safe_apply(function, *args):
     """
     Applies function to args that adapts to the input style of the passed function.
 
@@ -259,7 +262,7 @@ def _mangle(value):
     return base64.b32encode(byte_list).decode().replace("=", "_")
 
 
-def _two_argument(function, left, right):
+def two_argument(function, left, right):
     """
     Used for vectorising user-defined lambas/dyads over generators
     """
@@ -369,53 +372,6 @@ def uncompress(s):
     return final.replace("\n", "\\n").replace("\r", "")
 
 
-def vy_print(item, end="\n", raw=False):
-    global output, printed, stack
-    printed = True
-    t_item = type(item)
-    if t_item is Generator:
-        item._print(end)
-
-    elif t_item is list:
-        vy_print("⟨", "", False)
-        if item:
-            for value in item[:-1]:
-                vy_print(value, "|", True)
-            vy_print(item[-1], "", True)
-        vy_print("⟩", end, False)
-    elif t_item is Function:
-        pop(stack)
-        s = function_call(item, stack)
-        vy_print(s[0], end=end, raw=raw)
-    else:
-        if t_item is int and keg_mode:
-            item = chr(item)
-        if raw:
-            if online_version:
-                output[1] += vy_repr(item) + end
-            else:
-                print(vy_repr(item), end=end)
-        else:
-            if online_version:
-                output[1] += vy_str(item) + end
-            else:
-                print(vy_str(item), end=end)
-    if online_version and len(output) > ONE_TWO_EIGHT_KB:
-        exit(code=1)
-
-
-def vy_str(item):
-    global stack
-    t_item = vy_type(item)
-    return {
-        Number: str,
-        str: lambda x: x,
-        list: lambda x: "⟨" + "|".join([vy_repr(y) for y in x]) + "⟩",
-        Generator: lambda x: vy_str(x._dereference()),
-        Function: lambda x: vy_str(function_call(item, stack)[0]),
-    }[t_item](item)
-
-
 def vy_repr(item):
     t_item = vy_type(item)
     return {
@@ -457,23 +413,6 @@ def vy_zip(lhs, rhs):
             break
         yield [l, r]
         ind += 1
-
-
-def vy_zipmap(lhs, rhs):
-    if Function not in (vy_type(lhs), vy_type(rhs)):
-        return [lhs, vy_zip(rhs, rhs)]
-
-    function = vector = None
-    if type(rhs) is Function:
-        function, vector = rhs, iterable(lhs, range)
-    else:
-        function, vector = lhs, iterable(rhs, range)
-
-    def f():
-        for item in vector:
-            yield [item, _safe_apply(function, item)]
-
-    return Generator(f())
 
 
 if __name__ == "__main__":
