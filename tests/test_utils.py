@@ -6,7 +6,7 @@ from multiprocessing import Manager
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-import Vyxal
+import vyxal.interpreter
 
 header = "stack = []\nregister = 0\nprinted = False\n"
 manager = Manager()
@@ -15,23 +15,23 @@ manager = Manager()
 def run_code(code, flags="", input_list=[], output_variable=manager.dict()):
     reset_globals()
     # context_level = 0
-    Vyxal.execute(code, flags, "\n".join(
+    vyxal.interpreter.execute(code, flags, "\n".join(
         map(str, input_list)), output_variable)
-    return Vyxal.stack
+    return vyxal.interpreter.stack
 
 
 def reset_globals():
-    Vyxal.keg_mode = False
-    Vyxal.raw_strings = False
-    Vyxal.online_version = False
-    Vyxal.input_level = 0
-    Vyxal.number_iterable = list
-    Vyxal.MAP_START = 1
-    Vyxal.MAP_OFFSET = 1
-    Vyxal._join = False
-    Vyxal._vertical_join = False
-    Vyxal.use_encoding = False
-    Vyxal.stack = []
+    vyxal.interpreter.keg_mode = False
+    vyxal.interpreter.raw_strings = False
+    vyxal.interpreter.online_version = False
+    vyxal.interpreter.input_level = 0
+    vyxal.interpreter.number_iterable = list
+    vyxal.interpreter.MAP_START = 1
+    vyxal.interpreter.MAP_OFFSET = 1
+    vyxal.interpreter._join = False
+    vyxal.interpreter._vertical_join = False
+    vyxal.interpreter.use_encoding = False
+    vyxal.interpreter.stack = []
 
 
 def reshape(arr, shape):
@@ -43,12 +43,12 @@ def reshape(arr, shape):
 
 
 def to_list(vector):
-    typ = Vyxal.VY_type(vector)
-    if typ in (list, Vyxal.Generator):
+    typ = vyxal.interpreter.VY_type(vector)
+    if typ in (list, vyxal.interpreter.Generator):
         return list(
             map(
                 to_list,
-                vector._dereference() if typ is Vyxal.Generator else vector
+                vector._dereference() if typ is vyxal.interpreter.Generator else vector
             )
         )
     return vector

@@ -1,16 +1,14 @@
-import dictionary
+from vyxal import dictionary
+from vyxal import encoding
+from vyxal import utilities
+
 
 def extract_word(code):
-    import encoding
-    import utilities
-
     index_pos = utilities.to_ten(code, encoding.compression)
-
     return _words[index_pos]
 
+
 def word_index(word):
-    import utilities
-    import encoding
     if word in dictionary.lookup:
         ret = utilities.from_ten(dictionary.lookup[word], encoding.compression)
         if len(ret) == 1:
@@ -18,6 +16,7 @@ def word_index(word):
         return ret
     else:
         return -1
+
 
 _words = dictionary.contents
 

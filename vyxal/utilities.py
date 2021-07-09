@@ -1,4 +1,4 @@
-import words
+from vyxal import words
 
 
 def to_ten(number, custom_base):

@@ -1,7 +1,7 @@
 # Simple tests
 
 from test_utils import *
-import Vyxal
+import vyxal.interpreter
 import os
 import sys
 import builtins
@@ -15,17 +15,17 @@ from multiprocessing import Manager
 # overload of every single command
 def test_not():
     stack = run_code("2¬")
-    assert Vyxal.pop(stack) == 0
+    assert vyxal.interpreter.pop(stack) == 0
 
 
 def test_is_prime():
     stack = run_code("10ɾƛæ;")
-    assert Vyxal.pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
+    assert vyxal.interpreter.pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]
 
 
 def test_is_square():
     stack = run_code("1000'∆²;")
-    res = Vyxal.pop(stack)._dereference()
+    res = vyxal.interpreter.pop(stack)._dereference()
     assert res == [
         1,
         4,
@@ -95,12 +95,12 @@ def test_trailing_zeroes():
 
 
 def test_quit():
-    real_print = Vyxal.VY_print
+    real_print = vyxal.interpreter.VY_print
 
     def shouldnt_print(first, *args):
         raise ValueError("Shouldn't print anything")
 
-    Vyxal.VY_print = shouldnt_print
+    vyxal.interpreter.VY_print = shouldnt_print
     run_code("69 Q")
     run_code("69 Q", flags="O")
     trip = []
@@ -109,10 +109,10 @@ def test_quit():
         nonlocal trip
         trip.append(first)
 
-    Vyxal.VY_print = should_print
+    vyxal.interpreter.VY_print = should_print
     run_code("69 Q", flags="o")
     assert trip
-    Vyxal.VY_print = real_print
+    vyxal.interpreter.VY_print = real_print
 
 '''
 def test_foldl_rows():
@@ -124,7 +124,7 @@ def test_foldl_rows():
     ]
     for input_array, fn, expected in tests:
         stack = run_code(fn + "ÞR", input_list=[input_array])
-        assert Vyxal.pop(stack) == expected
+        assert vyxal.interpreter.pop(stack) == expected
 
 
 def test_foldl_cols():
@@ -137,5 +137,5 @@ def test_foldl_cols():
     ]
     for input_array, fn, expected in tests:
         stack = run_code(fn + "ÞC", input_list=[input_array])
-        assert to_list(Vyxal.pop(stack)) == expected
+        assert to_list(vyxal.interpreter.pop(stack)) == expected
 '''
