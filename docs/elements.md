@@ -223,7 +223,7 @@ cmd | inputs | out/effect
 | ‹ | (a: number)                         |  a - 1 # decrement |
 |  | (a: string)                         |  a + "-" |
 |  | (otherwise)                         |  vectorised |
-| ∷ | (a: number)                         |  a % 2 # parity, bit, even? |
+| ∷ | (a: number)                         |  a % 2 # parity, bit, odd? |
 |  | (a: string)                         |  last half of a |
 |  | (otherwise)                         |  vectorised |
 | ¤ |   |  "" # empty string |
