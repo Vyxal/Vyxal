@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
-from flask_cors import CORS
-import multiprocessing, secrets
-import Vyxal
+import multiprocessing
+import secrets
+
 import git
+from flask import Flask, flash, redirect, render_template, request, url_for
+from flask_cors import CORS
+
+import Vyxal
 
 app = Flask(__name__)
 CORS(app)
 
-import os, sys, shutil
+import os
+import shutil
+import sys
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)

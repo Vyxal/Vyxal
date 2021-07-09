@@ -1,5 +1,6 @@
-from commands import codepage
 import string
+
+from commands import codepage
 
 
 def vyxal_to_utf8(code):

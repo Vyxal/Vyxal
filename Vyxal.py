@@ -1,26 +1,25 @@
+import base64
 import copy
-from datetime import date
-from datetime import datetime as dt
 import functools
 import hashlib
 import itertools
 import math
+import os
 import random
+import secrets
 import string
+import sys
 import time
 import urllib.request
 import warnings
-import base64
-import os
-import sys
-import secrets
+from datetime import date
+from datetime import datetime as dt
 
-# Vyxal modules
-from commands import *
 import encoding
 import utilities
-from VyParse import *
 import words
+from commands import *
+from VyParse import *
 
 # Pipped modules
 
@@ -30,17 +29,17 @@ sys.path.insert(1, THIS_FOLDER)
 
 try:
     import numpy
+    import pwn
     import regex
     import sympy
-    import pwn
 except:
     import os
 
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
     import numpy
+    import pwn
     import regex
     import sympy
-    import pwn
 
 # Generic type constants
 Number = "NUMBER"
