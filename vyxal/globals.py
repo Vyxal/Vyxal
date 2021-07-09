@@ -1,4 +1,4 @@
-from vyxal.utilities import vy_print
+import vyxal
 
 # Execution variables
 context_level = 0
@@ -19,7 +19,7 @@ retain_items = False
 reverse_args = False
 safe_mode = False  # You may want to have safe evaluation but not be online.
 stack = []
-this_function = lambda x: vy_print(stack) or x
+this_function = lambda x: vyxal.utilities.vy_print(stack) or x
 variables_are_digraphs = False
 
 MAP_START = 1
