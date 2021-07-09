@@ -20,7 +20,7 @@ class Digraphs:
     MISC = "¨"; CONSTANT = "k"; ALL_DIGRAPHS = "k∆øÞ¨"
 class StringDelimiters:
     NORMAL = "`";  COM_NUMBER = "»"; COM_STRING = "«"
-    TWO_CHAR = "‛"; DELIM_TUPLE = (NORMAL, DICTIONARY, COM_NUMBER, COM_STRING, TWO_CHAR)
+    TWO_CHAR = "‛"; DELIM_TUPLE = (NORMAL, COM_NUMBER, COM_STRING, TWO_CHAR)
 
 structure_dictionary = { # (open, close, default_key, starting_active_key, secondary_key)
     Structure.IF: ("[", "]", Keys.IF_TRUE, Keys.IF_TRUE, Keys.IF_FALSE),
@@ -73,7 +73,7 @@ def group_strings(source):
         
         elif flux_string[0]:
             if escaped:
-                if character in (StringDelimiters.NORMAL, StringDelimiters.DICTIONARY):
+                if character in (StringDelimiters.NORMAL):
                     flux_string[1] = flux_string[1][:-1]
                 flux_string[1] += character
                 escaped = False
