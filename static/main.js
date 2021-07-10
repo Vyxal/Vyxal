@@ -85,10 +85,10 @@ function shareOptions(shareType) {
             output = url
             break
         case "cmc":
-            output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable?'':' (UTF-8)'}](${url})`
+            output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Lyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 
 \`\`\`
 ${code}
@@ -140,7 +140,7 @@ function decodeURL() {
 }
 
 function expandBoxes() {
-    ["flag", "inputs", "output", "extra"].forEach(function(n) {
+    ["flag", "inputs", "output", "extra"].forEach(function (n) {
         var boxToExpand = document.getElementById(n + "-detail")
         var actualBox = document.getElementById(n)
 
@@ -169,9 +169,9 @@ function expandBoxes() {
 function replaceHTMLChar(char) {
     return char === "␤" ? "\n" :
         char === "␠" ? " " :
-        char === "&lt;" ? "<" :
-        char === "&gt;" ? ">" :
-        char === "&amp;" ? "&" : char
+            char === "&lt;" ? "<" :
+                char === "&gt;" ? ">" :
+                    char === "&amp;" ? "&" : char
 }
 
 function copyToClipboard(arg) {
