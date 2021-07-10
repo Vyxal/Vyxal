@@ -6,3 +6,8 @@ Scripts/
 share/
 Lib/
 pyvenv.cfg
+__pycache__/
+.pytest_cache/
+env/
+venv/
+.idea/

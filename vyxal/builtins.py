@@ -16,7 +16,7 @@ from datetime import date
 from datetime import datetime as dt
 
 import vyxal
-from vyxal.globals import *
+from vyxal.utilities import Function
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
 
@@ -65,14 +65,13 @@ def all_prime_factors(item):
 
 
 def apply_to_register(function, vector):
-    global register
-    vector.append(register)
+    vector.append(vyxal.interpreter.register)
     if function.stored_arity > 1:
-        top, over = pop(stack, 2)
-        stack.append(top)
-        stack.append(over)
+        top, over = pop(vyxal.interpreter.stack, 2)
+        vyxal.interpreter.stack.append(top)
+        vyxal.interpreter.stack.append(over)
     vector += function_call(function, vector)
-    register = pop(vector)
+    vyxal.interpreter.register = pop(vector)
 
 
 def assigned(vector, index, item):
@@ -510,14 +509,13 @@ def divisors_of(item):
 
 
 def dont_pop(function, vector):
-    global retain_items
     if function.stored_arity == 1:
         vector.append(vy_filter(function, pop(vector)))
     else:
-        retain_items = True
+        vyxal.interpreter.retain_items = True
         args = pop(vector, function.stored_arity)
         vector.append(safe_apply(function, args[::-1]))
-        retain_items = False
+        vyxal.interpreter.retain_items = False
 
 
 def dot_product(lhs, rhs):
@@ -595,7 +593,7 @@ def factorials():
 
 def fibonacci():
     # A generator of all the fibonacci numbers
-    # Pro-tip: wrap in a generator before pushing to stack
+    # Pro-tip: wrap in a generator before pushing to vyxal.interpreter.stack
 
     yield 0
     yield 1
@@ -901,7 +899,7 @@ def function_call(fn, vector):
         return [
             {
                 Number: lambda: len(prime_factors(fn)),
-                str: lambda: exec(vy_compile(fn)) or [],
+                str: lambda: exec(vyxal.interpreter.vy_compile(fn)) or [],
             }.get(vy_type(fn), lambda: vectorised_not(fn))()
         ]
 
@@ -928,27 +926,25 @@ def gcd(lhs, rhs=None):
 
 
 def get_input(predefined_level=None):
-    global input_values
-
-    level = input_level
+    level = vyxal.interpreter.input_level
     if predefined_level is not None:
         level = predefined_level
 
-    if level in input_values:
-        source, index = input_values[level]
+    if level in vyxal.interpreter.input_values:
+        source, index = vyxal.interpreter.input_values[level]
     else:
         source, index = [], -1
     if source:
         ret = source[index % len(source)]
-        input_values[level][1] += 1
+        vyxal.interpreter.input_values[level][1] += 1
 
-        if keg_mode and type(ret) is str:
+        if vyxal.interpreter.keg_mode and type(ret) is str:
             return [ord(c) for c in ret]
         return ret
     else:
         try:
             temp = vy_eval(input())
-            if keg_mode and type(temp) is str:
+            if vyxal.interpreter.keg_mode and type(temp) is str:
                 return [ord(c) for c in temp]
             return temp
         except:
@@ -1190,12 +1186,12 @@ def is_square(n):
 
 
 def iterable(item, t=None):
-    t = t or number_iterable
+    t = t or vyxal.interpreter.number_iterable
     if vy_type(item) == Number:
         if t is list:
             return [int(let) if let not in "-." else let for let in str(item)]
         if t is range:
-            return Generator(range(MAP_START, int(item) + MAP_OFFSET))
+            return Generator(range(vyxal.interpreter.MAP_START, int(item) + vyxal.interpreter.MAP_OFFSET))
         return t(item)
     else:
         return item
@@ -1609,7 +1605,6 @@ def polynomial(vector):
 
 
 def pop(vector, num=1, wrap=False):
-    global last_popped
     ret = []
 
     for _ in range(num):
@@ -1619,7 +1614,7 @@ def pop(vector, num=1, wrap=False):
             x = get_input()
             ret.append(x)
 
-    if retain_items:
+    if vyxal.interpreter.retain_items:
         vector += ret[::-1]
 
     last_popped = ret
@@ -1627,7 +1622,7 @@ def pop(vector, num=1, wrap=False):
 
         return ret[0]
 
-    if reverse_args:
+    if vyxal.interpreter.reverse_args:
         return ret[::-1]
     return ret
 
@@ -1726,7 +1721,6 @@ def remove(vector, item):
 
 
 def repeat(vector, times, extra=None):
-    global safe_mode
     t_vector = vy_type(vector)
     if t_vector is Function and vy_type(times) is Function:
 
@@ -2480,14 +2474,14 @@ def vy_eval(item):
     elif vy_type(item) in [list, Generator]:
         return vectorise(vy_eval, item)
 
-    if online_version or safe_mode:
+    if vyxal.interpreter.online_version or vyxal.interpreter.safe_mode:
         from vyxal.parser import Tokenise, Structure
         from vyxal.interpreter import vy_compile
 
         try:
             return pwn.safeeval.const(item)
         except:
-            f = Tokenise(item, variables_are_digraphs)
+            f = Tokenise(item, vyxal.interpreter.variables_are_digraphs)
             if len(f) and f[-1][-1] in (
                 Structure.STRING,
                 Structure.NUMBER,
@@ -2495,9 +2489,9 @@ def vy_eval(item):
             ):
                 try:
                     temp = vy_compile(item)
-                    stack = []
+                    vyxal.interpreter.stack = []
                     exec(temp)
-                    return stack[-1]
+                    return vyxal.interpreter.stack[-1]
                 except Exception as e:
                     print(e)
                     return item
@@ -2513,7 +2507,7 @@ def vy_eval(item):
 
 def vy_exec(item):
     if vy_type(item) is str:
-        exec(vy_compile(item))
+        exec(vyxal.interpreter.vy_compile(item))
         return []
     elif vy_type(item) == Number:
         return [divide(1, item)]
@@ -2579,7 +2573,7 @@ def vy_map(fn, vector):
 
     vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if vy_type(vec) == Number:
-        vec = range(MAP_START, int(vec) + MAP_OFFSET)
+        vec = range(vyxal.interpreter.MAP_START, int(vec) + vyxal.interpreter.MAP_OFFSET)
     if vy_type(vec) is Generator:
 
         def gen():
@@ -2650,7 +2644,6 @@ def vy_oct(item):
 
 
 def vy_print(item, end="\n", raw=False):
-    global output, printed, stack
     printed = True
     t_item = type(item)
     if t_item is Generator:
@@ -2664,23 +2657,23 @@ def vy_print(item, end="\n", raw=False):
             vy_print(item[-1], "", True)
         vy_print("⟩", end, False)
     elif t_item is Function:
-        pop(stack)
-        s = function_call(item, stack)
+        pop(vyxal.interpreter.stack)
+        s = function_call(item, vyxal.interpreter.stack)
         vy_print(s[0], end=end, raw=raw)
     else:
-        if t_item is int and keg_mode:
+        if t_item is int and vyxal.interpreter.keg_mode:
             item = chr(item)
         if raw:
-            if online_version:
-                output[1] += vy_repr(item) + end
+            if vyxal.interpreter.online_version:
+                vyxal.interpreter.output[1] += vy_repr(item) + end
             else:
                 print(vy_repr(item), end=end)
         else:
-            if online_version:
-                output[1] += vy_str(item) + end
+            if vyxal.interpreter.online_version:
+                vyxal.interpreter.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
-    if online_version and len(output) > ONE_TWO_EIGHT_KB:
+    if vyxal.interpreter.online_version and len(vyxal.interpreter.output) > ONE_TWO_EIGHT_KB:
         exit(code=1)
 
 
@@ -2700,7 +2693,7 @@ def vy_reduce(fn, vector):
     if t_type is Generator:
         return [Generator(vector)._reduce(fn)]
     if t_type is Number:
-        vector = list(range(MAP_START, int(vector) + MAP_OFFSET))
+        vector = list(range(vyxal.interpreter.MAP_START, int(vector) + vyxal.interpreter.MAP_OFFSET))
     vector = vector[::-1]
     working_value = pop(vector)
     vector = vector[::-1]
@@ -2740,14 +2733,13 @@ def vy_sorted(vector, fn=None):
 
 
 def vy_str(item):
-    global stack
     t_item = vy_type(item)
     return {
         Number: str,
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([vy_repr(y) for y in x]) + "⟩",
         Generator: lambda x: vy_str(x._dereference()),
-        Function: lambda x: vy_str(function_call(item, stack)[0]),
+        Function: lambda x: vy_str(function_call(item, vyxal.interpreter.stack)[0]),
     }[t_item](item)
 
 

@@ -2,7 +2,6 @@ import base64
 import functools
 
 from vyxal import words
-from vyxal.globals import *
 
 # Generic type constants
 Number = "NUMBER"
@@ -178,6 +177,7 @@ class Generator:
         return d
 
     def _print(self, end="\n"):
+        from vyxal.builtins import vy_print
         main = self.generated
         try:
             f = next(self)

@@ -1,7 +1,6 @@
 # Simple tests
 
-import test_utils
-from test_utils import *
+from test_utils import run_code
 import os
 import sys
 import builtins
