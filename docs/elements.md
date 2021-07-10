@@ -169,7 +169,7 @@ cmd | inputs | out/effect
 | b | (a: number)                         |  bin(a) # binary representation, base 10 to 2 |
 |  | (a: string)                         |  [bin(ord(char)) for char in a] # Convert codepoint of each character in string to binary |
 |  | (otherwise)                         |  vectorised |
-| c | (a: any, b: any)                    |  a in b # non-vectorising contains, Membership, does b contain a? |
+| c | (a: any, b: any)                    |  b in a # non-vectorising contains, Membership, does a contain b? |
 | d | (a: number)                         |  a * 2 # double |
 |  | (a: string)                         |  a * 2 # double |
 |  | (otherwise)                         |  vectorised |
