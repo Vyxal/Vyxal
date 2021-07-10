@@ -178,6 +178,7 @@ class Generator:
 
     def _print(self, end="\n"):
         from vyxal.builtins import vy_print
+
         main = self.generated
         try:
             f = next(self)

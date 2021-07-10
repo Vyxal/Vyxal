@@ -1191,7 +1191,12 @@ def iterable(item, t=None):
         if t is list:
             return [int(let) if let not in "-." else let for let in str(item)]
         if t is range:
-            return Generator(range(vyxal.interpreter.MAP_START, int(item) + vyxal.interpreter.MAP_OFFSET))
+            return Generator(
+                range(
+                    vyxal.interpreter.MAP_START,
+                    int(item) + vyxal.interpreter.MAP_OFFSET,
+                )
+            )
         return t(item)
     else:
         return item
@@ -2573,7 +2578,9 @@ def vy_map(fn, vector):
 
     vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if vy_type(vec) == Number:
-        vec = range(vyxal.interpreter.MAP_START, int(vec) + vyxal.interpreter.MAP_OFFSET)
+        vec = range(
+            vyxal.interpreter.MAP_START, int(vec) + vyxal.interpreter.MAP_OFFSET
+        )
     if vy_type(vec) is Generator:
 
         def gen():
@@ -2672,7 +2679,10 @@ def vy_print(item, end="\n", raw=False):
                 vyxal.interpreter.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
-    if vyxal.interpreter.online_version and len(vyxal.interpreter.output) > ONE_TWO_EIGHT_KB:
+    if (
+        vyxal.interpreter.online_version
+        and len(vyxal.interpreter.output) > ONE_TWO_EIGHT_KB
+    ):
         exit(code=1)
 
 
@@ -2692,7 +2702,11 @@ def vy_reduce(fn, vector):
     if t_type is Generator:
         return [Generator(vector)._reduce(fn)]
     if t_type is Number:
-        vector = list(range(vyxal.interpreter.MAP_START, int(vector) + vyxal.interpreter.MAP_OFFSET))
+        vector = list(
+            range(
+                vyxal.interpreter.MAP_START, int(vector) + vyxal.interpreter.MAP_OFFSET
+            )
+        )
     vector = vector[::-1]
     working_value = pop(vector)
     vector = vector[::-1]
