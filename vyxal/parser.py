@@ -90,7 +90,7 @@ structure_dictionary = (
             "ƛ",
             ";",
             Keys.LAMBDA_BODY,
-            Keys.LAMBDA_ARGS,
+            Keys.LAMBDA_BODY,
             Keys.LAMBDA_BODY,
         ),  # y'know what, I will let y'all have custom map arities
         Structure.LIST: ("⟨", "⟩", Keys.LIST_ITEMS, Keys.LIST_ITEM, Keys.LIST_ITEM),
@@ -236,7 +236,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
     while token_pointer < len(source):
 
         character = source[token_pointer]
-        print(character, nest_level, structure, structure_data, active_key)
+        # print(character, nest_level, structure, structure_data, active_key)
         if comment:
             comment = character != "\n"
             token_pointer += 1
@@ -481,6 +481,7 @@ if __name__ == "__main__":
         "{|}",
         "10ʀ 1ß'›;",
         "5 λ1|›;",
+        "ƛ:Ǎ[∇pp",
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
