@@ -2971,7 +2971,6 @@ def VY_print(item, end="\n", raw=False):
             VY_print(item[-1], "", True)
         VY_print("⟩", end, False)
     elif t_item is Function:
-        pop(stack)
         s = function_call(item, stack)
         VY_print(s[0], end=end, raw=raw)
     else:
@@ -3065,7 +3064,7 @@ def VY_str(item):
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([VY_repr(y) for y in x]) + "⟩",
         Generator: lambda x: VY_str(x._dereference()),
-        Function: lambda x: VY_str(function_call(item, stack)[0]),
+        Function: lambda x: VY_str(function_call(x, stack)[0]),
     }[t_item](item)
 
 
@@ -3177,6 +3176,7 @@ def VY_compile(program, header=""):
     if isinstance(program, str):
         program = Tokenise(program)
     for token in program:
+        print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
@@ -3402,7 +3402,7 @@ else:
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
-            function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+            function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
             compiled += function_A + NEWLINE
             compiled += "function_A = pop(stack)\n"
             compiled += transformers[token_value[0]] + NEWLINE
@@ -3413,8 +3413,8 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
+                function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
+                function_B = VY_compile([wrap_in_lambda(token_value[1][1])])
                 compiled += function_A + NEWLINE + function_B + NEWLINE
                 compiled += "function_B = pop(stack); function_A = pop(stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
@@ -3425,9 +3425,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
-                function_C = VY_compile(wrap_in_lambda(token_value[1][2]))
+                function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
+                function_B = VY_compile([wrap_in_lambda(token_value[1][1])])
+                function_C = VY_compile([wrap_in_lambda(token_value[1][2])])
                 compiled += (
                     function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )

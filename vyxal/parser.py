@@ -236,7 +236,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
     while token_pointer < len(source):
 
         character = source[token_pointer]
-        # print(character, nest_level, structure, structure_data, active_key)
+        print(character, nest_level, structure, structure_data, active_key)
         if comment:
             comment = character != "\n"
             token_pointer += 1
@@ -361,8 +361,6 @@ def Tokenise(source: str, variables_are_digraphs=False):
 
         elif character == "|" and nest_level == 1:
             active_key = structure_dictionary[structure][-1]
-            if structure == Structure.LAMBDA:
-                structure_data[Keys.LAMBDA_ARGS] = structure_data[Keys.LAMBDA_BODY]
             if structure == Structure.LIST:
                 structure_data[Keys.LIST_ITEMS].append(structure_data[Keys.LIST_ITEM])
 
@@ -481,6 +479,8 @@ if __name__ == "__main__":
         "⟨1|2|3|4|5|6|7|8|9⟩ ÞD",
         "123 # `abc`",
         "{|}",
+        "10ʀ 1ß'›;",
+        "5 λ1|›;",
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
