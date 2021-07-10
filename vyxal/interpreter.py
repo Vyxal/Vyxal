@@ -3176,7 +3176,7 @@ def VY_compile(program, header=""):
     if isinstance(program, str):
         program = Tokenise(program)
     for token in program:
-        # print(token)
+        print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
@@ -3413,8 +3413,8 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
-                function_B = VY_compile([wrap_in_lambda(token_value[1][1])])
+                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
                 compiled += function_A + NEWLINE + function_B + NEWLINE
                 compiled += "function_B = pop(stack); function_A = pop(stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
