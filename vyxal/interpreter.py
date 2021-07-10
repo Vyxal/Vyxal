@@ -3237,7 +3237,7 @@ def VY_compile(program, header=""):
             compiled += tab("context_values.pop()")
         elif token_name == Structure.WHILE:
             condition = "stack.append(1)"
-            if Keys.WHILE_COND in value:
+            if Keys.WHILE_COND in token_value:
                 condition = VY_compile(token_value[Keys.WHILE_COND])
 
             compiled += condition + NEWLINE
@@ -3585,7 +3585,7 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and "J" in flags:
             VY_print("\n".join([VY_str(n) for n in stack]))
         else:
-            VY_print(VY_str(pop(stack)))
+            VY_print(pop(stack))
 
 
 if __name__ == "__main__":
