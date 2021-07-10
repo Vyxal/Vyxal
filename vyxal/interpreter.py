@@ -89,6 +89,7 @@ def vy_compile(program, header=""):
     if isinstance(program, str):
         program = Tokenise(program)
     for token in program:
+        # print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
@@ -149,7 +150,7 @@ def vy_compile(program, header=""):
             compiled += tab("context_values.pop()")
         elif token_name == Structure.WHILE:
             condition = "stack.append(1)"
-            if Keys.WHILE_COND in value:
+            if Keys.WHILE_COND in token_value:
                 condition = vy_compile(token_value[Keys.WHILE_COND])
 
             compiled += condition + NEWLINE
@@ -314,7 +315,7 @@ else:
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
-            function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
+            function_A = vy_compile([wrap_in_lambda(token_value[1][0])])
             compiled += function_A + NEWLINE
             compiled += "function_A = pop(stack)\n"
             compiled += transformers[token_value[0]] + NEWLINE
@@ -337,9 +338,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
-                function_C = vy_compile(wrap_in_lambda(token_value[1][2]))
+                function_A = vy_compile([wrap_in_lambda(token_value[1][0])])
+                function_B = vy_compile([wrap_in_lambda(token_value[1][1])])
+                function_C = vy_compile([wrap_in_lambda(token_value[1][2])])
                 compiled += (
                     function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )
@@ -497,7 +498,7 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and "J" in flags:
             vy_print("\n".join([vy_str(n) for n in stack]))
         else:
-            vy_print(vy_str(pop(stack)))
+            vy_print(pop(stack))
 
 
 if __name__ == "__main__":

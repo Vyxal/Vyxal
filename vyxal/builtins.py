@@ -2657,7 +2657,6 @@ def vy_print(item, end="\n", raw=False):
             vy_print(item[-1], "", True)
         vy_print("⟩", end, False)
     elif t_item is Function:
-        pop(vyxal.interpreter.stack)
         s = function_call(item, vyxal.interpreter.stack)
         vy_print(s[0], end=end, raw=raw)
     else:
@@ -2739,7 +2738,7 @@ def vy_str(item):
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([vy_repr(y) for y in x]) + "⟩",
         Generator: lambda x: vy_str(x._dereference()),
-        Function: lambda x: vy_str(function_call(item, vyxal.interpreter.stack)[0]),
+        Function: lambda x: vy_str(function_call(x, vyxal.interpreter.stack)[0]),
     }[t_item](item)
 
 
