@@ -86,8 +86,8 @@ def vy_compile(program, header=""):
 
     if isinstance(program, str):
         program = Tokenise(program)
+    # print(program)
     for token in program:
-        # print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
