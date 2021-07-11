@@ -362,7 +362,7 @@ def cumulative_reduce(lhs, rhs):
 
     def f():
         for prefix in prefixes(deref(vector, False)):
-            yield VY_reduce(prefix, function)[0]
+            yield vy_reduce(prefix, function)[0]
 
     return Generator(f())
 
