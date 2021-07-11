@@ -15,12 +15,10 @@ import warnings
 from datetime import date
 from datetime import datetime as dt
 
-from vyxal import encoding
-from vyxal import utilities
-from vyxal import words
+from vyxal import encoding, utilities, words
 from vyxal.commands import *
-from vyxal.parser import *
 from vyxal.factorials import FIRST_100_FACTORIALS
+from vyxal.parser import *
 
 # Pipped modules
 
@@ -98,7 +96,6 @@ class Generator:
         raw_generator,
         limit=-1,
         initial=[],
-        condition=None,
         is_numeric_sequence=False,
     ):
         self.next_index = 0
@@ -670,6 +667,20 @@ def cumulative_sum(vector):
     for i in range(len(vector)):
         ret.append(summate(vector[: i + 1]))
     return ret
+
+
+def cumulative_reduce(lhs, rhs):
+    function = vector = None
+    if isinstance(rhs, Function):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range)
+
+    def f():
+        for prefix in prefixes(deref(vector, False)):
+            yield VY_reduce(prefix, function)[0]
+
+    return Generator(f())
 
 
 def decimalify(vector):
@@ -1606,10 +1617,10 @@ def log(lhs, rhs):
         (str, Number): lambda: "".join([c * rhs for c in lhs]),
         (Number, str): lambda: "".join([c * lhs for c in rhs]),
         (list, list): lambda: mold(lhs, rhs),
-        (list, Generator): lambda: mold(lhs, list(rhs)),
-        (Generator, list): lambda: mold(list(lhs), rhs),
+        (list, Generator): lambda: mold(lhs, list(map(deref, deref(rhs)))),
+        (Generator, list): lambda: mold(list(map(deref, deref(lhs))), rhs),
         (Generator, Generator): lambda: mold(
-            list(lhs), list(rhs)
+            list(map(deref, deref(lhs))), list(map(deref, deref(rhs)))
         ),  # There's a chance molding raw generators won't work
     }.get(types, lambda: vectorise(log, lhs, rhs))()
 
@@ -1708,6 +1719,7 @@ def modulo(lhs, rhs):
 
 def mold(content, shape):
     # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
+    print(content, shape)
     for index in range(len(shape)):
         if type(shape[index]) == list:
             mold(content, shape[index])
@@ -1830,29 +1842,18 @@ def order(lhs, rhs):
         return infinite_replace(iterable(lhs, str), iterable(rhs, str), "")
 
 
-def orderless_range(lhs, rhs, lift_factor=0):
-    types = (VY_type(lhs), VY_type(rhs))
-    if types == (Number, Number):
-        if lhs < rhs:
-            return Generator(range(lhs, rhs + lift_factor))
-        else:
-            return Generator(range(lhs, rhs + lift_factor, -1))
-    elif Function in types:
-        if types[0] is Function:
-            func, vector = lhs, iterable(rhs, range)
-        else:
-            func, vector = rhs, iterable(lhs, range)
-
-        def gen():
-            for pre in prefixes(vector):
-                yield VY_reduce(func, pre)[-1]
-
-        return Generator(gen())
-    else:
-        lhs, rhs = VY_str(lhs), VY_str(rhs)
-        pobj = regex.compile(lhs)
-        mobj = pobj.search(rhs)
-        return int(bool(mobj))
+def orderless_range(lhs, rhs):
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: Generator(
+            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+        ),
+        (Number, str): lambda: stretch(rhs, lhs),
+        (str, Number): lambda: stretch(lhs, rhs),
+        (str, str): lambda: int(bool(regex.compile(lhs).search(rhs))),
+        (types[0], Function): lambda: cumulative_reduce(lhs, rhs),
+        (Function, types[1]): lambda: cumulative_reduce(lhs, rhs),
+    }.get(types, lambda: vectorise(orderless_range, lhs, rhs))()
 
 
 def osabie_newline_join(item):
@@ -2365,6 +2366,13 @@ def square(item):
     }.get(VY_type(item), lambda: multiply(item, deref(item)))()
 
 
+def stretch(string, length):
+    ret = string
+    while len(ret) < length:
+        ret += " " if len(ret) == 0 else ret[0]
+    return ret
+
+
 def string_empty(item):
     return {Number: lambda: item % 3, str: len(item) == 0}.get(
         VY_type(item), lambda: vectorise(string_empty, item)
@@ -2577,7 +2585,7 @@ def urlify(item):
 
 
 def vectorise(fn, left, right=None, third=None, explicit=False):
-    if third:
+    if third is not None:
         types = (VY_type(left), VY_type(right))
 
         def gen():
@@ -2623,7 +2631,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
             return Generator(ret)
         else:
             return ret
-    elif right:
+    elif right is not None:
         types = (VY_type(left), VY_type(right))
 
         def gen():
@@ -3163,7 +3171,7 @@ def wrap_in_lambda(tokens):
     elif tokens[0] == Structure.LAMBDA:
         return tokens
     else:
-        return (Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})]
 
 
 def VY_compile(program, header=""):
@@ -3175,8 +3183,8 @@ def VY_compile(program, header=""):
 
     if isinstance(program, str):
         program = Tokenise(program)
+    # print(program)
     for token in program:
-        # print(token)
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
@@ -3402,7 +3410,7 @@ else:
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
-            function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
+            function_A = VY_compile(wrap_in_lambda(token_value[1]))
             compiled += function_A + NEWLINE
             compiled += "function_A = pop(stack)\n"
             compiled += transformers[token_value[0]] + NEWLINE
@@ -3425,9 +3433,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = VY_compile([wrap_in_lambda(token_value[1][0])])
-                function_B = VY_compile([wrap_in_lambda(token_value[1][1])])
-                function_C = VY_compile([wrap_in_lambda(token_value[1][2])])
+                function_A = VY_compile(wrap_in_lambda(token_value[1][0]))
+                function_B = VY_compile(wrap_in_lambda(token_value[1][1]))
+                function_C = VY_compile(wrap_in_lambda(token_value[1][2]))
                 compiled += (
                     function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )

@@ -45,7 +45,7 @@ class Keys:
     VAR_NAME = 14
     LAMBDA_ARGS = 15
     COM_NUM_VALUE = 16
-    COM_STR_VALUE = (17,)
+    COM_STR_VALUE = 17
     LAMBDA_GROUP = 18
 
 
@@ -482,6 +482,7 @@ if __name__ == "__main__":
         "10ʀ 1ß'›;",
         "5 λ1|›;",
         "ƛ:Ǎ[∇pp",
+        '1 2 3W 4 5" v+',
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
