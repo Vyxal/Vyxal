@@ -117,6 +117,7 @@ fizzbuzz_output = [
 
 
 def test_fizzbuzz():
-    stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=["j"])
-    res = vyxal.interpreter.pop(stack)
+    stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=["j", "O"])
+    res = vyxal.builtins.pop(stack)
+    print(res)
     assert res == fizzbuzz_output

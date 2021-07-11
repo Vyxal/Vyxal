@@ -1,5 +1,6 @@
 import string
 
+from vyxal.utilities import safe_apply
 
 class Structure:
     NONE = 0
@@ -461,7 +462,7 @@ if __name__ == "__main__":
         "vøD",
         ".",
         "‛| mm",
-        "‛`0`\`0`",
+        r"‛`0`\`0`",
         "k\\",
         "₌+-",
         "«S⊍ǐ/µȦġk*∪±c*ɖøW₌≤₀e+₇ /)ðaðc~²⊍λġOṙŻZ⁽ɽẇ¼∴ðḂ>⁰IŻ↳Y%⁼ǐ∩\\ǔḞo⁋$∪@ø₇↑^V×Qc□„&<$↲AFðM‟[Ẏ`∵∪SĊ⟩%IHṠλ!q⟩»ꜝ∩=ẏ¼≥ȧ(ε∑²Z₁Ẇġ@Ḃ9d@3ġf₇Ṗꜝµ∞†≥¨ǐ $*∆⇩nTǎ√7Ḃ«",
