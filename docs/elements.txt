@@ -149,7 +149,7 @@ Q                                    = exit() # quit, halt, stop
 R (a: any, b: function)              = reduce a by b # reduction, reduce
   (a: any, b: any)                   = a, vectorised_reverse(b)
 S (a: any)                           = str(a) # string, to string, stringify
-T (a: any)                           = truthy indexes in a
+T (a: any)                           = truthy indices in a
 U (a: any)                           = uniquifed(a) # uniquify, unique items, remove duplicates
 V (a: any, b: any, c: any)           = a.replace(needle=b, replacement=c) # replace
 W                                    = [stack] # wrap stack, lisitfy whole stack
@@ -243,7 +243,7 @@ z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
   (a: string, b: string)             = a.trim(b)
 ė (a: any)                           = enumerate(a) # Enumerate, Zip with range to length
 ḟ (a: any, b: any)                   = a.find(b) # Index of
-  (a: any, b: function)              = truthy_indexes(map(b, a)) # Map over truthy indices
+  (a: any, b: function)              = truthy_indices(map(b, a)) # Map over truthy indices
 ġ (a: list)                          = gcd(a)  # greatest common denominator
   (a: number, b: number)             = gcd(a, b) # greatest common denominator
   (a: string, b: any)                = longest common suffix(a, str(b))

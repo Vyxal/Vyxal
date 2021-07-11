@@ -1,10 +1,10 @@
-# `∈` - Truthy Indexes of Function
+# `∈` - Truthy Indices of Function
 
 - Arity: 2
 - In: a, f
-- Out: truthy_indexes_of(f(a))
+- Out: truthy_indices_of(f(a))
 
-Returns all indexes of `a` where the result of  `f(a)` is truthy.
+Returns all indices of `a` where the result of  `f(a)` is truthy.
 
 # Usage
 ```

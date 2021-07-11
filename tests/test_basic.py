@@ -92,6 +92,19 @@ def test_trailing_zeroes():
         print(num, base, expected, stack)
         assert stack == [expected]
 
+def test_deep_vectorise():
+    tests = [
+        [[1, 2, 3], [2, 5, 1], [3, 7, 4], "+"],
+        [[1, 2, 3], [2, 5, 1], [1, 3, -2], "-"],
+        [[1, 2, 3], [2, 5, -4], [2, 10, -12], "*"],
+        [[1, 2, 3], [2, 5, -4], [2, 5/2, -4/3], "/"],
+        [["foo", "bar", 2], [3, "baz", "barbaz"], ["foofoofoo", ['bbar', 'abar', 'zbar'], "barbazbarbaz"], "*"]
+    ]
+    for input1, input2, expected, fn in tests:
+        stack = run_code(fn, flags=["O"], input_list=[input1, input2])
+        print(input1, fn, input2, 'should equal', stack)
+        assert pop(stack) == expected
+
 
 def test_quit():
     real_print = vyxal.interpreter.vy_print

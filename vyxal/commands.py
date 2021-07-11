@@ -247,7 +247,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ġ": ("stack.append(group_consecutive(iterable(pop(stack))))", 1),
     "Ḣ": ("stack.append(iterable(pop(stack))[1:])", 1),
     "İ": (
-        "indexes, vector = pop(stack, 2); stack.append(indexed_into(vector, indexes))",
+        "indices, vector = pop(stack, 2); stack.append(indexed_into(vector, indices))",
         2,
     ),
     "Ŀ": (
@@ -484,7 +484,7 @@ stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     ),
     "¨U": ("if not online_version: stack.append(request(pop(stack)))", 1),
     "¨M": (
-        "function, indexes, original = pop(stack, 3); stack.append(map_at(function, iterable(original), iterable(indexes)))",
+        "function, indices, original = pop(stack, 3); stack.append(map_at(function, iterable(original), iterable(indices)))",
         3,
     ),
     "¨,": ("vy_print(pop(stack), end=' ')", 1),

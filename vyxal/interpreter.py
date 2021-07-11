@@ -7,6 +7,7 @@ import urllib.request
 import warnings
 
 from vyxal import encoding, utilities, words
+from vyxal.array_builtins import *
 from vyxal.builtins import *
 from vyxal.commands import *
 from vyxal.factorials import FIRST_100_FACTORIALS
@@ -58,6 +59,42 @@ MAP_OFFSET = 1
 _join = False
 _vertical_join = False
 use_encoding = False
+
+
+def set_globals(flags):
+    global stack, inputs, MAP_START, MAP_OFFSET, _join
+    global _vertical_join, use_encoding, reverse_args, keg_mode, safe_mode
+    global header, number_iterable, raw_strings
+
+    if "H" in flags:
+        stack = [100]
+
+    if "a" in flags:
+        inputs = [inputs]
+
+    if "M" in flags:
+        MAP_START = 0
+
+    if "m" in flags:
+        MAP_OFFSET = 0
+
+    if "Ṁ" in flags:
+        MAP_START = 0
+        MAP_OFFSET = 0
+
+    if "H" in flags:
+        header = "stack = [100]\nregister = 0\nprinted = False\n"
+
+    if "R" in flags:
+        number_iterable = range
+
+    _join = "j" in flags
+    _vertical_join = "L" in flags
+    use_encoding = "v" in flags
+    reverse_args = "r" in flags
+    keg_mode = "K" in flags
+    safe_mode = "E" in flags
+    raw_strings = "D" in flags
 
 
 def wrap_in_lambda(tokens):
@@ -570,42 +607,7 @@ if __name__ == "__main__":
         print("\tṡ\tPrint stack joined on spaces")
     else:
         if flags:
-            if "M" in flags:
-                MAP_START = 0
-
-            if "m" in flags:
-                MAP_OFFSET = 0
-
-            if "Ṁ" in flags:
-                MAP_START = 0
-                MAP_OFFSET = 0
-
-            if "j" in flags:
-                _join = True
-
-            if "L" in flags:
-                _vertical_join = True
-
-            if "v" in flags:
-                use_encoding = True
-
-            if "r" in flags:
-                reverse_args = True
-
-            if "K" in flags:
-                keg_mode = True
-
-            if "E" in flags:
-                safe_mode = True
-
-            if "H" in flags:
-                header = "stack = [100]\nregister = 0\nprinted = False\n"
-
-            if "R" in flags:
-                number_iterable = range
-
-            if "D" in flags:
-                raw_strings = True
+            set_globals(flags)
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
         if use_encoding:

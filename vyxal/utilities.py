@@ -1,6 +1,7 @@
 import base64
 import functools
 
+import vyxal
 from vyxal import words
 
 # Generic type constants
@@ -233,6 +234,26 @@ class ShiftDirections:
 
 
 # Helper functions
+def deep_vectorised(fn):
+    def vectorised_fn(first, second=None, third=None):
+        types = map(vy_type, [first, second, third])
+        any_list = any(typ is list for typ in types)
+        any_gen = any(typ is Generator for typ in types)
+        if any_list or any_gen:
+            res = vectorise(fn, second, first, third)
+            if any_gen:
+                return res
+            else:
+                return res._dereference()
+        elif third is not None:
+            return fn(first, second, third)
+        elif second is not None:
+            return fn(first, second)
+        else:
+            return fn(first)
+    return vectorised_fn
+
+
 def safe_apply(function, *args):
     """
     Applies function to args that adapts to the input style of the passed function.
@@ -370,6 +391,115 @@ def uncompress(s):
             final += char
 
     return final.replace("\n", "\\n").replace("\r", "")
+
+
+def vectorise(fn, left, right=None, third=None, explicit=False):
+    if third is not None:
+        types = (vy_type(left), vy_type(right))
+
+        def gen():
+            for pair in vy_zip(right, left):
+                yield safe_apply(fn, third, *pair)
+
+        def expl(l, r):
+            for item in l:
+                yield safe_apply(fn, third, r, item)
+
+        def swapped_expl(l, r):
+            for item in r:
+                yield safe_apply(fn, third, item, l)
+
+        ret = {
+            (types[0], types[1]): (
+                lambda: safe_apply(fn, left, right),
+                lambda: expl(vyxal.array_builtins.iterable(left), right),
+            ),
+            (list, types[1]): (
+                lambda: [safe_apply(fn, x, right) for x in left],
+                lambda: expl(left, right),
+            ),
+            (types[0], list): (
+                lambda: [safe_apply(fn, left, x) for x in right],
+                lambda: swapped_expl(left, right),
+            ),
+            (Generator, types[1]): (
+                lambda: expl(left, right),
+                lambda: expl(left, right),
+            ),
+            (types[0], Generator): (
+                lambda: swapped_expl(left, right),
+                lambda: swapped_expl(left, right),
+            ),
+            (list, list): (lambda: gen(), lambda: expl(left, right)),
+            (Generator, Generator): (lambda: gen(), lambda: expl(left, right)),
+            (list, Generator): (lambda: gen(), lambda: expl(left, right)),
+            (Generator, list): (lambda: gen(), lambda: expl(left, right)),
+        }[types][explicit]()
+
+        if type(ret) is Python_Generator:
+            return Generator(ret)
+        else:
+            return ret
+    elif right is not None:
+        types = (vy_type(left), vy_type(right))
+
+        def gen():
+            for pair in vy_zip(left, right):
+                yield safe_apply(fn, *pair[::-1])
+
+        def expl(l, r):
+            for item in l:
+                yield safe_apply(fn, item, r)
+
+        def swapped_expl(l, r):
+            for item in r:
+                yield safe_apply(fn, l, item)
+
+        ret = {
+            (types[0], types[1]): (
+                lambda: safe_apply(fn, left, right),
+                lambda: expl(vyxal.array_builtins.iterable(left), right),
+            ),
+            (list, types[1]): (
+                lambda: [safe_apply(fn, x, right) for x in left],
+                lambda: expl(left, right),
+            ),
+            (types[0], list): (
+                lambda: [safe_apply(fn, left, x) for x in right],
+                lambda: swapped_expl(left, right),
+            ),
+            (Generator, types[1]): (
+                lambda: expl(left, right),
+                lambda: expl(left, right),
+            ),
+            (types[0], Generator): (
+                lambda: swapped_expl(left, right),
+                lambda: swapped_expl(left, right),
+            ),
+            (list, list): (lambda: gen(), lambda: expl(left, right)),
+            (Generator, Generator): (lambda: gen(), lambda: expl(left, right)),
+            (list, Generator): (lambda: gen(), lambda: expl(left, right)),
+            (Generator, list): (lambda: gen(), lambda: expl(left, right)),
+        }[types][explicit]()
+
+        if type(ret) is Python_Generator:
+            return Generator(ret)
+        else:
+            return ret
+
+    else:
+        if vy_type(left) is Generator:
+
+            def gen():
+                for item in left:
+                    yield safe_apply(fn, item)
+
+            return Generator(gen())
+        elif vy_type(left) in (str, Number):
+            return safe_apply(fn, list(vyxal.array_builtins.iterable(left)))
+        else:
+            ret = [safe_apply(fn, x) for x in left]
+            return ret
 
 
 def vy_repr(item):

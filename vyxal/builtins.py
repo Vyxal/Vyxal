@@ -16,33 +16,32 @@ from datetime import date
 from datetime import datetime as dt
 
 import vyxal
+from vyxal import array_builtins
+from vyxal.array_builtins import iterable
 from vyxal.utilities import Function
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
 
-import numpy
-import pwn
-import regex
-import sympy
+try:
+    import numpy
+    import pwn
+    import regex
+    import sympy
+except:
+    os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
+    import numpy
+    import pwn
+    import regex
+    import sympy
 
-
+@deep_vectorised
 def add(lhs, rhs):
     """
     Returns lhs + rhs. Check command docs for type cohesion.
     """
-    types = vy_type(lhs), vy_type(rhs)
-    return {
-        (Number, Number): lambda: lhs + rhs,
-        (str, str): lambda: lhs + rhs,
-        (str, Number): lambda: str(lhs) + str(rhs),
-        (Number, str): lambda: str(lhs) + str(rhs),
-        (list, types[1]): lambda: [add(item, rhs) for item in lhs],
-        (types[0], list): lambda: [add(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: add(*x), vy_zip(lhs, rhs))),
-        (list, Generator): lambda: two_argument(add, lhs, rhs),
-        (Generator, list): lambda: two_argument(add, lhs, rhs),
-        (Generator, Generator): lambda: two_argument(add, lhs, rhs),
-    }.get(types, lambda: vectorise(add, lhs, rhs))()
+    if vy_type(lhs) != vy_type(rhs):
+        return str(lhs) + str(rhs)
+    return lhs + rhs
 
 
 def all_combinations(vector):
@@ -80,24 +79,9 @@ def assigned(vector, index, item):
         vector[index] = item
         return "".join([str(x) for x in vector])
     else:
-        temp = deref(vector, False)
+        temp = array_builtins.deref(vector, False)
         temp[index] = item
         return temp
-
-
-def atleast_ndims(vector, n):
-    """Check if an array has at least n dimensions"""
-    if n == 0:
-        return 1
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        try:
-            return atleast_ndims(next(vector), n - 1)
-        except StopIteration:
-            return 1
-    if vec_type is list:
-        return not vector or atleast_ndims(vector[0], n - 1)
-    return 0
 
 
 def optimal_compress(word):
@@ -184,36 +168,6 @@ def bit_xor(lhs, rhs):
     }.get(types, lambda: vectorise(bit_xor, lhs, rhs))()
 
 
-def cartesian_product(lhs, rhs):
-    if Function not in (vy_type(lhs), vy_type(rhs)):
-        lhs, rhs = iterable(lhs), iterable(rhs)
-        if (vy_type(lhs), vy_type(rhs)) in (
-            (Number, Number),
-            (Number, str),
-            (str, Number),
-            (str, str),
-        ):
-            return Generator(
-                map(first_n, itertools.product(iterable(lhs), iterable(rhs)))
-            )
-        return Generator(itertools.product(iterable(lhs), iterable(rhs)))
-
-    if vy_type(lhs) is Function:
-        fn, init = lhs, rhs
-    else:
-        fn, init = rhs, lhs
-
-    def gen():
-        prev = None
-        curr = init
-        while prev != curr:
-            prev = deref(curr)
-            curr = fn([curr])[-1]
-        yield curr
-
-    return Generator(gen())[-1]
-
-
 def ceiling(item):
     return {Number: lambda: math.ceil(item), str: lambda: item.split(" ")}.get(
         vy_type(item), lambda: vectorise(ceiling, item)
@@ -221,7 +175,7 @@ def ceiling(item):
 
 
 def centre(vector):
-    vector = deref(iterable(vector), True)
+    vector = array_builtins.deref(iterable(vector), True)
     focal = max(map(len, vector))
 
     def gen():
@@ -321,7 +275,7 @@ def combinations_replace_generate(lhs, rhs):
             curr = init
             while prev != curr:
                 yield curr
-                prev = deref(curr)
+                prev = array_builtins.deref(curr)
                 curr = fn([curr])[-1]
 
         return Generator(gen())
@@ -353,29 +307,6 @@ def counts(vector):
     return ret
 
 
-def cumulative_reduce(lhs, rhs):
-    function = vector = None
-    if isinstance(rhs, Function):
-        function, vector = rhs, iterable(lhs, range)
-    else:
-        function, vector = lhs, iterable(rhs, range)
-
-    def f():
-        for prefix in prefixes(deref(vector, False)):
-            yield vy_reduce(prefix, function)[0]
-
-    return Generator(f())
-
-
-def cumulative_sum(vector):
-    ret = []
-    vector = iterable(vector)
-    # if vy_type(vector) is Generator: vector = vector._dereference()
-    for i in range(len(vector)):
-        ret.append(summate(vector[: i + 1]))
-    return ret
-
-
 def decimalify(vector):
     if vy_type(vector) == Number:
         return iterable(vector)
@@ -393,64 +324,15 @@ def deltas(vector):
     return ret
 
 
-def deref(item, generator_to_list=True, limit=-1):
-    if vy_type(item) is Generator:
-        if limit != -1:
-            return item.limit_to_items(limit)
-        return [item.safe, item._dereference][generator_to_list]()
-    if type(item) not in [int, float, str]:
-        return list(map(deref, item))
-    return item
-
-
-def determinant(matrix):
-    det = numpy.linalg.det(numpy.asarray(deref(matrix)))
-    # If it's a number, don't convert to list
-    if isinstance(matrix, numpy.number):
-        return det
-    else:
-        return det.tolist()
-
-
 def dictionary_compress(item):
     return "`" + optimal_compress(vy_str(item)) + "`"
-
-
-def diagonals(vector):
-    # Getting real heavy Mornington Crescent vibes from this
-    # joke explanation: the diagonals are the most important part of the game
-    vector = numpy.asarray(vector)
-    diag_num = 0
-    diagonal = numpy.diag(vector)
-    # postive diags first
-    while len(diagonal):
-        yield vectorise(lambda x: x.item(), list(diagonal))
-        diag_num += 1
-        diagonal = numpy.diag(vector, k=diag_num)
-
-    diag_num = -1
-    diagonal = numpy.diag(vector, k=diag_num)
-    # now the other diagonals
-    while len(diagonal):
-        yield vectorise(lambda x: x.item(), list(diagonal))
-        diag_num -= 1
-        diagonal = numpy.diag(vector, k=diag_num)
-
-
-def diagonal_main(matrix):
-    return numpy.asarray(matrix).diagonal().tolist()
-
-
-def diagonal_anti(matrix):
-    flipped = numpy.fliplr(numpy.asarray(matrix)).diagonal().tolist()
-    return flipped
 
 
 def distance_between(lhs, rhs):
     inner = Generator(
         map(lambda x: exponate(subtract(x[0], x[1]), 2), vy_zip(lhs, rhs))
     )
-    inner = summate(inner)
+    inner = array_builtins.summate(inner)
     return exponate(inner, 0.5)
 
 
@@ -497,7 +379,7 @@ def divide(lhs, rhs):
 def divisors_of(item):
     t_item = vy_type(item)
     if t_item in [list, Generator]:
-        return Generator(prefixes(item))
+        return Generator(array_builtins.prefixes(item))
 
     divisors = []
     if t_item == str:
@@ -530,10 +412,6 @@ def dont_pop(function, vector):
         args = pop(vector, function.stored_arity)
         vector.append(safe_apply(function, args[::-1]))
         vyxal.interpreter.retain_items = False
-
-
-def dot_product(lhs, rhs):
-    return summate(multiply(lhs, rhs))
 
 
 def escape(item):
@@ -621,7 +499,7 @@ def fibonacci():
 
 def find(haystack, needle, start=0):
     if type(needle) is Function:
-        return indexes_where(haystack, needle)
+        return array_builtins.indices_where(haystack, needle)
 
     # It looks like something from 2001
     index = 0
@@ -643,35 +521,12 @@ def find(haystack, needle, start=0):
     while True:
         try:
             temp = haystack[index]
-            if deref(temp) == deref(needle):
+            if array_builtins.deref(temp) == array_builtins.deref(needle):
                 return index
         except:
             break
         index += 1
     return -1
-
-
-def first_n(func, n=None):
-    if Function not in (type(func), type(n)):
-        if n:
-            return iterable(func)[n:]
-
-        ret = "".join([vy_str(n) for n in iterable(func)])
-        return vy_eval(ret)
-    ret = []
-    current_index = 0
-    n = n or 1
-    if isinstance(n, Function):
-        call, limit = n, func
-    else:
-        call, limit = func, n
-    while len(ret) < limit:
-        result = call([current_index])[-1]
-        if result:
-            ret.append(current_index)
-        current_index += 1
-
-    return ret
 
 
 def flatten(item):
@@ -696,178 +551,6 @@ def floor(item):
         Number: lambda: math.floor(item),
         str: lambda: int("".join([l for l in item if l in "0123456789"])),
     }.get(vy_type(item), lambda: vectorise(floor, item))()
-
-
-def foldl_by_axis(fn, vector, axis, init=None):
-    if axis > 0:
-        return map_norm(
-            lambda inner_arr: foldl_by_axis(fn, inner_arr, axis - 1, init=init), vector
-        )
-    vec_type = vy_type(vector)
-    if init is None:
-        acc = next(vector) if vec_type is Generator else vector.pop(0)
-    else:
-        acc = init
-    for inner_arr in vector:
-        acc = vectorise(fn, inner_arr, acc)
-    return acc
-
-
-def foldl_cols(fn, vector, init=None):
-    """
-    Fold each column of a matrix from top to bottom, possibly with a starting value.
-    TODO generalize to multiple dimensions
-    """
-    vec_type = vy_type(vector)
-    print(f"vector={vector}")
-    if vec_type is Generator:
-        if vector.end_reached:
-            return []
-        first_row = next(vector)
-        if atleast_ndims(first_row, 2):
-            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
-        num_cols = len(first_row)
-        cs = range(num_cols)
-        if init is None:
-            res = next(vector)
-            start = 1
-        else:
-            res = [init] * num_cols
-            start = 0
-        while not vector.end_reached:
-            res = zip_with2(fn, res, next(vector))
-        return res
-    elif vec_type is list:
-        num_rows = len(vector)
-        if not num_rows:
-            return []
-        if atleast_ndims(vector[0], 2):
-            print("recursioning")
-            return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
-        num_cols = len(vector[0])
-        cs = range(num_cols)
-        if init is None:
-            res = vector[0]
-            start = 1
-        else:
-            res = [init] * num_cols
-            start = 0
-        for r in range(start, num_rows):
-            res = zip_with2(fn, res, vector[r])
-        return res
-    raise ValueError("Expected list or generator, cannot fold the columns of an atom")
-
-
-def foldl_rows(fn, vector, init=None):
-    """
-    Fold each row of a matrix from the left, possibly with a starting value.
-    """
-    if not vector:
-        return []
-    vec_type = vy_type(vector)
-    first_row = vector[0] if vec_type is list else next(vector)
-    inner_type = vy_type(first_row)
-    if inner_type is list:
-        return [foldl_rows(fn, row, init=init) for row in vector]
-    elif inner_type is Generator:
-
-        def gen():
-            yield foldl_rows(fn, first_row, init=init)
-            for row in vector:
-                yield foldl_rows(fn, row, init=init)
-
-        return Generator(gen())
-    else:  # 1D fold/reduction
-        if vec_type is Generator:
-            acc = next(vector) if init is None else init
-            while not vector.end_reached:
-                acc = safe_apply(fn, acc, next(vector))
-            return acc
-        else:
-            if init is None:
-                acc = vector[0]
-                start = 1
-            else:
-                acc = init
-                start = 0
-            for i in range(start, len(vector)):
-                acc = safe_apply(fn, vector[i], acc)
-            return acc
-
-
-def foldr_by_axis(fn, vector, axis, init=None):
-    if axis > 0:
-        return map_norm(
-            lambda inner_arr: foldr_by_axis(fn, inner_arr, axis - 1, init=init), vector
-        )
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        vector = vector._dereference()
-    if init is None:
-        acc = vector[-1]
-        start = len(vector) - 2
-    else:
-        acc = init
-        start = len(vector) - 1
-    for i in range(start, -1, -1):
-        acc = vectorise(fn, acc, vector[i])
-    return acc
-
-
-def foldr_cols(fn, vector, init=None):
-    """
-    Fold each column of a matrix from top to bottom, possibly with a starting value.
-    TODO generalize to multiple dimensions
-    """
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        vector = vector._dereference()
-    num_rows = len(vector)
-    if not num_rows:
-        return []
-    num_cols = len(vector[0])
-    cs = range(num_cols)
-    if init is None:
-        res = vector[-1]
-        start = len(vector) - 2
-    else:
-        res = [init] * num_cols
-        start = len(vector) - 1
-    for r in range(start, -1, -1):
-        res = zip_with2(fn, vector[r], res)
-    return res
-
-
-def foldr_rows(fn, vector, init=None):
-    """
-    Fold each row of a matrix from the left, possibly with a starting value.
-    """
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        vector = vector._dereference()
-    if not vector:
-        return []
-    inner_type = vy_type(vector[0])
-    if inner_type is list:
-        return [foldr_rows(fn, row, init=init) for row in vector]
-    elif inner_type is Generator:
-
-        def gen():
-            yield foldr_rows(fn, vector[0], init=init)
-            for row in vector:
-                yield foldr_rows(fn, row, init=init)
-
-        return Generator(gen())
-    # 1D fold/reduction
-    if init is None:
-        acc = vector[-1]
-        start = len(vector) - 2
-    else:
-        acc = init
-        start = len(vector) - 1
-    for i in range(start, -1, -1):
-        acc = safe_apply(fn, acc, vector[i])
-    return acc
 
 
 def format_string(value, items):
@@ -935,7 +618,7 @@ def gcd(lhs, rhs=None):
 
     else:
         # I can't use vy_reduce because ugh reasons
-        lhs = deref(lhs, True)
+        lhs = array_builtins.deref(lhs, True)
         return int(numpy.gcd.reduce(lhs))
 
 
@@ -969,7 +652,7 @@ def graded(item):
     return {Number: lambda: item + 2, str: lambda: item.upper(),}.get(
         vy_type(item),
         lambda: Generator(
-            map(lambda x: x[0], sorted(enumerate(deref(item)), key=lambda x: x[-1]))
+            map(lambda x: x[0], sorted(enumerate(array_builtins.deref(item)), key=lambda x: x[-1]))
         ),
     )()
 
@@ -980,28 +663,11 @@ def graded_down(item):
         lambda: Generator(
             map(
                 lambda x: x[0],
-                sorted(enumerate(deref(item)), key=lambda x: x[-1], reverse=True),
+                sorted(enumerate(array_builtins.deref(item)), key=lambda x: x[-1], reverse=True),
             )
         ),
     )()
 
-
-def group_consecutive(vector):
-    ret = []
-    temp = [vector[0]]
-    last = vector[0]
-    for item in vector[1:]:
-        if item == last:
-            temp.append(item)
-        else:
-            ret.append(temp)
-            temp = [item]
-            last = item
-
-    if len(ret) == 0 or temp != ret[-1]:
-        ret.append(temp)
-
-    return ret
 
 
 def halve(item):
@@ -1009,93 +675,6 @@ def halve(item):
         Number: lambda: divide(item, 2),
         str: lambda: wrap(item, ceiling(len(item) / 2)),
     }.get(vy_type(item), lambda: vectorise(halve, item))()
-
-
-def inclusive_range(lhs, rhs):
-    types = (vy_type(lhs), vy_type(rhs))
-    if Function in types:
-        if types[0] is Function:
-            func, vector = lhs, rhs
-        else:
-            func, vector = rhs, lhs
-
-        def gen():
-            for index, item in enumerate(vector):
-                if (index + 1) % 2:
-                    yield item
-                else:
-                    yield func([item])[-1]
-
-        return Generator(gen())
-    if types != (Number, Number):
-        lhs, rhs = vy_str(lhs), vy_str(rhs)
-        pobj = regex.compile(rhs)
-        return pobj.split(lhs)
-
-    if lhs < rhs:
-        return Generator(range(int(lhs), int(rhs) + 1))
-    else:
-        return Generator(range(int(lhs), int(rhs) - 1, -1))
-
-
-def index(vector, index):
-    types = vy_type(vector), vy_type(index)
-    if Function in types:
-        if types[0] is Function:
-            fn, init = vector, index
-        else:
-            fn, init = index, vector
-
-        def gen():
-            seen = []
-            curr = deref(init)
-            while curr not in seen:
-                yield curr
-                seen.append(curr)
-                curr = deref(fn([curr])[-1])
-
-        return Generator(gen())
-    elif vy_type(index) == Number:
-        if vy_type(vector) is Generator:
-            return vector[int(index)]
-        return vector[int(index) % len(vector)]
-    elif vy_type(index) in (list, Generator):
-        return vector[slice(*index)]
-    else:
-        return [vector, index, join(vector, index)]
-
-
-def indexed_into(vector, indexes):
-    types = (vy_type(vector), vy_type(indexes))
-    if Function not in types:
-        ret = []
-        vector = iterable(vector)
-        for ind in iterable(indexes):
-            ret.append(vector[ind % len(vector)])
-        return ret
-    else:
-        if vy_type(vector) is Function:
-            fn, init = vector, indexes
-        else:
-            fn, init = indexes, vector
-
-        def gen():
-            seen = []
-            curr = deref(init)
-            while curr not in seen:
-                curr = deref(fn([curr])[-1])
-                seen.append(curr)
-            yield curr
-
-        return Generator(gen())[-1]
-
-
-def indexes_where(fn, vector):
-    ret = []
-    for i in range(len(vector)):
-        if fn([vector[i]])[-1]:
-            ret.append(i)
-    return ret
 
 
 def infinite_replace(haystack, needle, replacement):
@@ -1113,7 +692,7 @@ def infinite_replace(haystack, needle, replacement):
 
 
 def inserted(vector, item, index):
-    temp = deref(iterable(vector), False)
+    temp = array_builtins.deref(iterable(vector), False)
     t_vector = type(temp)
     if t_vector is list:
         temp.insert(index, item)
@@ -1142,22 +721,6 @@ def integer_list(value):
         for m in c:
             temp += charmap[m]
         ret.append(int(temp))
-    return ret
-
-
-def interleave(lhs, rhs):
-    ret = []
-    for i in range(min(len(lhs), len(rhs))):
-        ret.append(lhs[i])
-        ret.append(rhs[i])
-    if len(lhs) != len(rhs):
-        if len(lhs) < len(rhs):
-            # The rhs is longer
-            ret += list(rhs[i + 1 :])
-        else:
-            ret += list(lhs[i + 1 :])
-    if type(lhs) is str and type(rhs) is str:
-        return "".join(ret)
     return ret
 
 
@@ -1199,25 +762,8 @@ def is_square(n):
         return vectorise(is_square, n)
 
 
-def iterable(item, t=None):
-    t = t or vyxal.interpreter.number_iterable
-    if vy_type(item) == Number:
-        if t is list:
-            return [int(let) if let not in "-." else let for let in str(item)]
-        if t is range:
-            return Generator(
-                range(
-                    vyxal.interpreter.MAP_START,
-                    int(item) + vyxal.interpreter.MAP_OFFSET,
-                )
-            )
-        return t(item)
-    else:
-        return item
-
-
 def iterable_shift(vector, direction, times=1):
-    vector = deref(iterable(vector))
+    vector = array_builtins.deref(iterable(vector))
     t_vector = type(vector)
     for _ in range(times):
         if direction == ShiftDirections.LEFT:
@@ -1266,7 +812,7 @@ def join_on(vector, item):
         (str, str): lambda: item.join(vector),
         (list, types[1]): lambda: vy_str(item).join([vy_str(n) for n in vector]),
         (Generator, types[1]): lambda: vy_str(item).join(
-            [vy_str(n) for n in deref(vector)]
+            [vy_str(n) for n in array_builtins.deref(vector)]
         ),
     }[types]()
 
@@ -1311,11 +857,11 @@ def log(lhs, rhs):
         (Number, Number): lambda: math.log(lhs, rhs),
         (str, Number): lambda: "".join([c * rhs for c in lhs]),
         (Number, str): lambda: "".join([c * lhs for c in rhs]),
-        (list, list): lambda: mold(lhs, rhs),
-        (list, Generator): lambda: mold(lhs, list(map(deref, deref(rhs)))),
-        (Generator, list): lambda: mold(list(map(deref, deref(lhs))), rhs),
-        (Generator, Generator): lambda: mold(
-            list(map(deref, deref(lhs))), list(map(deref, deref(rhs)))
+        (list, list): lambda: array_builtins.mold(lhs, rhs),
+        (list, Generator): lambda: array_builtins.mold(lhs, list(map(array_builtins.deref, array_builtins.deref(rhs)))),
+        (Generator, list): lambda: array_builtins.mold(list(map(array_builtins.deref, array_builtins.deref(lhs))), rhs),
+        (Generator, Generator): lambda: array_builtins.mold(
+            list(map(array_builtins.deref, array_builtins.deref(lhs))), list(map(array_builtins.deref, array_builtins.deref(rhs)))
         ),  # There's a chance molding raw generators won't work
     }.get(types, lambda: vectorise(log, lhs, rhs))()
 
@@ -1334,55 +880,6 @@ def lshift(lhs, rhs):
         (Generator, list): lambda: two_argument(lshift, lhs, rhs),
         (Generator, Generator): lambda: two_argument(lshift, lhs, rhs),
     }.get(types, lambda: vectorise(lshift, lhs, rhs))()
-
-
-def map_at(function, vector, indexes):
-    def gen():
-        for pos, element in enumerate(vector):
-            if pos in indexes:
-                yield function([element])[-1]
-            else:
-                yield element
-
-    return Generator(gen())
-
-
-def map_every_n(vector, function, index):
-    def gen():
-        for pos, element in enumerate(vector):
-            if (pos + 1) % index:
-                yield element
-            else:
-                yield function([element])[-1]
-
-    return Generator(gen())
-
-
-def map_norm(fn, vector):
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-
-        def gen():
-            for item in vector:
-                yield fn(item)
-
-        return Generator(gen())
-    elif vec_type is Number:
-        pass  # idk what to do here, make a range or use it as a singleton?
-    else:
-        return Generator(map(fn, vector))
-
-
-def matrix_multiply(lhs, rhs):
-    transformed_right = deref(transpose(rhs))
-    ret = []
-
-    for row in lhs:
-        temp = []
-        for col in transformed_right:
-            temp.append(summate(multiply(row, col)))
-        ret.append(temp[::])
-    return ret
 
 
 def mirror(item):
@@ -1412,18 +909,7 @@ def modulo(lhs, rhs):
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 
 
-def mold(content, shape):
-    # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
-    for index in range(len(shape)):
-        if type(shape[index]) == list:
-            mold(content, shape[index])
-        else:
-            item = content.pop(0)
-            shape[index] = item
-            content.append(item)
-    return shape
-
-
+@deep_vectorised
 def multiply(lhs, rhs):
     types = vy_type(lhs), vy_type(rhs)
     if types == (Function, Number):
@@ -1432,12 +918,9 @@ def multiply(lhs, rhs):
     elif types == (Number, Function):
         rhs.stored_arity = lhs
         return rhs
-    return {
-        (Number, Number): lambda: lhs * rhs,
-        (str, str): lambda: [x + rhs for x in lhs],
-        (str, Number): lambda: lhs * rhs,
-        (Number, str): lambda: lhs * rhs,
-    }.get(types, lambda: vectorise(multiply, lhs, rhs))()
+    if types == (str, str):
+        return [x + rhs for x in lhs]
+    return lhs * rhs
 
 
 def ncr(lhs, rhs):
@@ -1488,19 +971,6 @@ def nwise_pair(lhs, rhs):
     return Generator(zip(*iters))
 
 
-def nub_sieve(vector):
-    def gen():
-        occurances = {}
-        for item in vector:
-            yield int(item not in occurances)
-            if item in occurances:
-                occurances[item] += 1
-            else:
-                occurances[item] = 1
-
-    return Generator(gen())
-
-
 def one_argument_tail_index(vector, index, start):
     types = (vy_type(vector), vy_type(index))
     if Number not in types:
@@ -1545,8 +1015,8 @@ def orderless_range(lhs, rhs):
         (Number, str): lambda: stretch(rhs, lhs),
         (str, Number): lambda: stretch(lhs, rhs),
         (str, str): lambda: int(bool(regex.compile(lhs).search(rhs))),
-        (types[0], Function): lambda: cumulative_reduce(lhs, rhs),
-        (Function, types[1]): lambda: cumulative_reduce(lhs, rhs),
+        (types[0], Function): lambda: array_builtins.scanl_first(lhs, rhs),
+        (Function, types[1]): lambda: array_builtins.scanl_first(lhs, rhs),
     }.get(types, lambda: vectorise(orderless_range, lhs, rhs))()
 
 
@@ -1573,28 +1043,11 @@ def palindromise(item):
 
 
 def para_apply(fn_A, fn_B, vector):
-    temp = deref(vector)[::]
+    temp = array_builtins.deref(vector)[::]
     args_A = pop(vector, fn_A.stored_arity, True)
     args_B = pop(temp, fn_B.stored_arity, True)
     vector.append(fn_A(args_A)[-1])
     vector.append(fn_B(args_B)[-1])
-
-
-def partition(item, I=1):
-    # https://stackoverflow.com/a/44209393/9363594
-    yield [item]
-    for i in range(I, item // 2 + 1):
-        for p in partition(item - i, i):
-            yield [i] + p
-
-
-def permutations(vector):
-    t_vector = vy_type(vector)
-    vector = itertools.permutations(vector)
-
-    if t_vector is str:
-        return Generator(map(lambda x: "".join(x), vector))
-    return Generator(vector)
 
 
 def pluralise(lhs, rhs):
@@ -1633,24 +1086,6 @@ def pop(vector, num=1, wrap=False):
     if vyxal.interpreter.reverse_args:
         return ret[::-1]
     return ret
-
-
-def powerset(vector):
-    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
-    if type(vector) is Generator:
-        vector = vector._dereference()
-    elif type(vector) is str:
-        vector = list(vector)
-    return Generator(
-        itertools.chain.from_iterable(
-            itertools.combinations(vector, r) for r in range(len(vector) + 1)
-        )
-    )
-
-
-def prefixes(vector):
-    for i in range(len(iterable(vector))):
-        yield iterable(vector)[0 : i + 1]
 
 
 def prime_factors(item):
@@ -1823,114 +1258,6 @@ def run_length_decode(vector):
     return ret
 
 
-def run_length_encode(item):
-    item = group_consecutive(iterable(item))
-    return Generator(map(lambda x: [x[0], len(x)], item))
-
-
-def scanl_by_axis(fn, vector, axis, init=None):
-    if axis > 0:
-        return map_norm(
-            lambda inner_arr: scanl_by_axis(fn, inner_arr, axis - 1, init=init), vector
-        )
-    vec_type = vy_type(vector)
-    if init is None:
-        acc = [next(vector) if vec_type is Generator else vector.pop(0)]
-    else:
-        acc = [init]
-    for inner_arr in vector:
-        acc.append(vectorise(fn, inner_arr, acc[-1]))
-    return acc
-
-
-def scanl_rows(fn, vector, init=None):
-    """
-    Fold each row of a matrix from the left, possibly with a starting value.
-    """
-    if not vector:
-        return []
-    vec_type = vy_type(vector)
-    first_row = vector[0] if vec_type is list else next(vector)
-    inner_type = vy_type(first_row)
-    if inner_type is list:
-        return [scanl_rows(fn, row, init=init) for row in vector]
-    elif inner_type is Generator:
-
-        def gen():
-            yield scanl_rows(fn, first_row, init=init)
-            for row in vector:
-                yield scanl_rows(fn, row, init=init)
-
-        return Generator(gen())
-    else:  # 1D fold/reduction
-        if vec_type is Generator:
-            acc = [next(vector)] if init is None else [init]
-            while not vector.end_reached:
-                acc.append(safe_apply(fn, acc[-1], next(vector)))
-            return acc
-        else:
-            if init is None:
-                acc = [vector[0]]
-                start = 1
-            else:
-                acc = [init]
-                start = 0
-            for i in range(start, len(vector)):
-                acc.append(safe_apply(fn, vector[i], acc[-1]))
-            return acc
-
-
-def scanr_by_axis(fn, vector, axis, init=None):
-    if axis > 0:
-        return map_norm(
-            lambda inner_arr: scanr_by_axis(fn, inner_arr, axis - 1, init=init), vector
-        )
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        vector = vector._dereference()
-    if init is None:
-        acc = [vector[-1]]
-        start = len(vector) - 2
-    else:
-        acc = [init]
-        start = len(vector) - 1
-    for i in range(start, -1, -1):
-        acc.append(vectorise(fn, acc[-1], vector[i]))
-    return acc
-
-
-def scanr_rows(fn, vector, init=None):
-    """
-    Fold each row of a matrix from the left, possibly with a starting value.
-    """
-    vec_type = vy_type(vector)
-    if vec_type is Generator:
-        vector = vector._dereference()
-    if not vector:
-        return []
-    inner_type = vy_type(vector[0])
-    if inner_type is list:
-        return [scanl_rows(fn, row, init=init) for row in vector]
-    elif inner_type is Generator:
-
-        def gen():
-            yield scanr_rows(fn, vector[0], init=init)
-            for row in vector:
-                yield scanr_rows(fn, row, init=init)
-
-        return Generator(gen())
-    # 1D fold/reduction
-    if init is None:
-        acc = [vector[-1]]
-        start = len(vector) - 2
-    else:
-        acc = [init]
-        start = len(vector) - 1
-    for i in range(start, -1, -1):
-        acc.append(safe_apply(fn, acc[-1], vector[i]))
-    return acc
-
-
 def sentence_case(item):
     ret = ""
     capitalise = True
@@ -2055,7 +1382,7 @@ def square(item):
     return {
         Number: lambda: item * item,
         str: lambda: grid_helper(item),
-    }.get(vy_type(item), lambda: multiply(item, deref(item)))()
+    }.get(vy_type(item), lambda: multiply(item, array_builtins.deref(item)))()
 
 
 def stretch(string, length):
@@ -2076,20 +1403,13 @@ def strip_non_alphabet(name):
     return "".join(stripped)
 
 
-def sublists(item):
-    yield []
-    length = len(item)
-    for size in range(1, length + 1):
-        for sub in range((length - size) + 1):
-            yield item[sub : sub + size]
-
-
 def substrings(item):
     for i in range(0, len(item) + 1):
         for j in range(1, len(item) + 1):
             yield item[i:j]
 
 
+@deep_vectorised
 def subtract(lhs, rhs):
     types = vy_type(lhs), vy_type(rhs)
 
@@ -2097,34 +1417,8 @@ def subtract(lhs, rhs):
         (Number, Number): lambda: lhs - rhs,
         (str, str): lambda: lhs.replace(rhs, ""),
         (str, Number): lambda: lhs + ("-" * rhs),
-        (Number, str): lambda: ("-" * lhs) + rhs,
-        (list, types[1]): lambda: [subtract(item, rhs) for item in lhs],
-        (types[0], list): lambda: [subtract(lhs, item) for item in rhs],
-        (list, list): lambda: list(map(lambda x: subtract(*x), vy_zip(lhs, rhs))),
-        (list, Generator): lambda: two_argument(subtract, lhs, rhs),
-        (Generator, list): lambda: two_argument(subtract, lhs, rhs),
-        (Generator, Generator): lambda: two_argument(subtract, lhs, rhs),
-    }.get(types, lambda: vectorise(subtract, lhs, rhs))()
-
-
-def summate(vector):
-    vector = iterable(vector)
-    if type(vector) is Generator:
-        return vector._reduce(add)
-    if len(vector) > 0:
-        ret = vector[0]
-        for item in vector[1:]:
-            ret = add(ret, item)
-        return ret
-    else:
-        return 0
-
-
-def sums(vector):
-    ret = []
-    for i in range(len(vector)):
-        ret.append(summate(vector[0 : i + 1]))
-    return ret
+        (Number, str): lambda: ("-" * lhs) + rhs
+    }[types]()
 
 
 def tab(x):
@@ -2147,11 +1441,11 @@ def transformer_vectorise(function, vector):
 
 
 def transliterate(original, new, transliterant):
-    transliterant = deref(transliterant)
+    transliterant = array_builtins.deref(transliterant)
     t_string = type(transliterant)
     if t_string is list:
         transliterant = list(map(str, transliterant))
-    original = deref(original)
+    original = array_builtins.deref(original)
     if type(original) is list:
         original = list(map(str, original))
     ret = t_string()
@@ -2166,18 +1460,6 @@ def transliterate(original, new, transliterant):
         except:
             ret += t_string(char)
     return ret
-
-
-def transpose(vector):
-    # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L1311
-    vector = iterable(vector)
-    vector = list(vector)
-    return Generator(
-        map(
-            lambda t: filter(None.__ne__, t),
-            itertools.zip_longest(*map(iterable, vector)),
-        )
-    )
 
 
 def trim(lhs, rhs, left=False, right=False):
@@ -2209,7 +1491,7 @@ def trim(lhs, rhs, left=False, right=False):
     return lhs[lindex:rindex]
 
 
-def truthy_indexes(vector):
+def truthy_indices(vector):
     ret = []
     for i in range(len(vector)):
         if bool(vector[i]):
@@ -2232,30 +1514,10 @@ def two_power(item):
 
 def uneval(item):
     item = [char for char in item]
-    indexes = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
-    for i in indexes:
+    indices = [i for i, ltr in enumerate(item) if ltr in ["\\", "`"]][::-1]
+    for i in indices:
         item.insert(i, "\\")
     return "`" + "".join(item) + "`"
-
-
-def uninterleave(item):
-    left, right = [], []
-    for i in range(len(item)):
-        if i % 2 == 0:
-            left.append(item[i])
-        else:
-            right.append(item[i])
-    if type(item) is str:
-        return ["".join(left), "".join(right)]
-    return [left, right]
-
-
-def uniquify(vector):
-    seen = []
-    for item in vector:
-        if item not in seen:
-            yield item
-            seen.append(item)
 
 
 def unsympy(item):
@@ -2275,115 +1537,6 @@ def urlify(item):
     return item
 
 
-def vectorise(fn, left, right=None, third=None, explicit=False):
-    if third is not None:
-        types = (vy_type(left), vy_type(right))
-
-        def gen():
-            for pair in vy_zip(right, left):
-                yield safe_apply(fn, third, *pair)
-
-        def expl(l, r):
-            for item in l:
-                yield safe_apply(fn, third, r, item)
-
-        def swapped_expl(l, r):
-            for item in r:
-                yield safe_apply(fn, third, item, l)
-
-        ret = {
-            (types[0], types[1]): (
-                lambda: safe_apply(fn, left, right),
-                lambda: expl(iterable(left), right),
-            ),
-            (list, types[1]): (
-                lambda: [safe_apply(fn, x, right) for x in left],
-                lambda: expl(left, right),
-            ),
-            (types[0], list): (
-                lambda: [safe_apply(fn, left, x) for x in right],
-                lambda: swapped_expl(left, right),
-            ),
-            (Generator, types[1]): (
-                lambda: expl(left, right),
-                lambda: expl(left, right),
-            ),
-            (types[0], Generator): (
-                lambda: swapped_expl(left, right),
-                lambda: swapped_expl(left, right),
-            ),
-            (list, list): (lambda: gen(), lambda: expl(left, right)),
-            (Generator, Generator): (lambda: gen(), lambda: expl(left, right)),
-            (list, Generator): (lambda: gen(), lambda: expl(left, right)),
-            (Generator, list): (lambda: gen(), lambda: expl(left, right)),
-        }[types][explicit]()
-
-        if type(ret) is Python_Generator:
-            return Generator(ret)
-        else:
-            return ret
-    elif right is not None:
-        types = (vy_type(left), vy_type(right))
-
-        def gen():
-            for pair in vy_zip(left, right):
-                yield safe_apply(fn, *pair[::-1])
-
-        def expl(l, r):
-            for item in l:
-                yield safe_apply(fn, item, r)
-
-        def swapped_expl(l, r):
-            for item in r:
-                yield safe_apply(fn, l, item)
-
-        ret = {
-            (types[0], types[1]): (
-                lambda: safe_apply(fn, left, right),
-                lambda: expl(iterable(left), right),
-            ),
-            (list, types[1]): (
-                lambda: [safe_apply(fn, x, right) for x in left],
-                lambda: expl(left, right),
-            ),
-            (types[0], list): (
-                lambda: [safe_apply(fn, left, x) for x in right],
-                lambda: swapped_expl(left, right),
-            ),
-            (Generator, types[1]): (
-                lambda: expl(left, right),
-                lambda: expl(left, right),
-            ),
-            (types[0], Generator): (
-                lambda: swapped_expl(left, right),
-                lambda: swapped_expl(left, right),
-            ),
-            (list, list): (lambda: gen(), lambda: expl(left, right)),
-            (Generator, Generator): (lambda: gen(), lambda: expl(left, right)),
-            (list, Generator): (lambda: gen(), lambda: expl(left, right)),
-            (Generator, list): (lambda: gen(), lambda: expl(left, right)),
-        }[types][explicit]()
-
-        if type(ret) is Python_Generator:
-            return Generator(ret)
-        else:
-            return ret
-
-    else:
-        if vy_type(left) is Generator:
-
-            def gen():
-                for item in left:
-                    yield safe_apply(fn, item)
-
-            return Generator(gen())
-        elif vy_type(left) in (str, Number):
-            return safe_apply(fn, list(iterable(left)))
-        else:
-            ret = [safe_apply(fn, x) for x in left]
-            return ret
-
-
 def vectorised_not(item):
     return {Number: lambda: int(not item), str: lambda: int(not item)}.get(
         vy_type(item), lambda: vectorise(vectorised_not, item)
@@ -2394,7 +1547,7 @@ def vertical_join(vector, padding=" "):
     if vy_type(padding) == vy_type(vector) == Number:
         return abs(vector - padding)
 
-    lengths = list(map(len, deref(vector, True)))
+    lengths = list(map(len, array_builtins.deref(vector, True)))
     vector = [padding * (max(lengths) - len(x)) + x for x in vector]
 
     out = ""
@@ -2425,9 +1578,9 @@ def vertical_mirror(item, mapping=None):
 def wrap(vector, width):
     types = vy_type(vector), vy_type(width)
     if types == (Function, types[1]):
-        return map_every_n(width, vector, 2)
+        return array_builtins.map_every_n(width, vector, 2)
     elif types == (types[0], Function):
-        return map_every_n(vector, width, 2)
+        return array_builtins.map_every_n(vector, width, 2)
 
     # Because textwrap.wrap doesn't consistently play nice with spaces
     ret = []
@@ -2617,7 +1770,7 @@ def vy_max(item, other=None):
         if item:
             biggest = item[0]
             for sub in item[1:]:
-                res = compare(deref(sub), deref(biggest), Comparitors.GREATER_THAN)
+                res = compare(array_builtins.deref(sub), array_builtins.deref(biggest), Comparitors.GREATER_THAN)
                 if vy_type(res) in [list, Generator]:
                     res = any(res)
                 if res:
@@ -2635,7 +1788,7 @@ def vy_min(item, other=None):
             (str, str): lambda: min(item, other),
         }.get(
             (vy_type(item), vy_type(other)),
-            lambda: vectorise(vy_min, deref(item), deref(other)),
+            lambda: vectorise(vy_min, array_builtins.deref(item), array_builtins.deref(other)),
         )()
 
         return ret
@@ -2644,7 +1797,7 @@ def vy_min(item, other=None):
         if item:
             smallest = item[0]
             for sub in item[1:]:
-                res = compare(deref(sub), deref(smallest), Comparitors.LESS_THAN)
+                res = compare(array_builtins.deref(sub), array_builtins.deref(smallest), Comparitors.LESS_THAN)
                 if vy_type(res) in [list, Generator]:
                     res = any(res)
                 if res:
@@ -2738,7 +1891,7 @@ def vy_round(item):
 
 def vy_sorted(vector, fn=None):
     if fn is not None and type(fn) is not Function:
-        return inclusive_range(vector, fn)
+        return array_builtins.inclusive_range(vector, fn)
     t_vector = type(vector)
     vector = iterable(vector, range)
     if t_vector is Generator:
@@ -2782,34 +1935,3 @@ def vy_zipmap(lhs, rhs):
 
     return Generator(f())
 
-
-def zip_with2(fn, xs, ys):
-    xs_type, ys_type = vy_type(xs), vy_type(ys)
-    # Convert both to Generators if not already
-    xs = xs if xs_type is Generator else Generator((x for x in xs))
-    ys = ys if ys_type is Generator else Generator((y for y in ys))
-
-    def gen():
-        try:
-            while not (xs.end_reached or ys.end_reached):
-                yield safe_apply(fn, next(ys), next(xs))
-        except StopIteration:
-            pass
-
-    return Generator(gen())
-
-
-def zip_with_multi(fn, lists):
-    lists = [
-        lst if vy_type(lst) is Generator else Generator((x for x in lst))
-        for lst in lists
-    ]
-
-    def gen():
-        try:
-            while not any(lst.end_reached for lst in lists):
-                yield safe_apply(fn, *map(next, lists))
-        except StopIteration:
-            pass
-
-    return Generator(gen())
