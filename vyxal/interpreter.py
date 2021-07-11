@@ -6,13 +6,11 @@ import time
 import urllib.request
 import warnings
 
-from vyxal import encoding
-from vyxal import utilities
-from vyxal import words
+from vyxal import encoding, utilities, words
 from vyxal.builtins import *
 from vyxal.commands import *
-from vyxal.parser import *
 from vyxal.factorials import FIRST_100_FACTORIALS
+from vyxal.parser import *
 
 # Pipped modules
 
@@ -76,7 +74,7 @@ def wrap_in_lambda(tokens):
     elif tokens[0] == Structure.LAMBDA:
         return tokens
     else:
-        return (Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})
+        return [(Structure.LAMBDA, {Keys.LAMBDA_BODY: tokens})]
 
 
 def vy_compile(program, header=""):
@@ -315,7 +313,7 @@ else:
         elif token_name == Structure.VAR_GET:
             compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
-            function_A = vy_compile([wrap_in_lambda(token_value[1][0])])
+            function_A = vy_compile(wrap_in_lambda(token_value[1]))
             compiled += function_A + NEWLINE
             compiled += "function_A = pop(stack)\n"
             compiled += transformers[token_value[0]] + NEWLINE
@@ -338,9 +336,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = vy_compile([wrap_in_lambda(token_value[1][0])])
-                function_B = vy_compile([wrap_in_lambda(token_value[1][1])])
-                function_C = vy_compile([wrap_in_lambda(token_value[1][2])])
+                function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
+                function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
+                function_C = vy_compile(wrap_in_lambda(token_value[1][2]))
                 compiled += (
                     function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )

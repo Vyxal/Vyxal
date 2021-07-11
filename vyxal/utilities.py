@@ -33,7 +33,6 @@ class Generator:
         raw_generator,
         limit=-1,
         initial=[],
-        condition=None,
         is_numeric_sequence=False,
     ):
         self.next_index = 0

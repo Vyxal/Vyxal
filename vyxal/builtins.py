@@ -353,6 +353,20 @@ def counts(vector):
     return ret
 
 
+def cumulative_reduce(lhs, rhs):
+    function = vector = None
+    if isinstance(rhs, Function):
+        function, vector = rhs, iterable(lhs, range)
+    else:
+        function, vector = lhs, iterable(rhs, range)
+
+    def f():
+        for prefix in prefixes(deref(vector, False)):
+            yield VY_reduce(prefix, function)[0]
+
+    return Generator(f())
+
+
 def cumulative_sum(vector):
     ret = []
     vector = iterable(vector)
@@ -1298,10 +1312,10 @@ def log(lhs, rhs):
         (str, Number): lambda: "".join([c * rhs for c in lhs]),
         (Number, str): lambda: "".join([c * lhs for c in rhs]),
         (list, list): lambda: mold(lhs, rhs),
-        (list, Generator): lambda: mold(lhs, list(rhs)),
-        (Generator, list): lambda: mold(list(lhs), rhs),
+        (list, Generator): lambda: mold(lhs, list(map(deref, deref(rhs)))),
+        (Generator, list): lambda: mold(list(map(deref, deref(lhs))), rhs),
         (Generator, Generator): lambda: mold(
-            list(lhs), list(rhs)
+            list(map(deref, deref(lhs))), list(map(deref, deref(rhs)))
         ),  # There's a chance molding raw generators won't work
     }.get(types, lambda: vectorise(log, lhs, rhs))()
 
@@ -1522,29 +1536,18 @@ def order(lhs, rhs):
         return infinite_replace(iterable(lhs, str), iterable(rhs, str), "")
 
 
-def orderless_range(lhs, rhs, lift_factor=0):
-    types = (vy_type(lhs), vy_type(rhs))
-    if types == (Number, Number):
-        if lhs < rhs:
-            return Generator(range(lhs, rhs + lift_factor))
-        else:
-            return Generator(range(lhs, rhs + lift_factor, -1))
-    elif Function in types:
-        if types[0] is Function:
-            func, vector = lhs, iterable(rhs, range)
-        else:
-            func, vector = rhs, iterable(lhs, range)
-
-        def gen():
-            for pre in prefixes(vector):
-                yield vy_reduce(func, pre)[-1]
-
-        return Generator(gen())
-    else:
-        lhs, rhs = vy_str(lhs), vy_str(rhs)
-        pobj = regex.compile(lhs)
-        mobj = pobj.search(rhs)
-        return int(bool(mobj))
+def orderless_range(lhs, rhs):
+    types = vy_type(lhs), vy_type(rhs)
+    return {
+        (Number, Number): lambda: Generator(
+            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+        ),
+        (Number, str): lambda: stretch(rhs, lhs),
+        (str, Number): lambda: stretch(lhs, rhs),
+        (str, str): lambda: int(bool(regex.compile(lhs).search(rhs))),
+        (types[0], Function): lambda: cumulative_reduce(lhs, rhs),
+        (Function, types[1]): lambda: cumulative_reduce(lhs, rhs),
+    }.get(types, lambda: vectorise(orderless_range, lhs, rhs))()
 
 
 def osabie_newline_join(item):
@@ -2055,6 +2058,13 @@ def square(item):
     }.get(vy_type(item), lambda: multiply(item, deref(item)))()
 
 
+def stretch(string, length):
+    ret = string
+    while len(ret) < length:
+        ret += " " if len(ret) == 0 else ret[0]
+    return ret
+
+
 def string_empty(item):
     return {Number: lambda: item % 3, str: len(item) == 0}.get(
         vy_type(item), lambda: vectorise(string_empty, item)
@@ -2266,7 +2276,7 @@ def urlify(item):
 
 
 def vectorise(fn, left, right=None, third=None, explicit=False):
-    if third:
+    if third is not None:
         types = (vy_type(left), vy_type(right))
 
         def gen():
@@ -2312,7 +2322,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
             return Generator(ret)
         else:
             return ret
-    elif right:
+    elif right is not None:
         types = (vy_type(left), vy_type(right))
 
         def gen():
