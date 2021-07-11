@@ -39,7 +39,7 @@ def add(lhs, rhs):
     """
     Returns lhs + rhs. Check command docs for type cohesion.
     """
-    types = VY_type(lhs), VY_type(rhs)
+    types = vy_type(lhs), vy_type(rhs)
     return {
         (Number, Number): lambda: lhs + rhs,
         (str, str): lambda: lhs + rhs,
@@ -925,7 +925,7 @@ def modulo(lhs, rhs):
 
 
 def multiply(lhs, rhs):
-    types = VY_type(lhs), VY_type(rhs)
+    types = vy_type(lhs), vy_type(rhs)
     if types == (Function, Number):
         lhs.stored_arity = rhs
         return lhs
@@ -1427,7 +1427,7 @@ def substrings(item):
 
 
 def subtract(lhs, rhs):
-    types = VY_type(lhs), VY_type(rhs)
+    types = vy_type(lhs), vy_type(rhs)
 
     return {
         (Number, Number): lambda: lhs - rhs,
