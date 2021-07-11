@@ -1,23 +1,10 @@
-import base64
-import copy
-import functools
-import hashlib
 import itertools
-import math
 import os
-import random
-import secrets
-import string
-import sys
-import time
-import warnings
-from datetime import date
-from datetime import datetime as dt
+
 
 import vyxal
 from vyxal.utilities import Function
 from vyxal.utilities import *
-from vyxal.factorials import FIRST_100_FACTORIALS
 
 try:
     import numpy
@@ -30,6 +17,7 @@ except:
     import pwn
     import regex
     import sympy
+
 
 def atleast_ndims(vector, n):
     """Check if an array has at least n dimensions"""

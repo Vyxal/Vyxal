@@ -34,14 +34,18 @@ except:
     import regex
     import sympy
 
-@deep_vectorised
+
 def add(lhs, rhs):
     """
     Returns lhs + rhs. Check command docs for type cohesion.
     """
-    if vy_type(lhs) != vy_type(rhs):
-        return str(lhs) + str(rhs)
-    return lhs + rhs
+    types = VY_type(lhs), VY_type(rhs)
+    return {
+        (Number, Number): lambda: lhs + rhs,
+        (str, str): lambda: lhs + rhs,
+        (str, Number): lambda: str(lhs) + str(rhs),
+        (Number, str): lambda: str(lhs) + str(rhs),
+    }.get(types, lambda: vectorise(add, lhs, rhs))()
 
 
 def all_combinations(vector):
@@ -652,7 +656,10 @@ def graded(item):
     return {Number: lambda: item + 2, str: lambda: item.upper(),}.get(
         vy_type(item),
         lambda: Generator(
-            map(lambda x: x[0], sorted(enumerate(array_builtins.deref(item)), key=lambda x: x[-1]))
+            map(
+                lambda x: x[0],
+                sorted(enumerate(array_builtins.deref(item)), key=lambda x: x[-1]),
+            )
         ),
     )()
 
@@ -663,11 +670,14 @@ def graded_down(item):
         lambda: Generator(
             map(
                 lambda x: x[0],
-                sorted(enumerate(array_builtins.deref(item)), key=lambda x: x[-1], reverse=True),
+                sorted(
+                    enumerate(array_builtins.deref(item)),
+                    key=lambda x: x[-1],
+                    reverse=True,
+                ),
             )
         ),
     )()
-
 
 
 def halve(item):
@@ -858,10 +868,15 @@ def log(lhs, rhs):
         (str, Number): lambda: "".join([c * rhs for c in lhs]),
         (Number, str): lambda: "".join([c * lhs for c in rhs]),
         (list, list): lambda: array_builtins.mold(lhs, rhs),
-        (list, Generator): lambda: array_builtins.mold(lhs, list(map(array_builtins.deref, array_builtins.deref(rhs)))),
-        (Generator, list): lambda: array_builtins.mold(list(map(array_builtins.deref, array_builtins.deref(lhs))), rhs),
+        (list, Generator): lambda: array_builtins.mold(
+            lhs, list(map(array_builtins.deref, array_builtins.deref(rhs)))
+        ),
+        (Generator, list): lambda: array_builtins.mold(
+            list(map(array_builtins.deref, array_builtins.deref(lhs))), rhs
+        ),
         (Generator, Generator): lambda: array_builtins.mold(
-            list(map(array_builtins.deref, array_builtins.deref(lhs))), list(map(array_builtins.deref, array_builtins.deref(rhs)))
+            list(map(array_builtins.deref, array_builtins.deref(lhs))),
+            list(map(array_builtins.deref, array_builtins.deref(rhs))),
         ),  # There's a chance molding raw generators won't work
     }.get(types, lambda: vectorise(log, lhs, rhs))()
 
@@ -909,18 +924,20 @@ def modulo(lhs, rhs):
     }.get(types, lambda: vectorise(modulo, lhs, rhs))()
 
 
-@deep_vectorised
 def multiply(lhs, rhs):
-    types = vy_type(lhs), vy_type(rhs)
+    types = VY_type(lhs), VY_type(rhs)
     if types == (Function, Number):
         lhs.stored_arity = rhs
         return lhs
     elif types == (Number, Function):
         rhs.stored_arity = lhs
         return rhs
-    if types == (str, str):
-        return [x + rhs for x in lhs]
-    return lhs * rhs
+    return {
+        (Number, Number): lambda: lhs * rhs,
+        (str, str): lambda: [x + rhs for x in lhs],
+        (str, Number): lambda: lhs * rhs,
+        (Number, str): lambda: lhs * rhs,
+    }.get(types, lambda: vectorise(multiply, lhs, rhs))()
 
 
 def ncr(lhs, rhs):
@@ -1409,16 +1426,15 @@ def substrings(item):
             yield item[i:j]
 
 
-@deep_vectorised
 def subtract(lhs, rhs):
-    types = vy_type(lhs), vy_type(rhs)
+    types = VY_type(lhs), VY_type(rhs)
 
     return {
         (Number, Number): lambda: lhs - rhs,
         (str, str): lambda: lhs.replace(rhs, ""),
         (str, Number): lambda: lhs + ("-" * rhs),
-        (Number, str): lambda: ("-" * lhs) + rhs
-    }[types]()
+        (Number, str): lambda: ("-" * lhs) + rhs,
+    }.get(types, lambda: vectorise(subtract, lhs, rhs))()
 
 
 def tab(x):
@@ -1770,7 +1786,11 @@ def vy_max(item, other=None):
         if item:
             biggest = item[0]
             for sub in item[1:]:
-                res = compare(array_builtins.deref(sub), array_builtins.deref(biggest), Comparitors.GREATER_THAN)
+                res = compare(
+                    array_builtins.deref(sub),
+                    array_builtins.deref(biggest),
+                    Comparitors.GREATER_THAN,
+                )
                 if vy_type(res) in [list, Generator]:
                     res = any(res)
                 if res:
@@ -1788,7 +1808,9 @@ def vy_min(item, other=None):
             (str, str): lambda: min(item, other),
         }.get(
             (vy_type(item), vy_type(other)),
-            lambda: vectorise(vy_min, array_builtins.deref(item), array_builtins.deref(other)),
+            lambda: vectorise(
+                vy_min, array_builtins.deref(item), array_builtins.deref(other)
+            ),
         )()
 
         return ret
@@ -1797,7 +1819,11 @@ def vy_min(item, other=None):
         if item:
             smallest = item[0]
             for sub in item[1:]:
-                res = compare(array_builtins.deref(sub), array_builtins.deref(smallest), Comparitors.LESS_THAN)
+                res = compare(
+                    array_builtins.deref(sub),
+                    array_builtins.deref(smallest),
+                    Comparitors.LESS_THAN,
+                )
                 if vy_type(res) in [list, Generator]:
                     res = any(res)
                 if res:
@@ -1934,4 +1960,3 @@ def vy_zipmap(lhs, rhs):
             yield [item, safe_apply(function, item)]
 
     return Generator(f())
-
