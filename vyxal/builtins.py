@@ -3,10 +3,13 @@ import math
 import os
 import random
 import string
+import sys
 import urllib.request
 
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+sys.path.insert(1, THIS_FOLDER)
+
 from vyxal import array_builtins
-from vyxal.array_builtins import iterable
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
 
@@ -56,13 +59,13 @@ def all_prime_factors(item):
 
 
 def apply_to_register(function, vector):
-    vector.append(vyxal.interpreter.register)
+    vector.append(vy_globals.register)
     if function.stored_arity > 1:
-        top, over = pop(vyxal.interpreter.stack, 2)
-        vyxal.interpreter.stack.append(top)
-        vyxal.interpreter.stack.append(over)
+        top, over = pop(vy_globals.stack, 2)
+        vy_globals.stack.append(top)
+        vy_globals.stack.append(over)
     vector += function_call(function, vector)
-    vyxal.interpreter.register = pop(vector)
+    vy_globals.register = pop(vector)
 
 
 def assigned(vector, index, item):
@@ -123,11 +126,11 @@ def bit_or(lhs, rhs):
         if len(common) == 0:
             return lhs + rhs
         common = sorted(common, key=lambda x: len(x))[-1]
-        return lhs[: -len(common)] + common + rhs[len(common) :]
+        return lhs[: -len(common)] + common + rhs[len(common):]
     return {
         (Number, Number): lambda: lhs | rhs,
-        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1 :],
-        (str, Number): lambda: rhs[:lhs] + rhs[lhs + 1 :],
+        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1:],
+        (str, Number): lambda: rhs[:lhs] + rhs[lhs + 1:],
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_or(*x), vy_zip(lhs, rhs))),
@@ -403,10 +406,10 @@ def dont_pop(function, vector):
     if function.stored_arity == 1:
         vector.append(vy_filter(function, pop(vector)))
     else:
-        vyxal.interpreter.retain_items = True
+        vy_globals.retain_items = True
         args = pop(vector, function.stored_arity)
         vector.append(safe_apply(function, args[::-1]))
-        vyxal.interpreter.retain_items = False
+        vy_globals.retain_items = False
 
 
 def escape(item):
@@ -480,7 +483,7 @@ def factorials():
 
 def fibonacci():
     # A generator of all the fibonacci numbers
-    # Pro-tip: wrap in a generator before pushing to vyxal.interpreter.stack
+    # Pro-tip: wrap in a generator before pushing to globals.stack
 
     yield 0
     yield 1
@@ -505,10 +508,10 @@ def find(haystack, needle, start=0):
         index = int(start)
 
     if (vy_type(haystack), vy_type(needle)) in (
-        (Number, Number),
-        (Number, str),
-        (str, Number),
-        (str, str),
+            (Number, Number),
+            (Number, str),
+            (str, Number),
+            (str, str),
     ):
         return str(haystack).find(str(needle), start=index)
 
@@ -588,6 +591,7 @@ def function_call(fn, vector):
     if type(fn) is Function:
         return fn(vector, self=fn)
     else:
+        from vyxal import interpreter
         return [
             {
                 Number: lambda: len(prime_factors(fn)),
@@ -618,25 +622,25 @@ def gcd(lhs, rhs=None):
 
 
 def get_input(predefined_level=None):
-    level = vyxal.interpreter.input_level
+    level = vy_globals.input_level
     if predefined_level is not None:
         level = predefined_level
 
-    if level in vyxal.interpreter.input_values:
-        source, index = vyxal.interpreter.input_values[level]
+    if level in vy_globals.input_values:
+        source, index = vy_globals.input_values[level]
     else:
         source, index = [], -1
     if source:
         ret = source[index % len(source)]
-        vyxal.interpreter.input_values[level][1] += 1
+        vy_globals.input_values[level][1] += 1
 
-        if vyxal.interpreter.keg_mode and type(ret) is str:
+        if vy_globals.keg_mode and type(ret) is str:
             return [ord(c) for c in ret]
         return ret
     else:
         try:
             temp = vy_eval(input())
-            if vyxal.interpreter.keg_mode and type(temp) is str:
+            if vy_globals.keg_mode and type(temp) is str:
                 return [ord(c) for c in temp]
             return temp
         except:
@@ -644,7 +648,7 @@ def get_input(predefined_level=None):
 
 
 def graded(item):
-    return {Number: lambda: item + 2, str: lambda: item.upper(),}.get(
+    return {Number: lambda: item + 2, str: lambda: item.upper(), }.get(
         vy_type(item),
         lambda: Generator(
             map(
@@ -656,7 +660,7 @@ def graded(item):
 
 
 def graded_down(item):
-    return {Number: lambda: item - 2, str: lambda: item.lower(),}.get(
+    return {Number: lambda: item - 2, str: lambda: item.lower(), }.get(
         vy_type(item),
         lambda: Generator(
             map(
@@ -684,7 +688,7 @@ def infinite_replace(haystack, needle, replacement):
     loop = True
     prev = copy.deepcopy(haystack)
     while (
-        loop
+            loop
     ):  # I intentionally used a post-test loop here to avoid making more calls to replace than neccesary
         haystack = replace(haystack, needle, replacement)
         loop = haystack != prev
@@ -850,7 +854,7 @@ def log(lhs, rhs):
                 ret += lhs[i]
 
         if len(lhs) > len(rhs):
-            ret += lhs[i + 1 :]
+            ret += lhs[i + 1:]
 
         return ret
 
@@ -937,8 +941,8 @@ def ncr(lhs, rhs):
         (Number, Number): lambda: unsympy(
             sympy.functions.combinatorial.numbers.nC(int(lhs), int(rhs))
         ),
-        (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
-        (Number, str): lambda: [random.choice(rhs) for c in range(lhs)],
+        (str, Number): lambda: [random.choice(lhs) for _ in range(rhs)],
+        (Number, str): lambda: [random.choice(rhs) for _ in range(lhs)],
         (str, str): lambda: int(set(lhs) == set(rhs)),
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
 
@@ -1056,6 +1060,7 @@ def para_apply(fn_A, fn_B, vector):
     args_B = pop(temp, fn_B.stored_arity, True)
     vector.append(fn_A(args_A)[-1])
     vector.append(fn_B(args_B)[-1])
+    vy_globals.stack = vector
 
 
 def pluralise(lhs, rhs):
@@ -1083,14 +1088,14 @@ def pop(vector, num=1, wrap=False):
             x = get_input()
             ret.append(x)
 
-    if vyxal.interpreter.retain_items:
+    if vy_globals.retain_items:
         vector += ret[::-1]
 
-    last_popped = ret
+    vy_globals.last_popped = ret
     if num == 1 and not wrap:
         return ret[0]
 
-    if vyxal.interpreter.reverse_args:
+    if vy_globals.reverse_args:
         return ret[::-1]
     return ret
 
@@ -1187,18 +1192,18 @@ def repeat(vector, times, extra=None):
         if t_vector is str:
             return vector[::-1] * times
         elif t_vector is Number:
-            vyxal.interpreter.safe_mode = True
+            vy_globals.safe_mode = True
             temp = vy_eval(str(reverse(vector)) * times)
-            vyxal.interpreter.safe_mode = False
+            vy_globals.safe_mode = False
             return temp
         return Generator(itertools.repeat(reversed(vector), times))
     else:
         if t_vector is str:
             return vector * times
         elif t_vector is Number:
-            vyxal.interpreter.safe_mode = True
+            vy_globals.safe_mode = True
             temp = vy_eval(str(reverse(vector)) * times)
-            vyxal.interpreter.safe_mode = False
+            vy_globals.safe_mode = False
             return temp
         return Generator(itertools.repeat(vector, times))
 
@@ -1651,24 +1656,24 @@ def vy_eval(item):
     elif vy_type(item) in [list, Generator]:
         return vectorise(vy_eval, item)
 
-    if vyxal.interpreter.online_version or vyxal.interpreter.safe_mode:
+    if vy_globals.online_version or vy_globals.safe_mode:
         from vyxal.parser import Tokenise, Structure
         from vyxal.interpreter import vy_compile
 
         try:
             return pwn.safeeval.const(item)
         except:
-            f = Tokenise(item, vyxal.interpreter.variables_are_digraphs)
+            f = Tokenise(item, vy_globals.variables_are_digraphs)
             if len(f) and f[-1][-1] in (
-                Structure.STRING,
-                Structure.NUMBER,
-                Structure.LIST,
+                    Structure.STRING,
+                    Structure.NUMBER,
+                    Structure.LIST,
             ):
                 try:
                     temp = vy_compile(item)
-                    vyxal.interpreter.stack = []
+                    vy_globals.stack = []
                     exec(temp)
-                    return vyxal.interpreter.stack[-1]
+                    return vy_globals.stack[-1]
                 except Exception as e:
                     print(e)
                     return item
@@ -1752,7 +1757,7 @@ def vy_map(fn, vector):
     vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if vy_type(vec) == Number:
         vec = range(
-            vyxal.interpreter.MAP_START, int(vec) + vyxal.interpreter.MAP_OFFSET
+            vy_globals.MAP_START, int(vec) + vy_globals.MAP_OFFSET
         )
 
     if vy_type(vec) is Generator:
@@ -1836,7 +1841,7 @@ def vy_oct(item):
 
 
 def vy_print(item, end="\n", raw=False):
-    printed = True
+    vy_globals.printed = True
     t_item = type(item)
     if t_item is Generator:
         item._print(end)
@@ -1849,24 +1854,24 @@ def vy_print(item, end="\n", raw=False):
             vy_print(item[-1], "", True)
         vy_print("⟩", end, False)
     elif t_item is Function:
-        s = function_call(item, vyxal.interpreter.stack)
+        s = function_call(item, vy_globals.stack)
         vy_print(s[0], end=end, raw=raw)
     else:
-        if t_item is int and vyxal.interpreter.keg_mode:
+        if t_item is int and vy_globals.keg_mode:
             item = chr(item)
         if raw:
-            if vyxal.interpreter.online_version:
-                vyxal.interpreter.output[1] += vy_repr(item) + end
+            if vy_globals.online_version:
+                vy_globals.output[1] += vy_repr(item) + end
             else:
                 print(vy_repr(item), end=end)
         else:
-            if vyxal.interpreter.online_version:
-                vyxal.interpreter.output[1] += vy_str(item) + end
+            if vy_globals.online_version:
+                vy_globals.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
     if (
-        vyxal.interpreter.online_version
-        and len(vyxal.interpreter.output) > ONE_TWO_EIGHT_KB
+            vy_globals.online_version
+            and len(vy_globals.output) > ONE_TWO_EIGHT_KB
     ):
         exit(code=1)
 
@@ -1889,7 +1894,7 @@ def vy_reduce(fn, vector):
     if t_type is Number:
         vector = list(
             range(
-                vyxal.interpreter.MAP_START, int(vector) + vyxal.interpreter.MAP_OFFSET
+                vy_globals.MAP_START, int(vector) + vy_globals.MAP_OFFSET
             )
         )
     vector = vector[::-1]
@@ -1937,7 +1942,7 @@ def vy_str(item):
         str: lambda x: x,
         list: lambda x: "⟨" + "|".join([vy_repr(y) for y in x]) + "⟩",
         Generator: lambda x: vy_str(x._dereference()),
-        Function: lambda x: vy_str(function_call(x, vyxal.interpreter.stack)[0]),
+        Function: lambda x: vy_str(function_call(x, vy_globals.stack)[0]),
     }[t_item](item)
 
 

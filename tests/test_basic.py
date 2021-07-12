@@ -1,15 +1,11 @@
 # Simple tests
 
 from test_utils import run_code
-import os
-import sys
-import builtins
-from multiprocessing import Manager
-
 
 import vyxal
-from vyxal.builtins import pop
 from vyxal.array_builtins import deref
+from vyxal.builtins import pop
+
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
 # overload of every single command
@@ -113,24 +109,25 @@ def test_deep_vectorise():
 
 
 def test_quit():
-    real_print = vyxal.interpreter.vy_print
+    real_print = vyxal.builtins.vy_print
 
     def shouldnt_print(first, *args):
         raise ValueError("Shouldn't print anything")
 
-    vyxal.interpreter.vy_print = shouldnt_print
+    vyxal.builtins.vy_print = shouldnt_print
     run_code("69 Q")
-    run_code("69 Q", flags="O")
+    run_code("69 Q", flags=["O"])
+
     trip = []
 
     def should_print(first, *args):
         nonlocal trip
         trip.append(first)
 
-    vyxal.interpreter.vy_print = should_print
-    run_code("69 Q", flags="o")
+    vyxal.builtins.vy_print = should_print
+    run_code("69 Q", flags=["o"])
     assert trip
-    vyxal.interpreter.vy_print = real_print
+    vyxal.builtins.vy_print = real_print
 
 
 """

@@ -1,12 +1,10 @@
 # Test more complex snippets of code, taken from Vyxal answers
 
 from test_utils import run_code
-import vyxal.interpreter
-import os
-import sys
-import builtins
-from multiprocessing import Manager
 
+import vyxal
+import vyxal.builtins
+import vyxal.interpreter
 
 # from from https://codegolf.stackexchange.com/a/210307
 fizzbuzz_output = [
@@ -115,6 +113,7 @@ fizzbuzz_output = [
 
 def test_fizzbuzz():
     stack = run_code("₁ƛ₍₃₅kF½*ṅ⟇", flags=["j", "O"])
+    print(stack)
     res = vyxal.builtins.pop(stack)
     print(res)
     assert res == fizzbuzz_output
