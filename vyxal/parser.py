@@ -226,7 +226,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
 
         if structure == Structure.NUMBER:
             if type(character) is str and character in (
-                string.digits + "."
+                    string.digits + "."
             ):  # If the character is a digit, we keep adding to the flux number
                 structure_data[active_key] += character
                 token_pointer += 1
@@ -241,7 +241,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
                 )
         if structure == Structure.VAR_GET or structure == Structure.VAR_SET:
             if (
-                type(character) is str and character in string.ascii_letters + "_"
+                    type(character) is str and character in string.ascii_letters + "_"
             ):  # If the character is a valid variable name letter, we keep adding to the name
                 structure_data[active_key] += character
                 token_pointer += 1
@@ -261,7 +261,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
         if type(character) is list:
             if structure != Structure.NONE:
                 structure_data[active_key] += (
-                    character[1] + character[0] + character[1]
+                        character[1] + character[0] + character[1]
                 )  # wrap string in it's quotes
             else:
                 tokens.append((Structure.STRING, character))
@@ -361,14 +361,14 @@ def Tokenise(source: str, variables_are_digraphs=False):
             structure_data[active_key] = ""
 
         elif character in Monadic_Transformers:
-            everything_after = Tokenise(source[token_pointer + 1 :])
+            everything_after = Tokenise(source[token_pointer + 1:])
             tokens.append(
                 (Structure.MONAD_TRANSFORMER, (character, [everything_after[0]]))
             )
             tokens += everything_after[1:]
             break
         elif character in Dyadic_Transformers:
-            everything_after = Tokenise(source[token_pointer + 1 :])
+            everything_after = Tokenise(source[token_pointer + 1:])
             if character == "‡":
                 tokens.append(
                     (Structure.LAMBDA, {Keys.LAMBDA_BODY: everything_after[0:2]})
@@ -382,7 +382,7 @@ def Tokenise(source: str, variables_are_digraphs=False):
             tokens += everything_after[2:]
             break
         elif character == Structure.TRIAD_TRANSFORMER:
-            everything_after = Tokenise(source[token_pointer + 1 :])
+            everything_after = Tokenise(source[token_pointer + 1:])
             tokens.append((Structure.LAMBDA, {Keys.LAMBDA_BODY: everything_after[0:3]}))
             tokens += everything_after[3:]
 

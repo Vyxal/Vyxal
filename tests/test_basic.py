@@ -1,15 +1,11 @@
 # Simple tests
 
 from test_utils import run_code
-import os
-import sys
-import builtins
-from multiprocessing import Manager
-
 
 import vyxal
-from vyxal.builtins import pop
 from vyxal.array_builtins import deref
+from vyxal.builtins import pop
+
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
 # overload of every single command
@@ -113,6 +109,7 @@ def test_deep_vectorise():
 
 
 def test_quit():
+    from vyxal import interpreter
     real_print = vyxal.interpreter.vy_print
 
     def shouldnt_print(first, *args):

@@ -1,8 +1,12 @@
 import itertools
 import os
+import sys
 
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+sys.path.insert(1, THIS_FOLDER)
 
-import vyxal
+from vyxal import vy_globals
+from vyxal.builtins import add
 from vyxal.utilities import *
 
 try:
@@ -35,16 +39,19 @@ def at_least_n_dims(vector, n):
 
 def cartesian_product(lhs, rhs):
     if Function not in (vy_type(lhs), vy_type(rhs)):
-        lhs, rhs = iterable(lhs), iterable(rhs)
         if (vy_type(lhs), vy_type(rhs)) in (
-            (Number, Number),
-            (Number, str),
-            (str, Number),
-            (str, str),
+                (Number, Number),
+                (Number, str),
+                (str, Number),
+                (str, str),
         ):
             return Generator(
-                map(first_n, itertools.product(iterable(lhs), iterable(rhs)))
+                itertools.product(iterable(lhs), iterable(rhs))
             )
+        lhs, rhs = iterable(lhs), iterable(rhs)
+        types = vy_type(lhs), vy_type(rhs)
+        if types == (Generator, Generator):
+            pass
         return Generator(itertools.product(iterable(lhs), iterable(rhs)))
 
     if vy_type(lhs) is Function:
@@ -442,29 +449,12 @@ def interleave(lhs, rhs):
     if len(lhs) != len(rhs):
         if len(lhs) < len(rhs):
             # The rhs is longer
-            ret += list(rhs[i + 1 :])
+            ret += list(rhs[i + 1:])
         else:
-            ret += list(lhs[i + 1 :])
+            ret += list(lhs[i + 1:])
     if type(lhs) is str and type(rhs) is str:
         return "".join(ret)
     return ret
-
-
-def iterable(item, t=None):
-    t = t or vyxal.interpreter.number_iterable
-    if vy_type(item) == Number:
-        if t is list:
-            return [int(let) if let not in "-." else let for let in str(item)]
-        if t is range:
-            return Generator(
-                range(
-                    vyxal.interpreter.MAP_START,
-                    int(item) + vyxal.interpreter.MAP_OFFSET,
-                )
-            )
-        return t(item)
-    else:
-        return item
 
 
 def map_at(function, vector, indices):
@@ -577,7 +567,7 @@ def powerset(vector):
 
 def prefixes(vector):
     for i in range(len(iterable(vector))):
-        yield iterable(vector)[0 : i + 1]
+        yield iterable(vector)[0: i + 1]
 
 
 def run_length_encode(item):
@@ -731,7 +721,7 @@ def sublists(item):
     length = len(item)
     for size in range(1, length + 1):
         for sub in range((length - size) + 1):
-            yield item[sub : sub + size]
+            yield item[sub: sub + size]
 
 
 def summate(vector):
@@ -750,7 +740,7 @@ def summate(vector):
 def sums(vector):
     ret = []
     for i in range(len(vector)):
-        ret.append(summate(vector[0 : i + 1]))
+        ret.append(summate(vector[0: i + 1]))
     return ret
 
 

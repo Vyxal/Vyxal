@@ -2,6 +2,7 @@ import base64
 import functools
 
 import vyxal
+from vyxal import vy_globals
 from vyxal import words
 
 # Generic type constants
@@ -18,6 +19,7 @@ ONE_TWO_EIGHT_KB = 1024000
 base53alphabet = "¡etaoinshrdlcumwfgypbvkjxqz ETAOINSHRDLCUMWFGYPBVKJXQZ"
 base27alphabet = " etaoinshrdlcumwfgypbvkjxqz"
 
+
 # Helper classes
 class Comparitors:
     EQUALS = 0
@@ -30,11 +32,11 @@ class Comparitors:
 
 class Generator:
     def __init__(
-        self,
-        raw_generator,
-        limit=-1,
-        initial=[],
-        is_numeric_sequence=False,
+            self,
+            raw_generator,
+            limit=-1,
+            initial=[],
+            is_numeric_sequence=False,
     ):
         self.next_index = 0
         self.end_reached = False
@@ -42,7 +44,7 @@ class Generator:
         self.do_print = True
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith(
-                "FN_"
+                    "FN_"
             ) or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
                 def gen():
@@ -311,12 +313,12 @@ def to_ten(number, custom_base):
     result = 0
     alphabet = (lambda: custom_base, lambda: range(0, int(custom_base)))[
         type(custom_base) in (int, float)
-    ]()
+        ]()
     base_exponent = len(alphabet)
     number = list(
         (lambda: number, lambda: map(int, str(int(number))))[
             type(number) in (int, float)
-        ]()
+            ]()
     )
     power = 0
     for digit in reversed(number):
@@ -360,6 +362,23 @@ def from_ten(number, custom_base):
         result
 
     return result
+
+
+def iterable(item, t=None):
+    t = t or vy_globals.number_iterable
+    if vy_type(item) == Number:
+        if t is list:
+            return [int(let) if let not in "-." else let for let in str(item)]
+        if t is range:
+            return Generator(
+                range(
+                    vy_globals.MAP_START,
+                    int(item) + vy_globals.MAP_OFFSET,
+                )
+            )
+        return t(item)
+    else:
+        return item
 
 
 def uncompress(s):

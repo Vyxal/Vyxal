@@ -1,19 +1,19 @@
+import inspect
 import os
 import secrets
 import sys
-
-from vyxal import encoding, utilities, words
-from vyxal.array_builtins import *
-from vyxal.builtins import *
-from vyxal.commands import *
-from vyxal.factorials import FIRST_100_FACTORIALS
-from vyxal.parser import *
 
 # Pipped modules
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
+from vyxal import encoding, utilities
+from vyxal import vy_globals
+from vyxal.array_builtins import *
+from vyxal.builtins import *
+from vyxal.commands import *
+from vyxal.parser import *
 
 try:
     import numpy
@@ -26,71 +26,6 @@ except:
     import pwn
     import regex
     import sympy
-
-
-# Execution variables
-context_level = 0
-context_values = [0]
-global_stack = []
-input_level = 0
-inputs = []
-input_values = {0: [inputs, 0]}  # input_level: [source, input_index]
-last_popped = []
-keg_mode = False
-number_iterable = list
-raw_strings = False
-online_version = False
-output = ""
-printed = False
-register = 0
-retain_items = False
-reverse_args = False
-safe_mode = False  # You may want to have safe evaluation but not be online.
-stack = []
-this_function = lambda x: vyxal.utilities.vy_print(stack) or x
-variables_are_digraphs = False
-
-MAP_START = 1
-MAP_OFFSET = 1
-_join = False
-_vertical_join = False
-use_encoding = False
-
-
-def set_globals(flags):
-    global stack, inputs, MAP_START, MAP_OFFSET, _join
-    global _vertical_join, use_encoding, reverse_args, keg_mode, safe_mode
-    global header, number_iterable, raw_strings
-
-    if "H" in flags:
-        stack = [100]
-
-    if "a" in flags:
-        inputs = [inputs]
-
-    if "M" in flags:
-        MAP_START = 0
-
-    if "m" in flags:
-        MAP_OFFSET = 0
-
-    if "Ṁ" in flags:
-        MAP_START = 0
-        MAP_OFFSET = 0
-
-    if "H" in flags:
-        header = "stack = [100]\nregister = 0\nprinted = False\n"
-
-    if "R" in flags:
-        number_iterable = range
-
-    _join = "j" in flags
-    _vertical_join = "L" in flags
-    use_encoding = "v" in flags
-    reverse_args = "r" in flags
-    keg_mode = "K" in flags
-    safe_mode = "E" in flags
-    raw_strings = "D" in flags
 
 
 def wrap_in_lambda(tokens):
@@ -113,7 +48,7 @@ def wrap_in_lambda(tokens):
 def vy_compile(program, header=""):
     if not program:
         return (
-            header or "pass"
+                header or "pass"
         )  # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
 
@@ -125,7 +60,7 @@ def vy_compile(program, header=""):
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
                 print(token_value)
-                compiled += f"stack.append({codepage.find(str(token_value[1]))} + 101)"
+                compiled += f"vy_globals.stack.append({codepage.find(str(token_value[1]))} + 101)"
             else:
                 compiled += command_dict.get(token[1], "  ")[0]
         elif token_name == Structure.NUMBER:
@@ -136,37 +71,37 @@ def vy_compile(program, header=""):
                 value = value[:end]
 
             if value.isnumeric():
-                compiled += f"stack.append({value})"
+                compiled += f"vy_globals.stack.append({value})"
             else:
                 try:
                     float(value)
-                    compiled += f"stack.append(sympy.Rational({value}))"
+                    compiled += f"vy_globals.stack.append(sympy.Rational({value}))"
                 except:
-                    compiled += f"stack.append(sympy.Rational('0.5'))"
+                    compiled += f"vy_globals.stack.append(sympy.Rational('0.5'))"
         elif token_name == Structure.STRING:
             string, string_type = token_value[0], token_value[1]
             if string_type == StringDelimiters.NORMAL:
-                if raw_strings:
+                if vy_globals.raw_strings:
                     value = string.replace("\\", "\\\\").replace('"', '\\"')
-                    compiled += f'stack.append("{value}")'
+                    compiled += f'vy_globals.stack.append("{value}")'
                 else:
                     value = string.replace("\\", "\\\\").replace('"', '\\"')
-                    compiled += f'stack.append("{utilities.uncompress(value)}")'
+                    compiled += f'vy_globals.stack.append("{utilities.uncompress(value)}")'
             elif string_type == StringDelimiters.COM_NUMBER:
                 number = utilities.to_ten(string, encoding.codepage_number_compress)
-                compiled += f"stack.append({number})"
+                compiled += f"vy_globals.stack.append({number})"
             elif string_type == StringDelimiters.COM_STRING:
                 value = utilities.to_ten(string, encoding.codepage_string_compress)
                 value = utilities.from_ten(value, utilities.base27alphabet)
-                compiled += f"stack.append('{value}')"
+                compiled += f"vy_globals.stack.append('{value}')"
         elif token_name == Structure.CHARACTER:
-            compiled += f"stack.append({repr(token[1])})"
+            compiled += f"vy_globals.stack.append({repr(token[1])})"
         elif token_name == Structure.IF:
-            compiled += "temp_value = pop(stack)\n"
+            compiled += "temp_value = pop(vy_globals.stack)\n"
             compiled += (
-                "if temp_value:\n"
-                + tab(vy_compile(token_value[Keys.IF_TRUE]))
-                + NEWLINE
+                    "if temp_value:\n"
+                    + tab(vy_compile(token_value[Keys.IF_TRUE]))
+                    + NEWLINE
             )
             if Keys.IF_FALSE in token_value:
                 compiled += "else:\n" + tab(vy_compile(token_value[Keys.IF_FALSE]))
@@ -174,26 +109,26 @@ def vy_compile(program, header=""):
             loop_variable = "LOOP_" + secrets.token_hex(16)
             if Keys.FOR_VAR in token_value:
                 loop_variable = "VAR_" + strip_non_alphabet(token_value[Keys.FOR_VAR])
-            compiled += "for " + loop_variable + " in vy_range(pop(stack)):" + NEWLINE
-            compiled += tab("context_level += 1") + NEWLINE
-            compiled += tab("context_values.append(" + loop_variable + ")") + NEWLINE
+            compiled += "for " + loop_variable + " in vy_range(pop(vy_globals.stack)):" + NEWLINE
+            compiled += tab("vy_globals.context_level += 1") + NEWLINE
+            compiled += tab("vy_globals.context_values.append(" + loop_variable + ")") + NEWLINE
             compiled += tab(vy_compile(token_value[Keys.FOR_BODY])) + NEWLINE
-            compiled += tab("context_level -= 1") + NEWLINE
-            compiled += tab("context_values.pop()")
+            compiled += tab("vy_globals.context_level -= 1") + NEWLINE
+            compiled += tab("vy_globals.context_values.pop()")
         elif token_name == Structure.WHILE:
-            condition = "stack.append(1)"
+            condition = "vy_globals.stack.append(1)"
             if Keys.WHILE_COND in token_value:
                 condition = vy_compile(token_value[Keys.WHILE_COND])
 
             compiled += condition + NEWLINE
-            compiled += "while pop(stack):\n"
+            compiled += "while pop(vy_globals.stack):\n"
             compiled += tab(vy_compile(token_value[Keys.WHILE_BODY])) + NEWLINE
             compiled += tab(condition)
         elif token_name == Structure.FUNCTION:
             # Determine if it's a function call or definition
             if Keys.FUNC_BODY not in token_value:
                 # Function call
-                compiled += "stack += FN_" + token_value[Keys.FUNC_NAME] + "(stack)"
+                compiled += "vy_globals.stack += FN_" + token_value[Keys.FUNC_NAME] + "(vy_globals.stack)"
             else:
                 function_information = token_value[Keys.FUNC_NAME].split(":")
                 # This will either be a single name, or name and parameter information
@@ -217,28 +152,22 @@ def vy_compile(program, header=""):
                             parameter_count += 1
 
                 compiled += (
-                    "def FN_" + function_name + "(parameter_stack, arity=None):\n"
+                        "def FN_" + function_name + "(parameter_stack, arity=None):\n"
                 )
-                compiled += (
-                    tab(
-                        "global context_level, context_values, input_level, input_values, retain_items, printed, register"
-                    )
-                    + NEWLINE
-                )
-                compiled += tab("context_level += 1") + NEWLINE
-                compiled += tab("input_level += 1") + NEWLINE
+                compiled += tab("vy_globals.context_level += 1") + NEWLINE
+                compiled += tab("vy_globals.input_level += 1") + NEWLINE
                 compiled += tab(f"this_function = FN_{function_name}") + NEWLINE
                 if parameter_count == 1:
                     # There's only one parameter, so instead of pushing it as a list
                     # (which is kinda rather inconvienient), push it as a "scalar"
 
-                    compiled += tab("context_values.append(parameter_stack[-1])")
+                    compiled += tab("vy_globals.context_values.append(parameter_stack[-1])")
                 elif parameter_count != -1:
                     compiled += tab(
-                        f"context_values.append(parameter_stack[:-{parameter_count}])"
+                        f"vy_globals.context_values.append(parameter_stack[:-{parameter_count}])"
                     )
                 else:
-                    compiled += tab("context_values.append(parameter_stack)")
+                    compiled += tab("vy_globals.context_values.append(parameter_stack)")
 
                 compiled += NEWLINE
 
@@ -264,12 +193,12 @@ else:
                         compiled += tab("VAR_" + parameter + " = pop(parameter_stack)")
                     compiled += NEWLINE
 
-                compiled += tab("stack = parameters[::]") + NEWLINE
-                compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
+                compiled += tab("vy_globals.stack = parameters[::]") + NEWLINE
+                compiled += tab("vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]") + NEWLINE
                 compiled += tab(vy_compile(token_value[Keys.FUNC_BODY])) + NEWLINE
-                compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
-                compiled += tab("input_level -= 1") + NEWLINE
-                compiled += tab("return stack")
+                compiled += tab("vy_globals.context_level -= 1; vy_globals.context_values.pop()") + NEWLINE
+                compiled += tab("vy_globals.input_level -= 1") + NEWLINE
+                compiled += tab("return vy_globals.stack")
         elif token_name == Structure.LAMBDA:
             defined_arity = 1
             if Keys.LAMBDA_ARGS in token_value:
@@ -278,103 +207,97 @@ else:
                     defined_arity = int(lambda_argument)
             signature = secrets.token_hex(16)
             compiled += (
-                f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):"
-                + NEWLINE
+                    f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):"
+                    + NEWLINE
             )
-            compiled += (
-                tab(
-                    "global context_level, context_values, input_level, input_values, retain_items, printed, register"
-                )
-                + NEWLINE
-            )
-            compiled += tab("context_level += 1") + NEWLINE
-            compiled += tab("input_level += 1") + NEWLINE
+            compiled += tab("vy_globals.context_level += 1") + NEWLINE
+            compiled += tab("vy_globals.input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += (
-                tab("if 'stored_arity' in dir(self): stored = self.stored_arity;")
-                + NEWLINE
+                    tab("if 'stored_arity' in dir(self): stored = self.stored_arity;")
+                    + NEWLINE
             )
             compiled += (
-                tab(
-                    f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity, True); stack = parameters[::]"
-                )
-                + NEWLINE
+                    tab(
+                        f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity, True); vy_globals.stack = parameters[::]"
+                    )
+                    + NEWLINE
             )
             compiled += (
-                tab(
-                    "elif stored: parameters = pop(parameter_stack, stored, True); stack = parameters[::]"
-                )
-                + NEWLINE
+                    tab(
+                        "elif stored: parameters = pop(parameter_stack, stored, True); vy_globals.stack = parameters[::]"
+                    )
+                    + NEWLINE
             )
             if defined_arity == 1:
                 compiled += (
-                    tab("else: parameters = pop(parameter_stack); stack = [parameters]")
-                    + NEWLINE
+                        tab("else: parameters = pop(parameter_stack); vy_globals.stack = [parameters]")
+                        + NEWLINE
                 )
             else:
                 compiled += (
-                    tab(
-                        f"else: parameters = pop(parameter_stack, {defined_arity}); stack = parameters[::]"
-                    )
-                    + NEWLINE
+                        tab(
+                            f"else: parameters = pop(parameter_stack, {defined_arity}); vy_globals.stack = parameters[::]"
+                        )
+                        + NEWLINE
                 )
-            compiled += tab("context_values.append(parameters)") + NEWLINE
-            compiled += tab("input_values[input_level] = [stack[::], 0]") + NEWLINE
+            compiled += tab("vy_globals.context_values.append(parameters)") + NEWLINE
+            compiled += tab("vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]") + NEWLINE
             compiled += tab(vy_compile(token_value[Keys.LAMBDA_BODY])) + NEWLINE
-            compiled += tab("ret = [pop(stack)]") + NEWLINE
-            compiled += tab("context_level -= 1; context_values.pop()") + NEWLINE
-            compiled += tab("input_level -= 1") + NEWLINE
+            compiled += tab("ret = [pop(vy_globals.stack)]") + NEWLINE
+            compiled += tab("vy_globals.context_level -= 1; vy_globals.context_values.pop()") + NEWLINE
+            compiled += tab("vy_globals.input_level -= 1") + NEWLINE
             compiled += tab("return ret") + NEWLINE
             compiled += f"_lambda_{signature}.stored_arity = {defined_arity}" + NEWLINE
-            compiled += f"stack.append(_lambda_{signature})"
+            compiled += f"vy_globals.stack.append(_lambda_{signature})"
         elif token_name == Structure.LIST:
             compiled += "temp_list = []" + NEWLINE
             for element in token_value[Keys.LIST_ITEMS]:
                 if element:
                     compiled += "def list_lhs(parameter_stack):" + NEWLINE
-                    compiled += tab("stack = parameter_stack[::]") + NEWLINE
+                    compiled += tab("vy_globals.stack = parameter_stack[::]") + NEWLINE
                     compiled += tab(vy_compile(element)) + NEWLINE
-                    compiled += tab("return pop(stack)") + NEWLINE
-                    compiled += "temp_list.append(list_lhs(stack))" + NEWLINE
-            compiled += "stack.append(temp_list[::])"
+                    compiled += tab("return pop(vy_globals.stack)") + NEWLINE
+                    compiled += "temp_list.append(list_lhs(vy_globals.stack))" + NEWLINE
+            compiled += "vy_globals.stack.append(temp_list[::])"
         elif token_name == Structure.FUNC_REF:
-            compiled += f"stack.append(FN_{token_value[Keys.FUNC_NAME]})"
+            compiled += f"vy_globals.stack.append(FN_{token_value[Keys.FUNC_NAME]})"
         elif token_name == Structure.VAR_SET:
-            compiled += "VAR_" + token_value[Keys.VAR_NAME] + " = pop(stack)"
+            compiled += "VAR_" + token_value[Keys.VAR_NAME] + " = pop(vy_globals.stack)"
         elif token_name == Structure.VAR_GET:
-            compiled += "stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
+            compiled += "vy_globals.stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
             function_A = vy_compile(wrap_in_lambda(token_value[1]))
             compiled += function_A + NEWLINE
-            compiled += "function_A = pop(stack)\n"
+            compiled += "function_A = pop(vy_globals.stack)\n"
             compiled += transformers[token_value[0]] + NEWLINE
         elif token_name == Structure.DYAD_TRANSFORMER:
             if token_value[0] in Grouping_Transformers:
                 compiled += (
-                    vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
-                    + NEWLINE
+                        vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
+                        + NEWLINE
                 )
             else:
                 function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
                 function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
                 compiled += function_A + NEWLINE + function_B + NEWLINE
-                compiled += "function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += "function_B = pop(vy_globals.stack); function_A = pop(vy_globals.stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
         elif token_name == Structure.TRIAD_TRANSFORMER:
             if token_value[0] in Grouping_Transformers:
                 compiled += (
-                    vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
-                    + NEWLINE
+                        vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
+                        + NEWLINE
                 )
             else:
                 function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
                 function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
                 function_C = vy_compile(wrap_in_lambda(token_value[1][2]))
                 compiled += (
-                    function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
+                        function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )
-                compiled += "function_C = pop(stack); function_B = pop(stack); function_A = pop(stack)\n"
+                compiled += "function_C = pop(vy_globals.stack); function_B = pop(vy_globals.stack); function_A = pop(vy_globals.stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
 
         compiled += "\n"
@@ -383,10 +306,7 @@ else:
 
 
 def execute(code, flags, input_list, output_variable):
-    global stack, register, printed, output, MAP_START, MAP_OFFSET
-    global _join, _vertical_join, use_encoding, input_level, online_version, raw_strings
-    global inputs, reverse_args, keg_mode, number_iterable, this_function, variables_are_digraphs
-    online_version = True
+    vy_globals.online_version = True
     output = output_variable
     output[1] = ""
     output[2] = ""
@@ -396,47 +316,13 @@ def execute(code, flags, input_list, output_variable):
         eval_function = vy_eval
         if "Ṡ" in flags:
             eval_function = str
-        inputs = list(map(eval_function, input_list.split("\n")))
+        vy_globals.inputs = list(map(eval_function, input_list.split("\n")))
 
     if "a" in flags:
-        inputs = [inputs]
+        vy_globals.inputs = [vy_globals.inputs]
 
     if flags:
-        if "H" in flags:
-            stack = [100]
-        if "M" in flags:
-            MAP_START = 0
-
-        if "m" in flags:
-            MAP_OFFSET = 0
-
-        if "Ṁ" in flags:
-            MAP_START = 0
-            MAP_OFFSET = 0
-
-        if "j" in flags:
-            _join = True
-
-        if "L" in flags:
-            _vertical_join = True
-
-        if "v" in flags:
-            use_encoding = True
-
-        if "r" in flags:
-            reverse_args = True
-
-        if "K" in flags:
-            keg_mode = True
-
-        if "R" in flags:
-            number_iterable = range
-
-        if "D" in flags:
-            raw_strings = True
-
-        if "V" in flags:
-            variables_are_digraphs = True
+        vy_globals.set_globals(flags)
 
         if "h" in flags:
             output[
@@ -465,7 +351,7 @@ ALL flags should be used as is (no '-' prefix)
 \tG\tPrint the maximum item of the top of stack on end of execution
 \tg\tPrint the minimum item of the top of the stack on end of execution
 \tW\tPrint the entire stack on end of execution
-\tṠ\tTreat all inputs as strings (usually obtainable by wrapping in quotations)
+\tṠ\tTreat all vy_globals.inputs as strings (usually obtainable by wrapping in quotations)
 \tR\tTreat numbers as ranges if ever used as an iterable
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
@@ -479,63 +365,68 @@ ALL flags should be used as is (no '-' prefix)
 \t…\tTruncate lists at 100 items
 """
             return
-    input_values[0] = [inputs, 0]
+    vy_globals.input_values[0] = [vy_globals.inputs, 0]
     code = vy_compile(
         code,
-        "global stack, register, printed, output, MAP_START, MAP_OFFSET, _join, _vertical_join, use_encoding, input_level, raw_strings, retain_items, reverse_args, this_function\n",
+        inspect.cleandoc("""
+            from vyxal import vy_globals
+            from vyxal.array_builtins import *
+            from vyxal.builtins import *\n""") + NEWLINE,
     )
-    context_level = 0
+    vy_globals.context_level = 0
     if flags and "c" in flags:
         output[2] = code
 
     try:
+        print(code)
         exec(code, globals())
+    except SystemExit:
+        if "o" not in flags:
+            return
     except Exception as e:
         output[2] += "\n" + str(e)
         output[
             2
-        ] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in last_popped]}"
-        output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in stack]}"
-        print(e)
-    except SystemExit:
-        if "o" not in flags:
-            return
+        ] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in vy_globals.last_popped]}"
+        output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
+        raise e
 
-    if (not printed and "O" not in flags) or "o" in flags:
+    if (not vy_globals.printed and "O" not in flags) or "o" in flags:
         if flags and "s" in flags:
-            vy_print(summate(pop(stack)))
+            vy_print(summate(pop(vy_globals.stack)))
         elif flags and "…" in flags:
-            top = pop(stack)
+            top = pop(vy_globals.stack)
             if vy_type(top) in (list, Generator):
                 vy_print(top[:100])
             else:
                 vy_print(top)
         elif flags and "ṡ" in flags:
-            vy_print(" ".join([vy_str(n) for n in stack]))
+            vy_print(" ".join([vy_str(n) for n in vy_globals.stack]))
         elif flags and "d" in flags:
-            vy_print(summate(flatten(pop(stack))))
+            vy_print(summate(flatten(pop(vy_globals.stack))))
         elif flags and "Ṫ" in flags:
-            vy_print(summate(stack))
+            vy_print(summate(vy_globals.stack))
         elif flags and "S" in flags:
-            vy_print(" ".join([vy_str(n) for n in pop(stack)]))
+            vy_print(" ".join([vy_str(n) for n in pop(vy_globals.stack)]))
         elif flags and "C" in flags:
-            vy_print("\n".join(centre([vy_str(n) for n in pop(stack)])))
+            vy_print("\n".join(centre([vy_str(n) for n in pop(vy_globals.stack)])))
         elif flags and "l" in flags:
-            vy_print(len(pop(stack)))
+            vy_print(len(pop(vy_globals.stack)))
         elif flags and "G" in flags:
-            vy_print(vy_max(pop(stack)))
+            vy_print(vy_max(pop(vy_globals.stack)))
         elif flags and "g" in flags:
-            vy_print(vy_min(pop(stack)))
+            vy_print(vy_min(pop(vy_globals.stack)))
         elif flags and "W" in flags:
-            vy_print(stack)
-        elif _vertical_join:
-            vy_print(vertical_join(pop(stack)))
-        elif _join:
-            vy_print("\n".join([vy_str(n) for n in pop(stack)]))
+            vy_print(vy_globals.stack)
+        elif vy_globals._vertical_join:
+            vy_print(vertical_join(pop(vy_globals.stack)))
+        elif vy_globals._join:
+            if vy_globals.stack:
+                vy_print("\n".join([vy_str(n) for n in pop(vy_globals.stack)]))
         elif flags and "J" in flags:
-            vy_print("\n".join([vy_str(n) for n in stack]))
+            vy_print("\n".join([vy_str(n) for n in vy_globals.stack]))
         else:
-            vy_print(pop(stack))
+            vy_print(pop(vy_globals.stack))
 
 
 if __name__ == "__main__":
@@ -544,8 +435,14 @@ if __name__ == "__main__":
 
     file_location = ""
     flags = ""
-    inputs = []
-    header = "stack = []\nregister = 0\nprinted = False\n"
+    vy_globals.inputs = []
+    header = inspect.cleandoc("""
+        from vyxal import vy_globals
+        from vyxal.builtins import *
+        from vyxal.array_builtins import *
+        vy_globals.stack = []
+        vy_globals.register = 0
+        vy_globals.printed = False""") + NEWLINE
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
@@ -556,23 +453,23 @@ if __name__ == "__main__":
             if "Ṡ" in flags:
                 eval_function = str
             if "H" in flags:
-                stack = [100]
+                vy_globals.stack = [100]
             if "f" in flags:
-                inputs = list(map(eval_function, open(sys.argv[3]).readlines()))
+                vy_globals.inputs = list(map(eval_function, open(sys.argv[3]).readlines()))
             else:
-                inputs = list(map(eval_function, sys.argv[3:]))
+                vy_globals.inputs = list(map(eval_function, sys.argv[3:]))
 
         if "a" in flags:
-            inputs = [inputs]
+            vy_globals.inputs = [vy_globals.inputs]
 
     if not file_location:  # repl mode
 
         while 1:
             line = input(">>> ")
-            context_level = 0
+            vy_globals.context_level = 0
             line = vy_compile(line, header)
             exec(line)
-            vy_print(stack)
+            vy_print(vy_globals.stack)
     elif file_location == "h":
         print(
             "\nUsage: python3 Vyxal.py <file> <flags (single string of flags)> <input(s) (if not from STDIN)>"
@@ -599,7 +496,7 @@ if __name__ == "__main__":
         print("\tG\tPrint the maximum item of the top of stack on end of execution")
         print("\tg\tPrint the minimum item of the top of the stack on end of execution")
         print("\tW\tPrint the entire stack on end of execution")
-        print("\tṠ\tTreat all inputs as strings")
+        print("\tṠ\tTreat all vy_globals.inputs as strings")
         print("\tR\tTreat numbers as ranges if ever used as an iterable")
         print("\tD\tTreat all strings as raw strings (don't decompress strings)")
         print("\tṪ\tPrint the sum of the entire stack")
@@ -610,54 +507,54 @@ if __name__ == "__main__":
         print("\t…\tTruncate lists at 100 items")
     else:
         if flags:
-            set_globals(flags)
+            vy_globals.set_globals(flags)
 
         # Encoding method thanks to Adnan (taken from the old 05AB1E interpreter)
-        if use_encoding:
+        if vy_globals.use_encoding:
             import vyxal.encoding
 
             code = open(file_location, "rb").read()
             code = vyxal.encoding.vyxal_to_utf8(code)
         else:
             code = open(file_location, "r", encoding="utf-8").read()
-        input_values[0] = [inputs, 0]
+        vy_globals.input_values[0] = [vy_globals.inputs, 0]
         code = vy_compile(code, header)
-        context_level = 0
+        vy_globals.context_level = 0
         if flags and "c" in flags:
             print(code)
         exec(code)
-        if (not printed and "O" not in flags) or "o" in flags:
+        if (not vy_globals.printed and "O" not in flags) or "o" in flags:
             if flags and "s" in flags:
-                print(summate(pop(stack)))
+                print(summate(pop(vy_globals.stack)))
             elif flags and "…":
-                top = pop(stack)
+                top = pop(vy_globals.stack)
                 if vy_type(top) in (list, Generator):
                     print(top[:100])
                 else:
                     print(top)
             elif flags and "ṡ" in flags:
-                print(" ".join([vy_str(n) for n in stack]))
+                print(" ".join([vy_str(n) for n in vy_globals.stack]))
             elif flags and "d" in flags:
-                print(summate(flatten(pop(stack))))
+                print(summate(flatten(pop(vy_globals.stack))))
             elif flags and "Ṫ" in flags:
-                vy_print(summate(stack))
+                vy_print(summate(vy_globals.stack))
             elif flags and "S" in flags:
-                print(" ".join([vy_str(n) for n in pop(stack)]))
+                print(" ".join([vy_str(n) for n in pop(vy_globals.stack)]))
             elif flags and "C" in flags:
-                print("\n".join(centre([vy_str(n) for n in pop(stack)])))
+                print("\n".join(centre([vy_str(n) for n in pop(vy_globals.stack)])))
             elif flags and "l" in flags:
-                print(len(pop(stack)))
+                print(len(pop(vy_globals.stack)))
             elif flags and "G" in flags:
-                print(vy_max(pop(stack)))
+                print(vy_max(pop(vy_globals.stack)))
             elif flags and "g" in flags:
-                print(vy_min(pop(stack)))
+                print(vy_min(pop(vy_globals.stack)))
             elif flags and "W" in flags:
-                print(vy_str(stack))
-            elif _vertical_join:
-                print(vertical_join(pop(stack)))
-            elif _join:
-                print("\n".join([vy_str(n) for n in pop(stack)]))
+                print(vy_str(vy_globals.stack))
+            elif vy_globals._vertical_join:
+                print(vertical_join(pop(vy_globals.stack)))
+            elif vy_globals._join:
+                print("\n".join([vy_str(n) for n in pop(vy_globals.stack)]))
             elif flags and "J" in flags:
-                print("\n".join([vy_str(n) for n in stack]))
+                print("\n".join([vy_str(n) for n in vy_globals.stack]))
             else:
-                vy_print(pop(stack))
+                vy_print(pop(vy_globals.stack))
