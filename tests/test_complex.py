@@ -7,9 +7,6 @@ import sys
 import builtins
 from multiprocessing import Manager
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
-sys.path.insert(1, THIS_FOLDER)
-
 
 # from from https://codegolf.stackexchange.com/a/210307
 fizzbuzz_output = [

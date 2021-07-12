@@ -6,11 +6,10 @@ import sys
 import builtins
 from multiprocessing import Manager
 
-# THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
-# sys.path.insert(1, THIS_FOLDER)
 
 import vyxal
 from vyxal.builtins import pop
+from vyxal.array_builtins import deref
 
 # This is just a dummy test, it's not feasible to write multiple tests for every single
 # overload of every single command
@@ -93,25 +92,24 @@ def test_trailing_zeroes():
         assert stack == [expected]
 
 
-"""
 def test_deep_vectorise():
     tests = [
         [[1, 2, 3], [2, 5, 1], [3, 7, 4], "+"],
-        [[1, 2, 3], [2, 5, 1], [1, 3, -2], "-"],
+        [[1, 2, 3], [2, 5, 1], [-1, -3, 2], "-"],
         [[1, 2, 3], [2, 5, -4], [2, 10, -12], "*"],
         [[1, 2, 3], [2, 5, -4], [2, 5 / 2, -4 / 3], "/"],
         [
             ["foo", "bar", 2],
             [3, "baz", "barbaz"],
-            ["foofoofoo", ["bbar", "abar", "zbar"], "barbazbarbaz"],
+            ["foofoofoo", ["bbaz", "abaz", "rbaz"], "barbazbarbaz"],
             "*",
         ],
     ]
     for input1, input2, expected, fn in tests:
         stack = run_code(fn, flags=["O"], input_list=[input1, input2])
-        print(input1, fn, input2, "should equal", stack)
-        assert deref(pop(stack)) == expected
-"""
+        res = deref(pop(stack))
+        print(input1, fn, input2, "should equal", res)
+        assert res == expected
 
 
 def test_quit():
