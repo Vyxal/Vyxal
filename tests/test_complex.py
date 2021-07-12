@@ -1,9 +1,10 @@
 # Test more complex snippets of code, taken from Vyxal answers
 
+from test_utils import run_code
+
 import vyxal
 import vyxal.builtins
 import vyxal.interpreter
-from test_utils import run_code
 
 # from from https://codegolf.stackexchange.com/a/210307
 fizzbuzz_output = [

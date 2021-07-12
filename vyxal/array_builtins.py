@@ -5,6 +5,7 @@ import sys
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
+import vyxal.builtins
 from vyxal.utilities import *
 
 try:

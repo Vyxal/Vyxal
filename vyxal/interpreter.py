@@ -370,7 +370,7 @@ ALL flags should be used as is (no '-' prefix)
         inspect.cleandoc("""
             from vyxal import vy_globals
             from vyxal.array_builtins import *
-            from vyxal.builtins import *\n""") + NEWLINE,
+            from vyxal.builtins import *""") + NEWLINE,
     )
     vy_globals.context_level = 0
     if flags and "c" in flags:
@@ -388,7 +388,7 @@ ALL flags should be used as is (no '-' prefix)
             2
         ] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in vy_globals.last_popped]}"
         vy_globals.output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
-        print(e)
+        raise e
 
     if (not vy_globals.printed and "O" not in flags) or "o" in flags:
         if flags and "s" in flags:
