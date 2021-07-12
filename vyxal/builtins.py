@@ -1365,7 +1365,7 @@ def split(haystack, needle, keep_needle=False):
         return ret
 
 
-def split_NEWLINEs_or_pow_10(item):
+def split_newlines_or_pow_10(item):
     return {Number: lambda: 10 ** item, str: lambda: item.split("\n")}.get(
         vy_type(item), lambda: vectorise(split_NEWLINEs_or_pow_10, item)
     )()
