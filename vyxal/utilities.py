@@ -437,7 +437,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         ret = {
             (types[0], types[1]): (
                 lambda: safe_apply(fn, left, right),
-                lambda: expl(vyxal.array_builtins.iterable(left), right),
+                lambda: expl(iterable(left), right),
             ),
             (list, types[1]): (
                 lambda: [safe_apply(fn, x, right) for x in left],
@@ -483,7 +483,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
         ret = {
             (types[0], types[1]): (
                 lambda: safe_apply(fn, left, right),
-                lambda: expl(vyxal.array_builtins.iterable(left), right),
+                lambda: expl(iterable(left), right),
             ),
             (list, types[1]): (
                 lambda: [safe_apply(fn, x, right) for x in left],
@@ -522,7 +522,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
 
             return gen()
         elif vy_type(left) in (str, Number):
-            return safe_apply(fn, list(vyxal.array_builtins.iterable(left)))
+            return safe_apply(fn, list(iterable(left)))
         else:
             ret = [safe_apply(fn, x) for x in left]
             return ret

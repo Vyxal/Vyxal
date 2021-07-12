@@ -4,6 +4,7 @@ from test_utils import run_code
 
 import vyxal
 import vyxal.interpreter
+import vyxal.builtins
 
 # from from https://codegolf.stackexchange.com/a/210307
 fizzbuzz_output = [

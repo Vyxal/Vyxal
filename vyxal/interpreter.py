@@ -307,9 +307,9 @@ else:
 
 def execute(code, flags, input_list, output_variable):
     vy_globals.online_version = True
-    output = output_variable
-    output[1] = ""
-    output[2] = ""
+    vy_globals.output = output_variable
+    vy_globals.output[1] = ""
+    vy_globals.output[2] = ""
     flags = flags
 
     if input_list:
@@ -325,7 +325,7 @@ def execute(code, flags, input_list, output_variable):
         vy_globals.set_globals(flags)
 
         if "h" in flags:
-            output[
+            vy_globals.output[
                 1
             ] = """
 ALL flags should be used as is (no '-' prefix)
@@ -375,7 +375,7 @@ ALL flags should be used as is (no '-' prefix)
     )
     vy_globals.context_level = 0
     if flags and "c" in flags:
-        output[2] = code
+        vy_globals.output[2] = code
 
     try:
         print(code)
@@ -384,12 +384,12 @@ ALL flags should be used as is (no '-' prefix)
         if "o" not in flags:
             return
     except Exception as e:
-        output[2] += "\n" + str(e)
-        output[
+        vy_globals.output[2] += "\n" + str(e)
+        vy_globals.output[
             2
         ] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in vy_globals.last_popped]}"
-        output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
-        raise e
+        vy_globals.output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
+        print(e)
 
     if (not vy_globals.printed and "O" not in flags) or "o" in flags:
         if flags and "s" in flags:
@@ -421,8 +421,7 @@ ALL flags should be used as is (no '-' prefix)
         elif vy_globals._vertical_join:
             vy_print(vertical_join(pop(vy_globals.stack)))
         elif vy_globals._join:
-            if vy_globals.stack:
-                vy_print("\n".join([vy_str(n) for n in pop(vy_globals.stack)]))
+            vy_print("\n".join([vy_str(n) for n in pop(vy_globals.stack)]))
         elif flags and "J" in flags:
             vy_print("\n".join([vy_str(n) for n in vy_globals.stack]))
         else:

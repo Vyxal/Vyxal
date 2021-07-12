@@ -942,8 +942,8 @@ def ncr(lhs, rhs):
         (Number, Number): lambda: unsympy(
             sympy.functions.combinatorial.numbers.nC(int(lhs), int(rhs))
         ),
-        (str, Number): lambda: [random.choice(lhs) for c in range(rhs)],
-        (Number, str): lambda: [random.choice(rhs) for c in range(lhs)],
+        (str, Number): lambda: [random.choice(lhs) for _ in range(rhs)],
+        (Number, str): lambda: [random.choice(rhs) for _ in range(lhs)],
         (str, str): lambda: int(set(lhs) == set(rhs)),
     }.get(types, lambda: vectorise(ncr, lhs, rhs))()
 
@@ -1092,7 +1092,7 @@ def pop(vector, num=1, wrap=False):
     if vy_globals.retain_items:
         vector += ret[::-1]
 
-    last_popped = ret
+    vy_globals.last_popped = ret
     if num == 1 and not wrap:
         return ret[0]
 
@@ -1842,7 +1842,7 @@ def vy_oct(item):
 
 
 def vy_print(item, end="\n", raw=False):
-    printed = True
+    vy_globals.printed = True
     t_item = type(item)
     if t_item is Generator:
         item._print(end)

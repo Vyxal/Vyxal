@@ -80,7 +80,7 @@ command_dict = {
     "J": ("rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(join(lhs, rhs))", 2),
     "K": ("vy_globals.stack.append(divisors_of(pop(vy_globals.stack)))", 1),
     "L": ("top = pop(vy_globals.stack); vy_globals.stack.append(len(iterable(top)))", 1),
-    "M": ("fn, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_map(fn, vector))", 2),
+    "M": ("fn, vector = pop(vy_globals.stack, 2); temp = vy_map(fn, vector); vy_globals.stack.append(temp)", 2),
     "N": ("vy_globals.stack.append(negate(pop(vy_globals.stack)))", 1),
     "O": (
         "needle, haystack = pop(vy_globals.stack, 2); vy_globals.stack.append(iterable(haystack).count(needle))",
