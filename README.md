@@ -160,7 +160,7 @@ KL2=
 
 ## Links
 
-- [Repository](https://github.com/Lyxal/Vyxal)
+- [Repository](https://github.com/Vyxal/Vyxal)
 - [Online Interpreter](http://lyxal.pythonanywhere.com)
 - [Tutorial](https://github.com/Lyxal/Vyxal/blob/master/docs/Tutorial.md)
 - [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
