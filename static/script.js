@@ -35,6 +35,11 @@
                 if (state.structure == 'COMMENT') {
                     return 'comment'
                 }
+                if (state.structure == 'SCC' && state.scc) {
+                    state.scc--;
+                    if(!state.scc) state.structure = 'NONE';
+                    return 'string';
+                }
                 if (char == '#' && state.structure == 'NONE') {
                     state.structure = 'COMMENT';
                     return 'comment'
