@@ -3,6 +3,7 @@ import secrets
 import string
 import sys
 import time
+from typing import Generator
 import urllib.request
 import warnings
 
@@ -449,8 +450,8 @@ def execute(code, flags, input_list, output_variable):
             ] = """
 ALL flags should be used as is (no '-' prefix)
 \tH\tPreset stack to 100
-\tj\tPrint top of stack joined by NEWLINEs on end of execution
-\tL\tPrint top of stack joined by NEWLINEs (Vertically) on end of execution
+\tj\tPrint top of stack joined by newlines on end of execution
+\tL\tPrint top of stack joined by newlines (Vertically) on end of execution
 \ts\tSum/concatenate top of stack on end of execution
 \tM\tMake implicit range generation start at 0 instead of 1
 \tm\tMake implicit range generation end at n-1 instead of n
@@ -458,11 +459,11 @@ ALL flags should be used as is (no '-' prefix)
 \tv\tUse Vyxal encoding for input file
 \tc\tOutput compiled code
 \tf\tGet input from file instead of arguments
-\ta\tTreat NEWLINE seperated values as a list
+\ta\tTreat newline seperated values as a list
 \td\tPrint deep sum of top of stack on end of execution
 \tr\tMakes all operations happen with reverse arguments
 \tS\tPrint top of stack joined by spaces on end of execution
-\tC\tCentre the output and join on NEWLINEs on end of execution
+\tC\tCentre the output and join on newlines on end of execution
 \tO\tDisable implicit output
 \to\tForce implicit output
 \tK\tEnable Keg mode (input as ordinal values and integers as characters when outputting)
@@ -475,12 +476,13 @@ ALL flags should be used as is (no '-' prefix)
 \tD\tTreat all strings as raw strings (don't decompress strings)
 \tṪ\tPrint the sum of the entire stack
 \tṡ\tPrint the entire stack, joined on spaces
-\tJ\tPrint the entire stack, separated by NEWLINEs.
+\tJ\tPrint the entire stack, separated by newlines.
 \tV\tVariables are only one letter long
 \t5\tMake the interpreter timeout after 5 seconds
 \tb\tMake the interpreter timeout after 15 seconds
 \tB\tMake the interpreter timeout after 30 seconds
 \tT\tMake the interpreter timeout after 60 seconds
+\t…\tTruncate lists at 100 items
 """
             return
     input_values[0] = [inputs, 0]
@@ -508,6 +510,12 @@ ALL flags should be used as is (no '-' prefix)
     if (not printed and "O" not in flags) or "o" in flags:
         if flags and "s" in flags:
             vy_print(summate(pop(stack)))
+        elif flags and "…" in flags:
+            top = pop(stack)
+            if vy_type(top) in (list, Generator):
+                vy_print(top[:100])
+            else:
+                vy_print(top)
         elif flags and "ṡ" in flags:
             vy_print(" ".join([vy_str(n) for n in stack]))
         elif flags and "d" in flags:
@@ -605,6 +613,7 @@ if __name__ == "__main__":
         print("\tJ\tPrint stack joined by NEWLINEs")
         print("\to\tForce implicit output, even when something has been outputted.")
         print("\tṡ\tPrint stack joined on spaces")
+        print("\t…\tTruncate lists at 100 items")
     else:
         if flags:
             set_globals(flags)
@@ -626,6 +635,12 @@ if __name__ == "__main__":
         if (not printed and "O" not in flags) or "o" in flags:
             if flags and "s" in flags:
                 print(summate(pop(stack)))
+            elif flags and "…":
+                top = pop(stack)
+                if vy_type(top) in (list, Generator):
+                    print(top[:100])
+                else:
+                    print(top)
             elif flags and "ṡ" in flags:
                 print(" ".join([vy_str(n) for n in stack]))
             elif flags and "d" in flags:
