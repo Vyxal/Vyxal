@@ -160,7 +160,7 @@ KL2=
 
 ## Links
 
-- [Repository](https://github.com/Lyxal/Vyxal)
+- [Repository](https://github.com/Vyxal/Vyxal)
 - [Online Interpreter](http://lyxal.pythonanywhere.com)
 - [Tutorial](https://github.com/Lyxal/Vyxal/blob/master/docs/Tutorial.md)
 - [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
@@ -175,5 +175,4 @@ KL2=
 - @detectivewasif for adding detail to the reference sheet.
 - @Razetime for helping me with the online interpreter's design
 - @ysthakur for making the reference.md file and making an automated process to do so.
-
 
