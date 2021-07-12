@@ -129,7 +129,8 @@ def vy_compile(program, header=""):
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
-                compiled += f"stack.append({codepage.find(token_value[1])} + 101)"
+                print(token_value)
+                compiled += f"stack.append({codepage.find(str(token_value[1]))} + 101)"
             else:
                 compiled += command_dict.get(token[1], "  ")[0]
         elif token_name == Structure.NUMBER:

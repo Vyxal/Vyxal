@@ -2,6 +2,7 @@ import string
 
 from vyxal.utilities import safe_apply
 
+
 class Structure:
     NONE = 0
     IF = 1
@@ -193,7 +194,7 @@ def group_digraphs(source, vars=False):
     temp = ""
     escaped = False
 
-    ALL_DIGRAPHS = "k∆ø¨Þ"
+    ALL_DIGRAPHS = "k∆ø¨Þ⁺"
     if vars:
         ALL_DIGRAPHS += "→←"
 
@@ -204,7 +205,7 @@ def group_digraphs(source, vars=False):
             escaped = components.append(character) or False
         elif temp:
             temp = components.append(temp + character) or ""
-        elif character in "\\⁺":
+        elif character in "\\":
             escaped = components.append(character) or True
         elif character in ALL_DIGRAPHS:
             temp = character
@@ -484,6 +485,7 @@ if __name__ == "__main__":
         "5 λ1|›;",
         "ƛ:Ǎ[∇pp",
         '1 2 3W 4 5" v+',
+        "⁺e",
     ]
     for test in tests:
         print(test, group_strings(group_two_byte_strings(test)))
