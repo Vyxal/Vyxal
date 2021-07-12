@@ -59,6 +59,8 @@ class Generator:
                             yield ret[-1]
 
                 self.gen = gen()
+            elif type(raw_generator) is Function:
+                self.gen = raw_generator()
             else:
 
                 def gen():
@@ -78,6 +80,9 @@ class Generator:
 
             self.gen = map(niceify, raw_generator)
         self.generated = []
+
+    def __call__(self, *args, **kwargs):
+        return self
 
     def __contains__(self, item):
         if self.is_numeric_sequence:
@@ -251,6 +256,7 @@ def deep_vectorised(fn):
             return fn(first, second)
         else:
             return fn(first)
+
     return vectorised_fn
 
 
@@ -490,11 +496,12 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
     else:
         if vy_type(left) is Generator:
 
+            @Generator
             def gen():
                 for item in left:
                     yield safe_apply(fn, item)
 
-            return Generator(gen())
+            return gen()
         elif vy_type(left) in (str, Number):
             return safe_apply(fn, list(vyxal.array_builtins.iterable(left)))
         else:

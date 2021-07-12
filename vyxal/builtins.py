@@ -182,11 +182,12 @@ def centre(vector):
     vector = array_builtins.deref(iterable(vector), True)
     focal = max(map(len, vector))
 
+    @Generator
     def gen():
         for item in vector:
             yield item.center(focal)
 
-    return Generator(gen())
+    return gen()
 
 
 def chrord(item):
@@ -274,6 +275,7 @@ def combinations_replace_generate(lhs, rhs):
         else:
             fn, init = rhs, lhs
 
+        @Generator
         def gen():
             prev = None
             curr = init
@@ -282,7 +284,7 @@ def combinations_replace_generate(lhs, rhs):
                 prev = array_builtins.deref(curr)
                 curr = fn([curr])[-1]
 
-        return Generator(gen())
+        return gen()
 
 
 def const_divisibility(item, n, string_overload):
@@ -388,6 +390,7 @@ def divisors_of(item):
     divisors = []
     if t_item == str:
 
+        @Generator
         def gen():
             s = list(item)
             i = itertools.chain.from_iterable(
@@ -399,7 +402,7 @@ def divisors_of(item):
                 if len(item.split(sub)) == 2:
                     yield sub
 
-        return Generator(gen())
+        return gen()
 
     for value in vy_range(item, 1, 1):
         if modulo(item, value) == 0:
@@ -1184,13 +1187,14 @@ def repeat(vector, times, extra=None):
     t_vector = vy_type(vector)
     if t_vector is Function and vy_type(times) is Function:
 
+        @Generator
         def gen():
             item = extra
             while vector([item])[-1]:
                 item = times([item])[-1]
                 yield item
 
-        return Generator(gen())
+        return gen()
 
     elif times < 0:
         if t_vector is str:
@@ -1213,13 +1217,14 @@ def repeat(vector, times, extra=None):
 
 
 def repeat_no_collect(predicate, modifier, value):
+    @Generator
     def gen():
         item = value
         while predicate([item])[-1]:
             item = modifier([item])[-1]
         yield item
 
-    return Generator(gen())
+    return gen()
 
 
 def replace(haystack, needle, replacement):
@@ -1485,6 +1490,7 @@ def trim(lhs, rhs, left=False, right=False):
     if type(rhs) is Function:
         lhs = iterable(lhs)
 
+        @Generator
         def gen():
             for index, item in enumerate(lhs):
                 if index % 2:
@@ -1749,24 +1755,27 @@ def vy_map(fn, vector):
     t_function = vy_type(fn)
     if Function not in (t_vector, t_function):
 
+        @Generator
         def gen():
             for item in iterable(fn):
                 yield [vector, item]
 
-        return Generator(gen())
+        return gen()
 
     vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if vy_type(vec) == Number:
         vec = range(
             vyxal.interpreter.MAP_START, int(vec) + vyxal.interpreter.MAP_OFFSET
         )
+
     if vy_type(vec) is Generator:
 
+        @Generator
         def gen():
             for item in vec:
                 yield safe_apply(function, item)
 
-        return Generator(gen())
+        return gen()
     for item in vec:
         result = function([item])
         ret.append(result[-1])
