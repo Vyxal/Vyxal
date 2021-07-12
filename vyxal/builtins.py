@@ -10,7 +10,6 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal import array_builtins
-from vyxal import vy_globals
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
 

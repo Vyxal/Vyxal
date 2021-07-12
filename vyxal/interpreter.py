@@ -9,7 +9,6 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal import encoding, utilities
-from vyxal import vy_globals
 from vyxal.array_builtins import *
 from vyxal.builtins import *
 from vyxal.commands import *

@@ -163,7 +163,8 @@ command_dict = {
         "rhs = pop(vy_globals.stack)\nif vy_type(rhs) in [list, Generator]: vy_globals.stack.append(gcd(rhs))\nelse: vy_globals.stack.append(gcd(pop(vy_globals.stack), rhs))",
         2,
     ),
-    "ḣ": ("top = iterable(pop(vy_globals.stack)); vy_globals.stack.append(top[0]); vy_globals.stack.append(top[1:])", 1),
+    "ḣ": (
+    "top = iterable(pop(vy_globals.stack)); vy_globals.stack.append(top[0]); vy_globals.stack.append(top[1:])", 1),
     "ḭ": ("rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(integer_divide(lhs, rhs))", 2),
     "ŀ": (
         "start, needle, haystack = pop(vy_globals.stack, 3); vy_globals.stack.append(find(haystack, needle, start))",

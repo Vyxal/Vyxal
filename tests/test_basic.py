@@ -1,8 +1,7 @@
 # Simple tests
 
-from test_utils import run_code
-
 import vyxal
+from test_utils import run_code
 from vyxal.array_builtins import deref
 from vyxal.builtins import pop
 

@@ -1,7 +1,6 @@
 import base64
 import functools
 
-import vyxal
 from vyxal import vy_globals
 from vyxal import words
 
