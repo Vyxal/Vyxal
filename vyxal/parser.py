@@ -120,7 +120,7 @@ OPEN = tuple(structure_dictionary[k][0] for k in structure_dictionary)
 CLOSE = tuple(structure_dictionary[k][1] for k in structure_dictionary)
 
 
-def group_strings(source: str) -> [str]:
+def group_strings(source):
     ret = []
     source = collections.deque(source)
     temp = ""
@@ -460,6 +460,6 @@ if __name__ == "__main__":
         "⁺e",
     ]
     for test in tests:
-        print(test, group_strings(group_two_byte_strings(test)))
+        print(test, group_strings(test))
         print([(n[0], n[1]) for n in Tokenise(test)])
     input()
