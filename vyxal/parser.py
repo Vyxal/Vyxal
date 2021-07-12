@@ -1,6 +1,5 @@
+import collections
 import string
-
-from vyxal.utilities import safe_apply
 
 
 class Structure:
@@ -121,72 +120,46 @@ OPEN = tuple(structure_dictionary[k][0] for k in structure_dictionary)
 CLOSE = tuple(structure_dictionary[k][1] for k in structure_dictionary)
 
 
-def group_two_byte_strings(source):
-    components = []
-    temp, in_string, escaped = "", False, False
-
-    for character in source:
-        if escaped:
-            escaped = components.append(character) or False
-        elif type(character) is list:
-            components.append(character)
-        elif temp:
-            temp = components.append([temp + character, "`"]) or ""
-            in_string = False
-        elif in_string:
-            temp = character
-        elif character in "\\⁺":
-            escaped = components.append(character) or True
-        elif character == StringDelimiters.TWO_CHAR:
-            in_string = True
-        else:
-            components.append(character)
-
-    if temp:
-        components.append(temp)
-    return components
-
-
-def group_strings(source):
-    components = []
+def group_strings(source: str) -> [str]:
+    ret = []
+    source = collections.deque(source)
     temp = ""
-    escaped = False
 
-    flux_string = [False, "", StringDelimiters.NORMAL]
+    while len(source):
+        current = source.popleft()
+        # print(current, source, ret)
+        if type(current) is list:
+            ret.append(current)
+        elif current == "\\":
+            if len(source):
+                ret.append([source.popleft(), StringDelimiters.NORMAL])
+        elif current in StringDelimiters.DELIM_TUPLE:
+            if current == StringDelimiters.TWO_CHAR:
+                if len(source) < 3:
+                    ret.append(["".join(source), StringDelimiters.NORMAL])
 
-    for character in source:
-        if type(character) is list:
-            if flux_string[0]:
-                flux_string[1] += character
+                else:
+                    first, second = source.popleft(), source.popleft()
+                    if "\\" in (first, second):
+                        ret.append(
+                            [first + second + source.popleft(), StringDelimiters.NORMAL]
+                        )
+                    else:
+                        ret.append([first + second, StringDelimiters.NORMAL])
             else:
-                components.append(character)
-
-        elif flux_string[0]:
-            if escaped:
-                if character in (StringDelimiters.NORMAL):
-                    flux_string[1] = flux_string[1][:-1]
-                flux_string[1] += character
-                escaped = False
-            elif character == flux_string[2]:
-                components.append([flux_string[1], flux_string[2]])
-                flux_string = [False, "", StringDelimiters.NORMAL]
-            elif character == "\\":
-                escaped = True
-                flux_string[1] += character
-            else:
-                flux_string[1] += character
-        elif escaped:
-            escaped = components.append(character) or False
-        elif character in "\\⁺":
-            escaped = components.append(character) or True
-        elif character in StringDelimiters.DELIM_TUPLE:
-            flux_string = [True, "", character]
+                while len(source) and source[0] != current:
+                    head = source.popleft()
+                    if current == StringDelimiters.NORMAL and head == "\\":
+                        temp += "\\" + source.popleft()
+                    else:
+                        temp += head
+                ret.append([temp, current])
+                temp = ""
+                if len(source):
+                    source.popleft()
         else:
-            components.append(character)
-
-    if flux_string[0]:
-        components.append([flux_string[1], flux_string[2]])
-    return components
+            ret.append(current)
+    return ret
 
 
 def group_digraphs(source, vars=False):
@@ -230,7 +203,6 @@ def Tokenise(source: str, variables_are_digraphs=False):
         0  # How far deep we are, as in, are we at the uppermost level of the program?
     )
 
-    source = group_two_byte_strings(source)
     source = group_strings(source)
     source = group_digraphs(source, variables_are_digraphs)
 
