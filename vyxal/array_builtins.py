@@ -3,7 +3,6 @@ import os
 
 
 import vyxal
-from vyxal.utilities import Function
 from vyxal.utilities import *
 
 try:
@@ -11,7 +10,7 @@ try:
     import pwn
     import regex
     import sympy
-except:
+except ImportError:
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
     import numpy
     import pwn
@@ -19,18 +18,18 @@ except:
     import sympy
 
 
-def atleast_ndims(vector, n):
+def at_least_n_dims(vector, n):
     """Check if an array has at least n dimensions"""
     if n == 0:
         return 1
     vec_type = vy_type(vector)
     if vec_type is Generator:
         try:
-            return atleast_ndims(next(vector), n - 1)
+            return at_least_n_dims(next(vector), n - 1)
         except StopIteration:
             return 1
     if vec_type is list:
-        return not vector or atleast_ndims(vector[0], n - 1)
+        return not vector or at_least_n_dims(vector[0], n - 1)
     return 0
 
 
@@ -171,7 +170,7 @@ def foldl_cols(fn, vector, init=None):
         if vector.end_reached:
             return []
         first_row = next(vector)
-        if atleast_ndims(first_row, 2):
+        if at_least_n_dims(first_row, 2):
             return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
         num_cols = len(first_row)
         cs = range(num_cols)
@@ -188,7 +187,7 @@ def foldl_cols(fn, vector, init=None):
         num_rows = len(vector)
         if not num_rows:
             return []
-        if atleast_ndims(vector[0], 2):
+        if at_least_n_dims(vector[0], 2):
             print("recursioning")
             return map_norm(lambda arr: foldl_cols(fn, arr, init=init), vector)
         num_cols = len(vector[0])
@@ -221,6 +220,7 @@ def foldl_rows(fn, vector, init=None):
     if inner_type is list:
         return [foldl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
+
         @Generator
         def gen():
             yield foldl_rows(fn, first_row, init=init)
@@ -306,6 +306,7 @@ def foldr_rows(fn, vector, init=None):
     if inner_type is list:
         return [foldr_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
+
         @Generator
         def gen():
             yield foldr_rows(fn, vector[0], init=init)
@@ -350,6 +351,7 @@ def inclusive_range(lhs, rhs):
             func, vector = lhs, rhs
         else:
             func, vector = rhs, lhs
+
         @Generator
         def gen():
             for index, item in enumerate(vector):
@@ -377,6 +379,7 @@ def index(vector, index):
             fn, init = vector, index
         else:
             fn, init = index, vector
+
         @Generator
         def gen():
             seen = []
@@ -410,6 +413,7 @@ def indexed_into(vector, indices):
             fn, init = vector, indices
         else:
             fn, init = indices, vector
+
         @Generator
         def gen():
             seen = []
@@ -419,7 +423,7 @@ def indexed_into(vector, indices):
                 seen.append(curr)
             yield curr
 
-        return (gen())[-1]
+        return gen()[-1]
 
 
 def indices_where(fn, vector):
@@ -472,7 +476,7 @@ def map_at(function, vector, indices):
             else:
                 yield element
 
-    return (gen())
+    return gen()
 
 
 def map_every_n(vector, function, index):
@@ -484,18 +488,19 @@ def map_every_n(vector, function, index):
             else:
                 yield function([element])[-1]
 
-    return (gen())
+    return gen()
 
 
 def map_norm(fn, vector):
     vec_type = vy_type(vector)
     if vec_type is Generator:
+
         @Generator
         def gen():
             for item in vector:
                 yield fn(item)
 
-        return (gen())
+        return gen()
     elif vec_type is Number:
         pass  # idk what to do here, make a range or use it as a singleton?
     else:
@@ -537,7 +542,7 @@ def nub_sieve(vector):
             else:
                 occurances[item] = 1
 
-    return (gen())
+    return gen()
 
 
 def partition(item, I=1):
@@ -625,13 +630,14 @@ def scanl_rows(fn, vector, init=None):
     if inner_type is list:
         return [scanl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
+
         @Generator
         def gen():
             yield scanl_rows(fn, first_row, init=init)
             for row in vector:
                 yield scanl_rows(fn, row, init=init)
 
-        return (gen())
+        return gen()
     else:  # 1D fold/reduction
         if vec_type is Generator:
             acc = [next(vector)] if init is None else [init]
@@ -700,13 +706,14 @@ def scanr_rows(fn, vector, init=None):
     if inner_type is list:
         return [scanl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
+
         @Generator
         def gen():
             yield scanr_rows(fn, vector[0], init=init)
             for row in vector:
                 yield scanr_rows(fn, row, init=init)
 
-        return (gen())
+        return gen()
     # 1D fold/reduction
     if init is None:
         acc = [vector[-1]]
@@ -784,6 +791,7 @@ def zip_with2(fn, xs, ys):
     # Convert both to Generators if not already
     xs = xs if xs_type is Generator else Generator((x for x in xs))
     ys = ys if ys_type is Generator else Generator((y for y in ys))
+
     @Generator
     def gen():
         try:
@@ -792,7 +800,7 @@ def zip_with2(fn, xs, ys):
         except StopIteration:
             pass
 
-    return (gen())
+    return gen()
 
 
 def zip_with_multi(fn, lists):
@@ -800,6 +808,7 @@ def zip_with_multi(fn, lists):
         lst if vy_type(lst) is Generator else Generator((x for x in lst))
         for lst in lists
     ]
+
     @Generator
     def gen():
         try:
@@ -808,4 +817,4 @@ def zip_with_multi(fn, lists):
         except StopIteration:
             pass
 
-    return (gen())
+    return gen()

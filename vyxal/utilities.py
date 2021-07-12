@@ -135,7 +135,7 @@ class Generator:
 
     def __setitem__(self, position, value):
         if position >= len(self.generated):
-            temp = self.__getitem__(position)
+            self.__getitem__(position)
         self.generated[position] = value
 
     def __len__(self):
@@ -536,19 +536,19 @@ def vy_zip(lhs, rhs):
     while True:
         exhausted = 0
         try:
-            l = next(lhs)
+            left = next(lhs)
         except:
-            l = 0
+            left = 0
             exhausted += 1
 
         try:
-            r = next(rhs)
+            right = next(rhs)
         except:
-            r = 0
+            right = 0
             exhausted += 1
         if exhausted == 2:
             break
-        yield [l, r]
+        yield [left, right]
         ind += 1
 
 

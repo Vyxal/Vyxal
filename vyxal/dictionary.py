@@ -23100,7 +23100,9 @@ mna
 mne
 mni
 mnu
-mny""".split("\n")
+mny""".split(
+    "\n"
+)
 
 lookup = {}
 

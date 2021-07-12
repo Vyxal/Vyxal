@@ -1,11 +1,6 @@
 import os
 import secrets
-import string
 import sys
-import time
-from typing import Generator
-import urllib.request
-import warnings
 
 from vyxal import encoding, utilities, words
 from vyxal.array_builtins import *
@@ -314,9 +309,7 @@ else:
             )
             if defined_arity == 1:
                 compiled += (
-                    tab(
-                        f"else: parameters = pop(parameter_stack); stack = [parameters]"
-                    )
+                    tab("else: parameters = pop(parameter_stack); stack = [parameters]")
                     + NEWLINE
                 )
             else:

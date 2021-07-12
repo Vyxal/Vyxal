@@ -1,24 +1,12 @@
-import base64
-import copy
-import functools
-import hashlib
 import itertools
 import math
 import os
 import random
-import secrets
 import string
-import sys
-import time
 import urllib.request
-import warnings
-from datetime import date
-from datetime import datetime as dt
 
-import vyxal
 from vyxal import array_builtins
 from vyxal.array_builtins import iterable
-from vyxal.utilities import Function
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
 
@@ -556,7 +544,7 @@ def flatten(item):
 def floor(item):
     return {
         Number: lambda: math.floor(item),
-        str: lambda: int("".join([l for l in item if l in "0123456789"])),
+        str: lambda: int("".join(digit for digit in item if digit in "0123456789")),
     }.get(vy_type(item), lambda: vectorise(floor, item))()
 
 
@@ -588,7 +576,7 @@ def fractionify(item):
         frac = Fraction(item).limit_denominator()
         return [frac.numerator, frac.denominator]
     elif type(item) is str:
-        if re.match(r"\-?\d+(\.\d+)?", item):
+        if re.match(r"-?\d+(\.\d+)?", item):
             return fractionify(eval(item))
         else:
             return item
@@ -802,7 +790,7 @@ def iterable_shift(vector, direction, times=1):
 
 
 def join(lhs, rhs):
-    types = tuple(map(vy_type, [lhs, rhs]))
+    types = vy_type(lhs), vy_type(rhs)
     return {
         (types[0], types[1]): lambda: str(lhs) + str(rhs),
         (Number, Number): lambda: vy_eval(str(lhs) + str(rhs)),
@@ -1100,7 +1088,6 @@ def pop(vector, num=1, wrap=False):
 
     last_popped = ret
     if num == 1 and not wrap:
-
         return ret[0]
 
     if vyxal.interpreter.reverse_args:
@@ -1200,18 +1187,18 @@ def repeat(vector, times, extra=None):
         if t_vector is str:
             return vector[::-1] * times
         elif t_vector is Number:
-            safe_mode = True
+            vyxal.interpreter.safe_mode = True
             temp = vy_eval(str(reverse(vector)) * times)
-            safe_mode = False
+            vyxal.interpreter.safe_mode = False
             return temp
         return Generator(itertools.repeat(reversed(vector), times))
     else:
         if t_vector is str:
             return vector * times
         elif t_vector is Number:
-            safe_mode = True
+            vyxal.interpreter.safe_mode = True
             temp = vy_eval(str(reverse(vector)) * times)
-            safe_mode = False
+            vyxal.interpreter.safe_mode = False
             return temp
         return Generator(itertools.repeat(vector, times))
 
@@ -1372,7 +1359,7 @@ def split(haystack, needle, keep_needle=False):
 
 def split_newlines_or_pow_10(item):
     return {Number: lambda: 10 ** item, str: lambda: item.split("\n")}.get(
-        vy_type(item), lambda: vectorise(split_NEWLINEs_or_pow_10, item)
+        vy_type(item), lambda: vectorise(split_newlines_or_pow_10, item)
     )()
 
 
@@ -1898,7 +1885,7 @@ def vy_reduce(fn, vector):
     if type(fn) != Function:
         return [vector, vectorise(reverse, fn)]
     if t_type is Generator:
-        return [Generator(vector)._reduce(fn)]
+        return [vector._reduce(fn)]
     if t_type is Number:
         vector = list(
             range(
