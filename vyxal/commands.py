@@ -887,6 +887,9 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "vy_globals.stack.append([31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)]",
         0,
     ),
+    "k∪": ("vy_globals.stack.append('aeiouy')", 0),
+    "k⊍": ("vy_globals.stack.append('AEIOUY')", 0),
+    "k∩": ("vy_globals.stack.append('aeiouyAEIOUY')", 0),
 }
 
 transformers = {
