@@ -130,6 +130,21 @@ def test_quit():
     vyxal.builtins.vy_print = real_print
 
 
+def test_eval():
+    real_print = vyxal.builtins.vy_print
+    res = None
+
+    def set_res(result):
+        nonlocal res
+        res = result
+        import vyxal.interpreter
+        vyxal.interpreter.vy_print = real_print
+
+    vyxal.builtins.vy_print = set_res
+    run_code("`1 2 3 4 5 6 W ∑,`Ė", flags=["D"])
+    assert res == 21
+
+
 """
 def test_foldl_rows():
     tests = [
