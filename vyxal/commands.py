@@ -72,7 +72,7 @@ command_dict = {
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(ncr(lhs, rhs))",
         2,
     ),
-    "∞": ("vy_globals.stack.append(Generator(lambda x: x))", 0),
+    "∞": ("vy_globals.stack.append(Generator.from_index_function(lambda x: x))", 0),
     "!": ("vy_globals.stack.append(len(vy_globals.stack))", 0),
     '"': (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append([lhs, rhs])",

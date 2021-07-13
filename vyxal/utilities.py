@@ -233,6 +233,15 @@ class Generator:
 
         return out + "⟩"
 
+    def from_index_function(f):
+        @Generator
+        def _generated():
+            index = 0
+            while True:
+                yield f(index)
+                index += 1
+        return _generated
+
 
 class ShiftDirections:
     LEFT = 1
