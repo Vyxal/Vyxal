@@ -52,8 +52,10 @@ def vy_compile(program, header=""):
     compiled = ""
 
     if isinstance(program, str):
-        program = Tokenise(program)
-    # print(program)
+        program = Tokenise(
+            program
+        )  # because if it's a string, we want it to be a token list
+
     for token in program:
         token_name, token_value = token
         if token_name == Structure.NONE:
