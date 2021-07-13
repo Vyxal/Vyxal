@@ -7,11 +7,11 @@ from vyxal.array_builtins import deref
 from vyxal.builtins import pop
 
 
-# This is just a dummy test, it's not feasible to write multiple tests for every single
+# This is just a dummy test, it's not feasible to write multiple tests for every
 # overload of every single command
 def test_not():
-    stack = run_code("2¬", flags=["O"])
-    assert pop(stack) == 0
+    stack = run_code("ƛ¬;", flags=["O", "c"], input_list=[[0, 1, 2, ""]])
+    assert pop(stack) == [1, 0, 0, 1]
 
 
 def test_is_prime():
@@ -89,6 +89,7 @@ def test_trailing_zeroes():
 
 
 def test_deep_vectorise():
+    # todo add deeply nested lists and generators
     tests = [
         [[1, 2, 3], [2, 5, 1], [3, 7, 4], "+"],
         [[1, 2, 3], [2, 5, 1], [-1, -3, 2], "-"],
@@ -100,6 +101,7 @@ def test_deep_vectorise():
             ["foofoofoo", ["bbaz", "abaz", "rbaz"], "barbazbarbaz"],
             "*",
         ],
+        [[14, "foo"], 3, [0.4162896638657993, "fffoooooo"], "•"],
     ]
     for input1, input2, expected, fn in tests:
         stack = run_code(fn, flags=["O"], input_list=[input1, input2])
@@ -138,6 +140,7 @@ def test_eval():
         nonlocal res
         res = result
         import vyxal.interpreter
+
         vyxal.interpreter.vy_print = real_print
 
     vyxal.builtins.vy_print = set_res
@@ -159,7 +162,7 @@ def test_foldl_rows():
 
 
 def test_foldl_cols():
-    #todo add more complicated test cases
+    # todo add more complicated test cases
     tests = [
         (reshape(list(range(1, 10)), [3, 3]), 'λ+;', [12, 15, 18]),
         (reshape(list(range(12)), [3, 4]), 'λ-;', [-12, -13, -14, -15]),

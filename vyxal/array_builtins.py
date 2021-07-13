@@ -49,6 +49,7 @@ def cartesian_product(lhs, rhs):
         types = vy_type(lhs), vy_type(rhs)
         if types[0] == Generator:
             if types[1] == Generator:
+
                 @Generator
                 def cantor_diagonalized():
                     left = 0
@@ -61,8 +62,10 @@ def cartesian_product(lhs, rhs):
                         else:
                             left -= 1
                             right += 1
+
                 return cantor_diagonalized
             else:
+
                 @Generator
                 def right_first():
                     left = 0
@@ -70,9 +73,11 @@ def cartesian_product(lhs, rhs):
                         for right in range(len(rhs)):
                             yield [lhs[left], rhs[right]]
                         left += 1
+
                 return right_first
         else:
             if types[1] == Generator:
+
                 @Generator
                 def left_first():
                     right = 0
@@ -80,6 +85,7 @@ def cartesian_product(lhs, rhs):
                         for left in range(len(lhs)):
                             yield [lhs[left], rhs[right]]
                         right += 1
+
                 return left_first
             else:
                 return Generator(itertools.product(iterable(lhs), iterable(rhs)))

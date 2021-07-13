@@ -36,6 +36,7 @@ use_encoding = False
 
 def this_function(x):
     from vyxal.builtins import vy_print
+
     vy_print(stack)
     return x
 

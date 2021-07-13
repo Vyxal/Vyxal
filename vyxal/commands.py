@@ -1,3 +1,9 @@
+from typing import Callable, Tuple, List, Union
+
+from vyxal.builtins import *
+from vyxal.array_builtins import *
+from vyxal.utilities import *
+
 codepage = "λƛ¬∧⟑∨⟇÷×«\n»°•ß†€"
 codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"#$%&'()*+,-./01"
@@ -17,12 +23,52 @@ codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
 assert len(codepage) == 256
 
+
+def make_cmd(
+    to_fn_call: Union[str, Callable[[List[str]], str]], arity: int
+) -> Tuple[str, int]:
+    """
+    Returns a tuple with the transpiled command and its arity.
+
+    :param to_fn_call
+      If Callable, takes a list of variables that hold values popped from the
+      stack (reversed) and returns a string representing a value created by
+      running some function.
+      If str, its format method will be called with the aforementioned list
+      of variables as arguments.
+    on those variables
+    :param arity The arity of the function
+    """
+    if arity == 0:
+        cmd = to_fn_call([])
+    else:
+        var_names = [f"x{n}" for n in range(arity, 0, -1)]
+        if isinstance(to_fn_call, str):
+            fn_call = to_fn_call.format(*var_names)
+        else:
+            fn_call = to_fn_call(var_names)
+        cmd = (
+            f"{', '.join(var_names[::-1])} = pop(vy_globals.stack, {arity});"
+            f"res = {fn_call};"
+            f"vy_globals.stack.append(res);"
+        )
+    return cmd, arity
+
+
+def fn_to_cmd(fn: Union[Callable, str], arity: int) -> Tuple[str, int]:
+    """
+    Returns a tuple with the transpiled command and its arity.
+
+    :param fn The function to turn into a command, or its name
+    :param arity The arity of the function
+    """
+    fn_name = fn if isinstance(fn, str) else fn.__name__
+    return make_cmd(lambda var_names: f"{fn_name}({', '.join(var_names)})", arity)
+
+
 command_dict = {
-    "¬": ("vy_globals.stack.append(int(not pop(vy_globals.stack)))", 1),
-    "∧": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(lhs and rhs)",
-        2,
-    ),
+    "¬": make_cmd("not {}", 1),
+    "∧": make_cmd("{} and {}", 1),
     "⟑": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(rhs and lhs)",
         2,
@@ -39,10 +85,7 @@ command_dict = {
         "for item in iterable(pop(vy_globals.stack)): vy_globals.stack.append(item)",
         1,
     ),
-    "•": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(log(lhs, rhs))",
-        2,
-    ),
+    "•": fn_to_cmd(log, 2),
     "†": (
         "fn = pop(vy_globals.stack); vy_globals.stack += function_call(fn, vy_globals.stack)",
         1,
@@ -366,7 +409,10 @@ command_dict = {
         2,
     ),
     "¡": ("vy_globals.stack.append(factorial(pop(vy_globals.stack)))", 1),
-    "∑": ("temp = summate(pop(vy_globals.stack));vy_globals.stack.append(temp);print(vy_globals.stack);", 1),
+    "∑": (
+        "temp = summate(pop(vy_globals.stack));vy_globals.stack.append(temp);print(vy_globals.stack);",
+        1,
+    ),
     "¦": (
         "vy_globals.stack.append(cumulative_sum(iterable(pop(vy_globals.stack))))",
         1,

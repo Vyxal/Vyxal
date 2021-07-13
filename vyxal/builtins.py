@@ -1672,7 +1672,7 @@ def vy_eval(item):
                 Structure.LIST,
             ):
                 try:
-                    temp = vy_compile(item, vyxal.utilities.vyxal_imports)
+                    temp = vy_compile(item, vyxal_imports)
                     vy_globals.stack = []
                     exec(temp)
                     return vy_globals.stack[-1]
@@ -1692,6 +1692,7 @@ def vy_eval(item):
 def vy_exec(item):
     if vy_type(item) is str:
         import vyxal.interpreter
+
         exec(vyxal.interpreter.vy_compile(item, vyxal_imports))
         return []
     elif vy_type(item) == Number:

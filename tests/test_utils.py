@@ -26,7 +26,9 @@ def reset_globals():
     vy_globals.global_stack = []
     vy_globals.input_level = 0
     vy_globals.inputs = []
-    vy_globals.input_values = {0: [vy_globals.inputs, 0]}  # input_level: [source, input_index]
+    vy_globals.input_values = {
+        0: [vy_globals.inputs, 0]
+    }  # input_level: [source, input_index]
     vy_globals.last_popped = []
     vy_globals.keg_mode = False
     vy_globals.number_iterable = list
@@ -37,7 +39,9 @@ def reset_globals():
     vy_globals.register = 0
     vy_globals.retain_items = False
     vy_globals.reverse_args = False
-    vy_globals.safe_mode = False  # You may want to have safe evaluation but not be online.
+    vy_globals.safe_mode = (
+        False  # You may want to have safe evaluation but not be online.
+    )
     vy_globals.stack = []
     vy_globals.variables_are_digraphs = False
 
@@ -54,7 +58,7 @@ def reshape(arr, shape):
         return arr
     rest = shape[1:]
     size = len(arr) // shape[0]
-    return [reshape(arr[i * size: (i + 1) * size], rest) for i in range(shape[0])]
+    return [reshape(arr[i * size : (i + 1) * size], rest) for i in range(shape[0])]
 
 
 def to_list(vector):
