@@ -508,7 +508,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         0,
     ),
     "□": (
-        "if inputs: vy_globals.stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
+        "if vy_globals.inputs: vy_globals.stack.append( vy_globals.inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
         0,
     ),
     "↳": (
@@ -856,6 +856,10 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "ki": ("vy_globals.stack.append(math.pi)", 0),
     "kn": ("vy_globals.stack.append(math.nan)", 0),
     "kt": ("vy_globals.stack.append(math.tau)", 0),
+    "kg": ("vy_globals.stack.append((1+math.sqrt(5))/2)", 0),
+    "k₂": ("vy_globals.stack.append(math.sqrt(2))", 0),
+    "k₃": ("vy_globals.stack.append(math.sqrt(3))", 0),
+    "k₅": ("vy_globals.stack.append(math.sqrt(5))", 0),
     "kD": ("vy_globals.stack.append(date.today().isoformat())", 0),
     "kN": (
         "vy_globals.stack.append([dt.now().hour, dt.now().minute, dt.now().second])",
