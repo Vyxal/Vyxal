@@ -126,11 +126,11 @@ def bit_or(lhs, rhs):
         if len(common) == 0:
             return lhs + rhs
         common = sorted(common, key=lambda x: len(x))[-1]
-        return lhs[: -len(common)] + common + rhs[len(common):]
+        return lhs[: -len(common)] + common + rhs[len(common) :]
     return {
         (Number, Number): lambda: lhs | rhs,
-        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1:],
-        (str, Number): lambda: rhs[:lhs] + rhs[lhs + 1:],
+        (Number, str): lambda: lhs[:rhs] + lhs[rhs + 1 :],
+        (str, Number): lambda: rhs[:lhs] + rhs[lhs + 1 :],
         (types[0], list): lambda: [bit_or(lhs, item) for item in rhs],
         (list, types[1]): lambda: [bit_or(item, rhs) for item in lhs],
         (list, list): lambda: list(map(lambda x: bit_or(*x), vy_zip(lhs, rhs))),
@@ -508,10 +508,10 @@ def find(haystack, needle, start=0):
         index = int(start)
 
     if (vy_type(haystack), vy_type(needle)) in (
-            (Number, Number),
-            (Number, str),
-            (str, Number),
-            (str, str),
+        (Number, Number),
+        (Number, str),
+        (str, Number),
+        (str, str),
     ):
         return str(haystack).find(str(needle), start=index)
 
@@ -592,6 +592,7 @@ def function_call(fn, vector):
         return fn(vector, self=fn)
     else:
         from vyxal import interpreter
+
         return [
             {
                 Number: lambda: len(prime_factors(fn)),
@@ -648,7 +649,7 @@ def get_input(predefined_level=None):
 
 
 def graded(item):
-    return {Number: lambda: item + 2, str: lambda: item.upper(), }.get(
+    return {Number: lambda: item + 2, str: lambda: item.upper(),}.get(
         vy_type(item),
         lambda: Generator(
             map(
@@ -660,7 +661,7 @@ def graded(item):
 
 
 def graded_down(item):
-    return {Number: lambda: item - 2, str: lambda: item.lower(), }.get(
+    return {Number: lambda: item - 2, str: lambda: item.lower(),}.get(
         vy_type(item),
         lambda: Generator(
             map(
@@ -688,7 +689,7 @@ def infinite_replace(haystack, needle, replacement):
     loop = True
     prev = copy.deepcopy(haystack)
     while (
-            loop
+        loop
     ):  # I intentionally used a post-test loop here to avoid making more calls to replace than neccesary
         haystack = replace(haystack, needle, replacement)
         loop = haystack != prev
@@ -854,7 +855,7 @@ def log(lhs, rhs):
                 ret += lhs[i]
 
         if len(lhs) > len(rhs):
-            ret += lhs[i + 1:]
+            ret += lhs[i + 1 :]
 
         return ret
 
@@ -1665,9 +1666,9 @@ def vy_eval(item):
         except:
             f = Tokenise(item, vy_globals.variables_are_digraphs)
             if len(f) and f[-1][-1] in (
-                    Structure.STRING,
-                    Structure.NUMBER,
-                    Structure.LIST,
+                Structure.STRING,
+                Structure.NUMBER,
+                Structure.LIST,
             ):
                 try:
                     temp = vy_compile(item)
@@ -1756,9 +1757,7 @@ def vy_map(fn, vector):
 
     vec, function = (fn, vector) if t_vector is Function else (vector, fn)
     if vy_type(vec) == Number:
-        vec = range(
-            vy_globals.MAP_START, int(vec) + vy_globals.MAP_OFFSET
-        )
+        vec = range(vy_globals.MAP_START, int(vec) + vy_globals.MAP_OFFSET)
 
     if vy_type(vec) is Generator:
 
@@ -1869,10 +1868,7 @@ def vy_print(item, end="\n", raw=False):
                 vy_globals.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
-    if (
-            vy_globals.online_version
-            and len(vy_globals.output) > ONE_TWO_EIGHT_KB
-    ):
+    if vy_globals.online_version and len(vy_globals.output) > ONE_TWO_EIGHT_KB:
         exit(code=1)
 
 
@@ -1892,11 +1888,7 @@ def vy_reduce(fn, vector):
     if t_type is Generator:
         return [vector._reduce(fn)]
     if t_type is Number:
-        vector = list(
-            range(
-                vy_globals.MAP_START, int(vector) + vy_globals.MAP_OFFSET
-            )
-        )
+        vector = list(range(vy_globals.MAP_START, int(vector) + vy_globals.MAP_OFFSET))
     vector = vector[::-1]
     working_value = pop(vector)
     vector = vector[::-1]

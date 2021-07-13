@@ -39,14 +39,12 @@ def at_least_n_dims(vector, n):
 def cartesian_product(lhs, rhs):
     if Function not in (vy_type(lhs), vy_type(rhs)):
         if (vy_type(lhs), vy_type(rhs)) in (
-                (Number, Number),
-                (Number, str),
-                (str, Number),
-                (str, str),
+            (Number, Number),
+            (Number, str),
+            (str, Number),
+            (str, str),
         ):
-            return Generator(
-                itertools.product(iterable(lhs), iterable(rhs))
-            )
+            return Generator(itertools.product(iterable(lhs), iterable(rhs)))
         lhs, rhs = iterable(lhs), iterable(rhs)
         types = vy_type(lhs), vy_type(rhs)
         if types == (Generator, Generator):
@@ -448,9 +446,9 @@ def interleave(lhs, rhs):
     if len(lhs) != len(rhs):
         if len(lhs) < len(rhs):
             # The rhs is longer
-            ret += list(rhs[i + 1:])
+            ret += list(rhs[i + 1 :])
         else:
-            ret += list(lhs[i + 1:])
+            ret += list(lhs[i + 1 :])
     if type(lhs) is str and type(rhs) is str:
         return "".join(ret)
     return ret
@@ -566,7 +564,7 @@ def powerset(vector):
 
 def prefixes(vector):
     for i in range(len(iterable(vector))):
-        yield iterable(vector)[0: i + 1]
+        yield iterable(vector)[0 : i + 1]
 
 
 def run_length_encode(item):
@@ -720,7 +718,7 @@ def sublists(item):
     length = len(item)
     for size in range(1, length + 1):
         for sub in range((length - size) + 1):
-            yield item[sub: sub + size]
+            yield item[sub : sub + size]
 
 
 def summate(vector):
@@ -739,7 +737,7 @@ def summate(vector):
 def sums(vector):
     ret = []
     for i in range(len(vector)):
-        ret.append(summate(vector[0: i + 1]))
+        ret.append(summate(vector[0 : i + 1]))
     return ret
 
 

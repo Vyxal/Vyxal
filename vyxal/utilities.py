@@ -31,11 +31,11 @@ class Comparitors:
 
 class Generator:
     def __init__(
-            self,
-            raw_generator,
-            limit=-1,
-            initial=[],
-            is_numeric_sequence=False,
+        self,
+        raw_generator,
+        limit=-1,
+        initial=[],
+        is_numeric_sequence=False,
     ):
         self.next_index = 0
         self.end_reached = False
@@ -43,7 +43,7 @@ class Generator:
         self.do_print = True
         if "__name__" in dir(raw_generator) and type(raw_generator) != Python_Generator:
             if raw_generator.__name__.startswith(
-                    "FN_"
+                "FN_"
             ) or raw_generator.__name__.startswith("_lambda"):
                 # User defined function
                 def gen():
@@ -312,12 +312,12 @@ def to_ten(number, custom_base):
     result = 0
     alphabet = (lambda: custom_base, lambda: range(0, int(custom_base)))[
         type(custom_base) in (int, float)
-        ]()
+    ]()
     base_exponent = len(alphabet)
     number = list(
         (lambda: number, lambda: map(int, str(int(number))))[
             type(number) in (int, float)
-            ]()
+        ]()
     )
     power = 0
     for digit in reversed(number):

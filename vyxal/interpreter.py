@@ -30,13 +30,13 @@ except:
 
 
 def wrap_in_lambda(tokens):
-    if tokens[0] == Structure.NONE:
+    if len(tokens) == 1 and tokens[0][0] == Structure.NONE:
         return [
             (
                 Structure.LAMBDA,
                 {
-                    Keys.LAMBDA_BODY: [tokens],
-                    Keys.LAMBDA_ARGS: str(command_dict.get(tokens[1], (0, 0))[1]),
+                    Keys.LAMBDA_BODY: tokens,
+                    Keys.LAMBDA_ARGS: str(command_dict.get(tokens[0][1], (0, 0))[1]),
                 },
             )
         ]
@@ -62,7 +62,6 @@ def vy_compile(program, header=""):
         token_name, token_value = token
         if token_name == Structure.NONE:
             if token_value[0] == Digraphs.CODEPAGE:
-                print(token_value)
                 compiled += f"vy_globals.stack.append({codepage.find(str(token_value[1]))} + 101)"
             else:
                 compiled += command_dict.get(token[1], "  ")[0]
