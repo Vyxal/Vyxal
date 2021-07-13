@@ -123,6 +123,13 @@
                 if (MOD_CHARS.includes(char) && state.structure == 'NONE') {
                     return 'mod'
                 }
+
+                if ((CONSTANTS.includes(char) && state.structure == 'NONE') || state.structure == 'CONSTANT') {
+                    if (state.structure == 'CONSTANT') {
+                        state.structure = 'NONE'
+                    }
+                    return 'constant'
+                }
                 if (FUNC_CHARS.includes(char) && state.structure == 'NONE') {
                     if (char == 'λ' && stream.match(/^\d+\|/, false)) {
                         state.structure = 'LAMBDA_ARITY'
@@ -170,12 +177,6 @@
                         return 'list'
                     }
                     return 'keyword'
-                }
-                if (CONSTANTS.includes(char) || state.structure == 'CONSTANT') {
-                    if (state.structure == 'CONSTANT') {
-                        state.structure = 'NONE'
-                    }
-                    return 'constant'
                 }
                 if (DIGRAPHS.includes(char)) {
                     state.structure = 'DIGRAPH';
