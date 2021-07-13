@@ -1,4 +1,4 @@
-# `ª` - Codepage Constant
+# `⁺` - Codepage Constant
 
 - Arity: 0
 - In: NA
@@ -8,7 +8,7 @@ Returns the position of the next character in the code page with 101 added. This
 
 # Usage
 ```
-ª£║⟨282⟩
-ªe║⟨201⟩
-ªð║⟨236⟩
+⁺£║⟨282⟩
+⁺e║⟨201⟩
+⁺ð║⟨236⟩
 ```

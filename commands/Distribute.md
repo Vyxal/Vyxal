@@ -1,4 +1,4 @@
-# `ĸ` - Distribute
+# `Þ…` - Distribute
 
 - Arity: 2
 - In: a, b
@@ -7,7 +7,7 @@
 If a and b are numbers, returns the absolute difference of a and b (`abs(a - b)`)
 Returns `a` with `b` spread over each element: think of it as incrementing each element of `a` until the number of increments equals `b`.
 
-E.g. `1 6r 14ĸ`
+E.g. `1 6r 14Þ…`
 ```
 a = ⟨1|2|3|4|5⟩ b = 14 next_index = 0
 a = ⟨2|2|3|4|5⟩ b = 13 next_index = 1
@@ -28,6 +28,6 @@ a = ⟨4|5|6|7|7⟩ b = 0 next_index = NA
 ```
 # Usage
 ```
-1 6r 14ĸ     ║⟨⟨4|5|6|7|7⟩⟩
-33 32 31 W 3ĸ║⟨⟨34|33|32⟩⟩
+1 6r 14Þ…     ║⟨⟨4|5|6|7|7⟩⟩
+33 32 31 W 3Þ…║⟨⟨34|33|32⟩⟩
 ```

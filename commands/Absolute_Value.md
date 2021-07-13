@@ -1,4 +1,4 @@
-# `Ȧ` - Absolute Value
+# `ȧ` - Absolute Value
 
 - Arity: 1
 - In: a
@@ -8,7 +8,7 @@ Returns the absolute value of `a`. For strings, return `a.remove(whitespace)`. V
 
 # Usage
 ```
-69NȦ          ║⟨69⟩
-69Ȧ           ║⟨69⟩
-`Hello World`Ȧ║⟨`HelloWorld`⟩
+69Nȧ          ║⟨69⟩
+69ȧ           ║⟨69⟩
+`Hello World`ȧ║⟨`HelloWorld`⟩
 ```

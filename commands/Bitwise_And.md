@@ -1,4 +1,4 @@
-# `⍲` - Bitwise And
+# `⋏` - Bitwise And
 
 - Arity: 2
 - In: a, b

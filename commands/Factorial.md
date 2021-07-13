@@ -1,4 +1,4 @@
-# `‼` - Factorial
+# `¡` - Factorial
 
 - Arity: 1
 - In: a
@@ -8,9 +8,9 @@ Return the factorial of `a`. If `a` is a string, return sentence cased `a`. Vect
 
 # Usage
 ```
-12‼             ║⟨479001600⟩
-`hello. world!`‼║⟨`Hello. World!`⟩
-1 10r‼          ║⟨⟨1|2|6|24|120|720|5040|40320|362880⟩⟩
+12¡             ║⟨479001600⟩
+`hello. world!`¡║⟨`Hello. World!`⟩
+1 10r¡          ║⟨⟨1|2|6|24|120|720|5040|40320|362880⟩⟩
 ```
 
 

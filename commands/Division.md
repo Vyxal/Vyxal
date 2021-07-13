@@ -4,8 +4,7 @@
 - In: a, b
 - Out: a % b
 
-Takes two values and divides them. Trying to divide by zero will raise an error.
-
+Takes two values and divides them. 
 
 # Cohesion
 | a v          b > | Number               | String               | List/Generator                    |

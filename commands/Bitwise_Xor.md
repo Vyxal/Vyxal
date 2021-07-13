@@ -1,4 +1,4 @@
-# `‸` - Bitwise XOR
+# `꘍` - Bitwise XOR
 
 - Arity: 2
 - In: a, b
