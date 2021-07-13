@@ -30,6 +30,7 @@ except:
 
 
 def wrap_in_lambda(tokens):
+    print(tokens)
     if len(tokens) == 1 and tokens[0][0] == Structure.NONE:
         return [
             (
@@ -316,8 +317,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
+                print(token_value)
+                function_A = vy_compile(wrap_in_lambda([token_value[1][0]]))
+                function_B = vy_compile(wrap_in_lambda([token_value[1][1]]))
                 compiled += function_A + NEWLINE + function_B + NEWLINE
                 compiled += "function_B = pop(vy_globals.stack); function_A = pop(vy_globals.stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
@@ -328,9 +330,9 @@ else:
                     + NEWLINE
                 )
             else:
-                function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
-                function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
-                function_C = vy_compile(wrap_in_lambda(token_value[1][2]))
+                function_A = vy_compile(wrap_in_lambda([token_value[1][0]]))
+                function_B = vy_compile(wrap_in_lambda([token_value[1][1]]))
+                function_C = vy_compile(wrap_in_lambda([token_value[1][2]]))
                 compiled += (
                     function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )
