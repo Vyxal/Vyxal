@@ -15,13 +15,11 @@ from vyxal.factorials import FIRST_100_FACTORIALS
 
 try:
     import numpy
-    import pwn
     import regex
     import sympy
 except:
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
     import numpy
-    import pwn
     import regex
     import sympy
 

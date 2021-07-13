@@ -10,13 +10,11 @@ from vyxal.utilities import *
 
 try:
     import numpy
-    import pwn
     import regex
     import sympy
 except ImportError:
     os.system("pip3 install -r requirements.txt --quiet --disable-pip-version-check")
     import numpy
-    import pwn
     import regex
     import sympy
 
