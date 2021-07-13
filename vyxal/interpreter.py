@@ -47,7 +47,7 @@ def wrap_in_lambda(tokens):
 def vy_compile(program, header=""):
     if not program:
         return (
-                header or "pass"
+            header or "pass"
         )  # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
 
@@ -85,7 +85,9 @@ def vy_compile(program, header=""):
                     compiled += f'vy_globals.stack.append("{value}")'
                 else:
                     value = string.replace("\\", "\\\\").replace('"', '\\"')
-                    compiled += f'vy_globals.stack.append("{utilities.uncompress(value)}")'
+                    compiled += (
+                        f'vy_globals.stack.append("{utilities.uncompress(value)}")'
+                    )
             elif string_type == StringDelimiters.COM_NUMBER:
                 number = utilities.to_ten(string, encoding.codepage_number_compress)
                 compiled += f"vy_globals.stack.append({number})"
@@ -98,9 +100,9 @@ def vy_compile(program, header=""):
         elif token_name == Structure.IF:
             compiled += "temp_value = pop(vy_globals.stack)\n"
             compiled += (
-                    "if temp_value:\n"
-                    + tab(vy_compile(token_value[Keys.IF_TRUE]))
-                    + NEWLINE
+                "if temp_value:\n"
+                + tab(vy_compile(token_value[Keys.IF_TRUE]))
+                + NEWLINE
             )
             if Keys.IF_FALSE in token_value:
                 compiled += "else:\n" + tab(vy_compile(token_value[Keys.IF_FALSE]))
@@ -108,9 +110,16 @@ def vy_compile(program, header=""):
             loop_variable = "LOOP_" + secrets.token_hex(16)
             if Keys.FOR_VAR in token_value:
                 loop_variable = "VAR_" + strip_non_alphabet(token_value[Keys.FOR_VAR])
-            compiled += "for " + loop_variable + " in vy_range(pop(vy_globals.stack)):" + NEWLINE
+            compiled += (
+                "for "
+                + loop_variable
+                + " in vy_range(pop(vy_globals.stack)):"
+                + NEWLINE
+            )
             compiled += tab("vy_globals.context_level += 1") + NEWLINE
-            compiled += tab("vy_globals.context_values.append(" + loop_variable + ")") + NEWLINE
+            compiled += (
+                tab("vy_globals.context_values.append(" + loop_variable + ")") + NEWLINE
+            )
             compiled += tab(vy_compile(token_value[Keys.FOR_BODY])) + NEWLINE
             compiled += tab("vy_globals.context_level -= 1") + NEWLINE
             compiled += tab("vy_globals.context_values.pop()")
@@ -127,7 +136,11 @@ def vy_compile(program, header=""):
             # Determine if it's a function call or definition
             if Keys.FUNC_BODY not in token_value:
                 # Function call
-                compiled += "vy_globals.stack += FN_" + token_value[Keys.FUNC_NAME] + "(vy_globals.stack)"
+                compiled += (
+                    "vy_globals.stack += FN_"
+                    + token_value[Keys.FUNC_NAME]
+                    + "(vy_globals.stack)"
+                )
             else:
                 function_information = token_value[Keys.FUNC_NAME].split(":")
                 # This will either be a single name, or name and parameter information
@@ -151,7 +164,7 @@ def vy_compile(program, header=""):
                             parameter_count += 1
 
                 compiled += (
-                        "def FN_" + function_name + "(parameter_stack, arity=None):\n"
+                    "def FN_" + function_name + "(parameter_stack, arity=None):\n"
                 )
                 compiled += tab("vy_globals.context_level += 1") + NEWLINE
                 compiled += tab("vy_globals.input_level += 1") + NEWLINE
@@ -160,7 +173,9 @@ def vy_compile(program, header=""):
                     # There's only one parameter, so instead of pushing it as a list
                     # (which is kinda rather inconvienient), push it as a "scalar"
 
-                    compiled += tab("vy_globals.context_values.append(parameter_stack[-1])")
+                    compiled += tab(
+                        "vy_globals.context_values.append(parameter_stack[-1])"
+                    )
                 elif parameter_count != -1:
                     compiled += tab(
                         f"vy_globals.context_values.append(parameter_stack[:-{parameter_count}])"
@@ -193,9 +208,19 @@ else:
                     compiled += NEWLINE
 
                 compiled += tab("vy_globals.stack = parameters[::]") + NEWLINE
-                compiled += tab("vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]") + NEWLINE
+                compiled += (
+                    tab(
+                        "vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]"
+                    )
+                    + NEWLINE
+                )
                 compiled += tab(vy_compile(token_value[Keys.FUNC_BODY])) + NEWLINE
-                compiled += tab("vy_globals.context_level -= 1; vy_globals.context_values.pop()") + NEWLINE
+                compiled += (
+                    tab(
+                        "vy_globals.context_level -= 1; vy_globals.context_values.pop()"
+                    )
+                    + NEWLINE
+                )
                 compiled += tab("vy_globals.input_level -= 1") + NEWLINE
                 compiled += tab("return vy_globals.stack")
         elif token_name == Structure.LAMBDA:
@@ -206,46 +231,56 @@ else:
                     defined_arity = int(lambda_argument)
             signature = secrets.token_hex(16)
             compiled += (
-                    f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):"
-                    + NEWLINE
+                f"def _lambda_{signature}(parameter_stack, arity=-1, self=None):"
+                + NEWLINE
             )
             compiled += tab("vy_globals.context_level += 1") + NEWLINE
             compiled += tab("vy_globals.input_level += 1") + NEWLINE
             compiled += tab(f"this_function = _lambda_{signature}") + NEWLINE
             compiled += tab("stored = False") + NEWLINE
             compiled += (
-                    tab("if 'stored_arity' in dir(self): stored = self.stored_arity;")
-                    + NEWLINE
+                tab("if 'stored_arity' in dir(self): stored = self.stored_arity;")
+                + NEWLINE
             )
             compiled += (
-                    tab(
-                        f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity, True); vy_globals.stack = parameters[::]"
-                    )
-                    + NEWLINE
+                tab(
+                    f"if arity != {defined_arity} and arity >= 0: parameters = pop(parameter_stack, arity, True); vy_globals.stack = parameters[::]"
+                )
+                + NEWLINE
             )
             compiled += (
-                    tab(
-                        "elif stored: parameters = pop(parameter_stack, stored, True); vy_globals.stack = parameters[::]"
-                    )
-                    + NEWLINE
+                tab(
+                    "elif stored: parameters = pop(parameter_stack, stored, True); vy_globals.stack = parameters[::]"
+                )
+                + NEWLINE
             )
             if defined_arity == 1:
                 compiled += (
-                        tab("else: parameters = pop(parameter_stack); vy_globals.stack = [parameters]")
-                        + NEWLINE
+                    tab(
+                        "else: parameters = pop(parameter_stack); vy_globals.stack = [parameters]"
+                    )
+                    + NEWLINE
                 )
             else:
                 compiled += (
-                        tab(
-                            f"else: parameters = pop(parameter_stack, {defined_arity}); vy_globals.stack = parameters[::]"
-                        )
-                        + NEWLINE
+                    tab(
+                        f"else: parameters = pop(parameter_stack, {defined_arity}); vy_globals.stack = parameters[::]"
+                    )
+                    + NEWLINE
                 )
             compiled += tab("vy_globals.context_values.append(parameters)") + NEWLINE
-            compiled += tab("vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]") + NEWLINE
+            compiled += (
+                tab(
+                    "vy_globals.input_values[vy_globals.input_level] = [vy_globals.stack[::], 0]"
+                )
+                + NEWLINE
+            )
             compiled += tab(vy_compile(token_value[Keys.LAMBDA_BODY])) + NEWLINE
             compiled += tab("ret = [pop(vy_globals.stack)]") + NEWLINE
-            compiled += tab("vy_globals.context_level -= 1; vy_globals.context_values.pop()") + NEWLINE
+            compiled += (
+                tab("vy_globals.context_level -= 1; vy_globals.context_values.pop()")
+                + NEWLINE
+            )
             compiled += tab("vy_globals.input_level -= 1") + NEWLINE
             compiled += tab("return ret") + NEWLINE
             compiled += f"_lambda_{signature}.stored_arity = {defined_arity}" + NEWLINE
@@ -263,9 +298,9 @@ else:
         elif token_name == Structure.FUNC_REF:
             compiled += f"vy_globals.stack.append(FN_{token_value[Keys.FUNC_NAME]})"
         elif token_name == Structure.VAR_SET:
-            compiled += "VAR_" + token_value[Keys.VAR_NAME] + " = pop(vy_globals.stack)"
+            compiled += "VAR_" + token_value + " = pop(vy_globals.stack)"
         elif token_name == Structure.VAR_GET:
-            compiled += "vy_globals.stack.append(VAR_" + token_value[Keys.VAR_NAME] + ")"
+            compiled += "vy_globals.stack.append(VAR_" + token_value + ")"
         elif token_name == Structure.MONAD_TRANSFORMER:
             function_A = vy_compile(wrap_in_lambda(token_value[1]))
             compiled += function_A + NEWLINE
@@ -274,8 +309,8 @@ else:
         elif token_name == Structure.DYAD_TRANSFORMER:
             if token_value[0] in Grouping_Transformers:
                 compiled += (
-                        vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
-                        + NEWLINE
+                    vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
+                    + NEWLINE
                 )
             else:
                 function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
@@ -286,15 +321,15 @@ else:
         elif token_name == Structure.TRIAD_TRANSFORMER:
             if token_value[0] in Grouping_Transformers:
                 compiled += (
-                        vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
-                        + NEWLINE
+                    vy_compile([(Structure.LAMBDA, {Keys.LAMBDA_BODY: token_value[1]})])
+                    + NEWLINE
                 )
             else:
                 function_A = vy_compile(wrap_in_lambda(token_value[1][0]))
                 function_B = vy_compile(wrap_in_lambda(token_value[1][1]))
                 function_C = vy_compile(wrap_in_lambda(token_value[1][2]))
                 compiled += (
-                        function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
+                    function_A + NEWLINE + function_B + NEWLINE + function_C + NEWLINE
                 )
                 compiled += "function_C = pop(vy_globals.stack); function_B = pop(vy_globals.stack); function_A = pop(vy_globals.stack)\n"
                 compiled += transformers[token_value[0]] + NEWLINE
@@ -367,10 +402,13 @@ ALL flags should be used as is (no '-' prefix)
     vy_globals.input_values[0] = [vy_globals.inputs, 0]
     code = vy_compile(
         code,
-        inspect.cleandoc("""
+        inspect.cleandoc(
+            """
             from vyxal import vy_globals
             from vyxal.array_builtins import *
-            from vyxal.builtins import *""") + NEWLINE,
+            from vyxal.builtins import *"""
+        )
+        + NEWLINE,
     )
     vy_globals.context_level = 0
     if flags and "c" in flags:
@@ -387,7 +425,9 @@ ALL flags should be used as is (no '-' prefix)
         vy_globals.output[
             2
         ] += f"\nMost recently popped arguments: {[deref(i, limit=10) for i in vy_globals.last_popped]}"
-        vy_globals.output[2] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
+        vy_globals.output[
+            2
+        ] += f"\nFinal stack: {[deref(i, limit=10) for i in vy_globals.stack]}"
         raise e
 
     if (not vy_globals.printed and "O" not in flags) or "o" in flags:
@@ -434,13 +474,18 @@ if __name__ == "__main__":
     file_location = ""
     flags = ""
     vy_globals.inputs = []
-    header = inspect.cleandoc("""
+    header = (
+        inspect.cleandoc(
+            """
         from vyxal import vy_globals
         from vyxal.builtins import *
         from vyxal.array_builtins import *
         vy_globals.stack = []
         vy_globals.register = 0
-        vy_globals.printed = False""") + NEWLINE
+        vy_globals.printed = False"""
+        )
+        + NEWLINE
+    )
 
     if len(sys.argv) > 1:
         file_location = sys.argv[1]
@@ -453,7 +498,9 @@ if __name__ == "__main__":
             if "H" in flags:
                 vy_globals.stack = [100]
             if "f" in flags:
-                vy_globals.inputs = list(map(eval_function, open(sys.argv[3]).readlines()))
+                vy_globals.inputs = list(
+                    map(eval_function, open(sys.argv[3]).readlines())
+                )
             else:
                 vy_globals.inputs = list(map(eval_function, sys.argv[3:]))
 
