@@ -1,9 +1,6 @@
-import inspect
 import os
 import secrets
 import sys
-from datetime import date
-from datetime import datetime as dt
 
 # Pipped modules
 
@@ -15,6 +12,7 @@ from vyxal.array_builtins import *
 from vyxal.builtins import *
 from vyxal.commands import *
 from vyxal.parser import *
+from vyxal.utilities import *
 
 try:
     import numpy
@@ -53,7 +51,6 @@ def vy_compile(program, header=""):
             header or "pass"
         )  # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
-
     if isinstance(program, str):
         program = Tokenise(
             program
@@ -405,16 +402,7 @@ ALL flags should be used as is (no '-' prefix)
 """
             return
     vy_globals.input_values[0] = [vy_globals.inputs, 0]
-    code = vy_compile(
-        code,
-        inspect.cleandoc(
-            """
-            from vyxal import vy_globals
-            from vyxal.array_builtins import *
-            from vyxal.builtins import *"""
-        )
-        + NEWLINE,
-    )
+    code = vy_compile(code, vyxal_imports)
     vy_globals.context_level = 0
     if flags and "c" in flags:
         vy_globals.output[2] = code
@@ -482,9 +470,6 @@ if __name__ == "__main__":
     header = (
         inspect.cleandoc(
             """
-        from vyxal import vy_globals
-        from vyxal.builtins import *
-        from vyxal.array_builtins import *
         vy_globals.stack = []
         vy_globals.register = 0
         vy_globals.printed = False"""
@@ -517,7 +502,7 @@ if __name__ == "__main__":
         while 1:
             line = input(">>> ")
             vy_globals.context_level = 0
-            line = vy_compile(line, header)
+            line = vy_compile(line, vyxal_imports + header)
             exec(line)
             vy_print(vy_globals.stack)
     elif file_location == "h":
@@ -568,7 +553,7 @@ if __name__ == "__main__":
         else:
             code = open(file_location, "r", encoding="utf-8").read()
         vy_globals.input_values[0] = [vy_globals.inputs, 0]
-        code = vy_compile(code, header)
+        code = vy_compile(code, vyxal_imports + header)
         vy_globals.context_level = 0
         if flags and "c" in flags:
             print(code)

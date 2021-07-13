@@ -9,6 +9,7 @@ import urllib.request
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
+import vyxal
 from vyxal import array_builtins
 from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
@@ -591,7 +592,7 @@ def function_call(fn, vector):
     if type(fn) is Function:
         return fn(vector, self=fn)
     else:
-        from vyxal import interpreter
+        import vyxal.interpreter
 
         return [
             {
@@ -1671,7 +1672,7 @@ def vy_eval(item):
                 Structure.LIST,
             ):
                 try:
-                    temp = vy_compile(item)
+                    temp = vy_compile(item, vyxal.utilities.vyxal_imports)
                     vy_globals.stack = []
                     exec(temp)
                     return vy_globals.stack[-1]
@@ -1690,7 +1691,8 @@ def vy_eval(item):
 
 def vy_exec(item):
     if vy_type(item) is str:
-        exec(vyxal.interpreter.vy_compile(item))
+        import vyxal.interpreter
+        exec(vyxal.interpreter.vy_compile(item, vyxal_imports))
         return []
     elif vy_type(item) == Number:
         return [divide(1, item)]

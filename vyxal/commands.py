@@ -94,7 +94,7 @@ command_dict = {
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(add(lhs, rhs))",
         2,
     ),
-    ",": ("vy_print(pop(vy_globals.stack))", 1),
+    ",": ("x=pop(vy_globals.stack);print(x);vy_print(x)", 1),
     "-": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(subtract(lhs, rhs))",
         2,
@@ -174,7 +174,7 @@ command_dict = {
         "replacement, needle, haystack = pop(vy_globals.stack, 3); vy_globals.stack.append(replace(haystack, needle, replacement))",
         3,
     ),
-    "W": ("vy_globals.stack = [deref(vy_globals.stack)]", 0),
+    "W": ("vy_globals.stack = [deref(vy_globals.stack)]; print(vy_globals.stack)", 0),
     "X": ("context_level += 1", 0),
     "Y": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(interleave(lhs, rhs))",
@@ -366,7 +366,7 @@ command_dict = {
         2,
     ),
     "¡": ("vy_globals.stack.append(factorial(pop(vy_globals.stack)))", 1),
-    "∑": ("vy_globals.stack.append(summate(pop(vy_globals.stack)))", 1),
+    "∑": ("temp = summate(pop(vy_globals.stack));vy_globals.stack.append(temp);print(vy_globals.stack);", 1),
     "¦": (
         "vy_globals.stack.append(cumulative_sum(iterable(pop(vy_globals.stack))))",
         1,
