@@ -28,6 +28,12 @@ except:
     import regex
     import sympy
 
+    
+imports = inspect.cleandoc("""
+              from vyxal import vy_globals
+              from vyxal.array_builtins import *
+              from vyxal.builtins import *
+          """) + NEWLINE
 
 def wrap_in_lambda(tokens):
     print(tokens)
@@ -50,10 +56,10 @@ def wrap_in_lambda(tokens):
 def vy_compile(program, header=""):
     if not program:
         return (
-            header or "pass"
+            imports + header if header else "pass"
         )  # If the program is empty, we probably just want the header or the shortest do-nothing program
     compiled = ""
-
+    header = imports + header
     if isinstance(program, str):
         program = Tokenise(
             program
@@ -405,16 +411,7 @@ ALL flags should be used as is (no '-' prefix)
 """
             return
     vy_globals.input_values[0] = [vy_globals.inputs, 0]
-    code = vy_compile(
-        code,
-        inspect.cleandoc(
-            """
-            from vyxal import vy_globals
-            from vyxal.array_builtins import *
-            from vyxal.builtins import *"""
-        )
-        + NEWLINE,
-    )
+    code = vy_compile(code)
     vy_globals.context_level = 0
     if flags and "c" in flags:
         vy_globals.output[2] = code
@@ -482,9 +479,6 @@ if __name__ == "__main__":
     header = (
         inspect.cleandoc(
             """
-        from vyxal import vy_globals
-        from vyxal.builtins import *
-        from vyxal.array_builtins import *
         vy_globals.stack = []
         vy_globals.register = 0
         vy_globals.printed = False"""
