@@ -68,6 +68,7 @@
                     }
                     return 'function'
                 }
+                if(state.structure == 'STRING' && char == '\\') state.escaped = true;
                 if (state.structure == 'STRING' && char !== '`') {
                     return 'string'
                 }
@@ -78,10 +79,9 @@
                 if ((state.structure == 'COMP_STRING' && char !== '«') || (state.structure == 'COMP_INT' && char !== '»')) {
                     return 'comp'
                 }
-                if(state.structure == 'STRING' && char == '\\') escaped = true;
                 if (char == '`' && (state.structure == 'NONE' || state.structure == 'STRING')) {
-                    if(escaped){
-                        escaped = false
+                    if(state.escaped){
+                        state.escaped = false
                         return 'string'
                     }
                     if (state.structure == 'STRING') {
