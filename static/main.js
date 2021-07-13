@@ -45,10 +45,10 @@ function updateCount() {
 
     var code = e_code.getValue()
     if ([...code].every(x => (codepage + ' ' + '\n').includes(x))) {
-        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code != 1)
+        byte_box.innerText = `Code: ${code.length} byte` + "s".repeat(code.length != 1)
     } else {
         var x = new Blob([code]).size
-        byte_box.innerText = `Code: ${x} byte${"s".repeat(x.length != 1)}` + ' (UTF-8)'
+        byte_box.innerText = `Code: ${x} byte${"s".repeat(x != 1)}` + ' (UTF-8)'
     }
 }
 
