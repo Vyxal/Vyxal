@@ -19,7 +19,7 @@
     CodeMirror.defineMode("vyxal", function () {
         return {
             startState: function () {
-                return {structure: 'NONE', scc: 0, struct_nest: []}
+                return {structure: 'NONE', scc: 0, struct_nest: [], escaped: false}
             },
             token: function (stream, state) {
                 if (stream.sol() && state.structure == 'COMMENT') {
@@ -78,7 +78,12 @@
                 if ((state.structure == 'COMP_STRING' && char !== '«') || (state.structure == 'COMP_INT' && char !== '»')) {
                     return 'comp'
                 }
+                if(state.structure == 'STRING' && char == '\\') escaped = true;
                 if (char == '`' && (state.structure == 'NONE' || state.structure == 'STRING')) {
+                    if(escaped){
+                        escaped = false
+                        return 'string'
+                    }
                     if (state.structure == 'STRING') {
                         state.structure = 'NONE'
                     } else {

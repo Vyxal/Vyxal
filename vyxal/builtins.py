@@ -1894,7 +1894,6 @@ def vy_reduce(fn, vector):
     vector = vector[::-1]
     working_value = pop(vector)
     vector = vector[::-1]
-
     for item in vector:
         working_value = fn([working_value, item], arity=2)[-1]
     return [working_value]
