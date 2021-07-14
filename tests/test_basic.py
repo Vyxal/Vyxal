@@ -7,8 +7,6 @@ from vyxal.array_builtins import deref
 from vyxal.builtins import pop
 
 
-# This is just a dummy test, it's not feasible to write multiple tests for every
-# overload of every single command
 def test_not():
     stack = run_code("ƛ¬;", flags=["O", "c"], input_list=[[0, 1, 2, ""]])
     assert pop(stack) == [1, 0, 0, 1]
