@@ -162,7 +162,7 @@ command_dict = {
     "U": ("vy_globals.stack.append(Generator(uniquify(pop(vy_globals.stack))))", 1),
     "V": fn_to_cmd(replace, 3),
     "W": ("vy_globals.stack = [deref(vy_globals.stack)]; print(vy_globals.stack)", 0),
-    "X": ("context_level += 1", 0),
+    "X": ("vy_globals.context_level += 1", 0),
     "Y": fn_to_cmd(interleave, 2),
     "Z": (
         "rhs, lhs = pop(vy_globals.stack, 2);"
@@ -188,7 +188,7 @@ command_dict = {
     "l": fn_to_cmd(nwise_pair, 2),
     "m": fn_to_cmd(mirror, 1),
     "n": (
-        "vy_globals.stack.append(context_values[context_level % len(context_values)])",
+        "vy_globals.stack.append(vy_globals.context_values[vy_globals.context_level % len(vy_globals.context_values)])",
         0,
     ),
     "o": fn_to_cmd(remove, 2),
@@ -369,8 +369,8 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "Ẋ": fn_to_cmd(cartesian_product, 2),
     "Ẏ": make_cmd("one_argument_tail_index({}, {}, 0)", 2),
     "Ż": make_cmd("one_argument_tail_index({}, {}, 1)", 2),
-    "⁰": ("vy_globals.stack.append(input_values[0][0][-1])", 0),
-    "¹": ("vy_globals.stack.append(input_values[0][0][-2])", 0),
+    "⁰": ("vy_globals.stack.append(vy_globals.input_values[0][0][-1])", 0),
+    "¹": ("vy_globals.stack.append(vy_globals.input_values[0][0][-2])", 0),
     "²": fn_to_cmd(square, 1),
     "∇": (
         "c, b, a = pop(vy_globals.stack, 3); vy_globals.stack.append(c); vy_globals.stack.append(a); vy_globals.stack.append(b)",

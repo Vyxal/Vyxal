@@ -142,7 +142,7 @@ def deref(item, generator_to_list=True, limit=-1):
     if vy_type(item) is Generator:
         if limit != -1:
             return item.limit_to_items(limit)
-        return [item.safe, item._dereference][generator_to_list]()
+        return item._dereference() if generator_to_list else item.safe()
     if type(item) not in [int, float, str]:
         return list(map(deref, item))
     return item

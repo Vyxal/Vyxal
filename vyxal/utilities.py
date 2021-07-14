@@ -163,10 +163,8 @@ class Generator:
 
     def _filter(self, function):
         index = 0
-        l = self.__len__()
-        while True:
-            if index == l:
-                break
+        length = self.__len__()
+        while index != length:
             obj = self.__getitem__(index)
             ret = safe_apply(function, obj)
             if ret:
@@ -276,8 +274,10 @@ def safe_apply(function, *args):
     """
     Applies function to args that adapts to the input style of the passed function.
 
-    If the function is a _lambda (it's been defined within λ...;), it passes a list of arguments and length of argument list
-    Otherwise, if the function is a user-defined function (starts with FN_), it simply passes the argument list
+    If the function is a _lambda (it's been defined within λ...;), it passes a
+      list of arguments and length of argument list.
+    Otherwise, if the function is a user-defined function (starts with FN_), it
+      simply passes the argument list.
     Otherwise, unpack args and call as usual
     """
 
