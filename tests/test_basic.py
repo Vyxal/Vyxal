@@ -12,9 +12,10 @@ def test_not():
     assert pop(stack) == [1, 0, 0, 1]
 
 
-def  test_inputs():
+def test_inputs():
     stack = run_code("⁰¹e", flags=["O"], input_list=[1, 2, 3])
     assert pop(stack) == 9
+
 
 def test_non_negative_integers():
     run_code("∞", flags=["O"])
