@@ -68,9 +68,14 @@
                     }
                     return 'function'
                 }
-                if(state.structure == 'STRING' && char == '\\') state.escaped = true;
+                if(state.escaped && char !== '\\' && char !== '`'){
+                    state.escaped = false;
+                    return 'string'
+                }
+                if(state.structure == 'STRING' && char == '\\'){
+                    state.escaped = true;
+                } 
                 if (state.structure == 'STRING' && char !== '`') {
-                    if(state.escaped && char !== '\\') state.escaped = false;
                     return 'string'
                 }
                 if (state.structure == 'CHAR') {
