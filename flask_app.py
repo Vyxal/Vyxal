@@ -78,7 +78,8 @@ def execute():
                     (header and (header + "\n")) + code + (footer and ("\n" + footer))
                 )
                 sessions[session] = multiprocessing.Process(
-                    target=vyxal.interpreter.execute, args=(fcode, flags, input_list, ret)
+                    target=vyxal.interpreter.execute,
+                    args=(fcode, flags, input_list, ret),
                 )
                 sessions[session].start()
                 sessions[session].join(time)
@@ -92,7 +93,7 @@ def execute():
                     sessions[session].kill()
                     if 2 in ret:
                         ret[2] += "\n" + f"Code timed out after {time} seconds"
-                output = ret[1]
+                print(len(ret[1]))
                 y.write(ret[1])
                 z.write(ret[2])
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:

@@ -1871,7 +1871,7 @@ def vy_print(item, end="\n", raw=False):
                 vy_globals.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
-    if vy_globals.online_version and len(vy_globals.output) > ONE_TWO_EIGHT_KB:
+    if vy_globals.online_version and len(vy_globals.output) > 128000:
         exit(code=1)
 
 
