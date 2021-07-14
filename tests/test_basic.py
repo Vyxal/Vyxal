@@ -102,6 +102,8 @@ def test_deep_vectorise():
             "*",
         ],
         [[14, "foo"], 3, [0.4162896638657993, "fffoooooo"], "•"],
+        [[1, 2, 3], [4, 5, 6], [4, 5, 6], "∨"],
+        [[1, 2, 3], [4, 5, 6], [1, 2, 3], "⟇"],
     ]
     for input1, input2, expected, fn in tests:
         stack = run_code(fn, flags=["O"], input_list=[input1, input2])

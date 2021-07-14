@@ -39,19 +39,16 @@ def make_cmd(
     on those variables
     :param arity The arity of the function
     """
-    if arity == 0:
-        cmd = to_fn_call([])
+    var_names = [f"x{n}" for n in range(arity, 0, -1)]
+    if isinstance(to_fn_call, str):
+        fn_call = to_fn_call.format(*var_names)
     else:
-        var_names = [f"x{n}" for n in range(arity, 0, -1)]
-        if isinstance(to_fn_call, str):
-            fn_call = to_fn_call.format(*var_names)
-        else:
-            fn_call = to_fn_call(var_names)
-        cmd = (
-            f"{', '.join(var_names[::-1])} = pop(vy_globals.stack, {arity});"
-            f"res = {fn_call};"
-            f"vy_globals.stack.append(res);"
-        )
+        fn_call = to_fn_call(var_names)
+    if arity > 0:
+        cmd = f"{', '.join(var_names[::-1])} = pop(vy_globals.stack, {arity});"
+    else:
+        cmd = ""
+    cmd += f"res = {fn_call}; vy_globals.stack.append(res);"
     return cmd, arity
 
 
@@ -68,19 +65,10 @@ def fn_to_cmd(fn: Union[Callable, str], arity: int) -> Tuple[str, int]:
 
 command_dict = {
     "¬": make_cmd("not {}", 1),
-    "∧": make_cmd("{} and {}", 1),
-    "⟑": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(rhs and lhs)",
-        2,
-    ),
-    "∨": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(lhs or rhs)",
-        2,
-    ),
-    "⟇": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(rhs or lhs)",
-        2,
-    ),
+    "∧": make_cmd("{} and {}", 2),
+    "⟑": make_cmd("{1} and {0}", 2),
+    "∨": make_cmd("{} or {}", 2),
+    "⟇": make_cmd("{1} or {0}", 2),
     "÷": (
         "for item in iterable(pop(vy_globals.stack)): vy_globals.stack.append(item)",
         1,
@@ -90,101 +78,66 @@ command_dict = {
         "fn = pop(vy_globals.stack); vy_globals.stack += function_call(fn, vy_globals.stack)",
         1,
     ),
-    "€": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(split(lhs, rhs))",
-        2,
-    ),
-    "½": ("vy_globals.stack.append(halve(pop(vy_globals.stack)))", 1),
-    "↔": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(combinations_replace_generate(lhs, rhs))",
-        2,
-    ),
-    "⌐": ("vy_globals.stack.append(complement(pop(vy_globals.stack)))", 1),
-    "æ": ("vy_globals.stack.append(is_prime(pop(vy_globals.stack)))", 1),
+    "€": fn_to_cmd(split, 2),
+    "½": fn_to_cmd(halve, 1),
+    "↔": fn_to_cmd(combinations_replace_generate, 2),
+    "⌐": fn_to_cmd(complement, 1),
+    "æ": fn_to_cmd(is_prime, 1),
     "ʀ": (
         "vy_globals.stack.append(orderless_range(0, add(pop(vy_globals.stack), 1)))",
         1,
     ),
-    "ʁ": ("vy_globals.stack.append(orderless_range(0, pop(vy_globals.stack)))", 1),
+    "ʁ": make_cmd("orderless_range(0, {})", 1),
     "ɾ": (
         "vy_globals.stack.append(orderless_range(1, add(pop(vy_globals.stack), 1)))",
         1,
     ),
-    "ɽ": ("vy_globals.stack.append(orderless_range(1, pop(vy_globals.stack)))", 1),
-    "ƈ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(ncr(lhs, rhs))",
-        2,
-    ),
-    "∞": ("vy_globals.stack.append(Generator(lambda x: x))", 0),
-    "!": ("vy_globals.stack.append(len(vy_globals.stack))", 0),
-    '"': (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append([lhs, rhs])",
-        2,
-    ),
+    "ɽ": make_cmd("orderless_range(1, {})", 1),
+    "ƈ": fn_to_cmd(ncr, 2),
+    "∞": make_cmd("Generator(lambda x: x)", 0),
+    "!": make_cmd("len(vy_globals.stack)", 0),
+    '"': make_cmd("[{}, {}]", 2),
     "$": (
-        "top, over = pop(vy_globals.stack, 2); vy_globals.stack.append(top); vy_globals.stack.append(over)",
+        "top, over = pop(vy_globals.stack, 2);"
+        "vy_globals.stack.append(top);"
+        "vy_globals.stack.append(over)",
         2,
     ),
-    "%": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(modulo(lhs, rhs))",
-        2,
-    ),
-    "*": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(multiply(lhs, rhs))",
-        2,
-    ),
-    "+": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(add(lhs, rhs))",
-        2,
-    ),
-    ",": ("x=pop(vy_globals.stack);print(x);vy_print(x)", 1),
-    "-": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(subtract(lhs, rhs))",
-        2,
-    ),
-    "/": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(divide(lhs, rhs))",
-        2,
-    ),
+    "%": fn_to_cmd(modulo, 2),
+    "*": fn_to_cmd(multiply, 2),
+    "+": fn_to_cmd(add, 2),
+    ",": ("vy_print(pop(vy_globals.stack))", 1),
+    "-": fn_to_cmd(subtract, 2),
+    "/": fn_to_cmd(divide, 2),
     ":": (
-        "temp = pop(vy_globals.stack); vy_globals.stack.append(temp); vy_globals.stack.append(deref(temp))",
+        "temp = pop(vy_globals.stack);"
+        "vy_globals.stack.append(temp);"
+        "vy_globals.stack.append(deref(temp))",
         1,
     ),
     "^": ("vy_globals.stack = vy_globals.stack[::-1]", 0),
     "_": ("pop(vy_globals.stack)", 1),
-    "<": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(compare(lhs, rhs, Comparitors.LESS_THAN))",
-        2,
-    ),
-    ">": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(compare(lhs, rhs, Comparitors.GREATER_THAN))",
-        2,
-    ),
-    "=": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(compare(lhs, rhs, Comparitors.EQUALS))",
-        2,
-    ),
-    "?": ("vy_globals.stack.append(get_input(0))", 0),
-    "A": ("vy_globals.stack.append(int(all(iterable(pop(vy_globals.stack)))))", 1),
-    "B": ("vy_globals.stack.append(vy_int(pop(vy_globals.stack), 2))", 1),
-    "C": ("vy_globals.stack.append(chrord(pop(vy_globals.stack)))", 1),
+    "<": make_cmd("compare({}, {}, Comparitors.LESS_THAN))", 2),
+    ">": make_cmd("compare({}, {}, Comparitors.GREATER_THAN))", 2),
+    "=": make_cmd("compare({}, {}, Comparitors.EQUALS))", 2),
+    "?": make_cmd("get_input(0)", 0),
+    "A": make_cmd("int(all(iterable({})))", 1),
+    "B": make_cmd("vy_int({}, 2)", 1),
+    "C": fn_to_cmd(chrord, 1),
     "D": (
-        "temp = pop(vy_globals.stack); vy_globals.stack.append(temp); vy_globals.stack.append(deref(temp)); vy_globals.stack.append(deref(vy_globals.stack[-1]))",
+        "temp = pop(vy_globals.stack);"
+        "vy_globals.stack.append(temp);"
+        "vy_globals.stack.append(deref(temp));"
+        "vy_globals.stack.append(deref(vy_globals.stack[-1]))",
         1,
     ),
-    "E": ("vy_globals.stack.append(vy_eval(pop(vy_globals.stack)))", 1),
-    "F": (
-        "fn, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_filter(fn, vector))",
-        2,
-    ),
-    "G": ("vy_globals.stack.append(vy_max(iterable(pop(vy_globals.stack))))", 1),
-    "H": ("vy_globals.stack.append(vy_int(pop(vy_globals.stack), 16))", 1),
-    "I": ("vy_globals.stack.append(vy_int(pop(vy_globals.stack)))", 1),
-    "J": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(join(lhs, rhs))",
-        2,
-    ),
-    "K": ("vy_globals.stack.append(divisors_of(pop(vy_globals.stack)))", 1),
+    "E": fn_to_cmd(vy_eval, 1),
+    "F": make_cmd("vy_filter({1}, {0})", 2),
+    "G": make_cmd("vy_max(iterable({}))", 1),
+    "H": make_cmd("vy_int({}, 16)", 1),
+    "I": fn_to_cmd(vy_int, 1),
+    "J": fn_to_cmd(join, 2),
+    "K": fn_to_cmd(divisors_of, 1),
     "L": (
         "top = pop(vy_globals.stack); vy_globals.stack.append(len(iterable(top)))",
         1,
@@ -193,7 +146,7 @@ command_dict = {
         "fn, vector = pop(vy_globals.stack, 2); temp = vy_map(fn, vector); vy_globals.stack.append(temp)",
         2,
     ),
-    "N": ("vy_globals.stack.append(negate(pop(vy_globals.stack)))", 1),
+    "N": fn_to_cmd(negate, 1),
     "O": (
         "needle, haystack = pop(vy_globals.stack, 2); vy_globals.stack.append(iterable(haystack).count(needle))",
         2,
@@ -207,71 +160,48 @@ command_dict = {
         "fn, vector = pop(vy_globals.stack, 2); vy_globals.stack += vy_reduce(fn, vector)",
         2,
     ),
-    "S": ("vy_globals.stack.append(vy_str(pop(vy_globals.stack)))", 1),
+    "S": fn_to_cmd(vy_str, 1),
     "T": (
         "vy_globals.stack.append([i for (i, x) in enumerate(pop(vy_globals.stack)) if bool(x)])",
         1,
     ),
     "U": ("vy_globals.stack.append(Generator(uniquify(pop(vy_globals.stack))))", 1),
-    "V": (
-        "replacement, needle, haystack = pop(vy_globals.stack, 3); vy_globals.stack.append(replace(haystack, needle, replacement))",
-        3,
-    ),
+    "V": fn_to_cmd(replace, 3),
     "W": ("vy_globals.stack = [deref(vy_globals.stack)]; print(vy_globals.stack)", 0),
     "X": ("context_level += 1", 0),
-    "Y": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(interleave(lhs, rhs))",
-        2,
-    ),
+    "Y": fn_to_cmd(interleave, 2),
     "Z": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(Generator(vy_zip(iterable(lhs), iterable(rhs))))",
+        "rhs, lhs = pop(vy_globals.stack, 2);"
+        "vy_globals.stack.append(Generator(vy_zip(iterable(lhs), iterable(rhs))))",
         2,
     ),
     "a": ("vy_globals.stack.append(int(any(iterable(pop(vy_globals.stack)))))", 1),
-    "b": ("vy_globals.stack.append(vy_bin(pop(vy_globals.stack)))", 1),
+    "b": fn_to_cmd(vy_bin, 1),
     "c": (
-        "needle, haystack = pop(vy_globals.stack, 2); haystack = iterable(haystack, str)\nif type(haystack) is str: needle = vy_str(needle)\nvy_globals.stack.append(int(needle in iterable(haystack, str)))",
+        "needle, haystack = pop(vy_globals.stack, 2);"
+        "haystack = iterable(haystack, str)\n"
+        "if type(haystack) is str: needle = vy_str(needle)\n"
+        "vy_globals.stack.append(int(needle in iterable(haystack, str)))",
         2,
     ),
     "d": ("vy_globals.stack.append(multiply(pop(vy_globals.stack), 2))", 1),
-    "e": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(exponate(lhs, rhs))",
-        2,
-    ),
+    "e": fn_to_cmd(exponate, 2),
     "f": ("vy_globals.stack.append(flatten(iterable(pop(vy_globals.stack))))", 1),
     "g": ("vy_globals.stack.append(vy_min(iterable(pop(vy_globals.stack))))", 1),
     "h": ("vy_globals.stack.append(iterable(pop(vy_globals.stack))[0])", 1),
-    "i": (
-        "rhs, lhs = pop(vy_globals.stack, 2)\nvy_globals.stack.append(index(lhs, rhs))",
-        2,
-    ),
-    "j": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(join_on(lhs, rhs))",
-        2,
-    ),
-    "l": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(nwise_pair(lhs, rhs))",
-        2,
-    ),
-    "m": ("item = pop(vy_globals.stack); vy_globals.stack.append(mirror(item))", 1),
+    "i": fn_to_cmd(index, 2),
+    "j": fn_to_cmd(join_on, 2),
+    "l": fn_to_cmd(nwise_pair, 2),
+    "m": fn_to_cmd(mirror, 1),
     "n": (
         "vy_globals.stack.append(context_values[context_level % len(context_values)])",
         0,
     ),
-    "o": (
-        "needle, haystack = pop(vy_globals.stack, 2); vy_globals.stack.append(remove(haystack, needle))",
-        2,
-    ),
-    "p": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(prepend(lhs, rhs))",
-        2,
-    ),
-    "q": ("vy_globals.stack.append(uneval(vy_str(pop(vy_globals.stack))))", 1),
-    "r": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(orderless_range(lhs, rhs))",
-        2,
-    ),
-    "s": ("vy_globals.stack.append(vy_sorted(pop(vy_globals.stack)))", 1),
+    "o": fn_to_cmd(remove, 2),
+    "p": fn_to_cmd(prepend, 2),
+    "q": fn_to_cmd(uneval, 1),
+    "r": fn_to_cmd(orderless_range, 2),
+    "s": fn_to_cmd(vy_sorted, 1),
     "t": ("vy_globals.stack.append(iterable(pop(vy_globals.stack))[-1])", 1),
     "u": ("vy_globals.stack.append(-1)", 0),
     "w": ("vy_globals.stack.append([pop(vy_globals.stack)])", 1),
@@ -289,14 +219,8 @@ command_dict = {
         "vy_globals.stack.append(min(pop(vy_globals.stack), key=lambda x: x[-1]))",
         1,
     ),
-    "∴": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_max(lhs, rhs))",
-        2,
-    ),
-    "∵": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_min(lhs, rhs))",
-        2,
-    ),
+    "∴": fn_to_cmd(vy_max, 2),
+    "∵": fn_to_cmd(vy_min, 2),
     "β": (
         "alphabet, number = pop(vy_globals.stack, 2); vy_globals.stack.append(utilities.to_ten(number, alphabet))",
         2,
@@ -310,7 +234,7 @@ command_dict = {
     "∷": ("vy_globals.stack.append(modulo(pop(vy_globals.stack), 2))", 1),
     "¤": ("vy_globals.stack.append('')", 0),
     "ð": ("vy_globals.stack.append(' ')", 0),
-    "ȧ": ("vy_globals.stack.append(vy_abs(pop(vy_globals.stack)))", 1),
+    "ȧ": fn_to_cmd(vy_abs, 1),
     "ḃ": (
         "vy_globals.stack.append(int(not compare(pop(vy_globals.stack), 0, Comparitors.EQUALS)))",
         1,
@@ -319,18 +243,14 @@ command_dict = {
         "vy_globals.stack.append(compare(pop(vy_globals.stack), 1, Comparitors.NOT_EQUALS))",
         1,
     ),
-    "ḋ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_divmod(lhs, rhs))",
-        2,
+    "ḋ": fn_to_cmd(
+        vy_divmod, 2
     ),  # Dereference because generators could accidentally get exhausted.
     "ė": (
         "vy_globals.stack.append(Generator(enumerate(iterable(pop(vy_globals.stack)))))",
         1,
     ),
-    "ḟ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(find(lhs, rhs))",
-        2,
-    ),
+    "ḟ": fn_to_cmd(find, 2),
     "ġ": (
         "rhs = pop(vy_globals.stack)\nif vy_type(rhs) in [list, Generator]: vy_globals.stack.append(gcd(rhs))\nelse: vy_globals.stack.append(gcd(pop(vy_globals.stack), rhs))",
         2,
@@ -339,10 +259,7 @@ command_dict = {
         "top = iterable(pop(vy_globals.stack)); vy_globals.stack.append(top[0]); vy_globals.stack.append(top[1:])",
         1,
     ),
-    "ḭ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(integer_divide(lhs, rhs))",
-        2,
-    ),
+    "ḭ": fn_to_cmd(integer_divide, 2),
     "ŀ": (
         "start, needle, haystack = pop(vy_globals.stack, 3); vy_globals.stack.append(find(haystack, needle, start))",
         3,
@@ -351,13 +268,10 @@ command_dict = {
         "top = iterable(pop(vy_globals.stack)); vy_globals.stack.append(divide(summate(top), len(top)))",
         1,
     ),
-    "ṅ": ("vy_globals.stack.append(first_n(pop(vy_globals.stack)))", 1),
-    "ȯ": (
-        "n, fn = pop(vy_globals.stack, 2); vy_globals.stack.append(first_n(fn, n))",
-        2,
-    ),
+    "ṅ": fn_to_cmd(first_n, 1),
+    "ȯ": fn_to_cmd(first_n, 2),
     "ṗ": ("vy_globals.stack.append(powerset(iterable(pop(vy_globals.stack))))", 1),
-    "ṙ": ("vy_globals.stack.append(vy_round(pop(vy_globals.stack)))", 1),
+    "ṙ": fn_to_cmd(vy_round, 1),
     "ṡ": (
         "fn , vector = pop(vy_globals.stack, 2); vy_globals.stack.append(vy_sorted(vector, fn))",
         2,
@@ -366,10 +280,7 @@ command_dict = {
         "vector = iterable(pop(vy_globals.stack)); vy_globals.stack.append(vector[:-1]); vy_globals.stack.append(vector[-1])",
         1,
     ),
-    "ẇ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(wrap(lhs, rhs))",
-        2,
-    ),
+    "ẇ": fn_to_cmd(wrap, 2),
     "ẋ": (
         "rhs, lhs = pop(vy_globals.stack, 2); main = None;\nif vy_type(lhs) is Function: main = pop(vy_globals.stack)\nvy_globals.stack.append(repeat(lhs, rhs, main))",
         2,
@@ -402,13 +313,10 @@ command_dict = {
     "₇": ("vy_globals.stack.append(128)", 0),
     "₈": ("vy_globals.stack.append(256)", 0),
     "¶": ("vy_globals.stack.append('\\n')", 0),
-    "⁋": ("vy_globals.stack.append(osabie_newline_join(pop(vy_globals.stack)))", 1),
-    "§": ("vy_globals.stack.append(vertical_join(pop(vy_globals.stack)))", 1),
-    "ε": (
-        "padding, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(vertical_join(vector, padding))",
-        2,
-    ),
-    "¡": ("vy_globals.stack.append(factorial(pop(vy_globals.stack)))", 1),
+    "⁋": fn_to_cmd(osabie_newline_join, 1),
+    "§": fn_to_cmd(vertical_join, 1),
+    "ε": fn_to_cmd(vertical_join, 2),
+    "¡": fn_to_cmd(factorial, 1),
     "∑": (
         "temp = summate(pop(vy_globals.stack));vy_globals.stack.append(temp);print(vy_globals.stack);",
         1,
@@ -426,7 +334,7 @@ command_dict = {
         3,
     ),
     "Ḃ": ("vy_globals.stack += bifurcate(pop(vy_globals.stack))", 1),
-    "Ċ": ("vy_globals.stack.append(counts(pop(vy_globals.stack)))", 1),
+    "Ċ": fn_to_cmd(counts, 1),
     "Ḋ": (
         "rhs, lhs = pop(vy_globals.stack, 2); ret = is_divisble(lhs, rhs)\nif type(ret) is tuple: vy_globals.stack += list(ret)\nelse: vy_globals.stack.append(ret)",
         2,
@@ -448,10 +356,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         1,
     ),
     "Ḣ": ("vy_globals.stack.append(iterable(pop(vy_globals.stack))[1:])", 1),
-    "İ": (
-        "indices, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(indexed_into(vector, indices))",
-        2,
-    ),
+    "İ": fn_to_cmd(indexed_into, 2),
     "Ŀ": (
         "new, original, value = pop(vy_globals.stack, 3)\nif Function in map(type, (new, original, value)): vy_globals.stack.append(repeat_no_collect(value, original, new))\nelse: vy_globals.stack.append(transliterate(iterable(original, str), iterable(new, str), iterable(value, str)))",
         3,
@@ -472,17 +377,14 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "vy_globals.stack.append(Generator(permutations(iterable(pop(vy_globals.stack)))))",
         1,
     ),
-    "Ṙ": ("vy_globals.stack.append(reverse(pop(vy_globals.stack)))", 1),
+    "Ṙ": fn_to_cmd(reverse, 1),
     "Ṡ": ("vy_globals.stack = [summate(vy_globals.stack)]", 0),
     "Ṫ": ("vy_globals.stack.append(iterable(pop(vy_globals.stack), str)[:-1])", 1),
     "Ẇ": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(split(lhs, rhs, True))",
         2,
     ),
-    "Ẋ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(cartesian_product(lhs, rhs))",
-        2,
-    ),
+    "Ẋ": fn_to_cmd(cartesian_product, 2),
     "Ẏ": (
         "index, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(one_argument_tail_index(vector, index, 0))",
         2,
@@ -498,40 +400,25 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "c, b, a = pop(vy_globals.stack, 3); vy_globals.stack.append(c); vy_globals.stack.append(a); vy_globals.stack.append(b)",
         3,
     ),
-    "⌈": ("vy_globals.stack.append(ceiling(pop(vy_globals.stack)))", 1),
-    "⌊": ("vy_globals.stack.append(floor(pop(vy_globals.stack)))", 1),
-    "¯": ("vy_globals.stack.append(deltas(pop(vy_globals.stack)))", 1),
-    "±": ("vy_globals.stack.append(sign_of(pop(vy_globals.stack)))", 1),
+    "⌈": fn_to_cmd(ceiling, 1),
+    "⌊": fn_to_cmd(floor, 1),
+    "¯": fn_to_cmd(deltas, 1),
+    "±": fn_to_cmd(sign_of, 1),
     "₴": ("vy_print(pop(vy_globals.stack), end='')", 1),
     "…": (
         "top = pop(vy_globals.stack); vy_globals.stack.append(top); vy_print(top)",
         0,
     ),
     "□": (
-        "if vy_globals.inputs: vy_globals.stack.append( vy_globals.inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
+        "if inputs: vy_globals.stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
         0,
     ),
-    "↳": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(rshift(lhs, rhs))",
-        2,
-    ),
-    "↲": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(lshift(lhs, rhs))",
-        2,
-    ),
-    "⋏": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(bit_and(lhs, rhs))",
-        2,
-    ),
-    "⋎": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(bit_or(lhs, rhs))",
-        2,
-    ),
-    "꘍": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(bit_xor(lhs, rhs))",
-        2,
-    ),
-    "ꜝ": ("vy_globals.stack.append(bit_not(pop(vy_globals.stack)))", 1),
+    "↳": fn_to_cmd(rshift, 2),
+    "↲": fn_to_cmd(lshift, 2),
+    "⋏": fn_to_cmd(bit_and, 2),
+    "⋎": fn_to_cmd(bit_or, 2),
+    "꘍": fn_to_cmd(bit_xor, 2),
+    "ꜝ": fn_to_cmd(bit_not, 1),
     "℅": ("vy_globals.stack.append(random.choice(iterable(pop(vy_globals.stack))))", 1),
     "≤": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(compare(lhs, rhs, Comparitors.LESS_THAN_EQUALS))",
@@ -549,34 +436,22 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(int(deref(lhs) == deref(rhs)))",
         2,
     ),
-    "ƒ": ("vy_globals.stack.append(fractionify(pop(vy_globals.stack)))", 1),
-    "ɖ": ("vy_globals.stack.append(decimalify(pop(vy_globals.stack)))", 1),
+    "ƒ": fn_to_cmd(fractionify, 1),
+    "ɖ": fn_to_cmd(decimalify, 1),
     "×": ("vy_globals.stack.append('*')", 0),
-    "∪": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(set_union(lhs, rhs))",
-        2,
-    ),
-    "∩": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(set_intersection(lhs, rhs))",
-        2,
-    ),
-    "⊍": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(set_caret(lhs, rhs))",
-        2,
-    ),
+    "∪": fn_to_cmd(set_union, 2),
+    "∩": fn_to_cmd(set_intersection, 2),
+    "⊍": fn_to_cmd(set_caret, 2),
     "£": ("register = pop(vy_globals.stack)", 1),
     "¥": ("vy_globals.stack.append(register)", 0),
-    "⇧": ("vy_globals.stack.append(graded(pop(vy_globals.stack)))", 1),
-    "⇩": ("vy_globals.stack.append(graded_down(pop(vy_globals.stack)))", 1),
-    "Ǎ": ("vy_globals.stack.append(two_power(pop(vy_globals.stack)))", 1),
-    "ǎ": ("vy_globals.stack.append(nth_prime(pop(vy_globals.stack)))", 1),
-    "Ǐ": ("vy_globals.stack.append(prime_factors(pop(vy_globals.stack)))", 1),
-    "ǐ": ("vy_globals.stack.append(all_prime_factors(pop(vy_globals.stack)))", 1),
-    "Ǒ": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(order(lhs, rhs))",
-        2,
-    ),
-    "ǒ": ("vy_globals.stack.append(is_empty(pop(vy_globals.stack)))", 1),
+    "⇧": fn_to_cmd(graded, 1),
+    "⇩": fn_to_cmd(graded_down, 1),
+    "Ǎ": fn_to_cmd(two_power, 1),
+    "ǎ": fn_to_cmd(nth_prime, 1),
+    "Ǐ": fn_to_cmd(prime_factors, 1),
+    "ǐ": fn_to_cmd(all_prime_factors, 1),
+    "Ǒ": fn_to_cmd(order, 2),
+    "ǒ": fn_to_cmd(is_empty, 1),
     "Ǔ": (
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack += overloaded_iterable_shift(lhs, rhs, ShiftDirections.LEFT)",
         2,
@@ -589,10 +464,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "replacement, needle, haystack = pop(vy_globals.stack, 3); vy_globals.stack.append(infinite_replace(haystack, needle, replacement))",
         3,
     ),
-    "↵": (
-        "vy_globals.stack.append(split_newlines_or_pow_10(pop(vy_globals.stack)))",
-        1,
-    ),
+    "↵": fn_to_cmd(split_newlines_or_pow_10, 1),
     "⅛": ("global_stack.append(pop(vy_globals.global_stack))", 1),
     "¼": ("vy_globals.stack.append(pop(vy_globals.global_stack))", 0),
     "¾": ("vy_globals.stack.append(deref(vy_globals.global_stack))", 0),
@@ -671,10 +543,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "arg = pop(vy_globals.stack); vy_globals.stack.append(vectorise(math.log10, arg))",
         1,
     ),
-    "∆d": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(distance_between(lhs, rhs))",
-        2,
-    ),
+    "∆d": fn_to_cmd(distance_between, 2),
     "∆D": (
         "arg = pop(vy_globals.stack); vy_globals.stack.append(vectorise(math.degrees, arg))",
         1,
@@ -687,9 +556,9 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "arg = pop(vy_globals.stack); vy_globals.stack.append(compare(vy_abs(arg), 1, Comparitors.LESS_THAN_EQUALS))",
         1,
     ),
-    "∆Ṗ": ("vy_globals.stack.append(next_prime(pop(vy_globals.stack)))", 1),
-    "∆ṗ": ("vy_globals.stack.append(prev_prime(pop(vy_globals.stack)))", 1),
-    "∆p": ("vy_globals.stack.append(closest_prime(pop(vy_globals.stack)))", 1),
+    "∆Ṗ": fn_to_cmd(next_prime, 1),
+    "∆ṗ": fn_to_cmd(prev_prime, 1),
+    "∆p": fn_to_cmd(closest_prime, 1),
     "∆ṙ": (
         "vy_globals.stack.append(unsympy(sympy.prod(map(sympy.poly('x').__sub__, iterable(pop(vy_globals.stack)))).all_coeffs()[::-1]))",
         1,
@@ -719,14 +588,14 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "number = pop(vy_globals.stack); vy_globals.stack.append('»' + utilities.from_ten(number, encoding.codepage_number_compress) + '»')",
         1,
     ),
-    "øĊ": ("vy_globals.stack.append(centre(pop(vy_globals.stack)))", 1),
+    "øĊ": fn_to_cmd(centre, 1),
     "øm": ("vy_globals.stack.append(palindromise(iterable(pop(vy_globals.stack))))", 1),
     "øe": (
         "vy_globals.stack.append(run_length_encode(iterable(pop(vy_globals.stack), str)))",
         1,
     ),
-    "ød": ("vy_globals.stack.append(run_length_decode(pop(vy_globals.stack)))", 1),
-    "øD": ("vy_globals.stack.append(dictionary_compress(pop(vy_globals.stack)))", 1),
+    "ød": fn_to_cmd(run_length_decode, 1),
+    "øD": fn_to_cmd(dictionary_compress, 1),
     "øW": ("vy_globals.stack.append(split_on_words(vy_str(pop(vy_globals.stack))))", 1),
     "øṙ": (
         "replacent, pattern, source = pop(vy_globals.stack, 3); vy_globals.stack.append(regex_replace(vy_str(source), vy_str(pattern), replacent))",
@@ -736,23 +605,14 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(int(str(lhs).startswith(str(rhs))))",
         2,
     ),
-    "øP": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(pluralise(lhs, rhs))",
-        2,
-    ),
-    "øṁ": ("vy_globals.stack.append(vertical_mirror(pop(vy_globals.stack)))", 1),
+    "øP": fn_to_cmd(pluralise, 2),
+    "øṁ": fn_to_cmd(vertical_mirror, 1),
     "øṀ": (
         "vy_globals.stack.append(vertical_mirror(pop(vy_globals.stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/']))",
         1,
     ),
-    "ø¦": (
-        "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(vertical_mirror(lhs, rhs))",
-        2,
-    ),
-    "Þ…": (
-        "value, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(distribute(vector, value))",
-        2,
-    ),
+    "ø¦": fn_to_cmd(vertical_mirror, 2),
+    "Þ…": fn_to_cmd(distribute, 2),
     "Þ↓": (
         "fn, vector = pop(vy_globals.stack, 2); vy_globals.stack.append(min(vy_zipmap(fn, vector), key=lambda x: x[-1])[0])",
         2,
@@ -774,7 +634,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         0,
     ),
     "ÞU": ("vy_globals.stack.append(nub_sieve(iterable(pop(vy_globals.stack))))", 1),
-    "ÞT": ("vy_globals.stack.append(transpose(pop(vy_globals.stack)))", 1),
+    "ÞT": fn_to_cmd(transpose, 1),
     "ÞD": (
         "vy_globals.stack.append(Generator(diagonals(iterable(pop(vy_globals.stack), list))))",
         1,
@@ -799,7 +659,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         "rhs, lhs = pop(vy_globals.stack, 2); vy_globals.stack.append(matrix_multiply(iterable(lhs), iterable(rhs)))",
         2,
     ),
-    "ÞḊ": ("vy_globals.stack.append(determinant(pop(vy_globals.stack)))", 1),
+    "ÞḊ": fn_to_cmd(determinant, 1),
     "Þ/": ("vy_globals.stack.append(diagonal_main(deref(pop(vy_globals.stack))))", 1),
     "Þ\\": ("vy_globals.stack.append(diagonal_anti(deref(pop(vy_globals.stack))))", 1),
     "ÞR": (
@@ -856,10 +716,6 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "ki": ("vy_globals.stack.append(math.pi)", 0),
     "kn": ("vy_globals.stack.append(math.nan)", 0),
     "kt": ("vy_globals.stack.append(math.tau)", 0),
-    "kg": ("vy_globals.stack.append((1+math.sqrt(5))/2)", 0),
-    "k₂": ("vy_globals.stack.append(math.sqrt(2))", 0),
-    "k₃": ("vy_globals.stack.append(math.sqrt(3))", 0),
-    "k₅": ("vy_globals.stack.append(math.sqrt(5))", 0),
     "kD": ("vy_globals.stack.append(date.today().isoformat())", 0),
     "kN": (
         "vy_globals.stack.append([dt.now().hour, dt.now().minute, dt.now().second])",
