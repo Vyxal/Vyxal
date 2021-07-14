@@ -36,6 +36,33 @@ def at_least_n_dims(vector, n):
     return 0
 
 
+def cartesian_power(vector, exp):
+    vec_type, exp_type = vy_type(vector), vy_type(exp)
+
+    if vec_type in (list, Generator):
+        assert exp_type is not str
+        if exp_type is Number:
+            res = [[]]
+            for _ in range(exp):
+                prod = cartesian_power(res, vector)
+                res = vyxal.builtins.vy_map(
+                    lambda prev, vec_elem: prev + [vec_elem], prod
+                )
+            return res
+        elif exp_type is Function:
+            res = [[]]
+            pred = exp
+            while not pred(res):
+                prod = cartesian_power(res, vector)
+                res = vyxal.builtins.vy_map(
+                    lambda prev, vec_elem: prev + [vec_elem], prod
+                )
+            return res
+        return vyxal.builtins.vy_map(
+            lambda inner_exp: cartesian_power(vector, inner_exp), exp
+        )
+
+
 def cartesian_product(lhs, rhs):
     if Function not in (vy_type(lhs), vy_type(rhs)):
         if (vy_type(lhs), vy_type(rhs)) in (
