@@ -70,6 +70,7 @@
                 }
                 if(state.structure == 'STRING' && char == '\\') state.escaped = true;
                 if (state.structure == 'STRING' && char !== '`') {
+                    if(state.escaped) state.escaped = false;
                     return 'string'
                 }
                 if (state.structure == 'CHAR') {
