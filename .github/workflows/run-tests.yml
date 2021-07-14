@@ -37,3 +37,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+    - name: Black Check
+      uses: jpetrucciani/black-check@20.8b1
