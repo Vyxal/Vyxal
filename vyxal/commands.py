@@ -465,7 +465,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         3,
     ),
     "↵": fn_to_cmd(split_newlines_or_pow_10, 1),
-    "⅛": ("global_stack.append(pop(vy_globals.global_stack))", 1),
+    "⅛": ("vy_globals.global_stack.append(pop(vy_globals.stack))", 1),
     "¼": ("vy_globals.stack.append(pop(vy_globals.global_stack))", 0),
     "¾": ("vy_globals.stack.append(deref(vy_globals.global_stack))", 0),
     "Π": ("vy_globals.stack.append(product(iterable(pop(vy_globals.stack))))", 1),
