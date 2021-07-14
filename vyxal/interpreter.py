@@ -355,7 +355,7 @@ def execute(code, flags, input_list, output_variable):
         vy_globals.inputs = list(map(eval_function, input_list.split("\n")))
 
     if "a" in flags:
-        vy_globals.inputs = [vy_globals.inputs]
+        vy_globals.inputs = vy_globals.inputs
 
     if flags:
         vy_globals.set_globals(flags)

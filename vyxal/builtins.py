@@ -1871,8 +1871,12 @@ def vy_print(item, end="\n", raw=False):
                 vy_globals.output[1] += vy_str(item) + end
             else:
                 print(vy_str(item), end=end)
-    if vy_globals.online_version and len(vy_globals.output) > ONE_TWO_EIGHT_KB:
-        exit(code=1)
+    if vy_globals.online_version and len(vy_globals.output[1]) > 128000:
+        vy_globals.output[
+            2
+        ] = "Program terminated after reaching the maximum character limit for output."
+        sys.exit(1)
+        return
 
 
 def vy_range(item, start=0, lift_factor=0):

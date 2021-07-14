@@ -533,6 +533,12 @@ cmd | inputs | out/effect
 | k§ |   |  ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] |
 | kɖ |   |  ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] |
 | kṁ |   |  [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31] |
+| k∪ |   |  "aeiouy" |
+| k⊍ |   |  "AEIOUY" |
+| k∩ |   |  "aeiouyAEIOUY" |
+| kṗ |   |  phi |
+| k⋏ |   |  2 ** 20 |
+| k⋎ |   |  2 ** 30 |
 | ∆c | (a: number)                        |  math.cos(a) # Cosine |
 | ∆C | (a: number)                        |  math.arccos(a) # Arc cosine |
 | ∆q | (a: number, b: number)             |  roots of quadratic ax^2 + bx = 0 # Solve quadratic equation |

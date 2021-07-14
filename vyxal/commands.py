@@ -386,7 +386,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         0,
     ),
     "□": (
-        "if inputs: vy_globals.stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
+        "if vy_globals.inputs: vy_globals.stack.append(vy_globals.inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
         0,
     ),
     "↳": fn_to_cmd(rshift, 2),
@@ -426,7 +426,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     ),
     "¢": fn_to_cmd(infinite_replace, 3),
     "↵": fn_to_cmd(split_newlines_or_pow_10, 1),
-    "⅛": ("global_stack.append(pop(vy_globals.global_stack))", 1),
+    "⅛": ("vy_globals.global_stack.append(pop(vy_globals.stack))", 1),
     "¼": ("vy_globals.stack.append(pop(vy_globals.global_stack))", 0),
     "¾": ("vy_globals.stack.append(deref(vy_globals.global_stack))", 0),
     "Π": ("vy_globals.stack.append(product(iterable(pop(vy_globals.stack))))", 1),
