@@ -68,7 +68,7 @@
                     }
                     return 'function'
                 }
-                if(state.escaped && char !== '\\' && char !== '`'){
+                if(state.escaped && char !== '`'){
                     state.escaped = false;
                     return 'string'
                 }
