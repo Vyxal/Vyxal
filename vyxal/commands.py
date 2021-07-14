@@ -398,7 +398,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
     "℅": make_cmd("random.choice(iterable({}))", 1),
     "≤": make_cmd("compare({}, {}, Comparitors.LESS_THAN_EQUALS)", 2),
     "≥": make_cmd("compare({}, {}, Comparitors.GREATER_THAN_EQUALS)", 2),
-    "≠": make_cmd("int(deref({}) != deref({})", 2),
+    "≠": make_cmd("int(deref({}) != deref({}))", 2),
     "⁼": make_cmd("int(deref({}) == deref({})", 2),
     "ƒ": fn_to_cmd(fractionify, 1),
     "ɖ": fn_to_cmd(decimalify, 1),
