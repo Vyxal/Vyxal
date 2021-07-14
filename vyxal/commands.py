@@ -410,7 +410,7 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         0,
     ),
     "□": (
-        "if inputs: vy_globals.stack.append(inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
+        "if vy_globals.inputs: vy_globals.stack.append(vy_globals.inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
         0,
     ),
     "↳": fn_to_cmd(rshift, 2),
