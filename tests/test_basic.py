@@ -14,6 +14,10 @@ def test_not():
     assert pop(stack) == [1, 0, 0, 1]
 
 
+def test_non_negative_integers():
+    run_code("∞", flags=["O"])
+
+
 def test_is_prime():
     stack = run_code("10ɾƛæ;", flags=["O"])
     assert pop(stack)._dereference() == [0, 1, 1, 0, 1, 0, 1, 0, 0, 0]

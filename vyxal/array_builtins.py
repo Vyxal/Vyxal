@@ -557,6 +557,14 @@ def mold(content, shape):
     return shape
 
 
+@Generator
+def non_negative_integers():
+    num = 0
+    while True:
+        yield num
+        num += 1
+
+
 def nub_sieve(vector):
     @Generator
     def gen():

@@ -94,7 +94,7 @@ command_dict = {
     ),
     "ɽ": make_cmd("orderless_range(1, {})", 1),
     "ƈ": fn_to_cmd(ncr, 2),
-    "∞": make_cmd("Generator(lambda x: x)", 0),
+    "∞": make_cmd("non_negative_integers()", 0),
     "!": make_cmd("len(vy_globals.stack)", 0),
     '"': make_cmd("[{}, {}]", 2),
     "$": (
