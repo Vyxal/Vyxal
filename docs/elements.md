@@ -156,7 +156,7 @@ cmd | inputs | out/effect
 | U | (a: any)                            |  uniquifed(a) # uniquify, unique items, remove duplicates |
 | V | (a: any, b: any, c: any)            |  a.replace(needle=b, replacement=c) # replace |
 | W |   |  [stack] # wrap stack, lisitfy whole stack |
-| X |   |  * context level down |
+| X |   |   |
 | Y | (a: any, b: any)                    |  interleave(a, b) # Interleave |
 | Z | (a: any, b: any)                    |  zip(a, b) # Zip |
 | [ |   |  * open if statement: [truthy|falsey] |
