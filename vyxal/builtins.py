@@ -13,8 +13,8 @@ sys.path.insert(1, THIS_FOLDER)
 
 import vyxal
 from vyxal import array_builtins
-from vyxal.utilities import *
 from vyxal.factorials import FIRST_100_FACTORIALS
+from vyxal.utilities import *
 
 try:
     import numpy
@@ -1661,8 +1661,8 @@ def vy_eval(item):
         return vectorise(vy_eval, item)
 
     if vy_globals.online_version or vy_globals.safe_mode:
-        from vyxal.parser import Tokenise, Structure
         from vyxal.interpreter import vy_compile
+        from vyxal.parser import Structure, Tokenise
 
         try:
             return pwn.safeeval.const(item)
