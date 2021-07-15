@@ -1,6 +1,4 @@
-from vyxal import dictionary
-from vyxal import encoding
-from vyxal import utilities
+from vyxal import dictionary, encoding, utilities
 
 
 def extract_word(code):

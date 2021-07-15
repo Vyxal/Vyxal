@@ -3,8 +3,7 @@ import functools
 import inspect
 from typing import Callable, Dict, List, Optional, Tuple, Union
 
-from vyxal import vy_globals
-from vyxal import words
+from vyxal import vy_globals, words
 
 # Generic type constants
 Number = "NUMBER"
@@ -375,6 +374,13 @@ def from_ten(number, custom_base):
     return result
 
 
+def make_generator(fn):
+    def new_fn(*args, **kwargs):
+        return Generator(fn(*args, **kwargs))
+
+    return new_fn
+
+
 def iterable(item, t=None):
     t = t or vy_globals.number_iterable
     if vy_type(item) == Number:
@@ -573,7 +579,7 @@ def vectorise(fn, left, right=None, third=None, explicit=False):
     else:
         if vy_type(left) is Generator:
 
-            @Generator
+            @make_generator
             def gen():
                 for item in left:
                     yield safe_apply(fn, item)

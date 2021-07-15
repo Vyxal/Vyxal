@@ -434,7 +434,7 @@ ALL flags should be used as is (no '-' prefix)
         elif flags and "ṡ" in flags:
             vy_print(" ".join([vy_str(n) for n in vy_globals.stack]))
         elif flags and "d" in flags:
-            vy_print(summate(flatten(pop(vy_globals.stack))))
+            vy_print(summate(deep_flatten(pop(vy_globals.stack))))
         elif flags and "Ṫ" in flags:
             vy_print(summate(vy_globals.stack))
         elif flags and "S" in flags:
@@ -569,7 +569,7 @@ if __name__ == "__main__":
             elif flags and "ṡ" in flags:
                 print(" ".join([vy_str(n) for n in vy_globals.stack]))
             elif flags and "d" in flags:
-                print(summate(flatten(pop(vy_globals.stack))))
+                print(summate(deep_flatten(pop(vy_globals.stack))))
             elif flags and "Ṫ" in flags:
                 vy_print(summate(vy_globals.stack))
             elif flags and "S" in flags:
