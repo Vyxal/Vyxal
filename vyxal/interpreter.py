@@ -28,7 +28,6 @@ except:
 
 
 def wrap_in_lambda(tokens):
-    print(tokens)
     if len(tokens) == 1 and tokens[0][0] == Structure.NONE:
         return [
             (
