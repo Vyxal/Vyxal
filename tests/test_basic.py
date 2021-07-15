@@ -15,6 +15,14 @@ def test_generators():
         assert deref(pop(stack)) == expected
 
 
+def test_vectorise():
+    test_cases = [([[1, 2, 3, 4], [5, 6, 2], [0], [[1, 2], 3]], "h", [1, 5, 0, [1, 2]])]
+
+    for vector, cmd, expected in test_cases:
+        stack = run_code("v" + cmd, flags=["O"], input_list=[vector])
+        assert pop(stack) == expected
+
+
 def test_not():
     """Test negation"""
     stack = run_code("ƛ¬;", flags=["O", "c"], input_list=[[0, 1, 2, ""]])

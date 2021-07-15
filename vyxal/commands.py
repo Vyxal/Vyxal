@@ -440,10 +440,7 @@ else:
     "∆T": make_cmd("math.atan({})", 1),
     "∆q": make_cmd("polynomial([{1}, {0}, 0])", 2),
     "∆Q": make_cmd("polynomial([1, {1}, {0}])", 2),
-    "∆P": (
-        "coeff = iterable(pop(vy_globals.stack)); vy_globals.stack.append(polynomial(coeff));",
-        1,
-    ),
+    "∆P": make_cmd("polynomial(iterable({}))", 1),
     "∆s": make_cmd("vectorise(math.sin, {})", 1),
     "∆c": make_cmd("vectorise(math.cos, {})", 1),
     "∆t": make_cmd("vectorise(math.tan, {})", 1),
@@ -485,42 +482,39 @@ else:
         "'»' + utilities.from_ten({}, encoding.codepage_number_compress) + '»'", 1
     ),
     "øĊ": fn_to_cmd(centre, 1),
-    "øm": ("vy_globals.stack.append(palindromise(iterable(pop(vy_globals.stack))))", 1),
-    "øe": (
-        "vy_globals.stack.append(run_length_encode(iterable(pop(vy_globals.stack), str)))",
+    "øm": make_cmd("palindromise(iterable({}))", 1),
+    "øe": make_cmd(
+        "run_length_encode(iterable({}, str))",
         1,
     ),
     "ød": fn_to_cmd(run_length_decode, 1),
     "øD": fn_to_cmd(dictionary_compress, 1),
-    "øW": ("vy_globals.stack.append(split_on_words(vy_str(pop(vy_globals.stack))))", 1),
-    "øṙ": (
-        "replacent, pattern, source = pop(vy_globals.stack, 3); vy_globals.stack.append(regex_replace(vy_str(source), vy_str(pattern), replacent))",
+    "øW": make_cmd("split_on_words(vy_str({}))", 1),
+    "øṙ": make_cmd(
+        "regex_replace(vy_str({}), vy_str({}), {})",
         3,
     ),
     "øp": make_cmd("int(str({}).startswith(str({})))", 2),
     "øP": fn_to_cmd(pluralise, 2),
     "øṁ": fn_to_cmd(vertical_mirror, 1),
-    "øṀ": (
-        "vy_globals.stack.append(vertical_mirror(pop(vy_globals.stack), ['()[]{}<>/\\\\', ')(][}{><\\\\/']))",
+    "øṀ": make_cmd(
+        "vertical_mirror({}, ['()[]{{}}<>/\\\\', ')(][}}{{><\\\\/']))",
         1,
     ),
     "ø¦": fn_to_cmd(vertical_mirror, 2),
     "Þ…": fn_to_cmd(distribute, 2),
     "Þ↓": make_cmd("min(vy_zipmap({1}, {0}), key=lambda x: x[-1])[0]", 2),
     "Þ↑": make_cmd("max(vy_zipmap({1}, {0}), key=lambda x: x[-1])[0]", 2),
-    "Þ×": (
-        "vector = pop(vy_globals.stack); vy_globals.stack.append(all_combinations(vector));",
-        1,
-    ),
-    "ÞF": (
-        "vy_globals.stack.append(Generator(fibonacci(), is_numeric_sequence=True))",
+    "Þ×": fn_to_cmd(all_combinations, 1),
+    "ÞF": make_cmd(
+        "Generator(fibonacci(), is_numeric_sequence=True)",
         0,
     ),
-    "Þ!": (
-        "vy_globals.stack.append(Generator(factorials(), is_numeric_sequence=True))",
+    "Þ!": make_cmd(
+        "Generator(factorials(), is_numeric_sequence=True)",
         0,
     ),
-    "ÞU": ("vy_globals.stack.append(nub_sieve(iterable(pop(vy_globals.stack))))", 1),
+    "ÞU": make_cmd("nub_sieve(iterable({}))", 1),
     "ÞT": fn_to_cmd(transpose, 1),
     "ÞD": (
         "vy_globals.stack.append(Generator(diagonals(iterable(pop(vy_globals.stack), list))))",
@@ -541,8 +535,8 @@ else:
     "Þ•": make_cmd("dot_product(iterable({}), iterable({}))", 2),
     "ÞṀ": make_cmd("matrix_multiply(iterable({}), iterable({}))", 2),
     "ÞḊ": fn_to_cmd(determinant, 1),
-    "Þ/": ("vy_globals.stack.append(diagonal_main(deref(pop(vy_globals.stack))))", 1),
-    "Þ\\": ("vy_globals.stack.append(diagonal_anti(deref(pop(vy_globals.stack))))", 1),
+    "Þ/": make_cmd("diagonal_main(deref({}))", 1),
+    "Þ\\": make_cmd("diagonal_anti(deref({}))", 1),
     "ÞR": make_cmd("foldl_rows({1}, deref({0}))", 2),
     "ÞC": make_cmd("foldl_cols({1}, deref({0}))", 2),
     "¨U": (
@@ -581,8 +575,8 @@ else:
     "kP": make_cmd("string.printable", 0),
     "kw": make_cmd("string.whitespace", 0),
     "kr": make_cmd("string.digits + string.ascii_letters", 0),
-    "kB": (
-        "vy_globals.stack.append(string.ascii_uppercase + string.ascii_lowercase)",
+    "kB": make_cmd(
+        "string.ascii_uppercase + string.ascii_lowercase",
         0,
     ),
     "kZ": make_cmd("string.ascii_uppercase[::-1]", 0),
@@ -592,14 +586,14 @@ else:
     "kn": make_cmd("math.nan", 0),
     "kt": make_cmd("math.tau", 0),
     "kD": make_cmd("date.today().isoformat()", 0),
-    "kN": (
-        "vy_globals.stack.append([dt.now().hour, dt.now().minute, dt.now().second])",
+    "kN": make_cmd(
+        "[dt.now().hour, dt.now().minute, dt.now().second]",
         0,
     ),
     "kḋ": make_cmd("date.today().strftime('%d/%m/%Y')", 0),
     "kḊ": make_cmd("date.today().strftime('%m/%d/%y')", 0),
-    "kð": (
-        "vy_globals.stack.append([date.today().day, date.today().month, date.today().year])",
+    "kð": make_cmd(
+        "[date.today().day, date.today().month, date.today().year]",
         0,
     ),
     "kβ": make_cmd("'{}[]<>()'", 0),
@@ -674,7 +668,7 @@ else:
 
 transformers = {
     "⁽": "vy_globals.stack.append(function_A)",
-    "v": "vy_globals.stack.append(transformer_vectorise(function_A, vy_globals.stack))",
+    "v": "temp = transformer_vectorise(function_A, vy_globals.stack); vy_globals.stack.append(temp)",
     "&": "apply_to_register(function_A, vy_globals.stack)",
     "~": "dont_pop(function_A, vy_globals.stack)",
     "ß": "cond = pop(vy_globals.stack)\nif cond: vy_globals.stack += function_call(function_A, vy_globals.stack)",
