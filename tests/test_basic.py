@@ -7,17 +7,28 @@ from vyxal.array_builtins import deref
 from vyxal.builtins import pop
 
 
+def test_generators():
+    # TODO add more test cases
+    test_cases = [("1 10 r '5<; f", [1, 2, 3, 4])]
+    for code, expected in test_cases:
+        stack = run_code(code, flags=["O"])
+        assert deref(pop(stack)) == expected
+
+
 def test_not():
+    """Test negation"""
     stack = run_code("ƛ¬;", flags=["O", "c"], input_list=[[0, 1, 2, ""]])
     assert pop(stack) == [1, 0, 0, 1]
 
 
 def test_inputs():
+    """Test ⁰ and ¹ for taking inputs"""
     stack = run_code("⁰¹e", flags=["O"], input_list=[1, 2, 3])
     assert pop(stack) == 9
 
 
 def test_non_negative_integers():
+    """Test the generator producing all natural numbers (>=0)"""
     run_code("∞", flags=["O"])
 
 

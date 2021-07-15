@@ -1,6 +1,7 @@
 import base64
 import functools
 import inspect
+from typing import Callable, Dict, List, Optional, Tuple, Union
 
 from vyxal import vy_globals
 from vyxal import words
@@ -391,7 +392,54 @@ def iterable(item, t=None):
         return item
 
 
-def uncompress(s):
+def rearrange_for_types(
+    types: Union[
+        List[tuple], Dict[tuple, Callable[..., tuple]], Callable[[tuple], bool]
+    ],
+    swap_args: Optional[Callable[..., tuple]] = None,
+):
+    """
+    Decorator to swap or rearrange arguments for given types.
+
+    :param types
+      If this is a list, if the arguments given to the function match
+      any of the types given in the list `types`, rearrange them using
+      swap_args or swap them if it's `None`.
+      If this is a dict, if any of the arguments given to the function
+      match any of the keys in `types`, rearrange them using the corresponding
+      value or swap_args if the value's `None`.
+    :param swap_args A function to rearrange arguments with. If not given,
+      defaults to swapping arguments (assumes `fn` is a binary function).
+    """
+    swap_args = swap_args or (lambda l, r: (r, l))
+
+    def decorator(fn):
+        if isinstance(types, dict):
+
+            def new_fn(*args, **kwargs):
+                arg_types = tuple(map(vy_type, args))
+                for types_case, swap_fn in types:
+                    if arg_types == types_case:
+                        args = swap_fn(*args)
+                        break
+                return fn(*args, **kwargs)
+
+            return new_fn
+        else:
+
+            def new_fn(*args, **kwargs):
+                nonlocal swap_args
+                arg_types = tuple(map(vy_type, args))
+                if arg_types in types:
+                    args = swap_args(*args)
+                return fn(*args, **kwargs)
+
+            return new_fn
+
+    return decorator
+
+
+def uncompress(s: str):
     final = ""
     current_two = ""
     escaped = False

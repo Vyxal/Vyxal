@@ -159,14 +159,13 @@ command_dict = {
         "vy_globals.stack.append([i for (i, x) in enumerate(pop(vy_globals.stack)) if bool(x)])",
         1,
     ),
-    "U": ("vy_globals.stack.append(Generator(uniquify(pop(vy_globals.stack))))", 1),
+    "U": make_cmd("Generator(uniquify({}))", 1),
     "V": fn_to_cmd(replace, 3),
     "W": ("vy_globals.stack = [deref(vy_globals.stack)]; print(vy_globals.stack)", 0),
     "X": ("vy_globals.context_level += 1", 0),
     "Y": fn_to_cmd(interleave, 2),
-    "Z": (
-        "rhs, lhs = pop(vy_globals.stack, 2);"
-        "vy_globals.stack.append(Generator(vy_zip(iterable(lhs), iterable(rhs))))",
+    "Z": make_cmd(
+        "Generator(vy_zip(iterable({}), iterable({})))",
         2,
     ),
     "a": ("vy_globals.stack.append(int(any(iterable(pop(vy_globals.stack)))))", 1),
@@ -180,15 +179,15 @@ command_dict = {
     ),
     "d": make_cmd("multiply({}, 2)", 1),
     "e": fn_to_cmd(exponate, 2),
-    "f": ("vy_globals.stack.append(flatten(iterable(pop(vy_globals.stack))))", 1),
-    "g": ("vy_globals.stack.append(vy_min(iterable(pop(vy_globals.stack))))", 1),
-    "h": ("vy_globals.stack.append(iterable(pop(vy_globals.stack))[0])", 1),
+    "f": make_cmd("flatten(iterable({}))", 1),
+    "g": make_cmd("vy_min(iterable({}))", 1),
+    "h": make_cmd("iterable({})[0]", 1),
     "i": fn_to_cmd(index, 2),
     "j": fn_to_cmd(join_on, 2),
     "l": fn_to_cmd(nwise_pair, 2),
     "m": fn_to_cmd(mirror, 1),
-    "n": (
-        "vy_globals.stack.append(vy_globals.context_values[vy_globals.context_level % len(vy_globals.context_values)])",
+    "n": make_cmd(
+        "vy_globals.context_values[vy_globals.context_level % len(vy_globals.context_values)]",
         0,
     ),
     "o": fn_to_cmd(remove, 2),
@@ -196,23 +195,17 @@ command_dict = {
     "q": fn_to_cmd(uneval, 1),
     "r": fn_to_cmd(orderless_range, 2),
     "s": fn_to_cmd(vy_sorted, 1),
-    "t": ("vy_globals.stack.append(iterable(pop(vy_globals.stack))[-1])", 1),
-    "u": ("vy_globals.stack.append(-1)", 0),
-    "w": ("vy_globals.stack.append([pop(vy_globals.stack)])", 1),
+    "t": make_cmd("iterable({})[-1]", 1),
+    "u": make_cmd("-1", 0),
+    "w": make_cmd("[{}]", 1),
     "x": ("vy_globals.stack += this_function(vy_globals.stack)", 0),
     "y": ("vy_globals.stack += uninterleave(pop(vy_globals.stack))", 1),
     "z": (
         "fn, vector = pop(vy_globals.stack, 2); vy_globals.stack += vy_zipmap(fn, vector)",
         2,
     ),
-    "↑": (
-        "vy_globals.stack.append(max(pop(vy_globals.stack), key=lambda x: x[-1]))",
-        1,
-    ),
-    "↓": (
-        "vy_globals.stack.append(min(pop(vy_globals.stack), key=lambda x: x[-1]))",
-        1,
-    ),
+    "↑": make_cmd("max({}, key=lambda x: x[-1])", 1),
+    "↓": make_cmd("min({}, key=lambda x: x[-1])", 1),
     "∴": fn_to_cmd(vy_max, 2),
     "∵": fn_to_cmd(vy_min, 2),
     "β": make_cmd("utilities.to_ten({}, {})", 2),
@@ -386,7 +379,11 @@ vy_globals.stack.append(Generator(fn, limit=limit, initial=iterable(vector)))
         0,
     ),
     "□": (
-        "if vy_globals.inputs: vy_globals.stack.append(vy_globals.inputs)\nelse:\n    s, x = [], input()\n    while x:\n        s.append(vy_eval(x)); x = input()",
+        """if vy_globals.inputs: vy_globals.stack.append(vy_globals.inputs)
+else:
+    s, x = [], input()
+    while x:
+        s.append(vy_eval(x)); x = input()""",
         0,
     ),
     "↳": fn_to_cmd(rshift, 2),

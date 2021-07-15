@@ -36,6 +36,7 @@ def at_least_n_dims(vector, n):
     return 0
 
 
+@rearrange_for_types([(Number, list), (Number, Generator)])
 def cartesian_power(vector, exp):
     vec_type, exp_type = vy_type(vector), vy_type(exp)
 
@@ -49,7 +50,7 @@ def cartesian_power(vector, exp):
                     lambda prev, vec_elem: prev + [vec_elem], prod
                 )
             return res
-        elif exp_type is Function:
+        if exp_type is Function:
             res = [[]]
             pred = exp
             while not pred(res):
@@ -229,6 +230,7 @@ def foldl_by_axis(fn, vector, axis, init=None):
     return acc
 
 
+@rearrange_for_types([(list, Function), (Generator, Function)])
 def foldl_cols(fn, vector, init=None):
     """
     Fold each column of a matrix from top to bottom, possibly with a starting value.
