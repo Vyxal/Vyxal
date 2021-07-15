@@ -78,7 +78,7 @@ def cartesian_product(lhs, rhs):
         if types[0] == Generator:
             if types[1] == Generator:
 
-                @Generator
+                @make_generator
                 def cantor_diagonalized():
                     left = 0
                     right = 0
@@ -94,7 +94,7 @@ def cartesian_product(lhs, rhs):
                 return cantor_diagonalized
             else:
 
-                @Generator
+                @make_generator
                 def right_first():
                     left = 0
                     while True:
@@ -106,7 +106,7 @@ def cartesian_product(lhs, rhs):
         else:
             if types[1] == Generator:
 
-                @Generator
+                @make_generator
                 def left_first():
                     right = 0
                     while True:
@@ -123,7 +123,7 @@ def cartesian_product(lhs, rhs):
     else:
         fn, init = rhs, lhs
 
-    @Generator
+    @make_generator
     def gen():
         prev = None
         curr = init
@@ -137,6 +137,61 @@ def cartesian_product(lhs, rhs):
 
 def cumulative_sum(vector):
     return scanl_by_axis(vyxal.builtins.add, vector, axis=0)
+
+
+def deep_flatten(item):
+    """
+    Returns a deep-flattened (all sublists expanded) version of the input
+    """
+    t_item = vy_type(item)
+    print("flattening", item)
+    if t_item is Generator:
+
+        @make_generator
+        def gen():
+            for inner in item:
+                for elem in deep_flatten(inner):
+                    yield elem
+
+        return gen()
+    elif t_item is list:
+        ret = []
+        item_it = iter(item)
+
+        for x in item_it:
+            x_t = vy_type(x)
+            if x_t is list:
+                flat_x = deep_flatten(x)
+                if type(flat_x) is list:
+                    ret += deep_flatten(x)
+                else:
+
+                    def flatten_to_gen():
+                        nonlocal ret, item_it, flat_x
+                        for elem in first_gen:
+                            yield elem
+                        for inner in item_it:
+                            for elem in deep_flatten(inner):
+                                yield elem
+
+                    return Generator(flatten_to_gen())
+            elif x_t is Generator:
+
+                def flatten_to_gen():
+                    nonlocal ret, item_it, x
+                    for inner in x:
+                        for elem in deep_flatten(inner):
+                            yield elem
+                    for inner in item_it:
+                        for elem in deep_flatten(inner):
+                            yield elem
+
+                return Generator(flatten_to_gen())
+            else:
+                ret.append(x)
+        return ret
+    else:
+        return [item]
 
 
 def deref(item, generator_to_list=True, limit=-1):
@@ -293,7 +348,7 @@ def foldl_rows(fn, vector, init=None):
         return [foldl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             yield foldl_rows(fn, first_row, init=init)
             for row in vector:
@@ -379,7 +434,7 @@ def foldr_rows(fn, vector, init=None):
         return [foldr_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             yield foldr_rows(fn, vector[0], init=init)
             for row in vector:
@@ -424,7 +479,7 @@ def inclusive_range(lhs, rhs):
         else:
             func, vector = rhs, lhs
 
-        @Generator
+        @make_generator
         def gen():
             for index, item in enumerate(vector):
                 if (index + 1) % 2:
@@ -452,7 +507,7 @@ def index(vector, index):
         else:
             fn, init = index, vector
 
-        @Generator
+        @make_generator
         def gen():
             seen = []
             curr = deref(init)
@@ -486,7 +541,7 @@ def indexed_into(vector, indices):
         else:
             fn, init = indices, vector
 
-        @Generator
+        @make_generator
         def gen():
             seen = []
             curr = deref(init)
@@ -523,7 +578,7 @@ def interleave(lhs, rhs):
 
 
 def map_at(function, vector, indices):
-    @Generator
+    @make_generator
     def gen():
         for pos, element in enumerate(vector):
             if pos in indices:
@@ -535,7 +590,7 @@ def map_at(function, vector, indices):
 
 
 def map_every_n(vector, function, index):
-    @Generator
+    @make_generator
     def gen():
         for pos, element in enumerate(vector):
             if (pos + 1) % index:
@@ -550,7 +605,7 @@ def map_norm(fn, vector):
     vec_type = vy_type(vector)
     if vec_type is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             for item in vector:
                 yield fn(item)
@@ -586,7 +641,7 @@ def mold(content, shape):
     return shape
 
 
-@Generator
+@make_generator
 def non_negative_integers():
     num = 0
     while True:
@@ -595,7 +650,7 @@ def non_negative_integers():
 
 
 def nub_sieve(vector):
-    @Generator
+    @make_generator
     def gen():
         occurances = {}
         for item in vector:
@@ -694,7 +749,7 @@ def scanl_rows(fn, vector, init=None):
         return [scanl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             yield scanl_rows(fn, first_row, init=init)
             for row in vector:
@@ -770,7 +825,7 @@ def scanr_rows(fn, vector, init=None):
         return [scanl_rows(fn, row, init=init) for row in vector]
     elif inner_type is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             yield scanr_rows(fn, vector[0], init=init)
             for row in vector:
@@ -855,7 +910,7 @@ def zip_with2(fn, xs, ys):
     xs = xs if xs_type is Generator else Generator((x for x in xs))
     ys = ys if ys_type is Generator else Generator((y for y in ys))
 
-    @Generator
+    @make_generator
     def gen():
         try:
             while not (xs.end_reached or ys.end_reached):
@@ -872,7 +927,7 @@ def zip_with_multi(fn, lists):
         for lst in lists
     ]
 
-    @Generator
+    @make_generator
     def gen():
         try:
             while not any(lst.end_reached for lst in lists):

@@ -12,7 +12,35 @@ def test_generators():
     test_cases = [("1 10 r '5<; f", [1, 2, 3, 4])]
     for code, expected in test_cases:
         stack = run_code(code, flags=["O"])
+        print(stack)
         assert deref(pop(stack)) == expected
+
+
+def test_flatten():
+    import vyxal.array_builtins
+    import vyxal.builtins
+    import vyxal.utilities
+
+    # @make_generator
+    # def gen():
+    #     for i in range(10):
+    #         for j in range(3, 6):
+    #             yield [i, j]
+    # print(deref(deep_flatten([vyxal.array_builtins.non_negative_integers(), gen()]), limit=5))
+    # assert 0
+    # TODO add more test cases
+    # test_cases = [
+    #     ("∞ ∞ W f 5 Ẏ", [0, 1, 2, 3, 4]),
+    #     ("1 10 r f 5 Ẏ", [1, 2, 3, 4, 5]),
+    # ]
+    # import vyxal.interpreter
+    # for code, expected in test_cases:
+    #     print(vyxal.interpreter.vy_compile(code, vyxal.utilities.vyxal_imports))
+    #     assert 0
+    #     stack = run_code(code, flags=["O", "c"])
+    #     res = deref(pop(stack), limit=20)
+    #     print(res)
+    #     assert res == expected
 
 
 def test_vectorise():

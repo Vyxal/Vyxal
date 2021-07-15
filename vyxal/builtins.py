@@ -176,7 +176,7 @@ def centre(vector):
     vector = array_builtins.deref(iterable(vector), True)
     focal = max(map(len, vector))
 
-    @Generator
+    @make_generator
     def gen():
         for item in vector:
             yield item.center(focal)
@@ -269,7 +269,7 @@ def combinations_replace_generate(lhs, rhs):
         else:
             fn, init = rhs, lhs
 
-        @Generator
+        @make_generator
         def gen():
             prev = None
             curr = init
@@ -384,7 +384,7 @@ def divisors_of(item):
     divisors = []
     if t_item == str:
 
-        @Generator
+        @make_generator
         def gen():
             s = list(item)
             i = itertools.chain.from_iterable(
@@ -528,23 +528,6 @@ def find(haystack, needle, start=0):
             break
         index += 1
     return -1
-
-
-def flatten(item):
-    """
-    Returns a deep-flattened (all sublists expanded) version of the input
-    """
-    t_item = vy_type(item)
-    if t_item is Generator:
-        return flatten(item._dereference())
-    else:
-        ret = []
-        for x in item:
-            if type(x) in [list, Generator]:
-                ret += flatten(x)
-            else:
-                ret.append(x)
-        return ret
 
 
 def floor(item):
@@ -1183,7 +1166,7 @@ def repeat(vector, times, extra=None):
     t_vector = vy_type(vector)
     if t_vector is Function and vy_type(times) is Function:
 
-        @Generator
+        @make_generator
         def gen():
             item = extra
             while vector([item])[-1]:
@@ -1213,7 +1196,7 @@ def repeat(vector, times, extra=None):
 
 
 def repeat_no_collect(predicate, modifier, value):
-    @Generator
+    @make_generator
     def gen():
         item = value
         while predicate([item])[-1]:
@@ -1486,7 +1469,7 @@ def trim(lhs, rhs, left=False, right=False):
     if type(rhs) is Function:
         lhs = iterable(lhs)
 
-        @Generator
+        @make_generator
         def gen():
             for index, item in enumerate(lhs):
                 if index % 2:
@@ -1748,12 +1731,11 @@ def vy_int(item, base=10):
 
 
 def vy_map(fn, vector):
-    ret = []
     t_vector = vy_type(vector)
     t_function = vy_type(fn)
     if Function not in (t_vector, t_function):
 
-        @Generator
+        @make_generator
         def gen():
             for item in iterable(fn):
                 yield [vector, item]
@@ -1766,12 +1748,15 @@ def vy_map(fn, vector):
 
     if vy_type(vec) is Generator:
 
-        @Generator
+        @make_generator
         def gen():
             for item in vec:
                 yield safe_apply(function, item)
 
+        print(gen())
         return gen()
+
+    ret = []
     for item in vec:
         result = function([item])
         ret.append(result[-1])
@@ -1787,7 +1772,7 @@ def vy_max(item, other=None):
             (str, str): lambda: max(item, other),
         }.get((vy_type(item), vy_type(other)), lambda: vectorise(vy_max, item, other))()
     else:
-        item = flatten(item)
+        item = deep_flatten(item)
         if item:
             biggest = item[0]
             for sub in item[1:]:
@@ -1820,7 +1805,7 @@ def vy_min(item, other=None):
 
         return ret
     else:
-        item = flatten(item)
+        item = deep_flatten(item)
         if item:
             smallest = item[0]
             for sub in item[1:]:
