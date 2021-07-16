@@ -22,7 +22,7 @@ cmd | inputs | out/effect
 |  | (otherwise)                         |  vectorised |
 | ß | (a: any)                            |  * execute next element if a is truthy: ß<element> |
 | † | (a: function)                       |  * call function reference |
-|  | (a: string)                         |  exec(a) # Execute python code, Python exec |
+|  | (a: string)                         |  exec(a) # Execute vyxal code; exec as vyxal |
 |  | (a: number)                         |  len(prime_factors(a)) # Number of prime factors |
 |  | (a: list)                           |  vectorised not a, ¬ vectorised |
 | € | (a: any, b: any)                    |  a.split_on(b) # split a on delimiter b |
