@@ -5,9 +5,9 @@ cmd | inputs | out/effect
 | ƛ |   |  * lambda map: ƛ...;  (Map a series of functions over top of stack) |
 | ¬ | (a: any)                            |  not a (non-vectorising) |
 | ∧ | (a: any, b: any)                    |  a and b (non-vectorising) |
-| ⟑ | (a: any, b: any)                    |  a and b (vectorising) |
+| ⟑ | (a: any, b: any)                    |  b and a (non-vectorising) |
 | ∨ | (a: any, b: any)                    |  a or b (non-vectorising) |
-| ⟇ | (a: any, b: any)                    |  a or b (vectorising) |
+| ⟇ | (a: any, b: any)                    |  b or a (non-vectorising) |
 | ÷ | (a: any)                            |  stack += iterable(a) # item split/unwrap |
 | × |   |  "*" |
 | « |   |  * base_255 compressed string: «...« |
