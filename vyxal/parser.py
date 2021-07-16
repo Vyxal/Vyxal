@@ -129,14 +129,17 @@ def group_strings(source):
         current = source.popleft()
         # print(current, source, ret)
         if type(current) is list:
-            ret.append(current)
+            ret.append(current[0])
         elif current == "\\":
             if len(source):
                 ret.append([source.popleft(), StringDelimiters.NORMAL])
         elif current in StringDelimiters.DELIM_TUPLE:
             if current == StringDelimiters.TWO_CHAR:
-                if len(source) < 3:
+                if len(source) and isinstance(source[-1], list):
+                    ret.append([source.popleft()[0], StringDelimiters.NORMAL])
+                elif len(source) < 3:
                     ret.append(["".join(source), StringDelimiters.NORMAL])
+                    break
 
                 else:
                     first, second = source.popleft(), source.popleft()
@@ -150,9 +153,12 @@ def group_strings(source):
                 while len(source) and source[0] != current:
                     head = source.popleft()
                     if current == StringDelimiters.NORMAL and head == "\\":
-                        temp += "\\" + source.popleft()
+                        next_head = source.popleft()
+                        temp += "\\" + next_head[0]
+                        if isinstance(next_head, list):
+                            temp += next_head[1]
                     else:
-                        temp += head
+                        temp += head[0]
                 ret.append([temp, current])
                 temp = ""
                 if len(source):
@@ -203,8 +209,8 @@ def Tokenise(source: str, variables_are_digraphs=False):
         0  # How far deep we are, as in, are we at the uppermost level of the program?
     )
 
-    source = group_strings(source)
     source = group_digraphs(source, variables_are_digraphs)
+    source = group_strings(source)
 
     token_pointer = 0
     while token_pointer < len(source):
@@ -458,6 +464,8 @@ if __name__ == "__main__":
         "ƛ:Ǎ[∇pp",
         '1 2 3W 4 5" v+',
         "⁺e",
+        "k`hello`f",
+        '‛b"',
     ]
     for test in tests:
         print(test, group_strings(test))
