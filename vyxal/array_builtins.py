@@ -144,7 +144,7 @@ def deep_flatten(item):
     Returns a deep-flattened (all sublists expanded) version of the input
     """
     t_item = vy_type(item)
-    # print("flattening", item)
+    print("flattening", item)
     if t_item is Generator:
 
         @make_generator

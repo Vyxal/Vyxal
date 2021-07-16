@@ -1753,7 +1753,7 @@ def vy_map(fn, vector):
             for item in vec:
                 yield safe_apply(function, item)
 
-        # print(gen())
+        print(gen())
         return gen()
 
     ret = []

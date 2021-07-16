@@ -1,4 +1,3 @@
-import types
 from typing import Callable, List, Tuple, Union
 
 from vyxal.array_builtins import *
@@ -25,23 +24,35 @@ codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 assert len(codepage) == 256
 
 
-def make_cmd(source, arity):
-    arguments = ""
-    variables = ["lhs", "rhs", "third"][:arity][::-1]
+def make_cmd(
+    to_fn_call: Union[str, Callable[[List[str]], str]], arity: int
+) -> Tuple[str, int]:
+    """
+    Returns a tuple with the transpiled command and its arity.
 
-    if isinstance(source, types.FunctionType):
-        source = source(variables)
-
-    if arity:
-        arguments = ", ".join(variables) + f" = pop(vy_globals.stack, {arity})\n"
-
-        python_equivalent = (
-            arguments
-            + f"res = {source.format(*variables)}\nvy_globals.stack.append(res)"
-        )
+    :param to_fn_call
+      If Callable, takes a list of variables that hold values popped from the
+      stack (reversed) and returns a string representing a value created by
+      running some function.
+      If str, its format method will be called with the aforementioned list
+      of variables as arguments.
+    on those variables
+    :param arity The arity of the function
+    """
+    var_names = [f"x{n}" for n in range(arity, 0, -1)]
+    if isinstance(to_fn_call, str):
+        if arity > 0:
+            fn_call = to_fn_call.format(*var_names)
+        else:
+            fn_call = to_fn_call
     else:
-        python_equivalent = arguments + f"res = {source}\nvy_globals.stack.append(res)"
-    return python_equivalent, arity
+        fn_call = to_fn_call(var_names)
+    if arity > 0:
+        cmd = f"{', '.join(var_names[::-1])} = pop(vy_globals.stack, {arity});"
+    else:
+        cmd = ""
+    cmd += f"res = {fn_call}; vy_globals.stack.append(res);"
+    return cmd, arity
 
 
 def fn_to_cmd(fn: Union[Callable, str], arity: int) -> Tuple[str, int]:
@@ -151,7 +162,7 @@ command_dict = {
     "U": make_cmd("Generator(uniquify({}))", 1),
     "V": fn_to_cmd("replace", 3),
     "W": (
-        "vy_globals.stack = [deref(vy_globals.stack, generator_to_list=False)];",
+        "vy_globals.stack = [deref(vy_globals.stack, generator_to_list=False)]; print(vy_globals.stack)",
         0,
     ),
     "X": ("vy_globals.context_level += 1", 0),
