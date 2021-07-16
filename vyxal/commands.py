@@ -672,7 +672,7 @@ else:
 transformers = {
     "⁽": "vy_globals.stack.append(function_A)",
     "v": "temp = transformer_vectorise(function_A, vy_globals.stack); vy_globals.stack.append(temp)",
-    "&": "apply_to_register(function_A, vy_globals.stack)",
+    "&": "stack.append(register)\nstack += function_A(stack)\nregister = pop(stack)",
     "~": "dont_pop(function_A, vy_globals.stack)",
     "ß": "cond = pop(vy_globals.stack)\nif cond: vy_globals.stack += function_call(function_A, vy_globals.stack)",
     "₌": "para_apply(function_A, function_B, vy_globals.stack)",

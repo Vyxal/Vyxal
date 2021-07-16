@@ -7,6 +7,8 @@ import sys
 import urllib.request
 from datetime import date
 from datetime import datetime as dt
+from types import FunctionType, GeneratorType
+from typing import List, Tuple, Union, Any
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -29,9 +31,17 @@ except:
     import sympy
 
 
-def add(lhs, rhs):
+def add(
+    lhs: Union[int, float, str, List, Generator],
+    rhs: Union[int, float, str, List, Generator],
+) -> Any:
+
     """
-    Returns lhs + rhs. Check command docs for type cohesion.
+
+    Returns lhs + rhs (generally either integer addition or concatenation). Vectorises.
+
+    :param lhs The left argument to add
+    :param rhs The right argument to add
     """
     types = vy_type(lhs), vy_type(rhs)
     return {
@@ -42,33 +52,27 @@ def add(lhs, rhs):
     }.get(types, lambda: vectorise(add, lhs, rhs))()
 
 
-def all_combinations(vector):
+def all_combinations(lhs: List[Any]) -> List[List[Any]]:
+    """
+
+    Returns itertools.product(lhs, repeat=n) for n in len(lhs)
+
+    :param lhs The item to get all combinations
+
+    """
     ret = []
-    for i in range(len(vector) + 1):
-        ret = join(ret, combinations_replace_generate(vector, i))
+    for index in range(len(lhs) + 1):
+        ret = join(ret, combinations_replace_generate(rhs, index))
     return ret
 
 
-def all_prime_factors(item):
-    if vy_type(item) == Number:
-        m = sympy.ntheory.factorint(int(item))
-        out = []
-        for key in sorted(m.keys()):
-            out += [key] * m[key]
-        return out
-    elif vy_type(item) is str:
-        return item.title()
-    return vectorise(all_prime_factors, item)
-
-
-def apply_to_register(function, vector):
-    vector.append(vy_globals.register)
-    if function.stored_arity > 1:
-        top, over = pop(vy_globals.stack, 2)
-        vy_globals.stack.append(top)
-        vy_globals.stack.append(over)
-    vector += function_call(function, vector)
-    vy_globals.register = pop(vector)
+def all_prime_factors(lhs: Union[int, float, str, List, Generator]):
+    return {
+        Number: lambda: flatten(
+            [[key] * value for key, value in sympy.ntheory.factorint(int(lhs)).items()]
+        ),
+        str: lambda: lhs.title(),
+    }.get(vy_type(lhs), lambda: vectorise(all_prime_factors, lhs))
 
 
 def assigned(vector, index, item):
