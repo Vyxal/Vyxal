@@ -11,6 +11,7 @@ My own personal hopes for this project are:
 - that communication is clear among contributors 
 - that the fires of v2.5.3 are put out 
 - that Vyxal is rewritten with unity and clarity
+- that we discuss changes in a way that the majority of people know exactly what's happening
 - and that we never have this problem again. 
 
 If someone knows how best to manage a project like this, and they desire to take charge of the rewrite, tell me. I'd be more than happy to follow the suggestions and guidance of someone else who actually knows what they are doing. 
@@ -22,6 +23,7 @@ Some things to note:
 - Everyone's opinions should be expressed 
 - This is a refactoring/rewrite, NOT a new language 
 
+There's a high chance I've missed a lot of things in this document, so take all this with the idea that this is a launch pad. Everything is subject to change now.
 
 Here's to the hopes of a better Vyxal
 
