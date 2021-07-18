@@ -38,9 +38,7 @@ In summary: provide helpful information in your issue and we'll be happy
 
 ### You found a bug that _is_ a security exploit
 
-Do **not** open an issue. We do not need trolls epicly trolling us.
-
-**TODO**: Figure out how to actually report security exploits
+Do **not** open an issue. See [the separate security policy](./security.md).
 
 ### You have a feature request
 
