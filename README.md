@@ -6,7 +6,7 @@ I'm sorry for the confusion and miscommunications that happened during the whole
 
 This is my chance to make things right - to refactor Vyxal in a way that is clean, maintainable and less messy. This time, it'll be built by the community.
 
-My own personal hopes for this project are:
+My personal hopes for this project are:
 
 - that communication is clear among contributors 
 - that the fires of v2.5.3 are put out 
