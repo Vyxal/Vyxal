@@ -4,7 +4,7 @@ The code clean up made everything a big mess. That isn't anyone's fault. The cod
 I'm sorry for the confusion and miscommunications that happened during the whole process - it all went so fast, and I barely have any experience with managing a somewhat large scale project. 
 
 
-This is my chance to make things right - to reactor Vyxal in a way that is clean, maintainable and less messy. This time, it'll be built by the community.
+This is my chance to make things right - to refactor Vyxal in a way that is clean, maintainable and less messy. This time, it'll be built by the community.
 
 My own personal hopes for this project are:
 
