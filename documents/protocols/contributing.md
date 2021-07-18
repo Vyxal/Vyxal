@@ -75,7 +75,7 @@ Ask in the Vyxal chatroom. We're happy to direct you to the right place.
 
 ## Styleguides
 
-Around here, we use black for linting python.
+Around here, we use black for linting python. **TODO**: link to black.
 
 When creating a commit message:
 
@@ -86,5 +86,3 @@ When creating a commit message:
 - Consider starting the commit message with a relevant emoji.
 
 (Yes, I stole those from Atom. Shut up.)
-
-Follow pep8 where possible.
