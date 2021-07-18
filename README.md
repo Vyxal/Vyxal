@@ -22,6 +22,7 @@ Some things to note:
 - We're implementing the v2 command list 
 - Everyone's opinions should be expressed 
 - This is a refactoring/rewrite, NOT a new language 
+- no more pushing straight to main. You'll need the review of someone else before any merging happens. Besides, PRs are cool. 
 - Vyxal will still be transpiled. Unless someone presents a feasibile way to make vyxal interpreted, I want to stick with the simpler option. 
 
 There's a high chance I've missed a lot of things in this document, so take all this with the idea that this is a launch pad. Everything is subject to change now.
