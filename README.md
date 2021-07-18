@@ -11,6 +11,7 @@ My own personal hopes for this project are:
 - that communication is clear among contributors 
 - that the fires of v2.5.3 are put out 
 - that Vyxal is rewritten with unity and clarity
+- that the code is made clean without breaking everything
 - that we discuss changes in a way that the majority of people know exactly what's happening
 - and that we never have this problem again. 
 
