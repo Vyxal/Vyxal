@@ -10,6 +10,10 @@ Whenever you contribute anything, make sure that you are abiding by the Vyxal [C
 Also, this whole entire thing (except for the above sentence) is a guide. It does not need to be followed (except for the above sentence) exactly, but it _should_
 influence how you contribute.
 
+Finally, as a general principle, decisions should not be made, PRs should not be merged, issues should not be closed or perhaps even worked on, until several people are agreed and all discussion is at least somewhat finalised. Take things a bit slower!
+
+
+
 Right. On to the fun stuff.
 
 ## What to do when...
