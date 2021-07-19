@@ -1,3 +1,0 @@
-Potential ideas:
-
-- Context objects
