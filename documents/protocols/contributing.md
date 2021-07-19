@@ -16,7 +16,7 @@ Right. On to the fun stuff.
 
 ### You have a question
 
-Instead of opening an issue, you should gp to the [Vyxal chatroom](https://chat.stackexchange.com/rooms/106764/vyxal) and ask your question there. You'll recieve an
+Instead of opening an issue, you should go to the [Vyxal chatroom](https://chat.stackexchange.com/rooms/106764/vyxal) and ask your question there. You'll recieve an
 answer much quicker than if you open an issue. Plus, we have cool stuff in the chatroom that can help out with your question.
 
 ### You found a bug that isn't a security exploit
