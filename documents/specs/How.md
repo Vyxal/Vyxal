@@ -1,8 +1,5 @@
 # How Does the Vyxal get turned into the Python and then turned into the Output?
 
-
-# How Does the Vyxal get turned into the Python and then turned into the Output?
-
 That's a great question, albeit somewhat poorly worded. Nonetheless, I shall explain the process of turning raw Vyxal source code into executable Python.
 
 The first step is to read the Vyxal source file; offline, we use the file name given on the command line. Online, we use the contents of the header, code and footer box, joined on newlines.
