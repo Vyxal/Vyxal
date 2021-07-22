@@ -56,6 +56,19 @@ def NAME(lhs, rhs):
     }.get(ts, lambda: vectorise(NAME, lhs, rhs))()
 ```
 
+### Triads
+
+```python
+def NAME(lhs, rhs, other):
+    ts = vy_type(lhs, rhs, other)
+    return {
+        (num, num, num): lambda: ...,
+        (num, num, str): lambda: ...,
+        (num, str, num): lambda: ...,
+        # and so forth
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, other))()
+```
+
 Very important: Only the type dictionary should be inside the function definition. Also, if there happens to be a `Function` overload, use `types.FunctionType`.
 
 Do NOT manually vectorise EVER.
