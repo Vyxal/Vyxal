@@ -6,3 +6,5 @@ of practical languages - such as functions, variables and comments - that are of
 
 Another reason for Vyxal is to provide an easy to use golfing language that anyone can quickly pick up - by providing tools that both new and experienced users are
 familiar with, Vyxal aims to cater to a wide demographic of golfers.
+
+Put simply, Vyxal exists because golfers need a golfing language - and because golfing languages could be better.
