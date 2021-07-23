@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Third revision_
+_Fourth revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -77,6 +77,52 @@ If you're implementing an element which has a non-vectorising overload, set the 
 
 ## Identifier Semantics
 
-Around here, we use `snake_case`. Class names start with a capital letter. Constants are all caps.
+Around here, we use `snake_case`. Class names start with a capital letter. Constants are all caps. Be descriptive - Vyxal is a golfing language, but that doesn't mean you need to golf the interpreter. Generally, be sensible and use common sense - don't name your variables `bob`, `joeBiden69quickscope_gamer` or `E`.
+
+To summarise: don't be a sussy baka with your variable names.
+
+## Comments and Documentation
+### Line Comments
+
+Line comments are started with `#` and terminated by a newline (we use `\n` for newlines - don't go using `\r\n` or anything stupid like that). These should be used when one of the following is true:
+
+- The functionality of a line of code isn't obvious
+- Something needs to be stated as a warning/important note
+
+When writing a line comment:
+
+- Don't just repeat what the line says. Keep your comments DRY (don't repeat yourself).
+- Try and keep it concise enough to fully convey what you want to say without losing too much detail.
+- Explain why you are doing something.
+
+### Multiline Comments / Docstrings
+
+These comments are started and terminated with either `"""` or `'''`. This should be used:
+
+- At the start of an element function to list the overloads:
+
+```python
+def add(lhs, rhs):
+    '''
+    (num, num) -> a + b
+    (num, str) -> concatenate a and b, converting a to string first
+    (str, num) -> concatenate a and b, converting b to string first
+    (str, str) -> concatenate a and b
+    '''
+    
+    ...
+```
+
+- At the start of a helper function to describe what the function is doing
+
+When writing a multiline comment, make sure to follow [PEP257](https://www.python.org/dev/peps/pep-0257/). Don't be afraid to use plain language in multiline comments.
+
+### Typing
+
+**TODO: Do we want static typing? And if so, where should it be applied? For example, there doesn't seem much point annotating element functions, because their annotations will always be (Any) -> Any, (Any, Any) -> Any or (Any, Any, Any) -> Any**
+
+If typing is used, make sure it follows [PEP484](https://www.python.org/dev/peps/pep-0484/)
+
+
 
 _Note that this revision is far from complete._
