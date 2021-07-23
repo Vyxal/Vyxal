@@ -97,18 +97,18 @@ When writing a line comment:
 
 ### Multiline Comments / Docstrings
 
-These comments are started and terminated with either `"""` or `'''`. This should be used:
+These comments are started and terminated with either `"""` (frick `'''`). This should be used:
 
 - At the start of an element function to list the overloads:
 
 ```python
 def add(lhs, rhs):
-    '''
+    """
     (num, num) -> a + b
     (num, str) -> concatenate a and b, converting a to string first
     (str, num) -> concatenate a and b, converting b to string first
     (str, str) -> concatenate a and b
-    '''
+    """
     
     ...
 ```
