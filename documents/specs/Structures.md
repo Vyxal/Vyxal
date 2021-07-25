@@ -55,4 +55,39 @@ The full form of a while loop is as so:
 
 With only 1 branch, the `Loop Condition` branch is considered to be always truthy (think infinite loop).
 
-Each iteration of the while loop, `Loop Condition` is executed on the main stack. The top of the stack is then popped, and if it is truthy, `Loop Code` is executed. Otherwise, the loop is exited.
+Each iteration of the while loop, `Loop Condition` is executed on the main stack. The top of the stack is then popped, and if it is truthy, `Loop Code` is executed. Otherwise, control flow moves out of the while loop and on to the rest of the program.
+
+## Defined Function
+
+The full form of a function definition is as so:
+
+```
+@Function Name:Function Parameters|Function Code;
+```
+
+Without the `Function Code`, it is considered to be calling the function named `Function Name`.
+
+### Function Parameters
+
+The function parameter syntax can be described as the following regex:
+
+```regex
+\*|((\d+|\w+):?)*(\d+|\w+)
+```
+
+If no parameters are specified, it is assumed that the function pops no arguments.
+
+When executing a function, arguments are popped off the current stack to fill each parameter: numbers pop that many arguments and push them to the function's stack, names pop a single argument and place it into a local variable with the same name. The entire function stack is pushed back onto the stack at the end of the function.
+
+## Lambdas
+
+There are 4 types of lambdas: normal, map, filter, sort. The full form of a normal lambda is as follows:
+
+```
+λLambda Arity|Lambda Body;
+```
+
+With only 1 branch, `Lambda Arity` is assumed to be `1`.
+
+When executing a lambda, the relevant number of arguments are popped from the stack and placed into the lambda's stack. Only the top of the lambda's stack is returned.
+
