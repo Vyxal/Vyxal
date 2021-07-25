@@ -12,7 +12,6 @@ Here is a list of every structure defined within version 2:
     - Map
     - Filter
     - Sort
-- List literal
 - Variables
 
 <!-- TODO: Hyperlink each item to its appropriate subheading -->
@@ -91,3 +90,12 @@ With only 1 branch, `Lambda Arity` is assumed to be `1`.
 
 When executing a lambda, the relevant number of arguments are popped from the stack and placed into the lambda's stack. Only the top of the lambda's stack is returned.
 
+All the other lambdas are just normal lambdas but with different opening characters and without arity.
+
+## Variables
+
+The full structure of a variable is expressible through the following regex:
+
+```regex
+[→←](\w+|\_)?
+```
