@@ -41,4 +41,6 @@ The full form of a for loop is as so:
 
 With only 1 branch, the `Loop Variable` branch is considered to use the context variable (`n`). Note that `(n|...)` and `(...)` are NOT equivalent.
 
+The for loop pops a single value off the stack - we'll call it `x`. If `x` is a function, it is evaluated as if it was called using `†`. `x` is then set to the result of the function (`x = x()`). This is repeated until a non-function value is returned. If `x` is numeric, `x` is set to the range `[0, ⌊x⌋)`.
 
+For each item in `x` (guaranteed to be either a string or list), the `Loop Code` branch is executed.
