@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Fifth revision_
+_Sixth revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -117,12 +117,11 @@ def add(lhs, rhs):
 
 When writing a multiline comment, make sure to follow [PEP257](https://www.python.org/dev/peps/pep-0257/). Don't be afraid to use plain language in multiline comments.
 
-### Typing
 
-**TODO: Do we want static typing? And if so, where should it be applied? For example, there doesn't seem much point annotating element functions, because their annotations will always be (Any) -> Any, (Any, Any) -> Any or (Any, Any, Any) -> Any**
+## Other Things
 
-If typing is used, make sure it follows [PEP484](https://www.python.org/dev/peps/pep-0484/)
-
+- No directly popping from the stack within element/helper functions. Only pop from the stack in the transpiled versions of each element.
+- Helper functions are to be stand alone functions. That is, they could be used outside of the context of element functions.
 
 
 _Note that this revision is far from complete._
