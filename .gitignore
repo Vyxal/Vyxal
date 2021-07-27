@@ -1,0 +1,13 @@
+sessions/
+update_server.txt
+*.vy
+*.pyc
+Scripts/
+share/
+Lib/
+pyvenv.cfg
+__pycache__/
+.pytest_cache/
+env/
+venv/
+.idea/

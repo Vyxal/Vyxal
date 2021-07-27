@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <script>
+            function decode_url(){
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                var seq = urlParams.get("seq");
+                main.width = window.innerWidth;
+                main.height = window.innerHeight;
+                if (! seq) {
+                    alert("No url given");
+                }
+                else if (seq.includes(",")){
+                    main.src = "https://oeis.org/search?q=" + seq
+                } else {
+                    main.src = "https://oeis.org/" + seq
+                } 
+
+                main.width = window.innerWidth;
+                main.height = window.innerHeight;
+            }
+        </script>
+    </head>
+
+    <body onload="decode_url()">
+        <embed type="text/html" src="" id="main" width="1020", height="1970">
+    </body>
+</html>
