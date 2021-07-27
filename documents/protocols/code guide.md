@@ -1,7 +1,6 @@
 # The Definitive Vyxal Code Style Guide
-_Tenth revision_
+_Eleventh revision_
 
-_yes, this really has been edited 10 times_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -12,6 +11,8 @@ This document is different to `contributing.md` because it specifically defines 
 First of all, because this is a python project, we comply to [PEP8](https://www.python.org/dev/peps/pep-0008/)'s code formatting standards around here. That means that you need to follow all the juicy guidelines that make python code very readable and good. "But sticking to that is hard and I can't remember all the rules" I hear you say. Well, don't worry...you can use [black](https://pypi.org/project/black/) to automatically lint your code to comply with PEP8 (protip: if you're a true gamer and you use an editor like VS Code, you can set it to automatically format with black everytime you save a file). Our testing workflow uses flake8 for code compliance.
 
 Also, we use [isort](https://pypi.org/project/isort/) to make sure that all imports are in an epic order. 
+
+Finally, we're using an 80 character limit per line, with comments limited to 72 characters per line. If you're a VS Code user, you can paste `"editor.rulers": [72,80]` into your `settings.json` to have a visual indicator of the line limits.
 
 Alright. Now to the specific stuff.
 
