@@ -1,3 +1,5 @@
+from typing import List
+
 """
 File: lexer.py
 Description: Before Vyxal programs can be grouped into appropriate
@@ -34,3 +36,33 @@ class TokenType:
     LITERAL: str = "literal"
     NAME: str = "name"
     GENERAL: str = "general"
+
+
+def tokenise(source: str) -> list[list[TokenType, str]]:
+    """
+    Transform a Vyxal program into a list of tokens
+
+    Parameters
+    ----------
+    
+    source : str
+        The Vyxal program to turn into tokens. This will have a utf-8
+        encoding.
+    
+    Returns
+    -------
+    list[list[TokenType, str]]
+        Each token is represented as a pair of a TokenType constant and
+        the portion of the Vyxal program being tokenised. These are all
+        contained within a list.
+    """
+    
+    tokens: list[list[TokenType, str]] = []
+
+    # code that does the tokenising here
+
+    return tokens
+
+if __name__ == "__main__":
+    # Test cases
+    # assert tokenise(<program>) == <expected list of tokens>
