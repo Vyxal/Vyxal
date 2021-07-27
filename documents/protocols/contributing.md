@@ -52,14 +52,14 @@ Open an issue and tag it `enhancement`. When doing so, make sure you:
 
 - Describe what it is you want. Providing examples (e.g. hypothetical programs/mockups) is really cool and good in this regard.
 - Be reasonably specific. Avoid being vague. However, being unsure of some (or most) of the implications/logisistics is fine, so long as we can understand the general idea you want.
-- Don't request things that already exist. 
+- Don't request things that already exist.
 - Don't request things that wouldn't be reasonable for a golfing language or a practical language.
 
 ### You have a complaint, and...
 
 #### You're caird, redwolf, rak1507 or N3buchadnezza
 
-Place your complaints [here](https://chat.stackexchange.com/rooms/82806/trash). 
+Place your complaints [here](https://chat.stackexchange.com/rooms/82806/trash).
 
 #### You're a Vyxal regular or someone genuinely interested in Vyxal
 
@@ -90,7 +90,3 @@ When creating a commit message:
 - Limit the first line to 72 characters or less
 - Reference issues and pull requests liberally after the first line
 - Consider starting the commit message with a relevant emoji.
-
-(Yes, I stole those from Atom. Shut up.)
-
-Follow pep8 where possible.
