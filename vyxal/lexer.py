@@ -1,5 +1,3 @@
-from typing import List
-
 """
 File: lexer.py
 Description: Before Vyxal programs can be grouped into appropriate
@@ -7,6 +5,8 @@ structures, they need to be turned into tokens representing the
 different components of a program. For the full specification on token
 types, go to documents/specs/Lexer.md
 """
+
+import collections
 
 
 class TokenType:
@@ -36,6 +36,8 @@ class TokenType:
     LITERAL: str = "literal"
     NAME: str = "name"
     GENERAL: str = "general"
+    COMPRESSED_NUMBER: str = "compressed_number"
+    COMPRESSED_STRING: str = "compressed_string"
 
 
 class Token:
@@ -89,7 +91,7 @@ class Token:
             [name, value]
         """
 
-        return f"[{self.name}, {self.value}]"
+        return f"{self.name}: {self.value}"
 
 
 def tokenise(source: str) -> list[Token]:
@@ -110,13 +112,55 @@ def tokenise(source: str) -> list[Token]:
     """
 
     tokens: list[Token] = []
+    source: collections.deque = collections.deque(source)
 
-    # code that does the tokenising here
+    contextual_token_value: str = ""
 
+    while source:
+        # By treating the program as a queue, we can dequeue elements
+        # until a certain predicate is satisfied. In simple terms, this
+        # means it's easier to group things based on order...you don't
+        # have to worry about what you group first.
+
+        head: str = source.popleft()
+        if head == "\\":  # Need to escape the next character
+            if source:
+                # This has the consequence of making backslahses at the
+                # end of a program not error.
+                tokens.append(Token(TokenType.LITERAL, source.popleft()))
+
+        elif head in "`»«":  # String
+            # Dequeue characters until the same string character is
+            # reached.
+            contextual_token_value = ""
+            while source and source[0] != head:
+                character: str = source.popleft()
+                if character == "\\":
+                    # Handle the escape by just dequeueing the next
+                    # character
+                    if source:
+                        contextual_token_value += "\\" + source.popleft()
+                else:
+                    contextual_token_value += character
+            token_type: str = ""
+            if head == "`":
+                token_type = TokenType.LITERAL
+            elif head == "»":
+                token_type = TokenType.COMPRESSED_NUMBER
+            elif head == "«":
+                token_type = TokenType.COMPRESSED_STRING
+            tokens.append(Token(token_type, contextual_token_value))
+            if source:
+                source.popleft()
+        else:
+            tokens.append(Token(TokenType.GENERAL, head))
     return tokens
 
 
 if __name__ == "__main__":
     # Test cases
     # assert tokenise(<program>) == <expected list of tokens>
-    pass
+    print(tokenise("1 1+ 2="))
+    print(tokenise("`Hello, World!`"))
+    print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.'))
+    print(tokenise("\\E"))
