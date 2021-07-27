@@ -1,5 +1,7 @@
 # The Definitive Vyxal Code Style Guide
-_Ninth revision_
+_Tenth revision_
+
+_yes, this really has been edited 10 times_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -107,7 +109,8 @@ These comments are started and terminated with either `"""` (frick `'''`). This 
 
 ```python
 def add(lhs, rhs):
-    """Element: +
+    """
+    Element: +
     (num, num) -> a + b
     (num, str) -> concatenate a and b, converting a to string first
     (str, num) -> concatenate a and b, converting b to string first
@@ -121,7 +124,8 @@ def add(lhs, rhs):
 
 ```python
 def function(arg1: type, arg2: type) -> type:
-    """Function description
+    """
+    Function description
 
     Parameters
     ----------
