@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Seventh revision_
+_Eight revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -94,6 +94,7 @@ When writing a line comment:
 - Don't just repeat what the line says. Keep your comments DRY (don't repeat yourself).
 - Try and keep it concise enough to fully convey what you want to say without losing too much detail.
 - Explain why you are doing something.
+- Remember to keep it 72 characters or less - split over two comments if need be.
 
 ### Multiline Comments / Docstrings
 
@@ -103,7 +104,7 @@ These comments are started and terminated with either `"""` (frick `'''`). This 
 
 ```python
 def add(lhs, rhs):
-    """
+    """Element: +
     (num, num) -> a + b
     (num, str) -> concatenate a and b, converting a to string first
     (str, num) -> concatenate a and b, converting b to string first
@@ -113,7 +114,35 @@ def add(lhs, rhs):
     ...
 ```
 
-- At the start of a helper function to describe what the function is doing
+- At the start of a helper function to describe what the function is doing (we use the [numpy/scipy](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format for non-element functions):
+
+```python
+def function(arg1: type, arg2: type) -> type:
+    """Function description
+
+    Parameters
+    ----------
+    arg1: type
+        description of arg1
+    arg2: type
+        description of arg2
+    
+    Returns
+    -------
+    type
+        description of the returned value
+    """  
+```
+
+- At the start of a file to describe the function of the file
+
+```python
+"""
+File: <filename>.py
+Description: <describe the file>
+<mutliple lines are okay>
+"""
+```
 
 When writing a multiline comment, make sure to follow [PEP257](https://www.python.org/dev/peps/pep-0257/). Don't be afraid to use plain language in multiline comments.
 
