@@ -22,6 +22,10 @@ The token's value should be a string that will evaluate to the value being
 returned. For example, `123` should return `"123"` and <code>`hello`</code>
 should return `"'hello'"`.
 
+### Compressed Strings and Numbers
+
+Compressed strings and numbers both have their own unqiue `TokenType`: `TokenType.COMPRESSED_STRING` and `TokenType.COMPRESSED_NUMBER` respectively.
+
 ## Name Token
 
 Following the tokens `°`, `@`, `→`, and `←`, Latin letters and underscores
