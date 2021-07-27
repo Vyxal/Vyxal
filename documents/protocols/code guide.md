@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Eight revision_
+_Ninth revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -82,6 +82,9 @@ Around here, we use `snake_case`. Class names start with a capital letter. Const
 To summarise: don't be a sussy baka with your variable names.
 
 ## Comments and Documentation
+
+[This](https://realpython.com/documenting-python-code/) is a good guide for comments, but here are some guidelines specific to the Vyxal project:
+
 ### Line Comments
 
 Line comments are started with `#` and terminated by a newline (we use `\n` for newlines - don't go using `\r\n` or anything stupid like that). These should be used when one of the following is true:
