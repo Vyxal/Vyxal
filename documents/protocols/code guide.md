@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Eleventh revision_
+_Twelfth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -154,6 +154,16 @@ Description: <describe the file>
 
 When writing a multiline comment, make sure to follow [PEP257](https://www.python.org/dev/peps/pep-0257/). Don't be afraid to use plain language in multiline comments.
 
+## Test Cases
+
+This is a very simple section: we here at Vyxal do _not_ use:
+
+```python
+if __name__ == "__main__":
+    # tests
+```
+
+Instead, we create test files for each file so that they can be all run together in the testing workflow.
 
 ## Other Things
 
