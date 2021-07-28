@@ -66,8 +66,8 @@ class Token:
     """
 
     def __init__(self, token_name: str, token_value: str):
-        self.name = token_name
-        self.value = token_value
+        self.name: str = token_name
+        self.value: str = token_value
 
     def __str__(self) -> str:
         """
@@ -173,15 +173,12 @@ def tokenise(source: str) -> list[Token]:
         elif head in "k∆øÞ¨":
             if source:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
-
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens
 
 
 if __name__ == "__main__":
-    # Test cases
-    # assert tokenise(<program>) == <expected list of tokens>
     print(tokenise("1 1+ 2="))
     print(tokenise("`Hello, World!`"))
     print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.\«'))
