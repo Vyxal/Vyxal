@@ -38,13 +38,17 @@ def token_equal(source: str, expected: list[Token]) -> bool:
     )
 
 
-assert token_equal("1", [Token(TokenType.NUMBER, "1")])
-assert token_equal(
-    "1 1+",
-    [
-        Token(TokenType.NUMBER, "1"),
-        Token(TokenType.GENERAL, " "),
-        Token(TokenType.NUMBER, "1"),
-        Token(TokenType.GENERAL, "+"),
-    ],
-)
+def test_single_token():
+    assert token_equal("1", [Token(TokenType.NUMBER, "1")])
+
+
+def test_one_plus_one():
+    assert token_equal(
+        "1 1+",
+        [
+            Token(TokenType.NUMBER, "1"),
+            Token(TokenType.GENERAL, " "),
+            Token(TokenType.NUMBER, "1"),
+            Token(TokenType.GENERAL, "+"),
+        ],
+    )
