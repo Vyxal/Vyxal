@@ -34,7 +34,8 @@ class TokenType:
         or just a simple element.
     """
 
-    LITERAL: str = "literal"
+    STRING: str = "string"
+    NUMBER: str = "number"
     NAME: str = "name"
     GENERAL: str = "general"
     COMPRESSED_NUMBER: str = "compressed_number"
@@ -145,7 +146,7 @@ def tokenise(source: str) -> list[Token]:
                     contextual_token_value += character
             token_type: str = ""
             if head == "`":
-                token_type = TokenType.LITERAL
+                token_type = TokenType.STRING
             elif head == "»":
                 token_type = TokenType.COMPRESSED_NUMBER
             elif head == "«":
@@ -157,7 +158,7 @@ def tokenise(source: str) -> list[Token]:
             contextual_token_value = head
             while source and source[0] in string.digits + ".":
                 contextual_token_value += source.popleft()
-            tokens.append(Token(TokenType.LITERAL, contextual_token_value))
+            tokens.append(Token(TokenType.NUMBER, contextual_token_value))
         elif head == "‛":
             contextual_token_value = ""
             while source and len(contextual_token_value) != 2:
