@@ -24,7 +24,8 @@ should return `"'hello'"`.
 
 ### Compressed Strings and Numbers
 
-Compressed strings and numbers both have their own unqiue `TokenType`: `TokenType.COMPRESSED_STRING` and `TokenType.COMPRESSED_NUMBER` respectively.
+Compressed strings and numbers both have their own unique `TokenType`:
+`TokenType.COMPRESSED_STRING` and `TokenType.COMPRESSED_NUMBER` respectively.
 
 ## Name Token
 
