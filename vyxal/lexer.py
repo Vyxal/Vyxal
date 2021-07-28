@@ -136,7 +136,7 @@ def tokenise(source: str) -> list[Token]:
             contextual_token_value = ""
             while source and source[0] != head:
                 character: str = source.popleft()
-                if character == "\\":
+                if head == "`" and character == "\\":
                     # Handle the escape by just dequeueing the next
                     # character
                     if source:
@@ -170,6 +170,9 @@ def tokenise(source: str) -> list[Token]:
                 contextual_token_value += source.popleft()
 
             tokens.append(Token(TokenType.NAME, contextual_token_value))
+        elif head in "k∆øÞ¨":
+            if source:
+                tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
 
         else:
             tokens.append(Token(TokenType.GENERAL, head))
@@ -181,7 +184,7 @@ if __name__ == "__main__":
     # assert tokenise(<program>) == <expected list of tokens>
     print(tokenise("1 1+ 2="))
     print(tokenise("`Hello, World!`"))
-    print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.'))
+    print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.\«'))
     print(tokenise("\\E"))
     print(tokenise("203"))
     print(tokenise("69.420"))
@@ -190,3 +193,4 @@ if __name__ == "__main__":
     print(tokenise("5→x4←x+"))
     print(tokenise("@triple:1|3*;"))
     print(tokenise("‛He‛ck+"))
+    print(tokenise("ø`string`"))
