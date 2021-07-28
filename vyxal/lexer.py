@@ -176,18 +176,3 @@ def tokenise(source: str) -> list[Token]:
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens
-
-
-if __name__ == "__main__":
-    print(tokenise("1 1+ 2="))
-    print(tokenise("`Hello, World!`"))
-    print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.\«'))
-    print(tokenise("\\E"))
-    print(tokenise("203"))
-    print(tokenise("69.420"))
-    print(tokenise("1`23`45"))
-    print(tokenise("5 →x 4 ←x +"))
-    print(tokenise("5→x4←x+"))
-    print(tokenise("@triple:1|3*;"))
-    print(tokenise("‛He‛ck+"))
-    print(tokenise("ø`string`"))
