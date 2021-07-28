@@ -7,6 +7,7 @@ types, go to documents/specs/Lexer.md
 """
 
 import collections
+import string
 
 
 class TokenType:
@@ -91,7 +92,7 @@ class Token:
             [name, value]
         """
 
-        return f"{self.name}: {self.value}"
+        return str([self.name, self.value])
 
 
 def tokenise(source: str) -> list[Token]:
@@ -152,6 +153,24 @@ def tokenise(source: str) -> list[Token]:
             tokens.append(Token(token_type, contextual_token_value))
             if source:
                 source.popleft()
+        elif head in string.digits + ".":
+            contextual_token_value = head
+            while source and source[0] in string.digits + ".":
+                contextual_token_value += source.popleft()
+            tokens.append(Token(TokenType.LITERAL, contextual_token_value))
+        elif head == "‛":
+            contextual_token_value = ""
+            while source and len(contextual_token_value) != 2:
+                contextual_token_value += source.popleft()
+            tokens.append(Token(TokenType.LITERAL, contextual_token_value))
+        elif head in "@→←°":
+            tokens.append(Token(TokenType.GENERAL, head))
+            contextual_token_value = ""
+            while source and source[0] in string.ascii_letters + "_":
+                contextual_token_value += source.popleft()
+
+            tokens.append(Token(TokenType.NAME, contextual_token_value))
+
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens
@@ -164,3 +183,10 @@ if __name__ == "__main__":
     print(tokenise("`Hello, World!`"))
     print(tokenise('`I wonder if I can escape \` he said.` «"we\'ll see", she said.'))
     print(tokenise("\\E"))
+    print(tokenise("203"))
+    print(tokenise("69.420"))
+    print(tokenise("1`23`45"))
+    print(tokenise("5 →x 4 ←x +"))
+    print(tokenise("5→x4←x+"))
+    print(tokenise("@triple:1|3*;"))
+    print(tokenise("‛He‛ck+"))
