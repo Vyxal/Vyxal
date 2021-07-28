@@ -169,8 +169,21 @@ def tokenise(source: str) -> list[Token]:
             contextual_token_value = ""
             while source and source[0] in string.ascii_letters + "_":
                 contextual_token_value += source.popleft()
-
             tokens.append(Token(TokenType.NAME, contextual_token_value))
+        elif head == "(":
+            tokens.append(Token(TokenType.GENERAL, head))
+            contextual_token_value = ""
+            while source and source[0] in string.ascii_letters + "_":
+                contextual_token_value += source.popleft()
+            whitespace = ""
+            while source and source[0].isspace():
+                whitespace += source.popleft()
+            if source and source[0] == "|":
+                tokens.append(Token(TokenType.NAME, contextual_token_value))
+                tokens.append(Token(TokenType.GENERAL, source.popleft()))
+            else:
+                for char in (contextual_token_value + whitespace)[::-1]:
+                    source.appendleft(char)
         elif head in "k∆øÞ¨":
             if source:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
