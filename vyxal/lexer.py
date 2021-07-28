@@ -187,6 +187,11 @@ def tokenise(source: str) -> list[Token]:
         elif head in "k∆øÞ¨":
             if source:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
+        elif head == "#":
+            while source and source[0] != "\n":
+                source.popleft()
+            if source:
+                source.popleft()
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens
