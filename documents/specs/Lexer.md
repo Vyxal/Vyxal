@@ -36,4 +36,6 @@ be the name itself.
 ## General Tokens
 
 Everything else should be a token of type `TokenType.OTHER`, whose value should
-be the characters in the token. Digraphs should be grouped here.
+be the characters in the token. Digraphs should be grouped here - but note that
+`|` can never be part of a digraph. Things like `k|` should be lexed as `k` and
+then `|`, each with the token type `TokenType.GENERAL`.
