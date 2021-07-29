@@ -6,6 +6,8 @@ different components of a program. For the full specification on token
 types, go to documents/specs/Lexer.md
 """
 
+from __future__ import annotations
+
 import collections
 import string
 
@@ -95,6 +97,25 @@ class Token:
 
         return str([self.name, self.value])
 
+    def __eq__(self, rhs: Token) -> bool:
+        """
+        Returns whether both tokens have the same attributes, because
+        memory addresses won't be the same.
+
+        Parameters
+        ----------
+
+        rhs : Token
+            The token to compare.
+
+        Returns
+        -------
+
+        True iff the two token names and values are the same.
+        """
+
+        return self.name == rhs.name and self.value == rhs.value
+
 
 def tokenise(source: str) -> list[Token]:
     """
@@ -129,7 +150,7 @@ def tokenise(source: str) -> list[Token]:
             if source:
                 # This has the consequence of making backslahses at the
                 # end of a program not error.
-                tokens.append(Token(TokenType.LITERAL, source.popleft()))
+                tokens.append(Token(TokenType.STRING, source.popleft()))
 
         elif head in "`»«":  # String
             # Dequeue characters until the same string character is
@@ -171,9 +192,16 @@ def tokenise(source: str) -> list[Token]:
                 contextual_token_value += source.popleft()
 
             tokens.append(Token(TokenType.NAME, contextual_token_value))
-        elif head in "k∆øÞ¨":
+        elif head == "#":
+            while source and source[0] != "\n":
+                source.popleft()
             if source:
+                source.popleft()
+        elif head in "k∆øÞ¨":
+            if source and source[0] != "|":
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
+            else:
+                tokens.append(Token(TokenType.GENERAL, head))
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens

@@ -32,7 +32,7 @@ def token_equal(source: str, expected: list[Token]) -> bool:
 
     return all(
         map(
-            lambda x: x[0].name == x[1].name and x[0].value == x[1].value,
+            lambda x: x[0] == x[1],
             zip(tokenise(source), expected),
         )
     )
@@ -52,3 +52,48 @@ def test_one_plus_one():
             Token(TokenType.GENERAL, "+"),
         ],
     )
+
+
+def test_strings():
+    assert token_equal("`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")])
+    assert token_equal("`Hello, World!", [Token(TokenType.STRING, "Hello, World!")])
+    assert token_equal(
+        "`Escaped backtick? \``", [Token(TokenType.STRING, "Escaped backtick? \\`")]
+    )
+    assert token_equal("\`", [Token(TokenType.STRING, "`")])
+    assert token_equal(
+        "k`Hi",
+        [
+            Token(TokenType.GENERAL, "k`"),
+            Token(TokenType.GENERAL, "H"),
+            Token(TokenType.GENERAL, "i"),
+        ],
+    )
+
+
+def test_comments():
+    assert token_equal(
+        "1 1 + # line comment ;)",
+        [
+            Token(TokenType.NUMBER, "1"),
+            Token(TokenType.GENERAL, " "),
+            Token(TokenType.NUMBER, "1"),
+            Token(TokenType.GENERAL, " "),
+            Token(TokenType.GENERAL, "+"),
+            Token(TokenType.GENERAL, " "),
+        ],
+    )
+
+
+def test_numbers():
+    assert token_equal("23", [Token(TokenType.NUMBER, "23")])
+    # TODO: More number cases
+
+
+if __name__ == "__main__":  # For testing outside of the workflow
+    test_single_token()
+    test_one_plus_one()
+    test_strings()
+    test_comments()
+    test_numbers()
+    print("everything passed.")
