@@ -53,7 +53,6 @@ def test_one_plus_one():
         ],
     )
 
-
 def test_strings():
     assert token_equal("`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")])
     assert token_equal("`Hello, World!", [Token(TokenType.STRING, "Hello, World!")])

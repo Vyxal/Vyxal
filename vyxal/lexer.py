@@ -97,6 +97,7 @@ class Token:
 
         return str([self.name, self.value])
 
+
     def __eq__(self, rhs: Token) -> bool:
         """
         Returns whether both tokens have the same attributes, because
@@ -150,6 +151,7 @@ def tokenise(source: str) -> list[Token]:
             if source:
                 # This has the consequence of making backslahses at the
                 # end of a program not error.
+
                 tokens.append(Token(TokenType.STRING, source.popleft()))
 
         elif head in "`»«":  # String
@@ -202,6 +204,7 @@ def tokenise(source: str) -> list[Token]:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
             else:
                 tokens.append(Token(TokenType.GENERAL, head))
+
         else:
             tokens.append(Token(TokenType.GENERAL, head))
     return tokens
