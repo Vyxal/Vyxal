@@ -97,7 +97,6 @@ class Token:
 
         return str([self.name, self.value])
 
-
     def __eq__(self, rhs: Token) -> bool:
         """
         Returns whether both tokens have the same attributes, because
