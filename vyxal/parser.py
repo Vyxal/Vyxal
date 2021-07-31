@@ -13,6 +13,8 @@ import string
 
 import lexer
 
+OPENING_CHARACTERS = "[({@λ"
+
 
 class StructureType:
     """
@@ -37,7 +39,8 @@ class StructureType:
     LAMBDA : str
         Lambda structure. Note that the other lambda types
         (map, filter and sort) are just lambdas followed by the
-        appropriate element token.
+        appropriate element token. Hence, their attributes won't be
+        listed here.
 
     FUNCTION_REF : str
         Function reference structure.
@@ -58,6 +61,9 @@ class StructureType:
     FUNCTION_REF: str = "function_ref"
     VARIABLE_GET: str = "variable_get"
     VARIABLE_SET: str = "variable_set"
+    LAMBDA_MAP: str = "lambda_map"
+    LAMDBA_FILTER: str = "lambda_filter"
+    LAMBDA_SORT: str = "lambda_sort"
 
 
 class Structure:
@@ -189,7 +195,26 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                     branches[0] = variable_name(branches[0])
 
                 elif structure_name == StructureType.FUNCTION:
+                    # code that epicly handles parameter stuff
                     pass
+
+                elif structure_name == StructureType.FUNCTION_REF:
+                    branches[0] = variable_name(branches[0])
+
+                elif structure_name == StructureType.LAMBDA_MAP:
+                    structure_name = StructureType.LAMBDA
+                    # code that says to insert the `M` element after
+                    # that structure goes here
+
+                elif structure_name == StructureType.LAMDBA_FILTER:
+                    structure_name = StructureType.LAMBDA
+                    # code that says to insert the `F` element after
+                    # that structure goes here
+
+                elif structure_name == StructureType.LAMBDA_SORT:
+                    structure_name = StructureType.LAMBDA
+                    # code that says to insert the `ṡ` element after
+                    # that structure goes here
 
                 structures.append(Structure(structure_name, branches))
 
