@@ -1,6 +1,7 @@
 # What is this fresh beginnings branch? 
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 
 The code clean up made everything a big mess. That isn't anyone's fault. The code just wasn't suited to such a big change. It's more my fault for not organising it properly.
