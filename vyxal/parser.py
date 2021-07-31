@@ -13,7 +13,9 @@ import string
 
 import lexer
 
-OPENING_CHARACTERS = "[({@λ"
+OPENING_CHARACTERS = "[({@λƛ'µ°⟨"
+CLOSING_CHARACTERS = "])};;;;;;⟩"  # haha semi-colons go brrrrrrrrrrrrrr
+# yes I really did just extend that comment to the line limit we set.
 
 
 class StructureType:
@@ -23,6 +25,9 @@ class StructureType:
 
     Attributes
     ----------
+
+    NONE : str
+        The generic structure.
 
     IF_STMT : str
         If statement structure.
@@ -51,8 +56,12 @@ class StructureType:
     VARIABLE_SET : str
         Variable assignment.
 
+    LIST : str
+        List literal.
+
     """
 
+    NONE: str = "none"
     IF_STMT: str = "if_stmt"
     FOR_LOOP: str = "for_loop"
     WHILE_LOOP: str = "while_loop"
@@ -64,6 +73,7 @@ class StructureType:
     LAMBDA_MAP: str = "lambda_map"
     LAMDBA_FILTER: str = "lambda_filter"
     LAMBDA_SORT: str = "lambda_sort"
+    LIST: str = "list"
 
 
 class Structure:
@@ -184,38 +194,55 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
         head: lexer.Token = tokens.popleft()
         if bracket_stack:
             # that is, if we are currently inside a structure...
-            if bracket_stack[-1] == head:
+            if bracket_stack[-1] == head.value:
                 bracket_stack.pop()
 
-            if not bracket_stack:
-                # that is, if what we just closed is the outer-most
-                # structure....
+                if not bracket_stack:
+                    # that is, if what we just closed is the outer-most
+                    # structure....
 
-                if structure_name == StructureType.FOR_LOOP:
-                    branches[0] = variable_name(branches[0])
+                    if structure_name == StructureType.FOR_LOOP:
+                        branches[0] = variable_name(branches[0])
 
-                elif structure_name == StructureType.FUNCTION:
-                    # code that epicly handles parameter stuff
-                    pass
+                    elif structure_name == StructureType.FUNCTION:
+                        # code that epicly handles parameter stuff
+                        pass
 
-                elif structure_name == StructureType.FUNCTION_REF:
-                    branches[0] = variable_name(branches[0])
+                    elif structure_name == StructureType.FUNCTION_REF:
+                        branches[0] = variable_name(branches[0])
 
-                elif structure_name == StructureType.LAMBDA_MAP:
-                    structure_name = StructureType.LAMBDA
-                    # code that says to insert the `M` element after
-                    # that structure goes here
+                    elif structure_name == StructureType.LAMBDA_MAP:
+                        structure_name = StructureType.LAMBDA
+                        # code that says to insert the `M` element after
+                        # that structure goes here
 
-                elif structure_name == StructureType.LAMDBA_FILTER:
-                    structure_name = StructureType.LAMBDA
-                    # code that says to insert the `F` element after
-                    # that structure goes here
+                    elif structure_name == StructureType.LAMDBA_FILTER:
+                        structure_name = StructureType.LAMBDA
+                        # code that says to insert the `F` element after
+                        # that structure goes here
 
-                elif structure_name == StructureType.LAMBDA_SORT:
-                    structure_name = StructureType.LAMBDA
-                    # code that says to insert the `ṡ` element after
-                    # that structure goes here
+                    elif structure_name == StructureType.LAMBDA_SORT:
+                        structure_name = StructureType.LAMBDA
+                        # code that says to insert the `ṡ` element after
+                        # that structure goes here
+
+                    elif structure_name == StructureType.LIST:
+                        # code to handle list literals here
+                        pass
+            else:
+                branches[-1].append(head)
 
                 structures.append(Structure(structure_name, branches))
+        elif head.value in OPENING_CHARACTERS:
+            corresponding_closing_index: int = OPENING_CHARACTERS.index(head)
+            bracket_stack.append(
+                CLOSING_CHARACTERS[corresponding_closing_index]
+            )  # haha long variable name goes brrrrrrrrrrrrrrrrrrrrrrrrr
+            structure_name = "whatever idk rn"
+            # TODO: Actually determine the structure name based (ha) on
+            # the opening character
+            branches = [[]]
+        else:
+            structures.append(Structure(StructureType.NONE, head))
 
     return structures
