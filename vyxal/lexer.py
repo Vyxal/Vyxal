@@ -20,15 +20,20 @@ class TokenType:
     Attributes
     ----------
 
-    LITERAL : str
-        Used to denote that a token is a literal. In this case, this is
-        defined as numbers and strings. Lists are NOT considered
-        to be literal tokens.
+    STRING : str
+        Used to denote that a token is a string.
 
-    NAME : str
-        Used to denote that a token is a name, meaning that it belongs
-        to a structure such as a function defintion/call or a variable
-        get/set.
+    VARIABLE_GET : str
+        Used to denote that a token is getting the value of a variable.
+
+    VARIABLE_SET : str
+        Used to denote that a token is setting the value of a variable.
+
+    COMPRESSED_NUMBER : str
+        Used to denote that a token is a compressed number (base-255).
+
+    COMPRESSED_STRING : str
+        Used to denote that a token is a compressed string (base-255).
 
     GENERAL : str
         Used to denote that a token does not have a specific type. This
@@ -42,6 +47,8 @@ class TokenType:
     GENERAL: str = "general"
     COMPRESSED_NUMBER: str = "compressed_number"
     COMPRESSED_STRING: str = "compressed_string"
+    VARIABLE_GET: str = "variable_get"
+    VARIABLE_SET: str = "variable_set"
 
 
 class Token:
@@ -186,13 +193,20 @@ def tokenise(source: str) -> list[Token]:
             while source and len(contextual_token_value) != 2:
                 contextual_token_value += source.popleft()
             tokens.append(Token(TokenType.LITERAL, contextual_token_value))
-        elif head in "@→←°":
+        elif head in "→←":
             tokens.append(Token(TokenType.GENERAL, head))
             contextual_token_value = ""
             while source and source[0] in string.ascii_letters + "_":
                 contextual_token_value += source.popleft()
 
-            tokens.append(Token(TokenType.NAME, contextual_token_value))
+            if head == "→":
+                tokens.append(
+                    Token(TokenType.VARIABLE_SET, contextual_token_value)
+                )
+            else:
+                tokens.append(
+                    Token(TokenType.VARIABLE_GET, contextual_token_value)
+                )
         elif head == "#":
             while source and source[0] != "\n":
                 source.popleft()
