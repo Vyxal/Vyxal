@@ -272,7 +272,6 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                 # next value isn't the closing character for the
                 # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
                 # where x = the corresponding closing character).
-                print(bracket_stack, tokens)
                 token: lexer.Token = tokens.popleft()
                 if token.value in OPENING_CHARACTERS:
                     branches[-1].append(token)
