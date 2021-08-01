@@ -200,10 +200,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
         A list of structures within the program.
     """
     structures: list[Structure] = []
-    bracket_stack: list[str] = []  # This is so we can keep track of
-    # which closing characters we need to
-    # watch out for when dealing with
-    # opening and closing brackets.
+    bracket_stack: list[str] = []  # all currently open structures
     tokens: deque = deque(tokens)
     branches: list[list[lexer.Token]] = []  # This will serve as a way
     # to keep track of all the
@@ -213,66 +210,86 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
 
     while tokens:
         head: lexer.Token = tokens.popleft()
-        if bracket_stack:
-            # that is, if we are currently inside a structure...
-            if bracket_stack[-1] == head.value:
-                bracket_stack.pop()
-
-                if not bracket_stack:
-                    # that is, if what we just closed is the outer-most
-                    # structure....
-
-                    if structure_name == StructureType.FOR_LOOP:
-                        branches[0] = variable_name(branches[0])
-
-                    elif structure_name == StructureType.FUNCTION:
-                        branches[0] = process_parameters(branches[0])
-
-                    elif structure_name == StructureType.FUNCTION_REF:
-                        branches[0] = variable_name(branches[0])
-
-                    elif structure_name == StructureType.LAMBDA_MAP:
-                        structure_name = StructureType.LAMBDA
-                        # code that says to insert the `M` element after
-                        # that structure goes here
-
-                    elif structure_name == StructureType.LAMBDA_FILTER:
-                        structure_name = StructureType.LAMBDA
-                        # code that says to insert the `F` element after
-                        # that structure goes here
-
-                    elif structure_name == StructureType.LAMBDA_SORT:
-                        structure_name = StructureType.LAMBDA
-                        # code that says to insert the `ṡ` element after
-                        # that structure goes here
-
-                    elif structure_name == StructureType.LIST:
-                        # code to handle list literals here
-                        pass
-                    print(branches)
-                    structures.append(Structure(structure_name, branches))
-                    structure_name = StructureType.NONE
-                    branches = []
-            elif head.value == "|":
-                if len(bracket_stack) != 1:
-                    branches[-1].append(head)
-                else:
-                    branches.append([])
-            else:
-                branches[-1].append(head)
-
-        elif head.value in OPENING_CHARACTERS:
-            corresponding_closing_index: int = OPENING_CHARACTERS.index(
-                head.value
-            )
-            bracket_stack.append(
-                CLOSING_CHARACTERS[corresponding_closing_index]
-            )  # haha long variable name goes brrrrrrrrrrrrrrrrrrrrrrrrr
-
+        if head.value in OPENING_CHARACTERS:
             structure_name = STRUCTURE_OVERVIEW[head.value][0]
+            bracket_stack.append(STRUCTURE_OVERVIEW[head.value][1])
             branches = [[]]
+            # important: each branch is a list of tokens, hence why
+            # it's a double nested list to start with - each
+            # token gets appended to the last branch in the branches
+            # list.
+
+            CLOSING_TOKEN: lexer.Token = lexer.Token(
+                lexer.TokenType.GENERAL, bracket_stack[0]
+            )
+            while tokens and bracket_stack:
+                # that is, while there are still tokens to consider,
+                # while we are still in the structure and while the
+                # next value isn't the closing character for the
+                # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
+                # where x = the corresponding closing character).
+                print(bracket_stack, tokens)
+                token: lexer.Token = tokens.popleft()
+                if token.value in OPENING_CHARACTERS:
+                    branches[-1].append(token)
+                    bracket_stack.append(STRUCTURE_OVERVIEW[token.value][-1])
+
+                elif token.value == "|":
+                    if len(bracket_stack) == 1:
+                        # that is, we are in the outer-most structure.
+                        branches.append([])
+                    else:
+                        branches[-1].append(token)
+                elif token.value in CLOSING_CHARACTERS:
+                    # that is, it's a closing character that isn't
+                    # the one we're expecting.
+                    if token.value == bracket_stack[-1]:
+                        # that is, if it's closing the inner-most
+                        # structure
+
+                        bracket_stack.pop()
+                        if bracket_stack:
+                            branches[-1].append(token)
+                else:
+                    branches[-1].append(token)
+            # Now, we have to actually process the branch(es) to make
+            # them _nice_ for the transpiler.
+
+            """
+            Structures that have to be manually processed are:
+
+            - For loops: if there are two+ branches, the first must be
+                         made into a valid variable name (alpha + _).
+            - Functions: if there are two+ branches, the first must have
+                         its paramters extracted from the first branch.
+            - Function References: the name must be turned into a valid
+                                   function name.
+            - Non-standard Lambdas: these must have their corresponding
+                                    element appended after the normal
+                                    lambda is appended to the structure
+                                    list. This is because non-standard
+                                    lambdas are just normal lambdas +
+                                    an element.
+            """
+
+            if structure_name == StructureType.FOR_LOOP:
+                if len(branches) > 1:
+                    branches[0] = variable_name(branches[0])
+                branches[-1] = parse(branches[-1])
+
+            elif structure_name == StructureType.FUNCTION:
+                branches[0] = process_parameters(branches[0])
+                if len(branches) > 1:
+                    branches[-1] = parse(branches[-1])
+            elif structure_name == StructureType.FUNCTION_REF:
+                branches[0] = variable_name(branches)
+
+            structures.append(Structure(structure_name, branches))
+        elif any((head.value in CLOSING_CHARACTERS, head.value in " |")):
+            # that is, if someone has been a sussy baka
+            # with their syntax (probably intentional).
+            continue  # ignore it. This also ignores spaces btw
         else:
-            if head.value != " ":  # ignore whitespace
-                structures.append(Structure(StructureType.NONE, head))
+            structures.append(Structure(StructureType.NONE, head))
 
     return structures
