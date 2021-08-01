@@ -8,14 +8,13 @@ until a predicate is matched for structures.
 
 from __future__ import annotations
 
-import collections
+from collections import deque
 import string
 
-import lexer
-
-OPENING_CHARACTERS = "[({@λƛ'µ°⟨"
-CLOSING_CHARACTERS = "])};;;;;;⟩"  # haha semi-colons go brrrrrrrrrrrrrr
-# yes I really did just extend that comment to the line limit we set.
+try:
+    import lexer
+except:
+    import vyxal.lexer as lexer
 
 
 class StructureType:
@@ -71,7 +70,7 @@ class StructureType:
     VARIABLE_GET: str = "variable_get"
     VARIABLE_SET: str = "variable_set"
     LAMBDA_MAP: str = "lambda_map"
-    LAMDBA_FILTER: str = "lambda_filter"
+    LAMBDA_FILTER: str = "lambda_filter"
     LAMBDA_SORT: str = "lambda_sort"
     LIST: str = "list"
 
@@ -131,6 +130,28 @@ class Structure:
         return str([self.name, self.branches])
 
 
+STRUCTURE_OVERVIEW: dict[str, tuple[str]] = {
+    # (Name, Closing character)
+    "[": (StructureType.IF_STMT, "]"),
+    "(": (StructureType.FOR_LOOP, ")"),
+    "{": (StructureType.WHILE_LOOP, "}"),
+    "@": (StructureType.FUNCTION, ";"),
+    "λ": (StructureType.LAMBDA, ";"),
+    "ƛ": (StructureType.LAMBDA_MAP, ";"),
+    "'": (StructureType.LAMBDA_FILTER, ";"),
+    "µ": (StructureType.LAMBDA_SORT, ";"),
+    "°": (StructureType.FUNCTION_REF, ";"),
+    "⟨": (StructureType.LIST, "⟩"),
+}
+
+OPENING_CHARACTERS: str = "".join(STRUCTURE_OVERVIEW.keys())
+CLOSING_CHARACTERS: str = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
+
+
+def process_parameters(tokens: list[lexer.Token]) -> list[str]:
+    pass
+
+
 def variable_name(tokens: list[lexer.Token]) -> str:
     """
     Concatenates the value of all tokens and removes non-alphabet/non-
@@ -183,12 +204,12 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
     # which closing characters we need to
     # watch out for when dealing with
     # opening and closing brackets.
-    tokens: collections.deque = collections.deque()
+    tokens: deque = deque(tokens)
     branches: list[list[lexer.Token]] = []  # This will serve as a way
     # to keep track of all the
     # branches of the structure
 
-    structure_name: str = ""
+    structure_name: str = StructureType.NONE
 
     while tokens:
         head: lexer.Token = tokens.popleft()
@@ -205,8 +226,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                         branches[0] = variable_name(branches[0])
 
                     elif structure_name == StructureType.FUNCTION:
-                        # code that epicly handles parameter stuff
-                        pass
+                        branches[0] = process_parameters(branches[0])
 
                     elif structure_name == StructureType.FUNCTION_REF:
                         branches[0] = variable_name(branches[0])
@@ -216,7 +236,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                         # code that says to insert the `M` element after
                         # that structure goes here
 
-                    elif structure_name == StructureType.LAMDBA_FILTER:
+                    elif structure_name == StructureType.LAMBDA_FILTER:
                         structure_name = StructureType.LAMBDA
                         # code that says to insert the `F` element after
                         # that structure goes here
@@ -229,20 +249,30 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                     elif structure_name == StructureType.LIST:
                         # code to handle list literals here
                         pass
+                    print(branches)
+                    structures.append(Structure(structure_name, branches))
+                    structure_name = StructureType.NONE
+                    branches = []
+            elif head.value == "|":
+                if len(bracket_stack) != 1:
+                    branches[-1].append(head)
+                else:
+                    branches.append([])
             else:
                 branches[-1].append(head)
 
-                structures.append(Structure(structure_name, branches))
         elif head.value in OPENING_CHARACTERS:
-            corresponding_closing_index: int = OPENING_CHARACTERS.index(head)
+            corresponding_closing_index: int = OPENING_CHARACTERS.index(
+                head.value
+            )
             bracket_stack.append(
                 CLOSING_CHARACTERS[corresponding_closing_index]
             )  # haha long variable name goes brrrrrrrrrrrrrrrrrrrrrrrrr
-            structure_name = "whatever idk rn"
-            # TODO: Actually determine the structure name based (ha) on
-            # the opening character
+
+            structure_name = STRUCTURE_OVERVIEW[head.value][0]
             branches = [[]]
         else:
-            structures.append(Structure(StructureType.NONE, head))
+            if head.value != " ":  # ignore whitespace
+                structures.append(Structure(StructureType.NONE, head))
 
     return structures
