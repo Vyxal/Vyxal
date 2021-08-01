@@ -144,8 +144,14 @@ STRUCTURE_OVERVIEW: dict[str, tuple[str]] = {
     "⟨": (StructureType.LIST, "⟩"),
 }
 
-OPENING_CHARACTERS: str = "".join(STRUCTURE_OVERVIEW.keys())
 CLOSING_CHARACTERS: str = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
+OPENING_CHARACTERS: str = "".join(STRUCTURE_OVERVIEW.keys())
+MONADIC_MODIFIERS: list[str] = list("v⁽&~ß")
+DYADIC_MODIFIERS: list[str] = list("₌‡₍")
+TRIADIC_MODIFIERS: list[str] = list("≬")
+GROUPING_MODIFIERS: list[str] = list("⁽‡≬")
+# The modifiers are stored as lists to allow for potential digraph
+# modifiers.
 
 
 def process_parameters(tokens: list[lexer.Token]) -> list[str]:
