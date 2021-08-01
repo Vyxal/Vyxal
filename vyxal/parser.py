@@ -8,8 +8,8 @@ until a predicate is matched for structures.
 
 from __future__ import annotations
 
-from collections import deque
 import string
+from collections import deque
 
 try:
     import lexer
@@ -299,7 +299,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                                     lambdas are just normal lambdas +
                                     an element.
             """
-
+            after_token: Structure = None
             if structure_name == StructureType.FOR_LOOP:
                 if len(branches) > 1:
                     branches[0] = variable_name(branches[0])
@@ -312,12 +312,45 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             elif structure_name == StructureType.FUNCTION_REF:
                 branches[0] = variable_name(branches)
             elif structure_name == StructureType.LAMBDA:
-                if len(branches) > 1:
-                    branches[1] = parse(branches[1:-1])
+                if len(branches) == 1:
+                    # that is, there is only a body - no arity
+                    branches.insert(0, "1")
                 else:
-                    branches[-1] = parse(branches[-1])
+                    branches[0] = branches[0].value
+                branches[1] = parse(branches[1])
+            elif structure_name == StructureType.LAMBDA_MAP:
+                branches.insert(0, "1")
+                branches[1] = parse(branches[1])
+                structure_name = StructureType.LAMBDA
+                after_token = Structure(
+                    StructureType.NONE,
+                    lexer.Token(lexer.TokenType.GENERAL, "M"),
+                )
+                # laziness ftw
+            elif structure_name == StructureType.LAMBDA_MAP:
+                branches.insert(0, "1")
+                branches[1] = parse(branches[1])
+                structure_name = StructureType.LAMBDA
+                after_token = Structure(
+                    StructureType.NONE,
+                    lexer.Token(lexer.TokenType.GENERAL, "F"),
+                )
+                # laziness ftw
+            elif structure_name == StructureType.LAMBDA_MAP:
+                branches.insert(0, "1")
+                branches[1] = parse(branches[1])
+                structure_name = StructureType.LAMBDA
+                after_token = Structure(
+                    StructureType.NONE,
+                    lexer.Token(lexer.TokenType.GENERAL, "ṡ"),
+                )
+                # laziness ftw
+            else:
+                branches = list(map(parse, branches))
 
             structures.append(Structure(structure_name, branches))
+            if after_token is not None:
+                structures.append(after_token)
         elif any((head.value in CLOSING_CHARACTERS, head.value in " |")):
             # that is, if someone has been a sussy baka
             # with their syntax (probably intentional).

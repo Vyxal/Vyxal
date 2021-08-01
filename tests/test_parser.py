@@ -12,5 +12,5 @@ if __name__ == "__main__":  # For testing outside of the workflow
     print(tokenise("1 1+"))
     print(parse(tokenise("1 1 +")))
 
-    print(tokenise("1[`abc`|`def`]"))
-    print(parse(tokenise("1[`abc`|`def`]")))
+    print(tokenise("₁ƛ₍₃₅kF½*∑∴"))
+    print(parse(tokenise("₁ƛ₍₃₅kF½*∑∴")))
