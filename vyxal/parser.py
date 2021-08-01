@@ -149,7 +149,36 @@ CLOSING_CHARACTERS: str = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
 
 
 def process_parameters(tokens: list[lexer.Token]) -> list[str]:
-    pass
+    """
+    Turns the tokens from the first branch of a function defintion
+    structure and returns the name and parameters.
+
+    Parameters
+    ----------
+
+    tokens : list[lexer.Token]
+        The tokens to turn into the parameter details
+
+    Returns
+    -------
+
+    list[str]
+        [name, parameters...]
+    """
+    token_values: list[str] = [token.value for token in tokens]
+    branch_data: str = "".join(token_values)
+    components: list[str] = branch_data.split(":")
+
+    parameters: list[str] = [variable_name(components[0])]
+    # this'll be the list that is returned
+
+    for parameter in components[1:]:
+        if parameter.isnumeric() or parameter == "*":
+            parameters.append(parameter)
+        else:
+            parameters.append(variable_name(parameter))
+
+    return parameters
 
 
 def variable_name(tokens: list[lexer.Token]) -> str:
@@ -162,7 +191,6 @@ def variable_name(tokens: list[lexer.Token]) -> str:
 
     tokens : list[lexer.Token]
         The tokens to turn into a single variable name.
-
 
     Returns
     -------
@@ -283,6 +311,11 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                     branches[-1] = parse(branches[-1])
             elif structure_name == StructureType.FUNCTION_REF:
                 branches[0] = variable_name(branches)
+            elif structure_name == StructureType.LAMBDA:
+                if len(branches) > 1:
+                    branches[1] = parse(branches[1:-1])
+                else:
+                    branches[-1] = parse(branches[-1])
 
             structures.append(Structure(structure_name, branches))
         elif any((head.value in CLOSING_CHARACTERS, head.value in " |")):
