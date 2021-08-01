@@ -58,6 +58,14 @@ class StructureType:
     LIST : str
         List literal.
 
+    MONADIC_MODIFIER : str
+        A monadic modifier - takes the next element
+
+    DYADIC_MODIFIER : str
+        A dyadic modifier - takes the next two elements
+
+    TRIADIC_MODIFIER : str
+        A triadic modifier - takes the next three elements
     """
 
     NONE: str = "none"
@@ -73,6 +81,9 @@ class StructureType:
     LAMBDA_FILTER: str = "lambda_filter"
     LAMBDA_SORT: str = "lambda_sort"
     LIST: str = "list"
+    MONADIC_MODIFIER: str = "monadic_modifier"
+    DYADIC_MODIFIER: str = "dyadic_modifier"
+    TRIADIC_MODIFIERS: str = "triadic_modifier"
 
 
 class Structure:
@@ -149,7 +160,6 @@ OPENING_CHARACTERS: str = "".join(STRUCTURE_OVERVIEW.keys())
 MONADIC_MODIFIERS: list[str] = list("v⁽&~ß")
 DYADIC_MODIFIERS: list[str] = list("₌‡₍")
 TRIADIC_MODIFIERS: list[str] = list("≬")
-GROUPING_MODIFIERS: list[str] = list("⁽‡≬")
 # The modifiers are stored as lists to allow for potential digraph
 # modifiers.
 
@@ -357,6 +367,66 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             structures.append(Structure(structure_name, branches))
             if after_token is not None:
                 structures.append(after_token)
+        elif head.value in MONADIC_MODIFIERS:
+            # the way to deal with all modifiers is to parse everything
+            # after the modifier and dequeue as many structures as
+            # needed to satisfy the arity of the modifier. It's import-
+            # -ant that you break the while loop after dealing with the
+            # modifier.
+
+            remaining: list[Structure] = parse(tokens)
+            if head.value == "⁽":
+                structures.append(
+                    Structure(StructureType.LAMBDA, ["1", [[remaining[0]]]])
+                )
+            else:
+                structures.append(
+                    Structure(
+                        StructureType.MONADIC_MODIFIER,
+                        [head.value, [remaining[0]]],
+                    )
+                )
+            structures += remaining[1:]
+            break
+        elif head.value in DYADIC_MODIFIERS:
+            remaining: list[Structure] = parse(tokens)
+            if head.value == "‡":
+                structures.append(
+                    Structure(
+                        StructureType.LAMBDA,
+                        ["1", [remaining[0], remaining[1]]],
+                    )
+                )
+            else:
+                structures.append(
+                    Structure(
+                        StructureType.DYADIC_MODIFIER,
+                        [head.value, [remaining[0], remaining[1]]],
+                    )
+                )
+            structures += remaining[2:]
+            break
+        elif head.value in TRIADIC_MODIFIERS:
+            remaining: list[Structure] = parse(tokens)
+            if head.value == "‡":
+                structures.append(
+                    Structure(
+                        StructureType.LAMBDA,
+                        ["1", [remaining[0], remaining[1], remaining[2]]],
+                    )
+                )
+            else:
+                structures.append(
+                    Structure(
+                        StructureType.TRIADIC_MODIFIERS,
+                        [
+                            head.value,
+                            [remaining[0], remaining[1], remaining[2]],
+                        ],
+                    )
+                )
+            structures += remaining[3:]
+            break
         elif any((head.value in CLOSING_CHARACTERS, head.value in " |")):
             # that is, if someone has been a sussy baka
             # with their syntax (probably intentional).
