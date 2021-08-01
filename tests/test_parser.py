@@ -72,9 +72,5 @@ def test_fizzbuzz():
 
 
 if __name__ == "__main__":  # For testing outside of the workflow
-
-    print(tokenise("₁ƛ₍₃₅kF½*∑∴"))
-    print(parse(tokenise("₁ƛ₍₃₅kF½*∑∴")))
-    print
     test_basic()
     test_fizzbuzz()
