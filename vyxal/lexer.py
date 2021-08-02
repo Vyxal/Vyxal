@@ -10,9 +10,10 @@ from __future__ import annotations
 
 import collections
 import string
+from enum import Enum
 
 
-class TokenType:
+class TokenType(Enum):
     """
     A class providing a namespace for token type constants. Do not
     create any instances of this class.
@@ -20,15 +21,20 @@ class TokenType:
     Attributes
     ----------
 
-    LITERAL : str
-        Used to denote that a token is a literal. In this case, this is
-        defined as numbers and strings. Lists are NOT considered
-        to be literal tokens.
+    STRING : str
+        Used to denote that a token is a string.
 
-    NAME : str
-        Used to denote that a token is a name, meaning that it belongs
-        to a structure such as a function defintion/call or a variable
-        get/set.
+    VARIABLE_GET : str
+        Used to denote that a token is getting the value of a variable.
+
+    VARIABLE_SET : str
+        Used to denote that a token is setting the value of a variable.
+
+    COMPRESSED_NUMBER : str
+        Used to denote that a token is a compressed number (base-255).
+
+    COMPRESSED_STRING : str
+        Used to denote that a token is a compressed string (base-255).
 
     GENERAL : str
         Used to denote that a token does not have a specific type. This
@@ -36,12 +42,14 @@ class TokenType:
         or just a simple element.
     """
 
-    STRING: str = "string"
-    NUMBER: str = "number"
-    NAME: str = "name"
-    GENERAL: str = "general"
-    COMPRESSED_NUMBER: str = "compressed_number"
-    COMPRESSED_STRING: str = "compressed_string"
+    STRING = "string"
+    NUMBER = "number"
+    NAME = "name"
+    GENERAL = "general"
+    COMPRESSED_NUMBER = "compressed_number"
+    COMPRESSED_STRING = "compressed_string"
+    VARIABLE_GET = "variable_get"
+    VARIABLE_SET = "variable_set"
 
 
 class Token:
@@ -68,9 +76,9 @@ class Token:
 
     """
 
-    def __init__(self, token_name: str, token_value: str):
-        self.name: str = token_name
-        self.value: str = token_value
+    def __init__(self, token_name: TokenType, token_value: str):
+        self.name = token_name
+        self.value = token_value
 
     def __str__(self) -> str:
         """
@@ -83,7 +91,7 @@ class Token:
             {name}: {value}
         """
 
-        return f"{self.name}: {self.value}"
+        return f"{self.name.value}: {self.value}"
 
     def __repr__(self) -> str:
         """
@@ -95,7 +103,7 @@ class Token:
             [name, value]
         """
 
-        return str([self.name, self.value])
+        return str([self.name.value, self.value])
 
     def __eq__(self, rhs: Token) -> bool:
         """
@@ -134,10 +142,10 @@ def tokenise(source: str) -> list[Token]:
         Each token is represented as a Token object.
     """
 
-    tokens: list[Token] = []
-    source: collections.deque = collections.deque(source)
+    tokens = []
+    source = collections.deque(source)
 
-    contextual_token_value: str = ""
+    contextual_token_value = ""
 
     while source:
         # By treating the program as a queue, we can dequeue elements
@@ -158,7 +166,7 @@ def tokenise(source: str) -> list[Token]:
             # reached.
             contextual_token_value = ""
             while source and source[0] != head:
-                character: str = source.popleft()
+                character = source.popleft()
                 if head == "`" and character == "\\":
                     # Handle the escape by just dequeueing the next
                     # character
@@ -166,7 +174,7 @@ def tokenise(source: str) -> list[Token]:
                         contextual_token_value += "\\" + source.popleft()
                 else:
                     contextual_token_value += character
-            token_type: str = ""
+            token_type = ""
             if head == "`":
                 token_type = TokenType.STRING
             elif head == "»":
@@ -186,13 +194,20 @@ def tokenise(source: str) -> list[Token]:
             while source and len(contextual_token_value) != 2:
                 contextual_token_value += source.popleft()
             tokens.append(Token(TokenType.LITERAL, contextual_token_value))
-        elif head in "@→←°":
+        elif head in "→←":
             tokens.append(Token(TokenType.GENERAL, head))
             contextual_token_value = ""
             while source and source[0] in string.ascii_letters + "_":
                 contextual_token_value += source.popleft()
 
-            tokens.append(Token(TokenType.NAME, contextual_token_value))
+            if head == "→":
+                tokens.append(
+                    Token(TokenType.VARIABLE_SET, contextual_token_value)
+                )
+            else:
+                tokens.append(
+                    Token(TokenType.VARIABLE_GET, contextual_token_value)
+                )
         elif head == "#":
             while source and source[0] != "\n":
                 source.popleft()
