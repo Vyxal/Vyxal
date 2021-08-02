@@ -11,10 +11,7 @@ from __future__ import annotations
 import string
 from collections import deque
 
-try:
-    import lexer
-except:
-    import vyxal.lexer as lexer
+import vyxal.lexer as lexer
 
 
 class StructureType:

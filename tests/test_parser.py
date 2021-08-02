@@ -74,3 +74,4 @@ def test_fizzbuzz():
 if __name__ == "__main__":  # For testing outside of the workflow
     test_basic()
     test_fizzbuzz()
+    print(fully_parse("⟨1|2|3|4|5|6|7|8|9⟩"))
