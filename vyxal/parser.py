@@ -10,11 +10,15 @@ from __future__ import annotations
 
 import string
 from collections import deque
+from enum import Enum
 
-import vyxal.lexer as lexer
+try:
+    import lexer
+except:
+    import vyxal.lexer as lexer
 
 
-class StructureType:
+class StructureType(Enum):
     """
     A class providing a namespace for structure type constants. Do not
     create any instances of this class.
@@ -62,7 +66,9 @@ class Structure:
     """
 
     def __init__(
-        self, structure_name: str, structure_branches: list[list[lexer.Token]]
+        self,
+        structure_name: StructureType,
+        structure_branches: list[list[lexer.Token]],
     ):
         self.name = structure_name
         self.branches = structure_branches
@@ -77,7 +83,7 @@ class Structure:
             {name}: {value}
         """
 
-        return f"{self.name}: {self.branches}"
+        return f"{self.name.value}: {self.branches}"
 
     def __repr__(self) -> str:
         """
@@ -90,7 +96,7 @@ class Structure:
             [name, value]
         """
 
-        return str([self.name, self.branches])
+        return str([self.name.value, self.branches])
 
 
 STRUCTURE_OVERVIEW = {
