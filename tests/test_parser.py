@@ -152,6 +152,21 @@ def test_structures():
         ]
     ]
 
+    assert eval(str(fully_parse("(code‛|c"))) == [
+        [
+            "for_loop",
+            [
+                [
+                    ["none", ["general", "c"]],
+                    ["none", ["general", "o"]],
+                    ["none", ["general", "d"]],
+                    ["none", ["general", "e"]],
+                    ["none", ["string", "|c"]],
+                ]
+            ],
+        ]
+    ]
+
 
 if __name__ == "__main__":
     test_basic()
