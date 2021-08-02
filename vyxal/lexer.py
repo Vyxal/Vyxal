@@ -76,7 +76,7 @@ class Token:
 
     """
 
-    def __init__(self, token_name: str, token_value: str):
+    def __init__(self, token_name: TokenType, token_value: str):
         self.name = token_name
         self.value = token_value
 
