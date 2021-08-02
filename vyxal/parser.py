@@ -8,6 +8,7 @@ until a predicate is matched for structures.
 
 from __future__ import annotations
 
+import re
 import string
 from collections import deque
 from enum import Enum
@@ -139,18 +140,18 @@ def process_parameters(tokens: list[lexer.Token]) -> list[str]:
     list[str]
         [name, parameters...]
     """
-    token_values: list[str] = [token.value for token in tokens]
-    branch_data: str = "".join(token_values)
-    components: list[str] = branch_data.split(":")
+    token_values = [token.value for token in tokens]
+    branch_data = "".join(token_values)
+    components = branch_data.split(":")
 
-    parameters: list[str] = [variable_name(components[0])]
+    parameters = [components[0]]
     # this'll be the list that is returned
 
     for parameter in components[1:]:
         if parameter.isnumeric() or parameter == "*":
             parameters.append(parameter)
         else:
-            parameters.append(variable_name(parameter))
+            parameters.append(re.sub(r"[A-z_]", "", parameter))
 
     return parameters
 
@@ -174,9 +175,9 @@ def variable_name(tokens: list[lexer.Token]) -> str:
         characters removed.
     """
 
-    token_values: list[str] = [token.value for token in tokens]
-    name: str = "".join(token_values)
-    return_name: str = ""
+    token_values = [token.value for token in tokens]
+    name = "".join(token_values)
+    return_name = ""
 
     for char in name:
         if char in string.ascii_letters + "_":
@@ -274,8 +275,8 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                 if len(branches) > 1:
                     branches[0] = variable_name(branches[0])
                 branches[-1] = parse(branches[-1])
-
             elif structure_name == StructureType.FUNCTION:
+                print(branches[0])
                 branches[0] = process_parameters(branches[0])
                 if len(branches) > 1:
                     branches[-1] = parse(branches[-1])
@@ -328,7 +329,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             # -ant that you break the while loop after dealing with the
             # modifier.
 
-            remaining: list[Structure] = parse(tokens)
+            remaining = parse(tokens)
             if head.value == "⁽":
                 structures.append(
                     Structure(StructureType.LAMBDA, ["1", [[remaining[0]]]])
@@ -343,7 +344,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             structures += remaining[1:]
             break
         elif head.value in DYADIC_MODIFIERS:
-            remaining: list[Structure] = parse(tokens)
+            remaining = parse(tokens)
             if head.value == "‡":
                 structures.append(
                     Structure(
@@ -361,7 +362,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             structures += remaining[2:]
             break
         elif head.value in TRIADIC_MODIFIERS:
-            remaining: list[Structure] = parse(tokens)
+            remaining = parse(tokens)
             if head.value == "‡":
                 structures.append(
                     Structure(
@@ -389,3 +390,6 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             structures.append(Structure(StructureType.NONE, head))
 
     return structures
+
+
+print(parse(lexer.tokenise("@triple:1|3*;")))

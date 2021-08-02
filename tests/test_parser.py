@@ -109,8 +109,53 @@ def test_modifiers():
     ]
 
 
+def test_structures():
+    assert eval(str(fully_parse("[1 1+|`nice`"))) == [
+        [
+            "if_stmt",
+            [
+                [
+                    ["none", ["number", "1"]],
+                    ["none", ["number", "1"]],
+                    ["none", ["general", "+"]],
+                ],
+                [["none", ["string", "nice"]]],
+            ],
+        ]
+    ]
+
+    assert eval(str(fully_parse("1 10r(i|n2*,"))) == [
+        ["none", ["number", "1"]],
+        ["none", ["number", "10"]],
+        ["none", ["general", "r"]],
+        [
+            "for_loop",
+            [
+                "i",
+                [
+                    ["none", ["general", "n"]],
+                    ["none", ["number", "2"]],
+                    ["none", ["general", "*"]],
+                    ["none", ["general", ","]],
+                ],
+            ],
+        ],
+    ]
+
+    assert eval(str(fully_parse("@triple:1|3*;"))) == [
+        [
+            "function",
+            [
+                ["triple", "1"],
+                [["none", ["number", "3"]], ["none", ["general", "*"]]],
+            ],
+        ]
+    ]
+
+
 if __name__ == "__main__":
     test_basic()
     test_fizzbuzz()
     test_modifiers()
+    test_structures()
     print("everything passed")
