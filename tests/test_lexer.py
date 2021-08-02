@@ -75,6 +75,20 @@ def test_strings():
         ],
     )
 
+    assert token_equal("«‛«", [Token(TokenType.COMPRESSED_STRING, "‛")])
+
+    assert token_equal(
+        "(code‛|c",
+        [
+            Token(TokenType.GENERAL, "("),
+            Token(TokenType.GENERAL, "c"),
+            Token(TokenType.GENERAL, "o"),
+            Token(TokenType.GENERAL, "d"),
+            Token(TokenType.GENERAL, "e"),
+            Token(TokenType.STRING, "|c"),
+        ],
+    )
+
 
 def test_comments():
     assert token_equal(
