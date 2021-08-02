@@ -10,9 +10,10 @@ from __future__ import annotations
 
 import collections
 import string
+from enum import Enum
 
 
-class TokenType:
+class TokenType(Enum):
     """
     A class providing a namespace for token type constants. Do not
     create any instances of this class.
@@ -90,7 +91,7 @@ class Token:
             {name}: {value}
         """
 
-        return f"{self.name}: {self.value}"
+        return f"{self.name.value}: {self.value}"
 
     def __repr__(self) -> str:
         """
@@ -102,7 +103,7 @@ class Token:
             [name, value]
         """
 
-        return str([self.name, self.value])
+        return str([self.name.value, self.value])
 
     def __eq__(self, rhs: Token) -> bool:
         """
