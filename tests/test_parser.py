@@ -71,7 +71,46 @@ def test_fizzbuzz():
     ]
 
 
+def test_modifiers():
+    assert eval(str(fully_parse("⁽*r"))) == [
+        ["lambda", ["1", [[["none", ["general", "*"]]]]]],
+        ["none", ["general", "r"]],
+    ]
+
+    assert eval(str(fully_parse("vv+"))) == [
+        [
+            "monadic_modifier",
+            ["v", [["monadic_modifier", ["v", [["none", ["general", "+"]]]]]]],
+        ]
+    ]
+
+    assert eval(str(fully_parse("‡₌*ġḭd†"))) == [
+        [
+            "lambda",
+            [
+                "1",
+                [
+                    [
+                        "dyadic_modifier",
+                        [
+                            "₌",
+                            [
+                                ["none", ["general", "*"]],
+                                ["none", ["general", "ġ"]],
+                            ],
+                        ],
+                    ],
+                    ["none", ["general", "ḭ"]],
+                ],
+            ],
+        ],
+        ["none", ["general", "d"]],
+        ["none", ["general", "†"]],
+    ]
+
+
 if __name__ == "__main__":  # For testing outside of the workflow
     test_basic()
     test_fizzbuzz()
+    test_modifiers()
     print("everything parsed")  # haha bad joke frick you if you say no

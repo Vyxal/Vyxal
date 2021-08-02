@@ -100,6 +100,11 @@ def test_variables():
         "→variable_name", [Token(TokenType.VARIABLE_SET, "variable_name")]
     )
 
+    assert token_equal(
+        "→←",
+        [Token(TokenType.VARIABLE_SET, ""), Token(TokenType.VARIABLE_GET, "")],
+    )
+
 
 if __name__ == "__main__":  # For testing outside of the workflow
     test_single_token()
