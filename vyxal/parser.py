@@ -390,6 +390,3 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             structures.append(Structure(StructureType.NONE, head))
 
     return structures
-
-
-print(parse(lexer.tokenise("@triple:1|3*;")))
