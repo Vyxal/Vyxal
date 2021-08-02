@@ -106,7 +106,7 @@ def test_variables():
     )
 
 
-if __name__ == "__main__":  # For testing outside of the workflow
+if __name__ == "__main__":
     test_single_token()
     test_one_plus_one()
     test_strings()

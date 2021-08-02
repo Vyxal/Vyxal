@@ -109,8 +109,8 @@ def test_modifiers():
     ]
 
 
-if __name__ == "__main__":  # For testing outside of the workflow
+if __name__ == "__main__":
     test_basic()
     test_fizzbuzz()
     test_modifiers()
-    print("everything parsed")
+    print("everything passed")
