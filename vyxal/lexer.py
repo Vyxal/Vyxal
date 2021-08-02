@@ -195,7 +195,6 @@ def tokenise(source: str) -> list[Token]:
                 contextual_token_value += source.popleft()
             tokens.append(Token(TokenType.LITERAL, contextual_token_value))
         elif head in "→←":
-            tokens.append(Token(TokenType.GENERAL, head))
             contextual_token_value = ""
             while source and source[0] in string.ascii_letters + "_":
                 contextual_token_value += source.popleft()

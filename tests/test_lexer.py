@@ -55,10 +55,15 @@ def test_one_plus_one():
 
 
 def test_strings():
-    assert token_equal("`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")])
-    assert token_equal("`Hello, World!", [Token(TokenType.STRING, "Hello, World!")])
     assert token_equal(
-        "`Escaped backtick? \``", [Token(TokenType.STRING, "Escaped backtick? \\`")]
+        "`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")]
+    )
+    assert token_equal(
+        "`Hello, World!", [Token(TokenType.STRING, "Hello, World!")]
+    )
+    assert token_equal(
+        "`Escaped backtick? \``",
+        [Token(TokenType.STRING, "Escaped backtick? \\`")],
     )
     assert token_equal("\`", [Token(TokenType.STRING, "`")])
     assert token_equal(
@@ -90,10 +95,17 @@ def test_numbers():
     # TODO: More number cases
 
 
+def test_variables():
+    assert token_equal(
+        "→variable_name", [Token(TokenType.VARIABLE_SET, "variable_name")]
+    )
+
+
 if __name__ == "__main__":  # For testing outside of the workflow
     test_single_token()
     test_one_plus_one()
     test_strings()
     test_comments()
     test_numbers()
+    test_variables()
     print("everything passed.")

@@ -74,3 +74,4 @@ def test_fizzbuzz():
 if __name__ == "__main__":  # For testing outside of the workflow
     test_basic()
     test_fizzbuzz()
+    print("everything parsed")  # haha bad joke frick you if you say no
