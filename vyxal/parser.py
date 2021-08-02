@@ -99,7 +99,7 @@ class Structure:
         return str([self.name.value, self.branches])
 
 
-STRUCTURE_OVERVIEW = {
+STRUCTURE_INFORMATION = {
     # (Name, Closing character)
     "[": (StructureType.IF_STMT, "]"),
     "(": (StructureType.FOR_LOOP, ")"),
@@ -113,8 +113,8 @@ STRUCTURE_OVERVIEW = {
     "⟨": (StructureType.LIST, "⟩"),
 }
 
-CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
-OPENING_CHARACTERS = "".join(STRUCTURE_OVERVIEW.keys())
+CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
+OPENING_CHARACTERS = "".join(STRUCTURE_INFORMATION.keys())
 MONADIC_MODIFIERS = list("v⁽&~ß")
 DYADIC_MODIFIERS = list("₌‡₍")
 TRIADIC_MODIFIERS = list("≬")
@@ -213,8 +213,8 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
     while tokens:
         head = tokens.popleft()
         if head.value in OPENING_CHARACTERS:
-            structure_name = STRUCTURE_OVERVIEW[head.value][0]
-            bracket_stack.append(STRUCTURE_OVERVIEW[head.value][1])
+            structure_name = STRUCTURE_INFORMATION[head.value][0]
+            bracket_stack.append(STRUCTURE_INFORMATION[head.value][1])
             branches = [[]]
             # important: each branch is a list of tokens, hence why
             # it's a double nested list to start with - each
@@ -230,7 +230,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                 token: lexer.Token = tokens.popleft()
                 if token.value in OPENING_CHARACTERS:
                     branches[-1].append(token)
-                    bracket_stack.append(STRUCTURE_OVERVIEW[token.value][-1])
+                    bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
 
                 elif token.value == "|":
                     if len(bracket_stack) == 1:
