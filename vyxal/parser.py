@@ -291,7 +291,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                     lexer.Token(lexer.TokenType.GENERAL, "M"),
                 )
                 # laziness ftw
-            elif structure_name == StructureType.LAMBDA_MAP:
+            elif structure_name == StructureType.LAMBDA_FILTER:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
                 structure_name = StructureType.LAMBDA
@@ -300,7 +300,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                     lexer.Token(lexer.TokenType.GENERAL, "F"),
                 )
                 # laziness ftw
-            elif structure_name == StructureType.LAMBDA_MAP:
+            elif structure_name == StructureType.LAMBDA_SORT:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
                 structure_name = StructureType.LAMBDA
