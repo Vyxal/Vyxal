@@ -18,69 +18,24 @@ class StructureType:
     """
     A class providing a namespace for structure type constants. Do not
     create any instances of this class.
-
-    Attributes
-    ----------
-
-    NONE : str
-        The generic structure.
-
-    IF_STMT : str
-        If statement structure.
-
-    FOR_LOOP : str
-        For loop structure.
-
-    WHILE_LOOP : str
-        While loop structure.
-
-    FUNCTION : str
-        Function structure.
-
-    LAMBDA : str
-        Lambda structure. Note that the other lambda types
-        (map, filter and sort) are just lambdas followed by the
-        appropriate element token. Hence, their attributes won't be
-        listed here.
-
-    FUNCTION_REF : str
-        Function reference structure.
-
-    VARIABLE_GET : str
-        Variable retrieval.
-
-    VARIABLE_SET : str
-        Variable assignment.
-
-    LIST : str
-        List literal.
-
-    MONADIC_MODIFIER : str
-        A monadic modifier - takes the next element
-
-    DYADIC_MODIFIER : str
-        A dyadic modifier - takes the next two elements
-
-    TRIADIC_MODIFIER : str
-        A triadic modifier - takes the next three elements
     """
 
-    NONE: str = "none"
-    IF_STMT: str = "if_stmt"
-    FOR_LOOP: str = "for_loop"
-    WHILE_LOOP: str = "while_loop"
-    FUNCTION: str = "function"
-    LAMBDA: str = "lambda"
-    FUNCTION_REF: str = "function_ref"
-    VARIABLE_GET: str = "variable_get"
-    VARIABLE_SET: str = "variable_set"
-    LAMBDA_MAP: str = "lambda_map"
-    LAMBDA_FILTER: str = "lambda_filter"
-    LAMBDA_SORT: str = "lambda_sort"
-    LIST: str = "list"
-    MONADIC_MODIFIER: str = "monadic_modifier"
-    DYADIC_MODIFIER: str = "dyadic_modifier"
-    TRIADIC_MODIFIERS: str = "triadic_modifier"
+    NONE = "none"
+    IF_STMT = "if_stmt"
+    FOR_LOOP = "for_loop"
+    WHILE_LOOP = "while_loop"
+    FUNCTION = "function"
+    LAMBDA = "lambda"
+    FUNCTION_REF = "function_ref"
+    VARIABLE_GET = "variable_get"
+    VARIABLE_SET = "variable_set"
+    LAMBDA_MAP = "lambda_map"
+    LAMBDA_FILTER = "lambda_filter"
+    LAMBDA_SORT = "lambda_sort"
+    LIST = "list"
+    MONADIC_MODIFIER = "monadic_modifier"
+    DYADIC_MODIFIER = "dyadic_modifier"
+    TRIADIC_MODIFIERS = "triadic_modifier"
 
 
 class Structure:
@@ -109,8 +64,8 @@ class Structure:
     def __init__(
         self, structure_name: str, structure_branches: list[list[lexer.Token]]
     ):
-        self.name: str = structure_name
-        self.branches: list[list[lexer.Token]] = structure_branches
+        self.name = structure_name
+        self.branches = structure_branches
 
     def __str__(self) -> str:
         """
@@ -138,7 +93,7 @@ class Structure:
         return str([self.name, self.branches])
 
 
-STRUCTURE_OVERVIEW: dict[str, tuple[str]] = {
+STRUCTURE_OVERVIEW = {
     # (Name, Closing character)
     "[": (StructureType.IF_STMT, "]"),
     "(": (StructureType.FOR_LOOP, ")"),
@@ -152,11 +107,11 @@ STRUCTURE_OVERVIEW: dict[str, tuple[str]] = {
     "⟨": (StructureType.LIST, "⟩"),
 }
 
-CLOSING_CHARACTERS: str = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
-OPENING_CHARACTERS: str = "".join(STRUCTURE_OVERVIEW.keys())
-MONADIC_MODIFIERS: list[str] = list("v⁽&~ß")
-DYADIC_MODIFIERS: list[str] = list("₌‡₍")
-TRIADIC_MODIFIERS: list[str] = list("≬")
+CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_OVERVIEW.values()])
+OPENING_CHARACTERS = "".join(STRUCTURE_OVERVIEW.keys())
+MONADIC_MODIFIERS = list("v⁽&~ß")
+DYADIC_MODIFIERS = list("₌‡₍")
+TRIADIC_MODIFIERS = list("≬")
 # The modifiers are stored as lists to allow for potential digraph
 # modifiers.
 
@@ -240,17 +195,17 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
     list[Structure]
         A list of structures within the program.
     """
-    structures: list[Structure] = []
-    bracket_stack: list[str] = []  # all currently open structures
-    tokens: deque = deque(tokens)
-    branches: list[list[lexer.Token]] = []  # This will serve as a way
+    structures = []
+    bracket_stack = []  # all currently open structures
+    tokens = deque(tokens)
+    branches = []  # This will serve as a way
     # to keep track of all the
     # branches of the structure
 
-    structure_name: str = StructureType.NONE
+    structure_name = StructureType.NONE
 
     while tokens:
-        head: lexer.Token = tokens.popleft()
+        head = tokens.popleft()
         if head.value in OPENING_CHARACTERS:
             structure_name = STRUCTURE_OVERVIEW[head.value][0]
             bracket_stack.append(STRUCTURE_OVERVIEW[head.value][1])
@@ -260,9 +215,6 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             # token gets appended to the last branch in the branches
             # list.
 
-            CLOSING_TOKEN: lexer.Token = lexer.Token(
-                lexer.TokenType.GENERAL, bracket_stack[0]
-            )
             while tokens and bracket_stack:
                 # that is, while there are still tokens to consider,
                 # while we are still in the structure and while the
@@ -311,7 +263,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                                     lambdas are just normal lambdas +
                                     an element.
             """
-            after_token: Structure = None
+            after_token = None
             if structure_name == StructureType.FOR_LOOP:
                 if len(branches) > 1:
                     branches[0] = variable_name(branches[0])

@@ -41,14 +41,14 @@ class TokenType:
         or just a simple element.
     """
 
-    STRING: str = "string"
-    NUMBER: str = "number"
-    NAME: str = "name"
-    GENERAL: str = "general"
-    COMPRESSED_NUMBER: str = "compressed_number"
-    COMPRESSED_STRING: str = "compressed_string"
-    VARIABLE_GET: str = "variable_get"
-    VARIABLE_SET: str = "variable_set"
+    STRING = "string"
+    NUMBER = "number"
+    NAME = "name"
+    GENERAL = "general"
+    COMPRESSED_NUMBER = "compressed_number"
+    COMPRESSED_STRING = "compressed_string"
+    VARIABLE_GET = "variable_get"
+    VARIABLE_SET = "variable_set"
 
 
 class Token:
@@ -76,8 +76,8 @@ class Token:
     """
 
     def __init__(self, token_name: str, token_value: str):
-        self.name: str = token_name
-        self.value: str = token_value
+        self.name = token_name
+        self.value = token_value
 
     def __str__(self) -> str:
         """
@@ -141,10 +141,10 @@ def tokenise(source: str) -> list[Token]:
         Each token is represented as a Token object.
     """
 
-    tokens: list[Token] = []
-    source: collections.deque = collections.deque(source)
+    tokens = []
+    source = collections.deque(source)
 
-    contextual_token_value: str = ""
+    contextual_token_value = ""
 
     while source:
         # By treating the program as a queue, we can dequeue elements
@@ -165,7 +165,7 @@ def tokenise(source: str) -> list[Token]:
             # reached.
             contextual_token_value = ""
             while source and source[0] != head:
-                character: str = source.popleft()
+                character = source.popleft()
                 if head == "`" and character == "\\":
                     # Handle the escape by just dequeueing the next
                     # character
@@ -173,7 +173,7 @@ def tokenise(source: str) -> list[Token]:
                         contextual_token_value += "\\" + source.popleft()
                 else:
                     contextual_token_value += character
-            token_type: str = ""
+            token_type = ""
             if head == "`":
                 token_type = TokenType.STRING
             elif head == "»":
