@@ -77,16 +77,3 @@ Do so increasing the epicness of your gamer level and makes everyone very happy.
 ### You are doing something not listed here
 
 Ask in the Vyxal chatroom. We're happy to direct you to the right place.
-
-
-## Styleguides
-
-Around here, we use black for linting python.
-
-When creating a commit message:
-
-- Use the present tense ("Add feature" not "Added feature")
-- Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-- Limit the first line to 72 characters or less
-- Reference issues and pull requests liberally after the first line
-- Consider starting the commit message with a relevant emoji.
