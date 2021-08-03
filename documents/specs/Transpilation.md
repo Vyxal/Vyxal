@@ -94,4 +94,30 @@ def FN_"""function name"""(parameters, *, ctx):
     return stack
 ```
     
+### Lambdas
+
+```python
+@implicits("ctx")
+def _lambda_"""(x := secrets.token_hex(16))"""(parameters, arity, self, *, ctx):
+    this = _lambda_"""x"""
+    overloaded_arity = False
     
+    if "arity_overload" in dir(self): overloaded_arity = self.arity_overload
+    
+    if arity and arity != """defined arity""": stack = pop(parameters, arity)
+    elif overloaded_arity: stack = pop(parameters, arity)
+    else: stack = pop(parameters, """defined arity""")
+    
+    context_values.append(stack[::])
+    input_level += 1
+    input_values[input_level] = [stack[::], 0]
+    
+    """transpiled body code"""
+    ret = pop(stack) 
+    context_values.pop()
+    input_level -= 1
+    
+    return ret
+stack.append(_lambda_"""x""")
+```
+   
