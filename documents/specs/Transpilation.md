@@ -34,6 +34,9 @@ third, rhs, lhs = pop(stack, 3); stack.append(expr)
 ```
 
 ## Structures
+
+These will all be in main.py
+
 ### If Statements
 
 ```python
@@ -142,3 +145,15 @@ stack.append(temporary_list[::])
 - Fn ref: `stack.append(FN_"""name""")`
 - Variable get: `stack.append(VAR_"""name""")`
 - Variable set: `VAR_"""name""" = pop(stack)`
+
+
+## Modifiers
+These actually go in commmands.py
+
+The transpiler in `main.py` will wrap each branch except for the modifier character in a lambda (if it already is a lambda, it stays as a lambda). This is so that the functions can be popped off the stack and put into variables. E.g.
+
+```python
+function_B, function_A = pop(stack, 2)
+```
+
+The things in commands.py don't need to follow the element template. They can just be strings.
