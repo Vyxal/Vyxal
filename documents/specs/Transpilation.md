@@ -87,6 +87,7 @@ def FN_"""function name"""(parameters, *, ctx):
     input_level += 1
     stack = []
     """processed parameters"""
+    input_values[input_level] = [stack[::], 0]
     """transpiled function code"""
     context_values.pop()
     input_level -= 1
