@@ -121,3 +121,24 @@ def _lambda_"""(x := secrets.token_hex(16))"""(parameters, arity, self, *, ctx):
 stack.append(_lambda_"""x""")
 ```
    
+### Lists
+
+```python
+temporary_list = []
+
+def list_item(s):
+    stack = s[::]
+    """list code"""
+
+temporary_list.append(list_item(stack))
+
+# continue this as much as needed
+
+stack.append(temporary_list[::])
+```
+
+### Function Reference and Variables
+
+- Fn ref: `stack.append(FN_"""name""")`
+- Variable get: `stack.append(VAR_"""name""")`
+- Variable set: `VAR_"""name""" = pop(stack)`
