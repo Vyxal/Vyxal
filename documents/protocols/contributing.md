@@ -65,12 +65,14 @@ Tell us in the Vyxal chatroom, and we'll respond accordingly.
 
 ### You want to make a Pull Request
 
-Wow. You actually took the time to dive into Vyxal source code and make a meaningful change. Aren't you an epic gamer. Before you merge your changes, make sure to:
+Wow. You actually took the time to dive into Vyxal source code and make a meaningful change. Aren't you an epic gamer! Before you merge your changes, make sure to:
 
 - Clearly describe what it is that you are changing.
 - Get approval from two other contributors (via requesting a review)
 - Check that the PR is actually mergable
 - Ensure that it passes the testing workflow
+
+Do so increasing the epicness of your gamer level and makes everyone very happy.
 
 ### You are doing something not listed here
 
