@@ -5,7 +5,7 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.lexer import *
-from vyxal.parser import *
+from vyxal.parse import *
 
 
 def fully_parse(program: str) -> list[Structure]:

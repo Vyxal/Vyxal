@@ -1,5 +1,5 @@
 """
-File: parser.py
+File: parse.py
 Description: Once Vyxal programs have been tokenised using lexer.py, the
 next step is to group the tokens into their corresponding structures.
 This is done by treating the tokens as a queue and dequeuing tokens
