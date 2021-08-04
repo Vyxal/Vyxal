@@ -55,7 +55,7 @@ Open an issue and tag it `enhancement`. When doing so, make sure you:
 
 ### You have a complaint, and...
 
-#### You're caird, redwolf or N3buchadnezza
+#### You're <s>caird</s> Dude, redwolf or N3buchadnezza
 
 Place your complaints [here](https://chat.stackexchange.com/rooms/82806/trash).
 
