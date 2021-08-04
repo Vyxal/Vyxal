@@ -1,0 +1,27 @@
+Structure
+  If_Statement
+    `truthy_branch`
+    `falsey_branch`
+    `elif_branches`
+  For_Loop
+    `variable_name`
+    `loop_body`
+  While_Loop
+    `loop_conditions`
+    `loop_body`
+  Function_Definition
+    - `function_name`
+    - `parameters`
+    - `total_parameters`
+    - `function_body`
+  Function_Call
+    - `function_name`
+  Lambda
+    - `arity`
+    - `lambda_body`
+    - `extra_token`
+  Function_Reference
+    - `function_name`
+  List_Literal
+    - `items`
+  
