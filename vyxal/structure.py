@@ -11,7 +11,7 @@ class Structure:
         return "Yesn't"
 
 
-class If_Statement(Structure):
+class IfStatement(Structure):
     def __init__(self, branches: list[list[Structure]]):
         self.truthy = branches[0]
         self.falsey = []
@@ -29,7 +29,7 @@ class If_Statement(Structure):
         return ""
 
 
-class For_Loop(Structure):
+class ForLoop(Structure):
     def __init__(self, branches: list[list[Structure]]):
         self.name = ""
         self.body = []
@@ -44,7 +44,7 @@ class For_Loop(Structure):
         return ""
 
 
-class While_Loop(Structure):
+class WhileLoop(Structure):
     def __init__(self, branches: list[list[Structure]]):
         self.condition = [Structure(["1"])]
         self.body = []
@@ -57,7 +57,7 @@ class While_Loop(Structure):
         return ""
 
 
-class Function_Call(Structure):
+class FunctionCall(Structure):
     def __init__(self, branches: list[list[Structure]]):
         self.parameters = branches[0]
         self.body = None
@@ -80,7 +80,7 @@ class Lambda(Structure):
         return ""
 
 
-class Function_Reference(Structure):
+class FunctionReference(Structure):
     def __init__(self, branches: list[list[Structure]]):
         self.name = branches[0]
 
@@ -88,7 +88,7 @@ class Function_Reference(Structure):
         return ""
 
 
-class List_Literal(Structure):
+class ListLiteral(Structure):
     def __init__(self, branches: list[list["Structure"]]):
         self.items = branches
 
