@@ -1,5 +1,7 @@
 # Vyxal - Terse, Elegant and Readable
 
+[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/does-not-contain-treenuts.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+
 **Vyxal** is the latest addition to the plethora of stack-based languages used for code golfing. But unlike its competitors, Vyxal has a special focus upon readability and elegancy. Indeed, the codepage has been specially chosen to be as mnemonic as possible. Further, constructs from practical languages (such as functions, lambdas and easy list manipulation) are present.
 
 (Vyxal is pronounced Vikesal)
