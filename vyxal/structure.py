@@ -10,6 +10,16 @@ class Structure:
 
         return "Yesn't"
 
+class GenericStatement(Structure):
+    """
+    Elements and so on
+    """
+
+    def __init__(self, branches: list[list["Structure"]]):
+        super().__init__(branches)
+    
+    def transpile(self) -> str:
+        return super().transpile()
 
 class IfStatement(Structure):
     def __init__(self, branches: list[list[Structure]]):

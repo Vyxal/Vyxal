@@ -17,4 +17,16 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     elements pass their arity on to the lambda
     """
 
-    pass
+    if len(branch) == 1:
+        if isinstance(branch[0], structure.GenericStatement):
+            return structure.Lambda([branch[0]])
+            # TODO: Actually get arity
+            # of the element and make that the arity of the lambda being
+            # returned. This'll be possible once we actually get the
+            # command dictionary established
+        elif isinstance(branch[0], structure.Lambda):
+            return branch[0]
+        else:
+            return structure.Lambda(branch)
+    else:
+        return structure.Lambda(branch)
