@@ -15,6 +15,8 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     Turns a list of structures into a single lambda structure. Useful
     for dealing with the functions of modifiers. Note that single
     elements pass their arity on to the lambda
+    
+    Para
     """
 
     if len(branch) == 1:
@@ -30,3 +32,12 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
             return structure.Lambda(branch)
     else:
         return structure.Lambda(branch)
+
+def transpile(program: str) -> str:
+    """
+    Cool
+    stuff
+    here
+    """
+    
+    return ""
