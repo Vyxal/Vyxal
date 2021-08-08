@@ -10,6 +10,16 @@ import parse
 import structure
 
 
+class Context:
+    def __init__(self):
+        self.stack = []
+        self.context_values = [0]
+        self.inputs = []
+
+
+ctx = Context()
+
+
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     """
     Turns a list of structures into a single lambda structure. Useful
@@ -36,6 +46,7 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
 
 def transpile(program: str) -> str:
     program = parse.parse(lexer.tokenise(program))
+    compiled = ""
     for structure in program:
         print(structure)
     return ""
