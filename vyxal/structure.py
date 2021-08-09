@@ -10,6 +10,9 @@ class Structure:
 
         return "Yesn't"
 
+    def __repr__(self):
+        return str([self.__class__, self.branches])
+
 
 class GenericStatement(Structure):
     """
@@ -25,6 +28,7 @@ class GenericStatement(Structure):
 
 class IfStatement(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.truthy = branches[0]
         self.falsey = []
         self.inbetween = []
@@ -43,6 +47,7 @@ class IfStatement(Structure):
 
 class ForLoop(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.name = ""
         self.body = []
 
@@ -58,6 +63,7 @@ class ForLoop(Structure):
 
 class WhileLoop(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.condition = [Structure(["1"])]
         self.body = []
 
@@ -71,6 +77,7 @@ class WhileLoop(Structure):
 
 class FunctionCall(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.parameters = branches[0]
         self.body = None
         if len(branches) >= 2:
@@ -82,6 +89,7 @@ class FunctionCall(Structure):
 
 class Lambda(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.body = branches[-1]
         self.arity = 1
 
@@ -109,6 +117,7 @@ class LambdaSort(Lambda):
 
 class FunctionReference(Structure):
     def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
         self.name = branches[0]
 
     def transpile(self) -> str:
@@ -117,7 +126,32 @@ class FunctionReference(Structure):
 
 class ListLiteral(Structure):
     def __init__(self, branches: list[list["Structure"]]):
+        super().__init__(branches)
         self.items = branches
 
     def transpile(self) -> str:
         return ""
+
+
+class MonadicModifier(Structure):
+    def __init__(self, branches: list[list["Structure"]]):
+        super().__init__(branches)
+
+    def transpile(self) -> str:
+        return super().transpile()
+
+
+class DyadicModifier(Structure):
+    def __init__(self, branches: list[list["Structure"]]):
+        super().__init__(branches)
+
+    def transpile(self) -> str:
+        return super().transpile()
+
+
+class TriadicModifier(Structure):
+    def __init__(self, branches: list[list["Structure"]]):
+        super().__init__(branches)
+
+    def transpile(self) -> str:
+        return super().transpile()

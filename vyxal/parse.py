@@ -15,103 +15,24 @@ from enum import Enum
 
 try:
     import lexer
+    import structure
 except:
     import vyxal.lexer as lexer
-
-
-class StructureType(Enum):
-    """
-    A class providing a namespace for structure type constants. Do not
-    create any instances of this class.
-    """
-
-    NONE = "none"
-    IF_STMT = "if_stmt"
-    FOR_LOOP = "for_loop"
-    WHILE_LOOP = "while_loop"
-    FUNCTION = "function"
-    LAMBDA = "lambda"
-    FUNCTION_REF = "function_ref"
-    VARIABLE_GET = "variable_get"
-    VARIABLE_SET = "variable_set"
-    LAMBDA_MAP = "lambda_map"
-    LAMBDA_FILTER = "lambda_filter"
-    LAMBDA_SORT = "lambda_sort"
-    LIST = "list"
-    MONADIC_MODIFIER = "monadic_modifier"
-    DYADIC_MODIFIER = "dyadic_modifier"
-    TRIADIC_MODIFIERS = "triadic_modifier"
-
-
-class Structure:
-    """
-    A class representing Vyxal structures.
-
-    Attributes
-    ----------
-
-    name : str
-        The name of the structure. Usually a StructureType literal.
-
-    branches : [[lexer.Token]]
-        The branches of the structure.
-
-    Parameters
-    ----------
-
-    structure_name : str
-        The value to use as the name of the structure
-
-    structure_branches : [[lexer.Token]]
-        The value to use as the branches of the structure
-    """
-
-    def __init__(
-        self,
-        structure_name: StructureType,
-        structure_branches: list[list[lexer.Token]],
-    ):
-        self.name = structure_name
-        self.branches = structure_branches
-
-    def __str__(self) -> str:
-        """
-        Return a nicely formatted representation of the structure
-
-        Returns
-        -------
-        str
-            {name}: {value}
-        """
-
-        return f"{self.name.value}: {self.branches}"
-
-    def __repr__(self) -> str:
-        """
-        Returns the structure as a stringified list version of name,
-        value
-
-        Returns
-        -------
-        str
-            [name, value]
-        """
-
-        return str([self.name.value, self.branches])
+    import vyxal.structure as structure
 
 
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)
-    "[": (StructureType.IF_STMT, "]"),
-    "(": (StructureType.FOR_LOOP, ")"),
-    "{": (StructureType.WHILE_LOOP, "}"),
-    "@": (StructureType.FUNCTION, ";"),
-    "λ": (StructureType.LAMBDA, ";"),
-    "ƛ": (StructureType.LAMBDA_MAP, ";"),
-    "'": (StructureType.LAMBDA_FILTER, ";"),
-    "µ": (StructureType.LAMBDA_SORT, ";"),
-    "°": (StructureType.FUNCTION_REF, ";"),
-    "⟨": (StructureType.LIST, "⟩"),
+    "[": (structure.IfStatement, "]"),
+    "(": (structure.ForLoop, ")"),
+    "{": (structure.WhileLoop, "}"),
+    "@": (structure.FunctionCall, ";"),
+    "λ": (structure.Lambda, ";"),
+    "ƛ": (structure.LambdaMap, ";"),
+    "'": (structure.LambdaFilter, ";"),
+    "µ": (structure.LambdaSort, ";"),
+    "°": (structure.FunctionReference, ";"),
+    "⟨": (structure.ListLiteral, "⟩"),
 }
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
@@ -186,7 +107,7 @@ def variable_name(tokens: list[lexer.Token]) -> str:
     return return_name
 
 
-def parse(tokens: list[lexer.Token]) -> list[Structure]:
+def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
     """
     Transforms a tokenised Vyxal program into a list of Structures.
 
@@ -209,7 +130,7 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
     # to keep track of all the
     # branches of the structure
 
-    structure_name = StructureType.NONE
+    structure_name = structure.GenericStatement
 
     while tokens:
         head = tokens.popleft()
@@ -271,55 +192,52 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
                                     an element.
             """
             after_token = None
-            if structure_name == StructureType.FOR_LOOP:
+            if structure_name == structure.ForLoop:
                 if len(branches) > 1:
                     branches[0] = variable_name(branches[0])
                 branches[-1] = parse(branches[-1])
-            elif structure_name == StructureType.FUNCTION:
+            elif structure_name == structure.FunctionCall:
                 print(branches[0])
                 branches[0] = process_parameters(branches[0])
                 if len(branches) > 1:
                     branches[-1] = parse(branches[-1])
-            elif structure_name == StructureType.FUNCTION_REF:
+            elif structure_name == structure.FunctionReference:
                 branches[0] = variable_name(branches)
-            elif structure_name == StructureType.LAMBDA:
+            elif structure_name == structure.Lambda:
                 if len(branches) == 1:
                     # that is, there is only a body - no arity
                     branches.insert(0, "1")
                 else:
                     branches[0] = branches[0].value
                 branches[1] = parse(branches[1])
-            elif structure_name == StructureType.LAMBDA_MAP:
+            elif structure_name == structure.LambdaMap:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
-                structure_name = StructureType.LAMBDA
-                after_token = Structure(
-                    StructureType.NONE,
-                    lexer.Token(lexer.TokenType.GENERAL, "M"),
+                structure_name = structure.Lambda
+                after_token = structure.GenericStatement(
+                    [lexer.Token(lexer.TokenType.GENERAL, "M")]
                 )
                 # laziness ftw
-            elif structure_name == StructureType.LAMBDA_FILTER:
+            elif structure_name == structure.LambdaFilter:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
-                structure_name = StructureType.LAMBDA
-                after_token = Structure(
-                    StructureType.NONE,
-                    lexer.Token(lexer.TokenType.GENERAL, "F"),
+                structure_name = structure.Lambda
+                after_token = structure.GenericStatement(
+                    [lexer.Token(lexer.TokenType.GENERAL, "F")]
                 )
                 # laziness ftw
-            elif structure_name == StructureType.LAMBDA_SORT:
+            elif structure_name == structure.LambdaSort:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
-                structure_name = StructureType.LAMBDA
-                after_token = Structure(
-                    StructureType.NONE,
-                    lexer.Token(lexer.TokenType.GENERAL, "ṡ"),
+                structure_name = structure.Lambda
+                after_token = structure.GenericStatement(
+                    [lexer.Token(lexer.TokenType.GENERAL, "ṡ")],
                 )
                 # laziness ftw
             else:
                 branches = list(map(parse, branches))
 
-            structures.append(Structure(structure_name, branches))
+            structures.append(structure_name(branches))
             if after_token is not None:
                 structures.append(after_token)
         elif head.value in MONADIC_MODIFIERS:
@@ -331,15 +249,10 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
 
             remaining = parse(tokens)
             if head.value == "⁽":
-                structures.append(
-                    Structure(StructureType.LAMBDA, ["1", [[remaining[0]]]])
-                )
+                structures.append(structure.Lambda(["1", [[remaining[0]]]]))
             else:
                 structures.append(
-                    Structure(
-                        StructureType.MONADIC_MODIFIER,
-                        [head.value, [remaining[0]]],
-                    )
+                    structure.MonadicModifier([head.value, [remaining[0]]])
                 )
             structures += remaining[1:]
             break
@@ -347,16 +260,12 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             remaining = parse(tokens)
             if head.value == "‡":
                 structures.append(
-                    Structure(
-                        StructureType.LAMBDA,
-                        ["1", [remaining[0], remaining[1]]],
-                    )
+                    structure.Lambda(["1", [remaining[0], remaining[1]]])
                 )
             else:
                 structures.append(
-                    Structure(
-                        StructureType.DYADIC_MODIFIER,
-                        [head.value, [remaining[0], remaining[1]]],
+                    structure.DyadicModifier(
+                        [head.value, [remaining[0], remaining[1]]]
                     )
                 )
             structures += remaining[2:]
@@ -365,15 +274,13 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             remaining = parse(tokens)
             if head.value == "‡":
                 structures.append(
-                    Structure(
-                        StructureType.LAMBDA,
+                    structure.Lambda(
                         ["1", [remaining[0], remaining[1], remaining[2]]],
                     )
                 )
             else:
                 structures.append(
-                    Structure(
-                        StructureType.TRIADIC_MODIFIERS,
+                    structure.TriadicModifier(
                         [
                             head.value,
                             [remaining[0], remaining[1], remaining[2]],
@@ -387,6 +294,10 @@ def parse(tokens: list[lexer.Token]) -> list[Structure]:
             # with their syntax (probably intentional).
             continue  # ignore it. This also ignores spaces btw
         else:
-            structures.append(Structure(StructureType.NONE, head))
+            structures.append(structure.GenericStatement([head]))
 
     return structures
+
+
+if __name__ == "__main__":
+    print(parse(lexer.tokenise("₁ƛ₍₃₅kF½*∑∴")))
