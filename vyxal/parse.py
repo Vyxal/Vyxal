@@ -297,7 +297,3 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
             structures.append(structure.GenericStatement([head]))
 
     return structures
-
-
-if __name__ == "__main__":
-    print(parse(lexer.tokenise("₁ƛ₍₃₅kF½*∑∴")))
