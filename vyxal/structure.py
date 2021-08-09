@@ -10,6 +10,7 @@ class Structure:
 
         return "Yesn't"
 
+
 class GenericStatement(Structure):
     """
     Elements and so on
@@ -17,9 +18,10 @@ class GenericStatement(Structure):
 
     def __init__(self, branches: list[list["Structure"]]):
         super().__init__(branches)
-    
+
     def transpile(self) -> str:
         return super().transpile()
+
 
 class IfStatement(Structure):
     def __init__(self, branches: list[list[Structure]]):
@@ -88,6 +90,21 @@ class Lambda(Structure):
 
     def transpile(self) -> str:
         return ""
+
+
+class LambdaMap(Lambda):
+    def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
+
+
+class LambdaFilter(Lambda):
+    def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
+
+
+class LambdaSort(Lambda):
+    def __init__(self, branches: list[list[Structure]]):
+        super().__init__(branches)
 
 
 class FunctionReference(Structure):
