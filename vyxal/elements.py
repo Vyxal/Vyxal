@@ -22,7 +22,7 @@ def process_element(expr: str, arity: int) -> str:
         The expression to wrap in boilerplate
 
     arity : int
-        The arity of the element
+        The arity of the element - <= 3
 
     Returns
     -------
@@ -31,7 +31,9 @@ def process_element(expr: str, arity: int) -> str:
         See documents/specs/Transpilation.md for information
     """
 
-    return "Not Implemented Yet"
+    arguments = ", ".join(["third", "rhs", "lhs"][-arity:])
+
+    return f"{arguments} = pop(stack, {arity}, ctx); stack.append({expr})"
 
 
 elements = {
