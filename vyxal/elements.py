@@ -27,16 +27,16 @@ def process_element(expr: str, arity: int) -> str:
     Returns
     -------
 
-    str
+    (str, int)
         See documents/specs/Transpilation.md for information
     """
 
     arguments = ", ".join(["third", "rhs", "lhs"][-arity:])
 
-    return f"{arguments} = pop(stack, {arity}, ctx); stack.append({expr})"
+    return (
+        f"{arguments} = pop(stack, {arity}, ctx); stack.append({expr})",
+        arity,
+    )
 
 
-elements = {
-    # having a dictionary with the same name as the library can't go
-    # wrong now can it? \s
-}
+elements = {"+": process_element("add(lhs, rhs, ctx)", 2)}
