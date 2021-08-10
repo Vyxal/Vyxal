@@ -33,6 +33,9 @@ rhs, lhs = pop(stack, 2); stack.append(expr)
 third, rhs, lhs = pop(stack, 3); stack.append(expr)
 ```
 
+If it is impractical to wrap an element's python equivalent inside of `process_element`, then
+the protocol is to manually define it inside the command dictionary.
+
 ## Structures
 
 These will all be in main.py
