@@ -7,6 +7,7 @@ the python equivalent of command is stored
 import types
 from typing import Union
 from helpers import *
+from copy import deepcopy
 
 # or should that be import helpers?
 
