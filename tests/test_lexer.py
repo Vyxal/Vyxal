@@ -58,10 +58,10 @@ def test_strings():
     assert token_equal("`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")])
     assert token_equal("`Hello, World!", [Token(TokenType.STRING, "Hello, World!")])
     assert token_equal(
-        "`Escaped backtick? \\``",
-        [Token(TokenType.STRING, "Escaped backtick? \\`")],
+        r"`Escaped backtick? \``",
+        [Token(TokenType.STRING, r"Escaped backtick? \`")],
     )
-    assert token_equal("\\`", [Token(TokenType.STRING, "`")])
+    assert token_equal(r"\`", [Token(TokenType.STRING, "`")])
     assert token_equal(
         "k`Hi",
         [
