@@ -8,10 +8,6 @@ import types
 from copy import deepcopy
 from typing import Union
 
-from vyxal.helpers import *
-
-# or should that be import helpers?
-
 
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
