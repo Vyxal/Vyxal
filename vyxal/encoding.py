@@ -21,11 +21,11 @@ def utf8_to_vyxal(code):
     return processed_code
 
 
-'''
+"""
 compression = codepage
 for char in string.printable:
     compression = compression.replace(char, "")
 
 codepage_number_compress = codepage.replace("»", "")
 codepage_string_compress = codepage.replace("«", "")
-'''
+"""

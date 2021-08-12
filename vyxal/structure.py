@@ -1,3 +1,6 @@
+from elements import elements
+
+
 class Structure:
     def __init__(self, branches: list[list["Structure"]]):
         # Don't do anything with the arguments
@@ -135,22 +138,22 @@ class Lambda(Structure):
 def _lambda_{}(parameters, arity, self, *, ctx):
     this = _lambda_{}
     overloaded_arity = False
-    
+
     if "arity_overload" in dir(self): overloaded_arity = self.arity_overload
-    
+
     if arity and arity != {}: stack = pop(parameters, arity)
     elif overloaded_arity: stack = pop(parameters, arity)
     else: stack = pop(parameters, {})
-    
+
     context_values.append(stack[::])
     input_level += 1
     input_values[input_level] = [stack[::], 0]
-    
+
     {}
-    ret = pop(stack) 
+    ret = pop(stack)
     context_values.pop()
     input_level -= 1
-    
+
     return ret
 stack.append(_lambda_{})
 """
