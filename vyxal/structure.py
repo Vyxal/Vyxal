@@ -186,7 +186,7 @@ class FunctionReference(Structure):
         self.name = branches[0]
 
     def transpile(self) -> str:
-        return ""
+        return "stack.append(FN_{})"
 
 
 class ListLiteral(Structure):
@@ -195,7 +195,17 @@ class ListLiteral(Structure):
         self.items = branches
 
     def transpile(self) -> str:
-        return ""
+        # We have to manually build this because we don't know how
+        # many list items there will be.
+
+        temp = "temporary_list = []"
+        temp += (
+            "\ndef list_item(s, ctx):\n    stack = s[::]\n    "
+            "{}\n    return pop(stack, ctx=ctx)\n"
+            "temp_list.append(list_item(stack))\n"
+        ) * len(self.items)
+        temp += "stack.append(temp_list[::])"
+        return temp
 
 
 class MonadicModifier(Structure):
