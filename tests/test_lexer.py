@@ -1,6 +1,5 @@
 import os
 import sys
-from typing import List
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -8,7 +7,7 @@ sys.path.insert(1, THIS_FOLDER)
 from vyxal.lexer import *
 
 
-def token_equal(source: str, expected: List[Token]) -> bool:
+def token_equal(source: str, expected: list[Token]) -> bool:
     """
     Vectorises equality over the tokenised version of the program and
     the expected token list. This is because memory references.

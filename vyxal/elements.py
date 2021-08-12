@@ -6,7 +6,7 @@ the python equivalent of command is stored
 """
 import types
 from copy import deepcopy
-from typing import Tuple, Union
+from typing import Union
 
 from vyxal.helpers import *
 
@@ -15,7 +15,7 @@ from vyxal.helpers import *
 
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
-) -> Tuple[str, int]:
+) -> tuple[str, int]:
     """
     Takes a python expression and adds boilerplate to it corresponding
     to the arity of the element being processed.

@@ -1,45 +1,42 @@
 """
-File: transpile_ast.py
+File: transpile.py
 Description: This module is for transpiling Vyxal to Python
 """
 
 import secrets
-from typing import List, Union
+from typing import Union
 
-from vyxal import elements, helpers, lexer, parse
+from vyxal import elements, helpers, lexer, parse, structure
 from vyxal.lexer import Token, TokenType
-from vyxal.structure import *
 
 
-def lambda_wrap(branch: List[Structure]) -> Lambda:
+def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     """
-    Turns a List of structures into a single lambda  Useful
+    Turns a List of structures into a single lambda. Useful
     for dealing with the functions of modifiers. Note that single
     elements pass their arity on to the lambda
-
-    Para
     """
 
     if len(branch) == 1:
-        if isinstance(branch[0], GenericStatement):
-            return Lambda([branch[0]])
+        if isinstance(branch[0], structure.GenericStatement):
+            return structure.Lambda([branch[0]])
             # TODO: Actually get arity
             # of the element and make that the arity of the lambda being
             # returned. This'll be possible once we actually get the
             # command dictionary established
-        elif isinstance(branch[0], Lambda):
+        elif isinstance(branch[0], structure.Lambda):
             return branch[0]
         else:
-            return Lambda(branch)
+            return structure.Lambda(branch)
     else:
-        return Lambda(branch)
+        return structure.Lambda(branch)
 
 
 def transpile(program: str) -> str:
     return transpile_ast(parse.parse(lexer.tokenise(program)))
 
 
-def transpile_ast(program: List[Structure], indent=0) -> str:
+def transpile_ast(program: list[structure.Structure], indent=0) -> str:
     """
     Transpile a given program (as a parsed list of structures) into Python
     """
@@ -48,10 +45,12 @@ def transpile_ast(program: List[Structure], indent=0) -> str:
     return "\n".join(transpile_single(struct, indent=indent) for struct in program)
 
 
-def transpile_single(token_or_struct: Union[Token, Structure], indent: int) -> str:
+def transpile_single(
+    token_or_struct: Union[Token, structure.Structure], indent: int
+) -> str:
     if isinstance(token_or_struct, Token):
         return transpile_token(token_or_struct, indent)
-    elif isinstance(token_or_struct, Structure):
+    elif isinstance(token_or_struct, structure.Structure):
         return transpile_structure(token_or_struct, indent)
     raise ValueError(
         f"Input must be a Token or Structure, was {type(token_or_struct).__name__}: {token_or_struct}"
@@ -80,15 +79,16 @@ def transpile_token(token: Token, indent: int) -> str:
     raise ValueError(f"Bad token: {token}")
 
 
-def transpile_structure(struct: Structure, indent: int) -> str:
+def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """
     Transpile a single structure.
+    # TODO (exedraj/lyxal, user/ysthakur) implement all structures here
     """
     from vyxal.helpers import indent_str
 
-    if isinstance(struct, GenericStatement):
+    if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0], indent)
-    if isinstance(struct, IfStatement):
+    if isinstance(struct, structure.IfStatement):
         # Add an empty "branch" as the first condition
         branches = [""] + struct.branches
         # Holds indentation level as elifs will be nested inside the else part
@@ -121,7 +121,7 @@ def transpile_structure(struct: Structure, indent: int) -> str:
         res += len(branches) // 2 * indent_str("context_values.pop()", indent)
 
         return res
-    if isinstance(struct, ForLoop):
+    if isinstance(struct, structure.ForLoop):
         var = struct.name if struct.name else f"LOOP{secrets.token_hex(16)}"
         var = f"VAR_{var}"
         return (
@@ -130,7 +130,7 @@ def transpile_structure(struct: Structure, indent: int) -> str:
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    context_values.pop()", indent)
         )
-    if isinstance(struct, WhileLoop):
+    if isinstance(struct, structure.WhileLoop):
         return (
             indent_str(f"condition = pop(stack)", indent)
             + indent_str(f"while boolify(condition):", indent)
@@ -140,25 +140,72 @@ def transpile_structure(struct: Structure, indent: int) -> str:
             + transpile_ast(struct.condition, indent + 1)
             + indent_str("    condition = pop(stack)", indent)
         )
-    if isinstance(struct, FunctionCall):
+    if isinstance(struct, structure.FunctionCall):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, Lambda):
+        return """def FN_{}(parameters, *, ctx):
+    this = FN_{}
+    context_values.append(parameters[-{}:])
+    input_level += 1
+    stack = []
+    {}
+    input_values[input_level] = [stack[::], 0]
+    {}
+    context_values.pop()
+    input_level -= 1
+    return stack
+"""
+    if isinstance(struct, structure.Lambda):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, LambdaMap):
+        return """
+def _lambda_{}(parameters, arity, self, *, ctx):
+    this = _lambda_{}
+    overloaded_arity = False
+
+    if "arity_overload" in dir(self): overloaded_arity = self.arity_overload
+
+    if arity and arity != {}: stack = pop(parameters, arity)
+    elif overloaded_arity: stack = pop(parameters, arity)
+    else: stack = pop(parameters, {})
+
+    context_values.append(stack[::])
+    input_level += 1
+    input_values[input_level] = [stack[::], 0]
+
+    {}
+    ret = pop(stack)
+    context_values.pop()
+    input_level -= 1
+
+    return ret
+stack.append(_lambda_{})
+"""
+    if isinstance(struct, structure.LambdaMap):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, LambdaFilter):
+    if isinstance(struct, structure.LambdaFilter):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, LambdaSort):
+    if isinstance(struct, structure.LambdaSort):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, FunctionReference):
+    if isinstance(struct, structure.FunctionReference):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, ListLiteral):
+        return "stack.append(FN_{})"
+    if isinstance(struct, structure.ListLiteral):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, MonadicModifier):
+        # We have to manually build this because we don't know how
+        # many list items there will be.
+
+        temp = "temporary_List = []"
+        temp += (
+            "\ndef List_item(s, ctx):\n    stack = s[::]\n    "
+            "{}\n    return pop(stack, ctx=ctx)\n"
+            "temp_List.append(List_item(stack))\n"
+        ) * len(self.items)
+        temp += "stack.append(temp_List[::])"
+        return temp
+    if isinstance(struct, structure.MonadicModifier):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, DyadicModifier):
+    if isinstance(struct, structure.DyadicModifier):
         raise Error("I WANT A RAISE")
-    if isinstance(struct, TriadicModifier):
+    if isinstance(struct, structure.TriadicModifier):
         raise Error("I WANT A RAISE")
 
     raise ValueError(struct)

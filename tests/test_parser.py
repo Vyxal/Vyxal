@@ -4,14 +4,12 @@ import sys
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-from typing import List
-
 from vyxal.lexer import *
 from vyxal.parse import *
 from vyxal.structure import Structure
 
 
-def fully_parse(program: str) -> List[Structure]:
+def fully_parse(program: str) -> list[Structure]:
     """
     Essentially, wrap tokenise(program) in parse
 
