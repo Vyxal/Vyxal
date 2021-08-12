@@ -86,7 +86,6 @@ If no condition is present, `1` is used as the code.
 ### Defined Functions
 
 ```python
-@implicits("ctx")
 def FN_"""function name"""(parameters, *, ctx):
     this = FN_"""function name"""
     context_values.append(parameters[-"""total sum of parameters""":])
@@ -103,7 +102,6 @@ def FN_"""function name"""(parameters, *, ctx):
 ### Lambdas
 
 ```python
-@implicits("ctx")
 def _lambda_"""(x := secrets.token_hex(16))"""(parameters, arity, self, *, ctx):
     this = _lambda_"""x"""
     overloaded_arity = False
