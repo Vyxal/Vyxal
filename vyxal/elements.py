@@ -5,16 +5,17 @@ functions directly corresponding to Vyxal elements). It's also where
 the python equivalent of command is stored
 """
 import types
-from typing import Union
-from helpers import *
 from copy import deepcopy
+from typing import Tuple, Union
+
+from vyxal.helpers import *
 
 # or should that be import helpers?
 
 
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
-) -> tuple[str, int]:
+) -> Tuple[str, int]:
     """
     Takes a python expression and adds boilerplate to it corresponding
     to the arity of the element being processed.

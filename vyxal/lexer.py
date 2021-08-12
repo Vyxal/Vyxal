@@ -100,10 +100,10 @@ class Token:
         Returns
         -------
         str
-            [name, value]
+            Token(name, value)
         """
 
-        return str([self.name.value, self.value])
+        return f"Token({repr(self.name.value)}, {repr(self.value)})"
 
     def __eq__(self, rhs: Token) -> bool:
         """

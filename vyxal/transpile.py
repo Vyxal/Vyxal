@@ -1,12 +1,19 @@
 """
-File: transpile.py
+File: transpile_ast.py
 Description: This module is for transpiling Vyxal to Python
 """
 
+import secrets
+from typing import List, Union
 
-def lambda_wrap(branch: list[Structure]) -> Lambda:
+from vyxal import elements, helpers, lexer, parse
+from vyxal.lexer import Token, TokenType
+from vyxal.structure import *
+
+
+def lambda_wrap(branch: List[Structure]) -> Lambda:
     """
-    Turns a list of structures into a single lambda  Useful
+    Turns a List of structures into a single lambda  Useful
     for dealing with the functions of modifiers. Note that single
     elements pass their arity on to the lambda
 
@@ -29,33 +36,67 @@ def lambda_wrap(branch: list[Structure]) -> Lambda:
 
 
 def transpile(program: str) -> str:
-    """Transpile a given program into Python"""
-    return transpile_structures(parse.parse(lexer.tokenise(program)))
+    return transpile_ast(parse.parse(lexer.tokenise(program)))
 
 
-def transpile_structures(program: list[Structure], indent=0) -> str:
+def transpile_ast(program: List[Structure], indent=0) -> str:
     """
-    Transpile a list of structures.
+    Transpile a given program (as a parsed list of structures) into Python
     """
     if not program:
         return helpers.indent_str("pass", indent)
-    return "\n".join(transpile_structure(struct, indent=indent) for struct in program)
+    return "\n".join(transpile_single(struct, indent=indent) for struct in program)
 
 
-def transpile_structure(struct: Structure, indent=0) -> str:
+def transpile_single(token_or_struct: Union[Token, Structure], indent: int) -> str:
+    if isinstance(token_or_struct, Token):
+        return transpile_token(token_or_struct, indent)
+    elif isinstance(token_or_struct, Structure):
+        return transpile_structure(token_or_struct, indent)
+    raise ValueError(
+        f"Input must be a Token or Structure, was {type(token_or_struct).__name__}: {token_or_struct}"
+    )
+
+
+def transpile_token(token: Token, indent: int) -> str:
+    from vyxal.helpers import indent_str
+
+    if token.name == TokenType.STRING:
+        return indent_str(f"stack.append('{token.value}')", indent)
+    elif token.name == TokenType.NUMBER:
+        return indent_str(f"stack.append({token.value})", indent)
+    elif token.name == TokenType.NAME:
+        pass
+    elif token.name == TokenType.GENERAL:
+        pass  # return elements.elements.get(token.value) @lyxal is this right?
+    elif token.name == TokenType.COMPRESSED_NUMBER:
+        pass
+    elif token.name == TokenType.COMPRESSED_STRING:
+        pass
+    elif token.name == TokenType.VARIABLE_GET:
+        pass
+    elif token.name == TokenType.VARIABLE_SET:
+        pass
+    raise ValueError(f"Bad token: {token}")
+
+
+def transpile_structure(struct: Structure, indent: int) -> str:
     """
     Transpile a single structure.
     """
-    from helpers import indent_str, indent_code
+    from vyxal.helpers import indent_str
 
     if isinstance(struct, GenericStatement):
-        pass
+        return transpile_single(struct.branches[0], indent)
     if isinstance(struct, IfStatement):
+        # Add an empty "branch" as the first condition
         branches = [""] + struct.branches
-
+        # Holds indentation level as elifs will be nested inside the else part
         new_indent = indent
+        # This will be returned when the Python code is built
+        res = ""
 
-        for i in range(0, len(branches), 2):
+        for i in range(0, len(branches) - 1, 2):
             cond = branches[i]
             body = branches[i + 1]
 
@@ -63,18 +104,18 @@ def transpile_structure(struct: Structure, indent=0) -> str:
                 # This isn't the first if branch, so nest it a level
                 res += indent_str("else:", new_indent)
                 new_indent += 1
-                res += transpile_structures(cond, new_indent)
+                res += transpile_ast(cond, new_indent)
 
             res += indent_str("condition = pop(stack)", new_indent)
             res += indent_str("context_values.append(condition)", new_indent)
             res += indent_str("if boolify(condition):", new_indent)
-            res += transpile_structures(body, new_indent + 1)
+            res += transpile_ast(body, new_indent + 1)
 
         # There's an extra else body at the end
         if len(branches) % 2 == 1:
             body = branches[-1]
             res += indent_str("else:", new_indent)
-            res += transpile_structures(body, new_indent + 1)
+            res += transpile_ast(body, new_indent + 1)
 
         # Pop all the conditions from before
         res += len(branches) // 2 * indent_str("context_values.pop()", indent)
@@ -86,7 +127,7 @@ def transpile_structure(struct: Structure, indent=0) -> str:
         return (
             indent_str(f"for {var} in iterable(pop(stack)):", indent)
             + indent_str("    context_values.append({var})", indent)
-            + transpile_structures(struct.body, indent + 1)
+            + transpile_ast(struct.body, indent + 1)
             + indent_str("    context_values.pop()", indent)
         )
     if isinstance(struct, WhileLoop):
@@ -94,28 +135,30 @@ def transpile_structure(struct: Structure, indent=0) -> str:
             indent_str(f"condition = pop(stack)", indent)
             + indent_str(f"while boolify(condition):", indent)
             + indent_str("    context_values.append(condition)", indent)
-            + transpile_structures(struct.body, indent + 1)
+            + transpile_ast(struct.body, indent + 1)
             + indent_str("    context_values.pop()", indent)
-            + transpile_structures(struct.condition, indent + 1)
+            + transpile_ast(struct.condition, indent + 1)
             + indent_str("    condition = pop(stack)", indent)
         )
     if isinstance(struct, FunctionCall):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, Lambda):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, LambdaMap):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, LambdaFilter):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, LambdaSort):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, FunctionReference):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, ListLiteral):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, MonadicModifier):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, DyadicModifier):
-        pass
+        raise Error("I WANT A RAISE")
     if isinstance(struct, TriadicModifier):
-        pass
+        raise Error("I WANT A RAISE")
+
+    raise ValueError(struct)

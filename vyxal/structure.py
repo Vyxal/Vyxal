@@ -1,8 +1,8 @@
-from elements import elements
+from typing import List
 
 
 class Structure:
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         # Don't do anything with the arguments
         self.branches = branches
 
@@ -14,7 +14,7 @@ class Structure:
         return "{}"
 
     def __repr__(self):
-        return str([self.__class__, self.branches])
+        return f"{type(self).__name__}({repr(self.branches)})"
 
 
 class GenericStatement(Structure):
@@ -22,7 +22,7 @@ class GenericStatement(Structure):
     Elements and so on
     """
 
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -30,7 +30,7 @@ class GenericStatement(Structure):
 
 
 class IfStatement(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.truthy = branches[0]
         self.falsey = []
@@ -57,7 +57,7 @@ context.values.pop()
 
 
 class ForLoop(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.name = ""
         self.body = []
@@ -78,7 +78,7 @@ for {} in iterable(pop(stack)):
 
 
 class WhileLoop(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.condition = [Structure(["1"])]
         self.body = []
@@ -101,7 +101,7 @@ while boolify(condition):
 
 
 class FunctionCall(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.parameters = branches[0]
         self.body = None
@@ -125,7 +125,7 @@ def FN_{}(parameters, *, ctx):
 
 
 class Lambda(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.body = branches[-1]
         self.arity = 1
@@ -160,7 +160,7 @@ stack.append(_lambda_{})
 
 
 class LambdaMap(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -168,7 +168,7 @@ class LambdaMap(Lambda):
 
 
 class LambdaFilter(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -176,7 +176,7 @@ class LambdaFilter(Lambda):
 
 
 class LambdaSort(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -184,7 +184,7 @@ class LambdaSort(Lambda):
 
 
 class FunctionReference(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, branches: List[List[Structure]]):
         super().__init__(branches)
         self.name = branches[0]
 
@@ -193,26 +193,26 @@ class FunctionReference(Structure):
 
 
 class ListLiteral(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         super().__init__(branches)
         self.items = branches
 
     def transpile(self) -> str:
         # We have to manually build this because we don't know how
-        # many list items there will be.
+        # many List items there will be.
 
-        temp = "temporary_list = []"
+        temp = "temporary_List = []"
         temp += (
-            "\ndef list_item(s, ctx):\n    stack = s[::]\n    "
+            "\ndef List_item(s, ctx):\n    stack = s[::]\n    "
             "{}\n    return pop(stack, ctx=ctx)\n"
-            "temp_list.append(list_item(stack))\n"
+            "temp_List.append(List_item(stack))\n"
         ) * len(self.items)
-        temp += "stack.append(temp_list[::])"
+        temp += "stack.append(temp_List[::])"
         return temp
 
 
 class MonadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -220,7 +220,7 @@ class MonadicModifier(Structure):
 
 
 class DyadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         super().__init__(branches)
 
     def transpile(self) -> str:
@@ -228,7 +228,7 @@ class DyadicModifier(Structure):
 
 
 class TriadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, branches: List[List["Structure"]]):
         super().__init__(branches)
 
     def transpile(self) -> str:

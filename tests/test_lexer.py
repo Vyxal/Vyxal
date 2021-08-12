@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import List
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -7,7 +8,7 @@ sys.path.insert(1, THIS_FOLDER)
 from vyxal.lexer import *
 
 
-def token_equal(source: str, expected: list[Token]) -> bool:
+def token_equal(source: str, expected: List[Token]) -> bool:
     """
     Vectorises equality over the tokenised version of the program and
     the expected token list. This is because memory references.
@@ -55,17 +56,13 @@ def test_one_plus_one():
 
 
 def test_strings():
+    assert token_equal("`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")])
+    assert token_equal("`Hello, World!", [Token(TokenType.STRING, "Hello, World!")])
     assert token_equal(
-        "`Hello, World!`", [Token(TokenType.STRING, "Hello, World!")]
-    )
-    assert token_equal(
-        "`Hello, World!", [Token(TokenType.STRING, "Hello, World!")]
-    )
-    assert token_equal(
-        "`Escaped backtick? \``",
+        "`Escaped backtick? \\``",
         [Token(TokenType.STRING, "Escaped backtick? \\`")],
     )
-    assert token_equal("\`", [Token(TokenType.STRING, "`")])
+    assert token_equal("\\`", [Token(TokenType.STRING, "`")])
     assert token_equal(
         "k`Hi",
         [
