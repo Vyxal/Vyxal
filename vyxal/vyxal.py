@@ -7,7 +7,8 @@ offline.
 
 import lexer
 import parse
-import structure
+import elements
+from structure import *
 
 
 class Context:
@@ -20,9 +21,9 @@ class Context:
 ctx = Context()
 
 
-def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
+def lambda_wrap(branch: list[Structure]) -> Lambda:
     """
-    Turns a list of structures into a single lambda structure. Useful
+    Turns a list of structures into a single lambda  Useful
     for dealing with the functions of modifiers. Note that single
     elements pass their arity on to the lambda
 
@@ -30,26 +31,32 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     """
 
     if len(branch) == 1:
-        if isinstance(branch[0], structure.GenericStatement):
-            return structure.Lambda([branch[0]])
+        if isinstance(branch[0], GenericStatement):
+            return Lambda([branch[0]])
             # TODO: Actually get arity
             # of the element and make that the arity of the lambda being
             # returned. This'll be possible once we actually get the
             # command dictionary established
-        elif isinstance(branch[0], structure.Lambda):
+        elif isinstance(branch[0], Lambda):
             return branch[0]
         else:
-            return structure.Lambda(branch)
+            return Lambda(branch)
     else:
-        return structure.Lambda(branch)
+        return Lambda(branch)
 
 
 def transpile(program: str) -> str:
     program = parse.parse(lexer.tokenise(program))
     compiled = ""
     for structure in program:
-        print(structure)
-    return ""
+        if isinstance(structure, GenericStatement):
+            compiled += (
+                structure.transpile().format(
+                    elements.elements.get(structure.branches[0].value)
+                )
+                + "\n"
+            )
+    return compiled
 
 
 if __name__ == "__main__":
@@ -60,3 +67,4 @@ if __name__ == "__main__":
         # Vyxal REPL ftw
         line = input("   ")
         line = transpile(line)
+        print(line)
