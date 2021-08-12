@@ -12,10 +12,6 @@ from copy import deepcopy
 # or should that be import helpers?
 
 
-def add(lhs, rhs, ctx):
-    return lhs + rhs
-
-
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
 ) -> tuple[str, int]:
@@ -54,10 +50,4 @@ def process_element(
         )
 
 
-elements = {
-    "+": process_element(add, 2),
-    "!": process_element("len(stack)", 0),
-    ":": "lhs = pop(stack, ctx=ctx); stack.append(copy(lhs)); stack.append(copy(lhs))",
-}
-
-print(elements)
+elements = {}

@@ -8,7 +8,7 @@ class Structure:
         Return the transpiled version of the structure
         """
 
-        return "Yesn't"
+        return "{}"
 
     def __repr__(self):
         return str([self.__class__, self.branches])
@@ -42,7 +42,15 @@ class IfStatement(Structure):
         Returns the if statement template
         """
 
-        return ""
+        return """
+condition = pop(stack, ctx=ctx)
+context_values.append(condition)
+if boolify(condition):
+    {}
+else:
+    {}
+context.values.pop()
+"""
 
 
 class ForLoop(Structure):
@@ -58,7 +66,12 @@ class ForLoop(Structure):
             self.body = branches[1]
 
     def transpile(self) -> str:
-        return ""
+        return """
+for {} in iterable(pop(stack)):
+    context_values.append({})
+    {}
+    context_values.pop()
+"""
 
 
 class WhileLoop(Structure):
@@ -72,7 +85,16 @@ class WhileLoop(Structure):
         self.body = branches[-1]
 
     def transpile(self) -> str:
-        return ""
+        return """
+{}
+condition = pop(stack)
+while boolify(condition):
+    context_values.append(condition)
+    {}
+    context_values.pop()
+    {}
+    condition = pop(stack)
+    """
 
 
 class FunctionCall(Structure):
@@ -84,7 +106,19 @@ class FunctionCall(Structure):
             self.body = branches[-1]
 
     def transpile(self) -> str:
-        return ""
+        return """
+def FN_{}(parameters, *, ctx):
+    this = FN_{}
+    context_values.append(parameters[-{}:])
+    input_level += 1
+    stack = []
+    {}
+    input_values[input_level] = [stack[::], 0]
+    {}
+    context_values.pop()
+    input_level -= 1
+    return stack
+"""
 
 
 class Lambda(Structure):
@@ -97,22 +131,53 @@ class Lambda(Structure):
             self.arity = branches[0]
 
     def transpile(self) -> str:
-        return ""
+        return """
+def _lambda_{}(parameters, arity, self, *, ctx):
+    this = _lambda_{}
+    overloaded_arity = False
+    
+    if "arity_overload" in dir(self): overloaded_arity = self.arity_overload
+    
+    if arity and arity != {}: stack = pop(parameters, arity)
+    elif overloaded_arity: stack = pop(parameters, arity)
+    else: stack = pop(parameters, {})
+    
+    context_values.append(stack[::])
+    input_level += 1
+    input_values[input_level] = [stack[::], 0]
+    
+    {}
+    ret = pop(stack) 
+    context_values.pop()
+    input_level -= 1
+    
+    return ret
+stack.append(_lambda_{})
+"""
 
 
 class LambdaMap(Lambda):
     def __init__(self, branches: list[list[Structure]]):
         super().__init__(branches)
 
+    def transpile(self) -> str:
+        return super().transpile() + "\n<MAPPING COMMAND>"
+
 
 class LambdaFilter(Lambda):
     def __init__(self, branches: list[list[Structure]]):
         super().__init__(branches)
 
+    def transpile(self) -> str:
+        return super().transpile() + "\n<FILTERING COMMAND>"
+
 
 class LambdaSort(Lambda):
     def __init__(self, branches: list[list[Structure]]):
         super().__init__(branches)
+
+    def transpile(self) -> str:
+        return super().transpile() + "\nSORTING COMMAND"
 
 
 class FunctionReference(Structure):
