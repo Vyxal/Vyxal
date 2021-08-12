@@ -536,6 +536,7 @@ k∩                                   = "aeiouyAEIOUY"
 kṗ                                   = phi
 k⋏                                   = 2 ** 20
 k⋎                                   = 2 ** 30
+k*                                   = "+-<>[].,"
 ∆c (a: number)                       = math.cos(a) # Cosine
 ∆C (a: number)                       = math.arccos(a) # Arc cosine
 ∆q (a: number, b: number)            = roots of quadratic ax^2 + bx = 0 # Solve quadratic equation
@@ -584,6 +585,10 @@ k⋎                                   = 2 ** 30
 øṀ (a: string)                       = vertical_mirror(a, mapping=flip_slashes_and_brackets) # [ <-> ], ( <-> ), { <-> }, < <-> >, / <-> \
    (otherwise)                       = vectorises
 ø¦ (a: string, b: string)            = vertical_mirror(a, mapping=b) # mapping in the form of ["normal", "flipped"] - custom mapping
+øb (a: string)                       = bracketify(a)
+øe (a: string, b: string)            = enclose b in a
+ø↳ (a: string, b: string, c: number) = pad a right with b to length c
+ø↲ (a: string, b: string, c: number) = pad a left with b to length c
 Þ… (a: list, b: number)              = b evenly distributed over the elements of a
 Þ↓ (a: function, b: any)             = * minimum of b by function a
 Þ↑ (a: function, b: any)             = * maximum of b by function a
