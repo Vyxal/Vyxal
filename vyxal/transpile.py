@@ -248,8 +248,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("return ret", indent + 1)
             + indent_str(f"stack.append(_lambda_{signature})", indent)
         )
+
     if isinstance(struct, structure.FunctionReference):
         return indent_str(f"stack.append(FN_{struct.branches[0]})", indent)
+
     if isinstance(struct, structure.ListLiteral):
         # We have to manually build this because we don't know how
         # many list items there will be.
@@ -268,6 +270,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         temp += indent_str("stack.append(temp_list[::]", indent)
         return temp
+
     if isinstance(struct, structure.MonadicModifier):
         element_A = transpile(lambda_wrap(struct.branches[1][0]))
         return element_A + "\n" + elements.modifiers.get(struct.branches[0])

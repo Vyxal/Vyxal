@@ -196,12 +196,15 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                 if len(branches) > 1:
                     branches[0] = variable_name(branches[0])
                 branches[-1] = parse(branches[-1])
+
             elif structure_name == structure.FunctionCall:
                 branches[0] = process_parameters(branches[0])
                 if len(branches) > 1:
                     branches[-1] = parse(branches[-1])
+
             elif structure_name == structure.FunctionReference:
                 branches[0] = variable_name(branches[0])
+
             elif structure_name == structure.Lambda:
                 if len(branches) == 1:
                     # that is, there is only a body - no arity
@@ -209,6 +212,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                 else:
                     branches[0] = branches[0][0].value
                 branches[1] = parse(branches[1])
+
             elif structure_name == structure.LambdaMap:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
@@ -217,6 +221,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                     [lexer.Token(lexer.TokenType.GENERAL, "M")]
                 )
                 # laziness ftw
+
             elif structure_name == structure.LambdaFilter:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
@@ -225,6 +230,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                     [lexer.Token(lexer.TokenType.GENERAL, "F")]
                 )
                 # laziness ftw
+
             elif structure_name == structure.LambdaSort:
                 branches.insert(0, "1")
                 branches[1] = parse(branches[1])
@@ -233,6 +239,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                     [lexer.Token(lexer.TokenType.GENERAL, "ṡ")],
                 )
                 # laziness ftw
+
             else:
                 branches = list(map(parse, branches))
 
