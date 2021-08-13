@@ -6,6 +6,8 @@ use type annotations here.
 """
 
 import textwrap
+from typing import Union
+import lexer
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
@@ -44,3 +46,7 @@ def indent_code(*code, indent: int = 1) -> str:
         `code`, all indented by `(4 * indent)` spaces, then joined on `\n`.
     """
     return "\n".join(indent_str(line, indent, end="") for line in code) + "\n"
+
+
+def uncompress(token: lexer.Token) -> Union[int, str]:
+    return token.value

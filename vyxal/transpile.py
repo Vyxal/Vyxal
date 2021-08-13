@@ -55,29 +55,35 @@ def transpile_single(
     elif isinstance(token_or_struct, structure.Structure):
         return transpile_structure(token_or_struct, indent)
     raise ValueError(
-        f"Input must be a Token or Structure, was {type(token_or_struct).__name__}: {token_or_struct}"
+        f"Input must be a Token or Structure,"
+        " was {type(token_or_struct).__name__}: {token_or_struct}"
     )
 
 
 def transpile_token(token: Token, indent: int) -> str:
-    from helpers import indent_str
+    from helpers import indent_str, uncompress
+
+    print(token.name, TokenType.GENERAL)
 
     if token.name == TokenType.STRING:
-        return indent_str(f"stack.append('{token.value}')", indent)
+        # Make sure we avoid any ACE exploits
+        string = uncompress(token)  # TODO: Account for -D flag
+        value = string.replace("\\", "\\\\").replace('"', '\\"')
+        return indent_str(f'stack.append("{value}")', indent)
     elif token.name == TokenType.NUMBER:
         return indent_str(f"stack.append({token.value})", indent)
-    elif token.name == TokenType.NAME:
-        pass
     elif token.name == TokenType.GENERAL:
-        pass  # return elements.elements.get(token.value) @lyxal is this right?
+        return elements.elements.get(token.value, ["pass", -1])[0]
     elif token.name == TokenType.COMPRESSED_NUMBER:
-        pass
+        return indent_str(f"stack.append({uncompress(token)})")
     elif token.name == TokenType.COMPRESSED_STRING:
-        pass
+        return indent_str(f"stack.append('{uncompress(token)}')")
+        # No need to check for ACE exploits here because this string
+        # type will only ever contain lower alpha + space.
     elif token.name == TokenType.VARIABLE_GET:
-        pass
+        return indent_str(f"stack.append(VAR_{token.value})")
     elif token.name == TokenType.VARIABLE_SET:
-        pass
+        return indent_str(f"VAR_{token.value} = pop(stack, ctx=ctx)")
     raise ValueError(f"Bad token: {token}")
 
 

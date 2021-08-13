@@ -44,7 +44,6 @@ class TokenType(Enum):
 
     STRING = "string"
     NUMBER = "number"
-    NAME = "name"
     GENERAL = "general"
     COMPRESSED_NUMBER = "compressed_number"
     COMPRESSED_STRING = "compressed_string"
