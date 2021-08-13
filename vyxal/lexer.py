@@ -200,9 +200,13 @@ def tokenise(source: str) -> list[Token]:
                 contextual_token_value += source.popleft()
 
             if head == "→":
-                tokens.append(Token(TokenType.VARIABLE_SET, contextual_token_value))
+                tokens.append(
+                    Token(TokenType.VARIABLE_SET, contextual_token_value)
+                )
             else:
-                tokens.append(Token(TokenType.VARIABLE_GET, contextual_token_value))
+                tokens.append(
+                    Token(TokenType.VARIABLE_GET, contextual_token_value)
+                )
         elif head == "#":
             while source and source[0] != "\n":
                 source.popleft()

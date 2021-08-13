@@ -6,6 +6,9 @@ offline.
 """
 
 from transpile import transpile
+import context
+
+ctx = context.Context()
 
 if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I

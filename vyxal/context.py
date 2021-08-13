@@ -10,5 +10,3 @@ class Context:
         self.context_values = [0]
         self.inputs = []
 
-
-ctx = Context()

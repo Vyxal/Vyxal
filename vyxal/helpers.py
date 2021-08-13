@@ -9,7 +9,7 @@ import textwrap
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
-    r"""
+    """
     Indent a multiline string with 4 spaces.
 
     Parameters
@@ -28,7 +28,7 @@ def indent_str(string: str, indent: int, end="\n") -> str:
 
 
 def indent_code(*code, indent: int = 1) -> str:
-    r"""
+    """
     Indent multiple lines by the given amount, then join on newlines.
 
     Parameters

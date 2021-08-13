@@ -6,8 +6,8 @@ Description: This module is for transpiling Vyxal to Python
 import secrets
 from typing import Union
 
-from vyxal import elements, helpers, lexer, parse, structure
-from vyxal.lexer import Token, TokenType
+import elements, helpers, lexer, parse, structure
+from lexer import Token, TokenType
 
 
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
@@ -42,7 +42,9 @@ def transpile_ast(program: list[structure.Structure], indent=0) -> str:
     """
     if not program:
         return helpers.indent_str("pass", indent)
-    return "\n".join(transpile_single(struct, indent=indent) for struct in program)
+    return "\n".join(
+        transpile_single(struct, indent=indent) for struct in program
+    )
 
 
 def transpile_single(
@@ -58,7 +60,7 @@ def transpile_single(
 
 
 def transpile_token(token: Token, indent: int) -> str:
-    from vyxal.helpers import indent_str
+    from helpers import indent_str
 
     if token.name == TokenType.STRING:
         return indent_str(f"stack.append('{token.value}')", indent)
@@ -84,7 +86,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
     Transpile a single structure.
     # TODO (exedraj/lyxal, user/ysthakur) implement all structures here
     """
-    from vyxal.helpers import indent_str
+    from helpers import indent_str
 
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0], indent)

@@ -259,10 +259,14 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
         elif head.value in DYADIC_MODIFIERS:
             remaining = parse(tokens)
             if head.value == "‡":
-                structures.append(structure.Lambda(["1", [remaining[0], remaining[1]]]))
+                structures.append(
+                    structure.Lambda(["1", [remaining[0], remaining[1]]])
+                )
             else:
                 structures.append(
-                    structure.DyadicModifier([head.value, [remaining[0], remaining[1]]])
+                    structure.DyadicModifier(
+                        [head.value, [remaining[0], remaining[1]]]
+                    )
                 )
             structures += remaining[2:]
             break
