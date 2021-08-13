@@ -71,7 +71,9 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.NUMBER:
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
-        return elements.elements.get(token.value, ["pass\n", -1])[0]
+        return indent_str(
+            elements.elements.get(token.value, ["pass\n", -1])[0], indent
+        )
     elif token.name == TokenType.COMPRESSED_NUMBER:
         return indent_str(f"stack.append({uncompress(token)})")
     elif token.name == TokenType.COMPRESSED_STRING:
@@ -180,32 +182,22 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
                 return (
                     f"def FN_{struct.branches[0][0]}(stack, ctx):\n"
-                    + indent_str("stack = []")
-                    + indent_str(f"this = FN_{struct.branches[0][0]}")
-                    + indent_str("ctx.input_level += 1")
-                    + indent_str(function_parameters)
-                    + indent_str("stack = parameters")
+                    + indent_str("stack = []", indent + 1)
                     + indent_str(
-                        "ctx.input_values[input_level] = [stack[::], 0]"
+                        f"this = FN_{struct.branches[0][0]}", indent + 1
+                    )
+                    + indent_str("ctx.input_level += 1", indent + 1)
+                    + indent_str(function_parameters, indent + 1)
+                    + indent_str("stack = parameters", indent + 1)
+                    + indent_str(
+                        "ctx.input_values[input_level] = [stack[::], 0]",
+                        indent + 1,
                     )
                     + transpile_ast(struct.branches[1], indent + 1)
-                    + "ctx.context_values.pop()"
-                    + "ctx.input_level -= 1"
-                    + "return stack"
+                    + indent_str("ctx.context_values.pop()", indent + 1)
+                    + indent_str("ctx.input_level -= 1", indent + 1)
+                    + indent_str("return stack", indent + 1)
                 )
-
-        return """def FN_{}(parameters, *, ctx):
-    this = FN_{}
-    context_values.append(parameters[-{}:])
-    input_level += 1
-    stack = []
-    {}
-    input_values[input_level] = [stack[::], 0]
-    {}
-    context_values.pop()
-    input_level -= 1
-    return stack
-"""
     if isinstance(struct, structure.Lambda):
         raise Error("I WANT A RAISE")
         return """
