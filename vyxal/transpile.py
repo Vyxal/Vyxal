@@ -134,7 +134,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         var = f"VAR_{var}"
         return (
             indent_str(f"for {var} in iterable(pop(stack)):", indent)
-            + indent_str("    context_values.append({var})", indent)
+            + indent_str(f"    context_values.append({var})", indent)
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    context_values.pop()", indent)
         )
@@ -204,10 +204,31 @@ stack.append(_lambda_{})
         temp += "stack.append(temp_List[::])"
         return temp
     if isinstance(struct, structure.MonadicModifier):
-        raise Error("I WANT A RAISE")
+        element_A = transpile(lambda_wrap(struct.branches[1][0]))
+        return element_A + "\n" + elements.modifiers.get(struct.branches[0])
+
     if isinstance(struct, structure.DyadicModifier):
-        raise Error("I WANT A RAISE")
+        element_A = transpile(lambda_wrap(struct.branches[1][0]))
+        element_B = transpile(lambda_wrap(struct.branches[1][1]))
+        return (
+            element_A
+            + "\n"
+            + element_B
+            + "\n"
+            + elements.modifiers.get(struct.branches[0])
+        )
     if isinstance(struct, structure.TriadicModifier):
-        raise Error("I WANT A RAISE")
+        element_A = transpile(lambda_wrap(struct.branches[1][0]))
+        element_B = transpile(lambda_wrap(struct.branches[1][1]))
+        element_C = transpile(lambda_wrap(struct.branches[1][2]))
+        return (
+            element_A
+            + "\n"
+            + element_B
+            + "\n"
+            + element_C
+            + "\n"
+            + elements.modifiers.get(struct.branches[0])
+        )
 
     raise ValueError(struct)

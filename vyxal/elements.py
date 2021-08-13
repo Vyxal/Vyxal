@@ -48,3 +48,4 @@ def process_element(
 
 
 elements = {}
+modifiers = {}
