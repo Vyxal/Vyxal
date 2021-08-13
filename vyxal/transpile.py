@@ -115,6 +115,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 res += transpile_ast(cond, new_indent)
 
             res += indent_str("condition = pop(stack)", new_indent)
+            res += indent_str("context_values.pop()", new_indent)
             res += indent_str("context_values.append(condition)", new_indent)
             res += indent_str("if boolify(condition):", new_indent)
             res += transpile_ast(body, new_indent + 1)
