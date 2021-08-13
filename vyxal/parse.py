@@ -197,7 +197,6 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                     branches[0] = variable_name(branches[0])
                 branches[-1] = parse(branches[-1])
             elif structure_name == structure.FunctionCall:
-                print(branches[0])
                 branches[0] = process_parameters(branches[0])
                 if len(branches) > 1:
                     branches[-1] = parse(branches[-1])
@@ -208,7 +207,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                     # that is, there is only a body - no arity
                     branches.insert(0, "1")
                 else:
-                    branches[0] = branches[0].value
+                    branches[0] = branches[0][0].value
                 branches[1] = parse(branches[1])
             elif structure_name == structure.LambdaMap:
                 branches.insert(0, "1")
@@ -297,7 +296,3 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
             structures.append(structure.GenericStatement([head]))
 
     return structures
-
-
-print(parse(lexer.tokenise("@abc;")))
-print(parse(lexer.tokenise("@abc:1|1 1+;")))
