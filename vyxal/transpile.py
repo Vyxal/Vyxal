@@ -67,21 +67,21 @@ def transpile_token(token: Token, indent: int) -> str:
         # Make sure we avoid any ACE exploits
         string = uncompress(token)  # TODO: Account for -D flag
         value = string.replace("\\", "\\\\").replace('"', '\\"')
-        return indent_str(f'ctx.stack.append("{value}")', indent)
+        return indent_str(f'stack.append("{value}")', indent)
     elif token.name == TokenType.NUMBER:
-        return indent_str(f"ctx.stack.append({token.value})", indent)
+        return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
         return elements.elements.get(token.value, ["pass\n", -1])[0]
     elif token.name == TokenType.COMPRESSED_NUMBER:
-        return indent_str(f"ctx.stack.append({uncompress(token)})")
+        return indent_str(f"stack.append({uncompress(token)})")
     elif token.name == TokenType.COMPRESSED_STRING:
-        return indent_str(f"ctx.stack.append('{uncompress(token)}')")
+        return indent_str(f"stack.append('{uncompress(token)}')")
         # No need to check for ACE exploits here because this string
         # type will only ever contain lower alpha + space.
     elif token.name == TokenType.VARIABLE_GET:
-        return indent_str(f"ctx.stack.append(VAR_{token.value})")
+        return indent_str(f"stack.append(VAR_{token.value})")
     elif token.name == TokenType.VARIABLE_SET:
-        return indent_str(f"VAR_{token.value} = pop(ctx.stack, ctx=ctx)")
+        return indent_str(f"VAR_{token.value} = pop(stack, ctx=ctx)")
     raise ValueError(f"Bad token: {token}")
 
 
@@ -112,7 +112,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 new_indent += 1
                 res += transpile_ast(cond, new_indent)
 
-            res += indent_str("condition = pop(ctx.stack, ctx=ctx)", new_indent)
+            res += indent_str("condition = pop(stack, ctx=ctx)", new_indent)
             res += indent_str("ctx.context_values.pop()", new_indent)
             res += indent_str(
                 "ctx.context_values.append(condition)", new_indent
@@ -136,27 +136,25 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         var = struct.name if struct.name else f"LOOP{secrets.token_hex(16)}"
         var = f"VAR_{var}"
         return (
-            indent_str(
-                f"for {var} in iterable(pop(ctx.stack, ctx=ctx)):", indent
-            )
+            indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)
             + indent_str(f"    ctx.context_values.append({var})", indent)
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, structure.WhileLoop):
         return (
-            indent_str(f"condition = pop(ctx.stack, ctx=ctx)", indent)
+            indent_str(f"condition = pop(stack, ctx=ctx)", indent)
             + indent_str(f"while boolify(condition):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    ctx.context_values.pop()", indent)
             + transpile_ast(struct.condition, indent + 1)
-            + indent_str("    condition = pop(ctx.stack, ctx=ctx)", indent)
+            + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
         if len(struct.branches) == 1:
             # That is, you're calling the function
-            return f"stack += FN_{struct.branches[0][0]}(ctx.stack, ctx=ctx)"
+            return f"stack += FN_{struct.branches[0][0]}(stack, ctx=ctx)"
         else:
             # That is, you're defining the function
             # the
@@ -167,29 +165,33 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 if parameter.isnumeric():
                     parameter_total += int(parameter)
                     function_parameters += (
-                        f"parameters += pop(ctx.stack, {int(parameter)}, ctx)\n"
+                        f"parameters += pop(stack, {int(parameter)}, ctx)\n"
                     )
                 elif parameter == "*":
                     function_parameters += (
                         "parameters += "
-                        + "pop(ctx.stack, pop(ctx.stack, ctx=ctx), ctx)\n"
+                        + "pop(stack, pop(stack, ctx=ctx), ctx)\n"
                     )
                 else:
                     parameter_total += 1
                     function_parameters += (
-                        f"VAR_{parameter} = pop(ctx.stack, ctx=ctx)"
+                        f"VAR_{parameter} = pop(stack, ctx=ctx)"
                     )
 
                 return (
                     f"def FN_{struct.branches[0][0]}(stack, ctx):\n"
-                    + indent_str("ctx.stack = []")
+                    + indent_str("stack = []")
                     + indent_str(f"this = FN_{struct.branches[0][0]}")
                     + indent_str("ctx.input_level += 1")
                     + indent_str(function_parameters)
-                    + indent_str("ctx.stack = parameters")
+                    + indent_str("stack = parameters")
                     + indent_str(
                         "ctx.input_values[input_level] = [stack[::], 0]"
                     )
+                    + transpile_ast(struct.branches[1], indent + 1)
+                    + "ctx.context_values.pop()"
+                    + "ctx.input_level -= 1"
+                    + "return stack"
                 )
 
         return """def FN_{}(parameters, *, ctx):
