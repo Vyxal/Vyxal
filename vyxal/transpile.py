@@ -150,7 +150,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("    condition = pop(stack)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        if len(branches) == 1:
+        if len(struct.branches) == 1:
             # That is, you're calling the function
             return "STUFF()"
         else:
