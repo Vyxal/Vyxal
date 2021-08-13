@@ -181,7 +181,9 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                     )
 
                 return (
-                    f"def FN_{struct.branches[0][0]}(stack, ctx):\n"
+                    indent_str(
+                        f"def FN_{struct.branches[0][0]}(stack, ctx)", indent
+                    )
                     + indent_str("stack = []", indent + 1)
                     + indent_str(
                         f"this = FN_{struct.branches[0][0]}", indent + 1
@@ -190,7 +192,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                     + indent_str(function_parameters, indent + 1)
                     + indent_str("stack = parameters", indent + 1)
                     + indent_str(
-                        "ctx.input_values[input_level] = [stack[::], 0]",
+                        "ctx.input_values[ctx.input_level] = [stack[::], 0]",
                         indent + 1,
                     )
                     + transpile_ast(struct.branches[1], indent + 1)
@@ -199,44 +201,73 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                     + indent_str("return stack", indent + 1)
                 )
     if isinstance(struct, structure.Lambda):
-        raise Error("I WANT A RAISE")
-        return """
-def _lambda_{}(parameters, arity, self, *, ctx):
-    this = _lambda_{}
-    overloaded_arity = False
+        signature = secrets.token_hex(16)
+        # The lambda signature used to be based on time.time() until
+        # I realised just how useless that was, because the calls to
+        # time.time() happened within only a few milliseconds of each
+        # other, meaning int(time.time()) would return the exact same
+        # lambda name for multiple lambdas.
 
-    if "arity_overload" in dir(self): overloaded_arity = self.arity_overload
-
-    if arity and arity != {}: stack = pop(parameters, arity)
-    elif overloaded_arity: stack = pop(parameters, arity)
-    else: stack = pop(parameters, {})
-
-    context_values.append(stack[::])
-    input_level += 1
-    input_values[input_level] = [stack[::], 0]
-
-    {}
-    ret = pop(stack)
-    context_values.pop()
-    input_level -= 1
-
-    return ret
-stack.append(_lambda_{})
-"""
+        return (
+            indent_str(
+                f"def _lambda_{signature}(parameters, arity, self, ctx):",
+                indent,
+            )
+            + indent_str(f"this = _lambda_{signature}", indent + 1)
+            + indent_str(f"overloaded_arity = False", indent + 1)
+            + indent_str(
+                'if "arity_overload" in dir(self):'
+                + "overloaded_arity = self.arity_overload",
+                indent + 1,
+            )
+            + indent_str(
+                f"if arity and arity != {struct.branches[0]}:"
+                + "stack = pop(parameters, arity, ctx))",
+                indent + 1,
+            )
+            + indent_str(
+                "elif overloaded_arity: stack = pop(parameters, arity"
+                + ", ctx",
+                indent + 1,
+            )
+            + indent_str(
+                f"else: stack = pop(parameters, {struct.branches}[0]"
+                + ", ctx)",
+                indent + 1,
+            )
+            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
+            + indent_str("ctx.input_level += 1", indent + 1)
+            + indent_str(
+                "ctx.input_values[ctx.input_level] = [stack[::], 0]",
+                indent + 1,
+            )
+            + transpile_ast(struct.branches[1], indent + 1)
+            + indent_str("ret = pop(stack, ctx=ctx)", indent + 1)
+            + indent_str("ctx.context_values.pop()", indent + 1)
+            + indent_str("ctx.input_level -= 1", indent + 1)
+            + indent_str("return ret", indent + 1)
+            + indent_str(f"stack.append(_lambda_{signature})", indent)
+        )
     if isinstance(struct, structure.FunctionReference):
-        raise Error("I WANT A RAISE")
-        return "stack.append(FN_{})"
+        return indent_str(f"stack.append(FN_{struct.branches[0]})", indent)
     if isinstance(struct, structure.ListLiteral):
-        raise Error("I WANT A RAISE")
         # We have to manually build this because we don't know how
         # many list items there will be.
 
-        temp = "temporary_List = []"
-        temp += (
-            "\ndef List_item(s, ctx):\n    stack = s[::]\n    "
-            "{}\n    return pop(stack, ctx=ctx)\n"
-            "temp_List.append(List_item(stack))\n"
-        ) * len(self.items)
+        temp = indent_str("temporary_list = []", indent)
+        for x in self.items:
+            temp += (
+                indent_str("def list_item(s, ctx):", indent)
+                + indent_str("stack = s[::]", indent + 1)
+                + transpile_ast(x, indent + 1)
+                + indent_str("return pop(stack, ctx=ctx)", indent + 1)
+                + indent_str(
+                    "temporary_list.append(list_item(stack, ctx)", indent
+                )
+            )
+
+        temp += indent_str("stack.append(temp_list[::]", indent)
+
         temp += "stack.append(temp_List[::])"
         return temp
     if isinstance(struct, structure.MonadicModifier):
@@ -244,14 +275,14 @@ stack.append(_lambda_{})
         return element_A + "\n" + elements.modifiers.get(struct.branches[0])
 
     if isinstance(struct, structure.DyadicModifier):
-        element_A = transpile(lambda_wrap(struct.branches[1][0]))
-        element_B = transpile(lambda_wrap(struct.branches[1][1]))
+        element_A = transpile_ast(lambda_wrap(struct.branches[1][0]), indent)
+        element_B = transpile_ast(lambda_wrap(struct.branches[1][1]), indent)
         return (
             element_A
             + "\n"
             + element_B
             + "\n"
-            + elements.modifiers.get(struct.branches[0])
+            + indent_str(elements.modifiers.get(struct.branches[0]), indent)
         )
     if isinstance(struct, structure.TriadicModifier):
         element_A = transpile(lambda_wrap(struct.branches[1][0]))

@@ -201,7 +201,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
                 if len(branches) > 1:
                     branches[-1] = parse(branches[-1])
             elif structure_name == structure.FunctionReference:
-                branches[0] = variable_name(branches)
+                branches[0] = variable_name(branches[0])
             elif structure_name == structure.Lambda:
                 if len(branches) == 1:
                     # that is, there is only a body - no arity
@@ -296,4 +296,3 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
             structures.append(structure.GenericStatement([head]))
 
     return structures
-
