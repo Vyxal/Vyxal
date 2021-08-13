@@ -296,3 +296,4 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
             structures.append(structure.GenericStatement([head]))
 
     return structures
+

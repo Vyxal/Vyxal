@@ -152,9 +152,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
     if isinstance(struct, structure.FunctionCall):
         if len(struct.branches) == 1:
             # That is, you're calling the function
-            return "STUFF()"
+            return f"stack += FN_{struct.branches[0][0]}(stack, ctx=ctx)"
         else:
             # That is, you're defining the function
+            # the
             return "def STUFF(): pass\n"
         return """def FN_{}(parameters, *, ctx):
     this = FN_{}
