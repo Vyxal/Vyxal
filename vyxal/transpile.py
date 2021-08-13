@@ -150,7 +150,12 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("    condition = pop(stack)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        raise Error("I WANT A RAISE")
+        if len(branches) == 1:
+            # That is, you're calling the function
+            return "STUFF()"
+        else:
+            # That is, you're defining the function
+            return "def STUFF(): pass\n"
         return """def FN_{}(parameters, *, ctx):
     this = FN_{}
     context_values.append(parameters[-{}:])

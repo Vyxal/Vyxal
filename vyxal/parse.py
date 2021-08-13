@@ -297,3 +297,7 @@ def parse(tokens: list[lexer.Token]) -> list[structure.Structure]:
             structures.append(structure.GenericStatement([head]))
 
     return structures
+
+
+print(parse(lexer.tokenise("@abc;")))
+print(parse(lexer.tokenise("@abc:1|1 1+;")))
