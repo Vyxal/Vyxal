@@ -187,12 +187,6 @@ def _lambda_{}(parameters, arity, self, *, ctx):
     return ret
 stack.append(_lambda_{})
 """
-    if isinstance(struct, structure.LambdaMap):
-        raise Error("I WANT A RAISE")
-    if isinstance(struct, structure.LambdaFilter):
-        raise Error("I WANT A RAISE")
-    if isinstance(struct, structure.LambdaSort):
-        raise Error("I WANT A RAISE")
     if isinstance(struct, structure.FunctionReference):
         raise Error("I WANT A RAISE")
         return "stack.append(FN_{})"
