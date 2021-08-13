@@ -7,11 +7,12 @@ use type annotations here.
 
 import textwrap
 from typing import Union
-import lexer
+
+from vyxal import lexer
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
-    """
+    r"""
     Indent a multiline string with 4 spaces.
 
     Parameters
@@ -30,7 +31,7 @@ def indent_str(string: str, indent: int, end="\n") -> str:
 
 
 def indent_code(*code, indent: int = 1) -> str:
-    """
+    r"""
     Indent multiple lines by the given amount, then join on newlines.
 
     Parameters
@@ -50,12 +51,11 @@ def indent_code(*code, indent: int = 1) -> str:
 
 def uncompress(token: lexer.Token) -> Union[int, str]:
     """
-    Uncompress the token's value based on the token type
+    Uncompress the token's value based on the token type.
 
     Parameters
     ----------
-
-    token: lexer.token
+    token: lexer.Token
         The token to uncompress. Will have one of the following token
         types: TokenType.STRING, TokenType.COMPRESSED_NUMBER,
         TokenType.COMPRESSED_STRING
@@ -67,6 +67,45 @@ def uncompress(token: lexer.Token) -> Union[int, str]:
         The uncompressed token value. The return type depends on the
         token type.
     """
+    if token.name == lexer.TokenType.COMPRESSED_STRING:
+        return uncompress_str(token.value)
+    if token.name == lexer.TokenType.COMPRESSED_NUMBER:
+        return uncompress_num(token.value)
 
-    # TODO: Implement the compression stuff
     return token.value
+
+
+def uncompress_str(string: str) -> str:
+    """
+    Uncompress a string.
+
+    Parameters
+    ----------
+    string: str
+        The string to uncompress.
+
+    Returns
+    -------
+    str
+        The uncompressed string.
+    """
+    # TODO (lyxal) Implement string (un)compression
+    raise ValueError("Not implemented")
+
+
+def uncompress_num(num: str) -> int:
+    """
+    Uncompress a number.
+
+    Parameters
+    ----------
+    number: str
+        The number to uncompress.
+
+    Returns
+    -------
+    int
+        The uncompressed number.
+    """
+    # TODO (lyxal) Implement number (un)compression
+    raise ValueError("Not implemented")

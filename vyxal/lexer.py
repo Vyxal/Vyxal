@@ -104,27 +104,28 @@ class Token:
 
         return f"Token({repr(self.name.value)}, {repr(self.value)})"
 
-    def __eq__(self, rhs: Token) -> bool:
+    def __eq__(self, rhs) -> bool:
         """
-        Returns whether both tokens have the same attributes, because
+        Return whether both tokens have the same attributes because
         memory addresses won't be the same.
 
         Parameters
         ----------
 
-        rhs : Token
-            The token to compare.
+        rhs : object
+            An object to compare this token with.
 
         Returns
         -------
 
-        True iff the two token names and values are the same.
+        True iff `rhs` is a token and has the same name and value.
         """
-
+        if not isinstance(rhs, Token):
+            return False
         return self.name == rhs.name and self.value == rhs.value
 
 
-def tokenise(source: str) -> list[Token]:
+def tokenise(source_str: str) -> list[Token]:
     """
     Transform a Vyxal program into a list of tokens
 
@@ -142,7 +143,7 @@ def tokenise(source: str) -> list[Token]:
     """
 
     tokens = []
-    source = collections.deque(source)
+    source: collections.deque[str] = collections.deque(source_str)
 
     contextual_token_value = ""
 
@@ -157,7 +158,6 @@ def tokenise(source: str) -> list[Token]:
             if source:
                 # This has the consequence of making backslahses at the
                 # end of a program not error.
-
                 tokens.append(Token(TokenType.STRING, source.popleft()))
 
         elif head in "`»«":  # String
@@ -173,7 +173,6 @@ def tokenise(source: str) -> list[Token]:
                         contextual_token_value += "\\" + source.popleft()
                 else:
                     contextual_token_value += character
-            token_type = ""
             if head == "`":
                 token_type = TokenType.STRING
             elif head == "»":
@@ -213,7 +212,9 @@ def tokenise(source: str) -> list[Token]:
                 source.popleft()
         elif head in "k∆øÞ¨":
             if source and source[0] != "|":
-                tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
+                tokens.append(
+                    Token(TokenType.GENERAL, head + source.popleft())
+                )
             else:
                 tokens.append(Token(TokenType.GENERAL, head))
 

@@ -16,7 +16,6 @@ def vyxalify(value: Any) -> Any:
     """
     Takes a value and returns it as one of the four types we use here.
     """
-
     if (
         isinstance(value, int)
         or isinstance(value, Rational)
@@ -99,7 +98,7 @@ class LazyList:
                 while len(self.generated) < position + 1:
                     try:
                         self.__next__()
-                    except:
+                    except StopIteration:
                         break
                 return self.generated[position % len(self.generated)]
 
@@ -153,7 +152,7 @@ class LazyList:
             print("⟩", end=end)
 
 
-"""
+r"""
 
 ,--------. ,-----. ,------.   ,-----.         ,--.   ,--.        ,--.
 '--.  .--''  .-.  '|  .-.  \ '  .-.  '.--.    |   `.'   | ,--,--.|  |,-. ,---.

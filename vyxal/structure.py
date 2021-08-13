@@ -41,7 +41,7 @@ class IfStatement(Structure):
 class ForLoop(Structure):
     def __init__(self, branches: list[list[Structure]]):
         super().__init__(branches)
-        self.name = ""
+        self.name = None
         self.body = []
 
         if len(branches) == 1:
@@ -52,6 +52,8 @@ class ForLoop(Structure):
 
 
 class WhileLoop(Structure):
+    """Represents either a while or an infinite loop."""
+
     def __init__(self, branches: list[list[Structure]]):
         super().__init__(branches)
         self.condition = [Structure(["1"])]
