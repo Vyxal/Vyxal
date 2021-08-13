@@ -267,8 +267,6 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
 
         temp += indent_str("stack.append(temp_list[::]", indent)
-
-        temp += "stack.append(temp_List[::])"
         return temp
     if isinstance(struct, structure.MonadicModifier):
         element_A = transpile(lambda_wrap(struct.branches[1][0]))
