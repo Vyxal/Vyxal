@@ -255,7 +255,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         # many list items there will be.
 
         temp = indent_str("temporary_list = []", indent)
-        for x in self.items:
+        for x in struct.items:
             temp += (
                 indent_str("def list_item(s, ctx):", indent)
                 + indent_str("stack = s[::]", indent + 1)
