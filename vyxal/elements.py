@@ -5,11 +5,8 @@ functions directly corresponding to Vyxal elements). It's also where
 the python equivalent of command is stored
 """
 import types
-from typing import Union
-from helpers import *
 from copy import deepcopy
-
-# or should that be import helpers?
+from typing import Union
 
 
 def process_element(
@@ -51,3 +48,4 @@ def process_element(
 
 
 elements = {}
+modifiers = {}

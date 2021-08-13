@@ -8,6 +8,7 @@ ranges and other stuff that needs to be lazily evaluated.
 
 import types
 from typing import Any
+
 from sympy import Rational
 
 
@@ -34,6 +35,7 @@ def lazylist(fn):
     A decorator to turn functions that return generators into functions that
     return LazyLists
     """
+
     def wrapped(*args, **kwargs):
         return LazyList(fn(*args, **kwargs))
 
