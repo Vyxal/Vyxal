@@ -216,12 +216,12 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str(f"this = _lambda_{signature}", indent + 1)
             + indent_str(f"overloaded_arity = False", indent + 1)
             + indent_str(
-                'if "arity_overload" in dir(self):'
+                'if "arity_overload" in dir(self): '
                 + "overloaded_arity = self.arity_overload",
                 indent + 1,
             )
             + indent_str(
-                f"if arity and arity != {struct.branches[0]}:"
+                f"if arity and arity != {struct.branches[0]}: "
                 + "stack = pop(parameters, arity, ctx))",
                 indent + 1,
             )
@@ -231,7 +231,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str(
-                f"else: stack = pop(parameters, {struct.branches}[0]"
+                f"else: stack = pop(parameters, {struct.branches[0]}[0]"
                 + ", ctx)",
                 indent + 1,
             )
