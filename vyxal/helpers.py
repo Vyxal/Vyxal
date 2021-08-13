@@ -49,4 +49,24 @@ def indent_code(*code, indent: int = 1) -> str:
 
 
 def uncompress(token: lexer.Token) -> Union[int, str]:
+    """
+    Uncompress the token's value based on the token type
+
+    Parameters
+    ----------
+
+    token: lexer.token
+        The token to uncompress. Will have one of the following token
+        types: TokenType.STRING, TokenType.COMPRESSED_NUMBER,
+        TokenType.COMPRESSED_STRING
+
+
+    Returns
+    -------
+    int | str
+        The uncompressed token value. The return type depends on the
+        token type.
+    """
+
+    # TODO: Implement the compression stuff
     return token.value
