@@ -292,7 +292,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
             # with their syntax (probably intentional).
             continue  # ignore it. This also ignores spaces btw
         else:
-            structures.append(structure.GenericStatement([head]))
+            structures.append(structure.GenericStatement([[head]]))
 
     return structures
 
