@@ -66,9 +66,8 @@ def transpile_token(token: Token, indent: int) -> str:
 
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
-        string = str(uncompress(token))  # TODO: Account for -D flag
-        value = string.replace("\\", "\\\\").replace('"', '\\"')
-        return indent_str(f'stack.append("{value}")', indent)
+        string = uncompress(token)  # TODO: Account for -D flag
+        return indent_str(f'stack.append("{string!r}")', indent)
     elif token.name == TokenType.NUMBER:
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
