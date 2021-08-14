@@ -5,10 +5,10 @@ of Vyxal programs actually happens here, and this is what gets executed
 offline.
 """
 
-from transpile import transpile
-import context
+from vyxal.context import Context
+from vyxal.transpile import transpile
 
-ctx = context.Context()
+ctx = Context()
 
 if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I
