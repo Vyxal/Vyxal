@@ -34,10 +34,11 @@ def process_element(
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx)"
     else:
         pushed = expr
-    return (
+    py_code = (
         f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
         f"stack.append({pushed})"
     )
+    return py_code, arity
 
 
 elements: dict[str, tuple[str, int]] = {}

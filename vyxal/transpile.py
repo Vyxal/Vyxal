@@ -19,7 +19,7 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
 
     if len(branch) == 1:
         if isinstance(branch[0], structure.GenericStatement):
-            return structure.Lambda([branch])
+            return structure.Lambda(1, [branch])
             # TODO: Actually get arity
             # of the element and make that the arity of the lambda being
             # returned. This'll be possible once we actually get the
@@ -27,9 +27,9 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
         elif isinstance(branch[0], structure.Lambda):
             return branch[0]
         else:
-            return structure.Lambda([branch])
+            return structure.Lambda(1, [branch])
     else:
-        return structure.Lambda([branch])
+        return structure.Lambda(1, [branch])
 
 
 def transpile(program: str) -> str:
@@ -129,7 +129,8 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         return res
     if isinstance(struct, structure.ForLoop):
-        var = struct.name if struct.name else f"LOOP{secrets.token_hex(16)}"
+        # TODO (user/ysthakur) make it work with multiple variables
+        var = struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
         var = f"VAR_{var}"
         return (
             indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)
@@ -148,52 +149,42 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        if len(struct.branches) == 1:
-            # That is, you're calling the function
-            return f"stack += FN_{struct.branches[0][0]}(stack, ctx=ctx)"
-        else:
-            # That is, you're defining the function
-            parameter_total = 0
-            function_parameters = ""
+        return f"stack += FN_{struct.name}(stack, ctx=ctx)"
+    if isinstance(struct, structure.FunctionDef):
+        parameter_total = 0
+        function_parameters = ""
 
-            for parameter_token in struct.branches[0][1:]:
-                parameter = parameter_token.value
-                if parameter.isnumeric():
-                    parameter_total += int(parameter)
-                    function_parameters += (
-                        f"parameters += pop(stack, {int(parameter)}, ctx)\n"
-                    )
-                elif parameter == "*":
-                    function_parameters += (
-                        "parameters += "
-                        + "pop(stack, pop(stack, ctx=ctx), ctx)\n"
-                    )
-                else:
-                    parameter_total += 1
-                    function_parameters += (
-                        f"VAR_{parameter} = pop(stack, ctx=ctx)"
-                    )
-
-                return (
-                    indent_str(
-                        f"def FN_{struct.branches[0][0]}(stack, ctx)", indent
-                    )
-                    + indent_str("stack = []", indent + 1)
-                    + indent_str(
-                        f"this = FN_{struct.branches[0][0]}", indent + 1
-                    )
-                    + indent_str("ctx.input_level += 1", indent + 1)
-                    + indent_str(function_parameters, indent + 1)
-                    + indent_str("stack = parameters", indent + 1)
-                    + indent_str(
-                        "ctx.input_values[ctx.input_level] = [stack[::], 0]",
-                        indent + 1,
-                    )
-                    + transpile_ast(struct.branches[1], indent + 1)
-                    + indent_str("ctx.context_values.pop()", indent + 1)
-                    + indent_str("ctx.input_level -= 1", indent + 1)
-                    + indent_str("return stack", indent + 1)
+        for parameter_token in struct.parameters:
+            parameter = parameter_token.value
+            if parameter.isnumeric():
+                parameter_total += int(parameter)
+                function_parameters += (
+                    f"parameters += pop(stack, {int(parameter)}, ctx)\n"
                 )
+            elif parameter == "*":
+                function_parameters += (
+                    "parameters += " + "pop(stack, pop(stack, ctx=ctx), ctx)\n"
+                )
+            else:
+                parameter_total += 1
+                function_parameters += f"VAR_{parameter} = pop(stack, ctx=ctx)"
+
+            return (
+                indent_str(f"def FN_{struct.name}(stack, ctx)", indent)
+                + indent_str("stack = []", indent + 1)
+                + indent_str(f"this = FN_{struct.name}", indent + 1)
+                + indent_str("ctx.input_level += 1", indent + 1)
+                + indent_str(function_parameters, indent + 1)
+                + indent_str("stack = parameters", indent + 1)
+                + indent_str(
+                    "ctx.input_values[ctx.input_level] = [stack[::], 0]",
+                    indent + 1,
+                )
+                + transpile_ast(struct.body, indent + 1)
+                + indent_str("ctx.context_values.pop()", indent + 1)
+                + indent_str("ctx.input_level -= 1", indent + 1)
+                + indent_str("return stack", indent + 1)
+            )
     if isinstance(struct, structure.Lambda):
         signature = secrets.token_hex(16)
         # The lambda signature used to be based on time.time() until
