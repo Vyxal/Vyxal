@@ -306,4 +306,3 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         )
 
     raise ValueError(struct)
-    raise ValueError(struct)

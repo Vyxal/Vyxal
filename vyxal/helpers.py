@@ -90,7 +90,7 @@ def uncompress_str(string: str) -> str:
         The uncompressed string.
     """
     # TODO (lyxal) Implement string (un)compression
-    raise ValueError("Not implemented")
+    raise NotImplementedError()
 
 
 def uncompress_num(num: str) -> int:
@@ -108,4 +108,4 @@ def uncompress_num(num: str) -> int:
         The uncompressed number.
     """
     # TODO (lyxal) Implement number (un)compression
-    raise ValueError("Not implemented")
+    raise NotImplementedError()
