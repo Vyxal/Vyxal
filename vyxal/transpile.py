@@ -77,9 +77,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.COMPRESSED_NUMBER:
         return indent_str(f"stack.append({uncompress(token)})", indent)
     elif token.name == TokenType.COMPRESSED_STRING:
-        return indent_str(f"stack.append('{uncompress(token)}')", indent)
-        # No need to check for ACE exploits here because this string
-        # type will only ever contain lower alpha + space.
+        return indent_str(f"stack.append({uncompress(token)!r})", indent)
     elif token.name == TokenType.VARIABLE_GET:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
