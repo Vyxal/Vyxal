@@ -1,5 +1,9 @@
+from typing import Union
+
+Branch = Union[str, list["Structure"], list["Token"]]
+
 class Structure:
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, *branches: Branch):
         # Don't do anything with the arguments
         self.branches = branches
 
@@ -19,16 +23,16 @@ class GenericStatement(Structure):
     Elements and so on
     """
 
-    def __init__(self, branches: list[list["Structure"]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
     def transpile(self) -> str:
         return super().transpile()
 
 
 class IfStatement(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
         self.truthy = branches[0]
         self.falsey = []
         self.inbetween = []
@@ -39,8 +43,8 @@ class IfStatement(Structure):
 
 
 class ForLoop(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
         self.name = None
         self.body = []
 
@@ -54,9 +58,9 @@ class ForLoop(Structure):
 class WhileLoop(Structure):
     """Represents either a while or an infinite loop."""
 
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
-        self.condition = [Structure(["1"])]
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
+        self.condition = [Structure("1")]
         self.body = []
 
         if len(branches) >= 2:
@@ -65,17 +69,17 @@ class WhileLoop(Structure):
 
 
 class FunctionCall(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
-        self.parameters = branches[0]
+    def __init__(self, parameters: list[Structure], *branches: Branch):
+        super().__init__(*branches)
+        self.parameters = parameters
         self.body = None
-        if len(branches) >= 2:
+        if len(branches) >= 1:
             self.body = branches[-1]
 
 
 class Lambda(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
         self.body = branches[-1]
         self.arity = 1
 
@@ -84,42 +88,42 @@ class Lambda(Structure):
 
 
 class LambdaMap(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class LambdaFilter(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class LambdaSort(Lambda):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class FunctionReference(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        super().__init__(branches)
-        self.name = branches[0]
+    def __init__(self, name: str):
+        super().__init__(name)
+        self.name = name
 
 
 class ListLiteral(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
         self.items = branches
 
 
 class MonadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class DyadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class TriadicModifier(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
-        super().__init__(branches)
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
