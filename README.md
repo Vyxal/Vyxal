@@ -1,6 +1,6 @@
 # Vyxal - Terse, Elegant and Readable
 
-[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/ages-12.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-by-neckbeards.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-with-resentment.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-technical-debt.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/not-a-bug-a-feature.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/you-didnt-ask-for-this.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/winter-is-coming.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-badges.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/0-percent-optimized.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 
 **Vyxal** is the latest addition to the plethora of stack-based languages used for code golfing. But unlike its competitors, Vyxal has a special focus upon readability and elegancy. Indeed, the codepage has been specially chosen to be as mnemonic as possible. Further, constructs from practical languages (such as functions, lambdas and easy list manipulation) are present.
 
@@ -171,7 +171,7 @@ KL2=
 ## Very Special Contributors (alphabetically sorted)
 
 - code-golf se user @2x-1 for helping me establish the fundamentals of Vyxal and being my first collaborator on this journey.
-- @8dion8 for language suggestions and motivation in the MAWP discord group. 
+- @8dion8 for language suggestions and motivation in the MAWP discord group.
 - @Amiller42 for pointing out bugs and fixing bugfixes
 - @chunkybanana for also bug fixing and making PRs
 - @detectivewasif for adding detail to the reference sheet.
