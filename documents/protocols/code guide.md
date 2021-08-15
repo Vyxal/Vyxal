@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Thirteenth revision_
+_Fourteenth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -175,12 +175,4 @@ Instead, we create test files for each file so that they can be all run together
 
 - No directly popping from the stack within element/helper functions. Only pop from the stack in the transpiled versions of each element.
 - Helper functions are to be stand alone functions. That is, they could be used outside of the context of element functions.
-- Functions that require access to flags or functions that directly or indirectly call functions requiring access to flags must be decorated using `@implicits("ctx")`, and their last parameters must be `*` and `ctx`. The `ctx` parameter refers to an object containing settings, the stack, and other values that need to be passed around to various functions. The decorator is from the [implicits package](https://pypi.org/project/implicits/). Here's an example:
-
-```python
-@implicits("ctx")
-def add(lhs, rhs, *, ctx):
-    # body of function
-```
-
-_Note that this revision is far from complete._
+- Whenever you write an element function, make sure you include a `ctx` parameter as the last paramemter. This allows element functions to access values that would otherwise be global variables.
