@@ -130,7 +130,9 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return res
     if isinstance(struct, structure.ForLoop):
         # TODO (user/ysthakur) make it work with multiple variables
-        var = struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
+        var = (
+            struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
+        )
         var = f"VAR_{var}"
         return (
             indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)
