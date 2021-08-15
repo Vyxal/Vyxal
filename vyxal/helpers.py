@@ -8,7 +8,7 @@ use type annotations here.
 import textwrap
 from typing import Union
 
-import lexer
+from vyxal import lexer
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:

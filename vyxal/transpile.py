@@ -6,8 +6,8 @@ Description: This module is for transpiling Vyxal to Python
 import secrets
 from typing import Union
 
-import elements, helpers, lexer, parse, structure
-from lexer import Token, TokenType
+from vyxal import elements, helpers, lexer, parse, structure
+from vyxal.lexer import Token, TokenType
 
 
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
@@ -62,7 +62,7 @@ def transpile_single(
 
 
 def transpile_token(token: Token, indent: int) -> str:
-    from helpers import indent_str, uncompress
+    from vyxal.helpers import indent_str, uncompress
 
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
@@ -90,7 +90,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
     Transpile a single structure.
     # TODO (exedraj/lyxal, user/ysthakur) implement all structures here
     """
-    from helpers import indent_str
+    from vyxal.helpers import indent_str
 
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)
@@ -130,9 +130,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return res
     if isinstance(struct, structure.ForLoop):
         # TODO (user/ysthakur) make it work with multiple variables
-        var = (
-            struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
-        )
+        var = struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
         var = f"VAR_{var}"
         return (
             indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)

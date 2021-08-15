@@ -5,8 +5,8 @@ of Vyxal programs actually happens here, and this is what gets executed
 offline.
 """
 
-from context import Context
-from transpile import transpile
+from vyxal.context import Context
+from vyxal.transpile import transpile
 
 ctx = Context()
 
