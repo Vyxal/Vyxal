@@ -252,7 +252,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                 structures.append(structure.Lambda(1, [[remaining[0]]]))
             else:
                 structures.append(
-                    structure.MonadicModifier(head.value, [remaining[0]])
+                    structure.MonadicModifier(head.value, remaining[0])
                 )
             structures += remaining[1:]
             break
@@ -265,7 +265,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
             else:
                 structures.append(
                     structure.DyadicModifier(
-                        head.value, [remaining[0], remaining[1]]
+                        head.value, remaining[0], remaining[1]
                     )
                 )
             structures += remaining[2:]
@@ -282,7 +282,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                 structures.append(
                     structure.TriadicModifier(
                         head.value,
-                        [remaining[0], remaining[1], remaining[2]],
+                        remaining[0],
+                        remaining[1],
+                        remaining[2],
                     )
                 )
             structures += remaining[3:]

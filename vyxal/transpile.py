@@ -19,7 +19,7 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
 
     if len(branch) == 1:
         if isinstance(branch[0], structure.GenericStatement):
-            return structure.Lambda(1, [branch])
+            return structure.Lambda(1, branch)
             # TODO: Actually get arity
             # of the element and make that the arity of the lambda being
             # returned. This'll be possible once we actually get the
@@ -27,9 +27,9 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
         elif isinstance(branch[0], structure.Lambda):
             return branch[0]
         else:
-            return structure.Lambda(1, [branch])
+            return structure.Lambda(1, branch)
     else:
-        return structure.Lambda(1, [branch])
+        return structure.Lambda(1, branch)
 
 
 def transpile(program: str) -> str:
@@ -259,35 +259,27 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return temp
 
     if isinstance(struct, structure.MonadicModifier):
-        element_A = transpile_ast(
-            [lambda_wrap([struct.branches[1][0]])], indent
+        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
+        return (
+            element_A + "\n" + elements.modifiers.get(struct.modifier, "pass")
         )
-        return element_A + "\n" + elements.modifiers[struct.branches[0]]
 
     if isinstance(struct, structure.DyadicModifier):
-        element_A = transpile_ast(
-            [lambda_wrap([struct.branches[1][0]])], indent
-        )
-        element_B = transpile_ast(
-            [lambda_wrap([struct.branches[1][1]])], indent
-        )
+        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
+        element_B = transpile_ast([lambda_wrap([struct.function_B])], indent)
         return (
             element_A
             + "\n"
             + element_B
             + "\n"
-            + indent_str(elements.modifiers[struct.branches[0]], indent)
+            + indent_str(
+                elements.modifiers.get(struct.modifier, "pass"), indent
+            )
         )
     if isinstance(struct, structure.TriadicModifier):
-        element_A = transpile_ast(
-            [lambda_wrap([struct.branches[1][0]])], indent
-        )
-        element_B = transpile_ast(
-            [lambda_wrap([struct.branches[1][1]])], indent
-        )
-        element_C = transpile_ast(
-            [lambda_wrap([struct.branches[1][2]])], indent
-        )
+        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
+        element_B = transpile_ast([lambda_wrap([struct.function_B])], indent)
+        element_C = transpile_ast([lambda_wrap([struct.function_C])], indent)
         return (
             element_A
             + "\n"
@@ -295,7 +287,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + "\n"
             + element_C
             + "\n"
-            + elements.modifiers[struct.branches[0]]
+            + elements.modifiers.get(struct.modifier, "pass")
         )
 
     raise ValueError(struct)

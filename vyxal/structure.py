@@ -108,15 +108,24 @@ class ListLiteral(Structure):
 
 
 class MonadicModifier(Structure):
-    def __init__(self, *branches: Branch):
+    def __init__(self, modifier: str, *branches: Branch):
         super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
 
 
 class DyadicModifier(Structure):
-    def __init__(self, *branches: Branch):
+    def __init__(self, modifier: str, *branches: Branch):
         super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
+        self.function_B = branches[1]
 
 
 class TriadicModifier(Structure):
-    def __init__(self, *branches: Branch):
+    def __init__(self, modifier: str, *branches: Branch):
         super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
+        self.function_B = branches[1]
+        self.function_C = branches[2]
