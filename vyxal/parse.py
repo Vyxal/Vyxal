@@ -243,6 +243,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
 
             remaining = parse(tokens)
             if head.value == "⁽":
+                # 1-element lambda
                 structures.append(structure.Lambda(1, [[remaining[0]]]))
             else:
                 structures.append(
@@ -253,6 +254,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
         elif head.value in DYADIC_MODIFIERS:
             remaining = parse(tokens)
             if head.value == "‡":
+                # 2-element lambda
                 structures.append(
                     structure.Lambda(1, [remaining[0], remaining[1]])
                 )
@@ -266,7 +268,8 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
             break
         elif head.value in TRIADIC_MODIFIERS:
             remaining = parse(tokens)
-            if head.value == "‡":
+            if head.value == "≬":
+                # 3-element lambda
                 structures.append(
                     structure.Lambda(
                         1, [remaining[0], remaining[1], remaining[2]]

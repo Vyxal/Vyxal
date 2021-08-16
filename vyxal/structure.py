@@ -81,7 +81,6 @@ class Lambda(Structure):
 
 class LambdaMap(Lambda):
     def __init__(self, body: list[Structure]):
-        print("Here")
         super().__init__(1, body)
 
 

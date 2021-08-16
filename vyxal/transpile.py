@@ -7,6 +7,7 @@ import secrets
 from typing import Union
 
 from vyxal import elements, helpers, lexer, parse, structure
+from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 
 
@@ -62,7 +63,6 @@ def transpile_single(
 
 
 def transpile_token(token: Token, indent: int) -> str:
-    from vyxal.helpers import indent_str, uncompress
 
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
@@ -88,9 +88,7 @@ def transpile_token(token: Token, indent: int) -> str:
 def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """
     Transpile a single structure.
-    # TODO (exedraj/lyxal, user/ysthakur) implement all structures here
     """
-    from vyxal.helpers import indent_str
 
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)
