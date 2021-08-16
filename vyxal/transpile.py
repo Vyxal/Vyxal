@@ -288,4 +288,4 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + elements.modifiers.get(struct.modifier, "pass")
         )
 
-    raise ValueError(struct)
+    assert False

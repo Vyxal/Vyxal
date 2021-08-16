@@ -1,8 +1,7 @@
 """
 File: vyxal.py
-Description: This is the main file for the project - the transpilation
-of Vyxal programs actually happens here, and this is what gets executed
-offline.
+Description: This is the main file for the project - you run this file
+to run Vyxal programs offline.
 """
 
 from vyxal.context import Context
@@ -14,6 +13,11 @@ if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I
     # can't.
 
+    # TODO:    Flag handling.
+    # Also,    file handling.
+    # Summary: cli handling.
+
+    # This is called if a file isn't given, just like it used to.
     while True:
         # Vyxal REPL ftw
         line = input("   ")
