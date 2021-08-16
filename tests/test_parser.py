@@ -6,7 +6,6 @@ sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.lexer import *
 from vyxal.parse import *
-from vyxal.structure import *
 
 
 def fully_parse(program: str) -> list[Structure]:
