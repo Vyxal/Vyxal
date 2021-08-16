@@ -186,8 +186,8 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 + indent_str("return stack", indent + 1)
             )
     if isinstance(struct, structure.Lambda):
-        signature = secrets.token_hex(16)
-        # The lambda signature used to be based on time.time() until
+        id_ = secrets.token_hex(16)
+        # The lambda id used to be based on time.time() until
         # I realised just how useless that was, because the calls to
         # time.time() happened within only a few milliseconds of each
         # other, meaning int(time.time()) would return the exact same
@@ -195,10 +195,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         return (
             indent_str(
-                f"def _lambda_{signature}(parameters, arity, self, ctx):",
+                f"def _lambda_{id_}(parameters, arity, self, ctx):",
                 indent,
             )
-            + indent_str(f"this = _lambda_{signature}", indent + 1)
+            + indent_str(f"this = _lambda_{id_}", indent + 1)
             + indent_str("overloaded_arity = False", indent + 1)
             + indent_str(
                 'if "arity_overload" in dir(self): '
@@ -231,7 +231,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.input_level -= 1", indent + 1)
             + indent_str("return ret", indent + 1)
-            + indent_str(f"stack.append(_lambda_{signature})", indent)
+            + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 
     if isinstance(struct, structure.FunctionReference):
