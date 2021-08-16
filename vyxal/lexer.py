@@ -102,7 +102,7 @@ class Token:
             Token(name, value)
         """
 
-        return f"Token({repr(self.name.value)}, {repr(self.value)})"
+        return f"Token({self.name.value!r}, {self.value!r})"
 
     def __eq__(self, rhs) -> bool:
         """
@@ -212,9 +212,7 @@ def tokenise(source_str: str) -> list[Token]:
                 source.popleft()
         elif head in "k∆øÞ¨":
             if source and source[0] != "|":
-                tokens.append(
-                    Token(TokenType.GENERAL, head + source.popleft())
-                )
+                tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
             else:
                 tokens.append(Token(TokenType.GENERAL, head))
 
