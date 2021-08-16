@@ -22,10 +22,7 @@ At the start of the interpreter, an instance of `Context` called `ctx` (think `c
 ```python
 # Simulate main.py
 
-from implicits import implicits
-
 import elements
-
 
 class Context:
     def __init__(self):
