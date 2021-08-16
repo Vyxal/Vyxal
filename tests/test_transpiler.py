@@ -14,5 +14,4 @@ else:
     stack.append(2)
 ctx.context_values.pop()
 """
-    print(py)
     assert py == expected
