@@ -121,7 +121,7 @@ class Token:
         True iff `rhs` is a token and has the same name and value.
         """
         if not isinstance(rhs, Token):
-            return False
+            return NotImplemented
         return self.name == rhs.name and self.value == rhs.value
 
 
@@ -158,6 +158,12 @@ def tokenise(source_str: str) -> list[Token]:
             if source:
                 # This has the consequence of making backslahses at the
                 # end of a program not error.
+
+                # Why? Because say that \ is the last character in a
+                # program. That means that after assigning head, the
+                # source variable is empty. Without checking to make
+                # sure that the source deque isn't empty, popping from
+                # an empty deque would cause an error.
                 tokens.append(Token(TokenType.STRING, source.popleft()))
 
         elif head in "`»«":  # String
