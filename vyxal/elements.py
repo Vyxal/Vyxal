@@ -28,7 +28,10 @@ def process_element(
     (str, int)
         See documents/specs/Transpilation.md for information
     """
-    arguments = ["third", "rhs", "lhs"][-arity:] if arity else "_"
+    if arity:
+        arguments = ["third", "rhs", "lhs"][-arity:]
+    else:
+        arguments = "_"
 
     if isinstance(expr, types.FunctionType):
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx)"
