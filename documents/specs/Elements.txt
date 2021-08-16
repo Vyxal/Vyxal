@@ -586,7 +586,7 @@ k*                                   = "+-<>[].,"
    (otherwise)                       = vectorises
 ø¦ (a: string, b: string)            = vertical_mirror(a, mapping=b) # mapping in the form of ["normal", "flipped"] - custom mapping
 øb (a: string)                       = bracketify(a) # surround in ()
-øe (a: string, b: string)            = enclose b in a # mirrors according to the mapping used by øṀ
+øe (a: string, b: string)            = enclose b in a # b[0:len(b)//2] + a + b[len(b)//2:]
 ø↳ (a: string, b: string, c: number) = pad a right with b to length c
 ø↲ (a: string, b: string, c: number) = pad a left with b to length c
 Þ… (a: list, b: number)              = b evenly distributed over the elements of a
