@@ -241,7 +241,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         # We have to manually build this because we don't know how
         # many list items there will be.
 
-        temp = indent_str("temporary_list = []", indent)
+        temp = indent_str("temp_list = []", indent)
         for x in struct.items:
             temp += (
                 indent_str("def list_item(s, ctx):", indent)
@@ -249,7 +249,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 + transpile_ast(x, indent + 1)
                 + indent_str("return pop(stack, ctx=ctx)", indent + 1)
                 + indent_str(
-                    "temporary_list.append(list_item(stack, ctx)", indent
+                    "temp_list.append(list_item(stack, ctx)", indent
                 )
             )
 
