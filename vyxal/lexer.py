@@ -1,6 +1,6 @@
-"""
-File: lexer.py
-Description: Before Vyxal programs can be grouped into appropriate
+"""lexes Vyxal code
+
+Before Vyxal programs can be grouped into appropriate
 structures, they need to be turned into tokens representing the
 different components of a program. For the full specification on token
 types, go to documents/specs/Lexer.md
@@ -14,37 +14,19 @@ from enum import Enum
 
 
 class TokenType(Enum):
-    """
-    A class providing a namespace for token type constants. Do not
-    create any instances of this class.
+    """Enum describing the possible types that tokens can have
 
-    Attributes
-    ----------
-
-    STRING : str
-        Used to denote that a token is a string.
-
-    VARIABLE_GET : str
-        Used to denote that a token is getting the value of a variable.
-
-    VARIABLE_SET : str
-        Used to denote that a token is setting the value of a variable.
-
-    COMPRESSED_NUMBER : str
-        Used to denote that a token is a compressed number (base-255).
-
-    COMPRESSED_STRING : str
-        Used to denote that a token is a compressed string (base-255).
-
-    GENERAL : str
-        Used to denote that a token does not have a specific type. This
-        kind of token can be anything - a digraph, a structure delimiter
-        or just a simple element.
+    Since this is an Enum, do not instantiate it!
     """
 
     STRING = "string"
     NUMBER = "number"
+
+    # `general` is used to denote that a token does not have a specific type.
+    # This kind of token can be anything - a digraph, a structure delimiter or
+    # just a simple element.
     GENERAL = "general"
+
     COMPRESSED_NUMBER = "compressed_number"
     COMPRESSED_STRING = "compressed_string"
     VARIABLE_GET = "variable_get"
@@ -52,94 +34,29 @@ class TokenType(Enum):
 
 
 class Token:
-    """
-    A class representing tokens of code
-
-    Attributes
-    ----------
-
-    name : str
-        The name of the token. Usually a TokenType literal
-
-    value : str
-        The value of the token
-
-    Parameters
-    ----------
-
-    token_name : str
-        The value to use as the name of the token
-
-    token_value : str
-        The value to use as the value of the token
-
-    """
-
     def __init__(self, token_name: TokenType, token_value: str):
         self.name = token_name
         self.value = token_value
 
     def __str__(self) -> str:
-        """
-        Return a nicely formatted representation of the token
-
-        Returns
-        -------
-
-        str
-            {name}: {value}
-        """
+        """Give a nicely formatted representation of the token"""
 
         return f"{self.name.value}: {self.value}"
 
     def __repr__(self) -> str:
-        """
-        Returns the token as a stringified list version of name, value
-
-        Returns
-        -------
-        str
-            Token(name, value)
-        """
-
+        """Returns the token as a stringified list version of name, value"""
         return f"Token({self.name.value!r}, {self.value!r})"
 
     def __eq__(self, rhs) -> bool:
-        """
-        Return whether both tokens have the same attributes because
-        memory addresses won't be the same.
-
-        Parameters
-        ----------
-
-        rhs : object
-            An object to compare this token with.
-
-        Returns
-        -------
-
-        True iff `rhs` is a token and has the same name and value.
-        """
         if not isinstance(rhs, Token):
             return NotImplemented
         return self.name == rhs.name and self.value == rhs.value
 
 
 def tokenise(source_str: str) -> list[Token]:
-    """
-    Transform a Vyxal program into a list of tokens
+    """Main lexing function: transforms a Vyxal program into a list of tokens
 
-    Parameters
-    ----------
-
-    source : str
-        The Vyxal program to turn into tokens. This will have a utf-8
-        encoding.
-
-    Returns
-    -------
-    list[Token]
-        Each token is represented as a Token object.
+    Returns a list of Token objects.
     """
 
     tokens = []
