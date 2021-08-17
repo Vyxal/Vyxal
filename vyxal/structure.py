@@ -1,3 +1,7 @@
+"""defines structure classes to represent the syntactic components of Vyxal
+
+See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structures.md
+"""
 from typing import Union
 
 Branch = Union[str, list["Structure"], list["Token"]]
@@ -9,9 +13,7 @@ class Structure:
         self.branches = branches
 
     def transpile(self) -> str:
-        """
-        Return the transpiled version of the structure
-        """
+        """Return the transpiled version of the structure"""
 
         return "{}"
 
@@ -20,9 +22,7 @@ class Structure:
 
 
 class GenericStatement(Structure):
-    """
-    Elements and so on
-    """
+    """Generic statements are elements and so on"""
 
     def __init__(self, *branches: Branch):
         super().__init__(*branches)
