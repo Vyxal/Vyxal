@@ -96,7 +96,8 @@ To summarise: don't be a sussy baka with your variable names.
 
 ## Comments and Documentation
 
-[This](https://realpython.com/documenting-python-code/) is a good guide for comments, but here are some guidelines specific to the Vyxal project:
+In general, [Google's style guide](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings)
+is a good set of rules to follow here, but these are some guidelines specific to the Vyxal project:
 
 ### Line Comments
 
@@ -131,7 +132,8 @@ def add(lhs, rhs):
     ...
 ```
 
-- At the start of a helper function to describe what the function is doing 
+- At the start of a helper function to describe what the function is doing (unless the function is all of {not public
+  API, short, and obvious})
 
 ```python
 def function(arg1: type, arg2: type) -> type:
