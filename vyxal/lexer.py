@@ -44,7 +44,6 @@ class TokenType(Enum):
 
     STRING = "string"
     NUMBER = "number"
-    NAME = "name"
     GENERAL = "general"
     COMPRESSED_NUMBER = "compressed_number"
     COMPRESSED_STRING = "compressed_string"
@@ -100,32 +99,33 @@ class Token:
         Returns
         -------
         str
-            [name, value]
+            Token(name, value)
         """
 
-        return str([self.name.value, self.value])
+        return f"Token({self.name.value!r}, {self.value!r})"
 
-    def __eq__(self, rhs: Token) -> bool:
+    def __eq__(self, rhs) -> bool:
         """
-        Returns whether both tokens have the same attributes, because
+        Return whether both tokens have the same attributes because
         memory addresses won't be the same.
 
         Parameters
         ----------
 
-        rhs : Token
-            The token to compare.
+        rhs : object
+            An object to compare this token with.
 
         Returns
         -------
 
-        True iff the two token names and values are the same.
+        True iff `rhs` is a token and has the same name and value.
         """
-
+        if not isinstance(rhs, Token):
+            return NotImplemented
         return self.name == rhs.name and self.value == rhs.value
 
 
-def tokenise(source: str) -> list[Token]:
+def tokenise(source_str: str) -> list[Token]:
     """
     Transform a Vyxal program into a list of tokens
 
@@ -143,7 +143,7 @@ def tokenise(source: str) -> list[Token]:
     """
 
     tokens = []
-    source = collections.deque(source)
+    source: collections.deque[str] = collections.deque(source_str)
 
     contextual_token_value = ""
 
@@ -159,6 +159,11 @@ def tokenise(source: str) -> list[Token]:
                 # This has the consequence of making backslahses at the
                 # end of a program not error.
 
+                # Why? Because say that \ is the last character in a
+                # program. That means that after assigning head, the
+                # source variable is empty. Without checking to make
+                # sure that the source deque isn't empty, popping from
+                # an empty deque would cause an error.
                 tokens.append(Token(TokenType.STRING, source.popleft()))
 
         elif head in "`»«":  # String
@@ -174,7 +179,6 @@ def tokenise(source: str) -> list[Token]:
                         contextual_token_value += "\\" + source.popleft()
                 else:
                     contextual_token_value += character
-            token_type = ""
             if head == "`":
                 token_type = TokenType.STRING
             elif head == "»":

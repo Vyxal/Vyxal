@@ -136,3 +136,10 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Not included by default
+pyvenv.cfg
+Include/
+Scripts/
+sessions/
+.idea

@@ -1,5 +1,10 @@
+from typing import Union
+
+Branch = Union[str, list["Structure"], list["Token"]]
+
+
 class Structure:
-    def __init__(self, branches: list[list["Structure"]]):
+    def __init__(self, *branches: Branch):
         # Don't do anything with the arguments
         self.branches = branches
 
@@ -8,11 +13,24 @@ class Structure:
         Return the transpiled version of the structure
         """
 
-        return "Yesn't"
+        return "{}"
+
+    def __repr__(self):
+        return f"{type(self).__name__}({repr(self.branches)})"
+
+
+class GenericStatement(Structure):
+    """
+    Elements and so on
+    """
+
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
 
 
 class IfStatement(Structure):
-    def __init__(self, branches: list[list[Structure]]):
+    def __init__(self, *branches: Branch):
+        super().__init__(*branches)
         self.truthy = branches[0]
         self.falsey = []
         self.inbetween = []
@@ -21,76 +39,92 @@ class IfStatement(Structure):
             if len(branches) > 2:
                 self.inbetween = branches[1:-1]
 
-    def transpile(self) -> str:
-        """
-        Returns the if statement template
-        """
-
-        return ""
-
 
 class ForLoop(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        self.name = ""
-        self.body = []
-
-        if len(branches) == 1:
-            self.body = branches[0]
-        else:
-            self.name = branches[0]
-            self.body = branches[1]
-
-    def transpile(self) -> str:
-        return ""
+    def __init__(self, names: list[str], body: Branch):
+        super().__init__(*names, body)
+        self.names = names
+        self.body = body
 
 
 class WhileLoop(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        self.condition = [Structure(["1"])]
-        self.body = []
+    """Represents either a while or an infinite loop."""
 
-        if len(branches) >= 2:
-            self.condition = branches[0]
-        self.body = branches[-1]
-
-    def transpile(self) -> str:
-        return ""
+    def __init__(self, condition: Branch, body: Branch):
+        super().__init__(condition, body)
+        self.condition = condition
+        self.body = body
 
 
 class FunctionCall(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        self.parameters = branches[0]
-        self.body = None
-        if len(branches) >= 2:
-            self.body = branches[-1]
+    def __init__(self, name: str):
+        super().__init__(name)
+        self.name = name
 
-    def transpile(self) -> str:
-        return ""
+
+class FunctionDef(Structure):
+    def __init__(
+        self, name: str, parameters: list["Token"], body: list[Structure]
+    ):
+        super().__init__(name, parameters, body)
+        self.name = name
+        self.parameters = parameters
+        self.body = body
 
 
 class Lambda(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        self.body = branches[-1]
-        self.arity = 1
+    def __init__(self, arity: int, body3: list[Structure]):
+        super().__init__(str(arity), body3)
+        self.arity = arity
+        self.body = body3
 
-        if len(branches) > 2:
-            self.arity = branches[0]
 
-    def transpile(self) -> str:
-        return ""
+class LambdaMap(Lambda):
+    def __init__(self, body: list[Structure]):
+        super().__init__(1, body)
+
+
+class LambdaFilter(Lambda):
+    def __init__(self, body: list[Structure]):
+        super().__init__(1, body)
+
+
+class LambdaSort(Lambda):
+    def __init__(self, body: list[Structure]):
+        super().__init__(1, body)
 
 
 class FunctionReference(Structure):
-    def __init__(self, branches: list[list[Structure]]):
-        self.name = branches[0]
-
-    def transpile(self) -> str:
-        return ""
+    def __init__(self, name: str):
+        super().__init__(name)
+        self.name = name
 
 
 class ListLiteral(Structure):
-    def __init__(self, branches: list[list["Structure"]]):
-        self.items = branches
+    def __init__(self, *items: Branch):
+        super().__init__(*items)
+        self.items = items
 
-    def transpile(self) -> str:
-        return ""
+
+class MonadicModifier(Structure):
+    def __init__(self, modifier: str, *branches: Branch):
+        super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
+
+
+class DyadicModifier(Structure):
+    def __init__(self, modifier: str, *branches: Branch):
+        super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
+        self.function_B = branches[1]
+
+
+class TriadicModifier(Structure):
+    def __init__(self, modifier: str, *branches: Branch):
+        super().__init__(*branches)
+        self.modifier = modifier
+        self.function_A = branches[0]
+        self.function_B = branches[1]
+        self.function_C = branches[2]

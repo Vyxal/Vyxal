@@ -30,19 +30,19 @@ def fully_parse(program: str) -> list[Structure]:
 
 def test_basic():
     assert (
-        str(fully_parse("1 1+"))
+        fully_parse("1 1+")
         == "[['none', ['number', '1']], ['none', ['number', '1']], "
         + "['none', ['general', '+']]]"
     )
 
     assert (
-        str(fully_parse("`Hello, World!`"))
+        fully_parse("`Hello, World!`")
         == "[['none', ['string', " + "'Hello, World!']]]"
     )
 
 
 def test_fizzbuzz():
-    assert eval(str(fully_parse("₁ƛ₍₃₅kF½*∑∴"))) == [
+    assert fully_parse("₁ƛ₍₃₅kF½*∑∴") == [
         ["none", ["general", "₁"]],
         [
             "lambda",
@@ -72,19 +72,19 @@ def test_fizzbuzz():
 
 
 def test_modifiers():
-    assert eval(str(fully_parse("⁽*r"))) == [
+    assert fully_parse("⁽*r") == [
         ["lambda", ["1", [[["none", ["general", "*"]]]]]],
         ["none", ["general", "r"]],
     ]
 
-    assert eval(str(fully_parse("vv+"))) == [
+    assert fully_parse("vv+") == [
         [
             "monadic_modifier",
             ["v", [["monadic_modifier", ["v", [["none", ["general", "+"]]]]]]],
         ]
     ]
 
-    assert eval(str(fully_parse("‡₌*ġḭd†"))) == [
+    assert fully_parse("‡₌*ġḭd†") == [
         [
             "lambda",
             [
@@ -110,7 +110,7 @@ def test_modifiers():
 
 
 def test_structures():
-    assert eval(str(fully_parse("[1 1+|`nice`"))) == [
+    assert fully_parse("[1 1+|`nice`") == [
         [
             "if_stmt",
             [
@@ -124,7 +124,7 @@ def test_structures():
         ]
     ]
 
-    assert eval(str(fully_parse("1 10r(i|n2*,"))) == [
+    assert fully_parse("1 10r(i|n2*,") == [
         ["none", ["number", "1"]],
         ["none", ["number", "10"]],
         ["none", ["general", "r"]],
@@ -142,7 +142,7 @@ def test_structures():
         ],
     ]
 
-    assert eval(str(fully_parse("@triple:1|3*;"))) == [
+    assert fully_parse("@triple:1|3*;") == [
         [
             "function",
             [
@@ -152,7 +152,7 @@ def test_structures():
         ]
     ]
 
-    assert eval(str(fully_parse("(code‛|c"))) == [
+    assert fully_parse("(code‛|c") == [
         [
             "for_loop",
             [

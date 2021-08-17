@@ -1,10 +1,10 @@
 # The Definitive Vyxal Code Style Guide
-_Fourteenth revision_
+_Sixteenth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
-This document is different to `contributing.md` because it specifically defines things such as semantics of functions and variables within the actual code.
+This document is different to [`contributing.md`](/documents/protocols/contributing.md) because it specifically defines things such as semantics of functions and variables within the actual code.
 
 ## The Obvious/Easy Stuff
 
@@ -26,20 +26,25 @@ Alright. Now to the specific stuff.
 
 Here's a list of all the main python files in the repository:
 
-- `main.py` - this is the file that actually runs Vyxal - it contains the compiler and the offline command line runner. The only things that should be in this file are helper functions for the transpiler, and anything needed to execute programs.
+- [`vyxal.py`](../../vyxal/vyxal.py) - this is the file that actually runs Vyxal - it contains the compiler and the offline command line runner. The only things that should be in this file is anything needed to execute programs.
 
-- `parse.py` - this is the parser that turns Vyxal programs into tokens. It contains the parser and a whole series of token related constants.
+- [`parse.py`](../../vyxal/parse.py) - this is the parser that turns tokens into Structures.
 
-- `commands.py` - this is where the python equivalent of each element is stored. Each element has a string representing what it is compiled as, and a command arity. Also in this file is the python equivalent of each modifier
+- [`lexer.py`](../../vyxal/lexer.py) - this is the lexer that turns Vyxal programs into tokens.
 
-- `functions.py` - this file contains functions directly connected to elements/modifiers - in other words, this is where the element overloading happens.
+- [`structure.py`](../../vyxal/structure.py) - this contains structure classes that are used by the parser.
 
-- `utilities.py` - this file contains helper functions that are not directly connected to elements/modifers: e.g. string decompression, the LazyList class and useful generators.
+- [`encoding.py`](../../vyxal/encoding.py) - this file is used for enforcing the SBCS used by Vyxal. Consequently, there isn't much reason to touch this file.
 
-- `encoding.py` - this file is used for enforcing the SBCS used by Vyxal. Consequently, there isn't much reason to touch this file.
+- [`dictionary.py`](../../vyxal/dictionary.py) - this file has the words used for dictionary compression. Consequently, there isn't much reason to touch this file.
 
-- `dictionary.py` - this file has the words used for dictionary compression. Consequently, there isn't much reason to touch this file.
+- [`elements.py`](../../vyxal/elements.py) - this file has the element functions and element/modifier dictionaries.
 
+- [`helpers.py`](../../vyxal/helpers.py) - this file has helper functions for elements and other files.
+
+- [`transpile.py`](../../vyxal/transpile.py) - this file has the transpiling functions.
+
+- [`LazyList.py`](../../vyxal/LazyList.py) - our generator wrapper.
 
 ## Function Overloads
 ### Monads
@@ -175,4 +180,4 @@ Instead, we create test files for each file so that they can be all run together
 
 - No directly popping from the stack within element/helper functions. Only pop from the stack in the transpiled versions of each element.
 - Helper functions are to be stand alone functions. That is, they could be used outside of the context of element functions.
-- Whenever you write an element function, make sure you include a `ctx` parameter as the last parameter. This allows element functions to access values that would otherwise be global variables.
+- Whenever you write an element function, make sure you include a `ctx` parameter as the last parameter. This allows element functions to access values that would otherwise be global variables. That is, `def function(<whatever args the function takes>, ctx)`. (For more info, go to [context.md](/documents/specs/Context.md))
