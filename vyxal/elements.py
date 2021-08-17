@@ -1,7 +1,6 @@
-"""
-File: elements.py
-Description: This is where the element functions are stored (that is,
-functions directly corresponding to Vyxal elements). It's also where
+"""This is where the element functions are stored
+
+(that is, functions directly corresponding to Vyxal elements). It's also where
 the python equivalent of command is stored
 """
 import types
@@ -11,22 +10,12 @@ from typing import Union
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
 ) -> tuple[str, int]:
-    """
-    Take a python expression and adds boilerplate to it corresponding
-    to the arity of the element being processed.
+    """Take a python expression and adds boilerplate for element functions to it
 
-    Parameters
-    ----------
-    expr : str
-        The expression to wrap in boilerplate
-
-    arity : int
-        The arity of the element - <= 3
-
-    Returns
-    -------
-    (str, int)
-        See documents/specs/Transpilation.md for information
+    expr can be a string, which will be added verbatim to the transpiled output,
+    or a function, for which a function call will be generated.
+    
+    See documents/specs/Transpilation.md for information on what happens here.
     """
     if arity:
         arguments = ["third", "rhs", "lhs"][-arity:]

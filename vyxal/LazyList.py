@@ -1,9 +1,8 @@
-"""
-File: LazyList.py
-Description: A generic wrapper for all sorts of generators. This is
-because itertools doesn't return things that return true when yeeted
-into isinstance(<itertools object>, types.GeneratorType). Also, maps,
-ranges and other stuff that needs to be lazily evaluated.
+"""A generic wrapper for all sorts of generators.
+
+This is because itertools doesn't return things that return true when yeeted
+into isinstance(<itertools object>, types.GeneratorType). Also, maps, ranges
+and other stuff that needs to be lazily evaluated.
 """
 
 import types
@@ -13,9 +12,7 @@ from sympy import Rational
 
 
 def vyxalify(value: Any) -> Any:
-    """
-    Takes a value and returns it as one of the four types we use here.
-    """
+    """Takes a value and returns it as one of the four types we use here."""
     if (
         isinstance(value, int)
         or isinstance(value, Rational)
@@ -30,10 +27,7 @@ def vyxalify(value: Any) -> Any:
 
 
 def lazylist(fn):
-    """
-    A decorator to turn functions that return generators into functions that
-    return LazyLists
-    """
+    """A decorator to wrap function return values in `LazyList`"""
 
     def wrapped(*args, **kwargs):
         return LazyList(fn(*args, **kwargs))
@@ -152,9 +146,9 @@ class LazyList:
             print("⟩", end=end)
 
 
-r"""
+"""
 -------------
-VERY IMPORTANT
+XXX: VERY IMPORTANT
 
 UPDATE THE PRNIT METHOD OF THE LAZYLIST TO USE VY_PRINT WHEN WE DEFINE
 IT.

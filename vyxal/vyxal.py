@@ -1,7 +1,5 @@
-"""
-File: vyxal.py
-Description: This is the main file for the project - you run this file
-to run Vyxal programs offline.
+"""The main interface to the project - you run this file to run Vyxal programs
+offline.
 """
 
 from vyxal.context import Context
