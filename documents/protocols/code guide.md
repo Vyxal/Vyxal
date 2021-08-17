@@ -175,4 +175,4 @@ Instead, we create test files for each file so that they can be all run together
 
 - No directly popping from the stack within element/helper functions. Only pop from the stack in the transpiled versions of each element.
 - Helper functions are to be stand alone functions. That is, they could be used outside of the context of element functions.
-- Whenever you write an element function, make sure you include a `ctx` parameter as the last parameter. This allows element functions to access values that would otherwise be global variables.
+- Whenever you write an element function, make sure you include a `ctx` parameter as the last parameter. This allows element functions to access values that would otherwise be global variables. That is, `def function(<whatever args the function takes>, ctx)`. (For more info, go to context.md)
