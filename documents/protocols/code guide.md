@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Eighteenth revision_
+_Nineteenth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -54,7 +54,7 @@ def NAME(lhs, ctx):
     return {
         num: lambda: NUMBER_OVERLOAD,
         str: lambda: STRING_OVERLOAD
-    }.get(vy_type(lhs), lambda: vectorise(NAME, lhs))()
+    }.get(vy_type(lhs), lambda: vectorise(NAME, lhs, ctx=ctx))()
 ```
 
 ### Dyads
@@ -67,7 +67,7 @@ def NAME(lhs, rhs, ctx):
         (num, str): lambda: NUMBER_STRING_OVERLOAD,
         (str, num): lambda: STRING_NUMBER_OVERLOAD,
         (str, str): lambda: STRING_STRING_OVERLOAD
-    }.get(ts, lambda: vectorise(NAME, lhs, rhs))()
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, ctx=ctx))()
 ```
 
 ### Triads
@@ -80,7 +80,7 @@ def NAME(lhs, rhs, other, ctx):
         (num, num, str): lambda: ...,
         (num, str, num): lambda: ...,
         # and so forth
-    }.get(ts, lambda: vectorise(NAME, lhs, rhs, other))()
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, other, ctx=ctx))()
 ```
 
 Very important: Only the type dictionary should be inside the function definition. Also, if there happens to be a `Function` overload, use `types.FunctionType`.
