@@ -85,7 +85,6 @@ def transpile_token(token: Token, indent: int) -> str:
 def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """Transpile a single structure."""
 
-
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)
     if isinstance(struct, structure.IfStatement):
@@ -244,9 +243,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 + indent_str("stack = s[::]", indent + 1)
                 + transpile_ast(x, indent + 1)
                 + indent_str("return pop(stack, ctx=ctx)", indent + 1)
-                + indent_str(
-                    "temp_list.append(list_item(stack, ctx)", indent
-                )
+                + indent_str("temp_list.append(list_item(stack, ctx)", indent)
             )
 
         temp += indent_str("stack.append(temp_list[::]", indent)

@@ -14,7 +14,7 @@ def process_element(
 
     expr can be a string, which will be added verbatim to the transpiled output,
     or a function, for which a function call will be generated.
-    
+
     See documents/specs/Transpilation.md for information on what happens here.
     """
     if arity:
