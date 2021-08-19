@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Sixteenth revision_
+_Seventeenth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -97,7 +97,8 @@ To summarise: don't be a sussy baka with your variable names.
 
 ## Comments and Documentation
 
-[This](https://realpython.com/documenting-python-code/) is a good guide for comments, but here are some guidelines specific to the Vyxal project:
+In general, [Google's style guide](https://github.com/google/styleguide/blob/gh-pages/pyguide.md#38-comments-and-docstrings)
+is a good set of rules to follow here, but these are some guidelines specific to the Vyxal project:
 
 ### Line Comments
 
@@ -121,8 +122,8 @@ These comments are started and terminated with either `"""` (frick `'''`). This 
 
 ```python
 def add(lhs, rhs):
-    """
-    Element: +
+    """Element: +
+
     (num, num) -> a + b
     (num, str) -> concatenate a and b, converting a to string first
     (str, num) -> concatenate a and b, converting b to string first
@@ -132,33 +133,36 @@ def add(lhs, rhs):
     ...
 ```
 
-- At the start of a helper function to describe what the function is doing (we use the [numpy/scipy](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format for non-element functions):
+- At the start of a helper function to describe what the function is doing (unless the function is all of {not public
+  API, short, and obvious})
 
 ```python
 def function(arg1: type, arg2: type) -> type:
-    """
-    Function description
+    """calculate the frobbernickel of the two input shnops"""  
+```
+
+If the function is complicated, it may be worth adding additional details a bit like the [numpy/scipy](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format:
+```python
+def function(arg1: type, arg2: type) -> type:
+    """Function description
 
     Parameters
-    ----------
     arg1: type
         description of arg1
     arg2: type
         description of arg2
     
-    Returns
-    -------
-    type
+    Returns a `type`
         description of the returned value
-    """  
+    """
 ```
 
 - At the start of a file to describe the function of the file
 
 ```python
-"""
-File: <filename>.py
-Description: <describe the file>
+"""<summarise the file's purpose>
+
+<describe in more detail if necessary>
 <mutliple lines are okay>
 """
 ```

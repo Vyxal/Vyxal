@@ -1,7 +1,4 @@
-"""
-File: context.py
-Description: This is for context-related stuff.
-"""
+"""This is for context-related stuff."""
 
 
 class Context:
