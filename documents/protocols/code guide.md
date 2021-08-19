@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Seventeenth revision_
+_Eighteenth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -50,7 +50,7 @@ Here's a list of all the main python files in the repository:
 ### Monads
 
 ```python
-def NAME(lhs):
+def NAME(lhs, ctx):
     return {
         num: lambda: NUMBER_OVERLOAD,
         str: lambda: STRING_OVERLOAD
@@ -60,7 +60,7 @@ def NAME(lhs):
 ### Dyads
 
 ```python
-def NAME(lhs, rhs):
+def NAME(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (num, num): lambda: NUMBER_NUMBER_OVERLOAD,
@@ -73,7 +73,7 @@ def NAME(lhs, rhs):
 ### Triads
 
 ```python
-def NAME(lhs, rhs, other):
+def NAME(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other)
     return {
         (num, num, num): lambda: ...,
@@ -121,7 +121,7 @@ These comments are started and terminated with either `"""` (frick `'''`). This 
 - At the start of an element function to list the overloads:
 
 ```python
-def add(lhs, rhs):
+def add(lhs, rhs, ctx):
     """Element: +
 
     (num, num) -> a + b
