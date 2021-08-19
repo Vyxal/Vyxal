@@ -25,6 +25,7 @@ class TokenType(Enum):
     # `general` is used to denote that a token does not have a specific type.
     # This kind of token can be anything - a digraph, a structure delimiter or
     # just a simple element.
+
     GENERAL = "general"
 
     COMPRESSED_NUMBER = "compressed_number"
@@ -48,6 +49,7 @@ class Token:
         return f"Token({self.name.value!r}, {self.value!r})"
 
     def __eq__(self, rhs) -> bool:
+
         if not isinstance(rhs, Token):
             return NotImplemented
         return self.name == rhs.name and self.value == rhs.value
@@ -55,6 +57,7 @@ class Token:
 
 def tokenise(source_str: str) -> list[Token]:
     """Main lexing function: transforms a Vyxal program into a list of tokens
+
 
     Returns a list of Token objects.
     """

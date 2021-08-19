@@ -2,6 +2,7 @@
 
 See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structures.md
 """
+
 from typing import Union
 
 Branch = Union[str, list["Structure"], list["Token"]]

@@ -1,6 +1,7 @@
 # The Definitive Vyxal Code Style Guide
 _Seventeenth revision_
 
+
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
 This document is different to [`contributing.md`](/documents/protocols/contributing.md) because it specifically defines things such as semantics of functions and variables within the actual code.

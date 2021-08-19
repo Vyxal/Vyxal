@@ -11,6 +11,7 @@ from vyxal import lexer
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
+
     """Indent a multiline string with 4 spaces, with a newline (or `end`) afterwards."""
     return textwrap.indent(string, "    " * indent) + end
 

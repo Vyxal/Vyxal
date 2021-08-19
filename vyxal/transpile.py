@@ -1,5 +1,6 @@
 """Transpiles Vyxal code into Python"""
 
+
 import secrets
 from typing import Union
 
@@ -12,6 +13,7 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     """Turns a List of structures into a single lambda.
 
     Useful for dealing with the functions of modifiers. Note that single
+
     elements pass their arity on to the lambda
     """
 
@@ -36,6 +38,7 @@ def transpile(program: str) -> str:
 
 def transpile_ast(program: list[structure.Structure], indent=0) -> str:
     """Transpile a given program (as a parsed list of structures) into Python"""
+
     if not program:
         return helpers.indent_str("pass", indent)
     return "\n".join(
@@ -81,6 +84,7 @@ def transpile_token(token: Token, indent: int) -> str:
 
 def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """Transpile a single structure."""
+
 
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)

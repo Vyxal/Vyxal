@@ -42,6 +42,7 @@ def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
     """Handles the tokens from the first branch of a function defintion structure
 
     Returns a tuple of the name and parameters."""
+
     token_values = [token.value for token in tokens]
     branch_data = "".join(token_values)
     components = branch_data.split(":")
