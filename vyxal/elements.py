@@ -33,5 +33,9 @@ def process_element(
     return py_code, arity
 
 
-elements: dict[str, tuple[str, int]] = {}
+elements: dict[str, tuple[str, int]] = {
+    "¬": process_element("int(not lhs)", 1),
+    "∧": process_element("int(lhs and rhs)", 2),
+    "⟑": process_element("int(rhs and lhs)", 2),
+}
 modifiers = {}
