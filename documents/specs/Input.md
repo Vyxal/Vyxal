@@ -28,6 +28,8 @@ and
 
 are both equivalent, assuming that the stack is empty.
 
+Note that whatever is on the stack is popped before the implicit input is taken. Also, taking implicit input cycles the input just as explicit input would.
+
 ## But how is this implemented internally?
 
 With lists. More specifically, a list containing lists containing a list of any, and an integer:
