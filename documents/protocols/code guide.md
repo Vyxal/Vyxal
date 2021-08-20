@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Nineteenth revision_
+_Twentieth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -131,6 +131,17 @@ def add(lhs, rhs, ctx):
     """
     
     ...
+```
+
+More generically:
+
+```python
+"""Element +
+(num, num) ->
+(num, str) ->
+(str, num) ->
+(str, str) ->
+"""
 ```
 
 - At the start of a helper function to describe what the function is doing (unless the function is all of {not public
