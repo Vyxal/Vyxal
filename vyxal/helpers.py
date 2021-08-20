@@ -5,10 +5,25 @@ use type annotations here.
 """
 
 import textwrap
-from typing import Union
+from typing import Any, List, Union
 
 from vyxal import lexer
 from vyxal import LazyList
+from vyxal import context
+
+
+def get_input(ctx: context.Context) -> Any:
+    """Returns the next input depending on where ctx tells to get the
+    input from."""
+
+    if ctx.use_top_input:
+        ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+        ctx.inputs[0][1] += 1
+        return ret
+    else:
+        ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
+        ctx.inputs[-1][1] += 1
+        return ret
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
@@ -37,6 +52,31 @@ def mold(
             shape[index] = item
             content.append(item)
     return shape
+
+
+def pop(
+    iterable: Union[list, LazyList.LazyList], count: int, ctx: context.Context
+) -> List[Any]:
+    """Pops (count) items from iterable. If there isn't enough items
+    within iterable, input is used as filler."""
+
+    popped_items = []
+    for _ in range(count):
+        if iterable:
+            popped_items.append(iterable.pop())
+        else:
+            ctx.use_top_input = True
+            popped_items.append(get_input())
+            ctx.use_top_input = False
+
+    if ctx.retain_popped:
+        for item in popped_items[::-1]:
+            iterable.append(item)
+
+    if ctx.reverse_flag:
+        popped_items = popped_items[::-1]
+
+    return popped_items
 
 
 def transfer_capitalisation(source: str, target: str) -> str:

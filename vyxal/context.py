@@ -6,4 +6,8 @@ class Context:
 
     def __init__(self):
         self.context_values = [0]
-        self.inputs = []
+        self.inputs = []  # [[[inputs], index], [[inputs], index]]
+        self.retain_popped = False
+        self.reverse_flag = False
+        self.last_popped = []
+        self.use_top_input = False

@@ -9,7 +9,7 @@ import types
 from typing import Union
 
 import sympy
-from vyxal import helpers
+from vyxal.helpers import *
 from vyxal import LazyList
 
 NUMBER_TYPE = "number"
@@ -41,6 +41,23 @@ def process_element(
     return py_code, arity
 
 
+def add(lhs, rhs, ctx):
+    """Element +
+    (num, num) -> lhs + rhs
+    (num, str) -> str(lhs) + rhs
+    (str, num) -> lhs + str(rhs)
+    (str, str) -> lhs + rhs
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
+        (str, NUMBER_TYPE): lambda: lhs + str(rhs),
+        (str, str): lambda: lhs + rhs,
+    }.get(ts, lambda: vectorise(add, lhs, rhs))()
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -56,8 +73,8 @@ def log_mold_multi(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(math.log(lhs, rhs)),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
         (str, NUMBER_TYPE): lambda: "".join([char * rhs for char in lhs]),
-        (str, str): lambda: helpers.transfer_capitalisation(rhs, lhs),
-        (list, list): lambda: helpers.mold(lhs, rhs),
+        (str, str): lambda: transfer_capitalisation(rhs, lhs),
+        (list, list): lambda: mold(lhs, rhs),
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
@@ -85,5 +102,6 @@ elements: dict[str, tuple[str, int]] = {
     "÷": ("lhs = pop(stack, 1, ctx); stack += iterable(lhs)", 1),
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
+    "+": process_element(add, 2),
 }
 modifiers = {}
