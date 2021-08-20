@@ -103,5 +103,10 @@ elements: dict[str, tuple[str, int]] = {
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
     "+": process_element(add, 2),
+    "?": (
+        "ctx.use_top_input = True; lhs = get_input(ctx);"
+        "ctx.use_top_input = False; stack.append(lhs)",
+        0,
+    ),
 }
 modifiers = {}
