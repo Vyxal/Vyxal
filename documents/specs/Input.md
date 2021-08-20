@@ -28,5 +28,35 @@ and
 
 are both equivalent, assuming that the stack is empty.
 
+## But how is this implemented internally?
 
+With lists. More specifically, a list containing lists containing a list of any, and an integer:
 
+```
+[
+  [
+    [inputs],
+    0
+  ],
+  
+  [
+    [inputs],
+    0
+  ],
+  
+  [
+    [inputs],
+    0
+  ]
+]
+```
+
+### Hang on, why are there multiple lists?
+
+Because functions have their own stack, and it's more helpful to have functions re-use their arguments as input rather than global input. Hence, each list acts as
+a sort of input scope.
+
+### But why is there a number?
+
+To keep track of where the input is up to - this allows for easier cycling through input, because you can just use `%` to bring the index into the range
+`[0, len(input_scope))`
