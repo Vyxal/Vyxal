@@ -4,6 +4,7 @@ They aren't directly attached to an element. Consequently, you need to
 use type annotations here.
 """
 
+import ast
 import textwrap
 from typing import Any, List, Union
 
@@ -17,9 +18,16 @@ def get_input(ctx: context.Context) -> Any:
     input from."""
 
     if ctx.use_top_input:
-        ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
-        ctx.inputs[0][1] += 1
-        return ret
+        if ctx.inputs[0][0]:
+            ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+            ctx.inputs[0][1] += 1
+            return ret
+        else:
+            try:
+                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+                return temp
+            except:
+                return 0
     else:
         ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
         ctx.inputs[-1][1] += 1
@@ -66,7 +74,7 @@ def pop(
             popped_items.append(iterable.pop())
         else:
             ctx.use_top_input = True
-            popped_items.append(get_input())
+            popped_items.append(get_input(ctx))
             ctx.use_top_input = False
 
     if ctx.retain_popped:
@@ -118,3 +126,20 @@ def uncompress_str(string: str) -> str:
 def uncompress_num(num: str) -> int:
     # TODO (lyxal) Implement number (un)compression
     raise NotImplementedError()
+
+
+def vy_eval(item: str, ctx: context.Context) -> Any:
+    """Evaluates an item. Does so safely if using the online
+    interpreter"""
+
+    if ctx.online:
+        try:
+            return ast.literal_eval(item)
+        except:
+            # TODO: eval as vyxal
+            return item
+    else:
+        try:
+            return eval(item)
+        except:
+            return item

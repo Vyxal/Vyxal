@@ -6,7 +6,9 @@ class Context:
 
     def __init__(self):
         self.context_values = [0]
-        self.inputs = []  # [[[inputs], index], [[inputs], index]]
+        self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
+        self.online = False
+        self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
         self.last_popped = []

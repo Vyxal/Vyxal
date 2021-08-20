@@ -20,12 +20,13 @@ if __name__ == "__main__":
     stack = []
 
     # This is called if a file isn't given, just like it used to.
-    ctx.inputs = [[[0], 0]]
+    ctx.repl_mode = True
     while True:
         # Vyxal REPL ftw
-        line = input("   ")
-        line = transpile(line)
+        line = transpile(input(">>> "))
         stack = []
-        print(line)
+
+        # print(line)
+
         exec(line)
         print(stack)
