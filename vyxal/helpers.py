@@ -103,6 +103,9 @@ def pop(
     if ctx.reverse_flag:
         popped_items = popped_items[::-1]
 
+    if count == 1:
+        return popped_items[0]
+
     return popped_items
 
 
