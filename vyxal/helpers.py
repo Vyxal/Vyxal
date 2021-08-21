@@ -8,6 +8,7 @@ import ast
 import textwrap
 from typing import Any, List, Union
 
+import sympy
 from vyxal import lexer
 from vyxal import LazyList
 from vyxal import context
@@ -43,6 +44,24 @@ def indent_str(string: str, indent: int, end="\n") -> str:
 def indent_code(*code, indent: int = 1) -> str:
     """Indent multiple lines (`*code`) by the given amount, then join on newlines."""
     return "\n".join(indent_str(line, indent, end="") for line in code) + "\n"
+
+
+def iterable(
+    item: Any, ctx: context.Context
+) -> Union[LazyList.LazyList, Union[list, str]]:
+    """Makes sure that a value is an iterable"""
+
+    if (t := type(item)) in [sympy.Rational, int]:
+        if ctx.number_as_range:
+            return LazyList.LazyList(
+                range(ctx.range_start, int(item) + ctx.range_end)
+            )
+        else:
+            if t is sympy.Rational:
+                item = float(item)
+            return [int(let) if let not in "-." else let for let in str(item)]
+    else:
+        return item
 
 
 def mold(

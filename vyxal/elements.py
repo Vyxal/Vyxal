@@ -78,8 +78,40 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
-def vectorise(function, lhs, rhs=None, other=None, ctx=None):
-    """Do that thing with the things."""
+def subtract(lhs, rhs, ctx):
+    """Element -
+    (num, num) -> lhs - rhs
+    (num, str) -> ("-" * lhs) + rhs
+    (str, num) -> lhs + ("-" * rhs)
+    (str, str) -> lhs.replace(rhs, "")
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs - rhs,
+        (NUMBER_TYPE, str): lambda: ("-" * lhs) + rhs,
+        (str, NUMBER_TYPE): lambda: lhs + ("-" * rhs),
+        (str, str): lambda: lhs.replace(rhs, ""),
+    }.get(ts, lambda: vectorise(add, lhs, rhs))()
+
+
+def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
+    """
+    Maps a function over arguments
+    Probably cursed but whatever.
+    The explicit argument is mainly for stopping element-wise
+    vectorisation happening.
+    """
+
+    if other is not None:
+        # That is, three argument vectorisation
+        # That is:
+        """
+        for item in lhs:
+            yield function(item, rhs, other)
+        """
+
+        pass
 
 
 def vy_type(item, other=None, simple=False):
@@ -103,6 +135,7 @@ elements: dict[str, tuple[str, int]] = {
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
     "+": process_element(add, 2),
+    "-": process_element(subtract, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx);"
         "ctx.use_top_input = False; stack.append(lhs)",
