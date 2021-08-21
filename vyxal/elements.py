@@ -101,6 +101,8 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     Probably cursed but whatever.
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
+
+    TODO: Actually account for explicit vectorising.
     """
 
     if other is not None:
@@ -117,13 +119,14 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
                 yield safe_apply(function, item, rhs, other, ctx)
 
     elif rhs is not None:
+        # That is, two argument vectorisation
 
         def f():
             for item in iterable(lhs, ctx):
                 yield safe_apply(function, item, rhs, ctx)
 
     else:
-
+        # That is, single argument vectorisation
         def f():
             for item in iterable(lhs, ctx):
                 yield safe_apply(function, item, ctx)
