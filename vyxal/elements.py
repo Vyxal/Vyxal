@@ -10,7 +10,7 @@ from typing import Union
 
 import sympy
 from vyxal.helpers import *
-from vyxal import LazyList
+from vyxal.LazyList import LazyList
 
 NUMBER_TYPE = "number"
 
@@ -111,7 +111,24 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             yield function(item, rhs, other)
         """
 
-        pass
+        @LazyList
+        def f():
+            for item in iterable(lhs, ctx):
+                yield safe_apply(function, item, rhs, other, ctx)
+
+    elif rhs is not None:
+
+        def f():
+            for item in iterable(lhs, ctx):
+                yield safe_apply(function, item, rhs, ctx)
+
+    else:
+
+        def f():
+            for item in iterable(lhs, ctx):
+                yield safe_apply(function, item, ctx)
+
+    return list(f())
 
 
 def vy_type(item, other=None, simple=False):
@@ -119,7 +136,7 @@ def vy_type(item, other=None, simple=False):
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
     if (x := type(item)) in (int, sympy.Rational, complex):
         return NUMBER_TYPE
-    elif simple and isinstance(item, LazyList.LazyList):
+    elif simple and isinstance(item, LazyList):
         return list
     else:
         return x

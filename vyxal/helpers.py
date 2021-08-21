@@ -6,12 +6,12 @@ use type annotations here.
 
 import ast
 import textwrap
+import types
 from typing import Any, List, Union
 
 import sympy
-from vyxal import lexer
-from vyxal import LazyList
-from vyxal import context
+
+from vyxal import LazyList, context, lexer
 
 
 def get_input(ctx: context.Context) -> Any:
@@ -107,6 +107,33 @@ def pop(
         return popped_items[0]
 
     return popped_items
+
+
+def safe_apply(function: types.FunctionType, *args) -> Any:
+    """
+    Applies function to args that adapts to the input style of the passed function.
+    If the function is a _lambda (it's been defined within λ...;), it passes a
+      list of arguments and length of argument list.
+    Otherwise, if the function is a user-defined function (starts with FN_), it
+      simply passes the argument list.
+    Otherwise, unpack args and call as usual
+
+    *args contains ctx
+    """
+
+    if function.__name__.startswith("_lambda"):
+        ret = function(list(args[:-1]), len(args[:-1]), function, args[-1])
+        if len(ret):
+            return ret[-1]
+        else:
+            return []
+    elif function.__name__.startswith("FN_"):
+        ret = function(list(args[:-1]), args[-1])[-1]
+        if len(ret):
+            return ret[-1]
+        else:
+            return []
+    return function(*args)
 
 
 def transfer_capitalisation(source: str, target: str) -> str:
