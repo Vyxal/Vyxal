@@ -57,7 +57,7 @@ def add(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
-    }.get(ts, lambda: vectorise(add, lhs, rhs))()
+    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -168,7 +168,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             ),
         }
 
-        explicit = {
+        explicit_dict = {
             (SCALAR_TYPE, SCALAR_TYPE): lambda: (
                 safe_apply(function, x, rhs, ctx=ctx) for x in iterable(lhs)
             ),
@@ -184,9 +184,9 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         }
 
         if explicit:
-            return LazyList(explicit.get(ts)())
+            return list(explicit_dict.get(ts)())
         else:
-            return LazyList(simple.get(ts)())
+            return list(simple.get(ts)())
     else:
         # That is, single argument vectorisation
         if explicit:
@@ -225,4 +225,11 @@ elements: dict[str, tuple[str, int]] = {
         0,
     ),
 }
-modifiers = {}
+modifiers = {
+    "v": (
+        "arguments = pop(stack, function_A.stored_arity, ctx=ctx)\n"
+        + "if len(arguments) == 1: arguments = [arguments]\n"
+        + "stack.append"
+        + "(vectorise(function_A, *arguments[::-1], explicit=True, ctx=ctx))\n"
+    )
+}

@@ -19,11 +19,12 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
 
     if len(branch) == 1:
         if isinstance(branch[0], structure.GenericStatement):
-            return structure.Lambda(1, branch)
-            # TODO: Actually get arity
-            # of the element and make that the arity of the lambda being
-            # returned. This'll be possible once we actually get the
-            # command dictionary established
+            return structure.Lambda(
+                elements.elements.get(branch[0].branches[0][0].value, ("", 1))[
+                    1
+                ],
+                branch,
+            )
         elif isinstance(branch[0], structure.Lambda):
             return branch[0]
         else:
@@ -158,26 +159,28 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 )
             elif parameter == "*":
                 function_parameters += (
-                    "parameters += " + "pop(stack, pop(stack, ctx=ctx), ctx)\n"
+                    "parameters += "
+                    + "pop(stack, pop(stack, 1, ctx=ctx), ctx=ctx)\n"
                 )
             else:
                 parameter_total += 1
-                function_parameters += f"VAR_{parameter} = pop(stack, ctx=ctx)"
+                function_parameters += (
+                    f"VAR_{parameter} = pop(stack, 1, ctx=ctx)"
+                )
 
             return (
                 indent_str(f"def FN_{struct.name}(stack, ctx)", indent)
                 + indent_str("stack = []", indent + 1)
                 + indent_str(f"this = FN_{struct.name}", indent + 1)
-                + indent_str("ctx.input_level += 1", indent + 1)
                 + indent_str(function_parameters, indent + 1)
                 + indent_str("stack = parameters", indent + 1)
                 + indent_str(
-                    "ctx.input_values[ctx.input_level] = [stack[::], 0]",
+                    "ctx.inputs.append([stack[::], 0])",
                     indent + 1,
                 )
                 + transpile_ast(struct.body, indent + 1)
+                + indent_str("ctx.inputs.pop()", indent + 1)
                 + indent_str("ctx.context_values.pop()", indent + 1)
-                + indent_str("ctx.input_level -= 1", indent + 1)
                 + indent_str("return stack", indent + 1)
             )
     if isinstance(struct, structure.Lambda):
@@ -202,30 +205,32 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
             + indent_str(
                 f"if arity and arity != {struct.branches[0]}: "
-                + "stack = pop(parameters, arity, ctx))",
+                + "stack = pop(parameters, arity, ctx)",
                 indent + 1,
             )
             + indent_str(
                 "elif overloaded_arity: stack = pop(parameters, arity"
-                + ", ctx",
+                + ", ctx)",
                 indent + 1,
             )
             + indent_str(
-                f"else: stack = pop(parameters, {struct.branches[0]}[0]"
+                f"else: stack = pop(parameters, {struct.branches[0]}"
                 + ", ctx)",
                 indent + 1,
             )
             + indent_str("ctx.context_values.append(stack[::])", indent + 1)
-            + indent_str("ctx.input_level += 1", indent + 1)
             + indent_str(
-                "ctx.input_values[ctx.input_level] = [stack[::], 0]",
+                "ctx.inputs.append([stack[::], 0])",
                 indent + 1,
             )
             + transpile_ast(struct.branches[1], indent + 1)
-            + indent_str("ret = pop(stack, ctx=ctx)", indent + 1)
+            + indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
-            + indent_str("ctx.input_level -= 1", indent + 1)
+            + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("return ret", indent + 1)
+            + indent_str(
+                f"_lambda_{id_}.stored_arity = {struct.branches[0]}", indent
+            )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 
@@ -252,7 +257,12 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
     if isinstance(struct, structure.MonadicModifier):
         element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
         return (
-            element_A + "\n" + elements.modifiers.get(struct.modifier, "pass")
+            element_A
+            + "\n"
+            + indent_str("function_A = pop(stack, 1, ctx)", indent)
+            + indent_str(
+                elements.modifiers.get(struct.modifier, "pass"), indent
+            )
         )
 
     if isinstance(struct, structure.DyadicModifier):
@@ -261,8 +271,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return (
             element_A
             + "\n"
+            + indent_str("function_A = pop(stack, 1, ctx)", indent)
             + element_B
             + "\n"
+            + indent_str("function_B = pop(stack, 1, ctx)", indent)
             + indent_str(
                 elements.modifiers.get(struct.modifier, "pass"), indent
             )
@@ -274,11 +286,16 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return (
             element_A
             + "\n"
+            + indent_str("function_A = pop(stack, 1, ctx)", indent)
             + element_B
             + "\n"
+            + indent_str("function_B = pop(stack, 1, ctx)", indent)
             + element_C
             + "\n"
-            + elements.modifiers.get(struct.modifier, "pass")
+            + indent_str("function_C = pop(stack, 1, ctx)", indent)
+            + indent_str(
+                elements.modifiers.get(struct.modifier, "pass"), indent
+            )
         )
 
     assert False
