@@ -83,6 +83,16 @@ def function_call(lhs, ctx):
         }.get(ts)()
 
 
+def halve(lhs, ctx):
+    """Element ½
+    (num) -> lhs / 2
+    (str) -> a split into two strings of equal lengths (as close as possible)
+    """
+    ts = vy_type(lhs)
+    return {NUMBER: sympy.Rational(lhs, 2)}
+    # TODO: Make the string stuff return
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -285,6 +295,7 @@ elements: dict[str, tuple[str, int]] = {
     "•": process_element(log_mold_multi, 2),
     "†": ("function_call(stack, ctx)", 1),
     "€": process_element(split_on, 2),
+    "½": process_element(halve, 1),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (
