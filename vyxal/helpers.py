@@ -13,6 +13,9 @@ import sympy
 
 from vyxal import LazyList, context, lexer
 
+NUMBER_TYPE = "number"
+SCALAR_TYPE = "scalar"
+
 
 def get_input(ctx: context.Context) -> Any:
     """Returns the next input depending on where ctx tells to get the
@@ -47,18 +50,19 @@ def indent_code(*code, indent: int = 1) -> str:
 
 
 def iterable(
-    item: Any, ctx: context.Context
+    item: Any, number_type: Any = None, ctx: context.Context = None
 ) -> Union[LazyList.LazyList, Union[list, str]]:
     """Makes sure that a value is an iterable"""
 
     if (t := type(item)) in [sympy.Rational, int]:
-        if ctx.number_as_range:
+        if ctx.number_as_range or number_type is range:
             return LazyList.LazyList(
                 range(ctx.range_start, int(item) + ctx.range_end)
             )
         else:
             if t is sympy.Rational:
                 item = float(item)
+
             return [int(let) if let not in "-." else let for let in str(item)]
     else:
         return item
@@ -109,7 +113,17 @@ def pop(
     return popped_items
 
 
-def safe_apply(function: types.FunctionType, *args) -> Any:
+def primitive_type(item: type) -> Union[str, type]:
+    """Turns int/Rational/str into 'Scalar' and everything else
+    into list"""
+
+    if type(item) in [int, sympy.Rational]:
+        return SCALAR_TYPE
+    else:
+        return list
+
+
+def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.
     If the function is a _lambda (it's been defined within λ...;), it passes a
@@ -122,18 +136,18 @@ def safe_apply(function: types.FunctionType, *args) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args[:-1]), len(args[:-1]), function, args[-1])
+        ret = function(list(args), len(args), function, ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args[:-1]), args[-1])[-1]
+        ret = function(list(args), ctx)[-1]
         if len(ret):
             return ret[-1]
         else:
             return []
-    return function(*args)
+    return function(*args, ctx)
 
 
 def transfer_capitalisation(source: str, target: str) -> str:
@@ -192,3 +206,23 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
             return eval(item)
         except:
             return item
+
+
+def vy_zip(*items) -> list:
+    """Like python's zip, but fills shorter lists with 0s"""
+
+    items = list(map(iter, items))
+    while True:
+        ret = []
+        exhausted_count = 0
+        for item in items:
+            try:
+                ret.append(next(item))
+            except:
+                ret.append(0)
+                exhausted_count += 1
+
+        if len(items) == exhausted_count:
+            break
+
+        yield ret

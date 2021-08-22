@@ -7,12 +7,14 @@ the python equivalent of command is stored
 import math
 import types
 from typing import Union
+from numpy.core.numerictypes import ScalarType
 
 import sympy
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList
 
 NUMBER_TYPE = "number"
+SCALAR_TYPE = "scalar"
 
 
 def process_element(
@@ -108,30 +110,91 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     if other is not None:
         # That is, three argument vectorisation
         # That is:
-        """
-        for item in lhs:
-            yield function(item, rhs, other)
-        """
 
-        @LazyList
-        def f():
-            for item in iterable(lhs, ctx):
-                yield safe_apply(function, item, rhs, other, ctx)
+        ts = primitive_type(lhs), primitive_type(rhs), primitive_type(other)
 
+        simple = {
+            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
+                function, lhs, rhs, other, ctx=ctx
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, rhs, x, ctx=ctx) for x in other
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, other, ctx=ctx) for x in rhs
+            ),
+            (SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, lhs, x, y, ctx=ctx)
+                for x, y in vy_zip(rhs, other)
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, other, ctx=ctx) for x in lhs
+            ),
+            (list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, rhs, y, ctx=ctx)
+                for x, y in vy_zip(lhs, other)
+            ),
+            (list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, other, ctx=ctx)
+                for x, y in vy_zip(lhs, rhs)
+            ),
+            (list, list, list): lambda: (
+                safe_apply(function, x, y, z, ctx=ctx)
+                for x, y, z in vy_zip(lhs, rhs, other)
+            ),
+        }
+
+        if explicit:
+            return LazyList(
+                (safe_apply(x, rhs, other, ctx=ctx) for x in iterable(lhs))
+            )
+        else:
+            return LazyList(simple.get(ts)())
     elif rhs is not None:
         # That is, two argument vectorisation
+        ts = primitive_type(lhs), primitive_type(rhs)
+        simple = {
+            (SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
+                function, lhs, rhs, ctx=ctx
+            ),
+            (SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, x, ctx=ctx) for x in rhs
+            ),
+            (list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
+            ),
+            (list, list): lambda: (
+                safe_apply(function, x, y, ctx=ctx) for x, y in vy_zip(lhs, rhs)
+            ),
+        }
 
-        def f():
-            for item in iterable(lhs, ctx):
-                yield safe_apply(function, item, rhs, ctx)
+        explicit = {
+            (SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, ctx=ctx) for x in iterable(lhs)
+            ),
+            (SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, x, ctx=ctx) for x in rhs
+            ),
+            (list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
+            ),
+            (list, list): lambda: (
+                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
+            ),
+        }
 
+        if explicit:
+            return LazyList(explicit.get(ts)())
+        else:
+            return LazyList(simple.get(ts)())
     else:
         # That is, single argument vectorisation
-        def f():
-            for item in iterable(lhs, ctx):
-                yield safe_apply(function, item, ctx)
+        if explicit:
+            lhs = iterable(lhs, range, ctx=ctx)
+        else:
+            lhs = iterable(lhs, ctx=ctx)
 
-    return list(f())
+        return LazyList((safe_apply(function, x, ctx) for x in lhs))
 
 
 def vy_type(item, other=None, simple=False):
