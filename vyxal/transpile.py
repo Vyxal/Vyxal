@@ -65,7 +65,7 @@ def transpile_token(token: Token, indent: int) -> str:
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
         string = uncompress(token)  # TODO: Account for -D flag
-        return indent_str(f'stack.append("{string!r}")', indent)
+        return indent_str(f"stack.append({string!r})", indent)
     elif token.name == TokenType.NUMBER:
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
@@ -169,7 +169,9 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 )
 
             return (
-                indent_str(f"def FN_{struct.name}(stack, ctx)", indent)
+                indent_str(
+                    f"def FN_{struct.name}(stack, self=None, ctx=None)", indent
+                )
                 + indent_str("stack = []", indent + 1)
                 + indent_str(f"this = FN_{struct.name}", indent + 1)
                 + indent_str(function_parameters, indent + 1)

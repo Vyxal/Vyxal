@@ -7,9 +7,10 @@ the python equivalent of command is stored
 import math
 import types
 from typing import Union
-from numpy.core.numerictypes import ScalarType
 
 import sympy
+from sympy.polys.polytools import primitive
+
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList
 
@@ -60,6 +61,28 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+def function_call(lhs, ctx):
+    """Element †
+    (fun) -> lhs()
+    (num) -> count of prime factors
+    (str) -> vyxal exec lhs
+    (lst) -> vectorised not
+    """
+
+    # Modifies lhs, because lhs = stack
+
+    top = pop(lhs, 1, ctx=ctx)
+    ts = vy_type(top, simple=True)
+    if isinstance(top, types.FunctionType):
+        lhs += top(lhs, ctx=ctx)
+    else:
+        return {
+            NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
+            str: lambda: "exec(transpile(top))" or [],
+            list: lambda: vectorised_not(top, ctx),
+        }.get(ts)()
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -78,6 +101,43 @@ def log_mold_multi(lhs, rhs, ctx):
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
         (list, list): lambda: mold(lhs, rhs),
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
+
+
+def prime_factors(lhs, ctx):
+    """Element Ǐ
+    (num) -> prime factors
+    (str) -> lhs + lhs[0]"""
+    ts = vy_type(item)
+    return {
+        NUMBER: lambda: sympy.ntheory.primefactors(int(lhs)),
+        str: lambda: lhs + lhs[0],
+    }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
+
+
+def split_on(lhs, rhs, ctx):
+    """
+    Element €
+    (num, num) -> str(lhs).split(rhs)
+    (num, str) -> str(lhs).split(rhs)
+    (str, num) -> lhs.split(str(rhs))
+    (str, str) -> lhs.split(rhs)
+
+    """
+    print(lhs, rhs)
+    if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
+        return str(lhs).split(str(rhs))
+
+    else:
+        ret, temp = [], []
+        for item in iterable(lhs, ctx):
+            if item == rhs:
+                ret.append(temp[::])
+                temp = []
+            else:
+                temp.append(item)
+        if temp:
+            ret.append(temp)
+        return ret
 
 
 def subtract(lhs, rhs, ctx):
@@ -197,6 +257,12 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         return LazyList((safe_apply(function, x, ctx) for x in lhs))
 
 
+def vectorised_not(lhs, ctx):
+    return {Number: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
+        vy_type(item), lambda: vectorise(vectorised_not, item, ctx=ctx)
+    )()
+
+
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
@@ -217,6 +283,8 @@ elements: dict[str, tuple[str, int]] = {
     "÷": ("lhs = pop(stack, 1, ctx); stack += iterable(lhs)", 1),
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
+    "†": ("function_call(stack, ctx)", 1),
+    "€": process_element(split_on, 2),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (
@@ -224,6 +292,7 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
+    '"': process_element("[lhs, rhs]", 2),
 }
 modifiers = {
     "v": (

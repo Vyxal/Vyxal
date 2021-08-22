@@ -117,7 +117,7 @@ def primitive_type(item: type) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
 
-    if type(item) in [int, sympy.Rational]:
+    if type(item) in [int, sympy.Rational, str]:
         return SCALAR_TYPE
     else:
         return list
