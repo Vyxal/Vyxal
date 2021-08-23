@@ -89,7 +89,9 @@ def halve(lhs, ctx):
     (str) -> a split into two strings of equal lengths (as close as possible)
     """
     ts = vy_type(lhs)
-    return {NUMBER: sympy.Rational(lhs, 2)}
+    return {NUMBER: sympy.Rational(lhs, 2)}.get(
+        ts, lambda: vectorise(halve, lhs, ctx=ctx)
+    )
     # TODO: Make the string stuff return
 
 
@@ -173,8 +175,6 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     Probably cursed but whatever.
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
-
-    TODO: Actually account for explicit vectorising.
     """
 
     if other is not None:
