@@ -38,6 +38,27 @@ def get_input(ctx: context.Context) -> Any:
         return ret
 
 
+def from_base_alphabet(value: str, alphabet: str) -> int:
+    """Returns value in base 10 using base len(alphabet)
+    [bijective base]"""
+
+    ret = 0
+    for digit in value:
+        ret = len(alphabet) * ret + alphabet.find(digit)
+
+    return ret
+
+
+def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
+    """Returns digits in base 10 using arbitrary base 'base'"""
+    # I may have stolen this from Jelly
+    ret = 0
+    for digit in digits:
+        ret = base * ret + digit
+
+    return ret
+
+
 def indent_str(string: str, indent: int, end="\n") -> str:
 
     """Indent a multiline string with 4 spaces, with a newline (or `end`) afterwards."""
@@ -148,6 +169,19 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
         else:
             return []
     return function(*args, ctx)
+
+
+def to_base_digits(value: int, base: int) -> List[int]:
+    """Returns value in base 'base' from base 10 as a list of digits"""
+
+    ret = []
+    n = value
+
+    while n > base:
+        n, digit = divmod(n, base)
+        ret.append(digit)
+    ret.append(n)
+    return ret[::-1]
 
 
 def transfer_capitalisation(source: str, target: str) -> str:
