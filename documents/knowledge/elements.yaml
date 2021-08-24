@@ -135,3 +135,21 @@
     - '[8] : 4'
     - '["FizzBuzz"] : ["Fizz", "Buzz"]'
     - '[[2, 4, 6, 8]] : [1, 2, 3, 4]'
+- element: '+'
+  name: add
+  arity: 2
+  description: adds the top two items on the stack
+  overloads:
+    num-num: a + b
+    num-str: str(a) + b
+    str-num: a + str(b)
+    str-str: a + b
+  vectorise: true
+  tests:
+    - '[1, 1] -> 2'
+    - '[0, -5] -> -5'
+    - '["abc", 5] -> "abc5"'
+    - '[5, "abc"] -> "5abc"'
+    - '["Hello, ", "World!"] -> "Hello, World!"'
+    - '[[1,2,3], 4] -> [5, 6, 7]'
+    - '[[1,2,3], [4,5,6]] -> [5, 7, 9]'
