@@ -1,0 +1,78 @@
+- element: '¬'
+  name: Logical Not
+  arity: 1
+  description: Return the inverse (negation) of the truthiness of an item.
+  overloads:
+    num: not a
+    str: a != "" | len(a) > 0
+    lst: a != [] | len(a) > 0
+ vectorise: false
+ tests:
+    - '[1] : 0'
+    - '[0] : 1'
+    - '["abc"] : 0'
+    - '[""] : 1'
+    - '[[1,2,3]] : 0'
+    - '[[]] : 1'
+- element: "∧"
+  name: Logical And
+  arity: 2
+  description: Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
+  overloads:
+    any-any: a and b
+ vectorise: false
+ tests:
+    - '[0 0] : 0'
+    - '["", 1] : ""'
+    - '[[1,2,3], 0] : 0'
+    - '[1, 2] : 2'
+- element: "⟑"
+  name: Reversed Logical And
+  arity: 2
+  description: Returns the same as logical and but with reversed arguments.
+  overloads:
+    any-any: b and a
+ vectorise: false
+ tests:
+    - '[0 0] : 0'
+    - '["", 1] : ""'
+    - '[[1,2,3], 0] : 0'
+    - '[1, 2] : 2'
+- element: "∨"
+  name: Logical Or
+  arity: 2
+  description: Returns the first truthy argument, otherwise the first falsey argument.
+  overloads:
+    any-any: a or b
+ vectorise: false
+ tests:
+    - '[0 0] : 0'
+    - '["", 1] : 1'
+    - '[[1,2,3], 0] : [1,2,3]'
+    - '[1, 2] : 1'
+- element: "v"
+  name: Reversed Logical Or
+  arity: 2
+  description: Returns the same as logical or but with reversed arguments.
+  overloads:
+    any-any: b or a
+ vectorise: false
+ tests:
+    - '[0 0] : 0'
+    - '["", 1] : 1'
+    - '[[1,2,3], 0] : [1,2,3]'
+    - '[1, 2] : 2'
+- element: "÷"
+  name: Item Split
+  arity: 1
+  description: Pushes each item of the top of the stack onto the stack.
+  overloads:
+    num: Push each digit of a
+    str: Push each character of a
+    lst: Push each item of a
+ vectorise: false
+ tests:
+    - '[123456] : 6'
+    - '["abc"] : "c"'
+    - '[[1,2,3]] : 3'"
+
