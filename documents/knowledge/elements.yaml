@@ -98,3 +98,17 @@
     - '["abcde", 4] : "aaaabbbbccccddddeeee"'
     - '["abcde", "FgHIj"] : "AbCDe"'
     - '[[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]] : [[1, 2], 3, 4, 5, [6, 7]]'
+- element: "†"
+  name: Function Call
+  arity: 1
+  description: Calls a function / executes as Vyxal / len(prime factors) / vectorised not
+  overloads:
+    fun: a()
+    num: len(prime_factors(a))
+    str: exec as vyxal
+    lst: vectorised not
+    # ...
+ vectorise: false
+ tests:
+    - '[12] : 2'
+    - '[[1, 0, 1]] : [0, 1, 0]'
