@@ -112,3 +112,26 @@
  tests:
     - '[12] : 2'
     - '[[1, 0, 1]] : [0, 1, 0]'
+- element: "€"
+  name: Split On
+  arity: 2
+  description: Split a on b (works on lists and numbers as well)
+  overloads:
+    any-any: a split on b
+ vectorise: <true/false>
+ tests:
+    - '[1231234, 3] : [12, 12, 4]'
+    - '[`abc3def`, 3] : ["abc", "def"]'
+    - '[[1, 2, 3, 4, 3, 2, 1]] : [[1, 2, 3], [3, 2, 1]]'
+- element: "½"
+  name: Halve
+  arity: 1
+  description: Halves an item
+  overloads:
+    num: a / 2
+    str: a split into two strings of equal lengths (as close as possible)
+ vectorise: true
+ tests:
+    - '[8] : 4'
+    - '["FizzBuzz"] : ["Fizz", "Buzz"]'
+    - '[[2, 4, 6, 8]] : [1, 2, 3, 4]'
