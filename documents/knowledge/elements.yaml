@@ -74,5 +74,27 @@
  tests:
     - '[123456] : 6'
     - '["abc"] : "c"'
-    - '[[1,2,3]] : 3'"
-
+    - '[[1,2,3]] : 3'
+- element: "×"
+  name: Asterisk Literal
+  arity: 0
+  description: The string "*" (asterisk)
+ vectorise: false
+ tests:
+    - '[] : "*"'
+- element: "•"
+  name: MultiCommand
+  arity: 2
+  description: Logarithm / Repeat Character / Capitalisation Transfer
+  overloads:
+    num-num: log_a(b)
+    num-str: [char * a for char in b]
+    str-num: [char * b for char in a]
+    str-str: a.with_capitalisation_of(b)
+    lst-lst: a molded to the shape of b
+ vectorise: true
+ tests:
+    - '[8, 2] : 3.0'
+    - '["abcde", 4] : "aaaabbbbccccddddeeee"'
+    - '["abcde", "FgHIj"] : "AbCDe"'
+    - '[[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]] : [[1, 2], 3, 4, 5, [6, 7]]'
