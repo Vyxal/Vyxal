@@ -33,6 +33,9 @@ element.
 ```
 
 ## The Parts Explained
+
+Parts marked with an asterisk (\*) aren't required for elements relating to structures.
+
 ### Element
 
 This is very simple: it's the byte being documented
@@ -51,7 +54,7 @@ This is very simple: how many items does the element pop from the stack?
 This is what you would say the element does in general, regardless of
 type overloads.
 
-### Overloads
+### Overloads (\*)
 
 For each overload of the element, list what expression it evaluates as.
 The types to use are:
@@ -63,13 +66,13 @@ lst - list
 any - any value
 ```
 
-### Vectorise
+### Vectorise (\*)
 
 This is whether or not the default behaviour of the element is to
 vectorise its functionality if given a list as an argument. Either true
 or false.
 
-### Tests
+### Tests (\*)
 
 These are expected input and output. Make sure to cover edge cases here.
 Also, use python expressions. The example stack is to be what the
