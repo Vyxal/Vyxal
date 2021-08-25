@@ -102,6 +102,11 @@
   name: Base Compressed Number
   arity: 0
   description: Open/close a bijective base-255 compressed number - »...»
+- modifier: "ß"
+  name: Conditional Execute
+  arity: 1 + *
+  usage: ß<elementA>
+  description: Executes element A if the top of the stack is truthy
 - element: "•"
   name: MultiCommand
   arity: 2
@@ -155,6 +160,10 @@
     - '[8] : 4'
     - '["FizzBuzz"] : ["Fizz", "Buzz"]'
     - '[[2, 4, 6, 8]] : [1, 2, 3, 4]'
+- element: "∆"
+  name: Mathematic Digraph
+  arity: NA
+  description: Used for mathematical digraphs
 - element: '+'
   name: add
   arity: 2
