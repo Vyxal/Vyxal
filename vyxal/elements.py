@@ -89,7 +89,7 @@ def halve(lhs, ctx):
     (str) -> a split into two strings of equal lengths (as close as possible)
     """
     ts = vy_type(lhs)
-    return {NUMBER: sympy.Rational(lhs, 2)}.get(
+    return {NUMBER_TYPE: sympy.Rational(lhs, 2)}.get(
         ts, lambda: vectorise(halve, lhs, ctx=ctx)
     )
     # TODO: Make the string stuff return
@@ -121,7 +121,7 @@ def prime_factors(lhs, ctx):
     (str) -> lhs + lhs[0]"""
     ts = vy_type(item)
     return {
-        NUMBER: lambda: sympy.ntheory.primefactors(int(lhs)),
+        NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
 
@@ -286,11 +286,14 @@ def vy_type(item, other=None, simple=False):
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
-    "∧": process_element("int(lhs and rhs)", 2),
-    "⟑": process_element("int(rhs and lhs)", 2),
-    "∨": process_element("int(lhs or rhs)", 2),
-    "⟇": process_element("int(rhs or lhs)", 2),
-    "÷": ("lhs = pop(stack, 1, ctx); stack += iterable(lhs)", 1),
+    "∧": process_element("lhs and rhs", 2),
+    "⟑": process_element("rhs and lhs", 2),
+    "∨": process_element("lhs or rhs", 2),
+    "⟇": process_element("rhs or lhs", 2),
+    "÷": (
+        "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
+        1,
+    ),
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
     "†": ("function_call(stack, ctx)", 1),

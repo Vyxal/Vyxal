@@ -7,7 +7,6 @@ from vyxal.context import Context
 from vyxal.transpile import transpile
 from vyxal.elements import *
 
-ctx = Context()
 
 if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I
@@ -17,6 +16,7 @@ if __name__ == "__main__":
     # Also,    file handling.
     # Summary: cli handling.
 
+    ctx = Context()
     stack = []
 
     # This is called if a file isn't given, just like it used to.
