@@ -11,7 +11,7 @@ element.
 ```yaml
 - element: "<character>"
   name: <one or two word proper name for the element>
-  arity: <0/1/2/3/*>
+  arity: <0/1/2/3/*/NA>
   description: <short general description of the command>
   overloads:
     type1-type2: <expression>
