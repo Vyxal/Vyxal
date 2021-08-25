@@ -24,6 +24,14 @@ element.
     - '[example stack] : expected result'
 ```
 
+```yaml
+- modifier: "<character>"
+  name: <one or two word proper name for the modifier>
+  arity: <0/1/2/3/*> + <0/1/2/3/*>
+  usage: <modifier><elementA><elementB> # as many/as few as needed.
+  description: <short general description of the modifier>
+```
+
 ## The Parts Explained
 ### Element
 
