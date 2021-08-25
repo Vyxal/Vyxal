@@ -7,7 +7,7 @@
   arity: 1
   description: Open a mapping lambda - ƛ
 - element: "¬"
-name: Logical Not
+  name: Logical Not
   arity: 1
   description: Return  the inverse (negation) of  the  truthiness of an item.
   overloads:
@@ -174,10 +174,10 @@ name: Logical Not
     str-str: a + b
   vectorise:  true
   tests:
-    - '[1, 1] -> 2'
-    - '[0, -5] -> -5'
-    - '["abc", 5] -> "abc5"'
-    - '[5, "abc"] -> "5abc"'
-    - '["Hello, ", "World!"] -> "Hello, World!"'
-    - '[[1,2,3], 4] -> [5, 6, 7]'
-    - '[[1,2,3], [4,5,6]] -> [5, 7, 9]'
+    - '[1, 1] : 2'
+    - '[0, -5] : -5'
+    - '["abc", 5] : "abc5"'
+    - '[5, "abc"] : "5abc"'
+    - '["Hello, ", "World!"] : "Hello, World!"'
+    - '[[1,2,3], 4] : [5, 6, 7]'
+    - '[[1,2,3], [4,5,6]] : [5, 7, 9]'
