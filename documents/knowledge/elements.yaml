@@ -1,21 +1,21 @@
 - element: "λ"
   name: Lambda
-  arity: *
+  arity: "*"
   description: Open a lambda - λ...;
 - element: "ƛ"
   name: Lambda Map
   arity: 1
   description: Open a mapping lambda - ƛ
 - element: "¬"
-  name: Logical Not
+name: Logical Not
   arity: 1
-  description: Return the inverse (negation) of the truthiness of an item.
+  description: Return  the inverse (negation) of  the  truthiness of an item.
   overloads:
     num: not a
     str: a != "" | len(a) > 0
     lst: a != [] | len(a) > 0
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[1] : 0'
     - '[0] : 1'
     - '["abc"] : 0'
@@ -25,11 +25,11 @@
 - element: "∧"
   name: Logical And
   arity: 2
-  description: Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
+  description: Returns  the first  truthy argument if both are  truthy, otherwise returns  the first falsey argument.
   overloads:
     any-any: a and b
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[0 0] : 0'
     - '["", 1] : ""'
     - '[[1,2,3], 0] : 0'
@@ -37,11 +37,11 @@
 - element: "⟑"
   name: Reversed Logical And
   arity: 2
-  description: Returns the same as logical and but with reversed arguments.
+  description: Returns  the same as logical and but with reversed arguments.
   overloads:
     any-any: b and a
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[0 0] : 0'
     - '["", 1] : ""'
     - '[[1,2,3], 0] : 0'
@@ -49,11 +49,11 @@
 - element: "∨"
   name: Logical Or
   arity: 2
-  description: Returns the first truthy argument, otherwise the first falsey argument.
+  description: Returns  the first  truthy argument, otherwise  the first falsey argument.
   overloads:
     any-any: a or b
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[0 0] : 0'
     - '["", 1] : 1'
     - '[[1,2,3], 0] : [1,2,3]'
@@ -61,11 +61,11 @@
 - element: "v"
   name: Reversed Logical Or
   arity: 2
-  description: Returns the same as logical or but with reversed arguments.
+  description: Returns  the same as logical or but with reversed arguments.
   overloads:
     any-any: b or a
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[0 0] : 0'
     - '["", 1] : 1'
     - '[[1,2,3], 0] : [1,2,3]'
@@ -78,23 +78,23 @@
     num: Push each digit of a
     str: Push each character of a
     lst: Push each item of a
- vectorise: false
- tests:
+  vectorise: false
+  tests:
     - '[123456] : 6'
     - '["abc"] : "c"'
     - '[[1,2,3]] : 3'
 - element: "×"
   name: Asterisk Literal
   arity: 0
-  description: The string "*" (asterisk)
- vectorise: false
- tests:
+  description:  the string "*" (asterisk)
+  vectorise: false
+  tests:
     - '[] : "*"'
 - element: "«"
   name: Base Compressed String
   arity: 0
   description: Open/close a bijective base-255 compressed string - «...«
-- element: "\n"
+- element: "␤"
   name: Newline
   arity: NA
   description: NOP
@@ -106,19 +106,19 @@
   name: Conditional Execute
   arity: 1 + *
   usage: ß<elementA>
-  description: Executes element A if the top of the stack is truthy
+  description: Executes element A if  the  top of  the stack is  truthy
 - element: "•"
   name: MultiCommand
   arity: 2
-  description: Logarithm / Repeat Character / Capitalisation Transfer
+  description: Logarithm / Repeat Character / Capitalisation  transfer
   overloads:
     num-num: log_a(b)
     num-str: [char * a for char in b]
     str-num: [char * b for char in a]
     str-str: a.with_capitalisation_of(b)
-    lst-lst: a molded to the shape of b
- vectorise: true
- tests:
+    lst-lst: a molded  to  the shape of b
+  vectorise:  true
+  tests:
     - '[8, 2] : 3.0'
     - '["abcde", 4] : "aaaabbbbccccddddeeee"'
     - '["abcde", "FgHIj"] : "AbCDe"'
@@ -126,15 +126,14 @@
 - element: "†"
   name: Function Call
   arity: 1
-  description: Calls a function / executes as Vyxal / len(prime factors) / vectorised not
+  description: Calls a function / executes as  vyxal / len(prime factors) /  vectorised not
   overloads:
     fun: a()
     num: len(prime_factors(a))
-    str: exec as vyxal
-    lst: vectorised not
-    # ...
- vectorise: false
- tests:
+    str: exec as  vyxal
+    lst:  vectorised not
+  vectorise: false
+  tests:
     - '[12] : 2'
     - '[[1, 0, 1]] : [0, 1, 0]'
 - element: "€"
@@ -143,8 +142,8 @@
   description: Split a on b (works on lists and numbers as well)
   overloads:
     any-any: a split on b
- vectorise: <true/false>
- tests:
+  vectorise: <true/false>
+  tests:
     - '[1231234, 3] : [12, 12, 4]'
     - '[`abc3def`, 3] : ["abc", "def"]'
     - '[[1, 2, 3, 4, 3, 2, 1]] : [[1, 2, 3], [3, 2, 1]]'
@@ -154,9 +153,9 @@
   description: Halves an item
   overloads:
     num: a / 2
-    str: a split into two strings of equal lengths (as close as possible)
- vectorise: true
- tests:
+    str: a split into  two strings of equal lengths (as close as possible)
+  vectorise:  true
+  tests:
     - '[8] : 4'
     - '["FizzBuzz"] : ["Fizz", "Buzz"]'
     - '[[2, 4, 6, 8]] : [1, 2, 3, 4]'
@@ -167,13 +166,13 @@
 - element: '+'
   name: add
   arity: 2
-  description: adds the top two items on the stack
+  description: adds  the  top  two items on  the stack
   overloads:
     num-num: a + b
     num-str: str(a) + b
     str-num: a + str(b)
     str-str: a + b
-  vectorise: true
+  vectorise:  true
   tests:
     - '[1, 1] -> 2'
     - '[0, -5] -> -5'
