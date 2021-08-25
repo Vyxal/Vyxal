@@ -1,4 +1,12 @@
-- element: '¬'
+- element: "λ"
+  name: Lambda
+  arity: *
+  description: Open a lambda - λ...;
+- element: "ƛ"
+  name: Lambda Map
+  arity: 1
+  description: Open a mapping lambda - ƛ
+- element: "¬"
   name: Logical Not
   arity: 1
   description: Return the inverse (negation) of the truthiness of an item.
@@ -82,6 +90,18 @@
  vectorise: false
  tests:
     - '[] : "*"'
+- element: "«"
+  name: Base Compressed String
+  arity: 0
+  description: Open/close a bijective base-255 compressed string - «...«
+- element: "\n"
+  name: Newline
+  arity: NA
+  description: NOP
+- element: "»"
+  name: Base Compressed Number
+  arity: 0
+  description: Open/close a bijective base-255 compressed number - »...»
 - element: "•"
   name: MultiCommand
   arity: 2
