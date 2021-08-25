@@ -7,8 +7,6 @@ from vyxal.transpile import *
 from vyxal.context import Context
 from vyxal.elements import *
 
-ctx = Context()
-
 
 def test_LogicalNot():
     stack = [1]
