@@ -45,7 +45,7 @@
     - '[0, 0] : 0'
     - '["", 1] : ""'
     - '[[1,2,3], 0] : 0'
-    - '[1, 2] : 2'
+    - '[1, 2] : 1'
 - element: "∨"
   name: Logical Or
   arity: 2
@@ -58,7 +58,7 @@
     - '["", 1] : 1'
     - '[[1,2,3], 0] : [1,2,3]'
     - '[1, 2] : 1'
-- element: "v"
+- element: "⟇"
   name: Reversed Logical Or
   arity: 2
   description: Returns  the same as logical or but with reversed arguments.
@@ -146,7 +146,7 @@
   tests:
     - '[1231234, 3] : ["12", "12", "4"]'
     - '["abc3def", 3] : ["abc", "def"]'
-    - '[[1, 2, 3, 4, 3, 2, 1]] : [[1, 2, 3], [3, 2, 1]]'
+    - '[[1, 2, 3, 4, 3, 2, 1], 4] : [[1, 2, 3], [3, 2, 1]]'
 - element: "½"
   name: Halve
   arity: 1

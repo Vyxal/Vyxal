@@ -75,6 +75,7 @@ def function_call(lhs, ctx):
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
         lhs += top(lhs, ctx=ctx)
+        return None
     else:
         return {
             NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
@@ -89,9 +90,10 @@ def halve(lhs, ctx):
     (str) -> a split into two strings of equal lengths (as close as possible)
     """
     ts = vy_type(lhs)
-    return {NUMBER_TYPE: sympy.Rational(lhs, 2)}.get(
-        ts, lambda: vectorise(halve, lhs, ctx=ctx)
-    )
+    return {
+        NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
+        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2)),
+    }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
     # TODO: Make the string stuff return
 
 
@@ -119,7 +121,7 @@ def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
     (str) -> lhs + lhs[0]"""
-    ts = vy_type(item)
+    ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
@@ -141,7 +143,7 @@ def split_on(lhs, rhs, ctx):
 
     else:
         ret, temp = [], []
-        for item in iterable(lhs, ctx):
+        for item in iterable(lhs, ctx=ctx):
             if item == rhs:
                 ret.append(temp[::])
                 temp = []
@@ -166,7 +168,7 @@ def subtract(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: ("-" * lhs) + rhs,
         (str, NUMBER_TYPE): lambda: lhs + ("-" * rhs),
         (str, str): lambda: lhs.replace(rhs, ""),
-    }.get(ts, lambda: vectorise(add, lhs, rhs))()
+    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
@@ -264,12 +266,12 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             lhs = iterable(lhs, ctx=ctx)
 
-        return LazyList((safe_apply(function, x, ctx) for x in lhs))
+        return LazyList((safe_apply(function, x, ctx=ctx) for x in lhs))
 
 
 def vectorised_not(lhs, ctx):
-    return {Number: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
-        vy_type(item), lambda: vectorise(vectorised_not, item, ctx=ctx)
+    return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
+        vy_type(lhs), lambda: vectorise(vectorised_not, lhs, ctx=ctx)
     )()
 
 
@@ -296,7 +298,11 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
-    "†": ("function_call(stack, ctx)", 1),
+    "†": (
+        "top = function_call(stack, ctx)\n"
+        + "if top is not None: stack.append(top)",
+        1,
+    ),
     "€": process_element(split_on, 2),
     "½": process_element(halve, 1),
     "+": process_element(add, 2),

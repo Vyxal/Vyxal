@@ -19,10 +19,10 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         "import os, sys\n\n"
         + "THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'\n"
         + "sys.path.insert(1, THIS_FOLDER)\n\n"
-        + "from vyxal.transpile import *\n\n"
         + "from vyxal.transpile import *\n"
         + "from vyxal.context import Context\n"
-        + "from vyxal.elements import *"
+        + "from vyxal.elements import *\n"
+        + "from vyxal.LazyList import *\n"
     )
     for element in data:
         if "tests" in element:
@@ -31,10 +31,10 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
             for test in cases:
                 stack, expected = test.split(" : ", 1)
                 tests.write(f"\tstack = {stack}; expected = {expected}\n")
-                tests.write(f"\tctx = Context()")
+                tests.write(f"\tctx = Context()\n")
                 tests.write(f"\tcode = transpile('{element['element']}')\n")
                 tests.write(f"\texec(code)\n")
-                tests.write(f"\tassert stack[-1] == expected\n\n")
+                tests.write(f"\tassert simplify(stack[-1]) == expected\n\n")
             tests.write("\n\n")
         else:
             continue

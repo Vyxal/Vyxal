@@ -6,7 +6,7 @@ and other stuff that needs to be lazily evaluated.
 """
 
 import types
-from typing import Any
+from typing import Any, Union
 
 from sympy import Rational
 
@@ -33,6 +33,22 @@ def lazylist(fn):
         return LazyList(fn(*args, **kwargs))
 
     return wrapped
+
+
+def simplify(value: Any) -> Union[int, float, str, list]:
+    if (
+        isinstance(value, int)
+        or isinstance(value, float)
+        or isinstance(value, str)
+    ):
+        return value
+
+    elif isinstance(value, Rational):
+        return float(value)
+
+    else:
+        print(value)
+        return list(map(simplify, value))
 
 
 class LazyList:
