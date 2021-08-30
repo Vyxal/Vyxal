@@ -13,7 +13,7 @@ import string
 from collections import deque
 from collections.abc import Iterable
 
-from vyxal import structure
+from vyxal import lexer, structure
 
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)
@@ -205,7 +205,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
             remaining = parse(tokens)
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(structure.Lambda(1, [[remaining[0]]]))
+                structures.append(structure.Lambda(1, remaining[0]))
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])

@@ -74,10 +74,10 @@ class FunctionDef(Structure):
 
 
 class Lambda(Structure):
-    def __init__(self, arity: int, body3: list[Structure]):
-        super().__init__(str(arity), body3)
+    def __init__(self, arity: int, body: list[Structure]):
+        super().__init__(str(arity), body)
         self.arity = arity
-        self.body = body3
+        self.body = body
 
 
 class LambdaMap(Lambda):
@@ -113,6 +113,11 @@ class MonadicModifier(Structure):
         self.modifier = modifier
         self.function_A = branches[0]
 
+    def __repr__(self):
+        return (
+            f"{type(self).__name__}({repr(self.branches)}, {self.modifier!r})"
+        )
+
 
 class DyadicModifier(Structure):
     def __init__(self, modifier: str, *branches: Branch):
@@ -120,6 +125,11 @@ class DyadicModifier(Structure):
         self.modifier = modifier
         self.function_A = branches[0]
         self.function_B = branches[1]
+
+    def __repr__(self):
+        return (
+            f"{type(self).__name__}({repr(self.branches)}, {self.modifier!r})"
+        )
 
 
 class TriadicModifier(Structure):
@@ -129,3 +139,8 @@ class TriadicModifier(Structure):
         self.function_A = branches[0]
         self.function_B = branches[1]
         self.function_C = branches[2]
+
+    def __repr__(self):
+        return (
+            f"{type(self).__name__}({repr(self.branches)}, {self.modifier!r})"
+        )
