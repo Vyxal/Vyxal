@@ -105,69 +105,61 @@ def test_modifiers():
     )
 
 
-"""
 def test_structures():
-    assert fully_parse("[1 1+|`nice`") == [
+    assert str(fully_parse("[1 1+|`nice`")) == str(
         [
-            "if_stmt",
-            [
+            IfStatement(
                 [
-                    ["none", ["number", "1"]],
-                    ["none", ["number", "1"]],
-                    ["none", ["general", "+"]],
+                    GenericStatement([Token(TokenType.NUMBER, "1")]),
+                    GenericStatement([Token(TokenType.NUMBER, "1")]),
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
                 ],
-                [["none", ["string", "nice"]]],
-            ],
+                [GenericStatement([Token(TokenType.STRING, "nice")])],
+            )
         ]
-    ]
+    )
 
-    assert fully_parse("1 10r(i|n2*,") == [
-        ["none", ["number", "1"]],
-        ["none", ["number", "10"]],
-        ["none", ["general", "r"]],
+    assert str(fully_parse("1 10r(i|n2*,")) == str(
         [
-            "for_loop",
-            [
-                "i",
+            GenericStatement([Token(TokenType.NUMBER, "1")]),
+            GenericStatement([Token(TokenType.NUMBER, "10")]),
+            GenericStatement([Token(TokenType.GENERAL, "r")]),
+            ForLoop(
+                ["i"],
                 [
-                    ["none", ["general", "n"]],
-                    ["none", ["number", "2"]],
-                    ["none", ["general", "*"]],
-                    ["none", ["general", ","]],
+                    GenericStatement([Token(TokenType.GENERAL, "n")]),
+                    GenericStatement([Token(TokenType.NUMBER, "2")]),
+                    GenericStatement([Token(TokenType.GENERAL, "*")]),
+                    GenericStatement([Token(TokenType.GENERAL, ",")]),
                 ],
-            ],
-        ],
-    ]
-
-    assert fully_parse("@triple:1|3*;") == [
-        [
-            "function",
-            [
-                ["triple", "1"],
-                [["none", ["number", "3"]], ["none", ["general", "*"]]],
-            ],
+            ),
         ]
-    ]
+    )
 
-    assert fully_parse("(code‛|c") == [
+    assert str(fully_parse("@triple:1|3*;")) == str(
         [
-            "for_loop",
-            [
+            FunctionDef(
+                "triple",
+                ["1"],
                 [
-                    ["none", ["general", "c"]],
-                    ["none", ["general", "o"]],
-                    ["none", ["general", "d"]],
-                    ["none", ["general", "e"]],
-                    ["none", ["string", "|c"]],
-                ]
-            ],
+                    GenericStatement([Token(TokenType.NUMBER, "3")]),
+                    GenericStatement([Token(TokenType.GENERAL, "*")]),
+                ],
+            )
         ]
-    ]
+    )
 
-"""
-if __name__ == "__main__":
-    test_basic()
-    test_fizzbuzz()
-    test_modifiers()
-    test_structures()
-    print("everything passed")
+    assert str(fully_parse("(code‛|c")) == str(
+        [
+            ForLoop(
+                [],
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "c")]),
+                    GenericStatement([Token(TokenType.GENERAL, "o")]),
+                    GenericStatement([Token(TokenType.GENERAL, "d")]),
+                    GenericStatement([Token(TokenType.GENERAL, "e")]),
+                    GenericStatement([Token(TokenType.STRING, "|c")]),
+                ],
+            )
+        ]
+    )

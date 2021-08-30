@@ -115,6 +115,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                                     an element.
             """
             if structure_cls == structure.ForLoop:
+                var_names = []
                 if len(branches) > 1:
                     var_names = [
                         variable_name(branch) for branch in branches[:-1]
