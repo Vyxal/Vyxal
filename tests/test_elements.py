@@ -268,7 +268,7 @@ def test_Halve():
 
 
 
-def test_add():
+def test_Addition():
 	stack = [1, 1]; expected = 2
 	ctx = Context()
 	code = transpile('+')
@@ -308,6 +308,78 @@ def test_add():
 	stack = [[1,2,3], [4,5,6]]; expected = [5, 7, 9]
 	ctx = Context()
 	code = transpile('+')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Subtract():
+	stack = [5, 4]; expected = 1
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [0, -5]; expected = 5
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["|", 5]; expected = "|-----"
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [3, "> arrow"]; expected = "---> arrow"
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["abcbde", "b"]; expected = "acde"
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["aaa", "a"]; expected = ""
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1, 2, 3], [1, 2, 3]]; expected = [0, 0, 0]
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[10, 20, 30], 5]; expected = [5, 15, 25]
+	ctx = Context()
+	code = transpile('-')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Pair():
+	stack = [1, 2]; expected = [1, 2]
+	ctx = Context()
+	code = transpile('"')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1, 2, 3]; expected = [2, 3]
+	ctx = Context()
+	code = transpile('"')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1, 2, 3], "abc", 3]; expected = ["abc", 3]
+	ctx = Context()
+	code = transpile('"')
 	exec(code)
 	assert simplify(stack[-1]) == expected
 

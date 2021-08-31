@@ -9,7 +9,7 @@
 - element: "¬"
   name: Logical Not
   arity: 1
-  description: Return  the inverse (negation) of  the  truthiness of an item.
+  description: Return the inverse (negation) of the truthiness of an item.
   overloads:
     num: not a
     str: a != "" | len(a) > 0
@@ -25,7 +25,7 @@
 - element: "∧"
   name: Logical And
   arity: 2
-  description: Returns  the first  truthy argument if both are  truthy, otherwise returns  the first falsey argument.
+  description: Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
   overloads:
     any-any: a and b
   vectorise: false
@@ -37,7 +37,7 @@
 - element: "⟑"
   name: Reversed Logical And
   arity: 2
-  description: Returns  the same as logical and but with reversed arguments.
+  description: Returns the same as logical and but with reversed arguments.
   overloads:
     any-any: b and a
   vectorise: false
@@ -49,7 +49,7 @@
 - element: "∨"
   name: Logical Or
   arity: 2
-  description: Returns  the first  truthy argument, otherwise  the first falsey argument.
+  description: Returns the first truthy argument, otherwise the first falsey argument.
   overloads:
     any-any: a or b
   vectorise: false
@@ -106,7 +106,7 @@
   name: Conditional Execute
   arity: 1 + *
   usage: ß<elementA>
-  description: Executes element A if  the  top of  the stack is  truthy
+  description: Executes element A if the top of the stack is truthy
 - element: "•"
   name: MultiCommand
   arity: 2
@@ -117,7 +117,7 @@
     str-num: [char * b for char in a]
     str-str: a.with_capitalisation_of(b)
     lst-lst: a molded  to  the shape of b
-  vectorise:  true
+  vectorise: true
   tests:
     - '[8, 2] : 3.0'
     - '["abcde", 4] : "aaaabbbbccccddddeeee"'
@@ -142,7 +142,7 @@
   description: Split a on b (works on lists and numbers as well)
   overloads:
     any-any: a split on b
-  vectorise: <true/false>
+  vectorise: false
   tests:
     - '[1231234, 3] : ["12", "12", "4"]'
     - '["abc3def", 3] : ["abc", "def"]'
@@ -153,8 +153,8 @@
   description: Halves an item
   overloads:
     num: a / 2
-    str: a split into  two strings of equal lengths (as close as possible)
-  vectorise:  true
+    str: a split into two strings of equal lengths (as close as possible)
+  vectorise: true
   tests:
     - '[8] : 4'
     - '["FizzBuzz"] : ["Fizz", "Buzz"]'
@@ -163,16 +163,16 @@
   name: Mathematic Digraph
   arity: NA
   description: Used for mathematical digraphs
-- element: '+'
-  name: add
+- element: "+"
+  name: Addition
   arity: 2
-  description: adds  the  top  two items on  the stack
+  description: Adds the top two items on the stack
   overloads:
     num-num: a + b
     num-str: str(a) + b
     str-num: a + str(b)
     str-str: a + b
-  vectorise:  true
+  vectorise: true
   tests:
     - '[1, 1] : 2'
     - '[0, -5] : -5'
@@ -181,3 +181,38 @@
     - '["Hello, ", "World!"] : "Hello, World!"'
     - '[[1,2,3], 4] : [5, 6, 7]'
     - '[[1,2,3], [4,5,6]] : [5, 7, 9]'
+- element: "-"
+  name: Subtract
+  arity: 2
+  description: Subtracts the top two items on the stack
+  overloads:
+    num-num: a - b
+    num-str: '("-" * a) + b'
+    str-num: 'a + ("-" * b)'
+    str-str: a.replace(b, '')
+  vectorise: true
+  tests:
+    - '[5, 4] : 1'
+    - '[0, -5] : 5'
+    - '["|", 5] : "|-----"'
+    - '[3, "> arrow"] : "---> arrow"'
+    - '["abcbde", "b"] : "acde"'
+    - '["aaa", "a"] : ""'
+    - '[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]'
+    - '[[10, 20, 30], 5] : [5, 15, 25]'
+- element: "?"
+  name: Input
+  arity: 0
+  description: Get the next input from the input source
+  vectorise: false
+- element: '"'
+  name: Pair
+  arity: 2
+  description: Place the top two items into a single list
+  overloads:
+    any-any: '[a, b]'
+  vectorise: false
+  tests:
+    - '[1, 2] : [1, 2]'
+    - '[1, 2, 3] : [2, 3]'
+    - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
