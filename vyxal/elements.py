@@ -168,7 +168,7 @@ def subtract(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: ("-" * lhs) + rhs,
         (str, NUMBER_TYPE): lambda: lhs + ("-" * rhs),
         (str, str): lambda: lhs.replace(rhs, ""),
-    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
