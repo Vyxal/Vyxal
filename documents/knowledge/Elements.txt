@@ -186,7 +186,7 @@ i (a: any, b: number)                = a[b] # index
   (a: any, b: [x, y, m])             = a[x:y:m] # index, xth to yth item step m items, needs wrapping index
 j (a: any, b: any)                   = a.join(b) # join
 k                                    = * constant digraphs (see near the end of docs)
-l (a: any, b: number)                = n-wise_group(a, b) # Cummulative grouping/pairing
+l (a: any, b: number)                = subvectors of a of length b # Equivalent to b,/a in APL
   (a: any, b: non-number)            = length(a) == length(b) # Length of a and b are same?
 m (a: any)                           = a + reversed(a) # mirror, mirrored, palindromised (Use vertical mirror below for ASCII art)
 n                                    = * context variable
