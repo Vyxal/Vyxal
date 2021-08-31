@@ -4,6 +4,7 @@
 the python equivalent of command is stored
 """
 
+import itertools
 import math
 import types
 from typing import Union
@@ -59,6 +60,26 @@ def add(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
+
+
+def combinations_with_replacement(lhs, rhs, ctx):
+    """Element ↔
+    (any, num) -> combinations of lhs of length rhs with replacement
+    (any, non-num) -> remove elements in lhs that are not in rhs
+    (fun, any) -> apply lhs on rhs until the result does not change. Collects intermittent values
+    (any, fun) -> apply rhs on lhs until the result does not change. Collects intermittent values
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, ts[1]): lambda: LazyList(
+            itertools.combinations_with_replacement(iterable(rhs, ctx), lhs)
+        ),
+        (ts[0], NUMBER_TYPE): lambda: LazyList(
+            itertools.combinations_with_replacement(iterable(lhs, ctx), rhs)
+        ),
+        (types.FunctionType, ts[1]): lambda: 1,
+    }
 
 
 def function_call(lhs, ctx):

@@ -17,6 +17,12 @@ NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
 
+def deep_copy(value: Any) -> Any:
+    """Because lists and lazylists use memory references."""
+
+    # Use itertools.tee for (LazyL|l)ists
+
+
 def get_input(ctx: context.Context) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
@@ -36,6 +42,19 @@ def get_input(ctx: context.Context) -> Any:
         ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
         ctx.inputs[-1][1] += 1
         return ret
+
+
+@LazyList
+def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
+    """Repeat function until the result is no longer unique.
+    Uses initial as the initial value"""
+
+    previous = None
+    current = simplify(initial)
+
+    while previous != current:
+        yield current
+        prevuous = deep_copy(current)
 
 
 def from_base_alphabet(value: str, alphabet: str) -> int:

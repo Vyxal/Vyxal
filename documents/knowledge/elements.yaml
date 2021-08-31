@@ -163,6 +163,7 @@
   name: Mathematic Digraph
   arity: NA
   description: Used for mathematical digraphs
+- element: "↔"
 - element: "+"
   name: Addition
   arity: 2
