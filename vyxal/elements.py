@@ -78,7 +78,7 @@ def combinations_with_replacement(lhs, rhs, ctx):
         (ts[0], NUMBER_TYPE): lambda: LazyList(
             itertools.combinations_with_replacement(iterable(lhs, ctx), rhs)
         ),
-        (types.FunctionType, ts[1]): lambda: 1,
+        (types.FunctionType, ts[1]): lambda: fixed_point,
     }
 
 
