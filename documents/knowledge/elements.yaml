@@ -163,7 +163,224 @@
   name: Mathematic Digraph
   arity: NA
   description: Used for mathematical digraphs
+- element: "ø"
+  name: String Digraph
+  arity: NA
+  description: Used for string-based digraphs
 - element: "↔"
+  name: Combinations/Remove/Repetitive-apply-collect
+  arity: 2
+  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+  overloads: 
+    any-num: combinations_with_replacement(a, length=b)
+    fun-any: Apply a on b until the result doesn't change, yielding intermediate values
+    any-str: Remove elements from a that are not in b
+    any-lst: Remove elements from a that are not in b.
+  vectorise: false
+  tests:
+    - '["abcde", "cabbage"] : "cabbae"'
+    - '[[1,2,5],[1,3,5,6,7,7,1]] : [1,7,7,1]'
+    - '[[1,2],2] : [[1,1],[1,2],[2,1],[2,2]]'
+- element: "¢"
+  name: Infinite replacement
+  arity: 3
+  description: Replace b in a with c until a doesn't change
+  overloads:
+    any-any-any: replace b in a with c until a doesn't change
+  vectorise: false
+  tests: 
+    - '["{[[[]]]}","[]",""] : "{}"'
+    - '[1444,44,34] : 1334'
+- element: "⌐"
+  name: Complement / Comma Split
+  description: 1 - a if number, split by commas if string.
+  arity: 1
+  overloads:
+    num: 1 - a
+    str: a.split(",")
+  vectorise: true
+  tests:
+    - '[5] : -4'
+    - '[-5] : 6'
+    - '["a,b,c"] : ["a","b","c"]'
+- element: "æ"
+  name: Isprime / case check
+  description: (a is prime) if a is a number, else check which case a is
+  arity: 1
+  overloads:
+    num: is a prime?
+    str: caseof(a) - 1 if all letters in a  are uppercase, 0 if some letters in a are lowercase, -1 if there are no letters in a 
+  vectorise: true
+  tests:
+    - '[2] : 1'
+    - '[4] : 0'
+    - '["a"]: 0'
+    - '["A"]: 1'
+    - '["!"]: -1'
+- element: "ʀ"
+  name: Inclusive range-0
+  description: Inclusive range or a = "0"
+  arity: 1
+  overloads:
+    num: range(0,a + 1) (inclusive range from 0)
+    str: a == "0"
+    lst: str(a) == "0"
+  vectorise: false
+  tests:
+    - '["0"] : 1'
+    - '[[1]] : 0'
+    - '[3] : [0,1,2,3]'
+- element: "ʁ"
+  name: Exclusive range-0
+  description: Exclusive range or a = "0"
+  arity: 1
+  overloads:
+    num: range(0,a) (exclusive range from 0)
+    str: a == "0"
+    lst: str(a) == "0"
+  vectorise: false
+  tests:
+    - '["0"] : 1'
+    - '[[1]] : 0'
+    - '[3] : [0,1,2]'
+- element: "ɾ"
+  name: Inclusive range-1
+  description: Inclusive range or a = "1"
+  arity: 1
+  overloads:
+    num: range(1,a+1) (inclusive range from 0)
+    str: a == "1"
+    lst: str(a) == "1"
+  vectorise: false
+  tests:
+    - '["1"] : 1'
+    - '[[0]] : 0'
+    - '[3] : [1,2,3]'
+- element: "ɽ"
+  name: Exclusive range-1
+  description: Exclusive range or a = "1"
+  arity: 1
+  overloads:
+    num: range(1,a) (exclusive range from 0)
+    str: a == "1"
+    lst: str(a) == "1"
+  vectorise: false
+  tests:
+    - '["1"] : 1'
+    - '[[0]] : 0'
+    - '[3] : [1,2]'
+- element: "Þ"
+  name: List Digraph
+  arity: NA
+  description: Used for list-related digraphs
+- element: "ƈ"
+  name: Choose / random choice / set same
+  description: Binomial coefficient / choose a random items from b / same except duplicates
+  arity: 2
+  overloads:
+    num-num: a choose b (binomial coefficient)
+    num-str: Choose a random items from b
+    str-num: Choose b random items from a
+    str-str: Check if lists are the same except for duplicates
+  vectorise: true
+  tests:
+    - '[5,3] : 10'
+    - '["abc","aaccb"] : 1'
+    - '["abc","abcd"] : 0'
+- element: "∞"
+  name: Positive integers
+  description: List of all non-negative integers, starting at 0
+  arity: 0
+- element: "¨"
+  name: Other Digraphs
+  arity: NA
+  description: Used for various random digraphs
+- element: " "
+  name: Space
+  arity: NA
+  description: NOP
+- element: "!"
+  name: Stack length
+  description: Push the length of the stack
+  arity: 0
+  tests:
+    - '[0,1,2] : 3'
+    - '[1,1,1,1,1] : 5'
+    - '[] : 0'
+- element: '"'
+  name: Pair
+  arity: 2
+  description: Place the top two items into a single list
+  overloads:
+    any-any: '[a, b]'
+  vectorise: false
+  tests:
+    - '[1, 2] : [1, 2]'
+    - '[1, 2, 3] : [2, 3]'
+    - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
+- element: "#"
+  name: Comment
+  description: The characters until the next newline are commented out
+  arity: NA
+- element: "$"
+  name: Swap
+  arity: 2
+  description: Swap the top two items
+  overloads:
+    any-any: 'b, a'
+  vectorise: false
+  tests:
+    - '[1, 2] : 1'
+    - '[1, 2, 3] : 2'
+    - '[[1, 2, 3], "abc", 3] : "abc"'
+- element: "%"
+  name: Modulo / format
+  description: Modulo two numbers / format two strings
+  arity: 2
+  overloads:
+    num-num: a % b
+    num-str: last of (b split into a equal pieces)
+    str-num: last of (a split into b equal pieces)
+    str-str: a.format(b) (replace % in a with b)
+    str-lst: a.format(b) (replace % in a with each item of b)
+  vectorise: true
+  tests:
+    - '[5,3] : 2'
+    - '["hello!",3] : "o!"'
+    - '["Hel%ld!","lo, Wor"] : "Hello, World!"'
+    - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
+- modifier: "&"
+  name: Apply to register
+  arity: *
+  description: Apply the next element to the register
+  usage: '&<element>'
+- element: "'"
+  name: Lambda Filter
+  arity: 1
+  description: Open a filter lambda - '...;
+- element: "("
+  name: Open For Loop
+  arity: 1
+  description: Start a for loop, iterating over the popped top of stack.
+- element: ")"
+  name: "Close for loop"
+  description: Close a for loop
+  arity: NA
+- element: "*"
+  name: Multiplication
+  description: Multiply two numbers or strings
+  arity: 2
+  overloads:
+    num-num: a * b
+    num-str: b repeated a times
+    str-num: a repeated b times
+    str-str: Prepend each char of a to b
+  vectorise: true
+  tests:
+    - '[3,5] : 15'
+    - '[4,-2] : -8'
+    - '[4,"*"] : "****"'
+    - '["x",5] : "xxxxx"'
 - element: "+"
   name: Addition
   arity: 2
@@ -182,6 +399,13 @@
     - '["Hello, ", "World!"] : "Hello, World!"'
     - '[[1,2,3], 4] : [5, 6, 7]'
     - '[[1,2,3], [4,5,6]] : [5, 7, 9]'
+- element: ","
+  name: Print
+  description: Print a with trailing newline
+  arity: 1
+  overloads:
+    any: print(a)
+  vectorise: false
 - element: "-"
   name: Subtract
   arity: 2
@@ -201,19 +425,131 @@
     - '["aaa", "a"] : ""'
     - '[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]'
     - '[[10, 20, 30], 5] : [5, 15, 25]'
+- element: "."
+  name: Decimal separator
+  description: Decimal separator
+  arity: NA
+- element: "/"
+  name: Divide / split
+  description: Divide two numbers or split strings
+  arity: 2
+  overloads:
+    num-num: a / b
+    num-str: b split into a even length pieces, possibly with an extra part
+    str-num: a split into b even length pieces, possibly with an extra part
+    str-str: a.split(b)
+  vectorise: true
+  tests:
+    - '[4,2] : 2'
+    - '["abcdef",3] : ["ab","cd","ef"]'
+    - '["1,2,3",","] : ["1","2","3"]'
+- element: "0"
+  name: Literal digit 0
+  description: Literal digit 0
+  arity: 0
+- element: "1"
+  name: Literal digit 1
+  description: Literal digit 1
+  arity: 0
+- element: "2"
+  name: Literal digit 2
+  description: Literal digit 2
+  arity: 0
+- element: "3"
+  name: Literal digit 3
+  description: Literal digit 3
+  arity: 0
+- element: "4"
+  name: Literal digit 4
+  description: Literal digit 4
+  arity: 0
+- element: "5"
+  name: Literal digit 5
+  description: Literal digit 5
+  arity: 0
+- element: "6"
+  name: Literal digit 6
+  description: Literal digit 6
+  arity: 0
+- element: "7"
+  name: Literal digit 7
+  description: Literal digit 7
+  arity: 0
+- element: "8"
+  name: Literal digit 8
+  description: Literal digit 8
+  arity: 0
+- element: "9"
+  name: Literal digit 9
+  description: Literal digit 9
+  arity: 0
+- element: ":"
+  name: Duplicate
+  description: Push a twice
+  arity: 1
+  overloads:
+    any: a,a
+  vectorise: false
+- element: ";"
+  name: Close structure
+  description: Close a lambda / map lambda / sort lambda / function
+  arity: NA
+- element: "<"
+  name: Less than
+  description: Basic comparison - less than
+  arity: 2
+  overloads:
+    num-num: a < b
+    num-str: str(a) < b
+    str-num: a < str(b)
+    str-str: a < b
+  vectorise: true
+  tests:  
+    - '[1, 2] : 1'
+    - '[2, 1] : 0'
+    - '["a","b"] : 1'
+    - '[-5,2] : 1'
+    - '[[1,2,3],2] : [1,0,0]'
+- element: "="
+  name: Equals
+  description: Basic comparison - equals
+  arity: 2
+  overloads:
+    num-num: a == b
+    num-str: str(a) == b
+    str-num: a == str(b)
+    str-str: a == b
+  vectorise: true
+  tests:  
+    - '[1, 1] : 1'
+    - '[2, 1] : 0'
+    - '["a","b"] : 0'
+    - '["xyz","xyz"] : 1'
+    - '[[1,2,3],2] : [0,1,0]'
+    - '[1,"1"] : 1'
+- element: ">"
+  name: Greater than
+  description: Basic comparison - greater than
+  arity: 2
+  overloads:
+    num-num: a > b
+    num-str: str(a) > b
+    str-num: a > str(b)
+    str-str: a > b
+  vectorise: true
+  tests:  
+    - '[1, 2] : 0'
+    - '[2, 1] : 1'
+    - '["a","b"] : 0'
+    - '[2,-5] : 1'
+    - '[[1,2,3],2] : [0,0,1]'
+    - '["5",10] : 0'
 - element: "?"
   name: Input
   arity: 0
   description: Get the next input from the input source
   vectorise: false
-- element: '"'
-  name: Pair
-  arity: 2
-  description: Place the top two items into a single list
-  overloads:
-    any-any: '[a, b]'
-  vectorise: false
-  tests:
-    - '[1, 2] : [1, 2]'
-    - '[1, 2, 3] : [2, 3]'
-    - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
+- element: "@"
+  name: Function call / declaration
+  description: Call / declare function (@name; / @name|code;)
+  arity: '* / NA'
