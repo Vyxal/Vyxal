@@ -104,7 +104,7 @@
   description: Open/close a bijective base-255 compressed number - »...»
 - modifier: "ß"
   name: Conditional Execute
-  arity: 1 + *
+  arity: '1 + *'
   usage: ß<elementA>
   description: Executes element A if the top of the stack is truthy
 - element: "•"
@@ -113,8 +113,8 @@
   description: Logarithm / Repeat Character / Capitalisation  transfer
   overloads:
     num-num: log_a(b)
-    num-str: [char * a for char in b]
-    str-num: [char * b for char in a]
+    num-str: '[char * a for char in b]'
+    str-num: '[char * b for char in a]'
     str-str: a.with_capitalisation_of(b)
     lst-lst: a molded  to  the shape of b
   vectorise: true
@@ -214,9 +214,9 @@
   tests:
     - '[2] : 1'
     - '[4] : 0'
-    - '["a"]: 0'
-    - '["A"]: 1'
-    - '["!"]: -1'
+    - '["a"] : 0'
+    - '["A"] : 1'
+    - '["!"] : -1'
 - element: "ʀ"
   name: Inclusive range-0
   description: Inclusive range or a = "0"
@@ -351,7 +351,7 @@
     - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
 - modifier: "&"
   name: Apply to register
-  arity: *
+  arity: "*"
   description: Apply the next element to the register
   usage: '&<element>'
 - element: "'"
