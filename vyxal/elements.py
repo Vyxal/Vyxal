@@ -10,7 +10,6 @@ import types
 from typing import Union
 
 import sympy
-from sympy.polys.polytools import primitive
 
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList
@@ -73,13 +72,14 @@ def combinations_with_replacement(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, ts[1]): lambda: LazyList(
-            itertools.combinations_with_replacement(iterable(rhs, ctx), lhs)
+            itertools.product(iterable(rhs, ctx), repeat=lhs)
         ),
         (ts[0], NUMBER_TYPE): lambda: LazyList(
-            itertools.combinations_with_replacement(iterable(lhs, ctx), rhs)
+            itertools.product(iterable(lhs, ctx), repeat=rhs)
         ),
-        (types.FunctionType, ts[1]): lambda: fixed_point,
-    }
+        (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs),
+        (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs),
+    }.get(ts, lambda: keep(lhs, rhs))()
 
 
 def function_call(lhs, ctx):
@@ -326,6 +326,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "€": process_element(split_on, 2),
     "½": process_element(halve, 1),
+    "↔": process_element(combinations_with_replacement, 2),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (
