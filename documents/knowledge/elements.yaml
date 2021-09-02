@@ -426,7 +426,7 @@
     - '[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]'
     - '[[10, 20, 30], 5] : [5, 15, 25]'
 - element: "."
-  name: Decimal separator
+  name: Decimal Separator
   description: Decimal separator
   arity: NA
 - element: "/"
