@@ -26,7 +26,5 @@ if __name__ == "__main__":
         line = transpile(input(">>> "))
         stack = []
 
-        print(line)
-
         exec(line)
         print(stack)

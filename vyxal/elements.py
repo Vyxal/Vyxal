@@ -115,7 +115,21 @@ def halve(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
         str: lambda: wrap(lhs, math.ceil(len(lhs) / 2)),
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
-    # TODO: Make the string stuff return
+
+
+def infinite_replace(lhs, rhs, other, ctx):
+    """Element ¢
+    (any-any-any) -> replace b in a with c until a doesn't change
+    """
+
+    prev = deep_copy(lhs)
+    while True:
+        lhs = replace(lhs, rhs, other, ctx)
+        if lhs == prev:
+            break
+        prev = deep_copy(lhs)
+
+    return lhs
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -147,6 +161,17 @@ def prime_factors(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
+
+
+def replace(lhs, rhs, other, ctx):
+    """Element V
+    (any, any, any) -> a.replace(b, c)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        return str(lhs).replace(str(rhs), str(other))
+    else:
+        return [other if value == rhs else value for value in iterable(lhs)]
 
 
 def split_on(lhs, rhs, ctx):
@@ -327,14 +352,16 @@ elements: dict[str, tuple[str, int]] = {
     "€": process_element(split_on, 2),
     "½": process_element(halve, 1),
     "↔": process_element(combinations_with_replacement, 2),
+    "¢": process_element(infinite_replace, 3),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (
-        "ctx.use_top_input = True; lhs = get_input(ctx);"
+        "ctx.use_top_input = True; lhs = get_input(ctx); "
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
     '"': process_element("[lhs, rhs]", 2),
+    "V": process_element(replace, 3),
 }
 modifiers = {
     "v": (
