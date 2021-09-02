@@ -231,16 +231,15 @@
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
   name: Exclusive Zero Range
-  description: Exclusive range or a = "0"
+  description: Exclusive range or palindromised
   arity: 1
   overloads:
     num: range(0,a) (exclusive range from 0)
-    str: a == "0"
-    lst: str(a) == "0"
-  vectorise: false
+    str: palindromised a
+  vectorise: true
   tests:
-    - '["0"] : 1'
-    - '[[1]] : 0'
+    - '["1234"] : "1234321'
+    - '[[1]] : [[0]]'
     - '[3] : [0,1,2]'
 - element: "ɾ"
   name: Inclusive One Range

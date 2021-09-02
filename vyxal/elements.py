@@ -94,6 +94,18 @@ def complement(lhs, ctx):
     )()
 
 
+def exclusive_zero_range(lhs, ctx):
+    """Element ʁ
+    (num) -> range(0, a)
+    (str) -> mirror(a)
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: LazyList(range(0, int(lhs))),
+        str: lambda: merge(lhs, reverse(lhs)[1:]),
+    }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -130,6 +142,10 @@ def halve(lhs, ctx):
 
 
 def inclusive_zero_range(lhs, ctx):
+    """Element ʀ
+    (num) -> range(0, a + 1)
+    (str) -> [char is alphabetical? for char in a]
+    """
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: LazyList(range(0, int(lhs) + 1)),
@@ -187,6 +203,28 @@ def log_mold_multi(lhs, rhs, ctx):
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
         (list, list): lambda: mold(lhs, rhs),
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
+
+
+def merge(lhs, rhs, ctx):
+    """Element J
+    (scl, scl) -> concatenate a and b
+    (lst, scl) -> append b to a
+    (scl, lst) -> prepend a to b
+    (lst, lst) -> merged a and b
+    """
+
+    ts = vy_type(lhs, rhs, simple=True)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            str(lhs) + str(rhs), ctx=ctx
+        ),
+        (NUMBER_TYPE, str): lambda: add(lhs, rhs),
+        (str, NUMBER_TYPE): lambda: add(lhs, rhs),
+        (str, str): lambda: lhs + rhs,
+        (list, ts[1]): lambda: lhs + [rhs],
+        (ts[0], list): lambda: [lhs] + rhs,
+        (list, list): lambda: lhs + rhs,
+    }.get(ts)()
 
 
 def prime_factors(lhs, ctx):
