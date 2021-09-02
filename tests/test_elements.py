@@ -268,6 +268,318 @@ def test_Halve():
 
 
 
+def test_Combinations_Remove_FixedPoint():
+	stack = ["cabbage", "abcde"]; expected = "cabbae"
+	ctx = Context()
+	code = transpile('↔')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1,3,5,6,7,7,1],[1,3,5]]; expected = [1,3,5,1]
+	ctx = Context()
+	code = transpile('↔')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1,2],2]; expected = [[1,1],[1,2],[2,1],[2,2]]
+	ctx = Context()
+	code = transpile('↔')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Infinitereplacement():
+	stack = ["{[[[]]]}","[]",""]; expected = "{}"
+	ctx = Context()
+	code = transpile('¢')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1444,44,34]; expected = 1334
+	ctx = Context()
+	code = transpile('¢')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Complement_CommaSplit():
+	stack = [5]; expected = -4
+	ctx = Context()
+	code = transpile('⌐')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [-5]; expected = 6
+	ctx = Context()
+	code = transpile('⌐')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a,b,c"]; expected = ["a","b","c"]
+	ctx = Context()
+	code = transpile('⌐')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_IsPrime_CaseCheck():
+	stack = [2]; expected = 1
+	ctx = Context()
+	code = transpile('æ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [4]; expected = 0
+	ctx = Context()
+	code = transpile('æ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a"]; expected = 0
+	ctx = Context()
+	code = transpile('æ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["A"]; expected = 1
+	ctx = Context()
+	code = transpile('æ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["!"]; expected = -1
+	ctx = Context()
+	code = transpile('æ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_InclusiveZeroRange():
+	stack = ["0"]; expected = 1
+	ctx = Context()
+	code = transpile('ʀ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1]]; expected = 0
+	ctx = Context()
+	code = transpile('ʀ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [3]; expected = [0,1,2,3]
+	ctx = Context()
+	code = transpile('ʀ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_ExclusiveZeroRange():
+	stack = ["0"]; expected = 1
+	ctx = Context()
+	code = transpile('ʁ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1]]; expected = 0
+	ctx = Context()
+	code = transpile('ʁ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [3]; expected = [0,1,2]
+	ctx = Context()
+	code = transpile('ʁ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_InclusiveOneRange():
+	stack = ["1"]; expected = 1
+	ctx = Context()
+	code = transpile('ɾ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[0]]; expected = 0
+	ctx = Context()
+	code = transpile('ɾ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [3]; expected = [1,2,3]
+	ctx = Context()
+	code = transpile('ɾ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_ExclusiveOneRange():
+	stack = ["1"]; expected = 1
+	ctx = Context()
+	code = transpile('ɽ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[0]]; expected = 0
+	ctx = Context()
+	code = transpile('ɽ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [3]; expected = [1,2]
+	ctx = Context()
+	code = transpile('ɽ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Choose_randomchoice_setsame():
+	stack = [5,3]; expected = 10
+	ctx = Context()
+	code = transpile('ƈ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["abc","aaccb"]; expected = 1
+	ctx = Context()
+	code = transpile('ƈ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["abc","abcd"]; expected = 0
+	ctx = Context()
+	code = transpile('ƈ')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Stacklength():
+	stack = [0,1,2]; expected = 3
+	ctx = Context()
+	code = transpile('!')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1,1,1,1,1]; expected = 5
+	ctx = Context()
+	code = transpile('!')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = []; expected = 0
+	ctx = Context()
+	code = transpile('!')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Pair():
+	stack = [1, 2]; expected = [1, 2]
+	ctx = Context()
+	code = transpile('"')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1, 2, 3]; expected = [2, 3]
+	ctx = Context()
+	code = transpile('"')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1, 2, 3], "abc", 3]; expected = ["abc", 3]
+	ctx = Context()
+	code = transpile('"')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Swap():
+	stack = [1, 2]; expected = 1
+	ctx = Context()
+	code = transpile('$')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1, 2, 3]; expected = 2
+	ctx = Context()
+	code = transpile('$')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1, 2, 3], "abc", 3]; expected = "abc"
+	ctx = Context()
+	code = transpile('$')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Modulo_Format():
+	stack = [5,3]; expected = 2
+	ctx = Context()
+	code = transpile('%')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["hello!",3]; expected = "o!"
+	ctx = Context()
+	code = transpile('%')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["Hel%ld!","lo, Wor"]; expected = "Hello, World!"
+	ctx = Context()
+	code = transpile('%')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["% and % and %",[1,2,3]]; expected = "1 and 2 and 3"
+	ctx = Context()
+	code = transpile('%')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Multiplication():
+	stack = [3,5]; expected = 15
+	ctx = Context()
+	code = transpile('*')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [4,-2]; expected = -8
+	ctx = Context()
+	code = transpile('*')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [4,"*"]; expected = "****"
+	ctx = Context()
+	code = transpile('*')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["x",5]; expected = "xxxxx"
+	ctx = Context()
+	code = transpile('*')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
 def test_Addition():
 	stack = [1, 1]; expected = 2
 	ctx = Context()
@@ -364,22 +676,133 @@ def test_Subtract():
 
 
 
-def test_Pair():
-	stack = [1, 2]; expected = [1, 2]
+def test_Divide_Split():
+	stack = [4,2]; expected = 2
 	ctx = Context()
-	code = transpile('"')
+	code = transpile('/')
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2, 3]; expected = [2, 3]
+	stack = ["abcdef",3]; expected = ["ab","cd","ef"]
 	ctx = Context()
-	code = transpile('"')
+	code = transpile('/')
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3], "abc", 3]; expected = ["abc", 3]
+	stack = ["1,2,3",","]; expected = ["1","2","3"]
 	ctx = Context()
-	code = transpile('"')
+	code = transpile('/')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Lessthan():
+	stack = [1, 2]; expected = 1
+	ctx = Context()
+	code = transpile('<')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [2, 1]; expected = 0
+	ctx = Context()
+	code = transpile('<')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a","b"]; expected = 1
+	ctx = Context()
+	code = transpile('<')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [-5,2]; expected = 1
+	ctx = Context()
+	code = transpile('<')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1,2,3],2]; expected = [1,0,0]
+	ctx = Context()
+	code = transpile('<')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_Equals():
+	stack = [1, 1]; expected = 1
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [2, 1]; expected = 0
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a","b"]; expected = 0
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["xyz","xyz"]; expected = 1
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1,2,3],2]; expected = [0,1,0]
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [1,"1"]; expected = 1
+	ctx = Context()
+	code = transpile('=')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+
+def test_GreaterThan():
+	stack = [1, 2]; expected = 0
+	ctx = Context()
+	code = transpile('>')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [2, 1]; expected = 1
+	ctx = Context()
+	code = transpile('>')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a","b"]; expected = 0
+	ctx = Context()
+	code = transpile('>')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [2,-5]; expected = 1
+	ctx = Context()
+	code = transpile('>')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = [[1,2,3],2]; expected = [0,0,1]
+	ctx = Context()
+	code = transpile('>')
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["5",10]; expected = 0
+	ctx = Context()
+	code = transpile('>')
 	exec(code)
 	assert simplify(stack[-1]) == expected
 

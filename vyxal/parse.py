@@ -90,7 +90,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
 
     while tokens:
         head = tokens.popleft()
-        if head.value in OPENING_CHARACTERS:
+        if head.name == lexer.TokenType.STRING:
+            structures.append(structure.GenericStatement([head]))
+        elif head.value in OPENING_CHARACTERS:
             structure_cls, end_bracket = STRUCTURE_INFORMATION[head.value]
             bracket_stack.append(end_bracket)
 
