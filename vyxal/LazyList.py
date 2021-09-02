@@ -143,29 +143,22 @@ class LazyList:
         self.generated = []
         return temp
 
-    def output(self, end="\n"):
-        print("⟨", end="")
+    def output(self, end="\n", ctx=None):
+        from vyxal.elements import vy_print
+
+        vy_print("⟨", "", ctx)
         for lhs in self.generated[:-1]:
-            print(lhs, end="|")
+            vy_print(lhs, "|", ctx)
         if len(self.generated):
-            print(self.generated[-1], end="")
+            vy_print(self.generated[-1], "", ctx)
 
         try:
             lhs = next(self)
             if len(self.generated) > 1:
-                print("|", end="")
+                vy_print("|", "", ctx)
             while True:
-                print(lhs, end="")
+                vy_print(lhs, "", ctx)
                 lhs = next(self)
-                print("|", end="")
+                vy_print("|", "", ctx)
         except:
-            print("⟩", end=end)
-
-
-"""
--------------
-XXX: VERY IMPORTANT
-
-UPDATE THE PRNIT METHOD OF THE LAZYLIST TO USE VY_PRINT WHEN WE DEFINE
-IT.
-"""
+            vy_print("⟩", end, ctx)

@@ -221,6 +221,17 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     return function(*args, ctx)
 
 
+def scalarify(value: Any) -> Union[Any, List[Any]]:
+    """Returns value[0] if value is a list of length 1, else value"""
+    if type(value) in (list, LazyList):
+        if len(value) == 1:
+            return value[0]
+        else:
+            return value
+    else:
+        return value
+
+
 def to_base_digits(value: int, base: int) -> List[int]:
     """Returns value in base 'base' from base 10 as a list of digits"""
 

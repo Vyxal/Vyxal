@@ -27,4 +27,4 @@ if __name__ == "__main__":
         stack = []
 
         exec(line)
-        print(stack)
+        vy_print(stack, ctx=ctx)

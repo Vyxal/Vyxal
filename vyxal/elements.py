@@ -6,6 +6,7 @@ the python equivalent of command is stored
 
 import itertools
 import math
+import string
 import types
 from typing import Union
 
@@ -111,7 +112,7 @@ def function_call(lhs, ctx):
     else:
         return {
             NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
-            str: lambda: "exec(transpile(top))" or [],
+            str: lambda: exec(lhs) or [],
             list: lambda: vectorised_not(top, ctx),
         }.get(ts)()
 
@@ -126,6 +127,16 @@ def halve(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
         str: lambda: wrap(lhs, math.ceil(len(lhs) / 2)),
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
+
+
+def inclusive_zero_range(lhs, ctx):
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: LazyList(range(0, int(lhs) + 1)),
+        str: lambda: scalarify(
+            [int(char in string.ascii_letters) for char in lhs]
+        ),
+    }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
 
 
 def infinite_replace(lhs, rhs, other, ctx):
@@ -347,6 +358,26 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vy_print(lhs, end="\n", ctx=None):
+    """Element ,
+    (any) -> send to stdout
+    """
+
+    ctx.printed = True
+    ts = vy_type(lhs)
+
+    if ts is LazyList:
+        lhs.output(end, ctx)
+    elif ts is list:
+        LazyList(lhs).output(end, ctx)
+    else:
+        if ctx.online:
+            ctx.online_output += str(lhs)  
+            # TODO: use custom string func
+        else:
+            print(lhs, end=end)
+
+
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
@@ -381,6 +412,7 @@ elements: dict[str, tuple[str, int]] = {
     "¢": process_element(infinite_replace, 3),
     "⌐": process_element(complement, 1),
     "æ": process_element(is_prime, 1),
+    "ʀ": process_element(inclusive_zero_range, 1),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (

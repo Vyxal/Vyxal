@@ -126,11 +126,11 @@
 - element: "†"
   name: Function Call
   arity: 1
-  description: Calls a function / executes as vyxal / len(prime factors) / vectorised not
+  description: Calls a function / executes as python / len(prime factors) / vectorised not
   overloads:
     fun: a()
     num: len(prime_factors(a))
-    str: exec as vyxal
+    str: exec as python
     lst:  vectorised not
   vectorise: false
   tests:
@@ -219,15 +219,14 @@
     - '["!"] : -1'
 - element: "ʀ"
   name: Inclusive Zero Range
-  description: Inclusive range or a = "0"
+  description: Inclusive range or whether each character is alphabetical
   arity: 1
   overloads:
     num: range(0,a + 1) (inclusive range from 0)
-    str: a == "0"
-    lst: str(a) == "0"
-  vectorise: false
+    str: [is v alphabetical? for v in a]
+  vectorise: true
   tests:
-    - '["0"] : 1'
+    - '["aBc"] : 1'
     - '[[1]] : 0'
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
