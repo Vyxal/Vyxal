@@ -268,14 +268,14 @@ def test_Halve():
 
 
 
-def test_Combinations/Remove/Repetitive-apply-collect():
-	stack = ["abcde", "cabbage"]; expected = "cabbae"
+def test_Combinations_Remove_FixedPoint():
+	stack = ["cabbage", "abcde"]; expected = "cabbae"
 	ctx = Context()
 	code = transpile('↔')
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,5],[1,3,5,6,7,7,1]]; expected = [1,7,7,1]
+	stack = [[1,3,5,6,7,7,1],[1,3,5]]; expected = [1,3,5,1]
 	ctx = Context()
 	code = transpile('↔')
 	exec(code)
@@ -304,7 +304,7 @@ def test_Infinitereplacement():
 
 
 
-def test_Complement/CommaSplit():
+def test_Complement_CommaSplit():
 	stack = [5]; expected = -4
 	ctx = Context()
 	code = transpile('⌐')
@@ -325,7 +325,7 @@ def test_Complement/CommaSplit():
 
 
 
-def test_Isprime/casecheck():
+def test_IsPrime_CaseCheck():
 	stack = [2]; expected = 1
 	ctx = Context()
 	code = transpile('æ')
@@ -358,7 +358,7 @@ def test_Isprime/casecheck():
 
 
 
-def test_Inclusiverange-0():
+def test_InclusiveZeroRange():
 	stack = ["0"]; expected = 1
 	ctx = Context()
 	code = transpile('ʀ')
@@ -379,7 +379,7 @@ def test_Inclusiverange-0():
 
 
 
-def test_Exclusiverange-0():
+def test_ExclusiveZeroRange():
 	stack = ["0"]; expected = 1
 	ctx = Context()
 	code = transpile('ʁ')
@@ -400,7 +400,7 @@ def test_Exclusiverange-0():
 
 
 
-def test_Inclusiverange-1():
+def test_InclusiveOneRange():
 	stack = ["1"]; expected = 1
 	ctx = Context()
 	code = transpile('ɾ')
@@ -421,7 +421,7 @@ def test_Inclusiverange-1():
 
 
 
-def test_Exclusiverange-1():
+def test_ExclusiveOneRange():
 	stack = ["1"]; expected = 1
 	ctx = Context()
 	code = transpile('ɽ')
@@ -442,7 +442,7 @@ def test_Exclusiverange-1():
 
 
 
-def test_Choose/randomchoice/setsame():
+def test_Choose_randomchoice_setsame():
 	stack = [5,3]; expected = 10
 	ctx = Context()
 	code = transpile('ƈ')
@@ -526,7 +526,7 @@ def test_Swap():
 
 
 
-def test_Modulo/format():
+def test_Modulo_Format():
 	stack = [5,3]; expected = 2
 	ctx = Context()
 	code = transpile('%')
@@ -676,7 +676,7 @@ def test_Subtract():
 
 
 
-def test_Divide/split():
+def test_Divide_Split():
 	stack = [4,2]; expected = 2
 	ctx = Context()
 	code = transpile('/')
@@ -769,7 +769,7 @@ def test_Equals():
 
 
 
-def test_Greaterthan():
+def test_GreaterThan():
 	stack = [1, 2]; expected = 0
 	ctx = Context()
 	code = transpile('>')

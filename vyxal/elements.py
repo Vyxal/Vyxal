@@ -82,6 +82,17 @@ def combinations_with_replacement(lhs, rhs, ctx):
     }.get(ts, lambda: keep(lhs, rhs))()
 
 
+def complement(lhs, ctx):
+    """Element ⌐
+    (num) -> 1 - a
+    (str) -> a.split(",")
+    """
+    ts = vy_type(lhs)
+    return {NUMBER_TYPE: lambda: 1 - lhs, str: lambda: lhs.split(",")}.get(
+        ts, lambda: vectorise(complement, lhs, ctx=ctx)
+    )()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -353,6 +364,7 @@ elements: dict[str, tuple[str, int]] = {
     "½": process_element(halve, 1),
     "↔": process_element(combinations_with_replacement, 2),
     "¢": process_element(infinite_replace, 3),
+    "⌐": process_element(complement, 1),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (

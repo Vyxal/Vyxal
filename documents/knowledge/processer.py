@@ -27,7 +27,10 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
     for element in data:
         if "tests" in element:
             cases = element["tests"]
-            tests.write(f"def test_{element['name'].replace(' ', '')}():\n")
+            tests.write(
+                "def test_"
+                f"{element['name'].replace(' ', '').replace('/', '_')}():\n"
+            )
             for test in cases:
                 stack, expected = test.split(" : ", 1)
                 tests.write(f"\tstack = {stack}; expected = {expected}\n")

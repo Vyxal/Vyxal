@@ -168,7 +168,7 @@
   arity: NA
   description: Used for string-based digraphs
 - element: "↔"
-  name: Combinations/Remove/Repetitive-apply-collect
+  name: Combinations/Remove/Fixed Point
   arity: 2
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
   overloads: 
@@ -204,7 +204,7 @@
     - '[-5] : 6'
     - '["a,b,c"] : ["a","b","c"]'
 - element: "æ"
-  name: Isprime / case check
+  name: Is Prime / Case Check
   description: (a is prime) if a is a number, else check which case a is
   arity: 1
   overloads:
@@ -218,7 +218,7 @@
     - '["A"] : 1'
     - '["!"] : -1'
 - element: "ʀ"
-  name: Inclusive range-0
+  name: Inclusive Zero Range
   description: Inclusive range or a = "0"
   arity: 1
   overloads:
@@ -231,7 +231,7 @@
     - '[[1]] : 0'
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
-  name: Exclusive range-0
+  name: Exclusive Zero Range
   description: Exclusive range or a = "0"
   arity: 1
   overloads:
@@ -244,7 +244,7 @@
     - '[[1]] : 0'
     - '[3] : [0,1,2]'
 - element: "ɾ"
-  name: Inclusive range-1
+  name: Inclusive One Range
   description: Inclusive range or a = "1"
   arity: 1
   overloads:
@@ -257,7 +257,7 @@
     - '[[0]] : 0'
     - '[3] : [1,2,3]'
 - element: "ɽ"
-  name: Exclusive range-1
+  name: Exclusive One Range
   description: Exclusive range or a = "1"
   arity: 1
   overloads:
@@ -334,7 +334,7 @@
     - '[1, 2, 3] : 2'
     - '[[1, 2, 3], "abc", 3] : "abc"'
 - element: "%"
-  name: Modulo / format
+  name: Modulo / Format
   description: Modulo two numbers / format two strings
   arity: 2
   overloads:
@@ -430,7 +430,7 @@
   description: Decimal separator
   arity: NA
 - element: "/"
-  name: Divide / split
+  name: Divide / Split
   description: Divide two numbers or split strings
   arity: 2
   overloads:
@@ -491,7 +491,7 @@
     any: a,a
   vectorise: false
 - element: ";"
-  name: Close structure
+  name: Close Structure
   description: Close a lambda / map lambda / sort lambda / function
   arity: NA
 - element: "<"
@@ -528,7 +528,7 @@
     - '[[1,2,3],2] : [0,1,0]'
     - '[1,"1"] : 1'
 - element: ">"
-  name: Greater than
+  name: Greater Than
   description: Basic comparison - greater than
   arity: 2
   overloads:
@@ -550,6 +550,6 @@
   description: Get the next input from the input source
   vectorise: false
 - element: "@"
-  name: Function call / declaration
+  name: Function Call / Declaration
   description: Call / declare function (@name; / @name|code;)
   arity: '* / NA'
