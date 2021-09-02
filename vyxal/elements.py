@@ -372,7 +372,7 @@ def vy_print(lhs, end="\n", ctx=None):
         LazyList(lhs).output(end, ctx)
     else:
         if ctx.online:
-            ctx.online_output += str(lhs)  
+            ctx.online_output += str(lhs)
             # TODO: use custom string func
         else:
             print(lhs, end=end)
@@ -414,6 +414,7 @@ elements: dict[str, tuple[str, int]] = {
     "æ": process_element(is_prime, 1),
     "ʀ": process_element(inclusive_zero_range, 1),
     "+": process_element(add, 2),
+    ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "

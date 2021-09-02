@@ -303,6 +303,17 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
             return item
 
 
+def vy_str(item: Any, ctx: context.Context) -> str:
+    """Convert to string, using custom vyxal formatting"""
+    if type(item) is LazyList:
+        item = list(item)
+
+    if type(item) is list:
+        return "⟨" + "|".join([vy_str(y) for y in x]) + "⟩"
+
+    return str(item)
+
+
 def vy_zip(*items) -> list:
     """Like python's zip, but fills shorter lists with 0s"""
 
