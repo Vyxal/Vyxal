@@ -18,6 +18,17 @@ NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
 
+def case_of(value: str) -> int:
+    """Returns 1 for all uppercase, 0 for all lowercase, and -1 for
+    mixed case."""
+
+    if all(map(lambda x: x.isupper(), value)):
+        return 1
+    elif all(map(lambda x: x.islower(), value)):
+        return 0
+    return -1
+
+
 def deep_copy(value: Any) -> Any:
     """Because lists and lazylists use memory references. Frick them."""
 

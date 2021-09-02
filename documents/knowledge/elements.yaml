@@ -209,7 +209,7 @@
   arity: 1
   overloads:
     num: is a prime?
-    str: caseof(a) - 1 if all letters in a  are uppercase, 0 if some letters in a are lowercase, -1 if there are no letters in a 
+    str: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
   vectorise: true
   tests:
     - '[2] : 1'

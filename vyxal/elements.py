@@ -143,6 +143,21 @@ def infinite_replace(lhs, rhs, other, ctx):
     return lhs
 
 
+def is_prime(lhs, ctx):
+    """Element æ
+    (num) -> is a prime?
+    (str) -> case of a (1 if all letters in a are uppercase,
+             0 if all letters in a are lowercase,
+            -1 if mixed case)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: int(sympy.ntheory.isprime(lhs)),
+        str: lambda: case_of(lhs),
+    }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -365,6 +380,7 @@ elements: dict[str, tuple[str, int]] = {
     "↔": process_element(combinations_with_replacement, 2),
     "¢": process_element(infinite_replace, 3),
     "⌐": process_element(complement, 1),
+    "æ": process_element(is_prime, 1),
     "+": process_element(add, 2),
     "-": process_element(subtract, 2),
     "?": (
