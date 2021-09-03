@@ -451,6 +451,7 @@ elements: dict[str, tuple[str, int]] = {
     "⌐": process_element(complement, 1),
     "æ": process_element(is_prime, 1),
     "ʀ": process_element(inclusive_zero_range, 1),
+    "ʁ": process_element(exclusive_zero_range, 1),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
@@ -460,6 +461,7 @@ elements: dict[str, tuple[str, int]] = {
         0,
     ),
     '"': process_element("[lhs, rhs]", 2),
+    "J": process_element(merge, 2),
     "V": process_element(replace, 3),
 }
 modifiers = {

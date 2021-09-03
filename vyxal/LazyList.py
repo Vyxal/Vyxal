@@ -5,6 +5,7 @@ into isinstance(<itertools object>, types.GeneratorType). Also, maps, ranges
 and other stuff that needs to be lazily evaluated.
 """
 
+import copy
 import types
 from typing import Any, Union
 
@@ -24,6 +25,14 @@ def vyxalify(value: Any) -> Any:
 
     else:
         return LazyList(map(vyxalify, value))
+
+
+def join_with(lhs, rhs):
+    for item in lhs:
+        yield item
+
+    for item in rhs:
+        yield item
 
 
 def lazylist(fn):
@@ -52,6 +61,9 @@ def simplify(value: Any) -> Union[int, float, str, list]:
 
 
 class LazyList:
+    def __add__(self, rhs):
+        return LazyList(join_with(self.raw_object, rhs))
+
     def __call__(self, *args, **kwargs):
         return self
 
