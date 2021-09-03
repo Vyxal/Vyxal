@@ -194,6 +194,20 @@ def primitive_type(item: type) -> Union[str, type]:
         return list
 
 
+def reverse_number(
+    item: Union[int, sympy.Rational]
+) -> Union[int, sympy.Rational]:
+    """Reverses a number. Negative numbers are returned negative"""
+
+    temp = ""
+    if item < 0:
+        temp = type(item)(str(eval(item))[1:][::-1])
+    else:
+        temp = type(item)(str(eval(item))[::-1])
+
+    return sympy.Rational(item)
+
+
 def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.

@@ -102,7 +102,7 @@ def exclusive_zero_range(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: LazyList(range(0, int(lhs))),
-        str: lambda: merge(lhs, reverse(lhs)[1:]),
+        str: lambda: merge(lhs, reverse(lhs, ctx)[1:], ctx),
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
 
 
@@ -249,6 +249,20 @@ def replace(lhs, rhs, other, ctx):
         return [other if value == rhs else value for value in iterable(lhs)]
 
 
+def reverse(lhs, ctx):
+    """Element Ṙ
+    (any) -> a reversed
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: reverse_number(lhs),
+        str: lambda: lhs[::-1],
+        list: lambda: lhs[::-1],
+        LazyList: lambda: lhs.reversed(),
+    }.get(ts)()
+
+
 def split_on(lhs, rhs, ctx):
     """
     Element €
@@ -258,7 +272,6 @@ def split_on(lhs, rhs, ctx):
     (str, str) -> lhs.split(rhs)
 
     """
-    print(lhs, rhs)
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 

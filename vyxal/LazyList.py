@@ -174,3 +174,11 @@ class LazyList:
                 vy_print("|", "", ctx)
         except:
             vy_print("⟩", end, ctx)
+
+    def reversed(self):
+        def temp():
+            self.generated += list(itertools.tee(self.raw_object)[-1])
+            for item in self.generated[::-1]:
+                yield item
+
+        return temp()
