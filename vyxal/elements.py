@@ -94,6 +94,19 @@ def complement(lhs, ctx):
     )()
 
 
+def exclusive_one_range(lhs, ctx):
+    """Element ɽ
+    (num) -> range(1, a)
+    (str) -> a.lower()
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: LazyList(range(1, int(lhs))),
+        str: lambda: lhs.lower(),
+    }.get(ts, lambda: vectorise(exclusive_one_range, lhs, ctx=ctx))
+
+
 def exclusive_zero_range(lhs, ctx):
     """Element ʁ
     (num) -> range(0, a)
@@ -103,7 +116,7 @@ def exclusive_zero_range(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: LazyList(range(0, int(lhs))),
         str: lambda: merge(lhs, reverse(lhs, ctx)[1:], ctx),
-    }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(exclusive_zero_range, lhs, ctx=ctx))()
 
 
 def function_call(lhs, ctx):
@@ -139,6 +152,19 @@ def halve(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
         str: lambda: wrap(lhs, math.ceil(len(lhs) / 2)),
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
+
+
+def inclusive_one_range(lhs, ctx):
+    """Element ɾ
+    (num) -> range(1, a + 1)
+    (str) -> a.uppercase()
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: LazyList(range(1, int(lhs) + 1)),
+        str: lambda: lhs.upper(),
+    }.get(ts, lambda: vectorise(inclusive_one_range, lhs, ctx=ctx))()
 
 
 def inclusive_zero_range(lhs, ctx):
@@ -465,6 +491,8 @@ elements: dict[str, tuple[str, int]] = {
     "æ": process_element(is_prime, 1),
     "ʀ": process_element(inclusive_zero_range, 1),
     "ʁ": process_element(exclusive_zero_range, 1),
+    "ɾ": process_element(inclusive_one_range, 1),
+    "ɽ": process_element(exclusive_one_range, 1),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),

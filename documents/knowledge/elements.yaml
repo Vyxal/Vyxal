@@ -223,11 +223,11 @@
   arity: 1
   overloads:
     num: range(0,a + 1) (inclusive range from 0)
-    str: [is v alphabetical? for v in a]
+    str: '[is v alphabetical? for v in a]'
   vectorise: true
   tests:
     - '["a$c"] : [1, 0, 1]'
-    - '[[1]] : [[0, 1]] '
+    - '[[1]] : [[0, 1]]'
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
   name: Exclusive Zero Range
@@ -238,31 +238,29 @@
     str: palindromised a
   vectorise: true
   tests:
-    - '["1234"] : "1234321'
+    - '["1234"] : "1234321"'
     - '[[1]] : [[0]]'
     - '[3] : [0,1,2]'
 - element: "ɾ"
   name: Inclusive One Range
-  description: Inclusive range or a = "1"
+  description: Inclusive range or uppercase
   arity: 1
   overloads:
-    num: range(1,a+1) (inclusive range from 0)
-    str: a == "1"
-    lst: str(a) == "1"
-  vectorise: false
+    num: range(1,a+1) (inclusive range from 1)
+    str: a.uppercase()
+  vectorise: true
   tests:
-    - '["1"] : 1'
-    - '[[0]] : 0'
+    - '["abc"] : "ABC"'
+    - '[[4, 5]] : [[1, 2, 3, 4], [1, 2, 3, 4, 5]]'
     - '[3] : [1,2,3]'
 - element: "ɽ"
   name: Exclusive One Range
-  description: Exclusive range or a = "1"
+  description: Exclusive range or lowercase
   arity: 1
   overloads:
     num: range(1,a) (exclusive range from 0)
-    str: a == "1"
-    lst: str(a) == "1"
-  vectorise: false
+    str: a.lowercase()
+  vectorise: true
   tests:
     - '["1"] : 1'
     - '[[0]] : 0'
@@ -704,7 +702,7 @@
     any-any: pair each item of b with a 
   tests:
     - '[5,[1,2,3]] : [[5,1],[5,2],[5,3]]'
-    - '["z","hi"] : [["z","h"],["z","i"]'
+    - '["z","hi"] : [["z","h"],["z","i"]]'
 - element: "N"
   name: Negate / Swap Case
   description: Negate a or swap its case
@@ -728,16 +726,16 @@
   tests:
     - '[[1,2,3,4,5,4,3], 4] : 2'
     - '["abcdbacsabdcabca","a"] : 5'
-- element: "P" # Useless
+- element: "P"
   name: Strip
-  description: Remove all elements in b from a 
+  description: a.strip(b) - trim b from both ends of a
   arity: 2
   overloads:
-    any-any: a.remove(b)
+    any-any: a.strip(b)
   vectorise: false
   tests:
-    - '[[1,2,3],[2,4,6]] : [1,3]'
-    - '["abcdef","daffodil"] : "bce"'
+    - '[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]'
+    - '["    Hello, World!    ", " "] : "Hello, World!"'
 - element: "Q"
   name: Quit
   description: Quit the program
@@ -816,7 +814,7 @@
   vectorise: false
   tests:
     - '[[1,3,5],[2,4]] : [1,2,3,4,5]'
-    - '["srn","tig"] : "string'
+    - '["srn","tig"] : "string"'
 - element: "Z"
   name: Zip
   description: Zip two lists
@@ -1143,7 +1141,7 @@
   vectorise: false
   tests:
     - '[[[3,4],[9,2]]] : [3,4]'
-    - '[[1,2,3],[2,5]]] : [2,5]'
+    - '[[1,2,3],[2,5]] : [2,5]'
 - element: "↑"
   name: Min by Tail
   description: Minimum by last item
@@ -1153,7 +1151,7 @@
   vectorise: false
   tests:
     - '[[[3,4],[9,2]]] : [9,2]'
-    - '[[1,2,3],[2,5]]] : [1,2,3]'
+    - '[[1,2,3],[2,5]] : [1,2,3]'
 - element: "∴"
   name: Dyadic Maximum
   description: Maximum of two values
