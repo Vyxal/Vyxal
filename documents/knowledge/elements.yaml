@@ -126,11 +126,11 @@
 - element: "†"
   name: Function Call
   arity: 1
-  description: Calls a function / executes as vyxal / len(prime factors) / vectorised not
+  description: Calls a function / executes as python / len(prime factors) / vectorised not
   overloads:
     fun: a()
     num: len(prime_factors(a))
-    str: exec as vyxal
+    str: exec as python
     lst:  vectorised not
   vectorise: false
   tests:
@@ -219,16 +219,15 @@
     - '["!"] : -1'
 - element: "ʀ"
   name: Inclusive Zero Range
-  description: Inclusive range or a = "0"
+  description: Inclusive range or whether each character is alphabetical
   arity: 1
   overloads:
     num: range(0,a + 1) (inclusive range from 0)
-    str: a == "0"
-    lst: str(a) == "0"
-  vectorise: false
+    str: [is v alphabetical? for v in a]
+  vectorise: true
   tests:
-    - '["0"] : 1'
-    - '[[1]] : 0'
+    - '["a$c"] : [1, 0, 1]'
+    - '[[1]] : [[0, 1]] '
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
   name: Exclusive Zero Range
@@ -854,3 +853,383 @@
   description: Pop the top item of the stack
   arity: 1
   vectorise: false
+- element: "a"
+  name: Any
+  description: Check if any items of a list are truthy
+  arity: 1
+  overloads: 
+    any: any(a) (Are any items truthy?)
+  vectorise: false
+  tests:
+    - '[[1,2,3]] : 1'
+    - '[[0,0,0]] : 0'
+    - '[[0,1,2]] : 1'
+- element: "b"
+  name: Binary
+  description: Convert a number or string to binary
+  arity: 1
+  overloads:
+    num: 'bin(a) - list of binary digits of A'
+    str: '[bin(ord(char)) for char in a] - binary of each codepoint'
+  vectorise: true
+  tests:
+    - '[5] : [1,0,1]'
+    - '[" "] : [[1,0,0,0,0,0]]'
+    - '[[2,3]] : [[1,0],[1,1]]'
+- element: "c"
+  name: Contains
+  description: Check if one thing contains another.
+  arity: 2
+  overloads:
+    any-any: b in a (Does a contain b, membership, contains)
+  vectorise: false
+  tests:
+    - '["abcdef","a"] : 1'
+    - '["xyz","a"] : 0'
+    - '[[1,2,3],1] : 1'
+    - '[[1,2,3],0] : 0'
+- element: "d"
+  name: Double
+  description: Double a number or repeat a string twice
+  arity: 1
+  overloads: 
+    num: a * 2 (double)
+    str: a * 2 (repeated twice)
+  vectorise: true
+  tests:
+    - '[5] : 10'
+    - '[0] : 0'
+    - '[[1,2]] : [2,4]'
+    - '["x"] : "xx"'
+    - '["ha"] : "haha"'
+- element: "e"
+  name: Exponentiation
+  description: Exponentiate two numbers / get every nth character of a string / get length of a regex match
+  arity: 2
+  overloads:
+    num-num: a ** b (exponentiation)
+    str-num: every bth character of a
+    num-str: every ath character of b
+    str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
+  vectorise: true
+  tests:
+    - '[5,3] : 125'
+    - '[0,0] : 1'
+    - '["hello",2] : "hlo"'
+- element: "f"
+  name: Flatten
+  description: Turn a number into a list of digits, a string into a list of characters, and flatten a list.
+  arity: 1
+  overloads:
+    num: digits of a
+    str: a split into list of characters
+    lst: flatten(a) (Deep flatten)
+  vectorise: false
+  tests:
+    - '[135] : [1,3,5]'
+    - '["hi"] : ["h","i"]'
+    - '[[[[1,2],3,[[4,[5]],6],7],[8,[9]]]] : [1,2,3,4,5,6,7,8,9]'
+    - '[-1] : ["-",1]'
+- element: "g"
+  name: Minimum
+  description: Take the minimum of a list
+  arity: 1
+  overloads:
+    any: min(a)
+  vectorise: false
+  tests:
+    - '["abc"] : "a"'
+    - '[[1,4,-2]] : -2'
+    - '[[5,3,9]] : 3'
+- element: "h"
+  name: Head
+  description: First item of something
+  arity: 1
+  overloads: 
+    any: a[0] (First item)
+  tests:
+    - '["hello"] : "h"'
+    - '[[1,2,3]] : 1'
+- element: "i"
+  name: Index
+  description: Index into a list
+  arity: 2
+  overloads:
+    any-num: a[b] (Index)
+    any-[x]: a[:b] (0 to bth item of a)
+    any-[x,y]: a[x:y] (x to yth item of a)
+    any-[x,y,m]: a[x:y:m] (x to yth item of a, taking every mth)
+  vectorise: false
+  tests:
+    - '["abc",1] : "b"'
+    - '[[1,2,3], 0] : 1'
+    - '[[2,3,4,5], [2]] : [2,3]'
+    - '[[1,3,5,7],[1,3]] : [3,5]'
+    - '[[1,2,3,4,5,6,7,8,9,10],[1,8,2]] : [2,4,6,8]'
+- element: "j"
+  name: Join
+  description: Join a list by a string
+  arity: 2
+  overloads:
+    any-any: a.join(b)
+  vectorise: false
+  tests:
+    - '[[1,2,3],"penguin"] : "1penguin2penguin3"'
+    - '[["he","","o, wor","d!"], "l"] : "hello, world!"'
+- element: "k"
+  name: Constant Digraph
+  description: Used for constant digraphs.
+  arity: 0
+- element: "l"
+  name: Cumulative Groups
+  description: Cumulative grouping / equal length
+  arity: 2
+  overloads:
+    any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
+    any-any: length(a) == length(b)
+  vectorise: false
+  tests:
+    - '["hello",3] : ["hel","ell","llo"]'
+    - '["cake",2] : ["ca","ak","ke"]'
+    - '["cheese","cake"] : 0'
+    - '["cheese","salads"] : 1'
+- element: "m"
+  name: Mirror
+  description: Append input reversed to itself.
+  arity: 1
+  overloads: 
+    num: a + reversed(a) (as number)
+    str: a + reversed(a)
+    lst: Append reversed(a) to a
+  vectorise: false
+  tests:
+    - '[123] : 444'
+    - '["hi"] : "hiih"'
+    - '[[1,2,3]] : [1,2,3,3,2,1]'
+- element: "n"
+  name: Context
+  description: Context variable, value of the current loop or function.
+  arity: 0
+- element: "o"
+  name: Remove
+  description: Remove instances of b in a
+  arity: 2
+  overloads:
+    any-any: a.replace(b,"")
+  vectorise: false
+  tests:
+    - '["hello","l"] : "heo"'
+    - '[[1,2,3,1,2],1] : [2,3,2]'
+    - '["bananas and naan","an"] : "bas d na"'
+- element: "p"
+  name: Prepend
+  description: Prepend b to a
+  overloads: 
+    any-any: a.prepend(b) ( Prepend b to a)
+  arity: 2
+  vectorise: false
+  tests:
+    - '["ld","wor"] : "world"'
+    - '[[1,2,3],13] : [13,1,2,3]'
+    - '[[3,4,5],"23"] : ["23",3,4,5]'
+- element: "q"
+  name: Uneval
+  description: Enclose in backticks, escape backslashes and backticks.
+  arity: 1
+  overloads: 
+    any: uneval(a) (Enclose in bacticks + escape)
+  vectorise: false
+  tests:
+    - '["\\"] : "`\\`"'
+    - '["`"] : "`\``"'
+    - '["a"] : "`a`"'
+- element: "r"
+  name: Range
+  description: Range betweeen two numbers, or cumulative reduce, or regex match
+  arity: 2
+  overloads: 
+    num-num: range(a,b) (Range form a to b)
+    any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
+    any-any: regex.has_match(pattern=a,string= b) ( Does b match a)
+  vectorise: false
+  tests:
+    - '[3,6] : [3,4,5]'
+    - '[4,8] : [4,5,6,7]'
+- element: "s"
+  name: sort
+  description: Sort a list or string
+  arity: 1
+  overloads:
+    any: sorted(a) (Sort)
+  vectorise: false
+  tests:
+    - '[[3,1,2]] : [1,2,3]'
+    - '["bca"] : "abc"'
+- element: "t"
+  name: Tail
+  description: Last item
+  arity: 1
+  overloads:
+    any: a[-1] (Last item)
+  vectorise: false
+  tests:
+    - '["hello"] : "o"'
+    - '[[1,2,3]] : 3'
+- element: "u"
+  name: Minus One
+  description: Push -1
+  arity: 0
+  tests:
+    - '[] : -1'
+- modifier: "v"
+  name: Vectorise
+  description: Vectorise an element
+  arity: '*'
+  usage: v<element>
+- element: "w"
+  name: Listify
+  description: a wrapped in a singleton list
+  arity: 1
+  overloads:
+    any: '[a] (Wrapped in singleton list)'
+  vectorise: false
+  tests:
+    - '[1] : [1]'
+    - '["hello"] : ["hello"]'
+    - '[[1,2,3]] : [[1,2,3]]'
+- element: "x"
+  name: Recurse
+  description: Call current function (Recursion)
+- element: "y"
+  name: Uninterleave
+  description: Push every other item of a, and the rest.
+  arity: 1
+  overloads:
+    any: a[::2], a[1::2] (Every second item, the rest)
+  vectorise: false
+  tests:
+    - '["abcde"] : "bd"'
+    - '[[1,2,3,4]] : [2,4]'
+- element: "z"
+  name: Zipmap
+  description: Zip a with b mapped over a, or zip b with itself
+  arity: 2
+  overloads:
+    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
+    any-any: a, zip(b,b)
+  vectorise: false
+  tests:
+    - '[1,[1,2,3]] : [[1,1],[2,2],[3,3]]'
+    - '[1,"zap"] : [["z","z"], ["a","a"],["p","p"]]'
+- element: "{"
+  name: Open While Loop
+  description: Open a while loop - `{...}`
+  arity: NA
+- element: "|"
+  name: Branch In Structure
+  description: Branch the structure - means various things depending on context
+- element: "}"
+  name: Close While Loop
+  description: Close a while loop
+- modifier: "~"
+  name: Filter / Execute Without Pop
+  description: For monads, filter a list by that. For dyads, execute without popping from the stack.
+  usage: "~<element>"
+- element: "↑"
+  name: Max by Tail
+  description: Maximum by last item
+  arity: 1
+  overloads:
+    any: 'max(a, key=lambda x: x[-1]) (Maximum by last item)'
+  vectorise: false
+  tests:
+    - '[[[3,4],[9,2]]] : [3,4]'
+    - '[[1,2,3],[2,5]]] : [2,5]'
+- element: "↑"
+  name: Min by Tail
+  description: Minimum by last item
+  arity: 1
+  overloads:
+    any: 'min(a, key=lambda x: x[-1]) (Minimum by last item)'
+  vectorise: false
+  tests:
+    - '[[[3,4],[9,2]]] : [9,2]'
+    - '[[1,2,3],[2,5]]] : [1,2,3]'
+- element: "∴"
+  name: Dyadic Maximum
+  description: Maximum of two values
+  arity: 2
+  overloads:
+    any-any: max(a,b)
+  vectorise: false
+  tests:
+    - '[5,3] : 5'
+    - '["hello","goodbye"] : "hello"'
+    - '[3,"(stuff)"] : 3'
+- element: "∵"
+  name: Dyadic Minimum
+  description: Minimum of two values
+  arity: 2
+  overloads:
+    any-any: min(a,b)
+  vectorise: false
+  tests:
+    - '[5,3] : 3'
+    - '["hello","goodbye"] : "goodbye"'
+    - '[3,"(stuff)"] : "(stuff)"'
+- element: "›"
+  name: Increment
+  description: Add 1 to a number
+  arity: 1
+  overloads:
+    num: a + 1
+    string: a + "1"
+  vectorise: true
+  tests:
+    - '[5] : 6'
+    - '[[3,4]] : [4,5]'
+    - '["hello"] : "hello1"'
+- element: "‹"
+  name: Decrement
+  description: Subtract 1 from a number
+  arity: 1
+  overloads:
+    num: a - 1
+    str: a + "-"
+  vectorise: true
+  tests:
+    - '[5] : 4'
+    - '[[3,4]] : [2,3]'
+    - '["hello"] : "hello-"'
+- element: "∷"
+  name: Parity
+  description: A number modulo 2
+  arity: 1
+  overloads:
+    num: a % 2 (Odd?)
+    str: Second half of A
+  vectorise: true
+  tests:
+    - '[2] : 0'
+    - '[3] : 1'
+    - '["hello!"] : "lo!"'
+- element: "¤"
+  name: Empty String
+  description: The empty string
+  arity: 0
+  tests:
+    - '[] : ""'
+- element: "ð"
+  name: Space
+  description: A Space
+  arity: 0
+  tests:
+    - '[] : " "'
+- element: "→"
+  name: Variable set
+  description: Set variable (→name)
+  arity: 1
+- element: "←"
+  name: Variable get
+  description: Get the value of a variable (←name)
+  arity: 0
