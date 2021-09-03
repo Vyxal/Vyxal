@@ -500,7 +500,7 @@ cmd | inputs | out/effect
 | kW |   |  "https://" |
 | k℅ |   |  "http://" |
 | k↳ |   |  "https://www." |
-| k² |   |  "http://www. |
+| k² |   |  "http://www." |
 | k¶ |   |  512 |
 | k⁋ |   |  1024 |
 | k¦ |   |  2048 |
