@@ -223,47 +223,44 @@
   arity: 1
   overloads:
     num: range(0,a + 1) (inclusive range from 0)
-    str: [is v alphabetical? for v in a]
+    str: '[is v alphabetical? for v in a]'
   vectorise: true
   tests:
     - '["a$c"] : [1, 0, 1]'
-    - '[[1]] : [[0, 1]] '
+    - '[[1]] : [[0, 1]]'
     - '[3] : [0,1,2,3]'
 - element: "ʁ"
   name: Exclusive Zero Range
-  description: Exclusive range or a = "0"
+  description: Exclusive range or palindromised
   arity: 1
   overloads:
     num: range(0,a) (exclusive range from 0)
-    str: a == "0"
-    lst: str(a) == "0"
-  vectorise: false
+    str: palindromised a
+  vectorise: true
   tests:
-    - '["0"] : 1'
-    - '[[1]] : 0'
+    - '["1234"] : "1234321"'
+    - '[[1]] : [[0]]'
     - '[3] : [0,1,2]'
 - element: "ɾ"
   name: Inclusive One Range
-  description: Inclusive range or a = "1"
+  description: Inclusive range or uppercase
   arity: 1
   overloads:
-    num: range(1,a+1) (inclusive range from 0)
-    str: a == "1"
-    lst: str(a) == "1"
-  vectorise: false
+    num: range(1,a+1) (inclusive range from 1)
+    str: a.uppercase()
+  vectorise: true
   tests:
-    - '["1"] : 1'
-    - '[[0]] : 0'
+    - '["abc"] : "ABC"'
+    - '[[4, 5]] : [[1, 2, 3, 4], [1, 2, 3, 4, 5]]'
     - '[3] : [1,2,3]'
 - element: "ɽ"
   name: Exclusive One Range
-  description: Exclusive range or a = "1"
+  description: Exclusive range or lowercase
   arity: 1
   overloads:
     num: range(1,a) (exclusive range from 0)
-    str: a == "1"
-    lst: str(a) == "1"
-  vectorise: false
+    str: a.lowercase()
+  vectorise: true
   tests:
     - '["1"] : 1'
     - '[[0]] : 0'
@@ -705,7 +702,7 @@
     any-any: pair each item of b with a 
   tests:
     - '[5,[1,2,3]] : [[5,1],[5,2],[5,3]]'
-    - '["z","hi"] : [["z","h"],["z","i"]'
+    - '["z","hi"] : [["z","h"],["z","i"]]'
 - element: "N"
   name: Negate / Swap Case
   description: Negate a or swap its case
@@ -729,16 +726,16 @@
   tests:
     - '[[1,2,3,4,5,4,3], 4] : 2'
     - '["abcdbacsabdcabca","a"] : 5'
-- element: "P" # Useless
+- element: "P"
   name: Strip
-  description: Remove all elements in b from a 
+  description: a.strip(b) - trim b from both ends of a
   arity: 2
   overloads:
-    any-any: a.remove(b)
+    any-any: a.strip(b)
   vectorise: false
   tests:
-    - '[[1,2,3],[2,4,6]] : [1,3]'
-    - '["abcdef","daffodil"] : "bce"'
+    - '[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]'
+    - '["    Hello, World!    ", " "] : "Hello, World!"'
 - element: "Q"
   name: Quit
   description: Quit the program
@@ -817,7 +814,7 @@
   vectorise: false
   tests:
     - '[[1,3,5],[2,4]] : [1,2,3,4,5]'
-    - '["srn","tig"] : "string'
+    - '["srn","tig"] : "string"'
 - element: "Z"
   name: Zip
   description: Zip two lists
@@ -1144,7 +1141,7 @@
   vectorise: false
   tests:
     - '[[[3,4],[9,2]]] : [3,4]'
-    - '[[1,2,3],[2,5]]] : [2,5]'
+    - '[[1,2,3],[2,5]] : [2,5]'
 - element: "↑"
   name: Min by Tail
   description: Minimum by last item
@@ -1154,7 +1151,7 @@
   vectorise: false
   tests:
     - '[[[3,4],[9,2]]] : [9,2]'
-    - '[[1,2,3],[2,5]]] : [1,2,3]'
+    - '[[1,2,3],[2,5]] : [1,2,3]'
 - element: "∴"
   name: Dyadic Maximum
   description: Maximum of two values
@@ -1226,10 +1223,381 @@
   tests:
     - '[] : " "'
 - element: "→"
-  name: Variable set
+  name: Variable Set
   description: Set variable (→name)
   arity: 1
 - element: "←"
-  name: Variable get
+  name: Variable Get
   description: Get the value of a variable (←name)
   arity: 0
+- element: "β"
+  name: To Base Ten
+  description: Convert a number from a custom base to base 10
+  arity: 2
+  overloads:
+    any-num: a to base 10 from number base b, treating list items / string items as digits
+    str-str: a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
+  vectorise: false
+  tests:
+    - '[43,5] : 23'
+    - '["banana","nab"] : 577'
+    - '[[15,23,9],31] : 15137'
+- element: "τ"
+  name: From Base Ten
+  description: Convert a number to a different base from base 10.
+  arity: 2
+  overloads:
+    num-num: List of digits of a in base b
+    num-str: a converted into a string of characters of b
+    num-lst: a converted into a list of arbitrary values from b
+  vectorise: false
+  tests:
+    - '[1234567,"abc"] : "cacccabbbbcab"'
+    - '[1234567,5] : [3,0,4,0,0,1,2,3,2]'
+    - '[928343,["he","ll","o"]] : ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]'
+- element: "ȧ"
+  name: Absolute value
+  description: Take the absolute value of a number, or remove whitespace from a string
+  arity: 1
+  overloads: 
+    num: abs(a) (Absolute value)
+    str: Remove whitespace from a
+  vectorise: true
+  tests:
+    - '[1] : 1'
+    - '[-1] : 1'
+    - '[" ch ee s e "] : "cheese"'
+    - '[[-1,2,-5]] : [1,2,5]'
+- element: "ḃ"
+  name: Boolify
+  description: Convert an arbitrary value into a truthy or falsy value
+  arity: 1
+  overloads:
+    any: bool(a) (Booliify)
+  vectorise: false
+  tests:
+    - '[0] : 0'
+    - '[1] : 1'
+    - '[[]] : 0'
+    - '["x"] : 1'
+- element: "ċ"
+  name: Not One
+  description: Check if something is not equal to 1
+  arity: 1
+  overloads:
+    any: a != 1
+  vectorise: false
+  tests:
+    - '[[]] : 1'
+    - '["1"] : 0'
+    - '[5] : 1'
+    - '[1] : 0'
+- element: "ḋ"
+  name: Divmod
+  description: Divmod / combinations / trim
+  arity: 2
+  overloads:
+    num-num: '[a // b, a % b] (Divmod - division and modulo)'
+    str-num: Combinations of a with length b
+    lst-num: Combinations of a with length b
+    str-str: a.trim(b) # TODO: Figure out what this means
+  vectorise: false
+  tests:
+    - '[5,3] : [1,2]'
+    - '["abcd",3] : ["abc","abd","acd","bcd"]'
+    - '[[1,2,3],2] : [[1,2],[1,3],[2,3]]'
+- element: "ė"
+  name: Enumerate
+  description: Zip with a range of the same length
+  arity: 1
+  overloads: 
+    any: enumerate(a) (Zip with 1...len(a))
+  vectorise: false
+  tests:
+    - '["abc"] : [[0,"a"],[1,"b"],[2,"c"]]'
+    - '[[1,2,3]] : [[0,1],[1,2],[2,3]]'
+- element: "ḟ"
+  name: Find
+  description: Find a value in another
+  arity: 2
+  overloads:
+    any-any: a.find(b) (Indexing)
+    any-fun: truthy indices of mapping b over a
+  vectorise: false
+  tests:
+    - '[[1,2,3],2] : 1'
+    - '["hello","l"] : 2'
+- element: "ġ"
+  name: Gcd
+  description: Greatest Common Denominator of a list or some numbers
+  arity: '*'
+  overloads: 
+    lst: GCD(a) (Gcd of whole list)
+    num-num: gcd(a,b) (Dyadic gcd)
+    str-str: Longest common suffix of a and b
+  vectorise: false
+  tests: 
+    - '[[1,3,2]] : 1'
+    - '[[60,42,108]] : 6'
+    - '[50,35] : 5'
+    - '["laugh","cough"] : "ugh"'
+- element: "ḣ"
+  name: Head Extract
+  description: Separate the first item of something and push both to stack
+  arity: 1
+  overloads:
+    any: a[0], a[1:] (Head extract)
+  vectorise: false
+  tests:
+    - '["hello"] : "ello"'
+    - '[[1,2,3]] : [2,3]'
+- element: 'ḭ'
+  name: Floor Division
+  description: Floor divide a by b
+  arity: 2
+  overloads:
+    num-num: a // b (Floor division, floor(a / b))
+    str-num: (a divided into b pieces)[0]
+    num-str: (b divided into a pieces)[0]
+    any-fun: Right reduce a by b (foldr)
+    fun-any: Right reduce b by a (foldr)
+  vectorise: false
+  tests:
+    - '[5,3] : 1'
+    - '["hello!",3] : "he"'
+    - '[3,"hello!"] : "he"'
+- element: "ŀ"
+  name: Find From Index
+  description: Find one value inside another, starting from a certain index.
+  arity: 3
+  overloads: 
+    any-any-num: a.find(b, start = c) ( Find from c)
+  vectorise: false
+  tests:
+    - '["hello world","o",5] : 7'
+    - '["hello world","l",4] : 9'
+- element: "ṁ"
+  name: Mean
+  description: Average of a list - sum / length
+  arity: 1
+  overloads:
+    lst: mean(a)
+  vectorise: false
+  tests:
+    - '[[1,2,3]] : 2'
+    - '[[4,71,-63]] : 4'
+- element: "ṅ"
+  name: Join By Nothing
+  description: Join a list by the empty string
+  arity: 1
+  overloads:
+    fun: First integer for which a(x) is truthy
+    any: Join by empty string
+  vectorise: false
+  tests:
+    - '[["a","b","c"]] : "abc"'
+    - '[[1,2,3]] : 123'
+- element: "ȯ"
+  name: Slice
+  description: Slice from an index to the end
+  arity: 2
+  overloads:
+    fun-num: First b integers for which a(x) is truthy
+    any-num: a[b:] (Slice from b to the end)
+  vectorise: false
+  tests:
+    - '["hello",2] : "llo"'
+    - '[[1,2,3],1] : [2,3]'
+- element: "ṗ"
+  name: Powerset
+  description: All possible combinations of a
+  arity: 1
+  overloads: 
+    any: All possible combinations of a
+  vectorise: false
+  tests:
+    - '["ab"] : [[],["a"],["b"],["a","b"]'
+    - '[1,2,3] : [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]'
+- element: "ṙ"
+  name: Round
+  description: Round a number to the nearest integer
+  arity: 1
+  overloads: 
+    num: round(a)
+  vectorise: true
+  tests:
+    - '[5.5] : 6'
+    - '[3.2] : 3'
+    - '[[5.5,3.2]] : [6,3]'
+    - '[-4.7] : -5'
+    - '[-4.5] : -4'
+- element: "ṡ"
+  name: Function Sort
+  description: Sort a list by a function / create a range / split on a regex
+  arity: 2
+  overloads:
+    any-fun: sorted(a, key=b) (Sort by b)
+    num-num: range(a, b + 1) (Inclusive range from a to b)
+    str-str: regex.split(string=a, pattern=b)
+  vectorise: false
+  tests:
+    - '[3,4] : [3,4]'
+    - '[1,5] : [1,2,3,4,5]'
+    - '["abc1def2ghi","\d+"] : ["abc","def","ghi"]'
+- element: "ṫ"
+  name: Tail Extract
+  description: Remove the last item and push both onto the stack
+  arity: 1
+  overloads: 
+    any: a[:-1],a[-1]
+  vectorise: false
+  tests:
+    - '["abc"] : "c"'
+    - '[[1,2,3]] : 3'
+- element: "ẇ"
+  name: Chunk Wrap
+  description: Wrap a list in chunks of a certain length / apply a function to every second item of a list
+  arity: 2
+  overloads:
+    any-num: a wrapped in chunks of length b
+    any-fun: Apply b to every second item of a
+    fun-any: Apply a to every second item of b
+  vectorise: false
+  tests:
+    - '["abcdef",2] : ["ab","cd","ef"]'
+    - '[[1,2,3,4,5,6],3] : [[1,2,3],[4,5,6]]'
+- element: "ẋ"
+  name: Repeat
+  description: Repeat a value several times
+  arity: "*"
+  overloads:
+    any-num: Repeat a b times
+    fun-fun-any: Collect results of applying b on c while a(c) is truthy
+  vectorise: false
+  tests: 
+    - '[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]'
+    - '["x",5] : "xxxxx"'
+- element: "ẏ"
+  name: Exclusive Range Length
+  description: Range from 0 to length of a
+  arity: 1
+  overloads:
+    any: range(0, len(a)) (Exclusive range from 0 to length of a)
+  vectorise: false
+  tests:
+    - '["abc"] : [0,1,2]'
+    - '[[1,2]] : [0,1]'
+- element: "ż"
+  name: Inclusive Range Length
+  description: Range from 1 to length of a inclusive
+  arity: 1
+  overloads:
+    any: range(1, len(a)+1) (Inclusive range from 1 to length of a)
+  vectorise: false
+  tests:
+    - '["abc"] : [1,2,3]'
+    - '[[1,2]] : [1,2]'
+- element: "√"
+  name: Square Root
+  description: Square root a number / every second character of a
+  arity: 1
+  overloads:
+    num: sqrt(a) (Square root)
+    str: every second character of a
+  vectorise: true
+  tests: 
+    - '[4] : 2'
+    - '["hello"] : "hlo"'
+- element: "⟨"
+  name: Open List
+  description: Open a list - ⟨...⟩
+  arity: 0
+- element: "⟩"
+  name: Close list
+  description: Close a list - ⟨...⟩
+  arity: 1
+- element: "‛"
+  name: Two Character String
+  description: Collect the next two characters as a string - ‛..
+  arity: 0
+- element: "₀"
+  name: Ten
+  description: Push 10 to the stack
+  arity: 0
+  tests:
+    - '[] : 10'
+- element: "₁"
+  name: Hundred
+  description: Push 100 to the stack
+  arity: 0
+  tests:
+    - '[] : 100'
+- element: "₂"
+  name: Is Even
+  description: Check if a value is even
+  arity: 1
+  overloads:
+    num: a % 2 == 0 (Even?)
+    any: len(a) % 2 == 0 (Length even?)
+  vectorise: false
+  tests:
+    - '[5] : 0'
+    - '[2] : 1'
+    - '["hello"] : 0'
+    - '[[1,2]] : 1'
+- element: "₃"
+  name: Divisible By three
+  description: Check if a is divisible by 3
+  arity: 1
+  overloads:
+    num: a % 3 == 0 (divisible by 3?)
+    any: len(a) == 1 (Length is 1?)
+  vectorise: false
+  tests:
+    - '[5] : 0'
+    - '[6] : 1'
+    - '["hi"] : 0'
+    - '[[1]] : 1'
+- element: "₄"
+  name: Twenty Six
+  description: Push 26 to the stack
+  arity: 0
+  tests:
+    - '[] : 26'
+- element: "₅"
+  name: Divisible By Five
+  description: Check if a is divisible by 5
+  arity: 1
+  overloads: 
+    num: a % 5 == 0
+    any: a, len(a)
+  vectorise: false
+  tests:
+    - '[4] : 0'
+    - '[5] : 1'
+    - '["hello"] : 5'
+    - '[[1,2,3]] : 3'
+- element: "₆"
+  name: Sixty Four
+  description: Push 64 to the stack
+  arity: 0
+  tests:
+    - '[] : 64'
+- element: "₇"
+  name: One Twenty Eight
+  description: Push 128 to the stack
+  arity: 0
+  tests:
+    - '[] : 128'
+- element: "₈"
+  name: Two Fifty Six
+  description: Push 256 to the stack
+  arity: 0
+  tests:
+    - '[] : 256'
+- element: "¶"
+  name: Newline
+  description: Push a newline to the stack
+  arity: 0
+  tests:
+    - '[] : "\\n"'
