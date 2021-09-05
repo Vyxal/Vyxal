@@ -1741,8 +1741,8 @@
     num: 1 / a
   vectorise: yes
   tests:
-    - '[2, 3, -1] : [0.5, 1/3, -1]'
-    - '"kH" : "Hello, World!"'
+    - '[[2, 3, -1]] : [0.5, 1/3, -1]'
+    - '["kH"] : "Hello, World!"'
 - element: Ḟ
   name: Generator from function with initial vector
   arity: '2 + 1'
@@ -1754,3 +1754,44 @@
     fun-lst-num: Generator of at most c items from function a with initial vector b
   vectorise: no
   # TODO tests
+- element: Ġ
+  name: Group consecutive
+  arity: 1
+  description: Group consecutive items
+  overloads:
+    lst: Group consecutive items
+    str: Group consecutive characters
+    num: Group consecutive digits
+  vectorise: no
+  tests:
+    - '[[2, 3, 4, 5, -1, -2, 12, 13, 14, 20]] : [[2, 3, 4, 5], [-1, -2], [12, 13, 14], [20]]'
+    - '["abc098FED"] : ["abc", "098", "FED"]'
+    - '[0345912] : [0, 345, 9, 12]'
+- element: Ḣ
+  name: Tail
+  arity: 1
+  description: All but the first item of a list / Drop 1
+  overloads:
+    lst: a[1:] or [] if empty
+    str: a[1:] or '' if empty
+    num: Remove first digit or do nothing if <1
+  vectorise: no
+  tests:
+    - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
+    - '[[]] : []'
+    - '["foo"] : "oo"'
+    - '[""] : ""'
+    - '[1234.56] : 234.56'
+    - '[0.2] : 0.2'
+- element: İ
+  name: Index into or find cycle
+  arity: 1
+  description: >-
+    Index into list at indices /
+    Repeatedly apply function to value while results are non-unique
+  overloads:
+    any-lst: [a[item] for item in b]
+    any-fun: Repeatedly apply b to a until a cycle is formed, return the cycle
+  vectorise: no
+  tests: # TODO more tests for the second overload
+    - '[[0, 2, 4], ["foo", "bar", -69, 420, "baz"]]] : ["foo", -69, "baz"]'
