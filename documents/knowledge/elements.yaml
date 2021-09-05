@@ -171,7 +171,7 @@
   name: Combinations/Remove/Fixed Point Collection
   arity: 2
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
-  overloads: 
+  overloads:
     any-num: combinations_with_replacement(a, length=b)
     fun-any: Apply a on b until the result doesn't change, yielding intermediate values
     any-str: Remove elements from a that are not in b
@@ -188,7 +188,7 @@
   overloads:
     any-any-any: replace b in a with c until a doesn't change
   vectorise: false
-  tests: 
+  tests:
     - '["{[[[]]]}","[]",""] : "{}"'
     - '[1444,44,34] : 1334'
 - element: "⌐"
@@ -500,7 +500,7 @@
     str-num: a < str(b)
     str-str: a < b
   vectorise: true
-  tests:  
+  tests:
     - '[1, 2] : 1'
     - '[2, 1] : 0'
     - '["a","b"] : 1'
@@ -516,7 +516,7 @@
     str-num: a == str(b)
     str-str: a == b
   vectorise: true
-  tests:  
+  tests:
     - '[1, 1] : 1'
     - '[2, 1] : 0'
     - '["a","b"] : 0'
@@ -533,7 +533,7 @@
     str-num: a > str(b)
     str-str: a > b
   vectorise: true
-  tests:  
+  tests:
     - '[1, 2] : 0'
     - '[2, 1] : 1'
     - '["a","b"] : 0'
@@ -578,7 +578,7 @@
   name: Chr / Ord
   description: Convert between characters and ordinals
   arity: 1
-  overloads: 
+  overloads:
     num: chr(a)
     str: ord(a) if length 1 else list of ordinals
   vectorise: true
@@ -699,7 +699,7 @@
   vectorise: false
   overloads:
     any-fun: map(b,a) (apply b to each of a)
-    any-any: pair each item of b with a 
+    any-any: pair each item of b with a
   tests:
     - '[5,[1,2,3]] : [[5,1],[5,2],[5,3]]'
     - '["z","hi"] : [["z","h"],["z","i"]]'
@@ -769,7 +769,7 @@
   overloads:
     any: truthy_indices(a)
   vectorise: false
-  tests: 
+  tests:
     - '[[0,1,0,2]] : [1,3]'
     - '[[1,2,3,4]] : [0,1,2,3]'
 - element: "U"
@@ -784,9 +784,9 @@
     - '["abdbcdbch"] : "abdch"'
 - element: "V"
   name: Replace
-  description: Replace b with c in a 
+  description: Replace b with c in a
   arity: 3
-  overloads: 
+  overloads:
     any-any-any: a.replace(b,c) (replace)
   vectorise: false
   tests:
@@ -819,7 +819,7 @@
   name: Zip
   description: Zip two lists
   arity: 2
-  overloads: 
+  overloads:
     any-any: zip(a,b)
   vectorise: false
   tests:
@@ -854,7 +854,7 @@
   name: Any
   description: Check if any items of a list are truthy
   arity: 1
-  overloads: 
+  overloads:
     any: any(a) (Are any items truthy?)
   vectorise: false
   tests:
@@ -889,7 +889,7 @@
   name: Double
   description: Double a number or repeat a string twice
   arity: 1
-  overloads: 
+  overloads:
     num: a * 2 (double)
     str: a * 2 (repeated twice)
   vectorise: true
@@ -942,7 +942,7 @@
   name: Head
   description: First item of something
   arity: 1
-  overloads: 
+  overloads:
     any: a[0] (First item)
   tests:
     - '["hello"] : "h"'
@@ -994,7 +994,7 @@
   name: Mirror
   description: Append input reversed to itself.
   arity: 1
-  overloads: 
+  overloads:
     num: a + reversed(a) (as number)
     str: a + reversed(a)
     lst: Append reversed(a) to a
@@ -1021,7 +1021,7 @@
 - element: "p"
   name: Prepend
   description: Prepend b to a
-  overloads: 
+  overloads:
     any-any: a.prepend(b) ( Prepend b to a)
   arity: 2
   vectorise: false
@@ -1033,7 +1033,7 @@
   name: Uneval
   description: Enclose in backticks, escape backslashes and backticks.
   arity: 1
-  overloads: 
+  overloads:
     any: uneval(a) (Enclose in bacticks + escape)
   vectorise: false
   tests:
@@ -1044,7 +1044,7 @@
   name: Range
   description: Range betweeen two numbers, or cumulative reduce, or regex match
   arity: 2
-  overloads: 
+  overloads:
     num-num: range(a,b) (Range form a to b)
     any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
     any-any: regex.has_match(pattern=a,string= b) ( Does b match a)
@@ -1259,7 +1259,7 @@
   name: Absolute value
   description: Take the absolute value of a number, or remove whitespace from a string
   arity: 1
-  overloads: 
+  overloads:
     num: abs(a) (Absolute value)
     str: Remove whitespace from a
   vectorise: true
@@ -1310,7 +1310,7 @@
   name: Enumerate
   description: Zip with a range of the same length
   arity: 1
-  overloads: 
+  overloads:
     any: enumerate(a) (Zip with 1...len(a))
   vectorise: false
   tests:
@@ -1331,12 +1331,12 @@
   name: Gcd
   description: Greatest Common Denominator of a list or some numbers
   arity: '*'
-  overloads: 
+  overloads:
     lst: GCD(a) (Gcd of whole list)
     num-num: gcd(a,b) (Dyadic gcd)
     str-str: Longest common suffix of a and b
   vectorise: false
-  tests: 
+  tests:
     - '[[1,3,2]] : 1'
     - '[[60,42,108]] : 6'
     - '[50,35] : 5'
@@ -1370,7 +1370,7 @@
   name: Find From Index
   description: Find one value inside another, starting from a certain index.
   arity: 3
-  overloads: 
+  overloads:
     any-any-num: a.find(b, start = c) ( Find from c)
   vectorise: false
   tests:
@@ -1412,7 +1412,7 @@
   name: Powerset
   description: All possible combinations of a
   arity: 1
-  overloads: 
+  overloads:
     any: All possible combinations of a
   vectorise: false
   tests:
@@ -1422,7 +1422,7 @@
   name: Round
   description: Round a number to the nearest integer
   arity: 1
-  overloads: 
+  overloads:
     num: round(a)
   vectorise: true
   tests:
@@ -1448,7 +1448,7 @@
   name: Tail Extract
   description: Remove the last item and push both onto the stack
   arity: 1
-  overloads: 
+  overloads:
     any: a[:-1],a[-1]
   vectorise: false
   tests:
@@ -1474,7 +1474,7 @@
     any-num: Repeat a b times
     fun-fun-any: Collect results of applying b on c while a(c) is truthy
   vectorise: false
-  tests: 
+  tests:
     - '[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]'
     - '["x",5] : "xxxxx"'
 - element: "ẏ"
@@ -1505,7 +1505,7 @@
     num: sqrt(a) (Square root)
     str: every second character of a
   vectorise: true
-  tests: 
+  tests:
     - '[4] : 2'
     - '["hello"] : "hlo"'
 - element: "⟨"
@@ -1568,7 +1568,7 @@
   name: Divisible By Five
   description: Check if a is divisible by 5
   arity: 1
-  overloads: 
+  overloads:
     num: a % 5 == 0
     any: a, len(a)
   vectorise: false
@@ -1732,3 +1732,25 @@
     - '[15, 5] : 1'
     - '["abc", 3] : "abc"'
     - '[[5, 13, 29, 48, 12], 2] : [0, 0, 0, 1, 1]'
+- element: Ė
+  name: Vyxal Exec / Reciprocal
+  arity: 1
+  description: Executes as Vyxal / Reciprocal of number
+  overloads:
+    str: vy_exec(a)
+    num: 1 / a
+  vectorise: yes
+  tests:
+    - '[2, 3, -1] : [0.5, 1/3, -1]'
+    - '"kH" : "Hello, World!"'
+- element: Ḟ
+  name: Generator from function with initial vector
+  arity: '2 + 1'
+  description: >-
+    Make a generator from function a with initial vector b, limited to c
+    items if a third argument is given.
+  overloads:
+    fun-lst: Generator from function a with initial vector b
+    fun-lst-num: Generator of at most c items from function a with initial vector b
+  vectorise: no
+  # TODO tests
