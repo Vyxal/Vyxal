@@ -1616,7 +1616,7 @@
   description: Tranpose (filling with spaces) and then join on newlines
   overloads:
     any: Transpose a, join on newlines
-  vectorise: False
+  vectorise: false
   tests:
     - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
     - '[["***", "****", "*****"]] : "  *\n **\n***\n***\n***"'
@@ -1627,7 +1627,7 @@
   overloads:
     num-num: abs(a - b)
     any-str: Transpose a (filling with b), join on newlines
-  vectorise: False
+  vectorise: false
   tests:
     - '[5, 1] : 4'
     - '[1, 5] : 4'
@@ -1641,7 +1641,7 @@
   overloads:
     num: factorial(a) (math.gamma(a + 1))
     str: a.sentence_case()
-  vectorise: True
+  vectorise: true
   tests:
     - '[5] : 120'
     - '["hello my name jeff. ur sussy baka"] : "Hello my name jeff. Ur sussy baka"'
@@ -1654,6 +1654,7 @@
     num: sum(digits of a)
     str: a
     lst: sum(a)
+  vectorise: false
   tests:
     - '[[1, 2, 3, 4, 5]] : 15'
     - '[["abc", "def", 10]] : "abcdef10"'
@@ -1664,9 +1665,70 @@
   description: Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
   overloads:
     any: cumulative_sum(a)
+  vectorise: false
   tests:
     - '[12345] : [1, 3, 6, 10, 15]'
     - '["abcdef"] : ["a", "ab", "abc", "abcd", "abcde", "abcdef"]'
     - '[[1, 2, 3, 4, 5]] : [1, 3, 6, 10, 15]'
-
-
+- element: "≈"
+  name: All Equal
+  arity: 1
+  description: Returns whether all items are equal
+  overloads:
+    any: are all items in a equal?
+  vectorise: false
+  tests:
+    - '[1111] : 1'
+    - '["acc"] : 0'
+    - '[[1, 2, 2, 1]] : 0'
+    - '[[]] : 1'
+- element: "µ"
+  name: Sorting Lambda
+  arity: NA
+  description: Sort the top of the stack by the function µ...;
+- element: "Ȧ"
+  name: Assign
+  arity: 3
+  description: The equivalent of a[b] = c
+  overloads:
+    any-num-any: a but item b (0-indexed) is set to c
+  vectorise: false
+  tests:
+    - '[[1, 2, 3, 4], 1, 0] : [1, 0, 3, 4]'
+    - '["Hello ", ", World!", 5] : "Hello, World!"'
+    - '[69320, 2, 4] : [6, 9, 4, 2, 0]'
+- element: "Ḃ"
+  name: Bifurcate
+  arity: 1
+  description: Pushes the top of the stack then it's reverse. Literally duplicate and reverse
+  overloads:
+    any: a, reversed(a)
+  vectorise: false
+  tests:
+    - '[203] : 302'
+    - '["abc"] : "cab"'
+    - '[[1, 2, 3, 4]] : [4, 3, 2, 1]'
+- element: "Ċ"
+  name: Counts
+  arity: 1
+  description: Returns a list of [item, count of item in the top of stack]
+  overloads:
+    any: '[[x, a.count(x)] for x in a]'
+  vectorise: false
+  tests:
+    - '[[1, 2, 2, 3, 3, 3, 3]] : [[1, 1], [2, 2], [3, 4]]'
+    - '["Hello, World!"] : [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]'
+- element: Ḋ
+  name: Is Divisible / Arbitrary Duplicate
+  arity: 2
+  description: Returns whether two items are divisble / numerious copies of the top of the stack
+  overloads:
+    num-num: a % b == 0
+    num-str: a copies of b
+    str-num: b copies of a
+    str-str: len(b) copies of a
+  vectorise: yes
+  tests:
+    - '[15, 5] : 1'
+    - '["abc", 3] : "abc"'
+    - '[[5, 13, 29, 48, 12], 2] : [0, 0, 0, 1, 1]'
