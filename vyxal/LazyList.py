@@ -5,6 +5,7 @@ into isinstance(<itertools object>, types.GeneratorType). Also, maps, ranges
 and other stuff that needs to be lazily evaluated.
 """
 
+import copy
 import types
 from typing import Any, Union
 
@@ -24,6 +25,14 @@ def vyxalify(value: Any) -> Any:
 
     else:
         return LazyList(map(vyxalify, value))
+
+
+def join_with(lhs, rhs):
+    for item in lhs:
+        yield item
+
+    for item in rhs:
+        yield item
 
 
 def lazylist(fn):
@@ -52,6 +61,9 @@ def simplify(value: Any) -> Union[int, float, str, list]:
 
 
 class LazyList:
+    def __add__(self, rhs):
+        return LazyList(join_with(self.raw_object, rhs))
+
     def __call__(self, *args, **kwargs):
         return self
 
@@ -143,29 +155,30 @@ class LazyList:
         self.generated = []
         return temp
 
-    def output(self, end="\n"):
-        print("⟨", end="")
+    def output(self, end="\n", ctx=None):
+        from vyxal.elements import vy_print
+
+        vy_print("⟨", "", ctx)
         for lhs in self.generated[:-1]:
-            print(lhs, end="|")
+            vy_print(lhs, "|", ctx)
         if len(self.generated):
-            print(self.generated[-1], end="")
+            vy_print(self.generated[-1], "", ctx)
 
         try:
             lhs = next(self)
             if len(self.generated) > 1:
-                print("|", end="")
+                vy_print("|", "", ctx)
             while True:
-                print(lhs, end="")
+                vy_print(lhs, "", ctx)
                 lhs = next(self)
-                print("|", end="")
+                vy_print("|", "", ctx)
         except:
-            print("⟩", end=end)
+            vy_print("⟩", end, ctx)
 
+    def reversed(self):
+        def temp():
+            self.generated += list(itertools.tee(self.raw_object)[-1])
+            for item in self.generated[::-1]:
+                yield item
 
-"""
--------------
-XXX: VERY IMPORTANT
-
-UPDATE THE PRNIT METHOD OF THE LAZYLIST TO USE VY_PRINT WHEN WE DEFINE
-IT.
-"""
+        return temp()

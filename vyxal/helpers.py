@@ -11,16 +11,34 @@ from typing import Any, List, Union
 
 import sympy
 
-from vyxal import LazyList, context, lexer
+from vyxal import context, lexer
+from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
 
+def case_of(value: str) -> int:
+    """Returns 1 for all uppercase, 0 for all lowercase, and -1 for
+    mixed case."""
+
+    if all(map(lambda x: x.isupper(), value)):
+        return 1
+    elif all(map(lambda x: x.islower(), value)):
+        return 0
+    return -1
+
+
 def deep_copy(value: Any) -> Any:
-    """Because lists and lazylists use memory references."""
+    """Because lists and lazylists use memory references. Frick them."""
+
+    if type(value) not in (list, LazyList):
+        return value  # because primitives are all like "ooh look at me
+        # I don't have any fancy memory references because I'm an epic
+        # chad unlike those virgin memory reference needing lists".
 
     # Use itertools.tee for (LazyL|l)ists
+    return LazyList(itertools.tee(value)[-1])
 
 
 def get_input(ctx: context.Context) -> Any:
@@ -44,7 +62,7 @@ def get_input(ctx: context.Context) -> Any:
         return ret
 
 
-@LazyList
+@lazylist
 def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
@@ -55,6 +73,7 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     while previous != current:
         yield current
         prevuous = deep_copy(current)
+        current = safe_apply(function, current)
 
 
 def from_base_alphabet(value: str, alphabet: str) -> int:
@@ -91,14 +110,12 @@ def indent_code(*code, indent: int = 1) -> str:
 
 def iterable(
     item: Any, number_type: Any = None, ctx: context.Context = None
-) -> Union[LazyList.LazyList, Union[list, str]]:
+) -> Union[LazyList, Union[list, str]]:
     """Makes sure that a value is an iterable"""
 
     if (t := type(item)) in [sympy.Rational, int]:
         if ctx.number_as_range or number_type is range:
-            return LazyList.LazyList(
-                range(ctx.range_start, int(item) + ctx.range_end)
-            )
+            return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
             if t is sympy.Rational:
                 item = float(item)
@@ -108,10 +125,24 @@ def iterable(
         return item
 
 
+def keep(haystack: Any, needle: Any) -> Any:
+    """Used for keeping only needle in haystack"""
+
+    ret = []
+    for item in haystack:
+        if item in needle:
+            ret.append(item)
+
+    if type(haystack) is str:
+        return "".join(ret)
+    else:
+        return ret
+
+
 def mold(
-    content: Union[list, LazyList.LazyList],
-    shape: Union[list, LazyList.LazyList],
-) -> Union[list, LazyList.LazyList]:
+    content: Union[list, LazyList],
+    shape: Union[list, LazyList],
+) -> Union[list, LazyList]:
     """Mold one list to the shape of the other. Uses the mold function
     that Jelly uses."""
     # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
@@ -126,7 +157,7 @@ def mold(
 
 
 def pop(
-    iterable: Union[list, LazyList.LazyList], count: int, ctx: context.Context
+    iterable: Union[list, LazyList], count: int, ctx: context.Context
 ) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
@@ -163,6 +194,20 @@ def primitive_type(item: type) -> Union[str, type]:
         return list
 
 
+def reverse_number(
+    item: Union[int, sympy.Rational]
+) -> Union[int, sympy.Rational]:
+    """Reverses a number. Negative numbers are returned negative"""
+
+    temp = ""
+    if item < 0:
+        temp = type(item)(str(eval(item))[1:][::-1])
+    else:
+        temp = type(item)(str(eval(item))[::-1])
+
+    return sympy.Rational(item)
+
+
 def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.
@@ -188,6 +233,17 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
         else:
             return []
     return function(*args, ctx)
+
+
+def scalarify(value: Any) -> Union[Any, List[Any]]:
+    """Returns value[0] if value is a list of length 1, else value"""
+    if type(value) in (list, LazyList):
+        if len(value) == 1:
+            return value[0]
+        else:
+            return value
+    else:
+        return value
 
 
 def to_base_digits(value: int, base: int) -> List[int]:
@@ -259,6 +315,17 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
             return eval(item)
         except:
             return item
+
+
+def vy_str(item: Any, ctx: context.Context) -> str:
+    """Convert to string, using custom vyxal formatting"""
+    if type(item) is LazyList:
+        item = list(item)
+
+    if type(item) is list:
+        return "⟨" + "|".join([vy_str(y) for y in x]) + "⟩"
+
+    return str(item)
 
 
 def vy_zip(*items) -> list:
