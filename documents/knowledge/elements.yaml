@@ -2051,7 +2051,14 @@
   description: Performs bitwise and between two numbers / centre a string
   overloads:
     num-num: a & b
-    num-str:
+    num-str: b.center(a)
+    str-num: a.center(b)
+    str-str: a.center(len(b) - len(a))
+  vectorise: true
+  tests:
+    - "[420, 69] : 4"
+    - '["abc", 10] : "   abc    "'
+    - '["no", "yesnt"] : " no "'
 
 # CONSTANTS GO DOWN HERE!!!!!!
 - element: "kA"
