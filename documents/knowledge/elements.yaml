@@ -2059,8 +2059,335 @@
     - "[420, 69] : 4"
     - '["abc", 10] : "   abc    "'
     - '["no", "yesnt"] : " no "'
+- element: "⋎"
+  name: Bitwise Or
+  arity: 2
+  description: Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
+  overloads:
+    num-num: a | b
+    num-str: b[:a]+b[a+1:]
+    str-num: a[:b]+a[b+1:]
+    str-str: merge_join(a,b)
+  vectorise: true
+  tests:
+    - "[420, 69] : 485"
+    - '[2, "abc"] : "ab"'
+    - '["abc", 2] : "ab"'
+    - '["Hello", "lower"] : "Hellower"'
+- element: "꘍"
+  name: Bitwise Xor
+  arity: 2
+  description: Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
+  overloads:
+    num-num: a ^ b
+    num-str: \" \" * a + b
+    str-num: a + \" \" * b
+    str-str: levenshtein_distance(a,b)
+  vectorise: true
+  tests:
+    - "[420, 69] : 481"
+    - '[5, "ab"] : "     ab"'
+    - '["ab", 5] : "ab     "'
+    - '["atoll", "bowl"] : 3'
+- element: "ꜝ"
+  name: Bitwise Not
+  arity: 1
+  description: Performs bitwise not on a number / check if any letters are uppercase
+  overloads:
+    num: ~a
+    str: any_upper(a)
+  vectorise: true
+  tests:
+    - "[220] : -221"
+    - '["Hello"] : 1'
+- element: "℅"
+  name: Random Choice
+  arity: 1
+  description: Random choice of single item from array
+  overloads:
+    lst: random.choice(a)
+  vectorise: false
+  tests:
+    - "[[1,2,3]] : 2"
+    - "[[1,2,3]] : 1"
+    - "[[1,2,3]] : 3"
+- element: "≤"
+  name: Lesser Than or Equal To
+  arity: 2
+  description: a is lesser than or equal to b?
+  overloads:
+    any-any: a <= b
+  vectorise: true
+  tests:
+    - "[1,2] : 1"
+- element: "≥"
+  name: Greater Than or Equal To
+  arity: 2
+  description: a is greater than or equal to b?
+  overloads:
+    any-any: a >= b
+  vectorise: true
+  tests:
+    - "[1,2] : 0"
+- element: "≠"
+  name: Not Equal To
+  arity: 2
+  description: a is not equal to b?
+  overloads:
+    any-any: a != b
+  vectorise: true
+  tests:
+    - "[1,2] : 1"
+- element: "⁼"
+  name: Exactly Equal To
+  arity: 2
+  description: a equal to b? (non-vectorizing)
+  overloads:
+    any-any: a == b
+  vectorise: true
+  tests:
+    - "[1,2] : 1"
+- element: "ƒ"
+  name: Fractionify
+  arity: 1
+  description: Convert number or string to 2-element array representing fraction
+  overloads:
+    num: fractionify(a)
+    str: fractionify(a)
+  vectorise: true
+  tests:
+    - "[0.5] : [1,2]"
+    - '"0.3" : [3,10]'
+- element: "ɖ"
+  name: Decimalify
+  arity: 1
+  description: Convert two element array to decimal / reduce by division
+  overloads:
+    lst: decimalify(a)
+  vectorise: true
+  tests:
+    - "[1,2] : 0.5"
+    - "[3,4] : 0.75"
+- element: "∪"
+  name: Set Union
+  arity: 2
+  description: Merge two arrays without duplicates
+  overloads:
+    any-any: list(set(a).union(set(b)))
+  vectorise: false
+  tests:
+    - "[[1,2],[2,3,4]] : [1,2,3,4]"
+- element: "∩"
+  name: Set Intersection
+  arity: 2
+  description: Common elements of two arrays
+  overloads:
+    any-any: list(set(a).intersection(set(b)))
+  vectorise: false
+  tests:
+    - "[[1,2],[2,3,4]] : [2]"
+- element: "⊍"
+  name: Symmetric Set difference
+  arity: 2
+  description: Uncommon elements of two arrays
+  overloads:
+    any-any: list(set(a) ^ set(b))
+  vectorise: false
+  tests:
+    - "[[1,2],[2,3,4]] : [1,3,4]"
+- element: "£"
+  name: Set Register
+  arity: 1
+  description: set the register to argument value
+  overloads:
+    any: set_register(a)
+  vectorise: false
+- element: "¥"
+  name: Push Register
+  arity: 0
+  description: Push the current register value
+  vectorise: false
+- element: "⇧"
+  name: Grade Up
+  arity: 1
+  description: Indices of elements to sort in ascending order / uppercase / increment number twice
+  overloads:
+    lst: graded_up(a)
+    str: a.upper()
+    num: a + 2
+  vectorise: false
+  tests:
+    - "[[420,69,1337]] : [2,1,3]"
+    - '"Heloo" : "HELOO"'
+    - '[4] : 6'
+- element: "⇩"
+  name: Grade Down
+  arity: 1
+  description: Indices of elements to sort in descending order / lowercase / decrement number twice
+  overloads:
+    lst: graded_down(a)
+    str: a.lower()
+    num: a - 2
+  vectorise: false
+  tests:
+    - "[[420,69,1337]] : [3,1,2]"
+    - '"Heloo" : "heloo"'
+    - '[4] : 2'
+- element: "Ǎ"
+  name: Remove non-alphabets
+  arity: 1
+  description: Remove non-alphabetical characters / power with base 2
+  overloads:
+    str: filter(isalpha, a)
+    num: 2 ** a
+  vectorise: true
+  tests:
+    - '["Helo1233adc__"] : "Heloadc"'
+    - "[8] : 256"
+- element: "ǎ"
+  name: Nth prime
+  arity: 1
+  description: n'th prime / all substrings
+  overloads:
+    str: substrings(a)
+    num: nth_prime(a)
+  vectorise: true
+  tests:
+    - "[3] : 7"
+    - '["abc"] : ["a","ab","abc","","b","bc","","","c","","",""]'
+- element: "Ǐ"
+  name: Prime factorization
+  arity: 1
+  description: prime factorization / append first element
+  overloads:
+    num: prime_factorization(a)
+    lst: a + a[0]
+  vectorise: true
+  tests:
+    - "[45] : [3,5]"
+    - '["abc"] : "abca"'
+- element: "ǐ"
+  name: Prime factors
+  arity: 1
+  description: all prime factors / Title Case string
+  overloads:
+    num: prime_factors(a)
+    str: title_case(a)
+  vectorise: true
+  tests:
+    - "[45] : [3, 3, 5]"
+    - '["abc def"] : "Abc Def"'
+- element: "Ǒ"
+  name: Multiplicity
+  arity: 2
+  description: Order, Multiplicity, Valuation / remove till fixpoint
+  overloads:
+    num-num: multiplicity(a,b)
+    str-str: remove_till_fixpoint(a,b)
+  vectorise: false
+  tests:
+    - "[45, 3] : 2"
+    - '["aaabbbc", "ab"] : "c"'
+- element: "ǒ"
+  name: Modulo 3
+  arity: 1
+  description: Modulo 3 / Is string empty?
+  overloads:
+    num: a % 3
+    num: a == ""
+  vectorise: true
+  tests:
+    - "[45] : 0"
+    - '[""] : 1'
+- element: "Ǔ"
+  name: Rotate Left
+  arity: 2
+  description: Rotate Left / Rotate Left Once
+  overloads:
+    any-num: rotate_left(a,b)
+    any-any: a,(b[1:]+b[:1])
+  vectorise: false
+  tests:
+    - "[3, [4, 5, 5, 6]] : [6, 4, 5, 5]"
+    - "[3, [1, 2, 3, 4]] : [2, 3, 4, 1]"
+- element: "ǔ"
+  name: Rotate Right
+  arity: 2
+  description: Rotate Right / Rotate Right Once
+  overloads:
+    any-num: rotate_right(a,b)
+    any-any: a,(b[-1:]+b[:-1])
+  vectorise: false
+  tests:
+    - "[3, [4, 5, 5, 6]] : [5, 5, 6, 4]"
+    - "[3, [1, 2, 3, 4]] : [4, 1, 2, 3]"
+- element: "⁽"
+  name: One Byte Lambda
+  arity: 0
+  description: One Byte lambda function (prefix)
+  vectorise: false
+- element: "‡"
+  name: Two Byte Lambda
+  arity: 0
+  description: Two Byte lambda function (prefix)
+  vectorise: false
+- element: "≬"
+  name: Three Byte Lambda
+  arity: 0
+  description: Three Byte lambda function (prefix)
+  vectorise: false
+- element: "⁺"
+  name: Index of next character in codepage
+  arity: 0
+  description: Compressed number in 1-128 (prefix)
+  vectorise: false
+- element: "↵"
+  name: Split On newlines
+  arity: 1
+  description: Split on newlines / Power with base 10
+  overloads:
+    str: a.split("\n")
+    num: 10 ** a
+  vectorise: true
+  tests:
+    - '["a\nb\nc"] : ["a", "b", "c"]'
+    - "[3] : 1000"
+- element: "⅛"
+  name: Push To Global Array
+  arity: 1
+  description: Push to global array (no popping)
+  vectorise: false
+- element: "¼"
+  name: Pop From Global Array
+  arity: 0
+  description: Pop from global array, push to stack
+  vectorise: false
+- element: "¾"
+  name: Push Global Array
+  arity: 0
+  description: Push global array, no modification of global array
+  vectorise: false
+- element: "Π"
+  name: Product of Array
+  arity: 1
+  description: Product of Array
+  overloads:
+    lst: prod(a)
+  vectorise: false
+  tests:
+    - "[3,4,5] : 60"
+- element: "„"
+  name: Rotate Stack Left
+  arity: 0
+  description: Rotate Stack Left
+  vectorise: false
+- element: "‟"
+  name: Rotate Stack Right
+  arity: 0
+  description: Rotate Stack Right
+  vectorise: false
 
-# CONSTANTS GO DOWN HERE!!!!!!
+# NOTE: CONSTANTS GO DOWN HERE!!!!!!
 - element: "kA"
   name: Uppercase alphabet
   arity: 0
@@ -2534,4 +2861,11 @@
   name: Lowercase consonants without y
   arity: 0
   description: "bcfghjklmnpqrstvwxz"
-  vectorise: f
+  vectorise: false
+
+# Add constants with the following format:
+# - element: ""
+#   name:
+#   arity: 0
+#   description:
+#   vectorise:
