@@ -86,6 +86,7 @@ def transpile_token(token: Token, indent: int) -> str:
 def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """Transpile a single structure."""
 
+
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)
     if isinstance(struct, structure.IfStatement):

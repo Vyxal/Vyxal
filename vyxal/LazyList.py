@@ -182,3 +182,4 @@ class LazyList:
                 yield item
 
         return temp()
+
