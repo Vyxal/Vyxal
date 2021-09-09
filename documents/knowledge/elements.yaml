@@ -2135,7 +2135,7 @@
   description: a is not equal to b?
   overloads:
     any-any: a != b
-  vectorise: true
+  vectorise: false
   tests:
     - "[1,2] : 1"
 - element: "⁼"
@@ -2144,7 +2144,7 @@
   description: a equal to b? (non-vectorizing)
   overloads:
     any-any: a == b
-  vectorise: true
+  vectorise: false
   tests:
     - "[1,2] : 1"
 - element: "ƒ"
@@ -2218,8 +2218,8 @@
   vectorise: false
   tests:
     - "[[420,69,1337]] : [2,1,3]"
-    - '"Heloo" : "HELOO"'
-    - '[4] : 6'
+    - '["Heloo"] : "HELOO"'
+    - "[4] : 6"
 - element: "⇩"
   name: Grade Down
   arity: 1
@@ -2231,8 +2231,8 @@
   vectorise: false
   tests:
     - "[[420,69,1337]] : [3,1,2]"
-    - '"Heloo" : "heloo"'
-    - '[4] : 2'
+    - '["Heloo"] : "heloo"'
+    - "[4] : 2"
 - element: "Ǎ"
   name: Remove non-alphabets
   arity: 1
@@ -2294,7 +2294,7 @@
   description: Modulo 3 / Is string empty?
   overloads:
     num: a % 3
-    num: a == ""
+    str: a == ""
   vectorise: true
   tests:
     - "[45] : 0"
@@ -2862,7 +2862,6 @@
   arity: 0
   description: "bcfghjklmnpqrstvwxz"
   vectorise: false
-
 # Add constants with the following format:
 # - element: ""
 #   name:
