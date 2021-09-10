@@ -50,7 +50,6 @@ def transpile_ast(program: list[structure.Structure], indent=0) -> str:
 def transpile_single(
     token_or_struct: Union[Token, structure.Structure], indent: int
 ) -> str:
-    # print("transpiling: ", token_or_struct)
     if isinstance(token_or_struct, Token):
         return transpile_token(token_or_struct, indent)
     elif isinstance(token_or_struct, structure.Structure):
@@ -85,7 +84,6 @@ def transpile_token(token: Token, indent: int) -> str:
 
 def transpile_structure(struct: structure.Structure, indent: int) -> str:
     """Transpile a single structure."""
-
 
     if isinstance(struct, structure.GenericStatement):
         return transpile_single(struct.branches[0][0], indent)

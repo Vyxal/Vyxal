@@ -26,7 +26,7 @@ def process_element(
 
     expr can be a string, which will be added verbatim to the transpiled output,
     or a function, for which a function call will be generated.
-    
+
     See documents/specs/Transpilation.md for information on what happens here.
     """
     if arity:
@@ -183,7 +183,7 @@ def inclusive_zero_range(lhs, ctx):
 
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
-    (any-any-any) -> replace b in a with c until a doesn't change
+    (any, any, any) -> replace b in a with c until a doesn't change
     """
 
     prev = deep_copy(lhs)

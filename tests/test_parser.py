@@ -1,6 +1,5 @@
 import os
 import sys
-from typing import Generic
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)

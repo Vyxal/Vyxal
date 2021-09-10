@@ -113,11 +113,11 @@ def iterable(
 ) -> Union[LazyList, Union[list, str]]:
     """Makes sure that a value is an iterable"""
 
-    if (t := type(item)) in [sympy.Rational, int]:
+    if (type_of_item := type(item)) in [sympy.Rational, int]:
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
-            if t is sympy.Rational:
+            if type_of_item is sympy.Rational:
                 item = float(item)
 
             return [int(let) if let not in "-." else let for let in str(item)]
@@ -307,13 +307,13 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
     if ctx.online:
         try:
             return ast.literal_eval(item)
-        except:
+        except Exception as ex:
             # TODO: eval as vyxal
             return item
     else:
         try:
             return eval(item)
-        except:
+        except Exception as ex:
             return item
 
 
@@ -349,7 +349,7 @@ def vy_zip(*items) -> list:
 
 
 def wrap(vector: Union[str, list], width: int) -> List[Any]:
-    # Because textwrap.wrap doesn't consistently play nice with spaces
+    """A version of textwrap.wrap that plays nice with spaces"""
     ret = []
     temp = []
     for item in vector:

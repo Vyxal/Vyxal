@@ -7,12 +7,7 @@ ELEMENTS_YAML = "elements.yaml"
 TEST_ELEMENTS_PY = "../../tests/test_elements.py"
 
 with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
-    try:
-        data = yaml.safe_load(elements)
-    except yaml.YAMLError as ex:
-        print(ex)
-        exit()
-
+    data = yaml.safe_load(elements)
 # Generate test cases
 with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
     tests.write(

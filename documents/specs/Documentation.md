@@ -1,4 +1,4 @@
-# Element Documentation
+# Element documentation
 
 When implementing elements, it's important that they are documented with
 all their overloads and test cases; doing so means that test case
