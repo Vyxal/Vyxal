@@ -6,6 +6,7 @@ sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.lexer import *
 from vyxal.parse import *
+from vyxal.structure import *
 
 
 def fully_parse(program: str) -> list[Structure]:
@@ -24,153 +25,140 @@ def fully_parse(program: str) -> list[Structure]:
     list[Structure]
         Quite literally parse(tokenise(program))
     """
-
     return parse(tokenise(program))  # see what I mean?
 
 
 def test_basic():
-    assert (
-        fully_parse("1 1+")
-        == "[['none', ['number', '1']], ['none', ['number', '1']], "
-        + "['none', ['general', '+']]]"
+    assert str(fully_parse("1 1+")) == str(
+        [
+            GenericStatement([Token(TokenType.NUMBER, "1")]),
+            GenericStatement([Token(TokenType.NUMBER, "1")]),
+            GenericStatement([Token(TokenType.GENERAL, "+")]),
+        ]
     )
 
-    assert (
-        fully_parse("`Hello, World!`")
-        == "[['none', ['string', " + "'Hello, World!']]]"
+    assert str(fully_parse("`Hello, World!`")) == str(
+        [GenericStatement([Token(TokenType.STRING, "Hello, World!")])]
     )
 
 
 def test_fizzbuzz():
-    assert fully_parse("₁ƛ₍₃₅kF½*∑∴") == [
-        ["none", ["general", "₁"]],
+    assert str(fully_parse("₁ƛ₍₃₅kF½*∑∴")) == str(
         [
-            "lambda",
-            [
+            GenericStatement([Token(TokenType.GENERAL, "₁")]),
+            Lambda(
                 "1",
                 [
-                    [
-                        "dyadic_modifier",
-                        [
-                            "₍",
-                            [
-                                ["none", ["general", "₃"]],
-                                ["none", ["general", "₅"]],
-                            ],
-                        ],
-                    ],
-                    ["none", ["general", "kF"]],
-                    ["none", ["general", "½"]],
-                    ["none", ["general", "*"]],
-                    ["none", ["general", "∑"]],
-                    ["none", ["general", "∴"]],
+                    DyadicModifier(
+                        "₍",
+                        GenericStatement([Token(TokenType.GENERAL, "₃")]),
+                        GenericStatement([Token(TokenType.GENERAL, "₅")]),
+                    ),
+                    GenericStatement([Token(TokenType.GENERAL, "kF")]),
+                    GenericStatement([Token(TokenType.GENERAL, "½")]),
+                    GenericStatement([Token(TokenType.GENERAL, "*")]),
+                    GenericStatement([Token(TokenType.GENERAL, "∑")]),
+                    GenericStatement([Token(TokenType.GENERAL, "∴")]),
                 ],
-            ],
-        ],
-        ["none", ["general", "M"]],
-    ]
+            ),
+            GenericStatement([Token(TokenType.GENERAL, "M")]),
+        ]
+    )
 
 
 def test_modifiers():
-    assert fully_parse("⁽*r") == [
-        ["lambda", ["1", [[["none", ["general", "*"]]]]]],
-        ["none", ["general", "r"]],
-    ]
-
-    assert fully_parse("vv+") == [
+    assert str(fully_parse("⁽*r")) == str(
         [
-            "monadic_modifier",
-            ["v", [["monadic_modifier", ["v", [["none", ["general", "+"]]]]]]],
+            Lambda("1", GenericStatement([Token(TokenType.GENERAL, "*")])),
+            GenericStatement([Token(TokenType.GENERAL, "r")]),
         ]
-    ]
+    )
 
-    assert fully_parse("‡₌*ġḭd†") == [
+    assert str(fully_parse("vv+")) == str(
         [
-            "lambda",
-            [
+            MonadicModifier(
+                "v",
+                MonadicModifier(
+                    "v", GenericStatement([Token(TokenType.GENERAL, "+")])
+                ),
+            )
+        ]
+    )
+
+    assert str(fully_parse("‡₌*ġḭd†")) == str(
+        [
+            Lambda(
                 "1",
                 [
-                    [
-                        "dyadic_modifier",
-                        [
-                            "₌",
-                            [
-                                ["none", ["general", "*"]],
-                                ["none", ["general", "ġ"]],
-                            ],
-                        ],
-                    ],
-                    ["none", ["general", "ḭ"]],
+                    DyadicModifier(
+                        "₌",
+                        GenericStatement([Token(TokenType.GENERAL, "*")]),
+                        GenericStatement([Token(TokenType.GENERAL, "ġ")]),
+                    ),
+                    GenericStatement([Token(TokenType.GENERAL, "ḭ")]),
                 ],
-            ],
-        ],
-        ["none", ["general", "d"]],
-        ["none", ["general", "†"]],
-    ]
+            ),
+            GenericStatement([Token(TokenType.GENERAL, "d")]),
+            GenericStatement([Token(TokenType.GENERAL, "†")]),
+        ]
+    )
 
 
 def test_structures():
-    assert fully_parse("[1 1+|`nice`") == [
+    assert str(fully_parse("[1 1+|`nice`")) == str(
         [
-            "if_stmt",
-            [
+            IfStatement(
                 [
-                    ["none", ["number", "1"]],
-                    ["none", ["number", "1"]],
-                    ["none", ["general", "+"]],
+                    GenericStatement([Token(TokenType.NUMBER, "1")]),
+                    GenericStatement([Token(TokenType.NUMBER, "1")]),
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
                 ],
-                [["none", ["string", "nice"]]],
-            ],
+                [GenericStatement([Token(TokenType.STRING, "nice")])],
+            )
         ]
-    ]
+    )
 
-    assert fully_parse("1 10r(i|n2*,") == [
-        ["none", ["number", "1"]],
-        ["none", ["number", "10"]],
-        ["none", ["general", "r"]],
+    assert str(fully_parse("1 10r(i|n2*,")) == str(
         [
-            "for_loop",
-            [
-                "i",
+            GenericStatement([Token(TokenType.NUMBER, "1")]),
+            GenericStatement([Token(TokenType.NUMBER, "10")]),
+            GenericStatement([Token(TokenType.GENERAL, "r")]),
+            ForLoop(
+                ["i"],
                 [
-                    ["none", ["general", "n"]],
-                    ["none", ["number", "2"]],
-                    ["none", ["general", "*"]],
-                    ["none", ["general", ","]],
+                    GenericStatement([Token(TokenType.GENERAL, "n")]),
+                    GenericStatement([Token(TokenType.NUMBER, "2")]),
+                    GenericStatement([Token(TokenType.GENERAL, "*")]),
+                    GenericStatement([Token(TokenType.GENERAL, ",")]),
                 ],
-            ],
-        ],
-    ]
-
-    assert fully_parse("@triple:1|3*;") == [
-        [
-            "function",
-            [
-                ["triple", "1"],
-                [["none", ["number", "3"]], ["none", ["general", "*"]]],
-            ],
+            ),
         ]
-    ]
+    )
 
-    assert fully_parse("(code‛|c") == [
+    assert str(fully_parse("@triple:1|3*;")) == str(
         [
-            "for_loop",
-            [
+            FunctionDef(
+                "triple",
+                ["1"],
                 [
-                    ["none", ["general", "c"]],
-                    ["none", ["general", "o"]],
-                    ["none", ["general", "d"]],
-                    ["none", ["general", "e"]],
-                    ["none", ["string", "|c"]],
-                ]
-            ],
+                    GenericStatement([Token(TokenType.NUMBER, "3")]),
+                    GenericStatement([Token(TokenType.GENERAL, "*")]),
+                ],
+            )
         ]
-    ]
+    )
 
-
-if __name__ == "__main__":
-    test_basic()
-    test_fizzbuzz()
-    test_modifiers()
-    test_structures()
-    print("everything passed")
+    assert str(fully_parse("(code‛|c")) == str(
+        [
+            ForLoop(
+                [],
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "c")]),
+                    GenericStatement([Token(TokenType.GENERAL, "o")]),
+                    GenericStatement([Token(TokenType.GENERAL, "d")]),
+                    GenericStatement([Token(TokenType.GENERAL, "e")]),
+                    GenericStatement([Token(TokenType.STRING, "|c")]),
+                ],
+            )
+        ]
+    )

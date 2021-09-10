@@ -13,7 +13,7 @@ import string
 from collections import deque
 from collections.abc import Iterable
 
-from vyxal import structure
+from vyxal import lexer, structure
 
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)
@@ -90,7 +90,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
 
     while tokens:
         head = tokens.popleft()
-        if head.value in OPENING_CHARACTERS:
+        if head.name == lexer.TokenType.STRING:
+            structures.append(structure.GenericStatement([head]))
+        elif head.value in OPENING_CHARACTERS:
             structure_cls, end_bracket = STRUCTURE_INFORMATION[head.value]
             bracket_stack.append(end_bracket)
 
@@ -115,6 +117,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                                     an element.
             """
             if structure_cls == structure.ForLoop:
+                var_names = []
                 if len(branches) > 1:
                     var_names = [
                         variable_name(branch) for branch in branches[:-1]
@@ -205,7 +208,7 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
             remaining = parse(tokens)
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(structure.Lambda(1, [[remaining[0]]]))
+                structures.append(structure.Lambda(1, remaining[0]))
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])

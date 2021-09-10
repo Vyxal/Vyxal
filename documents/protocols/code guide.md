@@ -1,5 +1,5 @@
 # The Definitive Vyxal Code Style Guide
-_Seventeenth revision_
+_Twentieth revision_
 
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
@@ -50,37 +50,37 @@ Here's a list of all the main python files in the repository:
 ### Monads
 
 ```python
-def NAME(lhs):
+def NAME(lhs, ctx):
     return {
         num: lambda: NUMBER_OVERLOAD,
         str: lambda: STRING_OVERLOAD
-    }.get(vy_type(lhs), lambda: vectorise(NAME, lhs))()
+    }.get(vy_type(lhs), lambda: vectorise(NAME, lhs, ctx=ctx))()
 ```
 
 ### Dyads
 
 ```python
-def NAME(lhs, rhs):
+def NAME(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (num, num): lambda: NUMBER_NUMBER_OVERLOAD,
         (num, str): lambda: NUMBER_STRING_OVERLOAD,
         (str, num): lambda: STRING_NUMBER_OVERLOAD,
         (str, str): lambda: STRING_STRING_OVERLOAD
-    }.get(ts, lambda: vectorise(NAME, lhs, rhs))()
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, ctx=ctx))()
 ```
 
 ### Triads
 
 ```python
-def NAME(lhs, rhs, other):
+def NAME(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other)
     return {
         (num, num, num): lambda: ...,
         (num, num, str): lambda: ...,
         (num, str, num): lambda: ...,
         # and so forth
-    }.get(ts, lambda: vectorise(NAME, lhs, rhs, other))()
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, other, ctx=ctx))()
 ```
 
 Very important: Only the type dictionary should be inside the function definition. Also, if there happens to be a `Function` overload, use `types.FunctionType`.
@@ -121,7 +121,7 @@ These comments are started and terminated with either `"""` (frick `'''`). This 
 - At the start of an element function to list the overloads:
 
 ```python
-def add(lhs, rhs):
+def add(lhs, rhs, ctx):
     """Element: +
 
     (num, num) -> a + b
@@ -131,6 +131,17 @@ def add(lhs, rhs):
     """
     
     ...
+```
+
+More generically:
+
+```python
+"""Element +
+(num, num) ->
+(num, str) ->
+(str, num) ->
+(str, str) ->
+"""
 ```
 
 - At the start of a helper function to describe what the function is doing (unless the function is all of {not public
