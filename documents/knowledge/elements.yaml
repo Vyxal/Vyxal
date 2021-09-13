@@ -2452,7 +2452,7 @@
 - element: "⇩"
   name: Grade Down
   arity: 1
-  description: Indices of elements to sort in descending order / lowercase / decrement number twice
+  description: 'Indices of elements to sort in descending order / lowercase / decrement number twice'
   overloads:
     lst: graded_down(a)
     str: a.lower()
@@ -3179,10 +3179,411 @@
   arity: 0
   description: "bcfghjklmnpqrstvwxz"
   vectorise: false
+
+
+- element: "kT"
+  name: BF command set
+  arity: 0
+  description: BF command set ("[]<>-+.,")
+  vectorise: false
+  tests:
+    - '[] : "[]<>-+.,"'
+
+- element: "kṗ"
+  name: Bracket pair list
+  arity: 0
+  description: List of bracket pairs ("[(),[],{},<>]")
+  vectorise: false
+  tests:
+    - '[] : ["()","[]","{}","<>"]'
+
+- element: "kṖ"
+  name: Nested brackets
+  arity: 0
+  description: String of all brackets nested ("([{<>}])")
+  vectorise: false
+  tests:
+    - '[] : "([{<>}])"'
+
+- element: "kg"
+  name: Phi
+  arity: 0
+  description: 1.6180339887 / (√5+1)/2 / Phi
+  vectorise: false
+
+- element: "kS"
+  name: Amogus
+  arity: 0
+  description: Amogus ("ඞ")
+  vectorise: false
+  tests:
+    - '[] : "ඞ"'
+
+- element: "k₂"
+  name: 2 ** 20
+  arity: 0
+  description: 2 to the power of 20, 1048576
+  vectorise: false
+  tests:
+    - '[] : 1048576'
+
+- element: "k₃"
+  name: 2 ** 30
+  arity: 0
+  description: 2 to the power of 30, 1073741824
+  vectorise: false
+  tests:
+    - '[] : 1073741824'
+
+- element: "k∪"
+  name: Lowercase Vowels With Y
+  arity: 0
+  description: Lowercase vowels with y, "aeiouy"
+  vectorise: false
+  tests:
+    - '[] : "aeiouy"'
+
+- element: "k⊍"
+  name: Uppercase Vowels With Y
+  arity: 0
+  description: Uppercase vowels with y, "AEIOUY"
+  vectorise: false
+  tests:
+    - '[] : "AEIOUY"'
+  
+- element: "k∩"
+  name: Vowels With Y
+  arity: 0
+  description: Vowels with y, "aeiouyAEIOUY"
+  vectorise: false
+  tests:
+    - '[] : "aeiouyAEIOUY"'
+
 # Add constants with the following format:
 #
-- element: ""
-#   name:
-#   arity: 0
-#   description:
-#   vectorise:
+#- element: ""
+#  name: 
+#  arity: 0
+#  description:
+#  vectorise: false
+#  tests:
+#    - '[] : '
+
+
+# DIGRAPHS
+
+- element: "øb"
+  name: Parenthesise
+  arity: 1
+  description: Parenthesise a string
+  overloads:
+    any: '"("" + a + ")"'
+  vectorise: true
+  tests:
+    - '["xyz"] : "(xyz)"'
+    - '[5] : "(5)"'
+    - '[[1,2,3]] : ["(1)","(2)","(3)"]'
+
+- element: "øB"
+  name: Bracketify
+  arity: 1
+  description: Enclose a string in brackets
+  overloads:
+    any: '"["" + a + "]"'
+  vectorise: true
+  tests:
+    - '["xyz"] : "[xyz]"'
+    - '[5] : "[5]"'
+    - '[[1,2,3]] : ["[1]","[2]","[3]"]'
+
+- element: "øḃ"
+  name: Curly Bracketify
+  arity: 1
+  description: Enclose a string in curly brackets
+  overloads:
+    any: '"{"" + a + "}"'
+  vectorise: true
+  tests:
+    - '["xyz"] : "{xyz}"'
+    - '[5] : "{5}"'
+    - '[[1,2,3]] : ["{1}","{2}","{3}"]'
+
+- element: "øḂ"
+  name: Angle Bracketify
+  arity: 1
+  description: Enclose a string in angle brackets
+  overloads:
+    any: '"<"" + a + ">"'
+  vectorise: true
+  tests:
+    - '["xyz"] : "<xyz>"'
+    - '[5] : "<5>"'
+    - '[[1,2,3]] : ["<1>","<2>","<3>"]'
+
+- element: "øβ"
+  name: Balanced Brackets
+  arity: 1
+  description: Check if brackets in a string ("{}()[]<>") are balanced
+  overloads:
+    any: 'balanced_brackets(a)'
+  vectorise: true
+  tests:
+    - '["xyz"] : 1'
+    - '["([)]"] : 0'
+    - '["({<[]>})"] : 1'
+    - '[")("] : 0'
+
+- element: "ø↳"
+  name: Custom Pad Left
+  arity: 3
+  description: Pad a string to the left with a certain character
+  overloads:
+    any-str-num: 'Pad a to the left with c so a has length b'
+    any-num-str: 'Pad a to the left with b so a has length c'
+  vectorise: true
+  tests:
+    - '["xyz","x",4] : "xxyz"'
+    - '["123","&",8] : "&&&&&123"'
+    - '["324"," ",2] : "324"'
+
+- element: "ø↲"
+  name: Custom Pad Right
+  arity: 3
+  description: Pad a string to the right with a certain character
+  overloads:
+    any-str-num: 'Pad a to the right with c so a has length b'
+    any-num-str: 'Pad a to the right with b so a has length c'
+  vectorise: true
+  tests:
+    - '["xyz","x",4] : "xyzx"'
+    - '["123","&",8] : "123&&&&&"'
+    - '["324"," ",2] : "324"'
+  
+- element: "øĿ"
+  arity: 2
+  name: Ring Translate
+  description: Replace each character in a that occurs in b with the character that occurs after it in b
+  overloads: 
+    any-any: In a, replace each character in b with the next character in b
+  vectorise: true
+  tests:
+    - '["aba","ba"] : "bab"'
+    - '["hello", "lo"] : "heool"'
+    - '["hello, world", "aeiou"] : "hillu, wurld"'
+
+- element: "øv"
+  name: Is Vowel
+  description: Check if a character is a vowel (aeiouAEIOU)
+  arity: 1
+  overloads:
+    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+  vectorise: true
+  tests:
+    - '["a"] : 1'
+    - '["y"] : 0'
+    - '["hi"] : [0,1]'
+
+- element: "øċ"
+  name: Is Uppercase
+  description: Check if a character is an uppercase letter
+  arity: 1
+  overloads:
+    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+  vectorise: true
+  tests:
+    - '["A"] : 1'
+    - '["a"] : 0'
+    - '["Hi"] : [1,0]'
+
+- element: "øM"
+  name: Flip Brackets Palindromise
+  description: Palindromise and reverse brackets and slashes, without duplicating center
+  arity: 1
+  overloads: 
+    any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
+  vectorise: true
+  tests:
+    - '["(x"] : "(x)"'
+    - '["{] "] : "{] [}"'
+    - '["/*>X"] : "/*>X<*\"'
+
+- element: "øo"
+  name: Remove Until No change
+  arity: 2
+  description: Remove b from a until a does not change
+  overloads: 
+    str-str: Remove b from a until a does not change
+    str-lst: Remove everything in b (in order) from a until a does not change
+  vectorise: false
+  tests:
+    - '["((()))","()"] : ""'
+    - '["--+--+-",["--","+-"]] : "+"'
+
+- element: "øV"
+  name: Replace Until No Change
+  arity: 3
+  description: Replace b with c in a until a does not change
+  overloads:
+    str-str-str: a.replace_until_no_change(b,c)
+  vectorise: false
+  tests:
+    - '["xyzzzzz","yzz","yyyz"] : "xyyyyyyyyyz"'
+    - '["abb","ab","aa"] : "aaa"'
+
+- element: "øc"
+  name: String Compress
+  arity: 1
+  description: Compress a string of lowercase letters and spaces in base 255
+  overloads:
+    str: base_255_string_compress(a)
+  vectorise: false
+  tests: 
+    - '["hello"] : "«B²z«"'
+    - '["hello world"] : "«⟇÷Ċ$⌈¢2«"'
+
+- element: "øC"
+  name: Number Compress
+  arity: 1
+  description: Compress a positive integer in base 255
+  overloads:
+    num: base_255_number_compress(a)
+  vectorise: false
+  tests:
+    - '[234] : "»⇧»"'
+    - '[27914632409837421] : "»fðǐ4''∞Ẏ»"'
+
+- element: "øĊ"
+  name: Center
+  description: Center a list of strings
+  arity: 1
+  overloads:
+    lst: Center(a) (Pad each item with spaces so all are centered)
+  vectorise: false
+  tests:
+    - '[["ab","cdef"]] : [" ab ","cdef"]'
+    - '[["xyz","a","bcdef"]] : [" xyz ","  a  ","bcdef"]'
+
+- element: "øe"
+  name: Run Length Encoding
+  arity: 1
+  description: Run length encoding, convert from string to list of characters and amount repeated.
+  overloads:
+    str: run_length_encoded(a)
+  vectorise: false
+  tests:
+    - '["abc"] : [["a",1],["b",1],["c",1]]'
+    - '["aaa"] : [["a",3]]'
+
+- element: "ød"
+  name: Run Length Decoding
+  arity: 1
+  description: Run length decoding, convert from list of characters and lengths to a string
+  overloads:
+    lst: run_length_decoded(a)
+  vectorise: false
+  tests:
+    - '[[["x",3]]] : "xxx"'
+    - '[[["z",2],["a",3]]] : "zzaaa"'
+
+- element: "øD"
+  name: Dictionary Compression
+  description: Optimally compress a string of English using words from Vyxal's dictionary
+  arity: 1
+  overloads:
+    str: dictionary_compressed(a)
+  vectorise: false
+  tests:
+    - '["withree"] : "`wi∧ḭ`"'
+    - '["hello"] : "`ƈṙ`"'
+    - '["Vyxal"] : "`₴ŀ`"'
+
+- element: "øW"
+  name: Group on words
+  description: Group a string on words
+  arity: 1
+  overloads: 
+    str: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
+  vectorise: false
+  tests:
+    - '["abc*xyz"] : ["abc","*","xyz"]'
+    - '["$$$"] : ["$","$","$"]'
+
+- element: "øṙ"
+  name: Regex replace
+  description: Replace matches of a with c in b
+  arity: 3
+  overloads:
+    any-any-fun: Apply c to matches of a in b
+    any-any-any: Replace matches of a with c in b
+  vectorise: false
+  tests:
+    - '[".{3}","hello","x"] : "xlo"'
+    - '["\W","Hello, World!","E"] : "HelloEEWorldE"'
+
+- element: "øm"
+  name: Palindromise
+  description: palindromise without duplicating middle
+  arity: 1
+  overloads:
+    any: palindromise(a) (Doesn't duplicate middle)
+  vectorise: false
+  tests: 
+    - '[[1,2,3]] : [1,2,3,2,1]'
+    - '["hello"] : "hellolleh"'
+
+- element: "øp"
+  name: Starts With
+  arity: 2
+  description: Check if one value starts with another
+  overloads:
+    any-any: a.startswith(b) (Starts with b?)
+  vectorise: false
+  tests:
+    - '["hello","h"] : 1'
+    - '["hello","hello"] : 1'
+    - '["hello","x"] : 0'
+    - '["hello",""] : 1'
+
+- element: "øP"
+  name: Pluralise Count
+  description: Create a sentence of the form 'a bs'
+  arity: 2
+  overloads:
+    num-str: a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
+  vectorise: false
+  tests:
+    - '[4,"hello"] : "4 hellos"'
+    - '[1,"hello"] : "1 hello"'
+    - '[0,"hello"] : "0 hellos"'
+
+- element: "øṁ"
+  name: Vertical Mirror
+  description: Vertical Mirror - Split by newlines, mirror each line, join by newlines
+  arity: 1
+  overloads:
+    str: vertical_mirror(a)
+  vectorise: true
+  tests:
+    # TODO: MULTILINE TESTCASSES
+
+- element: "øṀ"
+  name: Flip Brackets Vertical Mirror
+  description: Vertical mirror, and swap brackets and slashes in the second half.
+  arity: 1
+  overloads:
+    any: vertical_mirror(a,mapping  = flip brackets and slashes)
+  vectorise: false
+  tests:
+    - '["[}"] : "[}{]"'
+    - '[")X"] : ")XX("'
+    - '["</tag>"] : "</tag><gat\>"'
+
+- element: "ø¦"
+  name: Vertical Mirror Custom Mapping
+  description: Vertical mirror a, using the mapping defined in b
+  arity: 3
+  overloads:
+    any-any: vertical_mirror(a,mapping=b)
+  vectorise: false
+  tests:
+    # TODO: figure out how this works
