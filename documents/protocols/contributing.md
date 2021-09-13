@@ -55,11 +55,11 @@ Open an issue and tag it `enhancement`. When doing so, make sure you:
 
 ### You have a complaint, and...
 
-#### You're <s>caird</s> Dude, redwolf or N3buchadnezza
+#### You're making an unfunny joke
 
 Place your complaints [here](https://chat.stackexchange.com/rooms/82806/trash).
 
-#### You're a Vyxal regular or someone genuinely interested in Vyxal
+#### You have a genuine thing you want to discuss
 
 Tell us in the Vyxal chatroom, and we'll respond accordingly.
 
