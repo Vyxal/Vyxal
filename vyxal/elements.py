@@ -514,6 +514,9 @@ elements: dict[str, tuple[str, int]] = {
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
     "/": process_element(divide, 2),
+    ":": (
+        "top = pop(stack, 1, ctx); stack.append(top); "
+          "stack.append(deep_copy(top))", 1)
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
         "ctx.use_top_input = False; stack.append(lhs)",
