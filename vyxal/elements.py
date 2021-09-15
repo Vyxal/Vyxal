@@ -119,6 +119,23 @@ def exclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(exclusive_zero_range, lhs, ctx=ctx))()
 
 
+def divide(lhs, rhs, ctx):
+    """Element /
+    (num, num) -> a / b
+    (num, str) -> b split into a even length pieces, possibly with an extra part
+    (str, num) -> a split into b even length pieces, possibly with an extra part
+    (str, str) -> split a on b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
+        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
+        (str, str): lambda: lhs.split(rhs),
+    }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -496,6 +513,7 @@ elements: dict[str, tuple[str, int]] = {
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
+    "/": process_element(divide, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
         "ctx.use_top_input = False; stack.append(lhs)",
