@@ -512,7 +512,6 @@ cmd | inputs | out/effect
 | k× |   |  2147483648 |
 | k⁰ |   |  "bcfghjklmnpqrstvwxyz" |
 | k¹ |   |  "bcfghjklmnpqrstvwxz" |
-| k□ |   |  printable ascii |
 | k• |   |  ["qwertyuiop", "asdfghjkl", "zxcvbnm"] (Qwerty keyboard) |
 | kṠ |   |  current second |
 | kṀ |   |  current minute |
