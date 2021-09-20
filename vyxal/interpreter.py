@@ -459,7 +459,7 @@ ALL flags should be used as is (no '-' prefix)
             vy_print(pop(vy_globals.stack))
 
 
-if __name__ == "__main__":
+def main():
     ### Debugging area
     import sys
 
@@ -592,3 +592,7 @@ if __name__ == "__main__":
                 print("\n".join([vy_str(n) for n in vy_globals.stack]))
             else:
                 vy_print(pop(vy_globals.stack))
+
+
+if __name__ == "__main__":
+    main()
