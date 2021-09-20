@@ -6,6 +6,7 @@ the python equivalent of command is stored
 
 import itertools
 import math
+import random
 import string
 import types
 from typing import Union
@@ -198,6 +199,21 @@ def inclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
 
 
+def infinite_list(ctx):
+    """Element ∞
+    Yields a (lazy)list of positive integers
+    """
+
+    @LazyList
+    def f():
+        n = 1
+        while n:
+            yield n
+            n += 1
+
+    return f()
+
+
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
@@ -268,6 +284,27 @@ def merge(lhs, rhs, ctx):
         (ts[0], list): lambda: [lhs] + rhs,
         (list, list): lambda: lhs + rhs,
     }.get(ts)()
+
+
+def n_choose_r(lhs, rhs, ctx):
+    """Element ƈ
+    (num, num) -> n choose r
+    (num, str) -> [random.choice(b) for _ in range(a)]
+    (str, num) -> [random.choice(a) for _ in range(b)]
+    (str, str) -> does a have the same characters as b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: scipy.special.comb(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: [
+            random.choice(rhs) for _ in range(abs(int(lhs)))
+        ],
+        (str, NUMBER_TYPE): lambda: [
+            random.choice(lhs) for _ in range(abs(int(rhs)))
+        ],
+        (str, str): lambda: int(set(lhs) == set(rhs)),
+    }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
 def prime_factors(lhs, ctx):
@@ -433,9 +470,9 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         }
 
         if explicit:
-            return list(explicit_dict.get(ts)())
+            return LazyList(explicit_dict.get(ts)())
         else:
-            return list(simple.get(ts)())
+            return LazyList(simple.get(ts)())
     else:
         # That is, single argument vectorisation
         if explicit:
@@ -510,6 +547,8 @@ elements: dict[str, tuple[str, int]] = {
     "ʁ": process_element(exclusive_zero_range, 1),
     "ɾ": process_element(inclusive_one_range, 1),
     "ɽ": process_element(exclusive_one_range, 1),
+    "ƈ": process_element(n_choose_r, 2),
+    "∞": process_element("infinite_list(ctx)", 0),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
