@@ -286,6 +286,24 @@ def merge(lhs, rhs, ctx):
     }.get(ts)()
 
 
+def modulo(lhs, rhs, ctx):
+    """Element %
+    (num, num) -> a % b
+    (num, str) -> (b split into a equal pieces)[-1]
+    (str, num) -> (a split into b equal pieces)[-1]
+    (str, str) -> a.format(b)
+    """
+
+    ts = vy_type(lhs, rhs, simple=True)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
+        (NUMBER_TYPE, str): lambda: divide(rhs, lhs, ctx)[-1],
+        (str, NUMBER_TYPE): lambda: divide(lhs, rhs, ctx)[-1],
+        (str, str): lambda: format_string(lhs, [rhs]),
+        (str, list): lambda: format_string(lhs, rhs),
+    }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
+
+
 def n_choose_r(lhs, rhs, ctx):
     """Element ƈ
     (num, num) -> n choose r
@@ -556,6 +574,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(lhs)",
         2,
     ),
+    "%": process_element(modulo, 2),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),

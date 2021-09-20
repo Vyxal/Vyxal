@@ -41,27 +41,6 @@ def deep_copy(value: Any) -> Any:
     return LazyList(itertools.tee(value)[-1])
 
 
-def get_input(ctx: context.Context) -> Any:
-    """Returns the next input depending on where ctx tells to get the
-    input from."""
-
-    if ctx.use_top_input:
-        if ctx.inputs[0][0]:
-            ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
-            ctx.inputs[0][1] += 1
-            return ret
-        else:
-            try:
-                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-                return temp
-            except:
-                return 0
-    else:
-        ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
-        ctx.inputs[-1][1] += 1
-        return ret
-
-
 @lazylist
 def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     """Repeat function until the result is no longer unique.
@@ -74,6 +53,29 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
         yield current
         prevuous = deep_copy(current)
         current = safe_apply(function, current)
+
+
+def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
+    """Returns the pattern formatted with the given data. If the data is
+    a string, then the string is reused if there is more than one % to
+    be formatted. Otherwise (the data is a list), % are cyclically
+    substituted"""
+
+    ret = ""
+    index = 0
+    f_index = 0
+
+    while index < len(pattern):
+        if pattern[index] == "\\":
+            ret += "\\" + pattern[index + 1]
+            index += 1
+        elif pattern[index] == "%":
+            ret += str(data[f_index % len(data)])
+            f_index += 1
+        else:
+            ret += pattern[index]
+        index += 1
+    return ret
 
 
 def from_base_alphabet(value: str, alphabet: str) -> int:
@@ -95,6 +97,27 @@ def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
         ret = base * ret + digit
 
     return ret
+
+
+def get_input(ctx: context.Context) -> Any:
+    """Returns the next input depending on where ctx tells to get the
+    input from."""
+
+    if ctx.use_top_input:
+        if ctx.inputs[0][0]:
+            ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+            ctx.inputs[0][1] += 1
+            return ret
+        else:
+            try:
+                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+                return temp
+            except:
+                return 0
+    else:
+        ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
+        ctx.inputs[-1][1] += 1
+        return ret
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
