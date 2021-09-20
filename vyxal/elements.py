@@ -548,8 +548,14 @@ elements: dict[str, tuple[str, int]] = {
     "ɾ": process_element(inclusive_one_range, 1),
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
-    "!": process_element("len(stack)", 0),
     "∞": process_element("infinite_list(ctx)", 0),
+    "!": process_element("len(stack)", 0),
+    '"': process_element("[lhs, rhs]", 2),
+    "$": (
+        "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
+        "stack.append(lhs)",
+        2,
+    ),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
@@ -564,7 +570,6 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
-    '"': process_element("[lhs, rhs]", 2),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
 }
