@@ -548,6 +548,7 @@ elements: dict[str, tuple[str, int]] = {
     "ɾ": process_element(inclusive_one_range, 1),
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
+    "!": process_element("len(stack)", 0),
     "∞": process_element("infinite_list(ctx)", 0),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
