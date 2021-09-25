@@ -409,7 +409,7 @@
     num-num: a * b
     num-str: b repeated a times
     str-num: a repeated b times
-    str-str: Prepend each char of a to b
+    str-str: ring translate b according to a
   vectorise: true
   tests:
     - "[3,5] : 15"
