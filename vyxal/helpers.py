@@ -231,6 +231,20 @@ def reverse_number(
     return sympy.Rational(item)
 
 
+def ring_translate(map_source: Union[str, list], string: str) -> str:
+    """Ring translates a given string according to the provided mapping
+    - that is, map matching elements to the subsequent element in the
+    translation ring. The ring wraps around."""
+    ret = ""
+    LENGTH = len(map_source)
+    for char in string:
+        if char in map_source:
+            ret += map_source[(map_source.index(char) + 1) % LENGTH]
+        else:
+            ret += char
+    return ret
+
+
 def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.

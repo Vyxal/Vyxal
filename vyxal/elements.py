@@ -304,6 +304,23 @@ def modulo(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
 
 
+def multiply(lhs, rhs, ctx):
+    """Element *
+    (num, num) -> a * b
+    (num, str) -> repeat b a times
+    (str, num) -> repeat a b times
+    (str, str) -> ring translate b according to a
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
+        (NUMBER_TYPE, str): lambda: lhs * rhs,
+        (str, NUMBER_TYPE): lambda: lhs * rhs,
+        (str, str): lambda: ring_translate(lhs, rhs),
+    }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
+
+
 def n_choose_r(lhs, rhs, ctx):
     """Element ƈ
     (num, num) -> n choose r
@@ -575,6 +592,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "%": process_element(modulo, 2),
+    "*": process_element(multiply, 2),
     "+": process_element(add, 2),
     ",": process_element(vy_print, 1),
     "-": process_element(subtract, 2),
