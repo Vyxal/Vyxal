@@ -264,6 +264,10 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
+def less_than(lhs, rhs, ctx):
+    """Element <"""
+
+
 def merge(lhs, rhs, ctx):
     """Element J
     (scl, scl) -> concatenate a and b
