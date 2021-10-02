@@ -160,6 +160,23 @@ def function_call(lhs, ctx):
         }.get(ts)()
 
 
+def greater_than(lhs, rhs, ctx):
+    """Element <
+    (num, num) -> a > b
+    (num, str) -> str(a) > b
+    (str, num) -> a > str(b)
+    (str, str) -> a > b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs > rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) > rhs,
+        (str, NUMBER_TYPE): lambda: lhs > str(rhs),
+        (str, str): lambda: lhs > rhs,
+    }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
+
+
 def halve(lhs, ctx):
     """Element ½
     (num) -> lhs / 2
@@ -265,7 +282,20 @@ def log_mold_multi(lhs, rhs, ctx):
 
 
 def less_than(lhs, rhs, ctx):
-    """Element <"""
+    """Element <
+    (num, num) -> a < b
+    (num, str) -> str(a) < b
+    (str, num) -> a < str(b)
+    (str, str) -> a < b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs < rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) < rhs,
+        (str, NUMBER_TYPE): lambda: lhs < str(rhs),
+        (str, str): lambda: lhs < rhs,
+    }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
 
 
 def merge(lhs, rhs, ctx):
@@ -606,6 +636,8 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(deep_copy(top))",
         1,
     ),
+    "<": process_element(less_than, 2),
+    ">": process_element(greater_than, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
         "ctx.use_top_input = False; stack.append(lhs)",
