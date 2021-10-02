@@ -661,6 +661,9 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
+    "A": process_element("int(any(lhs))", 1),
+    "B": process_element("vy_int(lhs, 2)", 1),
+    "C": process_element("chr_ord(lhs)", 1),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
 }
