@@ -160,6 +160,23 @@ def function_call(lhs, ctx):
         }.get(ts)()
 
 
+def equals(lhs, rhs, ctx):
+    """Element =
+    (num, num) -> lhs == rhs
+    (num, str) -> str(lhs) == rhs
+    (str, num) -> lhs == str(rhs)
+    (str, str) -> lhs == rhs
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs == rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
+        (str, str): lambda: int(lhs == rhs),
+    }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
+
+
 def greater_than(lhs, rhs, ctx):
     """Element <
     (num, num) -> a > b
@@ -637,6 +654,7 @@ elements: dict[str, tuple[str, int]] = {
         1,
     ),
     "<": process_element(less_than, 2),
+    "=": process_element(equals, 2),
     ">": process_element(greater_than, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
