@@ -9,6 +9,7 @@ import textwrap
 import types
 from typing import Any, List, Union
 
+import numpy
 import sympy
 
 from vyxal import context, lexer
@@ -352,6 +353,9 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
             return eval(item)
         except Exception as ex:
             return item
+
+
+
 
 
 def vy_str(item: Any, ctx: context.Context) -> str:

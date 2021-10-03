@@ -11,6 +11,7 @@ import string
 import types
 from typing import Union
 
+import numpy
 import sympy
 
 from vyxal.helpers import *
@@ -61,6 +62,19 @@ def add(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
+
+
+def chr_ord(lhs, ctx):
+    """Element C
+    (num) -> chr(a)
+    (str) -> ord(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: chr(int(lhs)),
+        (str): lambda: list(map(ord, lhs)) if len(lhs) > 1 else ord(lhs),
+    }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
 def combinations_with_replacement(lhs, rhs, ctx):
@@ -575,6 +589,29 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vy_int(item: Any, base: int = 10, ctx: context.Context = None):
+    """Converts the item to the given base. Lists are treated as if
+    each item was a digit."""
+
+    """Used for multiple elements, and has to be here because it uses
+    functions defined only here."""
+    t_item = type(item)
+    if t_item not in [str, float, int, complex]:
+        ret = 0
+        for element in item:
+            ret = multiply(ret, base, ctx)
+            ret = add(ret, element, ctx)
+        return ret
+    elif t_item is str:
+        return int(item, base)
+    elif t_item is complex:
+        return numpy.real(item)
+    elif t_item is float:
+        return int(item)
+    elif t_item:
+        return vy_int(iterable(item), base)
+
+
 def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
@@ -663,7 +700,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "A": process_element("int(any(lhs))", 1),
     "B": process_element("vy_int(lhs, 2)", 1),
-    "C": process_element("chr_ord(lhs)", 1),
+    "C": process_element(chr_ord, 1),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
 }
