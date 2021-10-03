@@ -18,3 +18,6 @@ class Context:
         self.reverse_flag = False
         self.last_popped = []
         self.use_top_input = False
+
+
+DEFAULT_CTX = Context()

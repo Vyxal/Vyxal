@@ -12,7 +12,8 @@ from typing import Any, List, Union
 import numpy
 import sympy
 
-from vyxal import context, lexer
+from vyxal import lexer
+from vyxal.context import Context, DEFAULT_CTX
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -100,7 +101,7 @@ def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
-def get_input(ctx: context.Context) -> Any:
+def get_input(ctx: Context) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
 
@@ -133,15 +134,15 @@ def indent_code(*code, indent: int = 1) -> str:
 
 
 def iterable(
-    item: Any, number_type: Any = None, ctx: context.Context = None
+    item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
 ) -> Union[LazyList, Union[list, str]]:
-    """Makes sure that a value is an iterable"""
-
-    if (type_of_item := type(item)) in [sympy.Rational, int]:
+    """Turn a value into an iterable"""
+    item_type = type(item)
+    if item_type in [sympy.Rational, int]:
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
-            if type_of_item is sympy.Rational:
+            if item_type is sympy.Rational:
                 item = float(item)
 
             return [int(let) if let not in "-." else let for let in str(item)]
@@ -180,9 +181,7 @@ def mold(
     return shape
 
 
-def pop(
-    iterable: Union[list, LazyList], count: int, ctx: context.Context
-) -> List[Any]:
+def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
 
@@ -338,7 +337,7 @@ def uncompress_num(num: str) -> int:
     raise NotImplementedError()
 
 
-def vy_eval(item: str, ctx: context.Context) -> Any:
+def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
 
@@ -355,16 +354,13 @@ def vy_eval(item: str, ctx: context.Context) -> Any:
             return item
 
 
-
-
-
-def vy_str(item: Any, ctx: context.Context) -> str:
+def vy_str(item: Any, ctx: Context) -> str:
     """Convert to string, using custom vyxal formatting"""
     if type(item) is LazyList:
         item = list(item)
 
     if type(item) is list:
-        return "⟨" + "|".join([vy_str(y) for y in x]) + "⟩"
+        return "⟨" + "|".join([vy_str(y) for y in item]) + "⟩"
 
     return str(item)
 

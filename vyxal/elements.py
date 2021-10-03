@@ -14,8 +14,9 @@ from typing import Union
 import numpy
 import sympy
 
+from vyxal.context import Context, DEFAULT_CTX
 from vyxal.helpers import *
-from vyxal.LazyList import LazyList
+from vyxal.LazyList import LazyList, lazylist
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -109,6 +110,23 @@ def complement(lhs, ctx):
     )()
 
 
+def divide(lhs, rhs, ctx):
+    """Element /
+    (num, num) -> a / b
+    (num, str) -> b split into a even length pieces, possibly with an extra part
+    (str, num) -> a split into b even length pieces, possibly with an extra part
+    (str, str) -> split a on b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
+        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
+        (str, str): lambda: lhs.split(rhs),
+    }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
+
+
 def exclusive_one_range(lhs, ctx):
     """Element ɽ
     (num) -> range(1, a)
@@ -134,21 +152,17 @@ def exclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(exclusive_zero_range, lhs, ctx=ctx))()
 
 
-def divide(lhs, rhs, ctx):
-    """Element /
-    (num, num) -> a / b
-    (num, str) -> b split into a even length pieces, possibly with an extra part
-    (str, num) -> a split into b even length pieces, possibly with an extra part
-    (str, str) -> split a on b
+def exp2_or_eval(lhs, ctx):
+    """Element E
+    (num) -> 2 ** a
+    (str) -> eval(a)
     """
+    ts = vy_type(lhs)
 
-    ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(lhs, rhs),
-        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
-        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
-        (str, str): lambda: lhs.split(rhs),
-    }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
+        NUMBER_TYPE: lambda: 2 ** lhs,
+        str: lambda: vy_eval(lhs, ctx),
+    }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
 
 def function_call(lhs, ctx):
@@ -252,7 +266,7 @@ def infinite_list(ctx):
     Yields a (lazy)list of positive integers
     """
 
-    @LazyList
+    @lazylist
     def f():
         n = 1
         while n:
@@ -589,7 +603,29 @@ def vectorised_not(lhs, ctx):
     )()
 
 
-def vy_int(item: Any, base: int = 10, ctx: context.Context = None):
+def vy_filter(lhs: Any, rhs: Any, ctx):
+    """Element F
+    (any, fun) -> Keep elements in a that b is true for
+    (any, any) -> Remove elements of a that are in b
+    """
+    lhs = iterable(lhs, ctx)
+    if vy_type(rhs) == types.FunctionType:
+        return filter(rhs, lhs)
+
+    rhs = iterable(rhs, ctx)
+    if vy_type(lhs) != LazyList and vy_type(rhs) != LazyList:
+        return [elem for elem in lhs if elem not in rhs]
+
+    @lazylist
+    def filtered():
+        for elem in lhs:
+            if elem not in rhs:
+                yield elem
+
+    return filtered()
+
+
+def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
 
@@ -701,6 +737,13 @@ elements: dict[str, tuple[str, int]] = {
     "A": process_element("int(any(lhs))", 1),
     "B": process_element("vy_int(lhs, 2)", 1),
     "C": process_element(chr_ord, 1),
+    "D": (
+        "top = pop(stack, 1, ctx); stack.append(top);"
+        "stack.append(deep_copy(top)); stack.append(deep_copy(top));",
+        1,
+    ),
+    "E": process_element(exp2_or_eval, 1),
+    "F": process_element(vy_filter, 2),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
 }
