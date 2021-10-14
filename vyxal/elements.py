@@ -110,6 +110,19 @@ def complement(lhs, ctx):
     )()
 
 
+def deep_flatten(lhs, ctx):
+    """Element f
+    (any) -> flatten list
+    """
+    ret = []
+    for item in iterable(lhs):
+        if type(item) in (LazyList, list):
+            ret += deep_flatten(item, ctx)
+        else:
+            ret.append(item)
+    return ret
+
+
 def divide(lhs, rhs, ctx):
     """Element /
     (num, num) -> a / b
@@ -381,6 +394,28 @@ def modulo(lhs, rhs, ctx):
         (str, str): lambda: format_string(lhs, [rhs]),
         (str, list): lambda: format_string(lhs, rhs),
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
+
+
+def monadic_maximum(lhs, ctx):
+    """Element G
+    (any) -> returns the maximal element of the input
+    """
+
+    lhs = deep_flatten(lhs, ctx)
+
+    if len(lhs) == 0:
+        return []
+
+    elif len(lhs) == 1:
+        return lhs[0]
+
+    else:
+        biggest = lhs[0]
+        for item in lhs[1:]:
+            if greater_than(item, biggest, ctx):
+                biggest = item
+
+    return item
 
 
 def multiply(lhs, rhs, ctx):
@@ -744,8 +779,10 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "E": process_element(exp2_or_eval, 1),
     "F": process_element(vy_filter, 2),
+    "G": process_element(monadic_maximum, 1),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
+    "f": process_element(deep_flatten, 1),
 }
 modifiers = {
     "v": (
