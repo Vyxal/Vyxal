@@ -781,6 +781,7 @@ elements: dict[str, tuple[str, int]] = {
     "F": process_element(vy_filter, 2),
     "G": process_element(monadic_maximum, 1),
     "H": process_element("vy_int(lhs, 16)", 1),
+    "I": process_element(vy_int, 1),
     "J": process_element(merge, 2),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
