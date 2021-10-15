@@ -148,7 +148,15 @@ def divisors(lhs, ctx):
     """
 
     ts = vy_type(lhs)
-    return {(NUMBER_TYPE): lambda: sympy.divisors(lhs), (str): lambda: filter()}
+    return {
+        (NUMBER_TYPE): lambda: sympy.divisors(lhs),
+        (str): lambda: LazyList(
+            filter(
+                lambda x: len(lhs.split(x)) == 2 and all(lhs.split(x)),
+                substrings(lhs, ctx),
+            )
+        ),
+    }.get(ts, lambda: LazyList((lhs[: x + 1] for x in range(len(x)))))()
 
 
 def exclusive_one_range(lhs, ctx):
@@ -814,8 +822,10 @@ elements: dict[str, tuple[str, int]] = {
     "H": process_element("vy_int(lhs, 16)", 1),
     "I": process_element(vy_int, 1),
     "J": process_element(merge, 2),
+    "K": process_element(divisors, 1),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
+    "ǎ": process_element(substrings, 1),
 }
 modifiers = {
     "v": (
