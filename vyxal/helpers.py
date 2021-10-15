@@ -42,7 +42,6 @@ def deep_copy(value: Any) -> Any:
     # Use itertools.tee for (LazyL|l)ists
     return LazyList(itertools.tee(value)[-1])
 
-
 @lazylist
 def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     """Repeat function until the result is no longer unique.

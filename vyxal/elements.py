@@ -140,6 +140,17 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
+def divisors(lhs, ctx):
+    """Element K
+    (num) -> divisors(a) # Factors or divisors of a
+    (str) -> all substrings of a that occur more than once # they "divide" a into more than one piece
+    (lst) -> prefixes(a) # Prefixes of a
+    """
+
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: sympy.divisors(lhs), (str): lambda: filter()}
+
+
 def exclusive_one_range(lhs, ctx):
     """Element ɽ
     (num) -> range(1, a)
@@ -515,6 +526,26 @@ def split_on(lhs, rhs, ctx):
         if temp:
             ret.append(temp)
         return ret
+
+
+def substrings(lhs, ctx):
+    """Element ǎ
+    (num) -> ath prime
+    (str) -> all substrings of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.ntheory.prime(int(lhs) + 1),
+        str: lambda: LazyList(
+            (
+                lhs[i:j]
+                for i in range(len(lhs) + 1)
+                for j in range(1, len(lhs) + 1)
+                if i < j
+            )
+        ),
+    }.get(ts, lambda: vectorise(substrings, lhs, ctx=ctx))()
 
 
 def subtract(lhs, rhs, ctx):
