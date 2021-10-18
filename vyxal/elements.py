@@ -358,6 +358,17 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
+def length(lhs, ctx):
+    """Element L
+    (any) -> len(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: len(str(lhs)),
+    }.get(ts, lambda: len(lhs))()
+
+
 def less_than(lhs, rhs, ctx):
     """Element <
     (num, num) -> a < b
@@ -822,6 +833,7 @@ elements: dict[str, tuple[str, int]] = {
     "H": process_element("vy_int(lhs, 16)", 1),
     "I": process_element(vy_int, 1),
     "J": process_element(merge, 2),
+    "L": process_element(length, 1),
     "K": process_element(divisors, 1),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
