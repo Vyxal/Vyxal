@@ -486,6 +486,18 @@ def n_choose_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
+def negate(lhs, ctx):
+    """Element N
+    (num) -> -a
+    (str) -> swapcase of a
+    """
+
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
+        ts, lambda: vectorise(negate, lhs, ctx=ctx)
+    )()
+
+
 def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
@@ -843,6 +855,7 @@ elements: dict[str, tuple[str, int]] = {
     "J": process_element(merge, 2),
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
+    "N": process_element(negate, 1),
     "K": process_element(divisors, 1),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
