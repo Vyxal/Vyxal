@@ -210,7 +210,7 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += top(lhs, ctx=ctx)
+        lhs += safe_apply(top, lhs, ctx=ctx)
         return None
     else:
         return {
@@ -693,21 +693,29 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     (any, fun) -> Keep elements in a that b is true for
     (any, any) -> Remove elements of a that are in b
     """
-    lhs = iterable(lhs, ctx)
-    if vy_type(rhs) == types.FunctionType:
-        return filter(rhs, lhs)
 
-    rhs = iterable(rhs, ctx)
-    if vy_type(lhs) != LazyList and vy_type(rhs) != LazyList:
-        return [elem for elem in lhs if elem not in rhs]
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: LazyList(filter(rhs, lhs)),
+        (types.FunctionType, ts[1]): lambda: LazyList(filter(lhs, rhs)),
+    }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
 
-    @lazylist
-    def filtered():
-        for elem in lhs:
-            if elem not in rhs:
-                yield elem
 
-    return filtered()
+def vy_map(lhs, rhs, ctx):
+    """Element M
+    (any, fun) -> apply function b to each element of a
+    (any, any) -> a paired with each item of b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: list(
+            map(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)
+        ),
+        (types.FunctionType, ts[1]): lambda: list(
+            map(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)
+        ),
+    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
 
 
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
@@ -834,6 +842,7 @@ elements: dict[str, tuple[str, int]] = {
     "I": process_element(vy_int, 1),
     "J": process_element(merge, 2),
     "L": process_element(length, 1),
+    "M": process_element(vy_map, 2),
     "K": process_element(divisors, 1),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),

@@ -24,5 +24,6 @@ if __name__ == "__main__":
         # Vyxal REPL ftw
         line = transpile(input(">>> "))
         stack = []
+        # print(line)
         exec(line)
         vy_print(stack, ctx=ctx)

@@ -172,7 +172,7 @@ class LazyList:
                 vy_print(lhs, "", ctx)
                 lhs = next(self)
                 vy_print("|", "", ctx)
-        except:
+        except StopIteration:
             vy_print("⟩", end, ctx)
 
     def reversed(self):
