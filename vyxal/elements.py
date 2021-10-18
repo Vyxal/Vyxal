@@ -708,8 +708,12 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (ts[0], types.FunctionType): lambda: LazyList(filter(rhs, lhs)),
-        (types.FunctionType, ts[1]): lambda: LazyList(filter(lhs, rhs)),
+        (ts[0], types.FunctionType): lambda: LazyList(
+            filter(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)
+        ),
+        (types.FunctionType, ts[1]): lambda: LazyList(
+            filter(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)
+        ),
     }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
 
 
