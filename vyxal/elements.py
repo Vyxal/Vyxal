@@ -16,7 +16,7 @@ import sympy
 
 from vyxal.context import Context, DEFAULT_CTX
 from vyxal.helpers import *
-from vyxal.LazyList import LazyList, lazylist
+from vyxal.LazyList import LazyList, lazylist, vyxalify
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -602,6 +602,28 @@ def split_on(lhs, rhs, ctx):
         return ret
 
 
+def strip(lhs, rhs, ctx):
+    """Element P
+    (any, any) -> a.strip(b)
+    """
+
+    def list_strip(left: List[Any], right: List[Any]) -> List[Any]:
+        """Small helper function that only makes sense here
+        """
+        if (left[:len(right) + 1] == right):
+            left = [len(right) + 1:]
+        
+        # TODO: Implement strip going the other way too
+        
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(str(lhs).strip(str(rhs))),
+        (NUMBER_TYPE, str): lambda: str(lhs).strip(rhs),
+        (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
+        (str, str): lambda: lhs.strip(rhs)
+    }.get(ts, lambda: list_strip(lhs, rhs))()
+    
+
 def substrings(lhs, ctx):
     """Element ǎ
     (num) -> ath prime
@@ -917,6 +939,7 @@ elements: dict[str, tuple[str, int]] = {
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
     "O": process_element(count, 2),
+    "P": process_element(strip, 2),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),

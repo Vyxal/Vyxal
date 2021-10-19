@@ -5,7 +5,6 @@ into isinstance(<itertools object>, types.GeneratorType). Also, maps, ranges
 and other stuff that needs to be lazily evaluated.
 """
 
-import copy
 import types
 from typing import Any, Union
 
