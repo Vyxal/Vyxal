@@ -465,12 +465,21 @@ def multiply(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
-        (NUMBER_TYPE, str): lambda: lhs * rhs,
-        (str, NUMBER_TYPE): lambda: lhs * rhs,
-        (str, str): lambda: ring_translate(lhs, rhs),
-    }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
+
+    if ts[0] is types.FunctionType:
+        lhs.stored_arity = rhs
+        return lhs
+
+    elif ts[1] is types.FunctionType:
+        rhs.stored_arity = lhs
+        return rhs
+    else:
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
+            (NUMBER_TYPE, str): lambda: lhs * rhs,
+            (str, NUMBER_TYPE): lambda: lhs * rhs,
+            (str, str): lambda: ring_translate(lhs, rhs),
+        }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
 
 
 def n_choose_r(lhs, rhs, ctx):
@@ -523,10 +532,10 @@ def orderless_range(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
         (NUMBER_TYPE, str): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
         (ts[0], types.FunctionType): lambda: scanl(
-            multiply(rhs, 2), iterable(lhs)
+            multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
         ),
         (types.FunctionType, ts[1]): lambda: scanl(
-            multiply(lhs, 2), iterable(rhs)
+            multiply(lhs, 2, ctx), iterable(rhs, range, ctx=ctx), ctx=ctx
         ),
         (str, str): lambda: int(re.compile(lhs).search(rhs)),
     }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
@@ -743,10 +752,16 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], types.FunctionType): lambda: LazyList(
-            filter(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)
+            filter(
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
+            )
         ),
         (types.FunctionType, ts[1]): lambda: LazyList(
-            filter(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)
+            filter(
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
+            )
         ),
     }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
 
@@ -760,10 +775,16 @@ def vy_map(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], types.FunctionType): lambda: list(
-            map(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)
+            map(
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
+            )
         ),
         (types.FunctionType, ts[1]): lambda: list(
-            map(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)
+            map(
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
+            )
         ),
     }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
 
@@ -788,7 +809,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     elif t_item is float:
         return int(item)
     elif t_item:
-        return vy_int(iterable(item), base)
+        return vy_int(iterable(item, ctx=ctx), base)
 
 
 def vy_print(lhs, end="\n", ctx=None):

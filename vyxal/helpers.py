@@ -66,6 +66,8 @@ def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
     for item in vector[1:]:
         working = safe_apply(function, working, item, ctx=ctx)
 
+    return working
+
 
 def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
     """Returns the pattern formatted with the given data. If the data is
