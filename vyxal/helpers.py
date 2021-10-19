@@ -57,6 +57,16 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
         current = safe_apply(function, current)
 
 
+def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
+    """Reduce vector by function"""
+    if len(vector) == 0:
+        return 0
+
+    working = vector[0]
+    for item in vector[1:]:
+        working = safe_apply(function, working, item, ctx=ctx)
+
+
 def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
     """Returns the pattern formatted with the given data. If the data is
     a string, then the string is reused if there is more than one % to
@@ -281,6 +291,15 @@ def scalarify(value: Any) -> Union[Any, List[Any]]:
             return value
     else:
         return value
+
+
+@lazylist
+def scanl(
+    function: types.FunctionType, vector: List[Any], ctx: Context
+) -> List[Any]:
+    """Cumulative reduction of vector by function"""
+    for i in range(1, len(vector)):
+        yield foldl(function, vector[:i], ctx=ctx)
 
 
 def to_base_digits(value: int, base: int) -> List[int]:

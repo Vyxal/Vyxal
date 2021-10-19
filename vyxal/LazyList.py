@@ -149,6 +149,10 @@ class LazyList:
             self.__getitem__(position)
         self.generated[position] = value
 
+    def count(self, other):
+        temp = self.listify()
+        return temp.count(other)
+
     def listify(self):
         temp = self.generated + list(self.raw_object)
         self.raw_object = iter(temp[::])

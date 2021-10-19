@@ -110,6 +110,14 @@ def complement(lhs, ctx):
     )()
 
 
+def count(lhs, rhs, ctx):
+    """Element O
+    (any, any) -> returns the number of occurances of b in a
+    """
+
+    return iterable(lhs, ctx=ctx).count(rhs)
+
+
 def deep_flatten(lhs, ctx):
     """Element f
     (any) -> flatten list
@@ -498,6 +506,32 @@ def negate(lhs, ctx):
     )()
 
 
+def orderless_range(lhs, rhs, ctx):
+    """Element r
+    (num, num) -> range(a,b) (Range form a to b)
+    (num, str) -> append 0s to b to make it length a
+    (str, num) -> preprend 0s to a to make it length b
+    (any, fun) -> cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
+    (str, str) -> regex.has_match(pattern=a,string= b) ( Does b match a)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(
+            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+        ),
+        (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
+        (NUMBER_TYPE, str): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
+        (ts[0], types.FunctionType): lambda: scanl(
+            multiply(rhs, 2), iterable(lhs)
+        ),
+        (types.FunctionType, ts[1]): lambda: scanl(
+            multiply(lhs, 2), iterable(rhs)
+        ),
+        (str, str): lambda: int(re.compile(lhs).search(rhs)),
+    }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
+
+
 def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
@@ -860,9 +894,11 @@ elements: dict[str, tuple[str, int]] = {
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
+    "O": process_element(count, 2),
     "K": process_element(divisors, 1),
     "V": process_element(replace, 3),
     "f": process_element(deep_flatten, 1),
+    "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
 }
 modifiers = {
