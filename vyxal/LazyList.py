@@ -8,12 +8,17 @@ and other stuff that needs to be lazily evaluated.
 import types
 from typing import Any, Union
 
+import sympy
 from sympy import Rational
 
 
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
-    if (
+
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+
+    elif (
         isinstance(value, int)
         or isinstance(value, Rational)
         or isinstance(value, str)

@@ -14,7 +14,7 @@ from typing import Union
 import numpy
 import sympy
 
-from vyxal.context import Context, DEFAULT_CTX
+from vyxal.context import DEFAULT_CTX, Context
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist, vyxalify
 
@@ -141,7 +141,7 @@ def divide(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(lhs, rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(sympy.Rational(lhs, rhs)),
         (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
         (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
         (str, str): lambda: lhs.split(rhs),
@@ -679,6 +679,22 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+def truthy_indicies(lhs, ctx):
+    """Element T
+    (any) -> indicies of truthy elements
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+
+    @lazylist
+    def helper():
+        for i in range(len(lhs)):
+            if lhs[i]:
+                yield i
+
+    return helper()
+
+
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     """
     Maps a function over arguments
@@ -908,7 +924,7 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(eval(str(lhs))),
+        (NUMBER_TYPE): lambda: str(lhs),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`"
         # actually make the repr kinda make sense
     }.get(
@@ -1025,6 +1041,8 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
         2,
     ),
+    "S": process_element(vy_str, 1),
+    "T": process_element(truthy_indicies, 1),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
     "f": process_element(deep_flatten, 1),

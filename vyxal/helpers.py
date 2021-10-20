@@ -13,7 +13,7 @@ import numpy
 import sympy
 
 from vyxal import lexer
-from vyxal.context import Context, DEFAULT_CTX
+from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -365,7 +365,8 @@ def vy_eval(item: str, ctx: Context) -> Any:
     if ctx.online:
         try:
             t = ast.literal_eval(item)
-            if type(t) is float: t = sympy.Rational(str(t))
+            if type(t) is float:
+                t = sympy.Rational(str(t))
             return t
         except Exception as ex:
             # TODO: eval as vyxal
@@ -373,7 +374,8 @@ def vy_eval(item: str, ctx: Context) -> Any:
     else:
         try:
             t = eval(item)
-            if type(t) is float: t = sympy.Rational(str(t))
+            if type(t) is float:
+                t = sympy.Rational(str(t))
             return t
         except Exception as ex:
             return item
