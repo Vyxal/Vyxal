@@ -892,6 +892,19 @@ def vy_print(lhs, end="\n", ctx=None):
             print(lhs, end=end)
 
 
+def vy_reduce(lhs, rhs, ctx):
+    """Element R
+    (any, fun) -> Reduce a by function b
+    (fun, any) -> Reduce b by function a
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: foldl(rhs, lhs, ctx),
+        (types.FunctionType, ts[1]): lambda: foldl(lhs, rhs, ctx),
+    }.get(ts)()
+
+
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
@@ -1003,6 +1016,15 @@ elements: dict[str, tuple[str, int]] = {
     "O": process_element(count, 2),
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
+    "R": (
+        "if len(stack) > 1 and types.FunctionType "
+        "in vy_type(stack[-1], stack[-2]):\n"
+        "    rhs, lhs = pop(stack, 2, ctx);"
+        "    stack.append(vy_reduce(lhs, rhs, ctx))\n"
+        "else:\n"
+        "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
+        2,
+    ),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
     "f": process_element(deep_flatten, 1),
