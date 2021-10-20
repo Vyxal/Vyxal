@@ -695,6 +695,22 @@ def truthy_indicies(lhs, ctx):
     return helper()
 
 
+def uniquify(lhs, ctx):
+    """Element U
+    (any) -> only unique items of a
+    """
+
+    @lazylist
+    def f():
+        seen = []
+        for item in lhs:
+            if item not in seen:
+                yield item
+                seen.append(item)
+
+    return f()
+
+
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     """
     Maps a function over arguments
@@ -1043,6 +1059,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "S": process_element(vy_str, 1),
     "T": process_element(truthy_indicies, 1),
+    "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
     "f": process_element(deep_flatten, 1),
