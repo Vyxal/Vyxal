@@ -55,7 +55,6 @@ def simplify(value: Any) -> Union[int, float, str, list]:
         return float(value)
 
     else:
-        print(value)
         return list(map(simplify, value))
 
 
@@ -153,13 +152,13 @@ class LazyList:
         return temp.count(other)
 
     def listify(self):
-        temp = self.generated + list(self.raw_object)
+        temp = self.generated + simplify(self.raw_object)
         self.raw_object = iter(temp[::])
         self.generated = []
         return temp
 
     def output(self, end="\n", ctx=None):
-        from vyxal.elements import vy_print
+        from vyxal.elements import vy_print, vy_repr
 
         vy_print("⟨", "", ctx)
         for lhs in self.generated[:-1]:
@@ -172,7 +171,7 @@ class LazyList:
             if len(self.generated) > 1:
                 vy_print("|", "", ctx)
             while True:
-                vy_print(lhs, "", ctx)
+                vy_print(vy_repr(lhs, ctx), "", ctx)
                 lhs = next(self)
                 vy_print("|", "", ctx)
         except StopIteration:

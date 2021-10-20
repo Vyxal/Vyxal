@@ -364,26 +364,19 @@ def vy_eval(item: str, ctx: Context) -> Any:
 
     if ctx.online:
         try:
-            return ast.literal_eval(item)
+            t = ast.literal_eval(item)
+            if type(t) is float: t = sympy.Rational(str(t))
+            return t
         except Exception as ex:
             # TODO: eval as vyxal
             return item
     else:
         try:
-            return eval(item)
+            t = eval(item)
+            if type(t) is float: t = sympy.Rational(str(t))
+            return t
         except Exception as ex:
             return item
-
-
-def vy_str(item: Any, ctx: Context) -> str:
-    """Convert to string, using custom vyxal formatting"""
-    if type(item) is LazyList:
-        item = list(item)
-
-    if type(item) is list:
-        return "⟨" + "|".join([vy_str(y) for y in item]) + "⟩"
-
-    return str(item)
 
 
 def vy_zip(*items) -> list:

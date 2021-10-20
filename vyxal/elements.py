@@ -38,7 +38,7 @@ def process_element(
         arguments = "_"
 
     if isinstance(expr, types.FunctionType):
-        pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx)"
+        pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
         pushed = expr
     py_code = (
@@ -371,10 +371,7 @@ def length(lhs, ctx):
     (any) -> len(a)
     """
 
-    ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: len(str(lhs)),
-    }.get(ts, lambda: len(lhs))()
+    return len(iterable(lhs, ctx=ctx))
 
 
 def less_than(lhs, rhs, ctx):
@@ -607,22 +604,43 @@ def strip(lhs, rhs, ctx):
     (any, any) -> a.strip(b)
     """
 
-    def list_strip(left: List[Any], right: List[Any]) -> List[Any]:
-        """Small helper function that only makes sense here
-        """
-        if (left[:len(right) + 1] == right):
-            left = [len(right) + 1:]
-        
-        # TODO: Implement strip going the other way too
-        
+    def list_helper(left, right):
+        """This doesn't make sense anywhere but here"""
+
+        if vy_type(left) is LazyList:
+            left = left.listify()
+        if vy_type(right) is LazyList:
+            right = right.listify()
+        if len(left) == 0:
+            return []  # how you gonna strip from nothing
+
+        # Strip from the right side first
+        # check to make sure there's stuff to strip
+
+        if len(left) < len(right):
+            # left is smaller than right
+            # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
+            if left in (right[: len(left)], right[: len(left) : -1]):
+                return []
+
+        if left[-len(right) :] == right[::-1]:
+            del left[-len(right) :]
+
+        if left[: len(right)] == right:
+            del left[: len(right)]
+
+        return left
+
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(str(lhs).strip(str(rhs))),
-        (NUMBER_TYPE, str): lambda: str(lhs).strip(rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs).strip(vy_str(rhs))
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs)),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
-        (str, str): lambda: lhs.strip(rhs)
-    }.get(ts, lambda: list_strip(lhs, rhs))()
-    
+        (str, str): lambda: lhs.strip(rhs),
+    }.get(ts, lambda: list_helper(lhs, rhs))()
+
 
 def substrings(lhs, ctx):
     """Element ǎ
@@ -834,6 +852,27 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         return vy_int(iterable(item, ctx=ctx), base)
 
 
+def vy_str(lhs, ctx=None):
+    """Element S
+    (any) -> str(s)
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: str(eval(str(lhs))),
+        (str): lambda: lhs,  # wow so complex and hard to understand /s
+    }.get(
+        ts,
+        lambda: "⟨"
+        + "|".join(
+            map(
+                lambda x: vy_repr(x, ctx),
+                lhs,
+            )
+        )
+        + "⟩",
+    )()
+
+
 def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
@@ -848,16 +887,39 @@ def vy_print(lhs, end="\n", ctx=None):
         LazyList(lhs).output(end, ctx)
     else:
         if ctx.online:
-            ctx.online_output += str(lhs)
-            # TODO: use custom string func
+            ctx.online_output += vy_str(lhs)
         else:
             print(lhs, end=end)
+
+
+def vy_repr(lhs, ctx):
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: str(eval(str(lhs))),
+        (str): lambda: "`" + lhs.replace("`", "\\`") + "`"
+        # actually make the repr kinda make sense
+    }.get(
+        ts,
+        lambda: "⟨"
+        + "|".join(
+            map(
+                lambda x: vy_repr(x, ctx),
+                lhs,
+            )
+        )
+        + "⟩",
+    )()
 
 
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
-    if (x := type(item)) in (int, sympy.Rational, complex):
+    if (x := type(item)) in (
+        int,
+        sympy.Rational,
+        complex,
+        sympy.core.numbers.Half,
+    ):
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
         return list
@@ -940,7 +1002,9 @@ elements: dict[str, tuple[str, int]] = {
     "N": process_element(negate, 1),
     "O": process_element(count, 2),
     "P": process_element(strip, 2),
+    "Q": process_element("exit()", 0),
     "V": process_element(replace, 3),
+    "W": ("stack = [stack]", 0),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
