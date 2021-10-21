@@ -17,6 +17,7 @@ class Context:
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
+        self.stack = []
         self.last_popped = []
         self.use_top_input = False
 

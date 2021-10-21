@@ -317,16 +317,16 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             return indent_str("break", indent)
         elif struct.parent_structure == structure.FunctionDef:
             return (
-                indent_str("ctx.inputs.pop()", indent + 1)
-                + indent_str("ctx.context_values.pop()", indent + 1)
+                indent_str("ctx.inputs.pop()", indent)
+                + indent_str("ctx.context_values.pop()", indent)
                 + indent_str("return stack", indent)
             )
         elif struct.parent_structure == structure.Lambda:
-            (
-                indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent + 1)
-                + indent_str("ctx.context_values.pop()", indent + 1)
-                + indent_str("ctx.inputs.pop()", indent + 1)
-                + indent_str("return ret", indent + 1)
+            return (
+                indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent)
+                + indent_str("ctx.context_values.pop()", indent)
+                + indent_str("ctx.inputs.pop()", indent)
+                + indent_str("return ret", indent)
             )
         else:
             return indent_str("pass", indent)

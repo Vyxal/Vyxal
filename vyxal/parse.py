@@ -98,7 +98,6 @@ def parse(
         if head.name == lexer.TokenType.STRING:
             structures.append(structure.GenericStatement([head]))
         elif head.value == BREAK_CHARACTER:
-            print(parent)
             structures.append(structure.BreakStatement(parent))
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))

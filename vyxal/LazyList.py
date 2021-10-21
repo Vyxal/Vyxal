@@ -176,7 +176,10 @@ class LazyList:
             if len(self.generated) > 1:
                 vy_print("|", "", ctx)
             while True:
-                vy_print(vy_repr(lhs, ctx), "", ctx)
+                if type(lhs) is types.FunctionType:
+                    vy_print(lhs, "", ctx)
+                else:
+                    vy_print(vy_repr(lhs, ctx), "", ctx)
                 lhs = next(self)
                 vy_print("|", "", ctx)
         except StopIteration:
