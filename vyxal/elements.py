@@ -1062,6 +1062,7 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
+    "X": (),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
