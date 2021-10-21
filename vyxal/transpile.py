@@ -78,7 +78,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.VARIABLE_GET:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
-        return indent_str(f"VAR_{token.value} = pop(stack, ctx=ctx)", indent)
+        return indent_str(f"VAR_{token.value} = pop(stack, 1 ctx=ctx)", indent)
     raise ValueError(f"Bad token: {token}")
 
 
@@ -104,7 +104,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 res += indent_str("ctx.context_values.pop()", new_indent)
                 res += transpile_ast(cond, new_indent)
 
-            res += indent_str("condition = pop(stack, ctx=ctx)", new_indent)
+            res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
             res += indent_str(
                 "ctx.context_values.append(condition)", new_indent
             )
@@ -128,14 +128,17 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         )
         var = f"VAR_{var}"
         return (
-            indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)
+            indent_str(
+                f"for {var} in iterable(pop(stack, 1, ctx=ctx), range, ctx):",
+                indent,
+            )
             + indent_str(f"    ctx.context_values.append({var})", indent)
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, structure.WhileLoop):
         return (
-            indent_str("condition = pop(stack, ctx=ctx)", indent)
+            indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
             + indent_str("while boolify(condition):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + transpile_ast(struct.body, indent + 1)
@@ -303,5 +306,43 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 elements.modifiers.get(struct.modifier, "pass"), indent
             )
         )
+
+    if isinstance(struct, structure.BreakStatement):
+        if struct.parent_structure == structure.IfStatement:
+            return indent_str("pass", indent)
+        elif (
+            struct.parent_structure == structure.ForLoop
+            or struct.parent_structure == structure.WhileLoop
+        ):
+            return indent_str("break", indent)
+        elif struct.parent_structure == structure.FunctionDef:
+            return (
+                indent_str("ctx.inputs.pop()", indent + 1)
+                + indent_str("ctx.context_values.pop()", indent + 1)
+                + indent_str("return stack", indent)
+            )
+        elif struct.parent_structure == structure.Lambda:
+            (
+                indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent + 1)
+                + indent_str("ctx.context_values.pop()", indent + 1)
+                + indent_str("ctx.inputs.pop()", indent + 1)
+                + indent_str("return ret", indent + 1)
+            )
+        else:
+            return indent_str("pass", indent)
+    if isinstance(struct, structure.RecurseStatement):
+        if struct.parent_structure == structure.IfStatement:
+            return indent_str("pass", indent)
+        elif (
+            struct.parent_structure == structure.ForLoop
+            or struct.parent_structure == structure.WhileLoop
+        ):
+            return indent_str("continue", indent)
+        elif struct.parent_structure == structure.FunctionDef:
+            return indent_str("stack.append(this(stack, ctx=ctx))", indent)
+        elif struct.parent_structure == structure.Lambda:
+            return indent_str("stack.append(this(stack, ctx=ctx))", indent)
+        else:
+            return indent_str("vy_print(stack, ctx=ctx)", indent)
 
     assert False

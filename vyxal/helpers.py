@@ -19,7 +19,6 @@ from vyxal.LazyList import *
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
-
 def case_of(value: str) -> int:
     """Returns 1 for all uppercase, 0 for all lowercase, and -1 for
     mixed case."""

@@ -6,6 +6,8 @@ offline.
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.transpile import transpile
+from vyxal.parse import *
+from vyxal import lexer
 
 if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I

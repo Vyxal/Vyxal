@@ -1,6 +1,7 @@
 """This is for context-related stuff."""
 
 
+
 class Context:
     """Context objects hold flags and semi-global variables to pass around."""
 

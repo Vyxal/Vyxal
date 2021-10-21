@@ -65,6 +65,14 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+def boolify(lhs, ctx):
+    """Element ḃ
+    (any) -> is truthy?
+    """
+
+    return int(bool(lhs))
+
+
 def chr_ord(lhs, ctx):
     """Element C
     (num) -> chr(a)
@@ -949,7 +957,7 @@ def vy_repr(lhs, ctx):
         + "|".join(
             map(
                 lambda x: vy_repr(x, ctx),
-                lhs,
+                lhs or [],
             )
         )
         + "⟩",
@@ -1011,7 +1019,7 @@ elements: dict[str, tuple[str, int]] = {
     "%": process_element(modulo, 2),
     "*": process_element(multiply, 2),
     "+": process_element(add, 2),
-    ",": process_element(vy_print, 1),
+    ",": ("top = pop(stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
     "-": process_element(subtract, 2),
     "/": process_element(divide, 2),
     ":": (
@@ -1062,7 +1070,6 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
-    "X": (),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
