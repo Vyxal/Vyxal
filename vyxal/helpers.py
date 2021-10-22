@@ -213,7 +213,6 @@ def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
 
     if count == 1:
         return popped_items[0]
-
     return popped_items
 
 
@@ -268,13 +267,13 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args), len(args), function, ctx)
+        ret = function(list(args), function, len(args), ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args), len(args), ctx)[-1]
+        ret = function(list(args), function, ctx)[-1]
         if len(ret):
             return ret[-1]
         else:
@@ -418,3 +417,11 @@ def wrap(vector: Union[str, list], width: int) -> List[Any]:
             ret.append(temp[::])
 
     return ret
+
+
+def wrapify(item: Any) -> List[Any]:
+    """Leaves lists as lists, wraps scalars into a list"""
+    if primitive_type(item) == SCALAR_TYPE:
+        return [item]
+    else:
+        return item

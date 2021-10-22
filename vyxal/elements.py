@@ -225,10 +225,7 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        temp = safe_apply(top, *lhs, ctx=ctx)
-        if primitive_type(temp) == SCALAR_TYPE:
-            temp = [temp]
-        lhs += temp
+        lhs += wrapify(top(lhs, top, ctx=ctx))
         return None
     else:
         return {

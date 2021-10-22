@@ -29,6 +29,6 @@ if __name__ == "__main__":
         ctx.stack = stack  # Finally, a use case for assignment by
         # reference. Never thought I'd fine a time
         # when it wouldn't be an actual pain.
-        # print(line)
+        print(line)
         exec(line)
         vy_print(stack, ctx=ctx)

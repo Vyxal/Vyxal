@@ -58,7 +58,7 @@ def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
         if parameter.isnumeric() or parameter == "*":
             parameters.append(parameter)
         else:
-            parameters.append(re.sub(r"[A-z_]", "", parameter))
+            parameters.append(re.sub(r"[^A-z_]", "", parameter))
 
     return name, parameters
 
