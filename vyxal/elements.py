@@ -222,11 +222,13 @@ def function_call(lhs, ctx):
     """
 
     # Modifies lhs, because lhs = stack
-
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += safe_apply(top, lhs, ctx=ctx)
+        temp = safe_apply(top, *lhs, ctx=ctx)
+        if primitive_type(temp) == SCALAR_TYPE:
+            temp = [temp]
+        lhs += temp
         return None
     else:
         return {

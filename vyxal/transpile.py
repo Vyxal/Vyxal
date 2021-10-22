@@ -218,7 +218,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str(
-                f"elif {struct.branches[0]} == 1:"
+                f"elif {struct.branches[0]} == 1: "
                 + "stack = [pop(parameters, 1, ctx)]",
                 indent + 1,
             )
@@ -227,7 +227,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 + ", ctx)",
                 indent + 1,
             )
-            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
+            + indent_str(
+                "ctx.context_values.append(stack[::])",
+                indent + 1,
+            )
             + indent_str(
                 "ctx.inputs.append([stack[::], 0])",
                 indent + 1,

@@ -19,6 +19,7 @@ from vyxal.LazyList import *
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
+
 def case_of(value: str) -> int:
     """Returns 1 for all uppercase, 0 for all lowercase, and -1 for
     mixed case."""
@@ -118,7 +119,7 @@ def get_input(ctx: Context) -> Any:
 
     if ctx.use_top_input:
         if ctx.inputs[0][0]:
-            ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+            ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0])]
             ctx.inputs[0][1] += 1
             return ret
         else:
@@ -128,7 +129,7 @@ def get_input(ctx: Context) -> Any:
             except:
                 return 0
     else:
-        ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
+        ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
         ctx.inputs[-1][1] += 1
         return ret
 
@@ -201,9 +202,7 @@ def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
         if iterable:
             popped_items.append(iterable.pop())
         else:
-            ctx.use_top_input = True
             popped_items.append(get_input(ctx))
-            ctx.use_top_input = False
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
@@ -275,7 +274,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args), ctx)[-1]
+        ret = function(list(args), len(args), ctx)[-1]
         if len(ret):
             return ret[-1]
         else:
