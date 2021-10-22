@@ -929,7 +929,7 @@ def vy_print(lhs, end="\n", ctx=None, stack=None):
     elif ts is list:
         LazyList(lhs).output(end, ctx)
     elif ts is types.FunctionType:
-        vy_print(safe_apply(lhs, *(stack or []), ctx=ctx), ctx=ctx, stack=stack)
+        vy_print("No.")
     else:
         if ctx.online:
             ctx.online_output += vy_str(lhs)
