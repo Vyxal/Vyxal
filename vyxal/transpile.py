@@ -184,11 +184,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str(
                 "ctx.context_values.append(parameters[::])", indent + 1
             )
+            + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
             + indent_str(f"this = FN_{struct.name}", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
+            + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
         )
     if isinstance(struct, structure.Lambda):
@@ -220,15 +222,19 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
-            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
+            + indent_str(
+                "ctx.context_values.append(stack[::])", indent + 1
+            )
             + indent_str(
                 "ctx.inputs.append([stack[::], 0]);",
                 indent + 1,
             )
+            + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
             + indent_str("res = wrapify(pop(stack, 1, ctx))", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
+            + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )

@@ -129,9 +129,12 @@ def get_input(ctx: Context) -> Any:
             except:
                 return 0
     else:
-        ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
-        ctx.inputs[-1][1] += 1
-        return ret
+        if ctx.inputs[-1][0]:
+            ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
+            ctx.inputs[-1][1] += 1
+            return ret
+        else:
+            return 0
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:

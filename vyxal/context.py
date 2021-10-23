@@ -1,7 +1,6 @@
 """This is for context-related stuff."""
 
 
-
 class Context:
     """Context objects hold flags and semi-global variables to pass around."""
 
@@ -21,7 +20,7 @@ class Context:
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
-        self.stack = []
+        self.stacks = []
         self.last_popped = []
         self.use_top_input = False
 

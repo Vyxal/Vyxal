@@ -3,6 +3,8 @@ offline.
 
 """
 
+import types
+
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.transpile import transpile
@@ -26,9 +28,20 @@ if __name__ == "__main__":
         # Vyxal REPL ftw
         line = transpile(input(">>> "))
         stack = []
-        ctx.stack = stack  # Finally, a use case for assignment by
+        ctx.stacks.append(stack)  # Finally, a use case for assignment by
         # reference. Never thought I'd fine a time
         # when it wouldn't be an actual pain.
         print(line)
         exec(line)
-        vy_print(stack, ctx=ctx)
+
+        res = []
+        while len(stack):
+            top = stack.pop()
+            if isinstance(top, types.FunctionType):
+                res.append(top(stack, top, ctx=ctx)[-1])
+            else:
+                res.append(top)
+        res = res[::-1]
+
+        vy_print(res, ctx=ctx)
+        ctx.stacks.pop()

@@ -900,7 +900,7 @@ def vy_str(lhs, ctx=None):
         (NUMBER_TYPE): lambda: str(eval(str(lhs))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
-            safe_apply(lhs, *ctx.stack, ctx=ctx), ctx
+            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
         ),
     }.get(
         ts,
@@ -915,7 +915,7 @@ def vy_str(lhs, ctx=None):
     )()
 
 
-def vy_print(lhs, end="\n", ctx=None, stack=None):
+def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
     """
@@ -928,10 +928,11 @@ def vy_print(lhs, end="\n", ctx=None, stack=None):
     elif ts is list:
         LazyList(lhs).output(end, ctx)
     elif ts is types.FunctionType:
-        vy_print("No.")
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
+        vy_print(res, ctx=ctx)
     else:
         if ctx.online:
-            ctx.online_output += vy_str(lhs)
+            ctx.online_output += vy_str(lhs, ctx=ctx)
         else:
             print(lhs, end=end)
 
@@ -955,7 +956,7 @@ def vy_repr(lhs, ctx):
         (NUMBER_TYPE): lambda: str(lhs),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
-            safe_apply(lhs, *ctx.stack, ctx=ctx), ctx
+            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
         )
         # actually make the repr kinda make sense
     }.get(

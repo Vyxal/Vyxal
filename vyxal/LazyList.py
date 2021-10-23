@@ -165,6 +165,8 @@ class LazyList:
     def output(self, end="\n", ctx=None):
         from vyxal.elements import vy_print, vy_repr
 
+        ctx.stacks.append(self.generated)
+        stacks_index = len(ctx.stacks) - 1
         vy_print("⟨", "", ctx)
         for lhs in self.generated[:-1]:
             vy_print(lhs, "|", ctx)
