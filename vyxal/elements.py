@@ -1011,6 +1011,46 @@ def vy_type(item, other=None, simple=False):
         return x
 
 
+def vy_zip(lhs, rhs, ctx):
+    if isinstance(lhs, types.FunctionType):
+        return vy_zip(
+            rhs,
+            LazyList(map(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)),
+            ctx=ctx,
+        )
+    elif isinstance(rhs, types.FunctionType):
+        return vy_zip(
+            lhs,
+            LazyList(map(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)),
+            ctx=ctx,
+        )
+    else:
+
+        @lazylist
+        def f():
+            left = iter(iterable(lhs))
+            right = iter(iterable(rhs))
+            while True:
+                exhausted = 0
+                try:
+                    left_item = next(left)
+                except StopIteration:
+                    left_item = 0
+                    exhausted += 1
+
+                try:
+                    right_item = next(right)
+                except StopIteration:
+                    right_item = 0
+                    exhausted += 1
+                if exhausted == 2:
+                    break
+                else:
+                    yield [left_item, right_item]
+
+        return f()
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
     "∧": process_element("lhs and rhs", 2),
@@ -1103,6 +1143,7 @@ elements: dict[str, tuple[str, int]] = {
     "W": ("stack = [stack]", 0),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
+    "Z": process_element(vy_zip, 2),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),

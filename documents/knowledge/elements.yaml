@@ -904,10 +904,11 @@
 
 - element: "Z"
   name: Zip
-  description: Zip two lists
+  description: Zip two lists or Zip a with b mapped over a
   arity: 2
   overloads:
     any-any: zip(a,b)
+    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
   vectorise: false
   tests:
     - "[[1,2],[3,4]] : [[1,3],[2,4]]"
@@ -1228,11 +1229,10 @@
     - "[[1,2,3,4]] : [2,4]"
 
 - element: "z"
-  name: Zipmap
-  description: Zip a with b mapped over a, or zip b with itself
+  name: Zip-self
+  description: Zip a with itself
   arity: 2
   overloads:
-    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
     any-any: a, zip(b,b)
   vectorise: false
   tests:
