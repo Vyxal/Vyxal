@@ -338,6 +338,29 @@ def infinite_replace(lhs, rhs, other, ctx):
     return lhs
 
 
+def interleave(lhs, rhs, ctx):
+    """Element Y
+    (any, any) -> interleave a and b
+    """
+    # Essentially, Zf but whatever
+
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = iterable(rhs, ctx=ctx)
+
+    @lazylist
+    def f():
+        for i in range(max(len(lhs), len(rhs))):
+            if i < len(lhs):
+                yield lhs[i]
+            if i < len(rhs):
+                yield rhs[i]
+
+    if type(lhs) == type(rhs) == str:
+        return "".join(f())
+    else:
+        return f()
+
+
 def is_prime(lhs, ctx):
     """Element æ
     (num) -> is a prime?
@@ -1078,6 +1101,8 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": ("stack = [stack]", 0),
+    # X doesn't need to be implemented here, because it's already a structure
+    "Y": process_element(interleave, 2),
     "f": process_element(deep_flatten, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
