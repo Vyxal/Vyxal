@@ -78,7 +78,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.VARIABLE_GET:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
-        return indent_str(f"VAR_{token.value} = pop(stack, 1 ctx=ctx)", indent)
+        return indent_str(f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent)
     raise ValueError(f"Bad token: {token}")
 
 
@@ -222,9 +222,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
-            + indent_str(
-                "ctx.context_values.append(stack[::])", indent + 1
-            )
+            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
             + indent_str(
                 "ctx.inputs.append([stack[::], 0]);",
                 indent + 1,
