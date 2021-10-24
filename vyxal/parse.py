@@ -37,6 +37,9 @@ TRIADIC_MODIFIERS = list("≬")
 # The modifiers are stored as lists to allow for potential digraph
 # modifiers.
 
+BREAK_CHARACTER = "X"
+RECURSE_CHARACTER = "x"
+
 
 def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
     """Handles the tokens from the first branch of a function defintion structure
@@ -55,7 +58,7 @@ def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
         if parameter.isnumeric() or parameter == "*":
             parameters.append(parameter)
         else:
-            parameters.append(re.sub(r"[A-z_]", "", parameter))
+            parameters.append(re.sub(r"[^A-z_]", "", parameter))
 
     return name, parameters
 
@@ -77,7 +80,9 @@ def variable_name(tokens: list[lexer.Token]) -> str:
     return return_name
 
 
-def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
+def parse(
+    token_list: Iterable[lexer.Token], parent: structure.Structure = None
+) -> list[structure.Structure]:
     """Main parse function: transforms a list of Tokens into a list of Structures."""
     structures = []
     bracket_stack = []  # all currently open structures
@@ -92,6 +97,10 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
         head = tokens.popleft()
         if head.name == lexer.TokenType.STRING:
             structures.append(structure.GenericStatement([head]))
+        elif head.value == BREAK_CHARACTER:
+            structures.append(structure.BreakStatement(parent))
+        elif head.value == RECURSE_CHARACTER:
+            structures.append(structure.RecurseStatement(parent))
         elif head.value in OPENING_CHARACTERS:
             structure_cls, end_bracket = STRUCTURE_INFORMATION[head.value]
             bracket_stack.append(end_bracket)
@@ -122,23 +131,25 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                     var_names = [
                         variable_name(branch) for branch in branches[:-1]
                     ]
-                body = parse(branches[-1])
+                body = parse(branches[-1], structure_cls)
                 structures.append(structure.ForLoop(var_names, body))
             elif structure_cls == structure.WhileLoop:
                 if len(branches) == 1:
                     # If there's no condition, it's an infinite loop
                     condition = [lexer.Token(lexer.TokenType.NUMBER, "1")]
                 else:
-                    condition = parse(branches[0])
+                    condition = parse(branches[0], structure_cls)
                 structures.append(
-                    structure.WhileLoop(condition, parse(branches[-1]))
+                    structure.WhileLoop(
+                        condition, parse(branches[-1], structure_cls)
+                    )
                 )
 
             elif structure_cls == structure.FunctionCall:
                 name, parameters = process_parameters(branches[0])
                 if len(branches) > 1:
                     # It's got a body, so it's a function definition
-                    body = parse(branches[-1])
+                    body = parse(branches[-1], structure_cls)
                     structures.append(
                         structure.FunctionDef(name, parameters, body)
                     )
@@ -165,10 +176,14 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                         ) from ve
                     if arity < 0:
                         raise ValueError("Arity must be non-negative")
-                structures.append(structure.Lambda(arity, parse(branches[-1])))
+                structures.append(
+                    structure.Lambda(arity, parse(branches[-1], structure_cls))
+                )
 
             elif structure_cls == structure.LambdaMap:
-                structures.append(structure.Lambda(1, parse(branches[0])))
+                structures.append(
+                    structure.Lambda(1, parse(branches[0], structure_cls))
+                )
                 structures.append(
                     structure.GenericStatement(
                         [lexer.Token(lexer.TokenType.GENERAL, "M")]
@@ -177,7 +192,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                 # laziness ftw
 
             elif structure_cls == structure.LambdaFilter:
-                structures.append(structure.Lambda(1, parse(branches[0])))
+                structures.append(
+                    structure.Lambda(1, parse(branches[0], structure_cls))
+                )
                 structures.append(
                     structure.GenericStatement(
                         [lexer.Token(lexer.TokenType.GENERAL, "F")]
@@ -186,7 +203,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                 # laziness ftw
 
             elif structure_cls == structure.LambdaSort:
-                structures.append(structure.Lambda(1, parse(branches[0])))
+                structures.append(
+                    structure.Lambda(1, parse(branches[0], structure_cls))
+                )
                 structures.append(
                     structure.GenericStatement(
                         [lexer.Token(lexer.TokenType.GENERAL, "ṡ")]
@@ -195,7 +214,9 @@ def parse(token_list: Iterable[lexer.Token]) -> list[structure.Structure]:
                 # laziness ftw
 
             else:
-                branches = list(map(parse, branches))
+                branches = list(
+                    map(lambda x: parse(x, parent or structure_cls), branches)
+                )
                 structures.append(structure_cls(*branches))
 
         elif head.value in MONADIC_MODIFIERS:

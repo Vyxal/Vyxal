@@ -9,12 +9,16 @@ import copy
 import types
 from typing import Any, Union
 
+import sympy
 from sympy import Rational
 
 
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
-    if (
+
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+    elif (
         isinstance(value, int)
         or isinstance(value, Rational)
         or isinstance(value, str)
@@ -22,7 +26,6 @@ def vyxalify(value: Any) -> Any:
         or isinstance(value, LazyList)
     ):
         return value
-
     else:
         return LazyList(map(vyxalify, value))
 
@@ -56,7 +59,6 @@ def simplify(value: Any) -> Union[int, float, str, list]:
         return float(value)
 
     else:
-        print(value)
         return list(map(simplify, value))
 
 
@@ -149,15 +151,21 @@ class LazyList:
             self.__getitem__(position)
         self.generated[position] = value
 
+    def count(self, other):
+        temp = self.listify()
+        return temp.count(other)
+
     def listify(self):
-        temp = self.generated + list(self.raw_object)
+        temp = self.generated + simplify(self.raw_object)
         self.raw_object = iter(temp[::])
         self.generated = []
         return temp
 
     def output(self, end="\n", ctx=None):
-        from vyxal.elements import vy_print
+        from vyxal.elements import vy_print, vy_repr
 
+        ctx.stacks.append(self.generated)
+        stacks_index = len(ctx.stacks) - 1
         vy_print("⟨", "", ctx)
         for lhs in self.generated[:-1]:
             vy_print(lhs, "|", ctx)
@@ -169,10 +177,13 @@ class LazyList:
             if len(self.generated) > 1:
                 vy_print("|", "", ctx)
             while True:
-                vy_print(lhs, "", ctx)
+                if type(lhs) is types.FunctionType:
+                    vy_print(lhs, "", ctx)
+                else:
+                    vy_print(vy_repr(lhs, ctx), "", ctx)
                 lhs = next(self)
                 vy_print("|", "", ctx)
-        except:
+        except StopIteration:
             vy_print("⟩", end, ctx)
 
     def reversed(self):
@@ -182,4 +193,3 @@ class LazyList:
                 yield item
 
         return temp()
-

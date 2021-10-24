@@ -6,14 +6,17 @@ the python equivalent of command is stored
 
 import itertools
 import math
+import random
 import string
 import types
 from typing import Union
 
+import numpy
 import sympy
 
+from vyxal.context import DEFAULT_CTX, Context
 from vyxal.helpers import *
-from vyxal.LazyList import LazyList
+from vyxal.LazyList import LazyList, lazylist, vyxalify
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -35,7 +38,7 @@ def process_element(
         arguments = "_"
 
     if isinstance(expr, types.FunctionType):
-        pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx)"
+        pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
         pushed = expr
     py_code = (
@@ -60,6 +63,27 @@ def add(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
+
+
+def boolify(lhs, ctx):
+    """Element ḃ
+    (any) -> is truthy?
+    """
+
+    return int(bool(lhs))
+
+
+def chr_ord(lhs, ctx):
+    """Element C
+    (num) -> chr(a)
+    (str) -> ord(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: chr(int(lhs)),
+        (str): lambda: list(map(ord, lhs)) if len(lhs) > 1 else ord(lhs),
+    }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
 def combinations_with_replacement(lhs, rhs, ctx):
@@ -94,6 +118,63 @@ def complement(lhs, ctx):
     )()
 
 
+def count(lhs, rhs, ctx):
+    """Element O
+    (any, any) -> returns the number of occurances of b in a
+    """
+
+    return iterable(lhs, ctx=ctx).count(rhs)
+
+
+def deep_flatten(lhs, ctx):
+    """Element f
+    (any) -> flatten list
+    """
+    ret = []
+    for item in iterable(lhs):
+        if type(item) in (LazyList, list):
+            ret += deep_flatten(item, ctx)
+        else:
+            ret.append(item)
+    return ret
+
+
+def divide(lhs, rhs, ctx):
+    """Element /
+    (num, num) -> a / b
+    (num, str) -> b split into a even length pieces, possibly with an extra part
+    (str, num) -> a split into b even length pieces, possibly with an extra part
+    (str, str) -> split a on b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(sympy.Rational(lhs, rhs)),
+        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
+        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
+        (str, str): lambda: lhs.split(rhs),
+    }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
+
+
+def divisors(lhs, ctx):
+    """Element K
+    (num) -> divisors(a) # Factors or divisors of a
+    (str) -> all substrings of a that occur more than once # they "divide" a into more than one piece
+    (lst) -> prefixes(a) # Prefixes of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.divisors(lhs),
+        (str): lambda: LazyList(
+            filter(
+                lambda x: len(lhs.split(x)) == 2 and all(lhs.split(x)),
+                substrings(lhs, ctx),
+            )
+        ),
+    }.get(ts, lambda: LazyList((lhs[: x + 1] for x in range(len(x)))))()
+
+
 def exclusive_one_range(lhs, ctx):
     """Element ɽ
     (num) -> range(1, a)
@@ -119,6 +200,19 @@ def exclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(exclusive_zero_range, lhs, ctx=ctx))()
 
 
+def exp2_or_eval(lhs, ctx):
+    """Element E
+    (num) -> 2 ** a
+    (str) -> eval(a)
+    """
+    ts = vy_type(lhs)
+
+    return {
+        NUMBER_TYPE: lambda: 2 ** lhs,
+        str: lambda: vy_eval(lhs, ctx),
+    }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -128,11 +222,10 @@ def function_call(lhs, ctx):
     """
 
     # Modifies lhs, because lhs = stack
-
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += top(lhs, ctx=ctx)
+        lhs += wrapify(top(lhs, top, ctx=ctx))
         return None
     else:
         return {
@@ -140,6 +233,40 @@ def function_call(lhs, ctx):
             str: lambda: exec(lhs) or [],
             list: lambda: vectorised_not(top, ctx),
         }.get(ts)()
+
+
+def equals(lhs, rhs, ctx):
+    """Element =
+    (num, num) -> lhs == rhs
+    (num, str) -> str(lhs) == rhs
+    (str, num) -> lhs == str(rhs)
+    (str, str) -> lhs == rhs
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs == rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
+        (str, str): lambda: int(lhs == rhs),
+    }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
+
+
+def greater_than(lhs, rhs, ctx):
+    """Element <
+    (num, num) -> a > b
+    (num, str) -> str(a) > b
+    (str, num) -> a > str(b)
+    (str, str) -> a > b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs > rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) > rhs,
+        (str, NUMBER_TYPE): lambda: lhs > str(rhs),
+        (str, str): lambda: lhs > rhs,
+    }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
 
 
 def halve(lhs, ctx):
@@ -181,6 +308,21 @@ def inclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
 
 
+def infinite_list(ctx):
+    """Element ∞
+    Yields a (lazy)list of positive integers
+    """
+
+    @lazylist
+    def f():
+        n = 1
+        while n:
+            yield n
+            n += 1
+
+    return f()
+
+
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
@@ -194,6 +336,29 @@ def infinite_replace(lhs, rhs, other, ctx):
         prev = deep_copy(lhs)
 
     return lhs
+
+
+def interleave(lhs, rhs, ctx):
+    """Element Y
+    (any, any) -> interleave a and b
+    """
+    # Essentially, Zf but whatever
+
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = iterable(rhs, ctx=ctx)
+
+    @lazylist
+    def f():
+        for i in range(max(len(lhs), len(rhs))):
+            if i < len(lhs):
+                yield lhs[i]
+            if i < len(rhs):
+                yield rhs[i]
+
+    if type(lhs) == type(rhs) == str:
+        return "".join(f())
+    else:
+        return f()
 
 
 def is_prime(lhs, ctx):
@@ -231,6 +396,31 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
+def length(lhs, ctx):
+    """Element L
+    (any) -> len(a)
+    """
+
+    return len(iterable(lhs, ctx=ctx))
+
+
+def less_than(lhs, rhs, ctx):
+    """Element <
+    (num, num) -> a < b
+    (num, str) -> str(a) < b
+    (str, num) -> a < str(b)
+    (str, str) -> a < b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs < rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) < rhs,
+        (str, NUMBER_TYPE): lambda: lhs < str(rhs),
+        (str, str): lambda: lhs < rhs,
+    }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
+
+
 def merge(lhs, rhs, ctx):
     """Element J
     (scl, scl) -> concatenate a and b
@@ -251,6 +441,131 @@ def merge(lhs, rhs, ctx):
         (ts[0], list): lambda: [lhs] + rhs,
         (list, list): lambda: lhs + rhs,
     }.get(ts)()
+
+
+def modulo(lhs, rhs, ctx):
+    """Element %
+    (num, num) -> a % b
+    (num, str) -> (b split into a equal pieces)[-1]
+    (str, num) -> (a split into b equal pieces)[-1]
+    (str, str) -> a.format(b)
+    """
+
+    ts = vy_type(lhs, rhs, simple=True)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
+        (NUMBER_TYPE, str): lambda: divide(rhs, lhs, ctx)[-1],
+        (str, NUMBER_TYPE): lambda: divide(lhs, rhs, ctx)[-1],
+        (str, str): lambda: format_string(lhs, [rhs]),
+        (str, list): lambda: format_string(lhs, rhs),
+    }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
+
+
+def monadic_maximum(lhs, ctx):
+    """Element G
+    (any) -> returns the maximal element of the input
+    """
+
+    lhs = deep_flatten(lhs, ctx)
+
+    if len(lhs) == 0:
+        return []
+
+    elif len(lhs) == 1:
+        return lhs[0]
+
+    else:
+        biggest = lhs[0]
+        for item in lhs[1:]:
+            if greater_than(item, biggest, ctx):
+                biggest = item
+
+    return item
+
+
+def multiply(lhs, rhs, ctx):
+    """Element *
+    (num, num) -> a * b
+    (num, str) -> repeat b a times
+    (str, num) -> repeat a b times
+    (str, str) -> ring translate b according to a
+    """
+
+    ts = vy_type(lhs, rhs)
+
+    if ts[0] is types.FunctionType:
+        lhs.stored_arity = rhs
+        return lhs
+
+    elif ts[1] is types.FunctionType:
+        rhs.stored_arity = lhs
+        return rhs
+    else:
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
+            (NUMBER_TYPE, str): lambda: lhs * rhs,
+            (str, NUMBER_TYPE): lambda: lhs * rhs,
+            (str, str): lambda: ring_translate(lhs, rhs),
+        }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
+
+
+def n_choose_r(lhs, rhs, ctx):
+    """Element ƈ
+    (num, num) -> n choose r
+    (num, str) -> [random.choice(b) for _ in range(a)]
+    (str, num) -> [random.choice(a) for _ in range(b)]
+    (str, str) -> does a have the same characters as b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: scipy.special.comb(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: [
+            random.choice(rhs) for _ in range(abs(int(lhs)))
+        ],
+        (str, NUMBER_TYPE): lambda: [
+            random.choice(lhs) for _ in range(abs(int(rhs)))
+        ],
+        (str, str): lambda: int(set(lhs) == set(rhs)),
+    }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
+
+
+def negate(lhs, ctx):
+    """Element N
+    (num) -> -a
+    (str) -> swapcase of a
+    """
+
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
+        ts, lambda: vectorise(negate, lhs, ctx=ctx)
+    )()
+
+
+def orderless_range(lhs, rhs, ctx):
+    """Element r
+    (num, num) -> range(a,b) (Range form a to b)
+    (num, str) -> append 0s to b to make it length a
+    (str, num) -> preprend 0s to a to make it length b
+    (any, fun) -> cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
+    (str, str) -> regex.has_match(pattern=a,string= b) ( Does b match a)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(
+            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+        ),
+        (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
+        (NUMBER_TYPE, str): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
+        (ts[0], types.FunctionType): lambda: scanl(
+            multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
+        ),
+        (types.FunctionType, ts[1]): lambda: scanl(
+            multiply(lhs, 2, ctx), iterable(rhs, range, ctx=ctx), ctx=ctx
+        ),
+        (str, str): lambda: int(re.compile(lhs).search(rhs)),
+    }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
 
 
 def prime_factors(lhs, ctx):
@@ -314,6 +629,69 @@ def split_on(lhs, rhs, ctx):
         return ret
 
 
+def strip(lhs, rhs, ctx):
+    """Element P
+    (any, any) -> a.strip(b)
+    """
+
+    def list_helper(left, right):
+        """This doesn't make sense anywhere but here"""
+
+        if vy_type(left) is LazyList:
+            left = left.listify()
+        if vy_type(right) is LazyList:
+            right = right.listify()
+        if len(left) == 0:
+            return []  # how you gonna strip from nothing
+
+        # Strip from the right side first
+        # check to make sure there's stuff to strip
+
+        if len(left) < len(right):
+            # left is smaller than right
+            # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
+            if left in (right[: len(left)], right[: len(left) : -1]):
+                return []
+
+        if left[-len(right) :] == right[::-1]:
+            del left[-len(right) :]
+
+        if left[: len(right)] == right:
+            del left[: len(right)]
+
+        return left
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs).strip(vy_str(rhs))
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs)),
+        (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
+        (str, str): lambda: lhs.strip(rhs),
+    }.get(ts, lambda: list_helper(lhs, rhs))()
+
+
+def substrings(lhs, ctx):
+    """Element ǎ
+    (num) -> ath prime
+    (str) -> all substrings of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.ntheory.prime(int(lhs) + 1),
+        str: lambda: LazyList(
+            (
+                lhs[i:j]
+                for i in range(len(lhs) + 1)
+                for j in range(1, len(lhs) + 1)
+                if i < j
+            )
+        ),
+    }.get(ts, lambda: vectorise(substrings, lhs, ctx=ctx))()
+
+
 def subtract(lhs, rhs, ctx):
     """Element -
     (num, num) -> lhs - rhs
@@ -329,6 +707,38 @@ def subtract(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + ("-" * rhs),
         (str, str): lambda: lhs.replace(rhs, ""),
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
+
+
+def truthy_indicies(lhs, ctx):
+    """Element T
+    (any) -> indicies of truthy elements
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+
+    @lazylist
+    def helper():
+        for i in range(len(lhs)):
+            if lhs[i]:
+                yield i
+
+    return helper()
+
+
+def uniquify(lhs, ctx):
+    """Element U
+    (any) -> only unique items of a
+    """
+
+    @lazylist
+    def f():
+        seen = []
+        for item in lhs:
+            if item not in seen:
+                yield item
+                seen.append(item)
+
+    return f()
 
 
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
@@ -416,9 +826,9 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         }
 
         if explicit:
-            return list(explicit_dict.get(ts)())
+            return LazyList(explicit_dict.get(ts)())
         else:
-            return list(simple.get(ts)())
+            return LazyList(simple.get(ts)())
     else:
         # That is, single argument vectorisation
         if explicit:
@@ -435,6 +845,99 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vy_filter(lhs: Any, rhs: Any, ctx):
+    """Element F
+    (any, fun) -> Keep elements in a that b is true for
+    (any, any) -> Remove elements of a that are in b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: LazyList(
+            filter(
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
+            )
+        ),
+        (types.FunctionType, ts[1]): lambda: LazyList(
+            filter(
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
+            )
+        ),
+    }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
+
+
+def vy_map(lhs, rhs, ctx):
+    """Element M
+    (any, fun) -> apply function b to each element of a
+    (any, any) -> a paired with each item of b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: list(
+            map(
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
+            )
+        ),
+        (types.FunctionType, ts[1]): lambda: list(
+            map(
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
+            )
+        ),
+    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
+
+
+def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
+    """Converts the item to the given base. Lists are treated as if
+    each item was a digit."""
+
+    """Used for multiple elements, and has to be here because it uses
+    functions defined only here."""
+    t_item = type(item)
+    if t_item not in [str, float, int, complex]:
+        ret = 0
+        for element in item:
+            ret = multiply(ret, base, ctx)
+            ret = add(ret, element, ctx)
+        return ret
+    elif t_item is str:
+        return int(item, base)
+    elif t_item is complex:
+        return numpy.real(item)
+    elif t_item is float:
+        return int(item)
+    elif t_item:
+        return vy_int(iterable(item, ctx=ctx), base)
+
+
+def vy_str(lhs, ctx=None):
+    """Element S
+    (any) -> str(s)
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: str(eval(str(lhs))),
+        (str): lambda: lhs,  # wow so complex and hard to understand /s
+        (types.FunctionType): lambda: vy_str(
+            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
+        ),
+    }.get(
+        ts,
+        lambda: "⟨"
+        + "|".join(
+            map(
+                lambda x: vy_repr(x, ctx),
+                lhs,
+            )
+        )
+        + "⟩",
+    )()
+
+
 def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
@@ -447,23 +950,105 @@ def vy_print(lhs, end="\n", ctx=None):
         lhs.output(end, ctx)
     elif ts is list:
         LazyList(lhs).output(end, ctx)
+    elif ts is types.FunctionType:
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
+        vy_print(res, ctx=ctx)
     else:
         if ctx.online:
-            ctx.online_output += str(lhs)
-            # TODO: use custom string func
+            ctx.online_output += vy_str(lhs, ctx=ctx)
         else:
             print(lhs, end=end)
+
+
+def vy_reduce(lhs, rhs, ctx):
+    """Element R
+    (any, fun) -> Reduce a by function b
+    (fun, any) -> Reduce b by function a
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: foldl(rhs, lhs, ctx),
+        (types.FunctionType, ts[1]): lambda: foldl(lhs, rhs, ctx),
+    }.get(ts)()
+
+
+def vy_repr(lhs, ctx):
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: str(lhs),
+        (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
+        (types.FunctionType): lambda: vy_repr(
+            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
+        )
+        # actually make the repr kinda make sense
+    }.get(
+        ts,
+        lambda: "⟨"
+        + "|".join(
+            map(
+                lambda x: vy_repr(x, ctx),
+                lhs or [],
+            )
+        )
+        + "⟩",
+    )()
 
 
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
-    if (x := type(item)) in (int, sympy.Rational, complex):
+    if (x := type(item)) in (
+        int,
+        sympy.Rational,
+        complex,
+        sympy.core.numbers.Half,
+    ):
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
         return list
     else:
         return x
+
+
+def vy_zip(lhs, rhs, ctx):
+    if isinstance(lhs, types.FunctionType):
+        return vy_zip(
+            rhs,
+            LazyList(map(lambda x: safe_apply(lhs, x, ctx=ctx), rhs)),
+            ctx=ctx,
+        )
+    elif isinstance(rhs, types.FunctionType):
+        return vy_zip(
+            lhs,
+            LazyList(map(lambda x: safe_apply(rhs, x, ctx=ctx), lhs)),
+            ctx=ctx,
+        )
+    else:
+
+        @lazylist
+        def f():
+            left = iter(iterable(lhs))
+            right = iter(iterable(rhs))
+            while True:
+                exhausted = 0
+                try:
+                    left_item = next(left)
+                except StopIteration:
+                    left_item = 0
+                    exhausted += 1
+
+                try:
+                    right_item = next(right)
+                except StopIteration:
+                    right_item = 0
+                    exhausted += 1
+                if exhausted == 2:
+                    break
+                else:
+                    yield [left_item, right_item]
+
+        return f()
 
 
 elements: dict[str, tuple[str, int]] = {
@@ -493,17 +1078,75 @@ elements: dict[str, tuple[str, int]] = {
     "ʁ": process_element(exclusive_zero_range, 1),
     "ɾ": process_element(inclusive_one_range, 1),
     "ɽ": process_element(exclusive_one_range, 1),
+    "ƈ": process_element(n_choose_r, 2),
+    "∞": process_element("infinite_list(ctx)", 0),
+    "!": process_element("len(stack)", 0),
+    '"': process_element("[lhs, rhs]", 2),
+    "$": (
+        "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
+        "stack.append(lhs)",
+        2,
+    ),
+    "%": process_element(modulo, 2),
+    "*": process_element(multiply, 2),
     "+": process_element(add, 2),
-    ",": process_element(vy_print, 1),
+    ",": ("top = pop(stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
     "-": process_element(subtract, 2),
+    "/": process_element(divide, 2),
+    ":": (
+        "top = pop(stack, 1, ctx); stack.append(top); "
+        "stack.append(deep_copy(top))",
+        1,
+    ),
+    "<": process_element(less_than, 2),
+    "=": process_element(equals, 2),
+    ">": process_element(greater_than, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
-    '"': process_element("[lhs, rhs]", 2),
+    "A": process_element("int(any(lhs))", 1),
+    "B": process_element("vy_int(lhs, 2)", 1),
+    "C": process_element(chr_ord, 1),
+    "D": (
+        "top = pop(stack, 1, ctx); stack.append(top);"
+        "stack.append(deep_copy(top)); stack.append(deep_copy(top));",
+        1,
+    ),
+    "E": process_element(exp2_or_eval, 1),
+    "F": process_element(vy_filter, 2),
+    "G": process_element(monadic_maximum, 1),
+    "H": process_element("vy_int(lhs, 16)", 1),
+    "I": process_element(vy_int, 1),
     "J": process_element(merge, 2),
+    "K": process_element(divisors, 1),
+    "L": process_element(length, 1),
+    "M": process_element(vy_map, 2),
+    "N": process_element(negate, 1),
+    "O": process_element(count, 2),
+    "P": process_element(strip, 2),
+    "Q": process_element("exit()", 0),
+    "R": (
+        "if len(stack) > 1 and types.FunctionType "
+        "in vy_type(stack[-1], stack[-2]):\n"
+        "    rhs, lhs = pop(stack, 2, ctx);"
+        "    stack.append(vy_reduce(lhs, rhs, ctx))\n"
+        "else:\n"
+        "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
+        2,
+    ),
+    "S": process_element(vy_str, 1),
+    "T": process_element(truthy_indicies, 1),
+    "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
+    "W": ("stack = [stack]", 0),
+    # X doesn't need to be implemented here, because it's already a structure
+    "Y": process_element(interleave, 2),
+    "Z": process_element(vy_zip, 2),
+    "f": process_element(deep_flatten, 1),
+    "r": process_element(orderless_range, 2),
+    "ǎ": process_element(substrings, 1),
 }
 modifiers = {
     "v": (

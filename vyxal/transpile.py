@@ -78,7 +78,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.VARIABLE_GET:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
-        return indent_str(f"VAR_{token.value} = pop(stack, ctx=ctx)", indent)
+        return indent_str(f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent)
     raise ValueError(f"Bad token: {token}")
 
 
@@ -104,7 +104,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 res += indent_str("ctx.context_values.pop()", new_indent)
                 res += transpile_ast(cond, new_indent)
 
-            res += indent_str("condition = pop(stack, ctx=ctx)", new_indent)
+            res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
             res += indent_str(
                 "ctx.context_values.append(condition)", new_indent
             )
@@ -128,14 +128,17 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         )
         var = f"VAR_{var}"
         return (
-            indent_str(f"for {var} in iterable(pop(stack, ctx=ctx)):", indent)
+            indent_str(
+                f"for {var} in iterable(pop(stack, 1, ctx=ctx), range, ctx):",
+                indent,
+            )
             + indent_str(f"    ctx.context_values.append({var})", indent)
             + transpile_ast(struct.body, indent + 1)
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, structure.WhileLoop):
         return (
-            indent_str("condition = pop(stack, ctx=ctx)", indent)
+            indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
             + indent_str("while boolify(condition):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + transpile_ast(struct.body, indent + 1)
@@ -144,46 +147,52 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        return f"stack += FN_{struct.name}(stack, ctx=ctx)"
+        return (
+            f"stack += FN_{struct.name}(stack, self=FN_{struct.name}, ctx=ctx)"
+        )
     if isinstance(struct, structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
-
-        for parameter_token in struct.parameters:
-            parameter = parameter_token.value
+        print(struct.parameters)
+        for parameter in struct.parameters:
             if parameter.isnumeric():
                 parameter_total += int(parameter)
                 function_parameters += (
-                    f"parameters += pop(stack, {int(parameter)}, ctx)\n"
+                    f"parameters += wrapify(pop(arg_stack, {int(parameter)}"
+                    + ", ctx))\n"
                 )
             elif parameter == "*":
                 function_parameters += (
                     "parameters += "
-                    + "pop(stack, pop(stack, 1, ctx=ctx), ctx=ctx)\n"
+                    + "wrapify(pop(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx))"
+                    + "\n"
                 )
             else:
                 parameter_total += 1
                 function_parameters += (
-                    f"VAR_{parameter} = pop(stack, 1, ctx=ctx)"
+                    f"VAR_{parameter} = pop(arg_stack, 1, ctx=ctx)\n"
                 )
 
-            return (
-                indent_str(
-                    f"def FN_{struct.name}(stack, self=None, ctx=None)", indent
-                )
-                + indent_str("stack = []", indent + 1)
-                + indent_str(f"this = FN_{struct.name}", indent + 1)
-                + indent_str(function_parameters, indent + 1)
-                + indent_str("stack = parameters", indent + 1)
-                + indent_str(
-                    "ctx.inputs.append([stack[::], 0])",
-                    indent + 1,
-                )
-                + transpile_ast(struct.body, indent + 1)
-                + indent_str("ctx.inputs.pop()", indent + 1)
-                + indent_str("ctx.context_values.pop()", indent + 1)
-                + indent_str("return stack", indent + 1)
+        return (
+            indent_str(
+                f"def FN_{struct.name}(arg_stack, self, arity=-1, ctx=None):",
+                indent,
             )
+            + indent_str("parameters = []", indent + 1)
+            + indent_str(function_parameters, indent + 1)
+            + indent_str("stack = parameters[::]", indent + 1)
+            + indent_str(
+                "ctx.context_values.append(parameters[::])", indent + 1
+            )
+            + indent_str("ctx.stacks.append(stack)", indent + 1)
+            + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
+            + indent_str(f"this = FN_{struct.name}", indent + 1)
+            + indent_str(transpile_ast(struct.body), indent + 1)
+            + indent_str("ctx.context_values.pop()", indent + 1)
+            + indent_str("ctx.inputs.pop()", indent + 1)
+            + indent_str("ctx.stacks.pop()", indent + 1)
+            + indent_str("return stack", indent + 1)
+        )
     if isinstance(struct, structure.Lambda):
         id_ = secrets.token_hex(16)
         # The lambda id used to be based on time.time() until
@@ -194,44 +203,37 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         return (
             indent_str(
-                f"def _lambda_{id_}(parameters, arity, self, ctx):",
+                f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
                 indent,
             )
+            + indent_str(
+                "if arity != -1: stack = wrapify(pop(arg_stack, arity, ctx))",
+                indent + 1,
+            )
+            + indent_str(
+                "elif 'stored_arity' in dir(self): "
+                + "stack = wrapify(pop(arg_stack, self.stored_arity, ctx))",
+                indent + 1,
+            )
+            + indent_str(
+                "else: stack = wrapify(pop(arg_stack, "
+                + f"{struct.branches[0]}"
+                + ", ctx))",
+                indent + 1,
+            )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
-            + indent_str("overloaded_arity = False", indent + 1)
-            + indent_str(
-                'if "arity_overload" in dir(self): '
-                + "overloaded_arity = self.arity_overload",
-                indent + 1,
-            )
-            + indent_str(
-                f"if arity and arity != {struct.branches[0]}: "
-                + "stack = pop(parameters, arity, ctx)",
-                indent + 1,
-            )
-            + indent_str(
-                "elif overloaded_arity: stack = pop(parameters, arity"
-                + ", ctx)",
-                indent + 1,
-            )
-            + indent_str(
-                f"else: stack = pop(parameters, {struct.branches[0]}"
-                + ", ctx)",
-                indent + 1,
-            )
             + indent_str("ctx.context_values.append(stack[::])", indent + 1)
             + indent_str(
-                "ctx.inputs.append([stack[::], 0])",
+                "ctx.inputs.append([stack[::], 0]);",
                 indent + 1,
             )
-            + transpile_ast(struct.branches[1], indent + 1)
-            + indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent + 1)
+            + indent_str("ctx.stacks.append(stack)", indent + 1)
+            + indent_str(transpile_ast(struct.body), indent + 1)
+            + indent_str("res = wrapify(pop(stack, 1, ctx))", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
-            + indent_str("return ret", indent + 1)
-            + indent_str(
-                f"_lambda_{id_}.stored_arity = {struct.branches[0]}", indent
-            )
+            + indent_str("ctx.stacks.pop()", indent + 1)
+            + indent_str("return res", indent + 1)
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 
@@ -298,5 +300,47 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 elements.modifiers.get(struct.modifier, "pass"), indent
             )
         )
+
+    if isinstance(struct, structure.BreakStatement):
+        if struct.parent_structure == structure.IfStatement:
+            return indent_str("pass", indent)
+        elif (
+            struct.parent_structure == structure.ForLoop
+            or struct.parent_structure == structure.WhileLoop
+        ):
+            return indent_str("break", indent)
+        elif struct.parent_structure == structure.FunctionDef:
+            return (
+                indent_str("ctx.inputs.pop()", indent)
+                + indent_str("ctx.context_values.pop()", indent)
+                + indent_str("return stack", indent)
+            )
+        elif struct.parent_structure == structure.Lambda:
+            return (
+                indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent)
+                + indent_str("ctx.context_values.pop()", indent)
+                + indent_str("ctx.inputs.pop()", indent)
+                + indent_str("return ret", indent)
+            )
+        else:
+            return indent_str("pass", indent)
+    if isinstance(struct, structure.RecurseStatement):
+        if struct.parent_structure == structure.IfStatement:
+            return indent_str("pass", indent)
+        elif (
+            struct.parent_structure == structure.ForLoop
+            or struct.parent_structure == structure.WhileLoop
+        ):
+            return indent_str("continue", indent)
+        elif struct.parent_structure == structure.FunctionDef:
+            return indent_str(
+                "stack.append(this(stack, this, ctx=ctx))", indent
+            )
+        elif struct.parent_structure == structure.Lambda:
+            return indent_str(
+                "stack.append(this(stack, this, ctx=ctx))", indent
+            )
+        else:
+            return indent_str("vy_print(stack, ctx=ctx)", indent)
 
     assert False

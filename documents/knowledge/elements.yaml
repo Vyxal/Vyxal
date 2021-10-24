@@ -409,7 +409,7 @@
     num-num: a * b
     num-str: b repeated a times
     str-num: a repeated b times
-    str-str: Prepend each char of a to b
+    str-str: ring translate b according to a
   vectorise: true
   tests:
     - "[3,5] : 15"
@@ -904,10 +904,11 @@
 
 - element: "Z"
   name: Zip
-  description: Zip two lists
+  description: Zip two lists or Zip a with b mapped over a
   arity: 2
   overloads:
     any-any: zip(a,b)
+    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
   vectorise: false
   tests:
     - "[[1,2],[3,4]] : [[1,3],[2,4]]"
@@ -1157,9 +1158,11 @@
   arity: 2
   overloads:
     num-num: range(a,b) (Range form a to b)
+    num-str: append spaces to b to make it length a
+    str-num: preprend spaces to a to make it length b
     any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
-    any-any: regex.has_match(pattern=a,string= b) ( Does b match a)
-  vectorise: false
+    str-str: regex.has_match(pattern=a,string= b) ( Does b match a)
+  vectorise: true
   tests:
     - "[3,6] : [3,4,5]"
     - "[4,8] : [4,5,6,7]"
@@ -1226,11 +1229,10 @@
     - "[[1,2,3,4]] : [2,4]"
 
 - element: "z"
-  name: Zipmap
-  description: Zip a with b mapped over a, or zip b with itself
+  name: Zip-self
+  description: Zip a with itself
   arity: 2
   overloads:
-    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
     any-any: a, zip(b,b)
   vectorise: false
   tests:
@@ -2452,7 +2454,7 @@
 - element: "⇩"
   name: Grade Down
   arity: 1
-  description: 'Indices of elements to sort in descending order / lowercase / decrement number twice'
+  description: "Indices of elements to sort in descending order / lowercase / decrement number twice"
   overloads:
     lst: graded_down(a)
     str: a.lower()
@@ -3180,7 +3182,6 @@
   description: "bcfghjklmnpqrstvwxz"
   vectorise: false
 
-
 - element: "kT"
   name: BF command set
   arity: 0
@@ -3225,7 +3226,7 @@
   description: 2 to the power of 20, 1048576
   vectorise: false
   tests:
-    - '[] : 1048576'
+    - "[] : 1048576"
 
 - element: "k₃"
   name: 2 ** 30
@@ -3233,7 +3234,7 @@
   description: 2 to the power of 30, 1073741824
   vectorise: false
   tests:
-    - '[] : 1073741824'
+    - "[] : 1073741824"
 
 - element: "k∪"
   name: Lowercase Vowels With Y
@@ -3250,7 +3251,7 @@
   vectorise: false
   tests:
     - '[] : "AEIOUY"'
-  
+
 - element: "k∩"
   name: Vowels With Y
   arity: 0
@@ -3262,13 +3263,12 @@
 # Add constants with the following format:
 #
 #- element: ""
-#  name: 
+#  name:
 #  arity: 0
 #  description:
 #  vectorise: false
 #  tests:
 #    - '[] : '
-
 
 # DIGRAPHS
 
@@ -3325,7 +3325,7 @@
   arity: 1
   description: Check if brackets in a string ("{}()[]<>") are balanced
   overloads:
-    any: 'balanced_brackets(a)'
+    any: "balanced_brackets(a)"
   vectorise: true
   tests:
     - '["xyz"] : 1'
@@ -3338,8 +3338,8 @@
   arity: 3
   description: Pad a string to the left with a certain character
   overloads:
-    any-str-num: 'Pad a to the left with c so a has length b'
-    any-num-str: 'Pad a to the left with b so a has length c'
+    any-str-num: "Pad a to the left with c so a has length b"
+    any-num-str: "Pad a to the left with b so a has length c"
   vectorise: true
   tests:
     - '["xyz","x",4] : "xxyz"'
@@ -3351,19 +3351,19 @@
   arity: 3
   description: Pad a string to the right with a certain character
   overloads:
-    any-str-num: 'Pad a to the right with c so a has length b'
-    any-num-str: 'Pad a to the right with b so a has length c'
+    any-str-num: "Pad a to the right with c so a has length b"
+    any-num-str: "Pad a to the right with b so a has length c"
   vectorise: true
   tests:
     - '["xyz","x",4] : "xyzx"'
     - '["123","&",8] : "123&&&&&"'
     - '["324"," ",2] : "324"'
-  
+
 - element: "øĿ"
   arity: 2
   name: Ring Translate
   description: Replace each character in a that occurs in b with the character that occurs after it in b
-  overloads: 
+  overloads:
     any-any: In a, replace each character in b with the next character in b
   vectorise: true
   tests:
@@ -3399,7 +3399,7 @@
   name: Flip Brackets Palindromise
   description: Palindromise and reverse brackets and slashes, without duplicating center
   arity: 1
-  overloads: 
+  overloads:
     any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
   vectorise: true
   tests:
@@ -3411,7 +3411,7 @@
   name: Remove Until No change
   arity: 2
   description: Remove b from a until a does not change
-  overloads: 
+  overloads:
     str-str: Remove b from a until a does not change
     str-lst: Remove everything in b (in order) from a until a does not change
   vectorise: false
@@ -3437,7 +3437,7 @@
   overloads:
     str: base_255_string_compress(a)
   vectorise: false
-  tests: 
+  tests:
     - '["hello"] : "«B²z«"'
     - '["hello world"] : "«⟇÷Ċ$⌈¢2«"'
 
@@ -3501,7 +3501,7 @@
   name: Group on words
   description: Group a string on words
   arity: 1
-  overloads: 
+  overloads:
     str: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
   vectorise: false
   tests:
@@ -3527,8 +3527,8 @@
   overloads:
     any: palindromise(a) (Doesn't duplicate middle)
   vectorise: false
-  tests: 
-    - '[[1,2,3]] : [1,2,3,2,1]'
+  tests:
+    - "[[1,2,3]] : [1,2,3,2,1]"
     - '["hello"] : "hellolleh"'
 
 - element: "øp"

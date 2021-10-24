@@ -7,6 +7,10 @@ class Context:
     def __init__(self):
         self.context_values = [0]
         self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
+        # inputs[0] = [[inputs], index]
+        # inputs[0][0] = [inputs]
+        # inputs[0][0][n] = input_n
+        # inputs[1] = index
         self.number_as_range = False
         self.online = False
         self.online_output = ""
@@ -16,5 +20,9 @@ class Context:
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
+        self.stacks = []
         self.last_popped = []
         self.use_top_input = False
+
+
+DEFAULT_CTX = Context()

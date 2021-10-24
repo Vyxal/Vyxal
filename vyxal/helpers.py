@@ -9,9 +9,11 @@ import textwrap
 import types
 from typing import Any, List, Union
 
+import numpy
 import sympy
 
-from vyxal import context, lexer
+from vyxal import lexer
+from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -41,27 +43,6 @@ def deep_copy(value: Any) -> Any:
     return LazyList(itertools.tee(value)[-1])
 
 
-def get_input(ctx: context.Context) -> Any:
-    """Returns the next input depending on where ctx tells to get the
-    input from."""
-
-    if ctx.use_top_input:
-        if ctx.inputs[0][0]:
-            ret = ctx.inputs[0][ctx.inputs[0][1] % len(ctx.inputs[0])]
-            ctx.inputs[0][1] += 1
-            return ret
-        else:
-            try:
-                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-                return temp
-            except:
-                return 0
-    else:
-        ret = ctx.inputs[-1][ctx.inputs[-1][1] % len(ctx.inputs[-1])]
-        ctx.inputs[-1][1] += 1
-        return ret
-
-
 @lazylist
 def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     """Repeat function until the result is no longer unique.
@@ -72,8 +53,43 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
 
     while previous != current:
         yield current
-        prevuous = deep_copy(current)
+        previous = deep_copy(current)
         current = safe_apply(function, current)
+
+
+def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
+    """Reduce vector by function"""
+    if len(vector) == 0:
+        return 0
+
+    working = vector[0]
+    for item in vector[1:]:
+        working = safe_apply(function, working, item, ctx=ctx)
+
+    return working
+
+
+def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
+    """Returns the pattern formatted with the given data. If the data is
+    a string, then the string is reused if there is more than one % to
+    be formatted. Otherwise (the data is a list), % are cyclically
+    substituted"""
+
+    ret = ""
+    index = 0
+    f_index = 0
+
+    while index < len(pattern):
+        if pattern[index] == "\\":
+            ret += "\\" + pattern[index + 1]
+            index += 1
+        elif pattern[index] == "%":
+            ret += str(data[f_index % len(data)])
+            f_index += 1
+        else:
+            ret += pattern[index]
+        index += 1
+    return ret
 
 
 def from_base_alphabet(value: str, alphabet: str) -> int:
@@ -97,6 +113,30 @@ def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
+def get_input(ctx: Context) -> Any:
+    """Returns the next input depending on where ctx tells to get the
+    input from."""
+
+    if ctx.use_top_input:
+        if ctx.inputs[0][0]:
+            ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+            ctx.inputs[0][1] += 1
+            return ret
+        else:
+            try:
+                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+                return temp
+            except:
+                return 0
+    else:
+        if ctx.inputs[-1][0]:
+            ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
+            ctx.inputs[-1][1] += 1
+            return ret
+        else:
+            return 0
+
+
 def indent_str(string: str, indent: int, end="\n") -> str:
 
     """Indent a multiline string with 4 spaces, with a newline (or `end`) afterwards."""
@@ -109,15 +149,15 @@ def indent_code(*code, indent: int = 1) -> str:
 
 
 def iterable(
-    item: Any, number_type: Any = None, ctx: context.Context = None
+    item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
 ) -> Union[LazyList, Union[list, str]]:
-    """Makes sure that a value is an iterable"""
-
-    if (type_of_item := type(item)) in [sympy.Rational, int]:
+    """Turn a value into an iterable"""
+    item_type = type(item)
+    if item_type in [sympy.Rational, int]:
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
-            if type_of_item is sympy.Rational:
+            if item_type is sympy.Rational:
                 item = float(item)
 
             return [int(let) if let not in "-." else let for let in str(item)]
@@ -156,9 +196,7 @@ def mold(
     return shape
 
 
-def pop(
-    iterable: Union[list, LazyList], count: int, ctx: context.Context
-) -> List[Any]:
+def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
 
@@ -167,9 +205,7 @@ def pop(
         if iterable:
             popped_items.append(iterable.pop())
         else:
-            ctx.use_top_input = True
             popped_items.append(get_input(ctx))
-            ctx.use_top_input = False
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
@@ -180,7 +216,6 @@ def pop(
 
     if count == 1:
         return popped_items[0]
-
     return popped_items
 
 
@@ -208,6 +243,20 @@ def reverse_number(
     return sympy.Rational(item)
 
 
+def ring_translate(map_source: Union[str, list], string: str) -> str:
+    """Ring translates a given string according to the provided mapping
+    - that is, map matching elements to the subsequent element in the
+    translation ring. The ring wraps around."""
+    ret = ""
+    LENGTH = len(map_source)
+    for char in string:
+        if char in map_source:
+            ret += map_source[(map_source.index(char) + 1) % LENGTH]
+        else:
+            ret += char
+    return ret
+
+
 def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.
@@ -221,13 +270,13 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args), len(args), function, ctx)
+        ret = function(list(args), function, len(args), ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args), ctx)[-1]
+        ret = function(list(args), function, ctx)[-1]
         if len(ret):
             return ret[-1]
         else:
@@ -244,6 +293,15 @@ def scalarify(value: Any) -> Union[Any, List[Any]]:
             return value
     else:
         return value
+
+
+@lazylist
+def scanl(
+    function: types.FunctionType, vector: List[Any], ctx: Context
+) -> List[Any]:
+    """Cumulative reduction of vector by function"""
+    for i in range(1, len(vector)):
+        yield foldl(function, vector[:i], ctx=ctx)
 
 
 def to_base_digits(value: int, base: int) -> List[int]:
@@ -300,32 +358,27 @@ def uncompress_num(num: str) -> int:
     raise NotImplementedError()
 
 
-def vy_eval(item: str, ctx: context.Context) -> Any:
+def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
 
     if ctx.online:
         try:
-            return ast.literal_eval(item)
+            t = ast.literal_eval(item)
+            if type(t) is float:
+                t = sympy.Rational(str(t))
+            return t
         except Exception as ex:
             # TODO: eval as vyxal
             return item
     else:
         try:
-            return eval(item)
+            t = eval(item)
+            if type(t) is float:
+                t = sympy.Rational(str(t))
+            return t
         except Exception as ex:
             return item
-
-
-def vy_str(item: Any, ctx: context.Context) -> str:
-    """Convert to string, using custom vyxal formatting"""
-    if type(item) is LazyList:
-        item = list(item)
-
-    if type(item) is list:
-        return "⟨" + "|".join([vy_str(y) for y in x]) + "⟩"
-
-    return str(item)
 
 
 def vy_zip(*items) -> list:
@@ -367,3 +420,11 @@ def wrap(vector: Union[str, list], width: int) -> List[Any]:
             ret.append(temp[::])
 
     return ret
+
+
+def wrapify(item: Any) -> List[Any]:
+    """Leaves lists as lists, wraps scalars into a list"""
+    if primitive_type(item) == SCALAR_TYPE:
+        return [item]
+    else:
+        return item
