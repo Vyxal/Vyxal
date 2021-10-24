@@ -17,7 +17,6 @@ def vyxalify(value: Any) -> Any:
 
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
-
     elif (
         isinstance(value, int)
         or isinstance(value, Rational)
@@ -26,7 +25,6 @@ def vyxalify(value: Any) -> Any:
         or isinstance(value, LazyList)
     ):
         return value
-
     else:
         return LazyList(map(vyxalify, value))
 
