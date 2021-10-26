@@ -118,6 +118,18 @@ def complement(lhs, ctx):
     )()
 
 
+def contains(lhs, rhs, ctx):
+    """Element c
+    (any, any) -> count of a in b
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    for item in lhs:
+        if item == rhs:
+            return 1
+    return 0
+
+
 def count(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
@@ -213,6 +225,23 @@ def exp2_or_eval(lhs, ctx):
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
 
+def exponent(lhs, rhs, ctx):
+    """Element e
+    (num, num) -> a ** b (exponentiation)
+    (str, num) -> every bth character of a
+    (num, str) -> every ath character of b
+    (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
+        (NUMBER_TYPE, str): lambda: rhs[:: int(lhs)],
+        (str, NUMBER_TYPE): lambda: lhs[:: int(rhs)],
+        (str, str): lambda: list(re.search(lhs, rhs).span()),
+    }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -306,6 +335,21 @@ def inclusive_zero_range(lhs, ctx):
             [int(char in string.ascii_letters) for char in lhs]
         ),
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
+
+
+def index(lhs, rhs, ctx):
+    """Element i
+    (any-num) -> a[b] (Index)
+    (any-[x]) -> a[:b] (0 to bth item of a)
+    (any-[x,y]) -> a[x:y] (x to yth item of a)
+    (any-[x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
+    """
+
+    ts = vy_type(lhs, rhs)
+
+    return {
+        # TODO: what to do with string indexing (e.g. [1,2,3,4,5,6,7]["abcde"])?
+    }
 
 
 def infinite_list(ctx):
@@ -480,7 +524,28 @@ def monadic_maximum(lhs, ctx):
             if greater_than(item, biggest, ctx):
                 biggest = item
 
-    return item
+        return item
+
+
+def monadic_minimum(lhs, ctx):
+    """Element g
+    (any) -> smallest item of a
+    """
+
+    lhs = deep_flatten(lhs, ctx)
+    if len(lhs) == 0:
+        return []
+
+    elif len(lhs) == 1:
+        return lhs[0]
+
+    else:
+        smallest = lhs[0]
+        for item in lhs[1:]:
+            if less_than(item, smallest, ctx):
+                smallest = item
+
+        return item
 
 
 def multiply(lhs, rhs, ctx):
@@ -845,6 +910,19 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vy_bin(lhs, ctx):
+    """Element b
+    (num) -> list of binary digits
+    (str) -> binary of each codepoint
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
+        (str): lambda: vectorise(vy_bin, wrapify(chr_ord(lhs)), ctx=ctx),
+    }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
+
+
 def vy_filter(lhs: Any, rhs: Any, ctx):
     """Element F
     (any, fun) -> Keep elements in a that b is true for
@@ -868,29 +946,6 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
 
 
-def vy_map(lhs, rhs, ctx):
-    """Element M
-    (any, fun) -> apply function b to each element of a
-    (any, any) -> a paired with each item of b
-    """
-
-    ts = vy_type(lhs, rhs)
-    return {
-        (ts[0], types.FunctionType): lambda: list(
-            map(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
-            )
-        ),
-        (types.FunctionType, ts[1]): lambda: list(
-            map(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
-            )
-        ),
-    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
-
-
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
@@ -912,6 +967,29 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         return int(item)
     elif t_item:
         return vy_int(iterable(item, ctx=ctx), base)
+
+
+def vy_map(lhs, rhs, ctx):
+    """Element M
+    (any, fun) -> apply function b to each element of a
+    (any, any) -> a paired with each item of b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], types.FunctionType): lambda: list(
+            map(
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
+            )
+        ),
+        (types.FunctionType, ts[1]): lambda: list(
+            map(
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
+            )
+        ),
+    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
 
 
 def vy_str(lhs, ctx=None):
@@ -1144,7 +1222,17 @@ elements: dict[str, tuple[str, int]] = {
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
+    "^": ("stack = stack[::-1]", 0),
+    "_": ("pop(stack, 1, ctx)", 1),
+    "a": process_element("int(all(lhs))", 1),
+    "b": process_element(vy_bin, 1),
+    "c": process_element(contains, 2),
+    "d": process_element("multiply(lhs, 2, ctx)", 1),
+    "e": process_element(exponent, 2),
     "f": process_element(deep_flatten, 1),
+    "g": process_element(monadic_minimum, 1),
+    "h": process_element("iterable(lhs, ctx)[0]", 1),
+    "i": process_element(index, 2),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
 }

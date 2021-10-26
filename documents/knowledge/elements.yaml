@@ -1901,7 +1901,7 @@
     - "[[1, 2, 2, 3, 3, 3, 3]] : [[1, 1], [2, 2], [3, 4]]"
     - '["Hello, World!"] : [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]'
 
-- element: Ḋ
+- element: "Ḋ"
   name: Is Divisible / Arbitrary Duplicate
   arity: 2
   description: Returns whether two items are divisble / numerious copies of the top of the stack
@@ -1916,7 +1916,7 @@
     - '["abc", 3] : "abc"'
     - "[[5, 13, 29, 48, 12], 2] : [0, 0, 0, 1, 1]"
 
-- element: Ė
+- element: "Ė"
   name: Vyxal Exec / Reciprocal
   arity: 1
   description: Executes as Vyxal / Reciprocal of number
@@ -1928,7 +1928,7 @@
     - "[[2, 3, -1]] : [0.5, 1/3, -1]"
     - '["kH"] : "Hello, World!"'
 
-- element: Ḟ
+- element: "Ḟ"
   name: Generator from function with initial vector
   arity: 2
   description: Make a generator from function a with initial vector b.
@@ -1936,7 +1936,7 @@
     fun-lst: Generator from function a with initial vector b
   vectorise: false
 
-- element: Ġ
+- element: "Ġ"
   name: Group consecutive
   arity: 1
   description: Group consecutive identical items
@@ -1949,7 +1949,7 @@
     - "[[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]] : [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]"
     - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!""]]'
 
-- element: Ḣ
+- element: "Ḣ"
   name: Tail
   arity: 1
   description: All but the first item of a list / Drop 1
@@ -1966,7 +1966,7 @@
     - "[1234.56] : 234.56"
     - "[0.2] : 0.2"
 
-- element: İ
+- element: "İ"
   name: Index into or find cycle
   arity: 1
   description: >-
