@@ -339,17 +339,21 @@ def inclusive_zero_range(lhs, ctx):
 
 def index(lhs, rhs, ctx):
     """Element i
-    (any-num) -> a[b] (Index)
-    (any-[x]) -> a[:b] (0 to bth item of a)
-    (any-[x,y]) -> a[x:y] (x to yth item of a)
-    (any-[x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
+    (any, num) -> a[b] (Index)
+    (str, str) -> enclose b in a # b[0:len(b)//2] + a + b[len(b)//2:]
+    (any, [x]) -> a[:b] (0 to bth item of a)
+    (any, [x,y]) -> a[x:y] (x to yth item of a)
+    (any, [x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
     """
 
-    ts = vy_type(lhs, rhs)
-
+    ts = vy_type(lhs, rhs, True)
     return {
-        # TODO: what to do with string indexing (e.g. [1,2,3,4,5,6,7]["abcde"])?
-    }
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: iterable(lhs)[int(rhs)],
+        (NUMBER_TYPE, str): lambda: rhs[int(lhs)],
+        (str, str): lambda: rhs[0 : len(b) // 2] + lhs + rhs[len(b) // 2 :],
+        (ts[0], NUMBER_TYPE): lambda: lhs[rhs],
+        (ts[0], list): lambda: iterable(lhs)[slice(*rhs)],
+    }.get(ts, lambda: vectorise(index, lhs, rhs, ctx=ctx))()
 
 
 def infinite_list(ctx):
@@ -420,6 +424,14 @@ def is_prime(lhs, ctx):
     }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
 
 
+def join(lhs, rhs, ctx):
+    """Element j
+    (any, any) -> a.join(b)
+    """
+
+    return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -485,6 +497,16 @@ def merge(lhs, rhs, ctx):
         (ts[0], list): lambda: [lhs] + rhs,
         (list, list): lambda: lhs + rhs,
     }.get(ts)()
+
+
+def mirror(lhs, ctx):
+    """Element m
+    (num) -> a + reversed(a) (as number)
+    (str) -> a + reversed(a)
+    (lst) -> Append reversed(a) to a
+    """
+
+    return add(lhs, reverse(lhs))
 
 
 def modulo(lhs, rhs, ctx):
@@ -633,6 +655,23 @@ def orderless_range(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
 
 
+def overlapping_groups(lhs, rhs, ctx):
+    """Element l
+    (any, num) -> Overlapping groups of a of length b
+    (any, any) -> length(a) == length(b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    if vy_type(rhs) != NUMBER_TYPE:
+        return len(iterable(lhs)) == len(rhs)
+    iters = itertools.tee(iterable(lhs), rhs)
+    for i in range(len(iters)):
+        for j in range(i):
+            next(iters[i], None)
+
+    return LazyList(zip(*iters))
+
+
 def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
@@ -642,6 +681,25 @@ def prime_factors(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
+
+
+def prepend(lhs, rhs, ctx):
+    """Element p
+    (any, any) -> a.prepend(b) (Prepend b to a)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
+        ts, lambda: [rhs] + lhs
+    )()
+
+
+def remove(lhs, rhs, ctx):
+    """Element o
+    (any, any) -> a.remove(b)
+    """
+
+    return replace(lhs, rhs, "", ctx)
 
 
 def replace(lhs, rhs, other, ctx):
@@ -1233,6 +1291,11 @@ elements: dict[str, tuple[str, int]] = {
     "g": process_element(monadic_minimum, 1),
     "h": process_element("iterable(lhs, ctx)[0]", 1),
     "i": process_element(index, 2),
+    "j": process_element(join, 2),
+    "l": process_element(overlapping_groups, 2),
+    "m": process_element(mirror, 1),
+    "o": process_element(remove, 2),
+    "p": process_element(prepend, 2),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
 }
