@@ -1063,6 +1063,30 @@ def vy_map(lhs, rhs, ctx):
     }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
 
 
+def vy_sort(lhs, ctx):
+    """
+    (any) -> sorted(a)
+    """
+
+    # This one deviates from the usual type dictionary, because lambas
+    # just don't cut it.
+
+    if isinstance(lhs, int):
+        if lhs >= 0:
+            return int("".join(sorted(str(lhs))))
+        else:
+            return int("".join(sorted(str(-lhs)))) * -1
+    elif vy_type(lhs) == NUMBER_TYPE:
+        numerator, denomiator = str(lhs).split("/")
+        numerator = vy_sort(numerator, ctx)
+        denomiator = vy_sort(denomiator, ctx)
+        return sympy.Rational(numerator, denomiator)
+    elif isinstance(lhs, str):
+        return "".join(sorted(lhs))
+    else:
+        return LazyList(sorted(lhs))
+
+
 def vy_str(lhs, ctx=None):
     """Element S
     (any) -> str(s)
@@ -1311,6 +1335,7 @@ elements: dict[str, tuple[str, int]] = {
     "p": process_element(prepend, 2),
     "q": process_element(quotify, 1),
     "r": process_element(orderless_range, 2),
+    "s": process_element(vy_sort, 1),
     "ǎ": process_element(substrings, 1),
 }
 modifiers = {
