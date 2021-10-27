@@ -229,11 +229,12 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
-            + indent_str("res = wrapify(pop(stack, 1, ctx))", indent + 1)
+            + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
+            + indent_str(f"_lambda_{id_}.arity = {struct.branches[0]}", indent)
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 

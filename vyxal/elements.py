@@ -872,6 +872,24 @@ def truthy_indicies(lhs, ctx):
     return helper()
 
 
+def uninterleave(lhs, ctx):
+    """- element: "y"
+    name: Uninterleave
+    description: Push every other item of a, and the rest.
+    arity: 1
+    overloads:
+      any: a[::2], a[1::2] (Every second item, the rest)
+    vectorise: false
+    tests:
+      - '["abcde"] : "bd"'
+      - "[[1,2,3,4]] : [2,4]"
+    """
+    return [
+        index(deep_copy(lhs), [None, None, 2], ctx),
+        index(lhs, [1, None, 2], ctx),
+    ]
+
+
 def uniquify(lhs, ctx):
     """Element U
     (any) -> only unique items of a
@@ -929,13 +947,17 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             ),
             (list, list, list): lambda: (
                 safe_apply(function, x, y, z, ctx=ctx)
-                for x, y, z in vy_zip(lhs, rhs, other)
+                for x, y in vy_zip(lhs, rhs)
+                for z in other
             ),
         }
 
         if explicit:
             return LazyList(
-                (safe_apply(x, rhs, other, ctx=ctx) for x in iterable(lhs))
+                (
+                    safe_apply(x, rhs, other, ctx=ctx)
+                    for x in iterable(lhs, ctx=ctx)
+                )
             )
         else:
             return LazyList(simple.get(ts)())
@@ -953,7 +975,8 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
                 safe_apply(function, x, rhs, ctx=ctx) for x in lhs
             ),
             (list, list): lambda: (
-                safe_apply(function, x, y, ctx=ctx) for x, y in vy_zip(lhs, rhs)
+                safe_apply(function, x, y, ctx=ctx)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
             ),
         }
 
@@ -1356,13 +1379,18 @@ elements: dict[str, tuple[str, int]] = {
         "else '' if type(lhs) is str else 0",
         1,
     ),
+    "u": process_element("-1", 0),
+    "w": process_element("[lhs]", 1),
+    "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
+    "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "ǎ": process_element(substrings, 1),
 }
 modifiers = {
     "v": (
-        "arguments = pop(stack, function_A.stored_arity, ctx=ctx)\n"
+        "arguments = pop(stack, function_A.arity, ctx=ctx)\n"
         + "if len(arguments) == 1: arguments = [arguments]\n"
         + "stack.append"
         + "(vectorise(function_A, *arguments[::-1], explicit=True, ctx=ctx))\n"
-    )
+    ),
+    "~": ("arguments = pop(stack, function_A.arity, ctx=ctx)"),
 }
