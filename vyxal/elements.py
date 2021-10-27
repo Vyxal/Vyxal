@@ -1387,10 +1387,14 @@ elements: dict[str, tuple[str, int]] = {
 }
 modifiers = {
     "v": (
-        "arguments = pop(stack, function_A.arity, ctx=ctx)\n"
-        + "if len(arguments) == 1: arguments = [arguments]\n"
+        "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
         + "stack.append"
         + "(vectorise(function_A, *arguments[::-1], explicit=True, ctx=ctx))\n"
     ),
-    "~": ("arguments = pop(stack, function_A.arity, ctx=ctx)"),
+    "~": (
+        "ctx.retain_popped = True\n"
+        + "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
+        + "ctx.retain_popped = False\n"
+        + "stack.append(safe_apply(function_A, *arguments[::-1], ctx=ctx))\n"
+    ),
 }
