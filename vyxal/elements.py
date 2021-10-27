@@ -694,6 +694,19 @@ def prepend(lhs, rhs, ctx):
     )()
 
 
+def quotify(lhs, ctx):
+    """Element q
+    (any) -> ` + a + ` (Quotify a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: "`{}`".format(lhs),
+        (str): lambda: "`{}`".format(lhs.replace("`", "\\`")),
+        (types.FunctionType): lambda: "`{}`".format(lhs.__name__),
+    }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
+
+
 def remove(lhs, rhs, ctx):
     """Element o
     (any, any) -> a.remove(b)
@@ -1296,6 +1309,7 @@ elements: dict[str, tuple[str, int]] = {
     "m": process_element(mirror, 1),
     "o": process_element(remove, 2),
     "p": process_element(prepend, 2),
+    "q": process_element(quotify, 1),
     "r": process_element(orderless_range, 2),
     "ǎ": process_element(substrings, 1),
 }
