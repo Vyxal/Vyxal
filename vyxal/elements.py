@@ -346,14 +346,25 @@ def index(lhs, rhs, ctx):
     (any, [x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
     """
 
-    ts = vy_type(lhs, rhs, True)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: iterable(lhs)[int(rhs)],
-        (NUMBER_TYPE, str): lambda: rhs[int(lhs)],
-        (str, str): lambda: rhs[0 : len(b) // 2] + lhs + rhs[len(b) // 2 :],
-        (ts[0], NUMBER_TYPE): lambda: lhs[rhs],
-        (ts[0], list): lambda: iterable(lhs)[slice(*rhs)],
-    }.get(ts, lambda: vectorise(index, lhs, rhs, ctx=ctx))()
+    ts = vy_type(lhs, rhs)
+    if ts == (str, str):
+        # b[0:len(b)//2] + a + b[len(b)//2:]
+        return lhs[: len(rhs) // 2] + rhs + lhs[len(rhs) // 2 :]
+
+    elif ts == (LazyList, NUMBER_TYPE):
+        return lhs[int(rhs)]
+
+    elif ts[-1] == NUMBER_TYPE:
+        if len(iterable(lhs)):
+            return iterable(lhs, ctx)[int(rhs) % len(iterable(lhs, ctx))]
+        else:
+            return "" if ts[0] is str else 0
+
+    elif ts[-1] == str:
+        return vectorise(index, lhs, rhs, ctx=ctx)
+
+    else:
+        return iterable(lhs, ctx)[slice(*rhs)]
 
 
 def infinite_list(ctx):
@@ -1326,7 +1337,11 @@ elements: dict[str, tuple[str, int]] = {
     "e": process_element(exponent, 2),
     "f": process_element(deep_flatten, 1),
     "g": process_element(monadic_minimum, 1),
-    "h": process_element("iterable(lhs, ctx)[0]", 1),
+    "h": process_element(
+        "iterable(lhs, ctx)[0] if len(iterable(lhs, ctx)) "
+        "else '' if type(lhs) is str else 0",
+        1,
+    ),
     "i": process_element(index, 2),
     "j": process_element(join, 2),
     "l": process_element(overlapping_groups, 2),
@@ -1336,6 +1351,11 @@ elements: dict[str, tuple[str, int]] = {
     "q": process_element(quotify, 1),
     "r": process_element(orderless_range, 2),
     "s": process_element(vy_sort, 1),
+    "t": process_element(
+        "iterable(lhs, ctx)[-1] if len(iterable(lhs, ctx)) "
+        "else '' if type(lhs) is str else 0",
+        1,
+    ),
     "ǎ": process_element(substrings, 1),
 }
 modifiers = {
