@@ -99,12 +99,18 @@ class LazyList:
                 @lazylist
                 def infinite_index():
                     if len(self.generated):
-                        for lhs in self.generated[position::step]:
+                        for lhs in self.generated[start::step]:
                             yield lhs
-                        temp = next(self)
+                        steps = len(self.generated)
+                        temp = 1
                         while temp:
-                            yield temp
-                            temp = next(self)
+                            try:
+                                temp = next(self)
+                                steps += 1
+                                if steps % step == 0:
+                                    yield temp
+                            except StopIteration:
+                                break
 
                 return infinite_index()
             else:

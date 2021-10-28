@@ -1663,6 +1663,11 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(vy_gcd(pop(stack, 1, ctx), top, ctx))\n",
         2,
     ),
+    "ḣ": (
+        "top = pop(stack, 1, ctx); stack.append(head(top, ctx));"
+        " stack.append(index(top, [1, None], ctx))",
+        1,
+    ),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),
