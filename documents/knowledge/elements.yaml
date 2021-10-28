@@ -1303,17 +1303,17 @@
     - '[3,"(stuff)"] : "(stuff)"'
 
 - element: "›"
-  name: Increment
-  description: Add 1 to a number
+  name: Increment / Space Replace With 0
+  description: Add 1 to a number / replace all spaces in a string with "0"
   arity: 1
   overloads:
     num: a + 1
-    string: a + "1"
+    string: a.replace(" ","0")
   vectorise: true
   tests:
     - "[5] : 6"
     - "[[3,4]] : [4,5]"
-    - '["hello"] : "hello1"'
+    - '["  101"] : "00101"'
 
 - element: "‹"
   name: Decrement
@@ -1366,7 +1366,7 @@
   arity: 0
 
 - element: "β"
-  name: To Base Ten
+  name: To Base Ten / From Custom Base
   description: Convert a number from a custom base to base 10
   arity: 2
   overloads:
@@ -1379,7 +1379,7 @@
     - "[[15,23,9],31] : 15137"
 
 - element: "τ"
-  name: From Base Ten
+  name: From Base Ten / To Custom Base
   description: Convert a number to a different base from base 10.
   arity: 2
   overloads:

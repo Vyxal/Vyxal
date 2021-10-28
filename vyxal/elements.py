@@ -138,6 +138,18 @@ def count(lhs, rhs, ctx):
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
+def decrement(lhs, ctx):
+    """Element ‹
+    (num) -> a - 1
+    (str) -> a + "-"
+    """
+
+    ts = vy_type(lhs)
+    return {NUMBER_TYPE: lambda: lhs - 1, str: lambda: lhs + "-"}.get(
+        ts, lambda: vectorise(decrement, lhs, ctx=ctx)
+    )()
+
+
 def deep_flatten(lhs, ctx):
     """Element f
     (any) -> flatten list
@@ -185,6 +197,22 @@ def divisors(lhs, ctx):
             )
         ),
     }.get(ts, lambda: LazyList((lhs[: x + 1] for x in range(len(x)))))()
+
+
+def dyadic_maximum(lhs, rhs, ctx):
+    """Element ∴
+    (any, any) -> max(a, b)
+    """
+
+    return lhs if greater_than(lhs, rhs, ctx) else rhs
+
+
+def dyadic_minimum(lhs, rhs, ctx):
+    """Element ∵
+    (any, any) -> min(a, b)
+    """
+
+    return lhs if less_than(lhs, rhs, ctx) else rhs
 
 
 def exclusive_one_range(lhs, ctx):
@@ -262,6 +290,20 @@ def function_call(lhs, ctx):
             str: lambda: exec(lhs) or [],
             list: lambda: vectorised_not(top, ctx),
         }.get(ts)()
+
+
+def from_base(lhs, rhs, ctx):
+    """Element β
+    Convert lhs from base rhs to base 10
+    """
+
+    ts = vy_type(lhs, rhs)
+    if ts == (str, str):
+        return from_base([rhs.find(x) + 1 for x in lhs], len(rhs), ctx)
+    elif ts[-1] == NUMBER_TYPE:
+        lhs = [chr(x) if type(x) is str else x for x in iterable(lhs)]
+        exponents = list(exponent(rhs, list(range(0, len(lhs))), ctx))[::-1]
+        return sum(multiply(lhs, exponents, ctx))
 
 
 def equals(lhs, rhs, ctx):
@@ -348,6 +390,18 @@ def inclusive_zero_range(lhs, ctx):
             [int(char in string.ascii_letters) for char in lhs]
         ),
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
+
+
+def increment(lhs, ctx):
+    """Element ›
+    (num) -> lhs + 1
+    (str) -> replace spaces with 0s
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: lhs + 1,
+        str: lambda: lhs.replace(" ", "0"),
+    }.get(ts, lambda: vectorise(increment, lhs, ctx=ctx))()
 
 
 def index(lhs, rhs, ctx):
@@ -731,6 +785,19 @@ def overlapping_groups(lhs, rhs, ctx):
     return LazyList(zip(*iters))
 
 
+def parity(lhs, ctx):
+    """Element ∷
+    (num) -> parity of a
+    (str) -> parity of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: int(lhs % 2),
+        (str): lambda: divide(lhs, 2)[-1],
+    }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
+
+
 def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
@@ -916,6 +983,10 @@ def tail(lhs, ctx):
         if type(lhs) is str
         else 0
     )
+
+
+def to_base(lhs, rhs, ctx):
+    return None
 
 
 def truthy_indicies(lhs, ctx):
@@ -1439,9 +1510,17 @@ elements: dict[str, tuple[str, int]] = {
     "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "↑": process_element(max_by_tail, 1),
     "↓": process_element(min_by_tail, 1),
+    "∴": process_element(dyadic_maximum, 2),
+    "∵": process_element(dyadic_minimum, 2),
+    "∷": process_element(parity, 1),
+    "¤": process_element("''", 0),
+    "ð": process_element("' '", 0),
+    "β": process_element(from_base, 2),
+    "›": process_element(increment, 1),
+    "‹": process_element(decrement, 1),
     "ǎ": process_element(substrings, 1),
 }
-modifiers = {
+modifiers: dict[str, str] = {
     "v": (
         "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
         + "stack.append"
