@@ -304,6 +304,11 @@ def scanl(
         yield foldl(function, vector[:i], ctx=ctx)
 
 
+def suffixes(string: str, ctx: Context) -> List[str]:
+    """Returns a list of suffixes of string"""
+    return [string[-i:] for i in range(len(string))]
+
+
 def to_base_digits(value: int, base: int) -> List[int]:
     """Returns value in base 'base' from base 10 as a list of digits"""
 

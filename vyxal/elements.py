@@ -4,6 +4,7 @@
 the python equivalent of command is stored
 """
 
+from functools import reduce
 import itertools
 import math
 import random
@@ -1296,6 +1297,23 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
 
 
+def vy_gcd(lhs, rhs=None, ctx=None):
+
+    ts = vy_type(lhs, rhs)
+    NONE = type(None)
+
+    return {
+        (ts[0], NONE): lambda: reduce(
+            lambda x, y: vy_gcd(x, y, ctx=ctx), iterable(lhs, ctx=ctx)
+        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: math.gcd(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: vy_gcd(lhs, wrapify(chr_ord(rhs)), ctx=ctx),
+        (str, str): lambda: monadic_maximum(
+            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx
+        ),
+    }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
+
+
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
@@ -1637,6 +1655,14 @@ elements: dict[str, tuple[str, int]] = {
     "ḋ": process_element(vy_divmod, 2),
     "ė": process_element(vy_enumerate, 1),
     "ḟ": process_element(find, 2),
+    "ġ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top, simple=True) is list:\n"
+        "    stack.append(vy_gcd(top, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(vy_gcd(pop(stack, 1, ctx), top, ctx))\n",
+        2,
+    ),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),
