@@ -310,6 +310,19 @@ def halve(lhs, ctx):
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
+def head(lhs, ctx):
+    """Element h
+    (any) -> a[0]
+    """
+    return (
+        iterable(lhs, ctx)[0]
+        if len(iterable(lhs, ctx))
+        else ""
+        if type(lhs) is str
+        else 0
+    )
+
+
 def inclusive_one_range(lhs, ctx):
     """Element ɾ
     (num) -> range(1, a + 1)
@@ -488,6 +501,24 @@ def less_than(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
 
 
+def max_by_tail(lhs, ctx):
+    """Element ↑
+    (any) -> max(a, key=lambda x: x[-1])
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    if len(lhs) == 0:
+        return []
+    elif len(lhs) == 1:
+        return lhs[0]
+    else:
+        biggest = lhs[0]
+        for item in lhs[1:]:
+            if greater_than(tail(item, ctx), tail(biggest, ctx), ctx):
+                biggest = item
+        return biggest
+
+
 def merge(lhs, rhs, ctx):
     """Element J
     (scl, scl) -> concatenate a and b
@@ -508,6 +539,23 @@ def merge(lhs, rhs, ctx):
         (ts[0], list): lambda: [lhs] + rhs,
         (list, list): lambda: lhs + rhs,
     }.get(ts)()
+
+
+def min_by_tail(lhs, ctx):
+    """Element ↓
+    (any) -> min(a, key=lambda x: x[-1])
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    if len(lhs) == 0:
+        return []
+    elif len(lhs) == 1:
+        return lhs[0]
+    else:
+        smallest = lhs[0]
+        for item in lhs[1:]:
+            if less_than(tail(item, ctx), tail(smallest, ctx), ctx):
+                smallest = item
+        return smallest
 
 
 def mirror(lhs, ctx):
@@ -854,6 +902,20 @@ def subtract(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + ("-" * rhs),
         (str, str): lambda: lhs.replace(rhs, ""),
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
+
+
+def tail(lhs, ctx):
+    """Element t
+    (any) -> a[-1]
+    """
+
+    return (
+        iterable(lhs, ctx)[-1]
+        if len(iterable(lhs, ctx))
+        else ""
+        if type(lhs) is str
+        else 0
+    )
 
 
 def truthy_indicies(lhs, ctx):
@@ -1360,11 +1422,7 @@ elements: dict[str, tuple[str, int]] = {
     "e": process_element(exponent, 2),
     "f": process_element(deep_flatten, 1),
     "g": process_element(monadic_minimum, 1),
-    "h": process_element(
-        "iterable(lhs, ctx)[0] if len(iterable(lhs, ctx)) "
-        "else '' if type(lhs) is str else 0",
-        1,
-    ),
+    "h": process_element(head, 1),
     "i": process_element(index, 2),
     "j": process_element(join, 2),
     "l": process_element(overlapping_groups, 2),
@@ -1374,15 +1432,13 @@ elements: dict[str, tuple[str, int]] = {
     "q": process_element(quotify, 1),
     "r": process_element(orderless_range, 2),
     "s": process_element(vy_sort, 1),
-    "t": process_element(
-        "iterable(lhs, ctx)[-1] if len(iterable(lhs, ctx)) "
-        "else '' if type(lhs) is str else 0",
-        1,
-    ),
+    "t": process_element(tail, 1),
     "u": process_element("-1", 0),
     "w": process_element("[lhs]", 1),
     "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
     "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
+    "↑": process_element(max_by_tail, 1),
+    "↓": process_element(min_by_tail, 1),
     "ǎ": process_element(substrings, 1),
 }
 modifiers = {

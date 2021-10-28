@@ -1231,13 +1231,13 @@
 - element: "z"
   name: Zip-self
   description: Zip a with itself
-  arity: 2
+  arity: 1
   overloads:
-    any-any: a, zip(b,b)
+    any: zip(a,a)
   vectorise: false
   tests:
-    - "[1,[1,2,3]] : [[1,1],[2,2],[3,3]]"
-    - '[1,"zap"] : [["z","z"], ["a","a"],["p","p"]]'
+    - "[[1,2,3]] : [[1,1],[2,2],[3,3]]"
+    - '["zap"] : [["z","z"], ["a","a"],["p","p"]]'
 
 - element: "{"
   name: Open While Loop
@@ -1267,7 +1267,7 @@
     - "[[[3,4],[9,2]]] : [3,4]"
     - "[[1,2,3],[2,5]] : [2,5]"
 
-- element: "↑"
+- element: "↓"
   name: Min by Tail
   description: Minimum by last item
   arity: 1
