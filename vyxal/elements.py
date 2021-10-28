@@ -9,6 +9,7 @@ import itertools
 import math
 import random
 import string
+from token import NUMBER
 import types
 from typing import Union
 
@@ -493,6 +494,29 @@ def infinite_replace(lhs, rhs, other, ctx):
     return lhs
 
 
+def integer_divide(lhs, rhs, ctx):
+    """Element ḭ
+    (num, num) -> a // b (Floor division, floor(a / b))
+    (str, num) -> (a divided into b pieces)[0]
+    (num, str) -> (b divided into a pieces)[0]
+    (any, fun) -> Right reduce a by b (foldr)
+    (fun, any) -> Right reduce b by a (foldr)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs // rhs,
+        (NUMBER_TYPE, str): lambda: divide(lhs, rhs, ctx=ctx)[0],
+        (str, NUMBER_TYPE): lambda: divide(rhs, lhs, ctx=ctx)[0],
+        (ts[0], types.FunctionType): lambda: foldl(
+            rhs, reverse(iterable(lhs, ctx=ctx), ctx=ctx), ctx
+        ),
+        (types.FunctionType, ts[1]): lambda: foldl(
+            lhs, reverse(iterable(rhs, ctx=ctx), ctx=ctx), ctx
+        ),
+    }.get(ts, lambda: vectorise(integer_divide, lhs, rhs, ctx=ctx))()
+
+
 def interleave(lhs, rhs, ctx):
     """Element Y
     (any, any) -> interleave a and b
@@ -545,6 +569,40 @@ def join(lhs, rhs, ctx):
     """
 
     return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
+
+
+def ljust(lhs, rhs, other, ctx):
+    """Element ŀ
+    (num, num, num) -> a <= c <= b
+    (num, num, str) -> a by b grid of c
+    (num, str, num) -> a by c grid of b
+    (num, str, str) -> b.ljust(a,filler=c)
+    (str, num, num) -> b by c grid of a
+    (str, num, str) -> a.ljust(c,filler=b)
+    (str, str, num) -> a.ljust(b,filler=c)
+    (str, str, str) -> a.infinite_replace(b, c)
+    (fun, fun, any) -> collect_until_false(predicate=a,
+                       modifying_function=b, inital=c)
+                       # Collect the results of apply a on c while b(c)
+                       # is truthy
+    """
+
+    ts = vy_type(lhs, rhs, other)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: lhs <= other <= rhs,
+        (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
+        (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
+        (NUMBER_TYPE, str, str): lambda: vy_str(rhs).ljust(lhs, other),
+        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
+        (str, NUMBER_TYPE, str): lambda: vy_str(lhs).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs).ljust(rhs, other),
+        (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
+        (
+            types.FunctionType,
+            types.FunctionType,
+            any,
+        ): lambda: collect_until_false(lhs, rhs, other, ctx),
+    }.get(ts, vectorise(ljust, lhs, rhs, other, ctx=ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -1668,6 +1726,7 @@ elements: dict[str, tuple[str, int]] = {
         " stack.append(index(top, [1, None], ctx))",
         1,
     ),
+    "ḭ": process_element(integer_divide, 2),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),

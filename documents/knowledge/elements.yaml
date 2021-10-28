@@ -1514,15 +1514,22 @@
     - '[3,"hello!"] : "he"'
 
 - element: "ŀ"
-  name: Find From Index
+  name: Left Justify / Gridify / Infinite Replace / Collect until fale
   description: Find one value inside another, starting from a certain index.
   arity: 3
   overloads:
-    any-any-num: a.find(b, start = c) ( Find from c)
-  vectorise: false
-  tests:
-    - '["hello world","o",5] : 7'
-    - '["hello world","l",4] : 9'
+    num-num-num: a <= c <= b
+    num-num-str: a by b grid of c
+    num-str-num: a by c grid of b
+    num-str-str: b.ljust(a,filler=c)
+    str-num-num: b by c grid of a
+    str-num-str: a.ljust(c,filler=b)
+    str-str-num: a.ljust(b,filler=c)
+    str-str-str: a.infinite_replace(b, c)
+    fun-fun-any: collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply a on c while b(c) is truthy
+  vectorise: true
+  tests: # TODO: More test cases
+    - "[1, 3, 2] : 1"
 
 - element: "ṁ"
   name: Mean
