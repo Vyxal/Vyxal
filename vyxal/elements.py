@@ -487,6 +487,14 @@ def interleave(lhs, rhs, ctx):
         return f()
 
 
+def is_falsey(lhs, ctx):
+    """Element ċ
+    (any) -> a != 1
+    """
+
+    return vectorised_not(equals(lhs, 1, ctx=ctx))
+
+
 def is_prime(lhs, ctx):
     """Element æ
     (num) -> is a prime?
@@ -1170,6 +1178,17 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vy_abs(lhs, ctx):
+    """Elements ȧ
+    (num) -> abs(a)
+    (str) -> remove whitespace from a
+    """
+    return {
+        NUMBER_TYPE: lambda: abs(lhs),
+        str: lambda: lhs.replace(" ", ""),
+    }.get(vy_type(lhs), lambda: vectorise(vy_abs, lhs, ctx=ctx))()
+
+
 def vy_bin(lhs, ctx):
     """Element b
     (num) -> list of binary digits
@@ -1194,6 +1213,28 @@ def vy_ceil(lhs, ctx):
         (NUMBER_TYPE): lambda: math.ceil(lhs),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
+
+
+def vy_divmod(lhs, rhs, ctx):
+    """Element ḋ
+    (num, num) -> [lhs // rhs, lhs % rhs]
+    (iterable, num) -> combinations of a with length b
+    (str, str) ->  overwrite the start of a with b
+    """
+
+    ts = vy_type(lhs, rhs, True)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs // rhs, lhs % rhs],
+        (NUMBER_TYPE, str): lambda: LazyList(
+            map(sum, itertools.combinations(lhs, rhs))
+        ),
+        (str, NUMBER_TYPE): lambda: LazyList(
+            map(sum, itertools.combinations(rhs, lhs))
+        ),
+        (str, str): lambda: lhs[: len(rhs)] + rhs,
+        (list, NUMBER_TYPE): lambda: LazyList(itertools.combinations(lhs, rhs)),
+        (NUMBER_TYPE, list): lambda: LazyList(itertools.combinations(rhs, lhs)),
+    }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
@@ -1554,6 +1595,12 @@ elements: dict[str, tuple[str, int]] = {
     "τ": process_element(to_base, 2),
     "›": process_element(increment, 1),
     "‹": process_element(decrement, 1),
+    "ȧ": process_element(vy_abs, 1),
+    "ḃ": process_element(boolify, 1),
+    "ċ": process_element(is_falsey, 1),
+    "ḋ": process_element(vy_divmod, 2),
+    "Ṙ": process_element(reverse, 1),
+    "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),
 }
 modifiers: dict[str, str] = {
