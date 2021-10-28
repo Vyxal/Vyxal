@@ -986,7 +986,29 @@ def tail(lhs, ctx):
 
 
 def to_base(lhs, rhs, ctx):
-    return None
+    """Element τ
+    Convert lhs from base 10 to base rhs
+    """
+
+    if vy_type(lhs) is not NUMBER_TYPE:
+        raise ValueError("to_base only works on numbers")
+
+    if vy_type(rhs) == NUMBER_TYPE:
+        rhs = list(range(0, int(rhs)))
+    else:
+        rhs = iterable(rhs, ctx=ctx)
+    if len(rhs) == 1:
+        maximal_exponent = lhs
+    else:
+        maximal_exponent = int(log_mold_multi(lhs, len(rhs), ctx))
+
+    res = []
+    for i in range(maximal_exponent, -1, -1):
+        digit, remaining = divmod(lhs, len(rhs) ** i)
+        res.append(index(rhs, digit, ctx))
+        lhs = remaining
+
+    return res
 
 
 def truthy_indicies(lhs, ctx):
@@ -1159,6 +1181,19 @@ def vy_bin(lhs, ctx):
         (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
         (str): lambda: vectorise(vy_bin, wrapify(chr_ord(lhs)), ctx=ctx),
     }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
+
+
+def vy_ceil(lhs, ctx):
+    """Element ⌈
+    (num) -> ceil(a)
+    (str) -> a.split(' ') # split a on spaces
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: math.ceil(lhs),
+        (str): lambda: lhs.split(" "),
+    }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
@@ -1516,6 +1551,7 @@ elements: dict[str, tuple[str, int]] = {
     "¤": process_element("''", 0),
     "ð": process_element("' '", 0),
     "β": process_element(from_base, 2),
+    "τ": process_element(to_base, 2),
     "›": process_element(increment, 1),
     "‹": process_element(decrement, 1),
     "ǎ": process_element(substrings, 1),
