@@ -270,6 +270,34 @@ def exponent(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 
+def find(lhs, rhs, ctx):
+    """Element ḟ
+    (any, any) -> a.find(b)
+    (any, fun) -> truthy indices of mapping b over a
+    """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType not in ts:
+        return iterable(lhs, ctx=ctx).find(rhs)
+    else:
+        return {
+            (ts[0], types.FunctionType): lambda: LazyList(
+                (
+                    i
+                    for i in range(len(iterable(lhs, ctx=ctx)))
+                    if safe_apply(rhs, iterable(lhs, ctx=ctx)[i], ctx=ctx)
+                )
+            ),
+            (types.FunctionType, ts[1]): lambda: LazyList(
+                (
+                    i
+                    for i in range(len(iterable(rhs, ctx=ctx)))
+                    if safe_apply(lhs, iterable(rhs, ctx=ctx)[i], ctx=ctx)
+                )
+            ),
+        }.get(ts)()
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -1237,6 +1265,14 @@ def vy_divmod(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
+def vy_enumerate(lhs, ctx):
+    """Element ė
+    (any) -> Zip with a range of the same length
+    """
+
+    return LazyList(enumerate(iterable(lhs, ctx=ctx)))
+
+
 def vy_filter(lhs: Any, rhs: Any, ctx):
     """Element F
     (any, fun) -> Keep elements in a that b is true for
@@ -1599,6 +1635,8 @@ elements: dict[str, tuple[str, int]] = {
     "ḃ": process_element(boolify, 1),
     "ċ": process_element(is_falsey, 1),
     "ḋ": process_element(vy_divmod, 2),
+    "ė": process_element(vy_enumerate, 1),
+    "ḟ": process_element(find, 2),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),
