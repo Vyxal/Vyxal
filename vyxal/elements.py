@@ -15,6 +15,7 @@ from typing import Union
 
 import numpy
 import sympy
+from helpers import safe_apply
 
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.helpers import *
@@ -298,6 +299,30 @@ def find(lhs, rhs, ctx):
                 )
             ),
         }.get(ts)()
+
+
+def first_integer(lhs, ctx):
+    """Element ṅ
+    (num) -> abs(a) <= 1
+    (str) -> pad with 0s to nearest multiple of 8
+    (lst) -> "".join(a)
+    (fun) -> first integer x where a(x) is truthy
+    """
+
+    if ininstance(lhs, types.FunctionType):
+        value = 1
+
+        while not safe_apply(lhs, value, ctx):
+            value += 1
+
+        return value
+
+    ts = vy_type(lhs, simple)
+    return {
+        (NUMBER_TYPE): lambda: abs(lhs) <= 1,
+        (str): lambda: lhs.zfill(len(lhs) + (8 - len(lhs) % 8)),
+        (list): lambda: join(lhs, "", ctx),
+    }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
 def function_call(lhs, ctx):
@@ -1774,6 +1799,7 @@ elements: dict[str, tuple[str, int]] = {
     "ḭ": process_element(integer_divide, 2),
     "ŀ": process_element(ljust, 3),
     "ṁ": process_element(mean, 1),
+    "ṅ": process_element(first_integer, 1),
     "∑": process_element(vy_sum, 1),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
