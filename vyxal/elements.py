@@ -682,13 +682,13 @@ def max_by_tail(lhs, ctx):
 def mean(lhs, ctx):
     """Element ṁ
     (num) -> random.randint(0, a)
-    (str) -> vertically mirrored a
+    (str) -> palindromise a
     (lst) -> arithmetic mean of a
     """
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: random.randint(0, lhs),
-        (str): lambda: vertical_mirror(lhs, ctx),
+        (str): lambda: palindromise(lhs, ctx),
     }.get(ts, lambda: divide(vy_sum(lhs, ctx), len(lhs), ctx))()
 
 
@@ -902,6 +902,19 @@ def overlapping_groups(lhs, rhs, ctx):
             next(iters[i], None)
 
     return LazyList(zip(*iters))
+
+
+def palindromise(lhs, ctx):
+    """Element øm
+    (num) -> equivalent to m
+    (str) -> a + a[:-1:-1]
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: mirror(lhs, ctx),
+        (str): lambda: lhs + lhs[:-1][::-1],
+    }.get(ts, lambda: vectorise(palindromise, lhs, ctx=ctx))()
 
 
 def parity(lhs, ctx):
@@ -1289,11 +1302,6 @@ def vectorised_not(lhs, ctx):
     )()
 
 
-def vertical_mirror(lhs, ctx):
-    """String overload of ṁ"""
-    return "\n".join([mirror(s, ctx) for s in lhs.split("\n")])
-
-
 def vy_abs(lhs, ctx):
     """Elements ȧ
     (num) -> abs(a)
@@ -1500,9 +1508,7 @@ def vy_sum(lhs, ctx=None):
     (any) -> reduce a by addition
     """
 
-    return foldl(
-        add, iterable(lhs, range, ctx=ctx), ctx
-    )
+    return foldl(add, iterable(lhs, range, ctx=ctx), ctx=ctx)
 
 
 def vy_print(lhs, end="\n", ctx=None):
@@ -1772,6 +1778,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "ǎ": process_element(substrings, 1),
+    "øm": process_element(palindromise, 1),
 }
 modifiers: dict[str, str] = {
     "v": (

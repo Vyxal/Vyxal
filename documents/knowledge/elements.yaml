@@ -1536,8 +1536,7 @@
   description: Average of a list - sum / length
   arity: 1
   overloads:
-    num: random.choice(range(a))
-    str: vertical_mirror(a)
+    str: palindromise(a)
     lst: mean(a)
   vectorise: false
   tests:
@@ -3565,6 +3564,16 @@
     - '[4,"hello"] : "4 hellos"'
     - '[1,"hello"] : "1 hello"'
     - '[0,"hello"] : "0 hellos"'
+
+- element: "øṁ"
+  name: Vertical Mirror
+  description: Vertical Mirror - Split by newlines, mirror each line, join by newlines
+  arity: 1
+  overloads:
+    str: vertical_mirror(a)
+  vectorise: true
+  tests:
+    # TODO: MULTILINE TESTCASSES
 
 - element: "øṀ"
   name: Flip Brackets Vertical Mirror
