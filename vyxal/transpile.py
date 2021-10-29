@@ -64,7 +64,9 @@ def transpile_token(token: Token, indent: int) -> str:
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
         string = uncompress(token)  # TODO: Account for -D flag
-        return indent_str(f"stack.append({string!r})", indent)
+        # Can't use {string!r} inside the f-string because that
+        # screws up escape sequences.
+        return indent_str(f'stack.append("{string}")', indent)
     elif token.name == TokenType.NUMBER:
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:

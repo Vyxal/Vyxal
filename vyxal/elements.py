@@ -762,7 +762,7 @@ def mirror(lhs, ctx):
     (lst) -> Append reversed(a) to a
     """
 
-    return add(lhs, reverse(lhs))
+    return add(lhs, reverse(lhs, ctx), ctx)
 
 
 def modulo(lhs, rhs, ctx):
@@ -1421,11 +1421,11 @@ def vertical_mirror(lhs, rhs=None, ctx=None):
         if rhs:
             temp = [
                 s + transliterate(rhs[0], rhs[1], s[::-1])
-                for s in item.split("\n")
+                for s in lhs.split("\n")
             ]
             return "\n".join(temp)
         else:
-            return "\n".join([mirror(s, ctx) for s in item.split("\n")])
+            return "\n".join([mirror(s, ctx) for s in lhs.split("\n")])
     elif vy_type(lhs) == NUMBER_TYPE:
         return mirror(lhs, ctx=ctx)
     else:
@@ -1922,6 +1922,7 @@ elements: dict[str, tuple[str, int]] = {
     "ṅ": process_element(first_integer, 1),
     "ȯ": process_element(slice_from, 2),
     "ṗ": process_element(powerset, 1),
+    "ṙ": process_element(vy_round, 1),
     "∑": process_element(vy_sum, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
