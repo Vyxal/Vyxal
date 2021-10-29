@@ -1562,6 +1562,7 @@
   overloads:
     fun-num: First b integers for which a(x) is truthy
     any-num: a[b:] (Slice from b to the end)
+    str-str: vertically merge a and b
   vectorise: false
   tests:
     - '["hello",2] : "llo"'
@@ -1584,6 +1585,7 @@
   arity: 1
   overloads:
     num: round(a)
+    str: quad palindromize with overlap
   vectorise: true
   tests:
     - "[5.5] : 6"

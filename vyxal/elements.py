@@ -4,18 +4,17 @@
 the python equivalent of command is stored
 """
 
-from functools import reduce
 import itertools
 import math
 import random
 import string
-from token import NUMBER
 import types
+from functools import reduce
+from token import NUMBER
 from typing import Union
 
 import numpy
 import sympy
-from helpers import safe_apply
 
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.helpers import *
@@ -886,6 +885,23 @@ def negate(lhs, ctx):
     )()
 
 
+def non_vectorising_equals(lhs, rhs, ctx):
+    """Element ⁼
+    (num, num) -> a == b
+    (str, str) -> a == b
+    (lst, lst) -> a == b
+    """
+
+    ts = vy_type(lhs, rhs, True)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs == rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) == rhs,
+        (str, NUMBER_TYPE): lambda: lhs == str(rhs),
+        (str, str): lambda: lhs == rhs,
+        (list, list): lambda: lhs == rhs,
+    }.get(ts)()
+
+
 def orderless_range(lhs, rhs, ctx):
     """Element r
     (num, num) -> range(a,b) (Range form a to b)
@@ -955,6 +971,18 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+def powerset(lhs, ctx):
+    """Element ṗ
+    (any) -> powerset of a
+    """
+    return LazyList(
+        itertools.chain.from_iterable(
+            itertools.combinations(iterable(lhs, ctx), r)
+            for r in range(len(iterable(lhs, ctx)) + 1)
+        )
+    )
+
+
 def prime_factors(lhs, ctx):
     """Element Ǐ
     (num) -> prime factors
@@ -1021,6 +1049,39 @@ def reverse(lhs, ctx):
         list: lambda: lhs[::-1],
         LazyList: lambda: lhs.reversed(),
     }.get(ts)()
+
+
+def slice_from(lhs, rhs, ctx):
+    """Element ȯ
+    (fun, num) -> First b integers for which a(x) is truthy
+    (any, num) -> a[b:] (Slice from b to the end)
+    (str, str) -> vertically merge a and b
+    """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        function, count = (
+            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
+        )
+
+        @lazylist
+        def gen():
+            found = 0
+            item = 1
+            while True:
+                if found == count:
+                    break
+                if safe_apply(function, item, ctx):
+                    found += 1
+                    yield item
+                item += 1
+
+        return gen()
+
+    else:
+        return {
+            (str, str): lambda: vertical_merge(lhs, rhs, ctx=ctx),
+        }.get(ts, lambda: index(lhs, [rhs, None, None], ctx))()
 
 
 def split_on(lhs, rhs, ctx):
@@ -1166,6 +1227,33 @@ def to_base(lhs, rhs, ctx):
         lhs = remaining
 
     return res
+
+
+def transliterate(lhs, rhs, other, ctx):
+    """Element Ŀ
+    (any, any, any) -> transliterate lhs according to the
+                       mapping rhs->other
+    """
+
+    mapping = {
+        x: y
+        for x, y in vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx)
+    }
+
+    ret = []
+
+    for item in lhs:
+        for x in mapping:
+            if non_vectorising_equals(item, x, ctx):
+                ret.append(mapping[x])
+                break
+        else:
+            ret.append(item)
+
+    if type(lhs) is str:
+        return "".join(ret)
+    else:
+        return ret
 
 
 def truthy_indicies(lhs, ctx):
@@ -1325,6 +1413,23 @@ def vectorised_not(lhs, ctx):
     return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
         vy_type(lhs), lambda: vectorise(vectorised_not, lhs, ctx=ctx)
     )()
+
+
+def vertical_mirror(lhs, rhs=None, ctx=None):
+    """Element øṁ and øṀ"""
+    if type(lhs) is str:
+        if rhs:
+            temp = [
+                s + transliterate(rhs[0], rhs[1], s[::-1])
+                for s in item.split("\n")
+            ]
+            return "\n".join(temp)
+        else:
+            return "\n".join([mirror(s, ctx) for s in item.split("\n")])
+    elif vy_type(lhs) == NUMBER_TYPE:
+        return mirror(lhs, ctx=ctx)
+    else:
+        return vectorise(vertical_mirror, lhs, rhs, ctx=ctx)
 
 
 def vy_abs(lhs, ctx):
@@ -1593,6 +1698,21 @@ def vy_repr(lhs, ctx):
     )()
 
 
+def vy_round(lhs, ctx):
+    """Element ṙ
+    (num) -> round(a)
+    (str) -> quad palindromize with overlap
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: round(lhs),
+        (str): lambda: vertical_mirror(lhs, ctx=ctx)
+        + "\n"
+        + vertical_mirror(lhs, ctx=ctx)[::-1],
+    }.get(ts)()
+
+
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
@@ -1800,9 +1920,13 @@ elements: dict[str, tuple[str, int]] = {
     "ŀ": process_element(ljust, 3),
     "ṁ": process_element(mean, 1),
     "ṅ": process_element(first_integer, 1),
+    "ȯ": process_element(slice_from, 2),
+    "ṗ": process_element(powerset, 1),
     "∑": process_element(vy_sum, 1),
+    "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
+    "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
     "øm": process_element(palindromise, 1),
 }

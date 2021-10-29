@@ -87,6 +87,9 @@ class LazyList:
                     return 1
             return 0
 
+    def __eq__(self, other):
+        return self.listify() == simplify(other)
+
     def __getitem__(self, position):
         if isinstance(position, slice):
             start, stop, step = (
