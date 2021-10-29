@@ -588,6 +588,7 @@ def ljust(lhs, rhs, other, ctx):
     """
 
     ts = vy_type(lhs, rhs, other)
+
     return {
         (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: lhs <= other <= rhs,
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
@@ -600,9 +601,19 @@ def ljust(lhs, rhs, other, ctx):
         (
             types.FunctionType,
             types.FunctionType,
-            any,
+            ts[-1],
         ): lambda: collect_until_false(lhs, rhs, other, ctx),
-    }.get(ts, vectorise(ljust, lhs, rhs, other, ctx=ctx))()
+        (
+            ts[0],
+            types.FunctionType,
+            types.FunctionType,
+        ): lambda: collect_until_false(rhs, other, lhs, ctx),
+        (
+            types.FunctionType,
+            ts[1],
+            types.FunctionType,
+        ): lambda: collect_until_false(lhs, other, rhs, ctx),
+    }.get(ts, vectorise(ljust, lhs, rhs, other, ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):

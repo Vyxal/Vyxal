@@ -31,6 +31,18 @@ def case_of(value: str) -> int:
     return -1
 
 
+def collect_until_false(
+    function: types.FunctionType,
+    predicate: types.FunctionType,
+    initial: Any,
+    ctx: Context,
+) -> List[Any]:
+    val = initial
+    while safe_apply(predicate, val, ctx):
+        yield val
+        val = safe_apply(function, val, ctx)
+
+
 def deep_copy(value: Any) -> Any:
     """Because lists and lazylists use memory references. Frick them."""
 
