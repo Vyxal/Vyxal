@@ -12,6 +12,7 @@ import types
 from functools import reduce
 from token import NUMBER
 from typing import Union
+from mpmath.libmp.libmpf import to_str
 
 import numpy
 import sympy
@@ -1091,6 +1092,26 @@ def slice_from(lhs, rhs, ctx):
         }.get(ts, lambda: index(lhs, [rhs, None, None], ctx))()
 
 
+def sort_by(lhs, rhs, ctx):
+    """Element ṡ
+    (any, fun) -> sorted(a, key=b) (Sort by b)
+    (num, num) -> range(a, b + 1) (Inclusive range from a to b)
+    (str, str) -> regex.split(string=a, pattern=b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        function, iterable = (
+            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
+        )
+        return sorted(iterable, key=lambda x: safe_apply(function, x, ctx))
+    else:
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
+            (str, str): lambda: re.split(lhs, rhs),
+        }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
+
+
 def split_on(lhs, rhs, ctx):
     """
     Element €
@@ -1930,6 +1951,13 @@ elements: dict[str, tuple[str, int]] = {
     "ȯ": process_element(slice_from, 2),
     "ṗ": process_element(powerset, 1),
     "ṙ": process_element(vy_round, 1),
+    "ṡ": process_element(sort_by, 2),
+    "ṫ": (
+        "top = pop(stack, 1, ctx);"
+        " stack.append(index(top, [None, -1], ctx));"
+        " stack.append(tail(top, ctx))",
+        1,
+    ),
     "∑": process_element(vy_sum, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
