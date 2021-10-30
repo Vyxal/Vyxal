@@ -161,6 +161,14 @@ class LazyList:
         temp = self.listify()
         return temp.count(other)
 
+    def filter(self, fn):
+        @lazylist
+        def gen():
+            for item in self:
+                if fn(item):
+                    yield item
+        return gen()
+
     def listify(self):
         temp = self.generated + simplify(self.raw_object)
         self.raw_object = iter(temp[::])

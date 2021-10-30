@@ -1027,8 +1027,14 @@ def remove(lhs, rhs, ctx):
     """Element o
     (any, any) -> a.remove(b)
     """
-
-    return replace(lhs, rhs, "", ctx)
+    lhs = iterable(lhs)
+    ts = vy_type(lhs)
+    if ts == str:
+        return replace(lhs, rhs, "", ctx)
+    elif ts == LazyList:
+        return lhs.filter(lambda elem: elem != rhs)
+    else:
+        return [elem for elem in lhs if elem != rhs]
 
 
 def repeat(lhs, rhs, ctx):
