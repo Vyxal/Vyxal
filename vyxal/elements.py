@@ -1034,6 +1034,36 @@ def remove(lhs, rhs, ctx):
     return replace(lhs, rhs, "", ctx)
 
 
+def repeat(lhs, rhs, ctx):
+    """Element ẋ
+    (any, num) -> Repeat a b times
+    (str, str) -> a + " " + b
+    (fun, any) -> repeat function a on b while the function results are not-unique
+    (any, fun) -> repeat function b on a while the function results are not-unique
+    """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        function, value = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        @lazylist
+        def gen():
+            prev = value
+            while True:
+                val = safe_apply(function, value, ctx=ctx)
+                if val == prev:
+                    break
+                prev = val
+                yield val
+        return gen()
+    
+    else:
+        return {
+            (ts[0], NUMBER_TYPE): lambda: LazyList(itertools.repeat(iterable(lhs, ctx=ctx), int(rhs)),
+            (NUMBER_TYPE, ts[1]): lambda: LazyList(itertools.repeat(iterable(rhs, ctx=ctx), int(lhs)),
+            (str, str): lambda: lhs + " " + rhs,
+        }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
+
+
 def replace(lhs, rhs, other, ctx):
     """Element V
     (any, any, any) -> a.replace(b, c)

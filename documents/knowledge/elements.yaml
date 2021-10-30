@@ -1647,7 +1647,8 @@
   arity: "*"
   overloads:
     any-num: Repeat a b times
-    fun-fun-any: Collect results of applying b on c while a(c) is truthy
+    fun-any: repeat function a on b while the function results are not-unique
+    any-fun: repeat function b on a while the function results are not-unique
   vectorise: false
   tests:
     - "[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]"
