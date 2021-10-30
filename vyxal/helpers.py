@@ -5,6 +5,7 @@ use type annotations here.
 """
 
 import ast
+import itertools
 import textwrap
 import types
 from typing import Any, List, Union
@@ -51,7 +52,6 @@ def deep_copy(value: Any) -> Any:
         # I don't have any fancy memory references because I'm an epic
         # chad unlike those virgin memory reference needing lists".
 
-    # Use itertools.tee for (LazyL|l)ists
     return LazyList(itertools.tee(value)[-1])
 
 

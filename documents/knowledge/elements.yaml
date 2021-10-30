@@ -312,10 +312,19 @@
     - '["abc","abcd"] : 0'
 
 - element: "∞"
-  name: Positive integers
-  description: List of all non-negative integers, starting at 0
-  arity: 0
+  name: Palindromise
+  description: Palindromise a
+  arity: 1
+  overloads:
+    any: palindromised a
+  vectorise: false
+  tests:
+    - "[1,2,3] : [1,2,3,2,1]"
+    - "[1,2,3,4] : [1,2,3,4,3,2,1]"
+    - "[1,2,3,4,5] : [1,2,3,4,5,4,3,2,1]"
+    - "[1,2,3,4,5,6] : [1,2,3,4,5,6,5,4,3,2,1]"
 
+  
 - element: "¨"
   name: Other Digraphs
   arity: NA

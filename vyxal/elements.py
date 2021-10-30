@@ -946,16 +946,23 @@ def overlapping_groups(lhs, rhs, ctx):
 
 
 def palindromise(lhs, ctx):
-    """Element øm
+    """Element ∞
     (num) -> equivalent to m
     (str) -> a + a[:-1:-1]
+    (lst) -> a + a[:-1:-1]
     """
 
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: mirror(lhs, ctx),
         (str): lambda: lhs + lhs[:-1][::-1],
-    }.get(ts, lambda: vectorise(palindromise, lhs, ctx=ctx))()
+        (list): lambda: lhs + lhs[:-1][::-1],
+        (LazyList): lambda: merge(
+            deep_copy(lhs),
+            reverse(index(deep_copy(lhs), [None, -1, None], ctx), ctx),
+            ctx=ctx,
+        ),
+    }.get(ts)()
 
 
 def parity(lhs, ctx):
@@ -1797,7 +1804,7 @@ elements: dict[str, tuple[str, int]] = {
     "ɾ": process_element(inclusive_one_range, 1),
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
-    "∞": process_element("infinite_list(ctx)", 0),
+    "∞": process_element(palindromise, 1),
     "!": process_element("len(stack)", 0),
     '"': process_element("[lhs, rhs]", 2),
     "$": (
@@ -1812,8 +1819,8 @@ elements: dict[str, tuple[str, int]] = {
     "-": process_element(subtract, 2),
     "/": process_element(divide, 2),
     ":": (
-        "top = pop(stack, 1, ctx); stack.append(top); "
-        "stack.append(deep_copy(top))",
+        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
+        "stack.append(top)",
         1,
     ),
     "<": process_element(less_than, 2),
