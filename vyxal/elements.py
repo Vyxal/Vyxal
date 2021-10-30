@@ -403,7 +403,7 @@ def halve(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
-        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2)),
+        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx),
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
@@ -975,7 +975,7 @@ def parity(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: int(lhs % 2),
-        (str): lambda: divide(lhs, 2)[-1],
+        (str): lambda: halve(lhs, ctx)[-1],
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
@@ -1101,10 +1101,10 @@ def sort_by(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
-        function, iterable = (
+        function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(iterable, key=lambda x: safe_apply(function, x, ctx))
+        return sorted(vector, key=lambda x: safe_apply(function, x, ctx))
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
@@ -1797,6 +1797,53 @@ def vy_zip(lhs, rhs, ctx):
         return f()
 
 
+def wrap(lhs, rhs, ctx):
+    """Element ẇ
+    (any, num) -> a wrapped in chunks of length b
+    (any, fun) -> Apply b to every second item of a
+    (fun, any) -> Apply a to every second item of b
+    (str, str) -> split a on first occurance of b
+    """
+
+    # Because textwrap.wrap doesn't consistently play nice with spaces
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        function, vector = (
+            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
+        )
+        return LazyList(
+            safe_apply(function, vector[i], ctx=ctx) if i % 2 else vector[i]
+            for i in range(len(vector))
+        )
+
+    else:
+        if ts == (str, str):
+            return list(lhs.partition(rhs)[::2])
+
+        else:
+            vector, chunk_size = (
+                (iterable(lhs, ctx=ctx), rhs)
+                if ts[1] is NUMBER_TYPE
+                else (iterable(rhs, ctx=ctx), lhs)
+            )
+            ret, temp = [], []
+            for item in vector:
+                temp.append(item)
+                if len(temp) == chunk_size:
+                    if all([type(x) is str for x in temp]):
+                        ret.append("".join(temp))
+                    else:
+                        ret.append(temp[::])
+                    temp = []
+            if len(temp) < chunk_size and temp:
+                if all([type(x) is str for x in temp]):
+                    ret.append("".join(temp))
+                else:
+                    ret.append(temp[::])
+            return ret
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
     "∧": process_element("lhs and rhs", 2),
@@ -1904,6 +1951,7 @@ elements: dict[str, tuple[str, int]] = {
     "j": process_element(join, 2),
     "l": process_element(overlapping_groups, 2),
     "m": process_element(mirror, 1),
+    "n": process_element("ctx.context_values[-1]", 0),
     "o": process_element(remove, 2),
     "p": process_element(prepend, 2),
     "q": process_element(quotify, 1),
@@ -1958,6 +2006,7 @@ elements: dict[str, tuple[str, int]] = {
         " stack.append(tail(top, ctx))",
         1,
     ),
+    "ẇ": process_element(wrap, 2),
     "∑": process_element(vy_sum, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),

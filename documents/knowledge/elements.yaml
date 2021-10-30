@@ -324,7 +324,6 @@
     - "[1,2,3,4,5] : [1,2,3,4,5,4,3,2,1]"
     - "[1,2,3,4,5,6] : [1,2,3,4,5,6,5,4,3,2,1]"
 
-  
 - element: "¨"
   name: Other Digraphs
   arity: NA
@@ -1636,6 +1635,7 @@
     any-num: a wrapped in chunks of length b
     any-fun: Apply b to every second item of a
     fun-any: Apply a to every second item of b
+    str-str: split a on first occurance of b
   vectorise: false
   tests:
     - '["abcdef",2] : ["ab","cd","ef"]'
