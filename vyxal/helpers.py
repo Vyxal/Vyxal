@@ -5,6 +5,7 @@ use type annotations here.
 """
 
 import ast
+import inspect
 import itertools
 import textwrap
 import types
@@ -19,6 +20,7 @@ from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
+VyList = Union[list, LazyList]
 
 
 def case_of(value: str) -> int:
@@ -42,6 +44,21 @@ def collect_until_false(
     while safe_apply(predicate, val, ctx):
         yield val
         val = safe_apply(function, val, ctx)
+
+
+def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
+    """Concatenate two lists/lazylists"""
+    if LazyList not in (type(vec1), type(vec2)):
+        return vec1 + vec2
+
+    @lazylist
+    def gen():
+        for item in vec1:
+            yield item
+        for item in vec2:
+            yield item
+
+    return gen()
 
 
 def deep_copy(value: Any) -> Any:
@@ -77,7 +94,7 @@ def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
     working = None
 
     for item in vector:
-        if working == None:
+        if working is None:
             working = item
         else:
             working = safe_apply(function, working, item, ctx=ctx)
@@ -85,7 +102,7 @@ def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
     return working if working is not None else 0
 
 
-def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
+def format_string(pattern: str, data: Union[str, VyList]) -> str:
     """Returns the pattern formatted with the given data. If the data is
     a string, then the string is reused if there is more than one % to
     be formatted. Otherwise (the data is a list), % are cyclically
@@ -195,10 +212,61 @@ def keep(haystack: Any, needle: Any) -> Any:
         return ret
 
 
+def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
+    """
+    The maximum of a list according to a key function and/or a comparator.
+
+    Parameters:
+    key: Any -> Any
+    A function to first transform each element of the list before comparing.
+    cmp: (Any, Any) -> bool
+    A binary function to check if its first argument is less than the second.
+    """
+    if key is None:
+        key = lambda x, ctx=None: x
+    if cmp is None:
+        cmp = lambda a, b, ctx=None: a < b
+    return foldl(
+        lambda a, b, ctx=ctx: b
+        if safe_apply(
+            cmp,
+            safe_apply(key, a, ctx=ctx),
+            safe_apply(key, b, ctx=ctx),
+            ctx=ctx,
+        )
+        else a,
+        vec,
+        ctx=ctx,
+    )
+
+
+def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
+    """
+    The minimum of a list according to a key function and/or a comparator.
+
+    Parameters:
+    key: Any -> Any
+    A function to first transform each element of the list before comparing.
+    cmp: (Any, Any) -> bool
+    A binary function to check if its first argument is less than the second.
+    """
+    if key is None:
+        key = lambda x, ctx=None: x
+    if cmp is None:
+        cmp = lambda a, b, ctx=None: a < b
+    return foldl(
+        lambda a, b, ctx=ctx: a
+        if cmp(key(a, ctx=ctx), key(b, ctx=ctx), ctx=ctx)
+        else b,
+        vec,
+        ctx=ctx,
+    )
+
+
 def mold(
-    content: Union[list, LazyList],
-    shape: Union[list, LazyList],
-) -> Union[list, LazyList]:
+    content: VyList,
+    shape: VyList,
+) -> VyList:
     """Mold one list to the shape of the other. Uses the mold function
     that Jelly uses."""
     # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
@@ -212,7 +280,7 @@ def mold(
     return shape
 
 
-def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
+def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
 
@@ -250,15 +318,9 @@ def reverse_number(
 ) -> Union[int, sympy.Rational]:
     """Reverses a number. Negative numbers are returned negative"""
 
-    # TODO (lyxal) What is temp for? Why use eval directly without
-    # checking that it will truly evaluate to a number?
-    temp = ""
-    if item < 0:
-        temp = type(item)(str(eval(item))[1:][::-1])
-    else:
-        temp = type(item)(str(eval(item))[::-1])
-
-    return sympy.Rational(item)
+    sign = -1 if item < 0 else 1
+    rev = str(abs(item))[::-1]
+    return type(item)(rev) * sign
 
 
 def ring_translate(map_source: Union[str, list], string: str) -> str:
@@ -299,7 +361,9 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
             return ret[-1]
         else:
             return []
-    return function(*args, ctx)
+    elif takes_ctx(function):
+        return function(*args, ctx)
+    return function(*args)
 
 
 def scalarify(value: Any) -> Union[Any, List[Any]]:
@@ -330,6 +394,12 @@ def scanl(
 def suffixes(string: str, ctx: Context) -> List[str]:
     """Returns a list of suffixes of string"""
     return [string[-i:] for i in range(len(string))]
+
+
+def takes_ctx(function: types.FunctionType) -> bool:
+    """Whether or not a function accepts a context argument"""
+    argspec = inspect.getfullargspec(function)
+    return "ctx" in argspec.args or "ctx" in argspec.kwonlyargs
 
 
 def to_base_digits(value: int, base: int) -> List[int]:

@@ -177,8 +177,8 @@ def divide(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(sympy.Rational(lhs, rhs)),
-        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs),
-        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs),
+        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs, ctx),
+        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
         (str, str): lambda: lhs.split(rhs),
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
@@ -344,7 +344,7 @@ def function_call(lhs, ctx):
         return {
             NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
             str: lambda x: exec(lhs) or [],
-            list: lambda: vectorised_not(top, ctx),
+            list: lambda: vectorised_not(top, ctx=ctx),
         }.get(ts)()
 
 
@@ -389,10 +389,10 @@ def greater_than(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs > rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs) > rhs,
-        (str, NUMBER_TYPE): lambda: lhs > str(rhs),
-        (str, str): lambda: lhs > rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs > rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
+        (str, str): lambda: int(lhs > rhs),
     }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
 
 
@@ -510,6 +510,8 @@ def infinite_replace(lhs, rhs, other, ctx):
     (any, any, any) -> replace b in a with c until a doesn't change
     """
 
+    orig_type = type(lhs)
+
     prev = deep_copy(lhs)
     while True:
         lhs = replace(lhs, rhs, other, ctx)
@@ -517,6 +519,11 @@ def infinite_replace(lhs, rhs, other, ctx):
             break
         prev = deep_copy(lhs)
 
+    if orig_type is int:
+        try:
+            return int(lhs)
+        except ValueError:
+            return lhs
     return lhs
 
 
@@ -597,6 +604,31 @@ def join(lhs, rhs, ctx):
     return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
 
 
+def length(lhs, ctx):
+    """Element L
+    (any) -> len(a)
+    """
+
+    return len(iterable(lhs, ctx=ctx))
+
+
+def less_than(lhs, rhs, ctx):
+    """Element <
+    (num, num) -> a < b
+    (num, str) -> str(a) < b
+    (str, num) -> a < str(b)
+    (str, str) -> a < b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs < rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
+        (str, str): lambda: int(lhs < rhs),
+    }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
+
+
 def ljust(lhs, rhs, other, ctx):
     """Element ŀ
     (num, num, num) -> a <= c <= b
@@ -662,31 +694,6 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
-def length(lhs, ctx):
-    """Element L
-    (any) -> len(a)
-    """
-
-    return len(iterable(lhs, ctx=ctx))
-
-
-def less_than(lhs, rhs, ctx):
-    """Element <
-    (num, num) -> a < b
-    (num, str) -> str(a) < b
-    (str, num) -> a < str(b)
-    (str, str) -> a < b
-    """
-
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs < rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs) < rhs,
-        (str, NUMBER_TYPE): lambda: lhs < str(rhs),
-        (str, str): lambda: lhs < rhs,
-    }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
-
-
 def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
@@ -695,14 +702,8 @@ def max_by_tail(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return []
-    elif len(lhs) == 1:
-        return lhs[0]
     else:
-        biggest = lhs[0]
-        for item in lhs[1:]:
-            if greater_than(tail(item, ctx), tail(biggest, ctx), ctx):
-                biggest = item
-        return biggest
+        return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
 def mean(lhs, ctx):
@@ -734,9 +735,9 @@ def merge(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: add(lhs, rhs),
         (str, NUMBER_TYPE): lambda: add(lhs, rhs),
         (str, str): lambda: lhs + rhs,
-        (list, ts[1]): lambda: lhs + [rhs],
-        (ts[0], list): lambda: [lhs] + rhs,
-        (list, list): lambda: lhs + rhs,
+        (list, ts[1]): lambda: concat(lhs, [rhs]),
+        (ts[0], list): lambda: concat([lhs], rhs),
+        (list, list): lambda: concat(lhs, rhs),
     }.get(ts)()
 
 
@@ -747,24 +748,20 @@ def min_by_tail(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return []
-    elif len(lhs) == 1:
-        return lhs[0]
     else:
-        smallest = lhs[0]
-        for item in lhs[1:]:
-            if less_than(tail(item, ctx), tail(smallest, ctx), ctx):
-                smallest = item
-        return smallest
+        return min_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
 def mirror(lhs, ctx):
     """Element m
     (num) -> a + reversed(a) (as number)
     (str) -> a + reversed(a)
-    (lst) -> Append reversed(a) to a
+    (lst) -> Concatenate reversed(a) to a
     """
-
-    return add(lhs, reverse(lhs, ctx), ctx)
+    if vy_type(lhs) in (NUMBER_TYPE, str):
+        return add(lhs, reverse(lhs, ctx), ctx)
+    else:
+        return concat(lhs, reverse(lhs, ctx), ctx)
 
 
 def modulo(lhs, rhs, ctx):
@@ -787,45 +784,26 @@ def modulo(lhs, rhs, ctx):
 
 def monadic_maximum(lhs, ctx):
     """Element G
-    (any) -> returns the maximal element of the input
+    (any) -> Maximal element of the input (deep flattens first)
     """
 
     lhs = deep_flatten(lhs, ctx)
-
     if len(lhs) == 0:
         return []
-
-    elif len(lhs) == 1:
-        return lhs[0]
-
     else:
-        biggest = lhs[0]
-        for item in lhs[1:]:
-            if greater_than(item, biggest, ctx):
-                biggest = item
-
-        return item
+        return max_by(lhs, cmp=less_than, ctx=ctx)
 
 
 def monadic_minimum(lhs, ctx):
     """Element g
-    (any) -> smallest item of a
+    (any) -> Smallest item of a (deep flattens)
     """
 
     lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
-
-    elif len(lhs) == 1:
-        return lhs[0]
-
     else:
-        smallest = lhs[0]
-        for item in lhs[1:]:
-            if less_than(item, smallest, ctx):
-                smallest = item
-
-        return item
+        return min_by(lhs, cmp=less_than, ctx=ctx)
 
 
 def multiply(lhs, rhs, ctx):
@@ -932,19 +910,37 @@ def orderless_range(lhs, rhs, ctx):
 
 def overlapping_groups(lhs, rhs, ctx):
     """Element l
-    (any, num) -> Overlapping groups of a of length b
+    (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
     """
 
-    ts = vy_type(lhs, rhs)
     if vy_type(rhs) != NUMBER_TYPE:
         return len(iterable(lhs)) == len(rhs)
-    iters = itertools.tee(iterable(lhs), rhs)
-    for i in range(len(iters)):
-        for j in range(i):
-            next(iters[i], None)
 
-    return LazyList(zip(*iters))
+    stringify = vy_type(lhs) is str
+
+    @lazylist
+    def gen():
+        window = "" if stringify else []
+        for item in lhs:
+            if stringify:
+                window += item
+            else:
+                window.append(item)
+            if len(window) == rhs:
+                yield window
+                window = window[1:]
+
+    return gen()
+
+    # TODO (lyxal) This was erroring and idk what this even does
+    # so I commented it out
+    # iters = itertools.tee(iterable(lhs), rhs)
+    # for i in range(len(iters)):
+    #     for j in range(i):
+    #         next(iters[i], None)
+
+    # return LazyList(zip(*iters))
 
 
 def palindromise(lhs, ctx):
@@ -1088,7 +1084,6 @@ def reverse(lhs, ctx):
     """Element Ṙ
     (any) -> a reversed
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: reverse_number(lhs),
@@ -1362,6 +1357,13 @@ def uniquify(lhs, ctx):
     (any) -> only unique items of a
     """
 
+    if type(lhs) is str:
+        seen = ""
+        for item in lhs:
+            if item not in seen:
+                seen += item
+        return seen
+
     @lazylist
     def f():
         seen = []
@@ -1519,7 +1521,9 @@ def vy_bin(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
-        (str): lambda: vectorise(vy_bin, wrapify(chr_ord(lhs)), ctx=ctx),
+        (str): lambda: vectorise(
+            vy_bin, wrapify(chr_ord(lhs, ctx=ctx)), ctx=ctx
+        ),
     }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
 
 
@@ -1573,20 +1577,23 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     """
 
     ts = vy_type(lhs, rhs)
-    return {
-        (ts[0], types.FunctionType): lambda: LazyList(
+    if ts[0] == types.FunctionType:
+        return LazyList(
             filter(
                 lambda x: safe_apply(rhs, x, ctx=ctx),
                 iterable(lhs, range, ctx=ctx),
             )
-        ),
-        (types.FunctionType, ts[1]): lambda: LazyList(
+        )
+    elif ts[1] == types.FunctionType:
+        return LazyList(
             filter(
                 lambda x: safe_apply(lhs, x, ctx=ctx),
                 iterable(rhs, range, ctx=ctx),
             )
-        ),
-    }.get(ts, lambda: LazyList([elem for elem in lhs if elem not in rhs]))()
+        )
+    elif ts == (str, str):
+        return "".join(elem for elem in lhs if elem not in rhs)
+    return LazyList([elem for elem in lhs if elem not in rhs])
 
 
 def vy_gcd(lhs, rhs=None, ctx=None):
@@ -1938,7 +1945,7 @@ elements: dict[str, tuple[str, int]] = {
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
-    "A": process_element("int(any(lhs))", 1),
+    "A": process_element("int(all(iterable(lhs, ctx=ctx)))", 1),
     "B": process_element("vy_int(lhs, 2)", 1),
     "C": process_element(chr_ord, 1),
     "D": (
@@ -1978,7 +1985,7 @@ elements: dict[str, tuple[str, int]] = {
     "Z": process_element(vy_zip, 2),
     "^": ("stack = stack[::-1]", 0),
     "_": ("pop(stack, 1, ctx)", 1),
-    "a": process_element("int(all(lhs))", 1),
+    "a": process_element("int(any(iterable(lhs, ctx=ctx)))", 1),
     "b": process_element(vy_bin, 1),
     "c": process_element(contains, 2),
     "d": process_element("multiply(lhs, 2, ctx)", 1),

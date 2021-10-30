@@ -606,7 +606,7 @@
     - '["a","b"] : 0'
     - "[2,-5] : 1"
     - "[[1,2,3],2] : [0,0,1]"
-    - '["5",10] : 0'
+    - '["5",10] : 1'
 
 - element: "?"
   name: Input
@@ -659,7 +659,7 @@
     - '[8482] : "™"'
     - '["Z"] : 90'
     - '["ABC"] : [65,66,67]'
-    - '[[124,125,126]] : ["{","|","}"]'
+    - '[[123,124,125]] : ["{","|","}"]'
 
 - element: "D"
   name: Triplicate
@@ -758,7 +758,7 @@
   vectorise: false
   tests:
     - "[20] : [1,2,4,5,10,20]"
-    - "[1] : 1"
+    - "[1] : [1]"
     - '["abc"] : ["a","b","c","ab","bc","abc"]'
     - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
 
@@ -1157,7 +1157,7 @@
   vectorise: false
   tests:
     - '["\\"] : "`\\`"'
-    - '["`"] : "`\``"'
+    - '["`"] : "`\\``"'
     - '["a"] : "`a`"'
 
 - element: "r"
@@ -1273,7 +1273,7 @@
   vectorise: false
   tests:
     - "[[[3,4],[9,2]]] : [3,4]"
-    - "[[1,2,3],[2,5]] : [2,5]"
+    - "[[[1,2,3],[2,5]]] : [2,5]"
 
 - element: "↓"
   name: Min by Tail
@@ -1284,7 +1284,7 @@
   vectorise: false
   tests:
     - "[[[3,4],[9,2]]] : [9,2]"
-    - "[[1,2,3],[2,5]] : [1,2,3]"
+    - "[[[1,2,3],[2,5]]] : [1,2,3]"
 
 - element: "∴"
   name: Dyadic Maximum
@@ -1584,7 +1584,7 @@
     any: All possible combinations of a
   vectorise: false
   tests:
-    - '["ab"] : [[],["a"],["b"],["a","b"]'
+    - '["ab"] : [[],["a"],["b"],["a","b"]]'
     - "[1,2,3] : [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]"
 
 - element: "ṙ"
@@ -1614,7 +1614,7 @@
   tests:
     - "[3,4] : [3,4]"
     - "[1,5] : [1,2,3,4,5]"
-    - '["abc1def2ghi","\d+"] : ["abc","def","ghi"]'
+    - '["abc1def2ghi","\\d+"] : ["abc","def","ghi"]'
 
 - element: "ṫ"
   name: Tail Extract
@@ -1968,7 +1968,7 @@
   vectorise: false
   tests:
     - "[[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]] : [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]"
-    - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!""]]'
+    - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]'
 
 - element: "Ḣ"
   name: Tail
@@ -1998,7 +1998,7 @@
     any-fun: Repeatedly apply b to a until a cycle is formed, return the cycle
   vectorise: false
   tests: # TODO more tests for the second overload
-    - '[[0, 2, 4], ["foo", "bar", -69, 420, "baz"]]] : ["foo", -69, "baz"]'
+    - '[[0, 2, 4], ["foo", "bar", -69, 420, "baz"]] : ["foo", -69, "baz"]'
 
 - element: "Ŀ"
   name: Transliterate
@@ -2113,7 +2113,7 @@
   vectorise: false
   tests:
     - '["ab","cd"] : ["ac","ad","bc","bd"]'
-    - "[[1,2],[3,4] : [[1,3],[1,4],[2,3],[2,4]]"
+    - "[[1,2],[3,4]] : [[1,3],[1,4],[2,3],[2,4]]"
 
 - element: "Ẏ"
   name: Slice Until
@@ -2168,7 +2168,7 @@
   tests:
     - "[5] : 25"
     - '["hello"] : ["hel","lo"]'
-    - '["bye"]: ["by","e"]'
+    - '["bye"] : ["by","e"]'
     - "[[1,2,3]] : [1,4,9]"
 
 - element: "∇"
@@ -2810,7 +2810,7 @@
   description: printable ascii
   vectorise: false
   tests:
-    - "[] : printable ascii"
+    - "[] : '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~'"
 
 - element: "kw"
   name: ASCII Whitespace
@@ -3075,7 +3075,7 @@
   description: '"/\\" (Forwardslash, backslash)'
   vectorise: false
   tests:
-    - '[] : "/\"'
+    - '[] : "/\\"'
 
 - element: "kR"
   name: 360
@@ -3115,7 +3115,7 @@
   description: "http://www."
   vectorise: false
   tests:
-    - '[] : "http://www.'
+    - '[] : "http://www."'
 
 - element: "k¶"
   name: 512
@@ -3426,7 +3426,7 @@
   tests:
     - '["(x"] : "(x)"'
     - '["{] "] : "{] [}"'
-    - '["/*>X"] : "/*>X<*\"'
+    - '["/*>X"] : "/*>X<*\\"'
 
 - element: "øo"
   name: Remove Until No change

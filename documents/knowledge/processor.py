@@ -1,7 +1,5 @@
+import re
 import yaml
-
-import os
-import sys
 
 ELEMENTS_YAML = "elements.yaml"
 TEST_ELEMENTS_PY = "../../tests/test_elements.py"
@@ -20,19 +18,29 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         + "from vyxal.LazyList import *\n"
     )
     for element in data:
-        if "tests" in element:
-            cases = element["tests"]
-            tests.write(
-                "def test_"
-                f"{element['name'].replace(' ', '').replace('/', '_')}():\n"
-            )
-            for test in cases:
-                stack, expected = test.split(" : ", 1)
-                tests.write(f"\tstack = {stack}; expected = {expected}\n")
-                tests.write(f"\tctx = Context()\n")
-                tests.write(f"\tcode = transpile('{element['element']}')\n")
-                tests.write(f"\texec(code)\n")
-                tests.write(f"\tassert simplify(stack[-1]) == expected\n\n")
-            tests.write("\n\n")
-        else:
-            continue
+        try:
+            if "tests" in element:
+                cases = element["tests"]
+                name = re.sub('[^A-Za-z0-9_]', '', str(element['name']))
+                tests.write(f"def test_{name}():\n")
+                if cases:
+                    for test in cases:
+                        try:
+                            stack, expected = test.split(" : ", 1)
+                        except Exception as e:
+                            print('Failed on test', test)
+                            raise e
+                        tests.write(f"\tstack = {stack}\n")
+                        tests.write(f"\texpected = {expected}\n")
+                        tests.write(f"\tctx = Context()\n")
+                        tests.write(f"\tcode = transpile('{element['element']}')\n")
+                        tests.write(f"\texec(code)\n")
+                        tests.write(f"\tassert simplify(stack[-1]) == expected\n\n")
+                else:
+                    tests.write("\tpass #TODO implement this test!!!\n\n")
+                tests.write("\n")
+            else:
+                continue
+        except Exception as e:
+            print("Failed in element", element)
+            raise e
