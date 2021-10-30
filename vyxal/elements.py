@@ -7,12 +7,12 @@ the python equivalent of command is stored
 import itertools
 import math
 import random
+import re
 import string
 import types
 from functools import reduce
 from token import NUMBER
 from typing import Union
-from mpmath.libmp.libmpf import to_str
 
 import numpy
 import sympy
@@ -191,15 +191,16 @@ def divisors(lhs, ctx):
     """
 
     ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: sympy.divisors(lhs),
-        (str): lambda: LazyList(
+    if ts == NUMBER_TYPE:
+        return sympy.divisors(lhs)
+    elif ts == str:
+        return LazyList(
             filter(
                 lambda x: len(lhs.split(x)) == 2 and all(lhs.split(x)),
                 substrings(lhs, ctx),
             )
-        ),
-    }.get(ts, lambda: LazyList((lhs[: x + 1] for x in range(len(x)))))()
+        )
+    return LazyList((lhs[: x + 1] for x in range(len(lhs))))
 
 
 def dyadic_maximum(lhs, rhs, ctx):
@@ -342,7 +343,7 @@ def function_call(lhs, ctx):
     else:
         return {
             NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
-            str: lambda: exec(lhs) or [],
+            str: lambda x: exec(lhs) or [],
             list: lambda: vectorised_not(top, ctx),
         }.get(ts)()
 
@@ -863,7 +864,7 @@ def n_choose_r(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: scipy.special.comb(lhs, rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.binomial(lhs, rhs),
         (NUMBER_TYPE, str): lambda: [
             random.choice(rhs) for _ in range(abs(int(lhs)))
         ],
@@ -918,7 +919,7 @@ def orderless_range(lhs, rhs, ctx):
             range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
         ),
         (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
-        (NUMBER_TYPE, str): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
+        (str, NUMBER_TYPE): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
         (ts[0], types.FunctionType): lambda: scanl(
             multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
         ),
@@ -1044,7 +1045,10 @@ def repeat(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
-        function, value = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        function, value = (
+            (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        )
+
         @lazylist
         def gen():
             prev = value
@@ -1054,12 +1058,17 @@ def repeat(lhs, rhs, ctx):
                     break
                 prev = val
                 yield val
+
         return gen()
-    
+
     else:
         return {
-            (ts[0], NUMBER_TYPE): lambda: LazyList(itertools.repeat(iterable(lhs, ctx=ctx), int(rhs)),
-            (NUMBER_TYPE, ts[1]): lambda: LazyList(itertools.repeat(iterable(rhs, ctx=ctx), int(lhs)),
+            (ts[0], NUMBER_TYPE): lambda: LazyList(
+                itertools.repeat(iterable(lhs, ctx=ctx), int(rhs))
+            ),
+            (NUMBER_TYPE, ts[1]): lambda: LazyList(
+                itertools.repeat(iterable(rhs, ctx=ctx), int(lhs))
+            ),
             (str, str): lambda: lhs + " " + rhs,
         }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
 

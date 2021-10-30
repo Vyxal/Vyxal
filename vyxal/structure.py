@@ -34,10 +34,12 @@ class BreakStatement(Structure):
         super().__init__(*branches)
         self.parent_structure = branches[0]
 
+
 class RecurseStatement(Structure):
     def __init__(self, *branches: Branch):
         super().__init__(*branches)
         self.parent_structure = branches[0]
+
 
 class IfStatement(Structure):
     def __init__(self, *branches: Branch):

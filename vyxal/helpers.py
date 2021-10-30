@@ -74,11 +74,15 @@ def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
     if len(vector) == 0:
         return 0
 
-    working = vector[0]
-    for item in vector[1:]:
-        working = safe_apply(function, working, item, ctx=ctx)
+    working = None
 
-    return working
+    for item in vector:
+        if working == None:
+            working = item
+        else:
+            working = safe_apply(function, working, item, ctx=ctx)
+
+    return working if working is not None else 0
 
 
 def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
@@ -246,6 +250,8 @@ def reverse_number(
 ) -> Union[int, sympy.Rational]:
     """Reverses a number. Negative numbers are returned negative"""
 
+    # TODO (lyxal) What is temp for? Why use eval directly without
+    # checking that it will truly evaluate to a number?
     temp = ""
     if item < 0:
         temp = type(item)(str(eval(item))[1:][::-1])
@@ -312,8 +318,13 @@ def scanl(
     function: types.FunctionType, vector: List[Any], ctx: Context
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
-    for i in range(1, len(vector)):
-        yield foldl(function, vector[:i], ctx=ctx)
+    working = None
+    for item in vector:
+        if working is None:
+            working = item
+        else:
+            working = safe_apply(function, working, item, ctx=ctx)
+            yield working
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:
@@ -385,7 +396,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return t
-        except Exception as ex:
+        except Exception:
             # TODO: eval as vyxal
             return item
     else:
@@ -394,7 +405,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return t
-        except Exception as ex:
+        except Exception:
             return item
 
 
