@@ -23104,8 +23104,64 @@ mny""".split(
     "\n"
 )
 
-lookup = {}
+small_dictionary = r"""
+\d+
+-?\d+
+\d+\.\d+
+-?\d+(\.\d*)?
+[A-Za-z0-9\.,;:!?()"'%\-]+
+^\S+@\S+$
+[A-Za-z0-9]
+[A-Za-z]
+[a-z]
+[A-Z]
+[0-9]
+[aeiou]
+[aeiouy]
+[bcdfghjklmnpqrstvwxyz]
+\w+
+.*
+[^A-z0-9]
+[^A-Z]
+[^a-z]
+[^0-9]
+[^aeiou]
+[^aeiouy]
+[^bcdfghjklmnpqrstvwxyz]
+(.+)
+\W
+\w
+\S
+\s
+\W+
+\w+
+\S+
+\s+
+((www\.|(http|https|ftp|news|file)+\:\/\/)[_.a-z0-9-]+\.[a-z0-9\/_:@=.+?,##%&~-]*[^.|\'|\# |!|\(|?|,| |>|<|;|\)])
+?<=
+?!=
+?<!
+https://www.google.com
+https://www.google.com/query?q=
+https://www.duckduckgo.com
+https://www.duckduckgo.com/?q=
+https://www.bing.com
+https://www.bing.com/?q=
+https://codegolf.stackexchange.com/q/
+https://codegolf.stackexchange.com/a/
+https://stackoverflow.com/q/
+https://stackoverflow.com/a/
+₁ƛ₍₃₅kF½*∑∴,
+:ɾ:Ẋv∑Ȯẇ
+:ɾ:Ẋƛ⁽=R;Ȯẇ
+isdo
+›‹²…
+n't
+""".split(
+    "\n"
+)  # TODO: Add more words
 
+lookup = {}
 max_word_len = 0
 
 for index, word in enumerate(contents):

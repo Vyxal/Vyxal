@@ -5,18 +5,22 @@ use type annotations here.
 """
 
 import ast
+import collections
 import inspect
 import itertools
+import string
 import textwrap
 import types
 from typing import Any, List, Union
 
 import numpy
 import sympy
+import vyxal.encoding
 
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
+from vyxal.dictionary import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -438,12 +442,50 @@ def uncompress(token: lexer.Token) -> Union[int, str]:
     Handles the following token types: TokenType.STRING,
     TokenType.COMPRESSED_NUMBER, TokenType.COMPRESSED_STRING
     """
+    if token.name == lexer.TokenType.STRING:
+        return uncompress_dict(token.value)
     if token.name == lexer.TokenType.COMPRESSED_STRING:
         return uncompress_str(token.value)
     if token.name == lexer.TokenType.COMPRESSED_NUMBER:
         return uncompress_num(token.value)
 
     return token.value
+
+
+def uncompress_dict(source: str) -> str:
+    """Implements Vyxal dictionary compression"""
+    characters = collections.deque(source)
+    ret, temp_scc = "", ""
+    escaped = False
+    while characters:
+        char = characters.popleft()
+        if escaped:
+            if char not in vyxal.encoding.compression:
+                ret += "\\"
+            ret += char
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char in vyxal.encoding.compression:
+            temp_scc += char
+            if len(temp_scc) == 2:
+                index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
+                if index < len(contents):
+                    ret += contents[index]
+                temp_scc = ""
+        else:
+            if temp_scc:
+                ret += small_dictionary[
+                    vyxal.encoding.compression.find(temp_scc)
+                ]
+                temp_scc = ""
+            ret += char
+
+    if temp_scc:
+        ret += small_dictionary[vyxal.encoding.compression.find(temp_scc)]
+        temp_scc = ""
+
+    return ret
 
 
 def uncompress_str(string: str) -> str:
