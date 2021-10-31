@@ -586,7 +586,7 @@ def is_divisible_by_three(lhs, ctx):
     }.get(ts, lambda: vectorise(is_divisible_by_three, lhs, ctx=ctx))()
 
 
-def is_divisble_by_five(lhs, ctx):
+def is_divisible_by_five(lhs, ctx):
     """
     Element ₅
     (num) -> a % 5 == 0
@@ -598,7 +598,7 @@ def is_divisble_by_five(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: [lhs % 5 == 0],
         str: lambda: [lhs, len(lhs)],
-    }.get(ts, lambda: [vectorise(is_divisble_by_five, lhs, ctx=ctx)])()
+    }.get(ts, lambda: [vectorise(is_divisible_by_five, lhs, ctx=ctx)])()
 
 
 def is_even(lhs, ctx):
