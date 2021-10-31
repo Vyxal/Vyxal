@@ -573,6 +573,46 @@ def interleave(lhs, rhs, ctx):
         return f()
 
 
+def is_divisible_by_three(lhs, ctx):
+    """Element ₃
+    (num) -> a % 3 == 0
+    (str) -> len(a) == 1
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: lhs % 3 == 0,
+        str: lambda: len(lhs) == 1,
+    }.get(ts, lambda: vectorise(is_divisible_by_three, lhs, ctx=ctx))()
+
+
+def is_divisble_by_five(lhs, ctx):
+    """
+    Element ₅
+    (num) -> a % 5 == 0
+    (str) -> a, len(a)
+    """
+
+    # wrap in list because you might need to return more than 1 item
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [lhs % 5 == 0],
+        str: lambda: [lhs, len(lhs)],
+    }.get(ts, lambda: [vectorise(is_divisble_by_five, lhs, ctx=ctx)])()
+
+
+def is_even(lhs, ctx):
+    """Element ₂
+    (num) -> a % 2 == 0
+    (str) -> len(a) % 2 == 0
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: lhs % 2 == 0,
+        str: lambda: len(lhs) % 2 == 0,
+    }.get(ts, lambda: vectorise(is_even, lhs, ctx=ctx))()
+
+
 def is_falsey(lhs, ctx):
     """Element ċ
     (any) -> a != 1
@@ -602,6 +642,20 @@ def join(lhs, rhs, ctx):
     """
 
     return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
+
+
+def join_newlines(lhs, ctx):
+    """Element ⁋
+    (any) -> a.join("\n")
+    """
+
+    ret = []
+    for n in iterable(lhs, ctx):
+        if vy_type(n) in [list, LazyList]:
+            ret.append(join(n, " ", ctx))
+        else:
+            ret.append(str(n))
+    return "\n".join(ret)
 
 
 def length(lhs, ctx):
@@ -1175,6 +1229,19 @@ def split_on(lhs, rhs, ctx):
         if temp:
             ret.append(temp)
         return ret
+
+
+def square_root(lhs, ctx):
+    """Element √
+    (num) -> sqrt(a)
+    (str) -> every second character of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.sqrt(lhs),
+        str: lambda: "".join(lhs[::2]),
+    }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
 
 
 def strip(lhs, rhs, ctx):
@@ -2059,6 +2126,23 @@ elements: dict[str, tuple[str, int]] = {
         1,
     ),
     "ẇ": process_element(wrap, 2),
+    "ẋ": process_element(repeat, 2),
+    "ẏ": process_element("LazyList(range(0, len(iterable(lhs, ctx))))", 1),
+    "ż": process_element("LazyList(range(1, len(iterable(lhs, ctx)) + 1))", 1),
+    "√": process_element(square_root, 1),
+    "₀": process_element("10", 0),
+    "₁": process_element("100", 0),
+    "₂": process_element(is_even, 1),
+    "₃": process_element(is_divisible_by_three, 1),
+    "₄": process_element("26", 0),
+    "₅": (
+        "top = pop(stack, 1, ctx); stack += is_divisible_by_five(top, ctx)",
+        1,
+    ),
+    "₆": process_element("64", 0),
+    "₇": process_element("128", 0),
+    "₈": process_element("256", 0),
+    "¶": process_element("'\\n'", 0),
     "∑": process_element(vy_sum, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
