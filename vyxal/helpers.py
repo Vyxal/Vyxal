@@ -320,7 +320,7 @@ def reverse_number(
 
     sign = -1 if item < 0 else 1
     rev = str(abs(item))[::-1]
-    return type(item)(rev) * sign
+    return sympy.Rational(eval(rev) * sign)
 
 
 def ring_translate(map_source: Union[str, list], string: str) -> str:
@@ -346,7 +346,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
       simply passes the argument list.
     Otherwise, unpack args and call as usual
 
-    *args contains ctx
+    *args does NOT contain ctx
     """
 
     if function.__name__.startswith("_lambda"):

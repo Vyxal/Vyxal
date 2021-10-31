@@ -1998,7 +1998,7 @@
     any-fun: Repeatedly apply b to a until a cycle is formed, return the cycle
   vectorise: false
   tests: # TODO more tests for the second overload
-    - '[[0, 2, 4], ["foo", "bar", -69, 420, "baz"]] : ["foo", -69, "baz"]'
+    - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
 
 - element: "Ŀ"
   name: Transliterate
