@@ -581,9 +581,8 @@ def is_divisible_by_three(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: lhs % 3 == 0,
-        str: lambda: len(lhs) == 1,
-    }.get(ts, lambda: vectorise(is_divisible_by_three, lhs, ctx=ctx))()
+        NUMBER_TYPE: lambda: int(lhs % 3 == 0),
+    }.get(ts, lambda: int(len(lhs) == 1))()
 
 
 def is_divisible_by_five(lhs, ctx):
@@ -595,10 +594,10 @@ def is_divisible_by_five(lhs, ctx):
 
     # wrap in list because you might need to return more than 1 item
     ts = vy_type(lhs)
-    return {
-        NUMBER_TYPE: lambda: [lhs % 5 == 0],
-        str: lambda: [lhs, len(lhs)],
-    }.get(ts, lambda: [vectorise(is_divisible_by_five, lhs, ctx=ctx)])()
+    return {NUMBER_TYPE: lambda: [int(lhs % 5 == 0)],}.get(
+        ts,
+        lambda: [lhs, len(lhs)],
+    )()
 
 
 def is_even(lhs, ctx):
@@ -608,9 +607,8 @@ def is_even(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: lhs % 2 == 0,
-        str: lambda: len(lhs) % 2 == 0,
-    }.get(ts, lambda: vectorise(is_even, lhs, ctx=ctx))()
+        NUMBER_TYPE: lambda: int(lhs % 2 == 0),
+    }.get(ts, lambda: int(len(lhs) % 2 == 0))()
 
 
 def is_falsey(lhs, ctx):
