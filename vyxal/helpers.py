@@ -436,6 +436,15 @@ def transfer_capitalisation(source: str, target: str) -> str:
     return ret
 
 
+def transpose(
+    vector: VyList, filler: Any = None, ctx: Context = None
+) -> VyList:
+    """Transposes a vector"""
+    temp = itertools.zip_longest(*map(iterable, vector), fillvalue=filler)
+
+    return vyxalify((item for item in x if item is not None) for x in temp)
+
+
 def uncompress(token: lexer.Token) -> Union[int, str]:
     """Uncompress the token's value based on the token type.
 

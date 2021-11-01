@@ -1557,6 +1557,23 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vertical_join(lhs, rhs=" ", ctx=None):
+    """Element §
+    any: Transpose a (filling with b), join on newlines
+    """
+    # Make every list in lhs the same length, padding left with b
+
+    max_length = max(len(x) for x in lhs)
+    temp = [
+        [rhs] * (len(x) < max_length and max_length - len(x)) + x
+        if vy_type(x, simple=True) is list
+        else rhs * (len(x) < max_length and max_length - len(x)) + x
+        for x in lhs
+    ]
+    temp = [join(x, "", ctx) for x in transpose(temp, rhs, ctx=ctx)]
+    return join(temp, "\n", ctx)
+
+
 def vertical_mirror(lhs, rhs=None, ctx=None):
     """Element øṁ and øṀ"""
     if type(lhs) is str:
@@ -2143,7 +2160,9 @@ elements: dict[str, tuple[str, int]] = {
     "₇": process_element("128", 0),
     "₈": process_element("256", 0),
     "¶": process_element("'\\n'", 0),
+    "⁋": process_element(join_newlines, 1),
     "∑": process_element(vy_sum, 1),
+    "§": process_element(vertical_join, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),

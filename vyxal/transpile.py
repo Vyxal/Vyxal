@@ -7,6 +7,7 @@ from typing import Union
 from vyxal import elements, helpers, lexer, parse, structure
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
+from vyxal.LazyList import vyxalify
 
 
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
@@ -68,6 +69,13 @@ def transpile_token(token: Token, indent: int) -> str:
         # screws up escape sequences.
         return indent_str(f'stack.append("{string}")', indent)
     elif token.name == TokenType.NUMBER:
+        if token.value.count("."):
+            if token.value == ".":
+                return indent_str(f"stack.append(sympy.Rational(1, 2))", indent)
+            return indent_str(
+                f'stack.append(vyxalify(sympy.Rational("{token.value}")))',
+                indent,
+            )
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
         return indent_str(
