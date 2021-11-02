@@ -110,7 +110,11 @@ def tokenise(source_str: str) -> list[Token]:
                 source.popleft()
         elif head in string.digits + ".":
             contextual_token_value = head
-            while source and source[0] in string.digits + ".":
+            while (
+                source
+                and source[0] in string.digits + "."
+                and (contextual_token_value + source[0]).count(".") < 2
+            ):
                 contextual_token_value += source.popleft()
             tokens.append(Token(TokenType.NUMBER, contextual_token_value))
         elif head == "‛":

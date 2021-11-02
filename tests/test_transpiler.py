@@ -3,10 +3,10 @@ from vyxal.transpile import transpile
 
 
 def test_if():
-    # TODO(user/ysthakur) try with more branches
+    # TODO(user/cgccuser) try with more branches
     vy = """[ 1 | 2 ]"""
     py = transpile(vy)
-    expected = """condition = pop(stack, ctx=ctx)
+    expected = """condition = pop(stack, 1, ctx=ctx)
 ctx.context_values.append(condition)
 if boolify(condition, ctx):
     stack.append(1)

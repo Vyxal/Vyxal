@@ -5,7 +5,7 @@ into isinstance(<itertools object>, types.GeneratorType). Also, maps, ranges
 and other stuff that needs to be lazily evaluated.
 """
 
-import copy
+import itertools
 import types
 from typing import Any, Union
 
@@ -87,6 +87,9 @@ class LazyList:
                     return 1
             return 0
 
+    def __eq__(self, other):
+        return self.listify() == simplify(other)
+
     def __getitem__(self, position):
         if isinstance(position, slice):
             start, stop, step = (
@@ -98,17 +101,14 @@ class LazyList:
 
                 @lazylist
                 def infinite_index():
-                    if len(self.generated):
-                        for lhs in self.generated[position::step]:
-                            yield lhs
-                        temp = next(self)
-                        while temp:
-                            yield temp
-                            temp = next(self)
+                    self.listify()
+                    yield from self.generated[start:stop:step]
 
                 return infinite_index()
             else:
                 ret = []
+                if stop < 0:
+                    stop = len(self.listify()) + stop
                 for i in range(start, stop, step):
                     ret.append(self.__getitem__(i))
                 return ret
@@ -124,7 +124,10 @@ class LazyList:
                         next(self)
                     except StopIteration:
                         break
-                return self.generated[position % len(self.generated)]
+                if self.generated:
+                    return self.generated[position % len(self.generated)]
+                else:
+                    return 0
 
     def __init__(self, source, isinf=False):
         self.raw_object = source
@@ -136,7 +139,10 @@ class LazyList:
         self.infinite = isinf
 
     def __iter__(self):
-        return self
+        raw_object_clones = itertools.tee(self.raw_object)
+        self.raw_object = raw_object_clones[0]
+
+        return join_with(self.generated[::], raw_object_clones[1])
 
     def __len__(self):
         return len(self.listify())
@@ -154,6 +160,14 @@ class LazyList:
     def count(self, other):
         temp = self.listify()
         return temp.count(other)
+
+    def filter(self, fn):
+        @lazylist
+        def gen():
+            for item in self:
+                if fn(item):
+                    yield item
+        return gen()
 
     def listify(self):
         temp = self.generated + simplify(self.raw_object)

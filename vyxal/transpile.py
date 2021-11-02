@@ -7,6 +7,7 @@ from typing import Union
 from vyxal import elements, helpers, lexer, parse, structure
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
+from vyxal.LazyList import vyxalify
 
 
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
@@ -64,8 +65,17 @@ def transpile_token(token: Token, indent: int) -> str:
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
         string = uncompress(token)  # TODO: Account for -D flag
-        return indent_str(f"stack.append({string!r})", indent)
+        # Can't use {string!r} inside the f-string because that
+        # screws up escape sequences.
+        return indent_str(f'stack.append("{string}")', indent)
     elif token.name == TokenType.NUMBER:
+        if token.value.count("."):
+            if token.value == ".":
+                return indent_str(f"stack.append(sympy.Rational(1, 2))", indent)
+            return indent_str(
+                f'stack.append(vyxalify(sympy.Rational("{token.value}")))',
+                indent,
+            )
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
         return indent_str(
@@ -122,7 +132,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         return res
     if isinstance(struct, structure.ForLoop):
-        # TODO (user/ysthakur) make it work with multiple variables
+        # TODO (user/cgccuser) make it work with multiple variables
         var = (
             struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
         )
@@ -229,11 +239,12 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
-            + indent_str("res = wrapify(pop(stack, 1, ctx))", indent + 1)
+            + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
+            + indent_str(f"_lambda_{id_}.arity = {struct.branches[0]}", indent)
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 

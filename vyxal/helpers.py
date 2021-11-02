@@ -5,19 +5,26 @@ use type annotations here.
 """
 
 import ast
+import collections
+import inspect
+import itertools
+import string
 import textwrap
 import types
 from typing import Any, List, Union
 
 import numpy
 import sympy
+import vyxal.encoding
 
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
+from vyxal.dictionary import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
+VyList = Union[list, LazyList]
 
 
 def case_of(value: str) -> int:
@@ -31,6 +38,33 @@ def case_of(value: str) -> int:
     return -1
 
 
+def collect_until_false(
+    function: types.FunctionType,
+    predicate: types.FunctionType,
+    initial: Any,
+    ctx: Context,
+) -> List[Any]:
+    val = initial
+    while safe_apply(predicate, val, ctx):
+        yield val
+        val = safe_apply(function, val, ctx)
+
+
+def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
+    """Concatenate two lists/lazylists"""
+    if LazyList not in (type(vec1), type(vec2)):
+        return vec1 + vec2
+
+    @lazylist
+    def gen():
+        for item in vec1:
+            yield item
+        for item in vec2:
+            yield item
+
+    return gen()
+
+
 def deep_copy(value: Any) -> Any:
     """Because lists and lazylists use memory references. Frick them."""
 
@@ -39,7 +73,6 @@ def deep_copy(value: Any) -> Any:
         # I don't have any fancy memory references because I'm an epic
         # chad unlike those virgin memory reference needing lists".
 
-    # Use itertools.tee for (LazyL|l)ists
     return LazyList(itertools.tee(value)[-1])
 
 
@@ -62,14 +95,18 @@ def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
     if len(vector) == 0:
         return 0
 
-    working = vector[0]
-    for item in vector[1:]:
-        working = safe_apply(function, working, item, ctx=ctx)
+    working = None
 
-    return working
+    for item in vector:
+        if working is None:
+            working = item
+        else:
+            working = safe_apply(function, working, item, ctx=ctx)
+
+    return working if working is not None else 0
 
 
-def format_string(pattern: str, data: Union[str, Union[list, LazyList]]) -> str:
+def format_string(pattern: str, data: Union[str, VyList]) -> str:
     """Returns the pattern formatted with the given data. If the data is
     a string, then the string is reused if there is more than one % to
     be formatted. Otherwise (the data is a list), % are cyclically
@@ -179,10 +216,61 @@ def keep(haystack: Any, needle: Any) -> Any:
         return ret
 
 
+def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
+    """
+    The maximum of a list according to a key function and/or a comparator.
+
+    Parameters:
+    key: Any -> Any
+    A function to first transform each element of the list before comparing.
+    cmp: (Any, Any) -> bool
+    A binary function to check if its first argument is less than the second.
+    """
+    if key is None:
+        key = lambda x, ctx=None: x
+    if cmp is None:
+        cmp = lambda a, b, ctx=None: a < b
+    return foldl(
+        lambda a, b, ctx=ctx: b
+        if safe_apply(
+            cmp,
+            safe_apply(key, a, ctx=ctx),
+            safe_apply(key, b, ctx=ctx),
+            ctx=ctx,
+        )
+        else a,
+        vec,
+        ctx=ctx,
+    )
+
+
+def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
+    """
+    The minimum of a list according to a key function and/or a comparator.
+
+    Parameters:
+    key: Any -> Any
+    A function to first transform each element of the list before comparing.
+    cmp: (Any, Any) -> bool
+    A binary function to check if its first argument is less than the second.
+    """
+    if key is None:
+        key = lambda x, ctx=None: x
+    if cmp is None:
+        cmp = lambda a, b, ctx=None: a < b
+    return foldl(
+        lambda a, b, ctx=ctx: a
+        if cmp(key(a, ctx=ctx), key(b, ctx=ctx), ctx=ctx)
+        else b,
+        vec,
+        ctx=ctx,
+    )
+
+
 def mold(
-    content: Union[list, LazyList],
-    shape: Union[list, LazyList],
-) -> Union[list, LazyList]:
+    content: VyList,
+    shape: VyList,
+) -> VyList:
     """Mold one list to the shape of the other. Uses the mold function
     that Jelly uses."""
     # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
@@ -196,7 +284,7 @@ def mold(
     return shape
 
 
-def pop(iterable: Union[list, LazyList], count: int, ctx: Context) -> List[Any]:
+def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
 
@@ -234,13 +322,23 @@ def reverse_number(
 ) -> Union[int, sympy.Rational]:
     """Reverses a number. Negative numbers are returned negative"""
 
-    temp = ""
-    if item < 0:
-        temp = type(item)(str(eval(item))[1:][::-1])
-    else:
-        temp = type(item)(str(eval(item))[::-1])
+    sign = -1 if item < 0 else 1
+    rev = str(abs(item))[::-1]
+    return sympy.Rational(eval(rev) * sign)
 
-    return sympy.Rational(item)
+
+def ring_translate(map_source: Union[str, list], string: str) -> str:
+    """Ring translates a given string according to the provided mapping
+    - that is, map matching elements to the subsequent element in the
+    translation ring. The ring wraps around."""
+    ret = ""
+    LENGTH = len(map_source)
+    for char in string:
+        if char in map_source:
+            ret += map_source[(map_source.index(char) + 1) % LENGTH]
+        else:
+            ret += char
+    return ret
 
 
 def ring_translate(map_source: Union[str, list], string: str) -> str:
@@ -266,7 +364,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
       simply passes the argument list.
     Otherwise, unpack args and call as usual
 
-    *args contains ctx
+    *args does NOT contain ctx
     """
 
     if function.__name__.startswith("_lambda"):
@@ -281,7 +379,9 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
             return ret[-1]
         else:
             return []
-    return function(*args, ctx)
+    elif takes_ctx(function):
+        return function(*args, ctx)
+    return function(*args)
 
 
 def scalarify(value: Any) -> Union[Any, List[Any]]:
@@ -300,8 +400,24 @@ def scanl(
     function: types.FunctionType, vector: List[Any], ctx: Context
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
-    for i in range(1, len(vector)):
-        yield foldl(function, vector[:i], ctx=ctx)
+    working = None
+    for item in vector:
+        if working is None:
+            working = item
+        else:
+            working = safe_apply(function, working, item, ctx=ctx)
+            yield working
+
+
+def suffixes(string: str, ctx: Context) -> List[str]:
+    """Returns a list of suffixes of string"""
+    return [string[-i:] for i in range(len(string))]
+
+
+def takes_ctx(function: types.FunctionType) -> bool:
+    """Whether or not a function accepts a context argument"""
+    argspec = inspect.getfullargspec(function)
+    return "ctx" in argspec.args or "ctx" in argspec.kwonlyargs
 
 
 def to_base_digits(value: int, base: int) -> List[int]:
@@ -334,18 +450,65 @@ def transfer_capitalisation(source: str, target: str) -> str:
     return ret
 
 
+def transpose(
+    vector: VyList, filler: Any = None, ctx: Context = None
+) -> VyList:
+    """Transposes a vector"""
+    temp = itertools.zip_longest(*map(iterable, vector), fillvalue=filler)
+
+    return vyxalify((item for item in x if item is not None) for x in temp)
+
+
 def uncompress(token: lexer.Token) -> Union[int, str]:
     """Uncompress the token's value based on the token type.
 
     Handles the following token types: TokenType.STRING,
     TokenType.COMPRESSED_NUMBER, TokenType.COMPRESSED_STRING
     """
+    if token.name == lexer.TokenType.STRING:
+        return uncompress_dict(token.value)
     if token.name == lexer.TokenType.COMPRESSED_STRING:
         return uncompress_str(token.value)
     if token.name == lexer.TokenType.COMPRESSED_NUMBER:
         return uncompress_num(token.value)
 
     return token.value
+
+
+def uncompress_dict(source: str) -> str:
+    """Implements Vyxal dictionary compression"""
+    characters = collections.deque(source)
+    ret, temp_scc = "", ""
+    escaped = False
+    while characters:
+        char = characters.popleft()
+        if escaped:
+            if char not in vyxal.encoding.compression:
+                ret += "\\"
+            ret += char
+            escaped = False
+        elif char == "\\":
+            escaped = True
+        elif char in vyxal.encoding.compression:
+            temp_scc += char
+            if len(temp_scc) == 2:
+                index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
+                if index < len(contents):
+                    ret += contents[index]
+                temp_scc = ""
+        else:
+            if temp_scc:
+                ret += small_dictionary[
+                    vyxal.encoding.compression.find(temp_scc)
+                ]
+                temp_scc = ""
+            ret += char
+
+    if temp_scc:
+        ret += small_dictionary[vyxal.encoding.compression.find(temp_scc)]
+        temp_scc = ""
+
+    return ret
 
 
 def uncompress_str(string: str) -> str:
@@ -368,7 +531,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return t
-        except Exception as ex:
+        except Exception:
             # TODO: eval as vyxal
             return item
     else:
@@ -377,7 +540,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return t
-        except Exception as ex:
+        except Exception:
             return item
 
 
