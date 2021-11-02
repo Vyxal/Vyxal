@@ -18,6 +18,9 @@ def vyxalify(value: Any) -> Any:
 
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
+    elif isinstance(value, sympy.factorial):
+        return vyxalify(sympy.Rational(str(float(value))))
+        # Sympy is weird okay.
     elif (
         isinstance(value, int)
         or isinstance(value, Rational)
@@ -167,6 +170,7 @@ class LazyList:
             for item in self:
                 if fn(item):
                     yield item
+
         return gen()
 
     def listify(self):

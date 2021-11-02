@@ -51,6 +51,19 @@ def process_element(
     return py_code, arity
 
 
+def absolute_difference(lhs, rhs, ctx):
+    """Element ε
+    (num, num) -> abs(a - b)
+    (any, str) -> Transpose a (filling with b), join on newlines
+    """
+
+    ts = vy_type(lhs, rhs)
+    if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        return abs(lhs - rhs)
+    else:
+        return vertical_join(lhs, rhs, ctx)
+
+
 def add(lhs, rhs, ctx):
     """Element +
     (num, num) -> lhs + rhs
@@ -272,6 +285,20 @@ def exponent(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs[:: int(rhs)],
         (str, str): lambda: list(re.search(lhs, rhs).span()),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
+
+
+def factorial(lhs, ctx):
+    """Element ¡
+    (num) -> factorial(a) (math.gamma(a + 1))
+    (str) -> a.sentence_case()
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: vyxalify(sympy.factorial(lhs)),
+        # Because otherwise, it returns a very unhelpful factorial obj
+        str: lambda: sentence_case(lhs),
+    }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
 
 
 def find(lhs, rhs, ctx):
@@ -2161,6 +2188,8 @@ elements: dict[str, tuple[str, int]] = {
     "⁋": process_element(join_newlines, 1),
     "∑": process_element(vy_sum, 1),
     "§": process_element(vertical_join, 1),
+    "ε": process_element(absolute_difference, 2),
+    "¡": process_element(factorial, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),

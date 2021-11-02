@@ -409,6 +409,18 @@ def scanl(
             yield working
 
 
+def sentence_case(item: str) -> str:
+    """Returns the string sentence-cased in an 05AB1E manner"""
+    ret = ""
+    capitalise = True
+    for char in item:
+        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise and char != " ":
+            capitalise = False
+        capitalise = capitalise or char in "!?."
+    return ret
+
+
 def suffixes(string: str, ctx: Context) -> List[str]:
     """Returns a list of suffixes of string"""
     return [string[-i:] for i in range(len(string))]
