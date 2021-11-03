@@ -2005,6 +2005,23 @@ def vy_enumerate(lhs, ctx):
     return LazyList(enumerate(iterable(lhs, ctx=ctx)))
 
 
+def vy_exec(lhs, ctx):
+    """Element Ė
+    (str) -> vy_exec(a)
+    (num) -> 1 / a
+    """
+    if vy_type(lhs) is str:
+        import vyxal.transpile
+
+        stack = ctx.stacks[-1]
+        exec(vyxal.transpile.transpile(lhs))
+        return []
+    elif vy_type(lhs) == NUMBER_TYPE:
+        return [divide(1, lhs, ctx)]
+    else:
+        return [vectorise(vy_exec, lhs, ctx)]
+
+
 def vy_filter(lhs: Any, rhs: Any, ctx):
     """Element F
     (any, fun) -> Keep elements in a that b is true for
@@ -2523,6 +2540,7 @@ elements: dict[str, tuple[str, int]] = {
         "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
         2,
     ),
+    "Ė": ("stack += vy_exec(pop(stack, 1, ctx), ctx)", 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
