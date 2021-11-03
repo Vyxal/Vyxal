@@ -154,6 +154,14 @@ def count(lhs, rhs, ctx):
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
+def cumulative_sum(lhs, ctx):
+    """Element ¦
+    (any) -> cumulative sum of a
+    """
+
+    return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
+
+
 def decrement(lhs, ctx):
     """Element ‹
     (num) -> a - 1
@@ -2186,10 +2194,11 @@ elements: dict[str, tuple[str, int]] = {
     "₈": process_element("256", 0),
     "¶": process_element("'\\n'", 0),
     "⁋": process_element(join_newlines, 1),
-    "∑": process_element(vy_sum, 1),
     "§": process_element(vertical_join, 1),
     "ε": process_element(absolute_difference, 2),
     "¡": process_element(factorial, 1),
+    "∑": process_element(vy_sum, 1),
+    "¦": process_element(cumulative_sum, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
