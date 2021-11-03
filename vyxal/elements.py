@@ -13,7 +13,9 @@ import types
 from functools import reduce
 from token import NUMBER
 from typing import Union
-from vyxal.encoding import codepage_number_compress, codepage_string_compress
+from vyxal.encoding import codepage_number_compress, codepage_string_compress, codepage
+from datetime import datetime
+currentdate = datetime.now()
 
 import numpy
 import sympy
@@ -1599,6 +1601,9 @@ def substrings(lhs, ctx):
     }.get(ts, lambda: vectorise(substrings, lhs, ctx=ctx))()
 
 
+
+
+
 def subtract(lhs, rhs, ctx):
     """Element -
     (num, num) -> lhs - rhs
@@ -2479,7 +2484,80 @@ elements: dict[str, tuple[str, int]] = {
     "øP":process_element(pluralise_count, 2),
     "øp":process_element(starts_with, 2),
     "øo":process_element(remove_until_no_change, 2),
-    "øV":process_element(replace_until_no_change, 3)
+    "øV":process_element(replace_until_no_change, 3),
+    "kA":process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
+    "ke":process_element('math.e',0),
+    "kf":process_element('"Fizz"',0),
+    "kb":process_element('"Buzz"',0),
+    "kF":process_element('"FizzBuzz"',0),
+    "kH":process_element('"Hello, World!"',0),
+    "kh":process_element('"Hello World!"',0),
+    "k1":process_element('1000',0),
+    "k2":process_element('10000',0),
+    "k3":process_element('100000',0),
+    "k4":process_element('1000000',0),
+    "ka":process_element('"abcdefghijklmnopqrstuvwxyz"',0),
+    "kL":process_element('"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
+    "kd":process_element('"0123456789"',0),
+    "k6":process_element('"0123456789abcdef"',0),
+    "k^":process_element('"0123456789ABCDEF"',0),
+    "ko":process_element('"01234567"',0),
+    "kp":process_element('string.punctuatioin',0),
+    "kP":process_element('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\\"#$%&\\\'()*+,-./:;<=>?@[\\\\]^_`{|}~',0),
+    "kw":process_element('" \\t\\n\\r\\u000b\\u000c"',0),
+    "kr":process_element('"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
+    "kB":process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"',0),
+    "kZ":process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBA"',0),
+    "kz":process_element(' "zyxwvutsrqponmlkjihgfedcba"',0),
+    "kl":process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"',0),
+    "ki":process_element('math.pi',0),
+    "kn":process_element('math.nan',0),
+    "kg":process_element('(1 + math.sqrt(5)) / 2',0),
+    "kD":process_element('currenttime.strftime("%Y-%m-%d")',0),
+    "kN":process_element('LazyList(eval(currenttime.strftime("[%H,%M,%S]")))',0),
+    "kḋ":process_element('currenttime.strftime("%d/%m/%Y")',0),
+    "kḊ":process_element('currenttime.strftime("%m/%d/%Y")',0),
+    "kð":process_element('LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))',0),
+    "kβ":process_element('"{}[]<>()"',0),
+    "kB":process_element('"()[]{}"',0),
+    "kß":process_element('"()[]"',0),
+    "k≥":process_element('"([{<"',0),
+    "kΠ":process_element('")]}>"',0),
+    "kv":process_element('"aeiou"',0),
+    "kV":process_element('"AEIOU"',0),
+    "k∨":process_element('"aeiouAEIOU"',0),
+    "k⟇":process_element('codepage',0),
+    "k½":process_element('LazyList([1,2])',0),
+    "kḭ":process_element('2 ** 32',0),
+    "k+":process_element('LazyList([1, -1])',0),
+    "k-":process_element('LazyList([-1, 1])',0),
+    "k=":process_element('LazyList([0, 1])',0),
+    "k/":process_element('"/\\\\"',0),
+    "kR":process_element('360',0),
+    "kW":process_element('"https://"',0),
+    "k℅":process_element('"http://"',0),
+    "k↳":process_element('"https://www."',0),
+    "k²":process_element('"http://www."',0),
+    "k¶":process_element('512',0),
+    "k⁋":process_element('1024',0),
+    "k¦":process_element('2048',0),
+    "kṄ":process_element('4096',0),
+    "kṅ":process_element('8192',0),
+    "k¡":process_element('2 ** 14',0),
+    "kε":process_element('2 ** 15',0),
+    "k₴":process_element('2 ** 16',0),
+    "k×":process_element('2 ** 31',0),
+    "k⁰":process_element('"bcdfghjklmnpqrstvwxyz"',0),
+    "k¹":process_element('"bcdfghjklmnpqrstvwxz"',0),
+    "kT":process_element('"[]<>-+.,"',0),
+    "kṗ":process_element('LazyList("()","[]","{}","<>"])',0),
+    "kS":process_element('"ඞ"',0),
+    "k₂":process_element('2 ** 20',0),
+    "k₃":process_element('2 ** 30',0),
+    "k∪":process_element('"aeiouy"',0),
+    "k⊍":process_element('"AEIOUY"',0),
+    "k∩":process_element('"aeiouyAEIOUY"',0),
+    
 }
 modifiers: dict[str, str] = {
     "v": (
