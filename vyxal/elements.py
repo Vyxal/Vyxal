@@ -1444,6 +1444,7 @@ def reverse(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: reverse_number(lhs),
         str: lambda: lhs[::-1],
+        list: lambda: lhs[::-1],
         LazyList: lambda: lhs.reversed(),
     }.get(ts)()
 
@@ -2490,6 +2491,11 @@ elements: dict[str, tuple[str, int]] = {
     "¦": process_element(cumulative_sum, 1),
     "≈": process_element(all_equal, 1),
     "Ȧ": process_element(assign_iterable, 3),
+    "Ḃ": (
+        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
+        "stack.append(reverse(top, ctx))",
+        1,
+    ),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
