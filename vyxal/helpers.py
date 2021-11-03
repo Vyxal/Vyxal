@@ -15,12 +15,12 @@ from typing import Any, List, Union
 
 import numpy
 import sympy
-import vyxal.encoding
 
+import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-from vyxal.LazyList import *
 from vyxal.dictionary import *
+from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
