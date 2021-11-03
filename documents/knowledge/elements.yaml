@@ -323,6 +323,7 @@
     - "[1,2,3,4] : [1,2,3,4,3,2,1]"
     - "[1,2,3,4,5] : [1,2,3,4,5,4,3,2,1]"
     - "[1,2,3,4,5,6] : [1,2,3,4,5,6,5,4,3,2,1]"
+    - '["hello"] : "hellolleh"'
 
 - element: "¨"
   name: Other Digraphs
@@ -424,6 +425,7 @@
     - "[4,-2] : -8"
     - '[4,"*"] : "****"'
     - '["x",5] : "xxxxx"'
+    - '["hello","aeiou"] : "hillu"'
 
 - element: "+"
   name: Addition
@@ -621,9 +623,10 @@
 
 - element: "A"
   name: All
-  description: Chck if all items in a list are truthy
+  description: Chck if all items in a list are truthy / check if a character is a vowel
   arity: 1
   overloads:
+    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
     any: all(a)
   vectorise: false
   tests:
@@ -633,6 +636,9 @@
     - "[[]] : 1"
     - '[""] : 1'
     - "[0] : 0"
+    - '["a"] : 1'
+    - '["y"] : 0'
+    - '["hi"] : [0,1]'
 
 - element: "B"
   name: Binary To Decimal
@@ -955,15 +961,20 @@
 
 - element: "a"
   name: Any
-  description: Check if any items of a list are truthy
+  description: Check if any items of a list are truthy / Check if a character is an uppercase letter
   arity: 1
   overloads:
-    any: any(a) (Are any items truthy?)
+    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+    lst: any(a) (Are any items truthy?)
   vectorise: false
   tests:
     - "[[1,2,3]] : 1"
     - "[[0,0,0]] : 0"
     - "[[0,1,2]] : 1"
+    - '["A"] : 1'
+    - '["a"] : 0'
+    - '["Hi"] : [1,0]'
+
 
 - element: "b"
   name: Binary
@@ -3380,45 +3391,9 @@
     - '["123","&",8] : "123&&&&&"'
     - '["324"," ",2] : "324"'
 
-- element: "øĿ"
-  arity: 2
-  name: Ring Translate
-  description: Replace each character in a that occurs in b with the character that occurs after it in b
-  overloads:
-    any-any: In a, replace each character in b with the next character in b
-  vectorise: true
-  tests:
-    - '["aba","ba"] : "bab"'
-    - '["hello", "lo"] : "heool"'
-    - '["hello, world", "aeiou"] : "hillu, wurld"'
-
-- element: "øv"
-  name: Is Vowel
-  description: Check if a character is a vowel (aeiouAEIOU)
-  arity: 1
-  overloads:
-    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-  vectorise: true
-  tests:
-    - '["a"] : 1'
-    - '["y"] : 0'
-    - '["hi"] : [0,1]'
-
-- element: "øċ"
-  name: Is Uppercase
-  description: Check if a character is an uppercase letter
-  arity: 1
-  overloads:
-    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-  vectorise: true
-  tests:
-    - '["A"] : 1'
-    - '["a"] : 0'
-    - '["Hi"] : [1,0]'
-
 - element: "øM"
-  name: Flip Brackets Palindromise
-  description: Palindromise and reverse brackets and slashes, without duplicating center
+  name: Flip Brackets Vertical Palindromise
+  description: Vertically palindromise and reverse brackets and slashes, without duplicating center
   arity: 1
   overloads:
     any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
@@ -3540,17 +3515,6 @@
   tests:
     - '[".{3}","hello","x"] : "xlo"'
     - '["\W","Hello, World!","E"] : "HelloEEWorldE"'
-
-- element: "øm"
-  name: Palindromise
-  description: palindromise without duplicating middle
-  arity: 1
-  overloads:
-    any: palindromise(a) (Doesn't duplicate middle)
-  vectorise: false
-  tests:
-    - "[[1,2,3]] : [1,2,3,2,1]"
-    - '["hello"] : "hellolleh"'
 
 - element: "øp"
   name: Starts With
