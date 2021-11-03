@@ -405,8 +405,9 @@ def scanl(
         if working is None:
             working = item
         else:
-            working = safe_apply(function, working, item, ctx=ctx)
             yield working
+            working = safe_apply(function, working, item, ctx=ctx)
+    yield working
 
 
 def sentence_case(item: str) -> str:

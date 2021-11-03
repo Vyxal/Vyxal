@@ -81,6 +81,23 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+def all_equal(lhs, ctx):
+    """Element ≈
+    (any) -> are all items in a the same?
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    if not len(lhs):
+        return 0
+
+    else:
+        first = lhs[0]
+        for item in lhs[1:]:
+            if not non_vectorising_equals(item, first, ctx):
+                return 0
+        return 1
+
+
 def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
@@ -2199,6 +2216,7 @@ elements: dict[str, tuple[str, int]] = {
     "¡": process_element(factorial, 1),
     "∑": process_element(vy_sum, 1),
     "¦": process_element(cumulative_sum, 1),
+    "≈": process_element(all_equal, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
