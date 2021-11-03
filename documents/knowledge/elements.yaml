@@ -1658,6 +1658,7 @@
   arity: "*"
   overloads:
     any-num: Repeat a b times
+    str-str: a + " " + b
     fun-any: repeat function a on b while the function results are not-unique
     any-fun: repeat function b on a while the function results are not-unique
   vectorise: false
@@ -1941,7 +1942,7 @@
     num-num: a % b == 0
     num-str: a copies of b
     str-num: b copies of a
-    str-str: len(b) copies of a
+    str-str: b + " " + a
   vectorise: true
   tests:
     - "[15, 5] : 1"

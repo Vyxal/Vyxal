@@ -13,12 +13,12 @@ import types
 from functools import reduce
 from token import NUMBER
 from typing import Union
-from vyxal.encoding import codepage_number_compress, codepage_string_compress
 
 import numpy
 import sympy
 
 from vyxal.context import DEFAULT_CTX, Context
+from vyxal.encoding import codepage_number_compress, codepage_string_compress
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist, vyxalify
 
@@ -290,6 +290,11 @@ def count(lhs, rhs, ctx):
     """
 
     return iterable(lhs, ctx=ctx).count(rhs)
+
+
+def counts(lhs, ctx):
+    temp = uniquify(lhs, ctx=ctx)
+    return [[x, count(lhs, x, ctx)] for x in temp]
 
 
 def cumulative_sum(lhs, ctx):
@@ -823,6 +828,23 @@ def interleave(lhs, rhs, ctx):
         return "".join(f())
     else:
         return f()
+
+
+def is_divisible(lhs, rhs, ctx):
+    """Element Ḋ
+    (num, num) -> a % b == 0
+    (num, str) -> a copies of b
+    (str, num) -> b copies of a
+    (str, str) -> b + " " + a ($ẋ)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: [int(lhs % rhs == 0)],
+        (NUMBER_TYPE, str): lambda: [rhs] * lhs,
+        (str, NUMBER_TYPE): lambda: [lhs] * rhs,
+        (str, str): lambda: [rhs + " " + lhs],
+    }.get(ts, lambda: [vectorise(is_divisible, lhs, rhs, ctx=ctx)])()
 
 
 def is_divisible_by_three(lhs, ctx):
@@ -2495,6 +2517,11 @@ elements: dict[str, tuple[str, int]] = {
         "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
         "stack.append(reverse(top, ctx))",
         1,
+    ),
+    "Ċ": process_element(counts, 1),
+    "Ḋ": (
+        "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
+        2,
     ),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
