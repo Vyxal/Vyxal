@@ -680,7 +680,7 @@ def group_consecutive(lhs, ctx):
         count = 0
 
         for item in lhs:
-            if prev != item:
+            if not equals(prev, item, ctx):
                 yield [prev] * count
                 prev = item
                 count = 0
