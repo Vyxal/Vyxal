@@ -566,6 +566,30 @@ def first_integer(lhs, ctx):
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
+def index_indices_or_cycle(lhs, rhs, ctx):
+    """Element İ
+    (any, lst) -> [a[item] for item in b]
+    (any, fun) -> Repeatedly apply b to a until cycle is formed, then return cycle,
+                  not including the repeated item"""
+
+    if vy_type(rhs) is types.FunctionType:
+        prevs = []
+        curr = None
+
+        while True:
+            curr = safe_apply(rhs, lhs, ctx=ctx)
+
+            for i in range(prevs):
+                if equals(prevs[i], curr):
+                    return prevs[i:]
+
+            prevs.append(curr)
+    else:
+        lhs = iterable(lhs)
+        rhs = iterable(rhs)
+        return vy_map(rhs, lambda item: lhs[item])
+
+
 def invert_brackets(lhs: str, ctx) -> str:
     """
     Helper function to swap brackets and parentheses in a string
@@ -2623,6 +2647,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ḟ": process_element(gen_from_fn, 2),
     "Ġ": process_element(group_consecutive, 1),
     "Ḣ": process_element(head_remove, 1),
+    "İ": process_element(index_indices_or_cycle, 2),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
