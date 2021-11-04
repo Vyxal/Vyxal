@@ -48,5 +48,17 @@ class Context:
 
         return ctx
 
+    @property
+    def stack(self):
+        return self.stacks[-1]
+
+    @stack.setter
+    def stack(self, new_stack):
+        self.stacks[-1] = new_stack
+
+    @stack.deleter
+    def stack(self):
+        self.stacks.pop(-1)
+
 
 DEFAULT_CTX = Context()
