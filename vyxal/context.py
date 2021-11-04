@@ -20,6 +20,7 @@ class Context:
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
+        self.stack = []
         self.stacks = []
         self.last_popped = []
         self.use_top_input = False
@@ -40,6 +41,7 @@ class Context:
         ctx.repl_mode = self.repl_mode
         ctx.retain_popped = self.retain_popped
         ctx.reverse_flag = self.reverse_flag
+        ctx.stack = self.stack
         ctx.stacks = self.stacks
         ctx.last_popped = self.last_popped
         ctx.use_top_input = self.use_top_input

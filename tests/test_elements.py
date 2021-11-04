@@ -8,4984 +8,4984 @@ from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.LazyList import *
 def test_LogicalNot():
-	stack = [1]
+	ctx = Context()
+	ctx.stack = [1]
 	expected = 0
-	ctx = Context()
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0]
+	ctx = Context()
+	ctx.stack = [0]
 	expected = 1
-	ctx = Context()
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = 0
-	ctx = Context()
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [""]
+	ctx = Context()
+	ctx.stack = [""]
 	expected = 1
-	ctx = Context()
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 0
-	ctx = Context()
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[]]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [[]]
+	expected = 1
 	code = transpile('¬');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LogicalAnd():
-	stack = [0, 0]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [0, 0]
+	expected = 0
 	code = transpile('∧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["", 1]
+	ctx = Context()
+	ctx.stack = ["", 1]
 	expected = ""
-	ctx = Context()
 	code = transpile('∧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 0]
 	expected = 0
-	ctx = Context()
 	code = transpile('∧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2]
-	expected = 2
 	ctx = Context()
+	ctx.stack = [1, 2]
+	expected = 2
 	code = transpile('∧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ReversedLogicalAnd():
-	stack = [0, 0]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [0, 0]
+	expected = 0
 	code = transpile('⟑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["", 1]
+	ctx = Context()
+	ctx.stack = ["", 1]
 	expected = ""
-	ctx = Context()
 	code = transpile('⟑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 0]
 	expected = 0
-	ctx = Context()
 	code = transpile('⟑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1, 2]
+	expected = 1
 	code = transpile('⟑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LogicalOr():
-	stack = [0, 0]
+	ctx = Context()
+	ctx.stack = [0, 0]
 	expected = 0
-	ctx = Context()
 	code = transpile('∨');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["", 1]
+	ctx = Context()
+	ctx.stack = ["", 1]
 	expected = 1
-	ctx = Context()
 	code = transpile('∨');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 0]
 	expected = [1,2,3]
-	ctx = Context()
 	code = transpile('∨');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1, 2]
+	expected = 1
 	code = transpile('∨');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ReversedLogicalOr():
-	stack = [0, 0]
+	ctx = Context()
+	ctx.stack = [0, 0]
 	expected = 0
-	ctx = Context()
 	code = transpile('⟇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["", 1]
+	ctx = Context()
+	ctx.stack = ["", 1]
 	expected = 1
-	ctx = Context()
 	code = transpile('⟇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 0]
 	expected = [1,2,3]
-	ctx = Context()
 	code = transpile('⟇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2]
-	expected = 2
 	ctx = Context()
+	ctx.stack = [1, 2]
+	expected = 2
 	code = transpile('⟇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ItemSplit():
-	stack = [123456]
+	ctx = Context()
+	ctx.stack = [123456]
 	expected = 6
-	ctx = Context()
 	code = transpile('÷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "c"
-	ctx = Context()
 	code = transpile('÷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('÷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_AsteriskLiteral():
-	stack = []
-	expected = "*"
 	ctx = Context()
+	ctx.stack = []
+	expected = "*"
 	code = transpile('×');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_MultiCommand():
-	stack = [8, 2]
+	ctx = Context()
+	ctx.stack = [8, 2]
 	expected = 3.0
-	ctx = Context()
 	code = transpile('•');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcde", 4]
+	ctx = Context()
+	ctx.stack = ["abcde", 4]
 	expected = "aaaabbbbccccddddeeee"
-	ctx = Context()
 	code = transpile('•');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcde", "FgHIj"]
+	ctx = Context()
+	ctx.stack = ["abcde", "FgHIj"]
 	expected = "AbCDe"
-	ctx = Context()
 	code = transpile('•');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]]
-	expected = [[1, 2], 3, 4, 5, [6, 7]]
 	ctx = Context()
+	ctx.stack = [[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]]
+	expected = [[1, 2], 3, 4, 5, [6, 7]]
 	code = transpile('•');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FunctionCall():
-	stack = [12]
+	ctx = Context()
+	ctx.stack = [12]
 	expected = 2
-	ctx = Context()
 	code = transpile('†');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 0, 1]]
-	expected = [0, 1, 0]
 	ctx = Context()
+	ctx.stack = [[1, 0, 1]]
+	expected = [0, 1, 0]
 	code = transpile('†');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SplitOn():
-	stack = [1231234, 3]
+	ctx = Context()
+	ctx.stack = [1231234, 3]
 	expected = ["12", "12", "4"]
-	ctx = Context()
 	code = transpile('€');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc3def", 3]
+	ctx = Context()
+	ctx.stack = ["abc3def", 3]
 	expected = ["abc", "def"]
-	ctx = Context()
 	code = transpile('€');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 3, 2, 1], 4]
-	expected = [[1, 2, 3], [3, 2, 1]]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 3, 2, 1], 4]
+	expected = [[1, 2, 3], [3, 2, 1]]
 	code = transpile('€');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Halve():
-	stack = [8]
+	ctx = Context()
+	ctx.stack = [8]
 	expected = 4
-	ctx = Context()
 	code = transpile('½');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["FizzBuzz"]
+	ctx = Context()
+	ctx.stack = ["FizzBuzz"]
 	expected = ["Fizz", "Buzz"]
-	ctx = Context()
 	code = transpile('½');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[2, 4, 6, 8]]
-	expected = [1, 2, 3, 4]
 	ctx = Context()
+	ctx.stack = [[2, 4, 6, 8]]
+	expected = [1, 2, 3, 4]
 	code = transpile('½');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CombinationsRemoveFixedPointCollection():
-	stack = ["cabbage", "abcde"]
+	ctx = Context()
+	ctx.stack = ["cabbage", "abcde"]
 	expected = "cabbae"
-	ctx = Context()
 	code = transpile('↔');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,3,5,6,7,7,1],[1,3,5]]
+	ctx = Context()
+	ctx.stack = [[1,3,5,6,7,7,1],[1,3,5]]
 	expected = [1,3,5,1]
-	ctx = Context()
 	code = transpile('↔');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2],2]
-	expected = [[1,1],[1,2],[2,1],[2,2]]
 	ctx = Context()
+	ctx.stack = [[1,2],2]
+	expected = [[1,1],[1,2],[2,1],[2,2]]
 	code = transpile('↔');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_InfiniteReplacement():
-	stack = ["{[[[]]]}","[]",""]
+	ctx = Context()
+	ctx.stack = ["{[[[]]]}","[]",""]
 	expected = "{}"
-	ctx = Context()
 	code = transpile('¢');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1444,44,34]
-	expected = 1334
 	ctx = Context()
+	ctx.stack = [1444,44,34]
+	expected = 1334
 	code = transpile('¢');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ComplementCommaSplit():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = -4
-	ctx = Context()
 	code = transpile('⌐');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-5]
+	ctx = Context()
+	ctx.stack = [-5]
 	expected = 6
-	ctx = Context()
 	code = transpile('⌐');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a,b,c"]
-	expected = ["a","b","c"]
 	ctx = Context()
+	ctx.stack = ["a,b,c"]
+	expected = ["a","b","c"]
 	code = transpile('⌐');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_IsPrimeCaseCheck():
-	stack = [2]
+	ctx = Context()
+	ctx.stack = [2]
 	expected = 1
-	ctx = Context()
 	code = transpile('æ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4]
+	ctx = Context()
+	ctx.stack = [4]
 	expected = 0
-	ctx = Context()
 	code = transpile('æ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a"]
+	ctx = Context()
+	ctx.stack = ["a"]
 	expected = 0
-	ctx = Context()
 	code = transpile('æ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["A"]
+	ctx = Context()
+	ctx.stack = ["A"]
 	expected = 1
-	ctx = Context()
 	code = transpile('æ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["!"]
+	ctx = Context()
+	ctx.stack = ["!"]
 	expected = -1
-	ctx = Context()
 	code = transpile('æ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_InclusiveZeroRange():
-	stack = ["a$c"]
+	ctx = Context()
+	ctx.stack = ["a$c"]
 	expected = [1, 0, 1]
-	ctx = Context()
 	code = transpile('ʀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1]]
+	ctx = Context()
+	ctx.stack = [[1]]
 	expected = [[0, 1]]
-	ctx = Context()
 	code = transpile('ʀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
-	expected = [0,1,2,3]
 	ctx = Context()
+	ctx.stack = [3]
+	expected = [0,1,2,3]
 	code = transpile('ʀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ExclusiveZeroRange():
-	stack = ["1234"]
+	ctx = Context()
+	ctx.stack = ["1234"]
 	expected = "1234321"
-	ctx = Context()
 	code = transpile('ʁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1]]
+	ctx = Context()
+	ctx.stack = [[1]]
 	expected = [[0]]
-	ctx = Context()
 	code = transpile('ʁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
-	expected = [0,1,2]
 	ctx = Context()
+	ctx.stack = [3]
+	expected = [0,1,2]
 	code = transpile('ʁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_InclusiveOneRange():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "ABC"
-	ctx = Context()
 	code = transpile('ɾ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[4, 5]]
+	ctx = Context()
+	ctx.stack = [[4, 5]]
 	expected = [[1, 2, 3, 4], [1, 2, 3, 4, 5]]
-	ctx = Context()
 	code = transpile('ɾ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
-	expected = [1,2,3]
 	ctx = Context()
+	ctx.stack = [3]
+	expected = [1,2,3]
 	code = transpile('ɾ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ExclusiveOneRangeLowercase():
-	stack = ["1aBC"]
+	ctx = Context()
+	ctx.stack = ["1aBC"]
 	expected = "1abc"
-	ctx = Context()
 	code = transpile('ɽ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[0]]
+	ctx = Context()
+	ctx.stack = [[0]]
 	expected = [[]]
-	ctx = Context()
 	code = transpile('ɽ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
-	expected = [1,2]
 	ctx = Context()
+	ctx.stack = [3]
+	expected = [1,2]
 	code = transpile('ɽ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Chooserandomchoicesetsame():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 10
-	ctx = Context()
 	code = transpile('ƈ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc","aaccb"]
+	ctx = Context()
+	ctx.stack = ["abc","aaccb"]
 	expected = 1
-	ctx = Context()
 	code = transpile('ƈ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc","abcd"]
-	expected = 0
 	ctx = Context()
+	ctx.stack = ["abc","abcd"]
+	expected = 0
 	code = transpile('ƈ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Palindromise():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = [1,2,3,2,1]
-	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
+	ctx = Context()
+	ctx.stack = [[1,2,3,4]]
 	expected = [1,2,3,4,3,2,1]
-	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4,5]]
+	ctx = Context()
+	ctx.stack = [[1,2,3,4,5]]
 	expected = [1,2,3,4,5,4,3,2,1]
-	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6]]
+	ctx = Context()
+	ctx.stack = [[1,2,3,4,5,6]]
 	expected = [1,2,3,4,5,6,5,4,3,2,1]
-	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
-	expected = "hellolleh"
 	ctx = Context()
+	ctx.stack = ["hello"]
+	expected = "hellolleh"
 	code = transpile('∞');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_StackLength():
-	stack = [0,1,2]
+	ctx = Context()
+	ctx.stack = [0,1,2]
 	expected = 3
-	ctx = Context()
 	code = transpile('!');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,1,1,1,1]
+	ctx = Context()
+	ctx.stack = [1,1,1,1,1]
 	expected = 5
-	ctx = Context()
 	code = transpile('!');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = []
-	expected = 0
 	ctx = Context()
+	ctx.stack = []
+	expected = 0
 	code = transpile('!');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Pair():
-	stack = [1, 2]
+	ctx = Context()
+	ctx.stack = [1, 2]
 	expected = [1, 2]
-	ctx = Context()
 	code = transpile('"');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2, 3]
+	ctx = Context()
+	ctx.stack = [1, 2, 3]
 	expected = [2, 3]
-	ctx = Context()
 	code = transpile('"');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3], "abc", 3]
-	expected = ["abc", 3]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3], "abc", 3]
+	expected = ["abc", 3]
 	code = transpile('"');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Swap():
-	stack = [1, 2]
+	ctx = Context()
+	ctx.stack = [1, 2]
 	expected = 1
-	ctx = Context()
 	code = transpile('$');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 2, 3]
+	ctx = Context()
+	ctx.stack = [1, 2, 3]
 	expected = 2
-	ctx = Context()
 	code = transpile('$');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3], "abc", 3]
-	expected = "abc"
 	ctx = Context()
+	ctx.stack = [[1, 2, 3], "abc", 3]
+	expected = "abc"
 	code = transpile('$');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ModuloFormat():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 2
-	ctx = Context()
 	code = transpile('%');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello!",3]
+	ctx = Context()
+	ctx.stack = ["hello!",3]
 	expected = "o!"
-	ctx = Context()
 	code = transpile('%');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hel%ld!","lo, Wor"]
+	ctx = Context()
+	ctx.stack = ["Hel%ld!","lo, Wor"]
 	expected = "Hello, World!"
-	ctx = Context()
 	code = transpile('%');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["% and % and %",[1,2,3]]
-	expected = "1 and 2 and 3"
 	ctx = Context()
+	ctx.stack = ["% and % and %",[1,2,3]]
+	expected = "1 and 2 and 3"
 	code = transpile('%');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Multiplication():
-	stack = [3,5]
+	ctx = Context()
+	ctx.stack = [3,5]
 	expected = 15
-	ctx = Context()
 	code = transpile('*');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4,-2]
+	ctx = Context()
+	ctx.stack = [4,-2]
 	expected = -8
-	ctx = Context()
 	code = transpile('*');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4,"*"]
+	ctx = Context()
+	ctx.stack = [4,"*"]
 	expected = "****"
-	ctx = Context()
 	code = transpile('*');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["x",5]
+	ctx = Context()
+	ctx.stack = ["x",5]
 	expected = "xxxxx"
-	ctx = Context()
 	code = transpile('*');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["aeiou","hello"]
-	expected = "hillu"
 	ctx = Context()
+	ctx.stack = ["aeiou","hello"]
+	expected = "hillu"
 	code = transpile('*');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Addition():
-	stack = [1, 1]
+	ctx = Context()
+	ctx.stack = [1, 1]
 	expected = 2
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0, -5]
+	ctx = Context()
+	ctx.stack = [0, -5]
 	expected = -5
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc", 5]
+	ctx = Context()
+	ctx.stack = ["abc", 5]
 	expected = "abc5"
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5, "abc"]
+	ctx = Context()
+	ctx.stack = [5, "abc"]
 	expected = "5abc"
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello, ", "World!"]
+	ctx = Context()
+	ctx.stack = ["Hello, ", "World!"]
 	expected = "Hello, World!"
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 4]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 4]
 	expected = [5, 6, 7]
-	ctx = Context()
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], [4,5,6]]
-	expected = [5, 7, 9]
 	ctx = Context()
+	ctx.stack = [[1,2,3], [4,5,6]]
+	expected = [5, 7, 9]
 	code = transpile('+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Subtract():
-	stack = [5, 4]
+	ctx = Context()
+	ctx.stack = [5, 4]
 	expected = 1
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0, -5]
+	ctx = Context()
+	ctx.stack = [0, -5]
 	expected = 5
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["|", 5]
+	ctx = Context()
+	ctx.stack = ["|", 5]
 	expected = "|-----"
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3, "> arrow"]
+	ctx = Context()
+	ctx.stack = [3, "> arrow"]
 	expected = "---> arrow"
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcbde", "b"]
+	ctx = Context()
+	ctx.stack = ["abcbde", "b"]
 	expected = "acde"
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["aaa", "a"]
+	ctx = Context()
+	ctx.stack = ["aaa", "a"]
 	expected = ""
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3], [1, 2, 3]]
+	ctx = Context()
+	ctx.stack = [[1, 2, 3], [1, 2, 3]]
 	expected = [0, 0, 0]
-	ctx = Context()
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[10, 20, 30], 5]
-	expected = [5, 15, 25]
 	ctx = Context()
+	ctx.stack = [[10, 20, 30], 5]
+	expected = [5, 15, 25]
 	code = transpile('-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DivideSplit():
-	stack = [4,2]
+	ctx = Context()
+	ctx.stack = [4,2]
 	expected = 2
-	ctx = Context()
 	code = transpile('/');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcdef",3]
+	ctx = Context()
+	ctx.stack = ["abcdef",3]
 	expected = ["ab","cd","ef"]
-	ctx = Context()
 	code = transpile('/');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["1,2,3",","]
-	expected = ["1","2","3"]
 	ctx = Context()
+	ctx.stack = ["1,2,3",","]
+	expected = ["1","2","3"]
 	code = transpile('/');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LessThan():
-	stack = [1, 2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1, 2]
+	expected = 1
 	code = transpile('<');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2, 1]
+	ctx = Context()
+	ctx.stack = [2, 1]
 	expected = 0
-	ctx = Context()
 	code = transpile('<');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a","b"]
+	ctx = Context()
+	ctx.stack = ["a","b"]
 	expected = 1
-	ctx = Context()
 	code = transpile('<');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-5,2]
+	ctx = Context()
+	ctx.stack = [-5,2]
 	expected = 1
-	ctx = Context()
 	code = transpile('<');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	ctx = Context()
+	ctx.stack = [[1,2,3],2]
 	expected = [1,0,0]
-	ctx = Context()
 	code = transpile('<');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Equals():
-	stack = [1, 1]
+	ctx = Context()
+	ctx.stack = [1, 1]
 	expected = 1
-	ctx = Context()
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2, 1]
+	ctx = Context()
+	ctx.stack = [2, 1]
 	expected = 0
-	ctx = Context()
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a","b"]
+	ctx = Context()
+	ctx.stack = ["a","b"]
 	expected = 0
-	ctx = Context()
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["xyz","xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz","xyz"]
 	expected = 1
-	ctx = Context()
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	ctx = Context()
+	ctx.stack = [[1,2,3],2]
 	expected = [0,1,0]
-	ctx = Context()
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,"1"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1,"1"]
+	expected = 1
 	code = transpile('=');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_GreaterThan():
-	stack = [1, 2]
+	ctx = Context()
+	ctx.stack = [1, 2]
 	expected = 0
-	ctx = Context()
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2, 1]
+	ctx = Context()
+	ctx.stack = [2, 1]
 	expected = 1
-	ctx = Context()
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a","b"]
+	ctx = Context()
+	ctx.stack = ["a","b"]
 	expected = 0
-	ctx = Context()
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2,-5]
+	ctx = Context()
+	ctx.stack = [2,-5]
 	expected = 1
-	ctx = Context()
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	ctx = Context()
+	ctx.stack = [[1,2,3],2]
 	expected = [0,0,1]
-	ctx = Context()
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["5",10]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["5",10]
+	expected = 1
 	code = transpile('>');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_All():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 1
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[0,1,2]]
+	ctx = Context()
+	ctx.stack = [[0,1,2]]
 	expected = 0
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["",1,2]]
+	ctx = Context()
+	ctx.stack = [["",1,2]]
 	expected = 0
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[]]
+	ctx = Context()
+	ctx.stack = [[]]
 	expected = 1
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [""]
+	ctx = Context()
+	ctx.stack = [""]
 	expected = []
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0]
+	ctx = Context()
+	ctx.stack = [0]
 	expected = 0
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a"]
+	ctx = Context()
+	ctx.stack = ["a"]
 	expected = 1
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["y"]
+	ctx = Context()
+	ctx.stack = ["y"]
 	expected = 0
-	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi"]
-	expected = [0,1]
 	ctx = Context()
+	ctx.stack = ["hi"]
+	expected = [0,1]
 	code = transpile('A');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BinaryToDecimal():
-	stack = [[1,0,1]]
+	ctx = Context()
+	ctx.stack = [[1,0,1]]
 	expected = 5
-	ctx = Context()
 	code = transpile('B');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,1,1]]
+	ctx = Context()
+	ctx.stack = [[1,1,1]]
 	expected = 7
-	ctx = Context()
 	code = transpile('B');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["1011"]
-	expected = 11
 	ctx = Context()
+	ctx.stack = ["1011"]
+	expected = 11
 	code = transpile('B');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ChrOrd():
-	stack = [65]
+	ctx = Context()
+	ctx.stack = [65]
 	expected = "A"
-	ctx = Context()
 	code = transpile('C');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [8482]
+	ctx = Context()
+	ctx.stack = [8482]
 	expected = "™"
-	ctx = Context()
 	code = transpile('C');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Z"]
+	ctx = Context()
+	ctx.stack = ["Z"]
 	expected = 90
-	ctx = Context()
 	code = transpile('C');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["ABC"]
+	ctx = Context()
+	ctx.stack = ["ABC"]
 	expected = [65,66,67]
-	ctx = Context()
 	code = transpile('C');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[123,124,125]]
-	expected = ["{","|","}"]
 	ctx = Context()
+	ctx.stack = [[123,124,125]]
+	expected = ["{","|","}"]
 	code = transpile('C');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TwoPowerPythonEval():
-	stack = [0]
+	ctx = Context()
+	ctx.stack = [0]
 	expected = 1
-	ctx = Context()
 	code = transpile('E');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2]
+	ctx = Context()
+	ctx.stack = [2]
 	expected = 4
-	ctx = Context()
 	code = transpile('E');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["[1,2,3]"]
-	expected = [1,2,3]
 	ctx = Context()
+	ctx.stack = ["[1,2,3]"]
+	expected = [1,2,3]
 	code = transpile('E');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Filter():
-	stack = [[1,2,3],[2,4,6]]
+	ctx = Context()
+	ctx.stack = [[1,2,3],[2,4,6]]
 	expected = [1,3]
-	ctx = Context()
 	code = transpile('F');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcdef","daffodil"]
-	expected = "bce"
 	ctx = Context()
+	ctx.stack = ["abcdef","daffodil"]
+	expected = "bce"
 	code = transpile('F');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Max():
-	stack = [[1,3,2]]
+	ctx = Context()
+	ctx.stack = [[1,3,2]]
 	expected = 3
-	ctx = Context()
 	code = transpile('G');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["python"]
-	expected = "y"
 	ctx = Context()
+	ctx.stack = ["python"]
+	expected = "y"
 	code = transpile('G');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_HexToDecimal():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 291
-	ctx = Context()
 	code = transpile('H');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["b"]
+	ctx = Context()
+	ctx.stack = ["b"]
 	expected = 11
-	ctx = Context()
 	code = transpile('H');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["beedab"]
-	expected = 12512683
 	ctx = Context()
+	ctx.stack = ["beedab"]
+	expected = 12512683
 	code = transpile('H');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Int():
-	stack = ["5"]
-	expected = 5
 	ctx = Context()
+	ctx.stack = ["5"]
+	expected = 5
 	code = transpile('I');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
-	expected = 5
 	ctx = Context()
+	ctx.stack = [5]
+	expected = 5
 	code = transpile('I');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[5]]
-	expected = 5
 	ctx = Context()
+	ctx.stack = [[5]]
+	expected = 5
 	code = transpile('I');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Join():
-	stack = [[1,2,3],4]
-	expected = [1,2,3,4]
 	ctx = Context()
+	ctx.stack = [[1,2,3],4]
+	expected = [1,2,3,4]
 	code = transpile('J');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc","def"]
+	ctx = Context()
+	ctx.stack = ["abc","def"]
 	expected = "abcdef"
-	ctx = Context()
 	code = transpile('J');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,[2,3,4]]
-	expected = [1,2,3,4]
 	ctx = Context()
+	ctx.stack = [1,[2,3,4]]
+	expected = [1,2,3,4]
 	code = transpile('J');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2],[3,4]]
-	expected = [1,2,3,4]
 	ctx = Context()
+	ctx.stack = [[1,2],[3,4]]
+	expected = [1,2,3,4]
 	code = transpile('J');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FactorsSubstringsPrefixes():
-	stack = [20]
+	ctx = Context()
+	ctx.stack = [20]
 	expected = [1,2,4,5,10,20]
-	ctx = Context()
 	code = transpile('K');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1]
+	ctx = Context()
+	ctx.stack = [1]
 	expected = [1]
-	ctx = Context()
 	code = transpile('K');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["adbcdbcd"]
+	ctx = Context()
+	ctx.stack = ["adbcdbcd"]
 	expected = {"b","c","d","bc","cd","bcd","db","dbc"}
-	ctx = Context()
 	code = transpile('K');print(code)
 	exec(code)
-	assert set(simplify(stack[-1])) == expected
+	assert set(simplify(ctx.stack[-1])) == expected
 
-	stack = [[1,2,3]]
-	expected = [[1],[1,2],[1,2,3]]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [[1],[1,2],[1,2,3]]
 	code = transpile('K');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Length():
-	stack = ["abc"]
-	expected = 3
 	ctx = Context()
+	ctx.stack = ["abc"]
+	expected = 3
 	code = transpile('L');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('L');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,"wrfwerfgbr",6]]
+	ctx = Context()
+	ctx.stack = [[1,2,"wrfwerfgbr",6]]
 	expected = 4
-	ctx = Context()
 	code = transpile('L');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Map():
-	stack = [5,[1,2,3]]
+	ctx = Context()
+	ctx.stack = [5,[1,2,3]]
 	expected = [[5,1],[5,2],[5,3]]
-	ctx = Context()
 	code = transpile('M');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["z","hi"]
-	expected = [["z","h"],["z","i"]]
 	ctx = Context()
+	ctx.stack = ["z","hi"]
+	expected = [["z","h"],["z","i"]]
 	code = transpile('M');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_NegateSwapCase():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = -5
-	ctx = Context()
 	code = transpile('N');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-1]
+	ctx = Context()
+	ctx.stack = [-1]
 	expected = 1
-	ctx = Context()
 	code = transpile('N');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a"]
+	ctx = Context()
+	ctx.stack = ["a"]
 	expected = "A"
-	ctx = Context()
 	code = transpile('N');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["aBc"]
-	expected = "AbC"
 	ctx = Context()
+	ctx.stack = ["aBc"]
+	expected = "AbC"
 	code = transpile('N');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Count():
-	stack = [[1,2,3,4,5,4,3], 4]
+	ctx = Context()
+	ctx.stack = [[1,2,3,4,5,4,3], 4]
 	expected = 2
-	ctx = Context()
 	code = transpile('O');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcdbacsabdcabca","a"]
-	expected = 5
 	ctx = Context()
+	ctx.stack = ["abcdbacsabdcabca","a"]
+	expected = 5
 	code = transpile('O');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Strip():
-	stack = [[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]]
+	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]]
 	expected = [3, 4, 5, 4, 3]
-	ctx = Context()
 	code = transpile('P');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["    Hello, World!    ", " "]
-	expected = "Hello, World!"
 	ctx = Context()
+	ctx.stack = ["    Hello, World!    ", " "]
+	expected = "Hello, World!"
 	code = transpile('P');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Reduce():
-	stack = [[[1,2],[3,4]]]
+	ctx = Context()
+	ctx.stack = [[[1,2],[3,4]]]
 	expected = [[2,1],[4,3]]
-	ctx = Context()
 	code = transpile('R');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[[1,2]]]
-	expected = [[2,1]]
 	ctx = Context()
+	ctx.stack = [[[1,2]]]
+	expected = [[2,1]]
 	code = transpile('R');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Stringify():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = "5"
-	ctx = Context()
 	code = transpile('S');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = "⟨1|2|3⟩"
-	ctx = Context()
 	code = transpile('S');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["X"]
-	expected = "X"
 	ctx = Context()
+	ctx.stack = ["X"]
+	expected = "X"
 	code = transpile('S');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TruthyIndices():
-	stack = [[0,1,0,2]]
+	ctx = Context()
+	ctx.stack = [[0,1,0,2]]
 	expected = [1,3]
-	ctx = Context()
 	code = transpile('T');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
-	expected = [0,1,2,3]
 	ctx = Context()
+	ctx.stack = [[1,2,3,4]]
+	expected = [0,1,2,3]
 	code = transpile('T');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uniquify():
-	stack = [[1,3,5,5]]
+	ctx = Context()
+	ctx.stack = [[1,3,5,5]]
 	expected = [1,3,5]
-	ctx = Context()
 	code = transpile('U');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abdbcdbch"]
-	expected = "abdch"
 	ctx = Context()
+	ctx.stack = ["abdbcdbch"]
+	expected = "abdch"
 	code = transpile('U');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Replace():
-	stack = ["hela","a","lo"]
+	ctx = Context()
+	ctx.stack = ["hela","a","lo"]
 	expected = "hello"
-	ctx = Context()
 	code = transpile('V');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["banana","n","nan"]
-	expected = "banananana"
 	ctx = Context()
+	ctx.stack = ["banana","n","nan"]
+	expected = "banananana"
 	code = transpile('V');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Wrap():
-	stack = [1,2,3]
+	ctx = Context()
+	ctx.stack = [1,2,3]
 	expected = [1,2,3]
-	ctx = Context()
 	code = transpile('W');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = []
+	ctx = Context()
+	ctx.stack = []
 	expected = []
-	ctx = Context()
 	code = transpile('W');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello",1,9]
-	expected = ["hello",1,9]
 	ctx = Context()
+	ctx.stack = ["hello",1,9]
+	expected = ["hello",1,9]
 	code = transpile('W');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Interleave():
-	stack = [[1,3,5],[2,4]]
+	ctx = Context()
+	ctx.stack = [[1,3,5],[2,4]]
 	expected = [1,2,3,4,5]
-	ctx = Context()
 	code = transpile('Y');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["srn","tig"]
-	expected = "string"
 	ctx = Context()
+	ctx.stack = ["srn","tig"]
+	expected = "string"
 	code = transpile('Y');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Zip():
-	stack = [[1,2],[3,4]]
+	ctx = Context()
+	ctx.stack = [[1,2],[3,4]]
 	expected = [[1,3],[2,4]]
-	ctx = Context()
 	code = transpile('Z');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc",[1,2,3]]
-	expected = [["a",1],["b",2],["c",3]]
 	ctx = Context()
+	ctx.stack = ["abc",[1,2,3]]
+	expected = [["a",1],["b",2],["c",3]]
 	code = transpile('Z');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Any():
-	stack = [[1,2,3]]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 1
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[0,0,0]]
+	ctx = Context()
+	ctx.stack = [[0,0,0]]
 	expected = 0
-	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[0,1,2]]
+	ctx = Context()
+	ctx.stack = [[0,1,2]]
 	expected = 1
-	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["A"]
+	ctx = Context()
+	ctx.stack = ["A"]
 	expected = 1
-	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a"]
+	ctx = Context()
+	ctx.stack = ["a"]
 	expected = 0
-	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hi"]
+	ctx = Context()
+	ctx.stack = ["Hi"]
 	expected = [1,0]
-	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Binary():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = [1,0,1]
-	ctx = Context()
 	code = transpile('b');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [" "]
+	ctx = Context()
+	ctx.stack = [" "]
 	expected = [[1,0,0,0,0,0]]
-	ctx = Context()
 	code = transpile('b');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[2,3]]
-	expected = [[1,0],[1,1]]
 	ctx = Context()
+	ctx.stack = [[2,3]]
+	expected = [[1,0],[1,1]]
 	code = transpile('b');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Contains():
-	stack = ["abcdef","a"]
+	ctx = Context()
+	ctx.stack = ["abcdef","a"]
 	expected = 1
-	ctx = Context()
 	code = transpile('c');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["xyz","a"]
+	ctx = Context()
+	ctx.stack = ["xyz","a"]
 	expected = 0
-	ctx = Context()
 	code = transpile('c');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],1]
+	ctx = Context()
+	ctx.stack = [[1,2,3],1]
 	expected = 1
-	ctx = Context()
 	code = transpile('c');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],0]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [[1,2,3],0]
+	expected = 0
 	code = transpile('c');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Double():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 10
-	ctx = Context()
 	code = transpile('d');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0]
+	ctx = Context()
+	ctx.stack = [0]
 	expected = 0
-	ctx = Context()
 	code = transpile('d');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2]]
+	ctx = Context()
+	ctx.stack = [[1,2]]
 	expected = [2,4]
-	ctx = Context()
 	code = transpile('d');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["x"]
+	ctx = Context()
+	ctx.stack = ["x"]
 	expected = "xx"
-	ctx = Context()
 	code = transpile('d');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["ha"]
-	expected = "haha"
 	ctx = Context()
+	ctx.stack = ["ha"]
+	expected = "haha"
 	code = transpile('d');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Exponentiation():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 125
-	ctx = Context()
 	code = transpile('e');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0,0]
+	ctx = Context()
+	ctx.stack = [0,0]
 	expected = 1
-	ctx = Context()
 	code = transpile('e');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello",2]
-	expected = "hlo"
 	ctx = Context()
+	ctx.stack = ["hello",2]
+	expected = "hlo"
 	code = transpile('e');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Flatten():
-	stack = [135]
+	ctx = Context()
+	ctx.stack = [135]
 	expected = [1,3,5]
-	ctx = Context()
 	code = transpile('f');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi"]
+	ctx = Context()
+	ctx.stack = ["hi"]
 	expected = ["h","i"]
-	ctx = Context()
 	code = transpile('f');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[[[1,2],3,[[4,[5]],6],7],[8,[9]]]]
+	ctx = Context()
+	ctx.stack = [[[[1,2],3,[[4,[5]],6],7],[8,[9]]]]
 	expected = [1,2,3,4,5,6,7,8,9]
-	ctx = Context()
 	code = transpile('f');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-1]
-	expected = ["-",1]
 	ctx = Context()
+	ctx.stack = [-1]
+	expected = ["-",1]
 	code = transpile('f');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Minimum():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "a"
-	ctx = Context()
 	code = transpile('g');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,4,-2]]
+	ctx = Context()
+	ctx.stack = [[1,4,-2]]
 	expected = -2
-	ctx = Context()
 	code = transpile('g');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[5,3,9]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[5,3,9]]
+	expected = 3
 	code = transpile('g');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Head():
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "h"
-	ctx = Context()
 	code = transpile('h');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 1
 	code = transpile('h');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Index():
-	stack = ["abc",1]
+	ctx = Context()
+	ctx.stack = ["abc",1]
 	expected = "b"
-	ctx = Context()
 	code = transpile('i');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	ctx = Context()
+	ctx.stack = [[1,2,3], 0]
 	expected = 1
-	ctx = Context()
 	code = transpile('i');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[2,3,4,5], [2]]
+	ctx = Context()
+	ctx.stack = [[2,3,4,5], [2]]
 	expected = [2,3]
-	ctx = Context()
 	code = transpile('i');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,3,5,7],[1,3]]
+	ctx = Context()
+	ctx.stack = [[1,3,5,7],[1,3]]
 	expected = [3,5]
-	ctx = Context()
 	code = transpile('i');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]
-	expected = [2,4,6,8]
 	ctx = Context()
+	ctx.stack = [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]
+	expected = [2,4,6,8]
 	code = transpile('i');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Join():
-	stack = [[1,2,3],"penguin"]
+	ctx = Context()
+	ctx.stack = [[1,2,3],"penguin"]
 	expected = "1penguin2penguin3"
-	ctx = Context()
 	code = transpile('j');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["he","","o, wor","d!"], "l"]
-	expected = "hello, world!"
 	ctx = Context()
+	ctx.stack = [["he","","o, wor","d!"], "l"]
+	expected = "hello, world!"
 	code = transpile('j');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CumulativeGroups():
-	stack = ["hello",3]
+	ctx = Context()
+	ctx.stack = ["hello",3]
 	expected = ["hel","ell","llo"]
-	ctx = Context()
 	code = transpile('l');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["cake",2]
+	ctx = Context()
+	ctx.stack = ["cake",2]
 	expected = ["ca","ak","ke"]
-	ctx = Context()
 	code = transpile('l');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["cheese","cake"]
+	ctx = Context()
+	ctx.stack = ["cheese","cake"]
 	expected = 0
-	ctx = Context()
 	code = transpile('l');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["cheese","salads"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["cheese","salads"]
+	expected = 1
 	code = transpile('l');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Mirror():
-	stack = [123]
+	ctx = Context()
+	ctx.stack = [123]
 	expected = 444
-	ctx = Context()
 	code = transpile('m');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi"]
+	ctx = Context()
+	ctx.stack = ["hi"]
 	expected = "hiih"
-	ctx = Context()
 	code = transpile('m');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [1,2,3,3,2,1]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [1,2,3,3,2,1]
 	code = transpile('m');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Remove():
-	stack = ["hello","l"]
+	ctx = Context()
+	ctx.stack = ["hello","l"]
 	expected = "heo"
-	ctx = Context()
 	code = transpile('o');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,1,2],1]
+	ctx = Context()
+	ctx.stack = [[1,2,3,1,2],1]
 	expected = [2,3,2]
-	ctx = Context()
 	code = transpile('o');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["bananas and naan","an"]
-	expected = "bas d na"
 	ctx = Context()
+	ctx.stack = ["bananas and naan","an"]
+	expected = "bas d na"
 	code = transpile('o');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Prepend():
-	stack = ["ld","wor"]
+	ctx = Context()
+	ctx.stack = ["ld","wor"]
 	expected = "world"
-	ctx = Context()
 	code = transpile('p');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],13]
+	ctx = Context()
+	ctx.stack = [[1,2,3],13]
 	expected = [13,1,2,3]
-	ctx = Context()
 	code = transpile('p');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[3,4,5],"23"]
-	expected = ["23",3,4,5]
 	ctx = Context()
+	ctx.stack = [[3,4,5],"23"]
+	expected = ["23",3,4,5]
 	code = transpile('p');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uneval():
-	stack = ["\\"]
+	ctx = Context()
+	ctx.stack = ["\\"]
 	expected = "`\\`"
-	ctx = Context()
 	code = transpile('q');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["`"]
+	ctx = Context()
+	ctx.stack = ["`"]
 	expected = "`\\``"
-	ctx = Context()
 	code = transpile('q');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["a"]
-	expected = "`a`"
 	ctx = Context()
+	ctx.stack = ["a"]
+	expected = "`a`"
 	code = transpile('q');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Range():
-	stack = [3,6]
+	ctx = Context()
+	ctx.stack = [3,6]
 	expected = [3,4,5]
-	ctx = Context()
 	code = transpile('r');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4,8]
-	expected = [4,5,6,7]
 	ctx = Context()
+	ctx.stack = [4,8]
+	expected = [4,5,6,7]
 	code = transpile('r');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_sort():
-	stack = [[3,1,2]]
+	ctx = Context()
+	ctx.stack = [[3,1,2]]
 	expected = [1,2,3]
-	ctx = Context()
 	code = transpile('s');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["bca"]
-	expected = "abc"
 	ctx = Context()
+	ctx.stack = ["bca"]
+	expected = "abc"
 	code = transpile('s');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Tail():
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "o"
-	ctx = Context()
 	code = transpile('t');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('t');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_MinusOne():
-	stack = []
-	expected = -1
 	ctx = Context()
+	ctx.stack = []
+	expected = -1
 	code = transpile('u');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Listify():
-	stack = [1]
+	ctx = Context()
+	ctx.stack = [1]
 	expected = [1]
-	ctx = Context()
 	code = transpile('w');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = ["hello"]
-	ctx = Context()
 	code = transpile('w');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [[1,2,3]]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [[1,2,3]]
 	code = transpile('w');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uninterleave():
-	stack = ["abcde"]
+	ctx = Context()
+	ctx.stack = ["abcde"]
 	expected = "bd"
-	ctx = Context()
 	code = transpile('y');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
-	expected = [2,4]
 	ctx = Context()
+	ctx.stack = [[1,2,3,4]]
+	expected = [2,4]
 	code = transpile('y');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Zipself():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = [[1,1],[2,2],[3,3]]
-	ctx = Context()
 	code = transpile('z');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["zap"]
-	expected = [["z","z"], ["a","a"],["p","p"]]
 	ctx = Context()
+	ctx.stack = ["zap"]
+	expected = [["z","z"], ["a","a"],["p","p"]]
 	code = transpile('z');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_MaxbyTail():
-	stack = [[[3,4],[9,2]]]
+	ctx = Context()
+	ctx.stack = [[[3,4],[9,2]]]
 	expected = [3,4]
-	ctx = Context()
 	code = transpile('↑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[[1,2,3],[2,5]]]
-	expected = [2,5]
 	ctx = Context()
+	ctx.stack = [[[1,2,3],[2,5]]]
+	expected = [2,5]
 	code = transpile('↑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_MinbyTail():
-	stack = [[[3,4],[9,2]]]
+	ctx = Context()
+	ctx.stack = [[[3,4],[9,2]]]
 	expected = [9,2]
-	ctx = Context()
 	code = transpile('↓');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[[1,2,3],[2,5]]]
-	expected = [1,2,3]
 	ctx = Context()
+	ctx.stack = [[[1,2,3],[2,5]]]
+	expected = [1,2,3]
 	code = transpile('↓');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DyadicMaximum():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 5
-	ctx = Context()
 	code = transpile('∴');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","goodbye"]
+	ctx = Context()
+	ctx.stack = ["hello","goodbye"]
 	expected = "hello"
-	ctx = Context()
 	code = transpile('∴');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3,"(stuff)"]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [3,"(stuff)"]
+	expected = 3
 	code = transpile('∴');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DyadicMinimum():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 3
-	ctx = Context()
 	code = transpile('∵');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","goodbye"]
+	ctx = Context()
+	ctx.stack = ["hello","goodbye"]
 	expected = "goodbye"
-	ctx = Context()
 	code = transpile('∵');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3,"(stuff)"]
-	expected = "(stuff)"
 	ctx = Context()
+	ctx.stack = [3,"(stuff)"]
+	expected = "(stuff)"
 	code = transpile('∵');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_IncrementSpaceReplaceWith0():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 6
-	ctx = Context()
 	code = transpile('›');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[3,4]]
+	ctx = Context()
+	ctx.stack = [[3,4]]
 	expected = [4,5]
-	ctx = Context()
 	code = transpile('›');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["  101"]
-	expected = "00101"
 	ctx = Context()
+	ctx.stack = ["  101"]
+	expected = "00101"
 	code = transpile('›');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Decrement():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 4
-	ctx = Context()
 	code = transpile('‹');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[3,4]]
+	ctx = Context()
+	ctx.stack = [[3,4]]
 	expected = [2,3]
-	ctx = Context()
 	code = transpile('‹');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
-	expected = "hello-"
 	ctx = Context()
+	ctx.stack = ["hello"]
+	expected = "hello-"
 	code = transpile('‹');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Parity():
-	stack = [2]
+	ctx = Context()
+	ctx.stack = [2]
 	expected = 0
-	ctx = Context()
 	code = transpile('∷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
+	ctx = Context()
+	ctx.stack = [3]
 	expected = 1
-	ctx = Context()
 	code = transpile('∷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello!"]
-	expected = "lo!"
 	ctx = Context()
+	ctx.stack = ["hello!"]
+	expected = "lo!"
 	code = transpile('∷');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_EmptyString():
-	stack = []
-	expected = ""
 	ctx = Context()
+	ctx.stack = []
+	expected = ""
 	code = transpile('¤');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Space():
-	stack = []
-	expected = " "
 	ctx = Context()
+	ctx.stack = []
+	expected = " "
 	code = transpile('ð');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ToBaseTenFromCustomBase():
-	stack = [43,5]
+	ctx = Context()
+	ctx.stack = [43,5]
 	expected = 23
-	ctx = Context()
 	code = transpile('β');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["banana","nab"]
+	ctx = Context()
+	ctx.stack = ["banana","nab"]
 	expected = 577
-	ctx = Context()
 	code = transpile('β');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[15,23,9],31]
-	expected = 15137
 	ctx = Context()
+	ctx.stack = [[15,23,9],31]
+	expected = 15137
 	code = transpile('β');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FromBaseTenToCustomBase():
-	stack = [1234567,"abc"]
+	ctx = Context()
+	ctx.stack = [1234567,"abc"]
 	expected = "cacccabbbbcab"
-	ctx = Context()
 	code = transpile('τ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1234567,5]
+	ctx = Context()
+	ctx.stack = [1234567,5]
 	expected = [3,0,4,0,0,1,2,3,2]
-	ctx = Context()
 	code = transpile('τ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [928343,["he","ll","o"]]
-	expected = ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]
 	ctx = Context()
+	ctx.stack = [928343,["he","ll","o"]]
+	expected = ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]
 	code = transpile('τ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Absolutevalue():
-	stack = [1]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1]
+	expected = 1
 	code = transpile('ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-1]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [-1]
+	expected = 1
 	code = transpile('ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [" ch ee s e "]
+	ctx = Context()
+	ctx.stack = [" ch ee s e "]
 	expected = "cheese"
-	ctx = Context()
 	code = transpile('ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[-1,2,-5]]
-	expected = [1,2,5]
 	ctx = Context()
+	ctx.stack = [[-1,2,-5]]
+	expected = [1,2,5]
 	code = transpile('ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Boolify():
-	stack = [0]
+	ctx = Context()
+	ctx.stack = [0]
 	expected = 0
-	ctx = Context()
 	code = transpile('ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1]
+	ctx = Context()
+	ctx.stack = [1]
 	expected = 1
-	ctx = Context()
 	code = transpile('ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[]]
+	ctx = Context()
+	ctx.stack = [[]]
 	expected = 0
-	ctx = Context()
 	code = transpile('ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["x"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["x"]
+	expected = 1
 	code = transpile('ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_NotOne():
-	stack = [[]]
+	ctx = Context()
+	ctx.stack = [[]]
 	expected = 1
-	ctx = Context()
 	code = transpile('ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["1"]
+	ctx = Context()
+	ctx.stack = ["1"]
 	expected = 0
-	ctx = Context()
 	code = transpile('ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 1
-	ctx = Context()
 	code = transpile('ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [1]
+	expected = 0
 	code = transpile('ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Divmod():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = [1,2]
-	ctx = Context()
 	code = transpile('ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcd",3]
+	ctx = Context()
+	ctx.stack = ["abcd",3]
 	expected = ["abc","abd","acd","bcd"]
-	ctx = Context()
 	code = transpile('ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	ctx = Context()
+	ctx.stack = [[1,2,3],2]
 	expected = [[1,2],[1,3],[2,3]]
-	ctx = Context()
 	code = transpile('ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcdef", "Joe"]
-	expected = ["Joedef"]
 	ctx = Context()
+	ctx.stack = ["abcdef", "Joe"]
+	expected = ["Joedef"]
 	code = transpile('ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Enumerate():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = [[0,"a"],[1,"b"],[2,"c"]]
-	ctx = Context()
 	code = transpile('ė');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [[0,1],[1,2],[2,3]]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [[0,1],[1,2],[2,3]]
 	code = transpile('ė');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Find():
-	stack = [[1,2,3],2]
+	ctx = Context()
+	ctx.stack = [[1,2,3],2]
 	expected = 1
-	ctx = Context()
 	code = transpile('ḟ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","l"]
-	expected = 2
 	ctx = Context()
+	ctx.stack = ["hello","l"]
+	expected = 2
 	code = transpile('ḟ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Gcd():
-	stack = [[1,3,2]]
+	ctx = Context()
+	ctx.stack = [[1,3,2]]
 	expected = 1
-	ctx = Context()
 	code = transpile('ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[60,42,108]]
+	ctx = Context()
+	ctx.stack = [[60,42,108]]
 	expected = 6
-	ctx = Context()
 	code = transpile('ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [50,35]
+	ctx = Context()
+	ctx.stack = [50,35]
 	expected = 5
-	ctx = Context()
 	code = transpile('ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["laugh","cough"]
-	expected = "ugh"
 	ctx = Context()
+	ctx.stack = ["laugh","cough"]
+	expected = "ugh"
 	code = transpile('ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_HeadExtract():
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "ello"
-	ctx = Context()
 	code = transpile('ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [2,3]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [2,3]
 	code = transpile('ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FloorDivision():
-	stack = [5,3]
+	ctx = Context()
+	ctx.stack = [5,3]
 	expected = 1
-	ctx = Context()
 	code = transpile('ḭ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello!",3]
-	expected = "he"
 	ctx = Context()
+	ctx.stack = ["hello!",3]
+	expected = "he"
 	code = transpile('ḭ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3,"hello!"]
-	expected = "he"
 	ctx = Context()
+	ctx.stack = [3,"hello!"]
+	expected = "he"
 	code = transpile('ḭ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
-	stack = [1, 3, 2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1, 3, 2]
+	expected = 1
 	code = transpile('ŀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Mean():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 2
-	ctx = Context()
 	code = transpile('ṁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[4,71,-63]]
-	expected = 4
 	ctx = Context()
+	ctx.stack = [[4,71,-63]]
+	expected = 4
 	code = transpile('ṁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_JoinByNothing():
-	stack = [["a","b","c"]]
+	ctx = Context()
+	ctx.stack = [["a","b","c"]]
 	expected = "abc"
-	ctx = Context()
 	code = transpile('ṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 123
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 123
 	code = transpile('ṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Slice():
-	stack = ["hello",2]
+	ctx = Context()
+	ctx.stack = ["hello",2]
 	expected = "llo"
-	ctx = Context()
 	code = transpile('ȯ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],1]
-	expected = [2,3]
 	ctx = Context()
+	ctx.stack = [[1,2,3],1]
+	expected = [2,3]
 	code = transpile('ȯ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Powerset():
-	stack = ["ab"]
+	ctx = Context()
+	ctx.stack = ["ab"]
 	expected = [[],["a"],["b"],["a","b"]]
-	ctx = Context()
 	code = transpile('ṗ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,2,3]
-	expected = [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
 	ctx = Context()
+	ctx.stack = [1,2,3]
+	expected = [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
 	code = transpile('ṗ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Round():
-	stack = [5.5]
+	ctx = Context()
+	ctx.stack = [5.5]
 	expected = 6
-	ctx = Context()
 	code = transpile('ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3.2]
+	ctx = Context()
+	ctx.stack = [3.2]
 	expected = 3
-	ctx = Context()
 	code = transpile('ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[5.5,3.2]]
+	ctx = Context()
+	ctx.stack = [[5.5,3.2]]
 	expected = [6,3]
-	ctx = Context()
 	code = transpile('ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-4.7]
+	ctx = Context()
+	ctx.stack = [-4.7]
 	expected = -5
-	ctx = Context()
 	code = transpile('ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-4.5]
-	expected = -4
 	ctx = Context()
+	ctx.stack = [-4.5]
+	expected = -4
 	code = transpile('ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FunctionSort():
-	stack = [3,4]
+	ctx = Context()
+	ctx.stack = [3,4]
 	expected = [3,4]
-	ctx = Context()
 	code = transpile('ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,5]
+	ctx = Context()
+	ctx.stack = [1,5]
 	expected = [1,2,3,4,5]
-	ctx = Context()
 	code = transpile('ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc1def2ghi","\\d+"]
-	expected = ["abc","def","ghi"]
 	ctx = Context()
+	ctx.stack = ["abc1def2ghi","\\d+"]
+	expected = ["abc","def","ghi"]
 	code = transpile('ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TailExtract():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "c"
-	ctx = Context()
 	code = transpile('ṫ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('ṫ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ChunkWrap():
-	stack = ["abcdef",2]
+	ctx = Context()
+	ctx.stack = ["abcdef",2]
 	expected = ["ab","cd","ef"]
-	ctx = Context()
 	code = transpile('ẇ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6],3]
-	expected = [[1,2,3],[4,5,6]]
 	ctx = Context()
+	ctx.stack = [[1,2,3,4,5,6],3]
+	expected = [[1,2,3],[4,5,6]]
 	code = transpile('ẇ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Repeat():
-	stack = [[1,2,3],3]
+	ctx = Context()
+	ctx.stack = [[1,2,3],3]
 	expected = [[1,2,3],[1,2,3],[1,2,3]]
-	ctx = Context()
 	code = transpile('ẋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["x",5]
-	expected = "xxxxx"
 	ctx = Context()
+	ctx.stack = ["x",5]
+	expected = "xxxxx"
 	code = transpile('ẋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ExclusiveRangeLength():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = [0,1,2]
-	ctx = Context()
 	code = transpile('ẏ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2]]
-	expected = [0,1]
 	ctx = Context()
+	ctx.stack = [[1,2]]
+	expected = [0,1]
 	code = transpile('ẏ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_InclusiveRangeLength():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = [1,2,3]
-	ctx = Context()
 	code = transpile('ż');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2]]
-	expected = [1,2]
 	ctx = Context()
+	ctx.stack = [[1,2]]
+	expected = [1,2]
 	code = transpile('ż');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SquareRoot():
-	stack = [4]
+	ctx = Context()
+	ctx.stack = [4]
 	expected = 2
-	ctx = Context()
 	code = transpile('√');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
-	expected = "hlo"
 	ctx = Context()
+	ctx.stack = ["hello"]
+	expected = "hlo"
 	code = transpile('√');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Ten():
-	stack = []
-	expected = 10
 	ctx = Context()
+	ctx.stack = []
+	expected = 10
 	code = transpile('₀');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Hundred():
-	stack = []
-	expected = 100
 	ctx = Context()
+	ctx.stack = []
+	expected = 100
 	code = transpile('₁');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_IsEven():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 0
-	ctx = Context()
 	code = transpile('₂');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2]
+	ctx = Context()
+	ctx.stack = [2]
 	expected = 1
-	ctx = Context()
 	code = transpile('₂');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = 0
-	ctx = Context()
 	code = transpile('₂');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2]]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [[1,2]]
+	expected = 1
 	code = transpile('₂');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DivisibleBythree():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 0
-	ctx = Context()
 	code = transpile('₃');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [6]
+	ctx = Context()
+	ctx.stack = [6]
 	expected = 1
-	ctx = Context()
 	code = transpile('₃');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi"]
+	ctx = Context()
+	ctx.stack = ["hi"]
 	expected = 0
-	ctx = Context()
 	code = transpile('₃');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1]]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [[1]]
+	expected = 1
 	code = transpile('₃');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TwentySix():
-	stack = []
-	expected = 26
 	ctx = Context()
+	ctx.stack = []
+	expected = 26
 	code = transpile('₄');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DivisibleByFive():
-	stack = [4]
+	ctx = Context()
+	ctx.stack = [4]
 	expected = 0
-	ctx = Context()
 	code = transpile('₅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 1
-	ctx = Context()
 	code = transpile('₅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = 5
-	ctx = Context()
 	code = transpile('₅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('₅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SixtyFour():
-	stack = []
-	expected = 64
 	ctx = Context()
+	ctx.stack = []
+	expected = 64
 	code = transpile('₆');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_OneTwentyEight():
-	stack = []
-	expected = 128
 	ctx = Context()
+	ctx.stack = []
+	expected = 128
 	code = transpile('₇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TwoFiftySix():
-	stack = []
-	expected = 256
 	ctx = Context()
+	ctx.stack = []
+	expected = 256
 	code = transpile('₈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Newline():
-	stack = []
-	expected = "\\n"
 	ctx = Context()
+	ctx.stack = []
+	expected = "\\n"
 	code = transpile('¶');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_JoinOnNewlines():
-	stack = [[1, 2, 3, 4, 5, 6]]
+	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 5, 6]]
 	expected = "1\n2\n3\n4\n5\n6"
-	ctx = Context()
 	code = transpile('⁋');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["Hello", "World!"]]
-	expected = "Hello\nWorld!"
 	ctx = Context()
+	ctx.stack = [["Hello", "World!"]]
+	expected = "Hello\nWorld!"
 	code = transpile('⁋');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_VerticalJoin():
-	stack = [["abc", "def", "ghi"]]
+	ctx = Context()
+	ctx.stack = [["abc", "def", "ghi"]]
 	expected = "adg\nbeh\ncfi"
-	ctx = Context()
 	code = transpile('§');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["***", "****", "*****"]]
-	expected = "  *\n **\n***\n***\n***"
 	ctx = Context()
+	ctx.stack = [["***", "****", "*****"]]
+	expected = "  *\n **\n***\n***\n***"
 	code = transpile('§');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_AbsoluteDifferencePaddedVerticalJoin():
-	stack = [5, 1]
-	expected = 4
 	ctx = Context()
+	ctx.stack = [5, 1]
+	expected = 4
 	code = transpile('ε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1, 5]
-	expected = 4
 	ctx = Context()
+	ctx.stack = [1, 5]
+	expected = 4
 	code = transpile('ε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3, 3]
+	ctx = Context()
+	ctx.stack = [3, 3]
 	expected = 0
-	ctx = Context()
 	code = transpile('ε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["***", "****", "*****"], "."]
+	ctx = Context()
+	ctx.stack = [["***", "****", "*****"], "."]
 	expected = "..*\n.**\n***\n***\n***"
-	ctx = Context()
 	code = transpile('ε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["abc", "def", "ghi"], "."]
-	expected = "adg\nbeh\ncfi"
 	ctx = Context()
+	ctx.stack = [["abc", "def", "ghi"], "."]
+	expected = "adg\nbeh\ncfi"
 	code = transpile('ε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Factorial():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 120
-	ctx = Context()
 	code = transpile('¡');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello my name jeff. ur sussy baka"]
+	ctx = Context()
+	ctx.stack = ["hello my name jeff. ur sussy baka"]
 	expected = "Hello my name jeff. Ur sussy baka"
-	ctx = Context()
 	code = transpile('¡');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 5]]
-	expected = [1, 2, 6, 24, 120]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 5]]
+	expected = [1, 2, 6, 24, 120]
 	code = transpile('¡');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Summate():
-	stack = [[1, 2, 3, 4, 5]]
-	expected = 15
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 5]]
+	expected = 15
 	code = transpile('∑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["abc", "def", 10]]
+	ctx = Context()
+	ctx.stack = [["abc", "def", 10]]
 	expected = "abcdef10"
-	ctx = Context()
 	code = transpile('∑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [12345]
-	expected = 15
 	ctx = Context()
+	ctx.stack = [12345]
+	expected = 15
 	code = transpile('∑');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CumulativeSum():
-	stack = [12345]
-	expected = [1, 3, 6, 10, 15]
 	ctx = Context()
+	ctx.stack = [12345]
+	expected = [1, 3, 6, 10, 15]
 	code = transpile('¦');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abcdef"]
+	ctx = Context()
+	ctx.stack = ["abcdef"]
 	expected = ["a", "ab", "abc", "abcd", "abcde", "abcdef"]
-	ctx = Context()
 	code = transpile('¦');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 5]]
-	expected = [1, 3, 6, 10, 15]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4, 5]]
+	expected = [1, 3, 6, 10, 15]
 	code = transpile('¦');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_AllEqual():
-	stack = [1111]
+	ctx = Context()
+	ctx.stack = [1111]
 	expected = 1
-	ctx = Context()
 	code = transpile('≈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["acc"]
+	ctx = Context()
+	ctx.stack = ["acc"]
 	expected = 0
-	ctx = Context()
 	code = transpile('≈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 2, 1]]
+	ctx = Context()
+	ctx.stack = [[1, 2, 2, 1]]
 	expected = 0
-	ctx = Context()
 	code = transpile('≈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[]]
+	ctx = Context()
+	ctx.stack = [[]]
 	expected = 1
-	ctx = Context()
 	code = transpile('≈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Assign():
-	stack = [[1, 2, 3, 4], 1, 0]
+	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4], 1, 0]
 	expected = [1, 0, 3, 4]
-	ctx = Context()
 	code = transpile('Ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello ", ", World!", 5]
+	ctx = Context()
+	ctx.stack = ["Hello ", ", World!", 5]
 	expected = "Hello, World!"
-	ctx = Context()
 	code = transpile('Ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [69320, 2, 4]
-	expected = [6, 9, 4, 2, 0]
 	ctx = Context()
+	ctx.stack = [69320, 2, 4]
+	expected = [6, 9, 4, 2, 0]
 	code = transpile('Ȧ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Bifurcate():
-	stack = [203]
+	ctx = Context()
+	ctx.stack = [203]
 	expected = 302
-	ctx = Context()
 	code = transpile('Ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "cab"
-	ctx = Context()
 	code = transpile('Ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4]]
-	expected = [4, 3, 2, 1]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4]]
+	expected = [4, 3, 2, 1]
 	code = transpile('Ḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Counts():
-	stack = [[1, 2, 2, 3, 3, 3, 3]]
+	ctx = Context()
+	ctx.stack = [[1, 2, 2, 3, 3, 3, 3]]
 	expected = [[1, 1], [2, 2], [3, 4]]
-	ctx = Context()
 	code = transpile('Ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello, World!"]
-	expected = [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]
 	ctx = Context()
+	ctx.stack = ["Hello, World!"]
+	expected = [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]
 	code = transpile('Ċ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_IsDivisibleArbitraryDuplicate():
-	stack = [15, 5]
+	ctx = Context()
+	ctx.stack = [15, 5]
 	expected = 1
-	ctx = Context()
 	code = transpile('Ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc", 3]
+	ctx = Context()
+	ctx.stack = ["abc", 3]
 	expected = "abc"
-	ctx = Context()
 	code = transpile('Ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[5, 13, 29, 48, 12], 2]
-	expected = [0, 0, 0, 1, 1]
 	ctx = Context()
+	ctx.stack = [[5, 13, 29, 48, 12], 2]
+	expected = [0, 0, 0, 1, 1]
 	code = transpile('Ḋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_VyxalExecReciprocal():
-	stack = [[2, 3, -1]]
+	ctx = Context()
+	ctx.stack = [[2, 3, -1]]
 	expected = [0.5, 1/3, -1]
-	ctx = Context()
 	code = transpile('Ė');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["kH"]
-	expected = "Hello, World!"
 	ctx = Context()
+	ctx.stack = ["kH"]
+	expected = "Hello, World!"
 	code = transpile('Ė');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Groupconsecutive():
-	stack = [[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]]
+	ctx = Context()
+	ctx.stack = [[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]]
 	expected = [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]
-	ctx = Context()
 	code = transpile('Ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello, World!"]
-	expected = [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]
 	ctx = Context()
+	ctx.stack = ["Hello, World!"]
+	expected = [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]
 	code = transpile('Ġ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_HeadRemoveBehead():
-	stack = [[0, [43, 69], "foo"]]
+	ctx = Context()
+	ctx.stack = [[0, [43, 69], "foo"]]
 	expected = [[43, 69], "foo"]
-	ctx = Context()
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[]]
+	ctx = Context()
+	ctx.stack = [[]]
 	expected = []
-	ctx = Context()
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["foo"]
+	ctx = Context()
+	ctx.stack = ["foo"]
 	expected = "oo"
-	ctx = Context()
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [""]
+	ctx = Context()
+	ctx.stack = [""]
 	expected = ""
-	ctx = Context()
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1234.56]
+	ctx = Context()
+	ctx.stack = [1234.56]
 	expected = 234.56
-	ctx = Context()
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0.2]
-	expected = 0.2
 	ctx = Context()
+	ctx.stack = [0.2]
+	expected = 0.2
 	code = transpile('Ḣ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Indexintoorfindcycle():
-	stack = [["foo", "bar", -69, 420, "baz"], [0, 2, 4]]
-	expected = ["foo", -69, "baz"]
 	ctx = Context()
+	ctx.stack = [["foo", "bar", -69, 420, "baz"], [0, 2, 4]]
+	expected = ["foo", -69, "baz"]
 	code = transpile('İ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Transliterate():
-	stack = ["abcdefcba","abc","123"]
+	ctx = Context()
+	ctx.stack = ["abcdefcba","abc","123"]
 	expected = "123def321"
-	ctx = Context()
 	code = transpile('Ŀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,0], [2], [5]]
+	ctx = Context()
+	ctx.stack = [[1,2,0], [2], [5]]
 	expected = [1,5,0]
-	ctx = Context()
 	code = transpile('Ŀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc","ab",["bb","cc"]]
-	expected = ["bb","cc","c"]
 	ctx = Context()
+	ctx.stack = ["abc","ab",["bb","cc"]]
+	expected = ["bb","cc","c"]
 	code = transpile('Ŀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Insert():
-	stack = [[1,3,4],1,2]
+	ctx = Context()
+	ctx.stack = [[1,3,4],1,2]
 	expected = [1,2,3,4]
-	ctx = Context()
 	code = transpile('Ṁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["wyz",1,"x"]
+	ctx = Context()
+	ctx.stack = ["wyz",1,"x"]
 	expected = "wxyz"
-	ctx = Context()
 	code = transpile('Ṁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["jknop",2,"lm"]
-	expected = "jklmnop"
 	ctx = Context()
+	ctx.stack = ["jknop",2,"lm"]
+	expected = "jklmnop"
 	code = transpile('Ṁ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Integerpartitions():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = [[5],[1,4],[1,1,3],[1,1,1,2],[1,1,1,1,1],[1,2,2],[2,3]]
-	ctx = Context()
 	code = transpile('Ṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "h e l l o"
-	ctx = Context()
 	code = transpile('Ṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = "1 2 3"
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = "1 2 3"
 	code = transpile('Ṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Over():
-	stack = [4,5]
+	ctx = Context()
+	ctx.stack = [4,5]
 	expected = 4
-	ctx = Context()
 	code = transpile('Ȯ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi","bye"]
-	expected = "hi"
 	ctx = Context()
+	ctx.stack = ["hi","bye"]
+	expected = "hi"
 	code = transpile('Ȯ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Permutations():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = ["abc","abc","bac","bca","cab","cba"]
-	ctx = Context()
 	code = transpile('Ṗ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2]]
-	expected = [[1,2],[2,1]]
 	ctx = Context()
+	ctx.stack = [[1,2]]
+	expected = [[1,2],[2,1]]
 	code = transpile('Ṗ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Reverse():
-	stack = [203]
+	ctx = Context()
+	ctx.stack = [203]
 	expected = 302
-	ctx = Context()
 	code = transpile('Ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = "cab"
-	ctx = Context()
 	code = transpile('Ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4]]
-	expected = [4, 3, 2, 1]
 	ctx = Context()
+	ctx.stack = [[1, 2, 3, 4]]
+	expected = [4, 3, 2, 1]
 	code = transpile('Ṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Sumofstack():
-	stack = [[1,2,3],[4,5,6]]
+	ctx = Context()
+	ctx.stack = [[1,2,3],[4,5,6]]
 	expected = [5,7,9]
-	ctx = Context()
 	code = transpile('Ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3,4,5]
+	ctx = Context()
+	ctx.stack = [3,4,5]
 	expected = 12
-	ctx = Context()
 	code = transpile('Ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi","bye"]
-	expected = "hibye"
 	ctx = Context()
+	ctx.stack = ["hi","bye"]
+	expected = "hibye"
 	code = transpile('Ṡ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_TailRemove():
-	stack = ["1234"]
+	ctx = Context()
+	ctx.stack = ["1234"]
 	expected = "234"
-	ctx = Context()
 	code = transpile('Ṫ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [1,2]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [1,2]
 	code = transpile('Ṫ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SplitAndKeepDelimiter():
-	stack = ["a b c"," "]
+	ctx = Context()
+	ctx.stack = ["a b c"," "]
 	expected = ["a"," ","b"," ","c"]
-	ctx = Context()
 	code = transpile('Ẇ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["xyzabc123abc","b"]
-	expected = ["xyza","b","c123a","b","c"]
 	ctx = Context()
+	ctx.stack = ["xyzabc123abc","b"]
+	expected = ["xyza","b","c123a","b","c"]
 	code = transpile('Ẇ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CartesianProduct():
-	stack = ["ab","cd"]
+	ctx = Context()
+	ctx.stack = ["ab","cd"]
 	expected = ["ac","ad","bc","bd"]
-	ctx = Context()
 	code = transpile('Ẋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2],[3,4]]
-	expected = [[1,3],[1,4],[2,3],[2,4]]
 	ctx = Context()
+	ctx.stack = [[1,2],[3,4]]
+	expected = [[1,3],[1,4],[2,3],[2,4]]
 	code = transpile('Ẋ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SliceUntil():
-	stack = ["abc",1]
+	ctx = Context()
+	ctx.stack = ["abc",1]
 	expected = "a"
-	ctx = Context()
 	code = transpile('Ẏ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],2]
-	expected = [1,2]
 	ctx = Context()
+	ctx.stack = [[1,2,3],2]
+	expected = [1,2]
 	code = transpile('Ẏ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SliceFromOneUntil():
-	stack = ["abc",2]
+	ctx = Context()
+	ctx.stack = ["abc",2]
 	expected = "b"
-	ctx = Context()
 	code = transpile('Ż');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3],3]
-	expected = [2,3]
 	ctx = Context()
+	ctx.stack = [[1,2,3],3]
+	expected = [2,3]
 	code = transpile('Ż');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Square():
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = 25
-	ctx = Context()
 	code = transpile('²');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = ["hel","lo"]
-	ctx = Context()
 	code = transpile('²');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["bye"]
+	ctx = Context()
+	ctx.stack = ["bye"]
 	expected = ["by","e"]
-	ctx = Context()
 	code = transpile('²');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = [1,4,9]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = [1,4,9]
 	code = transpile('²');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Shift():
-	stack = [1,4,5]
+	ctx = Context()
+	ctx.stack = [1,4,5]
 	expected = 4
-	ctx = Context()
 	code = transpile('∇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["my","hi","bye"]
-	expected = "hi"
 	ctx = Context()
+	ctx.stack = ["my","hi","bye"]
+	expected = "hi"
 	code = transpile('∇');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Ceiling():
-	stack = [5]
-	expected = 5
 	ctx = Context()
+	ctx.stack = [5]
+	expected = 5
 	code = transpile('⌈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4.5]
-	expected = 5
 	ctx = Context()
+	ctx.stack = [4.5]
+	expected = 5
 	code = transpile('⌈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1.52,2.9,3.3]]
+	ctx = Context()
+	ctx.stack = [[1.52,2.9,3.3]]
 	expected = [2,3,4]
-	ctx = Context()
 	code = transpile('⌈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello world"]
-	expected = ["hello","world"]
 	ctx = Context()
+	ctx.stack = ["hello world"]
+	expected = ["hello","world"]
 	code = transpile('⌈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Floor():
-	stack = [5.3]
+	ctx = Context()
+	ctx.stack = [5.3]
 	expected = 5
-	ctx = Context()
 	code = transpile('⌊');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[5.3,4.7]]
+	ctx = Context()
+	ctx.stack = [[5.3,4.7]]
 	expected = [4,5]
-	ctx = Context()
 	code = transpile('⌊');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["123abc"]
-	expected = 123
 	ctx = Context()
+	ctx.stack = ["123abc"]
+	expected = 123
 	code = transpile('⌊');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Deltas():
-	stack = [1,2,3]
+	ctx = Context()
+	ctx.stack = [1,2,3]
 	expected = [1,1]
-	ctx = Context()
 	code = transpile('¯');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,1,1]
+	ctx = Context()
+	ctx.stack = [1,1,1]
 	expected = [0,0]
-	ctx = Context()
 	code = transpile('¯');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [40,61,3]
-	expected = [21,-58]
 	ctx = Context()
+	ctx.stack = [40,61,3]
+	expected = [21,-58]
 	code = transpile('¯');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Sign():
-	stack = [1]
+	ctx = Context()
+	ctx.stack = [1]
 	expected = 1
-	ctx = Context()
 	code = transpile('±');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hi"]
+	ctx = Context()
+	ctx.stack = ["hi"]
 	expected = "hi"
-	ctx = Context()
 	code = transpile('±');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [-5]
+	ctx = Context()
+	ctx.stack = [-5]
 	expected = -1
-	ctx = Context()
 	code = transpile('±');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [0]
+	expected = 0
 	code = transpile('±');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RightBitShift():
-	stack = [4,1]
+	ctx = Context()
+	ctx.stack = [4,1]
 	expected = 2
-	ctx = Context()
 	code = transpile('↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [8,"green"]
+	ctx = Context()
+	ctx.stack = [8,"green"]
 	expected = "   green"
-	ctx = Context()
 	code = transpile('↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","cheeseburger"]
-	expected = "       hello"
 	ctx = Context()
+	ctx.stack = ["hello","cheeseburger"]
+	expected = "       hello"
 	code = transpile('↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LeftBitShift():
-	stack = [4,1]
+	ctx = Context()
+	ctx.stack = [4,1]
 	expected = 8
-	ctx = Context()
 	code = transpile('↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [8,"green"]
+	ctx = Context()
+	ctx.stack = [8,"green"]
 	expected = "green   "
-	ctx = Context()
 	code = transpile('↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","cheeseburger"]
-	expected = "hello       "
 	ctx = Context()
+	ctx.stack = ["hello","cheeseburger"]
+	expected = "hello       "
 	code = transpile('↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BitwiseAnd():
-	stack = [420, 69]
+	ctx = Context()
+	ctx.stack = [420, 69]
 	expected = 4
-	ctx = Context()
 	code = transpile('⋏');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc", 10]
+	ctx = Context()
+	ctx.stack = ["abc", 10]
 	expected = "   abc    "
-	ctx = Context()
 	code = transpile('⋏');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["no", "yesnt"]
-	expected = " no "
 	ctx = Context()
+	ctx.stack = ["no", "yesnt"]
+	expected = " no "
 	code = transpile('⋏');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BitwiseOr():
-	stack = [420, 69]
+	ctx = Context()
+	ctx.stack = [420, 69]
 	expected = 485
-	ctx = Context()
 	code = transpile('⋎');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [2, "abc"]
+	ctx = Context()
+	ctx.stack = [2, "abc"]
 	expected = "ab"
-	ctx = Context()
 	code = transpile('⋎');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc", 2]
+	ctx = Context()
+	ctx.stack = ["abc", 2]
 	expected = "ab"
-	ctx = Context()
 	code = transpile('⋎');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello", "lower"]
+	ctx = Context()
+	ctx.stack = ["Hello", "lower"]
 	expected = "Hellower"
-	ctx = Context()
 	code = transpile('⋎');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BitwiseXor():
-	stack = [420, 69]
+	ctx = Context()
+	ctx.stack = [420, 69]
 	expected = 481
-	ctx = Context()
 	code = transpile('꘍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5, "ab"]
+	ctx = Context()
+	ctx.stack = [5, "ab"]
 	expected = "     ab"
-	ctx = Context()
 	code = transpile('꘍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["ab", 5]
+	ctx = Context()
+	ctx.stack = ["ab", 5]
 	expected = "ab     "
-	ctx = Context()
 	code = transpile('꘍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["atoll", "bowl"]
-	expected = 3
 	ctx = Context()
+	ctx.stack = ["atoll", "bowl"]
+	expected = 3
 	code = transpile('꘍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BitwiseNot():
-	stack = [220]
+	ctx = Context()
+	ctx.stack = [220]
 	expected = -221
-	ctx = Context()
 	code = transpile('ꜝ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Hello"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["Hello"]
+	expected = 1
 	code = transpile('ꜝ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RandomChoice():
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 2
-	ctx = Context()
 	code = transpile('℅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	ctx = Context()
+	ctx.stack = [[1,2,3]]
 	expected = 1
-	ctx = Context()
 	code = transpile('℅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 3
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = 3
 	code = transpile('℅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LesserThanorEqualTo():
-	stack = [1,2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1,2]
+	expected = 1
 	code = transpile('≤');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_GreaterThanorEqualTo():
-	stack = [1,2]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [1,2]
+	expected = 0
 	code = transpile('≥');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_NotEqualTo():
-	stack = [1,2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1,2]
+	expected = 1
 	code = transpile('≠');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ExactlyEqualTo():
-	stack = [1,2]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [1,2]
+	expected = 1
 	code = transpile('⁼');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Fractionify():
-	stack = [0.5]
+	ctx = Context()
+	ctx.stack = [0.5]
 	expected = [1,2]
-	ctx = Context()
 	code = transpile('ƒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = "0.3"
-	expected = [3,10]
 	ctx = Context()
+	ctx.stack = "0.3"
+	expected = [3,10]
 	code = transpile('ƒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Decimalify():
-	stack = [1,2]
+	ctx = Context()
+	ctx.stack = [1,2]
 	expected = 0.5
-	ctx = Context()
 	code = transpile('ɖ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3,4]
-	expected = 0.75
 	ctx = Context()
+	ctx.stack = [3,4]
+	expected = 0.75
 	code = transpile('ɖ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SetUnion():
-	stack = [[1,2],[2,3,4]]
-	expected = [1,2,3,4]
 	ctx = Context()
+	ctx.stack = [[1,2],[2,3,4]]
+	expected = [1,2,3,4]
 	code = transpile('∪');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SetIntersection():
-	stack = [[1,2],[2,3,4]]
-	expected = [2]
 	ctx = Context()
+	ctx.stack = [[1,2],[2,3,4]]
+	expected = [2]
 	code = transpile('∩');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SymmetricSetdifference():
-	stack = [[1,2],[2,3,4]]
-	expected = [1,3,4]
 	ctx = Context()
+	ctx.stack = [[1,2],[2,3,4]]
+	expected = [1,3,4]
 	code = transpile('⊍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_GradeUp():
-	stack = [[420,69,1337]]
+	ctx = Context()
+	ctx.stack = [[420,69,1337]]
 	expected = [2,1,3]
-	ctx = Context()
 	code = transpile('⇧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Heloo"]
+	ctx = Context()
+	ctx.stack = ["Heloo"]
 	expected = "HELOO"
-	ctx = Context()
 	code = transpile('⇧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4]
-	expected = 6
 	ctx = Context()
+	ctx.stack = [4]
+	expected = 6
 	code = transpile('⇧');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_GradeDown():
-	stack = [[420,69,1337]]
+	ctx = Context()
+	ctx.stack = [[420,69,1337]]
 	expected = [3,1,2]
-	ctx = Context()
 	code = transpile('⇩');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Heloo"]
+	ctx = Context()
+	ctx.stack = ["Heloo"]
 	expected = "heloo"
-	ctx = Context()
 	code = transpile('⇩');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [4]
-	expected = 2
 	ctx = Context()
+	ctx.stack = [4]
+	expected = 2
 	code = transpile('⇩');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Removenonalphabets():
-	stack = ["Helo1233adc__"]
+	ctx = Context()
+	ctx.stack = ["Helo1233adc__"]
 	expected = "Heloadc"
-	ctx = Context()
 	code = transpile('Ǎ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [8]
-	expected = 256
 	ctx = Context()
+	ctx.stack = [8]
+	expected = 256
 	code = transpile('Ǎ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Nthprime():
-	stack = [3]
+	ctx = Context()
+	ctx.stack = [3]
 	expected = 7
-	ctx = Context()
 	code = transpile('ǎ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
-	expected = ["a","ab","abc","","b","bc","","","c","","",""]
 	ctx = Context()
+	ctx.stack = ["abc"]
+	expected = ["a","ab","abc","","b","bc","","","c","","",""]
 	code = transpile('ǎ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Primefactorization():
-	stack = [45]
+	ctx = Context()
+	ctx.stack = [45]
 	expected = [3,5]
-	ctx = Context()
 	code = transpile('Ǐ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc"]
-	expected = "abca"
 	ctx = Context()
+	ctx.stack = ["abc"]
+	expected = "abca"
 	code = transpile('Ǐ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Primefactors():
-	stack = [45]
+	ctx = Context()
+	ctx.stack = [45]
 	expected = [3, 3, 5]
-	ctx = Context()
 	code = transpile('ǐ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abc def"]
-	expected = "Abc Def"
 	ctx = Context()
+	ctx.stack = ["abc def"]
+	expected = "Abc Def"
 	code = transpile('ǐ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Multiplicity():
-	stack = [45, 3]
+	ctx = Context()
+	ctx.stack = [45, 3]
 	expected = 2
-	ctx = Context()
 	code = transpile('Ǒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["aaabbbc", "ab"]
-	expected = "c"
 	ctx = Context()
+	ctx.stack = ["aaabbbc", "ab"]
+	expected = "c"
 	code = transpile('Ǒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Modulo3():
-	stack = [45]
+	ctx = Context()
+	ctx.stack = [45]
 	expected = 0
-	ctx = Context()
 	code = transpile('ǒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [""]
-	expected = 1
 	ctx = Context()
+	ctx.stack = [""]
+	expected = 1
 	code = transpile('ǒ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RotateLeft():
-	stack = [3, [4, 5, 5, 6]]
+	ctx = Context()
+	ctx.stack = [3, [4, 5, 5, 6]]
 	expected = [6, 4, 5, 5]
-	ctx = Context()
 	code = transpile('Ǔ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3, [1, 2, 3, 4]]
-	expected = [2, 3, 4, 1]
 	ctx = Context()
+	ctx.stack = [3, [1, 2, 3, 4]]
+	expected = [2, 3, 4, 1]
 	code = transpile('Ǔ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RotateRight():
-	stack = [3, [4, 5, 5, 6]]
+	ctx = Context()
+	ctx.stack = [3, [4, 5, 5, 6]]
 	expected = [5, 5, 6, 4]
-	ctx = Context()
 	code = transpile('ǔ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3, [1, 2, 3, 4]]
-	expected = [4, 1, 2, 3]
 	ctx = Context()
+	ctx.stack = [3, [1, 2, 3, 4]]
+	expected = [4, 1, 2, 3]
 	code = transpile('ǔ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_SplitOnnewlines():
-	stack = ["a\nb\nc"]
+	ctx = Context()
+	ctx.stack = ["a\nb\nc"]
 	expected = ["a", "b", "c"]
-	ctx = Context()
 	code = transpile('↵');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [3]
-	expected = 1000
 	ctx = Context()
+	ctx.stack = [3]
+	expected = 1000
 	code = transpile('↵');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ProductofArray():
-	stack = [3,4,5]
-	expected = 60
 	ctx = Context()
+	ctx.stack = [3,4,5]
+	expected = 60
 	code = transpile('Π');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uppercasealphabet():
-	stack = []
-	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
+	ctx.stack = []
+	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	code = transpile('kA');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_eEulersnumber():
-	stack = []
-	expected = 2.718281828459045
 	ctx = Context()
+	ctx.stack = []
+	expected = 2.718281828459045
 	code = transpile('ke');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Fizz():
-	stack = []
-	expected = "Fizz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "Fizz"
 	code = transpile('kf');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Buzz():
-	stack = []
-	expected = "Buzz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "Buzz"
 	code = transpile('kb');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FizzBuzz():
-	stack = []
-	expected = "FizzBuzz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "FizzBuzz"
 	code = transpile('kF');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_HelloWorld():
-	stack = []
-	expected = "Hello, World!"
 	ctx = Context()
+	ctx.stack = []
+	expected = "Hello, World!"
 	code = transpile('kH');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_HelloWorld():
-	stack = []
-	expected = "Hello World"
 	ctx = Context()
+	ctx.stack = []
+	expected = "Hello World"
 	code = transpile('kh');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_1000():
-	stack = []
-	expected = 1000
 	ctx = Context()
+	ctx.stack = []
+	expected = 1000
 	code = transpile('k1');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_1000():
-	stack = []
-	expected = 10000
 	ctx = Context()
+	ctx.stack = []
+	expected = 10000
 	code = transpile('k2');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_10000():
-	stack = []
-	expected = 100000
 	ctx = Context()
+	ctx.stack = []
+	expected = 100000
 	code = transpile('k3');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_1000000():
-	stack = []
-	expected = 1000000
 	ctx = Context()
+	ctx.stack = []
+	expected = 1000000
 	code = transpile('k4');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercasealphabet():
-	stack = []
-	expected = "abcdefghijklmnopqrstuvwxyz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "abcdefghijklmnopqrstuvwxyz"
 	code = transpile('ka');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercaseanduppercasealphabet():
-	stack = []
-	expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
+	ctx.stack = []
+	expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	code = transpile('kL');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Digits():
-	stack = []
-	expected = "0123456789"
 	ctx = Context()
+	ctx.stack = []
+	expected = "0123456789"
 	code = transpile('kd');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Hexdigitslowercase():
-	stack = []
-	expected = "0123456789abcdef"
 	ctx = Context()
+	ctx.stack = []
+	expected = "0123456789abcdef"
 	code = transpile('k6');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Hexdigitsuppercase():
-	stack = []
-	expected = "0123456789ABCDEF"
 	ctx = Context()
+	ctx.stack = []
+	expected = "0123456789ABCDEF"
 	code = transpile('k^');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Octaldigits():
-	stack = []
-	expected = "01234567"
 	ctx = Context()
+	ctx.stack = []
+	expected = "01234567"
 	code = transpile('ko');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Punctuation():
-	stack = []
-	expected = string.punctuation
 	ctx = Context()
+	ctx.stack = []
+	expected = string.punctuation
 	code = transpile('kp');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_PrintableASCII():
-	stack = []
-	expected = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 	ctx = Context()
+	ctx.stack = []
+	expected = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 	code = transpile('kP');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Digitslowercasealphabetanduppercasealphabet():
-	stack = []
-	expected = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
+	ctx.stack = []
+	expected = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	code = transpile('kr');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uppercaseandlowercasealphabet():
-	stack = []
-	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	code = transpile('kB');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uppercasealphabetreversed():
-	stack = []
-	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 	ctx = Context()
+	ctx.stack = []
+	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 	code = transpile('kZ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercasealphabetreversed():
-	stack = []
-	expected = "zyxwvutsrqponmlkjihgfedcba"
 	ctx = Context()
+	ctx.stack = []
+	expected = "zyxwvutsrqponmlkjihgfedcba"
 	code = transpile('kz');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Uppercaseandlowercasealphabetreversed():
-	stack = []
-	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
 	ctx = Context()
+	ctx.stack = []
+	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
 	code = transpile('kl');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Pi():
-	stack = []
-	expected = 3.141592653589793
 	ctx = Context()
+	ctx.stack = []
+	expected = 3.141592653589793
 	code = transpile('ki');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_NaN():
-	stack = []
-	expected = math.nan
 	ctx = Context()
+	ctx.stack = []
+	expected = math.nan
 	code = transpile('kn');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Goldenratiophi():
-	stack = []
-	expected = 1.618033988749895
 	ctx = Context()
+	ctx.stack = []
+	expected = 1.618033988749895
 	code = transpile('kg');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Bracessquarebracketsanglebracketsandparentheses():
-	stack = []
-	expected = "{}[]<>()"
 	ctx = Context()
+	ctx.stack = []
+	expected = "{}[]<>()"
 	code = transpile('kβ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Parenthesessquarebracketsandbraces():
-	stack = []
-	expected = "()[]{}"
 	ctx = Context()
+	ctx.stack = []
+	expected = "()[]{}"
 	code = transpile('kḂ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Parenthesesandsquarebrackets():
-	stack = []
-	expected = "()[]"
 	ctx = Context()
+	ctx.stack = []
+	expected = "()[]"
 	code = transpile('kß');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Openingbrackets():
-	stack = []
-	expected = "([{"
 	ctx = Context()
+	ctx.stack = []
+	expected = "([{"
 	code = transpile('kḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Closingbrackets():
-	stack = []
-	expected = ")]}"
 	ctx = Context()
+	ctx.stack = []
+	expected = ")]}"
 	code = transpile('k≥');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Openingbracketswith():
-	stack = []
-	expected = "([{<"
 	ctx = Context()
+	ctx.stack = []
+	expected = "([{<"
 	code = transpile('k≤');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Closingbracketswith():
-	stack = []
-	expected = ")]}>"
 	ctx = Context()
+	ctx.stack = []
+	expected = ")]}>"
 	code = transpile('kΠ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercasevowels():
-	stack = []
-	expected = "aeiou"
 	ctx = Context()
+	ctx.stack = []
+	expected = "aeiou"
 	code = transpile('kv');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Upercasevowels():
-	stack = []
-	expected = "AEIOU"
 	ctx = Context()
+	ctx.stack = []
+	expected = "AEIOU"
 	code = transpile('kV');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercaseanduppercasevowels():
-	stack = []
-	expected = "aeiouAEIOU"
 	ctx = Context()
+	ctx.stack = []
+	expected = "aeiouAEIOU"
 	code = transpile('k∨');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_12():
-	stack = []
-	expected = [1, 2]
 	ctx = Context()
+	ctx.stack = []
+	expected = [1, 2]
 	code = transpile('k½');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_4294967296():
-	stack = []
-	expected = 4294967296
 	ctx = Context()
+	ctx.stack = []
+	expected = 4294967296
 	code = transpile('kḭ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_11():
-	stack = []
-	expected = [1, -1]
 	ctx = Context()
+	ctx.stack = []
+	expected = [1, -1]
 	code = transpile('k+');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_11():
-	stack = []
-	expected = [-1, 1]
 	ctx = Context()
+	ctx.stack = []
+	expected = [-1, 1]
 	code = transpile('k-');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_01():
-	stack = []
-	expected = [0, 1]
 	ctx = Context()
+	ctx.stack = []
+	expected = [0, 1]
 	code = transpile('k≈');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Slashes():
-	stack = []
-	expected = "/\\"
 	ctx = Context()
+	ctx.stack = []
+	expected = "/\\"
 	code = transpile('k/');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_360():
-	stack = []
-	expected = 360
 	ctx = Context()
+	ctx.stack = []
+	expected = 360
 	code = transpile('kR');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_https():
-	stack = []
-	expected = "https://"
 	ctx = Context()
+	ctx.stack = []
+	expected = "https://"
 	code = transpile('kW');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_http():
-	stack = []
-	expected = "http://"
 	ctx = Context()
+	ctx.stack = []
+	expected = "http://"
 	code = transpile('k℅');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_httpswww():
-	stack = []
-	expected = "https://www."
 	ctx = Context()
+	ctx.stack = []
+	expected = "https://www."
 	code = transpile('k↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_httpwww():
-	stack = []
-	expected = "http://www."
 	ctx = Context()
+	ctx.stack = []
+	expected = "http://www."
 	code = transpile('k²');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_512():
-	stack = []
-	expected = 512
 	ctx = Context()
+	ctx.stack = []
+	expected = 512
 	code = transpile('k¶');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_1024():
-	stack = []
-	expected = 1024
 	ctx = Context()
+	ctx.stack = []
+	expected = 1024
 	code = transpile('k⁋');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_2048():
-	stack = []
-	expected = 2048
 	ctx = Context()
+	ctx.stack = []
+	expected = 2048
 	code = transpile('k¦');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_4096():
-	stack = []
-	expected = 4096
 	ctx = Context()
+	ctx.stack = []
+	expected = 4096
 	code = transpile('kṄ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_8192():
-	stack = []
-	expected = 8192
 	ctx = Context()
+	ctx.stack = []
+	expected = 8192
 	code = transpile('kṅ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_16384():
-	stack = []
-	expected = 16384
 	ctx = Context()
+	ctx.stack = []
+	expected = 16384
 	code = transpile('k¡');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_32768():
-	stack = []
-	expected = 32768
 	ctx = Context()
+	ctx.stack = []
+	expected = 32768
 	code = transpile('kε');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_65536():
-	stack = []
-	expected = 65536
 	ctx = Context()
+	ctx.stack = []
+	expected = 65536
 	code = transpile('k₴');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_2147483648():
-	stack = []
-	expected = 2147483648
 	ctx = Context()
+	ctx.stack = []
+	expected = 2147483648
 	code = transpile('k×');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Lowercaseconsonantswithy():
-	stack = []
-	expected = "bcdfghjklmnpqrstvwxyz"
 	ctx = Context()
+	ctx.stack = []
+	expected = "bcdfghjklmnpqrstvwxyz"
 	code = transpile('k⁰');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BFcommandset():
-	stack = []
-	expected = "[]<>-+.,"
 	ctx = Context()
+	ctx.stack = []
+	expected = "[]<>-+.,"
 	code = transpile('kT');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Bracketpairlist():
-	stack = []
-	expected = ["()","[]","{}","<>"]
 	ctx = Context()
+	ctx.stack = []
+	expected = ["()","[]","{}","<>"]
 	code = transpile('kṗ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Nestedbrackets():
-	stack = []
-	expected = "([{<>}])"
 	ctx = Context()
+	ctx.stack = []
+	expected = "([{<>}])"
 	code = transpile('kṖ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Amogus():
-	stack = []
-	expected = "ඞ"
 	ctx = Context()
+	ctx.stack = []
+	expected = "ඞ"
 	code = transpile('kS');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_220():
-	stack = []
-	expected = 1048576
 	ctx = Context()
+	ctx.stack = []
+	expected = 1048576
 	code = transpile('k₂');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_230():
-	stack = []
-	expected = 1073741824
 	ctx = Context()
+	ctx.stack = []
+	expected = 1073741824
 	code = transpile('k₃');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_LowercaseVowelsWithY():
-	stack = []
-	expected = "aeiouy"
 	ctx = Context()
+	ctx.stack = []
+	expected = "aeiouy"
 	code = transpile('k∪');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_UppercaseVowelsWithY():
-	stack = []
-	expected = "AEIOUY"
 	ctx = Context()
+	ctx.stack = []
+	expected = "AEIOUY"
 	code = transpile('k⊍');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_VowelsWithY():
-	stack = []
-	expected = "aeiouyAEIOUY"
 	ctx = Context()
+	ctx.stack = []
+	expected = "aeiouyAEIOUY"
 	code = transpile('k∩');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Parenthesise():
-	stack = ["xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz"]
 	expected = "(xyz)"
-	ctx = Context()
 	code = transpile('bø');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = "(5)"
-	ctx = Context()
 	code = transpile('bø');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = ["(1)","(2)","(3)"]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = ["(1)","(2)","(3)"]
 	code = transpile('bø');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Bracketify():
-	stack = ["xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz"]
 	expected = "[xyz]"
-	ctx = Context()
 	code = transpile('øB');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = "[5]"
-	ctx = Context()
 	code = transpile('øB');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = ["[1]","[2]","[3]"]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = ["[1]","[2]","[3]"]
 	code = transpile('øB');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CurlyBracketify():
-	stack = ["xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz"]
 	expected = "{xyz}"
-	ctx = Context()
 	code = transpile('øḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = "{5}"
-	ctx = Context()
 	code = transpile('øḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = ["{1}","{2}","{3}"]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = ["{1}","{2}","{3}"]
 	code = transpile('øḃ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_AngleBracketify():
-	stack = ["xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz"]
 	expected = "<xyz>"
-	ctx = Context()
 	code = transpile('øḂ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [5]
+	ctx = Context()
+	ctx.stack = [5]
 	expected = "<5>"
-	ctx = Context()
 	code = transpile('øḂ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = ["<1>","<2>","<3>"]
 	ctx = Context()
+	ctx.stack = [[1,2,3]]
+	expected = ["<1>","<2>","<3>"]
 	code = transpile('øḂ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_BalancedBrackets():
-	stack = ["xyz"]
+	ctx = Context()
+	ctx.stack = ["xyz"]
 	expected = 1
-	ctx = Context()
 	code = transpile('øβ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["([)]"]
+	ctx = Context()
+	ctx.stack = ["([)]"]
 	expected = 0
-	ctx = Context()
 	code = transpile('øβ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["({<[]>})"]
+	ctx = Context()
+	ctx.stack = ["({<[]>})"]
 	expected = 1
-	ctx = Context()
 	code = transpile('øβ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [")("]
-	expected = 0
 	ctx = Context()
+	ctx.stack = [")("]
+	expected = 0
 	code = transpile('øβ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CustomPadLeft():
-	stack = ["xyz","x",4]
+	ctx = Context()
+	ctx.stack = ["xyz","x",4]
 	expected = "xxyz"
-	ctx = Context()
 	code = transpile('ø↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["123","&",8]
+	ctx = Context()
+	ctx.stack = ["123","&",8]
 	expected = "&&&&&123"
-	ctx = Context()
 	code = transpile('ø↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["324"," ",2]
-	expected = "324"
 	ctx = Context()
+	ctx.stack = ["324"," ",2]
+	expected = "324"
 	code = transpile('ø↳');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_CustomPadRight():
-	stack = ["xyz","x",4]
+	ctx = Context()
+	ctx.stack = ["xyz","x",4]
 	expected = "xyzx"
-	ctx = Context()
 	code = transpile('ø↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["123","&",8]
+	ctx = Context()
+	ctx.stack = ["123","&",8]
 	expected = "123&&&&&"
-	ctx = Context()
 	code = transpile('ø↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["324"," ",2]
-	expected = "324"
 	ctx = Context()
+	ctx.stack = ["324"," ",2]
+	expected = "324"
 	code = transpile('ø↲');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_FlipBracketsVerticalPalindromise():
-	stack = ["(x"]
+	ctx = Context()
+	ctx.stack = ["(x"]
 	expected = "(x)"
-	ctx = Context()
 	code = transpile('øM');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["{] "]
+	ctx = Context()
+	ctx.stack = ["{] "]
 	expected = "{] [}"
-	ctx = Context()
 	code = transpile('øM');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["/*>X"]
-	expected = "/*>X<*\\"
 	ctx = Context()
+	ctx.stack = ["/*>X"]
+	expected = "/*>X<*\\"
 	code = transpile('øM');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RemoveUntilNochange():
-	stack = ["((()))","()"]
+	ctx = Context()
+	ctx.stack = ["((()))","()"]
 	expected = ""
-	ctx = Context()
 	code = transpile('øo');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["--+--+-",["--","+-"]]
-	expected = "+"
 	ctx = Context()
+	ctx.stack = ["--+--+-",["--","+-"]]
+	expected = "+"
 	code = transpile('øo');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_ReplaceUntilNoChange():
-	stack = ["xyzzzzz","yzz","yyyz"]
+	ctx = Context()
+	ctx.stack = ["xyzzzzz","yzz","yyyz"]
 	expected = "xyyyyyyyyyz"
-	ctx = Context()
 	code = transpile('øV');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["abb","ab","aa"]
-	expected = "aaa"
 	ctx = Context()
+	ctx.stack = ["abb","ab","aa"]
+	expected = "aaa"
 	code = transpile('øV');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_StringCompress():
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "«B²z«"
-	ctx = Context()
 	code = transpile('øc');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello world"]
-	expected = "«⟇÷Ċ$⌈¢2«"
 	ctx = Context()
+	ctx.stack = ["hello world"]
+	expected = "«⟇÷Ċ$⌈¢2«"
 	code = transpile('øc');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_NumberCompress():
-	stack = [234]
+	ctx = Context()
+	ctx.stack = [234]
 	expected = "»⇧»"
-	ctx = Context()
 	code = transpile('øC');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [27914632409837421]
-	expected = "»fðǐ4'∞Ẏ»"
 	ctx = Context()
+	ctx.stack = [27914632409837421]
+	expected = "»fðǐ4'∞Ẏ»"
 	code = transpile('øC');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Center():
-	stack = [["ab","cdef"]]
+	ctx = Context()
+	ctx.stack = [["ab","cdef"]]
 	expected = [" ab ","cdef"]
-	ctx = Context()
 	code = transpile('øĊ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [["xyz","a","bcdef"]]
-	expected = [" xyz ","  a  ","bcdef"]
 	ctx = Context()
+	ctx.stack = [["xyz","a","bcdef"]]
+	expected = [" xyz ","  a  ","bcdef"]
 	code = transpile('øĊ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RunLengthEncoding():
-	stack = ["abc"]
+	ctx = Context()
+	ctx.stack = ["abc"]
 	expected = [["a",1],["b",1],["c",1]]
-	ctx = Context()
 	code = transpile('øe');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["aaa"]
-	expected = [["a",3]]
 	ctx = Context()
+	ctx.stack = ["aaa"]
+	expected = [["a",3]]
 	code = transpile('øe');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_RunLengthDecoding():
-	stack = [[["x",3]]]
+	ctx = Context()
+	ctx.stack = [[["x",3]]]
 	expected = "xxx"
-	ctx = Context()
 	code = transpile('ød');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [[["z",2],["a",3]]]
-	expected = "zzaaa"
 	ctx = Context()
+	ctx.stack = [[["z",2],["a",3]]]
+	expected = "zzaaa"
 	code = transpile('ød');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_DictionaryCompression():
-	stack = ["withree"]
+	ctx = Context()
+	ctx.stack = ["withree"]
 	expected = "`wi∧ḭ`"
-	ctx = Context()
 	code = transpile('øD');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello"]
+	ctx = Context()
+	ctx.stack = ["hello"]
 	expected = "`ƈṙ`"
-	ctx = Context()
 	code = transpile('øD');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["Vyxal"]
-	expected = "`₴ŀ`"
 	ctx = Context()
+	ctx.stack = ["Vyxal"]
+	expected = "`₴ŀ`"
 	code = transpile('øD');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Grouponwords():
-	stack = ["abc*xyz"]
+	ctx = Context()
+	ctx.stack = ["abc*xyz"]
 	expected = ["abc","*","xyz"]
-	ctx = Context()
 	code = transpile('øW');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["$$$"]
-	expected = ["$","$","$"]
 	ctx = Context()
+	ctx.stack = ["$$$"]
+	expected = ["$","$","$"]
 	code = transpile('øW');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_Regexreplace():
-	stack = [".{3}","hello","x"]
+	ctx = Context()
+	ctx.stack = [".{3}","hello","x"]
 	expected = "xlo"
-	ctx = Context()
 	code = transpile('øṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["\\W","Hello, World!","E"]
-	expected = "HelloEEWorldE"
 	ctx = Context()
+	ctx.stack = ["\\W","Hello, World!","E"]
+	expected = "HelloEEWorldE"
 	code = transpile('øṙ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_StartsWith():
-	stack = ["hello","h"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["hello","h"]
+	expected = 1
 	code = transpile('øp');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","hello"]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["hello","hello"]
+	expected = 1
 	code = transpile('øp');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello","x"]
+	ctx = Context()
+	ctx.stack = ["hello","x"]
 	expected = 0
-	ctx = Context()
 	code = transpile('øp');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["hello",""]
-	expected = 1
 	ctx = Context()
+	ctx.stack = ["hello",""]
+	expected = 1
 	code = transpile('øp');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_PluraliseCount():
-	stack = [4,"hello"]
+	ctx = Context()
+	ctx.stack = [4,"hello"]
 	expected = "4 hellos"
-	ctx = Context()
 	code = transpile('øP');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [1,"hello"]
+	ctx = Context()
+	ctx.stack = [1,"hello"]
 	expected = "1 hello"
-	ctx = Context()
 	code = transpile('øP');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [0,"hello"]
-	expected = "0 hellos"
 	ctx = Context()
+	ctx.stack = [0,"hello"]
+	expected = "0 hellos"
 	code = transpile('øP');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_VerticalMirror():
@@ -4993,26 +4993,26 @@ def test_VerticalMirror():
 
 
 def test_FlipBracketsVerticalMirror():
-	stack = ["[}"]
+	ctx = Context()
+	ctx.stack = ["[}"]
 	expected = "[}{]"
-	ctx = Context()
 	code = transpile('øṀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = [")X"]
+	ctx = Context()
+	ctx.stack = [")X"]
 	expected = ")XX("
-	ctx = Context()
 	code = transpile('øṀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
-	stack = ["</tag>"]
-	expected = "</tag><gat\\>"
 	ctx = Context()
+	ctx.stack = ["</tag>"]
+	expected = "</tag><gat\\>"
 	code = transpile('øṀ');print(code)
 	exec(code)
-	assert simplify(stack[-1]) == expected
+	assert simplify(ctx.stack[-1]) == expected
 
 
 def test_VerticalMirrorCustomMapping():

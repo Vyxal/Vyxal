@@ -65,8 +65,8 @@ def process_element(
     else:
         pushed = expr
     py_code = (
-        f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
-        f"stack.append({pushed})"
+        f"{', '.join(arguments)} = pop(ctx.stack, {arity}, ctx); "
+        f"ctx.stack.append({pushed})"
     )
     return py_code, arity
 
@@ -150,7 +150,7 @@ def any_true(lhs, ctx):
         if len(lhs) == 1:
             return int(91 >= ord(lhs) >= 65)
         else:
-            return [int(91 >= ord(lhs) >= 65) for char in lhs]
+            return [int(91 >= ord(char) >= 65) for char in lhs]
     return int(any(iterable(lhs, ctx=ctx)))
 
 
@@ -2125,7 +2125,7 @@ def vy_exec(lhs, ctx):
     if vy_type(lhs) is str:
         import vyxal.transpile
 
-        stack = ctx.stacks[-1]
+        ctx.stack = ctx.stacks[-1]
         exec(vyxal.transpile.transpile(lhs))
         return []
     elif vy_type(lhs) == NUMBER_TYPE:
@@ -2461,14 +2461,14 @@ elements: dict[str, tuple[str, int]] = {
     "∨": process_element("lhs or rhs", 2),
     "⟇": process_element("rhs or lhs", 2),
     "÷": (
-        "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
+        "lhs = pop(ctx.stack, 1, ctx); ctx.stack += iterable(lhs, ctx=ctx)",
         1,
     ),
     "×": process_element("'*'", 0),
     "•": process_element(log_mold_multi, 2),
     "†": (
-        "top = function_call(stack, ctx)\n"
-        + "if top is not None: stack.append(top)",
+        "top = function_call(ctx.stack, ctx)\n"
+        + "if top is not None: ctx.stack.append(top)",
         1,
     ),
     "€": process_element(split_on, 2),
@@ -2483,22 +2483,22 @@ elements: dict[str, tuple[str, int]] = {
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
     "∞": process_element(palindromise, 1),
-    "!": process_element("len(stack)", 0),
+    "!": process_element("len(ctx.stack)", 0),
     '"': process_element("[lhs, rhs]", 2),
     "$": (
-        "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
-        "stack.append(lhs)",
+        "rhs, lhs = pop(ctx.stack, 2, ctx); ctx.stack.append(rhs); "
+        "ctx.stack.append(lhs)",
         2,
     ),
     "%": process_element(modulo, 2),
     "*": process_element(multiply, 2),
     "+": process_element(add, 2),
-    ",": ("top = pop(stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
+    ",": ("top = pop(ctx.stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
     "-": process_element(subtract, 2),
     "/": process_element(divide, 2),
     ":": (
-        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
-        "stack.append(top)",
+        "top = pop(ctx.stack, 1, ctx); ctx.stack.append(deep_copy(top)); "
+        "ctx.stack.append(top)",
         1,
     ),
     "<": process_element(less_than, 2),
@@ -2506,15 +2506,15 @@ elements: dict[str, tuple[str, int]] = {
     ">": process_element(greater_than, 2),
     "?": (
         "ctx.use_top_input = True; lhs = get_input(ctx); "
-        "ctx.use_top_input = False; stack.append(lhs)",
+        "ctx.use_top_input = False; ctx.stack.append(lhs)",
         0,
     ),
     "A": process_element(all_true, 1),
     "B": process_element("vy_int(lhs, 2)", 1),
     "C": process_element(chr_ord, 1),
     "D": (
-        "top = pop(stack, 1, ctx); stack.append(top);"
-        "stack.append(deep_copy(top)); stack.append(deep_copy(top));",
+        "top = pop(ctx.stack, 1, ctx); ctx.stack.append(top);"
+        "ctx.stack.append(deep_copy(top)); ctx.stack.append(deep_copy(top));",
         1,
     ),
     "E": process_element(exp2_or_eval, 1),
@@ -2531,24 +2531,24 @@ elements: dict[str, tuple[str, int]] = {
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
-        "if len(stack) > 1 and types.FunctionType "
-        "in vy_type(stack[-1], stack[-2]):\n"
-        "    rhs, lhs = pop(stack, 2, ctx);"
-        "    stack.append(vy_reduce(lhs, rhs, ctx))\n"
+        "if len(ctx.stack) > 1 and types.FunctionType "
+        "in vy_type(ctx.stack[-1], ctx.stack[-2]):\n"
+        "    rhs, lhs = pop(ctx.stack, 2, ctx);"
+        "    ctx.stack.append(vy_reduce(lhs, rhs, ctx))\n"
         "else:\n"
-        "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
+        "    ctx.stack.append(vectorise(reverse, pop(ctx.stack, 1, ctx), ctx=ctx))",
         2,
     ),
     "S": process_element(vy_str, 1),
     "T": process_element(truthy_indicies, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
-    "W": ("print(stack); stack = [stack]; print(stack)", 0),
+    "W": ("ctx.stack = [ctx.stack]", 0),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack = stack[::-1]", 0),
-    "_": ("pop(stack, 1, ctx)", 1),
+    "^": ("ctx.stack = ctx.stack[::-1]", 0),
+    "_": ("pop(ctx.stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
     "c": process_element(contains, 2),
@@ -2570,7 +2570,7 @@ elements: dict[str, tuple[str, int]] = {
     "t": process_element(tail, 1),
     "u": process_element("-1", 0),
     "w": process_element("[lhs]", 1),
-    "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
+    "y": ("ctx.stack += uninterleave(pop(ctx.stack, 1, ctx), ctx)", 1),
     "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "↑": process_element(max_by_tail, 1),
     "↓": process_element(min_by_tail, 1),
@@ -2590,16 +2590,16 @@ elements: dict[str, tuple[str, int]] = {
     "ė": process_element(vy_enumerate, 1),
     "ḟ": process_element(find, 2),
     "ġ": (
-        "top = pop(stack, 1, ctx)\n"
+        "top = pop(ctx.stack, 1, ctx)\n"
         "if vy_type(top, simple=True) is list:\n"
-        "    stack.append(vy_gcd(top, ctx=ctx))\n"
+        "    ctx.stack.append(vy_gcd(top, ctx=ctx))\n"
         "else:\n"
-        "    stack.append(vy_gcd(pop(stack, 1, ctx), top, ctx))\n",
+        "    ctx.stack.append(vy_gcd(pop(ctx.stack, 1, ctx), top, ctx))\n",
         2,
     ),
     "ḣ": (
-        "top = pop(stack, 1, ctx); stack.append(head(top, ctx));"
-        " stack.append(index(top, [1, None], ctx))",
+        "top = pop(ctx.stack, 1, ctx); ctx.stack.append(head(top, ctx));"
+        " ctx.stack.append(index(top, [1, None], ctx))",
         1,
     ),
     "ḭ": process_element(integer_divide, 2),
@@ -2611,9 +2611,9 @@ elements: dict[str, tuple[str, int]] = {
     "ṙ": process_element(vy_round, 1),
     "ṡ": process_element(sort_by, 2),
     "ṫ": (
-        "top = pop(stack, 1, ctx);"
-        " stack.append(index(top, [None, -1], ctx));"
-        " stack.append(tail(top, ctx))",
+        "top = pop(ctx.stack, 1, ctx);"
+        " ctx.stack.append(index(top, [None, -1], ctx));"
+        " ctx.stack.append(tail(top, ctx))",
         1,
     ),
     "ẇ": process_element(wrap, 2),
@@ -2627,7 +2627,7 @@ elements: dict[str, tuple[str, int]] = {
     "₃": process_element(is_divisible_by_three, 1),
     "₄": process_element("26", 0),
     "₅": (
-        "top = pop(stack, 1, ctx); stack += is_divisible_by_five(top, ctx)",
+        "top = pop(ctx.stack, 1, ctx); ctx.stack += is_divisible_by_five(top, ctx)",
         1,
     ),
     "₆": process_element("64", 0),
@@ -2643,16 +2643,16 @@ elements: dict[str, tuple[str, int]] = {
     "≈": process_element(all_equal, 1),
     "Ȧ": process_element(assign_iterable, 3),
     "Ḃ": (
-        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
-        "stack.append(reverse(top, ctx))",
+        "top = pop(ctx.stack, 1, ctx); ctx.stack.append(deep_copy(top)); "
+        "ctx.stack.append(reverse(top, ctx))",
         1,
     ),
     "Ċ": process_element(counts, 1),
     "Ḋ": (
-        "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
+        "rhs, lhs = pop(ctx.stack, 2, ctx); ctx.stack += is_divisible(lhs, rhs, ctx)",
         2,
     ),
-    "Ė": ("stack += vy_exec(pop(stack, 1, ctx), ctx)", 1),
+    "Ė": ("ctx.stack += vy_exec(pop(ctx.stack, 1, ctx), ctx)", 1),
     "Ḟ": process_element(gen_from_fn, 2),
     "Ġ": process_element(group_consecutive, 1),
     "Ḣ": process_element(head_remove, 1),
@@ -2770,14 +2770,14 @@ elements: dict[str, tuple[str, int]] = {
 }
 modifiers: dict[str, str] = {
     "v": (
-        "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
-        + "stack.append"
+        "arguments = wrapify(pop(ctx.stack, function_A.arity, ctx=ctx))\n"
+        + "ctx.stack.append"
         + "(vectorise(function_A, *arguments[::-1], explicit=True, ctx=ctx))\n"
     ),
     "~": (
         "ctx.retain_popped = True\n"
-        + "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
+        + "arguments = wrapify(pop(ctx.stack, function_A.arity, ctx=ctx))\n"
         + "ctx.retain_popped = False\n"
-        + "stack.append(safe_apply(function_A, *arguments[::-1], ctx=ctx))\n"
+        + "ctx.stack.append(safe_apply(function_A, *arguments[::-1], ctx=ctx))\n"
     ),
 }
