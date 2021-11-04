@@ -1983,7 +1983,7 @@
     - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]'
 
 - element: "Ḣ"
-  name: Tail
+  name: Head Remove / Behead
   arity: 1
   description: All but the first item of a list / Drop 1
   overloads:

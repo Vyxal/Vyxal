@@ -76,7 +76,8 @@ def deep_copy(value: Any) -> Any:
 
 def digits(num: NUMBER_TYPE) -> List[int]:
     """Get the digits of a (possibly Rational) number.
-    This differs from to_base_digits because it works with floats."""
+    This differs from to_base_digits because it works with floats.
+    This does NOT include signs and decimal points"""
     if type(num) is sympy.Rational:
         num = float(num)
 
@@ -461,7 +462,7 @@ def transfer_capitalisation(source: str, target: str) -> str:
             ret += target[i]
 
     if len(target) > len(source):
-        ret += target[i + 1:]
+        ret += target[i + 1 :]
 
     return ret
 

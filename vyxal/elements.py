@@ -737,6 +737,22 @@ def head(lhs, ctx):
     )
 
 
+def head_remove(lhs, ctx):
+    """Element Ḣ
+    (lst) -> a[1:] or [] if empty
+    (str) -> a[1:] or '' if empty
+    (num) -> Remove first digit or do nothing if <1"""
+
+    if vy_type(lhs, simple=True) in (list, str):
+        return a[1:] if a else a
+    if lhs < 1:
+        return lhs
+    if isinstance(lhs, int):
+        return lhs if lhs < 1 else int(str(lhs)[1:])
+    assert isinstance(lhs, sympy.Rational)
+    return sympy.Rational(str(float(lhs))[1:])
+
+
 def inclusive_one_range(lhs, ctx):
     """Element ɾ
     (num) -> range(1, a + 1)
@@ -2606,6 +2622,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ė": ("stack += vy_exec(pop(stack, 1, ctx), ctx)", 1),
     "Ḟ": process_element(gen_from_fn, 2),
     "Ġ": process_element(group_consecutive, 1),
+    "Ḣ": process_element(head_remove, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
