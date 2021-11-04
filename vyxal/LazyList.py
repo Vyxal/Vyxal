@@ -21,19 +21,14 @@ def vyxalify(value: Any) -> Any:
     elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
         return vyxalify(sympy.Rational(str(float(value))))
         # Sympy is weird okay.
-    elif (
-        isinstance(value, int)
-        or isinstance(value, Rational)
-        or isinstance(value, str)
-        or isinstance(value, list)
-        or isinstance(value, LazyList)
-    ):
+    elif isinstance(value, (int, Rational, str, list, LazyList)):
         return value
     else:
         return LazyList(map(vyxalify, value))
 
 
 def join_with(lhs, rhs):
+    """A generator to concatenate two iterables together"""
     for item in lhs:
         yield item
 
@@ -51,16 +46,10 @@ def lazylist(fn):
 
 
 def simplify(value: Any) -> Union[int, float, str, list]:
-    if (
-        isinstance(value, int)
-        or isinstance(value, float)
-        or isinstance(value, str)
-    ):
+    if isinstance(value, (int, float, str)):
         return value
-
     elif isinstance(value, Rational):
         return float(value)
-
     else:
         return list(map(simplify, value))
 
@@ -144,7 +133,6 @@ class LazyList:
     def __iter__(self):
         raw_object_clones = itertools.tee(self.raw_object)
         self.raw_object = raw_object_clones[0]
-
         return join_with(self.generated[::], raw_object_clones[1])
 
     def __len__(self):

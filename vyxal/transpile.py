@@ -71,7 +71,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.NUMBER:
         if token.value.count("."):
             if token.value == ".":
-                return indent_str(f"stack.append(sympy.Rational(1, 2))", indent)
+                return indent_str("stack.append(sympy.Rational(1, 2))", indent)
             return indent_str(
                 f'stack.append(vyxalify(sympy.Rational("{token.value}")))',
                 indent,

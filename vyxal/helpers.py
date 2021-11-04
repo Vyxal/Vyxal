@@ -202,6 +202,7 @@ def invert_brackets(lhs: str) -> str:
         lhs = lhs.replace("X", i[1])
     return lhs
 
+
 def iterable(
     item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
 ) -> Union[LazyList, Union[list, str]]:
@@ -241,9 +242,15 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
     A binary function to check if its first argument is less than the second.
     """
     if key is None:
-        key = lambda x, ctx=None: x
+
+        def key(x, ctx=None):
+            return x
+
     if cmp is None:
-        cmp = lambda a, b, ctx=None: a < b
+
+        def cmp(a, b, ctx=None):
+            return a < b
+
     return foldl(
         lambda a, b, ctx=ctx: b
         if safe_apply(
@@ -269,9 +276,15 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
     A binary function to check if its first argument is less than the second.
     """
     if key is None:
-        key = lambda x, ctx=None: x
+
+        def key(x, ctx=None):
+            return x
+
     if cmp is None:
-        cmp = lambda a, b, ctx=None: a < b
+
+        def cmp(a, b, ctx=None):
+            return a < b
+
     return foldl(
         lambda a, b, ctx=ctx: a
         if cmp(key(a, ctx=ctx), key(b, ctx=ctx), ctx=ctx)
@@ -321,14 +334,14 @@ def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     return popped_items
 
 
-def primitive_type(item: type) -> Union[str, type]:
+def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
 
     if type(item) in [int, sympy.Rational, str]:
         return SCALAR_TYPE
-    else:
-        return list
+    assert type(item) in [list, LazyList]
+    return list
 
 
 def reverse_number(
@@ -338,7 +351,7 @@ def reverse_number(
 
     sign = -1 if item < 0 else 1
     rev = str(abs(item))[::-1]
-    return sympy.Rational(eval(rev) * sign)
+    return vyxalify(sympy.Rational(eval(rev) * sign))
 
 
 def ring_translate(map_source: Union[str, list], string: str) -> str:
@@ -346,24 +359,9 @@ def ring_translate(map_source: Union[str, list], string: str) -> str:
     - that is, map matching elements to the subsequent element in the
     translation ring. The ring wraps around."""
     ret = ""
-    LENGTH = len(map_source)
     for char in string:
         if char in map_source:
-            ret += map_source[(map_source.index(char) + 1) % LENGTH]
-        else:
-            ret += char
-    return ret
-
-
-def ring_translate(map_source: Union[str, list], string: str) -> str:
-    """Ring translates a given string according to the provided mapping
-    - that is, map matching elements to the subsequent element in the
-    translation ring. The ring wraps around."""
-    ret = ""
-    LENGTH = len(map_source)
-    for char in string:
-        if char in map_source:
-            ret += map_source[(map_source.index(char) + 1) % LENGTH]
+            ret += map_source[(map_source.index(char) + 1) % len(map_source)]
         else:
             ret += char
     return ret

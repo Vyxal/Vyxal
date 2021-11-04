@@ -30,12 +30,21 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                         except Exception as e:
                             print('Failed on test', test)
                             raise e
+                        unordered = (
+                            len(expected) > 1
+                            and expected[0] == '{' and expected[-1] == '}')
                         tests.write(f"\tstack = {stack}\n")
                         tests.write(f"\texpected = {expected}\n")
                         tests.write(f"\tctx = Context()\n")
-                        tests.write(f"\tcode = transpile('{element['element']}')\n")
+                        tests.write(
+                            f"\tcode = transpile('{element['element']}');print(code)\n")
                         tests.write(f"\texec(code)\n")
-                        tests.write(f"\tassert simplify(stack[-1]) == expected\n\n")
+                        if unordered:
+                            tests.write(
+                                f"\tassert set(simplify(stack[-1])) == expected\n\n")
+                        else:
+                            tests.write(
+                                f"\tassert simplify(stack[-1]) == expected\n\n")
                 else:
                     tests.write("\tpass #TODO implement this test!!!\n\n")
                 tests.write("\n")

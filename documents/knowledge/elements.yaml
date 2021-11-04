@@ -279,7 +279,7 @@
     - "[3] : [1,2,3]"
 
 - element: "ɽ"
-  name: Exclusive One Range
+  name: Exclusive One Range / Lowercase
   description: Exclusive range or lowercase
   arity: 1
   overloads:
@@ -287,8 +287,8 @@
     str: a.lowercase()
   vectorise: true
   tests:
-    - '["1"] : 1'
-    - "[[0]] : 0"
+    - '["1aBC"] : "1abc"'
+    - "[[0]] : [[]]"
     - "[3] : [1,2]"
 
 - element: "Þ"
@@ -319,10 +319,10 @@
     any: palindromised a
   vectorise: false
   tests:
-    - "[1,2,3] : [1,2,3,2,1]"
-    - "[1,2,3,4] : [1,2,3,4,3,2,1]"
-    - "[1,2,3,4,5] : [1,2,3,4,5,4,3,2,1]"
-    - "[1,2,3,4,5,6] : [1,2,3,4,5,6,5,4,3,2,1]"
+    - "[[1,2,3]] : [1,2,3,2,1]"
+    - "[[1,2,3,4]] : [1,2,3,4,3,2,1]"
+    - "[[1,2,3,4,5]] : [1,2,3,4,5,4,3,2,1]"
+    - "[[1,2,3,4,5,6]] : [1,2,3,4,5,6,5,4,3,2,1]"
     - '["hello"] : "hellolleh"'
 
 - element: "¨"
@@ -425,7 +425,7 @@
     - "[4,-2] : -8"
     - '[4,"*"] : "****"'
     - '["x",5] : "xxxxx"'
-    - '["hello","aeiou"] : "hillu"'
+    - '["aeiou","hello"] : "hillu"'
 
 - element: "+"
   name: Addition
@@ -634,7 +634,7 @@
     - "[[0,1,2]] : 0"
     - '[["",1,2]] : 0'
     - "[[]] : 1"
-    - '[""] : 1'
+    - '[""] : []'
     - "[0] : 0"
     - '["a"] : 1'
     - '["y"] : 0'
@@ -755,17 +755,17 @@
 
 - element: "K"
   name: Factors / Substrings / Prefixes
-  description: Get either a's factors, substrings or prefixes
+  description: Get either a's factors, substrings that occur more than once, or prefixes
   arity: 1
   overloads:
     num: divisors(a) (factors)
-    str: substrings(a) (substrings)
+    str: All substrings of a that occur more than once in a
     lst: prefixes(a) (prefixes)
   vectorise: false
   tests:
     - "[20] : [1,2,4,5,10,20]"
     - "[1] : [1]"
-    - '["abc"] : ["a","b","c","ab","bc","abc"]'
+    - '["adbcdbcd"] : {"b","c","d","bc","cd","bcd","db","dbc"}'
     - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
 
 - element: "L"
@@ -3485,7 +3485,7 @@
   vectorise: false
   tests:
     - '[".{3}","hello","x"] : "xlo"'
-    - '["\W","Hello, World!","E"] : "HelloEEWorldE"'
+    - '["\\W","Hello, World!","E"] : "HelloEEWorldE"'
 
 - element: "øp"
   name: Starts With
@@ -3532,7 +3532,7 @@
   tests:
     - '["[}"] : "[}{]"'
     - '[")X"] : ")XX("'
-    - '["</tag>"] : "</tag><gat\>"'
+    - '["</tag>"] : "</tag><gat\\>"'
 
 - element: "ø¦"
   name: Vertical Mirror Custom Mapping
