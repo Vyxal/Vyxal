@@ -566,48 +566,13 @@ def first_integer(lhs, ctx):
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
-def index_indices_or_cycle(lhs, rhs, ctx):
-    """Element İ
-    (any, lst) -> [a[item] for item in b]
-    (any, fun) -> Repeatedly apply b to a until cycle is formed, then return cycle,
-                  not including the repeated item"""
-
-    if vy_type(rhs) is types.FunctionType:
-        prevs = []
-        curr = None
-
-        while True:
-            curr = safe_apply(rhs, lhs, ctx=ctx)
-
-            for i in range(prevs):
-                if equals(prevs[i], curr):
-                    return prevs[i:]
-
-            prevs.append(curr)
-    else:
-        lhs = iterable(lhs)
-        rhs = iterable(rhs)
-        return vy_map(rhs, lambda item: lhs[item])
-
-
-def invert_brackets(lhs: str, ctx) -> str:
-    """
-    Helper function to swap brackets and parentheses in a string
-    """
-    for i in ["()", "[]", "{}", "<>", "/\\"]:
-        lhs = lhs.replace(i[0], "X")
-        lhs = lhs.replace(i[1], i[0])
-        lhs = lhs.replace("X", i[1])
-    return lhs
-
-
 def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
     """
     result = lhs.split("\n")
     for i in range(len(result)):
-        result[i] += invert_brackets(result[i][:-1][::-1], ctx)
+        result[i] += invert_brackets(result[i][:-1][::-1])
     return "\n".join(result)
 
 
@@ -704,7 +669,7 @@ def group_consecutive(lhs, ctx):
         count = 0
 
         for item in lhs:
-            if not equals(prev, item, ctx):
+            if not non_vectorising_equals(prev, item, ctx):
                 yield [prev] * count
                 prev = item
                 count = 0
@@ -848,6 +813,30 @@ def index(lhs, rhs, ctx):
 
     else:
         return iterable(lhs, ctx)[slice(*rhs)]
+
+
+def index_indices_or_cycle(lhs, rhs, ctx):
+    """Element İ
+    (any, lst) -> [a[item] for item in b]
+    (any, fun) -> Repeatedly apply b to a until cycle is formed, then return cycle,
+                  not including the repeated item"""
+
+    if vy_type(rhs) is types.FunctionType:
+        prevs = []
+        curr = None
+
+        while True:
+            curr = safe_apply(rhs, lhs, ctx=ctx)
+
+            for i in range(prevs):
+                if equals(prevs[i], curr):
+                    return prevs[i:]
+
+            prevs.append(curr)
+    else:
+        lhs = iterable(lhs)
+        rhs = iterable(rhs)
+        return vy_map(rhs, lambda item: lhs[item])
 
 
 def infinite_list(ctx):
@@ -1680,7 +1669,7 @@ def square_root(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.sqrt(lhs),
+        NUMBER_TYPE: lambda: vyxalify(sympy.sqrt(lhs)),
         str: lambda: "".join(lhs[::2]),
     }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
 

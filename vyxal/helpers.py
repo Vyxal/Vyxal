@@ -192,6 +192,16 @@ def indent_code(*code, indent: int = 1) -> str:
     return "\n".join(indent_str(line, indent, end="") for line in code) + "\n"
 
 
+def invert_brackets(lhs: str) -> str:
+    """
+    Helper function to swap brackets and parentheses in a string
+    """
+    for i in ["()", "[]", "{}", "<>", "/\\"]:
+        lhs = lhs.replace(i[0], "X")
+        lhs = lhs.replace(i[1], i[0])
+        lhs = lhs.replace("X", i[1])
+    return lhs
+
 def iterable(
     item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
 ) -> Union[LazyList, Union[list, str]]:

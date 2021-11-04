@@ -16,9 +16,9 @@ from sympy import Rational
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
 
-    if isinstance(value, sympy.core.numbers.Integer):
+    if isinstance(value, (sympy.core.numbers.Integer)):
         return int(value)
-    elif isinstance(value, sympy.factorial):
+    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
         return vyxalify(sympy.Rational(str(float(value))))
         # Sympy is weird okay.
     elif (
