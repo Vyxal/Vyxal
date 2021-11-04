@@ -11,10 +11,14 @@ import re
 import string
 import types
 from functools import reduce
-from token import NUMBER
 from typing import Union
-from vyxal.encoding import codepage_number_compress, codepage_string_compress, codepage
+from vyxal.encoding import (
+    codepage_number_compress,
+    codepage_string_compress,
+    codepage,
+)
 from datetime import datetime
+
 currentdate = datetime.now()
 
 import numpy
@@ -247,8 +251,8 @@ def combinations_with_replacement(lhs, rhs, ctx):
     """Element ↔
     (any, num) -> combinations of lhs of length rhs with replacement
     (any, non-num) -> remove elements in lhs that are not in rhs
-    (fun, any) -> apply lhs on rhs until the result does not change. Collects intermittent values
-    (any, fun) -> apply rhs on lhs until the result does not change. Collects intermittent values
+    (fun, any) -> apply lhs on rhs until the result does not change. Collects intermediate values
+    (any, fun) -> apply rhs on lhs until the result does not change. Collects intermediate values
     """
 
     ts = vy_type(lhs, rhs)
@@ -422,6 +426,23 @@ def dyadic_minimum(lhs, rhs, ctx):
     """
 
     return lhs if less_than(lhs, rhs, ctx) else rhs
+
+
+def equals(lhs, rhs, ctx):
+    """Element =
+    (num, num) -> lhs == rhs
+    (num, str) -> str(lhs) == rhs
+    (str, num) -> lhs == str(rhs)
+    (str, str) -> lhs == rhs
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs == rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
+        (str, str): lambda: int(lhs == rhs),
+    }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
 
 
 def exclusive_one_range(lhs, ctx):
@@ -602,21 +623,28 @@ def from_base(lhs, rhs, ctx):
         return sum(multiply(lhs, exponents, ctx))
 
 
-def equals(lhs, rhs, ctx):
-    """Element =
-    (num, num) -> lhs == rhs
-    (num, str) -> str(lhs) == rhs
-    (str, num) -> lhs == str(rhs)
-    (str, str) -> lhs == rhs
+def gen_from_fn(lhs, rhs, ctx):
+    """Element Ḟ
+    (fun, lst) -> Generator from a with initial vector b
+    (lst, fun) -> Generator from b with initial vector a
     """
 
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs == rhs),
-        (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
-        (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
-        (str, str): lambda: int(lhs == rhs),
-    }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
+    rhs_type = vy_type(rhs)
+
+    if rhs_type == types.FunctionType:
+        temp = rhs
+        rhs = iterable(lhs)
+        lhs = temp
+
+    @lazylist
+    def gen():
+        for item in lhs:
+            yield item
+
+        while True:
+            yield safe_apply(lhs, ctx=ctx)
+
+    return gen()
 
 
 def greater_than(lhs, rhs, ctx):
@@ -634,6 +662,38 @@ def greater_than(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
     }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
+
+
+def group_consecutive(lhs, ctx):
+    """Element Ġ
+    (lst) -> Group consecutive identical items
+    (str) -> Group consecutive identical characters
+    (num) -> Group consecutive identical digits"""
+
+    typ = vy_type(lhs)
+
+    if typ == NUMBER_TYPE:
+        lhs = digits(lhs)
+
+    def gen():
+        prev = None
+        count = 0
+
+        for item in lhs:
+            if prev != item:
+                yield [prev] * count
+                prev = item
+                count = 0
+
+    if typ is LazyList:
+        return LazyList(gen())
+
+    res = list(gen())
+
+    if typ == NUMBER_TYPE:
+        res = [int(group) for group in res]
+
+    return res
 
 
 def group_on_words(lhs, ctx):
@@ -1655,9 +1715,6 @@ def substrings(lhs, ctx):
     }.get(ts, lambda: vectorise(substrings, lhs, ctx=ctx))()
 
 
-
-
-
 def subtract(lhs, rhs, ctx):
     """Element -
     (num, num) -> lhs - rhs
@@ -2547,100 +2604,13 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "Ė": ("stack += vy_exec(pop(stack, 1, ctx), ctx)", 1),
+    "Ḟ": process_element(gen_from_fn, 2),
+    "Ġ": process_element(group_consecutive, 1),
     "Ŀ": process_element(transliterate, 3),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
-    "øḂ":process_element(angle_bracketify, 1),
-    "øḃ":process_element(curly_bracketify, 1),
-    "øb":process_element(parenthesise, 1),
-    "øB":process_element(bracketify, 1),
-    "øc":process_element(base_255_string_compress, 1),
-    "øC":process_element(base_255_number_compress, 1),
-    "ød":process_element(run_length_decoding, 1),
-    "øe":process_element(run_length_encoding, 1),
-    "ø↲":process_element(custom_pad_left, 3),
-    "ø↳":process_element(custom_pad_right, 3),
-    "øM":process_element(flip_brackets_vertical_palindromise, 1),
-    "øW":process_element(group_on_words, 1),
-    "øP":process_element(pluralise_count, 2),
-    "øp":process_element(starts_with, 2),
-    "øo":process_element(remove_until_no_change, 2),
-    "øV":process_element(replace_until_no_change, 3),
-    "kA":process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
-    "ke":process_element('math.e',0),
-    "kf":process_element('"Fizz"',0),
-    "kb":process_element('"Buzz"',0),
-    "kF":process_element('"FizzBuzz"',0),
-    "kH":process_element('"Hello, World!"',0),
-    "kh":process_element('"Hello World!"',0),
-    "k1":process_element('1000',0),
-    "k2":process_element('10000',0),
-    "k3":process_element('100000',0),
-    "k4":process_element('1000000',0),
-    "ka":process_element('"abcdefghijklmnopqrstuvwxyz"',0),
-    "kL":process_element('"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
-    "kd":process_element('"0123456789"',0),
-    "k6":process_element('"0123456789abcdef"',0),
-    "k^":process_element('"0123456789ABCDEF"',0),
-    "ko":process_element('"01234567"',0),
-    "kp":process_element('string.punctuatioin',0),
-    "kP":process_element('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\\"#$%&\\\'()*+,-./:;<=>?@[\\\\]^_`{|}~',0),
-    "kw":process_element('" \\t\\n\\r\\u000b\\u000c"',0),
-    "kr":process_element('"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"',0),
-    "kB":process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"',0),
-    "kZ":process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBA"',0),
-    "kz":process_element(' "zyxwvutsrqponmlkjihgfedcba"',0),
-    "kl":process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"',0),
-    "ki":process_element('math.pi',0),
-    "kn":process_element('math.nan',0),
-    "kg":process_element('(1 + math.sqrt(5)) / 2',0),
-    "kD":process_element('currenttime.strftime("%Y-%m-%d")',0),
-    "kN":process_element('LazyList(eval(currenttime.strftime("[%H,%M,%S]")))',0),
-    "kḋ":process_element('currenttime.strftime("%d/%m/%Y")',0),
-    "kḊ":process_element('currenttime.strftime("%m/%d/%Y")',0),
-    "kð":process_element('LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))',0),
-    "kβ":process_element('"{}[]<>()"',0),
-    "kB":process_element('"()[]{}"',0),
-    "kß":process_element('"()[]"',0),
-    "k≥":process_element('"([{<"',0),
-    "kΠ":process_element('")]}>"',0),
-    "kv":process_element('"aeiou"',0),
-    "kV":process_element('"AEIOU"',0),
-    "k∨":process_element('"aeiouAEIOU"',0),
-    "k⟇":process_element('codepage',0),
-    "k½":process_element('LazyList([1,2])',0),
-    "kḭ":process_element('2 ** 32',0),
-    "k+":process_element('LazyList([1, -1])',0),
-    "k-":process_element('LazyList([-1, 1])',0),
-    "k=":process_element('LazyList([0, 1])',0),
-    "k/":process_element('"/\\\\"',0),
-    "kR":process_element('360',0),
-    "kW":process_element('"https://"',0),
-    "k℅":process_element('"http://"',0),
-    "k↳":process_element('"https://www."',0),
-    "k²":process_element('"http://www."',0),
-    "k¶":process_element('512',0),
-    "k⁋":process_element('1024',0),
-    "k¦":process_element('2048',0),
-    "kṄ":process_element('4096',0),
-    "kṅ":process_element('8192',0),
-    "k¡":process_element('2 ** 14',0),
-    "kε":process_element('2 ** 15',0),
-    "k₴":process_element('2 ** 16',0),
-    "k×":process_element('2 ** 31',0),
-    "k⁰":process_element('"bcdfghjklmnpqrstvwxyz"',0),
-    "k¹":process_element('"bcdfghjklmnpqrstvwxz"',0),
-    "kT":process_element('"[]<>-+.,"',0),
-    "kṗ":process_element('LazyList("()","[]","{}","<>"])',0),
-    "kS":process_element('"ඞ"',0),
-    "k₂":process_element('2 ** 20',0),
-    "k₃":process_element('2 ** 30',0),
-    "k∪":process_element('"aeiouy"',0),
-    "k⊍":process_element('"AEIOUY"',0),
-    "k∩":process_element('"aeiouyAEIOUY"',0),
-    
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -2657,6 +2627,93 @@ elements: dict[str, tuple[str, int]] = {
     "øp": process_element(starts_with, 2),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
+    "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
+    "ke": process_element("math.e", 0),
+    "kf": process_element('"Fizz"', 0),
+    "kb": process_element('"Buzz"', 0),
+    "kF": process_element('"FizzBuzz"', 0),
+    "kH": process_element('"Hello, World!"', 0),
+    "kh": process_element('"Hello World!"', 0),
+    "k1": process_element("1000", 0),
+    "k2": process_element("10000", 0),
+    "k3": process_element("100000", 0),
+    "k4": process_element("1000000", 0),
+    "ka": process_element('"abcdefghijklmnopqrstuvwxyz"', 0),
+    "kL": process_element(
+        '"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
+    ),
+    "kd": process_element('"0123456789"', 0),
+    "k6": process_element('"0123456789abcdef"', 0),
+    "k^": process_element('"0123456789ABCDEF"', 0),
+    "ko": process_element('"01234567"', 0),
+    "kp": process_element("string.punctuatioin", 0),
+    "kP": process_element(
+        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\\\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~",
+        0,
+    ),
+    "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),
+    "kr": process_element(
+        '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
+    ),
+    "kB": process_element(
+        '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"', 0
+    ),
+    "kZ": process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBA"', 0),
+    "kz": process_element(' "zyxwvutsrqponmlkjihgfedcba"', 0),
+    "kl": process_element(
+        '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
+    ),
+    "ki": process_element("math.pi", 0),
+    "kn": process_element("math.nan", 0),
+    "kg": process_element("(1 + math.sqrt(5)) / 2", 0),
+    "kD": process_element('currenttime.strftime("%Y-%m-%d")', 0),
+    "kN": process_element(
+        'LazyList(eval(currenttime.strftime("[%H,%M,%S]")))', 0
+    ),
+    "kḋ": process_element('currenttime.strftime("%d/%m/%Y")', 0),
+    "kḊ": process_element('currenttime.strftime("%m/%d/%Y")', 0),
+    "kð": process_element(
+        'LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))', 0
+    ),
+    "kβ": process_element('"{}[]<>()"', 0),
+    "kḂ": process_element('"()[]{}"', 0),
+    "kß": process_element('"()[]"', 0),
+    "k≥": process_element('"([{<"', 0),
+    "kΠ": process_element('")]}>"', 0),
+    "kv": process_element('"aeiou"', 0),
+    "kV": process_element('"AEIOU"', 0),
+    "k∨": process_element('"aeiouAEIOU"', 0),
+    "k⟇": process_element("codepage", 0),
+    "k½": process_element("LazyList([1,2])", 0),
+    "kḭ": process_element("2 ** 32", 0),
+    "k+": process_element("LazyList([1, -1])", 0),
+    "k-": process_element("LazyList([-1, 1])", 0),
+    "k=": process_element("LazyList([0, 1])", 0),
+    "k/": process_element('"/\\\\"', 0),
+    "kR": process_element("360", 0),
+    "kW": process_element('"https://"', 0),
+    "k℅": process_element('"http://"', 0),
+    "k↳": process_element('"https://www."', 0),
+    "k²": process_element('"http://www."', 0),
+    "k¶": process_element("512", 0),
+    "k⁋": process_element("1024", 0),
+    "k¦": process_element("2048", 0),
+    "kṄ": process_element("4096", 0),
+    "kṅ": process_element("8192", 0),
+    "k¡": process_element("2 ** 14", 0),
+    "kε": process_element("2 ** 15", 0),
+    "k₴": process_element("2 ** 16", 0),
+    "k×": process_element("2 ** 31", 0),
+    "k⁰": process_element('"bcdfghjklmnpqrstvwxyz"', 0),
+    "k¹": process_element('"bcdfghjklmnpqrstvwxz"', 0),
+    "kT": process_element('"[]<>-+.,"', 0),
+    "kṗ": process_element('LazyList("()","[]","{}","<>"])', 0),
+    "kS": process_element('"ඞ"', 0),
+    "k₂": process_element("2 ** 20", 0),
+    "k₃": process_element("2 ** 30", 0),
+    "k∪": process_element('"aeiouy"', 0),
+    "k⊍": process_element('"AEIOUY"', 0),
+    "k∩": process_element('"aeiouyAEIOUY"', 0),
 }
 modifiers: dict[str, str] = {
     "v": (

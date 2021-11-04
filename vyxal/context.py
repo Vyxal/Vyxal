@@ -24,5 +24,27 @@ class Context:
         self.last_popped = []
         self.use_top_input = False
 
+    def copy(self):
+        """Copy itself so a modified version can be passed elsewhere."""
+
+        ctx = Context()
+
+        ctx.context_values = self.context_values
+        ctx.inputs = self.inputs
+        ctx.number_as_range = self.number_as_range
+        ctx.online = self.online
+        ctx.online_output = self.online_output
+        ctx.printed = self.printed
+        ctx.range_start = self.range_start
+        ctx.range_end = self.range_end
+        ctx.repl_mode = self.repl_mode
+        ctx.retain_popped = self.retain_popped
+        ctx.reverse_flag = self.reverse_flag
+        ctx.stacks = self.stacks
+        ctx.last_popped = self.last_popped
+        ctx.use_top_input = self.use_top_input
+
+        return ctx
+
 
 DEFAULT_CTX = Context()

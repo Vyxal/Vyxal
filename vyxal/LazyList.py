@@ -195,7 +195,7 @@ class LazyList:
             if len(self.generated) > 1:
                 vy_print("|", "", ctx)
             while True:
-                if type(lhs) is types.FunctionType:
+                if isinstance(lhs, types.FunctionType):
                     vy_print(lhs, "", ctx)
                 else:
                     vy_print(vy_repr(lhs, ctx), "", ctx)

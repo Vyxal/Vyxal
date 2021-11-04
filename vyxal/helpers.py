@@ -8,12 +8,10 @@ import ast
 import collections
 import inspect
 import itertools
-import string
 import textwrap
 import types
 from typing import Any, List, Union
 
-import numpy
 import sympy
 
 import vyxal.encoding
@@ -74,6 +72,15 @@ def deep_copy(value: Any) -> Any:
         # chad unlike those virgin memory reference needing lists".
 
     return LazyList(itertools.tee(value)[-1])
+
+
+def digits(num: NUMBER_TYPE) -> List[int]:
+    """Get the digits of a (possibly Rational) number.
+    This differs from to_base_digits because it works with floats."""
+    if type(num) is sympy.Rational:
+        num = float(num)
+
+    return [int(let) if let not in "-." else let for let in str(num)]
 
 
 @lazylist
@@ -175,8 +182,7 @@ def get_input(ctx: Context) -> Any:
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
-
-    """Indent a multiline string with 4 spaces, with a newline (or `end`) afterwards."""
+    """Indent a multiline string with 4 spaces, with a newline or `end` afterwards."""
     return textwrap.indent(string, "    " * indent) + end
 
 
@@ -194,10 +200,7 @@ def iterable(
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
-            if item_type is sympy.Rational:
-                item = float(item)
-
-            return [int(let) if let not in "-." else let for let in str(item)]
+            return digits(item)
     else:
         return item
 
@@ -458,7 +461,7 @@ def transfer_capitalisation(source: str, target: str) -> str:
             ret += target[i]
 
     if len(target) > len(source):
-        ret += target[i + 1 :]
+        ret += target[i + 1:]
 
     return ret
 
