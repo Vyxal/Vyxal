@@ -1,8 +1,10 @@
+import os
 import re
 import yaml
 
-ELEMENTS_YAML = "elements.yaml"
-TEST_ELEMENTS_PY = "../../tests/test_elements.py"
+CURR_DIR = os.path.dirname(os.path.realpath(__file__))
+ELEMENTS_YAML = os.path.join(CURR_DIR, "elements.yaml")
+TEST_ELEMENTS_PY = os.path.join(CURR_DIR, "..", "..", "tests", "test_elements.py")
 
 with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
     data = yaml.safe_load(elements)
