@@ -463,8 +463,8 @@ def test_InclusiveOneRange():
 	assert simplify(stack[-1]) == expected
 
 
-def test_ExclusiveOneRangeLowercase():
-	stack = ["1aBC"]
+def test_ExclusiveOneRange():
+	stack = ["1AbC"]
 	expected = "1abc"
 	ctx = Context()
 	code = transpile('ɽ');print(code)
@@ -510,36 +510,29 @@ def test_Chooserandomchoicesetsame():
 
 
 def test_Palindromise():
-	stack = [[1,2,3]]
+	stack = [1,2,3]
 	expected = [1,2,3,2,1]
 	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
+	stack = [1,2,3,4]
 	expected = [1,2,3,4,3,2,1]
 	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5]]
+	stack = [1,2,3,4,5]
 	expected = [1,2,3,4,5,4,3,2,1]
 	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6]]
+	stack = [1,2,3,4,5,6]
 	expected = [1,2,3,4,5,6,5,4,3,2,1]
-	ctx = Context()
-	code = transpile('∞');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["hello"]
-	expected = "hellolleh"
 	ctx = Context()
 	code = transpile('∞');print(code)
 	exec(code)
@@ -669,13 +662,6 @@ def test_Multiplication():
 
 	stack = ["x",5]
 	expected = "xxxxx"
-	ctx = Context()
-	code = transpile('*');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["aeiou","hello"]
-	expected = "hillu"
 	ctx = Context()
 	code = transpile('*');print(code)
 	exec(code)
@@ -969,7 +955,7 @@ def test_All():
 	assert simplify(stack[-1]) == expected
 
 	stack = [""]
-	expected = []
+	expected = 1
 	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
@@ -977,27 +963,6 @@ def test_All():
 
 	stack = [0]
 	expected = 0
-	ctx = Context()
-	code = transpile('A');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["a"]
-	expected = 1
-	ctx = Context()
-	code = transpile('A');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["y"]
-	expected = 0
-	ctx = Context()
-	code = transpile('A');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["hi"]
-	expected = [0,1]
 	ctx = Context()
 	code = transpile('A');print(code)
 	exec(code)
@@ -1210,8 +1175,8 @@ def test_FactorsSubstringsPrefixes():
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
-	stack = ["adbcdbcd"]
-	expected = {"b","c","d","bc","cd","bcd","db","dbc"}
+	stack = ["abcdbcd"]
+	expected = {"b","c","d","bc","cd","bcd"}
 	ctx = Context()
 	code = transpile('K');print(code)
 	exec(code)
@@ -1485,27 +1450,6 @@ def test_Any():
 
 	stack = [[0,1,2]]
 	expected = 1
-	ctx = Context()
-	code = transpile('a');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["A"]
-	expected = 1
-	ctx = Context()
-	code = transpile('a');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["a"]
-	expected = 0
-	ctx = Context()
-	code = transpile('a');print(code)
-	exec(code)
-	assert simplify(stack[-1]) == expected
-
-	stack = ["Hi"]
-	expected = [1,0]
 	ctx = Context()
 	code = transpile('a');print(code)
 	exec(code)
@@ -3080,7 +3024,7 @@ def test_Groupconsecutive():
 	assert simplify(stack[-1]) == expected
 
 
-def test_HeadRemoveBehead():
+def test_Tail():
 	stack = [[0, [43, 69], "foo"]]
 	expected = [[43, 69], "foo"]
 	ctx = Context()
@@ -4217,6 +4161,33 @@ def test_Goldenratiophi():
 	assert simplify(stack[-1]) == expected
 
 
+def test_Squarerootof2():
+	stack = []
+	expected = 1.4142135623730951
+	ctx = Context()
+	code = transpile('k₂');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_Squarerootof3():
+	stack = []
+	expected = 1.7320508075688772
+	ctx = Context()
+	code = transpile('k₃');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_Squarerootof5():
+	stack = []
+	expected = 2.23606797749979
+	ctx = Context()
+	code = transpile('k₅');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
 def test_Bracessquarebracketsanglebracketsandparentheses():
 	stack = []
 	expected = "{}[]<>()"
@@ -4489,7 +4460,7 @@ def test_2147483648():
 
 def test_Lowercaseconsonantswithy():
 	stack = []
-	expected = "bcdfghjklmnpqrstvwxyz"
+	expected = "bcfghjklmnpqrstvwxyz"
 	ctx = Context()
 	code = transpile('k⁰');print(code)
 	exec(code)
@@ -4581,21 +4552,21 @@ def test_Parenthesise():
 	stack = ["xyz"]
 	expected = "(xyz)"
 	ctx = Context()
-	code = transpile('bø');print(code)
+	code = transpile('øb');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
 	stack = [5]
 	expected = "(5)"
 	ctx = Context()
-	code = transpile('bø');print(code)
+	code = transpile('øb');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
 	stack = [[1,2,3]]
 	expected = ["(1)","(2)","(3)"]
 	ctx = Context()
-	code = transpile('bø');print(code)
+	code = transpile('øb');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
@@ -4745,7 +4716,76 @@ def test_CustomPadRight():
 	assert simplify(stack[-1]) == expected
 
 
-def test_FlipBracketsVerticalPalindromise():
+def test_RingTranslate():
+	stack = ["aba","ba"]
+	expected = "bab"
+	ctx = Context()
+	code = transpile('øĿ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["hello", "lo"]
+	expected = "heool"
+	ctx = Context()
+	code = transpile('øĿ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["hello, world", "aeiou"]
+	expected = "hillu, wurld"
+	ctx = Context()
+	code = transpile('øĿ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_IsVowel():
+	stack = ["a"]
+	expected = 1
+	ctx = Context()
+	code = transpile('øv');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["y"]
+	expected = 0
+	ctx = Context()
+	code = transpile('øv');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["hi"]
+	expected = [0,1]
+	ctx = Context()
+	code = transpile('øv');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_IsUppercase():
+	stack = ["A"]
+	expected = 1
+	ctx = Context()
+	code = transpile('øċ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["a"]
+	expected = 0
+	ctx = Context()
+	code = transpile('øċ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["Hi"]
+	expected = [1,0]
+	ctx = Context()
+	code = transpile('øċ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_FlipBracketsPalindromise():
 	stack = ["(x"]
 	expected = "(x)"
 	ctx = Context()
@@ -4931,6 +4971,22 @@ def test_Regexreplace():
 	expected = "HelloEEWorldE"
 	ctx = Context()
 	code = transpile('øṙ');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+
+def test_Palindromise():
+	stack = [[1,2,3]]
+	expected = [1,2,3,2,1]
+	ctx = Context()
+	code = transpile('øm');print(code)
+	exec(code)
+	assert simplify(stack[-1]) == expected
+
+	stack = ["hello"]
+	expected = "hellolleh"
+	ctx = Context()
+	code = transpile('øm');print(code)
 	exec(code)
 	assert simplify(stack[-1]) == expected
 
