@@ -915,6 +915,26 @@ def integer_divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(integer_divide, lhs, rhs, ctx=ctx))()
 
 
+def integer_parts_or_join_spaces(lhs, ctx):
+    """Element Ṅ
+    (num) -> Integer partitions of a. [] if 0, all negative if n < 0
+    (any) -> Join on spaces"""
+
+    if vy_type(lhs) == NUMBER_TYPE:
+        if lhs == 0:
+            return []
+        sign = -1 if lhs < 0 else 1
+
+        def helper(n, min):
+            for i in range(min, n // 2 + 1):
+                for part in helper(n - i, i):
+                    yield part + [i * sign]
+            yield [n * sign]
+
+        return helper(abs(lhs), 1)
+    return join(lhs, " ", ctx)
+
+
 def interleave(lhs, rhs, ctx):
     """Element Y
     (any, any) -> interleave a and b
@@ -2651,6 +2671,7 @@ elements: dict[str, tuple[str, int]] = {
     "İ": process_element(index_indices_or_cycle, 2),
     "Ŀ": process_element(transliterate, 3),
     "Ṁ": process_element(insert_or_map_nth, 3),
+    "Ṅ": process_element(integer_parts_or_join_spaces, 1),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),

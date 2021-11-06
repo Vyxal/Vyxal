@@ -3181,7 +3181,7 @@ def test_Insert():
 
 def test_Integerpartitions():
 	stack = [5]
-	expected = [[5],[1,4],[1,1,3],[1,1,1,2],[1,1,1,1,1],[1,2,2],[2,3]]
+	expected = [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]
 	ctx = Context()
 	code = transpile('Ṅ');print(code)
 	exec(code)

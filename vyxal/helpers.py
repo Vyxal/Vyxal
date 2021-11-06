@@ -10,7 +10,7 @@ import inspect
 import itertools
 import textwrap
 import types
-from typing import Any, List, Union
+from typing import Any, Generator, List, Union
 
 import sympy
 
