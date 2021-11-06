@@ -279,7 +279,7 @@
     - "[3] : [1,2,3]"
 
 - element: "ɽ"
-  name: Exclusive One Range
+  name: Exclusive One Range / Lowercase
   description: Exclusive range or lowercase
   arity: 1
   overloads:
@@ -287,7 +287,7 @@
     str: a.lowercase()
   vectorise: true
   tests:
-    - '["1AbC"] : "1abc"'
+    - '["1aBC"] : "1abc"'
     - "[[0]] : [[]]"
     - "[3] : [1,2]"
 
@@ -319,10 +319,11 @@
     any: palindromised a
   vectorise: false
   tests:
-    - "[1,2,3] : [1,2,3,2,1]"
-    - "[1,2,3,4] : [1,2,3,4,3,2,1]"
-    - "[1,2,3,4,5] : [1,2,3,4,5,4,3,2,1]"
-    - "[1,2,3,4,5,6] : [1,2,3,4,5,6,5,4,3,2,1]"
+    - "[[1,2,3]] : [1,2,3,2,1]"
+    - "[[1,2,3,4]] : [1,2,3,4,3,2,1]"
+    - "[[1,2,3,4,5]] : [1,2,3,4,5,4,3,2,1]"
+    - "[[1,2,3,4,5,6]] : [1,2,3,4,5,6,5,4,3,2,1]"
+    - '["hello"] : "hellolleh"'
 
 - element: "¨"
   name: Other Digraphs
@@ -424,6 +425,7 @@
     - "[4,-2] : -8"
     - '[4,"*"] : "****"'
     - '["x",5] : "xxxxx"'
+    - '["aeiou","hello"] : "hillu"'
 
 - element: "+"
   name: Addition
@@ -621,9 +623,10 @@
 
 - element: "A"
   name: All
-  description: Chck if all items in a list are truthy
+  description: Chck if all items in a list are truthy / check if a character is a vowel
   arity: 1
   overloads:
+    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
     any: all(a)
   vectorise: false
   tests:
@@ -631,8 +634,11 @@
     - "[[0,1,2]] : 0"
     - '[["",1,2]] : 0'
     - "[[]] : 1"
-    - '[""] : 1'
+    - '[""] : []'
     - "[0] : 0"
+    - '["a"] : 1'
+    - '["y"] : 0'
+    - '["hi"] : [0,1]'
 
 - element: "B"
   name: Binary To Decimal
@@ -749,17 +755,17 @@
 
 - element: "K"
   name: Factors / Substrings / Prefixes
-  description: Get either a's factors, substrings or prefixes
+  description: Get either a's factors, substrings that occur more than once, or prefixes
   arity: 1
   overloads:
     num: divisors(a) (factors)
-    str: substrings(a) (substrings)
+    str: All substrings of a that occur more than once in a
     lst: prefixes(a) (prefixes)
   vectorise: false
   tests:
     - "[20] : [1,2,4,5,10,20]"
     - "[1] : [1]"
-    - '["abcdbcd"] : {"b","c","d","bc","cd","bcd"}'
+    - '["adbcdbcd"] : {"b","c","d","bc","cd","bcd","db","dbc"}'
     - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
 
 - element: "L"
@@ -955,15 +961,20 @@
 
 - element: "a"
   name: Any
-  description: Check if any items of a list are truthy
+  description: Check if any items of a list are truthy / Check if a character is an uppercase letter
   arity: 1
   overloads:
-    any: any(a) (Are any items truthy?)
+    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+    lst: any(a) (Are any items truthy?)
   vectorise: false
   tests:
     - "[[1,2,3]] : 1"
     - "[[0,0,0]] : 0"
     - "[[0,1,2]] : 1"
+    - '["A"] : 1'
+    - '["a"] : 0'
+    - '["Hi"] : [1,0]'
+
 
 - element: "b"
   name: Binary
@@ -1647,6 +1658,7 @@
   arity: "*"
   overloads:
     any-num: Repeat a b times
+    str-str: a + " " + b
     fun-any: repeat function a on b while the function results are not-unique
     any-fun: repeat function b on a while the function results are not-unique
   vectorise: false
@@ -1930,7 +1942,7 @@
     num-num: a % b == 0
     num-str: a copies of b
     str-num: b copies of a
-    str-str: len(b) copies of a
+    str-str: b + " " + a
   vectorise: true
   tests:
     - "[15, 5] : 1"
@@ -1971,7 +1983,7 @@
     - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]'
 
 - element: "Ḣ"
-  name: Tail
+  name: Head Remove / Behead
   arity: 1
   description: All but the first item of a list / Drop 1
   overloads:
@@ -2883,30 +2895,6 @@
   tests:
     - "[] : 1.618033988749895"
 
-- element: "k₂"
-  name: Square root of 2
-  arity: 0
-  description: 1.4142135623730951 (square root of 2)
-  vectorise: false
-  tests:
-    - "[] : 1.4142135623730951"
-
-- element: "k₃"
-  name: Square root of 3
-  arity: 0
-  description: 1.7320508075688772 (square root of 3)
-  vectorise: false
-  tests:
-    - "[] : 1.7320508075688772"
-
-- element: "k₅"
-  name: Square root of 5
-  arity: 0
-  description: 2.23606797749979 (square root of 5)
-  vectorise: false
-  tests:
-    - "[] : 2.23606797749979"
-
 - element: "kD"
   name: Current day in the format YYYY-MM-DD
   arity: 0
@@ -3192,15 +3180,15 @@
 - element: "k⁰"
   name: Lowercase consonants with y
   arity: 0
-  description: "bcfghjklmnpqrstvwxyz"
+  description: "bcdfghjklmnpqrstvwxyz"
   vectorise: false
   tests:
-    - '[] : "bcfghjklmnpqrstvwxyz"'
+    - '[] : "bcdfghjklmnpqrstvwxyz"'
 
 - element: "k¹"
   name: Lowercase consonants without y
   arity: 0
-  description: "bcfghjklmnpqrstvwxz"
+  description: "bcdfghjklmnpqrstvwxz"
   vectorise: false
 
 - element: "kT"
@@ -3226,12 +3214,6 @@
   vectorise: false
   tests:
     - '[] : "([{<>}])"'
-
-- element: "kg"
-  name: Phi
-  arity: 0
-  description: 1.6180339887 / (√5+1)/2 / Phi
-  vectorise: false
 
 - element: "kS"
   name: Amogus
@@ -3293,7 +3275,7 @@
 
 # DIGRAPHS
 
-- element: "øb"
+- element: "bø"
   name: Parenthesise
   arity: 1
   description: Parenthesise a string
@@ -3380,45 +3362,9 @@
     - '["123","&",8] : "123&&&&&"'
     - '["324"," ",2] : "324"'
 
-- element: "øĿ"
-  arity: 2
-  name: Ring Translate
-  description: Replace each character in a that occurs in b with the character that occurs after it in b
-  overloads:
-    any-any: In a, replace each character in b with the next character in b
-  vectorise: true
-  tests:
-    - '["aba","ba"] : "bab"'
-    - '["hello", "lo"] : "heool"'
-    - '["hello, world", "aeiou"] : "hillu, wurld"'
-
-- element: "øv"
-  name: Is Vowel
-  description: Check if a character is a vowel (aeiouAEIOU)
-  arity: 1
-  overloads:
-    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-  vectorise: true
-  tests:
-    - '["a"] : 1'
-    - '["y"] : 0'
-    - '["hi"] : [0,1]'
-
-- element: "øċ"
-  name: Is Uppercase
-  description: Check if a character is an uppercase letter
-  arity: 1
-  overloads:
-    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-  vectorise: true
-  tests:
-    - '["A"] : 1'
-    - '["a"] : 0'
-    - '["Hi"] : [1,0]'
-
 - element: "øM"
-  name: Flip Brackets Palindromise
-  description: Palindromise and reverse brackets and slashes, without duplicating center
+  name: Flip Brackets Vertical Palindromise
+  description: Vertically palindromise and reverse brackets and slashes, without duplicating center
   arity: 1
   overloads:
     any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
@@ -3540,17 +3486,6 @@
   tests:
     - '[".{3}","hello","x"] : "xlo"'
     - '["\\W","Hello, World!","E"] : "HelloEEWorldE"'
-
-- element: "øm"
-  name: Palindromise
-  description: palindromise without duplicating middle
-  arity: 1
-  overloads:
-    any: palindromise(a) (Doesn't duplicate middle)
-  vectorise: false
-  tests:
-    - "[[1,2,3]] : [1,2,3,2,1]"
-    - '["hello"] : "hellolleh"'
 
 - element: "øp"
   name: Starts With
