@@ -380,13 +380,13 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args), function, len(args), ctx)
+        ret = function(list(args)[::-1], function, len(args), ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args), function, ctx)[-1]
+        ret = function(list(args)[::-1], function, ctx)[-1]
         if len(ret):
             return ret[-1]
         else:

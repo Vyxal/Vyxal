@@ -975,7 +975,6 @@
     - '["a"] : 0'
     - '["Hi"] : [1,0]'
 
-
 - element: "b"
   name: Binary
   description: Convert a number or string to binary

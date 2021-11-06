@@ -1931,22 +1931,22 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             ),
             (SCALAR_TYPE, list, list): lambda: (
                 safe_apply(function, lhs, x, y, ctx=ctx)
-                for x, y in vy_zip(rhs, other)
+                for x, y in vy_zip(rhs, other, ctx=ctx)
             ),
             (list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
                 safe_apply(function, x, rhs, other, ctx=ctx) for x in lhs
             ),
             (list, SCALAR_TYPE, list): lambda: (
                 safe_apply(function, x, rhs, y, ctx=ctx)
-                for x, y in vy_zip(lhs, other)
+                for x, y in vy_zip(lhs, other, ctx=ctx)
             ),
             (list, list, SCALAR_TYPE): lambda: (
                 safe_apply(function, x, y, other, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
             ),
             (list, list, list): lambda: (
                 safe_apply(function, x, y, z, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
                 for z in other
             ),
         }
@@ -1954,7 +1954,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         if explicit:
             return LazyList(
                 (
-                    safe_apply(x, rhs, other, ctx=ctx)
+                    safe_apply(function, x, rhs, other, ctx=ctx)
                     for x in iterable(lhs, ctx=ctx)
                 )
             )
@@ -2772,12 +2772,13 @@ modifiers: dict[str, str] = {
     "v": (
         "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
         + "stack.append"
-        + "(vectorise(function_A, *arguments[::-1], explicit=True, ctx=ctx))\n"
+        + "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
+        + "\n"
     ),
     "~": (
         "ctx.retain_popped = True\n"
         + "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
         + "ctx.retain_popped = False\n"
-        + "stack.append(safe_apply(function_A, *arguments[::-1], ctx=ctx))\n"
+        + "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
     ),
 }
