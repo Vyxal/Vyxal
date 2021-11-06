@@ -33,18 +33,6 @@ NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
 
-def factorial_of_range(lhs, ctx):
-    """Element øF
-    (num, num) -> factorial of range
-    (num, str) -> vectorised
-    """
-    ts = vy_type(lhs)
-    return {
-        NUMBER_TYPE: lambda: math.factorial(lhs),
-        str: lambda: vectorise(factorial_of_range, lhs, ctx=ctx),
-    }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
-
-
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
 ) -> tuple[str, int]:
@@ -160,6 +148,13 @@ def assign_iterable(lhs, rhs, other, ctx):
     """
 
     lhs = iterable(lhs, ctx=ctx)
+    if type(rhs) is str:
+        rhs = chr_ord(rhs, ctx)
+
+    if vy_type(rhs, simple=True) is list:
+        for item in rhs:
+            lhs = assign_iterable(lhs, item, other, ctx)
+        return lhs
     if type(lhs) is str:
         lhs = list(lhs)
         lhs[rhs] = other
@@ -1689,7 +1684,7 @@ def square_root(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: vyxalify(sympy.sqrt(lhs)),
+        NUMBER_TYPE: lambda: sympy.sqrt(lhs),
         str: lambda: "".join(lhs[::2]),
     }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
 
@@ -2253,7 +2248,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(eval(str(lhs))),
+        (NUMBER_TYPE): lambda: str(sympy.Rational(str(float(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -2295,6 +2290,8 @@ def vy_print(lhs, end="\n", ctx=None):
         res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
         vy_print(res, ctx=ctx)
     else:
+        if ts == NUMBER_TYPE:
+            lhs = sympy.Rational(str(float(lhs)))
         if ctx.online:
             ctx.online_output += vy_str(lhs, ctx=ctx)
         else:
@@ -2317,7 +2314,7 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(lhs),
+        (NUMBER_TYPE): lambda: str(sympy.Rational(str(float(lhs)))),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -2354,12 +2351,7 @@ def vy_round(lhs, ctx):
 def vy_type(item, other=None, simple=False):
     if other is not None:
         return (vy_type(item, simple=simple), vy_type(other, simple=simple))
-    if (x := type(item)) in (
-        int,
-        sympy.Rational,
-        complex,
-        sympy.core.numbers.Half,
-    ):
+    if (x := type(item)) in (int, complex) or "sympy" in str(type(x)):
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
         return list
