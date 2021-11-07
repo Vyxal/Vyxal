@@ -2045,7 +2045,12 @@ def vectorised_not(lhs, ctx):
 
 
 def vectorised_sum(lhs, ctx):
-    return LazyList(vy_sum(x, ctx) for x in iterable(lhs, ctx=ctx))
+    """Element Ṡ
+    (any) -> the equivalent of v∑
+    """
+    return LazyList(
+        vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
+    )
 
 
 def vertical_join(lhs, rhs=" ", ctx=None):
@@ -2204,7 +2209,9 @@ def vy_gcd(lhs, rhs=None, ctx=None):
             lambda x, y: vy_gcd(x, y, ctx=ctx), iterable(lhs, ctx=ctx)
         ),
         (NUMBER_TYPE, NUMBER_TYPE): lambda: math.gcd(lhs, rhs),
-        (NUMBER_TYPE, str): lambda: vy_gcd(lhs, wrapify(chr_ord(rhs), None, ctx), ctx=ctx),
+        (NUMBER_TYPE, str): lambda: vy_gcd(
+            lhs, wrapify(chr_ord(rhs), None, ctx), ctx=ctx
+        ),
         (str, str): lambda: monadic_maximum(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx
         ),
@@ -2694,6 +2701,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ȯ": process_element("index(stack, -2, ctx)", 0),
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
+    "Ṡ": process_element(vectorised_sum, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
