@@ -1825,6 +1825,18 @@ def tail(lhs, ctx):
     )
 
 
+def tail_remove(lhs, ctx):
+    """Element Ṫ
+    (any) -> a[:-1] (All but the last item)
+    """
+
+    temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
+    if all(isinstance(x, int) for x in temp):
+        return int("".join(str(x) for x in temp))
+    else:
+        return temp
+
+
 def to_base(lhs, rhs, ctx):
     """Element τ
     Convert lhs from base 10 to base rhs
@@ -2702,6 +2714,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
+    "Ṫ": process_element(tail_remove, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
