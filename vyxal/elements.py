@@ -4,27 +4,27 @@
 the python equivalent of command is stored
 """
 
-from vyxal.LazyList import LazyList, lazylist, vyxalify
-from vyxal.helpers import *
-from vyxal.encoding import (
-    codepage_number_compress,
-    codepage_string_compress,
-    codepage,
-)
-from vyxal.context import DEFAULT_CTX, Context
-
-import sympy
-import numpy
-
 import itertools
 import math
 import random
 import re
 import string
 import types
+from datetime import datetime
 from functools import reduce
 from typing import Union
-from datetime import datetime
+
+import numpy
+import sympy
+
+from vyxal.context import DEFAULT_CTX, Context
+from vyxal.encoding import (
+    codepage,
+    codepage_number_compress,
+    codepage_string_compress,
+)
+from vyxal.helpers import *
+from vyxal.LazyList import LazyList, lazylist, vyxalify
 
 currentdate = datetime.now()
 
@@ -220,6 +220,19 @@ def brackets_balanced(lhs):
             if not stack or stack.pop() != char:
                 return 0
     return int(len(stack) == 0)
+
+
+def cartesian_product(lhs, rhs, ctx):
+    """Element Ẋ
+    (any, any) -> cartesian product of lhs and rhs
+    """
+    return LazyList(
+        left + right
+        if isinstance(left, str) and isinstance(right, str)
+        else [left, right]
+        for left in iterable(lhs, range, ctx=ctx)
+        for right in iterable(rhs, range, ctx=ctx)
+    )
 
 
 def center(lhs, ctx):
@@ -520,7 +533,6 @@ def factorial_of_range(lhs, ctx):
         NUMBER_TYPE: lambda: math.factorial(lhs),
         str: lambda: vectorise(factorial_of_range, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
-
 
 
 def find(lhs, rhs, ctx):
@@ -1724,6 +1736,30 @@ def split_on(lhs, rhs, ctx):
         return ret
 
 
+def split_keep(lhs, rhs, ctx):
+    """Element Ẇ
+    (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+    """
+
+    if isinstance(lhs, str):
+        return re.split(f"({re.escape(lhs)})", vy_str(rhs))
+    else:
+        lhs = iterable(lhs, ctx)
+
+        def gen():
+            temp = []
+            for item in lhs:
+                if item == rhs:
+                    yield temp[::]
+                    temp = [item]
+                else:
+                    temp.append(item)
+            if temp:
+                yield temp
+
+        return LazyList(gen())
+
+
 def square_root(lhs, ctx):
     """Element √
     (num) -> sqrt(a)
@@ -2728,6 +2764,8 @@ elements: dict[str, tuple[str, int]] = {
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
     "Ṫ": process_element(tail_remove, 1),
+    "Ẇ": process_element(split_keep, 2),
+    "Ẋ": process_element(cartesian_product, 2),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
@@ -2747,6 +2785,7 @@ elements: dict[str, tuple[str, int]] = {
     "øp": process_element(starts_with, 2),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
+    "øF": process_element(factorial_of_range, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("math.e", 0),
     "kf": process_element('"Fizz"', 0),
