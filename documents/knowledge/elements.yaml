@@ -2084,13 +2084,13 @@
     - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ṡ"
-  name: Sum of stack
+  name: Vectorised sums
   description: Reduce stack by addition (That's literally what it does, so it can vectorise)
   arity: 0
   tests:
-    - "[[1,2,3],[4,5,6]] : [5,7,9]"
-    - "[3,4,5] : 12"
-    - '["hi","bye"] : "hibye"'
+    - "[[[1,2,3],[4,5,6]]] : [6, 15]"
+    - "[[3,4,5]] : [3, 4, 5]"
+    - '[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]'
 
 - element: "Ṫ"
   name: Tail Remove

@@ -314,7 +314,6 @@ def mold(
 def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
-
     popped_items = []
     for _ in range(count):
         if iterable:
@@ -610,9 +609,16 @@ def wrap(vector: Union[str, list], width: int) -> List[Any]:
     return ret
 
 
-def wrapify(item: Any) -> List[Any]:
+def wrapify(item: Any, count: int = None, ctx: Context = None) -> List[Any]:
     """Leaves lists as lists, wraps scalars into a list"""
-    if primitive_type(item) == SCALAR_TYPE:
-        return [item]
+    if count is not None:
+        temp = pop(item, count, ctx)
+        if count == 1:
+            return [temp]
+        else:
+            return temp
     else:
-        return item
+        if primitive_type(item) == SCALAR_TYPE:
+            return [item]
+        else:
+            return item

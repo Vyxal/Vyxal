@@ -2044,6 +2044,10 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+def vectorised_sum(lhs, ctx):
+    return LazyList(vy_sum(x, ctx) for x in iterable(lhs, ctx=ctx))
+
+
 def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
@@ -2099,7 +2103,7 @@ def vy_bin(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
         (str): lambda: vectorise(
-            vy_bin, wrapify(chr_ord(lhs, ctx=ctx)), ctx=ctx
+            vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx), ctx=ctx
         ),
     }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
 
@@ -2200,7 +2204,7 @@ def vy_gcd(lhs, rhs=None, ctx=None):
             lambda x, y: vy_gcd(x, y, ctx=ctx), iterable(lhs, ctx=ctx)
         ),
         (NUMBER_TYPE, NUMBER_TYPE): lambda: math.gcd(lhs, rhs),
-        (NUMBER_TYPE, str): lambda: vy_gcd(lhs, wrapify(chr_ord(rhs)), ctx=ctx),
+        (NUMBER_TYPE, str): lambda: vy_gcd(lhs, wrapify(chr_ord(rhs), None, ctx), ctx=ctx),
         (str, str): lambda: monadic_maximum(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx
         ),
@@ -2570,7 +2574,7 @@ elements: dict[str, tuple[str, int]] = {
     "T": process_element(truthy_indicies, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
-    "W": ("print(stack); stack = [stack]; print(stack)", 0),
+    "W": ("stack = [stack];", 0),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
@@ -2800,14 +2804,14 @@ elements: dict[str, tuple[str, int]] = {
 }
 modifiers: dict[str, str] = {
     "v": (
-        "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
+        "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
         + "stack.append"
         + "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
         + "\n"
     ),
     "~": (
         "ctx.retain_popped = True\n"
-        + "arguments = wrapify(pop(stack, function_A.arity, ctx=ctx))\n"
+        + "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
         + "ctx.retain_popped = False\n"
         + "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
     ),

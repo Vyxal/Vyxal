@@ -168,13 +168,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             if parameter.isnumeric():
                 parameter_total += int(parameter)
                 function_parameters += (
-                    f"parameters += wrapify(pop(arg_stack, {int(parameter)}"
-                    + ", ctx))\n"
+                    f"parameters += wrapify(arg_stack, {int(parameter)}"
+                    + ", ctx)\n"
                 )
             elif parameter == "*":
                 function_parameters += (
                     "parameters += "
-                    + "wrapify(pop(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx))"
+                    + "wrapify(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx)"
                     + "\n"
                 )
             else:
@@ -217,18 +217,19 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent,
             )
             + indent_str(
-                "if arity != -1: stack = wrapify(pop(arg_stack, arity, ctx))",
+                "if arity != -1: stack = wrapify(arg_stack, arity, "
+                + "ctx=ctx)",
                 indent + 1,
             )
             + indent_str(
                 "elif 'stored_arity' in dir(self): "
-                + "stack = wrapify(pop(arg_stack, self.stored_arity, ctx))",
+                + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
                 indent + 1,
             )
             + indent_str(
-                "else: stack = wrapify(pop(arg_stack, "
+                "else: stack = wrapify(arg_stack, "
                 + f"{struct.branches[0]}"
-                + ", ctx))",
+                + ", ctx)",
                 indent + 1,
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
