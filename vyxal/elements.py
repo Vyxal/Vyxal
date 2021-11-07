@@ -510,6 +510,19 @@ def factorial(lhs, ctx):
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
 
 
+def factorial_of_range(lhs, ctx):
+    """Element øF
+    (num, num) -> factorial of range
+    (num, str) -> vectorised
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: math.factorial(lhs),
+        str: lambda: vectorise(factorial_of_range, lhs, ctx=ctx),
+    }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
+
+
+
 def find(lhs, rhs, ctx):
     """Element ḟ
     (any, any) -> a.find(b)
