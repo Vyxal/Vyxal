@@ -1439,6 +1439,21 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+def permutations(lhs, ctx):
+    """Element Ṗ
+    (any) -> Permutations of a
+    """
+
+    return LazyList(
+        map(
+            lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
+            itertools.permutations(
+                iterable(lhs, number_type=range, ctx=ctx), len(lhs)
+            ),
+        )
+    )
+
+
 def pluralise_count(lhs, rhs, ctx):
     """Element øP
     (str, num) -> count lhs lots of rhs
@@ -2672,6 +2687,8 @@ elements: dict[str, tuple[str, int]] = {
     "Ŀ": process_element(transliterate, 3),
     "Ṁ": process_element(insert_or_map_nth, 3),
     "Ṅ": process_element(integer_parts_or_join_spaces, 1),
+    "Ȯ": process_element("index(stack, -2, ctx)", 0),
+    "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
