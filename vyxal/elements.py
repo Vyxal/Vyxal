@@ -1369,8 +1369,12 @@ def one_slice(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (ts[0], NUMBER_TYPE): lambda: index(iterable(lhs, ctx=ctx), [1, rhs], ctx),
-        (NUMBER_TYPE, ts[1]): lambda: index(iterable(rhs, ctx=ctx), [1, lhs], ctx),
+        (ts[0], NUMBER_TYPE): lambda: index(
+            iterable(lhs, ctx=ctx), [1, rhs], ctx
+        ),
+        (NUMBER_TYPE, ts[1]): lambda: index(
+            iterable(rhs, ctx=ctx), [1, lhs], ctx
+        ),
         (str, str): lambda: vyxalify(re.match(lhs, rhs).groups()),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
@@ -2676,7 +2680,7 @@ elements: dict[str, tuple[str, int]] = {
     "T": process_element(truthy_indicies, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
-    "W": ("stack = [stack];", 0),
+    "W": ("stack = list(deep_copy(stack))", 0),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
@@ -2914,14 +2918,29 @@ elements: dict[str, tuple[str, int]] = {
 modifiers: dict[str, str] = {
     "v": (
         "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
-        + "stack.append"
-        + "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
-        + "\n"
+        "stack.append"
+        "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
+        "\n"
     ),
     "~": (
         "ctx.retain_popped = True\n"
-        + "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
-        + "ctx.retain_popped = False\n"
-        + "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
+        "ctx.retain_popped = False\n"
+        "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+    ),
+    "₌": (
+        "stack_copy = list(deep_copy(stack))\n"
+        "arguments_A = wrapify(stack_copy, function_A.arity, ctx=ctx)\n"
+        "arguments_B = wrapify(stack, function_B.arity, ctx=ctx)\n"
+        "stack.append(safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx))\n"
+        "stack.append(safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx))\n"
+    ),
+    "₍": (
+        "stack_copy = list(deep_copy(stack))\n"
+        "arguments_A = wrapify(stack_copy, function_A.arity, ctx=ctx)\n"
+        "arguments_B = wrapify(stack, function_B.arity, ctx=ctx)\n"
+        "res_A = safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx)\n"
+        "res_B = safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx)\n"
+        "stack.append([res_A, res_B])\n"
     ),
 }

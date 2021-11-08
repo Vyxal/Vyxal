@@ -233,9 +233,11 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
-            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
             + indent_str(
-                "ctx.inputs.append([stack[::], 0]);",
+                "ctx.context_values.append(list(deep_copy(stack)))", indent + 1
+            )
+            + indent_str(
+                "ctx.inputs.append([list(deep_copy(stack)), 0]);",
                 indent + 1,
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
@@ -260,13 +262,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         for x in struct.items:
             temp += (
                 indent_str("def list_item(s, ctx):", indent)
-                + indent_str("stack = s[::]", indent + 1)
+                + indent_str("stack = list(deep_copy(s))", indent + 1)
                 + transpile_ast(x, indent + 1)
                 + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
                 + indent_str("temp_list.append(list_item(stack, ctx))", indent)
             )
 
-        temp += indent_str("stack.append(temp_list[::])", indent)
+        temp += indent_str("stack.append(list(deep_copy(temp_list)))", indent)
         return temp
 
     if isinstance(struct, structure.MonadicModifier):
