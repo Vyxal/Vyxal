@@ -1060,6 +1060,25 @@ def is_prime(lhs, ctx):
     }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
 
 
+def is_square(lhs, ctx):
+    """Element ∆²
+    (num) -> is square number?
+    """
+    if isinstance(lhs, str) or "sympy" in str(type(lhs)):
+        return 0
+    elif isinstance(lhs, int):
+        return int(
+            any(
+                [
+                    exponent(item, 2, ctx) == lhs
+                    for item in range(1, math.ceil(lhs / 2) + 1)
+                ]
+            )
+        ) or int(lhs == 0)
+    else:
+        return vectorise(is_square, lhs, ctx=ctx)
+
+
 def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
@@ -1777,6 +1796,27 @@ def split_keep(lhs, rhs, ctx):
                 yield temp
 
         return LazyList(gen())
+
+
+def square(lhs, ctx):
+    """Element ²
+    (num) -> a ** 2 (Squared)
+    (str) -> a formatted as a square
+    """
+
+    def grid_helper(string):
+        temp = string
+        while not is_square(len(temp), ctx):
+            temp += " "
+        return wrap(
+            temp, int(square_root(len(temp), ctx)), ctx
+        )
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: exponent(lhs, 2, ctx),
+        str: lambda: grid_helper(lhs),
+    }.get(ts, lambda: vectorise(square, lhs, ctx=ctx))()
 
 
 def square_root(lhs, ctx):
@@ -2806,9 +2846,13 @@ elements: dict[str, tuple[str, int]] = {
     "Ẋ": process_element(cartesian_product, 2),
     "Ẏ": process_element(zero_slice, 2),
     "Ż": process_element(one_slice, 2),
+    "⁰": process_element("ctx.inputs[0][0][-1]", 0),
+    "¹": process_element("ctx.inputs[0][0][-2]", 0),
+    "²": process_element(square, 1),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
+    "∆²": process_element(is_square, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
