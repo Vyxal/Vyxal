@@ -2240,11 +2240,11 @@
   arity: 1
   overloads:
     num: sign_of(a) (positive = 1, 0 = 0; negative = -1)
-    str: a
+    str: is a numeric
   vectorise: true
   tests:
     - "[1] : 1"
-    - '["hi"] : "hi"'
+    - '["hi"] : 0'
     - "[-5] : -1"
     - "[0] : 0"
 

@@ -185,6 +185,77 @@ def base_255_number_compress(lhs, ctx):
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
+def bitwise_and(lhs, rhs, ctx):
+    """Element ⋏
+    (num, num) -> a & b
+    (num, str) -> b.center(a)
+    (str, num) -> a.center(b)
+    (str, str) -> a.center(len(b) - len(a))
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs & rhs,
+        (NUMBER_TYPE, str): lambda: rhs.center(lhs),
+        (str, NUMBER_TYPE): lambda: lhs.center(rhs),
+        (str, str): lambda: lhs.center(abs(len(rhs) - len(lhs))),
+    }.get(ts, lambda: vectorise(bitwise_and, lhs, rhs, ctx=ctx))()
+
+
+def bitwise_or(lhs, rhs, ctx):
+    """Element ⋎
+    (num, num) -> a | b
+    (num, str) -> b[:a]+b[a+1:]
+    (str, num) -> a[:b]+a[b+1:]
+    (str, str) -> merge_join(a,b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    if ts == (str, str):
+        suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
+        prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
+        common = suffixes & prefixes
+        if len(common) == 0:
+            return lhs + rhs
+        common = sorted(common, key=lambda x: len(x))[-1]
+        return lhs[: -len(common)] + common + rhs[len(common) :]
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs | rhs,
+        (NUMBER_TYPE, str): lambda: rhs[:lhs] + rhs[lhs + 1 :],
+        (str, NUMBER_TYPE): lambda: lhs[:rhs] + lhs[rhs + 1 :],
+    }.get(ts, lambda: vectorise(bitwise_or, lhs, rhs, ctx=ctx))()
+
+
+def bitwise_not(lhs, ctx):
+    """Element ꜝ
+    (num) -> ~a
+    (str) -> any_upper(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: ~lhs,
+        str: lambda: int(any(char.isupper() for char in lhs)),
+    }.get(ts, lambda: vectorise(bitwise_not, lhs, ctx=ctx))()
+
+
+def bitwise_xor(lhs, rhs, ctx):
+    """Element ꘍
+    (num, num) -> a ^ b
+    (num, str) -> " " * a + b
+    (str, num) -> a + " " * b
+    (str, str) -> levenshtein_distance(a,b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ^ rhs,
+        (NUMBER_TYPE, str): lambda: " " * lhs + rhs,
+        (str, NUMBER_TYPE): lambda: lhs + " " * rhs,
+        (str, str): lambda: levenshtein_distance(lhs, rhs),
+    }.get(ts, lambda: vectorise(bitwise_xor, lhs, rhs, ctx=ctx))()
+
+
 def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
@@ -1110,6 +1181,23 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+def left_bit_shift(lhs, rhs, ctx):
+    """Element ↲
+    (num, num) -> a >> b
+    (num, str) -> a.ljust(b)
+    (str, num) -> b.ljust(a)
+    (str, str) -> a.ljust(len(b)-len(a))
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs >> rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs).ljust(rhs),
+        (str, NUMBER_TYPE): lambda: str(rhs).ljust(lhs),
+        (str, str): lambda: str(lhs).ljust(abs(len(rhs) - len(lhs))),
+    }.get(ts, vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
+
+
 def length(lhs, ctx):
     """Element L
     (any) -> len(a)
@@ -1685,6 +1773,23 @@ def reverse(lhs, ctx):
     }.get(ts)()
 
 
+def right_bit_shift(lhs, rhs, ctx):
+    """Element ↳
+    (num, num) -> a << b
+    (num, str) -> a.rjust(b)
+    (str, num) -> b.rjust(a)
+    (str, str) -> a.rjust(len(b)-len(a))
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        NUMBER_TYPE: lambda: int(lhs) >> int(rhs),
+        str: lambda: str(lhs).rjust(int(rhs), " "),
+        str: lambda: str(rhs).rjust(int(lhs), " "),
+        str: lambda: str(lhs).rjust(abs(len(str(rhs)) - len(str(lhs))), " "),
+    }.get(ts)()
+
+
 # Written by copilot. Looks like it works.
 def run_length_encoding(lhs, ctx):
     """Element øe
@@ -1703,6 +1808,19 @@ def run_length_decoding(lhs, ctx):
     (lst) -> Run length decoding
     """
     return map(lhs, lambda elem: elem[0] * elem[1])
+
+
+def sign_of(lhs, ctx):
+    """
+    (num) -> sign_of(a) (positive = 1, 0 = 0; negative = -1)
+    (str) -> is a numeric
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.sign(lhs),
+        str: lambda: int(lhs.isnumeric()),
+    }.get(ts, lambda: vectorise(sign_of, lhs, ctx=ctx))()
 
 
 def slice_from(lhs, rhs, ctx):
@@ -2880,8 +2998,27 @@ elements: dict[str, tuple[str, int]] = {
     "⌈": process_element(vy_ceil, 1),
     "⌊": process_element(vy_floor, 1),
     "¯": process_element(deltas, 1),
+    "±": process_element(sign_of, 1),
+    "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
+    "…": (
+        "top = pop(stack, 1, ctx); "
+        "vy_print(top, end='', ctx=ctx); stack.append(top)",
+        1,
+    ),
+    "□": process_element("ctx.inputs[0][0]", 0),
+    "↳": process_element(right_bit_shift, 2),
+    "↲": process_element(left_bit_shift, 2),
+    "⋏": process_element(bitwise_and, 2),
+    "⋎": process_element(bitwise_or, 2),
+    "꘍": process_element(bitwise_xor, 2),
+    "ꜝ": process_element(bitwise_not, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
+    "¼": process_element("ctx.global_array.pop()", 0),
+    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
+    "¾": process_element("list(deep_copy(ctx.global_array))", 0),
+    "„": ("stack = stack[1:] + stack[0]", 0),
+    "‟": ("stack = stack[-1] + stack[:-1]", 0),
     "∆²": process_element(is_square, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
@@ -2988,11 +3125,6 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
-    "¼": process_element('ctx.global_array.pop()',0),
-    "⅛": ('lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)',1),
-    "¾": process_element('ctx.global_array[::]'),
-    "„": ('stack = stack[1:] + stack[0]',0),
-    "„": ('stack = stack[-1] + stack[:-1]',0),
 }
 modifiers: dict[str, str] = {
     "v": (
