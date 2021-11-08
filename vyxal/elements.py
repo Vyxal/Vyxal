@@ -1808,9 +1808,7 @@ def square(lhs, ctx):
         temp = string
         while not is_square(len(temp), ctx):
             temp += " "
-        return wrap(
-            temp, int(square_root(len(temp), ctx)), ctx
-        )
+        return wrap(temp, int(square_root(len(temp), ctx)), ctx)
 
     ts = vy_type(lhs)
     return {
@@ -2317,6 +2315,21 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     elif ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
     return LazyList([elem for elem in lhs if elem not in rhs])
+
+
+def vy_floor(lhs, ctx):
+    """Element ⌊
+    (num) -> floor(a)
+    (str) -> integer part of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: math.floor(lhs),
+        (str): lambda: int(
+            "".join([char for char in lhs if char in "0123456789"])
+        ),
+    }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
 
 
 def vy_gcd(lhs, rhs=None, ctx=None):
@@ -2849,7 +2862,14 @@ elements: dict[str, tuple[str, int]] = {
     "⁰": process_element("ctx.inputs[0][0][-1]", 0),
     "¹": process_element("ctx.inputs[0][0][-2]", 0),
     "²": process_element(square, 1),
+    "∇": (
+        "third, second, first = pop(stack, 3, ctx); "
+        "stack.append(third); stack.append(first); "
+        "stack.append(second)",
+        3,
+    ),
     "⌈": process_element(vy_ceil, 1),
+    "⌊": process_element(vy_floor, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
     "∆²": process_element(is_square, 1),
