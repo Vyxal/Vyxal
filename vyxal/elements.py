@@ -47,7 +47,6 @@ def process_element(
         arguments = ["third", "rhs", "lhs"][-arity:]
     else:
         arguments = "_"
-
     if isinstance(expr, types.FunctionType):
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
@@ -2989,6 +2988,11 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
+    "¼": process_element('ctx.global_array.pop()',0),
+    "⅛": ('lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)',1),
+    "¾": process_element('ctx.global_array[::]'),
+    "„": ('stack = stack[1:] + stack[0]',0),
+    "„": ('stack = stack[-1] + stack[:-1]',0),
 }
 modifiers: dict[str, str] = {
     "v": (

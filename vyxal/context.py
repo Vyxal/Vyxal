@@ -23,6 +23,7 @@ class Context:
         self.stacks = []
         self.last_popped = []
         self.use_top_input = False
+        self.global_array = []
 
     def copy(self):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -43,6 +44,7 @@ class Context:
         ctx.stacks = self.stacks
         ctx.last_popped = self.last_popped
         ctx.use_top_input = self.use_top_input
+        ctx.global_array = self.global_array
 
         return ctx
 
