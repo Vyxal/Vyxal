@@ -1360,6 +1360,21 @@ def non_vectorising_equals(lhs, rhs, ctx):
     }.get(ts)()
 
 
+def one_slice(lhs, rhs, ctx):
+    """Element Ż
+    (any, num) -> a[1:b] (Slice from 1 until b)
+    (num, any) -> b[1:a] (Slice from 1 until a)
+    (str, str) -> re.match(pattern=a,string=b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], NUMBER_TYPE): lambda: index(iterable(lhs, ctx=ctx), [1, rhs], ctx),
+        (NUMBER_TYPE, ts[1]): lambda: index(iterable(rhs, ctx=ctx), [1, lhs], ctx),
+        (str, str): lambda: vyxalify(re.match(lhs, rhs).groups()),
+    }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
+
+
 def orderless_range(lhs, rhs, ctx):
     """Element r
     (num, num) -> range(a,b) (Range form a to b)
@@ -2553,6 +2568,25 @@ def wrap(lhs, rhs, ctx):
             return ret
 
 
+def zero_slice(lhs, rhs, ctx):
+    """Element Ẏ
+    (any, num) -> a[0:b]
+    (num, any) -> b[0:a]
+    (str, str) -> regex.findall(pattern=a,string=b) (Find all matches for a regex)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (ts[0], NUMBER_TYPE): lambda: index(
+            iterable(lhs, ctx=ctx), [0, rhs], ctx=ctx
+        ),
+        (NUMBER_TYPE, ts[1]): lambda: index(
+            iterable(rhs, ctx=ctx), [0, lhs], ctx=ctx
+        ),
+        (str, str): lambda: re.findall(lhs, rhs),
+    }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
     "∧": process_element("lhs and rhs", 2),
@@ -2766,6 +2800,8 @@ elements: dict[str, tuple[str, int]] = {
     "Ṫ": process_element(tail_remove, 1),
     "Ẇ": process_element(split_keep, 2),
     "Ẋ": process_element(cartesian_product, 2),
+    "Ẏ": process_element(zero_slice, 2),
+    "Ż": process_element(one_slice, 2),
     "⌈": process_element(vy_ceil, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),

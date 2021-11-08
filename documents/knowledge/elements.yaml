@@ -2090,7 +2090,7 @@
   tests:
     - "[[[1,2,3],[4,5,6]]] : [6, 15]"
     - "[[3,4,5]] : [3, 4, 5]"
-    - '[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]'
+    - "[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]"
 
 - element: "Ṫ"
   name: Tail Remove
@@ -2132,8 +2132,9 @@
   arity: 2
   overloads:
     any-num: a[0:b] (Slice until b)
-    any-any: regex.findall(pattern=a,string=b) (Find all matches for a regex)
-  vectorise: false
+    num-any: b[0:a] (Slice until a)
+    str-str: regex.findall(pattern=a,string=b) (Find all matches for a regex)
+  vectorise: true
   tests:
     - '["abc",1] : "a"'
     - "[[1,2,3],2] : [1,2]"
@@ -2144,8 +2145,9 @@
   arity: 2
   overloads:
     any-num: a[1:b] (Slice from 1 until b)
-    any-any: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
-  vectorise: false
+    num-any: b[1:a] (Slice from 1 until a)
+    str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+  vectorise: true
   tests:
     - '["abc",2] : "b"'
     - "[[1,2,3],3] : [2,3]"
