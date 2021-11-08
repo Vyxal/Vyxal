@@ -383,6 +383,16 @@ def deep_flatten(lhs, ctx):
     return ret
 
 
+def deltas(lhs, ctx):
+    """Element ¯
+    (any) -> deltas of a
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    return LazyList(
+        subtract(lhs[i + 1], lhs[i], ctx=ctx) for i in range(len(lhs) - 1)
+    )
+
+
 def divide(lhs, rhs, ctx):
     """Element /
     (num, num) -> a / b
@@ -2733,7 +2743,7 @@ elements: dict[str, tuple[str, int]] = {
     "T": process_element(truthy_indicies, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
-    "W": ("stack = list(deep_copy(stack))", 0),
+    "W": ("stack = [list(deep_copy(stack))]", 0),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
@@ -2870,6 +2880,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "⌈": process_element(vy_ceil, 1),
     "⌊": process_element(vy_floor, 1),
+    "¯": process_element(deltas, 1),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
     "∆²": process_element(is_square, 1),
