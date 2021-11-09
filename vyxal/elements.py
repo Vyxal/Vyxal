@@ -492,7 +492,9 @@ def divide(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(sympy.Rational(lhs, rhs)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(
+            sympy.nsimplify(lhs / rhs)
+        ),
         (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs, ctx),
         (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
         (str, str): lambda: lhs.split(rhs),
@@ -724,11 +726,12 @@ def from_base(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
-        return from_base([rhs.find(x) + 1 for x in lhs], len(rhs), ctx)
+        return from_base_alphabet(lhs, rhs)
     elif ts[-1] == NUMBER_TYPE:
         lhs = [chr(x) if type(x) is str else x for x in iterable(lhs)]
-        exponents = list(exponent(rhs, list(range(0, len(lhs))), ctx))[::-1]
-        return sum(multiply(lhs, exponents, ctx))
+        return from_base_digits(lhs, rhs)
+    else:
+        raise ValueError("from_base: invalid types")
 
 
 def gen_from_fn(lhs, rhs, ctx):
@@ -1469,15 +1472,15 @@ def modulo(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
 
 
-def modulo_3(lhs,ctx):
+def modulo_3(lhs, ctx):
     """Element ǒ
     (num) -> a % 3
     (str) -> a split into chunks of size 2
     """
     return {
         (NUMBER_TYPE): lambda: lhs % 3,
-        (str): lambda: [lhs[i:i+2] for i in range(0, len(lhs), 2)],
-    }.get(vy_type(lhs),lambda: vectorise(modulo_3,lhs,ctx=ctx))()
+        (str): lambda: [lhs[i : i + 2] for i in range(0, len(lhs), 2)],
+    }.get(vy_type(lhs), lambda: vectorise(modulo_3, lhs, ctx=ctx))()
 
 
 def monadic_maximum(lhs, ctx):
@@ -1504,23 +1507,22 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=less_than, ctx=ctx)
 
 
-def multiplicity(lhs,rhs,ctx):
+def multiplicity(lhs, rhs, ctx):
     """Element Ǒ
     (num, num) -> number of times a divides b
     (str, str) -> Remove a from b until b does not change
     """
-    ts = vy_type(lhs,rhs, simple=True)
-    if ts == (NUMBER_TYPE,NUMBER_TYPE):
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts == (NUMBER_TYPE, NUMBER_TYPE):
         count = 0
-        while(lhs % rhs == 0):
+        while lhs % rhs == 0:
             lhs /= rhs
             count += 1
         return count
-    elif ts == (str,str):
-        return remove_until_no_change(lhs,rhs,ctx)
+    elif ts == (str, str):
+        return remove_until_no_change(lhs, rhs, ctx)
     else:
         return vectorise(multiplicity, lhs, rhs, ctx=ctx)
-
 
 
 def multiply(lhs, rhs, ctx):
@@ -1831,6 +1833,7 @@ def product(lhs, ctx):
     """Element Π
     (lst) -> product(list)"""
     return vy_reduce(multiply, lhs, ctx=ctx)
+
 
 def quotify(lhs, ctx):
     """Element q
@@ -2757,7 +2760,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.Rational(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(sympy.nsimpify(str(float(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -2800,7 +2803,7 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if ts == NUMBER_TYPE:
-            lhs = sympy.Rational(str(float(lhs)))
+            lhs = sympy.nsimplify(str(float(lhs)))
         if ctx.online:
             ctx.online_output += vy_str(lhs, ctx=ctx)
         else:
@@ -2823,7 +2826,7 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.Rational(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -3240,7 +3243,7 @@ elements: dict[str, tuple[str, int]] = {
     "Ǐ": process_element(prime_factorisation, 1),
     "ǐ": process_element(prime_factors, 1),
     "Ǒ": process_element(multiplicity, 2),
-    "ǒ": process_element(modulo_3,1),
+    "ǒ": process_element(modulo_3, 1),
     "Ǔ": (
         "lhs, rhs = pop(stack, 2, ctx); "
         "if vy_type(rhs) is NUMBER_TYPE: \n"

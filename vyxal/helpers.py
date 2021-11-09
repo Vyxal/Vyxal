@@ -168,18 +168,20 @@ def get_input(ctx: Context) -> Any:
             ctx.inputs[0][1] += 1
             return ret
         else:
-            try:
-                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-                return temp
-            except:
-                return 0
+            temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+            if temp == "":
+                temp = 0
+            return temp
     else:
         if ctx.inputs[-1][0]:
             ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
             ctx.inputs[-1][1] += 1
             return ret
         else:
-            return 0
+            ctx.use_top_input = True
+            temp = get_input(ctx)
+            ctx.use_top_input = False
+            return temp
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
@@ -337,7 +339,8 @@ def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
         if iterable:
             popped_items.append(iterable.pop())
         else:
-            popped_items.append(get_input(ctx))
+            temp = get_input(ctx)
+            popped_items.append(temp)
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
