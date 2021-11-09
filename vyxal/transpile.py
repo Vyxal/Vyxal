@@ -4,7 +4,7 @@
 import secrets
 from typing import Union
 
-from vyxal import elements, helpers, lexer, parse, structure
+from vyxal import elements, helpers, lexer, parse, structure, encoding
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 from vyxal.LazyList import vyxalify
@@ -40,7 +40,6 @@ def transpile(program: str) -> str:
 
 def transpile_ast(program: list[structure.Structure], indent=0) -> str:
     """Transpile a given program (as a parsed list of structures) into Python"""
-
     if not program:
         return helpers.indent_str("pass", indent)
     return "\n".join(
@@ -89,6 +88,10 @@ def transpile_token(token: Token, indent: int) -> str:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
         return indent_str(f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent)
+    elif token.name == TokenType.CODEPAGE_NUMBER:
+        return indent_str(
+            f"stack.append({encoding.codepage.find(token.value) + 101})", indent
+        )
     raise ValueError(f"Bad token: {token}")
 
 

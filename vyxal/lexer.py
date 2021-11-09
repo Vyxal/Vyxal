@@ -32,6 +32,7 @@ class TokenType(Enum):
     COMPRESSED_STRING = "compressed_string"
     VARIABLE_GET = "variable_get"
     VARIABLE_SET = "variable_set"
+    CODEPAGE_NUMBER = "codepage_number"
 
 
 class Token:
@@ -145,7 +146,12 @@ def tokenise(source_str: str) -> list[Token]:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
             else:
                 tokens.append(Token(TokenType.GENERAL, head))
+        elif head == "⁺":
+            if source:
+                tokens.append(
+                    Token(TokenType.CODEPAGE_NUMBER, source.popleft())
+                )
 
         else:
-            tokens.append(Token(TokenType.GENERAL, head))
+            tokens.append(Token(TokenType.COMPRESSED_NUMBER, head))
     return tokens

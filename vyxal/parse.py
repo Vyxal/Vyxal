@@ -229,7 +229,7 @@ def parse(
             remaining = parse(tokens)
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(structure.Lambda(1, remaining[0]))
+                structures.append(structure.Lambda(1, [remaining[0]]))
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])
