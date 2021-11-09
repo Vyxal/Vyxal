@@ -3237,7 +3237,11 @@ modifiers: dict[str, str] = {
         "stack.append([res_A, res_B])\n"
     ),
     "ƒ": (
-        "function_A.arity = 2\n"
+        "function_A.stored_arity = 2\n"
         "stack.append(vy_reduce(function_A, pop(stack, 1, ctx), ctx))"
+    ),
+    "ɖ": (
+        "function_A.stored_arity = 2\n"
+        "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
     ),
 }
