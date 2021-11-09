@@ -280,7 +280,7 @@ def boolify(lhs, ctx):
     (any) -> is truthy?
     """
 
-    if vy_type(lhs, simple):
+    if vy_type(lhs, simple=True) is list:
         return vectorise(boolify, lhs, ctx=ctx)
     else:
         return int(bool(lhs))
@@ -909,7 +909,7 @@ def head_remove(lhs, ctx):
     (num) -> Remove first digit or do nothing if <1"""
 
     if vy_type(lhs, simple=True) in (list, str):
-        return a[1:] if a else a
+        return lhs[1:] if lhs else lhs
     if lhs < 1:
         return lhs
     if isinstance(lhs, int):
@@ -1469,6 +1469,17 @@ def modulo(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
 
 
+def modulo_3(lhs,ctx):
+    """Element ǒ
+    (num) -> a % 3
+    (str) -> a split into chunks of size 2
+    """
+    return {
+        (NUMBER_TYPE): lambda: lhs % 3,
+        (str): lambda: [lhs[i:i+2] for i in range(0, len(lhs), 2)],
+    }.get(vy_type(lhs),lambda: vectorise(modulo_3,lhs,ctx=ctx))()
+
+
 def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input (deep flattens first)
@@ -1491,6 +1502,25 @@ def monadic_minimum(lhs, ctx):
         return []
     else:
         return min_by(lhs, cmp=less_than, ctx=ctx)
+
+
+def multiplicity(lhs,rhs,ctx):
+    """Element Ǒ
+    (num, num) -> number of times a divides b
+    (str, str) -> Remove a from b until b does not change
+    """
+    ts = vy_type(lhs,rhs, simple=True)
+    if ts == (NUMBER_TYPE,NUMBER_TYPE):
+        count = 0
+        while(lhs % rhs == 0):
+            lhs /= rhs
+            count += 1
+        return count
+    elif ts == (str,str):
+        return remove_until_no_change(lhs,rhs,ctx)
+    else:
+        return vectorise(multiplicity, lhs, rhs, ctx=ctx)
+
 
 
 def multiply(lhs, rhs, ctx):
@@ -1550,6 +1580,17 @@ def negate(lhs, ctx):
     return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
         ts, lambda: vectorise(negate, lhs, ctx=ctx)
     )()
+
+
+def newline_split(lhs, ctx):
+    """Element ↵
+    (num) -> 10 ** a
+    (str) -> a.split("\\n")
+    """
+    return {
+        (NUMBER_TYPE): lambda: 10 ** lhs,
+        (str): lambda: lhs.split("\n"),
+    }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
 
 def non_vectorising_equals(lhs, rhs, ctx):
@@ -1785,6 +1826,11 @@ def prepend(lhs, rhs, ctx):
         ts, lambda: [rhs] + lhs
     )()
 
+
+def product(lhs, ctx):
+    """Element Π
+    (lst) -> product(list)"""
+    return vy_reduce(multiply, lhs, ctx=ctx)
 
 def quotify(lhs, ctx):
     """Element q
@@ -3193,9 +3239,29 @@ elements: dict[str, tuple[str, int]] = {
     "ǎ": process_element(substrings, 1),
     "Ǐ": process_element(prime_factorisation, 1),
     "ǐ": process_element(prime_factors, 1),
+    "Ǒ": process_element(multiplicity, 2),
+    "ǒ": process_element(modulo_3,1),
+    "Ǔ": (
+        "lhs, rhs = pop(stack, 2, ctx); "
+        "if vy_type(rhs) is NUMBER_TYPE: \n"
+        "    return lhs[rhs:] + lhs[:rhs] \n"
+        "else:\n"
+        "    return lhs[1:] + lhs[0]",
+        2,
+    ),
+    "ǔ": (
+        "lhs, rhs = pop(stack, 2, ctx); "
+        "if vy_type(rhs) is NUMBER_TYPE: \n"
+        "    return lhs[-rhs:] + lhs[:-rhs] \n"
+        "else:\n"
+        "    return lhs[-1] + lhs[:-1]",
+        2,
+    ),
+    "↵": process_element(newline_split, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
+    "Π": process_element(product, 1),
     "„": ("stack = stack[1:] + stack[0]", 0),
     "‟": ("stack = stack[-1] + stack[:-1]", 0),
     "∆²": process_element(is_square, 1),

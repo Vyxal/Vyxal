@@ -2430,7 +2430,7 @@
 - element: "∩"
   name: Tranpose
   arity: 1
-  description: Common elements of two arrays
+  description: Transpose an array
   overloads:
     any: Transposed array
   vectorise: false
@@ -2555,7 +2555,7 @@
   description: Modulo 3 / Is string empty?
   overloads:
     num: a % 3
-    str: a == ""
+    str: a split into chunks of length 2
   vectorise: true
   tests:
     - "[45] : 0"
