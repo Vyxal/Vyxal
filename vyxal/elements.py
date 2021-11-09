@@ -753,6 +753,23 @@ def greater_than(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
 
 
+def greater_than_or_equal(lhs, rhs, ctx):
+    """Element ≥
+    (num, num) -> a ≥ b
+    (num, str) -> str(a) ≥ b
+    (str, num) -> a ≥ str(b)
+    (str, str) -> a ≥ b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs >= rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) >= rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs >= str(rhs)),
+        (str, str): lambda: int(lhs >= rhs),
+    }.get(ts, lambda: vectorise(greater_than_or_equal, lhs, rhs, ctx=ctx))()
+
+
 def group_consecutive(lhs, ctx):
     """Element Ġ
     (lst) -> Group consecutive identical items
@@ -1223,6 +1240,23 @@ def less_than(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
 
 
+def less_than_or_equal(lhs, rhs, ctx):
+    """Element ≤
+    (num, num) -> a ≤ b
+    (num, str) -> str(a) ≤ b
+    (str, num) -> a ≤ str(b)
+    (str, str) -> a ≤ b
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs <= rhs),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) <= rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
+        (str, str): lambda: int(lhs <= rhs),
+    }.get(ts, lambda: vectorise(less_than_or_equal, lhs, rhs, ctx=ctx))()
+
+
 def ljust(lhs, rhs, other, ctx):
     """Element ŀ
     (num, num, num) -> a <= c <= b
@@ -1474,6 +1508,22 @@ def non_vectorising_equals(lhs, rhs, ctx):
         (str, str): lambda: lhs == rhs,
         (list, list): lambda: lhs == rhs,
     }.get(ts)()
+
+
+def not_equals(lhs, rhs, ctx):
+    """Element ≠
+    (num, num) -> a != b
+    (str, str) -> a != b
+    (lst, lst) -> a != b
+    """
+
+    ts = vy_type(lhs, rhs, True)
+    return int(
+        {
+            (NUMBER_TYPE, str): lambda: str(lhs) != rhs,
+            (str, NUMBER_TYPE): lambda: lhs != str(rhs),
+        }.get(ts, lambda: lhs != rhs)()
+    )
 
 
 def one_slice(lhs, rhs, ctx):
@@ -3005,13 +3055,25 @@ elements: dict[str, tuple[str, int]] = {
         "vy_print(top, end='', ctx=ctx); stack.append(top)",
         1,
     ),
-    "□": process_element("ctx.inputs[0][0]", 0),
+    "□": (
+        "if ctx.inputs[0]: stack.append(ctx.inputs[0][0])\n"
+        "else:\n"
+        "    input_list, temp = [], input()\n"
+        "    while temp:\n"
+        "        input_list.append(vy_eval(temp))\n"
+        "        temp = input()",
+        0,
+    ),
     "↳": process_element(right_bit_shift, 2),
     "↲": process_element(left_bit_shift, 2),
     "⋏": process_element(bitwise_and, 2),
     "⋎": process_element(bitwise_or, 2),
     "꘍": process_element(bitwise_xor, 2),
     "ꜝ": process_element(bitwise_not, 1),
+    "℅": process_element("random.choice(iterable(lhs, ctx=ctx))", 1),
+    "≤": process_element(less_than_or_equal, 2),
+    "≥": process_element(greater_than_or_equal, 2),
+    "≠": process_element(not_equals, 2),
     "⁼": process_element(non_vectorising_equals, 2),
     "ǎ": process_element(substrings, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
