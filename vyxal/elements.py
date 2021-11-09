@@ -711,7 +711,7 @@ def function_call(lhs, ctx):
         lhs += wrapify(top(lhs, top, ctx=ctx))
         return None
     return {
-        NUMBER_TYPE: lambda: len(prime_factors(top, ctx)),
+        NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
         str: lambda: exec(lhs) or [],
         list: lambda: vectorised_not(top, ctx=ctx),
     }.get(ts)()
@@ -1746,14 +1746,33 @@ def powerset(lhs, ctx):
 
 
 def prime_factors(lhs, ctx):
+    """Element ǐ
+    (num) -> prime_factors(a) (with duplicates)
+    (str) -> title_case(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: deep_flatten(
+            [
+                [key] * value
+                for key, value in sympy.ntheory.factorint(int(lhs)).items()
+            ],
+            ctx=ctx,
+        ),
+        (str): lambda: lhs.title(),
+    }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
+
+
+def prime_factorisation(lhs, ctx):
     """Element Ǐ
-    (num) -> prime factors
+    (num) -> prime_factors(a) (no duplicates)
     (str) -> lhs + lhs[0]"""
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
-    }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(prime_factorisation, lhs, ctx=ctx))()
 
 
 def prepend(lhs, rhs, ctx):
@@ -1792,6 +1811,19 @@ def remove(lhs, rhs, ctx):
         return lhs.filter(lambda elem: elem != rhs)
     else:
         return [elem for elem in lhs if elem != rhs]
+
+
+def remove_non_alphabets(lhs, ctx):
+    """Element Ǎ
+    (str) -> filter(isalpha, a)
+    (num) -> 2 ** a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: 2 ** lhs,
+        str: lambda: "".join(filter(str.isalpha, lhs)),
+    }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
 
 def remove_until_no_change(lhs, rhs, ctx):
@@ -3157,7 +3189,10 @@ elements: dict[str, tuple[str, int]] = {
     "¥": process_element("ctx.register", 0),
     "⇧": process_element(grade_up, 1),
     "⇩": process_element(grade_down, 1),
+    "Ǎ": process_element(remove_non_alphabets, 1),
     "ǎ": process_element(substrings, 1),
+    "Ǐ": process_element(prime_factorisation, 1),
+    "ǐ": process_element(prime_factors, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),

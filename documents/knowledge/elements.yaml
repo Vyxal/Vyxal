@@ -2519,7 +2519,7 @@
   description: prime factorization / append first element
   overloads:
     num: prime_factorization(a)
-    lst: a + a[0]
+    str: a + a[0]
   vectorise: true
   tests:
     - "[45] : [3,5]"
