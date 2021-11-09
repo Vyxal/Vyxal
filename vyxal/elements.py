@@ -102,7 +102,7 @@ def all_combos(lhs, ctx):
         for combo in all_without_replacement:
             for item in combo:
                 for x in itertools.permutations(item):
-                    yield x
+                    yield vyxalify(x)
 
     return gen()
 

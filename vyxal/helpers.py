@@ -239,16 +239,14 @@ def levenshtein_distance(s1: str, s2: str) -> int:
 
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
-
-    ret = []
+    out = "" if type(haystack) is str else []
     for item in haystack:
         if item in needle:
-            ret.append(item)
-
-    if type(haystack) is str:
-        return "".join(ret)
-    else:
-        return ret
+            if type(haystack) is str:
+                out += item
+            else:
+                out.append(item)
+    return out
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
