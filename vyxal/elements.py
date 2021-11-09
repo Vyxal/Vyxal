@@ -755,6 +755,46 @@ def gen_from_fn(lhs, rhs, ctx):
     return gen()
 
 
+def grade_up(lhs, ctx):
+    """Element ⇧
+    (lst) -> graded_up(a)
+    (str) -> a.upper()
+    (num) -> a + 2
+    """
+
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: lhs + 2, (str): lambda: lhs.upper()}.get(
+        ts,
+        lambda: LazyList(
+            map(
+                lambda x: x[0],
+                sorted(enumerate(deep_copy(lhs)), key=lambda x: x[-1]),
+            ),
+        ),
+    )()
+
+
+def grade_down(lhs, ctx):
+    """Element ⇩
+    (lst) -> graded_down(a)
+    (str) -> a.lower()
+    (num) -> a - 2
+    """
+
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: lhs - 2, (str): lambda: lhs.lower()}.get(
+        ts,
+        lambda: LazyList(
+            map(
+                lambda x: x[0],
+                sorted(
+                    enumerate(deep_copy(lhs)), key=lambda x: x[-1], reverse=True
+                ),
+            ),
+        ),
+    )()
+
+
 def greater_than(lhs, rhs, ctx):
     """Element <
     (num, num) -> a > b
@@ -2113,6 +2153,14 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+def symmetric_difference(lhs, rhs, ctx):
+    """Element ⊍
+    (any, any) -> set(a) ^ set(b)
+    """
+
+    return LazyList(set(iterable(lhs, ctx=ctx)) ^ set(iterable(rhs, ctx=ctx)))
+
+
 def tail(lhs, ctx):
     """Element t
     (any) -> a[-1]
@@ -2224,6 +2272,14 @@ def uninterleave(lhs, ctx):
         index(deep_copy(lhs), [None, None, 2], ctx),
         index(lhs, [1, None, 2], ctx),
     ]
+
+
+def union(lhs, rhs, ctx):
+    """Element ∪
+    (any, any) -> union of lhs and rhs
+    """
+
+    return LazyList(set(iterable(lhs, ctx=ctx)) | set(iterable(rhs, ctx=ctx)))
 
 
 def uniquify(lhs, ctx):
@@ -3094,6 +3150,13 @@ elements: dict[str, tuple[str, int]] = {
     "≥": process_element(greater_than_or_equal, 2),
     "≠": process_element(not_equals, 2),
     "⁼": process_element(non_vectorising_equals, 2),
+    "∪": process_element(union, 2),
+    "∩": process_element(transpose, 1),
+    "⊍": process_element(symmetric_difference, 2),
+    "£": ("ctx.register = pop(stack, 1, ctx)", 1),
+    "¥": process_element("ctx.register", 0),
+    "⇧": process_element(grade_up, 1),
+    "⇩": process_element(grade_down, 1),
     "ǎ": process_element(substrings, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),

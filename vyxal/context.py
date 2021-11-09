@@ -17,6 +17,7 @@ class Context:
         self.printed = False
         self.range_start = 1  # Where do auto ranges start?
         self.range_end = 1  # How much to add to the end
+        self.register = 0
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False

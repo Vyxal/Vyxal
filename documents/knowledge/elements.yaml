@@ -1819,7 +1819,7 @@
 - element: "§"
   name: Vertical Join
   arity: 1
-  description: Tranpose (filling with spaces) and then join on newlines
+  description: Transpose (filling with spaces) and then join on newlines
   overloads:
     any: Transpose a, join on newlines
   vectorise: false
@@ -2428,14 +2428,14 @@
     - "[[1,2],[2,3,4]] : [1,2,3,4]"
 
 - element: "∩"
-  name: Set Intersection
-  arity: 2
+  name: Tranpose
+  arity: 1
   description: Common elements of two arrays
   overloads:
-    any-any: list(set(a).intersection(set(b)))
+    any: Transposed array
   vectorise: false
   tests:
-    - "[[1,2],[2,3,4]] : [2]"
+    - "[[1,2],[2,3,4]] : [[1, 2], [2, 3], [4]]"
 
 - element: "⊍"
   name: Symmetric Set difference

@@ -496,6 +496,7 @@ def transpose(
     vector: VyList, filler: Any = None, ctx: Context = None
 ) -> VyList:
     """Transposes a vector"""
+    vector = iterable(vector, ctx=ctx)
     temp = itertools.zip_longest(*map(iterable, vector), fillvalue=filler)
 
     return vyxalify((item for item in x if item is not None) for x in temp)
