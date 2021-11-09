@@ -1213,6 +1213,7 @@
   arity: 0
   tests:
     - "[] : -1"
+
 - modifier: "v"
   name: Vectorise
   description: Vectorise an element
@@ -2404,28 +2405,17 @@
   tests:
     - "[1,2] : 1"
 
-- element: "ƒ"
-  name: Fractionify
-  arity: 1
-  description: Convert number or string to 2-element array representing fraction
-  overloads:
-    num: fractionify(a)
-    str: fractionify(a)
-  vectorise: true
-  tests:
-    - "[0.5] : [1,2]"
-    - '"0.3" : [3,10]'
+- modifier: "ƒ"
+  name: Reduce by
+  description: Reduce by an element
+  arity: 2
+  usage: ƒ<element>
 
-- element: "ɖ"
-  name: Decimalify
-  arity: 1
-  description: Convert two element array to decimal / reduce by division
-  overloads:
-    lst: decimalify(a)
-  vectorise: true
-  tests:
-    - "[1,2] : 0.5"
-    - "[3,4] : 0.75"
+- modifier: "ɖ"
+  name: Scan by
+  description: Cumulatively reduce by an element
+  arity: 2
+  usage: ɖ<element>
 
 - element: "∪"
   name: Set Union

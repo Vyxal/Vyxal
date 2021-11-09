@@ -88,6 +88,25 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+def all_combos(lhs, ctx):
+    """Element Þ×
+    (any) -> all combinations without replacement of lhs (all lengths)
+    """
+
+    all_without_replacement = map(
+        lambda x: itertools.combinations(lhs, x), range(1, len(lhs) + 1)
+    )
+
+    @lazylist
+    def gen():
+        for combo in all_without_replacement:
+            for item in combo:
+                for x in itertools.permutations(item):
+                    yield x
+
+    return gen()
+
+
 def all_equal(lhs, ctx):
     """Element ≈
     (any) -> are all items in a the same?
@@ -3099,6 +3118,7 @@ elements: dict[str, tuple[str, int]] = {
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
+    "Þ×": process_element(all_combos, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("math.e", 0),
     "kf": process_element('"Fizz"', 0),
@@ -3215,5 +3235,9 @@ modifiers: dict[str, str] = {
         "res_A = safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx)\n"
         "res_B = safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx)\n"
         "stack.append([res_A, res_B])\n"
+    ),
+    "ƒ": (
+        "function_A.arity = 2\n"
+        "stack.append(vy_reduce(function_A, pop(stack, 1, ctx), ctx))"
     ),
 }
