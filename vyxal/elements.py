@@ -1856,13 +1856,13 @@ def quotify(lhs, ctx):
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
 
-def random_choice(lhs,ctx):
+def random_choice(lhs, ctx):
     """Element ℅
     (lst) -> random element of a
     (num) -> Random integer from 0 to a
     """
     if vy_type(lhs) == NUMBER_TYPE:
-        return random.randint(0,lhs)
+        return random.randint(0, lhs)
     return random.choice(iterable(lhs, ctx=ctx))
 
 
@@ -3379,9 +3379,9 @@ elements: dict[str, tuple[str, int]] = {
     "kl": process_element(
         '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
     ),
-    "ki": process_element("math.pi", 0),
+    "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
-    "kg": process_element("(1 + math.sqrt(5)) / 2", 0),
+    "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
     "kD": process_element('currenttime.strftime("%Y-%m-%d")', 0),
     "kN": process_element(
         'LazyList(eval(currenttime.strftime("[%H,%M,%S]")))', 0
