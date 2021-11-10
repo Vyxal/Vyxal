@@ -16,21 +16,19 @@ from sympy import Rational
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
 
-    if isinstance(value, sympy.core.numbers.Integer):
+    if isinstance(value, (sympy.core.numbers.Integer)):
         return int(value)
-    elif (
-        isinstance(value, int)
-        or isinstance(value, Rational)
-        or isinstance(value, str)
-        or isinstance(value, list)
-        or isinstance(value, LazyList)
-    ):
+    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
+        return vyxalify(sympy.Rational(str(float(value))))
+        # Sympy is weird okay.
+    elif isinstance(value, (int, Rational, str, list, LazyList)):
         return value
     else:
         return LazyList(map(vyxalify, value))
 
 
 def join_with(lhs, rhs):
+    """A generator to concatenate two iterables together"""
     for item in lhs:
         yield item
 
@@ -48,16 +46,10 @@ def lazylist(fn):
 
 
 def simplify(value: Any) -> Union[int, float, str, list]:
-    if (
-        isinstance(value, int)
-        or isinstance(value, float)
-        or isinstance(value, str)
-    ):
+    if isinstance(value, (int, float, str)):
         return value
-
     elif isinstance(value, Rational):
         return float(value)
-
     else:
         return list(map(simplify, value))
 
@@ -141,7 +133,6 @@ class LazyList:
     def __iter__(self):
         raw_object_clones = itertools.tee(self.raw_object)
         self.raw_object = raw_object_clones[0]
-
         return join_with(self.generated[::], raw_object_clones[1])
 
     def __len__(self):
@@ -167,6 +158,7 @@ class LazyList:
             for item in self:
                 if fn(item):
                     yield item
+
         return gen()
 
     def listify(self):
@@ -191,7 +183,7 @@ class LazyList:
             if len(self.generated) > 1:
                 vy_print("|", "", ctx)
             while True:
-                if type(lhs) is types.FunctionType:
+                if isinstance(lhs, types.FunctionType):
                     vy_print(lhs, "", ctx)
                 else:
                     vy_print(vy_repr(lhs, ctx), "", ctx)

@@ -8,19 +8,17 @@ import ast
 import collections
 import inspect
 import itertools
-import string
 import textwrap
 import types
-from typing import Any, List, Union
+from typing import Any, Generator, List, Union
 
-import numpy
 import sympy
-import vyxal.encoding
 
+import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-from vyxal.LazyList import *
 from vyxal.dictionary import *
+from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -74,6 +72,16 @@ def deep_copy(value: Any) -> Any:
         # chad unlike those virgin memory reference needing lists".
 
     return LazyList(itertools.tee(value)[-1])
+
+
+def digits(num: NUMBER_TYPE) -> List[int]:
+    """Get the digits of a (possibly Rational) number.
+    This differs from to_base_digits because it works with floats.
+    This does NOT include signs and decimal points"""
+    if type(num) is sympy.Rational:
+        num = float(num)
+
+    return [int(let) if let not in "-." else let for let in str(num)]
 
 
 @lazylist
@@ -160,29 +168,44 @@ def get_input(ctx: Context) -> Any:
             ctx.inputs[0][1] += 1
             return ret
         else:
-            try:
-                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-                return temp
-            except:
-                return 0
+            temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+            if temp == "":
+                temp = 0
+            return temp
     else:
         if ctx.inputs[-1][0]:
             ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
             ctx.inputs[-1][1] += 1
             return ret
         else:
-            return 0
+            if len(ctx.inputs) == 1:
+                ctx.use_top_input = True
+                temp = get_input(ctx)
+                ctx.use_top_input = False
+                return temp
+            else:
+                return 0
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
-
-    """Indent a multiline string with 4 spaces, with a newline (or `end`) afterwards."""
+    """Indent a multiline string with 4 spaces, with a newline or `end` afterwards."""
     return textwrap.indent(string, "    " * indent) + end
 
 
 def indent_code(*code, indent: int = 1) -> str:
     """Indent multiple lines (`*code`) by the given amount, then join on newlines."""
     return "\n".join(indent_str(line, indent, end="") for line in code) + "\n"
+
+
+def invert_brackets(lhs: str) -> str:
+    """
+    Helper function to swap brackets and parentheses in a string
+    """
+    for i in ["()", "[]", "{}", "<>", "/\\"]:
+        lhs = lhs.replace(i[0], "X")
+        lhs = lhs.replace(i[1], i[0])
+        lhs = lhs.replace("X", i[1])
+    return lhs
 
 
 def iterable(
@@ -194,26 +217,41 @@ def iterable(
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
-            if item_type is sympy.Rational:
-                item = float(item)
-
-            return [int(let) if let not in "-." else let for let in str(item)]
+            return digits(item)
     else:
         return item
 
 
+def levenshtein_distance(s1: str, s2: str) -> int:
+    """Returns the levenshtein distance between two strings"""
+    # https://stackoverflow.com/a/32558749
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2 + 1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(
+                    1 + min((distances[i1], distances[i1 + 1], distances_[-1]))
+                )
+        distances = distances_
+    return distances[-1]
+
+
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
-
-    ret = []
+    out = "" if type(haystack) is str else []
     for item in haystack:
         if item in needle:
-            ret.append(item)
-
-    if type(haystack) is str:
-        return "".join(ret)
-    else:
-        return ret
+            if type(haystack) is str:
+                out += item
+            else:
+                out.append(item)
+    return out
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
@@ -227,9 +265,15 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
     A binary function to check if its first argument is less than the second.
     """
     if key is None:
-        key = lambda x, ctx=None: x
+
+        def key(x, ctx=None):
+            return x
+
     if cmp is None:
-        cmp = lambda a, b, ctx=None: a < b
+
+        def cmp(a, b, ctx=None):
+            return a < b
+
     return foldl(
         lambda a, b, ctx=ctx: b
         if safe_apply(
@@ -255,9 +299,15 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
     A binary function to check if its first argument is less than the second.
     """
     if key is None:
-        key = lambda x, ctx=None: x
+
+        def key(x, ctx=None):
+            return x
+
     if cmp is None:
-        cmp = lambda a, b, ctx=None: a < b
+
+        def cmp(a, b, ctx=None):
+            return a < b
+
     return foldl(
         lambda a, b, ctx=ctx: a
         if cmp(key(a, ctx=ctx), key(b, ctx=ctx), ctx=ctx)
@@ -287,13 +337,13 @@ def mold(
 def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
-
     popped_items = []
     for _ in range(count):
         if iterable:
             popped_items.append(iterable.pop())
         else:
-            popped_items.append(get_input(ctx))
+            temp = get_input(ctx)
+            popped_items.append(temp)
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
@@ -307,14 +357,14 @@ def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
     return popped_items
 
 
-def primitive_type(item: type) -> Union[str, type]:
+def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
 
     if type(item) in [int, sympy.Rational, str]:
         return SCALAR_TYPE
-    else:
-        return list
+    assert type(item) in [list, LazyList]
+    return list
 
 
 def reverse_number(
@@ -324,7 +374,7 @@ def reverse_number(
 
     sign = -1 if item < 0 else 1
     rev = str(abs(item))[::-1]
-    return sympy.Rational(eval(rev) * sign)
+    return vyxalify(sympy.Rational(eval(rev) * sign))
 
 
 def ring_translate(map_source: Union[str, list], string: str) -> str:
@@ -332,24 +382,9 @@ def ring_translate(map_source: Union[str, list], string: str) -> str:
     - that is, map matching elements to the subsequent element in the
     translation ring. The ring wraps around."""
     ret = ""
-    LENGTH = len(map_source)
     for char in string:
         if char in map_source:
-            ret += map_source[(map_source.index(char) + 1) % LENGTH]
-        else:
-            ret += char
-    return ret
-
-
-def ring_translate(map_source: Union[str, list], string: str) -> str:
-    """Ring translates a given string according to the provided mapping
-    - that is, map matching elements to the subsequent element in the
-    translation ring. The ring wraps around."""
-    ret = ""
-    LENGTH = len(map_source)
-    for char in string:
-        if char in map_source:
-            ret += map_source[(map_source.index(char) + 1) % LENGTH]
+            ret += map_source[(map_source.index(char) + 1) % len(map_source)]
         else:
             ret += char
     return ret
@@ -368,13 +403,13 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args), function, len(args), ctx)
+        ret = function(list(args)[::-1], function, len(args), ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
     elif function.__name__.startswith("FN_"):
-        ret = function(list(args), function, ctx)[-1]
+        ret = function(list(args)[::-1], function, ctx)[-1]
         if len(ret):
             return ret[-1]
         else:
@@ -405,8 +440,21 @@ def scanl(
         if working is None:
             working = item
         else:
-            working = safe_apply(function, working, item, ctx=ctx)
             yield working
+            working = safe_apply(function, working, item, ctx=ctx)
+    yield working
+
+
+def sentence_case(item: str) -> str:
+    """Returns the string sentence-cased in an 05AB1E manner"""
+    ret = ""
+    capitalise = True
+    for char in item:
+        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise and char != " ":
+            capitalise = False
+        capitalise = capitalise or char in "!?."
+    return ret
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:
@@ -433,6 +481,13 @@ def to_base_digits(value: int, base: int) -> List[int]:
     return ret[::-1]
 
 
+def to_base_alphabet(value: int, alphabet: str) -> str:
+    """to_base_digit with a custom base"""
+
+    temp = to_base_digits(value, len(alphabet))
+    return "".join([alphabet[i] for i in temp])
+
+
 def transfer_capitalisation(source: str, target: str) -> str:
     """Returns target with the capitalisation of source"""
     ret = ""
@@ -454,6 +509,7 @@ def transpose(
     vector: VyList, filler: Any = None, ctx: Context = None
 ) -> VyList:
     """Transposes a vector"""
+    vector = iterable(vector, ctx=ctx)
     temp = itertools.zip_longest(*map(iterable, vector), fillvalue=filler)
 
     return vyxalify((item for item in x if item is not None) for x in temp)
@@ -585,9 +641,16 @@ def wrap(vector: Union[str, list], width: int) -> List[Any]:
     return ret
 
 
-def wrapify(item: Any) -> List[Any]:
+def wrapify(item: Any, count: int = None, ctx: Context = None) -> List[Any]:
     """Leaves lists as lists, wraps scalars into a list"""
-    if primitive_type(item) == SCALAR_TYPE:
-        return [item]
+    if count is not None:
+        temp = pop(item, count, ctx)
+        if count == 1:
+            return [temp]
+        else:
+            return temp
     else:
-        return item
+        if primitive_type(item) == SCALAR_TYPE:
+            return [item]
+        else:
+            return item

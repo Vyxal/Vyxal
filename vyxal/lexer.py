@@ -21,6 +21,7 @@ class TokenType(Enum):
 
     STRING = "string"
     NUMBER = "number"
+    CHARACTER = "character"
 
     # `general` is used to denote that a token does not have a specific type.
     # This kind of token can be anything - a digraph, a structure delimiter or
@@ -32,6 +33,7 @@ class TokenType(Enum):
     COMPRESSED_STRING = "compressed_string"
     VARIABLE_GET = "variable_get"
     VARIABLE_SET = "variable_set"
+    CODEPAGE_NUMBER = "codepage_number"
 
 
 class Token:
@@ -84,7 +86,7 @@ def tokenise(source_str: str) -> list[Token]:
                 # source variable is empty. Without checking to make
                 # sure that the source deque isn't empty, popping from
                 # an empty deque would cause an error.
-                tokens.append(Token(TokenType.STRING, source.popleft()))
+                tokens.append(Token(TokenType.CHARACTER, source.popleft()))
 
         elif head in "`»«":  # String
             # Dequeue characters until the same string character is
@@ -145,6 +147,11 @@ def tokenise(source_str: str) -> list[Token]:
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))
             else:
                 tokens.append(Token(TokenType.GENERAL, head))
+        elif head == "⁺":
+            if source:
+                tokens.append(
+                    Token(TokenType.CODEPAGE_NUMBER, source.popleft())
+                )
 
         else:
             tokens.append(Token(TokenType.GENERAL, head))

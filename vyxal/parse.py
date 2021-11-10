@@ -31,7 +31,7 @@ STRUCTURE_INFORMATION = {
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
 OPENING_CHARACTERS = "".join(STRUCTURE_INFORMATION.keys())
-MONADIC_MODIFIERS = list("v⁽&~ß")
+MONADIC_MODIFIERS = list("v⁽&~ßƒɖ")
 DYADIC_MODIFIERS = list("₌‡₍")
 TRIADIC_MODIFIERS = list("≬")
 # The modifiers are stored as lists to allow for potential digraph
@@ -229,7 +229,7 @@ def parse(
             remaining = parse(tokens)
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(structure.Lambda(1, remaining[0]))
+                structures.append(structure.Lambda(1, [remaining[0]]))
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])

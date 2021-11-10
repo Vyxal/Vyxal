@@ -4,7 +4,7 @@
 import secrets
 from typing import Union
 
-from vyxal import elements, helpers, lexer, parse, structure
+from vyxal import elements, helpers, lexer, parse, structure, encoding
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 from vyxal.LazyList import vyxalify
@@ -40,7 +40,6 @@ def transpile(program: str) -> str:
 
 def transpile_ast(program: list[structure.Structure], indent=0) -> str:
     """Transpile a given program (as a parsed list of structures) into Python"""
-
     if not program:
         return helpers.indent_str("pass", indent)
     return "\n".join(
@@ -71,7 +70,7 @@ def transpile_token(token: Token, indent: int) -> str:
     elif token.name == TokenType.NUMBER:
         if token.value.count("."):
             if token.value == ".":
-                return indent_str(f"stack.append(sympy.Rational(1, 2))", indent)
+                return indent_str("stack.append(sympy.Rational(1, 2))", indent)
             return indent_str(
                 f'stack.append(vyxalify(sympy.Rational("{token.value}")))',
                 indent,
@@ -89,6 +88,12 @@ def transpile_token(token: Token, indent: int) -> str:
         return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
         return indent_str(f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent)
+    elif token.name == TokenType.CODEPAGE_NUMBER:
+        return indent_str(
+            f"stack.append({encoding.codepage.find(token.value) + 101})", indent
+        )
+    elif token.name == TokenType.CHARACTER:
+        return indent_str(f"stack.append({token.value!r})", indent)
     raise ValueError(f"Bad token: {token}")
 
 
@@ -168,13 +173,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             if parameter.isnumeric():
                 parameter_total += int(parameter)
                 function_parameters += (
-                    f"parameters += wrapify(pop(arg_stack, {int(parameter)}"
-                    + ", ctx))\n"
+                    f"parameters += wrapify(arg_stack, {int(parameter)}"
+                    + ", ctx)\n"
                 )
             elif parameter == "*":
                 function_parameters += (
                     "parameters += "
-                    + "wrapify(pop(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx))"
+                    + "wrapify(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx)"
                     + "\n"
                 )
             else:
@@ -217,27 +222,32 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent,
             )
             + indent_str(
-                "if arity != -1: stack = wrapify(pop(arg_stack, arity, ctx))",
+                "if arity != -1: stack = wrapify(arg_stack, arity, "
+                + "ctx=ctx)",
                 indent + 1,
             )
             + indent_str(
                 "elif 'stored_arity' in dir(self): "
-                + "stack = wrapify(pop(arg_stack, self.stored_arity, ctx))",
+                + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
                 indent + 1,
             )
             + indent_str(
-                "else: stack = wrapify(pop(arg_stack, "
+                "else: stack = wrapify(arg_stack, "
                 + f"{struct.branches[0]}"
-                + ", ctx))",
+                + ", ctx)",
                 indent + 1,
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
-            + indent_str("ctx.context_values.append(stack[::])", indent + 1)
             + indent_str(
-                "ctx.inputs.append([stack[::], 0]);",
+                "ctx.context_values.append(list(deep_copy(stack)) "
+                "if len(stack) != 1 else deep_copy(stack[0]))",
                 indent + 1,
             )
-            + indent_str("ctx.stacks.append(stack)", indent + 1)
+            + indent_str(
+                "ctx.inputs.append([list(deep_copy(stack)), 0]);",
+                indent + 1,
+            )
+            + indent_str("ctx.stacks.append(stack);", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
             + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
@@ -259,13 +269,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         for x in struct.items:
             temp += (
                 indent_str("def list_item(s, ctx):", indent)
-                + indent_str("stack = s[::]", indent + 1)
+                + indent_str("stack = list(deep_copy(s))", indent + 1)
                 + transpile_ast(x, indent + 1)
                 + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
                 + indent_str("temp_list.append(list_item(stack, ctx))", indent)
             )
 
-        temp += indent_str("stack.append(temp_list[::])", indent)
+        temp += indent_str("stack.append(list(deep_copy(temp_list)))", indent)
         return temp
 
     if isinstance(struct, structure.MonadicModifier):
