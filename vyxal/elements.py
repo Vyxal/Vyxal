@@ -2621,7 +2621,7 @@ def vy_exec(lhs, ctx):
     elif vy_type(lhs) == NUMBER_TYPE:
         return [divide(1, lhs, ctx)]
     else:
-        return [vectorise(vy_exec, lhs, ctx)]
+        return [vectorise(vy_exec, lhs, ctx=ctx)]
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
@@ -3175,7 +3175,10 @@ elements: dict[str, tuple[str, int]] = {
         "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
         2,
     ),
-    "Ė": ("stack += vy_exec(pop(stack, 1, ctx), ctx)", 1),
+    "Ė": (
+        "print('stack =', stack);stack += vy_exec(pop(stack, 1, ctx), ctx)",
+        1,
+    ),
     "Ḟ": process_element(gen_from_fn, 2),
     "Ġ": process_element(group_consecutive, 1),
     "Ḣ": process_element(head_remove, 1),

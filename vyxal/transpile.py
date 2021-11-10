@@ -92,6 +92,8 @@ def transpile_token(token: Token, indent: int) -> str:
         return indent_str(
             f"stack.append({encoding.codepage.find(token.value) + 101})", indent
         )
+    elif token.name == TokenType.CHARACTER:
+        return indent_str(f"stack.append({token.value!r})", indent)
     raise ValueError(f"Bad token: {token}")
 
 
@@ -237,13 +239,15 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
             + indent_str(f"this = _lambda_{id_}", indent + 1)
             + indent_str(
-                "ctx.context_values.append(list(deep_copy(stack)))", indent + 1
+                "ctx.context_values.append(list(deep_copy(stack)) "
+                "if len(stack) != 1 else deep_copy(stack[0]))",
+                indent + 1,
             )
             + indent_str(
                 "ctx.inputs.append([list(deep_copy(stack)), 0]);",
                 indent + 1,
             )
-            + indent_str("ctx.stacks.append(stack)", indent + 1)
+            + indent_str("ctx.stacks.append(stack);", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
             + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)

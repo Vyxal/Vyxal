@@ -178,10 +178,13 @@ def get_input(ctx: Context) -> Any:
             ctx.inputs[-1][1] += 1
             return ret
         else:
-            ctx.use_top_input = True
-            temp = get_input(ctx)
-            ctx.use_top_input = False
-            return temp
+            if len(ctx.inputs) == 1:
+                ctx.use_top_input = True
+                temp = get_input(ctx)
+                ctx.use_top_input = False
+                return temp
+            else:
+                return 0
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
