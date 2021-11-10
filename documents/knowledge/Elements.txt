@@ -533,8 +533,9 @@ S (Stringify)
 -------------------------------
 T (Truthy Indices)
 
-- Get indices of truthy elements.
+- Get indices of truthy elements or triple
 
+    num a: a * 3
     any a: truthy_indices(a)
 -------------------------------
 U (Uniquify)
@@ -2012,7 +2013,199 @@ k∩ (Vowels With Y)
 - Vowels with y, "aeiouyAEIOUY"
 
 -------------------------------
-bø (Parenthesise)
+∆c (Cosine)
+
+- Get the cosine of an angle in radians
+
+    num a: math.cos(a)
+-------------------------------
+∆C (Arc Cosine)
+
+- Get the arccosine of an angle in radians
+
+    num a: math.arrcos(a)
+-------------------------------
+∆q (Quadratic Solver)
+
+- Solve a quadratic equation of the form ax^2 + bx = 0
+
+    num a, num b: x such that ax^2 + bx = 0
+-------------------------------
+∆Q (General Quadratic Solver)
+
+- Solve a quadratic equation of the form x^2 + ax + b = 0
+
+    num, num a: roots(a, b)
+-------------------------------
+∆s (Sine)
+
+- Get the sine of an angle in radians
+
+    num a: math.sin(a)
+-------------------------------
+∆S (Arc Sine)
+
+- Get the arcsine of an angle in radians
+
+    num a: math.arcsin(a)
+-------------------------------
+∆t (Tangent)
+
+- Get the tangent of an angle in radians
+
+    num a: math.tan(a)
+-------------------------------
+∆T (Arc Tangent)
+
+- Get the arctangent of an angle in radians
+
+    num a: math.arctan(a)
+-------------------------------
+∆P (Polynomial Solver)
+
+- Solve a polynomial of the form ax^2 + bx + c = 0
+
+    list a: roots(a)
+-------------------------------
+∆ƈ (n Pick r (npr))
+
+- Get the number of combinations of r items from a set of n items
+
+    num a, num b: n_pick_r(a, b)
+-------------------------------
+∆± (Copy Sign)
+
+- Copy the sign of one number to the other
+
+    num a, num b: math.copysign(a, b)
+-------------------------------
+∆K (Sum of Proper Divisors)
+
+- Get the sum of all proper divisors of a number
+
+    num a: sum_of_proper_divisors(a)
+-------------------------------
+∆² (Perfect Square?)
+
+- Is the number a perfect square? (1, 4, 9, 16, 25, 36)
+
+    num a: is_perfect_square(a)
+-------------------------------
+∆e (e raised to power a)
+
+- Get the value of e raised to the power of a
+
+    num a: e ** a
+-------------------------------
+∆E ((e raised to power a) - 1)
+
+- Get the value of e raised to the power of a minus 1
+
+    num a: (e ** a) - 1
+-------------------------------
+∆L (Natural Logarithm)
+
+- Get the natural logarithm of a number
+
+    num a: math.log(a)
+-------------------------------
+∆l (Logarithm (log_2))
+
+- Get the logarithm of a number to base 2
+
+    num a: math.log2(a)
+-------------------------------
+∆τ (Common Logarithm)
+
+- Get the common logarithm of a number
+
+    num a: math.log10(a)
+-------------------------------
+∆d (Straight Line Distance)
+
+- Get the straight line distance between two points (x1, y1) and (x2, y2)
+
+    lst a, lst b: euclidian_distance(a, b)
+-------------------------------
+∆D (Degrees to Radians)
+
+- Convert an angle from degrees to radians
+
+    num a: math.degrees(a)
+-------------------------------
+∆R (Radians to Degrees)
+
+- Convert an angle from radians to degrees
+
+    num a: math.radians(a)
+-------------------------------
+∆Ṗ (Next Prime After a Number)
+
+- Get the next prime number after a given number
+
+    num a: next_prime(a)
+-------------------------------
+∆ṗ (First Prime Before a Number)
+
+- Get the first prime number before a given number
+
+    num a: prev_prime(a)
+-------------------------------
+∆p (Nearest Prime to a Number)
+
+- Get the prime number closest to a given number
+
+    num a: nearest_prime(a)
+-------------------------------
+∆ṙ (Polynomial from Roots)
+
+- Get the polynomial with coefficients from the roots of a polynomial
+
+    list a: polynomial(a)
+-------------------------------
+∆W (Round to n Decimal Places)
+
+- Round a number to n decimal places
+
+    num, num a: round(a, no_dec_places=b)
+-------------------------------
+∆Ŀ (Least Common Multiple)
+
+- Get the least common multiple of two numbers
+
+    num, num a: lcm(a, b)
+-------------------------------
+∆Π (nth Digit of Pi)
+
+- Get the nth digit of pi
+
+    num a: nth_digit_of_pi(a)
+-------------------------------
+∆ė (nth Digit of e)
+
+- Get the nth digit of e
+
+    num a: nth_digit_of_e(a)
+-------------------------------
+∆F (nth Fibonacci Number)
+
+- Get the nth fibonacci number
+
+    num a: nth_fibonacci(a)
+-------------------------------
+∆b (Random Bits)
+
+- Get a list of random bits (0 or 1)
+
+    num a: random_bits(a)
+-------------------------------
+∆Ṙ (Random Float)
+
+- Get a random float in the range [0, 1), pseudo random number
+
+    num a: random.random()
+-------------------------------
+øb (Parenthesise)
 
 - Parenthesise a string
 
@@ -2148,9 +2341,93 @@ bø (Parenthesise)
 
     any a: vertical_mirror(a,mapping  = flip brackets and slashes)
 -------------------------------
-ø¦ (Vertical Mirror Custom Mapping)
+øṖ (String Partitions)
 
-- Vertical mirror a, using the mapping defined in b
+- All partitions of a string/list
 
-    any a, any b: vertical_mirror(a,mapping=b)
+    any a: all_partitions(a)
+-------------------------------
+Þo (Ordinals)
+
+- An infinite list of first, second, third, fourth etc
+
+-------------------------------
+Þc (Cardinals)
+
+- An infinite list of one, two, three, four etc
+
+-------------------------------
+Þp (Primes)
+
+- An infinite list of primes
+
+-------------------------------
+Þu (All Unique)
+
+- Are all elements of a list/string unique?
+
+    any a: all_unique(a)
+-------------------------------
+ÞẊ (Cartesian Power)
+
+- Cartesian power, cartesian product with self n times
+
+    any a, num b: cartesian_power(a, b)
+    num a, any b: cartesian_power(b, a)
+-------------------------------
+Þf (Flatten to depth)
+
+- Flatten a list to a certain depth (default 1)
+
+    lst a, num b: flatten a to depth b
+    any a, lst b: Flatten b to depth 1, push a as well
+-------------------------------
+ÞC (Chunks Of Specified Length)
+
+- Cut a string/list into chunks of specified sizes (stolen from osabie)
+
+    any a, lst b: Cut a into chunks of the lengths given in b
+-------------------------------
+ÞB (Random Bits)
+
+- Fill a list with random bits
+
+    num a: List of length a filled with random bits
+    any a: List of length n(a) filled with random bits
+-------------------------------
+Þ< (All Less Than Increasing)
+
+- Find all numbers less than a certain value in a (potentially infinite) list assumed to be increasing
+
+    any a, num b: All values of a up to (not including) the first greater than or equal to b
+-------------------------------
+Þǔ (Untruth)
+
+- Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
+
+    any a: [int(x in a) for x in range(len(a))]
+-------------------------------
+Þi (Multidimensional Indexing)
+
+- Index a list of coordinates into a value.
+
+    lst a, lst b: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+-------------------------------
+Þḟ (Multidimensional Search)
+
+- Find the first multidimensional index of a value in another
+
+    lst a, any b: Find the first occurrence of a in b and return as a multidimensional index
+-------------------------------
+Þm (Zero Matrix)
+
+- Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
+
+    lst a: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
+-------------------------------
+ÞZ (Fill By Coordinates)
+
+- Fill a matrix by calling a function with the lists of coordinates in the matrix.
+
+    any a, fun b: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
 -------------------------------
