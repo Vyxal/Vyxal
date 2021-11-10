@@ -2660,7 +2660,7 @@ def vy_floor(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: math.floor(lhs),
         (str): lambda: int(
-            "".join([char for char in lhs if char in "0123456789"])
+            "".join([char for char in lhs if char in "0123456789"] or "0")
         ),
     }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
 
@@ -2698,7 +2698,10 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
             ret = add(ret, element, ctx)
         return ret
     elif t_item is str:
-        return int(item, base)
+        try:
+            return int(item, base)
+        except ValueError:
+            return 0
     elif t_item is complex:
         return numpy.real(item)
     elif t_item is float:
