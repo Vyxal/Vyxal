@@ -481,6 +481,13 @@ def to_base_digits(value: int, base: int) -> List[int]:
     return ret[::-1]
 
 
+def to_base_alphabet(value: int, alphabet: str) -> str:
+    """to_base_digit with a custom base"""
+
+    temp = to_base_digits(value, len(alphabet))
+    return "".join([alphabet[i] for i in temp])
+
+
 def transfer_capitalisation(source: str, target: str) -> str:
     """Returns target with the capitalisation of source"""
     ret = ""

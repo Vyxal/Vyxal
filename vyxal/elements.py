@@ -17,6 +17,7 @@ from typing import Union
 import numpy
 import sympy
 
+from vyxal import dictionary
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.encoding import (
     codepage,
@@ -1647,6 +1648,22 @@ def one_slice(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
+def optimal_compress(lhs, ctx):
+    """Element øD
+    (str) -> return the most optimal dictionary compressed string
+    """
+    DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
+    DP[0] = ""
+    for index in range(1, len(lhs) + 1):
+        for left in range(max(0, index - dictionary.max_word_len), index - 1):
+            i = dictionary.word_index(lhs[left:index])
+            if i != -1:
+                DP[index] = min([DP[index], DP[left] + i], key=len)
+                break
+        DP[index] = min([DP[index], DP[index - 1] + lhs[index - 1]], key=len)
+    return DP[-1]
+
+
 def orderless_range(lhs, rhs, ctx):
     """Element r
     (num, num) -> range(a,b) (Range form a to b)
@@ -1697,15 +1714,6 @@ def overlapping_groups(lhs, rhs, ctx):
                 window = window[1:]
 
     return gen()
-
-    # TODO (lyxal) This was erroring and idk what this even does
-    # so I commented it out
-    # iters = itertools.tee(iterable(lhs), rhs)
-    # for i in range(len(iters)):
-    #     for j in range(i):
-    #         next(iters[i], None)
-
-    # return LazyList(zip(*iters))
 
 
 def palindromise(lhs, ctx):
@@ -3281,6 +3289,7 @@ elements: dict[str, tuple[str, int]] = {
     "øc": process_element(base_255_string_compress, 1),
     "øC": process_element(base_255_number_compress, 1),
     "ød": process_element(run_length_decoding, 1),
+    "øD": process_element(optimal_compress, 1),
     "øe": process_element(run_length_encoding, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),

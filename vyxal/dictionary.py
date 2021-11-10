@@ -1,3 +1,5 @@
+from vyxal import encoding, helpers
+
 contents = """the
 The
 and
@@ -23167,3 +23169,13 @@ max_word_len = 0
 for index, word in enumerate(contents):
     lookup[word] = index
     max_word_len = max(max_word_len, len(word))
+
+
+def word_index(word):
+    if word in lookup:
+        ret = helpers.to_base_alphabet(lookup[word], encoding.compression)
+        if len(ret) == 1:
+            ret = "λ" + ret
+        return ret
+    else:
+        return -1
