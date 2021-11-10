@@ -1951,12 +1951,13 @@ def repeat(lhs, rhs, ctx):
 
     else:
         return {
-            (ts[0], NUMBER_TYPE): lambda: LazyList(
-                itertools.repeat(iterable(lhs, ctx=ctx), int(rhs))
-            ),
             (NUMBER_TYPE, ts[1]): lambda: LazyList(
-                itertools.repeat(iterable(rhs, ctx=ctx), int(lhs))
+                itertools.repeat(iterable(rhs, ctx=ctx), int(abs(lhs)))
             ),
+            (ts[0], NUMBER_TYPE): lambda: LazyList(
+                itertools.repeat(iterable(lhs, ctx=ctx), int(abs(rhs)))
+            ),
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: str(lhs) * rhs,
             (str, str): lambda: lhs + " " + rhs,
         }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
 
@@ -2796,7 +2797,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimpify(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
