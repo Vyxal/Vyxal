@@ -859,12 +859,15 @@
 
 - element: "T"
   name: Truthy Indices
-  description: Get indices of truthy elements.
+  description: Get indices of truthy elements or triple
   arity: 1
   overloads:
+    num: a * 3
     any: truthy_indices(a)
   vectorise: false
   tests:
+    - "[1] : 3"
+    - "[-4] : -12"
     - "[[0,1,0,2]] : [1,3]"
     - "[[1,2,3,4]] : [0,1,2,3]"
 
@@ -3266,7 +3269,7 @@
 
 # DIGRAPHS
 
-- element: "bø"
+- element: "øb"
   name: Parenthesise
   arity: 1
   description: Parenthesise a string
@@ -3525,12 +3528,151 @@
     - '[")X"] : ")XX("'
     - '["</tag>"] : "</tag><gat\\>"'
 
-- element: "ø¦"
-  name: Vertical Mirror Custom Mapping
-  description: Vertical mirror a, using the mapping defined in b
-  arity: 3
-  overloads:
-    any-any: vertical_mirror(a,mapping=b)
+- element: "øṖ"
+  name: String Partitions
+  description: All partitions of a string/list
+  arity: 1
+  overloads:  
+    any: all_partitions(a)
   vectorise: false
   tests:
-    # TODO: figure out how this works
+    - '["ab"] : [["a","b"]]'
+
+- element: "Þo"
+  name: Ordinals
+  description: An infinite list of first, second, third, fourth etc
+  arity: 0
+  vectorise: false
+
+- element: "Þc"
+  name: Cardinals
+  description: An infinite list of one, two, three, four etc
+  arity: 0
+  vectorise: false
+
+- element: "Þp"
+  name: Primes
+  description: An infinite list of primes
+  arity: 0
+  vectorise: false
+
+- element: "Þu"
+  name: All Unique
+  description: Are all elements of a list/string unique?
+  arity: 1
+  overloads: 
+    any: all_unique(a)
+  vectorise: false
+  tests:
+    - '["hello"] : 0'
+    - '["eeee"] : 1'
+    - '[[1,2,3]] : 0'
+    - '[[1,1,1]] : 1'
+
+- element: "ÞẊ"
+  name: Cartesian Power
+  description: Cartesian power, cartesian product with self n times
+  arity: 2
+  overloads:
+    any-num: cartesian_power(a, b)
+    num-any: cartesian_power(b, a)
+  vectorise: false
+  tests:
+    - '["ab",2] : ["aa","ab","ba","bb"]'
+    - '[[1,2],3] : [[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]]'
+    - '["abc",3] : ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]'
+
+- element: "Þf"
+  name: Flatten to depth
+  description: Flatten a list to a certain depth (default 1)
+  arity: 2
+  overloads:
+    lst-num: flatten a to depth b
+    any-lst: Flatten b to depth 1, push a as well
+  vectorise: false
+  tests: 
+    - '[[[[[[1]]]]],3] : [[1]]'
+    - '["xyz",[1,2,[3,4,[5,6]]]] : [1,2,3,4,[5,6]]'
+
+- element: "ÞC"
+  name: Chunks Of Specified Length
+  description: Cut a string/list into chunks of specified sizes (stolen from osabie)
+  arity: 2
+  overloads:
+    any-lst: Cut a into chunks of the lengths given in b
+  vectorise: false
+  tests:
+    - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
+    - '[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]'
+  
+- element: "ÞB"
+  name: Random Bits
+  description: Fill a list with random bits
+  arity: 1
+  overloads:
+    num: List of length a filled with random bits
+    any: List of length n(a) filled with random bits
+  vectorise: false
+
+- element: "Þ<"
+  name: All Less Than Increasing
+  description: Find all numbers less than a certain value in a (potentially infinite) list assumed to be increasing
+  arity: 2
+  overloads:
+    any-num: All values of a up to (not including) the first greater than or equal to b
+  vectorise: false
+  tests: 
+    - '[[1,2,3,2,1,4,3,2,1], 3] : [1,2]'
+    - '[[1,2,3,4,5,2,1], 4] : [1,2,3]'
+
+- element: "Þǔ"
+  name: Untruth
+  description: Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
+  arity: 1
+  overloads:
+    any: '[int(x in a) for x in range(len(a))]'
+  vectorise: false
+  tests:
+    - '[[1]] : [0,1]'
+    - '[[0,3,4,6]] : [1,0,0,1,1,0,1]'
+
+- element: "Þi"
+  name: Multidimensional Indexing
+  description: Index a list of coordinates into a value.
+  arity: 2
+  overloads:
+    lst-lst: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+  vectorise: false
+  tests:
+    - '[[1,[2,3]],[0,1]] : 3'
+    - '[["xyzabc"], [0,4]] : "b"'
+
+- element: "Þḟ"
+  name: Multidimensional Search
+  description: Find the first multidimensional index of a value in another
+  arity: 2
+  overloads:
+    lst-any: Find the first occurrence of a in b and return as a multidimensional index
+  vectorise: false
+  tests:
+    - '[[[1,2,3],[4,5,6]], 5] : [1, 1]'
+    - '[["abc","def",["hij","klm","nop"]], "m"] : [1,1,2]'
+  
+- element: "Þm"
+  name: Zero Matrix
+  description: Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
+  arity: 1
+  overloads:
+    lst: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
+  vectorise: false
+  tests:
+    - '[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]'
+    - '[[2,3,2]] : [[0,0],[0,0]]'
+
+- element: "ÞZ"
+  name: Fill By Coordinates
+  description: Fill a matrix by calling a function with the lists of coordinates in the matrix.
+  arity: 2  
+  overloads:
+    any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+  vectorise: false

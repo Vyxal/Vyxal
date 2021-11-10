@@ -1856,6 +1856,16 @@ def quotify(lhs, ctx):
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
 
+def random_choice(lhs,ctx):
+    """Element ℅
+    (lst) -> random element of a
+    (num) -> Random integer from 0 to a
+    """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return random.randint(0,lhs)
+    return random.choice(iterable(lhs, ctx=ctx))
+
+
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -2358,7 +2368,11 @@ def transliterate(lhs, rhs, other, ctx):
 def truthy_indicies(lhs, ctx):
     """Element T
     (any) -> indicies of truthy elements
+    (num) -> lhs * 3
     """
+
+    if vy_type(lhs) == NUMBER_TYPE:
+        return lhs * 3
 
     lhs = iterable(lhs, ctx=ctx)
 
@@ -2975,7 +2989,7 @@ def wrap(lhs, rhs, ctx):
         else:
             vector, chunk_size = (
                 (iterable(lhs, ctx=ctx), rhs)
-                if ts[1] is NUMBER_TYPE
+                if ts[1] == NUMBER_TYPE
                 else (iterable(rhs, ctx=ctx), lhs)
             )
             ret, temp = [], []
@@ -3266,7 +3280,7 @@ elements: dict[str, tuple[str, int]] = {
     "⋎": process_element(bitwise_or, 2),
     "꘍": process_element(bitwise_xor, 2),
     "ꜝ": process_element(bitwise_not, 1),
-    "℅": process_element("random.choice(iterable(lhs, ctx=ctx))", 1),
+    "℅": process_element(random_choice, 1),
     "≤": process_element(less_than_or_equal, 2),
     "≥": process_element(greater_than_or_equal, 2),
     "≠": process_element(not_equals, 2),
@@ -3286,7 +3300,7 @@ elements: dict[str, tuple[str, int]] = {
     "ǒ": process_element(modulo_3, 1),
     "Ǔ": (
         "lhs, rhs = pop(stack, 2, ctx); "
-        "if vy_type(rhs) is NUMBER_TYPE: \n"
+        "if vy_type(rhs) == NUMBER_TYPE: \n"
         "    return lhs[rhs:] + lhs[:rhs] \n"
         "else:\n"
         "    return lhs[1:] + lhs[0]",
@@ -3294,7 +3308,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ǔ": (
         "lhs, rhs = pop(stack, 2, ctx); "
-        "if vy_type(rhs) is NUMBER_TYPE: \n"
+        "if vy_type(rhs) == NUMBER_TYPE: \n"
         "    return lhs[-rhs:] + lhs[:-rhs] \n"
         "else:\n"
         "    return lhs[-1] + lhs[:-1]",
