@@ -1856,6 +1856,31 @@ def quotify(lhs, ctx):
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
 
+def regex_sub(lhs, rhs, other, ctx):
+    """Element øṙ
+    (str, str, str) -> Replace matches of a with c in b
+    (any, any, fun) -> Apply c to matches of a in b
+    """
+
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+
+    if ts[-1] != types.FunctionType:
+        return re.sub(vy_str(lhs), vy_str(rhs), vy_str(other))
+    else:
+        parts = re.split("(" + lhs + ")", rhs)
+        out = ""
+        switch = 1
+        for item in parts:
+
+            if switch % 2:
+                out += item
+            else:
+                out += safe_apply(other, item, ctx=ctx)
+            switch += 1
+
+        return out
+
+
 def remove(lhs, rhs, ctx):
     """Element o
     (any, any) -> a.remove(b)
@@ -3300,6 +3325,7 @@ elements: dict[str, tuple[str, int]] = {
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
+    "øṙ": process_element(regex_sub, 3),
     "Þ×": process_element(all_combos, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("math.e", 0),
