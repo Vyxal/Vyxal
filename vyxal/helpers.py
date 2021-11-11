@@ -13,6 +13,10 @@ import types
 from typing import Any, Generator, List, Union
 
 import sympy
+from sympy.parsing.sympy_parser import (
+    implicit_multiplication_application,
+    standard_transformations,
+)
 
 import vyxal.encoding
 from vyxal import lexer
@@ -252,6 +256,16 @@ def keep(haystack: Any, needle: Any) -> Any:
             else:
                 out.append(item)
     return out
+
+
+def make_equation(eqn: str) -> sympy:
+    """Turns a stirng into a nice sympy expression"""
+
+    transformations = standard_transformations + (
+        implicit_multiplication_application,
+    )
+
+    return sympy.parse_expr(eqn, transformations=transformations)
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):

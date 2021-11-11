@@ -17,6 +17,7 @@ from typing import Union
 import numpy
 import sympy
 
+
 from vyxal import dictionary
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.encoding import (
@@ -166,10 +167,11 @@ def arccos(lhs, ctx):
     (num) -> arccos(lhs)
     """
 
-    if vy_type(lhs, True) is list:
-        return vectorise(arccos, lhs, ctx=ctx)
-    else:
-        return sympy.acos(lhs)
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.acos(lhs),
+        (str): lambda: sympy.acos(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
 def arcsin(lhs, ctx):
@@ -177,10 +179,23 @@ def arcsin(lhs, ctx):
     (num) -> arcsin(a)
     """
 
-    if vy_type(lhs, simple=True) is list:
-        return vectorise(arcsin, lhs, ctx=ctx)
-    else:
-        return sympy.asin(lhs)
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.asin(lhs),
+        (str): lambda: sympy.asin(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
+
+
+def arctan(lhs, ctx):
+    """Element ∆T
+    (num) -> arctan(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.atan(lhs),
+        (str): lambda: sympy.atan(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
 def assign_iterable(lhs, rhs, other, ctx):
@@ -416,10 +431,11 @@ def cosine(lhs, ctx):
     (num) -> cosine(a)
     """
 
-    if vy_type(lhs, simple=True) is list:
-        return vectorise(cosine, lhs, ctx=ctx)
-    else:
-        return sympy.cos(lhs)
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.cos(lhs),
+        str: lambda: sympy.cos(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
 def count(lhs, rhs, ctx):
@@ -1876,6 +1892,32 @@ def product(lhs, ctx):
     return vy_reduce(multiply, lhs, ctx=ctx)
 
 
+def quadratic_solver(lhs, ctx):
+    """Element ∆q
+    (num, num) -> x such that ax^2 + bx = 0
+    (num, str) -> evaluate single variable equation b with x=a
+    (str, num) -> evaluate single variable equation a with x=b
+    (str, str) -> solve equation a = b for x
+    """
+
+    ts = vy_type(lhs, ctx)
+    x = sympy.symbols("x")
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
+            sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
+        ),
+        (NUMBER_TYPE, str): lambda: sympy.solve(
+            sympy.Eq(make_equation(rhs), lhs), x
+        ),
+        (str, NUMBER_TYPE): lambda: sympy.solve(
+            sympy.Eq(make_equation(lhs), rhs), x
+        ),
+        (str, str): lambda: sympy.solve(
+            sympy.Eq(make_equation(lhs), make_equation(rhs)), x
+        ),
+    }.get(ts, lambda: vectorise(quadratic_solver, lhs, rhs, ctx=ctx))()
+
+
 def quotify(lhs, ctx):
     """Element q
     (any) -> ` + a + ` (Quotify a)
@@ -2095,10 +2137,11 @@ def sine(lhs, ctx):
     (num) -> sin(a)
     """
 
-    if vy_type(lhs, simple=True) is list:
-        return vectorise(sine, lhs, ctx=ctx)
-    else:
-        return sympy.sin(lhs)
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.sin(lhs),
+        str: lambda: sympy.sin(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
 def slice_from(lhs, rhs, ctx):
@@ -2361,10 +2404,11 @@ def tangent(lhs, ctx):
     (num) -> tan(a)
     """
 
-    if vy_type(lhs, simple=True) is list:
-        return vectorise(tangent, lhs, ctx=ctx)
-    else:
-        return sympy.tan(lhs)
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.tan(lhs),
+        str: lambda: sympy.tan(make_equation(lhs)),
+    }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
 def to_base(lhs, rhs, ctx):
@@ -3381,6 +3425,9 @@ elements: dict[str, tuple[str, int]] = {
     "∆C": process_element(arccos, 1),
     "∆s": process_element(sine, 1),
     "∆S": process_element(arcsin, 1),
+    "∆t": process_element(tangent, 1),
+    "∆T": process_element(arctan, 1),
+    "∆q": process_element(quadratic_solver, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
