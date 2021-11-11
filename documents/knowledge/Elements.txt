@@ -84,6 +84,7 @@
     str a, num b: [char * b for char in a]
     str a, str b: a.with_capitalisation_of(b)
     lst a, lst b: a molded  to  the shape of b
+    otherwise: vectorise
 -------------------------------
 † (Function Call)
 
@@ -106,6 +107,7 @@
 
     num a: a / 2
     str a: a split into two strings of equal lengths (as close as possible)
+    otherwise: vectorise
 -------------------------------
 ∆ (Mathematic Digraph)
 
@@ -138,6 +140,7 @@
 
     num a: 1 - a
     str a: a.split(",")
+    otherwise: vectorise
 -------------------------------
 æ (Is Prime / Case Check)
 
@@ -145,6 +148,7 @@
 
     num a: is a prime?
     str a: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
+    otherwise: vectorise
 -------------------------------
 ʀ (Inclusive Zero Range)
 
@@ -152,6 +156,7 @@
 
     num a: range(0,a + 1) (inclusive range from 0)
     str a: [is v alphabetical? for v in a]
+    otherwise: vectorise
 -------------------------------
 ʁ (Exclusive Zero Range)
 
@@ -159,6 +164,7 @@
 
     num a: range(0,a) (exclusive range from 0)
     str a: palindromised a
+    otherwise: vectorise
 -------------------------------
 ɾ (Inclusive One Range)
 
@@ -166,6 +172,7 @@
 
     num a: range(1,a+1) (inclusive range from 1)
     str a: a.uppercase()
+    otherwise: vectorise
 -------------------------------
 ɽ (Exclusive One Range / Lowercase)
 
@@ -173,6 +180,7 @@
 
     num a: range(1,a) (exclusive range from 0)
     str a: a.lowercase()
+    otherwise: vectorise
 -------------------------------
 Þ (List Digraph)
 
@@ -187,6 +195,7 @@
     num a, str b: Choose a random items from b
     str a, num b: Choose b random items from a
     str a, str b: Check if lists are the same except for duplicates
+    otherwise: vectorise
 -------------------------------
 ∞ (Palindromise)
 
@@ -235,6 +244,7 @@ $ (Swap)
     str a, num b: last of (a split into b equal pieces)
     str a, str b: a.format(b) (replace % in a with b)
     str a, lst b: a.format(b) (replace % in a with each item of b)
+    otherwise: vectorise
 -------------------------------
 & (Apply To Register)
 
@@ -266,6 +276,7 @@ $ (Swap)
     num a, str b: b repeated a times
     str a, num b: a repeated b times
     str a, str b: ring translate b according to a
+    otherwise: vectorise
 -------------------------------
 + (Addition)
 
@@ -275,6 +286,7 @@ $ (Swap)
     num a, str b: str(a) + b
     str a, num b: a + str(b)
     str a, str b: a + b
+    otherwise: vectorise
 -------------------------------
 , (Print)
 
@@ -290,6 +302,7 @@ $ (Swap)
     num a, str b: ("-" * a) + b
     str a, num b: a + ("-" * b)
     str a, str b: a.replace(b, '')
+    otherwise: vectorise
 -------------------------------
 . (Decimal Separator)
 
@@ -304,6 +317,7 @@ $ (Swap)
     num a, str b: b split into a even length pieces, possibly with an extra part
     str a, num b: a split into b even length pieces, possibly with an extra part
     str a, str b: a.split(b)
+    otherwise: vectorise
 -------------------------------
 0 (Literal digit 0)
 
@@ -374,6 +388,7 @@ $ (Swap)
     num a, str b: str(a) < b
     str a, num b: a < str(b)
     str a, str b: a < b
+    otherwise: vectorise
 -------------------------------
 = (Equals)
 
@@ -383,6 +398,7 @@ $ (Swap)
     num a, str b: str(a) == b
     str a, num b: a == str(b)
     str a, str b: a == b
+    otherwise: vectorise
 -------------------------------
 > (Greater Than)
 
@@ -392,6 +408,7 @@ $ (Swap)
     num a, str b: str(a) > b
     str a, num b: a > str(b)
     str a, str b: a > b
+    otherwise: vectorise
 -------------------------------
 ? (Input)
 
@@ -422,6 +439,7 @@ C (Chr / Ord)
 
     num a: chr(a)
     str a: ord(a) if length 1 else list of ordinals
+    otherwise: vectorise
 -------------------------------
 D (Triplicate)
 
@@ -434,6 +452,7 @@ E (Two Power / Python Eval)
 
     num a: 2 ** a
     str a: eval(a) (safe-eval as python)
+    otherwise: vectorise
 -------------------------------
 F (Filter)
 
@@ -500,6 +519,7 @@ N (Negate / Swap Case)
 
     num a: -a  (negate)
     str a: swap_case(a) (toggle case)
+    otherwise: vectorise
 -------------------------------
 O (Count)
 
@@ -616,6 +636,7 @@ b (Binary)
 
     num a: bin(a) - list of binary digits of A
     str a: [bin(ord(char)) for char in a] - binary of each codepoint
+    otherwise: vectorise
 -------------------------------
 c (Contains)
 
@@ -629,6 +650,7 @@ d (Double)
 
     num a: a * 2 (double)
     str a: a * 2 (repeated twice)
+    otherwise: vectorise
 -------------------------------
 e (Exponentiation)
 
@@ -638,6 +660,7 @@ e (Exponentiation)
     str a, num b: every bth character of a
     num a, str b: every ath character of b
     str a, str b: regex.search(pattern=a, string=b).span() (Length of regex match)
+    otherwise: vectorise
 -------------------------------
 f (Flatten)
 
@@ -726,6 +749,7 @@ r (Range)
     str a, num b: preprend spaces to a to make it length b
     any a, fun b: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
     str a, str b: regex.has_match(pattern=a,string= b) ( Does b match a)
+    otherwise: vectorise
 -------------------------------
 s (sort)
 
@@ -826,6 +850,7 @@ z (Zip-self)
 
     num a: a + 1
     string a: a.replace(" ","0")
+    otherwise: vectorise
 -------------------------------
 ‹ (Decrement)
 
@@ -833,6 +858,7 @@ z (Zip-self)
 
     num a: a - 1
     str a: a + "-"
+    otherwise: vectorise
 -------------------------------
 ∷ (Parity)
 
@@ -840,6 +866,7 @@ z (Zip-self)
 
     num a: a % 2 (Odd?)
     str a: Second half of A
+    otherwise: vectorise
 -------------------------------
 ¤ (Empty String)
 
@@ -882,6 +909,7 @@ z (Zip-self)
 
     num a: abs(a) (Absolute value)
     str a: Remove whitespace from a
+    otherwise: vectorise
 -------------------------------
 ḃ (Boolify)
 
@@ -954,6 +982,7 @@ z (Zip-self)
     str a, str b, num c: a.ljust(b,filler=c)
     str a, str b, str c: a.infinite_replace(b, c)
     fun a, fun b, any c: collect_until_false(predicate=a, modifying_function=b, inital=c)
+    otherwise: vectorise
 -------------------------------
 ṁ (Mean)
 
@@ -989,6 +1018,7 @@ z (Zip-self)
 
     num a: round(a)
     str a: quad palindromize with overlap
+    otherwise: vectorise
 -------------------------------
 ṡ (Function Sort)
 
@@ -1040,6 +1070,7 @@ z (Zip-self)
 
     num a: sqrt(a) (Square root)
     str a: every second character of a
+    otherwise: vectorise
 -------------------------------
 ⟨ (Open List)
 
@@ -1137,6 +1168,7 @@ z (Zip-self)
 
     num a: factorial(a) (math.gamma(a + 1))
     str a: a.sentence_case()
+    otherwise: vectorise
 -------------------------------
 ∑ (Summate)
 
@@ -1189,6 +1221,7 @@ z (Zip-self)
     num a, str b: a copies of b
     str a, num b: b copies of a
     str a, str b: b + " " + a
+    otherwise: vectorise
 -------------------------------
 Ė (Vyxal Exec / Reciprocal)
 
@@ -1196,6 +1229,7 @@ z (Zip-self)
 
     str a: vy_exec(a)
     num a: 1 / a
+    otherwise: vectorise
 -------------------------------
 Ḟ (Generator from function with initial vector)
 
@@ -1295,6 +1329,7 @@ z (Zip-self)
     any a, num b: a[0:b] (Slice until b)
     num a, any b: b[0:a] (Slice until a)
     str a, str b: regex.findall(pattern=a,string=b) (Find all matches for a regex)
+    otherwise: vectorise
 -------------------------------
 Ż (Slice From One Until)
 
@@ -1303,6 +1338,7 @@ z (Zip-self)
     any a, num b: a[1:b] (Slice from 1 until b)
     num a, any b: b[1:a] (Slice from 1 until a)
     str a, str b: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+    otherwise: vectorise
 -------------------------------
 ₌ (Parallel Apply)
 
@@ -1334,6 +1370,7 @@ z (Zip-self)
 
     num a: a ** 2 (Squared)
     str a: a formatted as a square
+    otherwise: vectorise
 -------------------------------
 ∇ (Shift)
 
@@ -1347,6 +1384,7 @@ z (Zip-self)
 
     num a: ceil(a) (Ceiling)
     str a: Split on spaces
+    otherwise: vectorise
 -------------------------------
 ⌊ (Floor)
 
@@ -1354,12 +1392,14 @@ z (Zip-self)
 
     num a: floor(a) (Floor)
     str a: Integer part of a
+    otherwise: vectorise
 -------------------------------
 ¯ (Deltas)
 
 - Deltas (consecutive differences)
 
     any a: deltas(a) (consecutive differences)
+    otherwise: vectorise
 -------------------------------
 ± (Sign)
 
@@ -1367,6 +1407,7 @@ z (Zip-self)
 
     num a: sign_of(a) (positive = 1, 0 = 0; negative = -1)
     str a: is a numeric
+    otherwise: vectorise
 -------------------------------
 ₴ (Print Without Newline)
 
@@ -1391,6 +1432,7 @@ z (Zip-self)
     num a, str b: a.rjust(b)
     str a, num b: b.rjust(a)
     str a, str b: a.rjust(len(b)-len(a))
+    otherwise: vectorise
 -------------------------------
 ↲ (Left Bit Shift)
 
@@ -1400,6 +1442,7 @@ z (Zip-self)
     num a, str b: a.ljust(b)
     str a, num b: b.ljust(a)
     str a, str b: a.ljust(len(b)-len(a))
+    otherwise: vectorise
 -------------------------------
 ⋏ (Bitwise And)
 
@@ -1409,6 +1452,7 @@ z (Zip-self)
     num a, str b: b.center(a)
     str a, num b: a.center(b)
     str a, str b: a.center(len(b) - len(a))
+    otherwise: vectorise
 -------------------------------
 ⋎ (Bitwise Or)
 
@@ -1418,6 +1462,7 @@ z (Zip-self)
     num a, str b: b[:a]+b[a+1:]
     str a, num b: a[:b]+a[b+1:]
     str a, str b: merge_join(a,b)
+    otherwise: vectorise
 -------------------------------
 ꘍ (Bitwise Xor)
 
@@ -1427,6 +1472,7 @@ z (Zip-self)
     num a, str b: \" \" * a + b
     str a, num b: a + \" \" * b
     str a, str b: levenshtein_distance(a,b)
+    otherwise: vectorise
 -------------------------------
 ꜝ (Bitwise Not)
 
@@ -1434,6 +1480,7 @@ z (Zip-self)
 
     num a: ~a
     str a: any_upper(a)
+    otherwise: vectorise
 -------------------------------
 ℅ (Random Choice)
 
@@ -1446,12 +1493,14 @@ z (Zip-self)
 - a is lesser than or equal to b?
 
     any a, any b: a <= b
+    otherwise: vectorise
 -------------------------------
 ≥ (Greater Than or Equal To)
 
 - a is greater than or equal to b?
 
     any a, any b: a >= b
+    otherwise: vectorise
 -------------------------------
 ≠ (Not Equal To)
 
@@ -1530,6 +1579,7 @@ z (Zip-self)
 
     str a: filter(isalpha, a)
     num a: 2 ** a
+    otherwise: vectorise
 -------------------------------
 ǎ (Nth prime)
 
@@ -1537,6 +1587,7 @@ z (Zip-self)
 
     str a: substrings(a)
     num a: nth_prime(a)
+    otherwise: vectorise
 -------------------------------
 Ǐ (Prime factorization)
 
@@ -1544,6 +1595,7 @@ z (Zip-self)
 
     num a: prime_factorization(a)
     str a: a + a[0]
+    otherwise: vectorise
 -------------------------------
 ǐ (Prime factors)
 
@@ -1551,6 +1603,7 @@ z (Zip-self)
 
     num a: prime_factors(a)
     str a: title_case(a)
+    otherwise: vectorise
 -------------------------------
 Ǒ (Multiplicity)
 
@@ -1565,6 +1618,7 @@ z (Zip-self)
 
     num a: a % 3
     str a: a split into chunks of length 2
+    otherwise: vectorise
 -------------------------------
 Ǔ (Rotate Left)
 
@@ -1606,6 +1660,7 @@ z (Zip-self)
 
     str a: a.split("\n")
     num a: 10 ** a
+    otherwise: vectorise
 -------------------------------
 ⅛ (Push To Global Array)
 
@@ -2018,48 +2073,56 @@ k∩ (Vowels With Y)
 - Get the cosine of an angle in radians
 
     num a: math.cos(a)
+    otherwise: vectorise
 -------------------------------
 ∆C (Arc Cosine)
 
 - Get the arccosine of an angle in radians
 
     num a: math.arrcos(a)
+    otherwise: vectorise
 -------------------------------
 ∆q (Quadratic Solver)
 
 - Solve a quadratic equation of the form ax^2 + bx = 0
 
     num a, num b: x such that ax^2 + bx = 0
+    otherwise: vectorise
 -------------------------------
 ∆Q (General Quadratic Solver)
 
 - Solve a quadratic equation of the form x^2 + ax + b = 0
 
     num, num a: roots(a, b)
+    otherwise: vectorise
 -------------------------------
 ∆s (Sine)
 
 - Get the sine of an angle in radians
 
     num a: math.sin(a)
+    otherwise: vectorise
 -------------------------------
 ∆S (Arc Sine)
 
 - Get the arcsine of an angle in radians
 
     num a: math.arcsin(a)
+    otherwise: vectorise
 -------------------------------
 ∆t (Tangent)
 
 - Get the tangent of an angle in radians
 
     num a: math.tan(a)
+    otherwise: vectorise
 -------------------------------
 ∆T (Arc Tangent)
 
 - Get the arctangent of an angle in radians
 
     num a: math.arctan(a)
+    otherwise: vectorise
 -------------------------------
 ∆P (Polynomial Solver)
 
@@ -2072,54 +2135,63 @@ k∩ (Vowels With Y)
 - Get the number of combinations of r items from a set of n items
 
     num a, num b: n_pick_r(a, b)
+    otherwise: vectorise
 -------------------------------
 ∆± (Copy Sign)
 
 - Copy the sign of one number to the other
 
     num a, num b: math.copysign(a, b)
+    otherwise: vectorise
 -------------------------------
 ∆K (Sum of Proper Divisors)
 
 - Get the sum of all proper divisors of a number
 
     num a: sum_of_proper_divisors(a)
+    otherwise: vectorise
 -------------------------------
 ∆² (Perfect Square?)
 
 - Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 
     num a: is_perfect_square(a)
+    otherwise: vectorise
 -------------------------------
 ∆e (e raised to power a)
 
 - Get the value of e raised to the power of a
 
     num a: e ** a
+    otherwise: vectorise
 -------------------------------
 ∆E ((e raised to power a) - 1)
 
 - Get the value of e raised to the power of a minus 1
 
     num a: (e ** a) - 1
+    otherwise: vectorise
 -------------------------------
 ∆L (Natural Logarithm)
 
 - Get the natural logarithm of a number
 
     num a: math.log(a)
+    otherwise: vectorise
 -------------------------------
 ∆l (Logarithm (log_2))
 
 - Get the logarithm of a number to base 2
 
     num a: math.log2(a)
+    otherwise: vectorise
 -------------------------------
 ∆τ (Common Logarithm)
 
 - Get the common logarithm of a number
 
     num a: math.log10(a)
+    otherwise: vectorise
 -------------------------------
 ∆d (Straight Line Distance)
 
@@ -2127,35 +2199,40 @@ k∩ (Vowels With Y)
 
     lst a, lst b: euclidian_distance(a, b)
 -------------------------------
-∆D (Degrees to Radians)
-
-- Convert an angle from degrees to radians
-
-    num a: math.degrees(a)
--------------------------------
-∆R (Radians to Degrees)
+∆D (To Degrees)
 
 - Convert an angle from radians to degrees
 
+    num a: math.degrees(a)
+    otherwise: vectorise
+-------------------------------
+∆R (To Radians)
+
+- Convert an angle from degrees to radians
+
     num a: math.radians(a)
+    otherwise: vectorise
 -------------------------------
 ∆Ṗ (Next Prime After a Number)
 
 - Get the next prime number after a given number
 
     num a: next_prime(a)
+    otherwise: vectorise
 -------------------------------
 ∆ṗ (First Prime Before a Number)
 
 - Get the first prime number before a given number
 
     num a: prev_prime(a)
+    otherwise: vectorise
 -------------------------------
 ∆p (Nearest Prime to a Number)
 
 - Get the prime number closest to a given number
 
     num a: nearest_prime(a)
+    otherwise: vectorise
 -------------------------------
 ∆ṙ (Polynomial from Roots)
 
@@ -2168,72 +2245,84 @@ k∩ (Vowels With Y)
 - Round a number to n decimal places
 
     num, num a: round(a, no_dec_places=b)
+    otherwise: vectorise
 -------------------------------
 ∆Ŀ (Least Common Multiple)
 
 - Get the least common multiple of two numbers
 
     num, num a: lcm(a, b)
+    otherwise: vectorise
 -------------------------------
 ∆Π (nth Digit of Pi)
 
 - Get the nth digit of pi
 
     num a: nth_digit_of_pi(a)
+    otherwise: vectorise
 -------------------------------
 ∆ė (nth Digit of e)
 
 - Get the nth digit of e
 
     num a: nth_digit_of_e(a)
+    otherwise: vectorise
 -------------------------------
 ∆F (nth Fibonacci Number)
 
 - Get the nth fibonacci number
 
     num a: nth_fibonacci(a)
+    otherwise: vectorise
 -------------------------------
 ∆b (Random Bits)
 
 - Get a list of random bits (0 or 1)
 
     num a: random_bits(a)
+    otherwise: vectorise
 -------------------------------
 ∆Ṙ (Random Float)
 
 - Get a random float in the range [0, 1), pseudo random number
 
     num a: random.random()
+    otherwise: vectorise
 -------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string
 
     any a: "("" + a + ")"
+    otherwise: vectorise
 -------------------------------
 øB (Bracketify)
 
 - Enclose a string in brackets
 
     any a: "["" + a + "]"
+    otherwise: vectorise
 -------------------------------
 øḃ (Curly Bracketify)
 
 - Enclose a string in curly brackets
 
     any a: "{"" + a + "}"
+    otherwise: vectorise
 -------------------------------
 øḂ (Angle Bracketify)
 
 - Enclose a string in angle brackets
 
     any a: "<"" + a + ">"
+    otherwise: vectorise
 -------------------------------
 øβ (Balanced Brackets)
 
 - Check if brackets in a string ("{}()[]<>") are balanced
 
     any a: balanced_brackets(a)
+    otherwise: vectorise
 -------------------------------
 ø↳ (Custom Pad Left)
 
@@ -2241,6 +2330,7 @@ k∩ (Vowels With Y)
 
     any a, str b, num c: Pad a to the left with c so a has length b
     any a, num b, str c: Pad a to the left with b so a has length c
+    otherwise: vectorise
 -------------------------------
 ø↲ (Custom Pad Right)
 
@@ -2248,12 +2338,14 @@ k∩ (Vowels With Y)
 
     any a, str b, num c: Pad a to the right with c so a has length b
     any a, num b, str c: Pad a to the right with b so a has length c
+    otherwise: vectorise
 -------------------------------
 øM (Flip Brackets Vertical Palindromise)
 
 - Vertically palindromise and reverse brackets and slashes, without duplicating center
 
     any a: Palindromise, without duplicating center, and flip brackets and slashes in the second half
+    otherwise: vectorise
 -------------------------------
 øo (Remove Until No change)
 
@@ -2334,6 +2426,7 @@ k∩ (Vowels With Y)
 - Vertical Mirror - Split by newlines, mirror each line, join by newlines
 
     str a: vertical_mirror(a)
+    otherwise: vectorise
 -------------------------------
 øṀ (Flip Brackets Vertical Mirror)
 
