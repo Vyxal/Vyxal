@@ -1892,7 +1892,7 @@ def product(lhs, ctx):
     return vy_reduce(multiply, lhs, ctx=ctx)
 
 
-def quadratic_solver(lhs, ctx):
+def quadratic_solver(lhs, rhs, ctx):
     """Element ∆q
     (num, num) -> x such that ax^2 + bx = 0
     (num, str) -> evaluate single variable equation b with x=a
@@ -1900,7 +1900,7 @@ def quadratic_solver(lhs, ctx):
     (str, str) -> solve equation a = b for x
     """
 
-    ts = vy_type(lhs, ctx)
+    ts = vy_type(lhs, rhs)
     x = sympy.symbols("x")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
