@@ -3312,7 +3312,10 @@
   arity: 2
   description: Solve a quadratic equation of the form x^2 + ax + b = 0
   overloads:
-    num, num: roots(a, b)
+    num-num: roots(a, b) / x^2 + ax + b = 0
+    num-str: evaluate single variable expression b with x=a
+    str-num: evaluate single variable expression a with x=b
+    str-str: solve equation a < b for x
   vectorise: true
   tests:
     - "[1, 2] : [-1, -1]"

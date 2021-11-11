@@ -14,6 +14,7 @@ from typing import Any, Generator, List, Union
 
 import sympy
 from sympy.parsing.sympy_parser import (
+    convert_xor,
     implicit_multiplication_application,
     standard_transformations,
 )
@@ -76,6 +77,12 @@ def deep_copy(value: Any) -> Any:
         # chad unlike those virgin memory reference needing lists".
 
     return LazyList(itertools.tee(value)[-1])
+
+
+def dict_to_list(dictionary: dict) -> List[Any]:
+    """Returns a dictionary as [[key, value]]"""
+
+    return [[str(key), dictionary[key]] for key in dictionary]
 
 
 def digits(num: NUMBER_TYPE) -> List[int]:
@@ -259,13 +266,23 @@ def keep(haystack: Any, needle: Any) -> Any:
 
 
 def make_equation(eqn: str) -> sympy:
-    """Turns a stirng into a nice sympy expression"""
+    """
+    Returns a sympy equation from a string
+    """
+
+    eqn = eqn.split("=")
+    return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
+
+
+def make_expression(expr: str) -> sympy:
+    """Turns a string into a nice sympy expression"""
 
     transformations = standard_transformations + (
         implicit_multiplication_application,
+        convert_xor,
     )
 
-    return sympy.parse_expr(eqn, transformations=transformations)
+    return sympy.parse_expr(expr, transformations=transformations)
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):

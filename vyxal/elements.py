@@ -170,7 +170,7 @@ def arccos(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.acos(lhs),
-        (str): lambda: sympy.acos(make_equation(lhs)),
+        (str): lambda: sympy.acos(make_expression(lhs)),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
@@ -182,7 +182,7 @@ def arcsin(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.asin(lhs),
-        (str): lambda: sympy.asin(make_equation(lhs)),
+        (str): lambda: sympy.asin(make_expression(lhs)),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
@@ -194,7 +194,7 @@ def arctan(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.atan(lhs),
-        (str): lambda: sympy.atan(make_equation(lhs)),
+        (str): lambda: sympy.atan(make_expression(lhs)),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -434,7 +434,7 @@ def cosine(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.cos(lhs),
-        str: lambda: sympy.cos(make_equation(lhs)),
+        str: lambda: sympy.cos(make_expression(lhs)),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -806,6 +806,28 @@ def gen_from_fn(lhs, rhs, ctx):
             yield safe_apply(lhs, ctx=ctx)
 
     return gen()
+
+
+def general_quadratic_solver(lhs, rhs, ctx):
+    """Element ∆Q
+    (num, num) -> roots(a, b) # x^2 + ax + b = 0
+    (num, str) -> evaluate single variable expression b with x=a
+    (str, num) -> evaluate single variable expression a with x=b
+    (str, str) -> solve a and b simulatenously
+    """
+
+    ts = vy_type(lhs, rhs)
+    x, y = sympy.symbols("x y")
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
+            sympy.Eq(x ** 2 + lhs * x + rhs, 0), x
+        ),
+        (NUMBER_TYPE, str): lambda: make_expression(rhs).subs(x, lhs),
+        (str, NUMBER_TYPE): lambda: make_expression(lhs).subs(x, rhs),
+        (str, str): lambda: dict_to_list(
+            sympy.solve([make_equation(lhs), make_equation(rhs)], (x, y))
+        ),
+    }.get(ts, lambda: vectorise(general_quadratic_solver, lhs, rhs, ctx=ctx))()
 
 
 def grade_up(lhs, ctx):
@@ -1907,13 +1929,13 @@ def quadratic_solver(lhs, rhs, ctx):
             sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
         ),
         (NUMBER_TYPE, str): lambda: sympy.solve(
-            sympy.Eq(make_equation(rhs), lhs), x
+            sympy.Eq(make_expression(rhs), lhs), x
         ),
         (str, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq(make_equation(lhs), rhs), x
+            sympy.Eq(make_expression(lhs), rhs), x
         ),
         (str, str): lambda: sympy.solve(
-            sympy.Eq(make_equation(lhs), make_equation(rhs)), x
+            sympy.Eq(make_expression(lhs), make_expression(rhs)), x
         ),
     }.get(ts, lambda: vectorise(quadratic_solver, lhs, rhs, ctx=ctx))()
 
@@ -2140,7 +2162,7 @@ def sine(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.sin(lhs),
-        str: lambda: sympy.sin(make_equation(lhs)),
+        str: lambda: sympy.sin(make_expression(lhs)),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -2407,7 +2429,7 @@ def tangent(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.tan(lhs),
-        str: lambda: sympy.tan(make_equation(lhs)),
+        str: lambda: sympy.tan(make_expression(lhs)),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
@@ -2975,6 +2997,7 @@ def vy_reduce(lhs, rhs, ctx):
 
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
+    print(lhs)
     return {
         (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
@@ -3428,6 +3451,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆t": process_element(tangent, 1),
     "∆T": process_element(arctan, 1),
     "∆q": process_element(quadratic_solver, 2),
+    "∆Q": process_element(general_quadratic_solver, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
