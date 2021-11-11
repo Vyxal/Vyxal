@@ -183,6 +183,16 @@ def arcsin(lhs, ctx):
         return sympy.asin(lhs)
 
 
+def arctan(lhs, ctx):
+    """Element ∆T
+    (num) -> arctan(a)
+    """
+
+    if vy_type(lhs, simple=True) is list:
+        return vectorise(arctan, lhs, ctx=ctx)
+    else:
+        return sympy.atan(lhs)
+
 def assign_iterable(lhs, rhs, other, ctx):
     """Element Ȧ
     (any, num, any) -> a but item b (0-indexed) is set to c
