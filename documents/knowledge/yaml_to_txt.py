@@ -32,4 +32,6 @@ with open(ELEMENTS_TXT, "w", encoding="utf-8") as output:
                         + str(element["overloads"][overload])
                         + "\n"
                     )
+            if "vectorise" in element and element["vectorise"]:
+                output.write("    otherwise: vectorise\n")
         output.write("-------------------------------\n")
