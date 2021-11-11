@@ -2517,17 +2517,17 @@ Get the straight line distance between two points (x1, y1) and (x2, y2)
 
 - lst a, lst b: `euclidian_distance(a, b)`
 -------------------------------
-## ∆D (Degrees to Radians)
+## ∆D (To Degrees)
 
-Convert an angle from degrees to radians
+Convert an angle from radians to degrees
 
 ### Overloads
 
 - num a: `math.degrees(a)`
 -------------------------------
-## ∆R (Radians to Degrees)
+## ∆R (To Radians)
 
-Convert an angle from radians to degrees
+Convert an angle from degrees to radians
 
 ### Overloads
 
