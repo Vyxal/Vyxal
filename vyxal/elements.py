@@ -9,6 +9,7 @@ import math
 import random
 import re
 import string
+from token import NUMBER
 import types
 from datetime import datetime
 from functools import reduce
@@ -1855,6 +1856,29 @@ def pluralise_count(lhs, rhs, ctx):
     return lhs + " " + rhs + "s" * (rhs != 1)
 
 
+def polynomial_roots(lhs, ctx):
+    """Element ∆P
+    (lst) -> roots(a)
+    """
+
+    x = sympy.symbols("x")
+
+    equation = make_expression(
+        " + ".join(
+            map(
+                lambda power: "("
+                + str(power[1])
+                + ")x^("
+                + str(power[0] - 1)
+                + ")",
+                enumerate(reverse(iterable(lhs, ctx=ctx), ctx=ctx)),
+            )
+        )
+    )
+
+    return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
+
+
 def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
@@ -2998,7 +3022,9 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(
+            sympy.nsimplify(str(float(lhs)), rational=True)
+        ),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -3451,6 +3477,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆T": process_element(arctan, 1),
     "∆q": process_element(quadratic_solver, 2),
     "∆Q": process_element(general_quadratic_solver, 2),
+    "∆P": process_element(polynomial_roots, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

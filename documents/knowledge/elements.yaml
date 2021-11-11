@@ -3373,7 +3373,7 @@
   arity: 1
   description: Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
   overloads:
-    list: roots(a)
+    lst: roots(a)
   vectorise: false
   tests:
     - "[[4, -1005, 3, 4]] : [251.2469990481482, 0.06460672339563359, -0.06160577154387768]"
