@@ -2997,7 +2997,6 @@ def vy_reduce(lhs, rhs, ctx):
 
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
-    print(lhs)
     return {
         (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
