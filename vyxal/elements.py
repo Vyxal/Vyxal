@@ -1645,6 +1645,25 @@ def n_choose_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
+def n_pick_r(lhs, rhs, ctx):
+    """Element ∆ƈ
+    (num, num) -> n_pick_r(a, b)
+    (num, str) -> n_pick_r(a, len(b))
+    (str, num) -> n_pick_r(len(a), b)
+    (str, str) -> n_pick_r(len(a), len(b))
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: divide(
+            factorial(lhs, ctx), factorial(lhs - rhs, ctx), ctx
+        ),
+        (NUMBER_TYPE, str): lambda: n_pick_r(lhs, len(rhs)),
+        (str, NUMBER_TYPE): lambda: n_pick_r(len(lhs), rhs),
+        (str, str): lambda: n_pick_r(len(lhs), len(rhs)),
+    }.get(ts, lambda: vectorise(n_pick_r, lhs, rhs, ctx=ctx))()
+
+
 def negate(lhs, ctx):
     """Element N
     (num) -> -a
@@ -3478,6 +3497,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆q": process_element(quadratic_solver, 2),
     "∆Q": process_element(general_quadratic_solver, 2),
     "∆P": process_element(polynomial_roots, 1),
+    "∆ƈ": process_element(n_pick_r, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

@@ -3385,6 +3385,9 @@
   description: Get the number of combinations of r items from a set of n items
   overloads:
     num-num: n_pick_r(a, b)
+    num-str: n_pick_r(a, len(b))
+    str-num: n_pick_r(len(a), b)
+    str-str: n_pick_r(len(a), len(b))
   vectorise: true
   tests:
     - "[[3, 4, 5, 6], [1, 2, 3, 4]] : [3,12,60,360]"
