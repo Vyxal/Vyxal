@@ -427,6 +427,16 @@ def contains(lhs, rhs, ctx):
     return 0
 
 
+def copy_sign(lhs, rhs, ctx):
+    """Element ∆±
+    (num, num) -> math.copysign(a, b)
+    """
+
+    return multiply(
+        vy_abs(lhs, ctx), (-1 if less_than(rhs, 0, ctx) else 1), ctx
+    )
+
+
 def cosine(lhs, ctx):
     """Element ∆c
     (num) -> cosine(a)
@@ -573,6 +583,14 @@ def divisors(lhs, ctx):
     return LazyList((lhs[: x + 1] for x in range(len(lhs))))
 
 
+def divisor_sum(lhs, ctx):
+    """Element ∆K
+    (num) -> sum of proper divisors of a
+    """
+
+    return vy_sum(divisors(lhs, ctx)[:-1], ctx)
+
+
 def dyadic_maximum(lhs, rhs, ctx):
     """Element ∴
     (any, any) -> max(a, b)
@@ -604,6 +622,14 @@ def equals(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
         (str, str): lambda: int(lhs == rhs),
     }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
+
+
+def euclidean_distance(lhs, rhs, ctx):
+    """Element ∆d
+    (num, num) -> distance between a and b
+    """
+
+    return sqrt(vy_sum(exponent(lhs - rhs, 2, ctx), ctx), ctx)
 
 
 def exclusive_one_range(lhs, ctx):
@@ -642,6 +668,32 @@ def exp2_or_eval(lhs, ctx):
         NUMBER_TYPE: lambda: 2 ** lhs,
         str: lambda: vy_eval(lhs, ctx),
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
+
+
+def expe(lhs, ctx):
+    """Element ∆e
+    (num) -> e ** a
+    (str) -> simplify expression a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.exp(lhs),
+        str: lambda: str(sympy.simplify(make_expression(lhs, ctx))),
+    }.get(ts, lambda: vectorise(expe, lhs, ctx=ctx))()
+
+
+def expe_minus_1(lhs, ctx):
+    """Element ∆E
+    (num) -> (e ** a) - 1
+    (str) -> expand expression a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.exp(lhs) - 1,
+        str: lambda: str(sympy.expand(make_expression(lhs, ctx))),
+    }.get(ts, lambda: vectorise(expe_minus_1, lhs, ctx=ctx))()
 
 
 def exponent(lhs, rhs, ctx):
@@ -1437,6 +1489,26 @@ def ljust(lhs, rhs, other, ctx):
     }.get(ts, vectorise(ljust, lhs, rhs, other, ctx))()
 
 
+def log_10(lhs, ctx):
+    """Element ∆τ
+    (num) -> log10(a)
+    """
+
+    return log_mold_multi(lhs, 10, ctx)
+    # no I'm not lazy why do you think that don't think that I
+    # would never just reuse vyxal functions for the sake of not
+    # having to think of an original and creative string overload.
+
+
+def log_2(lhs, ctx):
+    """Element ∆l
+    (num) -> log2(a)
+    """
+
+    return log_mold_multi(lhs, 2, ctx)
+    # okay fine maybe I would. shut up
+
+
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -1624,6 +1696,23 @@ def multiply(lhs, rhs, ctx):
         }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
 
 
+def natural_log(lhs, ctx):
+    """Element ∆L
+    (num) -> ln(a)
+    (str) -> inverse of expression a
+    """
+
+    x, y = sympy.symbols("x, y")
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.ln(lhs),
+        (str): lambda: map(
+            lambda ex: str(ex.subs(y, x)),
+            wrapify(sympy.solve(y - make_expression(lhs), x)),
+        ),
+    }.get(ts, lambda: vectorise(natural_log, lhs, ctx=ctx))()
+
+
 def n_choose_r(lhs, rhs, ctx):
     """Element ƈ
     (num, num) -> n choose r
@@ -1664,6 +1753,23 @@ def n_pick_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_pick_r, lhs, rhs, ctx=ctx))()
 
 
+def nearest_prime(lhs, ctx):
+    """Element ∆p
+    (num) -> nearest prime to a
+    (str) -> python code from expression
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: min(
+            next_prime(lhs, ctx),
+            prev_prime(lhs, ctx),
+            key=lambda x: abs(x - lhs),
+        ),
+        (str): lambda: sympy.pycode(make_expression(lhs)),
+    }.get(ts, lambda: vectorise(nearest_prime, lhs, ctx=ctx))()
+
+
 def negate(lhs, ctx):
     """Element N
     (num) -> -a
@@ -1685,6 +1791,19 @@ def newline_split(lhs, ctx):
         (NUMBER_TYPE): lambda: 10 ** lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
+
+
+def next_prime(lhs, ctx):
+    """Element ∆Ṗ
+    (num) -> next prime after a
+    (str) -> discrimiant of a
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.nextprime(lhs),
+        (str): lambda: sympy.discriminant(make_expression(lhs)),
+    }.get(ts, lambda: vectorise(next_prime, lhs, ctx=ctx))()
 
 
 def non_vectorising_equals(lhs, rhs, ctx):
@@ -1875,6 +1994,16 @@ def pluralise_count(lhs, rhs, ctx):
     return lhs + " " + rhs + "s" * (rhs != 1)
 
 
+def polynomial_from_roots(lhs, ctx):
+    """Element ∆ṙ
+    (lst) -> Get the polynomial with coefficients from the roots of a polynomial
+    """
+
+    eqn = " * ".join(map(lambda x: "(" + str(x) + " - x", lhs))
+    x = sympy.symbols("x")
+    return sympy.Poly(eqn, x).coeffs()
+
+
 def polynomial_roots(lhs, ctx):
     """Element ∆P
     (lst) -> roots(a)
@@ -1908,6 +2037,18 @@ def powerset(lhs, ctx):
             for r in range(len(iterable(lhs, ctx)) + 1)
         )
     )
+
+
+def prev_prime(lhs, ctx):
+    """Element ∆ṗ
+    (num) -> previous prime
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.prevprime(lhs),
+        str: lambda: str(sympy.factor(make_expression(lhs))),
+    }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
 
 
 def prime_factors(lhs, ctx):
@@ -2162,6 +2303,20 @@ def right_bit_shift(lhs, rhs, ctx):
         str: lambda: str(rhs).rjust(int(lhs), " "),
         str: lambda: str(lhs).rjust(abs(len(str(rhs)) - len(str(lhs))), " "),
     }.get(ts)()
+
+
+def round_to(lhs, rhs, ctx):
+    """Element ∆W
+    (num, num) -> round(a, no_dec_places=b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: round(float(lhs), int(rhs)),
+        (NUMBER_TYPE, str): lambda: -1,
+        (str, NUMBER_TYPE): lambda: -1,
+        (str, str): lambda: -1,
+    }.get(ts, lambda: vectorise(round_to, lhs, rhs, ctx=ctx))()
 
 
 # Written by copilot. Looks like it works.
@@ -2500,6 +2655,30 @@ def to_base(lhs, rhs, ctx):
         lhs = remaining
 
     return res
+
+
+def to_degrees(lhs, ctx):
+    """Element ∆D
+    (num) -> a * (180 / pi)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: lhs * (180 / sympy.pi),
+        str: lambda: sympy.N(lhs) * (180 / sympy.pi),
+    }.get(ts, lambda: vectorise(to_degrees, lhs, ctx=ctx))()
+
+
+def to_radians(lhs, ctx):
+    """Element ∆R
+    (num) -> a * (pi / 180)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
+        str: lambda: sympy.N(lhs) * (sympy.pi / 180),
+    }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
 
 
 def transliterate(lhs, rhs, other, ctx):
@@ -3216,7 +3395,7 @@ def nth_e(lhs, ctx):
         x = sympy.symbols("x")
         return str(sympy.diff(make_expression(lhs), x))
     elif vy_type(lhs) == NUMBER_TYPE:
-    	return int(str(sympy.N(sympy.E, int(lhs) + 1))[-1]) if lhs > 1 else 2
+        return int(str(sympy.N(sympy.E, int(lhs) + 1))[-1]) if lhs > 1 else 2
     else:
         return vectorise(nth_e, lhs, ctx=ctx)
 
@@ -3226,7 +3405,7 @@ def e_digits(lhs, ctx):
     (int) -> e_digits(a)
     """
     if vy_type(lhs) == NUMBER_TYPE:
-        estr = str(sympy.N(sympy.E,int(lhs) + 1))
+        estr = str(sympy.N(sympy.E, int(lhs) + 1))
         estr = estr[0] + estr[2:-1]
         return LazyList(map(int, estr))
     else:
@@ -3237,21 +3416,25 @@ def rand_bits(lhs, ctx):
     """Element ÞB
     (int) -> rand_bits(a)
     """
-    
+
     ts = vy_type(lhs)
     return {
-    (NUMBER_TYPE): [random.randint(0,1) for i in range(lhs)],
-    (str): lambda: [int(random.choice(bin(ord(c))[2:])) for c in lhs],
+        (NUMBER_TYPE): [random.randint(0, 1) for i in range(lhs)],
+        (str): lambda: [int(random.choice(bin(ord(c))[2:])) for c in lhs],
     }.get(ts, lambda: vectorise(rand_bits, lhs, ctx=ctx))()
+
 
 def zfiller(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, str): lambda: rhs.zfill(lhs),
         (str, NUMBER_TYPE): lambda: lhs.zfill(rhs),
-        (NUMBER_TYPE, list): lambda: [0 for i in range(max(0,lhs - len(rhs)))] + rhs,
-        (list, NUMBER_TYPE): lambda: [0 for i in range(max(0,rhs - len(lhs)))] + lhs
+        (NUMBER_TYPE, list): lambda: [0 for i in range(max(0, lhs - len(rhs)))]
+        + rhs,
+        (list, NUMBER_TYPE): lambda: [0 for i in range(max(0, rhs - len(lhs)))]
+        + lhs,
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
+
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
@@ -3562,6 +3745,21 @@ elements: dict[str, tuple[str, int]] = {
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element("sympy.fibonacci(lhs)", 1),
+    "∆±": process_element(copy_sign, 2),
+    "∆K": process_element(divisor_sum, 1),
+    "∆e": process_element(expe, 1),
+    "∆E": process_element(expe_minus_1, 1),
+    "∆L": process_element(natural_log, 1),
+    "∆l": process_element(log_2, 1),
+    "∆τ": process_element(log_10, 1),
+    "∆d": process_element(euclidean_distance, 2),
+    "∆D": process_element(to_degrees, 1),
+    "∆R": process_element(to_radians, 1),
+    "∆Ṗ": process_element(next_prime, 1),
+    "∆ṗ": process_element(prev_prime, 1),
+    "∆p": process_element(nearest_prime, 1),
+    "∆ṙ": process_element(polynomial_from_roots, 1),
+    "∆W": process_element(round_to, 2),
     "ÞB": process_element(rand_bits, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
@@ -3671,7 +3869,6 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
-
 }
 modifiers: dict[str, str] = {
     "v": (

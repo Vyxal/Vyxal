@@ -3444,6 +3444,7 @@
   description: Get the value of e raised to the power of a
   overloads:
     num: e ** a
+    str: simplify expression a
   vectorise: true
   tests:
     - "[0] : 1"
@@ -3668,7 +3669,7 @@
   arity: 2
   description: Round a number to n decimal places
   overloads:
-    num, num: round(a, no_dec_places=b)
+    num-num: round(a, no_dec_places=b)
   vectorise: true
   tests:
     - "[1.2345, 2] : 1.23"
@@ -3681,7 +3682,7 @@
   arity: 2
   description: Get the least common multiple of two numbers
   overloads:
-    num, num: lcm(a, b)
+    num-num: lcm(a, b)
   vectorise: true
   tests:
     - "[1, 2] : 2"
