@@ -655,7 +655,7 @@ def wrapify(item: Any, count: int = None, ctx: Context = None) -> List[Any]:
         else:
             return item
 
-def pi_digits(x: int):
+def pi_digits(x: int, ctx):
     """Generate x digits of Pi. Spigot's formula."""
     
     @lazylist
