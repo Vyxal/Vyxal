@@ -3687,7 +3687,7 @@
     - "[1, 2] : 2"
     - "[69, 420] : 9660"
 
-- element: "∆Π"
+- element: "∆i"
   name: nth Digit of Pi
   arity: 1
   description: Get the nth digit of pi
@@ -3719,7 +3719,7 @@
     - "[2] : 1"
     - "[3] : 8"
 
-- element: "∆F"
+- element: "∆f"
   name: nth Fibonacci Number
   arity: 1
   description: Get the nth fibonacci number
@@ -3738,7 +3738,7 @@
     - "[8] : 34"
     - "[9] : 55"
 
-- element: "∆b"
+- element: "∆B"
   name: Random Bits
   arity: 1
   description: Get a list of random bits to length n
@@ -3753,6 +3753,14 @@
   overloads:
     num: random.random()
   vectorise: true
+
+- element: "∆Z"
+  name: ZFill
+  arity: 2
+  description: Pad a string with zeros to a given length
+  overloads:
+    str, num: zfill(a, b)
+  vectorise: false
 
 - element: "øb"
   name: Parenthesise
@@ -4166,12 +4174,12 @@
   name: Evenly Distribute
   description: Evenly distribute a number over elements of a list
   arity: 2
-  overloads: 
+  overloads:
     list-num: Evenly distribute a over all elements of b, adding each part.
   vectorise: false
   tests:
-    - '[[1,2,3],6] : [3,4,5]'
-    - '[[1,2,3],5] : [3,4,4]'
+    - "[[1,2,3],6] : [3,4,5]"
+    - "[[1,2,3],5] : [3,4,4]"
 
 - element: "Þ↓"
   name: Minimum By Function
@@ -4197,7 +4205,7 @@
     any: All combinations of a list / string, of all lengths and all orders, without replacement
   vectorise: false
   tests:
-    - '[[1,2,3]] : [[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]'
+    - "[[1,2,3]] : [[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]"
     - '["ab"] : ["a","b","ab","ba"]'
 
 - element: "ÞF"
@@ -4220,8 +4228,8 @@
     any: Return a list of booleans describing which elements of a will remain after uniquifying.
   vectorise: false
   tests:
-    - '[[1,2,3,1,2,3]] : [1,1,1,0,0,0]'
-    - '[[1,1,1,2,3,1,2,2,1,3]] : [1,0,0,1,1,0,0,0,0,0]'
+    - "[[1,2,3,1,2,3]] : [1,1,1,0,0,0]"
+    - "[[1,1,1,2,3,1,2,2,1,3]] : [1,0,0,1,1,0,0,0,0,0]"
 
 - element: "ÞD"
   name: Diagonals
@@ -4231,7 +4239,7 @@
     lst: Diagonals of a matrix, starting with the main diagonal.
   vectorise: false
   tests:
-    - '[[1,2,3],[4,5,6],[7,8,9]] : [[1,5,9],[2,6],[3],[4,8],[7]]'
+    - "[[1,2,3],[4,5,6],[7,8,9]] : [[1,5,9],[2,6],[3],[4,8],[7]]"
 
 - element: "ÞS"
   name: Sublists
@@ -4241,7 +4249,7 @@
     lst: Sublists of a list.
   vectorise: false
   tests:
-    - '[[1,2,3]] : [[1],[2],[3],[1,2],[2,3],[1,2,3]]'
+    - "[[1,2,3]] : [[1],[2],[3],[1,2],[2,3],[1,2,3]]"
 
 - element: "ÞṪ"
   name: Transpose With Filler
@@ -4251,7 +4259,7 @@
     lst-any: Transpose a matrix, with a filler value for empty cells.
   vectorise: false
   tests:
-    - '[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]'
+    - "[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]"
     - '[[[1,2,3,4],[5,6],[7,8,9],[0]],"X"] : [[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]]'
 
 - element: "Þ℅"
@@ -4270,7 +4278,7 @@
     lst-lst: Matrix multiplication
   vectorise: false
   tests:
-    - '[[[1,2],[3,4]],[[5,6],[7,8]]] : [[23,34],[31,46]]'
+    - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[23,34],[31,46]]"
 
 - element: "ÞḊ"
   name: Matrix Determinant
@@ -4280,8 +4288,8 @@
     lst: Calculate the determinant of a matrix.
   vectorise: false
   tests:
-    - '[[[1,2],[3,4]]] : -2'
-    - '[[[1,2,3],[4,5,6],[7,8,9]]] : 0'
+    - "[[[1,2],[3,4]]] : -2"
+    - "[[[1,2,3],[4,5,6],[7,8,9]]] : 0"
 
 - element: "Þ\\"
   name: Antidiagonal
@@ -4291,7 +4299,7 @@
     lst: Antidiagonal of a matrix
   vectorise: false
   tests:
-    - '[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]'
+    - "[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]"
 
 - element: "Þ/"
   name: Diagonal
@@ -4301,7 +4309,7 @@
     lst: Diagonal of a matrix
   vectorise: false
   tests:
-    - '[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]'
+    - "[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]"
 
 - element: "ÞR"
   name: Matrix Row Reduce

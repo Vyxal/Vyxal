@@ -3557,6 +3557,12 @@ elements: dict[str, tuple[str, int]] = {
     "∆Q": process_element(general_quadratic_solver, 2),
     "∆P": process_element(polynomial_roots, 1),
     "∆ƈ": process_element(n_pick_r, 2),
+    "∆i": process_element(nth_pi, 1),
+    "∆ė": process_element(nth_e, 1),
+    "∆I": process_element("pi_digits(lhs)", 1),
+    "∆Ė": process_element(e_digits, 1),
+    "∆f": process_element("sympy.fibonacci(lhs)", 1),
+    "ÞB": process_element(rand_bits, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -3665,12 +3671,6 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
-    "∆i": process_element(nth_pi, 1),
-    "∆ė": process_element(nth_e, 1),
-    "∆I": process_element("pi_digits(lhs)", 1),
-    "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element("sympy.fibonacci(lhs)", 1),
-    "ÞB": process_element(rand_bits, 1),
 
 }
 modifiers: dict[str, str] = {
