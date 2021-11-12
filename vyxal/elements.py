@@ -3194,6 +3194,46 @@ def zero_slice(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
 
 
+def nth_pi(lhs, ctx):
+    """Element ∆i
+    (int) -> nth_pi(a)
+    """
+    return pi_digits(lhs)[lhs]
+
+
+def nth_e(lhs, ctx):
+    """Element ∆ė
+    (int) -> nth_e(a)
+    """
+    if (lhs):
+    	return int(str(sympy.N(sympy.E, lhs+1))[-1])
+    return 2
+
+
+def e_digits(lhs, ctx):
+    """Element ∆Ė
+    (int) -> e_digits(a)
+    """
+    estr = str(sympy.N(sympy.E, lhs+1))
+    estr = estr[0] + estr[2:-1]
+    return list(map(int, estr))
+
+
+def rand_bits(lhs, ctx):
+    """Element ÞB
+    (int) -> rand_bits(a)
+    """
+    return [random.randint(0,1) for i in range(lhs)]
+
+def zfiller(lhs, rhs, ctx):
+    ts = vy_type(lhs, rhs)
+    return {
+        (num, str): lambda: rhs.zfill(lhs),
+        (str, num): lambda: lhs.zfill(rhs),
+        (num, lst): lambda: [0 for i in range(max(0,lhs - len(rhs)))] + rhs,
+        (lst, num): lambda: [0 for i in range(max(0,rhs - len(lhs)))] + lhs
+    }.get(ts, lambda: vectorise(NAME, lhs, rhs, ctx=ctx))()
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
     "∧": process_element("lhs and rhs", 2),
@@ -3519,7 +3559,7 @@ elements: dict[str, tuple[str, int]] = {
     "øṙ": process_element(regex_sub, 3),
     "Þ×": process_element(all_combos, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
-    "ke": process_element("math.e", 0),
+    "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
     "kb": process_element('"Buzz"', 0),
     "kF": process_element('"FizzBuzz"', 0),
@@ -3537,7 +3577,7 @@ elements: dict[str, tuple[str, int]] = {
     "k6": process_element('"0123456789abcdef"', 0),
     "k^": process_element('"0123456789ABCDEF"', 0),
     "ko": process_element('"01234567"', 0),
-    "kp": process_element("string.punctuatioin", 0),
+    "kp": process_element("string.punctuation", 0),
     "kP": process_element(
         "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "!\\\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~",
@@ -3599,13 +3639,20 @@ elements: dict[str, tuple[str, int]] = {
     "k⁰": process_element('"bcdfghjklmnpqrstvwxyz"', 0),
     "k¹": process_element('"bcdfghjklmnpqrstvwxz"', 0),
     "kT": process_element('"[]<>-+.,"', 0),
-    "kṗ": process_element('LazyList("()","[]","{}","<>"])', 0),
+    "kṗ": process_element('LazyList(["()","[]","{}","<>"])', 0),
     "kS": process_element('"ඞ"', 0),
     "k₂": process_element("2 ** 20", 0),
     "k₃": process_element("2 ** 30", 0),
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
+    "∆i": process_element(nth_pi, 1),
+    "∆ė": process_element(nth_e, 1),
+    "∆I": process_element("pi_digits(lhs)", 1),
+    "∆Ė": process_element(e_digits, 1),
+    "∆f": process_element("sympy.fibonacci(lhs)", 1),
+    "ÞB": process_element(rand_bits, 1),
+
 }
 modifiers: dict[str, str] = {
     "v": (
