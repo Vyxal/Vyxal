@@ -3203,7 +3203,7 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: str(sympy.integrate(make_expression(lhs)),
+        (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
@@ -3247,11 +3247,11 @@ def rand_bits(lhs, ctx):
 def zfiller(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
-        (num, str): lambda: rhs.zfill(lhs),
-        (str, num): lambda: lhs.zfill(rhs),
-        (num, lst): lambda: [0 for i in range(max(0,lhs - len(rhs)))] + rhs,
-        (lst, num): lambda: [0 for i in range(max(0,rhs - len(lhs)))] + lhs
-    }.get(ts, lambda: vectorise(NAME, lhs, rhs, ctx=ctx))()
+        (NUMBER_TYPE, str): lambda: rhs.zfill(lhs),
+        (str, NUMBER_TYPE): lambda: lhs.zfill(rhs),
+        (NUMBER_TYPE, list): lambda: [0 for i in range(max(0,lhs - len(rhs)))] + rhs,
+        (list, NUMBER_TYPE): lambda: [0 for i in range(max(0,rhs - len(lhs)))] + lhs
+    }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("int(not lhs)", 1),
