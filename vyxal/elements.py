@@ -3457,7 +3457,7 @@ elements: dict[str, tuple[str, int]] = {
     "k∩": process_element('"aeiouyAEIOUY"', 0),
     "∆i": process_element(nth_pi, 1),
     "∆ė": process_element(nth_e, 1),
-    "∆I": process_element(lambda lhs, ctx: pi_digits(lhs), 1),
+    "∆I": process_element(pi_digits(lhs), 1),
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element("sympy.fibonacci(lhs)", 1),
     "ÞB": process_element(rand_bits, 1),
