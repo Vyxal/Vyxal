@@ -3197,33 +3197,52 @@ def zero_slice(lhs, rhs, ctx):
 def nth_pi(lhs, ctx):
     """Element ∆i
     (int) -> nth_pi(a)
+    (str) -> indefinte integral of a
     """
-    return pi_digits(lhs)[lhs]
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
+        (str): lambda: str(sympy.integrate(make_expression(lhs)),
+    }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
 def nth_e(lhs, ctx):
     """Element ∆ė
     (int) -> nth_e(a)
+    (str) -> derivative of a
     """
-    if (lhs):
-    	return int(str(sympy.N(sympy.E, lhs+1))[-1])
-    return 2
+    if type(lhs) is str:
+        x = sympy.symbols("x")
+        return str(sympy.diff(make_expression(lhs), x))
+    elif vy_type(lhs) == NUMBER_TYPE:
+    	return int(str(sympy.N(sympy.E, int(lhs) + 1))[-1]) if lhs > 1 else 2
+    else:
+        return vectorise(nth_e, lhs, ctx=ctx)
 
 
 def e_digits(lhs, ctx):
     """Element ∆Ė
     (int) -> e_digits(a)
     """
-    estr = str(sympy.N(sympy.E, lhs+1))
-    estr = estr[0] + estr[2:-1]
-    return list(map(int, estr))
+    if vy_type(lhs) == NUMBER_TYPE:
+        estr = str(sympy.N(sympy.E,int(lhs) + 1))
+        estr = estr[0] + estr[2:-1]
+        return LazyList(map(int, estr))
+    else:
+        return vectorise(e_digits, lhs, ctx=ctx)
 
 
 def rand_bits(lhs, ctx):
     """Element ÞB
     (int) -> rand_bits(a)
     """
-    return [random.randint(0,1) for i in range(lhs)]
+    
+    ts = vy_type(lhs)
+    return {
+    (NUMBER_TYPE): [random.randint(0,1) for i in range(lhs)],
+    (str): lambda: [int(random.choice(bin(ord(c))[2:])) for c in lhs],
+    }.get(ts, lambda: vectorise(rand_bits, lhs, ctx=ctx))()
 
 def zfiller(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)

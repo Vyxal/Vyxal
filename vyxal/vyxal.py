@@ -5,6 +5,8 @@ offline.
 
 import types
 
+from argparse import ArgumentParser
+
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.transpile import transpile
