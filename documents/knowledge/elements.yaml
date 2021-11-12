@@ -3638,7 +3638,7 @@
 - element: "∆p"
   name: Nearest Prime to a Number
   arity: 1
-  description: Get the prime number closest to a given number
+  description: Get the prime number closest to a given number, get the greater to break ties
   overloads:
     num: nearest_prime(a)
   vectorise: true
@@ -3741,20 +3741,10 @@
 - element: "∆b"
   name: Random Bits
   arity: 1
-  description: Get a list of random bits (0 or 1)
+  description: Get a list of random bits to length n
   overloads:
     num: random_bits(a)
   vectorise: true
-  tests:
-    - "[1] : [0]"
-    - "[2] : [0, 1]"
-    - "[3] : [0, 1, 1]"
-    - "[4] : [0, 0, 1, 1]"
-    - "[5] : [0, 0, 0, 1, 1]"
-    - "[6] : [0, 0, 0, 0, 1, 1]"
-    - "[7] : [0, 0, 0, 0, 0, 1, 1]"
-    - "[8] : [0, 0, 0, 0, 0, 0, 1, 1]"
-    - "[9] : [0, 0, 0, 0, 0, 0, 0, 1, 1]"
 
 - element: "∆Ṙ"
   name: Random Float
@@ -4170,4 +4160,193 @@
   arity: 2
   overloads:
     any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+  vectorise: false
+
+- element: "Þ…"
+  name: Evenly Distribute
+  description: Evenly distribute a number over elements of a list
+  arity: 2
+  overloads: 
+    list-num: Evenly distribute a over all elements of b, adding each part.
+  vectorise: false
+  tests:
+    - '[[1,2,3],6] : [3,4,5]'
+    - '[[1,2,3],5] : [3,4,4]'
+
+- element: "Þ↓"
+  name: Minimum By Function
+  description: Find the minimum value of a list by applying a function to each element
+  arity: 2
+  overloads:
+    lst-fun: Minimum value of a by applying b to each element
+  vectorise: false
+
+- element: "Þ↑"
+  name: Maximum By Function
+  description: Find the maximum value of a list by applying a function to each element
+  arity: 2
+  overloads:
+    lst-fun: Maximum value of a by applying b to each element
+  vectorise: false
+
+- element: "Þ×"
+  name: All Combinations
+  description: All combinations of a list / string, of all lengths, without replacement
+  arity: 1
+  overloads:
+    any: All combinations of a list / string, of all lengths and all orders, without replacement
+  vectorise: false
+  tests:
+    - '[[1,2,3]] : [[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]'
+    - '["ab"] : ["a","b","ab","ba"]'
+
+- element: "ÞF"
+  name: All Fibbonacci
+  description: All Fibbonacci numbers as a LazyList.
+  arity: 0
+  vectorise: false
+
+- element: "Þ!"
+  name: All Factorials
+  description: All factorials as a LazyList.
+  arity: 0
+  vectorise: false
+
+- element: "ÞU"
+  name: Uniquify Mask
+  description: Return a list of booleans describing which elements of a will remain after uniquifying.
+  arity: 1
+  overloads:
+    any: Return a list of booleans describing which elements of a will remain after uniquifying.
+  vectorise: false
+  tests:
+    - '[[1,2,3,1,2,3]] : [1,1,1,0,0,0]'
+    - '[[1,1,1,2,3,1,2,2,1,3]] : [1,0,0,1,1,0,0,0,0,0]'
+
+- element: "ÞD"
+  name: Diagonals
+  description: Diagonals of a matrix, starting with the main diagonal.
+  arity: 1
+  overloads:
+    lst: Diagonals of a matrix, starting with the main diagonal.
+  vectorise: false
+  tests:
+    - '[[1,2,3],[4,5,6],[7,8,9]] : [[1,5,9],[2,6],[3],[4,8],[7]]'
+
+- element: "ÞS"
+  name: Sublists
+  description: Sublists of a list.
+  arity: 1
+  overloads:
+    lst: Sublists of a list.
+  vectorise: false
+  tests:
+    - '[[1,2,3]] : [[1],[2],[3],[1,2],[2,3],[1,2,3]]'
+
+- element: "ÞṪ"
+  name: Transpose With Filler
+  description: Transpose a matrix, with a filler value for empty cells.
+  arity: 2
+  overloads:
+    lst-any: Transpose a matrix, with a filler value for empty cells.
+  vectorise: false
+  tests:
+    - '[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]'
+    - '[[[1,2,3,4],[5,6],[7,8,9],[0]],"X"] : [[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]]'
+
+- element: "Þ℅"
+  name: Random Permutation
+  description: Random permutation of a list / string
+  arity: 1
+  overloads:
+    any: Random permutation of a list / string
+  vectorise: false
+
+- element: "ÞṀ"
+  name: Matrix Multiplication
+  description: Multiply two matrices together.
+  arity: 2
+  overloads:
+    lst-lst: Matrix multiplication
+  vectorise: false
+  tests:
+    - '[[[1,2],[3,4]],[[5,6],[7,8]]] : [[23,34],[31,46]]'
+
+- element: "ÞḊ"
+  name: Matrix Determinant
+  description: Calculate the determinant of a matrix.
+  arity: 1
+  overloads:
+    lst: Calculate the determinant of a matrix.
+  vectorise: false
+  tests:
+    - '[[[1,2],[3,4]]] : -2'
+    - '[[[1,2,3],[4,5,6],[7,8,9]]] : 0'
+
+- element: "Þ\\"
+  name: Antidiagonal
+  description: Antidiagonal of a matrix
+  arity: 1
+  overloads:
+    lst: Antidiagonal of a matrix
+  vectorise: false
+  tests:
+    - '[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]'
+
+- element: "Þ/"
+  name: Diagonal
+  description: Diagonal of a matrix
+  arity: 1
+  overloads:
+    lst: Diagonal of a matrix
+  vectorise: false
+  tests:
+    - '[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]'
+
+- element: "ÞR"
+  name: Matrix Row Reduce
+  description: Reduce rows of a matrix by a function.
+  arity: 2
+  overloads:
+    lst-fun: Reduce rows of a matrix by a function.
+  vectorise: false
+
+- element: "ÞC"
+  name: Matrix Column Reduce
+  description: Reduce columns of a matrix by a function.
+  arity: 2
+  overloads:
+    lst-fun: Reduce columns of a matrix by a function.
+  vectorise: false
+
+- element: "¨U"
+  name: Get Request
+  description: Send a GET request to a URL
+  arity: 1
+  overloads:
+    str: Send a GET request to a URL
+  vectorise: false
+
+- element: "¨M"
+  name: Map To Indices
+  description: Map a function to elements of a list whose indices are in another list
+  arity: 3
+  overloads:
+    lst-lst-fun: Map a function to elements of a list whose indices are in another list
+  vectorise: false
+
+- element: "¨,"
+  name: Print With Space
+  description: Print a value with a space after it
+  arity: 1
+  overloads:
+    any: Print a value with a space after it
+  vectorise: false
+
+- element: "¨…"
+  name: Print With Space Without Popping
+  description: Print a value with a space after it, without popping it
+  arity: 1
+  overloads:
+    any: Print a value with a space after it, without popping it
   vectorise: false
