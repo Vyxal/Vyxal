@@ -159,7 +159,7 @@ def any_true(lhs, ctx):
         if len(lhs) == 1:
             return int(91 >= ord(lhs) >= 65)
         else:
-            return [int(91 >= ord(lhs) >= 65) for char in lhs]
+            return [int(91 >= ord(char) >= 65) for char in lhs]
     return int(any(iterable(lhs, ctx=ctx)))
 
 
