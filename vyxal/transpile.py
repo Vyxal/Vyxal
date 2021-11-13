@@ -162,13 +162,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        return (
-            f"stack += FN_{struct.name}(stack, self=FN_{struct.name}, ctx=ctx)"
-        )
+        return f"stack += VAR_{struct.name}(stack, self=VAR_{struct.name}, ctx=ctx)"
     if isinstance(struct, structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
-        print(struct.parameters)
         for parameter in struct.parameters:
             if parameter.isnumeric():
                 parameter_total += int(parameter)
@@ -190,7 +187,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
 
         return (
             indent_str(
-                f"def FN_{struct.name}(arg_stack, self, arity=-1, ctx=None):",
+                f"def VAR_{struct.name}(arg_stack, self, arity=-1, ctx=None):",
                 indent,
             )
             + indent_str("parameters = []", indent + 1)
@@ -201,7 +198,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str(f"this = FN_{struct.name}", indent + 1)
+            + indent_str(f"this = VAR_{struct.name}", indent + 1)
             + indent_str(transpile_ast(struct.body), indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
@@ -257,9 +254,6 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str(f"_lambda_{id_}.arity = {struct.branches[0]}", indent)
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
-
-    if isinstance(struct, structure.FunctionReference):
-        return indent_str(f"stack.append(FN_{struct.branches[0]})", indent)
 
     if isinstance(struct, structure.ListLiteral):
         # We have to manually build this because we don't know how

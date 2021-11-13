@@ -458,12 +458,9 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
             return ret[-1]
         else:
             return []
-    elif function.__name__.startswith("FN_"):
-        ret = function(list(args)[::-1], function, ctx)[-1]
-        if len(ret):
-            return ret[-1]
-        else:
-            return []
+    elif function.__name__.startswith("VAR_"):
+        ret = function(list(args)[::-1], function, ctx=ctx)[-1]
+        return ret
     elif takes_ctx(function):
         return function(*args, ctx)
     return function(*args)
