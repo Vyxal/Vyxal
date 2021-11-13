@@ -19,6 +19,7 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         + "from vyxal.transpile import *\n"
         + "from vyxal.context import Context\n"
         + "from vyxal.elements import *\n"
+        + "from vyxal.helpers import *\n"
         + "from vyxal.LazyList import *\n"
     )
     for element in data:
@@ -39,7 +40,7 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                             and expected[0] == "{"
                             and expected[-1] == "}"
                         )
-                        tests.write(f"\tstack = {stack}\n")
+                        tests.write(f"\tstack = [vyxalify(elem) for elem in {stack}]\n")
                         tests.write(f"\texpected = {expected}\n")
                         tests.write(f"\tctx = Context()\n")
                         tests.write("\tctx.stacks.append(stack)\n")

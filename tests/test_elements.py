@@ -6,9 +6,10 @@ sys.path.insert(1, THIS_FOLDER)
 from vyxal.transpile import *
 from vyxal.context import Context
 from vyxal.elements import *
+from vyxal.helpers import *
 from vyxal.LazyList import *
 def test_LogicalNot():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -17,7 +18,7 @@ def test_LogicalNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -26,7 +27,7 @@ def test_LogicalNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -35,7 +36,7 @@ def test_LogicalNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [""]
+	stack = [vyxalify(elem) for elem in [""]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -44,7 +45,7 @@ def test_LogicalNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -53,7 +54,7 @@ def test_LogicalNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[]]
+	stack = [vyxalify(elem) for elem in [[]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -64,7 +65,7 @@ def test_LogicalNot():
 
 
 def test_LogicalAnd():
-	stack = [0, 0]
+	stack = [vyxalify(elem) for elem in [0, 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -73,7 +74,7 @@ def test_LogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["", 1]
+	stack = [vyxalify(elem) for elem in ["", 1]]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -82,7 +83,7 @@ def test_LogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -91,7 +92,7 @@ def test_LogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -102,7 +103,7 @@ def test_LogicalAnd():
 
 
 def test_ReversedLogicalAnd():
-	stack = [0, 0]
+	stack = [vyxalify(elem) for elem in [0, 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -111,7 +112,7 @@ def test_ReversedLogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["", 1]
+	stack = [vyxalify(elem) for elem in ["", 1]]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -120,7 +121,7 @@ def test_ReversedLogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -129,7 +130,7 @@ def test_ReversedLogicalAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -140,7 +141,7 @@ def test_ReversedLogicalAnd():
 
 
 def test_LogicalOr():
-	stack = [0, 0]
+	stack = [vyxalify(elem) for elem in [0, 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -149,7 +150,7 @@ def test_LogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["", 1]
+	stack = [vyxalify(elem) for elem in ["", 1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -158,7 +159,7 @@ def test_LogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 0]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -167,7 +168,7 @@ def test_LogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -178,7 +179,7 @@ def test_LogicalOr():
 
 
 def test_ReversedLogicalOr():
-	stack = [0, 0]
+	stack = [vyxalify(elem) for elem in [0, 0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -187,7 +188,7 @@ def test_ReversedLogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["", 1]
+	stack = [vyxalify(elem) for elem in ["", 1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -196,7 +197,7 @@ def test_ReversedLogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 0]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -205,7 +206,7 @@ def test_ReversedLogicalOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -216,7 +217,7 @@ def test_ReversedLogicalOr():
 
 
 def test_ItemSplit():
-	stack = [123456]
+	stack = [vyxalify(elem) for elem in [123456]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -225,7 +226,7 @@ def test_ItemSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "c"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -234,7 +235,7 @@ def test_ItemSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -245,7 +246,7 @@ def test_ItemSplit():
 
 
 def test_AsteriskLiteral():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "*"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -256,7 +257,7 @@ def test_AsteriskLiteral():
 
 
 def test_MultiCommand():
-	stack = [8, 2]
+	stack = [vyxalify(elem) for elem in [8, 2]]
 	expected = 3.0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -265,7 +266,7 @@ def test_MultiCommand():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcde", 4]
+	stack = [vyxalify(elem) for elem in ["abcde", 4]]
 	expected = "aaaabbbbccccddddeeee"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -274,7 +275,7 @@ def test_MultiCommand():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcde", "FgHIj"]
+	stack = [vyxalify(elem) for elem in ["abcde", "FgHIj"]]
 	expected = "AbCDe"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -283,7 +284,7 @@ def test_MultiCommand():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]]]
 	expected = [[1, 2], 3, 4, 5, [6, 7]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -294,7 +295,7 @@ def test_MultiCommand():
 
 
 def test_FunctionCall():
-	stack = [12]
+	stack = [vyxalify(elem) for elem in [12]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -303,7 +304,7 @@ def test_FunctionCall():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 0, 1]]
+	stack = [vyxalify(elem) for elem in [[1, 0, 1]]]
 	expected = [0, 1, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -314,7 +315,7 @@ def test_FunctionCall():
 
 
 def test_SplitOn():
-	stack = [1231234, 3]
+	stack = [vyxalify(elem) for elem in [1231234, 3]]
 	expected = ["12", "12", "4"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -323,7 +324,7 @@ def test_SplitOn():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc3def", 3]
+	stack = [vyxalify(elem) for elem in ["abc3def", 3]]
 	expected = ["abc", "def"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -332,7 +333,7 @@ def test_SplitOn():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 3, 2, 1], 4]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 3, 2, 1], 4]]
 	expected = [[1, 2, 3], [3, 2, 1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -343,7 +344,7 @@ def test_SplitOn():
 
 
 def test_Halve():
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -352,7 +353,7 @@ def test_Halve():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["FizzBuzz"]
+	stack = [vyxalify(elem) for elem in ["FizzBuzz"]]
 	expected = ["Fizz", "Buzz"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -361,7 +362,7 @@ def test_Halve():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[2, 4, 6, 8]]
+	stack = [vyxalify(elem) for elem in [[2, 4, 6, 8]]]
 	expected = [1, 2, 3, 4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -372,7 +373,7 @@ def test_Halve():
 
 
 def test_CombinationsRemoveFixedPointCollection():
-	stack = ["cabbage", "abcde"]
+	stack = [vyxalify(elem) for elem in ["cabbage", "abcde"]]
 	expected = "cabbae"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -381,7 +382,7 @@ def test_CombinationsRemoveFixedPointCollection():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,3,5,6,7,7,1],[1,3,5]]
+	stack = [vyxalify(elem) for elem in [[1,3,5,6,7,7,1],[1,3,5]]]
 	expected = [1,3,5,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -390,7 +391,7 @@ def test_CombinationsRemoveFixedPointCollection():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2],2]
+	stack = [vyxalify(elem) for elem in [[1,2],2]]
 	expected = [[1,1],[1,2],[2,1],[2,2]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -401,7 +402,7 @@ def test_CombinationsRemoveFixedPointCollection():
 
 
 def test_InfiniteReplacement():
-	stack = ["{[[[]]]}","[]",""]
+	stack = [vyxalify(elem) for elem in ["{[[[]]]}","[]",""]]
 	expected = "{}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -410,7 +411,7 @@ def test_InfiniteReplacement():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1444,44,34]
+	stack = [vyxalify(elem) for elem in [1444,44,34]]
 	expected = 1334
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -421,7 +422,7 @@ def test_InfiniteReplacement():
 
 
 def test_ComplementCommaSplit():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = -4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -430,7 +431,7 @@ def test_ComplementCommaSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-5]
+	stack = [vyxalify(elem) for elem in [-5]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -439,7 +440,7 @@ def test_ComplementCommaSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a,b,c"]
+	stack = [vyxalify(elem) for elem in ["a,b,c"]]
 	expected = ["a","b","c"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -450,7 +451,7 @@ def test_ComplementCommaSplit():
 
 
 def test_IsPrimeCaseCheck():
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -459,7 +460,7 @@ def test_IsPrimeCaseCheck():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -468,7 +469,7 @@ def test_IsPrimeCaseCheck():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a"]
+	stack = [vyxalify(elem) for elem in ["a"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -477,7 +478,7 @@ def test_IsPrimeCaseCheck():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["A"]
+	stack = [vyxalify(elem) for elem in ["A"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -486,7 +487,7 @@ def test_IsPrimeCaseCheck():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["!"]
+	stack = [vyxalify(elem) for elem in ["!"]]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -497,7 +498,7 @@ def test_IsPrimeCaseCheck():
 
 
 def test_InclusiveZeroRange():
-	stack = ["a$c"]
+	stack = [vyxalify(elem) for elem in ["a$c"]]
 	expected = [1, 0, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -506,7 +507,7 @@ def test_InclusiveZeroRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1]]
+	stack = [vyxalify(elem) for elem in [[1]]]
 	expected = [[0, 1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -515,7 +516,7 @@ def test_InclusiveZeroRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = [0,1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -526,7 +527,7 @@ def test_InclusiveZeroRange():
 
 
 def test_ExclusiveZeroRange():
-	stack = ["1234"]
+	stack = [vyxalify(elem) for elem in ["1234"]]
 	expected = "1234321"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -535,7 +536,7 @@ def test_ExclusiveZeroRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1]]
+	stack = [vyxalify(elem) for elem in [[1]]]
 	expected = [[0]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -544,7 +545,7 @@ def test_ExclusiveZeroRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = [0,1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -555,7 +556,7 @@ def test_ExclusiveZeroRange():
 
 
 def test_InclusiveOneRange():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "ABC"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -564,7 +565,7 @@ def test_InclusiveOneRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[4, 5]]
+	stack = [vyxalify(elem) for elem in [[4, 5]]]
 	expected = [[1, 2, 3, 4], [1, 2, 3, 4, 5]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -573,7 +574,7 @@ def test_InclusiveOneRange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -584,7 +585,7 @@ def test_InclusiveOneRange():
 
 
 def test_ExclusiveOneRangeLowercase():
-	stack = ["1aBC"]
+	stack = [vyxalify(elem) for elem in ["1aBC"]]
 	expected = "1abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -593,7 +594,7 @@ def test_ExclusiveOneRangeLowercase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0]]
+	stack = [vyxalify(elem) for elem in [[0]]]
 	expected = [[]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -602,7 +603,7 @@ def test_ExclusiveOneRangeLowercase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -613,7 +614,7 @@ def test_ExclusiveOneRangeLowercase():
 
 
 def test_Chooserandomchoicesetsame():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 10
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -622,7 +623,7 @@ def test_Chooserandomchoicesetsame():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc","aaccb"]
+	stack = [vyxalify(elem) for elem in ["abc","aaccb"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -631,7 +632,7 @@ def test_Chooserandomchoicesetsame():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc","abcd"]
+	stack = [vyxalify(elem) for elem in ["abc","abcd"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -642,7 +643,7 @@ def test_Chooserandomchoicesetsame():
 
 
 def test_Palindromise():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [1,2,3,2,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -651,7 +652,7 @@ def test_Palindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4]]]
 	expected = [1,2,3,4,3,2,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -660,7 +661,7 @@ def test_Palindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5]]]
 	expected = [1,2,3,4,5,4,3,2,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -669,7 +670,7 @@ def test_Palindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,6]]]
 	expected = [1,2,3,4,5,6,5,4,3,2,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -678,7 +679,7 @@ def test_Palindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "hellolleh"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -689,7 +690,7 @@ def test_Palindromise():
 
 
 def test_StackLength():
-	stack = [0,1,2]
+	stack = [vyxalify(elem) for elem in [0,1,2]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -698,7 +699,7 @@ def test_StackLength():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,1,1,1,1]
+	stack = [vyxalify(elem) for elem in [1,1,1,1,1]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -707,7 +708,7 @@ def test_StackLength():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -718,7 +719,7 @@ def test_StackLength():
 
 
 def test_Pair():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = [1, 2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -727,7 +728,7 @@ def test_Pair():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2, 3]
+	stack = [vyxalify(elem) for elem in [1, 2, 3]]
 	expected = [2, 3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -736,7 +737,7 @@ def test_Pair():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3], "abc", 3]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3], "abc", 3]]
 	expected = ["abc", 3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -747,7 +748,7 @@ def test_Pair():
 
 
 def test_Swap():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -756,7 +757,7 @@ def test_Swap():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 2, 3]
+	stack = [vyxalify(elem) for elem in [1, 2, 3]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -765,7 +766,7 @@ def test_Swap():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3], "abc", 3]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3], "abc", 3]]
 	expected = "abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -776,7 +777,7 @@ def test_Swap():
 
 
 def test_ModuloFormat():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -785,7 +786,7 @@ def test_ModuloFormat():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello!",3]
+	stack = [vyxalify(elem) for elem in ["hello!",3]]
 	expected = "o!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -794,7 +795,7 @@ def test_ModuloFormat():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hel%ld!","lo, Wor"]
+	stack = [vyxalify(elem) for elem in ["Hel%ld!","lo, Wor"]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -803,7 +804,7 @@ def test_ModuloFormat():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["% and % and %",[1,2,3]]
+	stack = [vyxalify(elem) for elem in ["% and % and %",[1,2,3]]]
 	expected = "1 and 2 and 3"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -814,7 +815,7 @@ def test_ModuloFormat():
 
 
 def test_Multiplication():
-	stack = [3,5]
+	stack = [vyxalify(elem) for elem in [3,5]]
 	expected = 15
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -823,7 +824,7 @@ def test_Multiplication():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4,-2]
+	stack = [vyxalify(elem) for elem in [4,-2]]
 	expected = -8
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -832,7 +833,7 @@ def test_Multiplication():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4,"*"]
+	stack = [vyxalify(elem) for elem in [4,"*"]]
 	expected = "****"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -841,7 +842,7 @@ def test_Multiplication():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["x",5]
+	stack = [vyxalify(elem) for elem in ["x",5]]
 	expected = "xxxxx"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -850,7 +851,7 @@ def test_Multiplication():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["aeiou","hello"]
+	stack = [vyxalify(elem) for elem in ["aeiou","hello"]]
 	expected = "hillu"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -861,7 +862,7 @@ def test_Multiplication():
 
 
 def test_Addition():
-	stack = [1, 1]
+	stack = [vyxalify(elem) for elem in [1, 1]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -870,7 +871,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0, -5]
+	stack = [vyxalify(elem) for elem in [0, -5]]
 	expected = -5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -879,7 +880,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc", 5]
+	stack = [vyxalify(elem) for elem in ["abc", 5]]
 	expected = "abc5"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -888,7 +889,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5, "abc"]
+	stack = [vyxalify(elem) for elem in [5, "abc"]]
 	expected = "5abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -897,7 +898,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello, ", "World!"]
+	stack = [vyxalify(elem) for elem in ["Hello, ", "World!"]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -906,7 +907,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 4]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 4]]
 	expected = [5, 6, 7]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -915,7 +916,7 @@ def test_Addition():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], [4,5,6]]
+	stack = [vyxalify(elem) for elem in [[1,2,3], [4,5,6]]]
 	expected = [5, 7, 9]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -926,7 +927,7 @@ def test_Addition():
 
 
 def test_Subtract():
-	stack = [5, 4]
+	stack = [vyxalify(elem) for elem in [5, 4]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -935,7 +936,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0, -5]
+	stack = [vyxalify(elem) for elem in [0, -5]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -944,7 +945,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["|", 5]
+	stack = [vyxalify(elem) for elem in ["|", 5]]
 	expected = "|-----"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -953,7 +954,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3, "> arrow"]
+	stack = [vyxalify(elem) for elem in [3, "> arrow"]]
 	expected = "---> arrow"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -962,7 +963,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcbde", "b"]
+	stack = [vyxalify(elem) for elem in ["abcbde", "b"]]
 	expected = "acde"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -971,7 +972,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["aaa", "a"]
+	stack = [vyxalify(elem) for elem in ["aaa", "a"]]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -980,7 +981,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3], [1, 2, 3]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3], [1, 2, 3]]]
 	expected = [0, 0, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -989,7 +990,7 @@ def test_Subtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[10, 20, 30], 5]
+	stack = [vyxalify(elem) for elem in [[10, 20, 30], 5]]
 	expected = [5, 15, 25]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1000,7 +1001,7 @@ def test_Subtract():
 
 
 def test_DivideSplit():
-	stack = [4,2]
+	stack = [vyxalify(elem) for elem in [4,2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1009,7 +1010,7 @@ def test_DivideSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcdef",3]
+	stack = [vyxalify(elem) for elem in ["abcdef",3]]
 	expected = ["ab","cd","ef"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1018,7 +1019,7 @@ def test_DivideSplit():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["1,2,3",","]
+	stack = [vyxalify(elem) for elem in ["1,2,3",","]]
 	expected = ["1","2","3"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1029,7 +1030,7 @@ def test_DivideSplit():
 
 
 def test_LessThan():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1038,7 +1039,7 @@ def test_LessThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2, 1]
+	stack = [vyxalify(elem) for elem in [2, 1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1047,7 +1048,7 @@ def test_LessThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a","b"]
+	stack = [vyxalify(elem) for elem in ["a","b"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1056,7 +1057,7 @@ def test_LessThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-5,2]
+	stack = [vyxalify(elem) for elem in [-5,2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1065,7 +1066,7 @@ def test_LessThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = [1,0,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1076,7 +1077,7 @@ def test_LessThan():
 
 
 def test_Equals():
-	stack = [1, 1]
+	stack = [vyxalify(elem) for elem in [1, 1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1085,7 +1086,7 @@ def test_Equals():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2, 1]
+	stack = [vyxalify(elem) for elem in [2, 1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1094,7 +1095,7 @@ def test_Equals():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a","b"]
+	stack = [vyxalify(elem) for elem in ["a","b"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1103,7 +1104,7 @@ def test_Equals():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["xyz","xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz","xyz"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1112,7 +1113,7 @@ def test_Equals():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = [0,1,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1121,7 +1122,7 @@ def test_Equals():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,"1"]
+	stack = [vyxalify(elem) for elem in [1,"1"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1132,7 +1133,7 @@ def test_Equals():
 
 
 def test_GreaterThan():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1141,7 +1142,7 @@ def test_GreaterThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2, 1]
+	stack = [vyxalify(elem) for elem in [2, 1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1150,7 +1151,7 @@ def test_GreaterThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a","b"]
+	stack = [vyxalify(elem) for elem in ["a","b"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1159,7 +1160,7 @@ def test_GreaterThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2,-5]
+	stack = [vyxalify(elem) for elem in [2,-5]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1168,7 +1169,7 @@ def test_GreaterThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = [0,0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1177,7 +1178,7 @@ def test_GreaterThan():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["5",10]
+	stack = [vyxalify(elem) for elem in ["5",10]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1188,7 +1189,7 @@ def test_GreaterThan():
 
 
 def test_All():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1197,7 +1198,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0,1,2]]
+	stack = [vyxalify(elem) for elem in [[0,1,2]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1206,7 +1207,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["",1,2]]
+	stack = [vyxalify(elem) for elem in [["",1,2]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1215,7 +1216,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[]]
+	stack = [vyxalify(elem) for elem in [[]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1224,7 +1225,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [""]
+	stack = [vyxalify(elem) for elem in [""]]
 	expected = []
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1233,7 +1234,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1242,7 +1243,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a"]
+	stack = [vyxalify(elem) for elem in ["a"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1251,7 +1252,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["y"]
+	stack = [vyxalify(elem) for elem in ["y"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1260,7 +1261,7 @@ def test_All():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi"]
+	stack = [vyxalify(elem) for elem in ["hi"]]
 	expected = [0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1271,7 +1272,7 @@ def test_All():
 
 
 def test_BinaryToDecimal():
-	stack = [[1,0,1]]
+	stack = [vyxalify(elem) for elem in [[1,0,1]]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1280,7 +1281,7 @@ def test_BinaryToDecimal():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,1,1]]
+	stack = [vyxalify(elem) for elem in [[1,1,1]]]
 	expected = 7
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1289,7 +1290,7 @@ def test_BinaryToDecimal():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["1011"]
+	stack = [vyxalify(elem) for elem in ["1011"]]
 	expected = 11
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1300,7 +1301,7 @@ def test_BinaryToDecimal():
 
 
 def test_ChrOrd():
-	stack = [65]
+	stack = [vyxalify(elem) for elem in [65]]
 	expected = "A"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1309,7 +1310,7 @@ def test_ChrOrd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8482]
+	stack = [vyxalify(elem) for elem in [8482]]
 	expected = "™"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1318,7 +1319,7 @@ def test_ChrOrd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Z"]
+	stack = [vyxalify(elem) for elem in ["Z"]]
 	expected = 90
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1327,7 +1328,7 @@ def test_ChrOrd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["ABC"]
+	stack = [vyxalify(elem) for elem in ["ABC"]]
 	expected = [65,66,67]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1336,7 +1337,7 @@ def test_ChrOrd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[123,124,125]]
+	stack = [vyxalify(elem) for elem in [[123,124,125]]]
 	expected = ["{","|","}"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1347,7 +1348,7 @@ def test_ChrOrd():
 
 
 def test_TwoPowerPythonEval():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1356,7 +1357,7 @@ def test_TwoPowerPythonEval():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1365,7 +1366,7 @@ def test_TwoPowerPythonEval():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["[1,2,3]"]
+	stack = [vyxalify(elem) for elem in ["[1,2,3]"]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1376,7 +1377,7 @@ def test_TwoPowerPythonEval():
 
 
 def test_Filter():
-	stack = [[1,2,3],[2,4,6]]
+	stack = [vyxalify(elem) for elem in [[1,2,3],[2,4,6]]]
 	expected = [1,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1385,7 +1386,7 @@ def test_Filter():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcdef","daffodil"]
+	stack = [vyxalify(elem) for elem in ["abcdef","daffodil"]]
 	expected = "bce"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1396,7 +1397,7 @@ def test_Filter():
 
 
 def test_Max():
-	stack = [[1,3,2]]
+	stack = [vyxalify(elem) for elem in [[1,3,2]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1405,7 +1406,7 @@ def test_Max():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["python"]
+	stack = [vyxalify(elem) for elem in ["python"]]
 	expected = "y"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1416,7 +1417,7 @@ def test_Max():
 
 
 def test_HexToDecimal():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 291
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1425,7 +1426,7 @@ def test_HexToDecimal():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["b"]
+	stack = [vyxalify(elem) for elem in ["b"]]
 	expected = 11
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1434,7 +1435,7 @@ def test_HexToDecimal():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["beedab"]
+	stack = [vyxalify(elem) for elem in ["beedab"]]
 	expected = 12512683
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1445,7 +1446,7 @@ def test_HexToDecimal():
 
 
 def test_Int():
-	stack = ["5"]
+	stack = [vyxalify(elem) for elem in ["5"]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1454,7 +1455,7 @@ def test_Int():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1463,7 +1464,7 @@ def test_Int():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[5]]
+	stack = [vyxalify(elem) for elem in [[5]]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1474,7 +1475,7 @@ def test_Int():
 
 
 def test_Join():
-	stack = [[1,2,3],4]
+	stack = [vyxalify(elem) for elem in [[1,2,3],4]]
 	expected = [1,2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1483,7 +1484,7 @@ def test_Join():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc","def"]
+	stack = [vyxalify(elem) for elem in ["abc","def"]]
 	expected = "abcdef"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1492,7 +1493,7 @@ def test_Join():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,[2,3,4]]
+	stack = [vyxalify(elem) for elem in [1,[2,3,4]]]
 	expected = [1,2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1501,7 +1502,7 @@ def test_Join():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2],[3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[3,4]]]
 	expected = [1,2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1512,7 +1513,7 @@ def test_Join():
 
 
 def test_FactorsSubstringsPrefixes():
-	stack = [20]
+	stack = [vyxalify(elem) for elem in [20]]
 	expected = [1,2,4,5,10,20]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1521,7 +1522,7 @@ def test_FactorsSubstringsPrefixes():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = [1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1530,7 +1531,7 @@ def test_FactorsSubstringsPrefixes():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["adbcdbcd"]
+	stack = [vyxalify(elem) for elem in ["adbcdbcd"]]
 	expected = {"b","c","d","bc","cd","bcd","db","dbc"}
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1539,7 +1540,7 @@ def test_FactorsSubstringsPrefixes():
 	ctx.stacks.pop()
 	assert set(simplify(stack[-1])) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[1],[1,2],[1,2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1550,7 +1551,7 @@ def test_FactorsSubstringsPrefixes():
 
 
 def test_Length():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1559,7 +1560,7 @@ def test_Length():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1568,7 +1569,7 @@ def test_Length():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,"wrfwerfgbr",6]]
+	stack = [vyxalify(elem) for elem in [[1,2,"wrfwerfgbr",6]]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1579,7 +1580,7 @@ def test_Length():
 
 
 def test_Map():
-	stack = [5,[1,2,3]]
+	stack = [vyxalify(elem) for elem in [5,[1,2,3]]]
 	expected = [[5,1],[5,2],[5,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1588,7 +1589,7 @@ def test_Map():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["z","hi"]
+	stack = [vyxalify(elem) for elem in ["z","hi"]]
 	expected = [["z","h"],["z","i"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1599,7 +1600,7 @@ def test_Map():
 
 
 def test_NegateSwapCase():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = -5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1608,7 +1609,7 @@ def test_NegateSwapCase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1617,7 +1618,7 @@ def test_NegateSwapCase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a"]
+	stack = [vyxalify(elem) for elem in ["a"]]
 	expected = "A"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1626,7 +1627,7 @@ def test_NegateSwapCase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["aBc"]
+	stack = [vyxalify(elem) for elem in ["aBc"]]
 	expected = "AbC"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1637,7 +1638,7 @@ def test_NegateSwapCase():
 
 
 def test_Count():
-	stack = [[1,2,3,4,5,4,3], 4]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,4,3], 4]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1646,7 +1647,7 @@ def test_Count():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcdbacsabdcabca","a"]
+	stack = [vyxalify(elem) for elem in ["abcdbacsabdcabca","a"]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1657,7 +1658,7 @@ def test_Count():
 
 
 def test_Strip():
-	stack = [[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]]]
 	expected = [3, 4, 5, 4, 3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1666,7 +1667,7 @@ def test_Strip():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["    Hello, World!    ", " "]
+	stack = [vyxalify(elem) for elem in ["    Hello, World!    ", " "]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1677,7 +1678,7 @@ def test_Strip():
 
 
 def test_Reduce():
-	stack = [[[1,2],[3,4]]]
+	stack = [vyxalify(elem) for elem in [[[1,2],[3,4]]]]
 	expected = [[2,1],[4,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1686,7 +1687,7 @@ def test_Reduce():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2]]]
+	stack = [vyxalify(elem) for elem in [[[1,2]]]]
 	expected = [[2,1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1697,7 +1698,7 @@ def test_Reduce():
 
 
 def test_Stringify():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = "5"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1706,7 +1707,7 @@ def test_Stringify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = "⟨1|2|3⟩"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1715,7 +1716,7 @@ def test_Stringify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["X"]
+	stack = [vyxalify(elem) for elem in ["X"]]
 	expected = "X"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1726,7 +1727,7 @@ def test_Stringify():
 
 
 def test_TruthyIndices():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1735,7 +1736,7 @@ def test_TruthyIndices():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-4]
+	stack = [vyxalify(elem) for elem in [-4]]
 	expected = -12
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1744,7 +1745,7 @@ def test_TruthyIndices():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0,1,0,2]]
+	stack = [vyxalify(elem) for elem in [[0,1,0,2]]]
 	expected = [1,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1753,7 +1754,7 @@ def test_TruthyIndices():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4]]]
 	expected = [0,1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1764,7 +1765,7 @@ def test_TruthyIndices():
 
 
 def test_Uniquify():
-	stack = [[1,3,5,5]]
+	stack = [vyxalify(elem) for elem in [[1,3,5,5]]]
 	expected = [1,3,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1773,7 +1774,7 @@ def test_Uniquify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abdbcdbch"]
+	stack = [vyxalify(elem) for elem in ["abdbcdbch"]]
 	expected = "abdch"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1784,7 +1785,7 @@ def test_Uniquify():
 
 
 def test_Replace():
-	stack = ["hela","a","lo"]
+	stack = [vyxalify(elem) for elem in ["hela","a","lo"]]
 	expected = "hello"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1793,7 +1794,7 @@ def test_Replace():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["banana","n","nan"]
+	stack = [vyxalify(elem) for elem in ["banana","n","nan"]]
 	expected = "banananana"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1804,7 +1805,7 @@ def test_Replace():
 
 
 def test_Wrap():
-	stack = [1,2,3]
+	stack = [vyxalify(elem) for elem in [1,2,3]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1813,7 +1814,7 @@ def test_Wrap():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = []
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1822,7 +1823,7 @@ def test_Wrap():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello",1,9]
+	stack = [vyxalify(elem) for elem in ["hello",1,9]]
 	expected = ["hello",1,9]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1833,7 +1834,7 @@ def test_Wrap():
 
 
 def test_Interleave():
-	stack = [[1,3,5],[2,4]]
+	stack = [vyxalify(elem) for elem in [[1,3,5],[2,4]]]
 	expected = [1,2,3,4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1842,7 +1843,7 @@ def test_Interleave():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["srn","tig"]
+	stack = [vyxalify(elem) for elem in ["srn","tig"]]
 	expected = "string"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1853,7 +1854,7 @@ def test_Interleave():
 
 
 def test_Zip():
-	stack = [[1,2],[3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[3,4]]]
 	expected = [[1,3],[2,4]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1862,7 +1863,7 @@ def test_Zip():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc",[1,2,3]]
+	stack = [vyxalify(elem) for elem in ["abc",[1,2,3]]]
 	expected = [["a",1],["b",2],["c",3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1873,7 +1874,7 @@ def test_Zip():
 
 
 def test_Any():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1882,7 +1883,7 @@ def test_Any():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0,0,0]]
+	stack = [vyxalify(elem) for elem in [[0,0,0]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1891,7 +1892,7 @@ def test_Any():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0,1,2]]
+	stack = [vyxalify(elem) for elem in [[0,1,2]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1900,7 +1901,7 @@ def test_Any():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["A"]
+	stack = [vyxalify(elem) for elem in ["A"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1909,7 +1910,7 @@ def test_Any():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a"]
+	stack = [vyxalify(elem) for elem in ["a"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1918,7 +1919,7 @@ def test_Any():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hi"]
+	stack = [vyxalify(elem) for elem in ["Hi"]]
 	expected = [1,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1929,7 +1930,7 @@ def test_Any():
 
 
 def test_Binary():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = [1,0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1938,7 +1939,7 @@ def test_Binary():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [" "]
+	stack = [vyxalify(elem) for elem in [" "]]
 	expected = [[1,0,0,0,0,0]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1947,7 +1948,7 @@ def test_Binary():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[2,3]]
+	stack = [vyxalify(elem) for elem in [[2,3]]]
 	expected = [[1,0],[1,1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1958,7 +1959,7 @@ def test_Binary():
 
 
 def test_Contains():
-	stack = ["abcdef","a"]
+	stack = [vyxalify(elem) for elem in ["abcdef","a"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1967,7 +1968,7 @@ def test_Contains():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["xyz","a"]
+	stack = [vyxalify(elem) for elem in ["xyz","a"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1976,7 +1977,7 @@ def test_Contains():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],1]
+	stack = [vyxalify(elem) for elem in [[1,2,3],1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1985,7 +1986,7 @@ def test_Contains():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],0]
+	stack = [vyxalify(elem) for elem in [[1,2,3],0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -1996,7 +1997,7 @@ def test_Contains():
 
 
 def test_Double():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 10
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2005,7 +2006,7 @@ def test_Double():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2014,7 +2015,7 @@ def test_Double():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2]]
+	stack = [vyxalify(elem) for elem in [[1,2]]]
 	expected = [2,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2023,7 +2024,7 @@ def test_Double():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["x"]
+	stack = [vyxalify(elem) for elem in ["x"]]
 	expected = "xx"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2032,7 +2033,7 @@ def test_Double():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["ha"]
+	stack = [vyxalify(elem) for elem in ["ha"]]
 	expected = "haha"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2043,7 +2044,7 @@ def test_Double():
 
 
 def test_Exponentiation():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 125
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2052,7 +2053,7 @@ def test_Exponentiation():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0,0]
+	stack = [vyxalify(elem) for elem in [0,0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2061,7 +2062,7 @@ def test_Exponentiation():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello",2]
+	stack = [vyxalify(elem) for elem in ["hello",2]]
 	expected = "hlo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2072,7 +2073,7 @@ def test_Exponentiation():
 
 
 def test_Flatten():
-	stack = [135]
+	stack = [vyxalify(elem) for elem in [135]]
 	expected = [1,3,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2081,7 +2082,7 @@ def test_Flatten():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi"]
+	stack = [vyxalify(elem) for elem in ["hi"]]
 	expected = ["h","i"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2090,7 +2091,7 @@ def test_Flatten():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[[1,2],3,[[4,[5]],6],7],[8,[9]]]]
+	stack = [vyxalify(elem) for elem in [[[[1,2],3,[[4,[5]],6],7],[8,[9]]]]]
 	expected = [1,2,3,4,5,6,7,8,9]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2099,7 +2100,7 @@ def test_Flatten():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = ["-",1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2110,7 +2111,7 @@ def test_Flatten():
 
 
 def test_Minimum():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "a"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2119,7 +2120,7 @@ def test_Minimum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,4,-2]]
+	stack = [vyxalify(elem) for elem in [[1,4,-2]]]
 	expected = -2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2128,7 +2129,7 @@ def test_Minimum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[5,3,9]]
+	stack = [vyxalify(elem) for elem in [[5,3,9]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2139,7 +2140,7 @@ def test_Minimum():
 
 
 def test_Head():
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "h"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2148,7 +2149,7 @@ def test_Head():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2159,7 +2160,7 @@ def test_Head():
 
 
 def test_Index():
-	stack = ["abc",1]
+	stack = [vyxalify(elem) for elem in ["abc",1]]
 	expected = "b"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2168,7 +2169,7 @@ def test_Index():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3], 0]
+	stack = [vyxalify(elem) for elem in [[1,2,3], 0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2177,7 +2178,7 @@ def test_Index():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[2,3,4,5], [2]]
+	stack = [vyxalify(elem) for elem in [[2,3,4,5], [2]]]
 	expected = [2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2186,7 +2187,7 @@ def test_Index():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,3,5,7],[1,3]]
+	stack = [vyxalify(elem) for elem in [[1,3,5,7],[1,3]]]
 	expected = [3,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2195,7 +2196,7 @@ def test_Index():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]]
 	expected = [2,4,6,8]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2206,7 +2207,7 @@ def test_Index():
 
 
 def test_Join():
-	stack = [[1,2,3],"penguin"]
+	stack = [vyxalify(elem) for elem in [[1,2,3],"penguin"]]
 	expected = "1penguin2penguin3"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2215,7 +2216,7 @@ def test_Join():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["he","","o, wor","d!"], "l"]
+	stack = [vyxalify(elem) for elem in [["he","","o, wor","d!"], "l"]]
 	expected = "hello, world!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2226,7 +2227,7 @@ def test_Join():
 
 
 def test_CumulativeGroups():
-	stack = ["hello",3]
+	stack = [vyxalify(elem) for elem in ["hello",3]]
 	expected = ["hel","ell","llo"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2235,7 +2236,7 @@ def test_CumulativeGroups():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["cake",2]
+	stack = [vyxalify(elem) for elem in ["cake",2]]
 	expected = ["ca","ak","ke"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2244,7 +2245,7 @@ def test_CumulativeGroups():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["cheese","cake"]
+	stack = [vyxalify(elem) for elem in ["cheese","cake"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2253,7 +2254,7 @@ def test_CumulativeGroups():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["cheese","salads"]
+	stack = [vyxalify(elem) for elem in ["cheese","salads"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2264,7 +2265,7 @@ def test_CumulativeGroups():
 
 
 def test_Mirror():
-	stack = [123]
+	stack = [vyxalify(elem) for elem in [123]]
 	expected = 444
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2273,7 +2274,7 @@ def test_Mirror():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi"]
+	stack = [vyxalify(elem) for elem in ["hi"]]
 	expected = "hiih"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2282,7 +2283,7 @@ def test_Mirror():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [1,2,3,3,2,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2293,7 +2294,7 @@ def test_Mirror():
 
 
 def test_Remove():
-	stack = ["hello","l"]
+	stack = [vyxalify(elem) for elem in ["hello","l"]]
 	expected = "heo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2302,7 +2303,7 @@ def test_Remove():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,1,2],1]
+	stack = [vyxalify(elem) for elem in [[1,2,3,1,2],1]]
 	expected = [2,3,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2311,7 +2312,7 @@ def test_Remove():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["bananas and naan","an"]
+	stack = [vyxalify(elem) for elem in ["bananas and naan","an"]]
 	expected = "bas d na"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2322,7 +2323,7 @@ def test_Remove():
 
 
 def test_Prepend():
-	stack = ["ld","wor"]
+	stack = [vyxalify(elem) for elem in ["ld","wor"]]
 	expected = "world"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2331,7 +2332,7 @@ def test_Prepend():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],13]
+	stack = [vyxalify(elem) for elem in [[1,2,3],13]]
 	expected = [13,1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2340,7 +2341,7 @@ def test_Prepend():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[3,4,5],"23"]
+	stack = [vyxalify(elem) for elem in [[3,4,5],"23"]]
 	expected = ["23",3,4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2351,7 +2352,7 @@ def test_Prepend():
 
 
 def test_Uneval():
-	stack = ["\\"]
+	stack = [vyxalify(elem) for elem in ["\\"]]
 	expected = "`\\`"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2360,7 +2361,7 @@ def test_Uneval():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["`"]
+	stack = [vyxalify(elem) for elem in ["`"]]
 	expected = "`\\``"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2369,7 +2370,7 @@ def test_Uneval():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["a"]
+	stack = [vyxalify(elem) for elem in ["a"]]
 	expected = "`a`"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2380,7 +2381,7 @@ def test_Uneval():
 
 
 def test_Range():
-	stack = [3,6]
+	stack = [vyxalify(elem) for elem in [3,6]]
 	expected = [3,4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2389,7 +2390,7 @@ def test_Range():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4,8]
+	stack = [vyxalify(elem) for elem in [4,8]]
 	expected = [4,5,6,7]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2400,7 +2401,7 @@ def test_Range():
 
 
 def test_sort():
-	stack = [[3,1,2]]
+	stack = [vyxalify(elem) for elem in [[3,1,2]]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2409,7 +2410,7 @@ def test_sort():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["bca"]
+	stack = [vyxalify(elem) for elem in ["bca"]]
 	expected = "abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2420,7 +2421,7 @@ def test_sort():
 
 
 def test_Tail():
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "o"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2429,7 +2430,7 @@ def test_Tail():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2440,7 +2441,7 @@ def test_Tail():
 
 
 def test_MinusOne():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2451,7 +2452,7 @@ def test_MinusOne():
 
 
 def test_Listify():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = [1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2460,7 +2461,7 @@ def test_Listify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = ["hello"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2469,7 +2470,7 @@ def test_Listify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[1,2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2480,7 +2481,7 @@ def test_Listify():
 
 
 def test_Uninterleave():
-	stack = ["abcde"]
+	stack = [vyxalify(elem) for elem in ["abcde"]]
 	expected = "bd"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2489,7 +2490,7 @@ def test_Uninterleave():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4]]]
 	expected = [2,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2500,7 +2501,7 @@ def test_Uninterleave():
 
 
 def test_Zipself():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[1,1],[2,2],[3,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2509,7 +2510,7 @@ def test_Zipself():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["zap"]
+	stack = [vyxalify(elem) for elem in ["zap"]]
 	expected = [["z","z"], ["a","a"],["p","p"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2520,7 +2521,7 @@ def test_Zipself():
 
 
 def test_MaxbyTail():
-	stack = [[[3,4],[9,2]]]
+	stack = [vyxalify(elem) for elem in [[[3,4],[9,2]]]]
 	expected = [3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2529,7 +2530,7 @@ def test_MaxbyTail():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2,3],[2,5]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[2,5]]]]
 	expected = [2,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2540,7 +2541,7 @@ def test_MaxbyTail():
 
 
 def test_MinbyTail():
-	stack = [[[3,4],[9,2]]]
+	stack = [vyxalify(elem) for elem in [[[3,4],[9,2]]]]
 	expected = [9,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2549,7 +2550,7 @@ def test_MinbyTail():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2,3],[2,5]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[2,5]]]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2560,7 +2561,7 @@ def test_MinbyTail():
 
 
 def test_DyadicMaximum():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2569,7 +2570,7 @@ def test_DyadicMaximum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","goodbye"]
+	stack = [vyxalify(elem) for elem in ["hello","goodbye"]]
 	expected = "hello"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2578,7 +2579,7 @@ def test_DyadicMaximum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3,"(stuff)"]
+	stack = [vyxalify(elem) for elem in [3,"(stuff)"]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2589,7 +2590,7 @@ def test_DyadicMaximum():
 
 
 def test_DyadicMinimum():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2598,7 +2599,7 @@ def test_DyadicMinimum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","goodbye"]
+	stack = [vyxalify(elem) for elem in ["hello","goodbye"]]
 	expected = "goodbye"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2607,7 +2608,7 @@ def test_DyadicMinimum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3,"(stuff)"]
+	stack = [vyxalify(elem) for elem in [3,"(stuff)"]]
 	expected = "(stuff)"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2618,7 +2619,7 @@ def test_DyadicMinimum():
 
 
 def test_IncrementSpaceReplaceWith0():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2627,7 +2628,7 @@ def test_IncrementSpaceReplaceWith0():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[3,4]]
+	stack = [vyxalify(elem) for elem in [[3,4]]]
 	expected = [4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2636,7 +2637,7 @@ def test_IncrementSpaceReplaceWith0():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["  101"]
+	stack = [vyxalify(elem) for elem in ["  101"]]
 	expected = "00101"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2647,7 +2648,7 @@ def test_IncrementSpaceReplaceWith0():
 
 
 def test_Decrement():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2656,7 +2657,7 @@ def test_Decrement():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[3,4]]
+	stack = [vyxalify(elem) for elem in [[3,4]]]
 	expected = [2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2665,7 +2666,7 @@ def test_Decrement():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "hello-"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2676,7 +2677,7 @@ def test_Decrement():
 
 
 def test_Parity():
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2685,7 +2686,7 @@ def test_Parity():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2694,7 +2695,7 @@ def test_Parity():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello!"]
+	stack = [vyxalify(elem) for elem in ["hello!"]]
 	expected = "lo!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2705,7 +2706,7 @@ def test_Parity():
 
 
 def test_EmptyString():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2716,7 +2717,7 @@ def test_EmptyString():
 
 
 def test_Space():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = " "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2727,7 +2728,7 @@ def test_Space():
 
 
 def test_ToBaseTenFromCustomBase():
-	stack = [43,5]
+	stack = [vyxalify(elem) for elem in [43,5]]
 	expected = 23
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2736,7 +2737,7 @@ def test_ToBaseTenFromCustomBase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["banana","nab"]
+	stack = [vyxalify(elem) for elem in ["banana","nab"]]
 	expected = 577
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2745,7 +2746,7 @@ def test_ToBaseTenFromCustomBase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[15,23,9],31]
+	stack = [vyxalify(elem) for elem in [[15,23,9],31]]
 	expected = 15137
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2756,7 +2757,7 @@ def test_ToBaseTenFromCustomBase():
 
 
 def test_FromBaseTenToCustomBase():
-	stack = [1234567,"abc"]
+	stack = [vyxalify(elem) for elem in [1234567,"abc"]]
 	expected = "cacccabbbbcab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2765,7 +2766,7 @@ def test_FromBaseTenToCustomBase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1234567,5]
+	stack = [vyxalify(elem) for elem in [1234567,5]]
 	expected = [3,0,4,0,0,1,2,3,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2774,7 +2775,7 @@ def test_FromBaseTenToCustomBase():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [928343,["he","ll","o"]]
+	stack = [vyxalify(elem) for elem in [928343,["he","ll","o"]]]
 	expected = ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2785,7 +2786,7 @@ def test_FromBaseTenToCustomBase():
 
 
 def test_Absolutevalue():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2794,7 +2795,7 @@ def test_Absolutevalue():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2803,7 +2804,7 @@ def test_Absolutevalue():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [" ch ee s e "]
+	stack = [vyxalify(elem) for elem in [" ch ee s e "]]
 	expected = "cheese"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2812,7 +2813,7 @@ def test_Absolutevalue():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[-1,2,-5]]
+	stack = [vyxalify(elem) for elem in [[-1,2,-5]]]
 	expected = [1,2,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2823,7 +2824,7 @@ def test_Absolutevalue():
 
 
 def test_Boolify():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2832,7 +2833,7 @@ def test_Boolify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2841,7 +2842,7 @@ def test_Boolify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[69, 0]]
+	stack = [vyxalify(elem) for elem in [[69, 0]]]
 	expected = [1, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2850,7 +2851,7 @@ def test_Boolify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["x"]
+	stack = [vyxalify(elem) for elem in ["x"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2861,7 +2862,7 @@ def test_Boolify():
 
 
 def test_NotOne():
-	stack = [[1, 0]]
+	stack = [vyxalify(elem) for elem in [[1, 0]]]
 	expected = [0, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2870,7 +2871,7 @@ def test_NotOne():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["1"]
+	stack = [vyxalify(elem) for elem in ["1"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2879,7 +2880,7 @@ def test_NotOne():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2888,7 +2889,7 @@ def test_NotOne():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2899,7 +2900,7 @@ def test_NotOne():
 
 
 def test_Divmod():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2908,7 +2909,7 @@ def test_Divmod():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcd",3]
+	stack = [vyxalify(elem) for elem in ["abcd",3]]
 	expected = ["abc","abd","acd","bcd"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2917,7 +2918,7 @@ def test_Divmod():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = [[1,2],[1,3],[2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2926,7 +2927,7 @@ def test_Divmod():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcdef", "Joe"]
+	stack = [vyxalify(elem) for elem in ["abcdef", "Joe"]]
 	expected = "Joedef"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2937,7 +2938,7 @@ def test_Divmod():
 
 
 def test_Enumerate():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = [[0,"a"],[1,"b"],[2,"c"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2946,7 +2947,7 @@ def test_Enumerate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[0,1],[1,2],[2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2957,7 +2958,7 @@ def test_Enumerate():
 
 
 def test_Find():
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2966,7 +2967,7 @@ def test_Find():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","l"]
+	stack = [vyxalify(elem) for elem in ["hello","l"]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2977,7 +2978,7 @@ def test_Find():
 
 
 def test_Gcd():
-	stack = [[1,3,2]]
+	stack = [vyxalify(elem) for elem in [[1,3,2]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2986,7 +2987,7 @@ def test_Gcd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[60,42,108]]
+	stack = [vyxalify(elem) for elem in [[60,42,108]]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -2995,7 +2996,7 @@ def test_Gcd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [50,35]
+	stack = [vyxalify(elem) for elem in [50,35]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3004,7 +3005,7 @@ def test_Gcd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["laugh","cough"]
+	stack = [vyxalify(elem) for elem in ["laugh","cough"]]
 	expected = "ugh"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3015,7 +3016,7 @@ def test_Gcd():
 
 
 def test_HeadExtract():
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "ello"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3024,7 +3025,7 @@ def test_HeadExtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3035,7 +3036,7 @@ def test_HeadExtract():
 
 
 def test_FloorDivision():
-	stack = [5,3]
+	stack = [vyxalify(elem) for elem in [5,3]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3044,7 +3045,7 @@ def test_FloorDivision():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello!",3]
+	stack = [vyxalify(elem) for elem in ["hello!",3]]
 	expected = "he"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3053,7 +3054,7 @@ def test_FloorDivision():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3,"hello!"]
+	stack = [vyxalify(elem) for elem in [3,"hello!"]]
 	expected = "he"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3064,7 +3065,7 @@ def test_FloorDivision():
 
 
 def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
-	stack = [1, 3, 2]
+	stack = [vyxalify(elem) for elem in [1, 3, 2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3075,7 +3076,7 @@ def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
 
 
 def test_Mean():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3084,7 +3085,7 @@ def test_Mean():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[4,71,-63]]
+	stack = [vyxalify(elem) for elem in [[4,71,-63]]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3095,7 +3096,7 @@ def test_Mean():
 
 
 def test_JoinByNothing():
-	stack = [["a","b","c"]]
+	stack = [vyxalify(elem) for elem in [["a","b","c"]]]
 	expected = "abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3104,8 +3105,8 @@ def test_JoinByNothing():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
-	expected = 123
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
+	expected = '123'
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('ṅ'); print(code)
@@ -3115,7 +3116,7 @@ def test_JoinByNothing():
 
 
 def test_Slice():
-	stack = ["hello",2]
+	stack = [vyxalify(elem) for elem in ["hello",2]]
 	expected = "llo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3124,7 +3125,7 @@ def test_Slice():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],1]
+	stack = [vyxalify(elem) for elem in [[1,2,3],1]]
 	expected = [2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3135,7 +3136,7 @@ def test_Slice():
 
 
 def test_Powerset():
-	stack = ["ab"]
+	stack = [vyxalify(elem) for elem in ["ab"]]
 	expected = [[],["a"],["b"],["a","b"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3144,7 +3145,7 @@ def test_Powerset():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,2,3]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3155,7 +3156,7 @@ def test_Powerset():
 
 
 def test_Round():
-	stack = [5.5]
+	stack = [vyxalify(elem) for elem in [5.5]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3164,7 +3165,7 @@ def test_Round():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3.2]
+	stack = [vyxalify(elem) for elem in [3.2]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3173,7 +3174,7 @@ def test_Round():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[5.5,3.2]]
+	stack = [vyxalify(elem) for elem in [[5.5,3.2]]]
 	expected = [6,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3182,7 +3183,7 @@ def test_Round():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-4.7]
+	stack = [vyxalify(elem) for elem in [-4.7]]
 	expected = -5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3191,7 +3192,7 @@ def test_Round():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-4.5]
+	stack = [vyxalify(elem) for elem in [-4.5]]
 	expected = -4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3201,8 +3202,8 @@ def test_Round():
 	assert simplify(stack[-1]) == expected
 
 
-def test_FunctionSort():
-	stack = [3,4]
+def test_SortbyFunction():
+	stack = [vyxalify(elem) for elem in [3,4]]
 	expected = [3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3211,7 +3212,7 @@ def test_FunctionSort():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,5]
+	stack = [vyxalify(elem) for elem in [1,5]]
 	expected = [1,2,3,4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3220,7 +3221,7 @@ def test_FunctionSort():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc1def2ghi","\\d+"]
+	stack = [vyxalify(elem) for elem in ["abc1def2ghi","\\d+"]]
 	expected = ["abc","def","ghi"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3231,7 +3232,7 @@ def test_FunctionSort():
 
 
 def test_TailExtract():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "c"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3240,7 +3241,7 @@ def test_TailExtract():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3251,7 +3252,7 @@ def test_TailExtract():
 
 
 def test_ChunkWrap():
-	stack = ["abcdef",2]
+	stack = [vyxalify(elem) for elem in ["abcdef",2]]
 	expected = ["ab","cd","ef"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3260,7 +3261,7 @@ def test_ChunkWrap():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,6],3]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,6],3]]
 	expected = [[1,2,3],[4,5,6]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3271,7 +3272,7 @@ def test_ChunkWrap():
 
 
 def test_Repeat():
-	stack = [[1,2,3],3]
+	stack = [vyxalify(elem) for elem in [[1,2,3],3]]
 	expected = [[1,2,3],[1,2,3],[1,2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3280,7 +3281,7 @@ def test_Repeat():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["x",5]
+	stack = [vyxalify(elem) for elem in ["x",5]]
 	expected = "xxxxx"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3291,7 +3292,7 @@ def test_Repeat():
 
 
 def test_ExclusiveRangeLength():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = [0,1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3300,7 +3301,7 @@ def test_ExclusiveRangeLength():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2]]
+	stack = [vyxalify(elem) for elem in [[1,2]]]
 	expected = [0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3311,7 +3312,7 @@ def test_ExclusiveRangeLength():
 
 
 def test_InclusiveRangeLength():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3320,7 +3321,7 @@ def test_InclusiveRangeLength():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2]]
+	stack = [vyxalify(elem) for elem in [[1,2]]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3331,7 +3332,7 @@ def test_InclusiveRangeLength():
 
 
 def test_SquareRoot():
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3340,7 +3341,7 @@ def test_SquareRoot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "hlo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3351,7 +3352,7 @@ def test_SquareRoot():
 
 
 def test_Ten():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 10
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3362,7 +3363,7 @@ def test_Ten():
 
 
 def test_Hundred():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 100
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3373,7 +3374,7 @@ def test_Hundred():
 
 
 def test_IsEven():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3382,7 +3383,7 @@ def test_IsEven():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3391,7 +3392,7 @@ def test_IsEven():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3400,7 +3401,7 @@ def test_IsEven():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2]]
+	stack = [vyxalify(elem) for elem in [[1,2]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3411,7 +3412,7 @@ def test_IsEven():
 
 
 def test_DivisibleBythree():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3420,7 +3421,7 @@ def test_DivisibleBythree():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3429,7 +3430,7 @@ def test_DivisibleBythree():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi"]
+	stack = [vyxalify(elem) for elem in ["hi"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3438,7 +3439,7 @@ def test_DivisibleBythree():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1]]
+	stack = [vyxalify(elem) for elem in [[1]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3449,7 +3450,7 @@ def test_DivisibleBythree():
 
 
 def test_TwentySix():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 26
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3460,7 +3461,7 @@ def test_TwentySix():
 
 
 def test_DivisibleByFive():
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3469,7 +3470,7 @@ def test_DivisibleByFive():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3478,7 +3479,7 @@ def test_DivisibleByFive():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3487,7 +3488,7 @@ def test_DivisibleByFive():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3498,7 +3499,7 @@ def test_DivisibleByFive():
 
 
 def test_SixtyFour():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 64
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3509,7 +3510,7 @@ def test_SixtyFour():
 
 
 def test_OneTwentyEight():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 128
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3520,7 +3521,7 @@ def test_OneTwentyEight():
 
 
 def test_TwoFiftySix():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 256
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3531,8 +3532,8 @@ def test_TwoFiftySix():
 
 
 def test_Newline():
-	stack = []
-	expected = "\\n"
+	stack = [vyxalify(elem) for elem in []]
+	expected = "\n"
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('¶'); print(code)
@@ -3542,7 +3543,7 @@ def test_Newline():
 
 
 def test_JoinOnNewlines():
-	stack = [[1, 2, 3, 4, 5, 6]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 5, 6]]]
 	expected = "1\n2\n3\n4\n5\n6"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3551,7 +3552,7 @@ def test_JoinOnNewlines():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["Hello", "World!"]]
+	stack = [vyxalify(elem) for elem in [["Hello", "World!"]]]
 	expected = "Hello\nWorld!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3562,7 +3563,7 @@ def test_JoinOnNewlines():
 
 
 def test_VerticalJoin():
-	stack = [["abc", "def", "ghi"]]
+	stack = [vyxalify(elem) for elem in [["abc", "def", "ghi"]]]
 	expected = "adg\nbeh\ncfi"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3571,7 +3572,7 @@ def test_VerticalJoin():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["***", "****", "*****"]]
+	stack = [vyxalify(elem) for elem in [["***", "****", "*****"]]]
 	expected = "  *\n **\n***\n***\n***"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3582,7 +3583,7 @@ def test_VerticalJoin():
 
 
 def test_AbsoluteDifferencePaddedVerticalJoin():
-	stack = [5, 1]
+	stack = [vyxalify(elem) for elem in [5, 1]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3591,7 +3592,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 5]
+	stack = [vyxalify(elem) for elem in [1, 5]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3600,7 +3601,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3, 3]
+	stack = [vyxalify(elem) for elem in [3, 3]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3609,7 +3610,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["***", "****", "*****"], "."]
+	stack = [vyxalify(elem) for elem in [["***", "****", "*****"], "."]]
 	expected = "..*\n.**\n***\n***\n***"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3618,7 +3619,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["abc", "def", "ghi"], "."]
+	stack = [vyxalify(elem) for elem in [["abc", "def", "ghi"], "."]]
 	expected = "adg\nbeh\ncfi"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3629,7 +3630,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 
 
 def test_Factorial():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 120
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3638,7 +3639,7 @@ def test_Factorial():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello my name jeff. ur sussy baka"]
+	stack = [vyxalify(elem) for elem in ["hello my name jeff. ur sussy baka"]]
 	expected = "Hello my name jeff. Ur sussy baka"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3647,7 +3648,7 @@ def test_Factorial():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 5]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 5]]]
 	expected = [1, 2, 6, 24, 120]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3658,7 +3659,7 @@ def test_Factorial():
 
 
 def test_Summate():
-	stack = [[1, 2, 3, 4, 5]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 5]]]
 	expected = 15
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3667,7 +3668,7 @@ def test_Summate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["abc", "def", 10]]
+	stack = [vyxalify(elem) for elem in [["abc", "def", 10]]]
 	expected = "abcdef10"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3676,7 +3677,7 @@ def test_Summate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [12345]
+	stack = [vyxalify(elem) for elem in [12345]]
 	expected = 15
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3687,7 +3688,7 @@ def test_Summate():
 
 
 def test_CumulativeSum():
-	stack = [12345]
+	stack = [vyxalify(elem) for elem in [12345]]
 	expected = [1, 3, 6, 10, 15]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3696,7 +3697,7 @@ def test_CumulativeSum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abcdef"]
+	stack = [vyxalify(elem) for elem in ["abcdef"]]
 	expected = ["a", "ab", "abc", "abcd", "abcde", "abcdef"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3705,7 +3706,7 @@ def test_CumulativeSum():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4, 5]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4, 5]]]
 	expected = [1, 3, 6, 10, 15]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3716,7 +3717,7 @@ def test_CumulativeSum():
 
 
 def test_AllEqual():
-	stack = [1111]
+	stack = [vyxalify(elem) for elem in [1111]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3725,7 +3726,7 @@ def test_AllEqual():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["acc"]
+	stack = [vyxalify(elem) for elem in ["acc"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3734,7 +3735,7 @@ def test_AllEqual():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 2, 1]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 2, 1]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3743,7 +3744,7 @@ def test_AllEqual():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[]]
+	stack = [vyxalify(elem) for elem in [[]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3754,7 +3755,7 @@ def test_AllEqual():
 
 
 def test_Assign():
-	stack = [[1, 2, 3, 4], 1, 0]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4], 1, 0]]
 	expected = [1, 0, 3, 4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3763,7 +3764,7 @@ def test_Assign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello ", ", World!", 5]
+	stack = [vyxalify(elem) for elem in ["Hello ", ", World!", 5]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3772,7 +3773,7 @@ def test_Assign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69320, 2, 4]
+	stack = [vyxalify(elem) for elem in [69320, 2, 4]]
 	expected = [6, 9, 4, 2, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3783,7 +3784,7 @@ def test_Assign():
 
 
 def test_Bifurcate():
-	stack = [203]
+	stack = [vyxalify(elem) for elem in [203]]
 	expected = 302
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3792,7 +3793,7 @@ def test_Bifurcate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "cab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3801,7 +3802,7 @@ def test_Bifurcate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4]]]
 	expected = [4, 3, 2, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3812,7 +3813,7 @@ def test_Bifurcate():
 
 
 def test_Counts():
-	stack = [[1, 2, 2, 3, 3, 3, 3]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 2, 3, 3, 3, 3]]]
 	expected = [[1, 1], [2, 2], [3, 4]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3821,7 +3822,7 @@ def test_Counts():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello, World!"]
+	stack = [vyxalify(elem) for elem in ["Hello, World!"]]
 	expected = [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3832,7 +3833,7 @@ def test_Counts():
 
 
 def test_IsDivisibleArbitraryDuplicate():
-	stack = [15, 5]
+	stack = [vyxalify(elem) for elem in [15, 5]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3841,7 +3842,7 @@ def test_IsDivisibleArbitraryDuplicate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc", 3]
+	stack = [vyxalify(elem) for elem in ["abc", 3]]
 	expected = "abc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3850,7 +3851,7 @@ def test_IsDivisibleArbitraryDuplicate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[5, 13, 29, 48, 12], 2]
+	stack = [vyxalify(elem) for elem in [[5, 13, 29, 48, 12], 2]]
 	expected = [0, 0, 0, 1, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3861,7 +3862,7 @@ def test_IsDivisibleArbitraryDuplicate():
 
 
 def test_VyxalExecReciprocal():
-	stack = [[2, 3, -1]]
+	stack = [vyxalify(elem) for elem in [[2, 3, -1]]]
 	expected = [0.5, 1/3, -1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3870,7 +3871,7 @@ def test_VyxalExecReciprocal():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["kH"]
+	stack = [vyxalify(elem) for elem in ["kH"]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3881,7 +3882,7 @@ def test_VyxalExecReciprocal():
 
 
 def test_Groupconsecutive():
-	stack = [[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]]
+	stack = [vyxalify(elem) for elem in [[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]]]
 	expected = [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3890,7 +3891,7 @@ def test_Groupconsecutive():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello, World!"]
+	stack = [vyxalify(elem) for elem in ["Hello, World!"]]
 	expected = [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3901,7 +3902,7 @@ def test_Groupconsecutive():
 
 
 def test_HeadRemoveBehead():
-	stack = [[0, [43, 69], "foo"]]
+	stack = [vyxalify(elem) for elem in [[0, [43, 69], "foo"]]]
 	expected = [[43, 69], "foo"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3910,7 +3911,7 @@ def test_HeadRemoveBehead():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[]]
+	stack = [vyxalify(elem) for elem in [[]]]
 	expected = []
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3919,7 +3920,7 @@ def test_HeadRemoveBehead():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["foo"]
+	stack = [vyxalify(elem) for elem in ["foo"]]
 	expected = "oo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3928,7 +3929,7 @@ def test_HeadRemoveBehead():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [""]
+	stack = [vyxalify(elem) for elem in [""]]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3937,7 +3938,7 @@ def test_HeadRemoveBehead():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1234.56]
+	stack = [vyxalify(elem) for elem in [1234.56]]
 	expected = 234.56
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3946,7 +3947,7 @@ def test_HeadRemoveBehead():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0.2]
+	stack = [vyxalify(elem) for elem in [0.2]]
 	expected = 0.2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3957,7 +3958,7 @@ def test_HeadRemoveBehead():
 
 
 def test_Indexintoorfindcycle():
-	stack = [["foo", "bar", -69, 420, "baz"], [0, 2, 4]]
+	stack = [vyxalify(elem) for elem in [["foo", "bar", -69, 420, "baz"], [0, 2, 4]]]
 	expected = ["foo", -69, "baz"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3968,7 +3969,7 @@ def test_Indexintoorfindcycle():
 
 
 def test_Transliterate():
-	stack = ["abcdefcba","abc","123"]
+	stack = [vyxalify(elem) for elem in ["abcdefcba","abc","123"]]
 	expected = "123def321"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3977,7 +3978,7 @@ def test_Transliterate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,0], [2], [5]]
+	stack = [vyxalify(elem) for elem in [[1,2,0], [2], [5]]]
 	expected = [1,5,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3986,7 +3987,7 @@ def test_Transliterate():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc","ab",["bb","cc"]]
+	stack = [vyxalify(elem) for elem in ["abc","ab",["bb","cc"]]]
 	expected = ["bb","cc","c"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3997,7 +3998,7 @@ def test_Transliterate():
 
 
 def test_Insert():
-	stack = [[1,3,4],1,2]
+	stack = [vyxalify(elem) for elem in [[1,3,4],1,2]]
 	expected = [1,2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4006,7 +4007,7 @@ def test_Insert():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["wyz",1,"x"]
+	stack = [vyxalify(elem) for elem in ["wyz",1,"x"]]
 	expected = "wxyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4015,7 +4016,7 @@ def test_Insert():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["jknop",2,"lm"]
+	stack = [vyxalify(elem) for elem in ["jknop",2,"lm"]]
 	expected = "jklmnop"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4026,7 +4027,7 @@ def test_Insert():
 
 
 def test_Integerpartitions():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4035,7 +4036,7 @@ def test_Integerpartitions():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "h e l l o"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4044,7 +4045,7 @@ def test_Integerpartitions():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = "1 2 3"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4055,7 +4056,7 @@ def test_Integerpartitions():
 
 
 def test_Over():
-	stack = [4,5]
+	stack = [vyxalify(elem) for elem in [4,5]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4064,7 +4065,7 @@ def test_Over():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi","bye"]
+	stack = [vyxalify(elem) for elem in ["hi","bye"]]
 	expected = "hi"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4075,7 +4076,7 @@ def test_Over():
 
 
 def test_Permutations():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = ["abc","abc","bac","bca","cab","cba"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4084,7 +4085,7 @@ def test_Permutations():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2]]
+	stack = [vyxalify(elem) for elem in [[1,2]]]
 	expected = [[1,2],[2,1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4095,7 +4096,7 @@ def test_Permutations():
 
 
 def test_Reverse():
-	stack = [203]
+	stack = [vyxalify(elem) for elem in [203]]
 	expected = 302
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4104,7 +4105,7 @@ def test_Reverse():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "cab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4113,7 +4114,7 @@ def test_Reverse():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1, 2, 3, 4]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3, 4]]]
 	expected = [4, 3, 2, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4124,7 +4125,7 @@ def test_Reverse():
 
 
 def test_Vectorisedsums():
-	stack = [[[1,2,3],[4,5,6]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5,6]]]]
 	expected = [6, 15]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4133,7 +4134,7 @@ def test_Vectorisedsums():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[3,4,5]]
+	stack = [vyxalify(elem) for elem in [[3,4,5]]]
 	expected = [3, 4, 5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4142,7 +4143,7 @@ def test_Vectorisedsums():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2,3], [1, 2, 3, 4]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3], [1, 2, 3, 4]]]]
 	expected = [6, 10]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4153,7 +4154,7 @@ def test_Vectorisedsums():
 
 
 def test_TailRemove():
-	stack = ["1234"]
+	stack = [vyxalify(elem) for elem in ["1234"]]
 	expected = "234"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4162,7 +4163,7 @@ def test_TailRemove():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4173,7 +4174,7 @@ def test_TailRemove():
 
 
 def test_SplitAndKeepDelimiter():
-	stack = ["a b c"," "]
+	stack = [vyxalify(elem) for elem in ["a b c"," "]]
 	expected = ["a"," ","b"," ","c"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4182,7 +4183,7 @@ def test_SplitAndKeepDelimiter():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["xyzabc123abc","b"]
+	stack = [vyxalify(elem) for elem in ["xyzabc123abc","b"]]
 	expected = ["xyza","b","c123a","b","c"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4193,7 +4194,7 @@ def test_SplitAndKeepDelimiter():
 
 
 def test_CartesianProduct():
-	stack = ["ab","cd"]
+	stack = [vyxalify(elem) for elem in ["ab","cd"]]
 	expected = ["ac","ad","bc","bd"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4202,7 +4203,7 @@ def test_CartesianProduct():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2],[3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[3,4]]]
 	expected = [[1,3],[1,4],[2,3],[2,4]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4213,7 +4214,7 @@ def test_CartesianProduct():
 
 
 def test_SliceUntil():
-	stack = ["abc",1]
+	stack = [vyxalify(elem) for elem in ["abc",1]]
 	expected = "a"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4222,7 +4223,7 @@ def test_SliceUntil():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],2]
+	stack = [vyxalify(elem) for elem in [[1,2,3],2]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4233,7 +4234,7 @@ def test_SliceUntil():
 
 
 def test_SliceFromOneUntil():
-	stack = ["abc",2]
+	stack = [vyxalify(elem) for elem in ["abc",2]]
 	expected = "b"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4242,7 +4243,7 @@ def test_SliceFromOneUntil():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],3]
+	stack = [vyxalify(elem) for elem in [[1,2,3],3]]
 	expected = [2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4253,7 +4254,7 @@ def test_SliceFromOneUntil():
 
 
 def test_Square():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 25
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4262,7 +4263,7 @@ def test_Square():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = ["hel","lo"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4271,7 +4272,7 @@ def test_Square():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["bye"]
+	stack = [vyxalify(elem) for elem in ["bye"]]
 	expected = ["by","e"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4280,7 +4281,7 @@ def test_Square():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [1,4,9]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4291,7 +4292,7 @@ def test_Square():
 
 
 def test_Shift():
-	stack = [1,4,5]
+	stack = [vyxalify(elem) for elem in [1,4,5]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4300,7 +4301,7 @@ def test_Shift():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["my","hi","bye"]
+	stack = [vyxalify(elem) for elem in ["my","hi","bye"]]
 	expected = "hi"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4311,7 +4312,7 @@ def test_Shift():
 
 
 def test_Ceiling():
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4320,7 +4321,7 @@ def test_Ceiling():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4.5]
+	stack = [vyxalify(elem) for elem in [4.5]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4329,7 +4330,7 @@ def test_Ceiling():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1.52,2.9,3.3]]
+	stack = [vyxalify(elem) for elem in [[1.52,2.9,3.3]]]
 	expected = [2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4338,7 +4339,7 @@ def test_Ceiling():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello world"]
+	stack = [vyxalify(elem) for elem in ["hello world"]]
 	expected = ["hello","world"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4349,7 +4350,7 @@ def test_Ceiling():
 
 
 def test_Floor():
-	stack = [5.3]
+	stack = [vyxalify(elem) for elem in [5.3]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4358,7 +4359,7 @@ def test_Floor():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[5.3,4.7]]
+	stack = [vyxalify(elem) for elem in [[5.3,4.7]]]
 	expected = [4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4367,7 +4368,7 @@ def test_Floor():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["123abc"]
+	stack = [vyxalify(elem) for elem in ["123abc"]]
 	expected = 123
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4378,7 +4379,7 @@ def test_Floor():
 
 
 def test_Deltas():
-	stack = [1,2,3]
+	stack = [vyxalify(elem) for elem in [1,2,3]]
 	expected = [1,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4387,7 +4388,7 @@ def test_Deltas():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,1,1]
+	stack = [vyxalify(elem) for elem in [1,1,1]]
 	expected = [0,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4396,7 +4397,7 @@ def test_Deltas():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [40,61,3]
+	stack = [vyxalify(elem) for elem in [40,61,3]]
 	expected = [21,-58]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4407,7 +4408,7 @@ def test_Deltas():
 
 
 def test_Sign():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4416,7 +4417,7 @@ def test_Sign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hi"]
+	stack = [vyxalify(elem) for elem in ["hi"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4425,7 +4426,7 @@ def test_Sign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-5]
+	stack = [vyxalify(elem) for elem in [-5]]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4434,7 +4435,7 @@ def test_Sign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4445,7 +4446,7 @@ def test_Sign():
 
 
 def test_RightBitShift():
-	stack = [4,1]
+	stack = [vyxalify(elem) for elem in [4,1]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4454,7 +4455,7 @@ def test_RightBitShift():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8,"green"]
+	stack = [vyxalify(elem) for elem in [8,"green"]]
 	expected = "   green"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4463,7 +4464,7 @@ def test_RightBitShift():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","cheeseburger"]
+	stack = [vyxalify(elem) for elem in ["hello","cheeseburger"]]
 	expected = "       hello"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4474,7 +4475,7 @@ def test_RightBitShift():
 
 
 def test_LeftBitShift():
-	stack = [4,1]
+	stack = [vyxalify(elem) for elem in [4,1]]
 	expected = 8
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4483,7 +4484,7 @@ def test_LeftBitShift():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8,"green"]
+	stack = [vyxalify(elem) for elem in [8,"green"]]
 	expected = "green   "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4492,7 +4493,7 @@ def test_LeftBitShift():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","cheeseburger"]
+	stack = [vyxalify(elem) for elem in ["hello","cheeseburger"]]
 	expected = "hello       "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4503,7 +4504,7 @@ def test_LeftBitShift():
 
 
 def test_BitwiseAnd():
-	stack = [420, 69]
+	stack = [vyxalify(elem) for elem in [420, 69]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4512,7 +4513,7 @@ def test_BitwiseAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc", 10]
+	stack = [vyxalify(elem) for elem in ["abc", 10]]
 	expected = "   abc    "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4521,7 +4522,7 @@ def test_BitwiseAnd():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["no", "yesnt"]
+	stack = [vyxalify(elem) for elem in ["no", "yesnt"]]
 	expected = " no "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4532,7 +4533,7 @@ def test_BitwiseAnd():
 
 
 def test_BitwiseOr():
-	stack = [420, 69]
+	stack = [vyxalify(elem) for elem in [420, 69]]
 	expected = 485
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4541,7 +4542,7 @@ def test_BitwiseOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2, "abc"]
+	stack = [vyxalify(elem) for elem in [2, "abc"]]
 	expected = "ab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4550,7 +4551,7 @@ def test_BitwiseOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc", 2]
+	stack = [vyxalify(elem) for elem in ["abc", 2]]
 	expected = "ab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4559,7 +4560,7 @@ def test_BitwiseOr():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello", "lower"]
+	stack = [vyxalify(elem) for elem in ["Hello", "lower"]]
 	expected = "Hellower"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4570,7 +4571,7 @@ def test_BitwiseOr():
 
 
 def test_BitwiseXor():
-	stack = [420, 69]
+	stack = [vyxalify(elem) for elem in [420, 69]]
 	expected = 481
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4579,7 +4580,7 @@ def test_BitwiseXor():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5, "ab"]
+	stack = [vyxalify(elem) for elem in [5, "ab"]]
 	expected = "     ab"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4588,7 +4589,7 @@ def test_BitwiseXor():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["ab", 5]
+	stack = [vyxalify(elem) for elem in ["ab", 5]]
 	expected = "ab     "
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4597,7 +4598,7 @@ def test_BitwiseXor():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["atoll", "bowl"]
+	stack = [vyxalify(elem) for elem in ["atoll", "bowl"]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4608,7 +4609,7 @@ def test_BitwiseXor():
 
 
 def test_BitwiseNot():
-	stack = [220]
+	stack = [vyxalify(elem) for elem in [220]]
 	expected = -221
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4617,7 +4618,7 @@ def test_BitwiseNot():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Hello"]
+	stack = [vyxalify(elem) for elem in ["Hello"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4628,7 +4629,7 @@ def test_BitwiseNot():
 
 
 def test_RandomChoice():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4637,7 +4638,7 @@ def test_RandomChoice():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4646,7 +4647,7 @@ def test_RandomChoice():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4657,7 +4658,7 @@ def test_RandomChoice():
 
 
 def test_LesserThanorEqualTo():
-	stack = [1,2]
+	stack = [vyxalify(elem) for elem in [1,2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4668,7 +4669,7 @@ def test_LesserThanorEqualTo():
 
 
 def test_GreaterThanorEqualTo():
-	stack = [1,2]
+	stack = [vyxalify(elem) for elem in [1,2]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4679,7 +4680,7 @@ def test_GreaterThanorEqualTo():
 
 
 def test_NotEqualTo():
-	stack = [1,2]
+	stack = [vyxalify(elem) for elem in [1,2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4690,7 +4691,7 @@ def test_NotEqualTo():
 
 
 def test_ExactlyEqualTo():
-	stack = [1,2]
+	stack = [vyxalify(elem) for elem in [1,2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4701,7 +4702,7 @@ def test_ExactlyEqualTo():
 
 
 def test_SetUnion():
-	stack = [[1,2],[2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[2,3,4]]]
 	expected = [1,2,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4712,7 +4713,7 @@ def test_SetUnion():
 
 
 def test_Tranpose():
-	stack = [[1,2],[2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[2,3,4]]]
 	expected = [[1, 2], [2, 3], [4]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4723,7 +4724,7 @@ def test_Tranpose():
 
 
 def test_SymmetricSetdifference():
-	stack = [[1,2],[2,3,4]]
+	stack = [vyxalify(elem) for elem in [[1,2],[2,3,4]]]
 	expected = [1,3,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4734,7 +4735,7 @@ def test_SymmetricSetdifference():
 
 
 def test_GradeUp():
-	stack = [[420,69,1337]]
+	stack = [vyxalify(elem) for elem in [[420,69,1337]]]
 	expected = [2,1,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4743,7 +4744,7 @@ def test_GradeUp():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Heloo"]
+	stack = [vyxalify(elem) for elem in ["Heloo"]]
 	expected = "HELOO"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4752,7 +4753,7 @@ def test_GradeUp():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4763,7 +4764,7 @@ def test_GradeUp():
 
 
 def test_GradeDown():
-	stack = [[420,69,1337]]
+	stack = [vyxalify(elem) for elem in [[420,69,1337]]]
 	expected = [3,1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4772,7 +4773,7 @@ def test_GradeDown():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Heloo"]
+	stack = [vyxalify(elem) for elem in ["Heloo"]]
 	expected = "heloo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4781,7 +4782,7 @@ def test_GradeDown():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4792,7 +4793,7 @@ def test_GradeDown():
 
 
 def test_Removenonalphabets():
-	stack = ["Helo1233adc__"]
+	stack = [vyxalify(elem) for elem in ["Helo1233adc__"]]
 	expected = "Heloadc"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4801,7 +4802,7 @@ def test_Removenonalphabets():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 256
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4812,7 +4813,7 @@ def test_Removenonalphabets():
 
 
 def test_Nthprime():
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 7
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4821,7 +4822,7 @@ def test_Nthprime():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = ["a","ab","abc","","b","bc","","","c","","",""]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4832,7 +4833,7 @@ def test_Nthprime():
 
 
 def test_Primefactorization():
-	stack = [45]
+	stack = [vyxalify(elem) for elem in [45]]
 	expected = [3,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4841,7 +4842,7 @@ def test_Primefactorization():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = "abca"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4852,7 +4853,7 @@ def test_Primefactorization():
 
 
 def test_Primefactors():
-	stack = [45]
+	stack = [vyxalify(elem) for elem in [45]]
 	expected = [3, 3, 5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4861,7 +4862,7 @@ def test_Primefactors():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc def"]
+	stack = [vyxalify(elem) for elem in ["abc def"]]
 	expected = "Abc Def"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4872,7 +4873,7 @@ def test_Primefactors():
 
 
 def test_Multiplicity():
-	stack = [45, 3]
+	stack = [vyxalify(elem) for elem in [45, 3]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4881,7 +4882,7 @@ def test_Multiplicity():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["aaabbbc", "ab"]
+	stack = [vyxalify(elem) for elem in ["aaabbbc", "ab"]]
 	expected = "c"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4892,7 +4893,7 @@ def test_Multiplicity():
 
 
 def test_Modulo3():
-	stack = [45]
+	stack = [vyxalify(elem) for elem in [45]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4901,7 +4902,7 @@ def test_Modulo3():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [""]
+	stack = [vyxalify(elem) for elem in [""]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4912,7 +4913,7 @@ def test_Modulo3():
 
 
 def test_RotateLeft():
-	stack = [3, [4, 5, 5, 6]]
+	stack = [vyxalify(elem) for elem in [3, [4, 5, 5, 6]]]
 	expected = [6, 4, 5, 5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4921,7 +4922,7 @@ def test_RotateLeft():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3, [1, 2, 3, 4]]
+	stack = [vyxalify(elem) for elem in [3, [1, 2, 3, 4]]]
 	expected = [2, 3, 4, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4932,7 +4933,7 @@ def test_RotateLeft():
 
 
 def test_RotateRight():
-	stack = [3, [4, 5, 5, 6]]
+	stack = [vyxalify(elem) for elem in [3, [4, 5, 5, 6]]]
 	expected = [5, 5, 6, 4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4941,7 +4942,7 @@ def test_RotateRight():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3, [1, 2, 3, 4]]
+	stack = [vyxalify(elem) for elem in [3, [1, 2, 3, 4]]]
 	expected = [4, 1, 2, 3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4952,7 +4953,7 @@ def test_RotateRight():
 
 
 def test_SplitOnnewlines():
-	stack = ["a\nb\nc"]
+	stack = [vyxalify(elem) for elem in ["a\nb\nc"]]
 	expected = ["a", "b", "c"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4961,7 +4962,7 @@ def test_SplitOnnewlines():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 1000
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4972,7 +4973,7 @@ def test_SplitOnnewlines():
 
 
 def test_ProductofArray():
-	stack = [3,4,5]
+	stack = [vyxalify(elem) for elem in [3,4,5]]
 	expected = 60
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4983,7 +4984,7 @@ def test_ProductofArray():
 
 
 def test_Uppercasealphabet():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -4994,7 +4995,7 @@ def test_Uppercasealphabet():
 
 
 def test_eEulersnumber():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 2.718281828459045
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5005,7 +5006,7 @@ def test_eEulersnumber():
 
 
 def test_Fizz():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "Fizz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5016,7 +5017,7 @@ def test_Fizz():
 
 
 def test_Buzz():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "Buzz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5027,7 +5028,7 @@ def test_Buzz():
 
 
 def test_FizzBuzz():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "FizzBuzz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5038,7 +5039,7 @@ def test_FizzBuzz():
 
 
 def test_HelloWorld():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5049,7 +5050,7 @@ def test_HelloWorld():
 
 
 def test_HelloWorld():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "Hello World"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5060,7 +5061,7 @@ def test_HelloWorld():
 
 
 def test_1000():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1000
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5071,7 +5072,7 @@ def test_1000():
 
 
 def test_1000():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 10000
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5082,7 +5083,7 @@ def test_1000():
 
 
 def test_10000():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 100000
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5093,7 +5094,7 @@ def test_10000():
 
 
 def test_1000000():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1000000
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5104,7 +5105,7 @@ def test_1000000():
 
 
 def test_Lowercasealphabet():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "abcdefghijklmnopqrstuvwxyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5115,7 +5116,7 @@ def test_Lowercasealphabet():
 
 
 def test_Lowercaseanduppercasealphabet():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5126,7 +5127,7 @@ def test_Lowercaseanduppercasealphabet():
 
 
 def test_Digits():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "0123456789"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5137,7 +5138,7 @@ def test_Digits():
 
 
 def test_Hexdigitslowercase():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "0123456789abcdef"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5148,7 +5149,7 @@ def test_Hexdigitslowercase():
 
 
 def test_Hexdigitsuppercase():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "0123456789ABCDEF"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5159,7 +5160,7 @@ def test_Hexdigitsuppercase():
 
 
 def test_Octaldigits():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "01234567"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5170,7 +5171,7 @@ def test_Octaldigits():
 
 
 def test_Punctuation():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = string.punctuation
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5181,7 +5182,7 @@ def test_Punctuation():
 
 
 def test_PrintableASCII():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5192,7 +5193,7 @@ def test_PrintableASCII():
 
 
 def test_Digitslowercasealphabetanduppercasealphabet():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5203,7 +5204,7 @@ def test_Digitslowercasealphabetanduppercasealphabet():
 
 
 def test_Uppercaseandlowercasealphabet():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5214,7 +5215,7 @@ def test_Uppercaseandlowercasealphabet():
 
 
 def test_Uppercasealphabetreversed():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBA"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5225,7 +5226,7 @@ def test_Uppercasealphabetreversed():
 
 
 def test_Lowercasealphabetreversed():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "zyxwvutsrqponmlkjihgfedcba"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5236,7 +5237,7 @@ def test_Lowercasealphabetreversed():
 
 
 def test_Uppercaseandlowercasealphabetreversed():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5247,7 +5248,7 @@ def test_Uppercaseandlowercasealphabetreversed():
 
 
 def test_Pi():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 3.141592653589793
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5258,7 +5259,7 @@ def test_Pi():
 
 
 def test_NaN():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = math.nan
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5269,7 +5270,7 @@ def test_NaN():
 
 
 def test_Goldenratiophi():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1.618033988749895
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5280,7 +5281,7 @@ def test_Goldenratiophi():
 
 
 def test_Bracessquarebracketsanglebracketsandparentheses():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "{}[]<>()"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5291,7 +5292,7 @@ def test_Bracessquarebracketsanglebracketsandparentheses():
 
 
 def test_Parenthesessquarebracketsandbraces():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "()[]{}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5302,7 +5303,7 @@ def test_Parenthesessquarebracketsandbraces():
 
 
 def test_Parenthesesandsquarebrackets():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "()[]"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5313,7 +5314,7 @@ def test_Parenthesesandsquarebrackets():
 
 
 def test_Openingbrackets():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "([{"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5324,7 +5325,7 @@ def test_Openingbrackets():
 
 
 def test_Closingbrackets():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = ")]}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5335,7 +5336,7 @@ def test_Closingbrackets():
 
 
 def test_Openingbracketswith():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "([{<"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5346,7 +5347,7 @@ def test_Openingbracketswith():
 
 
 def test_Closingbracketswith():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = ")]}>"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5357,7 +5358,7 @@ def test_Closingbracketswith():
 
 
 def test_Lowercasevowels():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "aeiou"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5368,7 +5369,7 @@ def test_Lowercasevowels():
 
 
 def test_Upercasevowels():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "AEIOU"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5379,7 +5380,7 @@ def test_Upercasevowels():
 
 
 def test_Lowercaseanduppercasevowels():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "aeiouAEIOU"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5390,7 +5391,7 @@ def test_Lowercaseanduppercasevowels():
 
 
 def test_12():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = [1, 2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5401,7 +5402,7 @@ def test_12():
 
 
 def test_4294967296():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 4294967296
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5412,7 +5413,7 @@ def test_4294967296():
 
 
 def test_11():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = [1, -1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5423,7 +5424,7 @@ def test_11():
 
 
 def test_11():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = [-1, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5434,7 +5435,7 @@ def test_11():
 
 
 def test_01():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = [0, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5445,7 +5446,7 @@ def test_01():
 
 
 def test_Slashes():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "/\\"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5456,7 +5457,7 @@ def test_Slashes():
 
 
 def test_360():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 360
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5467,7 +5468,7 @@ def test_360():
 
 
 def test_https():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "https://"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5478,7 +5479,7 @@ def test_https():
 
 
 def test_http():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "http://"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5489,7 +5490,7 @@ def test_http():
 
 
 def test_httpswww():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "https://www."
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5500,7 +5501,7 @@ def test_httpswww():
 
 
 def test_httpwww():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "http://www."
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5511,7 +5512,7 @@ def test_httpwww():
 
 
 def test_512():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 512
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5522,7 +5523,7 @@ def test_512():
 
 
 def test_1024():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1024
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5533,7 +5534,7 @@ def test_1024():
 
 
 def test_2048():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 2048
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5544,7 +5545,7 @@ def test_2048():
 
 
 def test_4096():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 4096
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5555,7 +5556,7 @@ def test_4096():
 
 
 def test_8192():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 8192
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5566,7 +5567,7 @@ def test_8192():
 
 
 def test_16384():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 16384
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5577,7 +5578,7 @@ def test_16384():
 
 
 def test_32768():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 32768
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5588,7 +5589,7 @@ def test_32768():
 
 
 def test_65536():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 65536
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5599,7 +5600,7 @@ def test_65536():
 
 
 def test_2147483648():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 2147483648
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5610,7 +5611,7 @@ def test_2147483648():
 
 
 def test_Lowercaseconsonantswithy():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "bcdfghjklmnpqrstvwxyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5621,7 +5622,7 @@ def test_Lowercaseconsonantswithy():
 
 
 def test_BFcommandset():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "[]<>-+.,"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5632,7 +5633,7 @@ def test_BFcommandset():
 
 
 def test_Bracketpairlist():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = ["()","[]","{}","<>"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5643,7 +5644,7 @@ def test_Bracketpairlist():
 
 
 def test_Nestedbrackets():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "([{<>}])"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5654,7 +5655,7 @@ def test_Nestedbrackets():
 
 
 def test_Amogus():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "ඞ"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5665,7 +5666,7 @@ def test_Amogus():
 
 
 def test_220():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1048576
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5676,7 +5677,7 @@ def test_220():
 
 
 def test_230():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = 1073741824
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5687,7 +5688,7 @@ def test_230():
 
 
 def test_LowercaseVowelsWithY():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "aeiouy"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5698,7 +5699,7 @@ def test_LowercaseVowelsWithY():
 
 
 def test_UppercaseVowelsWithY():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "AEIOUY"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5709,7 +5710,7 @@ def test_UppercaseVowelsWithY():
 
 
 def test_VowelsWithY():
-	stack = []
+	stack = [vyxalify(elem) for elem in []]
 	expected = "aeiouyAEIOUY"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5720,7 +5721,7 @@ def test_VowelsWithY():
 
 
 def test_Cosine():
-	stack = [3.141519265]
+	stack = [vyxalify(elem) for elem in [3.141519265]]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5729,7 +5730,7 @@ def test_Cosine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5738,7 +5739,7 @@ def test_Cosine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6.283185307]
+	stack = [vyxalify(elem) for elem in [6.283185307]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5749,7 +5750,7 @@ def test_Cosine():
 
 
 def test_ArcCosine():
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = 3.141519265
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5758,7 +5759,7 @@ def test_ArcCosine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5769,7 +5770,7 @@ def test_ArcCosine():
 
 
 def test_QuadraticSolver():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = [-0.5, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5778,7 +5779,7 @@ def test_QuadraticSolver():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, -2]
+	stack = [vyxalify(elem) for elem in [1, -2]]
 	expected = [0.5, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5787,7 +5788,7 @@ def test_QuadraticSolver():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69, 420]
+	stack = [vyxalify(elem) for elem in [69, 420]]
 	expected = [-0.16428571428571428, 0.0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5798,7 +5799,7 @@ def test_QuadraticSolver():
 
 
 def test_GeneralQuadraticSolver():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = [-1, -1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5807,7 +5808,7 @@ def test_GeneralQuadraticSolver():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, -2]
+	stack = [vyxalify(elem) for elem in [1, -2]]
 	expected = [1, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5816,7 +5817,7 @@ def test_GeneralQuadraticSolver():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69, 420]
+	stack = [vyxalify(elem) for elem in [69, 420]]
 	expected = [-0.16428571428571428, 0.0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5827,7 +5828,7 @@ def test_GeneralQuadraticSolver():
 
 
 def test_Sine():
-	stack = [3.141519265]
+	stack = [vyxalify(elem) for elem in [3.141519265]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5836,7 +5837,7 @@ def test_Sine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5845,7 +5846,7 @@ def test_Sine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6.283185307]
+	stack = [vyxalify(elem) for elem in [6.283185307]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5856,7 +5857,7 @@ def test_Sine():
 
 
 def test_ArcSine():
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = -1.5707963267948966
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5865,7 +5866,7 @@ def test_ArcSine():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1.5707963267948966
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5876,7 +5877,7 @@ def test_ArcSine():
 
 
 def test_Tangent():
-	stack = [3.141519265]
+	stack = [vyxalify(elem) for elem in [3.141519265]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5885,7 +5886,7 @@ def test_Tangent():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5894,7 +5895,7 @@ def test_Tangent():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6.283185307]
+	stack = [vyxalify(elem) for elem in [6.283185307]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5905,7 +5906,7 @@ def test_Tangent():
 
 
 def test_ArcTangent():
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = -0.78539816
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5914,7 +5915,7 @@ def test_ArcTangent():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0.78539816
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5925,7 +5926,7 @@ def test_ArcTangent():
 
 
 def test_PolynomialSolver():
-	stack = [[4, -1005, 3, 4]]
+	stack = [vyxalify(elem) for elem in [[4, -1005, 3, 4]]]
 	expected = [251.2469990481482, 0.06460672339563359, -0.06160577154387768]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5934,7 +5935,7 @@ def test_PolynomialSolver():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[69, 420, -1]]
+	stack = [vyxalify(elem) for elem in [[69, 420, -1]]]
 	expected = [-6.089336543523048, 0.0023800217839172796]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5945,7 +5946,7 @@ def test_PolynomialSolver():
 
 
 def test_nPickrnpr():
-	stack = [[3, 4, 5, 6], [1, 2, 3, 4]]
+	stack = [vyxalify(elem) for elem in [[3, 4, 5, 6], [1, 2, 3, 4]]]
 	expected = [3,12,60,360]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5956,7 +5957,7 @@ def test_nPickrnpr():
 
 
 def test_CopySign():
-	stack = [-1, 1]
+	stack = [vyxalify(elem) for elem in [-1, 1]]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5965,7 +5966,7 @@ def test_CopySign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, -1]
+	stack = [vyxalify(elem) for elem in [1, -1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5974,7 +5975,7 @@ def test_CopySign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-1, -1]
+	stack = [vyxalify(elem) for elem in [-1, -1]]
 	expected = -1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5983,7 +5984,7 @@ def test_CopySign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1, 1]
+	stack = [vyxalify(elem) for elem in [1, 1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -5994,7 +5995,7 @@ def test_CopySign():
 
 
 def test_SumofProperDivisors():
-	stack = [43]
+	stack = [vyxalify(elem) for elem in [43]]
 	expected = [1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6003,7 +6004,7 @@ def test_SumofProperDivisors():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [12]
+	stack = [vyxalify(elem) for elem in [12]]
 	expected = [16]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6012,7 +6013,7 @@ def test_SumofProperDivisors():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [97]
+	stack = [vyxalify(elem) for elem in [97]]
 	expected = [1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6021,7 +6022,7 @@ def test_SumofProperDivisors():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [34]
+	stack = [vyxalify(elem) for elem in [34]]
 	expected = [20]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6030,7 +6031,7 @@ def test_SumofProperDivisors():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [18]
+	stack = [vyxalify(elem) for elem in [18]]
 	expected = [21]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6041,7 +6042,7 @@ def test_SumofProperDivisors():
 
 
 def test_PerfectSquare():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6050,7 +6051,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6059,7 +6060,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6068,7 +6069,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [16]
+	stack = [vyxalify(elem) for elem in [16]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6077,7 +6078,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [25]
+	stack = [vyxalify(elem) for elem in [25]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6086,7 +6087,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [36]
+	stack = [vyxalify(elem) for elem in [36]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6095,7 +6096,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [37]
+	stack = [vyxalify(elem) for elem in [37]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6104,7 +6105,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [-1]
+	stack = [vyxalify(elem) for elem in [-1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6113,7 +6114,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6122,7 +6123,7 @@ def test_PerfectSquare():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1.5]
+	stack = [vyxalify(elem) for elem in [1.5]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6133,7 +6134,7 @@ def test_PerfectSquare():
 
 
 def test_eraisedtopowera():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6142,7 +6143,7 @@ def test_eraisedtopowera():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 2.718281828459045
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6151,7 +6152,7 @@ def test_eraisedtopowera():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 7.38905609893065
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6160,7 +6161,7 @@ def test_eraisedtopowera():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 20.085536923187668
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6171,7 +6172,7 @@ def test_eraisedtopowera():
 
 
 def test_eraisedtopowera1():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6180,7 +6181,7 @@ def test_eraisedtopowera1():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1.718281828459045
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6189,7 +6190,7 @@ def test_eraisedtopowera1():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 6.38905609893065
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6198,7 +6199,7 @@ def test_eraisedtopowera1():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 19.085536923187668
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6209,7 +6210,7 @@ def test_eraisedtopowera1():
 
 
 def test_NaturalLogarithm():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6218,7 +6219,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 0.6931471805599453
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6227,7 +6228,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 1.0986122886681098
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6236,7 +6237,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 1.3862943611198906
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6245,7 +6246,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 1.6094379124341003
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6254,7 +6255,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 1.791759469228055
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6263,7 +6264,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [7]
+	stack = [vyxalify(elem) for elem in [7]]
 	expected = 1.9459101490553132
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6272,7 +6273,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 2.0794415416798357
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6281,7 +6282,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 2.1972245773362196
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6290,7 +6291,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [10]
+	stack = [vyxalify(elem) for elem in [10]]
 	expected = 2.302585092994046
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6299,7 +6300,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [11]
+	stack = [vyxalify(elem) for elem in [11]]
 	expected = 2.3978952727983707
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6308,7 +6309,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [12]
+	stack = [vyxalify(elem) for elem in [12]]
 	expected = 2.4849066497880004
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6317,7 +6318,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [13]
+	stack = [vyxalify(elem) for elem in [13]]
 	expected = 2.5649493574615367
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6326,7 +6327,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [14]
+	stack = [vyxalify(elem) for elem in [14]]
 	expected = 2.6390573296152586
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6335,7 +6336,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [15]
+	stack = [vyxalify(elem) for elem in [15]]
 	expected = 2.70805020110221
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6344,7 +6345,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [16]
+	stack = [vyxalify(elem) for elem in [16]]
 	expected = 2.7725887222397813
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6353,7 +6354,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [17]
+	stack = [vyxalify(elem) for elem in [17]]
 	expected = 2.833213344056216
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6362,7 +6363,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [18]
+	stack = [vyxalify(elem) for elem in [18]]
 	expected = 2.889279713667798
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6371,7 +6372,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [19]
+	stack = [vyxalify(elem) for elem in [19]]
 	expected = 2.940980663340675
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6380,7 +6381,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [20]
+	stack = [vyxalify(elem) for elem in [20]]
 	expected = 2.98885267308838
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6389,7 +6390,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [21]
+	stack = [vyxalify(elem) for elem in [21]]
 	expected = 3.03164900591155
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6398,7 +6399,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [22]
+	stack = [vyxalify(elem) for elem in [22]]
 	expected = 3.069078890930626
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6407,7 +6408,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [23]
+	stack = [vyxalify(elem) for elem in [23]]
 	expected = 3.101444148692257
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6416,7 +6417,7 @@ def test_NaturalLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [24]
+	stack = [vyxalify(elem) for elem in [24]]
 	expected = 3.129283016944946
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6427,7 +6428,7 @@ def test_NaturalLogarithm():
 
 
 def test_Logarithmlog_2():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6436,7 +6437,7 @@ def test_Logarithmlog_2():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6447,7 +6448,7 @@ def test_Logarithmlog_2():
 
 
 def test_CommonLogarithm():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6456,7 +6457,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 0.3010299956639812
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6465,7 +6466,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 0.47712125471966244
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6474,7 +6475,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 0.6020599913279624
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6483,7 +6484,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 0.6989700043360189
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6492,7 +6493,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 0.7781512503836436
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6501,7 +6502,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [7]
+	stack = [vyxalify(elem) for elem in [7]]
 	expected = 0.8450980400142568
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6510,7 +6511,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 0.9030899869919435
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6519,7 +6520,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 0.9542425094393249
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6528,7 +6529,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [10]
+	stack = [vyxalify(elem) for elem in [10]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6537,7 +6538,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [11]
+	stack = [vyxalify(elem) for elem in [11]]
 	expected = 1.0373648063829815
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6546,7 +6547,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [12]
+	stack = [vyxalify(elem) for elem in [12]]
 	expected = 1.0794415416798357
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6555,7 +6556,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [13]
+	stack = [vyxalify(elem) for elem in [13]]
 	expected = 1.1180339887498949
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6564,7 +6565,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [14]
+	stack = [vyxalify(elem) for elem in [14]]
 	expected = 1.1512925464970229
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6573,7 +6574,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [15]
+	stack = [vyxalify(elem) for elem in [15]]
 	expected = 1.1832159566199232
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6582,7 +6583,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [16]
+	stack = [vyxalify(elem) for elem in [16]]
 	expected = 1.2138765413770488
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6591,7 +6592,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [17]
+	stack = [vyxalify(elem) for elem in [17]]
 	expected = 1.2415866898954712
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6600,7 +6601,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [18]
+	stack = [vyxalify(elem) for elem in [18]]
 	expected = 1.2686525285981229
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6609,7 +6610,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [19]
+	stack = [vyxalify(elem) for elem in [19]]
 	expected = 1.293995220556003
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6618,7 +6619,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [20]
+	stack = [vyxalify(elem) for elem in [20]]
 	expected = 1.318385620278294
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6627,7 +6628,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [21]
+	stack = [vyxalify(elem) for elem in [21]]
 	expected = 1.341998858493418
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6636,7 +6637,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [22]
+	stack = [vyxalify(elem) for elem in [22]]
 	expected = 1.3647343448018976
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6645,7 +6646,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [23]
+	stack = [vyxalify(elem) for elem in [23]]
 	expected = 1.3867261498125963
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6654,7 +6655,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [24]
+	stack = [vyxalify(elem) for elem in [24]]
 	expected = 1.4079441410500514
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6663,7 +6664,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [25]
+	stack = [vyxalify(elem) for elem in [25]]
 	expected = 1.4283545351906137
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6672,7 +6673,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [26]
+	stack = [vyxalify(elem) for elem in [26]]
 	expected = 1.4479441410500514
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6681,7 +6682,7 @@ def test_CommonLogarithm():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [27]
+	stack = [vyxalify(elem) for elem in [27]]
 	expected = 1.4667563108421037
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6692,7 +6693,7 @@ def test_CommonLogarithm():
 
 
 def test_StraightLineDistance():
-	stack = [[69, 420], [21, 42]]
+	stack = [vyxalify(elem) for elem in [[69, 420], [21, 42]]]
 	expected = 381.03543142337827
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6703,7 +6704,7 @@ def test_StraightLineDistance():
 
 
 def test_ToDegrees():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6712,7 +6713,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 57.29577951308232
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6721,7 +6722,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 114.59155902616465
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6730,7 +6731,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 171.88733853924697
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6739,7 +6740,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 229.18264859012092
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6748,7 +6749,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 286.47895353103696
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6757,7 +6758,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 343.77426756035296
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6766,7 +6767,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [7]
+	stack = [vyxalify(elem) for elem in [7]]
 	expected = 401.06957159047897
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6775,7 +6776,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 458.36387551059497
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6784,7 +6785,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 515.65910164161098
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6793,7 +6794,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [10]
+	stack = [vyxalify(elem) for elem in [10]]
 	expected = 573.95432767272599
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6802,7 +6803,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [11]
+	stack = [vyxalify(elem) for elem in [11]]
 	expected = 632.24964270280999
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6811,7 +6812,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [12]
+	stack = [vyxalify(elem) for elem in [12]]
 	expected = 690.54595673282499
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6820,7 +6821,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [13]
+	stack = [vyxalify(elem) for elem in [13]]
 	expected = 748.84127076392999
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6829,7 +6830,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [14]
+	stack = [vyxalify(elem) for elem in [14]]
 	expected = 807.13658579503499
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6838,7 +6839,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [15]
+	stack = [vyxalify(elem) for elem in [15]]
 	expected = 865.43189982514
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6847,7 +6848,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [16]
+	stack = [vyxalify(elem) for elem in [16]]
 	expected = 923.72721485605
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6856,7 +6857,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [17]
+	stack = [vyxalify(elem) for elem in [17]]
 	expected = 982.02262888616
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6865,7 +6866,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [18]
+	stack = [vyxalify(elem) for elem in [18]]
 	expected = 1040.31894291626
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6874,7 +6875,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [19]
+	stack = [vyxalify(elem) for elem in [19]]
 	expected = 1098.61525694636
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6883,7 +6884,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [20]
+	stack = [vyxalify(elem) for elem in [20]]
 	expected = 1156.91057097646
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6892,7 +6893,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [21]
+	stack = [vyxalify(elem) for elem in [21]]
 	expected = 1215.20588500656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6901,7 +6902,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [22]
+	stack = [vyxalify(elem) for elem in [22]]
 	expected = 1273.50119903646
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6910,7 +6911,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [23]
+	stack = [vyxalify(elem) for elem in [23]]
 	expected = 1331.79651306656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6919,7 +6920,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [24]
+	stack = [vyxalify(elem) for elem in [24]]
 	expected = 1390.09182709656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6928,7 +6929,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [25]
+	stack = [vyxalify(elem) for elem in [25]]
 	expected = 1448.38714112656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6937,7 +6938,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [26]
+	stack = [vyxalify(elem) for elem in [26]]
 	expected = 1506.68245515656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6946,7 +6947,7 @@ def test_ToDegrees():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [27]
+	stack = [vyxalify(elem) for elem in [27]]
 	expected = 1564.97776018656
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6957,7 +6958,7 @@ def test_ToDegrees():
 
 
 def test_ToRadians():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6966,7 +6967,7 @@ def test_ToRadians():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [90]
+	stack = [vyxalify(elem) for elem in [90]]
 	expected = 1.5707963267948966
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6975,7 +6976,7 @@ def test_ToRadians():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [180]
+	stack = [vyxalify(elem) for elem in [180]]
 	expected = 3.141592653589793
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6984,7 +6985,7 @@ def test_ToRadians():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [270]
+	stack = [vyxalify(elem) for elem in [270]]
 	expected = 4.71238898038469
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -6993,7 +6994,7 @@ def test_ToRadians():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [360]
+	stack = [vyxalify(elem) for elem in [360]]
 	expected = 6.283185307179586
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7004,7 +7005,7 @@ def test_ToRadians():
 
 
 def test_NextPrimeAfteraNumber():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7013,7 +7014,7 @@ def test_NextPrimeAfteraNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7022,7 +7023,7 @@ def test_NextPrimeAfteraNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7031,7 +7032,7 @@ def test_NextPrimeAfteraNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7040,7 +7041,7 @@ def test_NextPrimeAfteraNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 7
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7049,7 +7050,7 @@ def test_NextPrimeAfteraNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69]
+	stack = [vyxalify(elem) for elem in [69]]
 	expected = 71
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7060,7 +7061,7 @@ def test_NextPrimeAfteraNumber():
 
 
 def test_FirstPrimeBeforeaNumber():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7069,7 +7070,7 @@ def test_FirstPrimeBeforeaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7078,7 +7079,7 @@ def test_FirstPrimeBeforeaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7087,7 +7088,7 @@ def test_FirstPrimeBeforeaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7096,7 +7097,7 @@ def test_FirstPrimeBeforeaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7105,7 +7106,7 @@ def test_FirstPrimeBeforeaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69]
+	stack = [vyxalify(elem) for elem in [69]]
 	expected = 67
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7116,7 +7117,7 @@ def test_FirstPrimeBeforeaNumber():
 
 
 def test_NearestPrimetoaNumber():
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7125,7 +7126,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7134,7 +7135,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7143,7 +7144,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7152,7 +7153,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7161,7 +7162,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [38]
+	stack = [vyxalify(elem) for elem in [38]]
 	expected = 37
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7170,7 +7171,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [40]
+	stack = [vyxalify(elem) for elem in [40]]
 	expected = 41
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7179,7 +7180,7 @@ def test_NearestPrimetoaNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69]
+	stack = [vyxalify(elem) for elem in [69]]
 	expected = 71
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7190,7 +7191,7 @@ def test_NearestPrimetoaNumber():
 
 
 def test_PolynomialfromRoots():
-	stack = [[1, 2, 3]]
+	stack = [vyxalify(elem) for elem in [[1, 2, 3]]]
 	expected = [-6, 11, -6, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7199,7 +7200,7 @@ def test_PolynomialfromRoots():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[19, 43, 12, 5, 129]]
+	stack = [vyxalify(elem) for elem in [[19, 43, 12, 5, 129]]]
 	expected = [-6323580, 2320581, -266708, 12122, -208, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7210,7 +7211,7 @@ def test_PolynomialfromRoots():
 
 
 def test_RoundtonDecimalPlaces():
-	stack = [1.2345, 2]
+	stack = [vyxalify(elem) for elem in [1.2345, 2]]
 	expected = 1.23
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7219,7 +7220,7 @@ def test_RoundtonDecimalPlaces():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1.2345, 3]
+	stack = [vyxalify(elem) for elem in [1.2345, 3]]
 	expected = 1.235
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7228,7 +7229,7 @@ def test_RoundtonDecimalPlaces():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1.2345, 4]
+	stack = [vyxalify(elem) for elem in [1.2345, 4]]
 	expected = 1.2345
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7237,7 +7238,7 @@ def test_RoundtonDecimalPlaces():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1.2345, 5]
+	stack = [vyxalify(elem) for elem in [1.2345, 5]]
 	expected = 1.2345
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7248,7 +7249,7 @@ def test_RoundtonDecimalPlaces():
 
 
 def test_LeastCommonMultiple():
-	stack = [1, 2]
+	stack = [vyxalify(elem) for elem in [1, 2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7257,7 +7258,7 @@ def test_LeastCommonMultiple():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [69, 420]
+	stack = [vyxalify(elem) for elem in [69, 420]]
 	expected = 9660
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7268,7 +7269,7 @@ def test_LeastCommonMultiple():
 
 
 def test_nthDigitofPi():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7277,7 +7278,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7286,7 +7287,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 4
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7295,7 +7296,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7304,7 +7305,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7313,7 +7314,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 9
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7322,7 +7323,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7331,7 +7332,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [7]
+	stack = [vyxalify(elem) for elem in [7]]
 	expected = 6
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7340,7 +7341,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7349,7 +7350,7 @@ def test_nthDigitofPi():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 9
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7360,7 +7361,7 @@ def test_nthDigitofPi():
 
 
 def test_nthDigitofe():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7369,7 +7370,7 @@ def test_nthDigitofe():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 7
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7378,7 +7379,7 @@ def test_nthDigitofe():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7387,7 +7388,7 @@ def test_nthDigitofe():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 8
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7398,7 +7399,7 @@ def test_nthDigitofe():
 
 
 def test_nthFibonacciNumber():
-	stack = [0]
+	stack = [vyxalify(elem) for elem in [0]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7407,7 +7408,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1]
+	stack = [vyxalify(elem) for elem in [1]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7416,7 +7417,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [2]
+	stack = [vyxalify(elem) for elem in [2]]
 	expected = 2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7425,7 +7426,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [3]
+	stack = [vyxalify(elem) for elem in [3]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7434,7 +7435,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [4]
+	stack = [vyxalify(elem) for elem in [4]]
 	expected = 5
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7443,7 +7444,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = 8
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7452,7 +7453,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [6]
+	stack = [vyxalify(elem) for elem in [6]]
 	expected = 13
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7461,7 +7462,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [7]
+	stack = [vyxalify(elem) for elem in [7]]
 	expected = 21
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7470,7 +7471,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [8]
+	stack = [vyxalify(elem) for elem in [8]]
 	expected = 34
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7479,7 +7480,7 @@ def test_nthFibonacciNumber():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [9]
+	stack = [vyxalify(elem) for elem in [9]]
 	expected = 55
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7490,7 +7491,7 @@ def test_nthFibonacciNumber():
 
 
 def test_Parenthesise():
-	stack = ["xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz"]]
 	expected = "(xyz)"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7499,7 +7500,7 @@ def test_Parenthesise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = "(5)"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7508,7 +7509,7 @@ def test_Parenthesise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = ["(1)","(2)","(3)"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7519,7 +7520,7 @@ def test_Parenthesise():
 
 
 def test_Bracketify():
-	stack = ["xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz"]]
 	expected = "[xyz]"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7528,7 +7529,7 @@ def test_Bracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = "[5]"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7537,7 +7538,7 @@ def test_Bracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = ["[1]","[2]","[3]"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7548,7 +7549,7 @@ def test_Bracketify():
 
 
 def test_CurlyBracketify():
-	stack = ["xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz"]]
 	expected = "{xyz}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7557,7 +7558,7 @@ def test_CurlyBracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = "{5}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7566,7 +7567,7 @@ def test_CurlyBracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = ["{1}","{2}","{3}"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7577,7 +7578,7 @@ def test_CurlyBracketify():
 
 
 def test_AngleBracketify():
-	stack = ["xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz"]]
 	expected = "<xyz>"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7586,7 +7587,7 @@ def test_AngleBracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [5]
+	stack = [vyxalify(elem) for elem in [5]]
 	expected = "<5>"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7595,7 +7596,7 @@ def test_AngleBracketify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = ["<1>","<2>","<3>"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7606,7 +7607,7 @@ def test_AngleBracketify():
 
 
 def test_BalancedBrackets():
-	stack = ["xyz"]
+	stack = [vyxalify(elem) for elem in ["xyz"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7615,7 +7616,7 @@ def test_BalancedBrackets():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["([)]"]
+	stack = [vyxalify(elem) for elem in ["([)]"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7624,7 +7625,7 @@ def test_BalancedBrackets():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["({<[]>})"]
+	stack = [vyxalify(elem) for elem in ["({<[]>})"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7633,7 +7634,7 @@ def test_BalancedBrackets():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [")("]
+	stack = [vyxalify(elem) for elem in [")("]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7644,7 +7645,7 @@ def test_BalancedBrackets():
 
 
 def test_CustomPadLeft():
-	stack = ["xyz","x",4]
+	stack = [vyxalify(elem) for elem in ["xyz","x",4]]
 	expected = "xxyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7653,7 +7654,7 @@ def test_CustomPadLeft():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["123","&",8]
+	stack = [vyxalify(elem) for elem in ["123","&",8]]
 	expected = "&&&&&123"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7662,7 +7663,7 @@ def test_CustomPadLeft():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["324"," ",2]
+	stack = [vyxalify(elem) for elem in ["324"," ",2]]
 	expected = "324"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7673,7 +7674,7 @@ def test_CustomPadLeft():
 
 
 def test_CustomPadRight():
-	stack = ["xyz","x",4]
+	stack = [vyxalify(elem) for elem in ["xyz","x",4]]
 	expected = "xyzx"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7682,7 +7683,7 @@ def test_CustomPadRight():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["123","&",8]
+	stack = [vyxalify(elem) for elem in ["123","&",8]]
 	expected = "123&&&&&"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7691,7 +7692,7 @@ def test_CustomPadRight():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["324"," ",2]
+	stack = [vyxalify(elem) for elem in ["324"," ",2]]
 	expected = "324"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7702,7 +7703,7 @@ def test_CustomPadRight():
 
 
 def test_FlipBracketsVerticalPalindromise():
-	stack = ["(x"]
+	stack = [vyxalify(elem) for elem in ["(x"]]
 	expected = "(x)"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7711,7 +7712,7 @@ def test_FlipBracketsVerticalPalindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["{] "]
+	stack = [vyxalify(elem) for elem in ["{] "]]
 	expected = "{] [}"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7720,7 +7721,7 @@ def test_FlipBracketsVerticalPalindromise():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["/*>X"]
+	stack = [vyxalify(elem) for elem in ["/*>X"]]
 	expected = "/*>X<*\\"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7731,7 +7732,7 @@ def test_FlipBracketsVerticalPalindromise():
 
 
 def test_RemoveUntilNochange():
-	stack = ["((()))","()"]
+	stack = [vyxalify(elem) for elem in ["((()))","()"]]
 	expected = ""
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7740,7 +7741,7 @@ def test_RemoveUntilNochange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["--+--+-",["--","+-"]]
+	stack = [vyxalify(elem) for elem in ["--+--+-",["--","+-"]]]
 	expected = "+"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7751,7 +7752,7 @@ def test_RemoveUntilNochange():
 
 
 def test_ReplaceUntilNoChange():
-	stack = ["xyzzzzz","yzz","yyyz"]
+	stack = [vyxalify(elem) for elem in ["xyzzzzz","yzz","yyyz"]]
 	expected = "xyyyyyyyyyz"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7760,7 +7761,7 @@ def test_ReplaceUntilNoChange():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abb","ab","aa"]
+	stack = [vyxalify(elem) for elem in ["abb","ab","aa"]]
 	expected = "aaa"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7771,7 +7772,7 @@ def test_ReplaceUntilNoChange():
 
 
 def test_StringCompress():
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "«B²z«"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7780,7 +7781,7 @@ def test_StringCompress():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello world"]
+	stack = [vyxalify(elem) for elem in ["hello world"]]
 	expected = "«⟇÷Ċ$⌈¢2«"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7791,7 +7792,7 @@ def test_StringCompress():
 
 
 def test_NumberCompress():
-	stack = [234]
+	stack = [vyxalify(elem) for elem in [234]]
 	expected = "»⇧»"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7800,7 +7801,7 @@ def test_NumberCompress():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [27914632409837421]
+	stack = [vyxalify(elem) for elem in [27914632409837421]]
 	expected = "»fðǐ4'∞Ẏ»"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7811,7 +7812,7 @@ def test_NumberCompress():
 
 
 def test_Center():
-	stack = [["ab","cdef"]]
+	stack = [vyxalify(elem) for elem in [["ab","cdef"]]]
 	expected = [" ab ","cdef"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7820,7 +7821,7 @@ def test_Center():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["xyz","a","bcdef"]]
+	stack = [vyxalify(elem) for elem in [["xyz","a","bcdef"]]]
 	expected = [" xyz ","  a  ","bcdef"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7831,7 +7832,7 @@ def test_Center():
 
 
 def test_RunLengthEncoding():
-	stack = ["abc"]
+	stack = [vyxalify(elem) for elem in ["abc"]]
 	expected = [["a",1],["b",1],["c",1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7840,7 +7841,7 @@ def test_RunLengthEncoding():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["aaa"]
+	stack = [vyxalify(elem) for elem in ["aaa"]]
 	expected = [["a",3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7851,7 +7852,7 @@ def test_RunLengthEncoding():
 
 
 def test_RunLengthDecoding():
-	stack = [[["x",3]]]
+	stack = [vyxalify(elem) for elem in [[["x",3]]]]
 	expected = "xxx"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7860,7 +7861,7 @@ def test_RunLengthDecoding():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[["z",2],["a",3]]]
+	stack = [vyxalify(elem) for elem in [[["z",2],["a",3]]]]
 	expected = "zzaaa"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7871,7 +7872,7 @@ def test_RunLengthDecoding():
 
 
 def test_DictionaryCompression():
-	stack = ["withree"]
+	stack = [vyxalify(elem) for elem in ["withree"]]
 	expected = "`wi∧ḭ`"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7880,7 +7881,7 @@ def test_DictionaryCompression():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = "`ƈṙ`"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7889,7 +7890,7 @@ def test_DictionaryCompression():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["Vyxal"]
+	stack = [vyxalify(elem) for elem in ["Vyxal"]]
 	expected = "`₴ŀ`"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7900,7 +7901,7 @@ def test_DictionaryCompression():
 
 
 def test_Grouponwords():
-	stack = ["abc*xyz"]
+	stack = [vyxalify(elem) for elem in ["abc*xyz"]]
 	expected = ["abc","*","xyz"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7909,7 +7910,7 @@ def test_Grouponwords():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["$$$"]
+	stack = [vyxalify(elem) for elem in ["$$$"]]
 	expected = ["$","$","$"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7920,7 +7921,7 @@ def test_Grouponwords():
 
 
 def test_Regexreplace():
-	stack = [".{3}","hello","x"]
+	stack = [vyxalify(elem) for elem in [".{3}","hello","x"]]
 	expected = "xlo"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7929,7 +7930,7 @@ def test_Regexreplace():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["\\W","Hello, World!","E"]
+	stack = [vyxalify(elem) for elem in ["\\W","Hello, World!","E"]]
 	expected = "HelloEEWorldE"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7940,7 +7941,7 @@ def test_Regexreplace():
 
 
 def test_StartsWith():
-	stack = ["hello","h"]
+	stack = [vyxalify(elem) for elem in ["hello","h"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7949,7 +7950,7 @@ def test_StartsWith():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","hello"]
+	stack = [vyxalify(elem) for elem in ["hello","hello"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7958,7 +7959,7 @@ def test_StartsWith():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello","x"]
+	stack = [vyxalify(elem) for elem in ["hello","x"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7967,7 +7968,7 @@ def test_StartsWith():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["hello",""]
+	stack = [vyxalify(elem) for elem in ["hello",""]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7978,7 +7979,7 @@ def test_StartsWith():
 
 
 def test_PluraliseCount():
-	stack = [4,"hello"]
+	stack = [vyxalify(elem) for elem in [4,"hello"]]
 	expected = "4 hellos"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7987,7 +7988,7 @@ def test_PluraliseCount():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [1,"hello"]
+	stack = [vyxalify(elem) for elem in [1,"hello"]]
 	expected = "1 hello"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -7996,7 +7997,7 @@ def test_PluraliseCount():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [0,"hello"]
+	stack = [vyxalify(elem) for elem in [0,"hello"]]
 	expected = "0 hellos"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8011,7 +8012,7 @@ def test_VerticalMirror():
 
 
 def test_FlipBracketsVerticalMirror():
-	stack = ["[}"]
+	stack = [vyxalify(elem) for elem in ["[}"]]
 	expected = "[}{]"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8020,7 +8021,7 @@ def test_FlipBracketsVerticalMirror():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [")X"]
+	stack = [vyxalify(elem) for elem in [")X"]]
 	expected = ")XX("
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8029,7 +8030,7 @@ def test_FlipBracketsVerticalMirror():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["</tag>"]
+	stack = [vyxalify(elem) for elem in ["</tag>"]]
 	expected = "</tag><gat\\>"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8040,7 +8041,7 @@ def test_FlipBracketsVerticalMirror():
 
 
 def test_StringPartitions():
-	stack = ["ab"]
+	stack = [vyxalify(elem) for elem in ["ab"]]
 	expected = [["a","b"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8051,7 +8052,7 @@ def test_StringPartitions():
 
 
 def test_AllUnique():
-	stack = ["hello"]
+	stack = [vyxalify(elem) for elem in ["hello"]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8060,7 +8061,7 @@ def test_AllUnique():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["eeee"]
+	stack = [vyxalify(elem) for elem in ["eeee"]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8069,7 +8070,7 @@ def test_AllUnique():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8078,7 +8079,7 @@ def test_AllUnique():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,1,1]]
+	stack = [vyxalify(elem) for elem in [[1,1,1]]]
 	expected = 1
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8089,7 +8090,7 @@ def test_AllUnique():
 
 
 def test_CartesianPower():
-	stack = ["ab",2]
+	stack = [vyxalify(elem) for elem in ["ab",2]]
 	expected = ["aa","ab","ba","bb"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8098,7 +8099,7 @@ def test_CartesianPower():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2],3]
+	stack = [vyxalify(elem) for elem in [[1,2],3]]
 	expected = [[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8107,7 +8108,7 @@ def test_CartesianPower():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["abc",3]
+	stack = [vyxalify(elem) for elem in ["abc",3]]
 	expected = ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8118,7 +8119,7 @@ def test_CartesianPower():
 
 
 def test_Flattentodepth():
-	stack = [[[[[[1]]]]],3]
+	stack = [vyxalify(elem) for elem in [[[[[[1]]]]],3]]
 	expected = [[1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8127,7 +8128,7 @@ def test_Flattentodepth():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["xyz",[1,2,[3,4,[5,6]]]]
+	stack = [vyxalify(elem) for elem in ["xyz",[1,2,[3,4,[5,6]]]]]
 	expected = [1,2,3,4,[5,6]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8138,7 +8139,7 @@ def test_Flattentodepth():
 
 
 def test_ChunksOfSpecifiedLength():
-	stack = ["abcdefghi",[2,3,4]]
+	stack = [vyxalify(elem) for elem in ["abcdefghi",[2,3,4]]]
 	expected = ["ab","cde","fghi"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8147,7 +8148,7 @@ def test_ChunksOfSpecifiedLength():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5], [2,3] ]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5], [2,3] ]]
 	expected = [[1,2],[3,4,5]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8158,7 +8159,7 @@ def test_ChunksOfSpecifiedLength():
 
 
 def test_AllLessThanIncreasing():
-	stack = [[1,2,3,2,1,4,3,2,1], 3]
+	stack = [vyxalify(elem) for elem in [[1,2,3,2,1,4,3,2,1], 3]]
 	expected = [1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8167,7 +8168,7 @@ def test_AllLessThanIncreasing():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3,4,5,2,1], 4]
+	stack = [vyxalify(elem) for elem in [[1,2,3,4,5,2,1], 4]]
 	expected = [1,2,3]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8178,7 +8179,7 @@ def test_AllLessThanIncreasing():
 
 
 def test_Untruth():
-	stack = [[1]]
+	stack = [vyxalify(elem) for elem in [[1]]]
 	expected = [0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8187,7 +8188,7 @@ def test_Untruth():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[0,3,4,6]]
+	stack = [vyxalify(elem) for elem in [[0,3,4,6]]]
 	expected = [1,0,0,1,1,0,1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8198,7 +8199,7 @@ def test_Untruth():
 
 
 def test_MultidimensionalIndexing():
-	stack = [[1,[2,3]],[0,1]]
+	stack = [vyxalify(elem) for elem in [[1,[2,3]],[0,1]]]
 	expected = 3
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8207,7 +8208,7 @@ def test_MultidimensionalIndexing():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["xyzabc"], [0,4]]
+	stack = [vyxalify(elem) for elem in [["xyzabc"], [0,4]]]
 	expected = "b"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8218,7 +8219,7 @@ def test_MultidimensionalIndexing():
 
 
 def test_MultidimensionalSearch():
-	stack = [[[1,2,3],[4,5,6]], 5]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5,6]], 5]]
 	expected = [1, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8227,7 +8228,7 @@ def test_MultidimensionalSearch():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [["abc","def",["hij","klm","nop"]], "m"]
+	stack = [vyxalify(elem) for elem in [["abc","def",["hij","klm","nop"]], "m"]]
 	expected = [1,1,2]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8238,7 +8239,7 @@ def test_MultidimensionalSearch():
 
 
 def test_ZeroMatrix():
-	stack = [[3,4]]
+	stack = [vyxalify(elem) for elem in [[3,4]]]
 	expected = [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8247,7 +8248,7 @@ def test_ZeroMatrix():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[2,3,2]]
+	stack = [vyxalify(elem) for elem in [[2,3,2]]]
 	expected = [[0,0],[0,0]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8258,7 +8259,7 @@ def test_ZeroMatrix():
 
 
 def test_EvenlyDistribute():
-	stack = [[1,2,3],6]
+	stack = [vyxalify(elem) for elem in [[1,2,3],6]]
 	expected = [3,4,5]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8267,7 +8268,7 @@ def test_EvenlyDistribute():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,2,3],5]
+	stack = [vyxalify(elem) for elem in [[1,2,3],5]]
 	expected = [3,4,4]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8278,7 +8279,7 @@ def test_EvenlyDistribute():
 
 
 def test_AllCombinations():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8287,7 +8288,7 @@ def test_AllCombinations():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = ["ab"]
+	stack = [vyxalify(elem) for elem in ["ab"]]
 	expected = ["a","b","ab","ba"]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8298,7 +8299,7 @@ def test_AllCombinations():
 
 
 def test_UniquifyMask():
-	stack = [[1,2,3,1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3,1,2,3]]]
 	expected = [1,1,1,0,0,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8307,7 +8308,7 @@ def test_UniquifyMask():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[1,1,1,2,3,1,2,2,1,3]]
+	stack = [vyxalify(elem) for elem in [[1,1,1,2,3,1,2,2,1,3]]]
 	expected = [1,0,0,1,1,0,0,0,0,0]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8318,7 +8319,7 @@ def test_UniquifyMask():
 
 
 def test_Diagonals():
-	stack = [[1,2,3],[4,5,6],[7,8,9]]
+	stack = [vyxalify(elem) for elem in [[1,2,3],[4,5,6],[7,8,9]]]
 	expected = [[1,5,9],[2,6],[3],[4,8],[7]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8329,7 +8330,7 @@ def test_Diagonals():
 
 
 def test_Sublists():
-	stack = [[1,2,3]]
+	stack = [vyxalify(elem) for elem in [[1,2,3]]]
 	expected = [[1],[2],[3],[1,2],[2,3],[1,2,3]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8340,7 +8341,7 @@ def test_Sublists():
 
 
 def test_TransposeWithFiller():
-	stack = [[[1,2,3],[4,5]],0]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5]],0]]
 	expected = [[1,4],[2,5],[3,0]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8349,7 +8350,7 @@ def test_TransposeWithFiller():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2,3,4],[5,6],[7,8,9],[0]],"X"]
+	stack = [vyxalify(elem) for elem in [[[1,2,3,4],[5,6],[7,8,9],[0]],"X"]]
 	expected = [[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8360,7 +8361,7 @@ def test_TransposeWithFiller():
 
 
 def test_MatrixMultiplication():
-	stack = [[[1,2],[3,4]],[[5,6],[7,8]]]
+	stack = [vyxalify(elem) for elem in [[[1,2],[3,4]],[[5,6],[7,8]]]]
 	expected = [[23,34],[31,46]]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8371,7 +8372,7 @@ def test_MatrixMultiplication():
 
 
 def test_MatrixDeterminant():
-	stack = [[[1,2],[3,4]]]
+	stack = [vyxalify(elem) for elem in [[[1,2],[3,4]]]]
 	expected = -2
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8380,7 +8381,7 @@ def test_MatrixDeterminant():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[[1,2,3],[4,5,6],[7,8,9]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5,6],[7,8,9]]]]
 	expected = 0
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8391,7 +8392,7 @@ def test_MatrixDeterminant():
 
 
 def test_Antidiagonal():
-	stack = [[[1,2,3],[4,5,6],[7,8,9]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5,6],[7,8,9]]]]
 	expected = [3,5,7]
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -8402,7 +8403,7 @@ def test_Antidiagonal():
 
 
 def test_Diagonal():
-	stack = [[[1,2,3],[4,5,6],[7,8,9]]]
+	stack = [vyxalify(elem) for elem in [[[1,2,3],[4,5,6],[7,8,9]]]]
 	expected = [1,5,9]
 	ctx = Context()
 	ctx.stacks.append(stack)

@@ -27,7 +27,7 @@ from vyxal.encoding import (
     codepage_string_compress,
 )
 from vyxal.helpers import *
-from vyxal.LazyList import LazyList, lazylist, vyxalify
+from vyxal.LazyList import LazyList, lazylist
 
 currentdate = datetime.now()
 
@@ -2037,6 +2037,7 @@ def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
+    # TODO make this work with infinite Lazylists
     return LazyList(
         itertools.chain.from_iterable(
             itertools.combinations(iterable(lhs, ctx), r)
@@ -2222,6 +2223,8 @@ def remove_until_no_change(lhs, rhs, ctx):
 
 def repeat(lhs, rhs, ctx):
     """Element ẋ
+    (str, num) -> a * b
+    (num, str) -> b * a
     (any, num) -> Repeat a b times
     (str, str) -> a + " " + b
     (fun, any) -> repeat function a on b while the function results are not-unique
@@ -2254,6 +2257,8 @@ def repeat(lhs, rhs, ctx):
             (ts[0], NUMBER_TYPE): lambda: LazyList(
                 itertools.repeat(iterable(lhs, ctx=ctx), int(abs(rhs)))
             ),
+            (str, NUMBER_TYPE): lambda: lhs * int(rhs),
+            (NUMBER_TYPE, str): lambda: rhs * int(lhs),
             (NUMBER_TYPE, NUMBER_TYPE): lambda: str(lhs) * rhs,
             (str, str): lambda: lhs + " " + rhs,
         }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
@@ -2297,17 +2302,17 @@ def reverse(lhs, ctx):
 def right_bit_shift(lhs, rhs, ctx):
     """Element ↳
     (num, num) -> a << b
-    (num, str) -> a.rjust(b)
-    (str, num) -> b.rjust(a)
-    (str, str) -> a.rjust(len(b)-len(a))
+    (str, num) -> a.rjust(b, " ")
+    (num, str) -> b.rjust(a, " ")
+    (str, str) -> a.rjust(len(b)-len(a), " ")
     """
 
     ts = vy_type(lhs, rhs)
     return {
-        NUMBER_TYPE: lambda: int(lhs) >> int(rhs),
-        str: lambda: str(lhs).rjust(int(rhs), " "),
-        str: lambda: str(rhs).rjust(int(lhs), " "),
-        str: lambda: str(lhs).rjust(abs(len(str(rhs)) - len(str(lhs))), " "),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
+        (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
+        (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
+        (str, str): lambda: lhs.rjust(len(rhs) - len(lhs), " "),
     }.get(ts)()
 
 
@@ -2407,7 +2412,7 @@ def sort_by(lhs, rhs, ctx):
     """Element ṡ
     (any, fun) -> sorted(a, key=b) (Sort by b)
     (num, num) -> range(a, b + 1) (Inclusive range from a to b)
-    (str, str) -> regex.split(string=a, pattern=b)
+    (str, str) -> regex.split(pattern=b, string=a)
     """
 
     ts = vy_type(lhs, rhs)
@@ -2419,7 +2424,7 @@ def sort_by(lhs, rhs, ctx):
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
-            (str, str): lambda: re.split(lhs, rhs),
+            (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
 
@@ -3252,15 +3257,17 @@ def vy_round(lhs, ctx):
     """Element ṙ
     (num) -> round(a)
     (str) -> quad palindromize with overlap
+    (lst) -> vectorised
     """
 
     ts = vy_type(lhs)
+    print(lhs, type(lhs), ts)
     return {
-        (NUMBER_TYPE): lambda: round(lhs),
-        (str): lambda: vertical_mirror(lhs, ctx=ctx)
+        NUMBER_TYPE: lambda: round(lhs),
+        str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
-    }.get(ts)()
+    }.get(ts, vectorise(vy_round, lhs, ctx=ctx))()
 
 
 def vy_type(item, other=None, simple=False):
@@ -3275,6 +3282,10 @@ def vy_type(item, other=None, simple=False):
 
 
 def vy_zip(lhs, rhs, ctx):
+    """Element Z
+    (any, any) -> zip(a, b)
+    (any, fun) -> zip(a,map(b,a)) (Zipmap, map and zip)
+    """
     if isinstance(lhs, types.FunctionType):
         return vy_zip(
             rhs,

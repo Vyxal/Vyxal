@@ -111,12 +111,18 @@ def fixed_point(
         current = safe_apply(function, current, ctx=ctx)
 
 
-def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
+def foldl(
+    function: types.FunctionType,
+    vector: List[Any],
+    initial=None,
+    *,
+    ctx: Context
+) -> Any:
     """Reduce vector by function"""
     if len(vector) == 0:
         return 0
 
-    working = None
+    working = initial
 
     for item in vector:
         if working is None:
@@ -649,7 +655,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return item
 
 
-def vy_zip(*items) -> list:
+def vy_zip_multi(*items) -> list:
     """Like python's zip, but fills shorter lists with 0s"""
 
     items = list(map(iter, items))
@@ -669,7 +675,25 @@ def vy_zip(*items) -> list:
         yield ret
 
 
-def wrap(vector: Union[str, list], width: int) -> List[Any]:
+def vyxalify(value: Any) -> Any:
+    """Takes a value and returns it as one of the four types we use here."""
+
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
+        return vyxalify(sympy.Rational(str(float(value))))
+        # Sympy is weird okay.
+    elif isinstance(value, float):
+        return sympy.Rational(value)
+    elif isinstance(value, (int, Rational, str, LazyList)):
+        return value
+    elif isinstance(value, list):
+        return list(map(vyxalify, value))
+    else:
+        return LazyList(map(vyxalify, value))
+
+
+def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
     """A version of textwrap.wrap that plays nice with spaces"""
     ret = []
     temp = []

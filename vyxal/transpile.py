@@ -5,9 +5,8 @@ import secrets
 from typing import Union
 
 from vyxal import elements, helpers, lexer, parse, structure, encoding
-from vyxal.helpers import indent_str, uncompress
+from vyxal.helpers import indent_str, uncompress, vyxalify
 from vyxal.lexer import Token, TokenType
-from vyxal.LazyList import vyxalify
 
 
 def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
