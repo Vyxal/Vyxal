@@ -655,26 +655,6 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return item
 
 
-def vy_zip_multi(*items) -> list:
-    """Like python's zip, but fills shorter lists with 0s"""
-
-    items = list(map(iter, items))
-    while True:
-        ret = []
-        exhausted_count = 0
-        for item in items:
-            try:
-                ret.append(next(item))
-            except:
-                ret.append(0)
-                exhausted_count += 1
-
-        if len(items) == exhausted_count:
-            break
-
-        yield ret
-
-
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
 

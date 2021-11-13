@@ -3764,7 +3764,7 @@ def test_Assign():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [vyxalify(elem) for elem in ["Hello ", ", World!", 5]]
+	stack = [vyxalify(elem) for elem in ["Hello ", 5, ", World!"]]
 	expected = "Hello, World!"
 	ctx = Context()
 	ctx.stacks.append(stack)
@@ -3794,7 +3794,7 @@ def test_Bifurcate():
 	assert simplify(stack[-1]) == expected
 
 	stack = [vyxalify(elem) for elem in ["abc"]]
-	expected = "cab"
+	expected = "cba"
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('Ḃ'); print(code)
@@ -3823,7 +3823,7 @@ def test_Counts():
 	assert simplify(stack[-1]) == expected
 
 	stack = [vyxalify(elem) for elem in ["Hello, World!"]]
-	expected = [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]
+	expected = [["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]]
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('Ċ'); print(code)

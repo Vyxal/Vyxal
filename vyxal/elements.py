@@ -116,9 +116,8 @@ def all_equal(lhs, ctx):
     """
 
     lhs = iterable(lhs, ctx=ctx)
-    if not len(lhs):
-        return 0
-
+    if len(lhs) == 0:
+        return 1
     else:
         first = lhs[0]
         for item in lhs[1:]:
@@ -1279,15 +1278,27 @@ def is_divisible(lhs, rhs, ctx):
     (num, str) -> a copies of b
     (str, num) -> b copies of a
     (str, str) -> b + " " + a ($ẋ)
+
+    Beware, this function returns a singleton list for its first and
+    fourth overloads and a list of copies of the top of the stack
+    otherwise, not a single value!
     """
 
     ts = vy_type(lhs, rhs)
+
+    def helper(lhs, rhs):
+        ts = vy_type(lhs, rhs)
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs % rhs == 0),
+            (NUMBER_TYPE, str): lambda: [rhs] * lhs,
+            (str, NUMBER_TYPE): lambda: [lhs] * rhs,
+            (str, str): lambda: rhs + " " + lhs,
+        }.get(ts, lambda: vectorise(helper, lhs, rhs, ctx=ctx))()
+
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: [int(lhs % rhs == 0)],
         (NUMBER_TYPE, str): lambda: [rhs] * lhs,
         (str, NUMBER_TYPE): lambda: [lhs] * rhs,
-        (str, str): lambda: [rhs + " " + lhs],
-    }.get(ts, lambda: [vectorise(is_divisible, lhs, rhs, ctx=ctx)])()
+    }.get(ts, lambda: [helper(lhs, rhs)])()
 
 
 def is_divisible_by_three(lhs, ctx):
@@ -1467,7 +1478,6 @@ def ljust(lhs, rhs, other, ctx):
     """
 
     ts = vy_type(lhs, rhs, other)
-
     return {
         (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: lhs <= other <= rhs,
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
@@ -1492,7 +1502,7 @@ def ljust(lhs, rhs, other, ctx):
             ts[1],
             types.FunctionType,
         ): lambda: collect_until_false(lhs, other, rhs, ctx),
-    }.get(ts, vectorise(ljust, lhs, rhs, other, ctx))()
+    }.get(ts, lambda: vectorise(ljust, lhs, rhs, other, ctx=ctx))()
 
 
 def log_10(lhs, ctx):
@@ -1524,7 +1534,7 @@ def log_mold_multi(lhs, rhs, ctx):
     (lst, lst) -> lhs molded to the shape of rhs
     """
 
-    ts = vy_type(lhs, rhs, True)
+    ts = vy_type(lhs, rhs, simple=True)
 
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(math.log(lhs, rhs)),
@@ -1819,7 +1829,7 @@ def non_vectorising_equals(lhs, rhs, ctx):
     (lst, lst) -> a == b
     """
 
-    ts = vy_type(lhs, rhs, True)
+    ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs == rhs,
         (NUMBER_TYPE, str): lambda: str(lhs) == rhs,
@@ -1836,7 +1846,7 @@ def not_equals(lhs, rhs, ctx):
     (lst, lst) -> a != b
     """
 
-    ts = vy_type(lhs, rhs, True)
+    ts = vy_type(lhs, rhs, simple=True)
     return int(
         {
             (NUMBER_TYPE, str): lambda: str(lhs) != rhs,
@@ -2988,7 +2998,7 @@ def vy_divmod(lhs, rhs, ctx):
     (str, str) ->  overwrite the start of a with b
     """
 
-    ts = vy_type(lhs, rhs, True)
+    ts = vy_type(lhs, rhs, simple=True)
 
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs // rhs, lhs % rhs],
@@ -3016,6 +3026,10 @@ def vy_exec(lhs, ctx):
     """Element Ė
     (str) -> vy_exec(a)
     (num) -> 1 / a
+
+    Beware, this doesn't return a single value, it returns a list!
+    If lhs is a str, it executes it and returns an empty list.
+    Otherwise, it wraps the result in a singleton list.
     """
     if vy_type(lhs) is str:
         import vyxal.transpile
@@ -3023,10 +3037,14 @@ def vy_exec(lhs, ctx):
         stack = ctx.stacks[-1]
         exec(vyxal.transpile.transpile(lhs))
         return []
-    elif vy_type(lhs) == NUMBER_TYPE:
-        return [divide(1, lhs, ctx)]
-    else:
-        return [vectorise(vy_exec, lhs, ctx=ctx)]
+
+    def helper(lhs):
+        if vy_type(lhs) == NUMBER_TYPE:
+            return divide(1, lhs, ctx)
+        else:
+            return vectorise(helper, lhs, ctx=ctx)
+
+    return [helper(lhs)]
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
@@ -3261,7 +3279,6 @@ def vy_round(lhs, ctx):
     """
 
     ts = vy_type(lhs)
-    print(lhs, type(lhs), ts)
     return {
         NUMBER_TYPE: lambda: round(lhs),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
@@ -3270,10 +3287,16 @@ def vy_round(lhs, ctx):
     }.get(ts, vectorise(vy_round, lhs, ctx=ctx))()
 
 
-def vy_type(item, other=None, simple=False):
+def vy_type(item, rhs=None, other=None, simple=False):
     if other is not None:
-        return (vy_type(item, simple=simple), vy_type(other, simple=simple))
-    if (x := type(item)) in (int, complex) or "sympy" in str(type(x)):
+        return (
+            vy_type(item, simple=simple),
+            vy_type(rhs, simple=simple),
+            vy_type(other, simple=simple),
+        )
+    elif rhs is not None:
+        return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
+    elif (x := type(item)) in (int, complex) or "sympy" in str(type(x)):
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
         return list
