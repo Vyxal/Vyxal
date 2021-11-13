@@ -3525,7 +3525,11 @@ elements: dict[str, tuple[str, int]] = {
     "T": process_element(truthy_indicies, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
-    "W": ("stack = [list(deep_copy(stack))]", 0),
+    "W": (
+        "temp = list(deep_copy(stack)); pop(stack, len(stack), ctx); "
+        "stack.append(temp)",
+        0,
+    ),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),

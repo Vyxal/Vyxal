@@ -42,11 +42,13 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                         tests.write(f"\tstack = {stack}\n")
                         tests.write(f"\texpected = {expected}\n")
                         tests.write(f"\tctx = Context()\n")
+                        tests.write("\tctx.stacks.append(stack)\n")
                         tests.write(
                             f"\tcode = transpile({element['element']!r})"
                             "; print(code)\n"
                         )
                         tests.write(f"\texec(code)\n")
+                        tests.write("\tctx.stacks.pop()\n")
                         if unordered:
                             tests.write(
                                 f"\tassert set(simplify(stack[-1])) == expected\n\n"
