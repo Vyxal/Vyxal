@@ -2841,8 +2841,8 @@ def test_Boolify():
 	ctx.stacks.pop()
 	assert simplify(stack[-1]) == expected
 
-	stack = [[]]
-	expected = 0
+	stack = [[69, 0]]
+	expected = [1, 0]
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('ḃ'); print(code)
@@ -2861,8 +2861,8 @@ def test_Boolify():
 
 
 def test_NotOne():
-	stack = [[]]
-	expected = 1
+	stack = [[1, 0]]
+	expected = [0, 1]
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('ċ'); print(code)

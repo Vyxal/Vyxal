@@ -48,9 +48,9 @@ def collect_until_false(
     ctx: Context,
 ) -> List[Any]:
     val = initial
-    while safe_apply(predicate, val, ctx):
+    while safe_apply(predicate, val, ctx=ctx):
         yield val
-        val = safe_apply(function, val, ctx)
+        val = safe_apply(function, val, ctx=ctx)
 
 
 def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
@@ -96,7 +96,9 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
+def fixed_point(
+    function: types.FunctionType, initial: Any, ctx: Context
+) -> List[Any]:
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
 
@@ -106,7 +108,7 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     while previous != current:
         yield current
         previous = deep_copy(current)
-        current = safe_apply(function, current)
+        current = safe_apply(function, current, ctx=ctx)
 
 
 def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
@@ -453,7 +455,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args)[::-1], function, len(args), ctx)
+        ret = function(list(args)[::-1], function, len(args), ctx=ctx)
         if len(ret):
             return ret[-1]
         else:
@@ -462,7 +464,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
         ret = function(list(args)[::-1], function, ctx=ctx)[-1]
         return ret
     elif takes_ctx(function):
-        return function(*args, ctx)
+        return function(*args, ctx=ctx)
     return function(*args)
 
 

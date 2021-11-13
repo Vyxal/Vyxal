@@ -747,7 +747,13 @@ def find(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
-        return iterable(lhs, ctx=ctx).find(rhs)
+        index = 0
+        lhs = iterable(lhs, ctx=ctx)
+        while index < len(lhs):
+            if non_vectorising_equals(lhs[index], rhs, ctx):
+                return index
+            index += 1
+        return -1
     else:
         return {
             (ts[0], types.FunctionType): lambda: LazyList(
@@ -2981,10 +2987,10 @@ def vy_divmod(lhs, rhs, ctx):
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs // rhs, lhs % rhs],
         (NUMBER_TYPE, str): lambda: LazyList(
-            map(sum, itertools.combinations(lhs, rhs))
+            map(sum, itertools.combinations(rhs, lhs))
         ),
         (str, NUMBER_TYPE): lambda: LazyList(
-            map(sum, itertools.combinations(rhs, lhs))
+            map(sum, itertools.combinations(lhs, rhs))
         ),
         (str, str): lambda: lhs[: len(rhs)] + rhs,
         (list, NUMBER_TYPE): lambda: LazyList(itertools.combinations(lhs, rhs)),
