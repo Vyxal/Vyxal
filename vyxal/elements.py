@@ -3068,12 +3068,10 @@ def vy_floor(lhs, ctx):
 def vy_gcd(lhs, rhs=None, ctx=None):
 
     ts = vy_type(lhs, rhs)
-    NONE = type(None)
 
+    if rhs is None:
+        return math.gcd(*iterable(lhs, ctx=ctx))
     return {
-        (ts[0], NONE): lambda: reduce(
-            lambda x, y: vy_gcd(x, y, ctx=ctx), iterable(lhs, ctx=ctx)
-        ),
         (NUMBER_TYPE, NUMBER_TYPE): lambda: math.gcd(lhs, rhs),
         (NUMBER_TYPE, str): lambda: vy_gcd(
             lhs, wrapify(chr_ord(rhs), None, ctx), ctx=ctx
