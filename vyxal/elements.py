@@ -1326,7 +1326,7 @@ def is_falsey(lhs, ctx):
     (any) -> a != 1
     """
 
-    return vectorised_not(equals(lhs, 1, ctx=ctx))
+    return vectorised_not(equals(lhs, 1, ctx=ctx), ctx=ctx)
 
 
 def is_prime(lhs, ctx):
@@ -2654,7 +2654,7 @@ def to_base(lhs, rhs, ctx):
         res.append(index(rhs, digit, ctx))
         lhs = remaining
 
-    if all(isinstance(x, str) for x in res):
+    if all(isinstance(x, str) for x in res) and all(len(x) == 1 for x in res):
         return "".join(res)
     return res
 
