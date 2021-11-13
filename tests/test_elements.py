@@ -2927,7 +2927,7 @@ def test_Divmod():
 	assert simplify(stack[-1]) == expected
 
 	stack = ["abcdef", "Joe"]
-	expected = ["Joedef"]
+	expected = "Joedef"
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('ḋ'); print(code)

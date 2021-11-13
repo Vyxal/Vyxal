@@ -2984,15 +2984,16 @@ def vy_divmod(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs, True)
+
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs // rhs, lhs % rhs],
         (NUMBER_TYPE, str): lambda: LazyList(
-            map(sum, itertools.combinations(rhs, lhs))
+            map(vy_sum, itertools.combinations(rhs, lhs))
         ),
         (str, NUMBER_TYPE): lambda: LazyList(
-            map(sum, itertools.combinations(lhs, rhs))
+            map(vy_sum, itertools.combinations(lhs, rhs))
         ),
-        (str, str): lambda: lhs[: len(rhs)] + rhs,
+        (str, str): lambda: rhs + lhs[len(rhs) :],
         (list, NUMBER_TYPE): lambda: LazyList(itertools.combinations(lhs, rhs)),
         (NUMBER_TYPE, list): lambda: LazyList(itertools.combinations(rhs, lhs)),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
