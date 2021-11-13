@@ -2654,6 +2654,8 @@ def to_base(lhs, rhs, ctx):
         res.append(index(rhs, digit, ctx))
         lhs = remaining
 
+    if all(isinstance(x, str) for x in res):
+        return "".join(res)
     return res
 
 
