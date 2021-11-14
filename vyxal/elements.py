@@ -3877,8 +3877,8 @@ elements: dict[str, tuple[str, int]] = {
     "ko": process_element('"01234567"', 0),
     "kp": process_element("string.punctuation", 0),
     "kP": process_element(
-        "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "!\\\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~\"",
+        '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        '!\\"#$%&\\\'()*+,-./:;<=>?@[\\\\]^_`{|}~"',
         0,
     ),
     "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),
@@ -3907,7 +3907,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
-    "kḃ": process_element("'([{'")
+    "kḃ": process_element("'([{'", 0),
     "kß": process_element('"()[]"', 0),
     "k≥": process_element('"([{<"', 0),
     "kΠ": process_element('")]}>"', 0),
