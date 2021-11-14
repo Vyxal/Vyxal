@@ -3260,8 +3260,12 @@ def vy_reduce(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (ts[0], types.FunctionType): lambda: foldl(rhs, lhs, ctx),
-        (types.FunctionType, ts[1]): lambda: foldl(lhs, rhs, ctx),
+        (ts[0], types.FunctionType): lambda: foldl(
+            rhs, iterable(lhs, ctx=ctx), ctx=ctx
+        ),
+        (types.FunctionType, ts[1]): lambda: foldl(
+            lhs, iterable(rhs, ctx=ctx), ctx=ctx
+        ),
     }.get(ts)()
 
 
@@ -3787,8 +3791,8 @@ elements: dict[str, tuple[str, int]] = {
         + "    stack.append(merge(index(lhs, [-rhs, None, None], ctx), "
         + "index(lhs, [None, -rhs, None], ctx), ctx))\n"
         + "else:\n"
-        + "    stack.append(merge(index(rhs, [-1, None, None], ctx), "
-        + "index(rhs, -1, ctx), ctx))\n",
+        + "    stack.append(merge(index(rhs, -1, ctx), "
+        + "index(rhs, [None, -1, None], ctx), ctx))\n",
         2,
     ),
     "↵": process_element(newline_split, 1),

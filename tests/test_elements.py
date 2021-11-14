@@ -4944,7 +4944,7 @@ def test_SplitOnnewlines():
 
 
 def test_ProductofArray():
-	stack = [vyxalify(elem) for elem in [3,4,5]]
+	stack = [vyxalify(elem) for elem in [[3,4,5]]]
 	expected = 60
 	ctx = Context()
 	ctx.stacks.append(stack)

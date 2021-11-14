@@ -2648,7 +2648,7 @@
     lst: prod(a)
   vectorise: false
   tests:
-    - "[3,4,5] : 60"
+    - "[[3,4,5]] : 60"
 
 - element: "„"
   name: Rotate Stack Left
