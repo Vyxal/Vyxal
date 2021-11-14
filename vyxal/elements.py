@@ -564,7 +564,6 @@ def divide(lhs, rhs, ctx):
 def divisors(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
-    # they "divide" a into more than one piece
     (str) -> all substrings of a that occur more than once
     (lst) -> prefixes(a) # Prefixes of a
     """
@@ -573,11 +572,14 @@ def divisors(lhs, ctx):
     if ts == NUMBER_TYPE:
         return sympy.divisors(lhs)
     elif ts == str:
-        return LazyList(
-            filter(
-                lambda substr: lhs.count(substr) > 1,
-                substrings(lhs, ctx),
-            )
+        return uniquify(
+            LazyList(
+                filter(
+                    lambda substr: lhs.count(substr) > 1,
+                    substrings(lhs, ctx),
+                )
+            ),
+            ctx,
         )
     return LazyList((lhs[: x + 1] for x in range(len(lhs))))
 
@@ -3860,7 +3862,7 @@ elements: dict[str, tuple[str, int]] = {
     "kb": process_element('"Buzz"', 0),
     "kF": process_element('"FizzBuzz"', 0),
     "kH": process_element('"Hello, World!"', 0),
-    "kh": process_element('"Hello World!"', 0),
+    "kh": process_element('"Hello World"', 0),
     "k1": process_element("1000", 0),
     "k2": process_element("10000", 0),
     "k3": process_element("100000", 0),
@@ -3875,8 +3877,8 @@ elements: dict[str, tuple[str, int]] = {
     "ko": process_element('"01234567"', 0),
     "kp": process_element("string.punctuation", 0),
     "kP": process_element(
-        "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "!\\\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~",
+        "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "!\\\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~\"",
         0,
     ),
     "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),
@@ -3905,6 +3907,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
+    "kḃ": process_element("'([{'")
     "kß": process_element('"()[]"', 0),
     "k≥": process_element('"([{<"', 0),
     "kΠ": process_element('")]}>"', 0),

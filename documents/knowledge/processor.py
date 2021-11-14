@@ -13,7 +13,7 @@ with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
 # Generate test cases
 with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
     tests.write(
-        "import os, sys\n\n"
+        "import os, sys, sympy\n\n"
         + "THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'\n"
         + "sys.path.insert(1, THIS_FOLDER)\n\n"
         + "from vyxal.transpile import *\n"
@@ -21,6 +21,15 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         + "from vyxal.elements import *\n"
         + "from vyxal.helpers import *\n"
         + "from vyxal.LazyList import *\n"
+    )
+
+    tests.write(
+        "def make_nice(x):\n"
+        "    x = simplify(x)\n"
+        "    if isinstance(x, float):\n"
+        "        return sympy.nsimplify(x)\n"
+        "    else:\n"
+        "        return x\n"
     )
     for element in data:
         try:
@@ -35,13 +44,10 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                         except Exception as e:
                             print("Failed on test", test)
                             raise e
-                        unordered = (
-                            len(expected) > 1
-                            and expected[0] == "{"
-                            and expected[-1] == "}"
+                        tests.write(
+                            f"\tstack = [vyxalify(elem) for elem in {stack}]\n"
                         )
-                        tests.write(f"\tstack = [vyxalify(elem) for elem in {stack}]\n")
-                        tests.write(f"\texpected = {expected}\n")
+                        tests.write(f"\texpected = make_nice({expected})\n")
                         tests.write(f"\tctx = Context()\n")
                         tests.write("\tctx.stacks.append(stack)\n")
                         tests.write(
@@ -50,14 +56,10 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                         )
                         tests.write(f"\texec(code)\n")
                         tests.write("\tctx.stacks.pop()\n")
-                        if unordered:
-                            tests.write(
-                                f"\tassert set(simplify(stack[-1])) == expected\n\n"
-                            )
-                        else:
-                            tests.write(
-                                f"\tassert simplify(stack[-1]) == expected\n\n"
-                            )
+
+                        tests.write(
+                            f"\tassert make_nice(stack[-1]) == expected\n\n"
+                        )
                 else:
                     tests.write("\tpass #TODO implement this test!!!\n\n")
                 tests.write("\n")

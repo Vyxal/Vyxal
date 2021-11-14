@@ -34,7 +34,7 @@ def lazylist(fn):
 def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
-    elif isinstance(value, Rational):
+    elif "sympy" in str(type(value)):
         return float(value)
     else:
         return list(map(simplify, value))
