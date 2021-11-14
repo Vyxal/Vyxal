@@ -1151,7 +1151,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
     else:
         lhs = iterable(lhs)
         rhs = iterable(rhs)
-        return vy_map(rhs, lambda item: lhs[item])
+        return vy_map(rhs, lambda item: lhs[item], ctx=ctx)
 
 
 def infinite_replace(lhs, rhs, other, ctx):
@@ -1182,12 +1182,15 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     (any, num, fun) -> c mapped over every bth item of a
 
     If `ind` is negative, the absolute value is used. If `ind` is greater than
-    or equal to the LazyList's length, `other` is appended to the end."""
+    or equal to the LazyList's length, `other` is appended to the end.
+    """
 
-    lhs = iterable(lhs)
+    lhs = iterable(lhs, ctx)
     assert vy_type(rhs) == NUMBER_TYPE
 
     if vy_type(other) != types.FunctionType:
+        if vy_type(lhs) is str:
+            return lhs[: int(rhs)] + str(other) + lhs[int(rhs) :]
 
         @lazylist
         def gen():
@@ -2731,7 +2734,11 @@ def transliterate(lhs, rhs, other, ctx):
         else:
             ret.append(item)
 
-    if type(lhs) is str:
+    if (
+        type(lhs) is str
+        and all(isinstance(x, str) for x in ret)
+        and all(len(x) == 1 for x in ret)
+    ):
         return "".join(ret)
     else:
         return ret
