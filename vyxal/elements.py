@@ -1413,7 +1413,7 @@ def join_newlines(lhs, ctx):
 
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
-    (num, num) -> a >> b
+    (num, num) -> a << b
     (num, str) -> a.ljust(b)
     (str, num) -> b.ljust(a)
     (str, str) -> a.ljust(len(b)-len(a))
@@ -1421,11 +1421,11 @@ def left_bit_shift(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs >> rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs).ljust(rhs),
-        (str, NUMBER_TYPE): lambda: str(rhs).ljust(lhs),
-        (str, str): lambda: str(lhs).ljust(abs(len(rhs) - len(lhs))),
-    }.get(ts, vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs << rhs,
+        (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
+        (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
+        (str, str): lambda: lhs.ljust(len(rhs)),
+    }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
 
 def length(lhs, ctx):
@@ -1839,13 +1839,15 @@ def non_vectorising_equals(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs, simple=True)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs == rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs) == rhs,
-        (str, NUMBER_TYPE): lambda: lhs == str(rhs),
-        (str, str): lambda: lhs == rhs,
-        (list, list): lambda: lhs == rhs,
-    }.get(ts)()
+    return int(
+        {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs == rhs,
+            (NUMBER_TYPE, str): lambda: str(lhs) == rhs,
+            (str, NUMBER_TYPE): lambda: lhs == str(rhs),
+            (str, str): lambda: lhs == rhs,
+            (list, list): lambda: lhs == rhs,
+        }.get(ts, lambda: 0)()
+    )
 
 
 def not_equals(lhs, rhs, ctx):
@@ -2229,14 +2231,17 @@ def remove_until_no_change(lhs, rhs, ctx):
     """Element øo
     (any, any) -> a.remove_until_no_change(b)
     """
-    if not isinstance(rhs, LazyList):
-        rhs = LazyList([rhs])
-    # Remove each item of rhs from lhs until lhs does not change
+
+    loop = True
     prev = deep_copy(lhs)
-    while prev != lhs:
-        for item in rhs:
-            lhs = remove(lhs, item, ctx)
-        prev = deep_copy(lhs)
+
+    while loop:
+        lhs = remove(lhs, rhs, ctx)
+        if non_vectorising_equals(lhs, prev, ctx):
+            loop = False
+        else:
+            prev = deep_copy(lhs)
+
     return lhs
 
 
@@ -2331,7 +2336,7 @@ def right_bit_shift(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
-        (str, str): lambda: lhs.rjust(len(rhs) - len(lhs), " "),
+        (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts)()
 
 
@@ -2478,7 +2483,7 @@ def split_keep(lhs, rhs, ctx):
     """
 
     if isinstance(lhs, str):
-        return re.split(f"({re.escape(lhs)})", vy_str(rhs))
+        return re.split(f"({re.escape(vy_str(rhs))})", lhs)
     else:
         lhs = iterable(lhs, ctx)
 
@@ -2643,7 +2648,7 @@ def tail_remove(lhs, ctx):
     """
 
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
-    if all(isinstance(x, int) for x in temp):
+    if isinstance(lhs, int) and all(isinstance(x, int) for x in temp):
         return int("".join(str(x) for x in temp))
     else:
         return temp
@@ -3765,19 +3770,25 @@ elements: dict[str, tuple[str, int]] = {
     "Ǒ": process_element(multiplicity, 2),
     "ǒ": process_element(modulo_3, 1),
     "Ǔ": (
-        "lhs, rhs = pop(stack, 2, ctx); "
-        "if vy_type(rhs) == NUMBER_TYPE: \n"
-        "    return lhs[rhs:] + lhs[:rhs] \n"
-        "else:\n"
-        "    return lhs[1:] + lhs[0]",
+        "rhs = pop(stack, 1, ctx)\n"
+        + "if vy_type(rhs) == NUMBER_TYPE: \n"
+        + "    lhs = pop(stack, 1, ctx)\n"
+        + "    stack.append(merge(index(lhs, [rhs, None, None], ctx), "
+        + "index(lhs, [None, rhs, None], ctx)))\n"
+        + "else:\n"
+        + "    stack.append(merge(index(rhs, [1, None, None], ctx), "
+        + "index(rhs, 0, ctx), ctx))\n",
         2,
     ),
     "ǔ": (
-        "lhs, rhs = pop(stack, 2, ctx); "
-        "if vy_type(rhs) == NUMBER_TYPE: \n"
-        "    return lhs[-rhs:] + lhs[:-rhs] \n"
-        "else:\n"
-        "    return lhs[-1] + lhs[:-1]",
+        "rhs = pop(stack, 1, ctx)\n"
+        + "if vy_type(rhs) == NUMBER_TYPE: \n"
+        + "    lhs = pop(stack, 1, ctx)\n"
+        + "    stack.append(merge(index(lhs, [-rhs, None, None], ctx), "
+        + "index(lhs, [None, -rhs, None], ctx), ctx))\n"
+        + "else:\n"
+        + "    stack.append(merge(index(rhs, [-1, None, None], ctx), "
+        + "index(rhs, -1, ctx), ctx))\n",
         2,
     ),
     "↵": process_element(newline_split, 1),
