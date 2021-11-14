@@ -973,15 +973,21 @@ def group_consecutive(lhs, ctx):
     if typ == NUMBER_TYPE:
         lhs = digits(lhs)
 
-    def gen():
-        prev = None
-        count = 0
+    if len(lhs) < 1:
+        return lhs
 
-        for item in lhs:
+    def gen():
+        prev = lhs[0]
+        count = 1
+
+        for item in lhs[1:]:
             if not non_vectorising_equals(prev, item, ctx):
                 yield [prev] * count
                 prev = item
-                count = 0
+                count = 1
+            else:
+                count += 1
+        yield [prev] * count
 
     if typ is LazyList:
         return LazyList(gen())
