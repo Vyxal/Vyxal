@@ -4077,7 +4077,7 @@ def test_Over():
 
 def test_Permutations():
 	stack = [vyxalify(elem) for elem in ["abc"]]
-	expected = ["abc","abc","bac","bca","cab","cba"]
+	expected = ["abc","acb","bac","bca","cab","cba"]
 	ctx = Context()
 	ctx.stacks.append(stack)
 	code = transpile('Ṗ'); print(code)

@@ -2074,7 +2074,7 @@
   overloads:
     any: permutations(a) (Get all permutations)
   tests:
-    - '["abc"] : ["abc","abc","bac","bca","cab","cba"]'
+    - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
     - "[[1,2]] : [[1,2],[2,1]]"
 
 - element: "Ṙ"
