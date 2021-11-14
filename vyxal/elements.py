@@ -169,8 +169,10 @@ def arccos(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.acos(lhs),
-        (str): lambda: sympy.acos(make_expression(lhs)),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs), rational=True),
+        (str): lambda: sympy.nsimplify(
+            sympy.acos(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
@@ -181,8 +183,10 @@ def arcsin(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.asin(lhs),
-        (str): lambda: sympy.asin(make_expression(lhs)),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs), rational=True),
+        (str): lambda: sympy.nsimplify(
+            sympy.asin(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
@@ -193,8 +197,10 @@ def arctan(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.atan(lhs),
-        (str): lambda: sympy.atan(make_expression(lhs)),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs), rational=True),
+        (str): lambda: sympy.nsimplify(
+            sympy.atan(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -443,8 +449,10 @@ def cosine(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.cos(lhs),
-        str: lambda: sympy.cos(make_expression(lhs)),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs), rational=True),
+        str: lambda: sympy.nsimplify(
+            sympy.cos(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -2396,8 +2404,10 @@ def sine(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.sin(lhs),
-        str: lambda: sympy.sin(make_expression(lhs)),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs), rational=True),
+        str: lambda: sympy.nsimplify(
+            sympy.sin(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -2663,8 +2673,10 @@ def tangent(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.tan(lhs),
-        str: lambda: sympy.tan(make_expression(lhs)),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs), rational=True),
+        str: lambda: sympy.nsimplify(
+            sympy.tan(make_expression(lhs)), rational=True
+        ),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
@@ -3909,7 +3921,8 @@ elements: dict[str, tuple[str, int]] = {
     "kḂ": process_element('"()[]{}"', 0),
     "kḃ": process_element("'([{'", 0),
     "kß": process_element('"()[]"', 0),
-    "k≥": process_element('"([{<"', 0),
+    "k≤": process_element('"([{<"', 0),
+    "k≥": process_element('")]}"', 0),
     "kΠ": process_element('")]}>"', 0),
     "kv": process_element('"aeiou"', 0),
     "kV": process_element('"AEIOU"', 0),
@@ -3919,7 +3932,7 @@ elements: dict[str, tuple[str, int]] = {
     "kḭ": process_element("2 ** 32", 0),
     "k+": process_element("LazyList([1, -1])", 0),
     "k-": process_element("LazyList([-1, 1])", 0),
-    "k=": process_element("LazyList([0, 1])", 0),
+    "k≈": process_element("LazyList([0, 1])", 0),
     "k/": process_element('"/\\\\"', 0),
     "kR": process_element("360", 0),
     "kW": process_element('"https://"', 0),
@@ -3939,6 +3952,7 @@ elements: dict[str, tuple[str, int]] = {
     "k¹": process_element('"bcdfghjklmnpqrstvwxz"', 0),
     "kT": process_element('"[]<>-+.,"', 0),
     "kṗ": process_element('LazyList(["()","[]","{}","<>"])', 0),
+    "kṖ": process_element('"([{<>}])"', 0),
     "kS": process_element('"ඞ"', 0),
     "k₂": process_element("2 ** 20", 0),
     "k₃": process_element("2 ** 30", 0),
