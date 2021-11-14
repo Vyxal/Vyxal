@@ -3207,7 +3207,7 @@ def vy_sum(lhs, ctx=None):
     (any) -> reduce a by addition
     """
 
-    return foldl(add, iterable(lhs, range, ctx=ctx), ctx=ctx)
+    return foldl(add, iterable(lhs, ctx=ctx), ctx=ctx)
 
 
 def vy_print(lhs, end="\n", ctx=None):
