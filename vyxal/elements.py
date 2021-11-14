@@ -169,10 +169,8 @@ def arccos(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs), rational=True),
-        (str): lambda: sympy.nsimplify(
-            sympy.acos(make_expression(lhs)), rational=True
-        ),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs)),
+        (str): lambda: sympy.nsimplify(sympy.acos(make_expression(lhs))),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
@@ -183,10 +181,8 @@ def arcsin(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs), rational=True),
-        (str): lambda: sympy.nsimplify(
-            sympy.asin(make_expression(lhs)), rational=True
-        ),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs)),
+        (str): lambda: sympy.nsimplify(sympy.asin(make_expression(lhs))),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
@@ -197,10 +193,8 @@ def arctan(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs), rational=True),
-        (str): lambda: sympy.nsimplify(
-            sympy.atan(make_expression(lhs)), rational=True
-        ),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs)),
+        (str): lambda: sympy.nsimplify(sympy.atan(make_expression(lhs))),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -449,10 +443,8 @@ def cosine(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs), rational=True),
-        str: lambda: sympy.nsimplify(
-            sympy.cos(make_expression(lhs)), rational=True
-        ),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs)),
+        str: lambda: sympy.nsimplify(sympy.cos(make_expression(lhs))),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -2404,10 +2396,8 @@ def sine(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs), rational=True),
-        str: lambda: sympy.nsimplify(
-            sympy.sin(make_expression(lhs)), rational=True
-        ),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs)),
+        str: lambda: sympy.nsimplify(sympy.sin(make_expression(lhs))),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -2673,10 +2663,8 @@ def tangent(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs), rational=True),
-        str: lambda: sympy.nsimplify(
-            sympy.tan(make_expression(lhs)), rational=True
-        ),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs)),
+        str: lambda: sympy.nsimplify(sympy.tan(make_expression(lhs))),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 

@@ -51,12 +51,11 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
                         tests.write(f"\tctx = Context()\n")
                         tests.write("\tctx.stacks.append(stack)\n")
                         tests.write(
-                            f"\tcode = transpile({element['element']!r})"
-                            "; print(code)\n"
+                            f"\tcode = transpile({element['element']!r})\n"
                         )
+                        tests.write("\tprint(code)\n")
                         tests.write(f"\texec(code)\n")
                         tests.write("\tctx.stacks.pop()\n")
-
                         tests.write(
                             f"\tassert make_nice(stack[-1]) == expected\n\n"
                         )

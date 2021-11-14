@@ -19,7 +19,8 @@ def test_LogicalNot():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -28,7 +29,8 @@ def test_LogicalNot():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -37,7 +39,8 @@ def test_LogicalNot():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -46,7 +49,8 @@ def test_LogicalNot():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -55,7 +59,8 @@ def test_LogicalNot():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -64,7 +69,8 @@ def test_LogicalNot():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¬'); print(code)
+	code = transpile('¬')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -75,7 +81,8 @@ def test_LogicalAnd():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∧'); print(code)
+	code = transpile('∧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -84,7 +91,8 @@ def test_LogicalAnd():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∧'); print(code)
+	code = transpile('∧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -93,7 +101,8 @@ def test_LogicalAnd():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∧'); print(code)
+	code = transpile('∧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -102,7 +111,8 @@ def test_LogicalAnd():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∧'); print(code)
+	code = transpile('∧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -113,7 +123,8 @@ def test_ReversedLogicalAnd():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟑'); print(code)
+	code = transpile('⟑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -122,7 +133,8 @@ def test_ReversedLogicalAnd():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟑'); print(code)
+	code = transpile('⟑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -131,7 +143,8 @@ def test_ReversedLogicalAnd():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟑'); print(code)
+	code = transpile('⟑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -140,7 +153,8 @@ def test_ReversedLogicalAnd():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟑'); print(code)
+	code = transpile('⟑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -151,7 +165,8 @@ def test_LogicalOr():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∨'); print(code)
+	code = transpile('∨')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -160,7 +175,8 @@ def test_LogicalOr():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∨'); print(code)
+	code = transpile('∨')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -169,7 +185,8 @@ def test_LogicalOr():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∨'); print(code)
+	code = transpile('∨')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -178,7 +195,8 @@ def test_LogicalOr():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∨'); print(code)
+	code = transpile('∨')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -189,7 +207,8 @@ def test_ReversedLogicalOr():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟇'); print(code)
+	code = transpile('⟇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -198,7 +217,8 @@ def test_ReversedLogicalOr():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟇'); print(code)
+	code = transpile('⟇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -207,7 +227,8 @@ def test_ReversedLogicalOr():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟇'); print(code)
+	code = transpile('⟇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -216,7 +237,8 @@ def test_ReversedLogicalOr():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⟇'); print(code)
+	code = transpile('⟇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -227,7 +249,8 @@ def test_ItemSplit():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('÷'); print(code)
+	code = transpile('÷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -236,7 +259,8 @@ def test_ItemSplit():
 	expected = make_nice("c")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('÷'); print(code)
+	code = transpile('÷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -245,7 +269,8 @@ def test_ItemSplit():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('÷'); print(code)
+	code = transpile('÷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -256,7 +281,8 @@ def test_AsteriskLiteral():
 	expected = make_nice("*")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('×'); print(code)
+	code = transpile('×')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -267,7 +293,8 @@ def test_MultiCommand():
 	expected = make_nice(3.0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('•'); print(code)
+	code = transpile('•')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -276,7 +303,8 @@ def test_MultiCommand():
 	expected = make_nice("aaaabbbbccccddddeeee")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('•'); print(code)
+	code = transpile('•')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -285,7 +313,8 @@ def test_MultiCommand():
 	expected = make_nice("AbCDe")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('•'); print(code)
+	code = transpile('•')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -294,7 +323,8 @@ def test_MultiCommand():
 	expected = make_nice([[1, 2], 3, 4, 5, [6, 7]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('•'); print(code)
+	code = transpile('•')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -305,7 +335,8 @@ def test_FunctionCall():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('†'); print(code)
+	code = transpile('†')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -314,7 +345,8 @@ def test_FunctionCall():
 	expected = make_nice([0, 1, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('†'); print(code)
+	code = transpile('†')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -325,7 +357,8 @@ def test_SplitOn():
 	expected = make_nice(["12", "12", "4"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('€'); print(code)
+	code = transpile('€')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -334,7 +367,8 @@ def test_SplitOn():
 	expected = make_nice(["abc", "def"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('€'); print(code)
+	code = transpile('€')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -343,7 +377,8 @@ def test_SplitOn():
 	expected = make_nice([[1, 2, 3], [3, 2, 1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('€'); print(code)
+	code = transpile('€')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -354,7 +389,8 @@ def test_Halve():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('½'); print(code)
+	code = transpile('½')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -363,7 +399,8 @@ def test_Halve():
 	expected = make_nice(["Fizz", "Buzz"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('½'); print(code)
+	code = transpile('½')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -372,7 +409,8 @@ def test_Halve():
 	expected = make_nice([1, 2, 3, 4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('½'); print(code)
+	code = transpile('½')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -383,7 +421,8 @@ def test_CombinationsRemoveFixedPointCollection():
 	expected = make_nice("cabbae")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↔'); print(code)
+	code = transpile('↔')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -392,7 +431,8 @@ def test_CombinationsRemoveFixedPointCollection():
 	expected = make_nice([1,3,5,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↔'); print(code)
+	code = transpile('↔')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -401,7 +441,8 @@ def test_CombinationsRemoveFixedPointCollection():
 	expected = make_nice([[1,1],[1,2],[2,1],[2,2]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↔'); print(code)
+	code = transpile('↔')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -412,7 +453,8 @@ def test_InfiniteReplacement():
 	expected = make_nice("{}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¢'); print(code)
+	code = transpile('¢')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -421,7 +463,8 @@ def test_InfiniteReplacement():
 	expected = make_nice(1334)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¢'); print(code)
+	code = transpile('¢')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -432,7 +475,8 @@ def test_ComplementCommaSplit():
 	expected = make_nice(-4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌐'); print(code)
+	code = transpile('⌐')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -441,7 +485,8 @@ def test_ComplementCommaSplit():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌐'); print(code)
+	code = transpile('⌐')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -450,7 +495,8 @@ def test_ComplementCommaSplit():
 	expected = make_nice(["a","b","c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌐'); print(code)
+	code = transpile('⌐')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -461,7 +507,8 @@ def test_IsPrimeCaseCheck():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('æ'); print(code)
+	code = transpile('æ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -470,7 +517,8 @@ def test_IsPrimeCaseCheck():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('æ'); print(code)
+	code = transpile('æ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -479,7 +527,8 @@ def test_IsPrimeCaseCheck():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('æ'); print(code)
+	code = transpile('æ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -488,7 +537,8 @@ def test_IsPrimeCaseCheck():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('æ'); print(code)
+	code = transpile('æ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -497,7 +547,8 @@ def test_IsPrimeCaseCheck():
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('æ'); print(code)
+	code = transpile('æ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -508,7 +559,8 @@ def test_InclusiveZeroRange():
 	expected = make_nice([1, 0, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʀ'); print(code)
+	code = transpile('ʀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -517,7 +569,8 @@ def test_InclusiveZeroRange():
 	expected = make_nice([[0, 1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʀ'); print(code)
+	code = transpile('ʀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -526,7 +579,8 @@ def test_InclusiveZeroRange():
 	expected = make_nice([0,1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʀ'); print(code)
+	code = transpile('ʀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -537,7 +591,8 @@ def test_ExclusiveZeroRange():
 	expected = make_nice("1234321")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʁ'); print(code)
+	code = transpile('ʁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -546,7 +601,8 @@ def test_ExclusiveZeroRange():
 	expected = make_nice([[0]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʁ'); print(code)
+	code = transpile('ʁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -555,7 +611,8 @@ def test_ExclusiveZeroRange():
 	expected = make_nice([0,1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ʁ'); print(code)
+	code = transpile('ʁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -566,7 +623,8 @@ def test_InclusiveOneRange():
 	expected = make_nice("ABC")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɾ'); print(code)
+	code = transpile('ɾ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -575,7 +633,8 @@ def test_InclusiveOneRange():
 	expected = make_nice([[1, 2, 3, 4], [1, 2, 3, 4, 5]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɾ'); print(code)
+	code = transpile('ɾ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -584,7 +643,8 @@ def test_InclusiveOneRange():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɾ'); print(code)
+	code = transpile('ɾ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -595,7 +655,8 @@ def test_ExclusiveOneRangeLowercase():
 	expected = make_nice("1abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɽ'); print(code)
+	code = transpile('ɽ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -604,7 +665,8 @@ def test_ExclusiveOneRangeLowercase():
 	expected = make_nice([[]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɽ'); print(code)
+	code = transpile('ɽ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -613,7 +675,8 @@ def test_ExclusiveOneRangeLowercase():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ɽ'); print(code)
+	code = transpile('ɽ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -624,7 +687,8 @@ def test_Chooserandomchoicesetsame():
 	expected = make_nice(10)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ƈ'); print(code)
+	code = transpile('ƈ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -633,7 +697,8 @@ def test_Chooserandomchoicesetsame():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ƈ'); print(code)
+	code = transpile('ƈ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -642,7 +707,8 @@ def test_Chooserandomchoicesetsame():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ƈ'); print(code)
+	code = transpile('ƈ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -653,7 +719,8 @@ def test_Palindromise():
 	expected = make_nice([1,2,3,2,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∞'); print(code)
+	code = transpile('∞')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -662,7 +729,8 @@ def test_Palindromise():
 	expected = make_nice([1,2,3,4,3,2,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∞'); print(code)
+	code = transpile('∞')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -671,7 +739,8 @@ def test_Palindromise():
 	expected = make_nice([1,2,3,4,5,4,3,2,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∞'); print(code)
+	code = transpile('∞')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -680,7 +749,8 @@ def test_Palindromise():
 	expected = make_nice([1,2,3,4,5,6,5,4,3,2,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∞'); print(code)
+	code = transpile('∞')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -689,7 +759,8 @@ def test_Palindromise():
 	expected = make_nice("hellolleh")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∞'); print(code)
+	code = transpile('∞')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -700,7 +771,8 @@ def test_StackLength():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('!'); print(code)
+	code = transpile('!')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -709,7 +781,8 @@ def test_StackLength():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('!'); print(code)
+	code = transpile('!')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -718,7 +791,8 @@ def test_StackLength():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('!'); print(code)
+	code = transpile('!')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -729,7 +803,8 @@ def test_Pair():
 	expected = make_nice([1, 2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('"'); print(code)
+	code = transpile('"')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -738,7 +813,8 @@ def test_Pair():
 	expected = make_nice([2, 3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('"'); print(code)
+	code = transpile('"')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -747,7 +823,8 @@ def test_Pair():
 	expected = make_nice(["abc", 3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('"'); print(code)
+	code = transpile('"')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -758,7 +835,8 @@ def test_Swap():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('$'); print(code)
+	code = transpile('$')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -767,7 +845,8 @@ def test_Swap():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('$'); print(code)
+	code = transpile('$')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -776,7 +855,8 @@ def test_Swap():
 	expected = make_nice("abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('$'); print(code)
+	code = transpile('$')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -787,7 +867,8 @@ def test_ModuloFormat():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('%'); print(code)
+	code = transpile('%')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -796,7 +877,8 @@ def test_ModuloFormat():
 	expected = make_nice("o!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('%'); print(code)
+	code = transpile('%')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -805,7 +887,8 @@ def test_ModuloFormat():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('%'); print(code)
+	code = transpile('%')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -814,7 +897,8 @@ def test_ModuloFormat():
 	expected = make_nice("1 and 2 and 3")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('%'); print(code)
+	code = transpile('%')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -825,7 +909,8 @@ def test_Multiplication():
 	expected = make_nice(15)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('*'); print(code)
+	code = transpile('*')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -834,7 +919,8 @@ def test_Multiplication():
 	expected = make_nice(-8)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('*'); print(code)
+	code = transpile('*')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -843,7 +929,8 @@ def test_Multiplication():
 	expected = make_nice("****")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('*'); print(code)
+	code = transpile('*')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -852,7 +939,8 @@ def test_Multiplication():
 	expected = make_nice("xxxxx")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('*'); print(code)
+	code = transpile('*')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -861,7 +949,8 @@ def test_Multiplication():
 	expected = make_nice("hillu")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('*'); print(code)
+	code = transpile('*')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -872,7 +961,8 @@ def test_Addition():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -881,7 +971,8 @@ def test_Addition():
 	expected = make_nice(-5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -890,7 +981,8 @@ def test_Addition():
 	expected = make_nice("abc5")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -899,7 +991,8 @@ def test_Addition():
 	expected = make_nice("5abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -908,7 +1001,8 @@ def test_Addition():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -917,7 +1011,8 @@ def test_Addition():
 	expected = make_nice([5, 6, 7])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -926,7 +1021,8 @@ def test_Addition():
 	expected = make_nice([5, 7, 9])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('+'); print(code)
+	code = transpile('+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -937,7 +1033,8 @@ def test_Subtract():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -946,7 +1043,8 @@ def test_Subtract():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -955,7 +1053,8 @@ def test_Subtract():
 	expected = make_nice("|-----")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -964,7 +1063,8 @@ def test_Subtract():
 	expected = make_nice("---> arrow")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -973,7 +1073,8 @@ def test_Subtract():
 	expected = make_nice("acde")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -982,7 +1083,8 @@ def test_Subtract():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -991,7 +1093,8 @@ def test_Subtract():
 	expected = make_nice([0, 0, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1000,7 +1103,8 @@ def test_Subtract():
 	expected = make_nice([5, 15, 25])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('-'); print(code)
+	code = transpile('-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1011,7 +1115,8 @@ def test_DivideSplit():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('/'); print(code)
+	code = transpile('/')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1020,7 +1125,8 @@ def test_DivideSplit():
 	expected = make_nice(["ab","cd","ef"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('/'); print(code)
+	code = transpile('/')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1029,7 +1135,8 @@ def test_DivideSplit():
 	expected = make_nice(["1","2","3"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('/'); print(code)
+	code = transpile('/')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1040,7 +1147,8 @@ def test_LessThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('<'); print(code)
+	code = transpile('<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1049,7 +1157,8 @@ def test_LessThan():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('<'); print(code)
+	code = transpile('<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1058,7 +1167,8 @@ def test_LessThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('<'); print(code)
+	code = transpile('<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1067,7 +1177,8 @@ def test_LessThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('<'); print(code)
+	code = transpile('<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1076,7 +1187,8 @@ def test_LessThan():
 	expected = make_nice([1,0,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('<'); print(code)
+	code = transpile('<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1087,7 +1199,8 @@ def test_Equals():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1096,7 +1209,8 @@ def test_Equals():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1105,7 +1219,8 @@ def test_Equals():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1114,7 +1229,8 @@ def test_Equals():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1123,7 +1239,8 @@ def test_Equals():
 	expected = make_nice([0,1,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1132,7 +1249,8 @@ def test_Equals():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('='); print(code)
+	code = transpile('=')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1143,7 +1261,8 @@ def test_GreaterThan():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1152,7 +1271,8 @@ def test_GreaterThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1161,7 +1281,8 @@ def test_GreaterThan():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1170,7 +1291,8 @@ def test_GreaterThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1179,7 +1301,8 @@ def test_GreaterThan():
 	expected = make_nice([0,0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1188,7 +1311,8 @@ def test_GreaterThan():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('>'); print(code)
+	code = transpile('>')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1199,7 +1323,8 @@ def test_All():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1208,7 +1333,8 @@ def test_All():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1217,7 +1343,8 @@ def test_All():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1226,7 +1353,8 @@ def test_All():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1235,7 +1363,8 @@ def test_All():
 	expected = make_nice([])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1244,7 +1373,8 @@ def test_All():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1253,7 +1383,8 @@ def test_All():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1262,7 +1393,8 @@ def test_All():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1271,7 +1403,8 @@ def test_All():
 	expected = make_nice([0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('A'); print(code)
+	code = transpile('A')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1282,7 +1415,8 @@ def test_BinaryToDecimal():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('B'); print(code)
+	code = transpile('B')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1291,7 +1425,8 @@ def test_BinaryToDecimal():
 	expected = make_nice(7)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('B'); print(code)
+	code = transpile('B')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1300,7 +1435,8 @@ def test_BinaryToDecimal():
 	expected = make_nice(11)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('B'); print(code)
+	code = transpile('B')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1311,7 +1447,8 @@ def test_ChrOrd():
 	expected = make_nice("A")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('C'); print(code)
+	code = transpile('C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1320,7 +1457,8 @@ def test_ChrOrd():
 	expected = make_nice("™")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('C'); print(code)
+	code = transpile('C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1329,7 +1467,8 @@ def test_ChrOrd():
 	expected = make_nice(90)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('C'); print(code)
+	code = transpile('C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1338,7 +1477,8 @@ def test_ChrOrd():
 	expected = make_nice([65,66,67])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('C'); print(code)
+	code = transpile('C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1347,7 +1487,8 @@ def test_ChrOrd():
 	expected = make_nice(["{","|","}"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('C'); print(code)
+	code = transpile('C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1358,7 +1499,8 @@ def test_TwoPowerPythonEval():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('E'); print(code)
+	code = transpile('E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1367,7 +1509,8 @@ def test_TwoPowerPythonEval():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('E'); print(code)
+	code = transpile('E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1376,7 +1519,8 @@ def test_TwoPowerPythonEval():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('E'); print(code)
+	code = transpile('E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1387,7 +1531,8 @@ def test_Filter():
 	expected = make_nice([1,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('F'); print(code)
+	code = transpile('F')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1396,7 +1541,8 @@ def test_Filter():
 	expected = make_nice("bce")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('F'); print(code)
+	code = transpile('F')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1407,7 +1553,8 @@ def test_Max():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('G'); print(code)
+	code = transpile('G')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1416,7 +1563,8 @@ def test_Max():
 	expected = make_nice("y")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('G'); print(code)
+	code = transpile('G')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1427,7 +1575,8 @@ def test_HexToDecimal():
 	expected = make_nice(291)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('H'); print(code)
+	code = transpile('H')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1436,7 +1585,8 @@ def test_HexToDecimal():
 	expected = make_nice(11)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('H'); print(code)
+	code = transpile('H')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1445,7 +1595,8 @@ def test_HexToDecimal():
 	expected = make_nice(12512683)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('H'); print(code)
+	code = transpile('H')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1456,7 +1607,8 @@ def test_Int():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('I'); print(code)
+	code = transpile('I')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1465,7 +1617,8 @@ def test_Int():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('I'); print(code)
+	code = transpile('I')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1474,7 +1627,8 @@ def test_Int():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('I'); print(code)
+	code = transpile('I')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1485,7 +1639,8 @@ def test_Join():
 	expected = make_nice([1,2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('J'); print(code)
+	code = transpile('J')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1494,7 +1649,8 @@ def test_Join():
 	expected = make_nice("abcdef")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('J'); print(code)
+	code = transpile('J')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1503,7 +1659,8 @@ def test_Join():
 	expected = make_nice([1,2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('J'); print(code)
+	code = transpile('J')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1512,7 +1669,8 @@ def test_Join():
 	expected = make_nice([1,2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('J'); print(code)
+	code = transpile('J')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1523,7 +1681,8 @@ def test_FactorsSubstringsPrefixes():
 	expected = make_nice([1,2,4,5,10,20])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('K'); print(code)
+	code = transpile('K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1532,7 +1691,8 @@ def test_FactorsSubstringsPrefixes():
 	expected = make_nice([1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('K'); print(code)
+	code = transpile('K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1541,7 +1701,8 @@ def test_FactorsSubstringsPrefixes():
 	expected = make_nice(["d", "db", "dbc", "b", "bc", "bcd", "c", "cd"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('K'); print(code)
+	code = transpile('K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1550,7 +1711,8 @@ def test_FactorsSubstringsPrefixes():
 	expected = make_nice([[1],[1,2],[1,2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('K'); print(code)
+	code = transpile('K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1561,7 +1723,8 @@ def test_Length():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('L'); print(code)
+	code = transpile('L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1570,7 +1733,8 @@ def test_Length():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('L'); print(code)
+	code = transpile('L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1579,7 +1743,8 @@ def test_Length():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('L'); print(code)
+	code = transpile('L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1590,7 +1755,8 @@ def test_Map():
 	expected = make_nice([[5,1],[5,2],[5,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('M'); print(code)
+	code = transpile('M')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1599,7 +1765,8 @@ def test_Map():
 	expected = make_nice([["z","h"],["z","i"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('M'); print(code)
+	code = transpile('M')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1610,7 +1777,8 @@ def test_NegateSwapCase():
 	expected = make_nice(-5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('N'); print(code)
+	code = transpile('N')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1619,7 +1787,8 @@ def test_NegateSwapCase():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('N'); print(code)
+	code = transpile('N')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1628,7 +1797,8 @@ def test_NegateSwapCase():
 	expected = make_nice("A")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('N'); print(code)
+	code = transpile('N')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1637,7 +1807,8 @@ def test_NegateSwapCase():
 	expected = make_nice("AbC")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('N'); print(code)
+	code = transpile('N')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1648,7 +1819,8 @@ def test_Count():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('O'); print(code)
+	code = transpile('O')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1657,7 +1829,8 @@ def test_Count():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('O'); print(code)
+	code = transpile('O')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1668,7 +1841,8 @@ def test_Strip():
 	expected = make_nice([3, 4, 5, 4, 3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('P'); print(code)
+	code = transpile('P')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1677,7 +1851,8 @@ def test_Strip():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('P'); print(code)
+	code = transpile('P')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1688,7 +1863,8 @@ def test_Reduce():
 	expected = make_nice([[2,1],[4,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('R'); print(code)
+	code = transpile('R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1697,7 +1873,8 @@ def test_Reduce():
 	expected = make_nice([[2,1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('R'); print(code)
+	code = transpile('R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1708,7 +1885,8 @@ def test_Stringify():
 	expected = make_nice("5")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('S'); print(code)
+	code = transpile('S')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1717,7 +1895,8 @@ def test_Stringify():
 	expected = make_nice("⟨1|2|3⟩")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('S'); print(code)
+	code = transpile('S')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1726,7 +1905,8 @@ def test_Stringify():
 	expected = make_nice("X")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('S'); print(code)
+	code = transpile('S')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1737,7 +1917,8 @@ def test_TruthyIndices():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('T'); print(code)
+	code = transpile('T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1746,7 +1927,8 @@ def test_TruthyIndices():
 	expected = make_nice(-12)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('T'); print(code)
+	code = transpile('T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1755,7 +1937,8 @@ def test_TruthyIndices():
 	expected = make_nice([1,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('T'); print(code)
+	code = transpile('T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1764,7 +1947,8 @@ def test_TruthyIndices():
 	expected = make_nice([0,1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('T'); print(code)
+	code = transpile('T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1775,7 +1959,8 @@ def test_Uniquify():
 	expected = make_nice([1,3,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('U'); print(code)
+	code = transpile('U')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1784,7 +1969,8 @@ def test_Uniquify():
 	expected = make_nice("abdch")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('U'); print(code)
+	code = transpile('U')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1795,7 +1981,8 @@ def test_Replace():
 	expected = make_nice("hello")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('V'); print(code)
+	code = transpile('V')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1804,7 +1991,8 @@ def test_Replace():
 	expected = make_nice("banananana")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('V'); print(code)
+	code = transpile('V')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1815,7 +2003,8 @@ def test_Wrap():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('W'); print(code)
+	code = transpile('W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1824,7 +2013,8 @@ def test_Wrap():
 	expected = make_nice([])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('W'); print(code)
+	code = transpile('W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1833,7 +2023,8 @@ def test_Wrap():
 	expected = make_nice(["hello",1,9])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('W'); print(code)
+	code = transpile('W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1844,7 +2035,8 @@ def test_Interleave():
 	expected = make_nice([1,2,3,4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Y'); print(code)
+	code = transpile('Y')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1853,7 +2045,8 @@ def test_Interleave():
 	expected = make_nice("string")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Y'); print(code)
+	code = transpile('Y')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1864,7 +2057,8 @@ def test_Zip():
 	expected = make_nice([[1,3],[2,4]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Z'); print(code)
+	code = transpile('Z')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1873,7 +2067,8 @@ def test_Zip():
 	expected = make_nice([["a",1],["b",2],["c",3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Z'); print(code)
+	code = transpile('Z')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1884,7 +2079,8 @@ def test_Any():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1893,7 +2089,8 @@ def test_Any():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1902,7 +2099,8 @@ def test_Any():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1911,7 +2109,8 @@ def test_Any():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1920,7 +2119,8 @@ def test_Any():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1929,7 +2129,8 @@ def test_Any():
 	expected = make_nice([1,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('a'); print(code)
+	code = transpile('a')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1940,7 +2141,8 @@ def test_Binary():
 	expected = make_nice([1,0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('b'); print(code)
+	code = transpile('b')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1949,7 +2151,8 @@ def test_Binary():
 	expected = make_nice([[1,0,0,0,0,0]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('b'); print(code)
+	code = transpile('b')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1958,7 +2161,8 @@ def test_Binary():
 	expected = make_nice([[1,0],[1,1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('b'); print(code)
+	code = transpile('b')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1969,7 +2173,8 @@ def test_Contains():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('c'); print(code)
+	code = transpile('c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1978,7 +2183,8 @@ def test_Contains():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('c'); print(code)
+	code = transpile('c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1987,7 +2193,8 @@ def test_Contains():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('c'); print(code)
+	code = transpile('c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -1996,7 +2203,8 @@ def test_Contains():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('c'); print(code)
+	code = transpile('c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2007,7 +2215,8 @@ def test_Double():
 	expected = make_nice(10)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('d'); print(code)
+	code = transpile('d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2016,7 +2225,8 @@ def test_Double():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('d'); print(code)
+	code = transpile('d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2025,7 +2235,8 @@ def test_Double():
 	expected = make_nice([2,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('d'); print(code)
+	code = transpile('d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2034,7 +2245,8 @@ def test_Double():
 	expected = make_nice("xx")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('d'); print(code)
+	code = transpile('d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2043,7 +2255,8 @@ def test_Double():
 	expected = make_nice("haha")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('d'); print(code)
+	code = transpile('d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2054,7 +2267,8 @@ def test_Exponentiation():
 	expected = make_nice(125)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('e'); print(code)
+	code = transpile('e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2063,7 +2277,8 @@ def test_Exponentiation():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('e'); print(code)
+	code = transpile('e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2072,7 +2287,8 @@ def test_Exponentiation():
 	expected = make_nice("hlo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('e'); print(code)
+	code = transpile('e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2083,7 +2299,8 @@ def test_Flatten():
 	expected = make_nice([1,3,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('f'); print(code)
+	code = transpile('f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2092,7 +2309,8 @@ def test_Flatten():
 	expected = make_nice(["h","i"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('f'); print(code)
+	code = transpile('f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2101,7 +2319,8 @@ def test_Flatten():
 	expected = make_nice([1,2,3,4,5,6,7,8,9])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('f'); print(code)
+	code = transpile('f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2110,7 +2329,8 @@ def test_Flatten():
 	expected = make_nice(["-",1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('f'); print(code)
+	code = transpile('f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2121,7 +2341,8 @@ def test_Minimum():
 	expected = make_nice("a")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('g'); print(code)
+	code = transpile('g')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2130,7 +2351,8 @@ def test_Minimum():
 	expected = make_nice(-2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('g'); print(code)
+	code = transpile('g')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2139,7 +2361,8 @@ def test_Minimum():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('g'); print(code)
+	code = transpile('g')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2150,7 +2373,8 @@ def test_Head():
 	expected = make_nice("h")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('h'); print(code)
+	code = transpile('h')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2159,7 +2383,8 @@ def test_Head():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('h'); print(code)
+	code = transpile('h')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2170,7 +2395,8 @@ def test_Index():
 	expected = make_nice("b")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('i'); print(code)
+	code = transpile('i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2179,7 +2405,8 @@ def test_Index():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('i'); print(code)
+	code = transpile('i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2188,7 +2415,8 @@ def test_Index():
 	expected = make_nice([2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('i'); print(code)
+	code = transpile('i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2197,7 +2425,8 @@ def test_Index():
 	expected = make_nice([3,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('i'); print(code)
+	code = transpile('i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2206,7 +2435,8 @@ def test_Index():
 	expected = make_nice([2,4,6,8])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('i'); print(code)
+	code = transpile('i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2217,7 +2447,8 @@ def test_Join():
 	expected = make_nice("1penguin2penguin3")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('j'); print(code)
+	code = transpile('j')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2226,7 +2457,8 @@ def test_Join():
 	expected = make_nice("hello, world!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('j'); print(code)
+	code = transpile('j')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2237,7 +2469,8 @@ def test_CumulativeGroups():
 	expected = make_nice(["hel","ell","llo"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('l'); print(code)
+	code = transpile('l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2246,7 +2479,8 @@ def test_CumulativeGroups():
 	expected = make_nice(["ca","ak","ke"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('l'); print(code)
+	code = transpile('l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2255,7 +2489,8 @@ def test_CumulativeGroups():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('l'); print(code)
+	code = transpile('l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2264,7 +2499,8 @@ def test_CumulativeGroups():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('l'); print(code)
+	code = transpile('l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2275,7 +2511,8 @@ def test_Mirror():
 	expected = make_nice(444)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('m'); print(code)
+	code = transpile('m')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2284,7 +2521,8 @@ def test_Mirror():
 	expected = make_nice("hiih")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('m'); print(code)
+	code = transpile('m')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2293,7 +2531,8 @@ def test_Mirror():
 	expected = make_nice([1,2,3,3,2,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('m'); print(code)
+	code = transpile('m')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2304,7 +2543,8 @@ def test_Remove():
 	expected = make_nice("heo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('o'); print(code)
+	code = transpile('o')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2313,7 +2553,8 @@ def test_Remove():
 	expected = make_nice([2,3,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('o'); print(code)
+	code = transpile('o')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2322,7 +2563,8 @@ def test_Remove():
 	expected = make_nice("bas d na")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('o'); print(code)
+	code = transpile('o')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2333,7 +2575,8 @@ def test_Prepend():
 	expected = make_nice("world")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('p'); print(code)
+	code = transpile('p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2342,7 +2585,8 @@ def test_Prepend():
 	expected = make_nice([13,1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('p'); print(code)
+	code = transpile('p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2351,7 +2595,8 @@ def test_Prepend():
 	expected = make_nice(["23",3,4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('p'); print(code)
+	code = transpile('p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2362,7 +2607,8 @@ def test_Uneval():
 	expected = make_nice("`\\`")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('q'); print(code)
+	code = transpile('q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2371,7 +2617,8 @@ def test_Uneval():
 	expected = make_nice("`\\``")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('q'); print(code)
+	code = transpile('q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2380,7 +2627,8 @@ def test_Uneval():
 	expected = make_nice("`a`")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('q'); print(code)
+	code = transpile('q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2391,7 +2639,8 @@ def test_Range():
 	expected = make_nice([3,4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('r'); print(code)
+	code = transpile('r')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2400,7 +2649,8 @@ def test_Range():
 	expected = make_nice([4,5,6,7])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('r'); print(code)
+	code = transpile('r')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2411,7 +2661,8 @@ def test_sort():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('s'); print(code)
+	code = transpile('s')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2420,7 +2671,8 @@ def test_sort():
 	expected = make_nice("abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('s'); print(code)
+	code = transpile('s')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2431,7 +2683,8 @@ def test_Tail():
 	expected = make_nice("o")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('t'); print(code)
+	code = transpile('t')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2440,7 +2693,8 @@ def test_Tail():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('t'); print(code)
+	code = transpile('t')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2451,7 +2705,8 @@ def test_MinusOne():
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('u'); print(code)
+	code = transpile('u')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2462,7 +2717,8 @@ def test_Listify():
 	expected = make_nice([1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('w'); print(code)
+	code = transpile('w')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2471,7 +2727,8 @@ def test_Listify():
 	expected = make_nice(["hello"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('w'); print(code)
+	code = transpile('w')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2480,7 +2737,8 @@ def test_Listify():
 	expected = make_nice([[1,2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('w'); print(code)
+	code = transpile('w')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2491,7 +2749,8 @@ def test_Uninterleave():
 	expected = make_nice("bd")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('y'); print(code)
+	code = transpile('y')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2500,7 +2759,8 @@ def test_Uninterleave():
 	expected = make_nice([2,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('y'); print(code)
+	code = transpile('y')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2511,7 +2771,8 @@ def test_Zipself():
 	expected = make_nice([[1,1],[2,2],[3,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('z'); print(code)
+	code = transpile('z')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2520,7 +2781,8 @@ def test_Zipself():
 	expected = make_nice([["z","z"], ["a","a"],["p","p"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('z'); print(code)
+	code = transpile('z')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2531,7 +2793,8 @@ def test_MaxbyTail():
 	expected = make_nice([3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↑'); print(code)
+	code = transpile('↑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2540,7 +2803,8 @@ def test_MaxbyTail():
 	expected = make_nice([2,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↑'); print(code)
+	code = transpile('↑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2551,7 +2815,8 @@ def test_MinbyTail():
 	expected = make_nice([9,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↓'); print(code)
+	code = transpile('↓')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2560,7 +2825,8 @@ def test_MinbyTail():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↓'); print(code)
+	code = transpile('↓')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2571,7 +2837,8 @@ def test_DyadicMaximum():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∴'); print(code)
+	code = transpile('∴')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2580,7 +2847,8 @@ def test_DyadicMaximum():
 	expected = make_nice("hello")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∴'); print(code)
+	code = transpile('∴')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2589,7 +2857,8 @@ def test_DyadicMaximum():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∴'); print(code)
+	code = transpile('∴')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2600,7 +2869,8 @@ def test_DyadicMinimum():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∵'); print(code)
+	code = transpile('∵')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2609,7 +2879,8 @@ def test_DyadicMinimum():
 	expected = make_nice("goodbye")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∵'); print(code)
+	code = transpile('∵')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2618,7 +2889,8 @@ def test_DyadicMinimum():
 	expected = make_nice("(stuff)")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∵'); print(code)
+	code = transpile('∵')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2629,7 +2901,8 @@ def test_IncrementSpaceReplaceWith0():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('›'); print(code)
+	code = transpile('›')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2638,7 +2911,8 @@ def test_IncrementSpaceReplaceWith0():
 	expected = make_nice([4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('›'); print(code)
+	code = transpile('›')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2647,7 +2921,8 @@ def test_IncrementSpaceReplaceWith0():
 	expected = make_nice("00101")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('›'); print(code)
+	code = transpile('›')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2658,7 +2933,8 @@ def test_Decrement():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('‹'); print(code)
+	code = transpile('‹')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2667,7 +2943,8 @@ def test_Decrement():
 	expected = make_nice([2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('‹'); print(code)
+	code = transpile('‹')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2676,7 +2953,8 @@ def test_Decrement():
 	expected = make_nice("hello-")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('‹'); print(code)
+	code = transpile('‹')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2687,7 +2965,8 @@ def test_Parity():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∷'); print(code)
+	code = transpile('∷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2696,7 +2975,8 @@ def test_Parity():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∷'); print(code)
+	code = transpile('∷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2705,7 +2985,8 @@ def test_Parity():
 	expected = make_nice("lo!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∷'); print(code)
+	code = transpile('∷')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2716,7 +2997,8 @@ def test_EmptyString():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¤'); print(code)
+	code = transpile('¤')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2727,7 +3009,8 @@ def test_Space():
 	expected = make_nice(" ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ð'); print(code)
+	code = transpile('ð')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2738,7 +3021,8 @@ def test_ToBaseTenFromCustomBase():
 	expected = make_nice(23)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('β'); print(code)
+	code = transpile('β')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2747,7 +3031,8 @@ def test_ToBaseTenFromCustomBase():
 	expected = make_nice(577)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('β'); print(code)
+	code = transpile('β')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2756,7 +3041,8 @@ def test_ToBaseTenFromCustomBase():
 	expected = make_nice(15137)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('β'); print(code)
+	code = transpile('β')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2767,7 +3053,8 @@ def test_FromBaseTenToCustomBase():
 	expected = make_nice("cacccabbbbcab")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('τ'); print(code)
+	code = transpile('τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2776,7 +3063,8 @@ def test_FromBaseTenToCustomBase():
 	expected = make_nice([3,0,4,0,0,1,2,3,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('τ'); print(code)
+	code = transpile('τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2785,7 +3073,8 @@ def test_FromBaseTenToCustomBase():
 	expected = make_nice(["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('τ'); print(code)
+	code = transpile('τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2796,7 +3085,8 @@ def test_Absolutevalue():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȧ'); print(code)
+	code = transpile('ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2805,7 +3095,8 @@ def test_Absolutevalue():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȧ'); print(code)
+	code = transpile('ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2814,7 +3105,8 @@ def test_Absolutevalue():
 	expected = make_nice("cheese")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȧ'); print(code)
+	code = transpile('ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2823,7 +3115,8 @@ def test_Absolutevalue():
 	expected = make_nice([1,2,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȧ'); print(code)
+	code = transpile('ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2834,7 +3127,8 @@ def test_Boolify():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḃ'); print(code)
+	code = transpile('ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2843,7 +3137,8 @@ def test_Boolify():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḃ'); print(code)
+	code = transpile('ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2852,7 +3147,8 @@ def test_Boolify():
 	expected = make_nice([1, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḃ'); print(code)
+	code = transpile('ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2861,7 +3157,8 @@ def test_Boolify():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḃ'); print(code)
+	code = transpile('ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2872,7 +3169,8 @@ def test_NotOne():
 	expected = make_nice([0, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ċ'); print(code)
+	code = transpile('ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2881,7 +3179,8 @@ def test_NotOne():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ċ'); print(code)
+	code = transpile('ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2890,7 +3189,8 @@ def test_NotOne():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ċ'); print(code)
+	code = transpile('ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2899,7 +3199,8 @@ def test_NotOne():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ċ'); print(code)
+	code = transpile('ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2910,7 +3211,8 @@ def test_Divmod():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḋ'); print(code)
+	code = transpile('ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2919,7 +3221,8 @@ def test_Divmod():
 	expected = make_nice(["abc","abd","acd","bcd"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḋ'); print(code)
+	code = transpile('ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2928,7 +3231,8 @@ def test_Divmod():
 	expected = make_nice([[1,2],[1,3],[2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḋ'); print(code)
+	code = transpile('ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2937,7 +3241,8 @@ def test_Divmod():
 	expected = make_nice("Joedef")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḋ'); print(code)
+	code = transpile('ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2948,7 +3253,8 @@ def test_Enumerate():
 	expected = make_nice([[0,"a"],[1,"b"],[2,"c"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ė'); print(code)
+	code = transpile('ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2957,7 +3263,8 @@ def test_Enumerate():
 	expected = make_nice([[0,1],[1,2],[2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ė'); print(code)
+	code = transpile('ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2968,7 +3275,8 @@ def test_Find():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḟ'); print(code)
+	code = transpile('ḟ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2977,7 +3285,8 @@ def test_Find():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḟ'); print(code)
+	code = transpile('ḟ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2988,7 +3297,8 @@ def test_Gcd():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ġ'); print(code)
+	code = transpile('ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -2997,7 +3307,8 @@ def test_Gcd():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ġ'); print(code)
+	code = transpile('ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3006,7 +3317,8 @@ def test_Gcd():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ġ'); print(code)
+	code = transpile('ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3015,7 +3327,8 @@ def test_Gcd():
 	expected = make_nice("ugh")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ġ'); print(code)
+	code = transpile('ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3026,7 +3339,8 @@ def test_HeadExtract():
 	expected = make_nice("ello")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḣ'); print(code)
+	code = transpile('ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3035,7 +3349,8 @@ def test_HeadExtract():
 	expected = make_nice([2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḣ'); print(code)
+	code = transpile('ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3046,7 +3361,8 @@ def test_FloorDivision():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḭ'); print(code)
+	code = transpile('ḭ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3055,7 +3371,8 @@ def test_FloorDivision():
 	expected = make_nice("he")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḭ'); print(code)
+	code = transpile('ḭ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3064,7 +3381,8 @@ def test_FloorDivision():
 	expected = make_nice("he")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ḭ'); print(code)
+	code = transpile('ḭ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3075,7 +3393,8 @@ def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ŀ'); print(code)
+	code = transpile('ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3086,7 +3405,8 @@ def test_Mean():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṁ'); print(code)
+	code = transpile('ṁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3095,7 +3415,8 @@ def test_Mean():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṁ'); print(code)
+	code = transpile('ṁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3106,7 +3427,8 @@ def test_JoinByNothing():
 	expected = make_nice("abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṅ'); print(code)
+	code = transpile('ṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3115,7 +3437,8 @@ def test_JoinByNothing():
 	expected = make_nice('123')
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṅ'); print(code)
+	code = transpile('ṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3126,7 +3449,8 @@ def test_Slice():
 	expected = make_nice("llo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȯ'); print(code)
+	code = transpile('ȯ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3135,7 +3459,8 @@ def test_Slice():
 	expected = make_nice([2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ȯ'); print(code)
+	code = transpile('ȯ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3146,7 +3471,8 @@ def test_Powerset():
 	expected = make_nice([[],["a"],["b"],["a","b"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṗ'); print(code)
+	code = transpile('ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3155,7 +3481,8 @@ def test_Powerset():
 	expected = make_nice([[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṗ'); print(code)
+	code = transpile('ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3166,7 +3493,8 @@ def test_Round():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṙ'); print(code)
+	code = transpile('ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3175,7 +3503,8 @@ def test_Round():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṙ'); print(code)
+	code = transpile('ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3184,7 +3513,8 @@ def test_Round():
 	expected = make_nice([6,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṙ'); print(code)
+	code = transpile('ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3193,7 +3523,8 @@ def test_Round():
 	expected = make_nice(-5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṙ'); print(code)
+	code = transpile('ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3202,7 +3533,8 @@ def test_Round():
 	expected = make_nice(-4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṙ'); print(code)
+	code = transpile('ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3213,7 +3545,8 @@ def test_SortbyFunction():
 	expected = make_nice([3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṡ'); print(code)
+	code = transpile('ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3222,7 +3555,8 @@ def test_SortbyFunction():
 	expected = make_nice([1,2,3,4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṡ'); print(code)
+	code = transpile('ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3231,7 +3565,8 @@ def test_SortbyFunction():
 	expected = make_nice(["abc","def","ghi"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṡ'); print(code)
+	code = transpile('ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3242,7 +3577,8 @@ def test_TailExtract():
 	expected = make_nice("c")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṫ'); print(code)
+	code = transpile('ṫ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3251,7 +3587,8 @@ def test_TailExtract():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ṫ'); print(code)
+	code = transpile('ṫ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3262,7 +3599,8 @@ def test_ChunkWrap():
 	expected = make_nice(["ab","cd","ef"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẇ'); print(code)
+	code = transpile('ẇ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3271,7 +3609,8 @@ def test_ChunkWrap():
 	expected = make_nice([[1,2,3],[4,5,6]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẇ'); print(code)
+	code = transpile('ẇ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3282,7 +3621,8 @@ def test_Repeat():
 	expected = make_nice([[1,2,3],[1,2,3],[1,2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẋ'); print(code)
+	code = transpile('ẋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3291,7 +3631,8 @@ def test_Repeat():
 	expected = make_nice("xxxxx")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẋ'); print(code)
+	code = transpile('ẋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3302,7 +3643,8 @@ def test_ExclusiveRangeLength():
 	expected = make_nice([0,1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẏ'); print(code)
+	code = transpile('ẏ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3311,7 +3653,8 @@ def test_ExclusiveRangeLength():
 	expected = make_nice([0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ẏ'); print(code)
+	code = transpile('ẏ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3322,7 +3665,8 @@ def test_InclusiveRangeLength():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ż'); print(code)
+	code = transpile('ż')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3331,7 +3675,8 @@ def test_InclusiveRangeLength():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ż'); print(code)
+	code = transpile('ż')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3342,7 +3687,8 @@ def test_SquareRoot():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('√'); print(code)
+	code = transpile('√')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3351,7 +3697,8 @@ def test_SquareRoot():
 	expected = make_nice("hlo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('√'); print(code)
+	code = transpile('√')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3362,7 +3709,8 @@ def test_Ten():
 	expected = make_nice(10)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₀'); print(code)
+	code = transpile('₀')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3373,7 +3721,8 @@ def test_Hundred():
 	expected = make_nice(100)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₁'); print(code)
+	code = transpile('₁')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3384,7 +3733,8 @@ def test_IsEven():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₂'); print(code)
+	code = transpile('₂')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3393,7 +3743,8 @@ def test_IsEven():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₂'); print(code)
+	code = transpile('₂')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3402,7 +3753,8 @@ def test_IsEven():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₂'); print(code)
+	code = transpile('₂')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3411,7 +3763,8 @@ def test_IsEven():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₂'); print(code)
+	code = transpile('₂')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3422,7 +3775,8 @@ def test_DivisibleBythree():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₃'); print(code)
+	code = transpile('₃')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3431,7 +3785,8 @@ def test_DivisibleBythree():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₃'); print(code)
+	code = transpile('₃')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3440,7 +3795,8 @@ def test_DivisibleBythree():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₃'); print(code)
+	code = transpile('₃')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3449,7 +3805,8 @@ def test_DivisibleBythree():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₃'); print(code)
+	code = transpile('₃')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3460,7 +3817,8 @@ def test_TwentySix():
 	expected = make_nice(26)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₄'); print(code)
+	code = transpile('₄')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3471,7 +3829,8 @@ def test_DivisibleByFive():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₅'); print(code)
+	code = transpile('₅')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3480,7 +3839,8 @@ def test_DivisibleByFive():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₅'); print(code)
+	code = transpile('₅')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3489,7 +3849,8 @@ def test_DivisibleByFive():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₅'); print(code)
+	code = transpile('₅')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3498,7 +3859,8 @@ def test_DivisibleByFive():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₅'); print(code)
+	code = transpile('₅')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3509,7 +3871,8 @@ def test_SixtyFour():
 	expected = make_nice(64)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₆'); print(code)
+	code = transpile('₆')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3520,7 +3883,8 @@ def test_OneTwentyEight():
 	expected = make_nice(128)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₇'); print(code)
+	code = transpile('₇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3531,7 +3895,8 @@ def test_TwoFiftySix():
 	expected = make_nice(256)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('₈'); print(code)
+	code = transpile('₈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3542,7 +3907,8 @@ def test_Newline():
 	expected = make_nice("\n")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¶'); print(code)
+	code = transpile('¶')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3553,7 +3919,8 @@ def test_JoinOnNewlines():
 	expected = make_nice("1\n2\n3\n4\n5\n6")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⁋'); print(code)
+	code = transpile('⁋')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3562,7 +3929,8 @@ def test_JoinOnNewlines():
 	expected = make_nice("Hello\nWorld!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⁋'); print(code)
+	code = transpile('⁋')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3573,7 +3941,8 @@ def test_VerticalJoin():
 	expected = make_nice("adg\nbeh\ncfi")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('§'); print(code)
+	code = transpile('§')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3582,7 +3951,8 @@ def test_VerticalJoin():
 	expected = make_nice("  *\n **\n***\n***\n***")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('§'); print(code)
+	code = transpile('§')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3593,7 +3963,8 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ε'); print(code)
+	code = transpile('ε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3602,7 +3973,8 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ε'); print(code)
+	code = transpile('ε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3611,7 +3983,8 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ε'); print(code)
+	code = transpile('ε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3620,7 +3993,8 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	expected = make_nice("..*\n.**\n***\n***\n***")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ε'); print(code)
+	code = transpile('ε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3629,7 +4003,8 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
 	expected = make_nice("adg\nbeh\ncfi")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ε'); print(code)
+	code = transpile('ε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3640,7 +4015,8 @@ def test_Factorial():
 	expected = make_nice(120)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¡'); print(code)
+	code = transpile('¡')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3649,7 +4025,8 @@ def test_Factorial():
 	expected = make_nice("Hello my name jeff. Ur sussy baka")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¡'); print(code)
+	code = transpile('¡')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3658,7 +4035,8 @@ def test_Factorial():
 	expected = make_nice([1, 2, 6, 24, 120])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¡'); print(code)
+	code = transpile('¡')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3669,7 +4047,8 @@ def test_Summate():
 	expected = make_nice(15)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∑'); print(code)
+	code = transpile('∑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3678,7 +4057,8 @@ def test_Summate():
 	expected = make_nice("abcdef10")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∑'); print(code)
+	code = transpile('∑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3687,7 +4067,8 @@ def test_Summate():
 	expected = make_nice(15)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∑'); print(code)
+	code = transpile('∑')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3698,7 +4079,8 @@ def test_CumulativeSum():
 	expected = make_nice([1, 3, 6, 10, 15])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¦'); print(code)
+	code = transpile('¦')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3707,7 +4089,8 @@ def test_CumulativeSum():
 	expected = make_nice(["a", "ab", "abc", "abcd", "abcde", "abcdef"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¦'); print(code)
+	code = transpile('¦')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3716,7 +4099,8 @@ def test_CumulativeSum():
 	expected = make_nice([1, 3, 6, 10, 15])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¦'); print(code)
+	code = transpile('¦')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3727,7 +4111,8 @@ def test_AllEqual():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≈'); print(code)
+	code = transpile('≈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3736,7 +4121,8 @@ def test_AllEqual():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≈'); print(code)
+	code = transpile('≈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3745,7 +4131,8 @@ def test_AllEqual():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≈'); print(code)
+	code = transpile('≈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3754,7 +4141,8 @@ def test_AllEqual():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≈'); print(code)
+	code = transpile('≈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3765,7 +4153,8 @@ def test_Assign():
 	expected = make_nice([1, 0, 3, 4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ȧ'); print(code)
+	code = transpile('Ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3774,7 +4163,8 @@ def test_Assign():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ȧ'); print(code)
+	code = transpile('Ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3783,7 +4173,8 @@ def test_Assign():
 	expected = make_nice([6, 9, 4, 2, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ȧ'); print(code)
+	code = transpile('Ȧ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3794,7 +4185,8 @@ def test_Bifurcate():
 	expected = make_nice(302)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḃ'); print(code)
+	code = transpile('Ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3803,7 +4195,8 @@ def test_Bifurcate():
 	expected = make_nice("cba")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḃ'); print(code)
+	code = transpile('Ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3812,7 +4205,8 @@ def test_Bifurcate():
 	expected = make_nice([4, 3, 2, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḃ'); print(code)
+	code = transpile('Ḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3823,7 +4217,8 @@ def test_Counts():
 	expected = make_nice([[1, 1], [2, 2], [3, 4]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ċ'); print(code)
+	code = transpile('Ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3832,7 +4227,8 @@ def test_Counts():
 	expected = make_nice([["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ċ'); print(code)
+	code = transpile('Ċ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3843,7 +4239,8 @@ def test_IsDivisibleArbitraryDuplicate():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḋ'); print(code)
+	code = transpile('Ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3852,7 +4249,8 @@ def test_IsDivisibleArbitraryDuplicate():
 	expected = make_nice("abc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḋ'); print(code)
+	code = transpile('Ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3861,7 +4259,8 @@ def test_IsDivisibleArbitraryDuplicate():
 	expected = make_nice([0, 0, 0, 1, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḋ'); print(code)
+	code = transpile('Ḋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3872,7 +4271,8 @@ def test_VyxalExecReciprocal():
 	expected = make_nice([0.5, 1/3, -1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ė'); print(code)
+	code = transpile('Ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3881,7 +4281,8 @@ def test_VyxalExecReciprocal():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ė'); print(code)
+	code = transpile('Ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3892,7 +4293,8 @@ def test_Groupconsecutive():
 	expected = make_nice([[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ġ'); print(code)
+	code = transpile('Ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3901,7 +4303,8 @@ def test_Groupconsecutive():
 	expected = make_nice([["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ġ'); print(code)
+	code = transpile('Ġ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3912,7 +4315,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice([[43, 69], "foo"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3921,7 +4325,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice([])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3930,7 +4335,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice("oo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3939,7 +4345,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3948,7 +4355,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice(234.56)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3957,7 +4365,8 @@ def test_HeadRemoveBehead():
 	expected = make_nice(0.2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ḣ'); print(code)
+	code = transpile('Ḣ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3968,7 +4377,8 @@ def test_Indexintoorfindcycle():
 	expected = make_nice(["foo", -69, "baz"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('İ'); print(code)
+	code = transpile('İ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3979,7 +4389,8 @@ def test_Transliterate():
 	expected = make_nice("123def321")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ŀ'); print(code)
+	code = transpile('Ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3988,7 +4399,8 @@ def test_Transliterate():
 	expected = make_nice([1,5,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ŀ'); print(code)
+	code = transpile('Ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -3997,7 +4409,8 @@ def test_Transliterate():
 	expected = make_nice(["bb","cc","c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ŀ'); print(code)
+	code = transpile('Ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4008,7 +4421,8 @@ def test_Insert():
 	expected = make_nice([1,2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṁ'); print(code)
+	code = transpile('Ṁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4017,7 +4431,8 @@ def test_Insert():
 	expected = make_nice("wxyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṁ'); print(code)
+	code = transpile('Ṁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4026,7 +4441,8 @@ def test_Insert():
 	expected = make_nice("jklmnop")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṁ'); print(code)
+	code = transpile('Ṁ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4037,7 +4453,8 @@ def test_Integerpartitions():
 	expected = make_nice([[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṅ'); print(code)
+	code = transpile('Ṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4046,7 +4463,8 @@ def test_Integerpartitions():
 	expected = make_nice("h e l l o")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṅ'); print(code)
+	code = transpile('Ṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4055,7 +4473,8 @@ def test_Integerpartitions():
 	expected = make_nice("1 2 3")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṅ'); print(code)
+	code = transpile('Ṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4066,7 +4485,8 @@ def test_Over():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ȯ'); print(code)
+	code = transpile('Ȯ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4075,7 +4495,8 @@ def test_Over():
 	expected = make_nice("hi")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ȯ'); print(code)
+	code = transpile('Ȯ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4086,7 +4507,8 @@ def test_Permutations():
 	expected = make_nice(["abc","acb","bac","bca","cab","cba"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṗ'); print(code)
+	code = transpile('Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4095,7 +4517,8 @@ def test_Permutations():
 	expected = make_nice([[1,2],[2,1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṗ'); print(code)
+	code = transpile('Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4106,7 +4529,8 @@ def test_Reverse():
 	expected = make_nice(302)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṙ'); print(code)
+	code = transpile('Ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4115,7 +4539,8 @@ def test_Reverse():
 	expected = make_nice("cba")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṙ'); print(code)
+	code = transpile('Ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4124,7 +4549,8 @@ def test_Reverse():
 	expected = make_nice([4, 3, 2, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṙ'); print(code)
+	code = transpile('Ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4135,7 +4561,8 @@ def test_Vectorisedsums():
 	expected = make_nice([6, 15])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṡ'); print(code)
+	code = transpile('Ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4144,7 +4571,8 @@ def test_Vectorisedsums():
 	expected = make_nice([3, 4, 5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṡ'); print(code)
+	code = transpile('Ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4153,7 +4581,8 @@ def test_Vectorisedsums():
 	expected = make_nice([6, 10])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṡ'); print(code)
+	code = transpile('Ṡ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4164,7 +4593,8 @@ def test_TailRemove():
 	expected = make_nice("123")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṫ'); print(code)
+	code = transpile('Ṫ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4173,7 +4603,8 @@ def test_TailRemove():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ṫ'); print(code)
+	code = transpile('Ṫ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4184,7 +4615,8 @@ def test_SplitAndKeepDelimiter():
 	expected = make_nice(["a"," ","b"," ","c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẇ'); print(code)
+	code = transpile('Ẇ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4193,7 +4625,8 @@ def test_SplitAndKeepDelimiter():
 	expected = make_nice(["xyza","b","c123a","b","c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẇ'); print(code)
+	code = transpile('Ẇ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4204,7 +4637,8 @@ def test_CartesianProduct():
 	expected = make_nice(["ac","ad","bc","bd"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẋ'); print(code)
+	code = transpile('Ẋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4213,7 +4647,8 @@ def test_CartesianProduct():
 	expected = make_nice([[1,3],[1,4],[2,3],[2,4]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẋ'); print(code)
+	code = transpile('Ẋ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4224,7 +4659,8 @@ def test_SliceUntil():
 	expected = make_nice("a")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẏ'); print(code)
+	code = transpile('Ẏ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4233,7 +4669,8 @@ def test_SliceUntil():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ẏ'); print(code)
+	code = transpile('Ẏ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4244,7 +4681,8 @@ def test_SliceFromOneUntil():
 	expected = make_nice("b")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ż'); print(code)
+	code = transpile('Ż')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4253,7 +4691,8 @@ def test_SliceFromOneUntil():
 	expected = make_nice([2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ż'); print(code)
+	code = transpile('Ż')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4264,7 +4703,8 @@ def test_Square():
 	expected = make_nice(25)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('²'); print(code)
+	code = transpile('²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4273,7 +4713,8 @@ def test_Square():
 	expected = make_nice(["hel","lo ", "   "])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('²'); print(code)
+	code = transpile('²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4282,7 +4723,8 @@ def test_Square():
 	expected = make_nice(["by","e "])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('²'); print(code)
+	code = transpile('²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4291,7 +4733,8 @@ def test_Square():
 	expected = make_nice([1,4,9])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('²'); print(code)
+	code = transpile('²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4302,7 +4745,8 @@ def test_Shift():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∇'); print(code)
+	code = transpile('∇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4311,7 +4755,8 @@ def test_Shift():
 	expected = make_nice("hi")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∇'); print(code)
+	code = transpile('∇')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4322,7 +4767,8 @@ def test_Ceiling():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌈'); print(code)
+	code = transpile('⌈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4331,7 +4777,8 @@ def test_Ceiling():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌈'); print(code)
+	code = transpile('⌈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4340,7 +4787,8 @@ def test_Ceiling():
 	expected = make_nice([2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌈'); print(code)
+	code = transpile('⌈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4349,7 +4797,8 @@ def test_Ceiling():
 	expected = make_nice(["hello","world"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌈'); print(code)
+	code = transpile('⌈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4360,7 +4809,8 @@ def test_Floor():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌊'); print(code)
+	code = transpile('⌊')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4369,7 +4819,8 @@ def test_Floor():
 	expected = make_nice([5, 4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌊'); print(code)
+	code = transpile('⌊')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4378,7 +4829,8 @@ def test_Floor():
 	expected = make_nice(123)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⌊'); print(code)
+	code = transpile('⌊')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4389,7 +4841,8 @@ def test_Deltas():
 	expected = make_nice([1,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¯'); print(code)
+	code = transpile('¯')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4398,7 +4851,8 @@ def test_Deltas():
 	expected = make_nice([0,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¯'); print(code)
+	code = transpile('¯')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4407,7 +4861,8 @@ def test_Deltas():
 	expected = make_nice([21,-58])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('¯'); print(code)
+	code = transpile('¯')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4418,7 +4873,8 @@ def test_Sign():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('±'); print(code)
+	code = transpile('±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4427,7 +4883,8 @@ def test_Sign():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('±'); print(code)
+	code = transpile('±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4436,7 +4893,8 @@ def test_Sign():
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('±'); print(code)
+	code = transpile('±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4445,7 +4903,8 @@ def test_Sign():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('±'); print(code)
+	code = transpile('±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4456,7 +4915,8 @@ def test_RightBitShift():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↳'); print(code)
+	code = transpile('↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4465,7 +4925,8 @@ def test_RightBitShift():
 	expected = make_nice("   green")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↳'); print(code)
+	code = transpile('↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4474,7 +4935,8 @@ def test_RightBitShift():
 	expected = make_nice("       hello")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↳'); print(code)
+	code = transpile('↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4485,7 +4947,8 @@ def test_LeftBitShift():
 	expected = make_nice(8)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↲'); print(code)
+	code = transpile('↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4494,7 +4957,8 @@ def test_LeftBitShift():
 	expected = make_nice("green   ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↲'); print(code)
+	code = transpile('↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4503,7 +4967,8 @@ def test_LeftBitShift():
 	expected = make_nice("hello       ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↲'); print(code)
+	code = transpile('↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4514,7 +4979,8 @@ def test_BitwiseAnd():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋏'); print(code)
+	code = transpile('⋏')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4523,7 +4989,8 @@ def test_BitwiseAnd():
 	expected = make_nice("   abc    ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋏'); print(code)
+	code = transpile('⋏')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4532,7 +4999,8 @@ def test_BitwiseAnd():
 	expected = make_nice(" no ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋏'); print(code)
+	code = transpile('⋏')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4543,7 +5011,8 @@ def test_BitwiseOr():
 	expected = make_nice(485)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋎'); print(code)
+	code = transpile('⋎')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4552,7 +5021,8 @@ def test_BitwiseOr():
 	expected = make_nice("ab")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋎'); print(code)
+	code = transpile('⋎')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4561,7 +5031,8 @@ def test_BitwiseOr():
 	expected = make_nice("ab")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋎'); print(code)
+	code = transpile('⋎')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4570,7 +5041,8 @@ def test_BitwiseOr():
 	expected = make_nice("Hellower")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⋎'); print(code)
+	code = transpile('⋎')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4581,7 +5053,8 @@ def test_BitwiseXor():
 	expected = make_nice(481)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('꘍'); print(code)
+	code = transpile('꘍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4590,7 +5063,8 @@ def test_BitwiseXor():
 	expected = make_nice("     ab")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('꘍'); print(code)
+	code = transpile('꘍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4599,7 +5073,8 @@ def test_BitwiseXor():
 	expected = make_nice("ab     ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('꘍'); print(code)
+	code = transpile('꘍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4608,7 +5083,8 @@ def test_BitwiseXor():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('꘍'); print(code)
+	code = transpile('꘍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4619,7 +5095,8 @@ def test_BitwiseNot():
 	expected = make_nice(-221)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ꜝ'); print(code)
+	code = transpile('ꜝ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4628,7 +5105,8 @@ def test_BitwiseNot():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ꜝ'); print(code)
+	code = transpile('ꜝ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4639,7 +5117,8 @@ def test_LesserThanorEqualTo():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≤'); print(code)
+	code = transpile('≤')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4650,7 +5129,8 @@ def test_GreaterThanorEqualTo():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≥'); print(code)
+	code = transpile('≥')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4661,7 +5141,8 @@ def test_NotEqualTo():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('≠'); print(code)
+	code = transpile('≠')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4672,7 +5153,8 @@ def test_ExactlyEqualTo():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⁼'); print(code)
+	code = transpile('⁼')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4683,7 +5165,8 @@ def test_SetUnion():
 	expected = make_nice([1,2,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∪'); print(code)
+	code = transpile('∪')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4694,7 +5177,8 @@ def test_Tranpose():
 	expected = make_nice([[1, 2], [2, 3], [4]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∩'); print(code)
+	code = transpile('∩')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4705,7 +5189,8 @@ def test_SymmetricSetdifference():
 	expected = make_nice([1,3,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⊍'); print(code)
+	code = transpile('⊍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4716,7 +5201,8 @@ def test_GradeUp():
 	expected = make_nice([1,0,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇧'); print(code)
+	code = transpile('⇧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4725,7 +5211,8 @@ def test_GradeUp():
 	expected = make_nice("HELOO")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇧'); print(code)
+	code = transpile('⇧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4734,7 +5221,8 @@ def test_GradeUp():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇧'); print(code)
+	code = transpile('⇧')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4745,7 +5233,8 @@ def test_GradeDown():
 	expected = make_nice([2,0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇩'); print(code)
+	code = transpile('⇩')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4754,7 +5243,8 @@ def test_GradeDown():
 	expected = make_nice("heloo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇩'); print(code)
+	code = transpile('⇩')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4763,7 +5253,8 @@ def test_GradeDown():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('⇩'); print(code)
+	code = transpile('⇩')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4774,7 +5265,8 @@ def test_Removenonalphabets():
 	expected = make_nice("Heloadc")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǎ'); print(code)
+	code = transpile('Ǎ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4783,7 +5275,8 @@ def test_Removenonalphabets():
 	expected = make_nice(256)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǎ'); print(code)
+	code = transpile('Ǎ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4794,7 +5287,8 @@ def test_Nthprime():
 	expected = make_nice(7)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǎ'); print(code)
+	code = transpile('ǎ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4803,7 +5297,8 @@ def test_Nthprime():
 	expected = make_nice(["a","ab","abc","b","bc","c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǎ'); print(code)
+	code = transpile('ǎ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4814,7 +5309,8 @@ def test_Primefactorization():
 	expected = make_nice([3,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǐ'); print(code)
+	code = transpile('Ǐ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4823,7 +5319,8 @@ def test_Primefactorization():
 	expected = make_nice("abca")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǐ'); print(code)
+	code = transpile('Ǐ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4834,7 +5331,8 @@ def test_Primefactors():
 	expected = make_nice([3, 3, 5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǐ'); print(code)
+	code = transpile('ǐ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4843,7 +5341,8 @@ def test_Primefactors():
 	expected = make_nice("Abc Def")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǐ'); print(code)
+	code = transpile('ǐ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4854,7 +5353,8 @@ def test_Multiplicity():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǒ'); print(code)
+	code = transpile('Ǒ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4863,7 +5363,8 @@ def test_Multiplicity():
 	expected = make_nice("c")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǒ'); print(code)
+	code = transpile('Ǒ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4874,7 +5375,8 @@ def test_Modulo3():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǒ'); print(code)
+	code = transpile('ǒ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4883,7 +5385,8 @@ def test_Modulo3():
 	expected = make_nice(["ab", "cd", "ef", "gh", "i"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǒ'); print(code)
+	code = transpile('ǒ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4894,7 +5397,8 @@ def test_RotateLeft():
 	expected = make_nice([5, 5, 6, 4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǔ'); print(code)
+	code = transpile('Ǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4903,7 +5407,8 @@ def test_RotateLeft():
 	expected = make_nice([2, 3, 4, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Ǔ'); print(code)
+	code = transpile('Ǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4914,7 +5419,8 @@ def test_RotateRight():
 	expected = make_nice([6, 4, 5, 5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǔ'); print(code)
+	code = transpile('ǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4923,7 +5429,8 @@ def test_RotateRight():
 	expected = make_nice([4, 1, 2, 3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ǔ'); print(code)
+	code = transpile('ǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4934,7 +5441,8 @@ def test_SplitOnnewlines():
 	expected = make_nice(["a", "b", "c"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↵'); print(code)
+	code = transpile('↵')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4943,7 +5451,8 @@ def test_SplitOnnewlines():
 	expected = make_nice(1000)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('↵'); print(code)
+	code = transpile('↵')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4954,7 +5463,8 @@ def test_ProductofArray():
 	expected = make_nice(60)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Π'); print(code)
+	code = transpile('Π')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4965,7 +5475,8 @@ def test_Uppercasealphabet():
 	expected = make_nice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kA'); print(code)
+	code = transpile('kA')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4976,7 +5487,8 @@ def test_eEulersnumber():
 	expected = make_nice(2.718281828459045)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ke'); print(code)
+	code = transpile('ke')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4987,7 +5499,8 @@ def test_Fizz():
 	expected = make_nice("Fizz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kf'); print(code)
+	code = transpile('kf')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -4998,7 +5511,8 @@ def test_Buzz():
 	expected = make_nice("Buzz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kb'); print(code)
+	code = transpile('kb')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5009,7 +5523,8 @@ def test_FizzBuzz():
 	expected = make_nice("FizzBuzz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kF'); print(code)
+	code = transpile('kF')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5020,7 +5535,8 @@ def test_HelloWorld():
 	expected = make_nice("Hello, World!")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kH'); print(code)
+	code = transpile('kH')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5031,7 +5547,8 @@ def test_HelloWorld():
 	expected = make_nice("Hello World")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kh'); print(code)
+	code = transpile('kh')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5042,7 +5559,8 @@ def test_1000():
 	expected = make_nice(1000)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k1'); print(code)
+	code = transpile('k1')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5053,7 +5571,8 @@ def test_1000():
 	expected = make_nice(10000)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k2'); print(code)
+	code = transpile('k2')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5064,7 +5583,8 @@ def test_10000():
 	expected = make_nice(100000)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k3'); print(code)
+	code = transpile('k3')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5075,7 +5595,8 @@ def test_1000000():
 	expected = make_nice(1000000)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k4'); print(code)
+	code = transpile('k4')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5086,7 +5607,8 @@ def test_Lowercasealphabet():
 	expected = make_nice("abcdefghijklmnopqrstuvwxyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ka'); print(code)
+	code = transpile('ka')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5097,7 +5619,8 @@ def test_Lowercaseanduppercasealphabet():
 	expected = make_nice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kL'); print(code)
+	code = transpile('kL')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5108,7 +5631,8 @@ def test_Digits():
 	expected = make_nice("0123456789")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kd'); print(code)
+	code = transpile('kd')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5119,7 +5643,8 @@ def test_Hexdigitslowercase():
 	expected = make_nice("0123456789abcdef")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k6'); print(code)
+	code = transpile('k6')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5130,7 +5655,8 @@ def test_Hexdigitsuppercase():
 	expected = make_nice("0123456789ABCDEF")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k^'); print(code)
+	code = transpile('k^')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5141,7 +5667,8 @@ def test_Octaldigits():
 	expected = make_nice("01234567")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ko'); print(code)
+	code = transpile('ko')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5152,7 +5679,8 @@ def test_Punctuation():
 	expected = make_nice(string.punctuation)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kp'); print(code)
+	code = transpile('kp')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5163,7 +5691,8 @@ def test_PrintableASCII():
 	expected = make_nice('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kP'); print(code)
+	code = transpile('kP')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5174,7 +5703,8 @@ def test_Digitslowercasealphabetanduppercasealphabet():
 	expected = make_nice("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kr'); print(code)
+	code = transpile('kr')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5185,7 +5715,8 @@ def test_Uppercaseandlowercasealphabet():
 	expected = make_nice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kB'); print(code)
+	code = transpile('kB')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5196,7 +5727,8 @@ def test_Uppercasealphabetreversed():
 	expected = make_nice("ZYXWVUTSRQPONMLKJIHGFEDCBA")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kZ'); print(code)
+	code = transpile('kZ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5207,7 +5739,8 @@ def test_Lowercasealphabetreversed():
 	expected = make_nice("zyxwvutsrqponmlkjihgfedcba")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kz'); print(code)
+	code = transpile('kz')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5218,7 +5751,8 @@ def test_Uppercaseandlowercasealphabetreversed():
 	expected = make_nice("ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kl'); print(code)
+	code = transpile('kl')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5229,7 +5763,8 @@ def test_Pi():
 	expected = make_nice(3.141592653589793)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ki'); print(code)
+	code = transpile('ki')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5240,7 +5775,8 @@ def test_NaN():
 	expected = make_nice(math.nan)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kn'); print(code)
+	code = transpile('kn')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5251,7 +5787,8 @@ def test_Goldenratiophi():
 	expected = make_nice(1.618033988749895)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kg'); print(code)
+	code = transpile('kg')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5262,7 +5799,8 @@ def test_Bracessquarebracketsanglebracketsandparentheses():
 	expected = make_nice("{}[]<>()")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kβ'); print(code)
+	code = transpile('kβ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5273,7 +5811,8 @@ def test_Parenthesessquarebracketsandbraces():
 	expected = make_nice("()[]{}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kḂ'); print(code)
+	code = transpile('kḂ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5284,7 +5823,8 @@ def test_Parenthesesandsquarebrackets():
 	expected = make_nice("()[]")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kß'); print(code)
+	code = transpile('kß')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5295,7 +5835,8 @@ def test_Openingbrackets():
 	expected = make_nice("([{")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kḃ'); print(code)
+	code = transpile('kḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5306,7 +5847,8 @@ def test_Closingbrackets():
 	expected = make_nice(")]}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k≥'); print(code)
+	code = transpile('k≥')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5317,7 +5859,8 @@ def test_Openingbracketswith():
 	expected = make_nice("([{<")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k≤'); print(code)
+	code = transpile('k≤')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5328,7 +5871,8 @@ def test_Closingbracketswith():
 	expected = make_nice(")]}>")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kΠ'); print(code)
+	code = transpile('kΠ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5339,7 +5883,8 @@ def test_Lowercasevowels():
 	expected = make_nice("aeiou")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kv'); print(code)
+	code = transpile('kv')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5350,7 +5895,8 @@ def test_Upercasevowels():
 	expected = make_nice("AEIOU")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kV'); print(code)
+	code = transpile('kV')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5361,7 +5907,8 @@ def test_Lowercaseanduppercasevowels():
 	expected = make_nice("aeiouAEIOU")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k∨'); print(code)
+	code = transpile('k∨')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5372,7 +5919,8 @@ def test_12():
 	expected = make_nice([1, 2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k½'); print(code)
+	code = transpile('k½')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5383,7 +5931,8 @@ def test_4294967296():
 	expected = make_nice(4294967296)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kḭ'); print(code)
+	code = transpile('kḭ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5394,7 +5943,8 @@ def test_11():
 	expected = make_nice([1, -1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k+'); print(code)
+	code = transpile('k+')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5405,7 +5955,8 @@ def test_11():
 	expected = make_nice([-1, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k-'); print(code)
+	code = transpile('k-')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5416,7 +5967,8 @@ def test_01():
 	expected = make_nice([0, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k≈'); print(code)
+	code = transpile('k≈')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5427,7 +5979,8 @@ def test_Slashes():
 	expected = make_nice("/\\")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k/'); print(code)
+	code = transpile('k/')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5438,7 +5991,8 @@ def test_360():
 	expected = make_nice(360)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kR'); print(code)
+	code = transpile('kR')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5449,7 +6003,8 @@ def test_https():
 	expected = make_nice("https://")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kW'); print(code)
+	code = transpile('kW')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5460,7 +6015,8 @@ def test_http():
 	expected = make_nice("http://")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k℅'); print(code)
+	code = transpile('k℅')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5471,7 +6027,8 @@ def test_httpswww():
 	expected = make_nice("https://www.")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k↳'); print(code)
+	code = transpile('k↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5482,7 +6039,8 @@ def test_httpwww():
 	expected = make_nice("http://www.")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k²'); print(code)
+	code = transpile('k²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5493,7 +6051,8 @@ def test_512():
 	expected = make_nice(512)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k¶'); print(code)
+	code = transpile('k¶')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5504,7 +6063,8 @@ def test_1024():
 	expected = make_nice(1024)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k⁋'); print(code)
+	code = transpile('k⁋')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5515,7 +6075,8 @@ def test_2048():
 	expected = make_nice(2048)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k¦'); print(code)
+	code = transpile('k¦')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5526,7 +6087,8 @@ def test_4096():
 	expected = make_nice(4096)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kṄ'); print(code)
+	code = transpile('kṄ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5537,7 +6099,8 @@ def test_8192():
 	expected = make_nice(8192)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kṅ'); print(code)
+	code = transpile('kṅ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5548,7 +6111,8 @@ def test_16384():
 	expected = make_nice(16384)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k¡'); print(code)
+	code = transpile('k¡')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5559,7 +6123,8 @@ def test_32768():
 	expected = make_nice(32768)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kε'); print(code)
+	code = transpile('kε')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5570,7 +6135,8 @@ def test_65536():
 	expected = make_nice(65536)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k₴'); print(code)
+	code = transpile('k₴')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5581,7 +6147,8 @@ def test_2147483648():
 	expected = make_nice(2147483648)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k×'); print(code)
+	code = transpile('k×')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5592,7 +6159,8 @@ def test_Lowercaseconsonantswithy():
 	expected = make_nice("bcdfghjklmnpqrstvwxyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k⁰'); print(code)
+	code = transpile('k⁰')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5603,7 +6171,8 @@ def test_BFcommandset():
 	expected = make_nice("[]<>-+.,")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kT'); print(code)
+	code = transpile('kT')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5614,7 +6183,8 @@ def test_Bracketpairlist():
 	expected = make_nice(["()","[]","{}","<>"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kṗ'); print(code)
+	code = transpile('kṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5625,7 +6195,8 @@ def test_Nestedbrackets():
 	expected = make_nice("([{<>}])")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kṖ'); print(code)
+	code = transpile('kṖ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5636,7 +6207,8 @@ def test_Amogus():
 	expected = make_nice("ඞ")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('kS'); print(code)
+	code = transpile('kS')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5647,7 +6219,8 @@ def test_220():
 	expected = make_nice(1048576)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k₂'); print(code)
+	code = transpile('k₂')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5658,7 +6231,8 @@ def test_230():
 	expected = make_nice(1073741824)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k₃'); print(code)
+	code = transpile('k₃')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5669,7 +6243,8 @@ def test_LowercaseVowelsWithY():
 	expected = make_nice("aeiouy")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k∪'); print(code)
+	code = transpile('k∪')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5680,7 +6255,8 @@ def test_UppercaseVowelsWithY():
 	expected = make_nice("AEIOUY")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k⊍'); print(code)
+	code = transpile('k⊍')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5691,18 +6267,20 @@ def test_VowelsWithY():
 	expected = make_nice("aeiouyAEIOUY")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('k∩'); print(code)
+	code = transpile('k∩')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
 
 
 def test_Cosine():
-	stack = [vyxalify(elem) for elem in [3.141519265]]
+	stack = [vyxalify(elem) for elem in [3.14159265358979]]
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆c'); print(code)
+	code = transpile('∆c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5711,7 +6289,8 @@ def test_Cosine():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆c'); print(code)
+	code = transpile('∆c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5720,7 +6299,8 @@ def test_Cosine():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆c'); print(code)
+	code = transpile('∆c')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5728,10 +6308,11 @@ def test_Cosine():
 
 def test_ArcCosine():
 	stack = [vyxalify(elem) for elem in [-1]]
-	expected = make_nice(3.141519265)
+	expected = make_nice(3.14159265358979)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆C'); print(code)
+	code = transpile('∆C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5740,7 +6321,8 @@ def test_ArcCosine():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆C'); print(code)
+	code = transpile('∆C')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5751,7 +6333,8 @@ def test_QuadraticSolver():
 	expected = make_nice([-0.5, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆q'); print(code)
+	code = transpile('∆q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5760,7 +6343,8 @@ def test_QuadraticSolver():
 	expected = make_nice([0.5, 0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆q'); print(code)
+	code = transpile('∆q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5769,7 +6353,8 @@ def test_QuadraticSolver():
 	expected = make_nice([-0.16428571428571428, 0.0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆q'); print(code)
+	code = transpile('∆q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5780,7 +6365,8 @@ def test_GeneralQuadraticSolver():
 	expected = make_nice([-1, -1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Q'); print(code)
+	code = transpile('∆Q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5789,7 +6375,8 @@ def test_GeneralQuadraticSolver():
 	expected = make_nice([1, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Q'); print(code)
+	code = transpile('∆Q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5798,18 +6385,20 @@ def test_GeneralQuadraticSolver():
 	expected = make_nice([-0.16428571428571428, 0.0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Q'); print(code)
+	code = transpile('∆Q')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
 
 
 def test_Sine():
-	stack = [vyxalify(elem) for elem in [3.141519265]]
+	stack = [vyxalify(elem) for elem in [3.14159265358979]]
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆s'); print(code)
+	code = transpile('∆s')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5818,7 +6407,8 @@ def test_Sine():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆s'); print(code)
+	code = transpile('∆s')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5827,7 +6417,8 @@ def test_Sine():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆s'); print(code)
+	code = transpile('∆s')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5838,7 +6429,8 @@ def test_ArcSine():
 	expected = make_nice(-1.5707963267948966)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆S'); print(code)
+	code = transpile('∆S')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5847,7 +6439,8 @@ def test_ArcSine():
 	expected = make_nice(1.5707963267948966)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆S'); print(code)
+	code = transpile('∆S')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5858,7 +6451,8 @@ def test_Tangent():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆t'); print(code)
+	code = transpile('∆t')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5867,7 +6461,8 @@ def test_Tangent():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆t'); print(code)
+	code = transpile('∆t')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5876,7 +6471,8 @@ def test_Tangent():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆t'); print(code)
+	code = transpile('∆t')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5887,7 +6483,8 @@ def test_ArcTangent():
 	expected = make_nice(-0.78539816)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆T'); print(code)
+	code = transpile('∆T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5896,7 +6493,8 @@ def test_ArcTangent():
 	expected = make_nice(0.78539816)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆T'); print(code)
+	code = transpile('∆T')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5907,7 +6505,8 @@ def test_PolynomialSolver():
 	expected = make_nice([251.2469990481482, 0.06460672339563359, -0.06160577154387768])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆P'); print(code)
+	code = transpile('∆P')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5916,7 +6515,8 @@ def test_PolynomialSolver():
 	expected = make_nice([-6.089336543523048, 0.0023800217839172796])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆P'); print(code)
+	code = transpile('∆P')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5927,7 +6527,8 @@ def test_nPickrnpr():
 	expected = make_nice([3,12,60,360])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ƈ'); print(code)
+	code = transpile('∆ƈ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5938,7 +6539,8 @@ def test_CopySign():
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆±'); print(code)
+	code = transpile('∆±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5947,7 +6549,8 @@ def test_CopySign():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆±'); print(code)
+	code = transpile('∆±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5956,7 +6559,8 @@ def test_CopySign():
 	expected = make_nice(-1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆±'); print(code)
+	code = transpile('∆±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5965,7 +6569,8 @@ def test_CopySign():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆±'); print(code)
+	code = transpile('∆±')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5976,7 +6581,8 @@ def test_SumofProperDivisors():
 	expected = make_nice([1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆K'); print(code)
+	code = transpile('∆K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5985,7 +6591,8 @@ def test_SumofProperDivisors():
 	expected = make_nice([16])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆K'); print(code)
+	code = transpile('∆K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -5994,7 +6601,8 @@ def test_SumofProperDivisors():
 	expected = make_nice([1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆K'); print(code)
+	code = transpile('∆K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6003,7 +6611,8 @@ def test_SumofProperDivisors():
 	expected = make_nice([20])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆K'); print(code)
+	code = transpile('∆K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6012,7 +6621,8 @@ def test_SumofProperDivisors():
 	expected = make_nice([21])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆K'); print(code)
+	code = transpile('∆K')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6023,7 +6633,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6032,7 +6643,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6041,7 +6653,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6050,7 +6663,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6059,7 +6673,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6068,7 +6683,8 @@ def test_PerfectSquare():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6077,7 +6693,8 @@ def test_PerfectSquare():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6086,7 +6703,8 @@ def test_PerfectSquare():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6095,7 +6713,8 @@ def test_PerfectSquare():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6104,7 +6723,8 @@ def test_PerfectSquare():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆²'); print(code)
+	code = transpile('∆²')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6115,7 +6735,8 @@ def test_eraisedtopowera():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆e'); print(code)
+	code = transpile('∆e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6124,7 +6745,8 @@ def test_eraisedtopowera():
 	expected = make_nice(2.718281828459045)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆e'); print(code)
+	code = transpile('∆e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6133,7 +6755,8 @@ def test_eraisedtopowera():
 	expected = make_nice(7.38905609893065)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆e'); print(code)
+	code = transpile('∆e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6142,7 +6765,8 @@ def test_eraisedtopowera():
 	expected = make_nice(20.085536923187668)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆e'); print(code)
+	code = transpile('∆e')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6153,7 +6777,8 @@ def test_eraisedtopowera1():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆E'); print(code)
+	code = transpile('∆E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6162,7 +6787,8 @@ def test_eraisedtopowera1():
 	expected = make_nice(1.718281828459045)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆E'); print(code)
+	code = transpile('∆E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6171,7 +6797,8 @@ def test_eraisedtopowera1():
 	expected = make_nice(6.38905609893065)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆E'); print(code)
+	code = transpile('∆E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6180,7 +6807,8 @@ def test_eraisedtopowera1():
 	expected = make_nice(19.085536923187668)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆E'); print(code)
+	code = transpile('∆E')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6191,7 +6819,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6200,7 +6829,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(0.6931471805599453)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6209,7 +6839,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(1.0986122886681098)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6218,7 +6849,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(1.3862943611198906)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6227,7 +6859,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(1.6094379124341003)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6236,7 +6869,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(1.791759469228055)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6245,7 +6879,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(1.9459101490553132)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6254,7 +6889,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.0794415416798357)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6263,7 +6899,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.1972245773362196)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6272,7 +6909,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.302585092994046)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6281,7 +6919,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.3978952727983707)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6290,7 +6929,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.4849066497880004)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6299,7 +6939,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.5649493574615367)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6308,7 +6949,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.6390573296152586)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6317,7 +6959,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.70805020110221)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6326,7 +6969,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.7725887222397813)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6335,7 +6979,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.833213344056216)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6344,7 +6989,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.889279713667798)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6353,7 +6999,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.940980663340675)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6362,7 +7009,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(2.98885267308838)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6371,7 +7019,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(3.03164900591155)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6380,7 +7029,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(3.069078890930626)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6389,7 +7039,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(3.101444148692257)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6398,7 +7049,8 @@ def test_NaturalLogarithm():
 	expected = make_nice(3.129283016944946)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆L'); print(code)
+	code = transpile('∆L')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6409,7 +7061,8 @@ def test_Logarithmlog_2():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆l'); print(code)
+	code = transpile('∆l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6418,7 +7071,8 @@ def test_Logarithmlog_2():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆l'); print(code)
+	code = transpile('∆l')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6429,7 +7083,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6438,7 +7093,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.3010299956639812)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6447,7 +7103,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.47712125471966244)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6456,7 +7113,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.6020599913279624)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6465,7 +7123,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.6989700043360189)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6474,7 +7133,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.7781512503836436)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6483,7 +7143,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.8450980400142568)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6492,7 +7153,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.9030899869919435)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6501,7 +7163,8 @@ def test_CommonLogarithm():
 	expected = make_nice(0.9542425094393249)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6510,7 +7173,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6519,7 +7183,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.0373648063829815)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6528,7 +7193,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.0794415416798357)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6537,7 +7203,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.1180339887498949)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6546,7 +7213,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.1512925464970229)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6555,7 +7223,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.1832159566199232)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6564,7 +7233,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.2138765413770488)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6573,7 +7243,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.2415866898954712)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6582,7 +7253,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.2686525285981229)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6591,7 +7263,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.293995220556003)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6600,7 +7273,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.318385620278294)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6609,7 +7283,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.341998858493418)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6618,7 +7293,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.3647343448018976)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6627,7 +7303,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.3867261498125963)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6636,7 +7313,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.4079441410500514)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6645,7 +7323,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.4283545351906137)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6654,7 +7333,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.4479441410500514)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6663,7 +7343,8 @@ def test_CommonLogarithm():
 	expected = make_nice(1.4667563108421037)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆τ'); print(code)
+	code = transpile('∆τ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6674,7 +7355,8 @@ def test_StraightLineDistance():
 	expected = make_nice(381.03543142337827)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆d'); print(code)
+	code = transpile('∆d')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6685,7 +7367,8 @@ def test_ToDegrees():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6694,7 +7377,8 @@ def test_ToDegrees():
 	expected = make_nice(57.29577951308232)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6703,7 +7387,8 @@ def test_ToDegrees():
 	expected = make_nice(114.59155902616465)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6712,7 +7397,8 @@ def test_ToDegrees():
 	expected = make_nice(171.88733853924697)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6721,7 +7407,8 @@ def test_ToDegrees():
 	expected = make_nice(229.18264859012092)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6730,7 +7417,8 @@ def test_ToDegrees():
 	expected = make_nice(286.47895353103696)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6739,7 +7427,8 @@ def test_ToDegrees():
 	expected = make_nice(343.77426756035296)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6748,7 +7437,8 @@ def test_ToDegrees():
 	expected = make_nice(401.06957159047897)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6757,7 +7447,8 @@ def test_ToDegrees():
 	expected = make_nice(458.36387551059497)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6766,7 +7457,8 @@ def test_ToDegrees():
 	expected = make_nice(515.65910164161098)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6775,7 +7467,8 @@ def test_ToDegrees():
 	expected = make_nice(573.95432767272599)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6784,7 +7477,8 @@ def test_ToDegrees():
 	expected = make_nice(632.24964270280999)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6793,7 +7487,8 @@ def test_ToDegrees():
 	expected = make_nice(690.54595673282499)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6802,7 +7497,8 @@ def test_ToDegrees():
 	expected = make_nice(748.84127076392999)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6811,7 +7507,8 @@ def test_ToDegrees():
 	expected = make_nice(807.13658579503499)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6820,7 +7517,8 @@ def test_ToDegrees():
 	expected = make_nice(865.43189982514)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6829,7 +7527,8 @@ def test_ToDegrees():
 	expected = make_nice(923.72721485605)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6838,7 +7537,8 @@ def test_ToDegrees():
 	expected = make_nice(982.02262888616)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6847,7 +7547,8 @@ def test_ToDegrees():
 	expected = make_nice(1040.31894291626)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6856,7 +7557,8 @@ def test_ToDegrees():
 	expected = make_nice(1098.61525694636)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6865,7 +7567,8 @@ def test_ToDegrees():
 	expected = make_nice(1156.91057097646)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6874,7 +7577,8 @@ def test_ToDegrees():
 	expected = make_nice(1215.20588500656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6883,7 +7587,8 @@ def test_ToDegrees():
 	expected = make_nice(1273.50119903646)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6892,7 +7597,8 @@ def test_ToDegrees():
 	expected = make_nice(1331.79651306656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6901,7 +7607,8 @@ def test_ToDegrees():
 	expected = make_nice(1390.09182709656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6910,7 +7617,8 @@ def test_ToDegrees():
 	expected = make_nice(1448.38714112656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6919,7 +7627,8 @@ def test_ToDegrees():
 	expected = make_nice(1506.68245515656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6928,7 +7637,8 @@ def test_ToDegrees():
 	expected = make_nice(1564.97776018656)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆D'); print(code)
+	code = transpile('∆D')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6939,7 +7649,8 @@ def test_ToRadians():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆R'); print(code)
+	code = transpile('∆R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6948,7 +7659,8 @@ def test_ToRadians():
 	expected = make_nice(1.5707963267948966)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆R'); print(code)
+	code = transpile('∆R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6957,7 +7669,8 @@ def test_ToRadians():
 	expected = make_nice(3.141592653589793)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆R'); print(code)
+	code = transpile('∆R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6966,7 +7679,8 @@ def test_ToRadians():
 	expected = make_nice(4.71238898038469)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆R'); print(code)
+	code = transpile('∆R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6975,7 +7689,8 @@ def test_ToRadians():
 	expected = make_nice(6.283185307179586)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆R'); print(code)
+	code = transpile('∆R')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6986,7 +7701,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -6995,7 +7711,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7004,7 +7721,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7013,7 +7731,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7022,7 +7741,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(7)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7031,7 +7751,8 @@ def test_NextPrimeAfteraNumber():
 	expected = make_nice(71)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ṗ'); print(code)
+	code = transpile('∆Ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7042,7 +7763,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7051,7 +7773,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7060,7 +7783,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7069,7 +7793,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7078,7 +7803,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7087,7 +7813,8 @@ def test_FirstPrimeBeforeaNumber():
 	expected = make_nice(67)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṗ'); print(code)
+	code = transpile('∆ṗ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7098,7 +7825,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7107,7 +7835,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7116,7 +7845,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7125,7 +7855,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7134,7 +7865,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7143,7 +7875,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(37)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7152,7 +7885,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(41)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7161,7 +7895,8 @@ def test_NearestPrimetoaNumber():
 	expected = make_nice(71)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆p'); print(code)
+	code = transpile('∆p')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7172,7 +7907,8 @@ def test_PolynomialfromRoots():
 	expected = make_nice([-6, 11, -6, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṙ'); print(code)
+	code = transpile('∆ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7181,7 +7917,8 @@ def test_PolynomialfromRoots():
 	expected = make_nice([-6323580, 2320581, -266708, 12122, -208, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ṙ'); print(code)
+	code = transpile('∆ṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7192,7 +7929,8 @@ def test_RoundtonDecimalPlaces():
 	expected = make_nice(1.23)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆W'); print(code)
+	code = transpile('∆W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7201,7 +7939,8 @@ def test_RoundtonDecimalPlaces():
 	expected = make_nice(1.235)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆W'); print(code)
+	code = transpile('∆W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7210,7 +7949,8 @@ def test_RoundtonDecimalPlaces():
 	expected = make_nice(1.2345)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆W'); print(code)
+	code = transpile('∆W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7219,7 +7959,8 @@ def test_RoundtonDecimalPlaces():
 	expected = make_nice(1.2345)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆W'); print(code)
+	code = transpile('∆W')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7230,7 +7971,8 @@ def test_LeastCommonMultiple():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ŀ'); print(code)
+	code = transpile('∆Ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7239,7 +7981,8 @@ def test_LeastCommonMultiple():
 	expected = make_nice(9660)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆Ŀ'); print(code)
+	code = transpile('∆Ŀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7250,7 +7993,8 @@ def test_nthDigitofPi():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7259,7 +8003,8 @@ def test_nthDigitofPi():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7268,7 +8013,8 @@ def test_nthDigitofPi():
 	expected = make_nice(4)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7277,7 +8023,8 @@ def test_nthDigitofPi():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7286,7 +8033,8 @@ def test_nthDigitofPi():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7295,7 +8043,8 @@ def test_nthDigitofPi():
 	expected = make_nice(9)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7304,7 +8053,8 @@ def test_nthDigitofPi():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7313,7 +8063,8 @@ def test_nthDigitofPi():
 	expected = make_nice(6)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7322,7 +8073,8 @@ def test_nthDigitofPi():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7331,7 +8083,8 @@ def test_nthDigitofPi():
 	expected = make_nice(9)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆i'); print(code)
+	code = transpile('∆i')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7342,7 +8095,8 @@ def test_nthDigitofe():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ė'); print(code)
+	code = transpile('∆ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7351,7 +8105,8 @@ def test_nthDigitofe():
 	expected = make_nice(7)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ė'); print(code)
+	code = transpile('∆ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7360,7 +8115,8 @@ def test_nthDigitofe():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ė'); print(code)
+	code = transpile('∆ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7369,7 +8125,8 @@ def test_nthDigitofe():
 	expected = make_nice(8)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆ė'); print(code)
+	code = transpile('∆ė')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7380,7 +8137,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7389,7 +8147,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7398,7 +8157,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7407,7 +8167,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7416,7 +8177,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(5)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7425,7 +8187,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(8)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7434,7 +8197,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(13)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7443,7 +8207,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(21)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7452,7 +8217,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(34)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7461,7 +8227,8 @@ def test_nthFibonacciNumber():
 	expected = make_nice(55)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('∆f'); print(code)
+	code = transpile('∆f')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7472,7 +8239,8 @@ def test_Parenthesise():
 	expected = make_nice("(xyz)")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øb'); print(code)
+	code = transpile('øb')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7481,7 +8249,8 @@ def test_Parenthesise():
 	expected = make_nice("(5)")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øb'); print(code)
+	code = transpile('øb')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7490,7 +8259,8 @@ def test_Parenthesise():
 	expected = make_nice(["(1)","(2)","(3)"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øb'); print(code)
+	code = transpile('øb')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7501,7 +8271,8 @@ def test_Bracketify():
 	expected = make_nice("[xyz]")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øB'); print(code)
+	code = transpile('øB')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7510,7 +8281,8 @@ def test_Bracketify():
 	expected = make_nice("[5]")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øB'); print(code)
+	code = transpile('øB')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7519,7 +8291,8 @@ def test_Bracketify():
 	expected = make_nice(["[1]","[2]","[3]"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øB'); print(code)
+	code = transpile('øB')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7530,7 +8303,8 @@ def test_CurlyBracketify():
 	expected = make_nice("{xyz}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḃ'); print(code)
+	code = transpile('øḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7539,7 +8313,8 @@ def test_CurlyBracketify():
 	expected = make_nice("{5}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḃ'); print(code)
+	code = transpile('øḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7548,7 +8323,8 @@ def test_CurlyBracketify():
 	expected = make_nice(["{1}","{2}","{3}"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḃ'); print(code)
+	code = transpile('øḃ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7559,7 +8335,8 @@ def test_AngleBracketify():
 	expected = make_nice("<xyz>")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḂ'); print(code)
+	code = transpile('øḂ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7568,7 +8345,8 @@ def test_AngleBracketify():
 	expected = make_nice("<5>")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḂ'); print(code)
+	code = transpile('øḂ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7577,7 +8355,8 @@ def test_AngleBracketify():
 	expected = make_nice(["<1>","<2>","<3>"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øḂ'); print(code)
+	code = transpile('øḂ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7588,7 +8367,8 @@ def test_BalancedBrackets():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øβ'); print(code)
+	code = transpile('øβ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7597,7 +8377,8 @@ def test_BalancedBrackets():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øβ'); print(code)
+	code = transpile('øβ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7606,7 +8387,8 @@ def test_BalancedBrackets():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øβ'); print(code)
+	code = transpile('øβ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7615,7 +8397,8 @@ def test_BalancedBrackets():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øβ'); print(code)
+	code = transpile('øβ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7626,7 +8409,8 @@ def test_CustomPadLeft():
 	expected = make_nice("xxyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↳'); print(code)
+	code = transpile('ø↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7635,7 +8419,8 @@ def test_CustomPadLeft():
 	expected = make_nice("&&&&&123")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↳'); print(code)
+	code = transpile('ø↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7644,7 +8429,8 @@ def test_CustomPadLeft():
 	expected = make_nice("324")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↳'); print(code)
+	code = transpile('ø↳')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7655,7 +8441,8 @@ def test_CustomPadRight():
 	expected = make_nice("xyzx")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↲'); print(code)
+	code = transpile('ø↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7664,7 +8451,8 @@ def test_CustomPadRight():
 	expected = make_nice("123&&&&&")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↲'); print(code)
+	code = transpile('ø↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7673,7 +8461,8 @@ def test_CustomPadRight():
 	expected = make_nice("324")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ø↲'); print(code)
+	code = transpile('ø↲')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7684,7 +8473,8 @@ def test_FlipBracketsVerticalPalindromise():
 	expected = make_nice("(x)")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øM'); print(code)
+	code = transpile('øM')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7693,7 +8483,8 @@ def test_FlipBracketsVerticalPalindromise():
 	expected = make_nice("{] [}")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øM'); print(code)
+	code = transpile('øM')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7702,7 +8493,8 @@ def test_FlipBracketsVerticalPalindromise():
 	expected = make_nice("/*>X<*\\")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øM'); print(code)
+	code = transpile('øM')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7713,7 +8505,8 @@ def test_RemoveUntilNochange():
 	expected = make_nice("")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øo'); print(code)
+	code = transpile('øo')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7722,7 +8515,8 @@ def test_RemoveUntilNochange():
 	expected = make_nice("+")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øo'); print(code)
+	code = transpile('øo')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7733,7 +8527,8 @@ def test_ReplaceUntilNoChange():
 	expected = make_nice("xyyyyyyyyyz")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øV'); print(code)
+	code = transpile('øV')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7742,7 +8537,8 @@ def test_ReplaceUntilNoChange():
 	expected = make_nice("aaa")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øV'); print(code)
+	code = transpile('øV')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7753,7 +8549,8 @@ def test_StringCompress():
 	expected = make_nice("«B²z«")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øc'); print(code)
+	code = transpile('øc')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7762,7 +8559,8 @@ def test_StringCompress():
 	expected = make_nice("«⟇÷Ċ$⌈¢2«")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øc'); print(code)
+	code = transpile('øc')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7773,7 +8571,8 @@ def test_NumberCompress():
 	expected = make_nice("»⇧»")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øC'); print(code)
+	code = transpile('øC')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7782,7 +8581,8 @@ def test_NumberCompress():
 	expected = make_nice("»fðǐ4'∞Ẏ»")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øC'); print(code)
+	code = transpile('øC')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7793,7 +8593,8 @@ def test_Center():
 	expected = make_nice([" ab ","cdef"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øĊ'); print(code)
+	code = transpile('øĊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7802,7 +8603,8 @@ def test_Center():
 	expected = make_nice([" xyz ","  a  ","bcdef"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øĊ'); print(code)
+	code = transpile('øĊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7813,7 +8615,8 @@ def test_RunLengthEncoding():
 	expected = make_nice([["a",1],["b",1],["c",1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øe'); print(code)
+	code = transpile('øe')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7822,7 +8625,8 @@ def test_RunLengthEncoding():
 	expected = make_nice([["a",3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øe'); print(code)
+	code = transpile('øe')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7833,7 +8637,8 @@ def test_RunLengthDecoding():
 	expected = make_nice("xxx")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ød'); print(code)
+	code = transpile('ød')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7842,7 +8647,8 @@ def test_RunLengthDecoding():
 	expected = make_nice("zzaaa")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ød'); print(code)
+	code = transpile('ød')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7853,7 +8659,8 @@ def test_DictionaryCompression():
 	expected = make_nice("`wi∧ḭ`")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øD'); print(code)
+	code = transpile('øD')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7862,7 +8669,8 @@ def test_DictionaryCompression():
 	expected = make_nice("`ƈṙ`")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øD'); print(code)
+	code = transpile('øD')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7871,7 +8679,8 @@ def test_DictionaryCompression():
 	expected = make_nice("`₴ŀ`")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øD'); print(code)
+	code = transpile('øD')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7882,7 +8691,8 @@ def test_Grouponwords():
 	expected = make_nice(["abc","*","xyz"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øW'); print(code)
+	code = transpile('øW')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7891,7 +8701,8 @@ def test_Grouponwords():
 	expected = make_nice(["$","$","$"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øW'); print(code)
+	code = transpile('øW')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7902,7 +8713,8 @@ def test_Regexreplace():
 	expected = make_nice("xlo")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṙ'); print(code)
+	code = transpile('øṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7911,7 +8723,8 @@ def test_Regexreplace():
 	expected = make_nice("HelloEEWorldE")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṙ'); print(code)
+	code = transpile('øṙ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7922,7 +8735,8 @@ def test_StartsWith():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øp'); print(code)
+	code = transpile('øp')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7931,7 +8745,8 @@ def test_StartsWith():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øp'); print(code)
+	code = transpile('øp')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7940,7 +8755,8 @@ def test_StartsWith():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øp'); print(code)
+	code = transpile('øp')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7949,7 +8765,8 @@ def test_StartsWith():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øp'); print(code)
+	code = transpile('øp')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7960,7 +8777,8 @@ def test_PluraliseCount():
 	expected = make_nice("4 hellos")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øP'); print(code)
+	code = transpile('øP')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7969,7 +8787,8 @@ def test_PluraliseCount():
 	expected = make_nice("1 hello")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øP'); print(code)
+	code = transpile('øP')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7978,7 +8797,8 @@ def test_PluraliseCount():
 	expected = make_nice("0 hellos")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øP'); print(code)
+	code = transpile('øP')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -7993,7 +8813,8 @@ def test_FlipBracketsVerticalMirror():
 	expected = make_nice("[}{]")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṀ'); print(code)
+	code = transpile('øṀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8002,7 +8823,8 @@ def test_FlipBracketsVerticalMirror():
 	expected = make_nice(")XX(")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṀ'); print(code)
+	code = transpile('øṀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8011,7 +8833,8 @@ def test_FlipBracketsVerticalMirror():
 	expected = make_nice("</tag><gat\\>")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṀ'); print(code)
+	code = transpile('øṀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8022,7 +8845,8 @@ def test_StringPartitions():
 	expected = make_nice([["a","b"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('øṖ'); print(code)
+	code = transpile('øṖ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8033,7 +8857,8 @@ def test_AllUnique():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þu'); print(code)
+	code = transpile('Þu')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8042,7 +8867,8 @@ def test_AllUnique():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þu'); print(code)
+	code = transpile('Þu')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8051,7 +8877,8 @@ def test_AllUnique():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þu'); print(code)
+	code = transpile('Þu')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8060,7 +8887,8 @@ def test_AllUnique():
 	expected = make_nice(1)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þu'); print(code)
+	code = transpile('Þu')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8071,7 +8899,8 @@ def test_CartesianPower():
 	expected = make_nice(["aa","ab","ba","bb"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞẊ'); print(code)
+	code = transpile('ÞẊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8080,7 +8909,8 @@ def test_CartesianPower():
 	expected = make_nice([[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞẊ'); print(code)
+	code = transpile('ÞẊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8089,7 +8919,8 @@ def test_CartesianPower():
 	expected = make_nice(["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞẊ'); print(code)
+	code = transpile('ÞẊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8100,7 +8931,8 @@ def test_Flattentodepth():
 	expected = make_nice([[1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þf'); print(code)
+	code = transpile('Þf')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8109,7 +8941,8 @@ def test_Flattentodepth():
 	expected = make_nice([1,2,3,4,[5,6]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þf'); print(code)
+	code = transpile('Þf')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8120,7 +8953,8 @@ def test_ChunksOfSpecifiedLength():
 	expected = make_nice(["ab","cde","fghi"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞC'); print(code)
+	code = transpile('ÞC')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8129,7 +8963,8 @@ def test_ChunksOfSpecifiedLength():
 	expected = make_nice([[1,2],[3,4,5]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞC'); print(code)
+	code = transpile('ÞC')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8140,7 +8975,8 @@ def test_AllLessThanIncreasing():
 	expected = make_nice([1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ<'); print(code)
+	code = transpile('Þ<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8149,7 +8985,8 @@ def test_AllLessThanIncreasing():
 	expected = make_nice([1,2,3])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ<'); print(code)
+	code = transpile('Þ<')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8160,7 +8997,8 @@ def test_Untruth():
 	expected = make_nice([0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þǔ'); print(code)
+	code = transpile('Þǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8169,7 +9007,8 @@ def test_Untruth():
 	expected = make_nice([1,0,0,1,1,0,1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þǔ'); print(code)
+	code = transpile('Þǔ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8180,7 +9019,8 @@ def test_MultidimensionalIndexing():
 	expected = make_nice(3)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þi'); print(code)
+	code = transpile('Þi')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8189,7 +9029,8 @@ def test_MultidimensionalIndexing():
 	expected = make_nice("b")
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þi'); print(code)
+	code = transpile('Þi')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8200,7 +9041,8 @@ def test_MultidimensionalSearch():
 	expected = make_nice([1, 1])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þḟ'); print(code)
+	code = transpile('Þḟ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8209,7 +9051,8 @@ def test_MultidimensionalSearch():
 	expected = make_nice([1,1,2])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þḟ'); print(code)
+	code = transpile('Þḟ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8220,7 +9063,8 @@ def test_ZeroMatrix():
 	expected = make_nice([[0,0,0],[0,0,0],[0,0,0],[0,0,0]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þm'); print(code)
+	code = transpile('Þm')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8229,7 +9073,8 @@ def test_ZeroMatrix():
 	expected = make_nice([[0,0],[0,0]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þm'); print(code)
+	code = transpile('Þm')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8240,7 +9085,8 @@ def test_EvenlyDistribute():
 	expected = make_nice([3,4,5])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ…'); print(code)
+	code = transpile('Þ…')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8249,7 +9095,8 @@ def test_EvenlyDistribute():
 	expected = make_nice([3,4,4])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ…'); print(code)
+	code = transpile('Þ…')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8260,7 +9107,8 @@ def test_AllCombinations():
 	expected = make_nice([[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ×'); print(code)
+	code = transpile('Þ×')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8269,7 +9117,8 @@ def test_AllCombinations():
 	expected = make_nice(["a","b","ab","ba"])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ×'); print(code)
+	code = transpile('Þ×')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8280,7 +9129,8 @@ def test_UniquifyMask():
 	expected = make_nice([1,1,1,0,0,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞU'); print(code)
+	code = transpile('ÞU')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8289,7 +9139,8 @@ def test_UniquifyMask():
 	expected = make_nice([1,0,0,1,1,0,0,0,0,0])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞU'); print(code)
+	code = transpile('ÞU')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8300,7 +9151,8 @@ def test_Diagonals():
 	expected = make_nice([[1,5,9],[2,6],[3],[4,8],[7]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞD'); print(code)
+	code = transpile('ÞD')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8311,7 +9163,8 @@ def test_Sublists():
 	expected = make_nice([[1],[2],[3],[1,2],[2,3],[1,2,3]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞS'); print(code)
+	code = transpile('ÞS')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8322,7 +9175,8 @@ def test_TransposeWithFiller():
 	expected = make_nice([[1,4],[2,5],[3,0]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞṪ'); print(code)
+	code = transpile('ÞṪ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8331,7 +9185,8 @@ def test_TransposeWithFiller():
 	expected = make_nice([[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞṪ'); print(code)
+	code = transpile('ÞṪ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8342,7 +9197,8 @@ def test_MatrixMultiplication():
 	expected = make_nice([[23,34],[31,46]])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞṀ'); print(code)
+	code = transpile('ÞṀ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8353,7 +9209,8 @@ def test_MatrixDeterminant():
 	expected = make_nice(-2)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞḊ'); print(code)
+	code = transpile('ÞḊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8362,7 +9219,8 @@ def test_MatrixDeterminant():
 	expected = make_nice(0)
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('ÞḊ'); print(code)
+	code = transpile('ÞḊ')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8373,7 +9231,8 @@ def test_Antidiagonal():
 	expected = make_nice([3,5,7])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ\\'); print(code)
+	code = transpile('Þ\\')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
@@ -8384,7 +9243,8 @@ def test_Diagonal():
 	expected = make_nice([1,5,9])
 	ctx = Context()
 	ctx.stacks.append(stack)
-	code = transpile('Þ/'); print(code)
+	code = transpile('Þ/')
+	print(code)
 	exec(code)
 	ctx.stacks.pop()
 	assert make_nice(stack[-1]) == expected
