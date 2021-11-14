@@ -25,7 +25,6 @@ STRUCTURE_INFORMATION = {
     "ƛ": (structure.LambdaMap, ";"),
     "'": (structure.LambdaFilter, ";"),
     "µ": (structure.LambdaSort, ";"),
-    "°": (structure.FunctionReference, ";"),
     "⟨": (structure.ListLiteral, "⟩"),
 }
 
@@ -157,11 +156,6 @@ def parse(
                     # No body, so it's a function call
                     assert not parameters
                     structures.append(structure.FunctionCall(name))
-
-            elif structure_cls == structure.FunctionReference:
-                structures.append(
-                    structure.FunctionReference(variable_name(branches[0]))
-                )
 
             elif structure_cls == structure.Lambda:
                 if len(branches) == 1:

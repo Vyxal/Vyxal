@@ -13,20 +13,6 @@ import sympy
 from sympy import Rational
 
 
-def vyxalify(value: Any) -> Any:
-    """Takes a value and returns it as one of the four types we use here."""
-
-    if isinstance(value, (sympy.core.numbers.Integer)):
-        return int(value)
-    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
-        return vyxalify(sympy.Rational(str(float(value))))
-        # Sympy is weird okay.
-    elif isinstance(value, (int, Rational, str, list, LazyList)):
-        return value
-    else:
-        return LazyList(map(vyxalify, value))
-
-
 def join_with(lhs, rhs):
     """A generator to concatenate two iterables together"""
     for item in lhs:

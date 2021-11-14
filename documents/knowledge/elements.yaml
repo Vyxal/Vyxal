@@ -1438,7 +1438,7 @@
   tests:
     - "[0] : 0"
     - "[1] : 1"
-    - "[[]] : 0"
+    - "[[69, 0]] : [1, 0]"
     - '["x"] : 1'
 
 - element: "ċ"
@@ -1449,7 +1449,7 @@
     any: a != 1
   vectorise: false
   tests:
-    - "[[]] : 1"
+    - "[[1, 0]] : [0, 1]"
     - '["1"] : 0'
     - "[5] : 1"
     - "[1] : 0"
@@ -1468,7 +1468,7 @@
     - "[5,3] : [1,2]"
     - '["abcd",3] : ["abc","abd","acd","bcd"]'
     - "[[1,2,3],2] : [[1,2],[1,3],[2,3]]"
-    - '["abcdef", "Joe"] : ["Joedef"]'
+    - '["abcdef", "Joe"] : "Joedef"'
 
 - element: "ė"
   name: Enumerate
@@ -1575,7 +1575,7 @@
   vectorise: false
   tests:
     - '[["a","b","c"]] : "abc"'
-    - "[[1,2,3]] : 123"
+    - "[[1,2,3]] : '123'"
 
 - element: "ȯ"
   name: Slice
@@ -1599,7 +1599,7 @@
   vectorise: false
   tests:
     - '["ab"] : [[],["a"],["b"],["a","b"]]'
-    - "[1,2,3] : [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]"
+    - "[[1,2,3]] : [[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]]"
 
 - element: "ṙ"
   name: Round
@@ -1617,13 +1617,13 @@
     - "[-4.5] : -4"
 
 - element: "ṡ"
-  name: Function Sort
+  name: Sort by Function
   description: Sort a list by a function / create a range / split on a regex
   arity: 2
   overloads:
     any-fun: sorted(a, key=b) (Sort by b)
     num-num: range(a, b + 1) (Inclusive range from a to b)
-    str-str: regex.split(string=a, pattern=b)
+    str-str: regex.split(pattern=b, string=a)
   vectorise: false
   tests:
     - "[3,4] : [3,4]"
@@ -1660,6 +1660,8 @@
   description: Repeat a value several times
   arity: "*"
   overloads:
+    str-num: a * b
+    num-str: b * a
     any-num: Repeat a b times
     str-str: a + " " + b
     fun-any: repeat function a on b while the function results are not-unique
@@ -1807,7 +1809,7 @@
   description: Push a newline to the stack
   arity: 0
   tests:
-    - '[] : "\\n"'
+    - '[] : "\n"'
 
 - element: "⁋"
   name: Join On Newlines
@@ -1911,19 +1913,19 @@
   vectorise: false
   tests:
     - "[[1, 2, 3, 4], 1, 0] : [1, 0, 3, 4]"
-    - '["Hello ", ", World!", 5] : "Hello, World!"'
+    - '["Hello ", 5, ", World!"] : "Hello, World!"'
     - "[69320, 2, 4] : [6, 9, 4, 2, 0]"
 
 - element: "Ḃ"
   name: Bifurcate
   arity: 1
-  description: Pushes the top of the stack then it's reverse. Literally duplicate and reverse
+  description: Pushes the top of the stack then its reverse. Literally duplicate and reverse
   overloads:
     any: a, reversed(a)
   vectorise: false
   tests:
     - "[203] : 302"
-    - '["abc"] : "cab"'
+    - '["abc"] : "cba"'
     - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ċ"
@@ -1935,7 +1937,7 @@
   vectorise: false
   tests:
     - "[[1, 2, 2, 3, 3, 3, 3]] : [[1, 1], [2, 2], [3, 4]]"
-    - '["Hello, World!"] : [["W", 1], ["!", 1], [" ", 1], ["o", 2], ["d", 1], [",", 1], ["H", 1], ["l", 3], ["e", 1], ["r", 1]]'
+    - '["Hello, World!"] : [["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]]'
 
 - element: "Ḋ"
   name: Is Divisible / Arbitrary Duplicate
@@ -2072,7 +2074,7 @@
   overloads:
     any: permutations(a) (Get all permutations)
   tests:
-    - '["abc"] : ["abc","abc","bac","bca","cab","cba"]'
+    - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
     - "[[1,2]] : [[1,2],[2,1]]"
 
 - element: "Ṙ"
@@ -2084,7 +2086,7 @@
   vectorise: false
   tests:
     - "[203] : 302"
-    - '["abc"] : "cab"'
+    - '["abc"] : "cba"'
     - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ṡ"
@@ -2104,7 +2106,7 @@
     any: a[:-1] (All but the last item)
   vectorise: false
   tests:
-    - '["1234"] : "234"'
+    - '["1234"] : "123"'
     - "[[1,2,3]] : [1,2]"
 
 - element: "Ẇ"
@@ -2184,8 +2186,8 @@
   vectorise: true
   tests:
     - "[5] : 25"
-    - '["hello"] : ["hel","lo"]'
-    - '["bye"] : ["by","e"]'
+    - '["hello"] : ["hel","lo ", "   "]'
+    - '["bye"] : ["by","e "]'
     - "[[1,2,3]] : [1,4,9]"
 
 - element: "∇"
@@ -2223,7 +2225,7 @@
   vectorise: true
   tests:
     - "[5.3] : 5"
-    - "[[5.3,4.7]] : [4,5]"
+    - "[[5.3,4.7]] : [5, 4]"
     - '["123abc"] : 123'
 
 - element: "¯"
@@ -2234,9 +2236,9 @@
     any: deltas(a) (consecutive differences)
   vectorise: true
   tests:
-    - "[1,2,3] : [1,1]"
-    - "[1,1,1] : [0,0]"
-    - "[40,61,3] : [21,-58]"
+    - "[[1,2,3]] : [1,1]"
+    - "[[1,1,1]] : [0,0]"
+    - "[[40,61,3]] : [21,-58]"
 
 - element: "±"
   name: Sign
@@ -2310,7 +2312,7 @@
   tests:
     - "[420, 69] : 4"
     - '["abc", 10] : "   abc    "'
-    - '["no", "yesnt"] : " no "'
+    - '["no", "gamers"] : " no "'
 
 - element: "⋎"
   name: Bitwise Or
@@ -2363,10 +2365,6 @@
   overloads:
     lst: random.choice(a)
   vectorise: false
-  tests:
-    - "[[1,2,3]] : 2"
-    - "[[1,2,3]] : 1"
-    - "[[1,2,3]] : 3"
 
 - element: "≤"
   name: Lesser Than or Equal To
@@ -2406,7 +2404,7 @@
     any-any: a == b
   vectorise: false
   tests:
-    - "[1,2] : 1"
+    - "[1,2] : 0"
 
 - modifier: "ƒ"
   name: Reduce by
@@ -2438,7 +2436,7 @@
     any: Transposed array
   vectorise: false
   tests:
-    - "[[1,2],[2,3,4]] : [[1, 2], [2, 3], [4]]"
+    - "[[[1,2],[2,3,4]]] : [[1, 2], [2, 3], [4]]"
 
 - element: "⊍"
   name: Symmetric Set difference
@@ -2474,7 +2472,7 @@
     num: a + 2
   vectorise: false
   tests:
-    - "[[420,69,1337]] : [2,1,3]"
+    - "[[420,69,1337]] : [1,0,2]"
     - '["Heloo"] : "HELOO"'
     - "[4] : 6"
 
@@ -2488,7 +2486,7 @@
     num: a - 2
   vectorise: false
   tests:
-    - "[[420,69,1337]] : [3,1,2]"
+    - "[[420,69,1337]] : [2,0,1]"
     - '["Heloo"] : "heloo"'
     - "[4] : 2"
 
@@ -2514,7 +2512,7 @@
   vectorise: true
   tests:
     - "[3] : 7"
-    - '["abc"] : ["a","ab","abc","","b","bc","","","c","","",""]'
+    - '["abc"] : ["a","ab","abc","b","bc","c"]'
 
 - element: "Ǐ"
   name: Prime factorization
@@ -2555,14 +2553,14 @@
 - element: "ǒ"
   name: Modulo 3
   arity: 1
-  description: Modulo 3 / Is string empty?
+  description: Modulo 3 / Split into Length 2
   overloads:
     num: a % 3
     str: a split into chunks of length 2
   vectorise: true
   tests:
     - "[45] : 0"
-    - '[""] : 1'
+    - '["abcdefghi"] : ["ab", "cd", "ef", "gh", "i"]'
 
 - element: "Ǔ"
   name: Rotate Left
@@ -2573,7 +2571,7 @@
     any-any: a,(b[1:]+b[:1])
   vectorise: false
   tests:
-    - "[3, [4, 5, 5, 6]] : [6, 4, 5, 5]"
+    - "[3, [4, 5, 5, 6]] : [5, 5, 6, 4]"
     - "[3, [1, 2, 3, 4]] : [2, 3, 4, 1]"
 
 - element: "ǔ"
@@ -2585,7 +2583,7 @@
     any-any: a,(b[-1:]+b[:-1])
   vectorise: false
   tests:
-    - "[3, [4, 5, 5, 6]] : [5, 5, 6, 4]"
+    - "[3, [4, 5, 5, 6]] : [6, 4, 5, 5]"
     - "[3, [1, 2, 3, 4]] : [4, 1, 2, 3]"
 
 - element: "⁽"
@@ -2650,7 +2648,7 @@
     lst: prod(a)
   vectorise: false
   tests:
-    - "[3,4,5] : 60"
+    - "[[3,4,5]] : 60"
 
 - element: "„"
   name: Rotate Stack Left
@@ -3444,6 +3442,7 @@
   description: Get the value of e raised to the power of a
   overloads:
     num: e ** a
+    str: simplify expression a
   vectorise: true
   tests:
     - "[0] : 1"
@@ -3668,7 +3667,7 @@
   arity: 2
   description: Round a number to n decimal places
   overloads:
-    num, num: round(a, no_dec_places=b)
+    num-num: round(a, no_dec_places=b)
   vectorise: true
   tests:
     - "[1.2345, 2] : 1.23"
@@ -3681,7 +3680,7 @@
   arity: 2
   description: Get the least common multiple of two numbers
   overloads:
-    num, num: lcm(a, b)
+    num-num: lcm(a, b)
   vectorise: true
   tests:
     - "[1, 2] : 2"

@@ -11,6 +11,7 @@ from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.transpile import transpile
 from vyxal.parse import *
+from vyxal.LazyList import simplify
 from vyxal import lexer
 
 if __name__ == "__main__":

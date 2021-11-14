@@ -48,9 +48,9 @@ def collect_until_false(
     ctx: Context,
 ) -> List[Any]:
     val = initial
-    while safe_apply(predicate, val, ctx):
+    while safe_apply(predicate, val, ctx=ctx):
         yield val
-        val = safe_apply(function, val, ctx)
+        val = safe_apply(function, val, ctx=ctx)
 
 
 def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
@@ -96,7 +96,9 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
+def fixed_point(
+    function: types.FunctionType, initial: Any, ctx: Context
+) -> List[Any]:
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
 
@@ -106,15 +108,21 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     while previous != current:
         yield current
         previous = deep_copy(current)
-        current = safe_apply(function, current)
+        current = safe_apply(function, current, ctx=ctx)
 
 
-def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
+def foldl(
+    function: types.FunctionType,
+    vector: List[Any],
+    initial=None,
+    *,
+    ctx: Context
+) -> Any:
     """Reduce vector by function"""
     if len(vector) == 0:
         return 0
 
-    working = None
+    working = initial
 
     for item in vector:
         if working is None:
@@ -453,19 +461,16 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args)[::-1], function, len(args), ctx)
+        ret = function(list(args)[::-1], function, len(args), ctx=ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
-    elif function.__name__.startswith("FN_"):
-        ret = function(list(args)[::-1], function, ctx)[-1]
-        if len(ret):
-            return ret[-1]
-        else:
-            return []
+    elif function.__name__.startswith("VAR_"):
+        ret = function(list(args)[::-1], function, ctx=ctx)[-1]
+        return ret
     elif takes_ctx(function):
-        return function(*args, ctx)
+        return function(*args, ctx=ctx)
     return function(*args)
 
 
@@ -650,27 +655,25 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return item
 
 
-def vy_zip(*items) -> list:
-    """Like python's zip, but fills shorter lists with 0s"""
+def vyxalify(value: Any) -> Any:
+    """Takes a value and returns it as one of the four types we use here."""
 
-    items = list(map(iter, items))
-    while True:
-        ret = []
-        exhausted_count = 0
-        for item in items:
-            try:
-                ret.append(next(item))
-            except:
-                ret.append(0)
-                exhausted_count += 1
-
-        if len(items) == exhausted_count:
-            break
-
-        yield ret
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
+        return vyxalify(sympy.Rational(str(float(value))))
+        # Sympy is weird okay.
+    elif isinstance(value, float):
+        return sympy.Rational(value)
+    elif isinstance(value, (int, Rational, str, LazyList)):
+        return value
+    elif isinstance(value, list):
+        return list(map(vyxalify, value))
+    else:
+        return LazyList(map(vyxalify, value))
 
 
-def wrap(vector: Union[str, list], width: int) -> List[Any]:
+def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
     """A version of textwrap.wrap that plays nice with spaces"""
     ret = []
     temp = []

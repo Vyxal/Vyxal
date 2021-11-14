@@ -107,12 +107,6 @@ class LambdaSort(Lambda):
         super().__init__(1, body)
 
 
-class FunctionReference(Structure):
-    def __init__(self, name: str):
-        super().__init__(name)
-        self.name = name
-
-
 class ListLiteral(Structure):
     def __init__(self, *items: Branch):
         super().__init__(*items)
