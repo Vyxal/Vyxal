@@ -5,9 +5,9 @@ name: Run linter
 
 on:
   push:
-    branches: [ digraph-implementation ]
+    branches: [ ${{ github.ref }} ]
   pull_request:
-    branches: [ digraph-implementation ]
+    branches: [ ${{ github.head_ref }} ]
 
 jobs:
   build:
