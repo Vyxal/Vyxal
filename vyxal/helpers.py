@@ -660,11 +660,10 @@ def vyxalify(value: Any) -> Any:
 
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
-    elif isinstance(value, (sympy.factorial, sympy.core.mul.Mul)):
-        return vyxalify(sympy.Rational(str(float(value))))
-        # Sympy is weird okay.
+    elif isinstance(value, sympy.Basic):
+        return sympy.nsimplify(value, rational=True)
     elif isinstance(value, float):
-        return sympy.Rational(value)
+        return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (int, Rational, str, LazyList)):
         return value
     elif isinstance(value, list):

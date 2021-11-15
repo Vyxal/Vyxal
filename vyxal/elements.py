@@ -9,15 +9,14 @@ import math
 import random
 import re
 import string
-from token import NUMBER
+import sys
 import types
 from datetime import datetime
-from functools import reduce
+from token import NUMBER
 from typing import Union
 
 import numpy
 import sympy
-
 
 from vyxal import dictionary
 from vyxal.context import DEFAULT_CTX, Context
@@ -392,10 +391,10 @@ def combinations_with_replacement(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, ts[1]): lambda: LazyList(
+        (NUMBER_TYPE, ts[1]): lambda: vyxalify(
             itertools.product(iterable(rhs, ctx), repeat=lhs)
         ),
-        (ts[0], NUMBER_TYPE): lambda: LazyList(
+        (ts[0], NUMBER_TYPE): lambda: vyxalify(
             itertools.product(iterable(lhs, ctx), repeat=rhs)
         ),
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs),
@@ -618,7 +617,9 @@ def equals(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs == rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
+            sympy.nsimplify(sympy.N(abs(lhs - rhs)) < sys.float_info.epsilon)
+        ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
         (str, str): lambda: int(lhs == rhs),
@@ -1490,7 +1491,9 @@ def ljust(lhs, rhs, other, ctx):
 
     ts = vy_type(lhs, rhs, other)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: lhs <= other <= rhs,
+        (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: int(
+            lhs <= other <= rhs
+        ),
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
         (NUMBER_TYPE, str, str): lambda: vy_str(rhs).ljust(lhs, other),
@@ -1548,7 +1551,7 @@ def log_mold_multi(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
 
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.Rational(math.log(lhs, rhs)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs)),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
         (str, NUMBER_TYPE): lambda: "".join([char * rhs for char in lhs]),
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
@@ -1936,7 +1939,7 @@ def overlapping_groups(lhs, rhs, ctx):
     """
 
     if vy_type(rhs) != NUMBER_TYPE:
-        return len(iterable(lhs)) == len(rhs)
+        return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
 
     stringify = vy_type(lhs) is str
 
@@ -3022,15 +3025,15 @@ def vy_divmod(lhs, rhs, ctx):
 
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: [lhs // rhs, lhs % rhs],
-        (NUMBER_TYPE, str): lambda: LazyList(
+        (NUMBER_TYPE, str): lambda: vyxalify(
             map(vy_sum, itertools.combinations(rhs, lhs))
         ),
-        (str, NUMBER_TYPE): lambda: LazyList(
+        (str, NUMBER_TYPE): lambda: vyxalify(
             map(vy_sum, itertools.combinations(lhs, rhs))
         ),
         (str, str): lambda: rhs + lhs[len(rhs) :],
-        (list, NUMBER_TYPE): lambda: LazyList(itertools.combinations(lhs, rhs)),
-        (NUMBER_TYPE, list): lambda: LazyList(itertools.combinations(rhs, lhs)),
+        (list, NUMBER_TYPE): lambda: vyxalify(itertools.combinations(lhs, rhs)),
+        (NUMBER_TYPE, list): lambda: vyxalify(itertools.combinations(rhs, lhs)),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 

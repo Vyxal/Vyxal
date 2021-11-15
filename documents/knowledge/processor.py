@@ -8,59 +8,74 @@ TEST_ELEMENTS_PY = os.path.join(
     CURR_DIR, "..", "..", "tests", "test_elements.py"
 )
 
+
+prologue = """import os
+import sys
+import sympy
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'
+sys.path.insert(1, THIS_FOLDER)
+
+from vyxal.transpile import *
+from vyxal.elements import *
+from vyxal.context import Context
+from vyxal.helpers import *
+from vyxal.LazyList import *
+"""
+
+function_template = """
+    stack = [vyxalify(item) for item in {}]
+    expected = vyxalify({})
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile({})
+    print({}, code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+"""
+
+
 with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
     data = yaml.safe_load(elements)
-# Generate test cases
-with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
-    tests.write(
-        "import os, sys, sympy\n\n"
-        + "THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'\n"
-        + "sys.path.insert(1, THIS_FOLDER)\n\n"
-        + "from vyxal.transpile import *\n"
-        + "from vyxal.context import Context\n"
-        + "from vyxal.elements import *\n"
-        + "from vyxal.helpers import *\n"
-        + "from vyxal.LazyList import *\n"
-    )
 
-    tests.write(
-        "def make_nice(x):\n"
-        "    x = simplify(x)\n"
-        "    if isinstance(x, float):\n"
-        "        return sympy.nsimplify(x)\n"
-        "    else:\n"
-        "        return x\n"
-    )
+# Generate test cases
+
+with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
+    tests.write(prologue + "\n")
+
     for element in data:
         try:
             if "tests" in element:
-                cases = element["tests"]
+                cases = element["tests"] or []
                 name = re.sub("[^A-Za-z0-9_]", "", str(element["name"]))
                 tests.write(f"def test_{name}():\n")
-                if cases:
-                    for test in cases:
-                        try:
-                            stack, expected = test.split(" : ", 1)
-                        except Exception as e:
-                            print("Failed on test", test)
-                            raise e
-                        tests.write(
-                            f"\tstack = [vyxalify(elem) for elem in {stack}]\n"
+                if not cases:
+                    tests.write("    pass #TODO implement this test!!!\n\n")
+                    continue
+                for test in cases:
+                    try:
+                        stack, expected = test.split(" : ", 1)
+                    except Exception as e:
+                        print("Failed on test", test)
+                        raise e
+
+                    tests.write(
+                        function_template.format(
+                            stack,
+                            expected,
+                            repr(element["element"]),
+                            repr(element["element"]),
                         )
-                        tests.write(f"\texpected = make_nice({expected})\n")
-                        tests.write(f"\tctx = Context()\n")
-                        tests.write("\tctx.stacks.append(stack)\n")
-                        tests.write(
-                            f"\tcode = transpile({element['element']!r})\n"
-                        )
-                        tests.write("\tprint(code)\n")
-                        tests.write(f"\texec(code)\n")
-                        tests.write("\tctx.stacks.pop()\n")
-                        tests.write(
-                            f"\tassert make_nice(stack[-1]) == expected\n\n"
-                        )
-                else:
-                    tests.write("\tpass #TODO implement this test!!!\n\n")
+                    )
                 tests.write("\n")
             else:
                 continue

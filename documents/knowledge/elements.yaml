@@ -2678,7 +2678,7 @@
   description: 2.718281828459045 (math.e, Eulers number)
   vectorise: false
   tests:
-    - "[] : 2.718281828459045"
+    - "[] : 2.7182818284590452354"
 
 - element: "kf"
   name: Fizz

@@ -16,10 +16,10 @@ from sympy import Rational
 def join_with(lhs, rhs):
     """A generator to concatenate two iterables together"""
     for item in lhs:
-        yield item
+        yield vyxalify(item)
 
     for item in rhs:
-        yield item
+        yield vyxalify(item)
 
 
 def lazylist(fn):
@@ -38,6 +38,22 @@ def simplify(value: Any) -> Union[int, float, str, list]:
         return float(value)
     else:
         return list(map(simplify, value))
+
+
+def vyxalify(value: Any) -> Any:
+    """Takes a value and returns it as one of the four types we use here."""
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+    elif isinstance(value, sympy.Basic):
+        return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, float):
+        return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, (int, Rational, str, LazyList)):
+        return value
+    elif isinstance(value, list):
+        return list(map(vyxalify, value))
+    else:
+        return LazyList(map(vyxalify, value))
 
 
 class LazyList:
@@ -125,7 +141,7 @@ class LazyList:
         return len(self.listify())
 
     def __next__(self):
-        lhs = next(self.raw_object)
+        lhs = vyxalify(next(self.raw_object))
         self.generated.append(lhs)
         return lhs
 
@@ -148,7 +164,7 @@ class LazyList:
         return gen()
 
     def listify(self):
-        temp = self.generated + simplify(self.raw_object)
+        temp = self.generated + vyxalify(list(self.raw_object))
         self.raw_object = iter(temp[::])
         self.generated = []
         return temp
