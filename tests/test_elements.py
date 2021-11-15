@@ -10581,27 +10581,6 @@ def test_Pi():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_NaN():
-
-    stack = [vyxalify(item) for item in []]
-    expected = vyxalify(math.nan)
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('kn')
-    print('kn', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
 def test_Goldenratiophi():
 
     stack = [vyxalify(item) for item in []]
@@ -11565,7 +11544,7 @@ def test_ArcCosine():
 def test_QuadraticSolver():
 
     stack = [vyxalify(item) for item in [1, 2]]
-    expected = vyxalify([-0.5, 0])
+    expected = vyxalify([-2, 0])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11584,7 +11563,7 @@ def test_QuadraticSolver():
 
 
     stack = [vyxalify(item) for item in [1, -2]]
-    expected = vyxalify([0.5, 0])
+    expected = vyxalify([0, 2])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11603,7 +11582,7 @@ def test_QuadraticSolver():
 
 
     stack = [vyxalify(item) for item in [69, 420]]
-    expected = vyxalify([-0.16428571428571428, 0.0])
+    expected = vyxalify([-140/23, 0.0])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11623,8 +11602,8 @@ def test_QuadraticSolver():
 
 def test_GeneralQuadraticSolver():
 
-    stack = [vyxalify(item) for item in [1, 2]]
-    expected = vyxalify([-1, -1])
+    stack = [vyxalify(item) for item in [1, -2]]
+    expected = vyxalify([-2, 1])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11642,8 +11621,8 @@ def test_GeneralQuadraticSolver():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [1, -2]]
-    expected = vyxalify([1, 1])
+    stack = [vyxalify(item) for item in [29, -30]]
+    expected = vyxalify([-30, 1])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11662,7 +11641,7 @@ def test_GeneralQuadraticSolver():
 
 
     stack = [vyxalify(item) for item in [69, 420]]
-    expected = vyxalify([-0.16428571428571428, 0.0])
+    expected = vyxalify([-62.2533781727558, -6.74662182724416])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11720,7 +11699,7 @@ def test_Sine():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [6.283185307]]
+    stack = [vyxalify(item) for item in [6.28318530717959]]
     expected = vyxalify(0)
     ctx = Context()
     
@@ -16211,6 +16190,7 @@ def test_FlipBracketsVerticalMirror():
     ctx.stacks.append(stack)
 
     code = transpile('øṀ')
+    print('øṀ', code)
     exec(code)
 
     ctx.stacks.pop()
