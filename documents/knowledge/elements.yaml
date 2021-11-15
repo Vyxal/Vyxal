@@ -2876,8 +2876,6 @@
   arity: 0
   description: math.nan
   vectorise: false
-  tests:
-    - "[] : math.nan"
 
 - element: "kg"
   name: Golden ratio/phi
@@ -3301,9 +3299,9 @@
     str-str: solve equation a = b for x
   vectorise: true
   tests:
-    - "[1, 2] : [-0.5, 0]"
-    - "[1, -2] : [0.5, 0]"
-    - "[69, 420] : [-0.16428571428571428, 0.0]"
+    - "[1, 2] : [-2, 0]"
+    - "[1, -2] : [0, 2]"
+    - "[69, 420] : [-140/23, 0.0]"
 
 - element: "∆Q"
   name: General Quadratic Solver
@@ -3316,9 +3314,9 @@
     str-str: solve equation a < b for x
   vectorise: true
   tests:
-    - "[1, 2] : [-1, -1]"
-    - "[1, -2] : [1, 1]"
-    - "[69, 420] : [-0.16428571428571428, 0.0]"
+    - "[1, -2] : [-2, -1]"
+    - "[29, -30] : [-30, 1]"
+    - "[69, 420] : [-74.62792, 5.62792]"
 
 - element: "∆s"
   name: Sine

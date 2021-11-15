@@ -34,6 +34,8 @@ currentdate = datetime.now()
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
+EPSILON = 1e-14
+
 
 def process_element(
     expr: Union[str, types.FunctionType], arity: int
@@ -614,11 +616,10 @@ def equals(lhs, rhs, ctx):
     (str, num) -> lhs == str(rhs)
     (str, str) -> lhs == rhs
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            sympy.nsimplify(sympy.N(abs(lhs - rhs)) < sys.float_info.epsilon)
+            bool(abs(sympy.N(lhs) - sympy.N(rhs)) < EPSILON)
         ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
