@@ -1040,6 +1040,8 @@ def group_on_words(lhs, ctx):
                 result.append(word)
             word = ""
             result.append(char)
+    if word:
+        result.append(word)
     return result
 
 
@@ -1981,7 +1983,7 @@ def optimal_compress(lhs, ctx):
                 DP[index] = min([DP[index], DP[left] + i], key=len)
                 break
         DP[index] = min([DP[index], DP[index - 1] + lhs[index - 1]], key=len)
-    return DP[-1]
+    return "`" + DP[-1] + "`"
 
 
 def orderless_range(lhs, rhs, ctx):
@@ -2099,9 +2101,9 @@ def pluralise_count(lhs, rhs, ctx):
     (str, num) -> count lhs lots of rhs
     (num, str) -> count rhs lots of lhs
     """
-    if isinstance(int, lhs):
+    if isinstance(lhs, int):
         return pluralise_count(rhs, lhs, ctx)
-    return lhs + " " + rhs + "s" * (rhs != 1)
+    return str(lhs) + " " + rhs + "s" * (rhs != 1)
 
 
 def polynomial_from_roots(lhs, ctx):
@@ -2280,7 +2282,7 @@ def regex_sub(lhs, rhs, other, ctx):
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
 
     if ts[-1] != types.FunctionType:
-        return re.sub(vy_str(lhs), vy_str(rhs), vy_str(other))
+        return re.sub(vy_str(lhs), vy_str(other), vy_str(rhs))
     else:
         parts = re.split("(" + lhs + ")", rhs)
         out = ""
@@ -2456,15 +2458,15 @@ def round_to(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(round_to, lhs, rhs, ctx=ctx))()
 
 
-# Written by copilot. Looks like it works.
+# Written by copilot. Did NOT work.
 def run_length_encoding(lhs, ctx):
     """Element øe
     (str) -> List of the form [[character, count], ...]
     """
     return LazyList(
         map(
-            itertools.groupby(lhs),
             lambda elem: [list(elem[1]), len(list(elem[1]))],
+            itertools.groupby(lhs),
         )
     )
 
@@ -2473,7 +2475,12 @@ def run_length_decoding(lhs, ctx):
     """Element ød
     (lst) -> Run length decoding
     """
-    return map(lhs, lambda elem: elem[0] * elem[1])
+    temp = list(map(lambda elem: elem[0] * elem[1], lhs))
+    print(temp)
+    if all(isinstance(x[0], str) for x in lhs):
+        return "".join(temp)
+    else:
+        return LazyList(temp)
 
 
 def sign_of(lhs, ctx):
@@ -2678,11 +2685,11 @@ def strip(lhs, rhs, ctx):
     }.get(ts, lambda: list_helper(lhs, rhs))()
 
 
-def starts_with(lhs, rhs):
+def starts_with(lhs, rhs, ctx):
     """Element øp
     (str, str) -> True if a starts with b
     """
-    return lhs.startswith(rhs)
+    return int(lhs.startswith(rhs))
 
 
 def substrings(lhs, ctx):
