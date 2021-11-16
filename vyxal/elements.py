@@ -373,7 +373,8 @@ def center(lhs, ctx):
     """Element øc
     (list) -> center align list by padding with spaces
     """
-    return [line.center(max(lhs, key=len)) for line in lhs]
+    focal = max(map(lambda x: len(iterable(x, ctx=ctx)), lhs))
+    return [line.center(focal) for line in lhs]
 
 
 def chr_ord(lhs, ctx):
@@ -3895,6 +3896,7 @@ elements: dict[str, tuple[str, int]] = {
     "øβ": process_element(brackets_balanced, 1),
     "øc": process_element(base_255_string_compress, 1),
     "øC": process_element(base_255_number_compress, 1),
+    "øĊ": process_element(center, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
     "øe": process_element(run_length_encoding, 1),
