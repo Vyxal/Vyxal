@@ -145,9 +145,9 @@ def angle_bracketify(lhs, ctx):
     (any) -> "<" + lhs + ">"
     (lst) -> vectorised
     """
-    if isinstance(lhs, LazyList):
-        return vectorise(parenthesise, lhs)
-    return "<" + lhs + ">"
+    if vy_type(lhs, simple=True) is list:
+        return vectorise(angle_bracketify, lhs)
+    return "<" + str(lhs) + ">"
 
 
 def any_true(lhs, ctx):
@@ -330,9 +330,9 @@ def bracketify(lhs, ctx):
     (any) -> "[" + lhs + "]"
     (lst) -> vectorised
     """
-    if isinstance(lhs, LazyList):
+    if vy_type(lhs, simple=True) is list:
         return vectorise(bracketify, lhs)
-    return "[" + lhs + "]"
+    return "[" + str(lhs) + "]"
 
 
 def brackets_balanced(lhs):
@@ -475,9 +475,9 @@ def curly_bracketify(lhs, ctx):
     (any) -> "[" + lhs + "]"
     (lst) -> vectorised
     """
-    if isinstance(lhs, LazyList):
+    if vy_type(lhs, simple=True) is list:
         return vectorise(curly_bracketify, lhs)
-    return "{" + lhs + "}"
+    return "{" + str(lhs) + "}"
 
 
 def custom_pad_left(lhs, rhs, other, ctx):
@@ -1919,7 +1919,12 @@ def nth_e(lhs, ctx):
         x = sympy.symbols("x")
         return str(sympy.diff(make_expression(lhs), x))
     elif vy_type(lhs) == NUMBER_TYPE:
-        return int(str(sympy.N(sympy.E, int(lhs)))[-1]) if lhs > 0 else 2
+        if lhs == 0:
+            return 2
+        elif lhs == 1:
+            return 7
+        else:
+            return int(str(sympy.N(sympy.E, int(lhs) + 2))[lhs + 1])
     else:
         return vectorise(nth_e, lhs, ctx=ctx)
 
@@ -2049,9 +2054,9 @@ def parenthesise(lhs, ctx):
     (any) -> "(" + lhs + ")"
     (lst) -> vectorised
     """
-    if isinstance(lhs, LazyList):
+    if vy_type(lhs, simple=True) is list:
         return vectorise(parenthesise, lhs)
-    return "(" + lhs + ")"
+    return "(" + str(lhs) + ")"
 
 
 def parity(lhs, ctx):
@@ -3855,7 +3860,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element("sympy.fibonacci(lhs)", 1),
+    "∆f": process_element("sympy.fibonacci(lhs + 1)", 1),
     "∆±": process_element(copy_sign, 2),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
