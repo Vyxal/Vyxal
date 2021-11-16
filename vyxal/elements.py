@@ -34,7 +34,7 @@ currentdate = datetime.now()
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
-EPSILON = 1e-14
+EPSILON = 1e-13
 
 
 def process_element(

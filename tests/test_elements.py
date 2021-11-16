@@ -11760,7 +11760,7 @@ def test_ArcSine():
 
 def test_Tangent():
 
-    stack = [vyxalify(item) for item in [3.141519265]]
+    stack = [vyxalify(item) for item in [3.1415926535897932385]]
     expected = vyxalify(0)
     ctx = Context()
     
@@ -11798,7 +11798,7 @@ def test_Tangent():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [6.283185307]]
+    stack = [vyxalify(item) for item in [6.2831853071795864769]]
     expected = vyxalify(0)
     ctx = Context()
     
@@ -11820,7 +11820,7 @@ def test_Tangent():
 def test_ArcTangent():
 
     stack = [vyxalify(item) for item in [-1]]
-    expected = vyxalify(-0.78539816)
+    expected = vyxalify(-0.78539816339744830962)
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11839,7 +11839,7 @@ def test_ArcTangent():
 
 
     stack = [vyxalify(item) for item in [1]]
-    expected = vyxalify(0.78539816)
+    expected = vyxalify(0.78539816339744830962)
     ctx = Context()
     
     ctx.stacks.append(stack)
