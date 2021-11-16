@@ -634,7 +634,9 @@ def euclidean_distance(lhs, rhs, ctx):
     (num, num) -> distance between a and b
     """
 
-    return square_root(vy_sum(exponent(subtract(lhs, rhs, ctx), 2, ctx), ctx), ctx)
+    return square_root(
+        vy_sum(exponent(subtract(lhs, rhs, ctx), 2, ctx), ctx), ctx
+    )
 
 
 def exclusive_one_range(lhs, ctx):
@@ -1793,6 +1795,12 @@ def nearest_prime(lhs, ctx):
     """
 
     ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        if lhs < 2:
+            return 2
+        elif is_prime(lhs, ctx):
+            return lhs
+
     return {
         (NUMBER_TYPE): lambda: min(
             next_prime(lhs, ctx),
@@ -2034,7 +2042,7 @@ def polynomial_from_roots(lhs, ctx):
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
     """
 
-    eqn = " * ".join(map(lambda x: "(" + str(x) + " - x", lhs))
+    eqn = " * ".join(map(lambda x: "(x - " + str(x) + ")", lhs))
     x = sympy.symbols("x")
     return sympy.Poly(eqn, x).coeffs()
 
@@ -2083,7 +2091,7 @@ def prev_prime(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.prevprime(lhs),
+        NUMBER_TYPE: lambda: sympy.prevprime(int(lhs)) if lhs >= 3 else 1,
         str: lambda: str(sympy.factor(make_expression(lhs))),
     }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
 

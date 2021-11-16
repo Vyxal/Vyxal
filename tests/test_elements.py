@@ -13059,6 +13059,25 @@ def test_ToDegrees():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in [1.5707963267948966]]
+    expected = vyxalify(90)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆D')
+    print('∆D', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
     stack = [vyxalify(item) for item in [2]]
     expected = vyxalify(114.59155902616465)
     ctx = Context()
@@ -13429,7 +13448,7 @@ def test_FirstPrimeBeforeaNumber():
 def test_NearestPrimetoaNumber():
 
     stack = [vyxalify(item) for item in [1]]
-    expected = vyxalify(1)
+    expected = vyxalify(2)
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -13583,7 +13602,7 @@ def test_NearestPrimetoaNumber():
 def test_PolynomialfromRoots():
 
     stack = [vyxalify(item) for item in [[1, 2, 3]]]
-    expected = vyxalify([-6, 11, -6, 1])
+    expected = vyxalify([1, -6, 11, -6])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -13602,7 +13621,7 @@ def test_PolynomialfromRoots():
 
 
     stack = [vyxalify(item) for item in [[19, 43, 12, 5, 129]]]
-    expected = vyxalify([-6323580, 2320581, -266708, 12122, -208, 1])
+    expected = vyxalify([1, -208, 12122, -266708, 2320581, -6323580])
     ctx = Context()
     
     ctx.stacks.append(stack)
