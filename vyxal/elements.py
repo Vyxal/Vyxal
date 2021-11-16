@@ -1564,6 +1564,21 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
+def lowest_common_multiple(lhs, rhs, ctx):
+    """Element ∆Ŀ
+    (num, num) -> lcm(a, b)
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            sympy.lcm(lhs, rhs)
+        ),
+        (NUMBER_TYPE, str): lambda: -1,
+        (str, NUMBER_TYPE): lambda: -1,
+        (str, str): lambda: -1,
+    }.get(ts, lambda: vectorise(lowest_common_multiple, lhs, rhs, ctx=ctx))()
+
 def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
@@ -2364,7 +2379,9 @@ def round_to(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: round(float(lhs), int(rhs)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            str(sympy.N(lhs, int(rhs) + 1)), rational=True
+        ),
         (NUMBER_TYPE, str): lambda: -1,
         (str, NUMBER_TYPE): lambda: -1,
         (str, str): lambda: -1,
@@ -3853,6 +3870,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆p": process_element(nearest_prime, 1),
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
+    "∆Ŀ": process_element(lowest_common_multiple, 2),
     "ÞB": process_element(rand_bits, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),

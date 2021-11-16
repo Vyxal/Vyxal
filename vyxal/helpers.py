@@ -375,7 +375,7 @@ def mold(
 
 def pi_digits(x: int):
     """Generate x digits of Pi. Spigot's formula."""
-
+    x = x
     @lazylist
     def gen():
         k, a, b, a1, b1 = 2, 4, 1, 12, 4

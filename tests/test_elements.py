@@ -13661,7 +13661,7 @@ def test_RoundtonDecimalPlaces():
 
 
     stack = [vyxalify(item) for item in [1.2345, 3]]
-    expected = vyxalify(1.235)
+    expected = vyxalify(1.234)
     ctx = Context()
     
     ctx.stacks.append(stack)
