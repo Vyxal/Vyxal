@@ -11860,7 +11860,7 @@ def test_ArcTangent():
 def test_PolynomialSolver():
 
     stack = [vyxalify(item) for item in [[4, -1005, 3, 4]]]
-    expected = vyxalify([251.2469990481482, 0.06460672339563359, -0.06160577154387768])
+    expected = vyxalify([0.0646067233956344, -0.0616057715438783, 251.246999048148])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -11879,7 +11879,7 @@ def test_PolynomialSolver():
 
 
     stack = [vyxalify(item) for item in [[69, 420, -1]]]
-    expected = vyxalify([-6.089336543523048, 0.0023800217839172796])
+    expected = vyxalify([0.00238002178391728, -6.08933654352305])
     ctx = Context()
     
     ctx.stacks.append(stack)

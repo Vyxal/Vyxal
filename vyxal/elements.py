@@ -34,7 +34,7 @@ currentdate = datetime.now()
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
-EPSILON = 1e-13
+EPSILON = 1e-10
 
 
 def process_element(
@@ -2050,13 +2050,14 @@ def polynomial_roots(lhs, ctx):
                 lambda power: "("
                 + str(power[1])
                 + ")x^("
-                + str(power[0] - 1)
+                + str(power[0])
                 + ")",
                 enumerate(reverse(iterable(lhs, ctx=ctx), ctx=ctx)),
             )
         )
     )
 
+    print(equation)
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
