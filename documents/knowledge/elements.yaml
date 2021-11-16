@@ -3843,8 +3843,8 @@
     str: base_255_string_compress(a)
   vectorise: false
   tests:
-    - '["hello"] : "«B²z«"'
-    - '["hello world"] : "«⟇÷Ċ$⌈¢2«"'
+    - '["hello"] : "«;ȧ‟«"'
+    - '["hello world"] : "«∨]¾r8›λ«"'
 
 - element: "øC"
   name: Number Compress

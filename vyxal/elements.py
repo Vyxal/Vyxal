@@ -21,7 +21,7 @@ import sympy
 from vyxal import dictionary
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.encoding import (
-    codepage,
+    base_27_alphabet,
     codepage_number_compress,
     codepage_string_compress,
 )
@@ -228,7 +228,7 @@ def base_255_string_compress(lhs, ctx):
     return (
         "«"
         + to_base(
-            from_base(lhs, string.ascii_lowercase + " ", ctx),
+            from_base(lhs, base_27_alphabet, ctx),
             codepage_string_compress,
             ctx,
         )
@@ -335,19 +335,25 @@ def bracketify(lhs, ctx):
     return "[" + str(lhs) + "]"
 
 
-def brackets_balanced(lhs):
+def brackets_balanced(lhs, ctx):
     """Element øβ
     (str) -> is lhs balanced?
     """
     brackets = {"(": ")", "[": "]", "{": "}", "<": ">"}
-    stack = []
+    temp = []
     for char in lhs:
+        print(char, temp)
         if char in brackets.keys():
-            stack.append(char)
+            temp.append(brackets[char])
         elif char in brackets.values():
-            if not stack or stack.pop() != char:
+            if temp and temp[-1] != char:
                 return 0
-    return int(len(stack) == 0)
+            elif not temp:
+                return 0
+            else:
+                temp.pop()
+        print(temp, "\n-----")
+    return int(len(temp) == 0)
 
 
 def cartesian_product(lhs, rhs, ctx):
@@ -2325,7 +2331,11 @@ def remove_until_no_change(lhs, rhs, ctx):
     prev = deep_copy(lhs)
 
     while loop:
-        lhs = remove(lhs, rhs, ctx)
+        if vy_type(rhs, simple=True) is list:
+            for item in rhs:
+                lhs = remove(lhs, item, ctx)
+        else:
+            lhs = remove(lhs, rhs, ctx=ctx)
         if non_vectorising_equals(lhs, prev, ctx):
             loop = False
         else:
@@ -2392,10 +2402,10 @@ def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
     """
-    prev = deep_copy(lhs)
+    prev = None
     while prev != lhs:
-        lhs = replace(lhs, rhs, other, ctx)
         prev = deep_copy(lhs)
+        lhs = replace(lhs, rhs, other, ctx)
     return lhs
 
 
@@ -3882,6 +3892,7 @@ elements: dict[str, tuple[str, int]] = {
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
     "øB": process_element(bracketify, 1),
+    "øβ": process_element(brackets_balanced, 1),
     "øc": process_element(base_255_string_compress, 1),
     "øC": process_element(base_255_number_compress, 1),
     "ød": process_element(run_length_decoding, 1),

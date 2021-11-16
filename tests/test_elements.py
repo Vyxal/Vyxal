@@ -14027,6 +14027,44 @@ def test_nthDigitofe():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in [4]]
+    expected = vyxalify(2)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ė')
+    print('∆ė', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in [5]]
+    expected = vyxalify(8)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ė')
+    print('∆ė', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_nthFibonacciNumber():
 
     stack = [vyxalify(item) for item in [0]]
@@ -14793,7 +14831,7 @@ def test_ReplaceUntilNoChange():
 def test_StringCompress():
 
     stack = [vyxalify(item) for item in ["hello"]]
-    expected = vyxalify("«B²z«")
+    expected = vyxalify("«;ȧ‟«")
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -14812,7 +14850,7 @@ def test_StringCompress():
 
 
     stack = [vyxalify(item) for item in ["hello world"]]
-    expected = vyxalify("«⟇÷Ċ$⌈¢2«")
+    expected = vyxalify("«∨]¾r8›λ«")
     ctx = Context()
     
     ctx.stacks.append(stack)

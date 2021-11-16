@@ -624,13 +624,18 @@ def uncompress_dict(source: str) -> str:
 
 
 def uncompress_str(string: str) -> str:
-    # TODO (lyxal) Implement string (un)compression
-    raise NotImplementedError()
+    base_10_representation = from_base_alphabet(
+        string, vyxal.encoding.codepage_string_compress
+    )
+
+    actual = to_base_alphabet(
+        base_10_representation, vyxal.encoding.base_27_alphabet
+    )
+    return actual
 
 
 def uncompress_num(num: str) -> int:
-    # TODO (lyxal) Implement number (un)compression
-    raise NotImplementedError()
+    return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
 
 
 def vy_eval(item: str, ctx: Context) -> Any:
