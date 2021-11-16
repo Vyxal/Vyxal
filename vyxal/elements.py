@@ -619,7 +619,9 @@ def equals(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            bool(abs(sympy.N(lhs) - sympy.N(rhs)) < EPSILON)
+            bool(
+                abs(lhs - rhs) < EPSILON or abs(lhs - rhs) < EPSILON * abs(lhs)
+            )
         ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
@@ -632,7 +634,7 @@ def euclidean_distance(lhs, rhs, ctx):
     (num, num) -> distance between a and b
     """
 
-    return sqrt(vy_sum(exponent(lhs - rhs, 2, ctx), ctx), ctx)
+    return square_root(vy_sum(exponent(subtract(lhs, rhs, ctx), 2, ctx), ctx), ctx)
 
 
 def exclusive_one_range(lhs, ctx):
@@ -1378,7 +1380,7 @@ def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
     """
-    if isinstance(lhs, str) or "sympy" in str(type(lhs)):
+    if isinstance(lhs, (str, sympy.Basic)) or lhs == 0:
         return 0
     elif isinstance(lhs, int):
         return int(
