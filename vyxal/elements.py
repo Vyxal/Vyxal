@@ -2103,7 +2103,7 @@ def pluralise_count(lhs, rhs, ctx):
     """
     if isinstance(lhs, int):
         return pluralise_count(rhs, lhs, ctx)
-    return str(lhs) + " " + rhs + "s" * (rhs != 1)
+    return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
 def polynomial_from_roots(lhs, ctx):

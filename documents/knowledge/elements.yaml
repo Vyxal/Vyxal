@@ -3957,8 +3957,6 @@
   overloads:
     str: vertical_mirror(a)
   vectorise: true
-  tests:
-    # TODO: MULTILINE TESTCASSES
 
 - element: "øṀ"
   name: Flip Brackets Vertical Mirror
