@@ -1579,6 +1579,7 @@ def lowest_common_multiple(lhs, rhs, ctx):
         (str, str): lambda: -1,
     }.get(ts, lambda: vectorise(lowest_common_multiple, lhs, rhs, ctx=ctx))()
 
+
 def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
@@ -3495,7 +3496,7 @@ def nth_e(lhs, ctx):
         x = sympy.symbols("x")
         return str(sympy.diff(make_expression(lhs), x))
     elif vy_type(lhs) == NUMBER_TYPE:
-        return int(str(sympy.N(sympy.E, int(lhs) + 1))[-1]) if lhs > 1 else 2
+        return int(str(sympy.N(sympy.E, int(lhs)))[-1]) if lhs > 1 else 2
     else:
         return vectorise(nth_e, lhs, ctx=ctx)
 

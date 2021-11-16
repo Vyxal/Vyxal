@@ -13931,7 +13931,7 @@ def test_nthDigitofPi():
 
 
     stack = [vyxalify(item) for item in [9]]
-    expected = vyxalify(9)
+    expected = vyxalify(3)
     ctx = Context()
     
     ctx.stacks.append(stack)
