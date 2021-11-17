@@ -15304,9 +15304,6 @@ def test_PluraliseCount():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_VerticalMirror():
-    pass #TODO implement this test!!!
-
 def test_FlipBracketsVerticalMirror():
 
     stack = [vyxalify(item) for item in ["[}"]]
