@@ -867,7 +867,6 @@ def flip_brackets_vertical_mirror(lhs, ctx):
 
     result = lhs.split("\n")
     for i in range(len(result)):
-        print(result[i], invert_brackets(result[i])[::-1])
         result[i] += invert_brackets(result[i])[::-1]
     return "\n".join(result)
 
@@ -879,16 +878,6 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     result = lhs.split("\n")
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
-    return "\n".join(result)
-
-
-def flip_brackets_vertical_mirror(lhs, ctx):
-    """Element øṀ
-    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
-    """
-    result = lhs.split("\n")
-    for i in range(len(result)):
-        result[i] += invert_brackets(result[i][::-1])
     return "\n".join(result)
 
 
