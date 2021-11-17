@@ -381,7 +381,16 @@ def brackets_balanced(lhs, ctx):
 
 
 def cartesian_power(lhs, rhs, ctx):
-    return LazyList(itertools.power(iterable(lhs, ctx=ctx), rhs))
+    """Element ÞẊ
+    (any, num) -> cartesian_power(a, b)
+    (num, any) -> cartesian_power(b, a)
+    """
+    ts = vy_type(lhs, rhs)
+    if NUMBER_TYPE not in ts:
+        return rhs
+    else:
+        lhs, rhs = (lhs, rhs) if ts[-1] == NUMBER_TYPE else (rhs, lhs)
+    return LazyList(itertools.product(iterable(lhs, ctx=ctx), repeat=int(rhs)))
 
 
 def cartesian_product(lhs, rhs, ctx):
@@ -871,6 +880,7 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
     return "\n".join(result)
+
 
 def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
@@ -1853,6 +1863,21 @@ def n_choose_r(lhs, rhs, ctx):
         ],
         (str, str): lambda: int(set(lhs) == set(rhs)),
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
+
+
+def n_flatten(lhs, rhs, ctx):
+    """Element Þf
+    (any, num) -> flatten a to depth b
+    (any) -> Flatten b to depth 1, push a as well
+    """
+
+    if vy_type(rhs) == NUMBER_TYPE:
+        if int(rhs) == 0:
+            return [flatten(lhs)]
+        else:
+            return [n_flatten(lhs, rhs - 1, ctx)]
+    else:
+        return flatten()
 
 
 def n_pick_r(lhs, rhs, ctx):
@@ -3944,7 +3969,6 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
-    "ÞB": process_element(rand_bits, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -3970,6 +3994,9 @@ elements: dict[str, tuple[str, int]] = {
     "øṙ": process_element(regex_sub, 3),
     "Þ×": process_element(all_combos, 1),
     "Þu": process_element(all_unqiue, 1),
+    "ÞẊ": process_element(cartesian_power, 2),
+    "ÞB": process_element(rand_bits, 1),
+    "Þf": ("stack += n_flatten(lhs, rhs, ctx)", 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
