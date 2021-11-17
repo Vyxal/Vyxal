@@ -3978,7 +3978,7 @@
     any: all_partitions(a)
   vectorise: false
   tests:
-    - '["ab"] : [["a","b"]]'
+    - '["ab"] : [["a","b"], ["a", "b"]]'
 
 - element: "Þo"
   name: Ordinals

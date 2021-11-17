@@ -127,6 +127,22 @@ def all_equal(lhs, ctx):
         return 1
 
 
+def all_partitions(lhs, ctx):
+    """Element øṖ
+    (any) -> all_partitions(a)
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+
+    @lazylist
+    def gen():
+        for index in range(1, len(lhs)):
+            for subarray in all_partitions(lhs[index:]):
+                yield prepend(0, subarray, ctx)
+
+    return gen()
+
+
 def all_true(lhs, ctx):
     """Element A
     (lst) -> all of lhs is truthy?
@@ -3926,6 +3942,7 @@ elements: dict[str, tuple[str, int]] = {
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
+    "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
