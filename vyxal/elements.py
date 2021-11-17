@@ -156,6 +156,14 @@ def all_true(lhs, ctx):
     return int(all(iterable(lhs, ctx)))
 
 
+def all_unqiue(lhs, ctx):
+    """Element Þu
+    (any) -> Are all elements of a unique?
+    """
+
+    return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
+
+
 def angle_bracketify(lhs, ctx):
     """Element øḂ
     (any) -> "<" + lhs + ">"
@@ -3948,6 +3956,7 @@ elements: dict[str, tuple[str, int]] = {
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "Þ×": process_element(all_combos, 1),
+    "Þu": process_element(all_unqiue, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
