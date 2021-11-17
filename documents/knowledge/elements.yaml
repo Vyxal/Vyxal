@@ -4007,9 +4007,10 @@
   vectorise: false
   tests:
     - '["hello"] : 0'
-    - '["eeee"] : 1'
-    - "[[1,2,3]] : 0"
-    - "[[1,1,1]] : 1"
+    - '["eeee"] : 0'
+    - '["Gaming"] : 1'
+    - "[[1,2,3]] : 1"
+    - "[[1,1,1]] : 0"
 
 - element: "ÞẊ"
   name: Cartesian Power

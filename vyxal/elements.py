@@ -127,6 +127,22 @@ def all_equal(lhs, ctx):
         return 1
 
 
+def all_partitions(lhs, ctx):
+    """Element øṖ
+    (any) -> all_partitions(a)
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+
+    @lazylist
+    def gen():
+        for index in range(1, len(lhs)):
+            for subarray in all_partitions(lhs[index:]):
+                yield prepend(0, subarray, ctx)
+
+    return gen()
+
+
 def all_true(lhs, ctx):
     """Element A
     (lst) -> all of lhs is truthy?
@@ -138,6 +154,14 @@ def all_true(lhs, ctx):
         else:
             return [int(char in "aeiouAEIOU") for char in lhs]
     return int(all(iterable(lhs, ctx)))
+
+
+def all_unqiue(lhs, ctx):
+    """Element Þu
+    (any) -> Are all elements of a unique?
+    """
+
+    return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
 
 
 def angle_bracketify(lhs, ctx):
@@ -821,6 +845,18 @@ def first_integer(lhs, ctx):
         (str): lambda: lhs.zfill(len(lhs) + (8 - len(lhs) % 8)),
         (list): lambda: join(lhs, "", ctx),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
+
+
+def flip_brackets_vertical_mirror(lhs, ctx):
+    """Element øṀ
+    (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
+    """
+
+    result = lhs.split("\n")
+    for i in range(len(result)):
+        print(result[i], invert_brackets(result[i])[::-1])
+        result[i] += invert_brackets(result[i])[::-1]
+    return "\n".join(result)
 
 
 def flip_brackets_vertical_palindromise(lhs, ctx):
@@ -3923,11 +3959,13 @@ elements: dict[str, tuple[str, int]] = {
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
+    "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "Þ×": process_element(all_combos, 1),
+    "Þu": process_element(all_unqiue, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

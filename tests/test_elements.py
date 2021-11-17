@@ -15304,9 +15304,6 @@ def test_PluraliseCount():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_VerticalMirror():
-    pass #TODO implement this test!!!
-
 def test_FlipBracketsVerticalMirror():
 
     stack = [vyxalify(item) for item in ["[}"]]
@@ -15409,6 +15406,25 @@ def test_AllUnique():
 
 
     stack = [vyxalify(item) for item in ["eeee"]]
+    expected = vyxalify(0)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('Þu')
+    print('Þu', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ["Gaming"]]
     expected = vyxalify(1)
     ctx = Context()
     
@@ -15428,7 +15444,7 @@ def test_AllUnique():
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify(0)
+    expected = vyxalify(1)
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -15447,7 +15463,7 @@ def test_AllUnique():
 
 
     stack = [vyxalify(item) for item in [[1,1,1]]]
-    expected = vyxalify(1)
+    expected = vyxalify(0)
     ctx = Context()
     
     ctx.stacks.append(stack)
