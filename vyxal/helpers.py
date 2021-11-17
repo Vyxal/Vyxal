@@ -220,11 +220,18 @@ def invert_brackets(lhs: str) -> str:
     """
     Helper function to swap brackets and parentheses in a string
     """
-    for i in ["()", "[]", "{}", "<>", "/\\"]:
-        lhs = lhs.replace(i[0], "X")
-        lhs = lhs.replace(i[1], i[0])
-        lhs = lhs.replace("X", i[1])
-    return lhs
+    res = ""
+    pairs = ["()", "[]", "{}", "<>", "/\\"]
+    open_close = {x[0]: x[1] for x in pairs}
+    close_open = {x[1]: x[0] for x in pairs}
+    for char in lhs:
+        if char in open_close:
+            res += open_close[char]
+        elif char in close_open:
+            res += close_open[char]
+        else:
+            res += char
+    return res
 
 
 def iterable(

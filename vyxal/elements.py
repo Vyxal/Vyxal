@@ -823,6 +823,18 @@ def first_integer(lhs, ctx):
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
+def flip_brackets_vertical_mirror(lhs, ctx):
+    """Element øṀ
+    (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
+    """
+
+    result = lhs.split("\n")
+    for i in range(len(result)):
+        print(result[i], invert_brackets(result[i])[::-1])
+        result[i] += invert_brackets(result[i])[::-1]
+    return "\n".join(result)
+
+
 def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
@@ -3910,6 +3922,7 @@ elements: dict[str, tuple[str, int]] = {
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
+    "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
