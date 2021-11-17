@@ -1854,21 +1854,6 @@ def n_choose_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
-def n_flatten(lhs, rhs, ctx):
-    """Element Þf
-    (any, num) -> flatten a to depth b
-    (any) -> Flatten b to depth 1, push a as well
-    """
-
-    if vy_type(rhs) == NUMBER_TYPE:
-        if int(rhs) == 0:
-            return [flatten(lhs)]
-        else:
-            return [n_flatten(lhs, rhs - 1, ctx)]
-    else:
-        return flatten()
-
-
 def n_pick_r(lhs, rhs, ctx):
     """Element ∆ƈ
     (num, num) -> n_pick_r(a, b)
@@ -3985,7 +3970,6 @@ elements: dict[str, tuple[str, int]] = {
     "Þu": process_element(all_unqiue, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
-    "Þf": ("stack += n_flatten(lhs, rhs, ctx)", 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
