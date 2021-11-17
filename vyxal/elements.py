@@ -380,6 +380,10 @@ def brackets_balanced(lhs, ctx):
     return int(len(temp) == 0)
 
 
+def cartesian_power(lhs, rhs, ctx):
+    return LazyList(itertools.power(iterable(lhs, ctx=ctx), rhs))
+
+
 def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
