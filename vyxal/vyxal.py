@@ -32,12 +32,15 @@ if __name__ == "__main__":
         if len(sys.argv) > 2:
             flags = sys.argv[2]
             if len(sys.argv) > 3:
-                ctx.inputs = list(map(lambda x: vy_eval(x, ctx), sys.argv[3:]))
+                ctx.inputs[0][0] = list(
+                    map(lambda x: vy_eval(x, ctx), sys.argv[3:])
+                )
 
         code = transpile(code)
         ctx.stacks.append(stack)
         exec(code)
-        print(stack[-1])
+        if not ctx.printed:
+            print(stack[-1])
     else:
         # This is called if a file isn't given, just like it used to.
         ctx.repl_mode = True
