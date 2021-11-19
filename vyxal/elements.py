@@ -1836,6 +1836,18 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=less_than, ctx=ctx)
 
 
+def multi_dimensional_index(lhs, rhs, ctx):
+    """Element Þi
+    (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
+                  a as initial value
+    """
+
+    for item in iterable(rhs, ctx=ctx):
+        lhs = index(lhs, item, ctx)
+
+    return lhs
+
+
 def multiplicity(lhs, rhs, ctx):
     """Element Ǒ
     (num, num) -> number of times a divides b
@@ -3039,6 +3051,15 @@ def uniquify(lhs, ctx):
     return f()
 
 
+def untruth(lhs, ctx):
+    """Element Þǔ
+    (any) -> [int(x in a) for x in range(max(a))]
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
+
+
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     """
     Maps a function over arguments
@@ -4047,6 +4068,8 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
         2,
     ),
+    "Þǔ": process_element(untruth, 1),
+    "Þi": process_element(multi_dimensional_index, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

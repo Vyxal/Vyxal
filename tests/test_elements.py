@@ -15700,8 +15700,8 @@ def test_Untruth():
 
 def test_MultidimensionalIndexing():
 
-    stack = [vyxalify(item) for item in [[1,[2,3]],[0,1]]]
-    expected = vyxalify(3)
+    stack = [vyxalify(item) for item in [[1,[2,3]],[1,0]]]
+    expected = vyxalify(2)
     ctx = Context()
     
     ctx.stacks.append(stack)
