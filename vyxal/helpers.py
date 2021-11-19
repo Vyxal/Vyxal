@@ -96,6 +96,21 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
+def enumerate_md(haystack: VyList, index_stack: list[int] = []) -> VyList:
+    """
+    Gets all the multi-dimensional indicies of haystack
+    """
+
+    for i, item in enumerate(haystack):
+        if type(item) in (list, LazyList):
+            yield from enumerate_md(item, index_stack + [i])
+        elif type(item) is str and len(item) > 1:
+            yield from enumerate_md(list(item), index_stack + [i])
+        else:
+            yield index_stack + [i]
+
+
+@lazylist
 def fixed_point(
     function: types.FunctionType, initial: Any, ctx: Context
 ) -> List[Any]:

@@ -143,3 +143,4 @@ Include/
 Scripts/
 sessions/
 .idea
+tests/test_log.txt

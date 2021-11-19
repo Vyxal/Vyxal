@@ -1836,6 +1836,24 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=less_than, ctx=ctx)
 
 
+def multi_dimensional_search(lhs, rhs, ctx):
+    """Element Þḟ
+    (lst, any) -> Find the first occurrence of a in b and return as a
+                  multidimensional index
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    indexes = enumerate_md(lhs)
+
+    for index in indexes:
+        if non_vectorising_equals(
+            multi_dimensional_index(lhs, index, ctx), rhs, ctx
+        ):
+            return index
+
+    return []
+
+
 def multi_dimensional_index(lhs, rhs, ctx):
     """Element Þi
     (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
@@ -3664,6 +3682,23 @@ def wrap(lhs, rhs, ctx):
             return ret
 
 
+def zero_matrix(lhs, ctx):
+    """Element Þm
+    Return a matrix with dimensions each item of a, where the first is the 
+    innermost and the last is the outermost
+    """
+
+    mat = []
+    temp = 0
+    for index in iterable(lhs, ctx=ctx):
+        mat = []
+        for _ in range(index):
+            mat.append(temp)
+        temp = deep_copy(mat)
+    
+    return mat
+        
+    
 def zero_slice(lhs, rhs, ctx):
     """Element Ẏ
     (any, num) -> a[0:b]
@@ -4070,6 +4105,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
+    "Þḟ": process_element(multi_dimensional_search, 2),
+    "Þm": process_element(zero_matrix, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

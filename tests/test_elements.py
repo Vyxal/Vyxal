@@ -15760,7 +15760,7 @@ def test_MultidimensionalSearch():
 
 
     stack = [vyxalify(item) for item in [["abc","def",["hij","klm","nop"]], "m"]]
-    expected = vyxalify([1,1,2])
+    expected = vyxalify([2,1,2])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -15800,7 +15800,7 @@ def test_ZeroMatrix():
 
 
     stack = [vyxalify(item) for item in [[2,3,2]]]
-    expected = vyxalify([[0,0],[0,0]])
+    expected = vyxalify([[[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0]]])
     ctx = Context()
     
     ctx.stacks.append(stack)

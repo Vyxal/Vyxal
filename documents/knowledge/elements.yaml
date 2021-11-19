@@ -4090,7 +4090,7 @@
   vectorise: false
   tests:
     - "[[[1,2,3],[4,5,6]], 5] : [1, 1]"
-    - '[["abc","def",["hij","klm","nop"]], "m"] : [1,1,2]'
+    - '[["abc","def",["hij","klm","nop"]], "m"] : [2,1,2]'
 
 - element: "Þm"
   name: Zero Matrix
@@ -4101,7 +4101,7 @@
   vectorise: false
   tests:
     - "[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]"
-    - "[[2,3,2]] : [[0,0],[0,0]]"
+    - "[[2,3,2]] : [[[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0]]]"
 
 - element: "ÞZ"
   name: Fill By Coordinates
