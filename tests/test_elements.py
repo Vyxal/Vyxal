@@ -6663,6 +6663,44 @@ def test_ChunkWrap():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in ["abcdefghi",[2,3,4]]]
+    expected = vyxalify(["ab","cde","fghi"])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('ẇ')
+    print('ẇ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in [[1,2,3,4,5], [2,3] ]]
+    expected = vyxalify([[1,2],[3,4,5]])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('ẇ')
+    print('ẇ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_Repeat():
 
     stack = [vyxalify(item) for item in [[1,2,3],3]]
@@ -15540,7 +15578,7 @@ def test_CartesianPower():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Flattentodepth():
+def test_FlattenBydepth():
 
     stack = [vyxalify(item) for item in [[[[[[1]]]]],3]]
     expected = vyxalify([[1]])
@@ -15569,46 +15607,6 @@ def test_Flattentodepth():
 
     code = transpile('Þf')
     print('Þf', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-def test_ChunksOfSpecifiedLength():
-
-    stack = [vyxalify(item) for item in ["abcdefghi",[2,3,4]]]
-    expected = vyxalify(["ab","cde","fghi"])
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('ÞC')
-    print('ÞC', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-    stack = [vyxalify(item) for item in [[1,2,3,4,5], [2,3] ]]
-    expected = vyxalify([[1,2],[3,4,5]])
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('ÞC')
-    print('ÞC', code)
     exec(code)
 
     ctx.stacks.pop()

@@ -1654,6 +1654,8 @@
   tests:
     - '["abcdef",2] : ["ab","cd","ef"]'
     - "[[1,2,3,4,5,6],3] : [[1,2,3],[4,5,6]]"
+    - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
+    - "[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]"
 
 - element: "ẋ"
   name: Repeat
@@ -4026,27 +4028,16 @@
     - '["abc",3] : ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]'
 
 - element: "Þf"
-  name: Flatten to depth
-  description: Flatten a list to a certain depth (default 1)
+  name: Flatten By depth
+  description: Flatten a list by a certain depth (default 1)
   arity: 2
   overloads:
-    lst-num: flatten a to depth b
-    any-lst: Flatten b to depth 1, push a as well
+    lst-num: Flatten a by depth b
+    any-lst: Flatten b by depth 1, push a as well
   vectorise: false
   tests:
     - "[[[[[[1]]]]],3] : [[1]]"
     - '["xyz",[1,2,[3,4,[5,6]]]] : [1,2,3,4,[5,6]]'
-
-- element: "ÞC"
-  name: Chunks Of Specified Length
-  description: Cut a string/list into chunks of specified sizes (stolen from osabie)
-  arity: 2
-  overloads:
-    any-lst: Cut a into chunks of the lengths given in b
-  vectorise: false
-  tests:
-    - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
-    - "[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]"
 
 - element: "ÞB"
   name: Random Bits

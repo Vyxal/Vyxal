@@ -861,6 +861,26 @@ def first_integer(lhs, ctx):
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
 
+def flatten_by(lhs, rhs, ctx):
+    """Element Þf
+    (lst, num) -> Flatten a by depth b
+    (any, lst) -> Flatten b by depth 1, push a as well
+    """
+    flat = []
+
+    if rhs == 0:
+        return lhs
+    elif vy_type(lhs, simple=True) is list:
+        for item in lhs:
+            if vy_type(item, simple=True) is list:
+                flat += flatten_by(item, int(rhs - 1), ctx)
+            else:
+                flat.append(item)
+    else:
+        flat.append(lhs)
+    return flat
+
+
 def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
@@ -1259,7 +1279,7 @@ def infinite_ordinals(_, ctx=None):
     return gen()
 
 
-def infinite_primes(_, ctx=ctx):
+def infinite_primes(_, ctx=None):
     """Element Þp
     An infinite list of primes
     """
@@ -3601,9 +3621,11 @@ def wrap(lhs, rhs, ctx):
         else:
             vector, chunk_size = (
                 (iterable(lhs, ctx=ctx), rhs)
-                if ts[1] == NUMBER_TYPE
+                if ts[1] == NUMBER_TYPE or all(isinstance(x, int) for x in rhs)
                 else (iterable(rhs, ctx=ctx), lhs)
             )
+            if vy_type(rhs, simple=True) is list:
+                return LazyList(wrap(lhs, x, ctx) for x in rhs)
             ret, temp = [], []
             for item in vector:
                 temp.append(item)
@@ -4017,6 +4039,14 @@ elements: dict[str, tuple[str, int]] = {
     "Þu": process_element(all_unqiue, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
+    "Þf": (
+        "rhs = pop(stack, 1, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "    stack.append(flatten_by(rhs, 1, ctx))\n"
+        "else:\n"
+        "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
+        2,
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
