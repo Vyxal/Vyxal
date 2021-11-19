@@ -15,6 +15,7 @@ from datetime import datetime
 from token import NUMBER
 from typing import Union
 
+import num2words
 import numpy
 import sympy
 
@@ -1229,6 +1230,25 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         lhs = iterable(lhs)
         rhs = iterable(rhs)
         return vy_map(rhs, lambda item: lhs[item], ctx=ctx)
+
+
+def infinite_ordinals(lhs, ctx=None):
+    """Element Þo
+    infinite list of place numbers starting at a - first, second,
+    third, fourth, fifth, etc.
+
+    This function returns an infinite generator that yields the word
+    form of each ordinal number starting at first.
+    """
+
+    @lazylist
+    def gen():
+        i = 1
+        while True:
+            yield num2words.num2words(i, to="ordinal")
+            i += 1
+
+    return gen()
 
 
 def infinite_replace(lhs, rhs, other, ctx):
@@ -3966,6 +3986,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "Þo": process_element(infinite_ordinals, 0),
     "Þ×": process_element(all_combos, 1),
     "Þu": process_element(all_unqiue, 1),
     "ÞẊ": process_element(cartesian_power, 2),

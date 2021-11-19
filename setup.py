@@ -5,5 +5,5 @@ setup(
     version="2.6.0p1",
     packages=["vyxal"],
     scripts=["scripts/vyxal"],
-    install_requires=["sympy", "numpy"],
+    install_requires=["sympy", "num2words", "numpy"],
 )
