@@ -1020,13 +1020,13 @@ z (Zip-self)
     str a: quad palindromize with overlap
     otherwise: vectorise
 -------------------------------
-ṡ (Function Sort)
+ṡ (Sort by Function)
 
 - Sort a list by a function / create a range / split on a regex
 
     any a, fun b: sorted(a, key=b) (Sort by b)
     num a, num b: range(a, b + 1) (Inclusive range from a to b)
-    str a, str b: regex.split(string=a, pattern=b)
+    str a, str b: regex.split(pattern=b, string=a)
 -------------------------------
 ṫ (Tail Extract)
 
@@ -1047,6 +1047,8 @@ z (Zip-self)
 
 - Repeat a value several times
 
+    str a, num b: a * b
+    num a, str b: b * a
     any a, num b: Repeat a b times
     str a, str b: a + " " + b
     fun a, any b: repeat function a on b while the function results are not-unique
@@ -1203,7 +1205,7 @@ z (Zip-self)
 -------------------------------
 Ḃ (Bifurcate)
 
-- Pushes the top of the stack then it's reverse. Literally duplicate and reverse
+- Pushes the top of the stack then its reverse. Literally duplicate and reverse
 
     any a: a, reversed(a)
 -------------------------------
@@ -1614,7 +1616,7 @@ z (Zip-self)
 -------------------------------
 ǒ (Modulo 3)
 
-- Modulo 3 / Is string empty?
+- Modulo 3 / Split into Length 2
 
     num a: a % 3
     str a: a split into chunks of length 2
@@ -2087,13 +2089,19 @@ k∩ (Vowels With Y)
 - Solve a quadratic equation of the form ax^2 + bx = 0
 
     num a, num b: x such that ax^2 + bx = 0
+    num a, str b: solve a such that a = b
+    str a, num b: solve b such that b = a
+    str a, str b: solve equation a = b for x
     otherwise: vectorise
 -------------------------------
 ∆Q (General Quadratic Solver)
 
 - Solve a quadratic equation of the form x^2 + ax + b = 0
 
-    num, num a: roots(a, b)
+    num a, num b: roots(a, b) / x^2 + ax + b = 0
+    num a, str b: evaluate single variable expression b with x=a
+    str a, num b: evaluate single variable expression a with x=b
+    str a, str b: solve equation a < b for x
     otherwise: vectorise
 -------------------------------
 ∆s (Sine)
@@ -2126,15 +2134,18 @@ k∩ (Vowels With Y)
 -------------------------------
 ∆P (Polynomial Solver)
 
-- Solve a polynomial of the form ax^2 + bx + c = 0
+- Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
 
-    list a: roots(a)
+    lst a: roots(a)
 -------------------------------
 ∆ƈ (n Pick r (npr))
 
 - Get the number of combinations of r items from a set of n items
 
     num a, num b: n_pick_r(a, b)
+    num a, str b: n_pick_r(a, len(b))
+    str a, num b: n_pick_r(len(a), b)
+    str a, str b: n_pick_r(len(a), len(b))
     otherwise: vectorise
 -------------------------------
 ∆± (Copy Sign)
@@ -2163,6 +2174,7 @@ k∩ (Vowels With Y)
 - Get the value of e raised to the power of a
 
     num a: e ** a
+    str a: simplify expression a
     otherwise: vectorise
 -------------------------------
 ∆E ((e raised to power a) - 1)
@@ -2229,7 +2241,7 @@ k∩ (Vowels With Y)
 -------------------------------
 ∆p (Nearest Prime to a Number)
 
-- Get the prime number closest to a given number
+- Get the prime number closest to a given number, get the greater to break ties
 
     num a: nearest_prime(a)
     otherwise: vectorise
@@ -2244,17 +2256,17 @@ k∩ (Vowels With Y)
 
 - Round a number to n decimal places
 
-    num, num a: round(a, no_dec_places=b)
+    num a, num b: round(a, no_dec_places=b)
     otherwise: vectorise
 -------------------------------
 ∆Ŀ (Least Common Multiple)
 
 - Get the least common multiple of two numbers
 
-    num, num a: lcm(a, b)
+    num a, num b: lcm(a, b)
     otherwise: vectorise
 -------------------------------
-∆Π (nth Digit of Pi)
+∆i (nth Digit of Pi)
 
 - Get the nth digit of pi
 
@@ -2268,16 +2280,16 @@ k∩ (Vowels With Y)
     num a: nth_digit_of_e(a)
     otherwise: vectorise
 -------------------------------
-∆F (nth Fibonacci Number)
+∆f (nth Fibonacci Number)
 
 - Get the nth fibonacci number
 
     num a: nth_fibonacci(a)
     otherwise: vectorise
 -------------------------------
-∆b (Random Bits)
+∆B (Random Bits)
 
-- Get a list of random bits (0 or 1)
+- Get a list of random bits to length n
 
     num a: random_bits(a)
     otherwise: vectorise
@@ -2288,6 +2300,12 @@ k∩ (Vowels With Y)
 
     num a: random.random()
     otherwise: vectorise
+-------------------------------
+∆Z (ZFill)
+
+- Pad a string with zeros to a given length
+
+    str, num a: zfill(a, b)
 -------------------------------
 øb (Parenthesise)
 
@@ -2523,4 +2541,128 @@ k∩ (Vowels With Y)
 - Fill a matrix by calling a function with the lists of coordinates in the matrix.
 
     any a, fun b: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+-------------------------------
+Þ… (Evenly Distribute)
+
+- Evenly distribute a number over elements of a list
+
+    list a, num b: Evenly distribute a over all elements of b, adding each part.
+-------------------------------
+Þ↓ (Minimum By Function)
+
+- Find the minimum value of a list by applying a function to each element
+
+    lst a, fun b: Minimum value of a by applying b to each element
+-------------------------------
+Þ↑ (Maximum By Function)
+
+- Find the maximum value of a list by applying a function to each element
+
+    lst a, fun b: Maximum value of a by applying b to each element
+-------------------------------
+Þ× (All Combinations)
+
+- All combinations of a list / string, of all lengths, without replacement
+
+    any a: All combinations of a list / string, of all lengths and all orders, without replacement
+-------------------------------
+ÞF (All Fibbonacci)
+
+- All Fibbonacci numbers as a LazyList.
+
+-------------------------------
+Þ! (All Factorials)
+
+- All factorials as a LazyList.
+
+-------------------------------
+ÞU (Uniquify Mask)
+
+- Return a list of booleans describing which elements of a will remain after uniquifying.
+
+    any a: Return a list of booleans describing which elements of a will remain after uniquifying.
+-------------------------------
+ÞD (Diagonals)
+
+- Diagonals of a matrix, starting with the main diagonal.
+
+    lst a: Diagonals of a matrix, starting with the main diagonal.
+-------------------------------
+ÞS (Sublists)
+
+- Sublists of a list.
+
+    lst a: Sublists of a list.
+-------------------------------
+ÞṪ (Transpose With Filler)
+
+- Transpose a matrix, with a filler value for empty cells.
+
+    lst a, any b: Transpose a matrix, with a filler value for empty cells.
+-------------------------------
+Þ℅ (Random Permutation)
+
+- Random permutation of a list / string
+
+    any a: Random permutation of a list / string
+-------------------------------
+ÞṀ (Matrix Multiplication)
+
+- Multiply two matrices together.
+
+    lst a, lst b: Matrix multiplication
+-------------------------------
+ÞḊ (Matrix Determinant)
+
+- Calculate the determinant of a matrix.
+
+    lst a: Calculate the determinant of a matrix.
+-------------------------------
+Þ\ (Antidiagonal)
+
+- Antidiagonal of a matrix
+
+    lst a: Antidiagonal of a matrix
+-------------------------------
+Þ/ (Diagonal)
+
+- Diagonal of a matrix
+
+    lst a: Diagonal of a matrix
+-------------------------------
+ÞR (Matrix Row Reduce)
+
+- Reduce rows of a matrix by a function.
+
+    lst a, fun b: Reduce rows of a matrix by a function.
+-------------------------------
+ÞC (Matrix Column Reduce)
+
+- Reduce columns of a matrix by a function.
+
+    lst a, fun b: Reduce columns of a matrix by a function.
+-------------------------------
+¨U (Get Request)
+
+- Send a GET request to a URL
+
+    str a: Send a GET request to a URL
+-------------------------------
+¨M (Map To Indices)
+
+- Map a function to elements of a list whose indices are in another list
+
+    lst a, lst b, fun c: Map a function to elements of a list whose indices are in another list
+-------------------------------
+¨, (Print With Space)
+
+- Print a value with a space after it
+
+    any a: Print a value with a space after it
+-------------------------------
+¨… (Print With Space Without Popping)
+
+- Print a value with a space after it, without popping it
+
+    any a: Print a value with a space after it, without popping it
 -------------------------------
