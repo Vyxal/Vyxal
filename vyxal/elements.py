@@ -1232,7 +1232,15 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return vy_map(rhs, lambda item: lhs[item], ctx=ctx)
 
 
-def infinite_ordinals(lhs, ctx=None):
+def infinite_cardinals(_, ctx=None):
+    """Element Þc
+    infinite sequence of cardinals
+    """
+
+    return LazyList(itertools.count(1))
+
+
+def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
     third, fourth, fifth, etc.
@@ -1247,6 +1255,22 @@ def infinite_ordinals(lhs, ctx=None):
         while True:
             yield num2words.num2words(i, to="ordinal")
             i += 1
+
+    return gen()
+
+
+def infinite_primes(_, ctx=ctx):
+    """Element Þp
+    An infinite list of primes
+    """
+
+    @lazylist
+    def gen():
+        i = 1
+        while True:
+            i += 1
+            if is_prime(i, ctx):
+                yield i
 
     return gen()
 
@@ -3987,6 +4011,8 @@ elements: dict[str, tuple[str, int]] = {
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "Þo": process_element(infinite_ordinals, 0),
+    "Þc": process_element(infinite_cardinals, 0),
+    "Þp": process_element(infinite_primes, 0),
     "Þ×": process_element(all_combos, 1),
     "Þu": process_element(all_unqiue, 1),
     "ÞẊ": process_element(cartesian_power, 2),
