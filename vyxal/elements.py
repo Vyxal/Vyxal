@@ -128,6 +128,24 @@ def all_equal(lhs, ctx):
         return 1
 
 
+def all_less_than_increasing(lhs, rhs, ctx):
+    """Element Þ<
+    (any, num): All values of a up to (not including) the first greater
+                than or equal to b
+    """
+    lhs = iterable(lhs, ctx)
+
+    @lazylist
+    def gen():
+        for elem in lhs:
+            if elem < rhs:
+                yield elem
+            else:
+                return
+
+    return gen()
+
+
 def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
@@ -4173,6 +4191,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þḟ": process_element(multi_dimensional_search, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
+    "Þ<": process_element(all_less_than_increasing, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

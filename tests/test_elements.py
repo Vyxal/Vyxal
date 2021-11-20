@@ -26,7 +26,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -45,7 +45,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -64,7 +64,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -83,7 +83,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -102,7 +102,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -121,7 +121,7 @@ def test_LogicalNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -142,7 +142,7 @@ def test_LogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -161,7 +161,7 @@ def test_LogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -180,7 +180,7 @@ def test_LogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -199,7 +199,7 @@ def test_LogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -220,7 +220,7 @@ def test_ReversedLogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -239,7 +239,7 @@ def test_ReversedLogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -258,7 +258,7 @@ def test_ReversedLogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -277,7 +277,7 @@ def test_ReversedLogicalAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -298,7 +298,7 @@ def test_LogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -317,7 +317,7 @@ def test_LogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -336,7 +336,7 @@ def test_LogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -355,7 +355,7 @@ def test_LogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -376,7 +376,7 @@ def test_ReversedLogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -395,7 +395,7 @@ def test_ReversedLogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -414,7 +414,7 @@ def test_ReversedLogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -433,7 +433,7 @@ def test_ReversedLogicalOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -454,7 +454,7 @@ def test_ItemSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -473,7 +473,7 @@ def test_ItemSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -492,7 +492,7 @@ def test_ItemSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -513,7 +513,7 @@ def test_AsteriskLiteral():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -534,7 +534,7 @@ def test_MultiCommand():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -553,7 +553,7 @@ def test_MultiCommand():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -572,7 +572,7 @@ def test_MultiCommand():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -591,7 +591,7 @@ def test_MultiCommand():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -612,7 +612,7 @@ def test_FunctionCall():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -631,7 +631,7 @@ def test_FunctionCall():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -652,7 +652,7 @@ def test_SplitOn():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -671,7 +671,7 @@ def test_SplitOn():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -690,7 +690,7 @@ def test_SplitOn():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -711,7 +711,7 @@ def test_Halve():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -730,7 +730,7 @@ def test_Halve():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -749,7 +749,7 @@ def test_Halve():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -770,7 +770,7 @@ def test_CombinationsRemoveFixedPointCollection():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -789,7 +789,7 @@ def test_CombinationsRemoveFixedPointCollection():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -808,7 +808,7 @@ def test_CombinationsRemoveFixedPointCollection():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -829,7 +829,7 @@ def test_InfiniteReplacement():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -848,7 +848,7 @@ def test_InfiniteReplacement():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -869,7 +869,7 @@ def test_ComplementCommaSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -888,7 +888,7 @@ def test_ComplementCommaSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -907,7 +907,7 @@ def test_ComplementCommaSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -928,7 +928,7 @@ def test_IsPrimeCaseCheck():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -947,7 +947,7 @@ def test_IsPrimeCaseCheck():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -966,7 +966,7 @@ def test_IsPrimeCaseCheck():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -985,7 +985,7 @@ def test_IsPrimeCaseCheck():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1004,7 +1004,7 @@ def test_IsPrimeCaseCheck():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1025,7 +1025,7 @@ def test_InclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1044,7 +1044,7 @@ def test_InclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1063,7 +1063,7 @@ def test_InclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1084,7 +1084,7 @@ def test_ExclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1103,7 +1103,7 @@ def test_ExclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1122,7 +1122,7 @@ def test_ExclusiveZeroRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1143,7 +1143,7 @@ def test_InclusiveOneRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1162,7 +1162,7 @@ def test_InclusiveOneRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1181,7 +1181,7 @@ def test_InclusiveOneRange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1202,7 +1202,7 @@ def test_ExclusiveOneRangeLowercase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1221,7 +1221,7 @@ def test_ExclusiveOneRangeLowercase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1240,7 +1240,7 @@ def test_ExclusiveOneRangeLowercase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1261,7 +1261,7 @@ def test_Chooserandomchoicesetsame():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1280,7 +1280,7 @@ def test_Chooserandomchoicesetsame():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1299,7 +1299,7 @@ def test_Chooserandomchoicesetsame():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1320,7 +1320,7 @@ def test_Palindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1339,7 +1339,7 @@ def test_Palindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1358,7 +1358,7 @@ def test_Palindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1377,7 +1377,7 @@ def test_Palindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1396,7 +1396,7 @@ def test_Palindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1417,7 +1417,7 @@ def test_StackLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1436,7 +1436,7 @@ def test_StackLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1455,7 +1455,7 @@ def test_StackLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1476,7 +1476,7 @@ def test_Pair():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1495,7 +1495,7 @@ def test_Pair():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1514,7 +1514,7 @@ def test_Pair():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1535,7 +1535,7 @@ def test_Swap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1554,7 +1554,7 @@ def test_Swap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1573,7 +1573,7 @@ def test_Swap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1594,7 +1594,7 @@ def test_ModuloFormat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1613,7 +1613,7 @@ def test_ModuloFormat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1632,7 +1632,7 @@ def test_ModuloFormat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1651,7 +1651,7 @@ def test_ModuloFormat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1672,7 +1672,7 @@ def test_Multiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1691,7 +1691,7 @@ def test_Multiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1710,7 +1710,7 @@ def test_Multiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1729,7 +1729,7 @@ def test_Multiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1748,7 +1748,7 @@ def test_Multiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1769,7 +1769,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1788,7 +1788,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1807,7 +1807,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1826,7 +1826,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1845,7 +1845,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1864,7 +1864,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1883,7 +1883,7 @@ def test_Addition():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1904,7 +1904,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1923,7 +1923,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1942,7 +1942,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1961,7 +1961,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1980,7 +1980,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -1999,7 +1999,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2018,7 +2018,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2037,7 +2037,7 @@ def test_Subtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2058,7 +2058,7 @@ def test_DivideSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2077,7 +2077,7 @@ def test_DivideSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2096,7 +2096,7 @@ def test_DivideSplit():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2117,7 +2117,7 @@ def test_LessThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2136,7 +2136,7 @@ def test_LessThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2155,7 +2155,7 @@ def test_LessThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2174,7 +2174,7 @@ def test_LessThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2193,7 +2193,7 @@ def test_LessThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2214,7 +2214,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2233,7 +2233,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2252,7 +2252,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2271,7 +2271,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2290,7 +2290,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2309,7 +2309,7 @@ def test_Equals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2330,7 +2330,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2349,7 +2349,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2368,7 +2368,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2387,7 +2387,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2406,7 +2406,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2425,7 +2425,7 @@ def test_GreaterThan():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2446,7 +2446,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2465,7 +2465,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2484,7 +2484,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2503,7 +2503,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2522,7 +2522,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2541,7 +2541,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2560,7 +2560,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2579,7 +2579,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2598,7 +2598,7 @@ def test_All():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2619,7 +2619,7 @@ def test_BinaryToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2638,7 +2638,7 @@ def test_BinaryToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2657,7 +2657,7 @@ def test_BinaryToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2678,7 +2678,7 @@ def test_ChrOrd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2697,7 +2697,7 @@ def test_ChrOrd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2716,7 +2716,7 @@ def test_ChrOrd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2735,7 +2735,7 @@ def test_ChrOrd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2754,7 +2754,7 @@ def test_ChrOrd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2775,7 +2775,7 @@ def test_TwoPowerPythonEval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2794,7 +2794,7 @@ def test_TwoPowerPythonEval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2813,7 +2813,7 @@ def test_TwoPowerPythonEval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2834,7 +2834,7 @@ def test_Filter():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2853,7 +2853,7 @@ def test_Filter():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2874,7 +2874,7 @@ def test_Max():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2893,7 +2893,7 @@ def test_Max():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2914,7 +2914,7 @@ def test_HexToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2933,7 +2933,7 @@ def test_HexToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2952,7 +2952,7 @@ def test_HexToDecimal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2973,7 +2973,7 @@ def test_Int():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -2992,7 +2992,7 @@ def test_Int():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3011,7 +3011,7 @@ def test_Int():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3032,7 +3032,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3051,7 +3051,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3070,7 +3070,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3089,7 +3089,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3110,7 +3110,7 @@ def test_FactorsSubstringsPrefixes():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3129,7 +3129,7 @@ def test_FactorsSubstringsPrefixes():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3148,7 +3148,7 @@ def test_FactorsSubstringsPrefixes():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3167,7 +3167,7 @@ def test_FactorsSubstringsPrefixes():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3188,7 +3188,7 @@ def test_Length():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3207,7 +3207,7 @@ def test_Length():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3226,7 +3226,7 @@ def test_Length():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3247,7 +3247,7 @@ def test_Map():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3266,7 +3266,7 @@ def test_Map():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3287,7 +3287,7 @@ def test_NegateSwapCase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3306,7 +3306,7 @@ def test_NegateSwapCase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3325,7 +3325,7 @@ def test_NegateSwapCase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3344,7 +3344,7 @@ def test_NegateSwapCase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3365,7 +3365,7 @@ def test_Count():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3384,7 +3384,7 @@ def test_Count():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3405,7 +3405,7 @@ def test_Strip():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3424,7 +3424,7 @@ def test_Strip():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3445,7 +3445,7 @@ def test_Reduce():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3464,7 +3464,7 @@ def test_Reduce():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3485,7 +3485,7 @@ def test_Stringify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3504,7 +3504,7 @@ def test_Stringify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3523,7 +3523,7 @@ def test_Stringify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3544,7 +3544,7 @@ def test_TruthyIndices():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3563,7 +3563,7 @@ def test_TruthyIndices():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3582,7 +3582,7 @@ def test_TruthyIndices():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3601,7 +3601,7 @@ def test_TruthyIndices():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3622,7 +3622,7 @@ def test_Uniquify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3641,7 +3641,7 @@ def test_Uniquify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3662,7 +3662,7 @@ def test_Replace():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3681,7 +3681,7 @@ def test_Replace():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3702,7 +3702,7 @@ def test_Wrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3721,7 +3721,7 @@ def test_Wrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3740,7 +3740,7 @@ def test_Wrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3761,7 +3761,7 @@ def test_Interleave():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3780,7 +3780,7 @@ def test_Interleave():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3801,7 +3801,7 @@ def test_Zip():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3820,7 +3820,7 @@ def test_Zip():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3841,7 +3841,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3860,7 +3860,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3879,7 +3879,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3898,7 +3898,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3917,7 +3917,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3936,7 +3936,7 @@ def test_Any():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3957,7 +3957,7 @@ def test_Binary():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3976,7 +3976,7 @@ def test_Binary():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -3995,7 +3995,7 @@ def test_Binary():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4016,7 +4016,7 @@ def test_Contains():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4035,7 +4035,7 @@ def test_Contains():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4054,7 +4054,7 @@ def test_Contains():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4073,7 +4073,7 @@ def test_Contains():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4094,7 +4094,7 @@ def test_Double():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4113,7 +4113,7 @@ def test_Double():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4132,7 +4132,7 @@ def test_Double():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4151,7 +4151,7 @@ def test_Double():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4170,7 +4170,7 @@ def test_Double():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4191,7 +4191,7 @@ def test_Exponentiation():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4210,7 +4210,7 @@ def test_Exponentiation():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4229,7 +4229,7 @@ def test_Exponentiation():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4250,7 +4250,7 @@ def test_Flatten():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4269,7 +4269,7 @@ def test_Flatten():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4288,7 +4288,7 @@ def test_Flatten():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4307,7 +4307,7 @@ def test_Flatten():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4328,7 +4328,7 @@ def test_Minimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4347,7 +4347,7 @@ def test_Minimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4366,7 +4366,7 @@ def test_Minimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4387,7 +4387,7 @@ def test_Head():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4406,7 +4406,7 @@ def test_Head():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4427,7 +4427,7 @@ def test_Index():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4446,7 +4446,7 @@ def test_Index():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4465,7 +4465,7 @@ def test_Index():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4484,7 +4484,7 @@ def test_Index():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4503,7 +4503,7 @@ def test_Index():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4524,7 +4524,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4543,7 +4543,7 @@ def test_Join():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4564,7 +4564,7 @@ def test_CumulativeGroups():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4583,7 +4583,7 @@ def test_CumulativeGroups():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4602,7 +4602,7 @@ def test_CumulativeGroups():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4621,7 +4621,7 @@ def test_CumulativeGroups():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4642,7 +4642,7 @@ def test_Mirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4661,7 +4661,7 @@ def test_Mirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4680,7 +4680,7 @@ def test_Mirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4701,7 +4701,7 @@ def test_Remove():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4720,7 +4720,7 @@ def test_Remove():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4739,7 +4739,7 @@ def test_Remove():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4760,7 +4760,7 @@ def test_Prepend():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4779,7 +4779,7 @@ def test_Prepend():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4798,7 +4798,7 @@ def test_Prepend():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4819,7 +4819,7 @@ def test_Uneval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4838,7 +4838,7 @@ def test_Uneval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4857,7 +4857,7 @@ def test_Uneval():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4878,7 +4878,7 @@ def test_Range():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4897,7 +4897,7 @@ def test_Range():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4918,7 +4918,7 @@ def test_sort():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4937,7 +4937,7 @@ def test_sort():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4958,7 +4958,7 @@ def test_Tail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4977,7 +4977,7 @@ def test_Tail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -4998,7 +4998,7 @@ def test_MinusOne():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5019,7 +5019,7 @@ def test_Listify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5038,7 +5038,7 @@ def test_Listify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5057,7 +5057,7 @@ def test_Listify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5078,7 +5078,7 @@ def test_Uninterleave():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5097,7 +5097,7 @@ def test_Uninterleave():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5118,7 +5118,7 @@ def test_Zipself():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5137,7 +5137,7 @@ def test_Zipself():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5158,7 +5158,7 @@ def test_MaxbyTail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5177,7 +5177,7 @@ def test_MaxbyTail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5198,7 +5198,7 @@ def test_MinbyTail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5217,7 +5217,7 @@ def test_MinbyTail():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5238,7 +5238,7 @@ def test_DyadicMaximum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5257,7 +5257,7 @@ def test_DyadicMaximum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5276,7 +5276,7 @@ def test_DyadicMaximum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5297,7 +5297,7 @@ def test_DyadicMinimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5316,7 +5316,7 @@ def test_DyadicMinimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5335,7 +5335,7 @@ def test_DyadicMinimum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5356,7 +5356,7 @@ def test_IncrementSpaceReplaceWith0():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5375,7 +5375,7 @@ def test_IncrementSpaceReplaceWith0():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5394,7 +5394,7 @@ def test_IncrementSpaceReplaceWith0():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5415,7 +5415,7 @@ def test_Decrement():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5434,7 +5434,7 @@ def test_Decrement():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5453,7 +5453,7 @@ def test_Decrement():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5474,7 +5474,7 @@ def test_Parity():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5493,7 +5493,7 @@ def test_Parity():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5512,7 +5512,7 @@ def test_Parity():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5533,7 +5533,7 @@ def test_EmptyString():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5554,7 +5554,7 @@ def test_Space():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5575,7 +5575,7 @@ def test_ToBaseTenFromCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5594,7 +5594,7 @@ def test_ToBaseTenFromCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5613,7 +5613,7 @@ def test_ToBaseTenFromCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5634,7 +5634,7 @@ def test_FromBaseTenToCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5653,7 +5653,7 @@ def test_FromBaseTenToCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5672,7 +5672,7 @@ def test_FromBaseTenToCustomBase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5693,7 +5693,7 @@ def test_Absolutevalue():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5712,7 +5712,7 @@ def test_Absolutevalue():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5731,7 +5731,7 @@ def test_Absolutevalue():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5750,7 +5750,7 @@ def test_Absolutevalue():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5771,7 +5771,7 @@ def test_Boolify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5790,7 +5790,7 @@ def test_Boolify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5809,7 +5809,7 @@ def test_Boolify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5828,7 +5828,7 @@ def test_Boolify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5849,7 +5849,7 @@ def test_NotOne():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5868,7 +5868,7 @@ def test_NotOne():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5887,7 +5887,7 @@ def test_NotOne():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5906,7 +5906,7 @@ def test_NotOne():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5927,7 +5927,7 @@ def test_Divmod():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5946,7 +5946,7 @@ def test_Divmod():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5965,7 +5965,7 @@ def test_Divmod():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -5984,7 +5984,7 @@ def test_Divmod():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6005,7 +6005,7 @@ def test_Enumerate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6024,7 +6024,7 @@ def test_Enumerate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6045,7 +6045,7 @@ def test_Find():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6064,7 +6064,7 @@ def test_Find():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6085,7 +6085,7 @@ def test_Gcd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6104,7 +6104,7 @@ def test_Gcd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6123,7 +6123,7 @@ def test_Gcd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6142,7 +6142,7 @@ def test_Gcd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6163,7 +6163,7 @@ def test_HeadExtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6182,7 +6182,7 @@ def test_HeadExtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6203,7 +6203,7 @@ def test_FloorDivision():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6222,7 +6222,7 @@ def test_FloorDivision():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6241,7 +6241,7 @@ def test_FloorDivision():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6262,7 +6262,7 @@ def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6283,7 +6283,7 @@ def test_Mean():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6302,7 +6302,7 @@ def test_Mean():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6323,7 +6323,7 @@ def test_JoinByNothing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6342,7 +6342,7 @@ def test_JoinByNothing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6363,7 +6363,7 @@ def test_Slice():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6382,7 +6382,7 @@ def test_Slice():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6403,7 +6403,7 @@ def test_Powerset():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6422,7 +6422,7 @@ def test_Powerset():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6443,7 +6443,7 @@ def test_Round():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6462,7 +6462,7 @@ def test_Round():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6481,7 +6481,7 @@ def test_Round():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6500,7 +6500,7 @@ def test_Round():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6519,7 +6519,7 @@ def test_Round():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6540,7 +6540,7 @@ def test_SortbyFunction():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6559,7 +6559,7 @@ def test_SortbyFunction():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6578,7 +6578,7 @@ def test_SortbyFunction():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6599,7 +6599,7 @@ def test_TailExtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6618,7 +6618,7 @@ def test_TailExtract():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6639,7 +6639,7 @@ def test_ChunkWrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6658,7 +6658,7 @@ def test_ChunkWrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6677,7 +6677,7 @@ def test_ChunkWrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6696,7 +6696,7 @@ def test_ChunkWrap():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6717,7 +6717,7 @@ def test_Repeat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6736,7 +6736,7 @@ def test_Repeat():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6757,7 +6757,7 @@ def test_ExclusiveRangeLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6776,7 +6776,7 @@ def test_ExclusiveRangeLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6797,7 +6797,7 @@ def test_InclusiveRangeLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6816,7 +6816,7 @@ def test_InclusiveRangeLength():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6837,7 +6837,7 @@ def test_SquareRoot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6856,7 +6856,7 @@ def test_SquareRoot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6877,7 +6877,7 @@ def test_Ten():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6898,7 +6898,7 @@ def test_Hundred():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6919,7 +6919,7 @@ def test_IsEven():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6938,7 +6938,7 @@ def test_IsEven():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6957,7 +6957,7 @@ def test_IsEven():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6976,7 +6976,7 @@ def test_IsEven():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -6997,7 +6997,7 @@ def test_DivisibleBythree():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7016,7 +7016,7 @@ def test_DivisibleBythree():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7035,7 +7035,7 @@ def test_DivisibleBythree():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7054,7 +7054,7 @@ def test_DivisibleBythree():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7075,7 +7075,7 @@ def test_TwentySix():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7096,7 +7096,7 @@ def test_DivisibleByFive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7115,7 +7115,7 @@ def test_DivisibleByFive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7134,7 +7134,7 @@ def test_DivisibleByFive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7153,7 +7153,7 @@ def test_DivisibleByFive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7174,7 +7174,7 @@ def test_SixtyFour():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7195,7 +7195,7 @@ def test_OneTwentyEight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7216,7 +7216,7 @@ def test_TwoFiftySix():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7237,7 +7237,7 @@ def test_Newline():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7258,7 +7258,7 @@ def test_JoinOnNewlines():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7277,7 +7277,7 @@ def test_JoinOnNewlines():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7298,7 +7298,7 @@ def test_VerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7317,7 +7317,7 @@ def test_VerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7338,7 +7338,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7357,7 +7357,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7376,7 +7376,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7395,7 +7395,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7414,7 +7414,7 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7435,7 +7435,7 @@ def test_Factorial():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7454,7 +7454,7 @@ def test_Factorial():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7473,7 +7473,7 @@ def test_Factorial():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7494,7 +7494,7 @@ def test_Summate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7513,7 +7513,7 @@ def test_Summate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7532,7 +7532,7 @@ def test_Summate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7553,7 +7553,7 @@ def test_CumulativeSum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7572,7 +7572,7 @@ def test_CumulativeSum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7591,7 +7591,7 @@ def test_CumulativeSum():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7612,7 +7612,7 @@ def test_AllEqual():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7631,7 +7631,7 @@ def test_AllEqual():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7650,7 +7650,7 @@ def test_AllEqual():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7669,7 +7669,7 @@ def test_AllEqual():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7690,7 +7690,7 @@ def test_Assign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7709,7 +7709,7 @@ def test_Assign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7728,7 +7728,7 @@ def test_Assign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7749,7 +7749,7 @@ def test_Bifurcate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7768,7 +7768,7 @@ def test_Bifurcate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7787,7 +7787,7 @@ def test_Bifurcate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7808,7 +7808,7 @@ def test_Counts():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7827,7 +7827,7 @@ def test_Counts():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7848,7 +7848,7 @@ def test_IsDivisibleArbitraryDuplicate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7867,7 +7867,7 @@ def test_IsDivisibleArbitraryDuplicate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7886,7 +7886,7 @@ def test_IsDivisibleArbitraryDuplicate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7907,7 +7907,7 @@ def test_VyxalExecReciprocal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7926,7 +7926,7 @@ def test_VyxalExecReciprocal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7947,7 +7947,7 @@ def test_Groupconsecutive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7966,7 +7966,7 @@ def test_Groupconsecutive():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -7987,7 +7987,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8006,7 +8006,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8025,7 +8025,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8044,7 +8044,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8063,7 +8063,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8082,7 +8082,7 @@ def test_HeadRemoveBehead():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8103,7 +8103,7 @@ def test_Indexintoorfindcycle():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8124,7 +8124,7 @@ def test_Transliterate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8143,7 +8143,7 @@ def test_Transliterate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8162,7 +8162,7 @@ def test_Transliterate():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8183,7 +8183,7 @@ def test_Insert():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8202,7 +8202,7 @@ def test_Insert():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8221,7 +8221,7 @@ def test_Insert():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8242,7 +8242,7 @@ def test_Integerpartitions():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8261,7 +8261,7 @@ def test_Integerpartitions():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8280,7 +8280,7 @@ def test_Integerpartitions():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8301,7 +8301,7 @@ def test_Over():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8320,7 +8320,7 @@ def test_Over():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8341,7 +8341,7 @@ def test_Permutations():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8360,7 +8360,7 @@ def test_Permutations():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8381,7 +8381,7 @@ def test_Reverse():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8400,7 +8400,7 @@ def test_Reverse():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8419,7 +8419,7 @@ def test_Reverse():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8440,7 +8440,7 @@ def test_Vectorisedsums():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8459,7 +8459,7 @@ def test_Vectorisedsums():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8478,7 +8478,7 @@ def test_Vectorisedsums():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8499,7 +8499,7 @@ def test_TailRemove():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8518,7 +8518,7 @@ def test_TailRemove():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8539,7 +8539,7 @@ def test_SplitAndKeepDelimiter():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8558,7 +8558,7 @@ def test_SplitAndKeepDelimiter():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8579,7 +8579,7 @@ def test_CartesianProduct():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8598,7 +8598,7 @@ def test_CartesianProduct():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8619,7 +8619,7 @@ def test_SliceUntil():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8638,7 +8638,7 @@ def test_SliceUntil():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8659,7 +8659,7 @@ def test_SliceFromOneUntil():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8678,7 +8678,7 @@ def test_SliceFromOneUntil():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8699,7 +8699,7 @@ def test_Square():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8718,7 +8718,7 @@ def test_Square():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8737,7 +8737,7 @@ def test_Square():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8756,7 +8756,7 @@ def test_Square():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8777,7 +8777,7 @@ def test_Shift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8796,7 +8796,7 @@ def test_Shift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8817,7 +8817,7 @@ def test_Ceiling():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8836,7 +8836,7 @@ def test_Ceiling():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8855,7 +8855,7 @@ def test_Ceiling():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8874,7 +8874,7 @@ def test_Ceiling():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8895,7 +8895,7 @@ def test_Floor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8914,7 +8914,7 @@ def test_Floor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8933,7 +8933,7 @@ def test_Floor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8954,7 +8954,7 @@ def test_Deltas():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8973,7 +8973,7 @@ def test_Deltas():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -8992,7 +8992,7 @@ def test_Deltas():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9013,7 +9013,7 @@ def test_Sign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9032,7 +9032,7 @@ def test_Sign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9051,7 +9051,7 @@ def test_Sign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9070,7 +9070,7 @@ def test_Sign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9091,7 +9091,7 @@ def test_RightBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9110,7 +9110,7 @@ def test_RightBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9129,7 +9129,7 @@ def test_RightBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9150,7 +9150,7 @@ def test_LeftBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9169,7 +9169,7 @@ def test_LeftBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9188,7 +9188,7 @@ def test_LeftBitShift():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9209,7 +9209,7 @@ def test_BitwiseAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9228,7 +9228,7 @@ def test_BitwiseAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9247,7 +9247,7 @@ def test_BitwiseAnd():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9268,7 +9268,7 @@ def test_BitwiseOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9287,7 +9287,7 @@ def test_BitwiseOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9306,7 +9306,7 @@ def test_BitwiseOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9325,7 +9325,7 @@ def test_BitwiseOr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9346,7 +9346,7 @@ def test_BitwiseXor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9365,7 +9365,7 @@ def test_BitwiseXor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9384,7 +9384,7 @@ def test_BitwiseXor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9403,7 +9403,7 @@ def test_BitwiseXor():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9424,7 +9424,7 @@ def test_BitwiseNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9443,7 +9443,7 @@ def test_BitwiseNot():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9464,7 +9464,7 @@ def test_LesserThanorEqualTo():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9485,7 +9485,7 @@ def test_GreaterThanorEqualTo():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9506,7 +9506,7 @@ def test_NotEqualTo():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9527,7 +9527,7 @@ def test_ExactlyEqualTo():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9548,7 +9548,7 @@ def test_SetUnion():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9569,7 +9569,7 @@ def test_Tranpose():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9590,7 +9590,7 @@ def test_SymmetricSetdifference():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9611,7 +9611,7 @@ def test_GradeUp():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9630,7 +9630,7 @@ def test_GradeUp():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9649,7 +9649,7 @@ def test_GradeUp():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9670,7 +9670,7 @@ def test_GradeDown():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9689,7 +9689,7 @@ def test_GradeDown():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9708,7 +9708,7 @@ def test_GradeDown():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9729,7 +9729,7 @@ def test_Removenonalphabets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9748,7 +9748,7 @@ def test_Removenonalphabets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9769,7 +9769,7 @@ def test_Nthprime():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9788,7 +9788,7 @@ def test_Nthprime():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9809,7 +9809,7 @@ def test_Primefactorization():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9828,7 +9828,7 @@ def test_Primefactorization():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9849,7 +9849,7 @@ def test_Primefactors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9868,7 +9868,7 @@ def test_Primefactors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9889,7 +9889,7 @@ def test_Multiplicity():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9908,7 +9908,7 @@ def test_Multiplicity():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9929,7 +9929,7 @@ def test_Modulo3():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9948,7 +9948,7 @@ def test_Modulo3():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9969,7 +9969,7 @@ def test_RotateLeft():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -9988,7 +9988,7 @@ def test_RotateLeft():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10009,7 +10009,7 @@ def test_RotateRight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10028,7 +10028,7 @@ def test_RotateRight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10049,7 +10049,7 @@ def test_SplitOnnewlines():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10068,7 +10068,7 @@ def test_SplitOnnewlines():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10089,7 +10089,7 @@ def test_ProductofArray():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10110,7 +10110,7 @@ def test_Uppercasealphabet():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10131,7 +10131,7 @@ def test_eEulersnumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10152,7 +10152,7 @@ def test_Fizz():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10173,7 +10173,7 @@ def test_Buzz():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10194,7 +10194,7 @@ def test_FizzBuzz():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10215,7 +10215,7 @@ def test_HelloWorld():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10236,7 +10236,7 @@ def test_HelloWorld():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10257,7 +10257,7 @@ def test_1000():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10278,7 +10278,7 @@ def test_1000():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10299,7 +10299,7 @@ def test_10000():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10320,7 +10320,7 @@ def test_1000000():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10341,7 +10341,7 @@ def test_Lowercasealphabet():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10362,7 +10362,7 @@ def test_Lowercaseanduppercasealphabet():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10383,7 +10383,7 @@ def test_Digits():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10404,7 +10404,7 @@ def test_Hexdigitslowercase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10425,7 +10425,7 @@ def test_Hexdigitsuppercase():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10446,7 +10446,7 @@ def test_Octaldigits():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10467,7 +10467,7 @@ def test_Punctuation():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10488,7 +10488,7 @@ def test_PrintableASCII():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10509,7 +10509,7 @@ def test_Digitslowercasealphabetanduppercasealphabet():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10530,7 +10530,7 @@ def test_Uppercaseandlowercasealphabet():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10551,7 +10551,7 @@ def test_Uppercasealphabetreversed():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10572,7 +10572,7 @@ def test_Lowercasealphabetreversed():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10593,7 +10593,7 @@ def test_Uppercaseandlowercasealphabetreversed():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10614,7 +10614,7 @@ def test_Pi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10635,7 +10635,7 @@ def test_Goldenratiophi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10656,7 +10656,7 @@ def test_Bracessquarebracketsanglebracketsandparentheses():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10677,7 +10677,7 @@ def test_Parenthesessquarebracketsandbraces():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10698,7 +10698,7 @@ def test_Parenthesesandsquarebrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10719,7 +10719,7 @@ def test_Openingbrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10740,7 +10740,7 @@ def test_Closingbrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10761,7 +10761,7 @@ def test_Openingbracketswith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10782,7 +10782,7 @@ def test_Closingbracketswith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10803,7 +10803,7 @@ def test_Lowercasevowels():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10824,7 +10824,7 @@ def test_Upercasevowels():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10845,7 +10845,7 @@ def test_Lowercaseanduppercasevowels():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10866,7 +10866,7 @@ def test_12():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10887,7 +10887,7 @@ def test_4294967296():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10908,7 +10908,7 @@ def test_11():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10929,7 +10929,7 @@ def test_11():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10950,7 +10950,7 @@ def test_01():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10971,7 +10971,7 @@ def test_Slashes():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -10992,7 +10992,7 @@ def test_360():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11013,7 +11013,7 @@ def test_https():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11034,7 +11034,7 @@ def test_http():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11055,7 +11055,7 @@ def test_httpswww():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11076,7 +11076,7 @@ def test_httpwww():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11097,7 +11097,7 @@ def test_512():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11118,7 +11118,7 @@ def test_1024():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11139,7 +11139,7 @@ def test_2048():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11160,7 +11160,7 @@ def test_4096():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11181,7 +11181,7 @@ def test_8192():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11202,7 +11202,7 @@ def test_16384():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11223,7 +11223,7 @@ def test_32768():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11244,7 +11244,7 @@ def test_65536():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11265,7 +11265,7 @@ def test_2147483648():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11286,7 +11286,7 @@ def test_Lowercaseconsonantswithy():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11307,7 +11307,7 @@ def test_BFcommandset():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11328,7 +11328,7 @@ def test_Bracketpairlist():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11349,7 +11349,7 @@ def test_Nestedbrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11370,7 +11370,7 @@ def test_Amogus():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11391,7 +11391,7 @@ def test_220():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11412,7 +11412,7 @@ def test_230():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11433,7 +11433,7 @@ def test_LowercaseVowelsWithY():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11454,7 +11454,7 @@ def test_UppercaseVowelsWithY():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11475,7 +11475,7 @@ def test_VowelsWithY():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11496,7 +11496,7 @@ def test_Cosine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11515,7 +11515,7 @@ def test_Cosine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11534,7 +11534,7 @@ def test_Cosine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11555,7 +11555,7 @@ def test_ArcCosine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11574,7 +11574,7 @@ def test_ArcCosine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11595,7 +11595,7 @@ def test_QuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11614,7 +11614,7 @@ def test_QuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11633,7 +11633,7 @@ def test_QuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11654,7 +11654,7 @@ def test_GeneralQuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11673,7 +11673,7 @@ def test_GeneralQuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11692,7 +11692,7 @@ def test_GeneralQuadraticSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11713,7 +11713,7 @@ def test_Sine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11732,7 +11732,7 @@ def test_Sine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11751,7 +11751,7 @@ def test_Sine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11772,7 +11772,7 @@ def test_ArcSine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11791,7 +11791,7 @@ def test_ArcSine():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11812,7 +11812,7 @@ def test_Tangent():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11831,7 +11831,7 @@ def test_Tangent():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11850,7 +11850,7 @@ def test_Tangent():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11871,7 +11871,7 @@ def test_ArcTangent():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11890,7 +11890,7 @@ def test_ArcTangent():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11911,7 +11911,7 @@ def test_PolynomialSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11930,7 +11930,7 @@ def test_PolynomialSolver():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11951,7 +11951,7 @@ def test_nPickrnpr():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11972,7 +11972,7 @@ def test_CopySign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -11991,7 +11991,7 @@ def test_CopySign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12010,7 +12010,7 @@ def test_CopySign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12029,7 +12029,7 @@ def test_CopySign():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12050,7 +12050,7 @@ def test_SumofProperDivisors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12069,7 +12069,7 @@ def test_SumofProperDivisors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12088,7 +12088,7 @@ def test_SumofProperDivisors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12107,7 +12107,7 @@ def test_SumofProperDivisors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12126,7 +12126,7 @@ def test_SumofProperDivisors():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12147,7 +12147,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12166,7 +12166,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12185,7 +12185,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12204,7 +12204,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12223,7 +12223,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12242,7 +12242,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12261,7 +12261,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12280,7 +12280,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12299,7 +12299,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12318,7 +12318,7 @@ def test_PerfectSquare():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12339,7 +12339,7 @@ def test_eraisedtopowera():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12358,7 +12358,7 @@ def test_eraisedtopowera():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12377,7 +12377,7 @@ def test_eraisedtopowera():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12396,7 +12396,7 @@ def test_eraisedtopowera():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12417,7 +12417,7 @@ def test_eraisedtopowera1():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12436,7 +12436,7 @@ def test_eraisedtopowera1():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12455,7 +12455,7 @@ def test_eraisedtopowera1():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12474,7 +12474,7 @@ def test_eraisedtopowera1():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12495,7 +12495,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12514,7 +12514,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12533,7 +12533,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12552,7 +12552,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12571,7 +12571,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12590,7 +12590,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12609,7 +12609,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12628,7 +12628,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12647,7 +12647,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12666,7 +12666,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12685,7 +12685,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12704,7 +12704,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12723,7 +12723,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12742,7 +12742,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12761,7 +12761,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12780,7 +12780,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12799,7 +12799,7 @@ def test_NaturalLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12820,7 +12820,7 @@ def test_Logarithmlog_2():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12839,7 +12839,7 @@ def test_Logarithmlog_2():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12860,7 +12860,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12879,7 +12879,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12898,7 +12898,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12917,7 +12917,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12936,7 +12936,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12955,7 +12955,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12974,7 +12974,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -12993,7 +12993,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13012,7 +13012,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13031,7 +13031,7 @@ def test_CommonLogarithm():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13052,7 +13052,7 @@ def test_StraightLineDistance():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13073,7 +13073,7 @@ def test_ToDegrees():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13092,7 +13092,7 @@ def test_ToDegrees():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13111,7 +13111,7 @@ def test_ToDegrees():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13130,7 +13130,7 @@ def test_ToDegrees():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13149,7 +13149,7 @@ def test_ToDegrees():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13170,7 +13170,7 @@ def test_ToRadians():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13189,7 +13189,7 @@ def test_ToRadians():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13208,7 +13208,7 @@ def test_ToRadians():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13227,7 +13227,7 @@ def test_ToRadians():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13246,7 +13246,7 @@ def test_ToRadians():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13267,7 +13267,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13286,7 +13286,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13305,7 +13305,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13324,7 +13324,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13343,7 +13343,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13362,7 +13362,7 @@ def test_NextPrimeAfteraNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13383,7 +13383,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13402,7 +13402,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13421,7 +13421,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13440,7 +13440,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13459,7 +13459,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13478,7 +13478,7 @@ def test_FirstPrimeBeforeaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13499,7 +13499,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13518,7 +13518,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13537,7 +13537,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13556,7 +13556,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13575,7 +13575,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13594,7 +13594,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13613,7 +13613,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13632,7 +13632,7 @@ def test_NearestPrimetoaNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13653,7 +13653,7 @@ def test_PolynomialfromRoots():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13672,7 +13672,7 @@ def test_PolynomialfromRoots():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13693,7 +13693,7 @@ def test_RoundtonDecimalPlaces():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13712,7 +13712,7 @@ def test_RoundtonDecimalPlaces():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13731,7 +13731,7 @@ def test_RoundtonDecimalPlaces():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13750,7 +13750,7 @@ def test_RoundtonDecimalPlaces():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13771,7 +13771,7 @@ def test_LeastCommonMultiple():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13790,7 +13790,7 @@ def test_LeastCommonMultiple():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13811,7 +13811,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13830,7 +13830,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13849,7 +13849,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13868,7 +13868,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13887,7 +13887,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13906,7 +13906,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13925,7 +13925,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13944,7 +13944,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13963,7 +13963,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -13982,7 +13982,7 @@ def test_nthDigitofPi():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14003,7 +14003,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14022,7 +14022,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14041,7 +14041,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14060,7 +14060,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14079,7 +14079,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14098,7 +14098,7 @@ def test_nthDigitofe():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14119,7 +14119,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14138,7 +14138,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14157,7 +14157,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14176,7 +14176,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14195,7 +14195,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14214,7 +14214,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14233,7 +14233,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14252,7 +14252,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14271,7 +14271,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14290,7 +14290,7 @@ def test_nthFibonacciNumber():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14311,7 +14311,7 @@ def test_Parenthesise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14330,7 +14330,7 @@ def test_Parenthesise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14349,7 +14349,7 @@ def test_Parenthesise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14370,7 +14370,7 @@ def test_Bracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14389,7 +14389,7 @@ def test_Bracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14408,7 +14408,7 @@ def test_Bracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14429,7 +14429,7 @@ def test_CurlyBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14448,7 +14448,7 @@ def test_CurlyBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14467,7 +14467,7 @@ def test_CurlyBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14488,7 +14488,7 @@ def test_AngleBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14507,7 +14507,7 @@ def test_AngleBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14526,7 +14526,7 @@ def test_AngleBracketify():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14547,7 +14547,7 @@ def test_BalancedBrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14566,7 +14566,7 @@ def test_BalancedBrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14585,7 +14585,7 @@ def test_BalancedBrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14604,7 +14604,7 @@ def test_BalancedBrackets():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14625,7 +14625,7 @@ def test_CustomPadLeft():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14644,7 +14644,7 @@ def test_CustomPadLeft():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14663,7 +14663,7 @@ def test_CustomPadLeft():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14684,7 +14684,7 @@ def test_CustomPadRight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14703,7 +14703,7 @@ def test_CustomPadRight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14722,7 +14722,7 @@ def test_CustomPadRight():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14743,7 +14743,7 @@ def test_FlipBracketsVerticalPalindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14762,7 +14762,7 @@ def test_FlipBracketsVerticalPalindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14781,7 +14781,7 @@ def test_FlipBracketsVerticalPalindromise():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14802,7 +14802,7 @@ def test_RemoveUntilNochange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14821,7 +14821,7 @@ def test_RemoveUntilNochange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14842,7 +14842,7 @@ def test_ReplaceUntilNoChange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14861,7 +14861,7 @@ def test_ReplaceUntilNoChange():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14882,7 +14882,7 @@ def test_StringCompress():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14901,7 +14901,7 @@ def test_StringCompress():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14922,7 +14922,7 @@ def test_NumberCompress():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14941,7 +14941,7 @@ def test_NumberCompress():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14962,7 +14962,7 @@ def test_Center():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -14981,7 +14981,7 @@ def test_Center():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15002,7 +15002,7 @@ def test_RunLengthEncoding():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15021,7 +15021,7 @@ def test_RunLengthEncoding():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15042,7 +15042,7 @@ def test_RunLengthDecoding():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15061,7 +15061,7 @@ def test_RunLengthDecoding():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15082,7 +15082,7 @@ def test_DictionaryCompression():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15101,7 +15101,7 @@ def test_DictionaryCompression():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15120,7 +15120,7 @@ def test_DictionaryCompression():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15141,7 +15141,7 @@ def test_Grouponwords():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15160,7 +15160,7 @@ def test_Grouponwords():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15181,7 +15181,7 @@ def test_Regexreplace():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15200,7 +15200,7 @@ def test_Regexreplace():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15221,7 +15221,7 @@ def test_StartsWith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15240,7 +15240,7 @@ def test_StartsWith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15259,7 +15259,7 @@ def test_StartsWith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15278,7 +15278,7 @@ def test_StartsWith():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15299,7 +15299,7 @@ def test_PluraliseCount():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15318,7 +15318,7 @@ def test_PluraliseCount():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15337,7 +15337,7 @@ def test_PluraliseCount():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15358,7 +15358,7 @@ def test_FlipBracketsVerticalMirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15377,7 +15377,7 @@ def test_FlipBracketsVerticalMirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15396,7 +15396,7 @@ def test_FlipBracketsVerticalMirror():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15417,7 +15417,7 @@ def test_StringPartitions():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15438,7 +15438,7 @@ def test_AllUnique():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15457,7 +15457,7 @@ def test_AllUnique():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15476,7 +15476,7 @@ def test_AllUnique():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15495,7 +15495,7 @@ def test_AllUnique():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15514,7 +15514,7 @@ def test_AllUnique():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15535,7 +15535,7 @@ def test_CartesianPower():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15554,7 +15554,7 @@ def test_CartesianPower():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15573,7 +15573,7 @@ def test_CartesianPower():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15594,7 +15594,7 @@ def test_FlattenBydepth():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15613,15 +15613,15 @@ def test_FlattenBydepth():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
 def test_AllLessThanIncreasing():
 
-    stack = [vyxalify(item) for item in [[1,2,3,2,1,4,3,2,1], 3]]
-    expected = vyxalify([1,2])
+    stack = [vyxalify(item) for item in [[1,2,2,3,2,1,4,3,2,1], 3]]
+    expected = vyxalify([1,2,2])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -15634,13 +15634,13 @@ def test_AllLessThanIncreasing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [[1,2,3,4,5,2,1], 4]]
-    expected = vyxalify([1,2,3])
+    stack = [vyxalify(item) for item in [[1,1,2,3,3,2,4,5,6,7], 4]]
+    expected = vyxalify([1,1,2,3,3,2])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -15653,7 +15653,7 @@ def test_AllLessThanIncreasing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15674,7 +15674,7 @@ def test_Untruth():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15693,7 +15693,7 @@ def test_Untruth():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15714,7 +15714,7 @@ def test_MultidimensionalIndexing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15733,7 +15733,7 @@ def test_MultidimensionalIndexing():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15754,7 +15754,7 @@ def test_MultidimensionalSearch():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15773,7 +15773,7 @@ def test_MultidimensionalSearch():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15794,7 +15794,7 @@ def test_ZeroMatrix():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15813,7 +15813,7 @@ def test_ZeroMatrix():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15834,7 +15834,7 @@ def test_EvenlyDistribute():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15853,7 +15853,7 @@ def test_EvenlyDistribute():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15874,7 +15874,7 @@ def test_AllCombinations():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15893,7 +15893,7 @@ def test_AllCombinations():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15910,13 +15910,11 @@ def test_UniquifyMask():
     print('ÞU', code)
     exec(code)
 
-    print(stack)
     ctx.stacks.pop()
-    print(stack)
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15935,7 +15933,7 @@ def test_UniquifyMask():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15956,7 +15954,7 @@ def test_Diagonals():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15977,7 +15975,7 @@ def test_Sublists():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -15998,7 +15996,7 @@ def test_TransposeWithFiller():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16017,7 +16015,7 @@ def test_TransposeWithFiller():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16038,7 +16036,7 @@ def test_MatrixMultiplication():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16059,7 +16057,7 @@ def test_MatrixDeterminant():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16078,7 +16076,7 @@ def test_MatrixDeterminant():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16099,7 +16097,7 @@ def test_Antidiagonal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
@@ -16120,7 +16118,7 @@ def test_Diagonal():
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {simplify(actual)}, expected: {expected}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 

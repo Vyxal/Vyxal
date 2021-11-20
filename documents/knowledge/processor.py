@@ -37,7 +37,7 @@ function_template = """
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx)
+        assert all(list(equals(actual, expected, ctx))) or non_vectorising_equals(actual, expected, ctx), f"actual: {{simplify(actual)}}, expected: {{expected}}"
     else:
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
