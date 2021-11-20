@@ -16962,7 +16962,7 @@ def test_FlipBracketsVerticalMirror():
 def test_StringPartitions():
 
     stack = [vyxalify(item) for item in ["ab"]]
-    expected = vyxalify([["a","b"]])
+    expected = vyxalify([["a", "b"], ["ab"]])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -17465,7 +17465,7 @@ def test_EvenlyDistribute():
 def test_AllCombinations():
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify([[1],[2],[3],[1,2],[1,3],[2,1],[2,3],[3,1],[3,2],[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]])
+    expected = vyxalify([[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]])
     ctx = Context()
     
     ctx.stacks.append(stack)

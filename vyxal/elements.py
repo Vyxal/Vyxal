@@ -107,6 +107,8 @@ def all_combos(lhs, ctx):
         for combo in all_without_replacement:
             for item in combo:
                 for x in itertools.permutations(item):
+                    if all(isinstance(y, str) for y in x):
+                        x = "".join(x)
                     yield vyxalify(x)
 
     return gen()
@@ -155,12 +157,8 @@ def all_partitions(lhs, ctx):
 
     @lazylist
     def gen():
-        for pos in range(1, 2 ** len(lhs) - 1):
-            indicies = group_consecutive(
-                bin(pos)[2:].zfill(log_2(2 ** len(lhs), ctx)), ctx
-            )
-            if not all((len(x) == 1 for x in indicies)):
-                yield mold(lhs, indicies)
+        shapes = integer_parts_or_join_spaces(len(lhs), ctx)
+        yield from (wrap(lhs, shape, ctx) for shape in shapes)
 
     return gen()
 
@@ -412,7 +410,10 @@ def cartesian_power(lhs, rhs, ctx):
         return rhs
     else:
         lhs, rhs = (lhs, rhs) if ts[-1] == NUMBER_TYPE else (rhs, lhs)
-    return LazyList(itertools.product(iterable(lhs, ctx=ctx), repeat=int(rhs)))
+    return LazyList(
+        "".join(x) if all(isinstance(y, str) for y in x) else x
+        for x in itertools.product(iterable(lhs, ctx=ctx), repeat=int(rhs))
+    )
 
 
 def cartesian_product(lhs, rhs, ctx):
