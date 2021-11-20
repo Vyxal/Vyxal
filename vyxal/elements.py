@@ -696,6 +696,38 @@ def euclidean_distance(lhs, rhs, ctx):
     )
 
 
+def evenly_distribute(lhs, rhs, ctx):
+    """Element Þ…
+    (list, num) -> Evenly distribute a over all elements of b,
+                   adding each part
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    print("evenly dist,", lhs, rhs)
+    if not lhs:
+        return lhs
+
+    each = rhs // len(lhs)
+    extra = rhs - each * len(lhs)
+
+    if isinstance(lhs, list):
+        return [
+            lhs[i] + each + 1 if i < extra else lhs[i] + each
+            for i in range(len(lhs))
+        ]
+
+    @lazylist
+    def gen():
+        i = 0
+        for elem in lhs:
+            if i < extra:
+                yield elem + each + 1
+            else:
+                yield elem + each
+            i += 1
+
+    return gen()
+
+
 def exclusive_one_range(lhs, ctx):
     """Element ɽ
     (num) -> range(1, a)
@@ -3097,6 +3129,7 @@ def uniquify_mask(lhs, ctx):
                 yield 1
             else:
                 yield 0
+
     return gen()
 
 
@@ -3715,7 +3748,7 @@ def wrap(lhs, rhs, ctx):
 
 def zero_matrix(lhs, ctx):
     """Element Þm
-    Return a matrix with dimensions each item of a, where the first is the 
+    Return a matrix with dimensions each item of a, where the first is the
     innermost and the last is the outermost
     """
 
@@ -3726,10 +3759,10 @@ def zero_matrix(lhs, ctx):
         for _ in range(index):
             mat.append(temp)
         temp = deep_copy(mat)
-    
+
     return mat
-        
-    
+
+
 def zero_slice(lhs, rhs, ctx):
     """Element Ẏ
     (any, num) -> a[0:b]
@@ -4139,6 +4172,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þi": process_element(multi_dimensional_index, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
     "Þm": process_element(zero_matrix, 1),
+    "Þ…": process_element(evenly_distribute, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
