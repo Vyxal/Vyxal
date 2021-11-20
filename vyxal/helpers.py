@@ -11,6 +11,7 @@ import itertools
 import textwrap
 import types
 from typing import Any, Generator, List, Union
+from numpy.lib.arraysetops import isin
 
 import sympy
 from sympy.parsing.sympy_parser import (
@@ -18,6 +19,7 @@ from sympy.parsing.sympy_parser import (
     implicit_multiplication_application,
     standard_transformations,
 )
+import numpy
 
 import vyxal.encoding
 from vyxal import lexer
@@ -252,6 +254,7 @@ def invert_brackets(lhs: str) -> str:
 def is_sympy(value):
     """Whether or not this is a Sympy type"""
     return isinstance(value, sympy.Basic)
+
 
 def iterable(
     item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
@@ -553,10 +556,10 @@ def sentence_case(item: str) -> str:
 def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
-    elif is_sympy(value):
+    elif is_sympy(value) or isinstance(value, numpy.number):
         return float(value)
     else:
-        return list(map(simplify, value))
+        return [simplify(x) for x in value]
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:
@@ -714,7 +717,7 @@ def vyxalify(value: Any) -> Any:
         return int(value)
     elif is_sympy(value):
         return sympy.nsimplify(value.as_real_imag()[0], rational=True)
-    elif isinstance(value, float):
+    elif isinstance(value, float) or isinstance(value, numpy.number):
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (int, Rational, str, LazyList)):
         return value

@@ -114,6 +114,33 @@ def all_combos(lhs, ctx):
     return gen()
 
 
+def all_diagonals(lhs, ctx):
+    """Element ÞD
+    Diagonals of a matrix, starting with the main diagonal.
+    """
+
+    @lazylist
+    def gen():
+        vector = list(map(lambda x: iterable(x, ctx=ctx), lhs))
+        diag_num = 0
+        diagonal = numpy.diag(vector)
+        # postive diags first
+        while len(diagonal):
+            yield vyxalify(diagonal)
+            diag_num += 1
+            diagonal = numpy.diag(vector, k=diag_num)
+
+        diag_num = -1
+        diagonal = numpy.diag(vector, k=diag_num)
+        # now the other diagonals
+        while len(diagonal):
+            yield vyxalify(diagonal)
+            diag_num -= 1
+            diagonal = numpy.diag(vector, k=diag_num)
+
+    return gen()
+
+
 def all_equal(lhs, ctx):
     """Element ≈
     (any) -> are all items in a the same?
@@ -3666,7 +3693,11 @@ def vy_type(item, rhs=None, other=None, simple=False):
         )
     elif rhs is not None:
         return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
+    elif (
+        (x := type(item)) in (int, complex, float)
+        or is_sympy(item)
+        or isinstance(item, numpy.number)
+    ):
         assert x is not float
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
@@ -4211,6 +4242,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
+    "ÞD": process_element(all_diagonals, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

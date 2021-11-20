@@ -17552,7 +17552,7 @@ def test_UniquifyMask():
 
 def test_Diagonals():
 
-    stack = [vyxalify(item) for item in [[1,2,3],[4,5,6],[7,8,9]]]
+    stack = [vyxalify(item) for item in [[[1,2,3],[4,5,6],[7,8,9]]]]
     expected = vyxalify([[1,5,9],[2,6],[3],[4,8],[7]])
     ctx = Context()
     
