@@ -2731,7 +2731,7 @@
     - "[] : 1000"
 
 - element: "k2"
-  name: 1000
+  name: 10000
   arity: 0
   description: 10^4 / 10000
   vectorise: false
@@ -2739,7 +2739,7 @@
     - "[] : 10000"
 
 - element: "k3"
-  name: 10000
+  name: 100000
   arity: 0
   description: 10^5 / 100000
   vectorise: false

@@ -5622,7 +5622,7 @@ def test_Uninterleave():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Zipself():
+def test_Zip_self():
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
     expected = vyxalify([[1,1],[2,2],[3,3]])
@@ -10699,7 +10699,7 @@ def test_GradeDown():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Removenonalphabets():
+def test_Removenon_alphabets():
 
     stack = [vyxalify(item) for item in ["Helo1233adc__"]]
     expected = vyxalify("Heloadc")
@@ -11302,7 +11302,7 @@ def test_1000():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_1000():
+def test_10000():
 
     stack = [vyxalify(item) for item in []]
     expected = vyxalify(10000)
@@ -11325,7 +11325,7 @@ def test_1000():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_10000():
+def test_100000():
 
     stack = [vyxalify(item) for item in []]
     expected = vyxalify(100000)
@@ -11992,7 +11992,7 @@ def test_4294967296():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_11():
+def test_1_1():
 
     stack = [vyxalify(item) for item in []]
     expected = vyxalify([1, -1])
@@ -12015,7 +12015,7 @@ def test_11():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_11():
+def test__11():
 
     stack = [vyxalify(item) for item in []]
     expected = vyxalify([-1, 1])
@@ -13651,7 +13651,7 @@ def test_eraisedtopowera():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_eraisedtopowera1():
+def test_eraisedtopowera_1():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(0)

@@ -51,6 +51,8 @@ with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
 
 # Generate test cases
 
+names = []
+
 with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
     tests.write(prologue + "\n")
 
@@ -58,7 +60,9 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         try:
             if "tests" in element:
                 cases = element["tests"] or []
-                name = re.sub("[^A-Za-z0-9_]", "", str(element["name"]))
+                name = re.sub("[^A-Za-z0-9_\-]", "", str(element["name"]))
+                name = name.replace("-", "_")
+                names.append(name)
                 tests.write(f"def test_{name}():\n")
                 if not cases:
                     tests.write("    pass #TODO implement this test!!!\n\n")
@@ -84,3 +88,5 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
         except Exception as e:
             print("Failed in element", element)
             raise e
+
+print(list(names), list(set(names)))
