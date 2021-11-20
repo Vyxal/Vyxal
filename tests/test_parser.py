@@ -69,7 +69,7 @@ def test_fizzbuzz():
 def test_modifiers():
     assert str(fully_parse("⁽*r")) == str(
         [
-            Lambda("1", GenericStatement([Token(TokenType.GENERAL, "*")])),
+            Lambda("1", [GenericStatement([Token(TokenType.GENERAL, "*")])]),
             GenericStatement([Token(TokenType.GENERAL, "r")]),
         ]
     )
