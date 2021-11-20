@@ -4163,10 +4163,10 @@
 
 - element: "ÞU"
   name: Uniquify Mask
-  description: Return a list of booleans describing which elements of a will remain after uniquifying.
+  description: A list of booleans describing which elements of a will remain after uniquifying.
   arity: 1
   overloads:
-    any: Return a list of booleans describing which elements of a will remain after uniquifying.
+    any: A list of booleans describing which elements of a will remain after uniquifying.
   vectorise: false
   tests:
     - "[[1,2,3,1,2,3]] : [1,1,1,0,0,0]"

@@ -157,7 +157,7 @@ def all_true(lhs, ctx):
     return int(all(iterable(lhs, ctx)))
 
 
-def all_unqiue(lhs, ctx):
+def all_unique(lhs, ctx):
     """Element Þu
     (any) -> Are all elements of a unique?
     """
@@ -3069,6 +3069,37 @@ def uniquify(lhs, ctx):
     return f()
 
 
+def uniquify_mask(lhs, ctx):
+    """Element ÞU
+    (any) -> A list of booleans describing which elements of a will
+             remain after uniquifying.
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    print("lhs,", lhs)
+    # TODO (user/cgccuser): Reduce code duplication here?
+    if isinstance(lhs, list):
+        seen = set()
+        mask = []
+        for elem in lhs:
+            if elem not in seen:
+                mask.append(1)
+                seen.add(elem)
+            else:
+                mask.append(0)
+        return mask
+
+    @lazylist
+    def gen():
+        seen = set()
+        for elem in lhs:
+            if elem not in seen:
+                seen.add(elem)
+                yield 1
+            else:
+                yield 0
+    return gen()
+
+
 def untruth(lhs, ctx):
     """Element Þǔ
     (any) -> [int(x in a) for x in range(max(a))]
@@ -4092,9 +4123,10 @@ elements: dict[str, tuple[str, int]] = {
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
     "Þ×": process_element(all_combos, 1),
-    "Þu": process_element(all_unqiue, 1),
+    "Þu": process_element(all_unique, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
+    "ÞU": process_element(uniquify_mask, 1),
     "Þf": (
         "rhs = pop(stack, 1, ctx)\n"
         "if vy_type(rhs) != NUMBER_TYPE:\n"

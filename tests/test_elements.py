@@ -15910,7 +15910,9 @@ def test_UniquifyMask():
     print('ÞU', code)
     exec(code)
 
+    print(stack)
     ctx.stacks.pop()
+    print(stack)
     actual = vyxalify(stack[-1])
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:

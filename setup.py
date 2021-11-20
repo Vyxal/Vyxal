@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name="vyxallaguage",
+    name="vyxallanguage",
     version="2.6.0p1",
     packages=["vyxal"],
     scripts=["scripts/vyxal"],
