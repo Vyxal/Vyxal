@@ -13,15 +13,6 @@ import sympy
 from sympy import Rational
 
 
-def join_with(lhs, rhs):
-    """A generator to concatenate two iterables together"""
-    for item in lhs:
-        yield vyxalify(item)
-
-    for item in rhs:
-        yield vyxalify(item)
-
-
 def lazylist(fn):
     """A decorator to wrap function return values in `LazyList`"""
 
@@ -31,34 +22,9 @@ def lazylist(fn):
     return wrapped
 
 
-def simplify(value: Any) -> Union[int, float, str, list]:
-    if isinstance(value, (int, float, str)):
-        return value
-    elif "sympy" in str(type(value)):
-        return float(value)
-    else:
-        return list(map(simplify, value))
-
-
-def vyxalify(value: Any) -> Any:
-    """Takes a value and returns it as one of the four types we use here."""
-
-    if isinstance(value, sympy.core.numbers.Integer):
-        return int(value)
-    elif isinstance(value, sympy.Basic):
-        return sympy.nsimplify(value.as_real_imag()[0], rational=True)
-    elif isinstance(value, float):
-        return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (int, Rational, str, LazyList)):
-        return value
-    elif isinstance(value, list):
-        return list(map(vyxalify, value))
-    else:
-        return LazyList(map(vyxalify, value))
-
-
 class LazyList:
     def __add__(self, rhs):
+        from vyxal.helpers import join_with
         return LazyList(join_with(self.raw_object, rhs))
 
     def __call__(self, *args, **kwargs):
@@ -83,6 +49,7 @@ class LazyList:
             return 0
 
     def __eq__(self, other):
+        from vyxal.helpers import simplify
         return self.listify() == simplify(other)
 
     def __getitem__(self, position):
@@ -134,6 +101,7 @@ class LazyList:
         self.infinite = isinf
 
     def __iter__(self):
+        from vyxal.helpers import join_with
         raw_object_clones = itertools.tee(self.raw_object)
         self.raw_object = raw_object_clones[0]
         return join_with(self.generated[::], raw_object_clones[1])
@@ -142,6 +110,7 @@ class LazyList:
         return len(self.listify())
 
     def __next__(self):
+        from vyxal.helpers import vyxalify
         lhs = vyxalify(next(self.raw_object))
         self.generated.append(lhs)
         return lhs
@@ -165,6 +134,7 @@ class LazyList:
         return gen()
 
     def listify(self):
+        from vyxal.helpers import vyxalify
         temp = self.generated + vyxalify(list(self.raw_object))
         self.raw_object = iter(temp[::])
         self.generated = []

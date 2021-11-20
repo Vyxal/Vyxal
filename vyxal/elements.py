@@ -3660,9 +3660,7 @@ def vy_type(item, rhs=None, other=None, simple=False):
         )
     elif rhs is not None:
         return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (x := type(item)) in (int, complex, float) or isinstance(
-        item, sympy.Basic
-    ):
+    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
         assert x is not float
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):

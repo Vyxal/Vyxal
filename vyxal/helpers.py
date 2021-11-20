@@ -249,6 +249,10 @@ def invert_brackets(lhs: str) -> str:
     return res
 
 
+def is_sympy(value):
+    """Whether or not this is a Sympy type"""
+    return isinstance(value, sympy.Basic)
+
 def iterable(
     item: Any, number_type: Any = None, ctx: Context = DEFAULT_CTX
 ) -> Union[LazyList, Union[list, str]]:
@@ -261,6 +265,15 @@ def iterable(
             return digits(item)
     else:
         return item
+
+
+def join_with(lhs, rhs):
+    """A generator to concatenate two iterables together"""
+    for item in lhs:
+        yield vyxalify(item)
+
+    for item in rhs:
+        yield vyxalify(item)
 
 
 def levenshtein_distance(s1: str, s2: str) -> int:
@@ -535,6 +548,15 @@ def sentence_case(item: str) -> str:
     return ret
 
 
+def simplify(value: Any) -> Union[int, float, str, list]:
+    if isinstance(value, (int, float, str)):
+        return value
+    elif is_sympy(value):
+        return float(value)
+    else:
+        return list(map(simplify, value))
+
+
 def suffixes(string: str, ctx: Context) -> List[str]:
     """Returns a list of suffixes of string"""
     return [string[-i:] for i in range(len(string))]
@@ -688,7 +710,7 @@ def vyxalify(value: Any) -> Any:
 
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
-    elif isinstance(value, sympy.Basic):
+    elif is_sympy(value):
         return sympy.nsimplify(value.as_real_imag()[0], rational=True)
     elif isinstance(value, float):
         return sympy.nsimplify(value, rational=True)
