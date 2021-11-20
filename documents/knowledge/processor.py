@@ -89,4 +89,4 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
             print("Failed in element", element)
             raise e
 
-print(list(names), list(set(names)))
+print([x for x in names if names.count(x) > 1])

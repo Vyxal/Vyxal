@@ -3324,7 +3324,7 @@ def test_Int():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Join():
+def test_Merge():
 
     stack = [vyxalify(item) for item in [[1,2,3],4]]
     expected = vyxalify([1,2,3,4])
@@ -11256,7 +11256,7 @@ def test_HelloWorld():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_HelloWorld():
+def test_HelloWorldNoPunctuation():
 
     stack = [vyxalify(item) for item in []]
     expected = vyxalify("Hello World")

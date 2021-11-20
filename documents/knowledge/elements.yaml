@@ -736,7 +736,7 @@
     - "[[5]] : 5"
 
 - element: "J"
-  name: Join
+  name: Merge
   description: Join two lists or items
   arity: 2
   overloads:
@@ -2715,7 +2715,7 @@
     - '[] : "Hello, World!"'
 
 - element: "kh"
-  name: Hello World
+  name: Hello World (No Punctuation)
   arity: 0
   description: "Hello World"
   vectorise: false
