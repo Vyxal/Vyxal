@@ -4259,6 +4259,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ<": process_element(all_less_than_increasing, 2),
     "ÞD": process_element(all_diagonals, 1),
     "ÞS": process_element(sublists, 1),
+    "ÞṪ": process_element(transpose, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
