@@ -2917,6 +2917,21 @@ def starts_with(lhs, rhs, ctx):
     return int(lhs.startswith(rhs))
 
 
+def sublists(lhs, ctx):
+    """Element ÞS
+    Sublists of a list.
+    """
+
+    @lazylist
+    def gen():
+        length = len(lhs)
+        for size in range(1, length + 1):
+            for sub in range((length - size) + 1):
+                yield index(lhs, [sub, sub + size], ctx)
+
+    return gen()
+
+
 def substrings(lhs, ctx):
     """Element ǎ
     (num) -> ath prime
@@ -4243,6 +4258,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
     "ÞD": process_element(all_diagonals, 1),
+    "ÞS": process_element(sublists, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
