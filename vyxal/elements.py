@@ -155,9 +155,12 @@ def all_partitions(lhs, ctx):
 
     @lazylist
     def gen():
-        for index in range(1, len(lhs)):
-            for subarray in all_partitions(lhs[index:]):
-                yield prepend(0, subarray, ctx)
+        for pos in range(1, 2 ** len(lhs) - 1):
+            indicies = group_consecutive(
+                bin(pos)[2:].zfill(log_2(2 ** len(lhs), ctx)), ctx
+            )
+            if not all((len(x) == 1 for x in indicies)):
+                yield mold(lhs, indicies)
 
     return gen()
 
@@ -861,12 +864,12 @@ def find(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
-        index = 0
+        pos = 0
         lhs = iterable(lhs, ctx=ctx)
-        while index < len(lhs):
-            if non_vectorising_equals(lhs[index], rhs, ctx):
-                return index
-            index += 1
+        while pos < len(lhs):
+            if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
+                return pos
+            pos += 1
         return -1
     else:
         return {
@@ -1895,11 +1898,11 @@ def multi_dimensional_search(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     indexes = enumerate_md(lhs)
 
-    for index in indexes:
+    for ind in indexes:
         if non_vectorising_equals(
-            multi_dimensional_index(lhs, index, ctx), rhs, ctx
+            multi_dimensional_index(lhs, ind, ctx), rhs, ctx
         ):
-            return index
+            return ind
 
     return []
 
@@ -2655,9 +2658,11 @@ def run_length_encoding(lhs, ctx):
     """Element øe
     (str) -> List of the form [[character, count], ...]
     """
+
+    lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda elem: [list(elem[1]), len(list(elem[1]))],
+            lambda elem: [elem[1], len(list(elem[1]))],
             itertools.groupby(lhs),
         )
     )
@@ -3744,8 +3749,22 @@ def wrap(lhs, rhs, ctx):
                 else (iterable(rhs, ctx=ctx), lhs)
             )
             if vy_type(rhs, simple=True) is list:
-                return LazyList(wrap(lhs, x, ctx) for x in rhs)
+
+                @LazyList
+                def gen():
+                    slice_start = 0
+                    for pos in rhs:
+                        yield index(
+                            iterable(lhs, ctx=ctx),
+                            [slice_start, slice_start + pos],
+                            ctx,
+                        )
+                        slice_start += pos
+
+                return gen()
+
             ret, temp = [], []
+
             for item in vector:
                 temp.append(item)
                 if len(temp) == chunk_size:
@@ -3754,6 +3773,7 @@ def wrap(lhs, rhs, ctx):
                     else:
                         ret.append(temp[::])
                     temp = []
+
             if len(temp) < chunk_size and temp:
                 if all([type(x) is str for x in temp]):
                     ret.append("".join(temp))
