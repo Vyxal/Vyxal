@@ -37,4 +37,4 @@ jobs:
     - name: Black Check
       uses: jpetrucciani/black-check@20.8b1
       with:
-          black_flags: '--line-length=80'
+          black_flags: '--line-length 80'
