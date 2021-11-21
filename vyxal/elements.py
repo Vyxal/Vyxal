@@ -687,6 +687,14 @@ def divisor_sum(lhs, ctx):
     return vy_sum(divisors(lhs, ctx)[:-1], ctx)
 
 
+def dot_product(lhs, rhs, ctx):
+    """Element Þ•
+    Return the dot product of lhs and rhs
+    """
+
+    return vy_sum(multiply(lhs, rhs, ctx), ctx)
+
+
 def dyadic_maximum(lhs, rhs, ctx):
     """Element ∴
     (any, any) -> max(a, b)
@@ -1792,6 +1800,18 @@ def lowest_common_multiple(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: -1,
         (str, str): lambda: -1,
     }.get(ts, lambda: vectorise(lowest_common_multiple, lhs, rhs, ctx=ctx))()
+
+
+def matrix_multiply(lhs, rhs, ctx):
+    """Element ÞṀ
+    (lst, lst) -> Matrix multiplication
+    """
+
+    rhs = transpose(rhs, ctx)
+
+    return LazyList(
+        [dot_product(row, column, ctx) for column in rhs] for row in lhs
+    )
 
 
 def max_by_tail(lhs, ctx):
@@ -4260,6 +4280,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞD": process_element(all_diagonals, 1),
     "ÞS": process_element(sublists, 1),
     "ÞṪ": process_element(transpose, 2),
+    "ÞṀ": process_element(matrix_multiply, 2),
+    "Þ•": process_element(dot_product, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

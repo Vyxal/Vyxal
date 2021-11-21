@@ -10,8 +10,7 @@ import inspect
 import itertools
 import textwrap
 import types
-from typing import Any, Generator, List, Union
-from numpy.lib.arraysetops import isin
+from typing import Any, List, Union
 
 import sympy
 from sympy.parsing.sympy_parser import (

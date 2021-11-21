@@ -4219,7 +4219,7 @@
     lst-lst: Matrix multiplication
   vectorise: false
   tests:
-    - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[23,34],[31,46]]"
+    - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[19, 22], [43, 50]]"
 
 - element: "ÞḊ"
   name: Matrix Determinant
@@ -4267,6 +4267,17 @@
   overloads:
     lst-fun: Reduce columns of a matrix by a function.
   vectorise: false
+
+- element: "Þ•"
+  name: Dot Product
+  description: Dot product of two lists.
+  arity: 2
+  overloads:
+    lst-lst: Dot product of two lists.
+  vectorise: false
+  tests:
+    - "[[1,2,3],[4,5,6]] : 32"
+    - "[[69, 420], [21, 42]] : 19089"
 
 - element: "¨U"
   name: Get Request

@@ -17643,7 +17643,7 @@ def test_TransposeWithFiller():
 def test_MatrixMultiplication():
 
     stack = [vyxalify(item) for item in [[[1,2],[3,4]],[[5,6],[7,8]]]]
-    expected = vyxalify([[23,34],[31,46]])
+    expected = vyxalify([[19, 22], [43, 50]])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -17740,6 +17740,50 @@ def test_MainDiagonal():
 
     code = transpile('Þ/')
     # print('Þ/', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+def test_DotProduct():
+
+    stack = [vyxalify(item) for item in [[1,2,3],[4,5,6]]]
+    expected = vyxalify(32)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('Þ•')
+    # print('Þ•', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in [[69, 420], [21, 42]]]
+    expected = vyxalify(19089)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('Þ•')
+    # print('Þ•', code)
     exec(code)
 
     ctx.stacks.pop()

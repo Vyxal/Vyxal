@@ -546,7 +546,7 @@ Convert string or list to integer
 - str a: `int(a)`
 - lst a: `int(a) (treating items in list as digits)`
 -------------------------------
-## J (Join)
+## J (Merge)
 
 Join two lists or items
 
@@ -1196,7 +1196,7 @@ Round a number to the nearest integer
 - num a: `round(a)`
 - str a: `quad palindromize with overlap`
 -------------------------------
-## ṡ (Function Sort)
+## ṡ (Sort by Function)
 
 Sort a list by a function / create a range / split on a regex
 
@@ -1204,7 +1204,7 @@ Sort a list by a function / create a range / split on a regex
 
 - any a, fun b: `sorted(a, key=b) (Sort by b)`
 - num a, num b: `range(a, b + 1) (Inclusive range from a to b)`
-- str a, str b: `regex.split(string=a, pattern=b)`
+- str a, str b: `regex.split(pattern=b, string=a)`
 -------------------------------
 ## ṫ (Tail Extract)
 
@@ -1231,6 +1231,8 @@ Repeat a value several times
 
 ### Overloads
 
+- str a, num b: `a * b`
+- num a, str b: `b * a`
 - any a, num b: `Repeat a b times`
 - str a, str b: `a + " " + b`
 - fun a, any b: `repeat function a on b while the function results are not-unique`
@@ -1413,7 +1415,7 @@ The equivalent of a[b] = c
 -------------------------------
 ## Ḃ (Bifurcate)
 
-Pushes the top of the stack then it's reverse. Literally duplicate and reverse
+Pushes the top of the stack then its reverse. Literally duplicate and reverse
 
 ### Overloads
 
@@ -1903,7 +1905,7 @@ Order, Multiplicity, Valuation / remove till fixpoint
 -------------------------------
 ## ǒ (Modulo 3)
 
-Modulo 3 / Is string empty?
+Modulo 3 / Split into Length 2
 
 ### Overloads
 
@@ -2020,7 +2022,7 @@ FizzBuzz
 Hello, World!
 
 -------------------------------
-## kh (Hello World)
+## kh (Hello World (No Punctuation))
 
 Hello World
 
@@ -2030,12 +2032,12 @@ Hello World
 10^3 / 1000
 
 -------------------------------
-## k2 (1000)
+## k2 (10000)
 
 10^4 / 10000
 
 -------------------------------
-## k3 (10000)
+## k3 (100000)
 
 10^5 / 100000
 
@@ -2388,6 +2390,9 @@ Solve a quadratic equation of the form ax^2 + bx = 0
 ### Overloads
 
 - num a, num b: `x such that ax^2 + bx = 0`
+- num a, str b: `solve a such that a = b`
+- str a, num b: `solve b such that b = a`
+- str a, str b: `solve equation a = b for x`
 -------------------------------
 ## ∆Q (General Quadratic Solver)
 
@@ -2395,7 +2400,10 @@ Solve a quadratic equation of the form x^2 + ax + b = 0
 
 ### Overloads
 
-- num, num a: `roots(a, b)`
+- num a, num b: `roots(a, b) / x^2 + ax + b = 0`
+- num a, str b: `evaluate single variable expression b with x=a`
+- str a, num b: `evaluate single variable expression a with x=b`
+- str a, str b: `solve equation a < b for x`
 -------------------------------
 ## ∆s (Sine)
 
@@ -2431,11 +2439,11 @@ Get the arctangent of an angle in radians
 -------------------------------
 ## ∆P (Polynomial Solver)
 
-Solve a polynomial of the form ax^2 + bx + c = 0
+Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
 
 ### Overloads
 
-- list a: `roots(a)`
+- lst a: `roots(a)`
 -------------------------------
 ## ∆ƈ (n Pick r (npr))
 
@@ -2444,6 +2452,9 @@ Get the number of combinations of r items from a set of n items
 ### Overloads
 
 - num a, num b: `n_pick_r(a, b)`
+- num a, str b: `n_pick_r(a, len(b))`
+- str a, num b: `n_pick_r(len(a), b)`
+- str a, str b: `n_pick_r(len(a), len(b))`
 -------------------------------
 ## ∆± (Copy Sign)
 
@@ -2476,6 +2487,7 @@ Get the value of e raised to the power of a
 ### Overloads
 
 - num a: `e ** a`
+- str a: `simplify expression a`
 -------------------------------
 ## ∆E ((e raised to power a) - 1)
 
@@ -2551,7 +2563,7 @@ Get the first prime number before a given number
 -------------------------------
 ## ∆p (Nearest Prime to a Number)
 
-Get the prime number closest to a given number
+Get the prime number closest to a given number, get the greater to break ties
 
 ### Overloads
 
@@ -2571,7 +2583,7 @@ Round a number to n decimal places
 
 ### Overloads
 
-- num, num a: `round(a, no_dec_places=b)`
+- num a, num b: `round(a, no_dec_places=b)`
 -------------------------------
 ## ∆Ŀ (Least Common Multiple)
 
@@ -2579,9 +2591,9 @@ Get the least common multiple of two numbers
 
 ### Overloads
 
-- num, num a: `lcm(a, b)`
+- num a, num b: `lcm(a, b)`
 -------------------------------
-## ∆Π (nth Digit of Pi)
+## ∆i (nth Digit of Pi)
 
 Get the nth digit of pi
 
@@ -2597,7 +2609,7 @@ Get the nth digit of e
 
 - num a: `nth_digit_of_e(a)`
 -------------------------------
-## ∆F (nth Fibonacci Number)
+## ∆f (nth Fibonacci Number)
 
 Get the nth fibonacci number
 
@@ -2605,9 +2617,9 @@ Get the nth fibonacci number
 
 - num a: `nth_fibonacci(a)`
 -------------------------------
-## ∆b (Random Bits)
+## ∆B (Random Bits)
 
-Get a list of random bits (0 or 1)
+Get a list of random bits to length n
 
 ### Overloads
 
@@ -2620,6 +2632,14 @@ Get a random float in the range [0, 1), pseudo random number
 ### Overloads
 
 - num a: `random.random()`
+-------------------------------
+## ∆Z (ZFill)
+
+Pad a string with zeros to a given length
+
+### Overloads
+
+- str, num a: `zfill(a, b)`
 -------------------------------
 ## øb (Parenthesise)
 
@@ -2841,22 +2861,14 @@ Cartesian power, cartesian product with self n times
 - any a, num b: `cartesian_power(a, b)`
 - num a, any b: `cartesian_power(b, a)`
 -------------------------------
-## Þf (Flatten to depth)
+## Þf (Flatten By depth)
 
-Flatten a list to a certain depth (default 1)
-
-### Overloads
-
-- lst a, num b: `flatten a to depth b`
-- any a, lst b: `Flatten b to depth 1, push a as well`
--------------------------------
-## ÞC (Chunks Of Specified Length)
-
-Cut a string/list into chunks of specified sizes (stolen from osabie)
+Flatten a list by a certain depth (default 1)
 
 ### Overloads
 
-- any a, lst b: `Cut a into chunks of the lengths given in b`
+- lst a, num b: `Flatten a by depth b`
+- any a, lst b: `Flatten b by depth 1, push a as well`
 -------------------------------
 ## ÞB (Random Bits)
 
@@ -2869,7 +2881,7 @@ Fill a list with random bits
 -------------------------------
 ## Þ< (All Less Than Increasing)
 
-Find all numbers less than a certain value in a (potentially infinite) list assumed to be increasing
+Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
 
 ### Overloads
 
@@ -2914,4 +2926,174 @@ Fill a matrix by calling a function with the lists of coordinates in the matrix.
 ### Overloads
 
 - any a, fun b: `For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.`
+-------------------------------
+## Þ… (Evenly Distribute)
+
+Evenly distribute a number over elements of a list
+
+### Overloads
+
+- list a, num b: `Evenly distribute a over all elements of b, adding each part.`
+-------------------------------
+## Þ↓ (Minimum By Function)
+
+Find the minimum value of a list by applying a function to each element
+
+### Overloads
+
+- lst a, fun b: `Minimum value of a by applying b to each element`
+-------------------------------
+## Þ↑ (Maximum By Function)
+
+Find the maximum value of a list by applying a function to each element
+
+### Overloads
+
+- lst a, fun b: `Maximum value of a by applying b to each element`
+-------------------------------
+## Þ× (All Combinations)
+
+All combinations of a list / string, of all lengths, without replacement
+
+### Overloads
+
+- any a: `All combinations of a list / string, of all lengths and all orders, without replacement`
+-------------------------------
+## ÞF (All Fibbonacci)
+
+All Fibbonacci numbers as a LazyList.
+
+-------------------------------
+## Þ! (All Factorials)
+
+All factorials as a LazyList.
+
+-------------------------------
+## ÞU (Uniquify Mask)
+
+A list of booleans describing which elements of a will remain after uniquifying.
+
+### Overloads
+
+- any a: `A list of booleans describing which elements of a will remain after uniquifying.`
+-------------------------------
+## ÞD (Diagonals)
+
+Diagonals of a matrix, starting with the main diagonal.
+
+### Overloads
+
+- lst a: `Diagonals of a matrix, starting with the main diagonal.`
+-------------------------------
+## ÞS (Sublists)
+
+Sublists of a list.
+
+### Overloads
+
+- lst a: `Sublists of a list.`
+-------------------------------
+## ÞṪ (Transpose With Filler)
+
+Transpose a matrix, with a filler value for empty cells.
+
+### Overloads
+
+- lst a, any b: `Transpose a matrix, with a filler value for empty cells.`
+-------------------------------
+## Þ℅ (Random Permutation)
+
+Random permutation of a list / string
+
+### Overloads
+
+- any a: `Random permutation of a list / string`
+-------------------------------
+## ÞṀ (Matrix Multiplication)
+
+Multiply two matrices together.
+
+### Overloads
+
+- lst a, lst b: `Matrix multiplication`
+-------------------------------
+## ÞḊ (Matrix Determinant)
+
+Calculate the determinant of a matrix.
+
+### Overloads
+
+- lst a: `Calculate the determinant of a matrix.`
+-------------------------------
+## Þ\ (Antidiagonal)
+
+Antidiagonal of a matrix
+
+### Overloads
+
+- lst a: `Antidiagonal of a matrix`
+-------------------------------
+## Þ/ (Main Diagonal)
+
+Diagonal of a matrix
+
+### Overloads
+
+- lst a: `Diagonal of a matrix`
+-------------------------------
+## ÞR (Matrix Row Reduce)
+
+Reduce rows of a matrix by a function.
+
+### Overloads
+
+- lst a, fun b: `Reduce rows of a matrix by a function.`
+-------------------------------
+## ÞC (Matrix Column Reduce)
+
+Reduce columns of a matrix by a function.
+
+### Overloads
+
+- lst a, fun b: `Reduce columns of a matrix by a function.`
+-------------------------------
+## Þ• (Dot Product)
+
+Dot product of two lists.
+
+### Overloads
+
+- lst a, lst b: `Dot product of two lists.`
+-------------------------------
+## ¨U (Get Request)
+
+Send a GET request to a URL
+
+### Overloads
+
+- str a: `Send a GET request to a URL`
+-------------------------------
+## ¨M (Map To Indices)
+
+Map a function to elements of a list whose indices are in another list
+
+### Overloads
+
+- lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
+-------------------------------
+## ¨, (Print With Space)
+
+Print a value with a space after it
+
+### Overloads
+
+- any a: `Print a value with a space after it`
+-------------------------------
+## ¨… (Print With Space Without Popping)
+
+Print a value with a space after it, without popping it
+
+### Overloads
+
+- any a: `Print a value with a space after it, without popping it`
 -------------------------------

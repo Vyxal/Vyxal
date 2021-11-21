@@ -481,7 +481,7 @@ I (Int)
     str a: int(a)
     lst a: int(a) (treating items in list as digits)
 -------------------------------
-J (Join)
+J (Merge)
 
 - Join two lists or items
 
@@ -1725,7 +1725,7 @@ kH (Hello, World!)
 - Hello, World!
 
 -------------------------------
-kh (Hello World)
+kh (Hello World (No Punctuation))
 
 - Hello World
 
@@ -1735,12 +1735,12 @@ k1 (1000)
 - 10^3 / 1000
 
 -------------------------------
-k2 (1000)
+k2 (10000)
 
 - 10^4 / 10000
 
 -------------------------------
-k3 (10000)
+k3 (100000)
 
 - 10^5 / 100000
 
@@ -2486,18 +2486,12 @@ k∩ (Vowels With Y)
     any a, num b: cartesian_power(a, b)
     num a, any b: cartesian_power(b, a)
 -------------------------------
-Þf (Flatten to depth)
+Þf (Flatten By depth)
 
-- Flatten a list to a certain depth (default 1)
+- Flatten a list by a certain depth (default 1)
 
-    lst a, num b: flatten a to depth b
-    any a, lst b: Flatten b to depth 1, push a as well
--------------------------------
-ÞC (Chunks Of Specified Length)
-
-- Cut a string/list into chunks of specified sizes (stolen from osabie)
-
-    any a, lst b: Cut a into chunks of the lengths given in b
+    lst a, num b: Flatten a by depth b
+    any a, lst b: Flatten b by depth 1, push a as well
 -------------------------------
 ÞB (Random Bits)
 
@@ -2508,7 +2502,7 @@ k∩ (Vowels With Y)
 -------------------------------
 Þ< (All Less Than Increasing)
 
-- Find all numbers less than a certain value in a (potentially infinite) list assumed to be increasing
+- Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
 
     any a, num b: All values of a up to (not including) the first greater than or equal to b
 -------------------------------
@@ -2578,9 +2572,9 @@ k∩ (Vowels With Y)
 -------------------------------
 ÞU (Uniquify Mask)
 
-- Return a list of booleans describing which elements of a will remain after uniquifying.
+- A list of booleans describing which elements of a will remain after uniquifying.
 
-    any a: Return a list of booleans describing which elements of a will remain after uniquifying.
+    any a: A list of booleans describing which elements of a will remain after uniquifying.
 -------------------------------
 ÞD (Diagonals)
 
@@ -2624,7 +2618,7 @@ k∩ (Vowels With Y)
 
     lst a: Antidiagonal of a matrix
 -------------------------------
-Þ/ (Diagonal)
+Þ/ (Main Diagonal)
 
 - Diagonal of a matrix
 
@@ -2641,6 +2635,12 @@ k∩ (Vowels With Y)
 - Reduce columns of a matrix by a function.
 
     lst a, fun b: Reduce columns of a matrix by a function.
+-------------------------------
+Þ• (Dot Product)
+
+- Dot product of two lists.
+
+    lst a, lst b: Dot product of two lists.
 -------------------------------
 ¨U (Get Request)
 
