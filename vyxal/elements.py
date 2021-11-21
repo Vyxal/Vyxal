@@ -926,6 +926,21 @@ def factorial(lhs, ctx):
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
 
 
+def factorials(_, ctx):
+    """Element Þ!
+    An infinite lazylist of factorials
+    """
+
+    @lazylist
+    def gen():
+        i = 0
+        while True:
+            yield factorial(i, ctx)
+            i += 1
+
+    return gen()
+
+
 def factorial_of_range(lhs, ctx):
     """Element øF
     (num, num) -> factorial of range
@@ -936,6 +951,21 @@ def factorial_of_range(lhs, ctx):
         NUMBER_TYPE: lambda: math.factorial(lhs),
         str: lambda: vectorise(factorial_of_range, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
+
+
+def fibonaacis(_, ctx):
+    """Element ÞF
+    An infinite lazylist of fibonaaci numbers
+    """
+
+    @lazylist
+    def gen():
+        i = 0
+        while True:
+            yield sympy.fibonacci(i + 1)
+            i += 1
+
+    return gen()
 
 
 def find(lhs, rhs, ctx):
@@ -1869,6 +1899,25 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
+def max_by_function(lhs, ctx):
+    """Element Þ↑
+    (lst, fun) -> Maximum value of a by applying b to each element
+    """
+
+    lhs, rhs = (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
+    lhs = iterable(lhs, ctx=ctx)
+    if len(lhs) == 0:
+        return []
+    elif len(lhs) == 1:
+        return lhs[0]
+    else:
+        biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
+        for item in biggest[1:]:
+            if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
+                biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
+        return biggest
+
+
 def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
@@ -1914,6 +1963,25 @@ def merge(lhs, rhs, ctx):
         (ts[0], list): lambda: concat([lhs], rhs),
         (list, list): lambda: concat(lhs, rhs),
     }.get(ts)()
+
+
+def min_by_function(lhs, rhs, ctx):
+    """Element Þ↓
+    (lst, fun) -> Minimum value of a by applying b to each element
+    """
+
+    lhs, rhs = (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
+    lhs = iterable(lhs, ctx=ctx)
+    if len(lhs) == 0:
+        return []
+    elif len(lhs) == 1:
+        return lhs[0]
+    else:
+        smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
+        for item in smallest[1:]:
+            if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
+                smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
+        return smallest
 
 
 def min_by_tail(lhs, ctx):
@@ -4340,7 +4408,11 @@ elements: dict[str, tuple[str, int]] = {
     "ÞḊ": process_element(matrix_determinant, 1),
     "Þ\\": process_element(anti_diagonal, 1),
     "Þ/": process_element(diagonal, 1),
+    "Þ↓": process_element(min_by_function, 2),
+    "Þ↑": process_element(max_by_function, 2),
     "ÞZ": process_element(apply_at, 2),
+    "ÞF": process_element(fibonaacis, 0),
+    "Þ!": process_element(factorials, 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
