@@ -258,14 +258,18 @@ def apply_at(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
 
-    for pos in enumerate_md(lhs):
-        res = vectorise(rhs, pos, ctx=ctx)
-        temp = lhs
-        for sub in pos[:-1]:
-            temp = temp[sub]
-        temp[pos[-1]] = res
+    f = lambda a, g, pos=(): [
+        f(b, g, (*pos, i))
+        if isinstance(b, list)
+        else safe_apply(g, [*pos, i], ctx=ctx)
+        for i, b in enumerate(a)
+    ]
 
-    return lhs
+    # the above curtosy of pxeger
+    # https://chat.stackexchange.com/transcript/message/59662694#59662694
+    # thank you very cool
+
+    return f(lhs, rhs)
 
 
 def arccos(lhs, ctx):
