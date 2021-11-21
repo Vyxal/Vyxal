@@ -2953,6 +2953,14 @@ Find the maximum value of a list by applying a function to each element
 -------------------------------
 ## Þ× (All Combinations)
 
+All combinations of a list / string, of all lengths, with replacement
+
+### Overloads
+
+- any a: `All combinations of a list / string, of all lengths and all orders, with replacement`
+-------------------------------
+## Þx (All Combinations Without Replacement)
+
 All combinations of a list / string, of all lengths, without replacement
 
 ### Overloads

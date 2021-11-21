@@ -2556,6 +2556,12 @@ k∩ (Vowels With Y)
 -------------------------------
 Þ× (All Combinations)
 
+- All combinations of a list / string, of all lengths, with replacement
+
+    any a: All combinations of a list / string, of all lengths and all orders, with replacement
+-------------------------------
+Þx (All Combinations Without Replacement)
+
 - All combinations of a list / string, of all lengths, without replacement
 
     any a: All combinations of a list / string, of all lengths and all orders, without replacement
