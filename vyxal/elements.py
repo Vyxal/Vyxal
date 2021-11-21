@@ -265,7 +265,7 @@ def apply_at(lhs, rhs, ctx):
         for i, b in enumerate(a)
     ]
 
-    # the above curtosy of pxeger
+    # the above curtosey of pxeger
     # https://chat.stackexchange.com/transcript/message/59662694#59662694
     # thank you very cool
 
