@@ -2836,6 +2836,14 @@ def replace_until_no_change(lhs, rhs, other, ctx):
     return lhs
 
 
+def request(lhs, ctx):
+    x = urllib.request.urlopen(urlify(lhs)).read()
+    try:
+        return x.decode("utf-8")
+    except:
+        return x.decode("latin-1")
+
+
 def reverse(lhs, ctx):
     """Element Ṙ
     (any) -> a reversed
@@ -4482,6 +4490,8 @@ elements: dict[str, tuple[str, int]] = {
         "top = pop(stack, 1, ctx); vy_print(top, end=' '); stack.append(top)",
         1,
     ),
+    "¨M": process_element(apply_at, 3),
+    "¨U": ("if ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))", 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

@@ -697,6 +697,11 @@ def uncompress_str(string: str) -> str:
 def uncompress_num(num: str) -> int:
     return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
 
+def urlify(item: str) -> str:
+    """Makes a url ready for requesting"""
+    if not (item.startswith("http://") or item.startswith("https://")):
+        return "https://" + item
+    return item
 
 def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
