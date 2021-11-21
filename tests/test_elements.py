@@ -17465,7 +17465,7 @@ def test_EvenlyDistribute():
 def test_AllCombinations():
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify([[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]])
+    expected = vyxalify([[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -17485,14 +17485,58 @@ def test_AllCombinations():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in ["ab"]]
-    expected = vyxalify(["a","b","ab","ba"])
+    stack = [vyxalify(item) for item in ['ab']]
+    expected = vyxalify(['a', 'b', 'aa', 'ab', 'bb'])
     ctx = Context()
     
     ctx.stacks.append(stack)
 
     code = transpile('Þ×')
     # print('Þ×', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+def test_AllCombinationsWithoutReplacement():
+
+    stack = [vyxalify(item) for item in [[1,2,3]]]
+    expected = vyxalify([[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('Þx')
+    # print('Þx', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ["ab"]]
+    expected = vyxalify(["a","b","ab","ba"])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('Þx')
+    # print('Þx', code)
     exec(code)
 
     ctx.stacks.pop()

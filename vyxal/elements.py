@@ -94,7 +94,7 @@ def add(lhs, rhs, ctx):
 
 
 def all_combos(lhs, ctx):
-    """Element Þ×
+    """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
     """
 
@@ -116,7 +116,7 @@ def all_combos(lhs, ctx):
 
 def all_combos_with_replacement(lhs, ctx):
     """Element Þ×
-    (any) -> all combinations without replacement of lhs (all lengths)
+    (any) -> all combinations with replacement of lhs (all lengths)
     """
 
     all_with_replacement = map(
@@ -127,11 +127,10 @@ def all_combos_with_replacement(lhs, ctx):
     @lazylist
     def gen():
         for combo in all_with_replacement:
-            for item in combo:
-                for x in itertools.permutations(item):
-                    if all(isinstance(y, str) for y in x):
-                        x = "".join(x)
-                    yield vyxalify(x)
+            for x in combo:
+                if all(isinstance(y, str) for y in x):
+                    x = "".join(x)
+                yield vyxalify(x)
 
     return gen()
 

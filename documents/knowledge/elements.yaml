@@ -4140,6 +4140,17 @@
 
 - element: "Þ×"
   name: All Combinations
+  description: All combinations of a list / string, of all lengths, with replacement
+  arity: 1
+  overloads:
+    any: All combinations of a list / string, of all lengths and all orders, with replacement
+  vectorise: false
+  tests:
+    - "[[1,2,3]] : [[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]"
+    - "['ab'] : ['a', 'b', 'aa', 'ab', 'bb']"
+
+- element: "Þx"
+  name: All Combinations Without Replacement
   description: All combinations of a list / string, of all lengths, without replacement
   arity: 1
   overloads:
