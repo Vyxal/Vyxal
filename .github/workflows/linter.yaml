@@ -36,3 +36,5 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
     - name: Black Check
       uses: jpetrucciani/black-check@20.8b1
+      with:
+          black_flags: 'line-length=80'
