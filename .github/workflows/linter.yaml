@@ -37,4 +37,5 @@ jobs:
     - name: Black Check
       uses: jpetrucciani/black-check@master
       with:
-          black_flags: 'line-length=80'
+          path: "."
+          black_flags: 'args line-length=80'
