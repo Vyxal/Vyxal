@@ -4413,6 +4413,9 @@ elements: dict[str, tuple[str, int]] = {
     "ÞZ": process_element(apply_at, 2),
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
+    "Þ℅": process_element(
+        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx))", 1
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
