@@ -412,6 +412,18 @@ def mold(
     return shape
 
 
+def pad_to_square(array: VyList) -> VyList:
+    """
+    Returns an array padded to the square of the largest dimension.
+    https://stackoverflow.com/a/11763827/9363594
+    """
+    array = numpy.asarray(array)
+    m = array.reshape((array.shape[0], -1))
+    padded = 0 * numpy.ones(2 * [max(m.shape)], dtype=m.dtype)
+    padded[0 : m.shape[0], 0 : m.shape[1]] = m
+    return vyxalify(padded)
+
+
 def pi_digits(n: int):
     """Generate x digits of Pi. Spigot's formula."""
 

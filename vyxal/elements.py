@@ -221,6 +221,12 @@ def angle_bracketify(lhs, ctx):
     return "<" + str(lhs) + ">"
 
 
+def anti_diagonal(lhs, ctx):
+    lhs = numpy.asarray(iterable(lhs, ctx=ctx))
+    lhs = numpy.fliplr(lhs)
+    return vyxalify(lhs.diagonal())
+
+
 def any_true(lhs, ctx):
     """Element a
     (lst) -> any of lhs is truthy?
@@ -635,6 +641,14 @@ def deltas(lhs, ctx):
     return LazyList(
         subtract(lhs[i + 1], lhs[i], ctx=ctx) for i in range(len(lhs) - 1)
     )
+
+
+def diagonal(lhs, ctx):
+    """Element Þ/
+    (any) -> diagonal of a
+    """
+    lhs = numpy.asarray(iterable(lhs, ctx=ctx))
+    return vyxalify(lhs.diagonal())
 
 
 def divide(lhs, rhs, ctx):
@@ -1800,6 +1814,15 @@ def lowest_common_multiple(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: -1,
         (str, str): lambda: -1,
     }.get(ts, lambda: vectorise(lowest_common_multiple, lhs, rhs, ctx=ctx))()
+
+
+def matrix_determinant(lhs, ctx):
+    """Element ∆∆
+    (mat) -> determinant(a)
+    """
+
+    lhs = pad_to_square(iterable(lhs, ctx=ctx))
+    return sympy.det(sympy.Matrix(lhs))
 
 
 def matrix_multiply(lhs, rhs, ctx):
@@ -4282,6 +4305,9 @@ elements: dict[str, tuple[str, int]] = {
     "ÞṪ": process_element(transpose, 2),
     "ÞṀ": process_element(matrix_multiply, 2),
     "Þ•": process_element(dot_product, 2),
+    "ÞḊ": process_element(matrix_determinant, 1),
+    "Þ\\": process_element(anti_diagonal, 1),
+    "Þ/": process_element(diagonal, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
