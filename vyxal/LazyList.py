@@ -25,6 +25,7 @@ def lazylist(fn):
 class LazyList:
     def __add__(self, rhs):
         from vyxal.helpers import join_with
+
         return LazyList(join_with(self.raw_object, rhs))
 
     def __call__(self, *args, **kwargs):
@@ -50,6 +51,7 @@ class LazyList:
 
     def __eq__(self, other):
         from vyxal.helpers import simplify
+
         return self.listify() == simplify(other)
 
     def __getitem__(self, position):
@@ -102,6 +104,7 @@ class LazyList:
 
     def __iter__(self):
         from vyxal.helpers import join_with
+
         raw_object_clones = itertools.tee(self.raw_object)
         self.raw_object = raw_object_clones[0]
         return join_with(self.generated[::], raw_object_clones[1])
@@ -111,6 +114,7 @@ class LazyList:
 
     def __next__(self):
         from vyxal.helpers import vyxalify
+
         lhs = vyxalify(next(self.raw_object))
         self.generated.append(lhs)
         return lhs
@@ -135,6 +139,7 @@ class LazyList:
 
     def listify(self):
         from vyxal.helpers import vyxalify
+
         temp = self.generated + vyxalify(list(self.raw_object))
         self.raw_object = iter(temp[::])
         self.generated = []
