@@ -1067,6 +1067,26 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     return "\n".join(result)
 
 
+def foldl_columns(lhs, rhs, ctx):
+    """Element ÞC
+    (lst, fun) -> reduce the columns of a by function b
+    """
+
+    lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
+    lhs = transpose(iterable(lhs, ctx=ctx), ctx=ctx)
+    return [foldl(rhs, col, ctx=ctx) for col in lhs]
+
+
+def foldl_rows(lhs, rhs, ctx):
+    """Element ÞR
+    (lst, fun) -> reduce the rows of a by function b
+    """
+
+    lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
+
+    return [foldl(rhs, row, ctx=ctx) for row in iterable(lhs, ctx=ctx)]
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -4416,6 +4436,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ℅": process_element(
         "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx))", 1
     ),
+    "ÞC": process_element(foldl_columns, 2),
+    "ÞR": process_element(foldl_rows, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
