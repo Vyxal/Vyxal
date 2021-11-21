@@ -35,6 +35,6 @@ jobs:
         # exit-zero treats all errors as warnings.
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
     - name: Black Check
-      uses: jpetrucciani/black-check@20.8b1
+      uses: jpetrucciani/black-check@master
       with:
           black_flags: 'line-length=80'
