@@ -262,36 +262,20 @@ def any_true(lhs, ctx):
     return int(any(iterable(lhs, ctx=ctx)))
 
 
-def apply_at(lhs, rhs, ctx):
-    """Element ÞZ
-    (any, fun) -> For each value of a (all the way down) call b with the
-                  coordinates of that value and put that at the
-                  appropriate position in a.
-
-    Or, as hyper said: for each value of a, call b with the coordinates
-    of that value is just deepmap(b, multidimindex(a))
-
-    https://chat.stackexchange.com/transcript/message/59662626#59662626
+def apply_at(lhs, rhs, other, ctx):
+    """Element ¨M
+    (lst, lst, fun) -> Map a function to elements of a list whose
+                       indices are in another list
     """
 
-    lhs, rhs = (lhs, rhs) if type(rhs) is types.FunctionType else (rhs, lhs)
-    # arrange so that lhs is always the list and rhs is always the
-    # function
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = wrapify(rhs)
+    for pos in rhs:
+        lhs = assign_iterable(
+            lhs, pos, safe_apply(other, index(lhs, pos, ctx), ctx=ctx)
+        )
 
-    lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
-
-    f = lambda a, g, pos=(): [
-        f(b, g, (*pos, i))
-        if isinstance(b, list)
-        else safe_apply(g, [*pos, i], ctx=ctx)
-        for i, b in enumerate(a)
-    ]
-
-    # the above curtosey of pxeger
-    # https://chat.stackexchange.com/transcript/message/59662694#59662694
-    # thank you very cool
-
-    return f(lhs, rhs)
+    return lhs
 
 
 def arccos(lhs, ctx):
@@ -579,6 +563,38 @@ def contains(lhs, rhs, ctx):
         if item == rhs:
             return 1
     return 0
+
+
+def coords_deepmap(lhs, rhs, ctx):
+    """Element ÞZ
+    (any, fun) -> For each value of a (all the way down) call b with the
+                  coordinates of that value and put that at the
+                  appropriate position in a.
+
+    Or, as hyper said: for each value of a, call b with the coordinates
+    of that value is just deepmap(b, multidimindex(a))
+
+    https://chat.stackexchange.com/transcript/message/59662626#59662626
+    """
+
+    lhs, rhs = (lhs, rhs) if type(rhs) is types.FunctionType else (rhs, lhs)
+    # arrange so that lhs is always the list and rhs is always the
+    # function
+
+    lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
+
+    f = lambda a, g, pos=(): [
+        f(b, g, (*pos, i))
+        if isinstance(b, list)
+        else safe_apply(g, [*pos, i], ctx=ctx)
+        for i, b in enumerate(a)
+    ]
+
+    # the above curtosey of pxeger
+    # https://chat.stackexchange.com/transcript/message/59662694#59662694
+    # thank you very cool
+
+    return f(lhs, rhs)
 
 
 def copy_sign(lhs, rhs, ctx):
@@ -4453,7 +4469,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ/": process_element(diagonal, 1),
     "Þ↓": process_element(min_by_function, 2),
     "Þ↑": process_element(max_by_function, 2),
-    "ÞZ": process_element(apply_at, 2),
+    "ÞZ": process_element(coords_deepmap, 2),
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(
@@ -4461,6 +4477,11 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
+    "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ')", 1),
+    "¨…": (
+        "top = pop(stack, 1, ctx); vy_print(top, end=' '); stack.append(top)",
+        1,
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
