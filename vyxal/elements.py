@@ -114,6 +114,28 @@ def all_combos(lhs, ctx):
     return gen()
 
 
+def all_combos_with_replacement(lhs, ctx):
+    """Element Þ×
+    (any) -> all combinations without replacement of lhs (all lengths)
+    """
+
+    all_with_replacement = map(
+        lambda x: itertools.combinations_with_replacement(lhs, x),
+        range(1, len(lhs) + 1),
+    )
+
+    @lazylist
+    def gen():
+        for combo in all_with_replacement:
+            for item in combo:
+                for x in itertools.permutations(item):
+                    if all(isinstance(y, str) for y in x):
+                        x = "".join(x)
+                    yield vyxalify(x)
+
+    return gen()
+
+
 def all_diagonals(lhs, ctx):
     """Element ÞD
     Diagonals of a matrix, starting with the main diagonal.
@@ -4401,7 +4423,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
-    "Þ×": process_element(all_combos, 1),
+    "Þx": process_element(all_combos, 1),
+    "Þ×": process_element(all_combos_with_replacement, 1),
     "Þu": process_element(all_unique, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
