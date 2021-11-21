@@ -12,21 +12,14 @@ def token_equal(source: str, expected: list[Token]) -> bool:
     Vectorises equality over the tokenised version of the program and
     the expected token list. This is because memory references.
 
-    Parameters
-    ----------
-
-    source : str
+    Parameters:
+    source: str
         The test program to tokenise
-
     expected: list[Token]
         The expected token list
 
-
-    Returns
-    -------
-
-    bool
-        True iff corresponding tokens in the tokenised source and the
+    Returns a `bool`
+        `True` iff corresponding tokens in the tokenised source and the
         expected list have the same name and value
     """
 
@@ -65,7 +58,7 @@ def test_strings():
         r"`Escaped backtick? \``",
         [Token(TokenType.STRING, r"Escaped backtick? \`")],
     )
-    assert token_equal(r"\`", [Token(TokenType.STRING, "`")])
+    assert token_equal(r"\`", [Token(TokenType.CHARACTER, "`")])
     assert token_equal(
         "k`Hi",
         [

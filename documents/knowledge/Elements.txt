@@ -1,621 +1,2674 @@
-λ                                    = * lambda: λ...; λarity|...;  (Function definition)
-ƛ                                    = * lambda map: ƛ...;  (Map a series of functions over top of stack)
-¬ (a: any)                           = not a (non-vectorising)
-∧ (a: any, b: any)                   = a and b (non-vectorising)
-⟑ (a: any, b: any)                   = b and a (non-vectorising)
-∨ (a: any, b: any)                   = a or b (non-vectorising)
-⟇ (a: any, b: any)                   = b or a (non-vectorising)
-÷ (a: any)                           = stack += iterable(a) # item split/unwrap
-×                                    = "*"
-«                                    = * base_255 compressed string: «...«
-<newline>                            = * newline
-»                                    = * base_255 compressed number: »...»
-°                                    = * function reference: °defined_function_name;
-• (a: number, b: number)             = log_a(b) # Logarithm, a based log of b
-  (a: number, b: string)             = [char * a for char in b] 
-  (a: string, b: number)             = [char * b for char in a]
-  (a: string, b: string)             = a.with_capitalisation_of(b)
-  (a: list, b: list)                 = a molded to the shape of b
-  (otherwise)                        = vectorised
-ß (a: any)                           = * execute next element if a is truthy: ß<element>
-† (a: function)                      = * call function reference
-  (a: string)                        = exec(a) # Execute vyxal code; exec as vyxal
-  (a: number)                        = len(prime_factors(a)) # Number of prime factors
-  (a: list)                          = vectorised not a, ¬ vectorised
-€ (a: any, b: any)                   = a.split_on(b) # split a on delimiter b
-½ (a: number)                        = a / 2 # half, halve
-  (a: string)                        = a split into two strings of equal lengths (as close as possible)
-  (otherwise)                        = vectorised
-∆                                    = * mathematic digraphs (see near the end of docs)
-ø                                    = * string digraphs (see near the end of docs)
-↔ (a: any, b: number)                = combinations_with_replacement(a, length=b)
-  (a: any, b: non-number)            = remove elements in a that are not in b
-  (a: function, b: any)              = apply a on b until the result does not change. Collects intermittent values
-¢ (a: string, b: string, c: string)  = replace b in a with c until a does not change
-⌐ (a: number)                        = 1 - a
-  (a: string)                        = a.split(",") # Split on comma ","
-  (otherwise)                        = vectorised
-æ (a: number)                        = is_prime(a) # Check if a is prime
-  (a: string)                        = case_of(a) # Check which case a is
-  (otherwise)                        = vectorised
-ʀ (a: number)                        = range(0, a + 1) # Inclusive range from 0
-  (a: otherwise)                     = str(a) == "0"
-ʁ (a: number)                        = range(0, a) # Exclusive range from 0
-  (a: otherwise)                     = str(a) == "0" # that is because of the way this is implemented - it is literally just 0ar
-ɾ (a: number)                        = range(1, a + 1) # Inclusive range from 1
-  (a: otherwise)                     = str(a) == "1"
-ɽ (a: number)                        = range(1, a) # Exclusive range from 1
-  (a: otherwise)                     = str(a) == "1"
-Þ                                    = * list digraphs (see near the end of docs)
-ƈ (a: number, b: number)             = a choose b (n choose r, ncr, n c r), Binomial Coefficient
-  (a: number, b: string)             = [random.choice(b) for _ in range(a)] # Randomly choose a items from b
-  (a: string, b: number)             = [random.choice(a) for _ in range(b)] # Randomly choose b items from a
-  (a: string, b: string)             = set(a) == set(b) # Check if two lists are same except duplicates
-  (otherwise)                        = vectorised
-∞                                    = list of all non-negative integers, starting at 0
-¨                                    = * other digraphs (see near the end of docs)
-<space>                              = * NOP (Do nothing)
-!                                    = length(stack) # Number of items in stack
-" (a: any, b: any)                   = [a, b] # pair, listify top two items on stack
-#                                    = * comment
-$ (a: any, b: any)                   = b, a # swap
-% (a: number, b: number)             = a % b # modulo, modulus
-  (a: number, b: string)             = (b split into a equal pieces)[-1]
-  (a: string, b: number)             = (a split into b equal pieces)[-1]
-  (a: string, b: string)             = a.format(b) # Format string
-  (a: string, b: list)               = a.format(b) # Format string with list
-  (otherwise)                        = vectorised
-&                                    = * apply next element to register: &<element>
-'                                    = * lambda filter, map or apply a series of functions over top of stack, and filter out the truthy ones
-(                                    = * open for loop: (variable|...)
-)                                    = * close for loop
-* (a: number, b: number)             = a * b # multiplication
-  (a: number, b: string)             = b repeated a times
-  (a: string, b: number)             = a repeated b times
-  (a: string, b: string)             = [char + b for char in a] # vectorised concatenation
-  (otherwise)                        = vectorised
-+ (a: number, b: number)             = a + b # addition
-  (a: number, b: string)             = concat(a, b) # Concatenate
-  (a: string, b: number)             = concat(a, b) # Concatenate
-  (a: string, b: string)             = concat(a, b) # Concatenate
-  (otherwise)                        = vectorised
-, (a: any)                           = print(a)
-- (a: number, b: number)             = a - b # subtraction
-  (a: number, string)                = ("-" * a) + b
-  (a: string, b: number)             = a + ("-" * b)
-  (a: string, b: string)             = a.remove(b) # Replace or Remove
-  (otherwise)                        = vectorised
-.                                    = * decimal seperator
-/ (a: number, b: number)             = a / b # division
-  (a: number, b: string)             = b split into a even length pieces. There may be an extra part if the string is too long.
-  (a: string, b: number)             = a split into b even length pieces. There may be an extra part if the string is too long.
-  (a: string, b: string)             = a.split(b) # Split
-  (otherwise)                        = vectorised
-0                                    = * numeric literal
-1                                    = * numeric literal
-2                                    = * numeric literal
-3                                    = * numeric literal
-4                                    = * numeric literal
-5                                    = * numeric literal
-6                                    = * numeric literal
-7                                    = * numeric literal
-8                                    = * numeric literal
-9                                    = * numeric literal
-: (a: any)                           = a, a  # duplicate
-;                                    = * closes a structure
-< (a: non-list, b: non-list)         = a < b # less than (numbers converted to strings)
-  (a: list, b: any)                  = vectorised
-= (a: non-list, b: non-list)         = a == b # Equal?
-  (a: list, b: any)                  = a == b # vectorising equals
-> (a: non-list, b: non-list)         = a > b # greater than (numbers converted to strings)
-  (a: list, b: any)                  = vectorised
-?                                    = input() # Prompt for input
-@                                    = * define a function: @name:parameters|...;
-                                     = * call a function: @name;
-A (a: any)                           = all(a) # Check if all items in a are truthy
-B (a: non-list)                      = int(a, 2) # convert from binary, binary to ten, 2 to 10, base 2 to base 10
-  (a: list)                          = int(a, 2) # treats the items in the list as digits
-C (a: number)                        = chr(a) # codepoint to character
-  (a: string)                        = ord(a) if len(a) == 1 else [ord(char) for char in a]
-  (otherwise)                        = vectorised
-D (a: any)                           = a, a, a # triplicate, three copies
-E (a: number)                        = 2 ** a # 2 power, two power, 2^a
-  (a: string)                        = eval(a) # Evaluate python code, Python eval
-  (otherwise)                        = vectorised
-F (a: any, b: function)              = filter(b, a) # filter, keep, python filter
-  (a: any, b: any)                   = remove elements of a that are in b
-G (a: any)                           = max(a) # monadic maximum, maximum iterable
-H (a: non-list)                      = int(a, 16) # convert from hexadecimal, hexadecimal to ten, 16 to 10
-  (a: list)                          = int(a, 16) # treats the items in the list as digits
-I (a: number)                        = int(a)
-  (a: string)                        = int(a)
-  (a: list)                          = int(a) # treats the items in the list as digits
-J (a: list, b: non-list)             = a.append(b) # Append
-  (a: non-list, b: list)             = b.prepend(a) # Prepend
-  (a: list, b: list)                 = merged(a, b) # Merge
-  (a: non-list, b: non-list)         = concatenated(a, b) # Concatenate
-K (a: number)                        = divisors(a) # Factors or divisors of a
-  (a: string)                        = all substrings of a that occur more than once # they "divide" a into more than one piece
-  (otherwise)                        = prefixes(a) # Prefixes of a
-L (a: any)                           = len(a)  # length
-M (a: any, b: function)              = map(b, a) # map, apply to each
-  (a: any, b: any)                   = [[a, item] for item in b] # Vectorised pair
-N (a: number)                        = -a # negate, a * -1
-  (a: string)                        = swap_case(a) # Toggle or swap cases
-  (otherwise)                        = vectorised
-O (a: any, b: any)                   = a.count(b) # non-vectorising count, number of times b occurs in a
-P (a: any, b: any)                   = a.strip(b) # Strip
-Q                                    = exit() # quit, halt, stop
-R (a: any, b: function)              = reduce a by b # reduction, reduce
-  (a: any, b: any)                   = a, vectorised_reverse(b)
-S (a: any)                           = str(a) # string, to string, stringify
-T (a: any)                           = truthy indices in a
-U (a: any)                           = uniquifed(a) # uniquify, unique items, remove duplicates
-V (a: any, b: any, c: any)           = a.replace(needle=b, replacement=c) # replace
-W                                    = [stack] # wrap stack, lisitfy whole stack
-X                                    = 
-Y (a: any, b: any)                   = interleave(a, b) # Interleave
-Z (a: any, b: any)                   = zip(a, b) # Zip
-[                                    = * open if statement: [truthy|falsey]
-\                                    = * one character literal: \<letter>, Capture the next element as a string
-]                                    = * close if statement
-`                                    = * string literal: `...`
-^                                    = * reverse stack
-_ (a: any)                           = discard/pop/remove item
-a (a: any)                           = any(a) # Check if at least one element in a is truthy
-b (a: number)                        = bin(a) # binary representation, base 10 to 2
-  (a: string)                        = [bin(ord(char)) for char in a] # Convert codepoint of each character in string to binary
-  (otherwise)                        = vectorised
-c (a: any, b: any)                   = b in a # non-vectorising contains, Membership, does a contain b?
-d (a: number)                        = a * 2 # double
-  (a: string)                        = a * 2 # double
-  (otherwise)                        = vectorised
-e (a: number, b: number)             = a ** b # exponent, exponentiation, a^b
-  (a: number, b: string)             = every ath letter of b
-  (a: string, b: number)             = every bth letter of a
-  (a: string, b: string)             = regex.search(pattern=a, string=b).span()
-  (otherwise)                        = vectorised
-f (a: number)                        = list of digits of a
-  (a: string)                        = list of characters of a
-  (otherwise)                        = flattened(a) # flatten, deep flatten
-g (a: any)                           = min(a) # monadic minimum, minimum iterable
-h (a: any)                           = a[0] # head, first item
-i (a: any, b: number)                = a[b] # index
-  (a: any, b: [x])                   = a[:b] # 0 to bth item of a, use ȯ for a[b:], needs wrapping index
-  (a: any, b: [x, y])                = a[x:y] # index, xth to yth item, needs wrapping index
-  (a: any, b: [x, y, m])             = a[x:y:m] # index, xth to yth item step m items, needs wrapping index
-j (a: any, b: any)                   = a.join(b) # join
-k                                    = * constant digraphs (see near the end of docs)
-l (a: any, b: number)                = subvectors of a of length b # Equivalent to b,/a in APL
-  (a: any, b: non-number)            = length(a) == length(b) # Length of a and b are same?
-m (a: any)                           = a + reversed(a) # mirror, mirrored, palindromised (Use vertical mirror below for ASCII art)
-n                                    = * context variable
-o (a: any, b: any)                   = a.replace(b, "") # equivalent to b``V
-p (a: any, b: any)                   = prepend a to b # a.insert(b, 0)
-q (a: any)                           = "`" + a + "`" # uneval, quotify
-r (a: number, b: number)             = range(a, b) # Exclusive range from a to b
-  (a: any, b: function)              = cumulative_reduce(a, function=b) # also works with (a: any, b: function), Cumulative reduce
-  (otherwise)                        = regex.has_match(pattern=a, string=b) # regex match
-s (a: any)                           = sorted(a) # min → max, sort
-t (a: any)                           = a[-1] # tail, last item
-u                                    = -1
-v                                    = * vectorise next element: v<element>, apply next element to each item in top of stack
-w (a: any)                           = [a] # single wrap, listify top of stack
-x                                    = * call current function # recursion. Prints entire stack if not in a function/lambda
-y (a: any)                           = uninterleave(a) # Uninterleave
-z (a: any, b: function)              = zip(a, map(b, a)) #zipmap, map and zip
-  (a: any, b: any)                   = a, zip(b, b)
-{                                    = * open while loop: {condition|...}
-|                                    = * branch in structure (syntax), Used to seperate blocks in If/For/While/Lambda/Function definition
-}                                    = * close while loop
-~                                    = * filter by element (monad)
-                                     = * execute element without popping (dyad)
-↑ (a: any)                           = max(a, key=lambda x: x[-1]) # Maximum by tail/last element
-↓ (a: any)                           = min(a, key=lambda x: x[-1]) # Minimum by tail/last element
-∴ (a: any, b: any)                   = max(a, b) # Maximum between a and b
-∵ (a: any, b: any)                   = min(a, b) # Minimum between a and b
-› (a: number)                        = a + 1 # increment
-  (a: string)                        = concat(a, "1") # Add "1"
-  (otherwise)                        = vectorised
-‹ (a: number)                        = a - 1 # decrement
-  (a: string)                        = a + "-"
-  (otherwise)                        = vectorised
-∷ (a: number)                        = a % 2 # parity, bit, odd?
-  (a: string)                        = last half of a
-  (otherwise)                        = vectorised
-¤                                    = "" # empty string
-ð                                    = " " # space string
-→ (a: any)                           = * variable set (= a): →name
-←                                   	       = * variable get: ←name
-β (a: any, b: number)                = a to base 10 from arbitrary base b # Base conversion
-  (a: string, b: string)             = a to base 10 from custom base b # Base conversion
-τ (a: number, b: number)             = a from base 10 to arbitrary base b # Base conversion
-  (a: number, b: string)             = a from base 10 to custom base b # Base conversion
-  (a: number, b: list)               = a from base 10 to custom base b # Base conversion
-ȧ (a: number)                        = abs(a) # Absolute value
-  (a: string)                        = remove whitespace from a
-  (otherwise)                        = vectorised
-ḃ (a: any)                           = bool(a) # Boolify
-ċ (a: any)                           = a != 1 # falsey
-ḋ (a: number, b: number)             = [a / b, a % b]  # divmod, div mod, [div, mod], Quotient and modulo
-  (a: string, b: number)             = combinations of a with length b
-  (a: list, b: number)               = combinations of a with length b
-  (a: string, b: string)             = a.trim(b)
-ė (a: any)                           = enumerate(a) # Enumerate, Zip with range to length
-ḟ (a: any, b: any)                   = a.find(b) # Index of
-  (a: any, b: function)              = truthy_indices(map(b, a)) # Map over truthy indices
-ġ (a: list)                          = gcd(a)  # greatest common denominator
-  (a: number, b: number)             = gcd(a, b) # greatest common denominator
-  (a: string, b: any)                = longest common suffix(a, str(b))
-ḣ (a: any)                           = a[0], a[1:] # head extract
-ḭ (a: number, b: number)             = a // b  # integer divison, floor division
-  (a: number, b: string)             = (b / a)[0] # head of string wrapping
-  (a: string, b: number)             = (a / b)[0] # head of string wrapping
-  (a: function, b: any)              = * right reduce b by a # foldr
-  (a: any, b: function)              = * right reduce a by b # foldr
-ŀ (a: any, b: any, c: number)        = a.find(b, start=c) # Index of from c
-ṁ (a: any)                           = arithmetic_mean(a)  # average -> sum(a) / length(a)
-ṅ (a: function)                      = first integer where a(x) is truthy
-  (otherwise)                        = "".join(a) # Join by empty string
-ȯ (a: function, b: number)           = first n integers where a(x) is truthy
-  (a: any, b: number)                = a[b:] # Slice a from b
-ṗ (a: any)                           = powerset(a) # Power sets
-ṙ (a: number)                        = round(a) # Round
-ṡ (a: any, b: function)              = sorted(a, key=b) # Sort a by b
-  (a: number, b: number)             = range(a, b + 1)  # inclusive range from a to b
-  (a: string, b: any)                = regex.split(string=a, pattern=str(b)) # split on regex match
-  (a: any, b: string)                = regex.split(string=str(a), pattern=b) # split on regex match
-ṫ (a: any)                           = a[:-1], a[-1] # tail extract
-ẇ (a: any, b: number)                = a wrapped in chunks of length b
-  (a: any, b: function)              = apply b to every second item of a
-  (a: function, b: any)              = apply a to every second item of b
-ẋ (a: any, b: number)                = repeat(a, times=b) # Repeat a b times
-  (a: function, b: function, c: any) = collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply b on c while a(c) is truthy
-ẏ (a: any)                           = range(0, len(a)) # Exclusive range from 0 to length of a
-ż (a: any)                           = range(1, len(a) + 1) # Inclusive range from 1 to length of a
-√ (a: number)                        = sqrt(a)  # square root
-  (a: string)                        = every second character of a
-  (otherwise)                        = vectorised
-⟨                                    = * open a list: ⟨...⟩
-⟩                                    = * close a list
-‛                                    = * two character string literal: ‛.. # capture next two bytes as a string
-₀                                    = 10
-₁                                    = 100
-₂ (a: number)                        = a % 2 == 0 # even?
-  (otherwise)                        = len(a) % 2 == 0 # Is length of a even?
-₃ (a: number)                        = a % 3 == 0 # Modulo by 3 is 0?
-  (otherwise)                        = len(a) == 1 # Is length of a 1?
-₄                                    = 26
-₅ (a: number)                        = a % 5 == 0 # Modulo by 5 is 0?
-  (otherwise)                        = a, len(a) # Push a with its length
-₆                                    = 64
-₇                                    = 128
-₈                                    = 256
-¶                                    = "\n" # newline
-⁋ (a: any)                           = "\n".join(a) # join by newlines
-§ (a: any)                           = vertical_join(a) # vertical join
-ε (a: list, b: number)               = abs(a - b) # vectorises
-  (a: any, b: string)                = vertical_join(a, padding=b)  # vertical join with padding b
-  (a: number, b: number)             = abs(a - b) # Absolute value of a - b
-¡ (a: number)                        = factorial(a) # Factorial
-  (a: string)                        = sentence_case(a) # Sentence case, first letter capitalised
-  (otherwise)                        = vectorised
-∑ (a: any)                           = sum(a) # Sum
-¦ (a: any)                           = cumulative_sum(a)  # cumulative sum
-  (a: string)                        = prefixes of a
-≈ (a: any)                           = are all elements the same?
-µ                                    = * lambda sort: µ...;. The same as λ...;ṡ
-Ȧ (a: list, b: number, c: any)       = a[b] = c # Assign bth index to value c
-Ḃ (a: any)                           = a, reversed(a) # bifurcate, push a and its reversed copy
-Ċ (a: any)                           = counts_of_items(a) # Counter of each distinct item of a in itself
-Ḋ (a: number, b: number)             = a % b == 0 # Modulo of a and b is 0?
-  (a: string, b: number)             = b copies of a
-  (a: string, b: string)             = len(b) copies of a
-  (a: number, b: string)             = a copies of b
-  (otherwise)                        = vectorised
-Ė (a: string)                        = Vyxal_exec(a) # Execute Vyxal code, Vyxal eval
-  (a: number)                        = 1 / a  # reciprocal
-  (otherwise)                        = vectorise
-Ḟ (a: function, b: any)              = push Generator of function f with initial vector a
-  (a: function, b: any, c: number)   = push Generator of function f with intial vector a, limited to b items (if present)
-Ġ (a: any)                           = group_consecutive(a) # Group consecutive items
-Ḣ (a: any)                           = a[1:] # All but first item
-İ (a: any, b: list)                  = [a[item] for item in b]  # indexed into
-  (a: any, b: function)              = repeat funciton b on a while the function results are not-unique
-Ŀ (a: any, b: any, c: any)           = transliterate(a, b, c) # Transliterate
-  (a: function, b: function, c: any) = repeat_until_false(predicate=a, modifying_function=b, inital=c) # equivalent to ẋt
-Ṁ (a: list, b: number, c: any)       = a.insert(b, c) # Insert at position b
-  (a: list, b: number, c: function)  = c mapped over every bth item of a
-Ṅ (a: number)                        = integer_paritions(a) # Integer partitions 
-  (otherwise)                        = " ".join(a) # Join by space
-Ȯ                                    = stack[-2] # Second last item
-Ṗ (a: any)                           = permutations(a) # Permutations
-Ṙ (a: any)                           = reversed(a) # Reversed, a[::-1]
-Ṡ                                    = sum(stack) # Sum of stack
-Ṫ (a: any)                           = a[:-1] # Tail, last item
-Ẇ (a: any, b: any)                   = a.split_and_keep_delimiter(b) # Split, but not remove delimiter
-Ẋ (a: any, b: any)                   = cartesian_product(a, b) # Cartesian product
-  (a: function, b: any)              = repeatedly apply a on b until b does not change
-Ẏ (a: any, b: number)                = a[0:b] # Slice until b
-  (a: any, b: non-number)            = regex.findall(pattern=a, string=b) # re.findall
-Ż (a: any, b: number)                = a[1:b] # Slice except head until b
-  (a: any, b: non-number)            = regex.match(pattern=a, string=b).groups() # regex groups
-₌                                    = * parallel apply next two elements: ₌<element><element>
-₍                                    = * parallel apply next two elements and put into list: ₍<element><element>. Equivalent to ₌.."
-⁰                                    = first item from input history
-¹                                    = second item from input history
-² (a: number)                        = a ** 2 # squared
-  (a: string)                        = a formatted as a square
-  (otherwise)                        = vectorised
-∇ (a: any, b: any, c: any)           = c, a, b # Shift
-⌈ (a: number)                        = ceiling(a) # Ceiling, ceil
-  (a: string)                        = a.split(" ") # Split on space
-⌊ (a: number)                        = floor(a) # Floor
-  (a: string)                        = int(keep only digits of a)
-¯ (a: any)                           = deltas(a) # Deltas, cumulative deduction
-± (a: number)                        = sign_of(a) # negative = -1, 0 = 0, positive = 1, signum
-  (a: string)                        = a
-  (otherwise)                        = vectorised
-₴ (a: any)                           = print(a, end="") # Print without newline
-…                                    = print(stack[-1]) # Print top of stack, but not pop
-□                                    = all inputs wrapped in a list # Listify or wrap input
-↳ (a: number, b: number)             = a >> b # Right bit shift, right shift
-  (a: string, b: number)             = a.rjust(b) # right justify
-  (a: number, b: string)             = b.rjust(a) # right justify
-  (a: string, b: string)             = a.rjust(len(b) - len(a)) # right justify by length
-  (otherwise)                        = vectorised
-↲ (a: number, b: number)             = a << b # Left bit shift, left shift
-  (a: string, b: number)             = a.ljust(b) # left justify
-  (a: number, b: string)             = b.ljust(a) # left justify
-  (a: string, b: string)             = a.ljust(len(b) - len(a)) # left justify by length
-  (otherwise)                        = vectorised
-⋏ (a: number, b: number)             = a and b (bitwise) # a & b
-  (a: string, b: number)             = a.center(b) # center
-  (a: number, b: string)             = b.center(a) # center
-  (a: string, b: string)             = a.center(len(b) - len(a)) # center by length
-  (otherwise)                        = vectorised
-⋎ (a: number, b: number)             = a or b (bitwise) # a | b
-  (a: string, b: number)             = remove bth character of a
-  (a: number, b: string)             = remove ath character of b
-  (a: string, b: string)             = a and b joined on longest common prefix and suffix # `abc``cabc`⋎ -> `abcabc`
-  (otherwise)                        = vectorised
-꘍ (a: number, b: number)             = a xor b (bitwise)
-  (a: string, b: number)             = a + " " * b # append b spaces to a
-  (a: number, b: string)             = " " * a + b # prepend a spaces to b
-  (a: string, b: string)             = levenshtein_distance(a, b) # Levenshtein distance of two strings
-  (otherwise)                        = vectorised
-ꜝ (a: number)                        = not a (bitwise) # ~a
-  (a: string)                        = are any letters in a uppercase?
-  (a: list)                          = vectorised
-℅ (a: any)                           = random.choice(a) # Randomly choose from a
-≤ (a: any, b: any)                   = a <= b # less than or equal to
-≥ (a: any, b: any)                   = a >= b # greater than or equal to
-≠ (a: any, b: any)                   = a != b (non-vectorising) # not equals
-⁼ (a: any, b: any)                   = a == b (non-vectorising) # non-vectorising equals
-ƒ (a: number)                        = fractionify(a) # returns a two-item list of [numerator, denominator]
-  (a: string)                        = fractionify(a) if a is numeric string
-ɖ (a: list)                          = decimalify(a) # opposite of ƒ, reduce by division
-∪ (a: any, b: any)                   = set union # Merge without duplicates
-∩ (a: any, b: any)                   = set intersection # Common elements
-⊍ (a: any, b: any)                   = set(a) ^ set(b)
-£                                    = set register without emptying
-¥                                    = push register without emptying
-⇧ (a: list)                          = graded_up(a)
-  (a: string)                        = a.upper() # To upper case
-  (a: number)                        = a + 2 # Increment by 2
-⇩ (a: list)                          = graded_down(a) # equivalent to ⇧Ṙ
-  (a: string)                        = a.lower() # To lower case
-  (a: number)                        = a - 2 # Decrement by 2
-Ǎ (a: string)                        = remove all non-letters of a `^[A-Za-z]`
-  (a: number)                        = 2 ** a # 2 raised to ath power, 2^a
-  (otherwise)                        = vectorised
-ǎ (a: number)                        = push ath prime
-  (a: string)                        = substrings(a) # All substrings
-  (otherwise)                        = vectorised
-Ǐ (a: number)                        = prime factorisation of a	# ǐU, without duplicates
-  (a: string)                        = a + a[0] # enclosed a
-  (otherwise)                        = vectorised
-ǐ (a: number)                        = all prime factors of a (includes duplicates)
-  (a: string)                        = a.titlecase() # To title case
-  (otherwise)                        = vectorised
-Ǒ (a: number, b: number)             = how many times does b divide a?  # order
-  (a: string, b: string)             = remove b from a until a does not change
-ǒ (a: number)                        = a % 3 # Modulo by 3
-  (a: string)                        = is string empty?
-  (otherwise)                        = vectorised
-Ǔ (a: any, b: number)                = rotate a b units to the left
-  (a: any, b: any)                   = a, b rotated to the left once
-ǔ (a: any, b: number)                = rotate a b units to the right
-  (a: any, b: any)                   = a, b rotated to the right once
-⁽                                    = * one-byte lambda: ⁽<element>
-‡                                    = * two-byte lambda: ‡<element><element>
-≬                                    = * three-byte lambda: ≬<element><element><element>
-⁺                                    = * index of next character in codepage + 101: ⁺<character>
-↵ (a: string)                        = a.split("\n") # Split on newlines
-  (a: number)                        = 10 ** a # 10 raised to ath power, 10^a
-  (otherwise)                        = vectorised
-⅛ (a: any)                           = push a to global array, but not pop a
-¼                                    = pop from global array and push to stack
-¾                                    = push global array
-Π (a: any)                           = product(a) # reduce by multiplication, product
-„                                    = * rotate stack left
-‟                                    = * rotate stack right 
-k                                    = Constants (below)
-kA                                   = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
-ke                                   = 2.718281828459045 (math.e, Eulers number)
-kf                                   = "Fizz"
-kb                                   = "Buzz"
-kF                                   = "FizzBuzz"
-kH                                   = "Hello, World!"
-kh                                   = "Hello World"
-k1                                   = 1000
-k2                                   = 10000
-k3                                   = 100000
-k4                                   = 1000000
-ka                                   = "abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
-kL                                   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
-kd                                   = "0123456789" (Digits 0-9)
-k6                                   = "0123456789abcdef" (Hex digits)
-k^                                   = "0123456789ABCDEF" (Hex digits uppercase)
-ko                                   = "01234567" (Octal digits)
-kp                                   = string.punctuation (Punctuations)
-kP                                   = printable ascii
-kw                                   = All ASCII whitespace
-kr                                   = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
-kB                                   = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
-kZ                                   = "ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
-kz                                   = "zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
-kl                                   = "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
-ki                                   = 3.141592653589793 (Pi)
-kn                                   = math.nan
-kg                                   = 1.618033988749895 (golden ratio/phi)
-k₂                                   = 1.4142135623730951 (square root of 2)
-k₃                                   = 1.7320508075688772 (square root of 3)
-k₅                                   = 2.23606797749979 (square root of 5)
-kD                                   = * Current day in the format YYYY-MM-DD
-kN                                   = * Current time as a list of ⟨hh|mm|ss⟩
-kḋ                                   = * Current day in the format DD/MM/YYYY
-kḊ                                   = * Current day in the format MM/DD/YYYY
-kð                                   = * Current day in the format ⟨DD|MM|YYYY⟩
-kβ                                   = "{}[]<>()" 
-kḂ                                   = "()[]{}" (Brackets)
-kß                                   = "()[]"
-kḃ                                   = "([{" (Open brackets)
-k≥                                   = ")]}" (Close brackets)
-k≤                                   = "([{<" (Fish bones :P)
-kΠ                                   = ")]}>"
-kv                                   = "aeiou" (Vowels lowercase)
-kV                                   = "AEIOU" (Vowels uppercase)
-k∨                                   = "aeiouAEIOU" (vowelsVOWELS)
-k⟇                                   = * Yields the Vyxal codepage
-k½                                   = [1, 2]
-kḭ                                   = 2 ** 32, 2^32, 4294967296
-k+                                   = [1, -1]
-k-                                   = [-1, 1]
-k≈                                   = [0, 1]
-k/                                   = "/\\"
-kR                                   = 360
-kW                                   = "https://"
-k℅                                   = "http://"
-k↳                                   = "https://www."
-k²                                   = "http://www."
-k¶                                   = 512
-k⁋                                   = 1024
-k¦                                   = 2048
-kṄ                                   = 4096
-kṅ                                   = 8192
-k¡                                   = 16384
-kε                                   = 32768
-k₴                                   = 65536
-k×                                   = 2147483648
-k⁰                                   = "bcfghjklmnpqrstvwxyz"
-k¹                                   = "bcfghjklmnpqrstvwxz"
-k•                                   = ["qwertyuiop", "asdfghjkl", "zxcvbnm"] (Qwerty keyboard)
-kṠ                                   = current second
-kṀ                                   = current minute
-kḢ                                   = current hour
-kτ                                   = day number of the year, day of year
-kṡ                                   = seconds since epoch
-k□                                   = [[0,1],[1,0],[0,-1],[-1,0]]
-k…                                   = [[0,1],[1,0]]
-kɽ                                   = [-1,0,1]
-k[                                   = "[]"
-k]                                   = "]["
-k(                                   = "()"
-k)                                   = ")("
-k{                                   = "{}"
-k}                                   = "}{"
-kẇ                                   = day of the week - 0 indexed
-kẆ                                   = day of the week - 1 indexed
-k§                                   = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-kɖ                                   = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-kṁ                                   = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-k∪                                   = "aeiouy"
-k⊍                                   = "AEIOUY"
-k∩                                   = "aeiouyAEIOUY"
-kṗ                                   = phi
-k⋏                                   = 2 ** 20
-k⋎                                   = 2 ** 30
-k*                                   = "+-<>[].,"
-kS                                   = "ඞ" # kS[us] (get it?)
-∆c (a: number)                       = math.cos(a) # Cosine
-∆C (a: number)                       = math.arccos(a) # Arc cosine
-∆q (a: number, b: number)            = roots of quadratic ax^2 + bx = 0 # Solve quadratic equation
-∆Q (a: number, b: number)            = roots of quadratic x^2 + ax + b = 0 # Solve quadratic equation
-∆s (a: number)                       = math.sin(a) # Sine
-∆S (a: number)                       = math.arcsin(a) # Arc sine
-∆t (a: number)                       = math.tan(a) # Tangent
-∆T (a: number)                       = math.arctan(a) # Arc tangent
-∆P (a: list)                         = roots of polynomial with coefficients in a: [2, 5, 1, 3] -> 2x^3 + 5x^2 + x + 3 = 0
-∆ƈ (a: number, b: number)            = n pick r (npr)
-∆± (a: number, b: number)            = math.copysign(a, b)
-∆K (a: number)                       = sum(proper_divisors(a)) # Sum of proper divisors
-∆² (a: number)                       = is_perfect_square(a) # Perfect square?
-∆e (a: number)                       = e ** a # e raised to power a, e^a
-∆E (a: number)                       = (e ** a) - 1 # uses math.expm1()
-∆L (a: number)                       = ln(a) # ln, e based log, natural logarithm
-∆l (a: number)                       = log_2(a)
-∆τ (a: number)                       = log_10(a) # Common logarithm, 10 based log
-∆d (a: list, b: list)                = euclidian_distance(a, b) # Straight line distance
-∆D (a: number)                       = math.degrees(a) # To degrees
-∆R (a: number)                       = math.radians(a) # To radians
-∆Ṗ (a: number)                       = next prime after a
-∆ṗ (a: number)                       = first prime before a
-∆p (a: number)                       = nearest prime to a (highest prime if lowest prime is just as close)
-∆ṙ (a: list)                         = polynomial from roots a
-∆Ṙ                                   = random.random() # random float in the range [0, 1), pseudo random number
-∆W (a: number, b: number)            = round(a, no_dec_places=b) # Round a to b decimal places
-∆Ŀ (a: number, b: number)            = lcm(a, b)
-∆Π (a: number)                       = ath digit of pi
-∆ė (a: number)                       = ath digit of e
-∆F (a: number)                       = ath fibonacii number
-∆b (a: number)                       = list of a random bits
-øo (a: string, b: string)            = a.remove_until_no_change(b) # Remove until no change
-øV (a: string, b: string, c: string) = a.replace_until_no_change(b, c) # Replace until no change
-øc (a: string)                       = base_255_string_compressed(a) # Base 255 compressed string
-øC (a: number)                       = base_255_number_compressed(a) # Base 255 compressed number
-øĊ (a: list)                         = center(a) # Center align, ASCII art
-øe (a: any)                          = run_length_encoded(a) # Run length encoding
-ød (a: any)                          = run_length_decoded(a) # Run length decoding
-øD (a: string)                       = dictionary_compressed(a) # Compress using dictionary
-øW (a: string)                       = group_on_words(a) # Group on words
-øṙ (a: any, b: any, c: non-function) = regex.replace(pattern=a, source=b, replacent=c) # Regex replace
-   (a: any, b: any, c: function)     = regex.apply_to_matches(pattern=a, source=b, function=c) # gsub, regex replace 
-øm (a: any)                          = palindromised(a) # does not duplicate middle
-øp (a: string, b: string)            = a.startswith(b) # Starts with b?
-øP (a: number, b: string)            = a + " " + b + (s if a != 1 else "") # Concatenate with space
-øṁ (a: string)                       = vertical_mirror(a) # Vertical mirror, ASCII art
-   (a: number)                       = mirror(a) 
-   (otherwise)                       = vectorises
-øṀ (a: string)                       = vertical_mirror(a, mapping=flip_slashes_and_brackets) # [ <-> ], ( <-> ), { <-> }, < <-> >, / <-> \
-   (otherwise)                       = vectorises
-ø¦ (a: string, b: string)            = vertical_mirror(a, mapping=b) # mapping in the form of ["normal", "flipped"] - custom mapping
-øb (a: string)                       = bracketify(a) # surround in ()
-øe (a: string, b: string)            = enclose b in a # b[0:len(b)//2] + a + b[len(b)//2:]
-ø↳ (a: string, b: string, c: number) = pad a right with b to length c
-ø↲ (a: string, b: string, c: number) = pad a left with b to length c
-ø0 (a: string, b: number)            = a.zfill(b)
-Þ… (a: list, b: number)              = b evenly distributed over the elements of a
-Þ↓ (a: function, b: any)             = * minimum of b by function a
-Þ↑ (a: function, b: any)             = * maximum of b by function a
-Þ× (a: any)                          = all_combinations(a) # This is all lengths
-ÞU (a: any)                          = nub_sieve(a) # uniquify mask, which items would remain after uniqified(a)
-ÞT (a: any)                          = transpose(a) # Transpose
-ÞF                                   = * every fibonacci number (Generator)
-Þ!                                   = * every factorial (Generator)
-ÞD (a: list)                         = diagonals of a - starts with main diagonal.
-ÞS (a: any)                          = sublists(a)
-ÞṪ (a: list, b: any)                 = transpose(a, filler=b) # Transpose with filler
-Þ℅ (a: any)                          = random permutation of a (but faster than Ṗ℅)
-Þ• (a: list, b: list)                = dot product of a and b
-ÞṀ (a: list, b: list)                = matrix multiply a and b
-ÞḊ (a: list)                         = matrix determinant of a
-Þ/ (a: list)                         = the main diagonal of a
-Þ\ (a: list)                         = the anti-diagonal of a
-ÞR (a: list, b: function)            = reduce rows of a by function b
-ÞC (a: list, b: function)            = reduce columns of a by function b
-ÞW (a: number)                       = pop top a items into a list
-¨U (a: string)                       = GET request with url=a
-¨M (a: list, b: list, c: function)   = map function c to every item in a whos index is in b
-¨, (a: any)                          = print(a, end=" ") # Print with a space at end
-¨…                                   = print(stack[-1], end=" ") # Print top of stack with a space at end, but not pop
+λ (Lambda)
+
+- Open a lambda - λ...;
+
+-------------------------------
+ƛ (Lambda Map)
+
+- Open a mapping lambda - ƛ
+
+-------------------------------
+¬ (Logical Not)
+
+- Return the inverse (negation) of the truthiness of an item.
+
+    num a: not a
+    str a: a != "" | len(a) > 0
+    lst a: a != [] | len(a) > 0
+-------------------------------
+∧ (Logical And)
+
+- Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
+
+    any a, any b: a and b
+-------------------------------
+⟑ (Reversed Logical And)
+
+- Returns the same as logical and but with reversed arguments.
+
+    any a, any b: b and a
+-------------------------------
+∨ (Logical Or)
+
+- Returns the first truthy argument, otherwise the first falsey argument.
+
+    any a, any b: a or b
+-------------------------------
+⟇ (Reversed Logical Or)
+
+- Returns  the same as logical or but with reversed arguments.
+
+    any a, any b: b or a
+-------------------------------
+÷ (Item Split)
+
+- Pushes each item of the top of the stack onto the stack.
+
+    num a: Push each digit of a
+    str a: Push each character of a
+    lst a: Push each item of a
+-------------------------------
+× (Asterisk Literal)
+
+- the string "*" (asterisk)
+
+-------------------------------
+« (Base Compressed String)
+
+- Open/close a bijective base-255 compressed string - «...«
+
+-------------------------------
+␤ (Newline)
+
+- NOP
+
+-------------------------------
+» (Base Compressed Number)
+
+- Open/close a bijective base-255 compressed number - »...»
+
+-------------------------------
+ß (Conditional Execute)
+
+- Executes element A if the top of the stack is truthy
+
+    ß<element>
+
+-------------------------------
+• (MultiCommand)
+
+- Logarithm / Repeat Character / Capitalisation transfer
+
+    num a, num b: log_a(b)
+    num a, str b: [char * a for char in b]
+    str a, num b: [char * b for char in a]
+    str a, str b: a.with_capitalisation_of(b)
+    lst a, lst b: a molded  to  the shape of b
+    otherwise: vectorise
+-------------------------------
+† (Function Call)
+
+- Calls a function / executes as python / len(prime factors) / vectorised not
+
+    fun a: a()
+    num a: len(prime_factors(a))
+    str a: exec as python
+    lst a: vectorised not
+-------------------------------
+€ (Split On)
+
+- Split a on b (works on lists and numbers as well)
+
+    any a, any b: a split on b
+-------------------------------
+½ (Halve)
+
+- Halves an item
+
+    num a: a / 2
+    str a: a split into two strings of equal lengths (as close as possible)
+    otherwise: vectorise
+-------------------------------
+∆ (Mathematic Digraph)
+
+- Used for mathematical digraphs
+
+-------------------------------
+ø (String Digraph)
+
+- Used for string-based digraphs
+
+-------------------------------
+↔ (Combinations/Remove/Fixed Point Collection)
+
+- Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+
+    any a, num b: combinations_with_replacement(a, length=b)
+    fun a, any b: Apply a on b until the result doesn't change, yielding intermediate values
+    any a, str b: Remove elements from a that are not in b
+    any a, lst b: Remove elements from a that are not in b.
+-------------------------------
+¢ (Infinite Replacement)
+
+- Replace b in a with c until a doesn't change
+
+    any a, any b, any c: replace b in a with c until a doesn't change
+-------------------------------
+⌐ (Complement / Comma Split)
+
+- 1 - a if number, split by commas if string.
+
+    num a: 1 - a
+    str a: a.split(",")
+    otherwise: vectorise
+-------------------------------
+æ (Is Prime / Case Check)
+
+- (a is prime) if a is a number, else check which case a is
+
+    num a: is a prime?
+    str a: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
+    otherwise: vectorise
+-------------------------------
+ʀ (Inclusive Zero Range)
+
+- Inclusive range or whether each character is alphabetical
+
+    num a: range(0,a + 1) (inclusive range from 0)
+    str a: [is v alphabetical? for v in a]
+    otherwise: vectorise
+-------------------------------
+ʁ (Exclusive Zero Range)
+
+- Exclusive range or palindromised
+
+    num a: range(0,a) (exclusive range from 0)
+    str a: palindromised a
+    otherwise: vectorise
+-------------------------------
+ɾ (Inclusive One Range)
+
+- Inclusive range or uppercase
+
+    num a: range(1,a+1) (inclusive range from 1)
+    str a: a.uppercase()
+    otherwise: vectorise
+-------------------------------
+ɽ (Exclusive One Range / Lowercase)
+
+- Exclusive range or lowercase
+
+    num a: range(1,a) (exclusive range from 0)
+    str a: a.lowercase()
+    otherwise: vectorise
+-------------------------------
+Þ (List Digraph)
+
+- Used for list-related digraphs
+
+-------------------------------
+ƈ (Choose / random choice / set same)
+
+- Binomial coefficient / choose a random items from b / same except duplicates
+
+    num a, num b: a choose b (binomial coefficient)
+    num a, str b: Choose a random items from b
+    str a, num b: Choose b random items from a
+    str a, str b: Check if lists are the same except for duplicates
+    otherwise: vectorise
+-------------------------------
+∞ (Palindromise)
+
+- Palindromise a
+
+    any a: palindromised a
+-------------------------------
+¨ (Other Digraphs)
+
+- Used for various random digraphs
+
+-------------------------------
+  (Space)
+
+- NOP
+
+-------------------------------
+! (Stack Length)
+
+- Push the length of the stack
+
+-------------------------------
+" (Pair)
+
+- Place the top two items into a single list
+
+    any a, any b: [a, b]
+-------------------------------
+# (Comment)
+
+- The characters until the next newline are commented out
+
+-------------------------------
+$ (Swap)
+
+- Swap the top two items
+
+    any a, any b: b, a
+-------------------------------
+% (Modulo / Format)
+
+- Modulo two numbers / format two strings
+
+    num a, num b: a % b
+    num a, str b: last of (b split into a equal pieces)
+    str a, num b: last of (a split into b equal pieces)
+    str a, str b: a.format(b) (replace % in a with b)
+    str a, lst b: a.format(b) (replace % in a with each item of b)
+    otherwise: vectorise
+-------------------------------
+& (Apply To Register)
+
+- Apply the next element to the register
+
+    &<element>
+
+-------------------------------
+' (Lambda Filter)
+
+- Open a filter lambda - '...;
+
+-------------------------------
+( (Open For Loop)
+
+- Start a for loop, iterating over the popped top of stack.
+
+-------------------------------
+) (Close For loop)
+
+- Close a for loop
+
+-------------------------------
+* (Multiplication)
+
+- Multiply two numbers or strings
+
+    num a, num b: a * b
+    num a, str b: b repeated a times
+    str a, num b: a repeated b times
+    str a, str b: ring translate b according to a
+    otherwise: vectorise
+-------------------------------
++ (Addition)
+
+- Adds the top two items on the stack
+
+    num a, num b: a + b
+    num a, str b: str(a) + b
+    str a, num b: a + str(b)
+    str a, str b: a + b
+    otherwise: vectorise
+-------------------------------
+, (Print)
+
+- Print a with trailing newline
+
+    any a: print(a)
+-------------------------------
+- (Subtract)
+
+- Subtracts the top two items on the stack
+
+    num a, num b: a - b
+    num a, str b: ("-" * a) + b
+    str a, num b: a + ("-" * b)
+    str a, str b: a.replace(b, '')
+    otherwise: vectorise
+-------------------------------
+. (Decimal Separator)
+
+- Decimal separator
+
+-------------------------------
+/ (Divide / Split)
+
+- Divide two numbers or split strings
+
+    num a, num b: a / b
+    num a, str b: b split into a even length pieces, possibly with an extra part
+    str a, num b: a split into b even length pieces, possibly with an extra part
+    str a, str b: a.split(b)
+    otherwise: vectorise
+-------------------------------
+0 (Literal digit 0)
+
+- Literal digit 0
+
+-------------------------------
+1 (Literal digit 1)
+
+- Literal digit 1
+
+-------------------------------
+2 (Literal digit 2)
+
+- Literal digit 2
+
+-------------------------------
+3 (Literal digit 3)
+
+- Literal digit 3
+
+-------------------------------
+4 (Literal digit 4)
+
+- Literal digit 4
+
+-------------------------------
+5 (Literal digit 5)
+
+- Literal digit 5
+
+-------------------------------
+6 (Literal digit 6)
+
+- Literal digit 6
+
+-------------------------------
+7 (Literal digit 7)
+
+- Literal digit 7
+
+-------------------------------
+8 (Literal digit 8)
+
+- Literal digit 8
+
+-------------------------------
+9 (Literal digit 9)
+
+- Literal digit 9
+
+-------------------------------
+: (Duplicate)
+
+- Push a twice
+
+    any a: a,a
+-------------------------------
+; (Close Structure)
+
+- Close a lambda / map lambda / sort lambda / function
+
+-------------------------------
+< (Less Than)
+
+- Basic comparison - less than
+
+    num a, num b: a < b
+    num a, str b: str(a) < b
+    str a, num b: a < str(b)
+    str a, str b: a < b
+    otherwise: vectorise
+-------------------------------
+= (Equals)
+
+- Basic comparison - equals
+
+    num a, num b: a == b
+    num a, str b: str(a) == b
+    str a, num b: a == str(b)
+    str a, str b: a == b
+    otherwise: vectorise
+-------------------------------
+> (Greater Than)
+
+- Basic comparison - greater than
+
+    num a, num b: a > b
+    num a, str b: str(a) > b
+    str a, num b: a > str(b)
+    str a, str b: a > b
+    otherwise: vectorise
+-------------------------------
+? (Input)
+
+- Get the next input from the input source
+
+-------------------------------
+@ (Function Call / Declaration)
+
+- Call / declare function (@name; / @name|code;)
+
+-------------------------------
+A (All)
+
+- Chck if all items in a list are truthy / check if a character is a vowel
+
+    str a: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+    any a: all(a)
+-------------------------------
+B (Binary To Decimal)
+
+- Convert a binary string or list to base 10
+
+    any a: int(a,2) (convert from base 2 to base 10)
+-------------------------------
+C (Chr / Ord)
+
+- Convert between characters and ordinals
+
+    num a: chr(a)
+    str a: ord(a) if length 1 else list of ordinals
+    otherwise: vectorise
+-------------------------------
+D (Triplicate)
+
+- Push three copies of a to stack
+
+-------------------------------
+E (Two Power / Python Eval)
+
+- a ** 2, or eval(a)
+
+    num a: 2 ** a
+    str a: eval(a) (safe-eval as python)
+    otherwise: vectorise
+-------------------------------
+F (Filter)
+
+- Filter a list by another list or function.
+
+    any a, fun b: filter(b,a) (filter a by the ones that b returns a truthy result for)
+    any a, any b: remove elements of a that are in b
+-------------------------------
+G (Max)
+
+- Maximum value or a
+
+    any a: max(a)
+-------------------------------
+H (Hex To Decimal)
+
+- Convert hexadecimal to decimal
+
+    any a: int(a,16) (from hexadecimal)
+-------------------------------
+I (Int)
+
+- Convert string or list to integer
+
+    num a: a
+    str a: int(a)
+    lst a: int(a) (treating items in list as digits)
+-------------------------------
+J (Merge)
+
+- Join two lists or items
+
+    lst a, str b: a.append(b) (Append)
+    lst a, num b: a.append(b) (Append)
+    str a, lst b: b.prepend(a) (Prepend)
+    num a, lst b: b.prepend(a) (Prepend)
+    lst a, lst b: merged(a,b) (Merge)
+    any a, any b: a + b (Concatenate)
+-------------------------------
+K (Factors / Substrings / Prefixes)
+
+- Get either a's factors, substrings that occur more than once, or prefixes
+
+    num a: divisors(a) (factors)
+    str a: All substrings of a that occur more than once in a
+    lst a: prefixes(a) (prefixes)
+-------------------------------
+L (Length)
+
+- Get length of a
+
+    any a: len(a)
+-------------------------------
+M (Map)
+
+- Map b over a
+
+    any a, fun b: map(b,a) (apply b to each of a)
+    any a, any b: pair each item of b with a
+-------------------------------
+N (Negate / Swap Case)
+
+- Negate a or swap its case
+
+    num a: -a  (negate)
+    str a: swap_case(a) (toggle case)
+    otherwise: vectorise
+-------------------------------
+O (Count)
+
+- Count number of times b occurs in a
+
+    any a, any b: a.count(b)
+-------------------------------
+P (Strip)
+
+- a.strip(b) - trim b from both ends of a
+
+    any a, any b: a.strip(b)
+-------------------------------
+Q (Quit)
+
+- Quit the program
+
+-------------------------------
+R (Reduce)
+
+- Reduce a by b, or reverse each item of b
+
+    any a, fun b: reduce(b,a) (Reduce a by b)
+    any a, any b: a, vectorised_reverse(b)
+-------------------------------
+S (Stringify)
+
+- Stringify a list or number
+
+    any a: str(a) (Stringify)
+-------------------------------
+T (Truthy Indices)
+
+- Get indices of truthy elements or triple
+
+    num a: a * 3
+    any a: truthy_indices(a)
+-------------------------------
+U (Uniquify)
+
+- Remove duplicates
+
+    any a: uniquify(a) (Remove duplicates)
+-------------------------------
+V (Replace)
+
+- Replace b with c in a
+
+    any a, any b, any c: a.replace(b,c) (replace)
+-------------------------------
+W (Wrap)
+
+- Stack wrapped into a list
+
+-------------------------------
+X (Break)
+
+- Break out of the current loop or function
+
+-------------------------------
+Y (Interleave)
+
+- Interleave two lists
+
+    any a, any b: interleave(a,b)
+-------------------------------
+Z (Zip)
+
+- Zip two lists or Zip a with b mapped over a
+
+    any a, any b: zip(a,b)
+    any a, fun b: zip(a,map(b,a)) (Zipmap, map and zip)
+-------------------------------
+[ (Open If Statement)
+
+- Open an if Statement
+
+-------------------------------
+\ (Single char Literal)
+
+- Pushes a single character
+
+-------------------------------
+] (Close If Statement)
+
+- Close an if Statement
+
+-------------------------------
+` (String Literal)
+
+- A string literal - `...`
+
+-------------------------------
+^ (Reverse Stack)
+
+- Reverse the stack.
+
+-------------------------------
+_ (Pop)
+
+- Pop the top item of the stack
+
+-------------------------------
+a (Any)
+
+- Check if any items of a list are truthy / Check if a character is an uppercase letter
+
+    str a: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+    lst a: any(a) (Are any items truthy?)
+-------------------------------
+b (Binary)
+
+- Convert a number or string to binary
+
+    num a: bin(a) - list of binary digits of A
+    str a: [bin(ord(char)) for char in a] - binary of each codepoint
+    otherwise: vectorise
+-------------------------------
+c (Contains)
+
+- Check if one thing contains another.
+
+    any a, any b: b in a (Does a contain b, membership, contains)
+-------------------------------
+d (Double)
+
+- Double a number or repeat a string twice
+
+    num a: a * 2 (double)
+    str a: a * 2 (repeated twice)
+    otherwise: vectorise
+-------------------------------
+e (Exponentiation)
+
+- Exponentiate two numbers / get every nth character of a string / get length of a regex match
+
+    num a, num b: a ** b (exponentiation)
+    str a, num b: every bth character of a
+    num a, str b: every ath character of b
+    str a, str b: regex.search(pattern=a, string=b).span() (Length of regex match)
+    otherwise: vectorise
+-------------------------------
+f (Flatten)
+
+- Turn a number into a list of digits, a string into a list of characters, and flatten a list.
+
+    num a: digits of a
+    str a: a split into list of characters
+    lst a: flatten(a) (Deep flatten)
+-------------------------------
+g (Minimum)
+
+- Take the minimum of a list
+
+    any a: min(a)
+-------------------------------
+h (Head)
+
+- First item of something
+
+    any a: a[0] (First item)
+-------------------------------
+i (Index)
+
+- Index into a list
+
+    any a, num b: a[b] (Index)
+    any a, [x] b: a[:b] (0 to bth item of a)
+    any a, [x,y] b: a[x:y] (x to yth item of a)
+    any a, [x,y,m] b: a[x:y:m] (x to yth item of a, taking every mth)
+-------------------------------
+j (Join)
+
+- Join a list by a string
+
+    any a, any b: a.join(b)
+-------------------------------
+k (Constant Digraph)
+
+- Used for constant digraphs.
+
+-------------------------------
+l (Cumulative Groups)
+
+- Cumulative grouping / equal length
+
+    any a, num b: n-wise_group(a,b) ( Overlapping groups of a of length b)
+    any a, any b: length(a) == length(b)
+-------------------------------
+m (Mirror)
+
+- Append input reversed to itself.
+
+    num a: a + reversed(a) (as number)
+    str a: a + reversed(a)
+    lst a: Append reversed(a) to a
+-------------------------------
+n (Context)
+
+- Context variable, value of the current loop or function.
+
+-------------------------------
+o (Remove)
+
+- Remove instances of b in a
+
+    any a, any b: a.replace(b,"")
+-------------------------------
+p (Prepend)
+
+- Prepend b to a
+
+    any a, any b: a.prepend(b) ( Prepend b to a)
+-------------------------------
+q (Uneval)
+
+- Enclose in backticks, escape backslashes and backticks.
+
+    any a: uneval(a) (Enclose in bacticks + escape)
+-------------------------------
+r (Range)
+
+- Range betweeen two numbers, or cumulative reduce, or regex match
+
+    num a, num b: range(a,b) (Range form a to b)
+    num a, str b: append spaces to b to make it length a
+    str a, num b: preprend spaces to a to make it length b
+    any a, fun b: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
+    str a, str b: regex.has_match(pattern=a,string= b) ( Does b match a)
+    otherwise: vectorise
+-------------------------------
+s (sort)
+
+- Sort a list or string
+
+    any a: sorted(a) (Sort)
+-------------------------------
+t (Tail)
+
+- Last item
+
+    any a: a[-1] (Last item)
+-------------------------------
+u (Minus One)
+
+- Push -1
+
+-------------------------------
+v (Vectorise)
+
+- Vectorise an element
+
+    v<element>
+
+-------------------------------
+w (Listify)
+
+- a wrapped in a singleton list
+
+    any a: [a] (Wrapped in singleton list)
+-------------------------------
+x (Recurse)
+
+- Call current function (Recursion)
+
+-------------------------------
+y (Uninterleave)
+
+- Push every other item of a, and the rest.
+
+    any a: a[::2], a[1::2] (Every second item, the rest)
+-------------------------------
+z (Zip-self)
+
+- Zip a with itself
+
+    any a: zip(a,a)
+-------------------------------
+{ (Open While Loop)
+
+- Open a while loop - `{...}`
+
+-------------------------------
+| (Branch In Structure)
+
+- Branch the structure - means various things depending on context
+
+-------------------------------
+} (Close While Loop)
+
+- Close a while loop
+
+-------------------------------
+~ (Filter / Execute Without Pop)
+
+- For monads, filter a list by that. For dyads, execute without popping from the stack.
+
+    ~<element>
+
+-------------------------------
+↑ (Max by Tail)
+
+- Maximum by last item
+
+    any a: max(a, key=lambda x: x[-1]) (Maximum by last item)
+-------------------------------
+↓ (Min by Tail)
+
+- Minimum by last item
+
+    any a: min(a, key=lambda x: x[-1]) (Minimum by last item)
+-------------------------------
+∴ (Dyadic Maximum)
+
+- Maximum of two values
+
+    any a, any b: max(a,b)
+-------------------------------
+∵ (Dyadic Minimum)
+
+- Minimum of two values
+
+    any a, any b: min(a,b)
+-------------------------------
+› (Increment / Space Replace With 0)
+
+- Add 1 to a number / replace all spaces in a string with "0"
+
+    num a: a + 1
+    string a: a.replace(" ","0")
+    otherwise: vectorise
+-------------------------------
+‹ (Decrement)
+
+- Subtract 1 from a number
+
+    num a: a - 1
+    str a: a + "-"
+    otherwise: vectorise
+-------------------------------
+∷ (Parity)
+
+- A number modulo 2
+
+    num a: a % 2 (Odd?)
+    str a: Second half of A
+    otherwise: vectorise
+-------------------------------
+¤ (Empty String)
+
+- The empty string
+
+-------------------------------
+ð (Space)
+
+- A Space
+
+-------------------------------
+→ (Variable Set)
+
+- Set variable (→name)
+
+-------------------------------
+← (Variable Get)
+
+- Get the value of a variable (←name)
+
+-------------------------------
+β (To Base Ten / From Custom Base)
+
+- Convert a number from a custom base to base 10
+
+    any a, num b: a to base 10 from number base b, treating list items / string items as digits
+    str a, str b: a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
+-------------------------------
+τ (From Base Ten / To Custom Base)
+
+- Convert a number to a different base from base 10.
+
+    num a, num b: List of digits of a in base b
+    num a, str b: a converted into a string of characters of b
+    num a, lst b: a converted into a list of arbitrary values from b
+-------------------------------
+ȧ (Absolute value)
+
+- Take the absolute value of a number, or remove whitespace from a string
+
+    num a: abs(a) (Absolute value)
+    str a: Remove whitespace from a
+    otherwise: vectorise
+-------------------------------
+ḃ (Boolify)
+
+- Convert an arbitrary value into a truthy or falsy value
+
+    any a: bool(a) (Booliify)
+-------------------------------
+ċ (Not One)
+
+- Check if something is not equal to 1
+
+    any a: a != 1
+-------------------------------
+ḋ (Divmod)
+
+- Divmod / combinations / trim
+
+    num a, num b: [a // b, a % b] (Divmod - division and modulo)
+    str a, num b: Combinations of a with length b
+    lst a, num b: Combinations of a with length b
+    str a, str b: overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef`
+-------------------------------
+ė (Enumerate)
+
+- Zip with a range of the same length
+
+    any a: enumerate(a) (Zip with 1...len(a))
+-------------------------------
+ḟ (Find)
+
+- Find a value in another
+
+    any a, any b: a.find(b) (Indexing)
+    any a, fun b: truthy indices of mapping b over a
+-------------------------------
+ġ (Gcd)
+
+- Greatest Common Denominator of a list or some numbers
+
+    lst a: GCD(a) (Gcd of whole list)
+    num a, num b: gcd(a,b) (Dyadic gcd)
+    str a, str b: Longest common suffix of a and b
+-------------------------------
+ḣ (Head Extract)
+
+- Separate the first item of something and push both to stack
+
+    any a: a[0], a[1:] (Head extract)
+-------------------------------
+ḭ (Floor Division)
+
+- Floor divide a by b
+
+    num a, num b: a // b (Floor division, floor(a / b))
+    str a, num b: (a divided into b pieces)[0]
+    num a, str b: (b divided into a pieces)[0]
+    any a, fun b: Right reduce a by b (foldr)
+    fun a, any b: Right reduce b by a (foldr)
+-------------------------------
+ŀ (Left Justify / Gridify / Infinite Replace / Collect until fale)
+
+- Find one value inside another, starting from a certain index.
+
+    num a, num b, num c: a <= c <= b
+    num a, num b, str c: a by b grid of c
+    num a, str b, num c: a by c grid of b
+    num a, str b, str c: b.ljust(a,filler=c)
+    str a, num b, num c: b by c grid of a
+    str a, num b, str c: a.ljust(c,filler=b)
+    str a, str b, num c: a.ljust(b,filler=c)
+    str a, str b, str c: a.infinite_replace(b, c)
+    fun a, fun b, any c: collect_until_false(predicate=a, modifying_function=b, inital=c)
+    otherwise: vectorise
+-------------------------------
+ṁ (Mean)
+
+- Average of a list - sum / length
+
+    str a: palindromise(a)
+    lst a: mean(a)
+-------------------------------
+ṅ (Join By Nothing)
+
+- Join a list by the empty string
+
+    fun a: First integer for which a(x) is truthy
+    any a: Join by empty string
+-------------------------------
+ȯ (Slice)
+
+- Slice from an index to the end
+
+    fun a, num b: First b integers for which a(x) is truthy
+    any a, num b: a[b:] (Slice from b to the end)
+    str a, str b: vertically merge a and b
+-------------------------------
+ṗ (Powerset)
+
+- All possible combinations of a
+
+    any a: All possible combinations of a
+-------------------------------
+ṙ (Round)
+
+- Round a number to the nearest integer
+
+    num a: round(a)
+    str a: quad palindromize with overlap
+    otherwise: vectorise
+-------------------------------
+ṡ (Sort by Function)
+
+- Sort a list by a function / create a range / split on a regex
+
+    any a, fun b: sorted(a, key=b) (Sort by b)
+    num a, num b: range(a, b + 1) (Inclusive range from a to b)
+    str a, str b: regex.split(pattern=b, string=a)
+-------------------------------
+ṫ (Tail Extract)
+
+- Remove the last item and push both onto the stack
+
+    any a: a[:-1],a[-1]
+-------------------------------
+ẇ (Chunk Wrap)
+
+- Wrap a list in chunks of a certain length / apply a function to every second item of a list
+
+    any a, num b: a wrapped in chunks of length b
+    any a, fun b: Apply b to every second item of a
+    fun a, any b: Apply a to every second item of b
+    str a, str b: split a on first occurance of b
+-------------------------------
+ẋ (Repeat)
+
+- Repeat a value several times
+
+    str a, num b: a * b
+    num a, str b: b * a
+    any a, num b: Repeat a b times
+    str a, str b: a + " " + b
+    fun a, any b: repeat function a on b while the function results are not-unique
+    any a, fun b: repeat function b on a while the function results are not-unique
+-------------------------------
+ẏ (Exclusive Range Length)
+
+- Range from 0 to length of a
+
+    any a: range(0, len(a)) (Exclusive range from 0 to length of a)
+-------------------------------
+ż (Inclusive Range Length)
+
+- Range from 1 to length of a inclusive
+
+    any a: range(1, len(a)+1) (Inclusive range from 1 to length of a)
+-------------------------------
+√ (Square Root)
+
+- Square root a number / every second character of a
+
+    num a: sqrt(a) (Square root)
+    str a: every second character of a
+    otherwise: vectorise
+-------------------------------
+⟨ (Open List)
+
+- Open a list - ⟨...⟩
+
+-------------------------------
+⟩ (Close list)
+
+- Close a list - ⟨...⟩
+
+-------------------------------
+‛ (Two Character String)
+
+- Collect the next two characters as a string - ‛..
+
+-------------------------------
+₀ (Ten)
+
+- Push 10 to the stack
+
+-------------------------------
+₁ (Hundred)
+
+- Push 100 to the stack
+
+-------------------------------
+₂ (Is Even)
+
+- Check if a value is even
+
+    num a: a % 2 == 0 (Even?)
+    any a: len(a) % 2 == 0 (Length even?)
+-------------------------------
+₃ (Divisible By three)
+
+- Check if a is divisible by 3
+
+    num a: a % 3 == 0 (divisible by 3?)
+    any a: len(a) == 1 (Length is 1?)
+-------------------------------
+₄ (Twenty Six)
+
+- Push 26 to the stack
+
+-------------------------------
+₅ (Divisible By Five)
+
+- Check if a is divisible by 5
+
+    num a: a % 5 == 0
+    any a: a, len(a)
+-------------------------------
+₆ (Sixty Four)
+
+- Push 64 to the stack
+
+-------------------------------
+₇ (One Twenty Eight)
+
+- Push 128 to the stack
+
+-------------------------------
+₈ (Two Fifty Six)
+
+- Push 256 to the stack
+
+-------------------------------
+¶ (Newline)
+
+- Push a newline to the stack
+
+-------------------------------
+⁋ (Join On Newlines)
+
+- Join the top of the stack on newlines (insert "\n" between items)
+
+    any a: "\\n".join(a)
+-------------------------------
+§ (Vertical Join)
+
+- Transpose (filling with spaces) and then join on newlines
+
+    any a: Transpose a, join on newlines
+-------------------------------
+ε (Absolute Difference / Padded Vertical Join)
+
+- Returns the aboslute different (|a - b|) or vertically joins using padding
+
+    num a, num b: abs(a - b)
+    any a, str b: Transpose a (filling with b), join on newlines
+-------------------------------
+¡ (Factorial)
+
+- Returns the factorial of the top of the stack
+
+    num a: factorial(a) (math.gamma(a + 1))
+    str a: a.sentence_case()
+    otherwise: vectorise
+-------------------------------
+∑ (Summate)
+
+- Returns the sum of the top of the stack (reduce by addition)
+
+    num a: sum(digits of a)
+    str a: a
+    lst a: sum(a)
+-------------------------------
+¦ (Cumulative Sum)
+
+- Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
+
+    any a: cumulative_sum(a)
+-------------------------------
+≈ (All Equal)
+
+- Returns whether all items are equal
+
+    any a: are all items in a equal?
+-------------------------------
+µ (Sorting Lambda)
+
+- Sort the top of the stack by the function µ...;
+
+-------------------------------
+Ȧ (Assign)
+
+- The equivalent of a[b] = c
+
+    any a, num b, any c: a but item b (0-indexed) is set to c
+-------------------------------
+Ḃ (Bifurcate)
+
+- Pushes the top of the stack then its reverse. Literally duplicate and reverse
+
+    any a: a, reversed(a)
+-------------------------------
+Ċ (Counts)
+
+- Returns a list of [item, count of item in the top of stack]
+
+    any a: [[x, a.count(x)] for x in a]
+-------------------------------
+Ḋ (Is Divisible / Arbitrary Duplicate)
+
+- Returns whether two items are divisble / numerious copies of the top of the stack
+
+    num a, num b: a % b == 0
+    num a, str b: a copies of b
+    str a, num b: b copies of a
+    str a, str b: b + " " + a
+    otherwise: vectorise
+-------------------------------
+Ė (Vyxal Exec / Reciprocal)
+
+- Executes as Vyxal / Reciprocal of number
+
+    str a: vy_exec(a)
+    num a: 1 / a
+    otherwise: vectorise
+-------------------------------
+Ḟ (Generator from function with initial vector)
+
+- Make a generator from function a with initial vector b.
+
+    fun a, lst b: Generator from function a with initial vector b
+-------------------------------
+Ġ (Group consecutive)
+
+- Group consecutive identical items
+
+    lst a: Group consecutive identical items
+    str a: Group consecutive identical characters
+    num a: Group consecutive identical digits
+-------------------------------
+Ḣ (Head Remove / Behead)
+
+- All but the first item of a list / Drop 1
+
+    lst a: a[1:] or [] if empty
+    str a: a[1:] or '' if empty
+    num a: Remove first digit or do nothing if <1
+-------------------------------
+İ (Index into or find cycle)
+
+- Index into list at indices / Repeatedly apply function to value while results are non-unique
+
+    any a, lst b: [a[item] for item in b]
+    any a, fun b: Repeatedly apply b to a until a cycle is formed, return the cycle
+-------------------------------
+Ŀ (Transliterate)
+
+- Replace each item of one value in another value with the corresponding element from a third value
+
+    any a, any b, any c: transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)
+    fun a, fun b, any c: Call b on c until a(c) is falsey.
+-------------------------------
+Ṁ (Insert)
+
+- Insert a value at a specified index / Map a function over every nth item of a list
+
+    any a, num b, any c: a.insert(b,c) (Insert c at position b in a)
+    any a, num b, fun c: c mapped over every bth item of a
+-------------------------------
+Ṅ (Integer partitions)
+
+- Integer partitions / join by space
+
+    num a: integer_partitions(a) (Integer partitions)
+    any a: " ".join(a) (Join by space)
+-------------------------------
+Ȯ (Over)
+
+- Push the second-last item of stack to the top
+
+-------------------------------
+Ṗ (Permutations)
+
+- Get all permutations of a value
+
+    any a: permutations(a) (Get all permutations)
+-------------------------------
+Ṙ (Reverse)
+
+- Reverse a value
+
+    any a: a, reversed(a)
+-------------------------------
+Ṡ (Vectorised sums)
+
+- Reduce stack by addition (That's literally what it does, so it can vectorise)
+
+-------------------------------
+Ṫ (Tail Remove)
+
+- Cut off the last item of a list
+
+    any a: a[:-1] (All but the last item)
+-------------------------------
+Ẇ (Split And Keep Delimiter)
+
+- Split a value and keep the delimiter
+
+    any a, any b: a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+-------------------------------
+Ẋ (Cartesian Product)
+
+- Take the Cartesian Product of two values, or apply a function until there is no change.
+
+    any a, any b: cartesian-product(a,b)
+    fun a, any b: Apply a on b until b doesn't change
+-------------------------------
+Ẏ (Slice Until)
+
+- Slice a list until a certain index / find all results for a regex match
+
+    any a, num b: a[0:b] (Slice until b)
+    num a, any b: b[0:a] (Slice until a)
+    str a, str b: regex.findall(pattern=a,string=b) (Find all matches for a regex)
+    otherwise: vectorise
+-------------------------------
+Ż (Slice From One Until)
+
+- Slice from index 1 until a number / get groups of a gregex match
+
+    any a, num b: a[1:b] (Slice from 1 until b)
+    num a, any b: b[1:a] (Slice from 1 until a)
+    str a, str b: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+    otherwise: vectorise
+-------------------------------
+₌ (Parallel Apply)
+
+- Parallel apply two elements to the top of the stack
+
+    ₌<element><element>
+
+-------------------------------
+₍ (Parallel Apply Wrap)
+
+- Parallel apply two elements and wrap the results in a list
+
+    ₍<element><element>
+
+-------------------------------
+⁰ (First Input)
+
+- Push the first input
+
+-------------------------------
+¹ (Second Input)
+
+- Push the second input
+
+-------------------------------
+² (Square)
+
+- Square a number / Format a string into a square
+
+    num a: a ** 2 (Squared)
+    str a: a formatted as a square
+    otherwise: vectorise
+-------------------------------
+∇ (Shift)
+
+- Shift the top of stack two values down
+
+    any a, any b, any c: c,a,b (Shift)
+-------------------------------
+⌈ (Ceiling)
+
+- Take the ceiling of a number / split a string on spaces
+
+    num a: ceil(a) (Ceiling)
+    str a: Split on spaces
+    otherwise: vectorise
+-------------------------------
+⌊ (Floor)
+
+- Floor a number / extract the integer part of a string
+
+    num a: floor(a) (Floor)
+    str a: Integer part of a
+    otherwise: vectorise
+-------------------------------
+¯ (Deltas)
+
+- Deltas (consecutive differences)
+
+    any a: deltas(a) (consecutive differences)
+    otherwise: vectorise
+-------------------------------
+± (Sign)
+
+- Get the sign of a number
+
+    num a: sign_of(a) (positive = 1, 0 = 0; negative = -1)
+    str a: is a numeric
+    otherwise: vectorise
+-------------------------------
+₴ (Print Without Newline)
+
+- Print a value without a trailing newline
+
+-------------------------------
+… (Print Without Popping)
+
+- Print a value without popping the stack
+
+-------------------------------
+□ (Input List)
+
+- All inputs wrapped in a list
+
+-------------------------------
+↳ (Right Bit Shift)
+
+- Right-bitshift a value / right-justify a string
+
+    num a, num b: a << b
+    num a, str b: a.rjust(b)
+    str a, num b: b.rjust(a)
+    str a, str b: a.rjust(len(b)-len(a))
+    otherwise: vectorise
+-------------------------------
+↲ (Left Bit Shift)
+
+- Left-bitshift a value / left-justify a string
+
+    num a, num b: a >> b
+    num a, str b: a.ljust(b)
+    str a, num b: b.ljust(a)
+    str a, str b: a.ljust(len(b)-len(a))
+    otherwise: vectorise
+-------------------------------
+⋏ (Bitwise And)
+
+- Performs bitwise and between two numbers / centre a string
+
+    num a, num b: a & b
+    num a, str b: b.center(a)
+    str a, num b: a.center(b)
+    str a, str b: a.center(len(b) - len(a))
+    otherwise: vectorise
+-------------------------------
+⋎ (Bitwise Or)
+
+- Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
+
+    num a, num b: a | b
+    num a, str b: b[:a]+b[a+1:]
+    str a, num b: a[:b]+a[b+1:]
+    str a, str b: merge_join(a,b)
+    otherwise: vectorise
+-------------------------------
+꘍ (Bitwise Xor)
+
+- Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
+
+    num a, num b: a ^ b
+    num a, str b: \" \" * a + b
+    str a, num b: a + \" \" * b
+    str a, str b: levenshtein_distance(a,b)
+    otherwise: vectorise
+-------------------------------
+ꜝ (Bitwise Not)
+
+- Performs bitwise not on a number / check if any letters are uppercase
+
+    num a: ~a
+    str a: any_upper(a)
+    otherwise: vectorise
+-------------------------------
+℅ (Random Choice)
+
+- Random choice of single item from array
+
+    lst a: random.choice(a)
+-------------------------------
+≤ (Lesser Than or Equal To)
+
+- a is lesser than or equal to b?
+
+    any a, any b: a <= b
+    otherwise: vectorise
+-------------------------------
+≥ (Greater Than or Equal To)
+
+- a is greater than or equal to b?
+
+    any a, any b: a >= b
+    otherwise: vectorise
+-------------------------------
+≠ (Not Equal To)
+
+- a is not equal to b?
+
+    any a, any b: a != b
+-------------------------------
+⁼ (Exactly Equal To)
+
+- a equal to b? (non-vectorizing)
+
+    any a, any b: a == b
+-------------------------------
+ƒ (Reduce by)
+
+- Reduce by an element
+
+    ƒ<element>
+
+-------------------------------
+ɖ (Scan by)
+
+- Cumulatively reduce by an element
+
+    ɖ<element>
+
+-------------------------------
+∪ (Set Union)
+
+- Merge two arrays without duplicates
+
+    any a, any b: list(set(a).union(set(b)))
+-------------------------------
+∩ (Tranpose)
+
+- Transpose an array
+
+    any a: Transposed array
+-------------------------------
+⊍ (Symmetric Set difference)
+
+- Uncommon elements of two arrays
+
+    any a, any b: list(set(a) ^ set(b))
+-------------------------------
+£ (Set Register)
+
+- set the register to argument value
+
+    any a: set_register(a)
+-------------------------------
+¥ (Push Register)
+
+- Push the current register value
+
+-------------------------------
+⇧ (Grade Up)
+
+- Indices of elements to sort in ascending order / uppercase / increment number twice
+
+    lst a: graded_up(a)
+    str a: a.upper()
+    num a: a + 2
+-------------------------------
+⇩ (Grade Down)
+
+- Indices of elements to sort in descending order / lowercase / decrement number twice
+
+    lst a: graded_down(a)
+    str a: a.lower()
+    num a: a - 2
+-------------------------------
+Ǎ (Remove non-alphabets)
+
+- Remove non-alphabetical characters / power with base 2
+
+    str a: filter(isalpha, a)
+    num a: 2 ** a
+    otherwise: vectorise
+-------------------------------
+ǎ (Nth prime)
+
+- n'th prime / all substrings
+
+    str a: substrings(a)
+    num a: nth_prime(a)
+    otherwise: vectorise
+-------------------------------
+Ǐ (Prime factorization)
+
+- prime factorization / append first element
+
+    num a: prime_factorization(a)
+    str a: a + a[0]
+    otherwise: vectorise
+-------------------------------
+ǐ (Prime factors)
+
+- all prime factors / Title Case string
+
+    num a: prime_factors(a)
+    str a: title_case(a)
+    otherwise: vectorise
+-------------------------------
+Ǒ (Multiplicity)
+
+- Order, Multiplicity, Valuation / remove till fixpoint
+
+    num a, num b: multiplicity(a,b)
+    str a, str b: remove_till_fixpoint(a,b)
+-------------------------------
+ǒ (Modulo 3)
+
+- Modulo 3 / Split into Length 2
+
+    num a: a % 3
+    str a: a split into chunks of length 2
+    otherwise: vectorise
+-------------------------------
+Ǔ (Rotate Left)
+
+- Rotate Left / Rotate Left Once
+
+    any a, num b: rotate_left(a,b)
+    any a, any b: a,(b[1:]+b[:1])
+-------------------------------
+ǔ (Rotate Right)
+
+- Rotate Right / Rotate Right Once
+
+    any a, num b: rotate_right(a,b)
+    any a, any b: a,(b[-1:]+b[:-1])
+-------------------------------
+⁽ (One Byte Lambda)
+
+- One Byte lambda function (prefix)
+
+-------------------------------
+‡ (Two Byte Lambda)
+
+- Two Byte lambda function (prefix)
+
+-------------------------------
+≬ (Three Byte Lambda)
+
+- Three Byte lambda function (prefix)
+
+-------------------------------
+⁺ (Index of next character in codepage)
+
+- Compressed number in 1-128 (prefix)
+
+-------------------------------
+↵ (Split On newlines)
+
+- Split on newlines / Power with base 10
+
+    str a: a.split("\n")
+    num a: 10 ** a
+    otherwise: vectorise
+-------------------------------
+⅛ (Push To Global Array)
+
+- Push to global array (no popping)
+
+-------------------------------
+¼ (Pop From Global Array)
+
+- Pop from global array, push to stack
+
+-------------------------------
+¾ (Push Global Array)
+
+- Push global array, no modification of global array
+
+-------------------------------
+Π (Product of Array)
+
+- Product of Array
+
+    lst a: prod(a)
+-------------------------------
+„ (Rotate Stack Left)
+
+- Rotate Stack Left
+
+-------------------------------
+‟ (Rotate Stack Right)
+
+- Rotate Stack Right
+
+-------------------------------
+kA (Uppercase alphabet)
+
+- "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
+
+-------------------------------
+ke (e, Euler's number)
+
+- 2.718281828459045 (math.e, Eulers number)
+
+-------------------------------
+kf (Fizz)
+
+- Fizz
+
+-------------------------------
+kb (Buzz)
+
+- Buzz
+
+-------------------------------
+kF (FizzBuzz)
+
+- FizzBuzz
+
+-------------------------------
+kH (Hello, World!)
+
+- Hello, World!
+
+-------------------------------
+kh (Hello World (No Punctuation))
+
+- Hello World
+
+-------------------------------
+k1 (1000)
+
+- 10^3 / 1000
+
+-------------------------------
+k2 (10000)
+
+- 10^4 / 10000
+
+-------------------------------
+k3 (100000)
+
+- 10^5 / 100000
+
+-------------------------------
+k4 (1000000)
+
+- 10^6 / 1000000
+
+-------------------------------
+ka (Lowercase alphabet)
+
+- "abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
+
+-------------------------------
+kL (Lowercase and uppercase alphabet)
+
+- "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
+
+-------------------------------
+kd (Digits)
+
+- "0123456789" (Digits 0-9)
+
+-------------------------------
+k6 (Hex digits (lowercase))
+
+- "0123456789abcdef" (Hex digits)
+
+-------------------------------
+k^ (Hex digits (uppercase))
+
+- "0123456789ABCDEF" (Hex digits uppercase)
+
+-------------------------------
+ko (Octal digits)
+
+- "01234567" (Octal digits)
+
+-------------------------------
+kp (Punctuation)
+
+- string.punctuation (Punctuations)
+
+-------------------------------
+kP (Printable ASCII)
+
+- printable ascii
+
+-------------------------------
+kw (ASCII Whitespace)
+
+- All ASCII whitespace
+
+-------------------------------
+kr (Digits, lowercase alphabet, and uppercase alphabet)
+
+- "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
+
+-------------------------------
+kB (Uppercase and lowercase alphabet)
+
+- "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
+
+-------------------------------
+kZ (Uppercase alphabet reversed)
+
+- "ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
+
+-------------------------------
+kz (Lowercase alphabet reversed)
+
+- "zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
+
+-------------------------------
+kl (Uppercase and lowercase alphabet, reversed)
+
+- "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
+
+-------------------------------
+ki (Pi)
+
+- 3.141592653589793 (Pi)
+
+-------------------------------
+kn (NaN)
+
+- math.nan
+
+-------------------------------
+kg (Golden ratio/phi)
+
+- 1.618033988749895 (golden ratio/phi)
+
+-------------------------------
+kD (Current day in the format YYYY-MM-DD)
+
+- Current day in the format YYYY-MM-DD
+
+-------------------------------
+kN (Current time as a list of ⟨hh|mm|ss⟩)
+
+- Current time as a list of ⟨hh|mm|ss⟩
+
+-------------------------------
+kḋ (Current day in the format DD/MM/YYYY)
+
+- Current day in the format DD/MM/YYYY
+
+-------------------------------
+kḊ (Current day in the format MM/DD/YYYY)
+
+- Current day in the format MM/DD/YYYY
+
+-------------------------------
+kð (Current day in the format ⟨DD|MM|YYYY⟩)
+
+- Current day in the format ⟨DD|MM|YYYY⟩
+
+-------------------------------
+kβ (Braces, square brackets, angle brackets, and parentheses)
+
+- {}[]<>()
+
+-------------------------------
+kḂ (Parentheses, square brackets, and braces)
+
+- "()[]{}" (Brackets)
+
+-------------------------------
+kß (Parentheses and square brackets)
+
+- ()[]
+
+-------------------------------
+kḃ (Opening brackets)
+
+- "([{" (Open brackets)
+
+-------------------------------
+k≥ (Closing brackets)
+
+- ")]}" (Close brackets)
+
+-------------------------------
+k≤ (Opening brackets (with <))
+
+- "([{<" (Fish bones :P)
+
+-------------------------------
+kΠ (Closing brackets (with >))
+
+- ")]}>" (Closing brackets)
+
+-------------------------------
+kv (Lowercase vowels)
+
+- "aeiou" (Vowels lowercase)
+
+-------------------------------
+kV (Upercase vowels)
+
+- "AEIOU" (Vowels uppercase)
+
+-------------------------------
+k∨ (Lowercase and uppercase vowels)
+
+- "aeiouAEIOU" (vowelsVOWELS)
+
+-------------------------------
+k⟇ (Vyxal codepage)
+
+- Yields the Vyxal codepage
+
+-------------------------------
+k½ ([1, 2])
+
+- [1, 2]
+
+-------------------------------
+kḭ (4294967296)
+
+- 2 ** 32, 2^32, 4294967296
+
+-------------------------------
+k+ ([1, -1])
+
+- [1, -1]
+
+-------------------------------
+k- ([-1, 1])
+
+- [-1, 1]
+
+-------------------------------
+k≈ ([0, 1])
+
+- [0, 1]
+
+-------------------------------
+k/ (Slashes)
+
+- "/\\" (Forwardslash, backslash)
+
+-------------------------------
+kR (360)
+
+- 360
+
+-------------------------------
+kW (https://)
+
+- https://
+
+-------------------------------
+k℅ (http://)
+
+- http://
+
+-------------------------------
+k↳ (https://www.)
+
+- https://www.
+
+-------------------------------
+k² (http://www.)
+
+- http://www.
+
+-------------------------------
+k¶ (512)
+
+- 512
+
+-------------------------------
+k⁋ (1024)
+
+- 1024
+
+-------------------------------
+k¦ (2048)
+
+- 2048
+
+-------------------------------
+kṄ (4096)
+
+- 4096
+
+-------------------------------
+kṅ (8192)
+
+- 8192
+
+-------------------------------
+k¡ (16384)
+
+- 16384
+
+-------------------------------
+kε (32768)
+
+- 32768
+
+-------------------------------
+k₴ (65536)
+
+- 65536
+
+-------------------------------
+k× (2147483648)
+
+- 2147483648
+
+-------------------------------
+k⁰ (Lowercase consonants with y)
+
+- bcdfghjklmnpqrstvwxyz
+
+-------------------------------
+k¹ (Lowercase consonants without y)
+
+- bcdfghjklmnpqrstvwxz
+
+-------------------------------
+kT (BF command set)
+
+- BF command set ("[]<>-+.,")
+
+-------------------------------
+kṗ (Bracket pair list)
+
+- List of bracket pairs ("[(),[],{},<>]")
+
+-------------------------------
+kṖ (Nested brackets)
+
+- String of all brackets nested ("([{<>}])")
+
+-------------------------------
+kS (Amogus)
+
+- Amogus ("ඞ")
+
+-------------------------------
+k₂ (2 ** 20)
+
+- 2 to the power of 20, 1048576
+
+-------------------------------
+k₃ (2 ** 30)
+
+- 2 to the power of 30, 1073741824
+
+-------------------------------
+k∪ (Lowercase Vowels With Y)
+
+- Lowercase vowels with y, "aeiouy"
+
+-------------------------------
+k⊍ (Uppercase Vowels With Y)
+
+- Uppercase vowels with y, "AEIOUY"
+
+-------------------------------
+k∩ (Vowels With Y)
+
+- Vowels with y, "aeiouyAEIOUY"
+
+-------------------------------
+∆c (Cosine)
+
+- Get the cosine of an angle in radians
+
+    num a: math.cos(a)
+    otherwise: vectorise
+-------------------------------
+∆C (Arc Cosine)
+
+- Get the arccosine of an angle in radians
+
+    num a: math.arrcos(a)
+    otherwise: vectorise
+-------------------------------
+∆q (Quadratic Solver)
+
+- Solve a quadratic equation of the form ax^2 + bx = 0
+
+    num a, num b: x such that ax^2 + bx = 0
+    num a, str b: solve a such that a = b
+    str a, num b: solve b such that b = a
+    str a, str b: solve equation a = b for x
+    otherwise: vectorise
+-------------------------------
+∆Q (General Quadratic Solver)
+
+- Solve a quadratic equation of the form x^2 + ax + b = 0
+
+    num a, num b: roots(a, b) / x^2 + ax + b = 0
+    num a, str b: evaluate single variable expression b with x=a
+    str a, num b: evaluate single variable expression a with x=b
+    str a, str b: solve equation a < b for x
+    otherwise: vectorise
+-------------------------------
+∆s (Sine)
+
+- Get the sine of an angle in radians
+
+    num a: math.sin(a)
+    otherwise: vectorise
+-------------------------------
+∆S (Arc Sine)
+
+- Get the arcsine of an angle in radians
+
+    num a: math.arcsin(a)
+    otherwise: vectorise
+-------------------------------
+∆t (Tangent)
+
+- Get the tangent of an angle in radians
+
+    num a: math.tan(a)
+    otherwise: vectorise
+-------------------------------
+∆T (Arc Tangent)
+
+- Get the arctangent of an angle in radians
+
+    num a: math.arctan(a)
+    otherwise: vectorise
+-------------------------------
+∆P (Polynomial Solver)
+
+- Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
+
+    lst a: roots(a)
+-------------------------------
+∆ƈ (n Pick r (npr))
+
+- Get the number of combinations of r items from a set of n items
+
+    num a, num b: n_pick_r(a, b)
+    num a, str b: n_pick_r(a, len(b))
+    str a, num b: n_pick_r(len(a), b)
+    str a, str b: n_pick_r(len(a), len(b))
+    otherwise: vectorise
+-------------------------------
+∆± (Copy Sign)
+
+- Copy the sign of one number to the other
+
+    num a, num b: math.copysign(a, b)
+    otherwise: vectorise
+-------------------------------
+∆K (Sum of Proper Divisors)
+
+- Get the sum of all proper divisors of a number
+
+    num a: sum_of_proper_divisors(a)
+    otherwise: vectorise
+-------------------------------
+∆² (Perfect Square?)
+
+- Is the number a perfect square? (1, 4, 9, 16, 25, 36)
+
+    num a: is_perfect_square(a)
+    otherwise: vectorise
+-------------------------------
+∆e (e raised to power a)
+
+- Get the value of e raised to the power of a
+
+    num a: e ** a
+    str a: simplify expression a
+    otherwise: vectorise
+-------------------------------
+∆E ((e raised to power a) - 1)
+
+- Get the value of e raised to the power of a minus 1
+
+    num a: (e ** a) - 1
+    otherwise: vectorise
+-------------------------------
+∆L (Natural Logarithm)
+
+- Get the natural logarithm of a number
+
+    num a: math.log(a)
+    otherwise: vectorise
+-------------------------------
+∆l (Logarithm (log_2))
+
+- Get the logarithm of a number to base 2
+
+    num a: math.log2(a)
+    otherwise: vectorise
+-------------------------------
+∆τ (Common Logarithm)
+
+- Get the common logarithm of a number
+
+    num a: math.log10(a)
+    otherwise: vectorise
+-------------------------------
+∆d (Straight Line Distance)
+
+- Get the straight line distance between two points (x1, y1) and (x2, y2)
+
+    lst a, lst b: euclidian_distance(a, b)
+-------------------------------
+∆D (To Degrees)
+
+- Convert an angle from radians to degrees
+
+    num a: math.degrees(a)
+    otherwise: vectorise
+-------------------------------
+∆R (To Radians)
+
+- Convert an angle from degrees to radians
+
+    num a: math.radians(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṗ (Next Prime After a Number)
+
+- Get the next prime number after a given number
+
+    num a: next_prime(a)
+    otherwise: vectorise
+-------------------------------
+∆ṗ (First Prime Before a Number)
+
+- Get the first prime number before a given number
+
+    num a: prev_prime(a)
+    otherwise: vectorise
+-------------------------------
+∆p (Nearest Prime to a Number)
+
+- Get the prime number closest to a given number, get the greater to break ties
+
+    num a: nearest_prime(a)
+    otherwise: vectorise
+-------------------------------
+∆ṙ (Polynomial from Roots)
+
+- Get the polynomial with coefficients from the roots of a polynomial
+
+    list a: polynomial(a)
+-------------------------------
+∆W (Round to n Decimal Places)
+
+- Round a number to n decimal places
+
+    num a, num b: round(a, no_dec_places=b)
+    otherwise: vectorise
+-------------------------------
+∆Ŀ (Least Common Multiple)
+
+- Get the least common multiple of two numbers
+
+    num a, num b: lcm(a, b)
+    otherwise: vectorise
+-------------------------------
+∆i (nth Digit of Pi)
+
+- Get the nth digit of pi
+
+    num a: nth_digit_of_pi(a)
+    otherwise: vectorise
+-------------------------------
+∆ė (nth Digit of e)
+
+- Get the nth digit of e
+
+    num a: nth_digit_of_e(a)
+    otherwise: vectorise
+-------------------------------
+∆f (nth Fibonacci Number)
+
+- Get the nth fibonacci number
+
+    num a: nth_fibonacci(a)
+    otherwise: vectorise
+-------------------------------
+∆B (Random Bits)
+
+- Get a list of random bits to length n
+
+    num a: random_bits(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṙ (Random Float)
+
+- Get a random float in the range [0, 1), pseudo random number
+
+    num a: random.random()
+    otherwise: vectorise
+-------------------------------
+∆Z (ZFill)
+
+- Pad a string with zeros to a given length
+
+    str, num a: zfill(a, b)
+-------------------------------
+øb (Parenthesise)
+
+- Parenthesise a string
+
+    any a: "("" + a + ")"
+    otherwise: vectorise
+-------------------------------
+øB (Bracketify)
+
+- Enclose a string in brackets
+
+    any a: "["" + a + "]"
+    otherwise: vectorise
+-------------------------------
+øḃ (Curly Bracketify)
+
+- Enclose a string in curly brackets
+
+    any a: "{"" + a + "}"
+    otherwise: vectorise
+-------------------------------
+øḂ (Angle Bracketify)
+
+- Enclose a string in angle brackets
+
+    any a: "<"" + a + ">"
+    otherwise: vectorise
+-------------------------------
+øβ (Balanced Brackets)
+
+- Check if brackets in a string ("{}()[]<>") are balanced
+
+    any a: balanced_brackets(a)
+    otherwise: vectorise
+-------------------------------
+ø↳ (Custom Pad Left)
+
+- Pad a string to the left with a certain character
+
+    any a, str b, num c: Pad a to the left with c so a has length b
+    any a, num b, str c: Pad a to the left with b so a has length c
+    otherwise: vectorise
+-------------------------------
+ø↲ (Custom Pad Right)
+
+- Pad a string to the right with a certain character
+
+    any a, str b, num c: Pad a to the right with c so a has length b
+    any a, num b, str c: Pad a to the right with b so a has length c
+    otherwise: vectorise
+-------------------------------
+øM (Flip Brackets Vertical Palindromise)
+
+- Vertically palindromise and reverse brackets and slashes, without duplicating center
+
+    any a: Palindromise, without duplicating center, and flip brackets and slashes in the second half
+    otherwise: vectorise
+-------------------------------
+øo (Remove Until No change)
+
+- Remove b from a until a does not change
+
+    str a, str b: Remove b from a until a does not change
+    str a, lst b: Remove everything in b (in order) from a until a does not change
+-------------------------------
+øV (Replace Until No Change)
+
+- Replace b with c in a until a does not change
+
+    str a, str b, str c: a.replace_until_no_change(b,c)
+-------------------------------
+øc (String Compress)
+
+- Compress a string of lowercase letters and spaces in base 255
+
+    str a: base_255_string_compress(a)
+-------------------------------
+øC (Number Compress)
+
+- Compress a positive integer in base 255
+
+    num a: base_255_number_compress(a)
+-------------------------------
+øĊ (Center)
+
+- Center a list of strings
+
+    lst a: Center(a) (Pad each item with spaces so all are centered)
+-------------------------------
+øe (Run Length Encoding)
+
+- Run length encoding, convert from string to list of characters and amount repeated.
+
+    str a: run_length_encoded(a)
+-------------------------------
+ød (Run Length Decoding)
+
+- Run length decoding, convert from list of characters and lengths to a string
+
+    lst a: run_length_decoded(a)
+-------------------------------
+øD (Dictionary Compression)
+
+- Optimally compress a string of English using words from Vyxal's dictionary
+
+    str a: dictionary_compressed(a)
+-------------------------------
+øW (Group on words)
+
+- Group a string on words
+
+    str a: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
+-------------------------------
+øṙ (Regex replace)
+
+- Replace matches of a with c in b
+
+    any a, any b, fun c: Apply c to matches of a in b
+    any a, any b, any c: Replace matches of a with c in b
+-------------------------------
+øp (Starts With)
+
+- Check if one value starts with another
+
+    any a, any b: a.startswith(b) (Starts with b?)
+-------------------------------
+øP (Pluralise Count)
+
+- Create a sentence of the form 'a bs'
+
+    num a, str b: a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
+-------------------------------
+øṁ (Vertical Mirror)
+
+- Vertical Mirror - Split by newlines, mirror each line, join by newlines
+
+    str a: vertical_mirror(a)
+    otherwise: vectorise
+-------------------------------
+øṀ (Flip Brackets Vertical Mirror)
+
+- Vertical mirror, and swap brackets and slashes in the second half.
+
+    any a: vertical_mirror(a,mapping  = flip brackets and slashes)
+-------------------------------
+øṖ (String Partitions)
+
+- All partitions of a string/list
+
+    any a: all_partitions(a)
+-------------------------------
+Þo (Ordinals)
+
+- An infinite list of first, second, third, fourth etc
+
+-------------------------------
+Þc (Cardinals)
+
+- An infinite list of one, two, three, four etc
+
+-------------------------------
+Þp (Primes)
+
+- An infinite list of primes
+
+-------------------------------
+Þu (All Unique)
+
+- Are all elements of a list/string unique?
+
+    any a: all_unique(a)
+-------------------------------
+ÞẊ (Cartesian Power)
+
+- Cartesian power, cartesian product with self n times
+
+    any a, num b: cartesian_power(a, b)
+    num a, any b: cartesian_power(b, a)
+-------------------------------
+Þf (Flatten By depth)
+
+- Flatten a list by a certain depth (default 1)
+
+    lst a, num b: Flatten a by depth b
+    any a, lst b: Flatten b by depth 1, push a as well
+-------------------------------
+ÞB (Random Bits)
+
+- Fill a list with random bits
+
+    num a: List of length a filled with random bits
+    any a: List of length n(a) filled with random bits
+-------------------------------
+Þ< (All Less Than Increasing)
+
+- Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
+
+    any a, num b: All values of a up to (not including) the first greater than or equal to b
+-------------------------------
+Þǔ (Untruth)
+
+- Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
+
+    any a: [int(x in a) for x in range(len(a))]
+-------------------------------
+Þi (Multidimensional Indexing)
+
+- Index a list of coordinates into a value.
+
+    lst a, lst b: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+-------------------------------
+Þḟ (Multidimensional Search)
+
+- Find the first multidimensional index of a value in another
+
+    lst a, any b: Find the first occurrence of a in b and return as a multidimensional index
+-------------------------------
+Þm (Zero Matrix)
+
+- Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
+
+    lst a: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
+-------------------------------
+ÞZ (Fill By Coordinates)
+
+- Fill a matrix by calling a function with the lists of coordinates in the matrix.
+
+    any a, fun b: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+-------------------------------
+Þ… (Evenly Distribute)
+
+- Evenly distribute a number over elements of a list
+
+    list a, num b: Evenly distribute a over all elements of b, adding each part.
+-------------------------------
+Þ↓ (Minimum By Function)
+
+- Find the minimum value of a list by applying a function to each element
+
+    lst a, fun b: Minimum value of a by applying b to each element
+-------------------------------
+Þ↑ (Maximum By Function)
+
+- Find the maximum value of a list by applying a function to each element
+
+    lst a, fun b: Maximum value of a by applying b to each element
+-------------------------------
+Þ× (All Combinations)
+
+- All combinations of a list / string, of all lengths, with replacement
+
+    any a: All combinations of a list / string, of all lengths and all orders, with replacement
+-------------------------------
+Þx (All Combinations Without Replacement)
+
+- All combinations of a list / string, of all lengths, without replacement
+
+    any a: All combinations of a list / string, of all lengths and all orders, without replacement
+-------------------------------
+ÞF (All Fibbonacci)
+
+- All Fibbonacci numbers as a LazyList.
+
+-------------------------------
+Þ! (All Factorials)
+
+- All factorials as a LazyList.
+
+-------------------------------
+ÞU (Uniquify Mask)
+
+- A list of booleans describing which elements of a will remain after uniquifying.
+
+    any a: A list of booleans describing which elements of a will remain after uniquifying.
+-------------------------------
+ÞD (Diagonals)
+
+- Diagonals of a matrix, starting with the main diagonal.
+
+    lst a: Diagonals of a matrix, starting with the main diagonal.
+-------------------------------
+ÞS (Sublists)
+
+- Sublists of a list.
+
+    lst a: Sublists of a list.
+-------------------------------
+ÞṪ (Transpose With Filler)
+
+- Transpose a matrix, with a filler value for empty cells.
+
+    lst a, any b: Transpose a matrix, with a filler value for empty cells.
+-------------------------------
+Þ℅ (Random Permutation)
+
+- Random permutation of a list / string
+
+    any a: Random permutation of a list / string
+-------------------------------
+ÞṀ (Matrix Multiplication)
+
+- Multiply two matrices together.
+
+    lst a, lst b: Matrix multiplication
+-------------------------------
+ÞḊ (Matrix Determinant)
+
+- Calculate the determinant of a matrix.
+
+    lst a: Calculate the determinant of a matrix.
+-------------------------------
+Þ\ (Antidiagonal)
+
+- Antidiagonal of a matrix
+
+    lst a: Antidiagonal of a matrix
+-------------------------------
+Þ/ (Main Diagonal)
+
+- Diagonal of a matrix
+
+    lst a: Diagonal of a matrix
+-------------------------------
+ÞR (Matrix Row Reduce)
+
+- Reduce rows of a matrix by a function.
+
+    lst a, fun b: Reduce rows of a matrix by a function.
+-------------------------------
+ÞC (Matrix Column Reduce)
+
+- Reduce columns of a matrix by a function.
+
+    lst a, fun b: Reduce columns of a matrix by a function.
+-------------------------------
+Þ• (Dot Product)
+
+- Dot product of two lists.
+
+    lst a, lst b: Dot product of two lists.
+-------------------------------
+¨U (Get Request)
+
+- Send a GET request to a URL
+
+    str a: Send a GET request to a URL
+-------------------------------
+¨M (Map To Indices)
+
+- Map a function to elements of a list whose indices are in another list
+
+    lst a, lst b, fun c: Map a function to elements of a list whose indices are in another list
+-------------------------------
+¨, (Print With Space)
+
+- Print a value with a space after it
+
+    any a: Print a value with a space after it
+-------------------------------
+¨… (Print With Space Without Popping)
+
+- Print a value with a space after it, without popping it
+
+    any a: Print a value with a space after it, without popping it
+-------------------------------

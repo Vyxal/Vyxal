@@ -4,6 +4,7 @@ See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structu
 """
 
 from typing import Union
+from vyxal.lexer import Token
 
 Branch = Union[str, list["Structure"], list["Token"]]
 
@@ -105,12 +106,6 @@ class LambdaFilter(Lambda):
 class LambdaSort(Lambda):
     def __init__(self, body: list[Structure]):
         super().__init__(1, body)
-
-
-class FunctionReference(Structure):
-    def __init__(self, name: str):
-        super().__init__(name)
-        self.name = name
 
 
 class ListLiteral(Structure):

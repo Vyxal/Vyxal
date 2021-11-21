@@ -10,9 +10,15 @@ import inspect
 import itertools
 import textwrap
 import types
-from typing import Any, Generator, List, Union
+from typing import Any, List, Union
 
 import sympy
+from sympy.parsing.sympy_parser import (
+    convert_xor,
+    implicit_multiplication_application,
+    standard_transformations,
+)
+import numpy
 
 import vyxal.encoding
 from vyxal import lexer
@@ -43,9 +49,9 @@ def collect_until_false(
     ctx: Context,
 ) -> List[Any]:
     val = initial
-    while safe_apply(predicate, val, ctx):
+    while safe_apply(predicate, val, ctx=ctx):
         yield val
-        val = safe_apply(function, val, ctx)
+        val = safe_apply(function, val, ctx=ctx)
 
 
 def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
@@ -74,6 +80,12 @@ def deep_copy(value: Any) -> Any:
     return LazyList(itertools.tee(value)[-1])
 
 
+def dict_to_list(dictionary: dict) -> List[Any]:
+    """Returns a dictionary as [[key, value]]"""
+
+    return [[str(key), dictionary[key]] for key in dictionary]
+
+
 def digits(num: NUMBER_TYPE) -> List[int]:
     """Get the digits of a (possibly Rational) number.
     This differs from to_base_digits because it works with floats.
@@ -85,7 +97,24 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
+def enumerate_md(haystack: VyList, index_stack: list[int] = []) -> VyList:
+    """
+    Gets all the multi-dimensional indicies of haystack
+    """
+
+    for i, item in enumerate(haystack):
+        if type(item) in (list, LazyList):
+            yield from enumerate_md(item, index_stack + [i])
+        elif type(item) is str and len(item) > 1:
+            yield from enumerate_md(list(item), index_stack + [i])
+        else:
+            yield index_stack + [i]
+
+
+@lazylist
+def fixed_point(
+    function: types.FunctionType, initial: Any, ctx: Context
+) -> List[Any]:
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
 
@@ -95,15 +124,21 @@ def fixed_point(function: types.FunctionType, initial: Any) -> List[Any]:
     while previous != current:
         yield current
         previous = deep_copy(current)
-        current = safe_apply(function, current)
+        current = safe_apply(function, current, ctx=ctx)
 
 
-def foldl(function: types.FunctionType, vector: List[Any], ctx: Context) -> Any:
+def foldl(
+    function: types.FunctionType,
+    vector: List[Any],
+    initial=None,
+    *,
+    ctx: Context
+) -> Any:
     """Reduce vector by function"""
     if len(vector) == 0:
         return 0
 
-    working = None
+    working = initial
 
     for item in vector:
         if working is None:
@@ -201,11 +236,23 @@ def invert_brackets(lhs: str) -> str:
     """
     Helper function to swap brackets and parentheses in a string
     """
-    for i in ["()", "[]", "{}", "<>", "/\\"]:
-        lhs = lhs.replace(i[0], "X")
-        lhs = lhs.replace(i[1], i[0])
-        lhs = lhs.replace("X", i[1])
-    return lhs
+    res = ""
+    pairs = ["()", "[]", "{}", "<>", "/\\"]
+    open_close = {x[0]: x[1] for x in pairs}
+    close_open = {x[1]: x[0] for x in pairs}
+    for char in lhs:
+        if char in open_close:
+            res += open_close[char]
+        elif char in close_open:
+            res += close_open[char]
+        else:
+            res += char
+    return res
+
+
+def is_sympy(value):
+    """Whether or not this is a Sympy type"""
+    return isinstance(value, sympy.Basic)
 
 
 def iterable(
@@ -220,6 +267,15 @@ def iterable(
             return digits(item)
     else:
         return item
+
+
+def join_with(lhs, rhs):
+    """A generator to concatenate two iterables together"""
+    for item in lhs:
+        yield vyxalify(item)
+
+    for item in rhs:
+        yield vyxalify(item)
 
 
 def levenshtein_distance(s1: str, s2: str) -> int:
@@ -252,6 +308,26 @@ def keep(haystack: Any, needle: Any) -> Any:
             else:
                 out.append(item)
     return out
+
+
+def make_equation(eqn: str) -> sympy:
+    """
+    Returns a sympy equation from a string
+    """
+
+    eqn = eqn.split("=")
+    return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
+
+
+def make_expression(expr: str) -> sympy:
+    """Turns a string into a nice sympy expression"""
+
+    transformations = standard_transformations + (
+        implicit_multiplication_application,
+        convert_xor,
+    )
+
+    return sympy.parse_expr(expr, transformations=transformations)
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
@@ -324,6 +400,8 @@ def mold(
     """Mold one list to the shape of the other. Uses the mold function
     that Jelly uses."""
     # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
+    if isinstance(content, str):
+        content = list(content)
     for index in range(len(shape)):
         if type(shape[index]) == list:
             mold(content, shape[index])
@@ -332,6 +410,38 @@ def mold(
             shape[index] = item
             content.append(item)
     return shape
+
+
+def pad_to_square(array: VyList) -> VyList:
+    """
+    Returns an array padded to the square of the largest dimension.
+    https://stackoverflow.com/a/11763827/9363594
+    """
+    array = numpy.asarray(array)
+    m = array.reshape((array.shape[0], -1))
+    padded = 0 * numpy.ones(2 * [max(m.shape)], dtype=m.dtype)
+    padded[0 : m.shape[0], 0 : m.shape[1]] = m
+    return vyxalify(padded)
+
+
+def pi_digits(n: int):
+    """Generate x digits of Pi. Spigot's formula."""
+
+    @lazylist
+    def gen():
+        x = n + 1
+        k, a, b, a1, b1 = 2, 4, 1, 12, 4
+        while x > 0:
+            p, q, k = k * k, 2 * k + 1, k + 1
+            a, b, a1, b1 = a1, b1, p * a + q * a1, p * b + q * b1
+            d, d1 = a / b, a1 / b1
+            while d == d1 and x > 0:
+                yield int(d)
+                x -= 1
+                a, a1 = 10 * (a % b), 10 * (a1 % b1)
+                d, d1 = a / b, a1 / b1
+
+    return gen()
 
 
 def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
@@ -403,19 +513,16 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
 
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args)[::-1], function, len(args), ctx)
+        ret = function(list(args)[::-1], function, len(args), ctx=ctx)
         if len(ret):
             return ret[-1]
         else:
             return []
-    elif function.__name__.startswith("FN_"):
-        ret = function(list(args)[::-1], function, ctx)[-1]
-        if len(ret):
-            return ret[-1]
-        else:
-            return []
+    elif function.__name__.startswith("VAR_"):
+        ret = function(list(args)[::-1], function, ctx=ctx)[-1]
+        return ret
     elif takes_ctx(function):
-        return function(*args, ctx)
+        return function(*args, ctx=ctx)
     return function(*args)
 
 
@@ -455,6 +562,15 @@ def sentence_case(item: str) -> str:
             capitalise = False
         capitalise = capitalise or char in "!?."
     return ret
+
+
+def simplify(value: Any) -> Union[int, float, str, list]:
+    if isinstance(value, (int, float, str)):
+        return value
+    elif is_sympy(value) or isinstance(value, numpy.number):
+        return float(value)
+    else:
+        return [simplify(x) for x in value]
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:
@@ -568,13 +684,25 @@ def uncompress_dict(source: str) -> str:
 
 
 def uncompress_str(string: str) -> str:
-    # TODO (lyxal) Implement string (un)compression
-    raise NotImplementedError()
+    base_10_representation = from_base_alphabet(
+        string, vyxal.encoding.codepage_string_compress
+    )
+
+    actual = to_base_alphabet(
+        base_10_representation, vyxal.encoding.base_27_alphabet
+    )
+    return actual
 
 
 def uncompress_num(num: str) -> int:
-    # TODO (lyxal) Implement number (un)compression
-    raise NotImplementedError()
+    return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
+
+
+def urlify(item: str) -> str:
+    """Makes a url ready for requesting"""
+    if not (item.startswith("http://") or item.startswith("https://")):
+        return "https://" + item
+    return item
 
 
 def vy_eval(item: str, ctx: Context) -> Any:
@@ -600,27 +728,24 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return item
 
 
-def vy_zip(*items) -> list:
-    """Like python's zip, but fills shorter lists with 0s"""
+def vyxalify(value: Any) -> Any:
+    """Takes a value and returns it as one of the four types we use here."""
 
-    items = list(map(iter, items))
-    while True:
-        ret = []
-        exhausted_count = 0
-        for item in items:
-            try:
-                ret.append(next(item))
-            except:
-                ret.append(0)
-                exhausted_count += 1
-
-        if len(items) == exhausted_count:
-            break
-
-        yield ret
+    if isinstance(value, sympy.core.numbers.Integer):
+        return int(value)
+    elif is_sympy(value):
+        return sympy.nsimplify(value.as_real_imag()[0], rational=True)
+    elif isinstance(value, float) or isinstance(value, numpy.number):
+        return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, (int, Rational, str, LazyList)):
+        return value
+    elif isinstance(value, list):
+        return list(map(vyxalify, value))
+    else:
+        return LazyList(map(vyxalify, value))
 
 
-def wrap(vector: Union[str, list], width: int) -> List[Any]:
+def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
     """A version of textwrap.wrap that plays nice with spaces"""
     ret = []
     temp = []

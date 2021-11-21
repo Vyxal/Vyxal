@@ -1,0 +1,96 @@
+.right {
+    float: right;
+    display: flex;
+}
+
+.left {
+    float: right;
+    display: flex;
+}
+
+button {
+    border: none !important;
+    color: white
+
+}
+body {
+    background-color: #353535;
+    color: #C0C0C0;
+}
+
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+
+}
+
+input, textarea {
+    color: white;
+    background-color: #1e1e1e !important;
+    font-family: 'DejaVu Sans Mono', monospace;
+    min-height: 1em !important;
+    height: 1em;
+    border: none !important;
+    border-radius: 0px !important;
+    padding: 1em;
+}
+input:focus,textarea:focus{
+    border: none;
+}
+textarea {
+    width: 100%;
+}
+
+details {
+    color: white;
+    font-size: large;
+    font-family: 'Montserrat', sans-serif;
+}
+
+summary {
+    padding-bottom: 10px;
+}
+
+#keyboard {
+    border: 1px solid #eee;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.key {
+    padding:2px;
+    cursor:crosshair;
+    font-family: 'DejaVu Sans Mono', monospace;
+    color: white;
+    width: 1em;
+
+}
+.key:hover {
+    background-color: rgba(255, 255, 255, 0.596);
+    color: #000;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+a {
+    text-decoration: none !important;
+    color: white !important;
+}
+
+session-code {
+    display: none;
+}
+#dummy {
+    width: calc(100vw - 16px)
+}
+
+:read-only {
+    white-space: pre-wrap;
+    width: 100%;
+} 
