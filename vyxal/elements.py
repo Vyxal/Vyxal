@@ -240,6 +240,34 @@ def any_true(lhs, ctx):
     return int(any(iterable(lhs, ctx=ctx)))
 
 
+def apply_at(lhs, rhs, ctx):
+    """Element ÞZ
+    (any, fun) -> For each value of a (all the way down) call b with the
+                  coordinates of that value and put that at the
+                  appropriate position in a.
+
+    Or, as hyper said: for each value of a, call b with the coordinates
+    of that value is just deepmap(b, multidimindex(a))
+
+    https://chat.stackexchange.com/transcript/message/59662626#59662626
+    """
+
+    lhs, rhs = (lhs, rhs) if type(rhs) is types.FunctionType else (rhs, lhs)
+    # arrange so that lhs is always the list and rhs is always the
+    # function
+
+    lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
+
+    for pos in enumerate_md(lhs):
+        res = vectorise(rhs, pos, ctx=ctx)
+        temp = lhs
+        for sub in pos[:-1]:
+            temp = temp[sub]
+        temp[pos[-1]] = res
+
+    return lhs
+
+
 def arccos(lhs, ctx):
     """Element ∆C
     (num) -> arccos(lhs)
@@ -4308,6 +4336,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞḊ": process_element(matrix_determinant, 1),
     "Þ\\": process_element(anti_diagonal, 1),
     "Þ/": process_element(diagonal, 1),
+    "ÞZ": process_element(apply_at, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
