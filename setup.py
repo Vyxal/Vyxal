@@ -9,4 +9,5 @@ setup(
     license="MIT",
     packages=["vyxal"],
     install_requires=["numpy", "sympy", "num2word"],
+    scripts=["scripts/vyxal"],
 )
