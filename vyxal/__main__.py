@@ -98,8 +98,39 @@ if __name__ == "__main__":
 
         ctx.stacks.append(stack)
         exec(code)
-        if not ctx.printed:
-            vy_print(stack[-1], ctx=ctx)
+        if not (ctx.printed or "O" in flags) or "o" in flags:
+            output = pop(stack, 1, ctx)
+            stack.append(output)
+            for flag in flags:
+                if flag == "j":
+                    output = join(output, "\n", ctx)
+                elif flag == "s":
+                    output = vy_sum(output, ctx)
+                elif flag == "d":
+                    output = vy_sum(deep_flatten(output, ctx), ctx)
+                elif flag == "Ṫ":
+                    output = vy_sum(stack, ctx)
+                    stack = [output]
+                elif flag == "L":
+                    output = vertical_join(output, ctx=ctx)
+                elif flag == "S":
+                    output = join(output, " ", ctx)
+                elif flag == "C":
+                    output = center(output, ctx)
+                    output = join(output, "\n", ctx)
+                elif flag == "G":
+                    output = monadic_maximum(output, ctx)
+                elif flag == "g":
+                    output = monadic_minimum(output, ctx)
+                elif flag == "W":
+                    output = vy_str(stack, ctx)
+                elif flag == "ṡ":
+                    output = join(stack, " ", ctx)
+                elif flag == "J":
+                    output = join(stack, "\n", ctx)
+                else:
+                    pass
+            vy_print(output, ctx=ctx)
     else:
         # This is called if a file isn't given, just like it used to.
         ctx.repl_mode = True
