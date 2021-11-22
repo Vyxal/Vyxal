@@ -3,26 +3,19 @@ offline.
 
 """
 
+import sys
 import types
 
-import sys
+from vyxal import encoding
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.helpers import simplify
-from vyxal.transpile import transpile
 from vyxal.parse import *
-from vyxal import encoding
+from vyxal.transpile import transpile
 
 if __name__ == "__main__":
-    # I'm allowed to have this here this time. Frick you if you say I
-    # can't.
 
-    # TODO:    Flag handling.
-    # Also,    file handling.
-    # Summary: cli handling.
-
-    ctx = Context()
-    stack = []
+    ctx, stack = Context(), []
 
     if len(sys.argv) > 1:
         file_name = sys.argv[1]
@@ -36,7 +29,7 @@ if __name__ == "__main__":
 
         # Handle file opening flags
 
-        if "h" in flags:
+        if "h" in flags:  # Help flag
             print("Help message")
             exit(0)
 
@@ -51,18 +44,18 @@ if __name__ == "__main__":
                 code = f.read()
 
         # Handle input handling flags
-        if "a" in flags:
+        if "a" in flags:  # All inputs as array
             inputs = [inputs]
-        elif "f" in flags:
+        elif "f" in flags:  # Read inputs from file
             with open(inputs[0], "r", encoding="utf-8") as f:
                 inputs = f.readlines()
 
-        if "Ṡ" in flags:
+        if "Ṡ" in flags:  # All inputs as strings
             inputs = list(map(str, inputs))
         else:
             inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
-        if "H" in flags:
+        if "H" in flags:  # Pre-initalise stack to 100
             stack = [100]
         else:
             stack = []
@@ -73,14 +66,14 @@ if __name__ == "__main__":
 
         # Handle runtime flags
 
-        if "Ṁ" in flags:
+        if "Ṁ" in flags:  # Implicit ranges are [0, n)
             ctx.range_start = 0
             ctx.range_end = 0
 
-        elif "M" in flags:
+        elif "M" in flags:  # Implicit ranges are [0, n]
             ctx.range_start = 0
 
-        elif "m" in flags:
+        elif "m" in flags:  # Implicit ranges are [1, n)
             ctx.range_end = 0
 
         ctx.reverse_flag = "r" in flags
@@ -97,11 +90,9 @@ if __name__ == "__main__":
         else:
             ctx.default_arity = 1
 
-        # TODO: Handle dictionary flags
-
         code = transpile(code, ctx.dictionary_compression)
 
-        if "c" in flags:
+        if "c" in flags:  # Show transpiled code
             print(code, "\n")
 
         ctx.stacks.append(stack)

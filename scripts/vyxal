@@ -1,1 +1,1 @@
-../vyxal/__main__.py
+python -m vyxal.vyxal
