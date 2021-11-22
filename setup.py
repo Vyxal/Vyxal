@@ -1,9 +1,12 @@
-from distutils.core import setup
+from setuptools import setup
 
 setup(
-    name="vyxallanguage",
-    version="2.6.0p1",
+    name="vyxal",
+    version="2.6.0pre2",
+    description="The Vyxal Programming Language",
+    url="https://github.com/Vyxal/Vyxal",
+    author="Vyxal Organisation",
+    license="MIT",
     packages=["vyxal"],
-    scripts=["scripts/vyxal"],
-    install_requires=["sympy", "num2words", "numpy"],
+    install_requires=["numpy", "sympy", "num2word"],
 )

@@ -33,36 +33,54 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
         return structure.Lambda(1, branch)
 
 
-def transpile(program: str) -> str:
-    return transpile_ast(parse.parse(lexer.tokenise(program)))
+def transpile(program: str, dict_compress: bool = True) -> str:
+    return transpile_ast(
+        parse.parse(lexer.tokenise(program)), dict_compress=dict_compress
+    )
 
 
-def transpile_ast(program: list[structure.Structure], indent=0) -> str:
+def transpile_ast(
+    program: list[structure.Structure],
+    indent: int = 0,
+    dict_compress: bool = True,
+) -> str:
     """Transpile a given program (as a parsed list of structures) into Python"""
     if not program:
         return helpers.indent_str("pass", indent)
     return "\n".join(
-        transpile_single(struct, indent=indent) for struct in program
+        transpile_single(struct, indent=indent, dict_compress=dict_compress)
+        for struct in program
     )
 
 
 def transpile_single(
-    token_or_struct: Union[Token, structure.Structure], indent: int
+    token_or_struct: Union[Token, structure.Structure],
+    indent: int,
+    dict_compress: bool = True,
 ) -> str:
     if isinstance(token_or_struct, Token):
-        return transpile_token(token_or_struct, indent)
+        return transpile_token(
+            token_or_struct, indent, dict_compress=dict_compress
+        )
     elif isinstance(token_or_struct, structure.Structure):
-        return transpile_structure(token_or_struct, indent)
+        return transpile_structure(
+            token_or_struct, indent, dict_compress=dict_compress
+        )
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"
     )
 
 
-def transpile_token(token: Token, indent: int) -> str:
+def transpile_token(
+    token: Token, indent: int, dict_compress: bool = True
+) -> str:
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
-        string = uncompress(token)  # TODO: Account for -D flag
+        if dict_compress:
+            string = uncompress(token)
+        else:
+            string = token.value
         # Can't use {string!r} inside the f-string because that
         # screws up escape sequences.
         return indent_str(f'stack.append("{string}")', indent)
@@ -96,11 +114,15 @@ def transpile_token(token: Token, indent: int) -> str:
     raise ValueError(f"Bad token: {token}")
 
 
-def transpile_structure(struct: structure.Structure, indent: int) -> str:
+def transpile_structure(
+    struct: structure.Structure, indent: int, dict_compress: bool = True
+) -> str:
     """Transpile a single structure."""
 
     if isinstance(struct, structure.GenericStatement):
-        return transpile_single(struct.branches[0][0], indent)
+        return transpile_single(
+            struct.branches[0][0], indent, dict_compress=dict_compress
+        )
     if isinstance(struct, structure.IfStatement):
         # Holds indentation level as elifs will be nested inside the else part
         new_indent = indent
@@ -116,20 +138,26 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 res += indent_str("else:", new_indent)
                 new_indent += 1
                 res += indent_str("ctx.context_values.pop()", new_indent)
-                res += transpile_ast(cond, new_indent)
+                res += transpile_ast(
+                    cond, new_indent, dict_compress=dict_compress
+                )
 
             res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
             res += indent_str(
                 "ctx.context_values.append(condition)", new_indent
             )
             res += indent_str("if boolify(condition, ctx):", new_indent)
-            res += transpile_ast(body, new_indent + 1)
+            res += transpile_ast(
+                body, new_indent + 1, dict_compress=dict_compress
+            )
 
         # There's an extra else body at the end
         if len(struct.branches) % 2 == 0:
             body = struct.branches[-1]
             res += indent_str("else:", new_indent)
-            res += transpile_ast(body, new_indent + 1)
+            res += transpile_ast(
+                body, new_indent + 1, dict_compress=dict_compress
+            )
 
         # Pop the last condition
         res += indent_str("ctx.context_values.pop()", indent)
@@ -147,7 +175,9 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent,
             )
             + indent_str(f"    ctx.context_values.append({var})", indent)
-            + transpile_ast(struct.body, indent + 1)
+            + transpile_ast(
+                struct.body, indent + 1, dict_compress=dict_compress
+            )
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, structure.WhileLoop):
@@ -155,9 +185,13 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
             + indent_str("while boolify(condition):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
-            + transpile_ast(struct.body, indent + 1)
+            + transpile_ast(
+                struct.body, indent + 1, dict_compress=dict_compress
+            )
             + indent_str("    ctx.context_values.pop()", indent)
-            + transpile_ast(struct.condition, indent + 1)
+            + transpile_ast(
+                struct.condition, indent + 1, dict_compress=dict_compress
+            )
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
@@ -198,7 +232,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
             + indent_str(f"this = VAR_{struct.name}", indent + 1)
-            + indent_str(transpile_ast(struct.body), indent + 1)
+            + indent_str(
+                transpile_ast(struct.body, dict_compress=dict_compress),
+                indent + 1,
+            )
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
@@ -244,7 +281,10 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
                 indent + 1,
             )
             + indent_str("ctx.stacks.append(stack);", indent + 1)
-            + indent_str(transpile_ast(struct.body), indent + 1)
+            + indent_str(
+                transpile_ast(struct.body, dict_compress=dict_compress),
+                indent + 1,
+            )
             + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
@@ -263,7 +303,7 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             temp += (
                 indent_str("def list_item(s, ctx):", indent)
                 + indent_str("stack = list(deep_copy(s))", indent + 1)
-                + transpile_ast(x, indent + 1)
+                + transpile_ast(x, indent + 1, dict_compress=dict_compress)
                 + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
                 + indent_str("temp_list.append(list_item(stack, ctx))", indent)
             )
@@ -272,7 +312,11 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         return temp
 
     if isinstance(struct, structure.MonadicModifier):
-        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
+        element_A = transpile_ast(
+            [lambda_wrap([struct.function_A])],
+            indent,
+            dict_compress=dict_compress,
+        )
         return (
             element_A
             + "\n"
@@ -283,8 +327,16 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
         )
 
     if isinstance(struct, structure.DyadicModifier):
-        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
-        element_B = transpile_ast([lambda_wrap([struct.function_B])], indent)
+        element_A = transpile_ast(
+            [lambda_wrap([struct.function_A])],
+            indent,
+            dict_compress=dict_compress,
+        )
+        element_B = transpile_ast(
+            [lambda_wrap([struct.function_B])],
+            indent,
+            dict_compress=dict_compress,
+        )
         return (
             element_A
             + "\n"
@@ -297,9 +349,21 @@ def transpile_structure(struct: structure.Structure, indent: int) -> str:
             )
         )
     if isinstance(struct, structure.TriadicModifier):
-        element_A = transpile_ast([lambda_wrap([struct.function_A])], indent)
-        element_B = transpile_ast([lambda_wrap([struct.function_B])], indent)
-        element_C = transpile_ast([lambda_wrap([struct.function_C])], indent)
+        element_A = transpile_ast(
+            [lambda_wrap([struct.function_A])],
+            indent,
+            dict_compress=dict_compress,
+        )
+        element_B = transpile_ast(
+            [lambda_wrap([struct.function_B])],
+            indent,
+            dict_compress=dict_compress,
+        )
+        element_C = transpile_ast(
+            [lambda_wrap([struct.function_C])],
+            indent,
+            dict_compress=dict_compress,
+        )
         return (
             element_A
             + "\n"
