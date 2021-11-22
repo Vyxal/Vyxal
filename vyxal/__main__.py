@@ -11,7 +11,7 @@ from vyxal.elements import *
 from vyxal.helpers import simplify
 from vyxal.transpile import transpile
 from vyxal.parse import *
-from vyxal import lexer
+from vyxal import encoding
 
 if __name__ == "__main__":
     # I'm allowed to have this here this time. Frick you if you say I
@@ -25,22 +25,55 @@ if __name__ == "__main__":
     stack = []
 
     if len(sys.argv) > 1:
-        with open(sys.argv[1], "r", encoding="utf-8") as f:
-            code = f.read()  # TODO: Allow for vyxal raw encoding.
-            # That'll be done once flags are handled
+        file_name = sys.argv[1]
+        flags = ""
+        inputs = []
 
         if len(sys.argv) > 2:
-            flags = sys.argv[2]
-            if len(sys.argv) > 3:
-                ctx.inputs[0][0] = list(
-                    map(lambda x: vy_eval(x, ctx), sys.argv[3:])
-                )
+            flags, inputs = sys.argv[2], sys.argv[3:]
+
+        code = ""
+
+        # Handle file opening flags
+
+        if "e" in flags:  # Program is file name
+            code = file_name
+        elif "v" in flags:  # Open file using Vyxal encoding
+            with open(file_name, "rb") as f:
+                code = f.read()
+                code = encoding.vyxal_to_utf8(code)
+        else:  # Open file using UTF-8 encoding:
+            with open(file_name, "r", encoding="utf-8") as f:
+                code = f.read()
+
+        # Handle input handling flags
+        if "a" in flags:
+            inputs = [inputs]
+        elif "f" in flags:
+            with open(inputs[0], "r", encoding="utf-8") as f:
+                inputs = f.readlines()
+
+        if "Ṡ" in flags:
+            inputs = list(map(str, inputs))
+        else:
+            inputs = list(map(vy_eval, inputs))
+
+        if "H" in flags:
+            stack = [100]
+        else:
+            stack = []
+
+        ctx = Context()
+        ctx.inputs[0][0] = inputs
+        ctx.stacks.append(stack)
+
+        # TODO: Handle dictionary flags
 
         code = transpile(code)
         ctx.stacks.append(stack)
         exec(code)
         if not ctx.printed:
-            print(stack[-1])
+            vy_print(stack[-1])
     else:
         # This is called if a file isn't given, just like it used to.
         ctx.repl_mode = True
