@@ -23,7 +23,7 @@ import numpy
 import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-from vyxal.dictionary import *
+import vyxal.dictionary
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -665,19 +665,21 @@ def uncompress_dict(source: str) -> str:
             temp_scc += char
             if len(temp_scc) == 2:
                 index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
-                if index < len(contents):
-                    ret += contents[index]
+                if index < len(vyxal.dictionary.contents):
+                    ret += vyxal.dictionary.contents[index]
                 temp_scc = ""
         else:
             if temp_scc:
-                ret += small_dictionary[
+                ret += vyxal.dictionary.small_dictionary[
                     vyxal.encoding.compression.find(temp_scc)
                 ]
                 temp_scc = ""
             ret += char
 
     if temp_scc:
-        ret += small_dictionary[vyxal.encoding.compression.find(temp_scc)]
+        ret += vyxal.dictionary.small_dictionary[
+            vyxal.encoding.compression.find(temp_scc)
+        ]
         temp_scc = ""
 
     return ret

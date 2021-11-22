@@ -36,6 +36,10 @@ if __name__ == "__main__":
 
         # Handle file opening flags
 
+        if "h" in flags:
+            print("Help message")
+            exit(0)
+
         if "e" in flags:  # Program is file name
             code = file_name
         elif "v" in flags:  # Open file using Vyxal encoding
@@ -67,13 +71,35 @@ if __name__ == "__main__":
         ctx.inputs[0][0] = inputs
         ctx.stacks.append(stack)
 
+        # Handle runtime flags
+
+        if "Ṁ" in flags:
+            ctx.range_start = 0
+            ctx.range_end = 0
+
+        elif "M" in flags:
+            ctx.range_start = 0
+
+        elif "m" in flags:
+            ctx.range_end = 0
+
+        ctx.reverse_flag = "r" in flags
+        ctx.keg_mode = "K" in flags
+        ctx.number_as_range = "R" in flags
+        ctx.dictionary_compression = not "D" in flags
+        ctx.variable_length_1 = "V" in flags
+
         # TODO: Handle dictionary flags
 
-        code = transpile(code)
+        code = transpile(code, ctx.dictionary_compression)
+
+        if "c" in flags:
+            print(code, "\n")
+
         ctx.stacks.append(stack)
         exec(code)
         if not ctx.printed:
-            vy_print(stack[-1])
+            vy_print(stack[-1], ctx=ctx)
     else:
         # This is called if a file isn't given, just like it used to.
         ctx.repl_mode = True
