@@ -60,7 +60,7 @@ if __name__ == "__main__":
         if "Ṡ" in flags:
             inputs = list(map(str, inputs))
         else:
-            inputs = list(map(vy_eval, inputs))
+            inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
         if "H" in flags:
             stack = [100]
