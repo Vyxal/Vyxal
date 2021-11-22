@@ -6,6 +6,7 @@ class Context:
 
     def __init__(self):
         self.context_values = [0]
+        self.default_arity = 1
         self.dictionary_compression = True
         self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
         # inputs[0] = [[inputs], index]
@@ -24,6 +25,7 @@ class Context:
         self.retain_popped = False
         self.reverse_flag = False
         self.stacks = []
+        self.truthy_lists = False
         self.last_popped = []
         self.use_top_input = False
         self.variable_length_1 = False

@@ -88,6 +88,14 @@ if __name__ == "__main__":
         ctx.number_as_range = "R" in flags
         ctx.dictionary_compression = not "D" in flags
         ctx.variable_length_1 = "V" in flags
+        ctx.truthy_lists = "t" in flags  # L431 in elements.py
+
+        if "2" in flags:
+            ctx.default_arity = 2
+        elif "3" in flags:
+            ctx.default_arity = 3
+        else:
+            ctx.default_arity = 1
 
         # TODO: Handle dictionary flags
 
@@ -128,6 +136,9 @@ if __name__ == "__main__":
                     output = join(stack, " ", ctx)
                 elif flag == "J":
                     output = join(stack, "\n", ctx)
+                elif flag == "…":
+                    if vy_type(output, simple=True) is list:
+                        output = output[:100]
                 else:
                     pass
             vy_print(output, ctx=ctx)
