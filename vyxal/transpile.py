@@ -266,11 +266,14 @@ def transpile_structure(
             )
             + indent_str(
                 "else: stack = wrapify(arg_stack, "
-                + f"{struct.branches[0]}"
-                + ", ctx)",
+                + (
+                    struct.arity
+                    if struct.arity != "default"
+                    else "ctx.default_arity" + ", ctx)"
+                ),
                 indent + 1,
             )
-            + indent_str(f"this = _lambda_{id_}", indent + 1)
+            + indent_str(f"this = self", indent + 1)
             + indent_str(
                 "ctx.context_values.append(list(deep_copy(stack)) "
                 "if len(stack) != 1 else deep_copy(stack[0]))",
@@ -290,7 +293,12 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
-            + indent_str(f"_lambda_{id_}.arity = {struct.branches[0]}", indent)
+            + indent_str(
+                f"_lambda_{id_}.arity = " + struct.arity
+                if struct.arity != "default"
+                else "ctx.default_arity",
+                indent,
+            )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 

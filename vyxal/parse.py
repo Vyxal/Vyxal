@@ -160,7 +160,7 @@ def parse(
             elif structure_cls == structure.Lambda:
                 if len(branches) == 1:
                     # that is, there is only a body - no arity
-                    arity = 1
+                    arity = "default"
                 else:
                     try:
                         arity = int(branches[0][0].value)
