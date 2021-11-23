@@ -70,6 +70,7 @@ def execute_vyxal(code, flags, inputs):
     ctx.dictionary_compression = not "D" in flags
     ctx.variable_length_1 = "V" in flags
     ctx.truthy_lists = "t" in flags  # L431 in elements.py
+    ctx.vyxal_lists = not "P" in flags
 
     if "2" in flags:
         ctx.default_arity = 2
