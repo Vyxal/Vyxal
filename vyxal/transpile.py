@@ -94,9 +94,7 @@ def transpile_token(
             )
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
-        return indent_str(
-            elements.elements.get(token.value, ("pass\n", -1))[0], indent
-        )
+        return indent_str(elements.get(token.value, ("pass\n", -1))[0], indent)
     elif token.name == TokenType.COMPRESSED_NUMBER:
         return indent_str(f"stack.append({uncompress(token)})", indent)
     elif token.name == TokenType.COMPRESSED_STRING:
