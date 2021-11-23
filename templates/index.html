@@ -25,15 +25,13 @@
     <script src="https://cdn.jsdelivr.net/gh/vyxal/vylight/mode-vyxal.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vyxal/vylight/mode-vyxal.min.css">
 
-    <script src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/main.min.js"></script>
-    <link rel="stylesheet" src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/main.min.css">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{url_for('static', filename='main.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
 
-            codepage_descriptions = eval('{{codepage_info |safe}}');
+            codepage_descriptions = "KROMER" //eval('{{codepage_info |safe}}');
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
                 kb.innerHTML += `<span class=\"key\" style="text-align:center;" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
@@ -92,22 +90,21 @@
 
     <button id="permalink" title="Generate Permalink" type="button"
         onclick="shareOptions('permalink'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/images/permalink.svg"
-            style="width:24px;height:24px">
+        <img src="static/images/permalink.svg" style="width:24px;height:24px;color: white;">
     </button>
 
     <button id="post-template" title="Generate Code Golf Submission" type="button"
         onclick="shareOptions('post-template'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/images/template.svg" style="width:24px;height:24px">
+        <img src="static/images/template.svg" style="width:24px;height:24px;color: white;">
     </button>
 
     <button id="markdown" title="Generate Inline Markdown" type="button"
         onclick="shareOptions('markdown'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/images/markdown.svg" style="width:24px;height:24px">
+        <img src="static/images/markdown.svg" style="width:24px;height:24px">
     </button>
 
     <button id="clear" title="Clear all fields">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal/templates/images/clear.svg" style="width:24px;height:24px">
+        <img src="static/images/clear.svg" style="width:24px;height:24px">
     </button>
 
     <details>
