@@ -1434,7 +1434,7 @@
   arity: 1
   overloads:
     any: bool(a) (Booliify)
-  vectorise: false
+  vectorise: true
   tests:
     - "[0] : 0"
     - "[1] : 1"
@@ -1447,7 +1447,7 @@
   arity: 1
   overloads:
     any: a != 1
-  vectorise: false
+  vectorise: true
   tests:
     - "[[1, 0]] : [0, 1]"
     - '["1"] : 0'

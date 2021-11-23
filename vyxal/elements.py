@@ -1736,20 +1736,14 @@ def is_prime(lhs, ctx):
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
+    (str) -> square the expression
     """
-    if isinstance(lhs, (str, sympy.Basic)) or lhs == 0:
-        return 0
-    elif isinstance(lhs, int):
-        return int(
-            any(
-                [
-                    exponent(item, 2, ctx) == lhs
-                    for item in range(1, math.ceil(lhs / 2) + 1)
-                ]
-            )
-        ) or int(lhs == 0)
-    else:
-        return vectorise(is_square, lhs, ctx=ctx)
+    ts = vy_type(lhs)
+    x = sympy.Symbol("x")
+    return {
+        NUMBER_TYPE: lambda: int(sympy.ntheory.is_square(lhs)),
+        str: lambda: str(sympy.expand(lhs + " ** 2")),
+    }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
 
 def join(lhs, rhs, ctx):
@@ -2898,7 +2892,7 @@ def run_length_encoding(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda elem: [elem[1], len(list(elem[1]))],
+            lambda elem: [elem[0], len(list(elem[1]))],
             itertools.groupby(lhs),
         )
     )

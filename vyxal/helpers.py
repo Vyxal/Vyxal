@@ -311,9 +311,7 @@ def keep(haystack: Any, needle: Any) -> Any:
 
 
 def make_equation(eqn: str) -> sympy:
-    """
-    Returns a sympy equation from a string
-    """
+    """Returns a sympy equation from a string"""
 
     eqn = eqn.split("=")
     return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
