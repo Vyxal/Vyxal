@@ -33,11 +33,11 @@ textarea {
     color           : white;
     background-color: #1e1e1e !important;
     font-family     : 'DejaVu Sans Mono', monospace;
-    min-height      : 1em !important;
-    height          : 1em;
+    min-height      : 3em !important;
+    height          : 3em;
     border          : none !important;
     border-radius   : 0px !important;
-    padding         : 1em;
+    margin-bottom   : 1em;
 }
 
 input:focus,
