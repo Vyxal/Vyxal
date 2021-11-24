@@ -266,7 +266,11 @@ function initCodeMirror() {
             Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27)
         )
         dummy.value = ""
-        updateCount()
+
+        // Make sure e_code is not null
+        if ("e_code" in globalThis) {
+            updateCount()
+        }
     }
 
     let mode = {
@@ -274,13 +278,14 @@ function initCodeMirror() {
         lineWrapping: true
     }
 
-    for (boxId of ['header', 'code', 'footer']) {
-        globalThis['e_' + boxID] = CodeMirror.fromTextArea($$$('#' + boxId), mode)
-        globalThis['e_' + boxID].on('change', cm => {
-            resize(globalThis['e_' + boxID])
-            globalThis['e_' + boxID].value = cm.getValue()
+    for (const boxId of ['header', 'code', 'footer']) {
+        console.log(boxId)
+        globalThis['e_' + boxId] = CodeMirror.fromTextArea($$$('#' + boxId), mode)
+        globalThis['e_' + boxId].on('change', cm => {
+            resize(globalThis['e_' + boxId])
+            globalThis['e_' + boxId].value = cm.getValue()
         })
-        resize(globalThis['e_' + boxID])
+        resize(globalThis['e_' + boxId])
 
         box = getCodeMirrorTextArea(boxId)
         if (box) {

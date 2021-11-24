@@ -27,7 +27,6 @@
 
     <script src="{{url_for('static', filename='main.js')}}"></script>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
 
@@ -85,26 +84,30 @@
     <button id="run_button" title="Run Program" type="button">
         <svg style="width:24px;height:24px" viewBox="0 0 24 24">
             <path fill="white" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
-        </svg>>
+        </svg>
     </button>
 
     <button id="permalink" title="Generate Permalink" type="button"
         onclick="shareOptions('permalink'); resizeCodeBox('output')">
-        <img src="static/images/permalink.svg" style="width:24px;height:24px;color: white;">
+        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/permalink.svg"
+            style="width:24px;height:24px;color: white;">
     </button>
 
     <button id="post-template" title="Generate Code Golf Submission" type="button"
         onclick="shareOptions('post-template'); resizeCodeBox('output')">
-        <img src="static/images/template.svg" style="width:24px;height:24px;color: white;">
+        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/template.svg"
+            style="width:24px;height:24px;color: white;">
     </button>
 
     <button id="markdown" title="Generate Inline Markdown" type="button"
         onclick="shareOptions('markdown'); resizeCodeBox('output')">
-        <img src="static/images/markdown.svg" style="width:24px;height:24px">
+        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/markdown.svg"
+            style="width:24px;height:24px">
     </button>
 
     <button id="clear" title="Clear all fields">
-        <img src="static/images/clear.svg" style="width:24px;height:24px">
+        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/clear.svg"
+            style="width:24px;height:24px">
     </button>
 
     <details>
