@@ -18,6 +18,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.online_output = output_var
     ctx.online = online_mode
 
+    if online_mode:
+        inputs = inputs.split("\n")  # have to do this here because file writing
+
     # Handle input handling flags
     if "h" in flags:  # Help flag
         print("Help message")
