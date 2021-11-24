@@ -3,12 +3,12 @@ import yaml
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 ELEMENTS_YAML = os.path.join(CURR_DIR, "elements.yaml")
-ELEMENTS_TXT = os.path.join(CURR_DIR, "elements.md")
+ELEMENTS_MD = os.path.join(CURR_DIR, "elements.md")
 
 with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
     data = yaml.safe_load(elements)
 
-with open(ELEMENTS_TXT, "w", encoding="utf-8") as output:
+with open(ELEMENTS_MD, "w", encoding="utf-8") as output:
     for element in data:
         if "modifier" in element:
             output.write(

@@ -287,3 +287,7 @@ function initCodeMirror() {
         }
     }
 }
+
+function repr(str) {
+    return str.replace(/'/g, "&apos;").replace(/"/g, "&quot;")
+}

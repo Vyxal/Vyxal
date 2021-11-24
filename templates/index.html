@@ -26,14 +26,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vyxal/vylight/mode-vyxal.min.css">
 
     <script src="{{url_for('static', filename='main.js')}}"></script>
+    <script src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
+
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
     <script>
         window.addEventListener('DOMContentLoaded', (event) => {
 
-            codepage_descriptions = "KROMER" //eval('{{codepage_info |safe}}');
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += `<span class=\"key\" style="text-align:center;" title='${codepage_descriptions[i]}'>${codepage[i]}</span>`;
+                kb.innerHTML += (`<span class=\"key\" style="text-align:center;" title='`
+                    + repr(codepage_descriptions[i])
+                    + `'>${codepage[i]}</span>`);
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {

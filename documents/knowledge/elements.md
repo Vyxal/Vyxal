@@ -89,6 +89,11 @@ Usage:
 ```
 
 -------------------------------
+## ° (Complex Number Separator)
+
+Separates the real and imaginary parts of a complex number
+
+-------------------------------
 ## • (MultiCommand)
 
 Logarithm / Repeat Character / Capitalisation transfer
