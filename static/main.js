@@ -259,7 +259,7 @@ function initCodeMirror() {
         var dummy = $$$("#dummy")
         dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily
         dummy.style.fontSize = '15px'
-        dummy.style.lineHeight = '24px'
+        dummy.style.lineHeight = '15px'
         dummy.value = elem.doc.getValue()
         elem.setSize(
             null,
