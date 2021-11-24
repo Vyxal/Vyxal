@@ -3842,7 +3842,7 @@ def vy_print(lhs, end="\n", ctx=None):
         if ts == NUMBER_TYPE:
             lhs = sympy.nsimplify(str(float(lhs)))
         if ctx.online:
-            ctx.online_output += vy_str(lhs, ctx=ctx)
+            ctx.online_output[1] += vy_str(lhs, ctx=ctx)
         else:
             print(lhs, end=end)
 

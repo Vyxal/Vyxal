@@ -35,7 +35,7 @@ def index():
 def execute():
 
     print(sessions, request.form)
-    flags = request.form["flags"]
+    flags = request.form["flags"] + "e"
     code = request.form["code"].replace("\r", "")
     input_list = request.form["inputs"].replace("\r", "")
     header = request.form["header"].replace("\r", "")
@@ -82,11 +82,9 @@ def execute():
                     + (footer and ("\n" + footer))
                 )
 
-                ctx = Context()
-                ctx.online = True
                 sessions[session] = multiprocessing.Process(
                     target=vyxal.execute_vyxal,
-                    args=(fcode, flags, input_list, ret, ctx),
+                    args=(fcode, flags, input_list, ret, True),
                 )
                 sessions[session].start()
                 sessions[session].join(time)
@@ -100,7 +98,6 @@ def execute():
                     sessions[session].kill()
                     if 2 in ret:
                         ret[2] += "\n" + f"Code timed out after {time} seconds"
-                print(len(ret[1]))
                 y.write(ret[1])
                 z.write(ret[2])
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:

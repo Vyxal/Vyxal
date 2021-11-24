@@ -12,13 +12,12 @@ from vyxal.elements import *
 from vyxal.transpile import transpile
 
 
-def execute_vyxal(file_name, flags, inputs, output="", ctx=None):
-    if ctx is not None:
-        ctx = ctx
-    else:
-        ctx = Context()
+def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
+    ctx = Context()
     stack = []
-    ctx.online_output = output
+    ctx.online_output = output_var
+    ctx.online = online_mode
+
     # Handle input handling flags
     if "h" in flags:  # Help flag
         print("Help message")
@@ -51,7 +50,6 @@ def execute_vyxal(file_name, flags, inputs, output="", ctx=None):
     else:
         stack = []
 
-    ctx = Context()
     ctx.inputs[0][0] = inputs
     ctx.stacks.append(stack)
 
@@ -85,7 +83,7 @@ def execute_vyxal(file_name, flags, inputs, output="", ctx=None):
     code = transpile(code, ctx.dictionary_compression)
 
     if "c" in flags:  # Show transpiled code
-        print(code, "\n")
+        vy_print(code + "\n", ctx=ctx)
 
     ctx.stacks.append(stack)
     exec(code)
