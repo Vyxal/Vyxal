@@ -96,3 +96,7 @@ session-code {
 #dummy {
     width: calc(100vw - 16px)
 }
+
+button:hover {
+    color: white;
+}

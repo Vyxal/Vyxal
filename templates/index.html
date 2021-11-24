@@ -75,6 +75,18 @@
                         element.style.display = "none";
                     }
                 }
+            } else {
+                document.getElementById("keyboard").innerHTML = og_keyboard_html;
+                document.querySelectorAll('.key').forEach(item => {
+                    item.addEventListener('click', event => {
+                        var char = replaceHTMLChar(event.target.innerHTML)
+                        var cm = globalThis[`e_${selectedBox}`]
+                        cm.replaceSelection(char)
+                        cm.save()
+                        cm.focus()
+                        updateCount()
+                    })
+                })
             }
         }
     </script>
