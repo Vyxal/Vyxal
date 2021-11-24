@@ -69,7 +69,7 @@
                 var pattern = new RegExp(raw);
 
                 for (element of document.getElementsByClassName("key")) {
-                    if (element.title.match(pattern)) {
+                    if (element.title.toLowerCase().match(pattern)) {
                         element.style.display = "inline-block";
                     } else {
                         element.style.display = "none";
