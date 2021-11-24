@@ -55,23 +55,23 @@ function updateCount() {
     }
 }
 
+function encode(obj) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+
+function decode(str) {
+    return JSON.parse(decodeURIComponent(escape(atob(str))));
+}
+
 function generateURL() {
     var flags = document.getElementById("flag").value
     var code = e_code.doc.getValue()
     var inputs = document.getElementById("inputs").value
     var header = e_header.doc.getValue()
     var footer = e_footer.doc.getValue()
-    var undone_url = "?flags=" + flags + "&code=" + encodeURIComponent(code) + "&inputs=" + encodeURIComponent(inputs)
-    undone_url += "&header=" + encodeURIComponent(header) + "&footer=" + encodeURIComponent(footer)
 
-    var url = "https://lyxal.pythonanywhere.com" + undone_url
-    url = url.replace(/\(/g, "%28")
-    url = url.replace(/\[/g, "%5B")
-    url = url.replace(/\]/g, "%5D")
-    url = url.replace(/\)/g, "%29")
-    url = url.replace(/\*/g, "%2A")
-    url = url.replace(/'/g, "%27")
-    return url
+    var url = [flags, header, code, footer, inputs];
+    return "https://vyxal.pythonanywhere.com/#" + encode(url)
 }
 
 function shareOptions(shareType) {
@@ -111,14 +111,7 @@ ${code}
 }
 
 function decodeURL() {
-    const queryString = window.location.search
-    console.log(queryString)
-    const urlParams = new URLSearchParams(queryString)
-    code = urlParams.get("code")
-    flags = urlParams.get("flags")
-    inputs = urlParams.get("inputs")
-    footer = urlParams.get("footer")
-    header = urlParams.get("header")
+    var [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
 
     var flag_box = document.getElementById("flag")
     var inputs_box = document.getElementById("inputs")
