@@ -7,11 +7,11 @@ import sys
 import types
 
 
-import encoding
-from context import Context
-from elements import *
-from transpile import transpile
-from helpers import *
+import vyxal.encoding
+from vyxal.context import Context
+from vyxal.elements import *
+from vyxal.transpile import transpile
+from vyxal.helpers import *
 
 
 def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
@@ -155,16 +155,17 @@ def repl():
         ctx.stacks.pop()
 
 
-if len(sys.argv) > 1:
-    file_name = sys.argv[1]
-    flags = ""
-    inputs = []
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        file_name = sys.argv[1]
+        flags = ""
+        inputs = []
 
-    if len(sys.argv) > 2:
-        flags, inputs = sys.argv[2], sys.argv[3:]
+        if len(sys.argv) > 2:
+            flags, inputs = sys.argv[2], sys.argv[3:]
 
-    code = ""
+        code = ""
 
-    execute_vyxal(code, flags, inputs)
-else:
-    repl()
+        execute_vyxal(code, flags, inputs)
+    else:
+        repl()
