@@ -269,7 +269,7 @@ def transpile_structure(
             + indent_str(
                 "else: stack = wrapify(arg_stack, "
                 + (
-                    struct.arity
+                    str(struct.arity)
                     if struct.arity != "default"
                     else "ctx.default_arity" + ", ctx)"
                 ),
@@ -296,7 +296,7 @@ def transpile_structure(
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
             + indent_str(
-                f"_lambda_{id_}.arity = " + struct.arity
+                f"_lambda_{id_}.arity = " + str(struct.arity)
                 if struct.arity != "default"
                 else "ctx.default_arity",
                 indent,
