@@ -15,7 +15,7 @@
         crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" type="image/jpg"
         href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
 
@@ -96,33 +96,27 @@
     <textarea id=dummy style="visibility: hidden;position:absolute; height: 0px; font: size 20px;"></textarea>
     <session-code>{{session}}</session-code>
     <h2 style="display: inline-block;"><a href="https://github.com/Vyxal/Vyxal" target="_blank">Vyxal</a></h2>
-    <button id="run_button" title="Run Program" type="button">
-        <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-            <path fill="white" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12" />
-        </svg>
+    <button id="run_button" title="Run Program" type="button" onclick="this.blur()">
+        <i class="fas fa-play-circle"></i>
     </button>
 
     <button id="permalink" title="Generate Permalink" type="button"
         onclick="shareOptions('permalink'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/permalink.svg"
-            style="width:24px;height:24px;color: white;">
+        <i class="fas fa-link"></i>
     </button>
 
     <button id="post-template" title="Generate Code Golf Submission" type="button"
         onclick="shareOptions('post-template'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/template.svg"
-            style="width:24px;height:24px;color: white;">
+        <i class="fas fa-medal"></i>
     </button>
 
     <button id="markdown" title="Generate Inline Markdown" type="button"
         onclick="shareOptions('markdown'); resizeCodeBox('output')">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/markdown.svg"
-            style="width:24px;height:24px">
+        <i class="fab fa-markdown"></i>
     </button>
 
     <button id="clear" title="Clear all fields">
-        <img src="https://cdn.jsdelivr.net/gh/vyxal/vyxal@2.6.0pre2/templates/images/clear.svg"
-            style="width:24px;height:24px">
+        <i class="fas fa-redo"></i>
     </button>
 
     <details>

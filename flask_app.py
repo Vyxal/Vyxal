@@ -1,5 +1,6 @@
 import multiprocessing
 import secrets
+import traceback
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
@@ -86,18 +87,23 @@ def execute():
                     target=vyxal.execute_vyxal,
                     args=(fcode, flags, input_list, ret, True),
                 )
-                sessions[session].start()
-                sessions[session].join(time)
+                try:
+                    sessions[session].start()
+                    sessions[session].join(time)
 
-                if session in terminated:
-                    terminated.remove(session)
-                    ret[2] += "\nSession terminated upon user request"
+                    if session in terminated:
+                        terminated.remove(session)
+                        ret[2] += "\nSession terminated upon user request"
 
-                if sessions[session].is_alive():
+                    if sessions[session].is_alive():
 
-                    sessions[session].kill()
-                    if 2 in ret:
-                        ret[2] += "\n" + f"Code timed out after {time} seconds"
+                        sessions[session].kill()
+                        if 2 in ret:
+                            ret[2] += (
+                                "\n" + f"Code timed out after {time} seconds"
+                            )
+                except Exception as e:
+                    ret[2] += "\n" + sys.last_value
                 y.write(ret[1])
                 z.write(ret[2])
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:

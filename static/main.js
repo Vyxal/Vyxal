@@ -203,9 +203,8 @@ $(document).ready(e => {
                 output.value = res.stdout
                 extra.value = res.stderr
                 run.innerHTML =
-                    `<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12"/>
-                    </svg>`;
+                    `<i class="fas fa-play-circle"></i>
+                    `;
                 if (e_code.doc.getValue() == 'lyxal') {
                     location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                 }

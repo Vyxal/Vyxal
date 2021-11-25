@@ -100,3 +100,7 @@ session-code {
 button:hover {
     color: white;
 }
+
+i {
+    font-size: 24px;
+}

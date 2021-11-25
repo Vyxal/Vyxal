@@ -1,6 +1,6 @@
 """Transpiles Vyxal code into Python"""
 
-
+import re
 import secrets
 from typing import Union
 
@@ -166,6 +166,7 @@ def transpile_structure(
         var = (
             struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
         )
+        var = re.sub("[^A-Za-z0-9_]", "", var)
         var = f"VAR_{var}"
         return (
             indent_str(
@@ -193,7 +194,8 @@ def transpile_structure(
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
     if isinstance(struct, structure.FunctionCall):
-        return f"stack += VAR_{struct.name}(stack, self=VAR_{struct.name}, ctx=ctx)"
+        var = re.sub("[^A-Za-z0-9_]", "", struct.name)
+        return f"stack += VAR_{var}(stack, self=VAR_{var}, ctx=ctx)"
     if isinstance(struct, structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
@@ -213,12 +215,14 @@ def transpile_structure(
             else:
                 parameter_total += 1
                 function_parameters += (
-                    f"VAR_{parameter} = pop(arg_stack, 1, ctx=ctx)\n"
+                    f"VAR_{re.sub('[^A-z0-9_]', '', parameter)} ="
+                    + "pop(arg_stack, 1, ctx=ctx)\n"
                 )
 
+        var = re.sub("[^A-Za-z0-9_]", "", struct.name)
         return (
             indent_str(
-                f"def VAR_{struct.name}(arg_stack, self, arity=-1, ctx=None):",
+                f"def VAR_{var}(arg_stack, self, arity=-1, ctx=None):",
                 indent,
             )
             + indent_str("parameters = []", indent + 1)
@@ -229,7 +233,7 @@ def transpile_structure(
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str(f"this = VAR_{struct.name}", indent + 1)
+            + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
                 indent + 1,
