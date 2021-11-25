@@ -69,7 +69,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.range_end = 0
 
     ctx.reverse_flag = "r" in flags
-    ctx.keg_mode = "K" in flags
     ctx.number_as_range = "R" in flags
     ctx.dictionary_compression = not "D" in flags
     ctx.variable_length_1 = "V" in flags

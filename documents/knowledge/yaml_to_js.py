@@ -36,7 +36,12 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
         out.write("codepage_descriptions.push(`")
         out.write(str(element["name"]) + "\n")
         out.write(str(element["description"]).replace("`", "\\`") + "\n")
-
+        if len(element) == 2:
+            out.write(
+                "codepage_descriptions["
+                + str(codepage.index(element[1]))
+                + "] += `"
+            )
         if "overloads" in element:
             for overload in element["overloads"]:
                 data_types = map(

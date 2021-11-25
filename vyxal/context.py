@@ -13,7 +13,6 @@ class Context:
         # inputs[0][0] = [inputs]
         # inputs[0][0][n] = input_n
         # inputs[1] = index
-        self.keg_mode = False
         self.number_as_range = False
         self.online = False
         self.online_output = ""
