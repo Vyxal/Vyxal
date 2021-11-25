@@ -33,25 +33,48 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
     out.write(f"var codepage = {codepage!r}\n")
     out.write("var codepage_descriptions = []\n\n")
     for element in data:
-        out.write("codepage_descriptions.push(`")
-        out.write(str(element["name"]) + "\n")
-        out.write(str(element["description"]).replace("`", "\\`") + "\n")
-        if len(element) == 2:
+
+        if "element" in element and len(element["element"]) == 2:
             out.write(
                 "codepage_descriptions["
-                + str(codepage.index(element[1]))
-                + "] += `"
+                + str(codepage.index(element["element"][1]))
+                + "] += `\n"
             )
-        if "overloads" in element:
-            for overload in element["overloads"]:
-                data_types = map(
-                    lambda x: " ".join(x),
-                    zip(overload.split("-"), "abc"),
-                )
-                out.write(
-                    ", ".join(data_types)
-                    + " -> "
-                    + str(element["overloads"][overload]).replace("`", "\\`")
-                    + "\n"
-                )
-        out.write("`)\n\n")
+            out.write(
+                str(element["element"]) + " (" + str(element["name"]) + ")\n"
+            )
+            out.write(str(element["description"]) + "\n")
+            if "overloads" in element:
+                for overload in element["overloads"]:
+                    data_types = map(
+                        lambda x: " ".join(x),
+                        zip(overload.split("-"), "abc"),
+                    )
+                    out.write(
+                        ", ".join(data_types)
+                        + " -> "
+                        + str(element["overloads"][overload]).replace(
+                            "`", "\\`"
+                        )
+                        + "\n"
+                    )
+            out.write("`\n")
+        else:
+            out.write("codepage_descriptions.push(`")
+            out.write(str(element["name"]) + "\n")
+            out.write(str(element["description"]).replace("`", "\\`") + "\n")
+            if "overloads" in element:
+                for overload in element["overloads"]:
+                    data_types = map(
+                        lambda x: " ".join(x),
+                        zip(overload.split("-"), "abc"),
+                    )
+                    out.write(
+                        ", ".join(data_types)
+                        + " -> "
+                        + str(element["overloads"][overload]).replace(
+                            "`", "\\`"
+                        )
+                        + "\n"
+                    )
+            out.write("`)\n\n")

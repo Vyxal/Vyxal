@@ -1380,775 +1380,775 @@ codepage_descriptions.push(`Rotate Stack Right
 Rotate Stack Right
 `)
 
-codepage_descriptions.push(`Uppercase alphabet
+codepage_descriptions[65] += `
+kA (Uppercase alphabet)
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
-`)
-
-codepage_descriptions.push(`e, Eulers number
+`
+codepage_descriptions[101] += `
+ke (e, Eulers number)
 2.718281828459045 (math.e, Eulers number)
-`)
-
-codepage_descriptions.push(`Fizz
+`
+codepage_descriptions[102] += `
+kf (Fizz)
 Fizz
-`)
-
-codepage_descriptions.push(`Buzz
+`
+codepage_descriptions[98] += `
+kb (Buzz)
 Buzz
-`)
-
-codepage_descriptions.push(`FizzBuzz
+`
+codepage_descriptions[70] += `
+kF (FizzBuzz)
 FizzBuzz
-`)
-
-codepage_descriptions.push(`Hello, World!
+`
+codepage_descriptions[72] += `
+kH (Hello, World!)
 Hello, World!
-`)
-
-codepage_descriptions.push(`Hello World (No Punctuation)
+`
+codepage_descriptions[104] += `
+kh (Hello World (No Punctuation))
 Hello World
-`)
-
-codepage_descriptions.push(`1000
+`
+codepage_descriptions[49] += `
+k1 (1000)
 10^3 / 1000
-`)
-
-codepage_descriptions.push(`10000
+`
+codepage_descriptions[50] += `
+k2 (10000)
 10^4 / 10000
-`)
-
-codepage_descriptions.push(`100000
+`
+codepage_descriptions[51] += `
+k3 (100000)
 10^5 / 100000
-`)
-
-codepage_descriptions.push(`1000000
+`
+codepage_descriptions[52] += `
+k4 (1000000)
 10^6 / 1000000
-`)
-
-codepage_descriptions.push(`Lowercase alphabet
+`
+codepage_descriptions[97] += `
+ka (Lowercase alphabet)
 "abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
-`)
-
-codepage_descriptions.push(`Lowercase and uppercase alphabet
+`
+codepage_descriptions[76] += `
+kL (Lowercase and uppercase alphabet)
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
-`)
-
-codepage_descriptions.push(`Digits
+`
+codepage_descriptions[100] += `
+kd (Digits)
 "0123456789" (Digits 0-9)
-`)
-
-codepage_descriptions.push(`Hex digits (lowercase)
+`
+codepage_descriptions[54] += `
+k6 (Hex digits (lowercase))
 "0123456789abcdef" (Hex digits)
-`)
-
-codepage_descriptions.push(`Hex digits (uppercase)
+`
+codepage_descriptions[95] += `
+k^ (Hex digits (uppercase))
 "0123456789ABCDEF" (Hex digits uppercase)
-`)
-
-codepage_descriptions.push(`Octal digits
+`
+codepage_descriptions[111] += `
+ko (Octal digits)
 "01234567" (Octal digits)
-`)
-
-codepage_descriptions.push(`Punctuation
+`
+codepage_descriptions[112] += `
+kp (Punctuation)
 string.punctuation (Punctuations)
-`)
-
-codepage_descriptions.push(`Printable ASCII
+`
+codepage_descriptions[80] += `
+kP (Printable ASCII)
 printable ascii
-`)
-
-codepage_descriptions.push(`ASCII Whitespace
+`
+codepage_descriptions[119] += `
+kw (ASCII Whitespace)
 All ASCII whitespace
-`)
-
-codepage_descriptions.push(`Digits, lowercase alphabet, and uppercase alphabet
+`
+codepage_descriptions[114] += `
+kr (Digits, lowercase alphabet, and uppercase alphabet)
 "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
-`)
-
-codepage_descriptions.push(`Uppercase and lowercase alphabet
+`
+codepage_descriptions[66] += `
+kB (Uppercase and lowercase alphabet)
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
-`)
-
-codepage_descriptions.push(`Uppercase alphabet reversed
+`
+codepage_descriptions[90] += `
+kZ (Uppercase alphabet reversed)
 "ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
-`)
-
-codepage_descriptions.push(`Lowercase alphabet reversed
+`
+codepage_descriptions[122] += `
+kz (Lowercase alphabet reversed)
 "zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
-`)
-
-codepage_descriptions.push(`Uppercase and lowercase alphabet, reversed
+`
+codepage_descriptions[108] += `
+kl (Uppercase and lowercase alphabet, reversed)
 "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
-`)
-
-codepage_descriptions.push(`Pi
+`
+codepage_descriptions[105] += `
+ki (Pi)
 3.141592653589793 (Pi)
-`)
-
-codepage_descriptions.push(`NaN
+`
+codepage_descriptions[110] += `
+kn (NaN)
 math.nan
-`)
-
-codepage_descriptions.push(`Golden ratio/phi
+`
+codepage_descriptions[103] += `
+kg (Golden ratio/phi)
 1.618033988749895 (golden ratio/phi)
-`)
-
-codepage_descriptions.push(`Current day in the format YYYY-MM-DD
+`
+codepage_descriptions[68] += `
+kD (Current day in the format YYYY-MM-DD)
 Current day in the format YYYY-MM-DD
-`)
-
-codepage_descriptions.push(`Current time as a list of ⟨hh|mm|ss⟩
+`
+codepage_descriptions[78] += `
+kN (Current time as a list of ⟨hh|mm|ss⟩)
 Current time as a list of ⟨hh|mm|ss⟩
-`)
-
-codepage_descriptions.push(`Current day in the format DD/MM/YYYY
+`
+codepage_descriptions[143] += `
+kḋ (Current day in the format DD/MM/YYYY)
 Current day in the format DD/MM/YYYY
-`)
-
-codepage_descriptions.push(`Current day in the format MM/DD/YYYY
+`
+codepage_descriptions[186] += `
+kḊ (Current day in the format MM/DD/YYYY)
 Current day in the format MM/DD/YYYY
-`)
-
-codepage_descriptions.push(`Current day in the format ⟨DD|MM|YYYY⟩
+`
+codepage_descriptions[135] += `
+kð (Current day in the format ⟨DD|MM|YYYY⟩)
 Current day in the format ⟨DD|MM|YYYY⟩
-`)
-
-codepage_descriptions.push(`Braces, square brackets, angle brackets, and parentheses
+`
+codepage_descriptions[138] += `
+kβ (Braces, square brackets, angle brackets, and parentheses)
 {}[]<>()
-`)
-
-codepage_descriptions.push(`Parentheses, square brackets, and braces
+`
+codepage_descriptions[184] += `
+kḂ (Parentheses, square brackets, and braces)
 "()[]{}" (Brackets)
-`)
-
-codepage_descriptions.push(`Parentheses and square brackets
+`
+codepage_descriptions[14] += `
+kß (Parentheses and square brackets)
 ()[]
-`)
-
-codepage_descriptions.push(`Opening brackets
+`
+codepage_descriptions[141] += `
+kḃ (Opening brackets)
 "([{" (Open brackets)
-`)
-
-codepage_descriptions.push(`Closing brackets
+`
+codepage_descriptions[225] += `
+k≥ (Closing brackets)
 ")]}" (Close brackets)
-`)
-
-codepage_descriptions.push(`Opening brackets (with <)
+`
+codepage_descriptions[224] += `
+k≤ (Opening brackets (with <))
 "([{<" (Fish bones :P)
-`)
-
-codepage_descriptions.push(`Closing brackets (with >)
+`
+codepage_descriptions[253] += `
+kΠ (Closing brackets (with >))
 ")]}>" (Closing brackets)
-`)
-
-codepage_descriptions.push(`Lowercase vowels
+`
+codepage_descriptions[118] += `
+kv (Lowercase vowels)
 "aeiou" (Vowels lowercase)
-`)
-
-codepage_descriptions.push(`Upercase vowels
+`
+codepage_descriptions[86] += `
+kV (Upercase vowels)
 "AEIOU" (Vowels uppercase)
-`)
-
-codepage_descriptions.push(`Lowercase and uppercase vowels
+`
+codepage_descriptions[5] += `
+k∨ (Lowercase and uppercase vowels)
 "aeiouAEIOU" (vowelsVOWELS)
-`)
-
-codepage_descriptions.push(`Vyxal codepage
+`
+codepage_descriptions[6] += `
+k⟇ (Vyxal codepage)
 Yields the Vyxal codepage
-`)
-
-codepage_descriptions.push(`[1, 2]
+`
+codepage_descriptions[17] += `
+k½ ([1, 2])
 [1, 2]
-`)
-
-codepage_descriptions.push(`4294967296
+`
+codepage_descriptions[148] += `
+kḭ (4294967296)
 2 ** 32, 2^32, 4294967296
-`)
-
-codepage_descriptions.push(`[1, -1]
+`
+codepage_descriptions[43] += `
+k+ ([1, -1])
 [1, -1]
-`)
-
-codepage_descriptions.push(`[-1, 1]
+`
+codepage_descriptions[45] += `
+k- ([-1, 1])
 [-1, 1]
-`)
-
-codepage_descriptions.push(`[0, 1]
+`
+codepage_descriptions[181] += `
+k≈ ([0, 1])
 [0, 1]
-`)
-
-codepage_descriptions.push(`Slashes
+`
+codepage_descriptions[47] += `
+k/ (Slashes)
 "/\\" (Forwardslash, backslash)
-`)
-
-codepage_descriptions.push(`360
+`
+codepage_descriptions[82] += `
+kR (360)
 360
-`)
-
-codepage_descriptions.push(`https://
+`
+codepage_descriptions[87] += `
+kW (https://)
 https://
-`)
-
-codepage_descriptions.push(`http://
+`
+codepage_descriptions[223] += `
+k℅ (http://)
 http://
-`)
-
-codepage_descriptions.push(`https://www.
+`
+codepage_descriptions[217] += `
+k↳ (https://www.)
 https://www.
-`)
-
-codepage_descriptions.push(`http://www.
+`
+codepage_descriptions[208] += `
+k² (http://www.)
 http://www.
-`)
-
-codepage_descriptions.push(`512
+`
+codepage_descriptions[174] += `
+k¶ (512)
 512
-`)
-
-codepage_descriptions.push(`1024
+`
+codepage_descriptions[175] += `
+k⁋ (1024)
 1024
-`)
-
-codepage_descriptions.push(`2048
+`
+codepage_descriptions[180] += `
+k¦ (2048)
 2048
-`)
-
-codepage_descriptions.push(`4096
+`
+codepage_descriptions[194] += `
+kṄ (4096)
 4096
-`)
-
-codepage_descriptions.push(`8192
+`
+codepage_descriptions[151] += `
+kṅ (8192)
 8192
-`)
-
-codepage_descriptions.push(`16384
+`
+codepage_descriptions[178] += `
+k¡ (16384)
 16384
-`)
-
-codepage_descriptions.push(`32768
+`
+codepage_descriptions[177] += `
+kε (32768)
 32768
-`)
-
-codepage_descriptions.push(`65536
+`
+codepage_descriptions[214] += `
+k₴ (65536)
 65536
-`)
-
-codepage_descriptions.push(`2147483648
+`
+codepage_descriptions[8] += `
+k× (2147483648)
 2147483648
-`)
-
-codepage_descriptions.push(`Lowercase consonants with y
+`
+codepage_descriptions[206] += `
+k⁰ (Lowercase consonants with y)
 bcdfghjklmnpqrstvwxyz
-`)
-
-codepage_descriptions.push(`Lowercase consonants without y
+`
+codepage_descriptions[207] += `
+k¹ (Lowercase consonants without y)
 bcdfghjklmnpqrstvwxz
-`)
-
-codepage_descriptions.push(`BF command set
+`
+codepage_descriptions[84] += `
+kT (BF command set)
 BF command set ("[]<>-+.,")
-`)
-
-codepage_descriptions.push(`Bracket pair list
+`
+codepage_descriptions[153] += `
+kṗ (Bracket pair list)
 List of bracket pairs ("[(),[],{},<>]")
-`)
-
-codepage_descriptions.push(`Nested brackets
+`
+codepage_descriptions[196] += `
+kṖ (Nested brackets)
 String of all brackets nested ("([{<>}])")
-`)
-
-codepage_descriptions.push(`Amogus
+`
+codepage_descriptions[83] += `
+kS (Amogus)
 Amogus ("ඞ")
-`)
-
-codepage_descriptions.push(`2 ** 20
+`
+codepage_descriptions[167] += `
+k₂ (2 ** 20)
 2 to the power of 20, 1048576
-`)
-
-codepage_descriptions.push(`2 ** 30
+`
+codepage_descriptions[168] += `
+k₃ (2 ** 30)
 2 to the power of 30, 1073741824
-`)
-
-codepage_descriptions.push(`Lowercase Vowels With Y
+`
+codepage_descriptions[230] += `
+k∪ (Lowercase Vowels With Y)
 Lowercase vowels with y, "aeiouy"
-`)
-
-codepage_descriptions.push(`Uppercase Vowels With Y
+`
+codepage_descriptions[232] += `
+k⊍ (Uppercase Vowels With Y)
 Uppercase vowels with y, "AEIOUY"
-`)
-
-codepage_descriptions.push(`Vowels With Y
+`
+codepage_descriptions[231] += `
+k∩ (Vowels With Y)
 Vowels with y, "aeiouyAEIOUY"
-`)
-
-codepage_descriptions.push(`Cosine
+`
+codepage_descriptions[99] += `
+∆c (Cosine)
 Get the cosine of an angle in radians
 num a -> math.cos(a)
-`)
-
-codepage_descriptions.push(`Arc Cosine
+`
+codepage_descriptions[67] += `
+∆C (Arc Cosine)
 Get the arccosine of an angle in radians
 num a -> math.arrcos(a)
-`)
-
-codepage_descriptions.push(`Quadratic Solver
+`
+codepage_descriptions[113] += `
+∆q (Quadratic Solver)
 Solve a quadratic equation of the form ax^2 + bx = 0
 num a, num b -> x such that ax^2 + bx = 0
 num a, str b -> solve a such that a = b
 str a, num b -> solve b such that b = a
 str a, str b -> solve equation a = b for x
-`)
-
-codepage_descriptions.push(`General Quadratic Solver
+`
+codepage_descriptions[81] += `
+∆Q (General Quadratic Solver)
 Solve a quadratic equation of the form x^2 + ax + b = 0
 num a, num b -> roots(a, b) / x^2 + ax + b = 0
 num a, str b -> evaluate single variable expression b with x=a
 str a, num b -> evaluate single variable expression a with x=b
 str a, str b -> solve equation a < b for x
-`)
-
-codepage_descriptions.push(`Sine
+`
+codepage_descriptions[115] += `
+∆s (Sine)
 Get the sine of an angle in radians
 num a -> math.sin(a)
-`)
-
-codepage_descriptions.push(`Arc Sine
+`
+codepage_descriptions[83] += `
+∆S (Arc Sine)
 Get the arcsine of an angle in radians
 num a -> math.arcsin(a)
-`)
-
-codepage_descriptions.push(`Tangent
+`
+codepage_descriptions[116] += `
+∆t (Tangent)
 Get the tangent of an angle in radians
 num a -> math.tan(a)
-`)
-
-codepage_descriptions.push(`Arc Tangent
+`
+codepage_descriptions[84] += `
+∆T (Arc Tangent)
 Get the arctangent of an angle in radians
 num a -> math.arctan(a)
-`)
-
-codepage_descriptions.push(`Polynomial Solver
+`
+codepage_descriptions[80] += `
+∆P (Polynomial Solver)
 Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
 lst a -> roots(a)
-`)
-
-codepage_descriptions.push(`n Pick r (npr)
+`
+codepage_descriptions[29] += `
+∆ƈ (n Pick r (npr))
 Get the number of combinations of r items from a set of n items
 num a, num b -> n_pick_r(a, b)
 num a, str b -> n_pick_r(a, len(b))
 str a, num b -> n_pick_r(len(a), b)
 str a, str b -> n_pick_r(len(a), len(b))
-`)
-
-codepage_descriptions.push(`Copy Sign
+`
+codepage_descriptions[213] += `
+∆± (Copy Sign)
 Copy the sign of one number to the other
 num a, num b -> math.copysign(a, b)
-`)
-
-codepage_descriptions.push(`Sum of Proper Divisors
+`
+codepage_descriptions[75] += `
+∆K (Sum of Proper Divisors)
 Get the sum of all proper divisors of a number
 num a -> sum_of_proper_divisors(a)
-`)
-
-codepage_descriptions.push(`Perfect Square?
+`
+codepage_descriptions[208] += `
+∆² (Perfect Square?)
 Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 num a -> is_perfect_square(a)
-`)
-
-codepage_descriptions.push(`e raised to power a
+`
+codepage_descriptions[101] += `
+∆e (e raised to power a)
 Get the value of e raised to the power of a
 num a -> e ** a
 str a -> simplify expression a
-`)
-
-codepage_descriptions.push(`(e raised to power a) - 1
+`
+codepage_descriptions[69] += `
+∆E ((e raised to power a) - 1)
 Get the value of e raised to the power of a minus 1
 num a -> (e ** a) - 1
-`)
-
-codepage_descriptions.push(`Natural Logarithm
+`
+codepage_descriptions[76] += `
+∆L (Natural Logarithm)
 Get the natural logarithm of a number
 num a -> math.log(a)
-`)
-
-codepage_descriptions.push(`Logarithm (log_2)
+`
+codepage_descriptions[108] += `
+∆l (Logarithm (log_2))
 Get the logarithm of a number to base 2
 num a -> math.log2(a)
-`)
-
-codepage_descriptions.push(`Common Logarithm
+`
+codepage_descriptions[139] += `
+∆τ (Common Logarithm)
 Get the common logarithm of a number
 num a -> math.log10(a)
-`)
-
-codepage_descriptions.push(`Straight Line Distance
+`
+codepage_descriptions[100] += `
+∆d (Straight Line Distance)
 Get the straight line distance between two points (x1, y1) and (x2, y2)
 lst a, lst b -> euclidian_distance(a, b)
-`)
-
-codepage_descriptions.push(`To Degrees
+`
+codepage_descriptions[68] += `
+∆D (To Degrees)
 Convert an angle from radians to degrees
 num a -> math.degrees(a)
-`)
-
-codepage_descriptions.push(`To Radians
+`
+codepage_descriptions[82] += `
+∆R (To Radians)
 Convert an angle from degrees to radians
 num a -> math.radians(a)
-`)
-
-codepage_descriptions.push(`Next Prime After a Number
+`
+codepage_descriptions[196] += `
+∆Ṗ (Next Prime After a Number)
 Get the next prime number after a given number
 num a -> next_prime(a)
-`)
-
-codepage_descriptions.push(`First Prime Before a Number
+`
+codepage_descriptions[153] += `
+∆ṗ (First Prime Before a Number)
 Get the first prime number before a given number
 num a -> prev_prime(a)
-`)
-
-codepage_descriptions.push(`Nearest Prime to a Number
+`
+codepage_descriptions[112] += `
+∆p (Nearest Prime to a Number)
 Get the prime number closest to a given number, get the greater to break ties
 num a -> nearest_prime(a)
-`)
-
-codepage_descriptions.push(`Polynomial from Roots
+`
+codepage_descriptions[154] += `
+∆ṙ (Polynomial from Roots)
 Get the polynomial with coefficients from the roots of a polynomial
 list a -> polynomial(a)
-`)
-
-codepage_descriptions.push(`Round to n Decimal Places
+`
+codepage_descriptions[87] += `
+∆W (Round to n Decimal Places)
 Round a number to n decimal places
 num a, num b -> round(a, no_dec_places=b)
-`)
-
-codepage_descriptions.push(`Least Common Multiple
+`
+codepage_descriptions[192] += `
+∆Ŀ (Least Common Multiple)
 Get the least common multiple of two numbers
 num a, num b -> lcm(a, b)
-`)
-
-codepage_descriptions.push(`nth Digit of Pi
+`
+codepage_descriptions[105] += `
+∆i (nth Digit of Pi)
 Get the nth digit of pi
 num a -> nth_digit_of_pi(a)
-`)
-
-codepage_descriptions.push(`nth Digit of e
+`
+codepage_descriptions[144] += `
+∆ė (nth Digit of e)
 Get the nth digit of e
 num a -> nth_digit_of_e(a)
-`)
-
-codepage_descriptions.push(`nth Fibonacci Number
+`
+codepage_descriptions[102] += `
+∆f (nth Fibonacci Number)
 Get the nth fibonacci number
 num a -> nth_fibonacci(a)
-`)
-
-codepage_descriptions.push(`Random Bits
+`
+codepage_descriptions[66] += `
+∆B (Random Bits)
 Get a list of random bits to length n
 num a -> random_bits(a)
-`)
-
-codepage_descriptions.push(`Random Float
+`
+codepage_descriptions[197] += `
+∆Ṙ (Random Float)
 Get a random float in the range [0, 1), pseudo random number
 num a -> random.random()
-`)
-
-codepage_descriptions.push(`ZFill
+`
+codepage_descriptions[90] += `
+∆Z (ZFill)
 Pad a string with zeros to a given length
 str, num a -> zfill(a, b)
-`)
-
-codepage_descriptions.push(`Parenthesise
+`
+codepage_descriptions[98] += `
+øb (Parenthesise)
 Parenthesise a string
 any a -> "("" + a + ")"
-`)
-
-codepage_descriptions.push(`Bracketify
+`
+codepage_descriptions[66] += `
+øB (Bracketify)
 Enclose a string in brackets
 any a -> "["" + a + "]"
-`)
-
-codepage_descriptions.push(`Curly Bracketify
+`
+codepage_descriptions[141] += `
+øḃ (Curly Bracketify)
 Enclose a string in curly brackets
 any a -> "{"" + a + "}"
-`)
-
-codepage_descriptions.push(`Angle Bracketify
+`
+codepage_descriptions[184] += `
+øḂ (Angle Bracketify)
 Enclose a string in angle brackets
 any a -> "<"" + a + ">"
-`)
-
-codepage_descriptions.push(`Balanced Brackets
+`
+codepage_descriptions[138] += `
+øβ (Balanced Brackets)
 Check if brackets in a string ("{}()[]<>") are balanced
 any a -> balanced_brackets(a)
-`)
-
-codepage_descriptions.push(`Custom Pad Left
+`
+codepage_descriptions[217] += `
+ø↳ (Custom Pad Left)
 Pad a string to the left with a certain character
 any a, str b, num c -> Pad a to the left with c so a has length b
 any a, num b, str c -> Pad a to the left with b so a has length c
-`)
-
-codepage_descriptions.push(`Custom Pad Right
+`
+codepage_descriptions[218] += `
+ø↲ (Custom Pad Right)
 Pad a string to the right with a certain character
 any a, str b, num c -> Pad a to the right with c so a has length b
 any a, num b, str c -> Pad a to the right with b so a has length c
-`)
-
-codepage_descriptions.push(`Flip Brackets Vertical Palindromise
+`
+codepage_descriptions[77] += `
+øM (Flip Brackets Vertical Palindromise)
 Vertically palindromise and reverse brackets and slashes, without duplicating center
 any a -> Palindromise, without duplicating center, and flip brackets and slashes in the second half
-`)
-
-codepage_descriptions.push(`Remove Until No change
+`
+codepage_descriptions[111] += `
+øo (Remove Until No change)
 Remove b from a until a does not change
 str a, str b -> Remove b from a until a does not change
 str a, lst b -> Remove everything in b (in order) from a until a does not change
-`)
-
-codepage_descriptions.push(`Replace Until No Change
+`
+codepage_descriptions[86] += `
+øV (Replace Until No Change)
 Replace b with c in a until a does not change
 str a, str b, str c -> a.replace_until_no_change(b,c)
-`)
-
-codepage_descriptions.push(`String Compress
+`
+codepage_descriptions[99] += `
+øc (String Compress)
 Compress a string of lowercase letters and spaces in base 255
 str a -> base_255_string_compress(a)
-`)
-
-codepage_descriptions.push(`Number Compress
+`
+codepage_descriptions[67] += `
+øC (Number Compress)
 Compress a positive integer in base 255
 num a -> base_255_number_compress(a)
-`)
-
-codepage_descriptions.push(`Center
+`
+codepage_descriptions[185] += `
+øĊ (Center)
 Center a list of strings
 lst a -> Center(a) (Pad each item with spaces so all are centered)
-`)
-
-codepage_descriptions.push(`Run Length Encoding
+`
+codepage_descriptions[101] += `
+øe (Run Length Encoding)
 Run length encoding, convert from string to list of characters and amount repeated.
 str a -> run_length_encoded(a)
-`)
-
-codepage_descriptions.push(`Run Length Decoding
+`
+codepage_descriptions[100] += `
+ød (Run Length Decoding)
 Run length decoding, convert from list of characters and lengths to a string
 lst a -> run_length_decoded(a)
-`)
-
-codepage_descriptions.push(`Dictionary Compression
+`
+codepage_descriptions[68] += `
+øD (Dictionary Compression)
 Optimally compress a string of English using words from the Vyxal dictionary
 str a -> dictionary_compressed(a)
-`)
-
-codepage_descriptions.push(`Group on words
+`
+codepage_descriptions[87] += `
+øW (Group on words)
 Group a string on words
 str a -> Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
-`)
-
-codepage_descriptions.push(`Regex replace
+`
+codepage_descriptions[154] += `
+øṙ (Regex replace)
 Replace matches of a with c in b
 any a, any b, fun c -> Apply c to matches of a in b
 any a, any b, any c -> Replace matches of a with c in b
-`)
-
-codepage_descriptions.push(`Starts With
+`
+codepage_descriptions[112] += `
+øp (Starts With)
 Check if one value starts with another
 any a, any b -> a.startswith(b) (Starts with b?)
-`)
-
-codepage_descriptions.push(`Pluralise Count
+`
+codepage_descriptions[80] += `
+øP (Pluralise Count)
 Create a sentence of the form 'a bs'
 num a, str b -> a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
-`)
-
-codepage_descriptions.push(`Vertical Mirror
+`
+codepage_descriptions[150] += `
+øṁ (Vertical Mirror)
 Vertical Mirror - Split by newlines, mirror each line, join by newlines
 str a -> vertical_mirror(a)
-`)
-
-codepage_descriptions.push(`Flip Brackets Vertical Mirror
+`
+codepage_descriptions[193] += `
+øṀ (Flip Brackets Vertical Mirror)
 Vertical mirror, and swap brackets and slashes in the second half.
 any a -> vertical_mirror(a,mapping  = flip brackets and slashes)
-`)
-
-codepage_descriptions.push(`String Partitions
+`
+codepage_descriptions[196] += `
+øṖ (String Partitions)
 All partitions of a string/list
 any a -> all_partitions(a)
-`)
-
-codepage_descriptions.push(`Ordinals
+`
+codepage_descriptions[111] += `
+Þo (Ordinals)
 An infinite list of first, second, third, fourth etc
-`)
-
-codepage_descriptions.push(`Cardinals
+`
+codepage_descriptions[99] += `
+Þc (Cardinals)
 An infinite list of one, two, three, four etc
-`)
-
-codepage_descriptions.push(`Primes
+`
+codepage_descriptions[112] += `
+Þp (Primes)
 An infinite list of primes
-`)
-
-codepage_descriptions.push(`All Unique
+`
+codepage_descriptions[117] += `
+Þu (All Unique)
 Are all elements of a list/string unique?
 any a -> all_unique(a)
-`)
-
-codepage_descriptions.push(`Cartesian Power
+`
+codepage_descriptions[201] += `
+ÞẊ (Cartesian Power)
 Cartesian power, cartesian product with self n times
 any a, num b -> cartesian_power(a, b)
 num a, any b -> cartesian_power(b, a)
-`)
-
-codepage_descriptions.push(`Flatten By depth
+`
+codepage_descriptions[102] += `
+Þf (Flatten By depth)
 Flatten a list by a certain depth (default 1)
 lst a, num b -> Flatten a by depth b
 any a, lst b -> Flatten b by depth 1, push a as well
-`)
-
-codepage_descriptions.push(`Random Bits
+`
+codepage_descriptions[66] += `
+ÞB (Random Bits)
 Fill a list with random bits
 num a -> List of length a filled with random bits
 any a -> List of length n(a) filled with random bits
-`)
-
-codepage_descriptions.push(`All Less Than Increasing
+`
+codepage_descriptions[60] += `
+Þ< (All Less Than Increasing)
 Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
 any a, num b -> All values of a up to (not including) the first greater than or equal to b
-`)
-
-codepage_descriptions.push(`Untruth
+`
+codepage_descriptions[244] += `
+Þǔ (Untruth)
 Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 any a -> [int(x in a) for x in range(len(a))]
-`)
-
-codepage_descriptions.push(`Multidimensional Indexing
+`
+codepage_descriptions[105] += `
+Þi (Multidimensional Indexing)
 Index a list of coordinates into a value.
 lst a, lst b -> a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
-`)
-
-codepage_descriptions.push(`Multidimensional Search
+`
+codepage_descriptions[145] += `
+Þḟ (Multidimensional Search)
 Find the first multidimensional index of a value in another
 lst a, any b -> Find the first occurrence of a in b and return as a multidimensional index
-`)
-
-codepage_descriptions.push(`Zero Matrix
+`
+codepage_descriptions[109] += `
+Þm (Zero Matrix)
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
 lst a -> Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
-`)
-
-codepage_descriptions.push(`Fill By Coordinates
+`
+codepage_descriptions[90] += `
+ÞZ (Fill By Coordinates)
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
 any a, fun b -> For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
-`)
-
-codepage_descriptions.push(`Evenly Distribute
+`
+codepage_descriptions[215] += `
+Þ… (Evenly Distribute)
 Evenly distribute a number over elements of a list
 list a, num b -> Evenly distribute a over all elements of b, adding each part.
-`)
-
-codepage_descriptions.push(`Minimum By Function
+`
+codepage_descriptions[128] += `
+Þ↓ (Minimum By Function)
 Find the minimum value of a list by applying a function to each element
 lst a, fun b -> Minimum value of a by applying b to each element
-`)
-
-codepage_descriptions.push(`Maximum By Function
+`
+codepage_descriptions[127] += `
+Þ↑ (Maximum By Function)
 Find the maximum value of a list by applying a function to each element
 lst a, fun b -> Maximum value of a by applying b to each element
-`)
-
-codepage_descriptions.push(`All Combinations
+`
+codepage_descriptions[8] += `
+Þ× (All Combinations)
 All combinations of a list / string, of all lengths, with replacement
 any a -> All combinations of a list / string, of all lengths and all orders, with replacement
-`)
-
-codepage_descriptions.push(`All Combinations Without Replacement
+`
+codepage_descriptions[120] += `
+Þx (All Combinations Without Replacement)
 All combinations of a list / string, of all lengths, without replacement
 any a -> All combinations of a list / string, of all lengths and all orders, without replacement
-`)
-
-codepage_descriptions.push(`All Fibbonacci
+`
+codepage_descriptions[70] += `
+ÞF (All Fibbonacci)
 All Fibbonacci numbers as a LazyList.
-`)
-
-codepage_descriptions.push(`All Factorials
+`
+codepage_descriptions[33] += `
+Þ! (All Factorials)
 All factorials as a LazyList.
-`)
-
-codepage_descriptions.push(`Uniquify Mask
+`
+codepage_descriptions[85] += `
+ÞU (Uniquify Mask)
 A list of booleans describing which elements of a will remain after uniquifying.
 any a -> A list of booleans describing which elements of a will remain after uniquifying.
-`)
-
-codepage_descriptions.push(`Diagonals
+`
+codepage_descriptions[68] += `
+ÞD (Diagonals)
 Diagonals of a matrix, starting with the main diagonal.
 lst a -> Diagonals of a matrix, starting with the main diagonal.
-`)
-
-codepage_descriptions.push(`Sublists
+`
+codepage_descriptions[83] += `
+ÞS (Sublists)
 Sublists of a list.
 lst a -> Sublists of a list.
-`)
-
-codepage_descriptions.push(`Transpose With Filler
+`
+codepage_descriptions[199] += `
+ÞṪ (Transpose With Filler)
 Transpose a matrix, with a filler value for empty cells.
 lst a, any b -> Transpose a matrix, with a filler value for empty cells.
-`)
-
-codepage_descriptions.push(`Random Permutation
+`
+codepage_descriptions[223] += `
+Þ℅ (Random Permutation)
 Random permutation of a list / string
 any a -> Random permutation of a list / string
-`)
-
-codepage_descriptions.push(`Matrix Multiplication
+`
+codepage_descriptions[193] += `
+ÞṀ (Matrix Multiplication)
 Multiply two matrices together.
 lst a, lst b -> Matrix multiplication
-`)
-
-codepage_descriptions.push(`Matrix Determinant
+`
+codepage_descriptions[186] += `
+ÞḊ (Matrix Determinant)
 Calculate the determinant of a matrix.
 lst a -> Calculate the determinant of a matrix.
-`)
-
-codepage_descriptions.push(`Antidiagonal
+`
+codepage_descriptions[92] += `
+Þ\ (Antidiagonal)
 Antidiagonal of a matrix
 lst a -> Antidiagonal of a matrix
-`)
-
-codepage_descriptions.push(`Main Diagonal
+`
+codepage_descriptions[47] += `
+Þ/ (Main Diagonal)
 Diagonal of a matrix
 lst a -> Diagonal of a matrix
-`)
-
-codepage_descriptions.push(`Matrix Row Reduce
+`
+codepage_descriptions[82] += `
+ÞR (Matrix Row Reduce)
 Reduce rows of a matrix by a function.
 lst a, fun b -> Reduce rows of a matrix by a function.
-`)
-
-codepage_descriptions.push(`Matrix Column Reduce
+`
+codepage_descriptions[67] += `
+ÞC (Matrix Column Reduce)
 Reduce columns of a matrix by a function.
 lst a, fun b -> Reduce columns of a matrix by a function.
-`)
-
-codepage_descriptions.push(`Dot Product
+`
+codepage_descriptions[13] += `
+Þ• (Dot Product)
 Dot product of two lists.
 lst a, lst b -> Dot product of two lists.
-`)
-
-codepage_descriptions.push(`Get Request
+`
+codepage_descriptions[85] += `
+¨U (Get Request)
 Send a GET request to a URL
 str a -> Send a GET request to a URL
-`)
-
-codepage_descriptions.push(`Map To Indices
+`
+codepage_descriptions[77] += `
+¨M (Map To Indices)
 Map a function to elements of a list whose indices are in another list
 lst a, lst b, fun c -> Map a function to elements of a list whose indices are in another list
-`)
-
-codepage_descriptions.push(`Print With Space
+`
+codepage_descriptions[44] += `
+¨, (Print With Space)
 Print a value with a space after it
 any a -> Print a value with a space after it
-`)
-
-codepage_descriptions.push(`Print With Space Without Popping
+`
+codepage_descriptions[215] += `
+¨… (Print With Space Without Popping)
 Print a value with a space after it, without popping it
 any a -> Print a value with a space after it, without popping it
-`)
-
+`
