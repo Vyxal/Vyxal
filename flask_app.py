@@ -103,7 +103,7 @@ def execute():
                                 "\n" + f"Code timed out after {time} seconds"
                             )
                 except Exception as e:
-                    ret[2] += "\n" + sys.last_value
+                    ret[2] += "\n" + traceback.format_exc()
                 y.write(ret[1])
                 z.write(ret[2])
     with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:
