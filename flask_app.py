@@ -1,3 +1,8 @@
+from hashlib import sha256
+from hmac import compare_digest
+
+FUNKY_PASSWORD_HASH = "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
+
 import multiprocessing
 import secrets
 import traceback
@@ -129,19 +134,12 @@ def oeis():
     return render_template("oeis.html")
 
 
-@app.route("/update", methods=("GET", "POST"))
+@app.route("/update", methods=("POST",))
 def update():
-    # Updates the server after a commit
-    # It's possible that it is now working.
-    if request.method == "POST":
-        repo = git.Repo("/home/Lyxal/mysite")
-        origin = repo.remotes.origin
-        with repo.config_writer() as git_config:
-            git_config.set_value(
-                "user", "email", "36217120+Lyxal@users.noreply.github.com"
-            )
-            git_config.set_value("user", "name", "Lyxal")
-        origin.pull()
-        return "Updated PythonAnywhere successfully", 200
+    key = request.args.get("key", "")
+    if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
+        import os
+        os.system("/home/Vyxal/funky_upgrade.sh")
+        return "ok", 200
     else:
-        return "Wrong event type", 400
+        return "no", 403
