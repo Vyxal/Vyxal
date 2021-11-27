@@ -13524,7 +13524,7 @@ def test_PerfectSquare():
 
 
     stack = [vyxalify(item) for item in [0]]
-    expected = vyxalify(0)
+    expected = vyxalify(1)
     ctx = Context()
     
     ctx.stacks.append(stack)

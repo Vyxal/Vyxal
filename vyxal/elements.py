@@ -1657,10 +1657,10 @@ def into_two(lhs, ctx):
     ts = vy_type(lhs, simple=True)
     return {
         NUMBER_TYPE: lambda: " " * int(lhs),
-        str: lambda: quotify(lhs) + lhs,
+        str: lambda: quotify(lhs, ctx) + lhs,
         list: lambda: [
             index(lhs, [None, int(len(lhs) / 2)], ctx),
-            index(lhs, [None, int(len(lhs) / 2)], ctx),
+            index(lhs, [int(len(lhs) / 2), None], ctx),
         ],
     }.get(ts)()
 
@@ -1762,7 +1762,9 @@ def is_square(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.Symbol("x")
     return {
-        NUMBER_TYPE: lambda: int(sympy.ntheory.is_square(lhs)),
+        NUMBER_TYPE: lambda: int(
+            int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
+        ),
         str: lambda: str(sympy.expand(lhs + " ** 2")),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
