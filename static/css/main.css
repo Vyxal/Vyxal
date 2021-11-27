@@ -13,6 +13,11 @@ button {
     color : white
 }
 
+button:focus {
+    outline: none;
+    color  : white;
+}
+
 body {
     background-color: #353535;
     color           : #C0C0C0;

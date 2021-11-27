@@ -173,7 +173,6 @@ function replaceHTMLChar(char) {
 function copyToClipboard(arg) {
     var el = document.getElementById(arg).value
     navigator.clipboard.writeText(el)
-    copy_button.style.color = "white";
 }
 
 $(document).ready(e => {
