@@ -139,7 +139,7 @@ def update():
     key = request.args.get("key", "")
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
         import os
-        os.system("/home/Vyxal/funky_upgrade.sh")
+        os.system("/home/Vyxal/mysite/funky_upgrade.sh")
         return "ok", 200
     else:
         return "no", 403
