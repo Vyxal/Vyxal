@@ -727,19 +727,19 @@
     - '["b"] : 11'
     - '["beedab"] : 12512683'
 
-- element: "I" # Useless
-  name: Int
-  description: Convert string or list to integer
+- element: "I"
+  name: Into Two Pieces
+  description: Push n spaces / quine cheese / into two pieces
   arity: 1
   overloads:
-    num: a
-    str: int(a)
-    lst: int(a) (treating items in list as digits)
+    num: push a spaces
+    str: equivlaent to `qp`
+    lst: split a list into two halves
   vectorise: false
   tests:
-    - '["5"] : 5'
-    - "[5] : 5"
-    - "[[5]] : 5"
+    - '[6] : "      "'
+    - '[":I"] : "`:I`:I"'
+    - "[[1, 2, 3, 4]] : [[1, 2], [3, 4]]"
 
 - element: "J"
   name: Merge

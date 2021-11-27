@@ -1647,6 +1647,24 @@ def interleave(lhs, rhs, ctx):
         return f()
 
 
+def into_two(lhs, ctx):
+    """Element I
+    (num) -> push a spaces
+    (str) -> equivlaent to `qp`
+    (lst) -> split a list into two halves
+    """
+
+    ts = vy_type(lhs, simple=True)
+    return {
+        NUMBER_TYPE: lambda: " " * int(lhs),
+        str: lambda: quotify(lhs) + lhs,
+        list: lambda: [
+            index(lhs, [None, int(len(lhs) / 2)], ctx),
+            index(lhs, [None, int(len(lhs) / 2)], ctx),
+        ],
+    }.get(ts)()
+
+
 def is_divisible(lhs, rhs, ctx):
     """Element Ḋ
     (num, num) -> a % b == 0
@@ -4149,7 +4167,7 @@ elements: dict[str, tuple[str, int]] = {
     "F": process_element(vy_filter, 2),
     "G": process_element(monadic_maximum, 1),
     "H": process_element("vy_int(lhs, 16)", 1),
-    "I": process_element(vy_int, 1),
+    "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
     "K": process_element(divisors, 1),
     "L": process_element(length, 1),
