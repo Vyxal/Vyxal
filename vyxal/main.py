@@ -153,19 +153,3 @@ def repl():
 
         vy_print(res, ctx=ctx)
         ctx.stacks.pop()
-
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        file_name = sys.argv[1]
-        flags = ""
-        inputs = []
-
-        if len(sys.argv) > 2:
-            flags, inputs = sys.argv[2], sys.argv[3:]
-
-        code = ""
-
-        execute_vyxal(code, flags, inputs)
-    else:
-        repl()
