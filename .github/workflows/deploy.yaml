@@ -6,4 +6,5 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - run: curl -X POST -H "X-funky-password: ${{ secrets.FUNKY_PASSWORD }}" "https://vyxal.pythonanywhere.com/update"
+      - run: |
+          curl -X POST -H "X-funky-password: ${{ secrets.FUNKY_PASSWORD }}" "https://vyxal.pythonanywhere.com/update"
