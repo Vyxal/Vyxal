@@ -389,11 +389,11 @@ Convert hexadecimal to decimal
 any a -> int(a,16) (from hexadecimal)
 `)
 
-codepage_descriptions.push(`Int
-Convert string or list to integer
-num a -> a
-str a -> int(a)
-lst a -> int(a) (treating items in list as digits)
+codepage_descriptions.push(`Into Two Pieces
+Push n spaces / quine cheese / into two pieces
+num a -> push a spaces
+str a -> equivlaent to \`qp\`
+lst a -> split a list into two halves
 `)
 
 codepage_descriptions.push(`Merge

@@ -80,15 +80,6 @@ NOP
 Open/close a bijective base-255 compressed number - »...»
 
 -------------------------------
-## ß (Conditional Execute)
-Executes element A if the top of the stack is truthy
-
-Usage:
-```
-ß<element>
-```
-
--------------------------------
 ## ° (Complex Number Separator)
 
 Separates the real and imaginary parts of a complex number
@@ -105,6 +96,15 @@ Logarithm / Repeat Character / Capitalisation transfer
 - str a, num b: `[char * b for char in a]`
 - str a, str b: `a.with_capitalisation_of(b)`
 - lst a, lst b: `a molded  to  the shape of b`
+-------------------------------
+## ß (Conditional Execute)
+Executes element A if the top of the stack is truthy
+
+Usage:
+```
+ß<element>
+```
+
 -------------------------------
 ## † (Function Call)
 
@@ -151,17 +151,17 @@ Does either combinations_with_replacement, removes items from a not in b, or app
 ### Overloads
 
 - any a, num b: `combinations_with_replacement(a, length=b)`
-- fun a, any b: `Apply a on b until the result doesn't change, yielding intermediate values`
+- fun a, any b: `Apply a on b until the result does not change, yielding intermediate values`
 - any a, str b: `Remove elements from a that are not in b`
 - any a, lst b: `Remove elements from a that are not in b.`
 -------------------------------
 ## ¢ (Infinite Replacement)
 
-Replace b in a with c until a doesn't change
+Replace b in a with c until a does not change
 
 ### Overloads
 
-- any a, any b, any c: `replace b in a with c until a doesn't change`
+- any a, any b, any c: `replace b in a with c until a does not change`
 -------------------------------
 ## ⌐ (Complement / Comma Split)
 
@@ -541,15 +541,15 @@ Convert hexadecimal to decimal
 
 - any a: `int(a,16) (from hexadecimal)`
 -------------------------------
-## I (Int)
+## I (Into Two Pieces)
 
-Convert string or list to integer
+Push n spaces / quine cheese / into two pieces
 
 ### Overloads
 
-- num a: `a`
-- str a: `int(a)`
-- lst a: `int(a) (treating items in list as digits)`
+- num a: `push a spaces`
+- str a: `equivlaent to `qp``
+- lst a: `split a list into two halves`
 -------------------------------
 ## J (Merge)
 
@@ -566,7 +566,7 @@ Join two lists or items
 -------------------------------
 ## K (Factors / Substrings / Prefixes)
 
-Get either a's factors, substrings that occur more than once, or prefixes
+Get either the factors of a, substrings that occur more than once, or prefixes
 
 ### Overloads
 
@@ -1541,7 +1541,7 @@ Reverse a value
 -------------------------------
 ## Ṡ (Vectorised sums)
 
-Reduce stack by addition (That's literally what it does, so it can vectorise)
+Reduce stack by addition
 
 -------------------------------
 ## Ṫ (Tail Remove)
@@ -1567,7 +1567,7 @@ Take the Cartesian Product of two values, or apply a function until there is no 
 ### Overloads
 
 - any a, any b: `cartesian-product(a,b)`
-- fun a, any b: `Apply a on b until b doesn't change`
+- fun a, any b: `Apply a on b until b does not change`
 -------------------------------
 ## Ẏ (Slice Until)
 
@@ -1874,7 +1874,7 @@ Remove non-alphabetical characters / power with base 2
 -------------------------------
 ## ǎ (Nth prime)
 
-n'th prime / all substrings
+nth prime / all substrings
 
 ### Overloads
 
@@ -2002,7 +2002,7 @@ Rotate Stack Right
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
 
 -------------------------------
-## ke (e, Euler's number)
+## ke (e, Eulers number)
 
 2.718281828459045 (math.e, Eulers number)
 
@@ -2771,7 +2771,7 @@ Run length decoding, convert from list of characters and lengths to a string
 -------------------------------
 ## øD (Dictionary Compression)
 
-Optimally compress a string of English using words from Vyxal's dictionary
+Optimally compress a string of English using words from the Vyxal dictionary
 
 ### Overloads
 
