@@ -87,11 +87,15 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     code = transpile(code, ctx.dictionary_compression)
 
     if "c" in flags:  # Show transpiled code
-        vy_print(code + "\n", ctx=ctx)
+        if ctx.online:
+            ctx.online_output[2] += code
+        else:
+            vy_print(code + "\n", ctx=ctx)
 
     ctx.stacks.append(stack)
     exec(code)
     if not (ctx.printed or "O" in flags) or "o" in flags:
+        originally_empty = not len(stack)
         output = pop(stack, 1, ctx)
         for flag in flags:
             if flag == "j":
@@ -101,7 +105,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             elif flag == "d":
                 output = vy_sum(deep_flatten(output, ctx), ctx)
             elif flag == "Ṫ":
-                output = vy_sum(stack, ctx)
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = vy_sum(stack, ctx)
                 stack = [output]
             elif flag == "L":
                 output = vertical_join(output, ctx=ctx)
@@ -115,11 +123,23 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             elif flag == "g":
                 output = monadic_minimum(output, ctx)
             elif flag == "W":
-                output = vy_str(stack, ctx)
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = vy_str(stack, ctx)
             elif flag == "ṡ":
-                output = join(stack, " ", ctx)
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = join(stack, " ", ctx)
             elif flag == "J":
-                output = join(stack, "\n", ctx)
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = join(stack, "\n", ctx)
             elif flag == "…":
                 if vy_type(output, simple=True) is list:
                     output = output[:100]
