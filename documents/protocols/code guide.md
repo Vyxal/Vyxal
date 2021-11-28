@@ -1,6 +1,6 @@
 # The Definitive Vyxal Code Style Guide
-_Twentieth revision_
 
+_Twentieth revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -10,15 +10,17 @@ This document is different to [`contributing.md`](/documents/protocols/contribut
 
 First of all, because this is a python project, we comply to [PEP8](https://www.python.org/dev/peps/pep-0008/)'s code formatting standards around here. That means that you need to follow all the juicy guidelines that make python code very readable and good. "But sticking to that is hard and I can't remember all the rules" I hear you say. Well, that's why we use [black](https://pypi.org/project/black/) (with the `--line-length=80` cli flag) to automatically lint our code to comply with PEP8 (protip: if you're a true gamer and you use an editor like VS Code, you can set it to automatically format with black everytime you save a file). Our testing workflow uses flake8 for code compliance.
 
-Also, we use [isort](https://pypi.org/project/isort/) to make sure that all imports are in an epic order. 
+Also, we use [isort](https://pypi.org/project/isort/) to make sure that all imports are in an epic order.
 
-Finally, we're using an 80 character limit per line, with comments limited to 72 characters per line. If you're a VS Code user, you can paste `"editor.rulers": [72,80]` into your `settings.json` to have a visual indicator of the line limits. Also, you'll have to configure black to wrap on 80 characters: change `python.formatting.blackArgs` to 
+Finally, we're using an 80 character limit per line, with comments limited to 72 characters per line. If you're a VS Code user, you can paste `"editor.rulers": [72,80]` into your `settings.json` to have a visual indicator of the line limits. Also, you'll have to configure black to wrap on 80 characters: change `python.formatting.blackArgs` to
 
 ```json
 "python.formatting.blackArgs": [
   "--line-length=80"
 ]
 ```
+
+Also, you can use [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) to lint your CSS and markdown.
 
 Alright. Now to the specific stuff.
 
@@ -47,6 +49,7 @@ Here's a list of all the main python files in the repository:
 - [`LazyList.py`](../../vyxal/LazyList.py) - our generator wrapper.
 
 ## Function Overloads
+
 ### Monads
 
 ```python
@@ -129,7 +132,7 @@ def add(lhs, rhs, ctx):
     (str, num) -> concatenate a and b, converting b to string first
     (str, str) -> concatenate a and b
     """
-    
+
     ...
 ```
 
@@ -149,10 +152,11 @@ More generically:
 
 ```python
 def function(arg1: type, arg2: type) -> type:
-    """calculate the frobbernickel of the two input shnops"""  
+    """calculate the frobbernickel of the two input shnops"""
 ```
 
 If the function is complicated, it may be worth adding additional details a bit like the [numpy/scipy](https://numpydoc.readthedocs.io/en/latest/format.html) docstring format:
+
 ```python
 def function(arg1: type, arg2: type) -> type:
     """Function description
@@ -162,7 +166,7 @@ def function(arg1: type, arg2: type) -> type:
         description of arg1
     arg2: type
         description of arg2
-    
+
     Returns a `type`
         description of the returned value
     """
