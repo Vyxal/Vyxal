@@ -139,10 +139,12 @@ def oeis():
 
 @app.route("/update", methods=("POST",))
 def update():
-    key = request.args.get("key", "")
+    key = request.headers.get("X-funky-password", "")
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
         import os
-        os.system("/home/Vyxal/mysite/funky_upgrade.sh")
+        if os.fork() == 0:
+            os.system("/home/Vyxal/mysite/funky_upgrade.sh")
+            os._exit()
         return "updated successfully", 200
     else:
         return "incorrect or missing X-funky-password header", 403
