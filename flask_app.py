@@ -136,7 +136,7 @@ def oeis():
 
 @app.route("/update", methods=("POST",))
 def update():
-    key = request.args.get("key", "")
+    key = request.headers.get("X-funky-password", "")
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
         import os
         os.system("/home/Vyxal/mysite/funky_upgrade.sh")
