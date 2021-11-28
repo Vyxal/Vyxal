@@ -1,111 +1,108 @@
 .right {
-    float  : right;
-    display: flex;
+  float: right;
+  display: flex;
 }
 
 .left {
-    float  : right;
-    display: flex;
+  float: right;
+  display: flex;
 }
 
 button {
-    border: none !important;
-    color : white
+  border: none !important;
+  color: white;
 }
 
 button:focus {
-    outline: none;
-    color  : white;
+  outline: none;
+  color: white;
 }
 
 body {
-    background-color: #353535;
-    color           : #C0C0C0;
+  background-color: #353535;
+  color: #c0c0c0;
 }
 
 pre {
-    overflow-x : auto;
-    white-space: pre-wrap;
-    white-space: -moz-pre-wrap;
-    white-space: -pre-wrap;
-    white-space: -o-pre-wrap;
-    word-wrap  : break-word;
-
+  overflow-x: auto;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
 }
 
 input,
 textarea {
-    color           : white;
-    background-color: #1e1e1e !important;
-    font-family     : 'DejaVu Sans Mono', monospace;
-    min-height      : 3em !important;
-    height          : 3em;
-    border          : none !important;
-    border-radius   : 0px !important;
-    margin-bottom   : 1em;
+  color: white;
+  background-color: #1e1e1e !important;
+  font-family: "DejaVu Sans Mono", monospace;
+  min-height: 3em !important;
+  height: 3em;
+  border: none !important;
+  border-radius: 0px !important;
+  margin-bottom: 1em;
 }
 
 input:focus,
 textarea:focus {
-    border: none;
+  border: none;
 }
 
 textarea {
-    width: 100%;
+  width: 100%;
 }
 
 details {
-    color      : white;
-    font-size  : large;
-    font-family: 'Montserrat', sans-serif;
-
+  color: white;
+  font-size: large;
+  font-family: "Montserrat", sans-serif;
 }
 
 summary {
-    padding-bottom: 10px;
+  padding-bottom: 10px;
 }
 
 #keyboard {
-    border   : 1px solid #eee;
-    display  : flex;
-    flex-wrap: wrap;
+  border: 1px solid #eee;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .key {
-    padding    : 2px;
-    cursor     : crosshair;
-    font-family: 'DejaVu Sans Mono', monospace;
-    color      : white;
-    width      : 1em;
-
+  padding: 2px;
+  cursor: crosshair;
+  font-family: "DejaVu Sans Mono", monospace;
+  color: white;
+  width: 1em;
 }
 
 .key:hover {
-    background-color: rgba(255, 255, 255, 0.596);
-    color           : #000;
+  background-color: rgba(255, 255, 255, 0.596);
+  color: #000;
 }
 
 h2 {
-    font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 a {
-    text-decoration: none !important;
-    color          : white !important;
+  text-decoration: none !important;
+  color: white !important;
 }
 
 session-code {
-    display: none;
+  display: none;
 }
 
 #dummy {
-    width: calc(100vw - 16px)
+  width: calc(100vw - 16px);
 }
 
 button:hover {
-    color: white;
+  color: white;
 }
 
 i {
-    font-size: 24px;
+  font-size: 24px;
 }
