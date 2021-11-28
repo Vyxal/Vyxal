@@ -31,7 +31,7 @@ sessions = {}
 terminated = set()
 
 import subprocess
-VERSION = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+VERSION = subprocess.check_output(["git", "--git-dir", "/home/Vyxal/mysite", "--work-tree", "/home/Vyxal/mysite/.git", "rev-parse", "HEAD"]).decode().strip()
 
 
 @app.route("/", methods=("POST", "GET"))
