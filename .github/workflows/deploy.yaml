@@ -8,4 +8,4 @@ jobs:
     environment: production
     steps:
       - run: |
-          curl -X POST -H "X-funky-password: ${{ secrets.FUNKY_PASSWORD }}" "https://vyxal.pythonanywhere.com/update"
+          curl -X POST -H "X-funky-password: ${{ secrets.FUNKY_PASSWORD }}" "https://vyxal.pythonanywhere.com/update" --fail-with-body
