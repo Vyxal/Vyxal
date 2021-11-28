@@ -1,37 +1,39 @@
-# What is this fresh beginnings branch? 
+# Vyxal
 
-[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-
-
-
-The code clean up made everything a big mess. That isn't anyone's fault. The code just wasn't suited to such a big change. It's more my fault for not organising it properly.
-I'm sorry for the confusion and miscommunications that happened during the whole process - it all went so fast, and I barely have any experience with managing a somewhat large scale project. 
+[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 
 
-This is my chance to make things right - to refactor Vyxal in a way that is clean, maintainable and less messy. This time, it'll be built by the community.
+Vyxal is a golfing language with a unique design philosophy: make things as short as possible but retain elegance while doing so. In very simple terms, this means
+keeping aspects of traditional programming languages that most developers are familiar with, while still providing commands that allow golfers to actually _win_
+challenges.
 
-My personal hopes for this project are:
+Vyxal is _not_ a language which forces users to mash random characters togther until something works. Nor is it a language that needs to be verbose. Vyxal is terse when
+it needs to be, and readable/stylish when it wants to be.
 
-- that communication is clear among contributors 
-- that the fires of v2.5.3 are put out 
-- that Vyxal is rewritten with unity and clarity
-- that the code is made clean without breaking everything
-- that we discuss changes in a way that the majority of people know exactly what's happening
-- and that we never have this problem again. 
+Vyxal is also deliberately designed to be an easy language to learn. While it may be possible to teach golfers how to program in Vyxal, it is far more likely that they will just learn through experience. The language is designed to be easy to understand, and to allow for fast and rapid development.
 
-If someone knows how best to manage a project like this, and they desire to take charge of the rewrite, tell me. I'd be more than happy to follow the suggestions and guidance of someone else who actually knows what they are doing. 
+Ultimately, Vyxal is a language for golfers, by golfers.
 
-Some things to note:
+## Usage 
 
-- I want to keep the current parser and dictionary - those are good
-- We're implementing the v2 command list 
-- Everyone's opinions should be expressed 
-- This is a refactoring/rewrite, NOT a new language 
-- no more pushing straight to main. You'll need the review of someone else before any merging happens. Besides, PRs are cool. 
-- Vyxal will still be transpiled. Unless someone presents a feasibile way to make vyxal interpreted, I want to stick with the simpler option. 
+    python3 -m vyxal  <file> <flags (single string of flags)> <input(s)>
 
-There's a high chance I've missed a lot of things in this document, so take all this with the idea that this is a launch pad. Everything is subject to change now.
+## Why Make Another Golfing Language When There's Like Hundreds of Them Already?
 
-Here's to the hopes of a better Vyxal
+Most golfing languages are created with the intent of terse code - a goal that is obviously essential to the very core of what a golfing language is. However, this is
+mostly done at the expense of losing constructs within traditional programming languages that make things simple to do. Vyxal's raison d'être is to provide structures
+of practical languages - such as functions, variables and comments - that are oftentimes lost within the modern golfing language market.
 
-~Lyxal
+Another reason for Vyxal is to provide an easy to use golfing language that anyone can quickly pick up - by providing tools that both new and experienced users are
+familiar with, Vyxal aims to cater to a wide demographic of golfers.
+
+Put simply, Vyxal exists because golfers need a golfing language - and because golfing languages could be better.
+
+## Links
+
+- [Repository](https://github.com/Vyxal/Vyxal)
+- [Online Interpreter](http://lyxal.pythonanywhere.com)
+- [Tutorial](https://github.com/Lyxal/Vyxal/blob/master/docs/Tutorial.md)
+- [Codepage](https://github.com/Lyxal/Vyxal/blob/master/docs/codepage.txt)
+- [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
+- [Elements](https://github.com/Vyxal/Vyxal/blob/v2.6.0/documents/knowledge/elements.md)
