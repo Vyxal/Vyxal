@@ -5,9 +5,9 @@ name: Run tests
 
 on:
   push:
-    branches: [ digraph-implementation ]
+    branches: [ main ]
   pull_request:
-    branches: [ digraph-implementation ]
+    branches: [ main ]
 
 jobs:
   build:
