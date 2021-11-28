@@ -30,6 +30,9 @@ os.system("mkdir sessions")
 sessions = {}
 terminated = set()
 
+import subprocess
+VERSION = subprocess.check_output(["git", "rev-parse", "HEAD"]).decode().strip()
+
 
 @app.route("/", methods=("POST", "GET"))
 def index():
@@ -143,3 +146,8 @@ def update():
         return "updated successfully", 200
     else:
         return "incorrect or missing X-funky-password header", 403
+
+
+@app.route("/version", methods=("GET",))
+def version():
+    return VERSION
