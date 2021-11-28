@@ -132,7 +132,7 @@ def foldl(
     vector: List[Any],
     initial=None,
     *,
-    ctx: Context
+    ctx: Context,
 ) -> Any:
     """Reduce vector by function"""
     if len(vector) == 0:
