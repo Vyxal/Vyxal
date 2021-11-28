@@ -87,7 +87,10 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     code = transpile(code, ctx.dictionary_compression)
 
     if "c" in flags:  # Show transpiled code
-        vy_print(code + "\n", ctx=ctx)
+        if ctx.online:
+            ctx.online_output[2] += code
+        else:
+            vy_print(code + "\n", ctx=ctx)
 
     ctx.stacks.append(stack)
     exec(code)
