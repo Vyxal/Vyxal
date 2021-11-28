@@ -55,23 +55,23 @@ function updateCount() {
     }
 }
 
+function encode(obj) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+
+function decode(str) {
+    return JSON.parse(decodeURIComponent(escape(atob(str))));
+}
+
 function generateURL() {
     var flags = document.getElementById("flag").value
     var code = e_code.doc.getValue()
     var inputs = document.getElementById("inputs").value
     var header = e_header.doc.getValue()
     var footer = e_footer.doc.getValue()
-    var undone_url = "?flags=" + flags + "&code=" + encodeURIComponent(code) + "&inputs=" + encodeURIComponent(inputs)
-    undone_url += "&header=" + encodeURIComponent(header) + "&footer=" + encodeURIComponent(footer)
 
-    var url = "https://lyxal.pythonanywhere.com" + undone_url
-    url = url.replace(/\(/g, "%28")
-    url = url.replace(/\[/g, "%5B")
-    url = url.replace(/\]/g, "%5D")
-    url = url.replace(/\)/g, "%29")
-    url = url.replace(/\*/g, "%2A")
-    url = url.replace(/'/g, "%27")
-    return url
+    var url = [flags, header, code, footer, inputs];
+    return "https://vyxal.pythonanywhere.com/#" + encode(url)
 }
 
 function shareOptions(shareType) {
@@ -111,14 +111,7 @@ ${code}
 }
 
 function decodeURL() {
-    const queryString = window.location.search
-    console.log(queryString)
-    const urlParams = new URLSearchParams(queryString)
-    code = urlParams.get("code")
-    flags = urlParams.get("flags")
-    inputs = urlParams.get("inputs")
-    footer = urlParams.get("footer")
-    header = urlParams.get("header")
+    var [flags, header, code, footer, inputs] = decode(window.location.hash.substring(1));
 
     var flag_box = document.getElementById("flag")
     var inputs_box = document.getElementById("inputs")
@@ -209,9 +202,8 @@ $(document).ready(e => {
                 output.value = res.stdout
                 extra.value = res.stderr
                 run.innerHTML =
-                    `<svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M8.5,8.64L13.77,12L8.5,15.36V8.64M6.5,5V19L17.5,12"/>
-                    </svg>`;
+                    `<i class="fas fa-play-circle"></i>
+                    `;
                 if (e_code.doc.getValue() == 'lyxal') {
                     location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                 }
@@ -258,15 +250,20 @@ function initCodeMirror() {
     function resize(elem) {
         var dummy = $$$("#dummy")
         dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily
-        dummy.style.fontSize = '15px'
-        dummy.style.lineHeight = '24px'
+        dummy.style.fontSize = '1em'
+        dummy.style.lineHeight = '1em'
+
         dummy.value = elem.doc.getValue()
         elem.setSize(
             null,
             Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27)
         )
         dummy.value = ""
-        updateCount()
+
+        // Make sure e_code is not null
+        if ("e_code" in globalThis) {
+            updateCount()
+        }
     }
 
     let mode = {
@@ -274,13 +271,14 @@ function initCodeMirror() {
         lineWrapping: true
     }
 
-    for (boxId of ['header', 'code', 'footer']) {
-        globalThis['e_' + boxID] = CodeMirror.fromTextArea($$$('#' + boxId), mode)
-        globalThis['e_' + boxID].on('change', cm => {
-            resize(globalThis['e_' + boxID])
-            globalThis['e_' + boxID].value = cm.getValue()
+    for (const boxId of ['header', 'code', 'footer']) {
+        console.log(boxId)
+        globalThis['e_' + boxId] = CodeMirror.fromTextArea($$$('#' + boxId), mode)
+        globalThis['e_' + boxId].on('change', cm => {
+            resize(globalThis['e_' + boxId])
+            globalThis['e_' + boxId].value = cm.getValue()
         })
-        resize(globalThis['e_' + boxID])
+        resize(globalThis['e_' + boxId])
 
         box = getCodeMirrorTextArea(boxId)
         if (box) {
@@ -288,4 +286,8 @@ function initCodeMirror() {
             box.addEventListener('focusin', event => selectedBox = capturedId)
         }
     }
+}
+
+function repr(str) {
+    return str.replace(/'/g, "&apos;").replace(/"/g, "&quot;")
 }

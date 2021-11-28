@@ -149,26 +149,25 @@ class LazyList:
         from vyxal.elements import vy_print, vy_repr
 
         ctx.stacks.append(self.generated)
-        stacks_index = len(ctx.stacks) - 1
-        vy_print("⟨", "", ctx)
+        vy_print("⟨ " if ctx.vyxal_lists else "[", "", ctx)
         for lhs in self.generated[:-1]:
-            vy_print(lhs, "|", ctx)
+            vy_print(lhs, " | " if ctx.vyxal_lists else ", ", ctx)
         if len(self.generated):
             vy_print(self.generated[-1], "", ctx)
 
         try:
             lhs = next(self)
             if len(self.generated) > 1:
-                vy_print("|", "", ctx)
+                vy_print(" | " if ctx.vyxal_lists else ", ", "", ctx)
             while True:
                 if isinstance(lhs, (types.FunctionType, LazyList)):
                     vy_print(lhs, "", ctx)
                 else:
                     vy_print(vy_repr(lhs, ctx), "", ctx)
                 lhs = next(self)
-                vy_print("|", "", ctx)
+                vy_print(" | " if ctx.vyxal_lists else ", ", "", ctx)
         except StopIteration:
-            vy_print("⟩", end, ctx)
+            vy_print(" ⟩" if ctx.vyxal_lists else "]", end, ctx)
 
     def reversed(self):
         def temp():

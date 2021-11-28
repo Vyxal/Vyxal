@@ -68,11 +68,9 @@
 - Open/close a bijective base-255 compressed number - »...»
 
 -------------------------------
-ß (Conditional Execute)
+° (Complex Number Separator)
 
-- Executes element A if the top of the stack is truthy
-
-    ß<element>
+- Separates the real and imaginary parts of a complex number
 
 -------------------------------
 • (MultiCommand)
@@ -85,6 +83,13 @@
     str a, str b: a.with_capitalisation_of(b)
     lst a, lst b: a molded  to  the shape of b
     otherwise: vectorise
+-------------------------------
+ß (Conditional Execute)
+
+- Executes element A if the top of the stack is truthy
+
+    ß<element>
+
 -------------------------------
 † (Function Call)
 
@@ -124,15 +129,15 @@
 - Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
 
     any a, num b: combinations_with_replacement(a, length=b)
-    fun a, any b: Apply a on b until the result doesn't change, yielding intermediate values
+    fun a, any b: Apply a on b until the result does not change, yielding intermediate values
     any a, str b: Remove elements from a that are not in b
     any a, lst b: Remove elements from a that are not in b.
 -------------------------------
 ¢ (Infinite Replacement)
 
-- Replace b in a with c until a doesn't change
+- Replace b in a with c until a does not change
 
-    any a, any b, any c: replace b in a with c until a doesn't change
+    any a, any b, any c: replace b in a with c until a does not change
 -------------------------------
 ⌐ (Complement / Comma Split)
 
@@ -473,13 +478,13 @@ H (Hex To Decimal)
 
     any a: int(a,16) (from hexadecimal)
 -------------------------------
-I (Int)
+I (Into Two Pieces)
 
-- Convert string or list to integer
+- Push n spaces / quine cheese / into two pieces
 
-    num a: a
-    str a: int(a)
-    lst a: int(a) (treating items in list as digits)
+    num a: push a spaces
+    str a: equivlaent to `qp`
+    lst a: split a list into two halves
 -------------------------------
 J (Merge)
 
@@ -494,7 +499,7 @@ J (Merge)
 -------------------------------
 K (Factors / Substrings / Prefixes)
 
-- Get either a's factors, substrings that occur more than once, or prefixes
+- Get either the factors of a, substrings that occur more than once, or prefixes
 
     num a: divisors(a) (factors)
     str a: All substrings of a that occur more than once in a
@@ -916,12 +921,14 @@ z (Zip-self)
 - Convert an arbitrary value into a truthy or falsy value
 
     any a: bool(a) (Booliify)
+    otherwise: vectorise
 -------------------------------
 ċ (Not One)
 
 - Check if something is not equal to 1
 
     any a: a != 1
+    otherwise: vectorise
 -------------------------------
 ḋ (Divmod)
 
@@ -1302,7 +1309,7 @@ z (Zip-self)
 -------------------------------
 Ṡ (Vectorised sums)
 
-- Reduce stack by addition (That's literally what it does, so it can vectorise)
+- Reduce stack by addition
 
 -------------------------------
 Ṫ (Tail Remove)
@@ -1322,7 +1329,7 @@ z (Zip-self)
 - Take the Cartesian Product of two values, or apply a function until there is no change.
 
     any a, any b: cartesian-product(a,b)
-    fun a, any b: Apply a on b until b doesn't change
+    fun a, any b: Apply a on b until b does not change
 -------------------------------
 Ẏ (Slice Until)
 
@@ -1585,7 +1592,7 @@ z (Zip-self)
 -------------------------------
 ǎ (Nth prime)
 
-- n'th prime / all substrings
+- nth prime / all substrings
 
     str a: substrings(a)
     num a: nth_prime(a)
@@ -1700,7 +1707,7 @@ kA (Uppercase alphabet)
 - "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
 
 -------------------------------
-ke (e, Euler's number)
+ke (e, Eulers number)
 
 - 2.718281828459045 (math.e, Eulers number)
 
@@ -2410,7 +2417,7 @@ k∩ (Vowels With Y)
 -------------------------------
 øD (Dictionary Compression)
 
-- Optimally compress a string of English using words from Vyxal's dictionary
+- Optimally compress a string of English using words from the Vyxal dictionary
 
     str a: dictionary_compressed(a)
 -------------------------------

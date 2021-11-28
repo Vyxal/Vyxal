@@ -1,15 +1,18 @@
 """Transpiles Vyxal code into Python"""
 
-
+import re
 import secrets
 from typing import Union
 
-from vyxal import elements, helpers, lexer, parse, structure, encoding
+from vyxal import helpers, lexer, parse, structure, encoding
+from vyxal.elements import *
 from vyxal.helpers import indent_str, uncompress, vyxalify
 from vyxal.lexer import Token, TokenType
 
 
-def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
+def lambda_wrap(
+    branch: list[vyxal.structure.Structure],
+) -> vyxal.structure.Lambda:
     """Turns a List of structures into a single lambda.
 
     Useful for dealing with the functions of modifiers. Note that single
@@ -18,29 +21,28 @@ def lambda_wrap(branch: list[structure.Structure]) -> structure.Lambda:
     """
 
     if len(branch) == 1:
-        if isinstance(branch[0], structure.GenericStatement):
-            return structure.Lambda(
-                elements.elements.get(branch[0].branches[0][0].value, ("", 1))[
-                    1
-                ],
+        if isinstance(branch[0], vyxal.structure.GenericStatement):
+            return vyxal.structure.Lambda(
+                elements.get(branch[0].branches[0][0].value, ("", 1))[1],
                 branch,
             )
-        elif isinstance(branch[0], structure.Lambda):
+        elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
         else:
-            return structure.Lambda(1, branch)
+            return vyxal.structure.Lambda(1, branch)
     else:
-        return structure.Lambda(1, branch)
+        return vyxal.structure.Lambda(1, branch)
 
 
 def transpile(program: str, dict_compress: bool = True) -> str:
     return transpile_ast(
-        parse.parse(lexer.tokenise(program)), dict_compress=dict_compress
+        vyxal.parse.parse(vyxal.lexer.tokenise(program)),
+        dict_compress=dict_compress,
     )
 
 
 def transpile_ast(
-    program: list[structure.Structure],
+    program: list[vyxal.structure.Structure],
     indent: int = 0,
     dict_compress: bool = True,
 ) -> str:
@@ -54,7 +56,7 @@ def transpile_ast(
 
 
 def transpile_single(
-    token_or_struct: Union[Token, structure.Structure],
+    token_or_struct: Union[Token, vyxal.structure.Structure],
     indent: int,
     dict_compress: bool = True,
 ) -> str:
@@ -62,10 +64,11 @@ def transpile_single(
         return transpile_token(
             token_or_struct, indent, dict_compress=dict_compress
         )
-    elif isinstance(token_or_struct, structure.Structure):
+    elif isinstance(token_or_struct, vyxal.structure.Structure):
         return transpile_structure(
             token_or_struct, indent, dict_compress=dict_compress
         )
+    print(type(token_or_struct))
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"
@@ -94,9 +97,7 @@ def transpile_token(
             )
         return indent_str(f"stack.append({token.value})", indent)
     elif token.name == TokenType.GENERAL:
-        return indent_str(
-            elements.elements.get(token.value, ("pass\n", -1))[0], indent
-        )
+        return indent_str(elements.get(token.value, ("pass\n", -1))[0], indent)
     elif token.name == TokenType.COMPRESSED_NUMBER:
         return indent_str(f"stack.append({uncompress(token)})", indent)
     elif token.name == TokenType.COMPRESSED_STRING:
@@ -115,15 +116,15 @@ def transpile_token(
 
 
 def transpile_structure(
-    struct: structure.Structure, indent: int, dict_compress: bool = True
+    struct: vyxal.structure.Structure, indent: int, dict_compress: bool = True
 ) -> str:
-    """Transpile a single structure."""
+    """Transpile a single vyxal.structure."""
 
-    if isinstance(struct, structure.GenericStatement):
+    if isinstance(struct, vyxal.structure.GenericStatement):
         return transpile_single(
             struct.branches[0][0], indent, dict_compress=dict_compress
         )
-    if isinstance(struct, structure.IfStatement):
+    if isinstance(struct, vyxal.structure.IfStatement):
         # Holds indentation level as elifs will be nested inside the else part
         new_indent = indent
         # This will be returned when the Python code is built
@@ -163,11 +164,12 @@ def transpile_structure(
         res += indent_str("ctx.context_values.pop()", indent)
 
         return res
-    if isinstance(struct, structure.ForLoop):
+    if isinstance(struct, vyxal.structure.ForLoop):
         # TODO (user/cgccuser) make it work with multiple variables
         var = (
             struct.names[0] if struct.names else f"LOOP{secrets.token_hex(16)}"
         )
+        var = re.sub("[^A-Za-z0-9_]", "", var)
         var = f"VAR_{var}"
         return (
             indent_str(
@@ -180,7 +182,7 @@ def transpile_structure(
             )
             + indent_str("    ctx.context_values.pop()", indent)
         )
-    if isinstance(struct, structure.WhileLoop):
+    if isinstance(struct, vyxal.structure.WhileLoop):
         return (
             indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
             + indent_str("while boolify(condition):", indent)
@@ -194,9 +196,10 @@ def transpile_structure(
             )
             + indent_str("    condition = pop(stack, ctx=ctx)", indent)
         )
-    if isinstance(struct, structure.FunctionCall):
-        return f"stack += VAR_{struct.name}(stack, self=VAR_{struct.name}, ctx=ctx)"
-    if isinstance(struct, structure.FunctionDef):
+    if isinstance(struct, vyxal.structure.FunctionCall):
+        var = re.sub("[^A-Za-z0-9_]", "", struct.name)
+        return f"stack += VAR_{var}(stack, self=VAR_{var}, ctx=ctx)"
+    if isinstance(struct, vyxal.structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
         for parameter in struct.parameters:
@@ -215,12 +218,14 @@ def transpile_structure(
             else:
                 parameter_total += 1
                 function_parameters += (
-                    f"VAR_{parameter} = pop(arg_stack, 1, ctx=ctx)\n"
+                    f"VAR_{re.sub('[^A-z0-9_]', '', parameter)} ="
+                    + "pop(arg_stack, 1, ctx=ctx)\n"
                 )
 
+        var = re.sub("[^A-Za-z0-9_]", "", struct.name)
         return (
             indent_str(
-                f"def VAR_{struct.name}(arg_stack, self, arity=-1, ctx=None):",
+                f"def VAR_{var}(arg_stack, self, arity=-1, ctx=None):",
                 indent,
             )
             + indent_str("parameters = []", indent + 1)
@@ -231,7 +236,7 @@ def transpile_structure(
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str(f"this = VAR_{struct.name}", indent + 1)
+            + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
                 indent + 1,
@@ -241,7 +246,7 @@ def transpile_structure(
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
         )
-    if isinstance(struct, structure.Lambda):
+    if isinstance(struct, vyxal.structure.Lambda):
         id_ = secrets.token_hex(16)
         # The lambda id used to be based on time.time() until
         # I realised just how useless that was, because the calls to
@@ -266,11 +271,15 @@ def transpile_structure(
             )
             + indent_str(
                 "else: stack = wrapify(arg_stack, "
-                + f"{struct.branches[0]}"
+                + (
+                    str(struct.arity)
+                    if struct.arity != "default"
+                    else "ctx.default_arity"
+                )
                 + ", ctx)",
                 indent + 1,
             )
-            + indent_str(f"this = _lambda_{id_}", indent + 1)
+            + indent_str(f"this = self", indent + 1)
             + indent_str(
                 "ctx.context_values.append(list(deep_copy(stack)) "
                 "if len(stack) != 1 else deep_copy(stack[0]))",
@@ -290,11 +299,16 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return res", indent + 1)
-            + indent_str(f"_lambda_{id_}.arity = {struct.branches[0]}", indent)
+            + indent_str(
+                f"_lambda_{id_}.arity = " + str(struct.arity)
+                if struct.arity != "default"
+                else "ctx.default_arity",
+                indent,
+            )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )
 
-    if isinstance(struct, structure.ListLiteral):
+    if isinstance(struct, vyxal.structure.ListLiteral):
         # We have to manually build this because we don't know how
         # many list items there will be.
 
@@ -311,7 +325,7 @@ def transpile_structure(
         temp += indent_str("stack.append(list(deep_copy(temp_list)))", indent)
         return temp
 
-    if isinstance(struct, structure.MonadicModifier):
+    if isinstance(struct, vyxal.structure.MonadicModifier):
         element_A = transpile_ast(
             [lambda_wrap([struct.function_A])],
             indent,
@@ -321,12 +335,10 @@ def transpile_structure(
             element_A
             + "\n"
             + indent_str("function_A = pop(stack, 1, ctx)", indent)
-            + indent_str(
-                elements.modifiers.get(struct.modifier, "pass"), indent
-            )
+            + indent_str(modifiers.get(struct.modifier, "pass"), indent)
         )
 
-    if isinstance(struct, structure.DyadicModifier):
+    if isinstance(struct, vyxal.structure.DyadicModifier):
         element_A = transpile_ast(
             [lambda_wrap([struct.function_A])],
             indent,
@@ -344,11 +356,9 @@ def transpile_structure(
             + element_B
             + "\n"
             + indent_str("function_B = pop(stack, 1, ctx)", indent)
-            + indent_str(
-                elements.modifiers.get(struct.modifier, "pass"), indent
-            )
+            + indent_str(modifiers.get(struct.modifier, "pass"), indent)
         )
-    if isinstance(struct, structure.TriadicModifier):
+    if isinstance(struct, vyxal.structure.TriadicModifier):
         element_A = transpile_ast(
             [lambda_wrap([struct.function_A])],
             indent,
@@ -374,26 +384,24 @@ def transpile_structure(
             + element_C
             + "\n"
             + indent_str("function_C = pop(stack, 1, ctx)", indent)
-            + indent_str(
-                elements.modifiers.get(struct.modifier, "pass"), indent
-            )
+            + indent_str(modifiers.get(struct.modifier, "pass"), indent)
         )
 
-    if isinstance(struct, structure.BreakStatement):
-        if struct.parent_structure == structure.IfStatement:
+    if isinstance(struct, vyxal.structure.BreakStatement):
+        if struct.parent_structure == vyxal.structure.IfStatement:
             return indent_str("pass", indent)
         elif (
-            struct.parent_structure == structure.ForLoop
-            or struct.parent_structure == structure.WhileLoop
+            struct.parent_structure == vyxal.structure.ForLoop
+            or struct.parent_structure == vyxal.structure.WhileLoop
         ):
             return indent_str("break", indent)
-        elif struct.parent_structure == structure.FunctionDef:
+        elif struct.parent_structure == vyxal.structure.FunctionDef:
             return (
                 indent_str("ctx.inputs.pop()", indent)
                 + indent_str("ctx.context_values.pop()", indent)
                 + indent_str("return stack", indent)
             )
-        elif struct.parent_structure == structure.Lambda:
+        elif struct.parent_structure == vyxal.structure.Lambda:
             return (
                 indent_str("ret = [pop(stack, 1, ctx=ctx)]", indent)
                 + indent_str("ctx.context_values.pop()", indent)
@@ -402,19 +410,19 @@ def transpile_structure(
             )
         else:
             return indent_str("pass", indent)
-    if isinstance(struct, structure.RecurseStatement):
-        if struct.parent_structure == structure.IfStatement:
+    if isinstance(struct, vyxal.structure.RecurseStatement):
+        if struct.parent_structure == vyxal.structure.IfStatement:
             return indent_str("pass", indent)
         elif (
-            struct.parent_structure == structure.ForLoop
-            or struct.parent_structure == structure.WhileLoop
+            struct.parent_structure == vyxal.structure.ForLoop
+            or struct.parent_structure == vyxal.structure.WhileLoop
         ):
             return indent_str("continue", indent)
-        elif struct.parent_structure == structure.FunctionDef:
+        elif struct.parent_structure == vyxal.structure.FunctionDef:
             return indent_str(
                 "stack.append(this(stack, this, ctx=ctx))", indent
             )
-        elif struct.parent_structure == structure.Lambda:
+        elif struct.parent_structure == vyxal.structure.Lambda:
             return indent_str(
                 "stack.append(this(stack, this, ctx=ctx))", indent
             )

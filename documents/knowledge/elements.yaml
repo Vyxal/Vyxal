@@ -113,11 +113,11 @@
   name: Base Compressed Number
   arity: 0
   description: Open/close a bijective base-255 compressed number - »...»
-- modifier: "ß"
-  name: Conditional Execute
-  arity: "1 + *"
-  usage: ß<element>
-  description: Executes element A if the top of the stack is truthy
+
+- element: "°"
+  name: Complex Number Separator
+  description: Separates the real and imaginary parts of a complex number
+  arity: NA
 
 - element: "•"
   name: MultiCommand
@@ -135,6 +135,12 @@
     - '["abcde", 4] : "aaaabbbbccccddddeeee"'
     - '["abcde", "FgHIj"] : "AbCDe"'
     - "[[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]] : [[1, 2], 3, 4, 5, [6, 7]]"
+
+- modifier: "ß"
+  name: Conditional Execute
+  arity: "1 + *"
+  usage: ß<element>
+  description: Executes element A if the top of the stack is truthy
 
 - element: "†"
   name: Function Call
@@ -191,7 +197,7 @@
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
   overloads:
     any-num: combinations_with_replacement(a, length=b)
-    fun-any: Apply a on b until the result doesn't change, yielding intermediate values
+    fun-any: Apply a on b until the result does not change, yielding intermediate values
     any-str: Remove elements from a that are not in b
     any-lst: Remove elements from a that are not in b.
   vectorise: false
@@ -203,9 +209,9 @@
 - element: "¢"
   name: Infinite Replacement
   arity: 3
-  description: Replace b in a with c until a doesn't change
+  description: Replace b in a with c until a does not change
   overloads:
-    any-any-any: replace b in a with c until a doesn't change
+    any-any-any: replace b in a with c until a does not change
   vectorise: false
   tests:
     - '["{[[[]]]}","[]",""] : "{}"'
@@ -721,19 +727,19 @@
     - '["b"] : 11'
     - '["beedab"] : 12512683'
 
-- element: "I" # Useless
-  name: Int
-  description: Convert string or list to integer
+- element: "I"
+  name: Into Two Pieces
+  description: Push n spaces / quine cheese / into two pieces
   arity: 1
   overloads:
-    num: a
-    str: int(a)
-    lst: int(a) (treating items in list as digits)
+    num: push a spaces
+    str: equivlaent to `qp`
+    lst: split a list into two halves
   vectorise: false
   tests:
-    - '["5"] : 5'
-    - "[5] : 5"
-    - "[[5]] : 5"
+    - '[6] : "      "'
+    - '[":I"] : "`:I`:I"'
+    - "[[1, 2, 3, 4]] : [[1, 2], [3, 4]]"
 
 - element: "J"
   name: Merge
@@ -755,7 +761,7 @@
 
 - element: "K"
   name: Factors / Substrings / Prefixes
-  description: Get either a's factors, substrings that occur more than once, or prefixes
+  description: Get either the factors of a, substrings that occur more than once, or prefixes
   arity: 1
   overloads:
     num: divisors(a) (factors)
@@ -1434,7 +1440,7 @@
   arity: 1
   overloads:
     any: bool(a) (Booliify)
-  vectorise: false
+  vectorise: true
   tests:
     - "[0] : 0"
     - "[1] : 1"
@@ -1447,7 +1453,7 @@
   arity: 1
   overloads:
     any: a != 1
-  vectorise: false
+  vectorise: true
   tests:
     - "[[1, 0]] : [0, 1]"
     - '["1"] : 0'
@@ -2093,7 +2099,7 @@
 
 - element: "Ṡ"
   name: Vectorised sums
-  description: Reduce stack by addition (That's literally what it does, so it can vectorise)
+  description: Reduce stack by addition
   arity: 0
   tests:
     - "[[[1,2,3],[4,5,6]]] : [6, 15]"
@@ -2128,7 +2134,7 @@
   arity: 2
   overloads:
     any-any: cartesian-product(a,b)
-    fun-any: Apply a on b until b doesn't change
+    fun-any: Apply a on b until b does not change
   vectorise: false
   tests:
     - '["ab","cd"] : ["ac","ad","bc","bd"]'
@@ -2507,7 +2513,7 @@
 - element: "ǎ"
   name: Nth prime
   arity: 1
-  description: n'th prime / all substrings
+  description: nth prime / all substrings
   overloads:
     str: substrings(a)
     num: nth_prime(a)
@@ -2675,7 +2681,7 @@
     - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"'
 
 - element: "ke"
-  name: e, Euler's number
+  name: e, Eulers number
   arity: 0
   description: 2.718281828459045 (math.e, Eulers number)
   vectorise: false
@@ -3433,7 +3439,7 @@
     - "[36] : 1"
     - "[37] : 0"
     - "[-1] : 0"
-    - "[0] : 0"
+    - "[0] : 1"
     - "[1.5] : 0"
 
 - element: "∆e"
@@ -3894,7 +3900,7 @@
 
 - element: "øD"
   name: Dictionary Compression
-  description: Optimally compress a string of English using words from Vyxal's dictionary
+  description: Optimally compress a string of English using words from the Vyxal dictionary
   arity: 1
   overloads:
     str: dictionary_compressed(a)

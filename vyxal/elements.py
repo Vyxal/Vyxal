@@ -434,7 +434,10 @@ def boolify(lhs, ctx):
     """
 
     if vy_type(lhs, simple=True) is list:
-        return vectorise(boolify, lhs, ctx=ctx)
+        if ctx.truthy_lists:
+            return any_true(lhs, ctx)
+        else:
+            return vectorise(boolify, lhs, ctx=ctx)
     else:
         return int(bool(lhs))
 
@@ -1644,6 +1647,24 @@ def interleave(lhs, rhs, ctx):
         return f()
 
 
+def into_two(lhs, ctx):
+    """Element I
+    (num) -> push a spaces
+    (str) -> equivlaent to `qp`
+    (lst) -> split a list into two halves
+    """
+
+    ts = vy_type(lhs, simple=True)
+    return {
+        NUMBER_TYPE: lambda: " " * int(lhs),
+        str: lambda: quotify(lhs, ctx) + lhs,
+        list: lambda: [
+            index(lhs, [None, int(len(lhs) / 2)], ctx),
+            index(lhs, [int(len(lhs) / 2), None], ctx),
+        ],
+    }.get(ts)()
+
+
 def is_divisible(lhs, rhs, ctx):
     """Element Ḋ
     (num, num) -> a % b == 0
@@ -1736,20 +1757,16 @@ def is_prime(lhs, ctx):
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
+    (str) -> square the expression
     """
-    if isinstance(lhs, (str, sympy.Basic)) or lhs == 0:
-        return 0
-    elif isinstance(lhs, int):
-        return int(
-            any(
-                [
-                    exponent(item, 2, ctx) == lhs
-                    for item in range(1, math.ceil(lhs / 2) + 1)
-                ]
-            )
-        ) or int(lhs == 0)
-    else:
-        return vectorise(is_square, lhs, ctx=ctx)
+    ts = vy_type(lhs)
+    x = sympy.Symbol("x")
+    return {
+        NUMBER_TYPE: lambda: int(
+            int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
+        ),
+        str: lambda: str(sympy.expand(lhs + " ** 2")),
+    }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
 
 def join(lhs, rhs, ctx):
@@ -2898,7 +2915,7 @@ def run_length_encoding(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda elem: [elem[1], len(list(elem[1]))],
+            lambda elem: [elem[0], len(list(elem[1]))],
             itertools.groupby(lhs),
         )
     )
@@ -3845,7 +3862,7 @@ def vy_print(lhs, end="\n", ctx=None):
         if ts == NUMBER_TYPE:
             lhs = sympy.nsimplify(str(float(lhs)))
         if ctx.online:
-            ctx.online_output += vy_str(lhs, ctx=ctx)
+            ctx.online_output[1] += vy_str(lhs, ctx=ctx)
         else:
             print(lhs, end=end)
 
@@ -4152,7 +4169,7 @@ elements: dict[str, tuple[str, int]] = {
     "F": process_element(vy_filter, 2),
     "G": process_element(monadic_maximum, 1),
     "H": process_element("vy_int(lhs, 16)", 1),
-    "I": process_element(vy_int, 1),
+    "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
     "K": process_element(divisors, 1),
     "L": process_element(length, 1),
