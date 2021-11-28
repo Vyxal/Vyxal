@@ -1,7 +1,9 @@
 from hashlib import sha256
 from hmac import compare_digest
 
-FUNKY_PASSWORD_HASH = "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
+FUNKY_PASSWORD_HASH = (
+    "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
+)
 
 import multiprocessing
 import secrets
@@ -9,7 +11,6 @@ import traceback
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
-
 
 app = Flask(__name__)
 CORS(app)
@@ -21,8 +22,8 @@ import sys
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-from vyxal.main import execute_vyxal
 from vyxal.context import Context
+from vyxal.main import execute_vyxal
 
 shutil.rmtree("sessions", ignore_errors=True)
 os.system("mkdir sessions")
@@ -31,7 +32,22 @@ sessions = {}
 terminated = set()
 
 import subprocess
-VERSION = subprocess.check_output(["git", "--git-dir", "/home/Vyxal/mysite/.git", "--work-tree", "/home/Vyxal/mysite", "rev-parse", "HEAD"]).decode().strip()
+
+VERSION = (
+    subprocess.check_output(
+        [
+            "git",
+            "--git-dir",
+            "/home/Vyxal/mysite/.git",
+            "--work-tree",
+            "/home/Vyxal/mysite",
+            "rev-parse",
+            "HEAD",
+        ]
+    )
+    .decode()
+    .strip()
+)
 
 
 @app.route("/", methods=("POST", "GET"))
@@ -142,6 +158,7 @@ def update():
     key = request.headers.get("X-funky-password", "")
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
         import os
+
         if os.fork() == 0:
             os.system("/home/Vyxal/mysite/funky_upgrade.sh")
             os._exit()
