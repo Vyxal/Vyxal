@@ -38,9 +38,11 @@ var selectedBox = 'code' //whether 'header', 'code', or 'footer' are selected
 
 function resizeCodeBox(id) {
     // Resize the code box with the given id
-    var element = document.getElementById(id)
-    element.style.height = ""
-    element.style.height = element.scrollHeight + 4 + "px"
+    var element = document.getElementById(id);
+    if (element){
+        element.style.height = ""
+        element.style.height = element.scrollHeight + 4 + "px"
+    }
 }
 
 function updateCount() {
@@ -60,7 +62,11 @@ function encode(obj) {
 }
 
 function decode(str) {
-    return JSON.parse(decodeURIComponent(escape(atob(str))));
+    if (str){
+        return JSON.parse(decodeURIComponent(escape(atob(str))));
+    } else {
+        return [];
+    }
 }
 
 function generateURL() {
@@ -142,12 +148,13 @@ function expandBoxes() {
 
         if (actualBox.value) {
             boxToExpand.open = true
-            resizeCodeBox(n)
-
 
         } else {
             boxToExpand.open = false
         }
+
+        resizeCodeBox(n)
+
     })
 
     if (e_header.getValue()) {
@@ -252,9 +259,8 @@ function initCodeMirror() {
     function resize(elem) {
         var dummy = $$$("#dummy")
         dummy.style.fontFamily = getComputedStyle($$$('.CodeMirror.cm-s-default')).fontFamily
-        dummy.style.fontSize = '1em'
-        dummy.style.lineHeight = '1em'
-
+        dummy.style.fontSize = '15px'
+        dummy.style.lineHeight = '24px'
         dummy.value = elem.doc.getValue()
         elem.setSize(
             null,

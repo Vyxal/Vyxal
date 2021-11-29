@@ -89,10 +89,11 @@
                 })
             }
         }
+
     </script>
 </head>
 
-<body onload="initCodeMirror(); decodeURL();  updateCount()">
+<body onload="initCodeMirror(); decodeURL();  updateCount();">
     <textarea id=dummy style="visibility: hidden;position:absolute; height: 0px; font: size 20px;"></textarea>
     <session-code>{{session}}</session-code>
     <h2 style="display: inline-block;"><a href="https://github.com/Vyxal/Vyxal" target="_blank">Vyxal</a></h2>
@@ -140,12 +141,13 @@
 
     <details id="header-detail">
         <summary>Header</summary>
-        <textarea id="header" name="header"></textarea>
+        <textarea id="header" name="header" oninput="resizeCodeBox('header')"></textarea>
     </details>
 
     <details open id="code-detail">
         <summary id="code-count">Code: 0 bytes</summary>
-        <textarea id="code" name="code"></textarea>
+        <textarea id="code" name="code" oninput="resizeCodeBox('code'); updateCount()"
+            onkeyup="updateCount()"></textarea>
     </details>
 
     <details id="footer-detail">
