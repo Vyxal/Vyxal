@@ -171,8 +171,10 @@ function replaceHTMLChar(char) {
 }
 
 function copyToClipboard(arg) {
-    var el = document.getElementById(arg).value
-    navigator.clipboard.writeText(el)
+    var el = document.getElementById(arg)
+    // navigator.clipboard.writeText(el)
+    el.select()
+    document.execCommand("copy")
 }
 
 $(document).ready(e => {
