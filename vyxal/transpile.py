@@ -426,9 +426,7 @@ def transpile_structure(
                 "stack.append(this(stack, this, ctx=ctx))", indent
             )
         elif struct.parent_structure == vyxal.structure.Lambda:
-            return indent_str(
-                "stack.append(this(stack, this, ctx=ctx))", indent
-            )
+            return indent_str("stack += this(stack, this, ctx=ctx)", indent)
         else:
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
