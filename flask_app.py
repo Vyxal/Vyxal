@@ -34,7 +34,6 @@ terminated = set()
 
 import subprocess
 
-"""
 VERSION = (
     subprocess.check_output(
         [
@@ -50,7 +49,6 @@ VERSION = (
     .decode()
     .strip()
 )
-"""
 
 
 @app.route("/", methods=("POST", "GET"))
