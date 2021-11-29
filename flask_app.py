@@ -32,24 +32,6 @@ os.system("mkdir sessions")
 sessions = {}
 terminated = set()
 
-import subprocess
-
-VERSION = (
-    subprocess.check_output(
-        [
-            "git",
-            "--git-dir",
-            "/home/Vyxal/mysite/.git",
-            "--work-tree",
-            "/home/Vyxal/mysite",
-            "rev-parse",
-            "HEAD",
-        ]
-    )
-    .decode()
-    .strip()
-)
-
 
 @app.route("/", methods=("POST", "GET"))
 def index():
@@ -165,4 +147,22 @@ def update():
 
 @app.route("/version", methods=("GET",))
 def version():
+    import subprocess
+
+    VERSION = (
+        subprocess.check_output(
+            [
+                "git",
+                "--git-dir",
+                "/home/Vyxal/mysite/.git",
+                "--work-tree",
+                "/home/Vyxal/mysite",
+                "rev-parse",
+                "HEAD",
+            ]
+        )
+        .decode()
+        .strip()
+    )
+
     return VERSION
