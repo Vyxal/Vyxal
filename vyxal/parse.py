@@ -100,6 +100,11 @@ def parse(
             structures.append(structure.BreakStatement(parent))
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))
+        elif head.name in (
+            lexer.TokenType.VARIABLE_GET,
+            lexer.TokenType.VARIABLE_SET,
+        ):
+            structures.append(structure.GenericStatement([head]))
         elif head.value in OPENING_CHARACTERS:
             structure_cls, end_bracket = STRUCTURE_INFORMATION[head.value]
             bracket_stack.append(end_bracket)

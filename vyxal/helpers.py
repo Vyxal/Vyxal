@@ -132,7 +132,7 @@ def foldl(
     vector: List[Any],
     initial=None,
     *,
-    ctx: Context
+    ctx: Context,
 ) -> Any:
     """Reduce vector by function"""
     if len(vector) == 0:
@@ -199,7 +199,7 @@ def get_input(ctx: Context) -> Any:
 
     if ctx.use_top_input:
         if ctx.inputs[0][0]:
-            ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0])]
+            ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
             ctx.inputs[0][1] += 1
             return ret
         else:

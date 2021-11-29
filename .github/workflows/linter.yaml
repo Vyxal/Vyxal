@@ -40,4 +40,4 @@ jobs:
         # because who tf needs external workflows amiright or amiright?
         # ~ lyxal
         
-        black . --check --line-length=80
+        black . --check
