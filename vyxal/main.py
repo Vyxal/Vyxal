@@ -5,6 +5,7 @@ offline.
 
 import sys
 import types
+import traceback
 
 
 import vyxal.encoding
@@ -25,7 +26,38 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     # Handle input handling flags
     if "h" in flags:  # Help flag
-        print("Help message")
+        flag_string = """ALL flags should be used as is (no '-' prefix)
+    H    Preset stack to 100
+    j    Print top of stack joined by newlines on end of execution
+    L    Print top of stack joined by newlines (Vertically) on end of execution
+    s    Sum/concatenate top of stack on end of execution
+    M    Make implicit range generation start at 0 instead of 1
+    m    Make implicit range generation end at n-1 instead of n
+    Ṁ    Equivalent to having both m and M flags
+    v    Use Vyxal encoding for input file
+    c    Output compiled code
+    f    Get input from file instead of arguments
+    a    Treat newline seperated values as a list
+    d    Print deep sum of top of stack on end of execution
+    r    Makes all operations happen with reverse arguments
+    S    Print top of stack joined by spaces on end of execution
+    C    Centre the output and join on newlines on end of execution
+    O    Disable implicit output
+    o    Force implicit output
+    l    Print length of top of stack on end of execution
+    G    Print the maximum item of the top of stack on end of execution
+    g    Print the minimum item of the top of the stack on end of execution
+    W    Print the entire stack on end of execution
+    Ṡ    Treat all inputs as strings
+    R    Treat numbers as ranges if ever used as an iterable
+    D    Treat all strings as raw strings (don't decompress strings)
+    Ṫ    Print the sum of the entire stack
+    ṡ    Print the entire stack, joined on spaces
+    J    Print the entire stack, separated by newlines.
+    t   Lists are considered truthy if they are not empty
+    P   Print lists as their python representation
+"""
+        vy_print(flag_string, ctx=ctx)
         exit(0)
 
     if "e" in flags:  # Program is file name
@@ -39,9 +71,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             code = f.read()
 
     # Handle input handling flags
-    if "a" in flags:  # All inputs as array
-        inputs = [inputs]
-    elif "f" in flags:  # Read inputs from file
+
+    if "f" in flags:  # Read inputs from file
         with open(inputs[0], "r", encoding="utf-8") as f:
             inputs = f.readlines()
 
@@ -49,6 +80,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         inputs = list(map(str, inputs))
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
+
+    if "a" in flags:  # All inputs as array
+        inputs = [inputs]
 
     if "H" in flags:  # Pre-initalise stack to 100
         stack = [100]
@@ -84,7 +118,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     else:
         ctx.default_arity = 1
 
-    code = transpile(code, ctx.dictionary_compression)
+    try:
+        code = transpile(code, ctx.dictionary_compression)
+    except Exception as e:
+        if ctx.online:
+            ctx.online_output[2] += "\n" + traceback.format_exc()
+            exit(1)
+        else:
+            raise e
 
     if "c" in flags:  # Show transpiled code
         vy_print(code + "\n", ctx=ctx)

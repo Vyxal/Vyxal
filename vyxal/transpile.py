@@ -86,6 +86,9 @@ def transpile_token(
             string = token.value
         # Can't use {string!r} inside the f-string because that
         # screws up escape sequences.
+
+        # So instead, we have to manually escape the string
+        string = string.replace("\\", "\\\\").replace('"', '\\"')
         return indent_str(f'stack.append("{string}")', indent)
     elif token.name == TokenType.NUMBER:
         if token.value.count("."):
