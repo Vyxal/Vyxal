@@ -39,10 +39,8 @@ var selectedBox = 'code' //whether 'header', 'code', or 'footer' are selected
 function resizeCodeBox(id) {
     // Resize the code box with the given id
     var element = document.getElementById(id);
-    if (element){
-        element.style.height = ""
-        element.style.height = element.scrollHeight + 4 + "px"
-    }
+    element.style.height = ""
+    element.style.height = ((element.scrollHeight || 24) + 4) + "px"
 }
 
 function updateCount() {
