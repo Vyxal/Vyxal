@@ -4495,9 +4495,10 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
-    "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ')", 1),
+    "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
-        "top = pop(stack, 1, ctx); vy_print(top, end=' '); stack.append(top)",
+        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
+        "stack.append(top)",
         1,
     ),
     "¨M": process_element(apply_at, 3),

@@ -27,7 +27,7 @@ def lambda_wrap(
                 branch,
             )
         elif isinstance(branch[0], vyxal.structure.RecurseStatement):
-            return vyxal.structure.Lambda(2, branch)
+            return vyxal.structure.Lambda(1, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
         else:
@@ -144,15 +144,11 @@ def transpile_structure(
                 cond = struct.branches[i]
                 res += indent_str("else:", new_indent)
                 new_indent += 1
-                res += indent_str("ctx.context_values.pop()", new_indent)
                 res += transpile_ast(
                     cond, new_indent, dict_compress=dict_compress
                 )
 
             res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
-            res += indent_str(
-                "ctx.context_values.append(condition)", new_indent
-            )
             res += indent_str("if boolify(condition, ctx):", new_indent)
             res += transpile_ast(
                 body, new_indent + 1, dict_compress=dict_compress
@@ -165,9 +161,6 @@ def transpile_structure(
             res += transpile_ast(
                 body, new_indent + 1, dict_compress=dict_compress
             )
-
-        # Pop the last condition
-        res += indent_str("ctx.context_values.pop()", indent)
 
         return res
     if isinstance(struct, vyxal.structure.ForLoop):
@@ -439,7 +432,7 @@ def transpile_structure(
         ):
             return indent_str(
                 "stack += ctx.function_stack[-2](stack, ctx.function_stack[-2],"
-                " ctx=ctx)",
+                " ctx=ctx)\n"
                 indent,
             )
         else:
