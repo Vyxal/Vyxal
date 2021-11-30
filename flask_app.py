@@ -1,36 +1,31 @@
 from hashlib import sha256
 from hmac import compare_digest
-
-FUNKY_PASSWORD_HASH = (
-    "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
-)
-
 import multiprocessing
+import os
 import secrets
-import traceback
+import shutil
+import sys
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
-
-import os
-import shutil
-import sys
-
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-from vyxal.context import Context
 from vyxal.main import execute_vyxal
+
+app = Flask(__name__)
+CORS(app)
+
+FUNKY_PASSWORD_HASH = (
+    "411b514435eaffc4fc36b25b40347761af7cbf644c1e92e1fe190e6ebcf4b2d2"
+)
 
 shutil.rmtree("sessions", ignore_errors=True)
 os.system("mkdir sessions")
 
 sessions = {}
 terminated = set()
-
 
 
 @app.route("/", methods=("POST", "GET"))
