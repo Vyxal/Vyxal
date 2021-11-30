@@ -678,7 +678,6 @@ def uncompress_dict(source: str) -> str:
         ret += vyxal.dictionary.small_dictionary[
             vyxal.encoding.compression.find(temp_scc)
         ]
-        temp_scc = ""
 
     return ret
 

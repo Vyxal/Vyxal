@@ -9,10 +9,8 @@ import math
 import random
 import re
 import string
-import sys
 import types
 from datetime import datetime
-from token import NUMBER
 from typing import Union
 
 import num2words
@@ -271,7 +269,7 @@ def apply_at(lhs, rhs, other, ctx):
     rhs = wrapify(rhs)
     for pos in rhs:
         lhs = assign_iterable(
-            lhs, pos, safe_apply(other, index(lhs, pos, ctx), ctx=ctx)
+            lhs, pos, safe_apply(other, index(lhs, pos, ctx), ctx=ctx), ctx
         )
 
     return lhs
@@ -918,7 +916,7 @@ def expe(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs),
-        str: lambda: str(sympy.simplify(make_expression(lhs, ctx))),
+        str: lambda: str(sympy.simplify(make_expression(lhs))),
     }.get(ts, lambda: vectorise(expe, lhs, ctx=ctx))()
 
 
@@ -1169,12 +1167,7 @@ def gen_from_fn(lhs, rhs, ctx):
     (lst, fun) -> Generator from b with initial vector a
     """
 
-    rhs_type = vy_type(rhs)
-
-    if rhs_type == types.FunctionType:
-        temp = rhs
-        rhs = iterable(lhs)
-        lhs = temp
+    lhs, rhs = (lhs, rhs) if vy_type(lhs) is types.FunctionType else (rhs, lhs)
 
     @lazylist
     def gen():
@@ -1182,7 +1175,7 @@ def gen_from_fn(lhs, rhs, ctx):
             yield item
 
         while True:
-            yield safe_apply(lhs, ctx=ctx)
+            yield safe_apply(lhs, rhs, ctx=ctx)
 
     return gen()
 
@@ -1375,7 +1368,7 @@ def head_remove(lhs, ctx):
     if lhs < 1:
         return lhs
     if isinstance(lhs, int):
-        return lhs if lhs < 1 else int(str(lhs)[1:])
+        return int(str(lhs)[1:])
     assert isinstance(lhs, sympy.Rational)
     return sympy.Rational(str(float(lhs))[1:])
 
@@ -2030,12 +2023,12 @@ def merge(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
             str(lhs) + str(rhs), ctx=ctx
         ),
-        (NUMBER_TYPE, str): lambda: add(lhs, rhs),
-        (str, NUMBER_TYPE): lambda: add(lhs, rhs),
+        (NUMBER_TYPE, str): lambda: add(lhs, rhs, ctx),
+        (str, NUMBER_TYPE): lambda: add(lhs, rhs, ctx),
         (str, str): lambda: lhs + rhs,
-        (list, ts[1]): lambda: concat(lhs, [rhs]),
-        (ts[0], list): lambda: concat([lhs], rhs),
-        (list, list): lambda: concat(lhs, rhs),
+        (list, ts[1]): lambda: concat(lhs, [rhs], ctx),
+        (ts[0], list): lambda: concat([lhs], rhs, ctx),
+        (list, list): lambda: concat(lhs, rhs, ctx),
     }.get(ts)()
 
 
@@ -2259,9 +2252,9 @@ def n_pick_r(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: divide(
             factorial(lhs, ctx), factorial(lhs - rhs, ctx), ctx
         ),
-        (NUMBER_TYPE, str): lambda: n_pick_r(lhs, len(rhs)),
-        (str, NUMBER_TYPE): lambda: n_pick_r(len(lhs), rhs),
-        (str, str): lambda: n_pick_r(len(lhs), len(rhs)),
+        (NUMBER_TYPE, str): lambda: n_pick_r(lhs, len(rhs), ctx),
+        (str, NUMBER_TYPE): lambda: n_pick_r(len(lhs), rhs, ctx),
+        (str, str): lambda: n_pick_r(len(lhs), len(rhs), ctx),
     }.get(ts, lambda: vectorise(n_pick_r, lhs, rhs, ctx=ctx))()
 
 
@@ -2856,7 +2849,7 @@ def request(lhs, ctx):
     x = urllib.request.urlopen(urlify(lhs)).read()
     try:
         return x.decode("utf-8")
-    except:
+    except Exception as e:
         return x.decode("latin-1")
 
 
@@ -3127,9 +3120,9 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs))
+            vy_str(lhs).strip(vy_str(rhs), ctx)
         ),
-        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs)),
+        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
     }.get(ts, lambda: list_helper(lhs, rhs))()
@@ -3573,7 +3566,7 @@ def vertical_mirror(lhs, rhs=None, ctx=None):
     if type(lhs) is str:
         if rhs:
             temp = [
-                s + transliterate(rhs[0], rhs[1], s[::-1])
+                s + transliterate(rhs[0], rhs[1], s[::-1], ctx)
                 for s in lhs.split("\n")
             ]
             return "\n".join(temp)
@@ -3730,7 +3723,7 @@ def vy_gcd(lhs, rhs=None, ctx=None):
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: math.gcd(lhs, rhs),
         (NUMBER_TYPE, str): lambda: vy_gcd(
-            lhs, wrapify(chr_ord(rhs), None, ctx), ctx=ctx
+            lhs, wrapify(chr_ord(rhs, ctx), None, ctx), ctx=ctx
         ),
         (str, str): lambda: monadic_maximum(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx

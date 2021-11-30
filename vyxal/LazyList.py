@@ -7,10 +7,6 @@ and other stuff that needs to be lazily evaluated.
 
 import itertools
 import types
-from typing import Any, Union
-
-import sympy
-from sympy import Rational
 
 
 def lazylist(fn):

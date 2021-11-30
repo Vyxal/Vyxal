@@ -135,8 +135,6 @@ def oeis():
 def update():
     key = request.headers.get("X-funky-password", "")
     if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
-        import os
-
         if os.fork() == 0:
             os.system("/home/Vyxal/mysite/funky_upgrade.sh")
             os._exit()
