@@ -432,7 +432,7 @@ def transpile_structure(
         ):
             return indent_str(
                 "stack += ctx.function_stack[-2](stack, ctx.function_stack[-2],"
-                " ctx=ctx)\n"
+                " ctx=ctx)\n",
                 indent,
             )
         else:
