@@ -12,7 +12,6 @@ import traceback
 from flask import Flask, render_template, request
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -23,14 +22,15 @@ import sys
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
-from vyxal.main import execute_vyxal
 from vyxal.context import Context
+from vyxal.main import execute_vyxal
 
 shutil.rmtree("sessions", ignore_errors=True)
 os.system("mkdir sessions")
 
 sessions = {}
 terminated = set()
+
 
 
 @app.route("/", methods=("POST", "GET"))
