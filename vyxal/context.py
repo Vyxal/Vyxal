@@ -8,6 +8,7 @@ class Context:
         self.context_values = [0]
         self.default_arity = 1
         self.dictionary_compression = True
+        self.function_stack = []
         self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
         # inputs[0] = [[inputs], index]
         # inputs[0][0] = [inputs]

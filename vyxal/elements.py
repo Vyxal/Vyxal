@@ -4215,6 +4215,7 @@ elements: dict[str, tuple[str, int]] = {
     "t": process_element(tail, 1),
     "u": process_element("-1", 0),
     "w": process_element("[lhs]", 1),
+    "x": process_element("", 2),
     "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
     "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
     "↑": process_element(max_by_tail, 1),
