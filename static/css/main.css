@@ -42,6 +42,7 @@ textarea {
   border: none !important;
   border-radius: 0px !important;
   margin-bottom: 1em;
+  overflow: visible;
 }
 
 input:focus,

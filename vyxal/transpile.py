@@ -86,6 +86,10 @@ def transpile_token(
             string = token.value
         # Can't use {string!r} inside the f-string because that
         # screws up escape sequences.
+
+        # So instead, we have to manually escape the string
+        string = string.replace("\\", "\\\\").replace('"', '\\"')
+        string = string.replace("\n", "\\n")
         return indent_str(f'stack.append("{string}")', indent)
     elif token.name == TokenType.NUMBER:
         if token.value.count("."):
@@ -423,9 +427,7 @@ def transpile_structure(
                 "stack.append(this(stack, this, ctx=ctx))", indent
             )
         elif struct.parent_structure == vyxal.structure.Lambda:
-            return indent_str(
-                "stack.append(this(stack, this, ctx=ctx))", indent
-            )
+            return indent_str("stack += this(stack, this, ctx=ctx)", indent)
         else:
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
