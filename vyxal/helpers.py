@@ -678,7 +678,6 @@ def uncompress_dict(source: str) -> str:
         ret += vyxal.dictionary.small_dictionary[
             vyxal.encoding.compression.find(temp_scc)
         ]
-        temp_scc = ""
 
     return ret
 
@@ -737,7 +736,7 @@ def vyxalify(value: Any) -> Any:
         return sympy.nsimplify(value.as_real_imag()[0], rational=True)
     elif isinstance(value, float) or isinstance(value, numpy.number):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (int, Rational, str, LazyList)):
+    elif isinstance(value, (int, sympy.Rational, str, LazyList)):
         return value
     elif isinstance(value, list):
         return list(map(vyxalify, value))

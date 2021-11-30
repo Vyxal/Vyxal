@@ -26,6 +26,8 @@ def lambda_wrap(
                 elements.get(branch[0].branches[0][0].value, ("", 1))[1],
                 branch,
             )
+        elif isinstance(branch[0], vyxal.structure.RecurseStatement):
+            return vyxal.structure.Lambda(1, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
         else:
@@ -142,15 +144,11 @@ def transpile_structure(
                 cond = struct.branches[i]
                 res += indent_str("else:", new_indent)
                 new_indent += 1
-                res += indent_str("ctx.context_values.pop()", new_indent)
                 res += transpile_ast(
                     cond, new_indent, dict_compress=dict_compress
                 )
 
             res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
-            res += indent_str(
-                "ctx.context_values.append(condition)", new_indent
-            )
             res += indent_str("if boolify(condition, ctx):", new_indent)
             res += transpile_ast(
                 body, new_indent + 1, dict_compress=dict_compress
@@ -163,9 +161,6 @@ def transpile_structure(
             res += transpile_ast(
                 body, new_indent + 1, dict_compress=dict_compress
             )
-
-        # Pop the last condition
-        res += indent_str("ctx.context_values.pop()", indent)
 
         return res
     if isinstance(struct, vyxal.structure.ForLoop):
@@ -284,6 +279,7 @@ def transpile_structure(
                 indent + 1,
             )
             + indent_str(f"this = self", indent + 1)
+            + indent_str("ctx.function_stack.append(this)", indent + 1)
             + indent_str(
                 "ctx.context_values.append(list(deep_copy(stack)) "
                 "if len(stack) != 1 else deep_copy(stack[0]))",
@@ -302,6 +298,7 @@ def transpile_structure(
             + indent_str("ctx.context_values.pop()", indent + 1)
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
+            + indent_str("ctx.function_stack.pop()", indent + 1)
             + indent_str("return res", indent + 1)
             + indent_str(
                 f"_lambda_{id_}.arity = " + str(struct.arity)
@@ -428,7 +425,18 @@ def transpile_structure(
             )
         elif struct.parent_structure == vyxal.structure.Lambda:
             return indent_str("stack += this(stack, this, ctx=ctx)", indent)
+        elif (
+            struct.parent_structure == vyxal.structure.MonadicModifier
+            or struct.parent_structure == vyxal.structure.DyadicModifier
+            or struct.parent_structure == vyxal.structure.TriadicModifier
+        ):
+            return indent_str(
+                "stack += ctx.function_stack[-2](stack, ctx.function_stack[-2],"
+                " ctx=ctx)\n",
+                indent,
+            )
         else:
+            print(struct.parent_structure)
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
     assert False
