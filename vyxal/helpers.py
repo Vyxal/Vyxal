@@ -567,7 +567,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value) or isinstance(value, numpy.number):
-        return float(value)
+        return eval(sympy.pycode(value))
     else:
         return [simplify(x) for x in value]
 
