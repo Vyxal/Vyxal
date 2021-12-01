@@ -3810,7 +3810,9 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs))
+        if not ctx.print_decimals
+        else str(eval(sympy.pycode(sympy.nsimplify(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
