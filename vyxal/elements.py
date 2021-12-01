@@ -1051,7 +1051,7 @@ def first_integer(lhs, ctx):
     if isinstance(lhs, types.FunctionType):
         value = 1
 
-        while not safe_apply(lhs, value, ctx):
+        while not safe_apply(lhs, value, ctx=ctx):
             value += 1
 
         return value
