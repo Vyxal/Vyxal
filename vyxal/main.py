@@ -27,6 +27,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if online_mode:
         inputs = inputs.split("\n")  # have to do this here because file writing
+        if inputs[0] == "":
+            inputs = inputs[1:]
 
     # Handle input handling flags
     if "h" in flags:  # Help flag
@@ -78,12 +80,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "f" in flags:  # Read inputs from file
         with open(inputs[0], "r", encoding="utf-8") as f:
-            inputs = f.readlines()
+            inputs = [x.replace("\r", "") for x in f.readlines()]
 
     if "Ṡ" in flags:  # All inputs as strings
         inputs = list(map(str, inputs))
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
+
+    print(inputs)
 
     if "a" in flags:  # All inputs as array
         inputs = [inputs]
@@ -135,7 +139,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         if ctx.online:
             ctx.online_output[2] += code
         else:
-            vy_print(code + "\n", ctx=ctx)
+            print(code + "\n")
 
     ctx.stacks.append(stack)
     exec(code)
