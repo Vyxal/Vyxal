@@ -225,7 +225,7 @@ def parse(
             # -ant that you break the while loop after dealing with the
             # modifier.
 
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure.MonadicModifier)
             if head.value == "⁽":
                 # 1-element lambda
                 structures.append(structure.Lambda(1, [remaining[0]]))
@@ -236,7 +236,7 @@ def parse(
             structures += remaining[1:]
             break
         elif head.value in DYADIC_MODIFIERS:
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure.DyadicModifier)
             if head.value == "‡":
                 # 2-element lambda
                 structures.append(
@@ -251,7 +251,7 @@ def parse(
             structures += remaining[2:]
             break
         elif head.value in TRIADIC_MODIFIERS:
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure.TriadicModifier)
             if head.value == "≬":
                 # 3-element lambda
                 structures.append(

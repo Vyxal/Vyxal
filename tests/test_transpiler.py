@@ -7,11 +7,9 @@ def test_if():
     vy = """[ 1 | 2 ]"""
     py = transpile(vy)
     expected = """condition = pop(stack, 1, ctx=ctx)
-ctx.context_values.append(condition)
 if boolify(condition, ctx):
     stack.append(1)
 else:
     stack.append(2)
-ctx.context_values.pop()
 """
     assert py == expected
