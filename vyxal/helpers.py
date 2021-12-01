@@ -97,7 +97,7 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def enumerate_md(haystack: VyList, index_stack: list[int] = []) -> VyList:
+def enumerate_md(haystack: VyList, index_stack: List[int] = []) -> VyList:
     """
     Gets all the multi-dimensional indicies of haystack
     """
