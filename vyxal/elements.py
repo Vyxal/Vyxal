@@ -4491,7 +4491,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(
-        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx))", 1
+        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx)))", 1
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
