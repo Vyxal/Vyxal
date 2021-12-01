@@ -235,7 +235,7 @@ def transpile_structure(
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str(f"this = VAR_{var}", indent + 1)
+            + indent_str("this = self", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
                 indent + 1,
