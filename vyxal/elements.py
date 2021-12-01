@@ -818,7 +818,8 @@ def equals(lhs, rhs, ctx):
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
             bool(
-                abs(lhs - rhs) < EPSILON or abs(lhs - rhs) < EPSILON * abs(lhs)
+                abs(simplify(lhs - rhs)) < EPSILON
+                or abs(simplify(lhs - rhs)) < EPSILON * abs(lhs)
             )
         ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
