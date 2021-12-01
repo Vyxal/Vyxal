@@ -203,8 +203,9 @@ def get_input(ctx: Context) -> Any:
             ctx.inputs[0][1] += 1
             return ret
         else:
-            temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-            if temp == "":
+            try:
+                temp = vy_eval(input("> " * ctx.repl_mode), ctx)
+            except EOFError:
                 temp = 0
             return temp
     else:
@@ -668,16 +669,16 @@ def uncompress_dict(source: str) -> str:
                 temp_scc = ""
         else:
             if temp_scc:
-                ret += vyxal.dictionary.small_dictionary[
-                    vyxal.encoding.compression.find(temp_scc)
-                ]
+                pos = vyxal.encoding.compression.find(temp_scc)
+                if pos < len(vyxal.dictionary.small_dictionary):
+                    ret += vyxal.dictionary.small_dictionary[pos]
                 temp_scc = ""
             ret += char
 
     if temp_scc:
-        ret += vyxal.dictionary.small_dictionary[
-            vyxal.encoding.compression.find(temp_scc)
-        ]
+        pos = vyxal.encoding.compression.find(temp_scc)
+        if pos < len(vyxal.dictionary.small_dictionary):
+            ret += vyxal.dictionary.small_dictionary[pos]
 
     return ret
 
