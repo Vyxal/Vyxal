@@ -116,6 +116,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.variable_length_1 = "V" in flags
     ctx.truthy_lists = "t" in flags  # L431 in elements.py
     ctx.vyxal_lists = not "P" in flags
+    ctx.print_decimals = "ḋ" in flags
 
     if "2" in flags:
         ctx.default_arity = 2

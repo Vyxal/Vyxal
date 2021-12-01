@@ -3853,7 +3853,10 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if ts == NUMBER_TYPE:
-            lhs = sympy.nsimplify(str(float(lhs)))
+            if ctx.print_decimals:
+                lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
+            else:
+                lhs = sympy.nsimplify(lhs)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
