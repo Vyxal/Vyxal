@@ -3880,9 +3880,7 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(
-            sympy.nsimplify(str(float(lhs)), rational=True)
-        ),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx

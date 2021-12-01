@@ -87,8 +87,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
-    print(inputs)
-
     if "a" in flags:  # All inputs as array
         inputs = [inputs]
 
