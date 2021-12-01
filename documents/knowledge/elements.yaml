@@ -681,7 +681,7 @@
 
 - element: "E"
   name: Two Power / Python Eval
-  description: a ** 2, or eval(a)
+  description: 2 ** a, or eval(a)
   arity: 1
   overloads:
     num: 2 ** a
