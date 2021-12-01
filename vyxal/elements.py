@@ -2197,7 +2197,7 @@ def multiply(lhs, rhs, ctx):
             (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
             (NUMBER_TYPE, str): lambda: lhs * rhs,
             (str, NUMBER_TYPE): lambda: lhs * rhs,
-            (str, str): lambda: ring_translate(lhs, rhs),
+            (str, str): lambda: ring_translate(rhs, lhs),
         }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
 
 
