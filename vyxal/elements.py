@@ -3482,6 +3482,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             return LazyList(simple.get(ts)())
     elif rhs is not None:
+        print(lhs, rhs)
         # That is, two argument vectorisation
         ts = primitive_type(lhs), primitive_type(rhs)
         simple = {

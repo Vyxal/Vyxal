@@ -166,6 +166,7 @@ class LazyList:
             vy_print(" ⟩" if ctx.vyxal_lists else "]", end, ctx)
 
     def reversed(self):
+        @lazylist
         def temp():
             self.generated += list(itertools.tee(self.raw_object)[-1])
             for item in self.generated[::-1]:
