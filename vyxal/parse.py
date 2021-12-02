@@ -13,7 +13,7 @@ import string
 from collections import deque
 from collections.abc import Iterable
 
-from vyxal import lexer, structure
+import lexer, structure
 
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)

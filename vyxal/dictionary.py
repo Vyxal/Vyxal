@@ -1,4 +1,4 @@
-from vyxal import encoding, helpers
+import encoding, helpers
 
 contents = """the
 The

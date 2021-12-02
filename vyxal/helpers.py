@@ -20,11 +20,11 @@ from sympy.parsing.sympy_parser import (
 )
 import numpy
 
-import vyxal.encoding
-from vyxal import lexer
-from vyxal.context import DEFAULT_CTX, Context
-import vyxal.dictionary
-from vyxal.LazyList import *
+import encoding
+import lexer
+from context import DEFAULT_CTX, Context
+import dictionary
+from LazyList import *
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -654,48 +654,48 @@ def uncompress_dict(source: str) -> str:
     while characters:
         char = characters.popleft()
         if escaped:
-            if char not in vyxal.encoding.compression:
+            if char not in encoding.compression:
                 ret += "\\"
             ret += char
             escaped = False
         elif char == "\\":
             escaped = True
-        elif char in vyxal.encoding.compression:
+        elif char in encoding.compression:
             temp_scc += char
             if len(temp_scc) == 2:
-                index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
-                if index < len(vyxal.dictionary.contents):
-                    ret += vyxal.dictionary.contents[index]
+                index = from_base_alphabet(temp_scc, encoding.compression)
+                if index < len(dictionary.contents):
+                    ret += dictionary.contents[index]
                 temp_scc = ""
         else:
             if temp_scc:
-                pos = vyxal.encoding.compression.find(temp_scc)
-                if pos < len(vyxal.dictionary.small_dictionary):
-                    ret += vyxal.dictionary.small_dictionary[pos]
+                pos = encoding.compression.find(temp_scc)
+                if pos < len(dictionary.small_dictionary):
+                    ret += dictionary.small_dictionary[pos]
                 temp_scc = ""
             ret += char
 
     if temp_scc:
-        pos = vyxal.encoding.compression.find(temp_scc)
-        if pos < len(vyxal.dictionary.small_dictionary):
-            ret += vyxal.dictionary.small_dictionary[pos]
+        pos = encoding.compression.find(temp_scc)
+        if pos < len(dictionary.small_dictionary):
+            ret += dictionary.small_dictionary[pos]
 
     return ret
 
 
 def uncompress_str(string: str) -> str:
     base_10_representation = from_base_alphabet(
-        string, vyxal.encoding.codepage_string_compress
+        string, encoding.codepage_string_compress
     )
 
     actual = to_base_alphabet(
-        base_10_representation, vyxal.encoding.base_27_alphabet
+        base_10_representation, encoding.base_27_alphabet
     )
     return actual
 
 
 def uncompress_num(num: str) -> int:
-    return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
+    return from_base_alphabet(num, encoding.codepage_number_compress)
 
 
 def urlify(item: str) -> str:

@@ -9,11 +9,11 @@ import types
 import traceback
 
 
-import vyxal.encoding
-from vyxal.context import Context
-from vyxal.elements import *
-from vyxal.transpile import transpile
-from vyxal.helpers import *
+import encoding
+from context import Context
+from elements import *
+from transpile import transpile
+from helpers import *
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -71,7 +71,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     elif "v" in flags:  # Open file using Vyxal encoding
         with open(file_name, "rb") as f:
             code = f.read()
-            code = vyxal.encoding.vyxal_to_utf8(code)
+            code = encoding.vyxal_to_utf8(code)
     else:  # Open file using UTF-8 encoding:
         with open(file_name, "r", encoding="utf-8") as f:
             code = f.read()

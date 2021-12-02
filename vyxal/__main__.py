@@ -1,4 +1,4 @@
-import vyxal.main
+import main
 import sys
 
 if len(sys.argv) > 1:
@@ -9,6 +9,6 @@ if len(sys.argv) > 1:
     if len(sys.argv) > 2:
         flags, inputs = sys.argv[2], sys.argv[3:]
 
-    vyxal.main.execute_vyxal(file_name, flags, inputs)
+    main.execute_vyxal(file_name, flags, inputs)
 else:
-    vyxal.main.repl()
+    main.repl()

@@ -10,6 +10,7 @@ import random
 import re
 import string
 import types
+import urllib
 from datetime import datetime
 from typing import Union
 
@@ -17,15 +18,15 @@ import num2words
 import numpy
 import sympy
 
-from vyxal import dictionary
-from vyxal.context import DEFAULT_CTX, Context
-from vyxal.encoding import (
+import dictionary
+from context import DEFAULT_CTX, Context
+from encoding import (
     base_27_alphabet,
     codepage_number_compress,
     codepage_string_compress,
 )
-from vyxal.helpers import *
-from vyxal.LazyList import LazyList, lazylist
+from helpers import *
+from LazyList import LazyList, lazylist
 
 currentdate = datetime.now()
 
@@ -1966,7 +1967,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
-def max_by_function(lhs, ctx):
+def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
