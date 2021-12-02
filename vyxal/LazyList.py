@@ -61,14 +61,14 @@ class LazyList:
 
                 @lazylist
                 def infinite_index():
-                    self.listify()
-                    yield from self.generated[start:stop:step]
+                    x = self.listify()
+                    yield from x[start:stop:step]
 
                 return infinite_index()
             else:
                 ret = []
                 if stop < 0:
-                    stop = len(self.listify()) + stop
+                    stop = len(self) + stop
                 for i in range(start, stop, step):
                     ret.append(self.__getitem__(i))
                 return ret
@@ -106,7 +106,9 @@ class LazyList:
         return join_with(self.generated[::], raw_object_clones[1])
 
     def __len__(self):
-        return len(self.listify())
+        temp = self.listify()
+        self = LazyList(temp[::])
+        return len(temp)
 
     def __next__(self):
         from vyxal.helpers import vyxalify
