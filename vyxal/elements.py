@@ -29,7 +29,6 @@ from vyxal.LazyList import LazyList, lazylist
 
 currentdate = datetime.now()
 
-
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
