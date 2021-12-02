@@ -1423,6 +1423,7 @@ def index(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs)
+    lhs = deep_copy(lhs)
     if ts == (str, str):
         # b[0:len(b)//2] + a + b[len(b)//2:]
         return lhs[: len(rhs) // 2] + rhs + lhs[len(rhs) // 2 :]
@@ -3819,14 +3820,14 @@ def vy_str(lhs, ctx=None):
         ),
     }.get(
         ts,
-        lambda: "⟨"
-        + "|".join(
+        lambda: "⟨ "
+        + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
                 lhs,
             )
         )
-        + "⟩",
+        + " ⟩",
     )()
 
 
@@ -3893,14 +3894,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨"
-        + "|".join(
+        lambda: "⟨ "
+        + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
                 lhs or [],
             )
         )
-        + "⟩",
+        + " ⟩",
     )()
 
 
