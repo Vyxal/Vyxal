@@ -453,7 +453,7 @@ D (Triplicate)
 -------------------------------
 E (Two Power / Python Eval)
 
-- a ** 2, or eval(a)
+- 2 ** a, or eval(a)
 
     num a: 2 ** a
     str a: eval(a) (safe-eval as python)
@@ -2464,6 +2464,12 @@ k∩ (Vowels With Y)
 - All partitions of a string/list
 
     any a: all_partitions(a)
+-------------------------------
+øḋ (To Decimal)
+
+- Convert a rational to its decimal representation.
+
+    num a: to_decimal(a)
 -------------------------------
 Þo (Ordinals)
 

@@ -860,7 +860,7 @@
   vectorise: false
   tests:
     - '[5] : "5"'
-    - '[[1,2,3]] : "⟨1|2|3⟩"'
+    - '[[1,2,3]] : "⟨ 1 | 2 | 3 ⟩"'
     - '["X"] : "X"'
 
 - element: "T"
@@ -3261,6 +3261,14 @@
   tests:
     - '[] : "aeiouyAEIOUY"'
 
+- element: "k□"
+  name: Directions
+  arity: 0
+  description: Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
+  vectorise: false
+  tests: 
+    - '[] : [[0,1],[1,0],[0,-1],[-1,0]]'
+    
 # Add constants with the following format:
 #
 #- element: ""
@@ -3380,7 +3388,7 @@
     lst: roots(a)
   vectorise: false
   tests:
-    - "[[4, -1005, 3, 4]] : [0.0646067233956344, -0.0616057715438783, 251.246999048148]"
+    - "[[4, -1005, 3, 4]] : [(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)]"
     - "[[69, 420, -1]] : [0.00238002178391728, -6.08933654352305]"
 
 - element: "∆ƈ"
@@ -3987,6 +3995,14 @@
   vectorise: false
   tests:
     - '["ab"] : [["a", "b"], ["ab"]]'
+
+- element: "øḋ"
+  name: To Decimal
+  description: Convert a rational to its decimal representation.
+  arity: 1
+  overloads:
+    num: to_decimal(a)
+  vectorise: false
 
 - element: "Þo"
   name: Ordinals

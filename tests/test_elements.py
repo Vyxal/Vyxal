@@ -3847,7 +3847,7 @@ def test_Stringify():
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify("⟨1|2|3⟩")
+    expected = vyxalify("⟨ 1 | 2 | 3 ⟩")
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -12636,6 +12636,29 @@ def test_VowelsWithY():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+def test_Directions():
+
+    stack = [vyxalify(item) for item in []]
+    expected = vyxalify([[0,1],[1,0],[0,-1],[-1,0]])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('k□')
+    # print('k□', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_Cosine():
 
     stack = [vyxalify(item) for item in [3.14159265358979]]
@@ -13096,7 +13119,7 @@ def test_ArcTangent():
 def test_PolynomialSolver():
 
     stack = [vyxalify(item) for item in [[4, -1005, 3, 4]]]
-    expected = vyxalify([0.0646067233956344, -0.0616057715438783, 251.246999048148])
+    expected = vyxalify([(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)])
     ctx = Context()
     
     ctx.stacks.append(stack)

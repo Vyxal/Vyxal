@@ -29,7 +29,6 @@ from vyxal.LazyList import LazyList, lazylist
 
 currentdate = datetime.now()
 
-
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
@@ -818,7 +817,8 @@ def equals(lhs, rhs, ctx):
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
             bool(
-                abs(lhs - rhs) < EPSILON or abs(lhs - rhs) < EPSILON * abs(lhs)
+                abs(simplify(lhs - rhs)) < EPSILON
+                or abs(simplify(lhs - rhs)) < EPSILON * abs(lhs)
             )
         ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
@@ -1423,6 +1423,7 @@ def index(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs)
+    lhs = deep_copy(lhs)
     if ts == (str, str):
         # b[0:len(b)//2] + a + b[len(b)//2:]
         return lhs[: len(rhs) // 2] + rhs + lhs[len(rhs) // 2 :]
@@ -3810,21 +3811,23 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(str(float(lhs)))),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs))
+        if ctx is not None and not ctx.print_decimals
+        else str(eval(sympy.pycode(sympy.nsimplify(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
         ),
     }.get(
         ts,
-        lambda: "⟨"
-        + "|".join(
+        lambda: "⟨ "
+        + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
                 lhs,
             )
         )
-        + "⟩",
+        + " ⟩",
     )()
 
 
@@ -3853,7 +3856,10 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if ts == NUMBER_TYPE:
-            lhs = sympy.nsimplify(str(float(lhs)))
+            if ctx.print_decimals:
+                lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
+            else:
+                lhs = sympy.nsimplify(lhs)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
@@ -3880,9 +3886,7 @@ def vy_reduce(lhs, rhs, ctx):
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(
-            sympy.nsimplify(str(float(lhs)), rational=True)
-        ),
+        (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
         (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -3890,14 +3894,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨"
-        + "|".join(
+        lambda: "⟨ "
+        + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
                 lhs or [],
             )
         )
-        + "⟩",
+        + " ⟩",
     )()
 
 
@@ -4441,6 +4445,7 @@ elements: dict[str, tuple[str, int]] = {
     "øĊ": process_element(center, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
+    "øḋ": process_element("str(eval(sympy.pycode(lhs)))", 1),
     "øe": process_element(run_length_encoding, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
@@ -4491,7 +4496,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(
-        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx))", 1
+        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx)))", 1
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
@@ -4594,6 +4599,7 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
+    "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
 }
 modifiers: dict[str, str] = {
     "v": (
