@@ -3988,6 +3988,14 @@
   tests:
     - '["ab"] : [["a", "b"], ["ab"]]'
 
+- element: "øḋ"
+  name: To Decimal
+  description: Convert a rational to its decimal representation.
+  arity: 1
+  overloads:
+    num: to_decimal(a)
+  vectorise: false
+
 - element: "Þo"
   name: Ordinals
   description: An infinite list of first, second, third, fourth etc

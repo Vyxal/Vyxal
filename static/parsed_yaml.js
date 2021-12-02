@@ -368,7 +368,7 @@ Push three copies of a to stack
 `)
 
 codepage_descriptions.push(`Two Power / Python Eval
-a ** 2, or eval(a)
+2 ** a, or eval(a)
 num a -> 2 ** a
 str a -> eval(a) (safe-eval as python)
 `)
@@ -1973,6 +1973,11 @@ codepage_descriptions[196] += `
 øṖ (String Partitions)
 All partitions of a string/list
 any a -> all_partitions(a)
+`
+codepage_descriptions[143] += `
+øḋ (To Decimal)
+Convert a rational to its decimal representation.
+num a -> to_decimal(a)
 `
 codepage_descriptions[111] += `
 Þo (Ordinals)
