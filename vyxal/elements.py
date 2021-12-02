@@ -4594,7 +4594,7 @@ elements: dict[str, tuple[str, int]] = {
     "k∪": process_element('"aeiouy"', 0),
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
-    "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0)
+    "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
 }
 modifiers: dict[str, str] = {
     "v": (
