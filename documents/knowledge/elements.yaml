@@ -3261,6 +3261,14 @@
   tests:
     - '[] : "aeiouyAEIOUY"'
 
+- element: "k□"
+  name: Directions
+  arity: 0
+  description: Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
+  vectorise: false
+  tests: 
+    - '[] : [[0,1],[1,0],[0,-1],[-1,0]]'
+    
 # Add constants with the following format:
 #
 #- element: ""
