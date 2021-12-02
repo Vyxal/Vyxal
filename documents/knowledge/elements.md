@@ -509,7 +509,7 @@ Push three copies of a to stack
 -------------------------------
 ## E (Two Power / Python Eval)
 
-a ** 2, or eval(a)
+2 ** a, or eval(a)
 
 ### Overloads
 
@@ -2833,6 +2833,14 @@ All partitions of a string/list
 ### Overloads
 
 - any a: `all_partitions(a)`
+-------------------------------
+## øḋ (To Decimal)
+
+Convert a rational to its decimal representation.
+
+### Overloads
+
+- num a: `to_decimal(a)`
 -------------------------------
 ## Þo (Ordinals)
 

@@ -8,6 +8,7 @@ import ast
 import collections
 import inspect
 import itertools
+import math
 import textwrap
 import types
 from typing import Any, List, Union
@@ -97,7 +98,7 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def enumerate_md(haystack: VyList, index_stack: list[int] = []) -> VyList:
+def enumerate_md(haystack: VyList, index_stack: List[int] = []) -> VyList:
     """
     Gets all the multi-dimensional indicies of haystack
     """
@@ -567,7 +568,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value) or isinstance(value, numpy.number):
-        return float(value)
+        return eval(sympy.pycode(value))
     else:
         return [simplify(x) for x in value]
 
@@ -734,8 +735,8 @@ def vyxalify(value: Any) -> Any:
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
     elif is_sympy(value):
-        return sympy.nsimplify(value.as_real_imag()[0], rational=True)
-    elif isinstance(value, float) or isinstance(value, numpy.number):
+        return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, (float, complex, numpy.number)):
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (int, sympy.Rational, str, LazyList)):
         return value

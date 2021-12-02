@@ -8,8 +8,8 @@ def test_if():
     py = transpile(vy)
     expected = """condition = pop(stack, 1, ctx=ctx)
 if boolify(condition, ctx):
-    stack.append(1)
+    stack.append(sympy.nsimplify("1"))
 else:
-    stack.append(2)
+    stack.append(sympy.nsimplify("2"))
 """
     assert py == expected

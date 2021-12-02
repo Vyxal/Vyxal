@@ -13096,7 +13096,7 @@ def test_ArcTangent():
 def test_PolynomialSolver():
 
     stack = [vyxalify(item) for item in [[4, -1005, 3, 4]]]
-    expected = vyxalify([0.0646067233956344, -0.0616057715438783, 251.246999048148])
+    expected = vyxalify([(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)])
     ctx = Context()
     
     ctx.stacks.append(stack)
