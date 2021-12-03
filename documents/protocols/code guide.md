@@ -1,6 +1,6 @@
 # The Definitive Vyxal Code Style Guide
 
-_Twentieth revision_
+_Twenty-first revision_
 
 When contributing to the Vyxal repository, make sure you follow the conventions in this document like an epic gamer. Doing so will make everyone's lives hunky-dory, and you'll be an absolute pogchamp. Who doesn't want to be an absolute pogchamp?
 
@@ -28,7 +28,11 @@ Alright. Now to the specific stuff.
 
 Here's a list of all the main python files in the repository:
 
-- [`vyxal.py`](../../vyxal/vyxal.py) - this is the file that actually runs Vyxal - it contains the compiler and the offline command line runner. The only things that should be in this file is anything needed to execute programs.
+- [`__init__.py`](../../vyxal/__init__.py) - The main file that imports all the other files.
+
+- [`__main__.py`](../../vyxal/__main__.py) - this is what is run when you run `python3`
+
+- [`main.py`](../../vyxal/main.py) - this is the file that actually runs Vyxal - it contains the compiler and the offline command line runner. The only things that should be in this file is anything needed to execute programs.
 
 - [`parse.py`](../../vyxal/parse.py) - this is the parser that turns tokens into Structures.
 
@@ -47,6 +51,8 @@ Here's a list of all the main python files in the repository:
 - [`transpile.py`](../../vyxal/transpile.py) - this file has the transpiling functions.
 
 - [`LazyList.py`](../../vyxal/LazyList.py) - our generator wrapper.
+
+- [`context.py`](../../vyxal/context.py) - the context object class
 
 ## Function Overloads
 
