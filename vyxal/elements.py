@@ -3688,15 +3688,15 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     if ts[0] == types.FunctionType:
         return LazyList(
             filter(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
             )
         )
     elif ts[1] == types.FunctionType:
         return LazyList(
             filter(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
             )
         )
     elif ts == (str, str):
