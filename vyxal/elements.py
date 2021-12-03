@@ -694,7 +694,7 @@ def deep_flatten(lhs, ctx):
     (any) -> flatten list
     """
     ret = []
-    for item in iterable(lhs):
+    for item in iterable(lhs, ctx=ctx):
         if type(item) in (LazyList, list):
             ret += deep_flatten(item, ctx)
         else:
@@ -929,7 +929,7 @@ def expe_minus_1(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs) - 1,
-        str: lambda: str(sympy.expand(make_expression(lhs, ctx))),
+        str: lambda: str(sympy.expand(make_expression(lhs))),
     }.get(ts, lambda: vectorise(expe_minus_1, lhs, ctx=ctx))()
 
 
@@ -1167,15 +1167,19 @@ def gen_from_fn(lhs, rhs, ctx):
     (lst, fun) -> Generator from b with initial vector a
     """
 
-    lhs, rhs = (lhs, rhs) if vy_type(lhs) is types.FunctionType else (rhs, lhs)
+    lhs, rhs = (rhs, lhs) if vy_type(lhs) is types.FunctionType else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
 
     @lazylist
     def gen():
         for item in lhs:
             yield item
 
+        made = list(lhs)
+
         while True:
-            yield safe_apply(lhs, rhs, ctx=ctx)
+            made.append(safe_apply(rhs, *made, ctx=ctx))
+            yield made[-1]
 
     return gen()
 
@@ -1309,7 +1313,7 @@ def group_consecutive(lhs, ctx):
     res = list(gen())
 
     if typ == NUMBER_TYPE:
-        res = [int(group) for group in res]
+        res = [vy_int("".join(group)) for group in res]
 
     return res
 
@@ -2432,7 +2436,9 @@ def orderless_range(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(
-            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+            range(int(lhs), int(rhs), (-1, 1)[int(bool(lhs < rhs))])
+            # int(bool(...)) is needed because sympy decides to
+            # return a special boolean class sometimes
         ),
         (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
         (str, NUMBER_TYPE): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
@@ -3378,7 +3384,8 @@ def uniquify(lhs, ctx):
     @lazylist
     def f():
         seen = []
-        for item in lhs:
+        t = iterable(lhs, ctx=ctx)
+        for item in t:
             if item not in seen:
                 yield item
                 seen.append(item)
@@ -3684,15 +3691,15 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     if ts[0] == types.FunctionType:
         return LazyList(
             filter(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
+                lambda x: safe_apply(lhs, x, ctx=ctx),
+                iterable(rhs, range, ctx=ctx),
             )
         )
     elif ts[1] == types.FunctionType:
         return LazyList(
             filter(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
+                lambda x: safe_apply(rhs, x, ctx=ctx),
+                iterable(lhs, range, ctx=ctx),
             )
         )
     elif ts == (str, str):
@@ -4196,7 +4203,7 @@ elements: dict[str, tuple[str, int]] = {
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack = stack[::-1]", 0),
+    "^": ("stack += pop(stack, len(stack), ctx)", 0),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -4338,7 +4345,7 @@ elements: dict[str, tuple[str, int]] = {
     "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
     "…": (
         "top = pop(stack, 1, ctx); "
-        "vy_print(top, end='', ctx=ctx); stack.append(top)",
+        "vy_print(top, end='\n', ctx=ctx); stack.append(top)",
         1,
     ),
     "□": (
@@ -4401,8 +4408,16 @@ elements: dict[str, tuple[str, int]] = {
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
-    "„": ("stack = stack[1:] + stack[0]", 0),
-    "‟": ("stack = stack[-1] + stack[:-1]", 0),
+    "„": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += temp[1:] + [temp[0]]",
+        0,
+    ),
+    "‟": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += [temp[-1]] + temp[:-1]",
+        0,
+    ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
@@ -4636,5 +4651,10 @@ modifiers: dict[str, str] = {
     "ɖ": (
         "function_A.stored_arity = 2\n"
         "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
+    ),
+    "ß": (
+        "if boolify(pop(stack, 1, ctx), ctx):\n"
+        "    stack.append(function_A)\n"
+        "    function_call(stack, ctx)"
     ),
 }

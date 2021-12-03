@@ -189,8 +189,9 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.WhileLoop):
         return (
-            indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
-            + indent_str("while boolify(condition):", indent)
+            transpile_ast(struct.condition, indent, dict_compress=dict_compress)
+            + indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
+            + indent_str("while boolify(condition, ctx):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + transpile_ast(
                 struct.body, indent + 1, dict_compress=dict_compress
@@ -199,7 +200,7 @@ def transpile_structure(
             + transpile_ast(
                 struct.condition, indent + 1, dict_compress=dict_compress
             )
-            + indent_str("    condition = pop(stack, ctx=ctx)", indent)
+            + indent_str("    condition = pop(stack, 1, ctx=ctx)", indent)
         )
     if isinstance(struct, vyxal.structure.FunctionCall):
         var = re.sub("[^A-Za-z0-9_]", "", struct.name)
