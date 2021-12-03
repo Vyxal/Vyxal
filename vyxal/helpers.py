@@ -262,7 +262,7 @@ def iterable(
 ) -> Union[LazyList, Union[list, str]]:
     """Turn a value into an iterable"""
     item_type = type(item)
-    if item_type in [sympy.Rational, int]:
+    if item_type is int or is_sympy(item):
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:

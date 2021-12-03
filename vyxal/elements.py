@@ -694,7 +694,7 @@ def deep_flatten(lhs, ctx):
     (any) -> flatten list
     """
     ret = []
-    for item in iterable(lhs):
+    for item in iterable(lhs, ctx=ctx):
         if type(item) in (LazyList, list):
             ret += deep_flatten(item, ctx)
         else:
