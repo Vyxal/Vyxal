@@ -483,7 +483,7 @@ def reverse_number(
     """Reverses a number. Negative numbers are returned negative"""
 
     sign = -1 if item < 0 else 1
-    rev = str(abs(item))[::-1]
+    rev = str(abs(item)).strip("0")[::-1]
     return vyxalify(sympy.Rational(eval(rev) * sign))
 
 

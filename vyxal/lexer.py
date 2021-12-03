@@ -112,17 +112,21 @@ def tokenise(source_str: str) -> list[Token]:
                 source.popleft()
         elif head in string.digits + ".°":
             contextual_token_value = head
-            while (
-                source
-                and source[0] in string.digits + ".°"
-                and (contextual_token_value + source[0]).count("°") < 2
-                and all(
-                    x.count(".") < 2
-                    for x in (contextual_token_value + source[0]).split("°")
-                )
-            ):
-                contextual_token_value += source.popleft()
-            tokens.append(Token(TokenType.NUMBER, contextual_token_value))
+            if head == "0" and not (source and source[0] in "°."):
+                # Handle the special case of 0.
+                tokens.append(Token(TokenType.NUMBER, contextual_token_value))
+            else:
+                while (
+                    source
+                    and source[0] in string.digits + ".°"
+                    and (contextual_token_value + source[0]).count("°") < 2
+                    and all(
+                        x.count(".") < 2
+                        for x in (contextual_token_value + source[0]).split("°")
+                    )
+                ):
+                    contextual_token_value += source.popleft()
+                tokens.append(Token(TokenType.NUMBER, contextual_token_value))
         elif head == "‛":
             contextual_token_value = ""
             while source and len(contextual_token_value) != 2:

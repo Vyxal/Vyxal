@@ -929,7 +929,7 @@ def expe_minus_1(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs) - 1,
-        str: lambda: str(sympy.expand(make_expression(lhs, ctx))),
+        str: lambda: str(sympy.expand(make_expression(lhs))),
     }.get(ts, lambda: vectorise(expe_minus_1, lhs, ctx=ctx))()
 
 
@@ -1309,7 +1309,7 @@ def group_consecutive(lhs, ctx):
     res = list(gen())
 
     if typ == NUMBER_TYPE:
-        res = [int(group) for group in res]
+        res = [vy_int("".join(group)) for group in res]
 
     return res
 
@@ -3483,6 +3483,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             return LazyList(simple.get(ts)())
     elif rhs is not None:
+        print(lhs, rhs)
         # That is, two argument vectorisation
         ts = primitive_type(lhs), primitive_type(rhs)
         simple = {
@@ -4196,7 +4197,7 @@ elements: dict[str, tuple[str, int]] = {
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack = stack[::-1]", 0),
+    "^": ("stack += pop(stack, len(stack), ctx)", 0),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -4338,7 +4339,7 @@ elements: dict[str, tuple[str, int]] = {
     "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
     "…": (
         "top = pop(stack, 1, ctx); "
-        "vy_print(top, end='', ctx=ctx); stack.append(top)",
+        "vy_print(top, end='\n', ctx=ctx); stack.append(top)",
         1,
     ),
     "□": (
@@ -4401,8 +4402,16 @@ elements: dict[str, tuple[str, int]] = {
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
-    "„": ("stack = stack[1:] + stack[0]", 0),
-    "‟": ("stack = stack[-1] + stack[:-1]", 0),
+    "„": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += temp[1:] + [temp[0]]",
+        0,
+    ),
+    "‟": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += [temp[-1]] + temp[:-1]",
+        0,
+    ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
@@ -4636,5 +4645,10 @@ modifiers: dict[str, str] = {
     "ɖ": (
         "function_A.stored_arity = 2\n"
         "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
+    ),
+    "ß": (
+        "if boolify(pop(stack, 1, ctx), ctx):\n"
+        "    stack.append(function_A)\n"
+        "    function_call(stack, ctx)"
     ),
 }
