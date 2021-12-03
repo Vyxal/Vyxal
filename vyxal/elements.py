@@ -4645,4 +4645,9 @@ modifiers: dict[str, str] = {
         "function_A.stored_arity = 2\n"
         "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
     ),
+    "ß": (
+        "if boolify(pop(stack, 1, ctx), ctx):\n"
+        "    stack.append(function_A)\n"
+        "    function_call(stack, ctx)"
+    ),
 }
