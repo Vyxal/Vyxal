@@ -1167,15 +1167,19 @@ def gen_from_fn(lhs, rhs, ctx):
     (lst, fun) -> Generator from b with initial vector a
     """
 
-    lhs, rhs = (lhs, rhs) if vy_type(lhs) is types.FunctionType else (rhs, lhs)
+    lhs, rhs = (rhs, lhs) if vy_type(lhs) is types.FunctionType else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
 
     @lazylist
     def gen():
         for item in lhs:
             yield item
 
+        made = list(lhs)
+
         while True:
-            yield safe_apply(lhs, rhs, ctx=ctx)
+            made.append(safe_apply(rhs, *made, ctx=ctx))
+            yield made[-1]
 
     return gen()
 
