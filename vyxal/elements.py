@@ -2432,7 +2432,9 @@ def orderless_range(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(
-            range(int(lhs), int(rhs), (-1, 1)[lhs < rhs])
+            range(int(lhs), int(rhs), (-1, 1)[int(bool(lhs < rhs))])
+            # int(bool(...)) is needed because sympy decides to
+            # return a special boolean class sometimes
         ),
         (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
         (str, NUMBER_TYPE): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
@@ -3378,7 +3380,8 @@ def uniquify(lhs, ctx):
     @lazylist
     def f():
         seen = []
-        for item in lhs:
+        t = iterable(lhs, ctx=ctx)
+        for item in t:
             if item not in seen:
                 yield item
                 seen.append(item)
