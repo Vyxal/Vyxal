@@ -1309,7 +1309,7 @@ def group_consecutive(lhs, ctx):
     res = list(gen())
 
     if typ == NUMBER_TYPE:
-        res = [int(group) for group in res]
+        res = [vy_int("".join(group)) for group in res]
 
     return res
 
@@ -4196,7 +4196,7 @@ elements: dict[str, tuple[str, int]] = {
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack = stack[::-1]", 0),
+    "^": ("stack += pop(stack, len(stack), ctx)", 0),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -4401,8 +4401,16 @@ elements: dict[str, tuple[str, int]] = {
     "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
-    "„": ("stack = stack[1:] + stack[0]", 0),
-    "‟": ("stack = stack[-1] + stack[:-1]", 0),
+    "„": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += temp[1:] + [temp[0]]",
+        0,
+    ),
+    "‟": (
+        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "stack += [temp[-1]] + temp[:-1]",
+        0,
+    ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
