@@ -262,7 +262,7 @@ def iterable(
 ) -> Union[LazyList, Union[list, str]]:
     """Turn a value into an iterable"""
     item_type = type(item)
-    if item_type in [sympy.Rational, int]:
+    if item_type is int or is_sympy(item):
         if ctx.number_as_range or number_type is range:
             return LazyList(range(ctx.range_start, int(item) + ctx.range_end))
         else:
@@ -471,7 +471,7 @@ def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
 
-    if type(item) in [int, sympy.Rational, str]:
+    if type(item) in [int, sympy.Rational, str] or is_sympy(item):
         return SCALAR_TYPE
     assert type(item) in [list, LazyList]
     return list
