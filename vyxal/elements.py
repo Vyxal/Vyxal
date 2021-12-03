@@ -929,7 +929,7 @@ def expe_minus_1(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs) - 1,
-        str: lambda: str(sympy.expand(make_expression(lhs, ctx))),
+        str: lambda: str(sympy.expand(make_expression(lhs))),
     }.get(ts, lambda: vectorise(expe_minus_1, lhs, ctx=ctx))()
 
 
