@@ -4405,7 +4405,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "↵": process_element(newline_split, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
-    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
+    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.append(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
     "„": (
@@ -4617,6 +4617,11 @@ elements: dict[str, tuple[str, int]] = {
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
 }
 modifiers: dict[str, str] = {
+    "&": (
+        "stack.append(ctx.register)\n"
+        "ctx.register = safe_apply(function_A, "
+        "pop(stack, function_A.arity, ctx), ctx=ctx)\n"
+    ),
     "v": (
         "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
         "stack.append"
