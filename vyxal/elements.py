@@ -4345,7 +4345,7 @@ elements: dict[str, tuple[str, int]] = {
     "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
     "…": (
         "top = pop(stack, 1, ctx); "
-        "vy_print(top, end='\n', ctx=ctx); stack.append(top)",
+        "vy_print(top, end='\\n', ctx=ctx); stack.append(top)",
         1,
     ),
     "□": (
