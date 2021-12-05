@@ -3772,20 +3772,17 @@ def vy_map(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs)
-    return {
-        (ts[0], types.FunctionType): lambda: list(
-            map(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
-            )
-        ),
-        (types.FunctionType, ts[1]): lambda: list(
-            map(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
-            )
-        ),
-    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
+    if types.FunctionType not in ts:
+        return LazyList([[lhs, x] for x in rhs])
+
+    function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
+
+    @lazylist
+    def gen():
+        for element in itr:
+            yield safe_apply(function, element, ctx=ctx)
+
+    return gen()
 
 
 def vy_sort(lhs, ctx):
@@ -3831,7 +3828,7 @@ def vy_str(lhs, ctx=None):
         + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
-                lhs,
+                list(lhs) or [],
             )
         )
         + " ⟩",
@@ -3857,7 +3854,7 @@ def vy_print(lhs, end="\n", ctx=None):
     if ts is LazyList:
         lhs.output(end, ctx)
     elif ts is list:
-        LazyList(lhs).output(end, ctx)
+        vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
         res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
         vy_print(res, ctx=ctx)
@@ -3905,7 +3902,7 @@ def vy_repr(lhs, ctx):
         + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
-                lhs or [],
+                list(lhs) or [],
             )
         )
         + " ⟩",

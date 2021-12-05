@@ -142,58 +142,59 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.stacks.append(stack)
     exec(code)
-    if not (ctx.printed or "O" in flags) or "o" in flags:
-        originally_empty = not len(stack)
-        output = pop(stack, 1, ctx)
-        for flag in flags:
-            if flag == "j":
-                output = join(output, "\n", ctx)
-            elif flag == "s":
-                output = vy_sum(output, ctx)
-            elif flag == "d":
-                output = vy_sum(deep_flatten(output, ctx), ctx)
-            elif flag == "Ṫ":
-                if originally_empty:
-                    output = []
-                else:
-                    stack.append(output)
-                    output = vy_sum(stack, ctx)
-                stack = [output]
-            elif flag == "L":
-                output = vertical_join(output, ctx=ctx)
-            elif flag == "S":
-                output = join(output, " ", ctx)
-            elif flag == "C":
-                output = center(output, ctx)
-                output = join(output, "\n", ctx)
-            elif flag == "G":
-                output = monadic_maximum(output, ctx)
-            elif flag == "g":
-                output = monadic_minimum(output, ctx)
-            elif flag == "W":
-                if originally_empty:
-                    output = []
-                else:
-                    stack.append(output)
-                    output = vy_str(stack, ctx)
-            elif flag == "ṡ":
-                if originally_empty:
-                    output = []
-                else:
-                    stack.append(output)
-                    output = join(stack, " ", ctx)
-            elif flag == "J":
-                if originally_empty:
-                    output = []
-                else:
-                    stack.append(output)
-                    output = join(stack, "\n", ctx)
-            elif flag == "…":
-                if vy_type(output, simple=True) is list:
-                    output = output[:100]
+
+    originally_empty = not len(stack)
+    output = pop(stack, 1, ctx)
+    for flag in flags:
+        if flag == "j":
+            output = join(output, "\n", ctx)
+        elif flag == "s":
+            output = vy_sum(output, ctx)
+        elif flag == "d":
+            output = vy_sum(deep_flatten(output, ctx), ctx)
+        elif flag == "Ṫ":
+            if originally_empty:
+                output = []
             else:
-                pass
-        vy_print(output, ctx=ctx)
+                stack.append(output)
+                output = vy_sum(stack, ctx)
+            stack = [output]
+        elif flag == "L":
+            output = vertical_join(output, ctx=ctx)
+        elif flag == "S":
+            output = join(output, " ", ctx)
+        elif flag == "C":
+            output = center(output, ctx)
+            output = join(output, "\n", ctx)
+        elif flag == "G":
+            output = monadic_maximum(output, ctx)
+        elif flag == "g":
+            output = monadic_minimum(output, ctx)
+        elif flag == "W":
+            if originally_empty:
+                output = []
+            else:
+                stack.append(output)
+                output = vy_str(stack, ctx)
+        elif flag == "ṡ":
+            if originally_empty:
+                output = []
+            else:
+                stack.append(output)
+                output = join(stack, " ", ctx)
+        elif flag == "J":
+            if originally_empty:
+                output = []
+            else:
+                stack.append(output)
+                output = join(stack, "\n", ctx)
+        elif flag == "…":
+            if vy_type(output, simple=True) is list:
+                output = output[:100]
+        else:
+            pass
+        if not (ctx.printed or "O" in flags) or "o" in flags:
+            vy_print(output, ctx=ctx)
 
 
 def repl():
