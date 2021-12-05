@@ -2978,7 +2978,7 @@ def slice_from(lhs, rhs, ctx):
             while True:
                 if found == count:
                     break
-                if safe_apply(function, item, ctx):
+                if boolify(safe_apply(function, item, ctx=ctx), ctx=ctx):
                     found += 1
                     yield item
                 item += 1
@@ -3003,7 +3003,7 @@ def sort_by(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(vector, key=lambda x: safe_apply(function, x, ctx))
+        return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
@@ -3399,7 +3399,6 @@ def uniquify_mask(lhs, ctx):
              remain after uniquifying.
     """
     lhs = iterable(lhs, ctx=ctx)
-    print("lhs,", lhs)
     # TODO (user/cgccuser): Reduce code duplication here?
     if isinstance(lhs, list):
         seen = set()
@@ -4307,7 +4306,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "Ė": (
-        "print('stack =', stack);stack += vy_exec(pop(stack, 1, ctx), ctx)",
+        "stack += vy_exec(pop(stack, 1, ctx), ctx)",
         1,
     ),
     "Ḟ": process_element(gen_from_fn, 2),
