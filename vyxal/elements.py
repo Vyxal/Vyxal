@@ -1256,7 +1256,7 @@ def greater_than(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs > rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
@@ -1273,7 +1273,7 @@ def greater_than_or_equal(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs >= rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs >= rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) >= rhs),
         (str, NUMBER_TYPE): lambda: int(lhs >= str(rhs)),
         (str, str): lambda: int(lhs >= rhs),
@@ -1824,7 +1824,7 @@ def less_than(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs < rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
@@ -1841,7 +1841,7 @@ def less_than_or_equal(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs <= rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs <= rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) <= rhs),
         (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
         (str, str): lambda: int(lhs <= rhs),
