@@ -2976,9 +2976,9 @@ def slice_from(lhs, rhs, ctx):
             found = 0
             item = 1
             while True:
-                res = safe_apply(function, item, ctx=ctx)
                 if found == count:
                     break
+                res = safe_apply(function, item, ctx=ctx)
                 if boolify(res, ctx=ctx):
                     found += 1
                     yield item

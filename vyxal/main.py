@@ -193,8 +193,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 output = output[:100]
         else:
             pass
-        if not (ctx.printed or "O" in flags) or "o" in flags:
-            vy_print(output, ctx=ctx)
+    if not (ctx.printed or "O" in flags) or "o" in flags:
+        vy_print(output, ctx=ctx)
 
 
 def repl():
