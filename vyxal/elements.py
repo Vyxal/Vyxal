@@ -4464,7 +4464,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
-    "∆Z": process_element(zfill, 2),
+    "∆Z": process_element(zfiller, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
