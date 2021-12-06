@@ -148,7 +148,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             ctx.online_output[2] += "\n" + traceback.format_exc()
             exit(1)
         else:
-            raise e
+            raise
 
     originally_empty = not len(stack)
     output = pop(stack, 1, ctx)

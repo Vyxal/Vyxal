@@ -1,6 +1,5 @@
 """Transpiles Vyxal code into Python"""
 
-from inspect import indentsize
 import re
 import secrets
 from typing import Union
