@@ -723,7 +723,7 @@
     any: int(a,16) (from hexadecimal)
   vectorise: false
   tests:
-    - "[[1,2,3]] : 291"
+    - "[32] : '20'"
     - '["b"] : 11'
     - '["beedab"] : 12512683'
 

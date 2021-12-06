@@ -1256,7 +1256,7 @@ def greater_than(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs > rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
@@ -1273,7 +1273,7 @@ def greater_than_or_equal(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs >= rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs >= rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) >= rhs),
         (str, NUMBER_TYPE): lambda: int(lhs >= str(rhs)),
         (str, str): lambda: int(lhs >= rhs),
@@ -1824,7 +1824,7 @@ def less_than(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs < rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
@@ -1841,7 +1841,7 @@ def less_than_or_equal(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs <= rhs),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs <= rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) <= rhs),
         (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
         (str, str): lambda: int(lhs <= rhs),
@@ -2978,7 +2978,8 @@ def slice_from(lhs, rhs, ctx):
             while True:
                 if found == count:
                     break
-                if safe_apply(function, item, ctx):
+                res = safe_apply(function, item, ctx=ctx)
+                if boolify(res, ctx=ctx):
                     found += 1
                     yield item
                 item += 1
@@ -3003,7 +3004,7 @@ def sort_by(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(vector, key=lambda x: safe_apply(function, x, ctx))
+        return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
@@ -3399,7 +3400,6 @@ def uniquify_mask(lhs, ctx):
              remain after uniquifying.
     """
     lhs = iterable(lhs, ctx=ctx)
-    print("lhs,", lhs)
     # TODO (user/cgccuser): Reduce code duplication here?
     if isinstance(lhs, list):
         seen = set()
@@ -3739,6 +3739,19 @@ def vy_gcd(lhs, rhs=None, ctx=None):
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
 
+def vy_hex(lhs, ctx):
+    """Element H
+    (num) -> hex(a)
+    (str) -> int(a, 16)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: hex(lhs)[2:],
+        (str): lambda: int(lhs, 16),
+    }.get(ts, lambda: vectorise(vy_hex, lhs, ctx=ctx))()
+
+
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
@@ -3772,20 +3785,17 @@ def vy_map(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs)
-    return {
-        (ts[0], types.FunctionType): lambda: list(
-            map(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
-            )
-        ),
-        (types.FunctionType, ts[1]): lambda: list(
-            map(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
-            )
-        ),
-    }.get(ts, lambda: LazyList([[lhs, x] for x in rhs]))()
+    if types.FunctionType not in ts:
+        return LazyList([[lhs, x] for x in rhs])
+
+    function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
+
+    @lazylist
+    def gen():
+        for element in itr:
+            yield safe_apply(function, element, ctx=ctx)
+
+    return gen()
 
 
 def vy_sort(lhs, ctx):
@@ -3831,7 +3841,7 @@ def vy_str(lhs, ctx=None):
         + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
-                lhs,
+                list(lhs) or [],
             )
         )
         + " ⟩",
@@ -3857,7 +3867,7 @@ def vy_print(lhs, end="\n", ctx=None):
     if ts is LazyList:
         lhs.output(end, ctx)
     elif ts is list:
-        LazyList(lhs).output(end, ctx)
+        vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
         res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
         vy_print(res, ctx=ctx)
@@ -3905,7 +3915,7 @@ def vy_repr(lhs, ctx):
         + " | ".join(
             map(
                 lambda x: vy_repr(x, ctx),
-                lhs or [],
+                list(lhs) or [],
             )
         )
         + " ⟩",
@@ -4095,6 +4105,9 @@ def zero_slice(lhs, rhs, ctx):
 
 
 def zfiller(lhs, rhs, ctx):
+    """Element ∆Z
+    zfill to rhs
+    """
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, str): lambda: rhs.zfill(lhs),
@@ -4103,6 +4116,7 @@ def zfiller(lhs, rhs, ctx):
         + rhs,
         (list, NUMBER_TYPE): lambda: [0 for i in range(max(0, rhs - len(lhs)))]
         + lhs,
+        (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
@@ -4172,7 +4186,7 @@ elements: dict[str, tuple[str, int]] = {
     "E": process_element(exp2_or_eval, 1),
     "F": process_element(vy_filter, 2),
     "G": process_element(monadic_maximum, 1),
-    "H": process_element("vy_int(lhs, 16)", 1),
+    "H": process_element(vy_hex, 1),
     "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
     "K": process_element(divisors, 1),
@@ -4310,7 +4324,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "Ė": (
-        "print('stack =', stack);stack += vy_exec(pop(stack, 1, ctx), ctx)",
+        "stack += vy_exec(pop(stack, 1, ctx), ctx)",
         1,
     ),
     "Ḟ": process_element(gen_from_fn, 2),
@@ -4345,7 +4359,7 @@ elements: dict[str, tuple[str, int]] = {
     "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
     "…": (
         "top = pop(stack, 1, ctx); "
-        "vy_print(top, end='\n', ctx=ctx); stack.append(top)",
+        "vy_print(top, end='\\n', ctx=ctx); stack.append(top)",
         1,
     ),
     "□": (
@@ -4405,7 +4419,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "↵": process_element(newline_split, 1),
     "¼": process_element("ctx.global_array.pop()", 0),
-    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.push(lhs)", 1),
+    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.append(lhs)", 1),
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
     "„": (
@@ -4450,6 +4464,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
+    "∆Z": process_element(zfiller, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -4617,6 +4632,11 @@ elements: dict[str, tuple[str, int]] = {
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
 }
 modifiers: dict[str, str] = {
+    "&": (
+        "stack.append(ctx.register)\n"
+        "ctx.register = safe_apply(function_A, "
+        "pop(stack, function_A.arity, ctx), ctx=ctx)\n"
+    ),
     "v": (
         "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
         "stack.append"

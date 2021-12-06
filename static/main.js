@@ -75,7 +75,7 @@ function generateURL() {
     var footer = e_footer.doc.getValue()
 
     var url = [flags, header, code, footer, inputs];
-    return "https://vyxal.pythonanywhere.com/#" + encode(url)
+    return location.origin + "/#" + encode(url)
 }
 
 function shareOptions(shareType) {
