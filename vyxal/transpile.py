@@ -1,5 +1,6 @@
 """Transpiles Vyxal code into Python"""
 
+from inspect import indentsize
 import re
 import secrets
 from typing import Union
@@ -115,9 +116,25 @@ def transpile_token(
     elif token.name == TokenType.COMPRESSED_STRING:
         return indent_str(f"stack.append({uncompress(token)!r})", indent)
     elif token.name == TokenType.VARIABLE_GET:
-        return indent_str(f"stack.append(VAR_{token.value})", indent)
+        if token.value == "":
+            return indent_str("stack.append(ctx.ghost_variable)", indent)
+        elif token.value[0] == "_":
+            return indent_str(f"stack.append(ctx.VAR_{token.value})", indent)
+        else:
+            return indent_str(f"stack.append(VAR_{token.value})", indent)
     elif token.name == TokenType.VARIABLE_SET:
-        return indent_str(f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent)
+        if token.value == "":
+            return indent_str(
+                "ctx.ghost_variable = pop(stack, 1, ctx=ctx)", indent
+            )
+        elif token.value[0] == "_":
+            return indent_str(
+                f"ctx.VAR_{token.value} = pop(stack, 1, ctx)", indent
+            )
+        else:
+            return indent_str(
+                f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent
+            )
     elif token.name == TokenType.CODEPAGE_NUMBER:
         return indent_str(
             f"stack.append({encoding.codepage.find(token.value) + 101})", indent

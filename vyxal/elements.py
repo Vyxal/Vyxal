@@ -3739,6 +3739,19 @@ def vy_gcd(lhs, rhs=None, ctx=None):
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
 
+def vy_hex(lhs, ctx):
+    """Element H
+    (num) -> hex(a)
+    (str) -> int(a, 16)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: hex(lhs)[2:],
+        (str): lambda: int(lhs, 16),
+    }.get(ts, lambda: vectorise(vy_hex, lhs, ctx=ctx))()
+
+
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
@@ -4169,7 +4182,7 @@ elements: dict[str, tuple[str, int]] = {
     "E": process_element(exp2_or_eval, 1),
     "F": process_element(vy_filter, 2),
     "G": process_element(monadic_maximum, 1),
-    "H": process_element("vy_int(lhs, 16)", 1),
+    "H": process_element(vy_hex, 1),
     "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
     "K": process_element(divisors, 1),

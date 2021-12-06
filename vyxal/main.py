@@ -141,7 +141,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             print(code + "\n")
 
     ctx.stacks.append(stack)
-    exec(code)
+    try:
+        exec(code)
+    except Exception as e:
+        if ctx.online:
+            ctx.online_output[2] += "\n" + traceback.format_exc()
+            exit(1)
+        else:
+            raise e
 
     originally_empty = not len(stack)
     output = pop(stack, 1, ctx)
