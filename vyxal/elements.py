@@ -4105,6 +4105,9 @@ def zero_slice(lhs, rhs, ctx):
 
 
 def zfiller(lhs, rhs, ctx):
+    """Element ∆Z
+    zfill to rhs
+    """
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, str): lambda: rhs.zfill(lhs),
@@ -4113,6 +4116,7 @@ def zfiller(lhs, rhs, ctx):
         + rhs,
         (list, NUMBER_TYPE): lambda: [0 for i in range(max(0, rhs - len(lhs)))]
         + lhs,
+        (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
@@ -4460,6 +4464,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
+    "∆Z": process_element(zfill, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
