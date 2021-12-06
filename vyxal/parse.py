@@ -294,7 +294,7 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
         # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
         # where x = the corresponding closing character).
         token: lexer.Token = tokens.popleft()
-        if token.value in OPENING_CHARACTERS:
+        if token.value and token.value in OPENING_CHARACTERS:
             branches[-1].append(token)
             bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
 
@@ -304,7 +304,7 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
                 branches.append([])
             else:
                 branches[-1].append(token)
-        elif token.value in CLOSING_CHARACTERS:
+        elif token.value and token.value in CLOSING_CHARACTERS:
             # that is, it's a closing character that isn't
             # the one we're expecting.
             if token.value == bracket_stack[-1]:
