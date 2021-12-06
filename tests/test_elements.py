@@ -3196,8 +3196,8 @@ def test_Max():
 
 def test_HexToDecimal():
 
-    stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify(291)
+    stack = [vyxalify(item) for item in [32]]
+    expected = vyxalify('20')
     ctx = Context()
     
     ctx.stacks.append(stack)
