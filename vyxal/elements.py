@@ -958,7 +958,7 @@ def factorial(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: vyxalify(sympy.factorial(lhs)),
+        NUMBER_TYPE: lambda: vyxalify(sympy.factorial(abs(lhs))),
         # Because otherwise, it returns a very unhelpful factorial obj
         str: lambda: sentence_case(lhs),
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
