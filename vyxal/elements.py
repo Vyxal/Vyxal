@@ -3789,6 +3789,7 @@ def vy_map(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in rhs])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
+    itr = iterable(itr, range, ctx=ctx)
 
     @lazylist
     def gen():
