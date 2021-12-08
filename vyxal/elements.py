@@ -730,9 +730,9 @@ def divide(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: vyxalify(
-            sympy.nsimplify(lhs / rhs)
-        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
+        if lhs == rhs == 0
+        else vyxalify(sympy.nsimplify(lhs / rhs)),
         (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs, ctx),
         (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
         (str, str): lambda: lhs.split(rhs),
@@ -1590,7 +1590,9 @@ def integer_divide(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs // rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
+        if lhs == rhs == 0
+        else lhs // rhs,
         (NUMBER_TYPE, str): lambda: divide(lhs, rhs, ctx=ctx)[0],
         (str, NUMBER_TYPE): lambda: divide(rhs, lhs, ctx=ctx)[0],
         (ts[0], types.FunctionType): lambda: foldl(
@@ -3200,7 +3202,19 @@ def symmetric_difference(lhs, rhs, ctx):
     (any, any) -> set(a) ^ set(b)
     """
 
-    return LazyList(set(iterable(lhs, ctx=ctx)) ^ set(iterable(rhs, ctx=ctx)))
+    lhs = uniquify(iterable(lhs, ctx=ctx), ctx)
+    rhs = uniquify(iterable(rhs, ctx=ctx), ctx)
+
+    @lazylist
+    def gen():
+        for item in lhs:
+            if item not in rhs:
+                yield item
+        for item in rhs:
+            if item not in lhs:
+                yield item
+
+    return gen()
 
 
 def tail(lhs, ctx):
@@ -3367,7 +3381,19 @@ def union(lhs, rhs, ctx):
     (any, any) -> union of lhs and rhs
     """
 
-    return LazyList(set(iterable(lhs, ctx=ctx)) | set(iterable(rhs, ctx=ctx)))
+    @lazylist
+    def gen():
+        seen = []
+        for item in iterable(lhs, ctx=ctx):
+            if item not in seen:
+                yield item
+                seen.append(item)
+        for item in iterable(rhs, ctx=ctx):
+            if item not in seen:
+                yield item
+                seen.append(item)
+
+    return gen()
 
 
 def uniquify(lhs, ctx):
