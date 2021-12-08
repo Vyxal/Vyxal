@@ -4601,6 +4601,7 @@ elements: dict[str, tuple[str, int]] = {
     "k⟇": process_element("codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
+    "k₁": process_element("LazyList([1, 1])", 0),
     "k+": process_element("LazyList([1, -1])", 0),
     "k-": process_element("LazyList([-1, 1])", 0),
     "k≈": process_element("LazyList([0, 1])", 0),
