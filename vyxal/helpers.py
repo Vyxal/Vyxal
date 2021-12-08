@@ -715,7 +715,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             t = ast.literal_eval(item)
             if type(t) is float:
                 t = sympy.Rational(str(t))
-            return t
+            return vyxalify(t)
         except Exception:
             # TODO: eval as vyxal
             return item
@@ -724,7 +724,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             t = eval(item)
             if type(t) is float:
                 t = sympy.Rational(str(t))
-            return t
+            return vyxalify(t)
         except Exception:
             return item
 

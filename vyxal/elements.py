@@ -958,7 +958,7 @@ def factorial(lhs, ctx):
 
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: vyxalify(sympy.factorial(lhs)),
+        NUMBER_TYPE: lambda: vyxalify(sympy.factorial(abs(lhs))),
         # Because otherwise, it returns a very unhelpful factorial obj
         str: lambda: sentence_case(lhs),
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
@@ -3128,7 +3128,7 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs), ctx)
+            vy_str(lhs).strip(vy_str(rhs))
         ),
         (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
@@ -3789,6 +3789,7 @@ def vy_map(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in rhs])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
+    itr = iterable(itr, range, ctx=ctx)
 
     @lazylist
     def gen():
@@ -4600,6 +4601,7 @@ elements: dict[str, tuple[str, int]] = {
     "k⟇": process_element("codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
+    "k₁": process_element("LazyList([1, 1])", 0),
     "k+": process_element("LazyList([1, -1])", 0),
     "k-": process_element("LazyList([-1, 1])", 0),
     "k≈": process_element("LazyList([0, 1])", 0),
