@@ -3130,7 +3130,7 @@ def strip(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
             vy_str(lhs).strip(vy_str(rhs))
         ),
-        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs)),
+        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
     }.get(ts, lambda: list_helper(lhs, rhs))()
