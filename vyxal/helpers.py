@@ -206,7 +206,9 @@ def get_input(ctx: Context) -> Any:
         else:
             try:
                 temp = vy_eval(input("> " * ctx.repl_mode), ctx)
-            except EOFError:
+                if ctx.empty_input_is_zero and temp == "":
+                    return 0
+            except Exception:
                 temp = 0
             return temp
     else:
