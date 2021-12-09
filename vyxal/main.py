@@ -87,8 +87,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
-    print(inputs)
-
     if "a" in flags:  # All inputs as array
         inputs = [inputs]
 
@@ -114,11 +112,12 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.reverse_flag = "r" in flags
     ctx.number_as_range = "R" in flags
-    ctx.dictionary_compression = not "D" in flags
+    ctx.dictionary_compression = "D" not in flags
     ctx.variable_length_1 = "V" in flags
     ctx.truthy_lists = "t" in flags  # L431 in elements.py
-    ctx.vyxal_lists = not "P" in flags
+    ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
+    ctx.empty_input_is_zero = "?" not in flags
 
     if "2" in flags:
         ctx.default_arity = 2
