@@ -2347,6 +2347,11 @@ String of all brackets nested ("([{<>}])")
 Amogus ("ඞ")
 
 -------------------------------
+## k₁ ([1, 1])
+
+The list [1, 1]
+
+-------------------------------
 ## k₂ (2 ** 20)
 
 2 to the power of 20, 1048576
@@ -2370,6 +2375,11 @@ Uppercase vowels with y, "AEIOUY"
 ## k∩ (Vowels With Y)
 
 Vowels with y, "aeiouyAEIOUY"
+
+-------------------------------
+## k□ (Directions)
+
+Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 
 -------------------------------
 ## ∆c (Cosine)
