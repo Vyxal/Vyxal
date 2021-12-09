@@ -3221,6 +3221,14 @@
   tests:
     - '[] : "ඞ"'
 
+- element: "k₁"
+  name: [1, 1]
+  arity: 0
+  description: The list [1, 1]
+  vectorise: false
+  tests:
+    - "[] : [1, 1]"
+
 - element: "k₂"
   name: 2 ** 20
   arity: 0

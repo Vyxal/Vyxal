@@ -1660,6 +1660,10 @@ codepage_descriptions[83] += `
 kS (Amogus)
 Amogus ("ඞ")
 `
+codepage_descriptions[166] += `
+k₁ ([1, 1])
+The list [1, 1]
+`
 codepage_descriptions[167] += `
 k₂ (2 ** 20)
 2 to the power of 20, 1048576
@@ -1679,6 +1683,10 @@ Uppercase vowels with y, "AEIOUY"
 codepage_descriptions[231] += `
 k∩ (Vowels With Y)
 Vowels with y, "aeiouyAEIOUY"
+`
+codepage_descriptions[216] += `
+k□ (Directions)
+Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 `
 codepage_descriptions[99] += `
 ∆c (Cosine)
