@@ -220,7 +220,7 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.FunctionCall):
         var = re.sub("[^A-Za-z0-9_]", "", struct.name)
-        return f"stack += VAR_{var}(stack, self=VAR_{var}, ctx=ctx)"
+        return f"stack += VAR_{var}(stack, self=None, ctx=ctx)"
     if isinstance(struct, vyxal.structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
@@ -258,7 +258,7 @@ def transpile_structure(
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str("this = self", indent + 1)
+            + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
                 indent + 1,
@@ -267,6 +267,7 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
+            + indent_str(f"globals()['VAR_{var}'] = VAR_{var}", indent)
         )
     if isinstance(struct, vyxal.structure.Lambda):
         id_ = secrets.token_hex(16)
