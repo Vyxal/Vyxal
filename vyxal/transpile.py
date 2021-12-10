@@ -90,9 +90,9 @@ def transpile_token(
         # screws up escape sequences.
 
         # So instead, we have to manually escape the string
-        string = string.replace("\\", "\\\\").replace('"', '\\"')
-        string = string.replace("\n", "\\n")
-        return indent_str(f'stack.append("{string}")', indent)
+        string = f"{string!r}"
+        string = re.sub(r"\\([ntbrf])", r"\1", string).replace("\\`", "`")
+        return indent_str(f"stack.append({string})", indent)
     elif token.name == TokenType.NUMBER:
         parts = [
             "0.5" if part == "." else part for part in token.value.split("°")
