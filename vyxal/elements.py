@@ -4244,7 +4244,7 @@ elements: dict[str, tuple[str, int]] = {
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack += pop(stack, len(stack), ctx)", 0),
+    "^": ("stack += wrapify(stack, len(stack), ctx)", 0),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
