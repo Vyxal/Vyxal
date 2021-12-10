@@ -90,9 +90,9 @@ def transpile_token(
         # screws up escape sequences.
 
         # So instead, we have to manually escape the string
-        string = string.replace("\\", "\\\\").replace('"', '\\"')
-        string = string.replace("\n", "\\n")
-        return indent_str(f'stack.append("{string}")', indent)
+        string = f"{string!r}"
+        string = re.sub(r"\\([ntbrf])", r"\1", string).replace("\\`", "`")
+        return indent_str(f"stack.append({string})", indent)
     elif token.name == TokenType.NUMBER:
         parts = [
             "0.5" if part == "." else part for part in token.value.split("°")
@@ -220,7 +220,7 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.FunctionCall):
         var = re.sub("[^A-Za-z0-9_]", "", struct.name)
-        return f"stack += VAR_{var}(stack, self=VAR_{var}, ctx=ctx)"
+        return f"stack += VAR_{var}(stack, self=None, ctx=ctx)"
     if isinstance(struct, vyxal.structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""
@@ -258,7 +258,7 @@ def transpile_structure(
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
             + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
-            + indent_str("this = self", indent + 1)
+            + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
                 indent + 1,
@@ -267,6 +267,7 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
+            + indent_str(f"globals()['VAR_{var}'] = VAR_{var}", indent)
         )
     if isinstance(struct, vyxal.structure.Lambda):
         id_ = secrets.token_hex(16)
@@ -324,9 +325,12 @@ def transpile_structure(
             + indent_str("ctx.function_stack.pop()", indent + 1)
             + indent_str("return res", indent + 1)
             + indent_str(
-                f"_lambda_{id_}.arity = " + str(struct.arity)
-                if struct.arity != "default"
-                else "ctx.default_arity",
+                f"_lambda_{id_}.arity = "
+                + (
+                    str(struct.arity)
+                    if struct.arity != "default"
+                    else "ctx.default_arity"
+                ),
                 indent,
             )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
@@ -342,8 +346,10 @@ def transpile_structure(
                 indent_str("def list_item(s, ctx):", indent)
                 + indent_str("stack = list(deep_copy(s))", indent + 1)
                 + transpile_ast(x, indent + 1, dict_compress=dict_compress)
+                + indent_str("if len(stack) == 0: return", indent + 1)
                 + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
-                + indent_str("temp_list.append(list_item(stack, ctx))", indent)
+                + indent_str("f = list_item(stack, ctx)", indent)
+                + indent_str("if f is not None: temp_list.append(f)", indent)
             )
 
         temp += indent_str("stack.append(list(deep_copy(temp_list)))", indent)
