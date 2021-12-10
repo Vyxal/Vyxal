@@ -105,7 +105,10 @@ def parse(
             structures.append(structure.BreakStatement(parent))
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))
-        elif head.value in OPENING_CHARACTERS:
+        elif (
+            head.name == lexer.TokenType.GENERAL
+            and head.value in OPENING_CHARACTERS
+        ):
             structure_cls, end_bracket = STRUCTURE_INFORMATION[head.value]
             bracket_stack.append(end_bracket)
 
@@ -270,7 +273,9 @@ def parse(
                 )
             structures += remaining[3:]
             break
-        elif any((head.value in CLOSING_CHARACTERS, head.value in " |")):
+        elif head.name == lexer.TokenType.GENERAL and any(
+            (head.value in CLOSING_CHARACTERS, head.value in " |")
+        ):
             # that is, if someone has been a sussy baka
             # with their syntax (probably intentional).
             continue  # ignore it. This also ignores spaces btw
@@ -294,7 +299,11 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
         # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
         # where x = the corresponding closing character).
         token: lexer.Token = tokens.popleft()
-        if token.value and token.value in OPENING_CHARACTERS:
+        if (
+            token.name == lexer.TokenType.GENERAL
+            and token.value
+            and token.value in OPENING_CHARACTERS
+        ):
             branches[-1].append(token)
             bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
 
@@ -304,7 +313,11 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
                 branches.append([])
             else:
                 branches[-1].append(token)
-        elif token.value and token.value in CLOSING_CHARACTERS:
+        elif (
+            token.name == lexer.TokenType.GENERAL
+            and token.value
+            and token.value in CLOSING_CHARACTERS
+        ):
             # that is, it's a closing character that isn't
             # the one we're expecting.
             if token.value == bracket_stack[-1]:

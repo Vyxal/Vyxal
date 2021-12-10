@@ -324,9 +324,12 @@ def transpile_structure(
             + indent_str("ctx.function_stack.pop()", indent + 1)
             + indent_str("return res", indent + 1)
             + indent_str(
-                f"_lambda_{id_}.arity = " + str(struct.arity)
-                if struct.arity != "default"
-                else "ctx.default_arity",
+                f"_lambda_{id_}.arity = "
+                + (
+                    str(struct.arity)
+                    if struct.arity != "default"
+                    else "ctx.default_arity"
+                ),
                 indent,
             )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
