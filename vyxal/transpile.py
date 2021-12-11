@@ -220,7 +220,11 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.FunctionCall):
         var = re.sub("[^A-Za-z0-9_]", "", struct.name)
-        return f"stack += VAR_{var}(stack, self=None, ctx=ctx)"
+
+        return indent_str(
+            f"stack += VAR_{var}(stack, self=None, ctx=ctx)", indent
+        )
+
     if isinstance(struct, vyxal.structure.FunctionDef):
         parameter_total = 0
         function_parameters = ""

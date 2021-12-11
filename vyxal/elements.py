@@ -1926,7 +1926,6 @@ def log_mold_multi(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs, simple=True)
-
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs)),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
@@ -2108,6 +2107,14 @@ def modulo_3(lhs, ctx):
         (NUMBER_TYPE): lambda: lhs % 3,
         (str): lambda: [lhs[i : i + 2] for i in range(0, len(lhs), 2)],
     }.get(vy_type(lhs), lambda: vectorise(modulo_3, lhs, ctx=ctx))()
+
+
+def mold_special(lhs, rhs, ctx):
+    """Element Þṁ
+    (lst, lst) -> mold, but don't reuse items"""
+
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return mold_without_repeat(lhs, rhs)
 
 
 def monadic_maximum(lhs, ctx):
@@ -3838,11 +3845,13 @@ def vy_sort(lhs, ctx):
             return int("".join(sorted(str(lhs))))
         else:
             return int("".join(sorted(str(-lhs)))) * -1
-    elif vy_type(lhs) == NUMBER_TYPE:
-        numerator, denomiator = str(lhs).split("/")
-        numerator = vy_sort(numerator, ctx)
-        denomiator = vy_sort(denomiator, ctx)
-        return sympy.Rational(numerator, denomiator)
+    if vy_type(lhs) == NUMBER_TYPE:
+        sign = 1 if lhs >= 0 else -1
+        number = str(sympy.N(abs(lhs), 15))
+        parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
+        print(parts)
+        return sympy.nsimplify(".".join(parts), rational=True) * sign
+
     elif isinstance(lhs, str):
         return "".join(sorted(lhs))
     else:
@@ -3903,7 +3912,7 @@ def vy_print(lhs, end="\n", ctx=None):
             if ctx.print_decimals:
                 lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
             else:
-                lhs = sympy.nsimplify(lhs)
+                lhs = sympy.nsimplify(sympy.N(lhs, 50), rational=True)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
@@ -4557,6 +4566,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
+    "Þṁ": process_element(mold_special, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
