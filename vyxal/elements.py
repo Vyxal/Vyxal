@@ -3838,11 +3838,13 @@ def vy_sort(lhs, ctx):
             return int("".join(sorted(str(lhs))))
         else:
             return int("".join(sorted(str(-lhs)))) * -1
-    elif vy_type(lhs) == NUMBER_TYPE:
-        numerator, denomiator = str(lhs).split("/")
-        numerator = vy_sort(numerator, ctx)
-        denomiator = vy_sort(denomiator, ctx)
-        return sympy.Rational(numerator, denomiator)
+    if vy_type(lhs) == NUMBER_TYPE:
+        sign = 1 if lhs >= 0 else -1
+        number = str(sympy.N(abs(lhs), 15))
+        parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
+        print(parts)
+        return sympy.nsimplify(".".join(parts), rational=True) * sign
+
     elif isinstance(lhs, str):
         return "".join(sorted(lhs))
     else:
@@ -3903,7 +3905,7 @@ def vy_print(lhs, end="\n", ctx=None):
             if ctx.print_decimals:
                 lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
             else:
-                lhs = sympy.nsimplify(lhs)
+                lhs = sympy.nsimplify(sympy.N(lhs, 50), rational=True)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
