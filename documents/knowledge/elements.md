@@ -2418,7 +2418,7 @@ Solve a quadratic equation of the form x^2 + ax + b = 0
 - num a, num b: `roots(a, b) / x^2 + ax + b = 0`
 - num a, str b: `evaluate single variable expression b with x=a`
 - str a, num b: `evaluate single variable expression a with x=b`
-- str a, str b: `solve equation a < b for x`
+- str a, str b: `solve equations a and b simultaneously`
 -------------------------------
 ## ∆s (Sine)
 
