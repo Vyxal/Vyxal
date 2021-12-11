@@ -1027,18 +1027,18 @@
 
 - element: "e"
   name: Exponentiation
-  description: Exponentiate two numbers / get every nth character of a string / get length of a regex match
+  description: Exponentiate two numbers / extend string / get length of a regex match
   arity: 2
   overloads:
     num-num: a ** b (exponentiation)
-    str-num: every bth character of a
-    num-str: every ath character of b
+    str-num: repeat characters of a until a is length b
+    num-str: repeat characters of b until b is length a
     str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
   vectorise: true
   tests:
     - "[5,3] : 125"
     - "[0,0] : 1"
-    - '["hello",2] : "hlo"'
+    - '["hello",7] : "hellohe"'
 
 - element: "f"
   name: Flatten
@@ -1979,8 +1979,22 @@
   arity: 2
   description: Make a generator from function a with initial vector b.
   overloads:
+    num-num: sympy.N(a, b)
+    num-str: every ath letter of b
+    str-num: every bth letter of a
+    str-str: replace spaces in a with b
+    lst-num: every bth item of a
     fun-lst: Generator from function a with initial vector b
   vectorise: false
+  tests:
+    - '[4.51, 3] : "4.51"'
+    - '[1.69, 10] : "1.690000000"'
+    - '["Hello, World!", 3] : "Hl r!"'
+    - '["LQYWXUAOL", 2] : "LYXAL"'
+    - '[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [1, 5, 9]'
+    - '[["Hello", "World!", "Gaming", "Pogchamp", "A"], 2] : ["Hello", "Gaming", "A"]'
+    - '["    111", "0"] : "00001111"'
+    - '["But who was phone?", "!"] : "But!Who!Was!Phone?"'
 
 - element: "Ġ"
   name: Group consecutive

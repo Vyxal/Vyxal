@@ -936,16 +936,16 @@ def expe_minus_1(lhs, ctx):
 def exponent(lhs, rhs, ctx):
     """Element e
     (num, num) -> a ** b (exponentiation)
-    (str, num) -> every bth character of a
-    (num, str) -> every ath character of b
+    (num, str) -> repeat characters of b until b is length a
+    (str, num) -> repeat characters of a until a is length b
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
     """
 
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
-        (NUMBER_TYPE, str): lambda: rhs[:: int(lhs)],
-        (str, NUMBER_TYPE): lambda: lhs[:: int(rhs)],
+        (NUMBER_TYPE, str): lambda: (rhs * lhs)[:lhs],
+        (str, NUMBER_TYPE): lambda: (lhs * rhs)[:rhs],
         (str, str): lambda: list(re.search(lhs, rhs).span()),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
@@ -1163,11 +1163,26 @@ def from_base(lhs, rhs, ctx):
 
 def gen_from_fn(lhs, rhs, ctx):
     """Element Ḟ
-    (fun, lst) -> Generator from a with initial vector b
-    (lst, fun) -> Generator from b with initial vector a
+    (num, num) -> sympy.N(a, b)
+    (num, str) -> every ath letter of b
+    (str, num) -> every bth letter of a
+    (str, str) -> replace spaces in a with b
+    (lst, num) -> every bth item of a
+    (fun, lst) -> Generator from function a with initial vector b
     """
 
-    lhs, rhs = (rhs, lhs) if vy_type(lhs) is types.FunctionType else (lhs, rhs)
+    ts = vy_type(lhs, rhs, simple=True)
+    if types.FunctionType not in ts:
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: str(sympy.N(lhs, rhs)),
+            (NUMBER_TYPE, str): lambda: rhs[::lhs],
+            (str, NUMBER_TYPE): lambda: lhs[::rhs],
+            (str, str): lambda: lhs.replace(" ", rhs),
+            (list, NUMBER_TYPE): lambda: index(lhs, [None, None, rhs], ctx),
+            (NUMBER_TYPE, list): lambda: index(rhs, [None, None, lhs], ctx),
+        }.get(ts, lambda: vectorise(gen_from_fn, lhs, rhs, ctx=ctx))()
+
+    lhs, rhs = (rhs, lhs) if ts[0] is types.FunctionType else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
     @lazylist
