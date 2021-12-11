@@ -1994,7 +1994,7 @@
     - '[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [1, 5, 9]'
     - '[["Hello", "World!", "Gaming", "Pogchamp", "A"], 2] : ["Hello", "Gaming", "A"]'
     - '["    1111", "0"] : "00001111"'
-    - '["But who was phone?", "!"] : "But!Who!Was!Phone?"'
+    - '["But who was phone?", "!"] : "But!who!was!phone?"'
 
 - element: "Ġ"
   name: Group consecutive

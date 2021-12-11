@@ -8887,7 +8887,7 @@ def test_Generatorfromfunctionwithinitialvector():
 
 
     stack = [vyxalify(item) for item in ["But who was phone?", "!"]]
-    expected = vyxalify("But!Who!Was!Phone?")
+    expected = vyxalify("But!who!was!phone?")
     ctx = Context()
     
     ctx.stacks.append(stack)
