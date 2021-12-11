@@ -99,13 +99,12 @@ def transpile_token(
         ]
 
         parts = "+".join(parts)
-
         if parts[0] == "+":
-            parts = "0" + parts + "j"
+            parts = (parts or "1") + "I"
         elif parts[-1] == "+":
-            parts = parts + "1j"
+            parts = parts + "1 * I"
         elif "+" in parts:
-            parts = parts + "j"
+            parts = parts + "* I"
 
         return indent_str(f'stack.append(sympy.nsimplify("{parts}"))', indent)
     elif token.name == TokenType.GENERAL:
