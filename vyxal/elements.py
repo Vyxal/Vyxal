@@ -944,8 +944,10 @@ def exponent(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
-        (NUMBER_TYPE, str): lambda: rhs + (rhs[0] * (int(lhs) - len(rhs))),
-        (str, NUMBER_TYPE): lambda: lhs + (lhs[0] * (int(rhs) - len(lhs))),
+        (NUMBER_TYPE, str): lambda: rhs
+        + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
+        (str, NUMBER_TYPE): lambda: lhs
+        + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
@@ -1163,7 +1165,7 @@ def from_base(lhs, rhs, ctx):
 
 def gen_from_fn(lhs, rhs, ctx):
     """Element Ḟ
-    (num, num) -> sympy.N(a, b)
+    (num, num) -> sympy.N(a, b) (evaluate a to b decimal places)
     (num, str) -> every ath letter of b
     (str, num) -> every bth letter of a
     (str, str) -> replace spaces in a with b

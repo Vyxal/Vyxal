@@ -4646,7 +4646,7 @@ def test_Exponentiation():
 
 
     stack = [vyxalify(item) for item in ["hello",7]]
-    expected = vyxalify("hellohe")
+    expected = vyxalify("hellohh")
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -8737,7 +8737,7 @@ def test_VyxalExecReciprocal():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Generatorfromfunctionwithinitialvector():
+def test_GeneratorModuloIndexFormat():
 
     stack = [vyxalify(item) for item in [4.51, 3]]
     expected = vyxalify("4.51")
