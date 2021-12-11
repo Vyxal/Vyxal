@@ -4436,7 +4436,7 @@ elements: dict[str, tuple[str, int]] = {
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
         + "    stack.append(merge(index(lhs, [rhs, None, None], ctx), "
-        + "index(lhs, [None, rhs, None], ctx)))\n"
+        + "index(lhs, [None, rhs, None], ctx), ctx))\n"
         + "else:\n"
         + "    stack.append(merge(index(rhs, [1, None, None], ctx), "
         + "index(rhs, 0, ctx), ctx))\n",
@@ -4634,7 +4634,7 @@ elements: dict[str, tuple[str, int]] = {
     "kv": process_element('"aeiou"', 0),
     "kV": process_element('"AEIOU"', 0),
     "k∨": process_element('"aeiouAEIOU"', 0),
-    "k⟇": process_element("codepage", 0),
+    "k⟇": process_element("vyxal.encoding.codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
     "k₁": process_element("LazyList([1, 1])", 0),
