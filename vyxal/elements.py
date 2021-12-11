@@ -3879,7 +3879,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs))
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
         if ctx is not None and not ctx.print_decimals
         else str(eval(sympy.pycode(sympy.nsimplify(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
@@ -3923,7 +3923,7 @@ def vy_print(lhs, end="\n", ctx=None):
         res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
         vy_print(res, ctx=ctx)
     else:
-        if ts == NUMBER_TYPE:
+        if is_sympy(lhs):
             if ctx.print_decimals:
                 lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
             else:
