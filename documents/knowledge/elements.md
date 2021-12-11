@@ -3096,6 +3096,14 @@ Dot product of two lists.
 
 - lst a, lst b: `Dot product of two lists.`
 -------------------------------
+## Þṁ (Mold without repeat)
+
+Mold a list without repeating elements.
+
+### Overloads
+
+- lst a, lst b: `Mold a list without repeating elements.`
+-------------------------------
 ## ¨U (Get Request)
 
 Send a GET request to a URL

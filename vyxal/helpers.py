@@ -415,7 +415,7 @@ def mold(
     """
 
     final = []
-    original_content, content = itertools.tee(content)
+    original, content = itertools.tee(content)
     for item in shape:
         temp = []
         if isinstance(item, (int, str)):
@@ -423,8 +423,44 @@ def mold(
         for _ in item:
             obj = next(content, None)
             if obj is None:
-                content = itertools.tee(original_content)[1]
-                obj = next(content, None)
+                content = itertools.tee(original)[1]
+                obj = next(content)
+            temp.append(obj)
+        if temp:
+            final.append(temp[::])
+
+    return final
+
+
+def mold_without_repeat(
+    content: VyList,
+    shape: VyList,
+) -> VyList:
+
+    """
+    Mold a list into a shape but don't reuse content.
+
+    Parameters:
+    content: VyList
+    The list to mold.
+    shape: VyList
+    The shape to mold the list into.
+
+    Returns:
+    VyList
+    The content, molded into the shape.
+    """
+
+    final = []
+    _, content = itertools.tee(content)
+    for item in shape:
+        temp = []
+        if isinstance(item, (int, str)):
+            item = [item]
+        for _ in item:
+            obj = next(content, None)
+            if obj is None:
+                break
             temp.append(obj)
         if temp:
             final.append(temp[::])

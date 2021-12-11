@@ -2109,6 +2109,14 @@ def modulo_3(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(modulo_3, lhs, ctx=ctx))()
 
 
+def mold_special(lhs, rhs, ctx):
+    """Element Þṁ
+    (lst, lst) -> mold, but don't reuse items"""
+
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return mold_without_repeat(lhs, rhs)
+
+
 def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input (deep flattens first)
@@ -4558,6 +4566,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
+    "Þṁ": process_element(mold_special, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

@@ -2145,6 +2145,11 @@ codepage_descriptions[13] += `
 Dot product of two lists.
 lst a, lst b -> Dot product of two lists.
 `
+codepage_descriptions[150] += `
+Þṁ (Mold without repeat)
+Mold a list without repeating elements.
+lst a, lst b -> Mold a list without repeating elements.
+`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL
