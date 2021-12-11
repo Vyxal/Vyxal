@@ -936,16 +936,16 @@ def expe_minus_1(lhs, ctx):
 def exponent(lhs, rhs, ctx):
     """Element e
     (num, num) -> a ** b (exponentiation)
-    (num, str) -> repeat characters of b until b is length a
-    (str, num) -> repeat characters of a until a is length b
+    (num, str) -> append b[0] to b until b is length a (spaces if b is empty)
+    (str, num) -> append a[0] to a until a is length b (spaces if a is empty)
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
     """
 
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
-        (NUMBER_TYPE, str): lambda: (rhs * lhs)[:lhs],
-        (str, NUMBER_TYPE): lambda: (lhs * rhs)[:rhs],
+        (NUMBER_TYPE, str): lambda: rhs + (rhs[0] * (int(lhs) - len(rhs))),
+        (str, NUMBER_TYPE): lambda: lhs + (lhs[0] * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
@@ -1452,7 +1452,7 @@ def index(lhs, rhs, ctx):
 
     elif ts[-1] == NUMBER_TYPE:
         if len(iterable(lhs)):
-            return iterable(lhs, ctx)[int(rhs) % len(iterable(lhs, ctx))]
+            return iterable(lhs, ctx=ctx)[int(rhs) % len(iterable(lhs, ctx))]
         else:
             return "" if ts[0] is str else 0
 
@@ -1463,7 +1463,14 @@ def index(lhs, rhs, ctx):
         return vectorise(index, lhs, rhs, ctx=ctx)
 
     else:
-        return iterable(lhs, ctx)[slice(*rhs)]
+        originally_string = False
+        if isinstance(lhs, str):
+            lhs = LazyList(list(lhs))
+            originally_string = True
+        temp = iterable(lhs, ctx=ctx)[slice(*rhs)]
+        if originally_string:
+            return "".join(temp)
+        return temp
 
 
 def index_indices_or_cycle(lhs, rhs, ctx):

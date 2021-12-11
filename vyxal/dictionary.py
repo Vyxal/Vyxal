@@ -23106,8 +23106,7 @@ mny""".split(
     "\n"
 )
 
-small_dictionary = r"""
-\d+
+small_dictionary = r"""\d+
 -?\d+
 \d+\.\d+
 -?\d+(\.\d*)?
@@ -23159,7 +23158,16 @@ https://stackoverflow.com/a/
 isdo
 ›‹²…
 n't
-""".split(
+cos(x)
+sin(x)
+tan(x)
+acos(x)
+asin(x)
+atan(x)
+x^2
+x^3
+x+1
+x-1""".split(
     "\n"
 )  # TODO: Add more words
 
@@ -23179,3 +23187,11 @@ def word_index(word):
         return ret
     else:
         return -1
+
+
+if __name__ == "__main__":
+    for i in range(len(small_dictionary)):
+        print(
+            small_dictionary[i],
+            helpers.to_base_alphabet(i, encoding.compression),
+        )
