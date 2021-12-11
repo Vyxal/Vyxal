@@ -1027,18 +1027,18 @@
 
 - element: "e"
   name: Exponentiation
-  description: Exponentiate two numbers / get every nth character of a string / get length of a regex match
+  description: Exponentiate two numbers / extend string / get length of a regex match
   arity: 2
   overloads:
     num-num: a ** b (exponentiation)
-    str-num: every bth character of a
-    num-str: every ath character of b
+    str-num: append a[0] until a is length b (spaces are used if a is empty)
+    num-str: append b[0] until b is length a (spaces are used if b is empty) 
     str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
   vectorise: true
   tests:
     - "[5,3] : 125"
     - "[0,0] : 1"
-    - '["hello",2] : "hlo"'
+    - '["hello",7] : "hellohh"'
 
 - element: "f"
   name: Flatten

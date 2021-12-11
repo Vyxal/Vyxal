@@ -538,10 +538,10 @@ str a -> a * 2 (repeated twice)
 `)
 
 codepage_descriptions.push(`Exponentiation
-Exponentiate two numbers / get every nth character of a string / get length of a regex match
+Exponentiate two numbers / extend string / get length of a regex match
 num a, num b -> a ** b (exponentiation)
-str a, num b -> every bth character of a
-num a, str b -> every ath character of b
+str a, num b -> append a[0] until a is length b (spaces are used if a is empty)
+num a, str b -> append b[0] until b is length a (spaces are used if b is empty)
 str a, str b -> regex.search(pattern=a, string=b).span() (Length of regex match)
 `)
 
