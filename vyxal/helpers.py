@@ -399,19 +399,73 @@ def mold(
     content: VyList,
     shape: VyList,
 ) -> VyList:
-    """Mold one list to the shape of the other. Uses the mold function
-    that Jelly uses."""
-    # https://github.com/DennisMitchell/jellylanguage/blob/70c9fd93ab009c05dc396f8cc091f72b212fb188/jelly/interpreter.py#L578
-    if isinstance(content, str):
-        content = list(content)
-    for index in range(len(shape)):
-        if type(shape[index]) == list:
-            mold(content, shape[index])
-        else:
-            item = content.pop(0)
-            shape[index] = item
-            content.append(item)
-    return shape
+
+    """
+    Mold a list into a shape.
+
+    Parameters:
+    content: VyList
+    The list to mold.
+    shape: VyList
+    The shape to mold the list into.
+
+    Returns:
+    VyList
+    The content, molded into the shape.
+    """
+
+    final = []
+    original, content = itertools.tee(content)
+    for item in shape:
+        temp = []
+        if isinstance(item, (int, str)):
+            item = [item]
+        for _ in item:
+            obj = next(content, None)
+            if obj is None:
+                content = itertools.tee(original)[1]
+                obj = next(content)
+            temp.append(obj)
+        if temp:
+            final.append(temp[::])
+
+    return final
+
+
+def mold_without_repeat(
+    content: VyList,
+    shape: VyList,
+) -> VyList:
+
+    """
+    Mold a list into a shape but don't reuse content.
+
+    Parameters:
+    content: VyList
+    The list to mold.
+    shape: VyList
+    The shape to mold the list into.
+
+    Returns:
+    VyList
+    The content, molded into the shape.
+    """
+
+    final = []
+    _, content = itertools.tee(content)
+    for item in shape:
+        temp = []
+        if isinstance(item, (int, str)):
+            item = [item]
+        for _ in item:
+            obj = next(content, None)
+            if obj is None:
+                break
+            temp.append(obj)
+        if temp:
+            final.append(temp[::])
+
+    return final
 
 
 def pad_to_square(array: VyList) -> VyList:

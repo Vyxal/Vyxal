@@ -4320,6 +4320,16 @@
     - "[[1,2,3],[4,5,6]] : 32"
     - "[[69, 420], [21, 42]] : 19089"
 
+- element: "Þṁ"
+  name: Mold without repeat
+  description: Mold a list without repeating elements.
+  arity: 2
+  overloads:
+    lst-lst: Mold a list without repeating elements.
+  vectorise: false
+  tests:
+    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
+
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL
