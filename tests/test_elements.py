@@ -8865,7 +8865,7 @@ def test_Generatorfromfunctionwithinitialvector():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in ["    111", "0"]]
+    stack = [vyxalify(item) for item in ["    1111", "0"]]
     expected = vyxalify("00001111")
     ctx = Context()
     
