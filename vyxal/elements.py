@@ -1926,7 +1926,6 @@ def log_mold_multi(lhs, rhs, ctx):
     """
 
     ts = vy_type(lhs, rhs, simple=True)
-
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs)),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
