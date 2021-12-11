@@ -4634,7 +4634,7 @@ elements: dict[str, tuple[str, int]] = {
     "kv": process_element('"aeiou"', 0),
     "kV": process_element('"AEIOU"', 0),
     "k∨": process_element('"aeiouAEIOU"', 0),
-    "k⟇": process_element("codepage", 0),
+    "k⟇": process_element("vyxal.encoding.codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
     "k₁": process_element("LazyList([1, 1])", 0),
