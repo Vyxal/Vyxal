@@ -40,7 +40,7 @@ function resizeCodeBox(id) {
     // Resize the code box with the given id
     var element = document.getElementById(id);
     element.style.height = ""
-    element.style.height = ((element.scrollHeight || 24) + 4) + "px"
+    element.style.height = element.scrollHeight + 4 + "px"
 }
 
 function updateCount() {
@@ -262,8 +262,9 @@ function initCodeMirror() {
         dummy.value = elem.doc.getValue()
         elem.setSize(
             null,
-            Math.max(dummy.scrollHeight - 5, elem.getTextArea().dataset.baseHeight || 27)
+            (elem.lineCount() * 22) + 24
         )
+        elem.refresh();
         dummy.value = ""
 
         // Make sure e_code is not null
@@ -274,7 +275,7 @@ function initCodeMirror() {
 
     let mode = {
         mode: 'vyxal',
-        lineWrapping: true
+        lineWrapping: true,
     }
 
     for (const boxId of ['header', 'code', 'footer']) {
