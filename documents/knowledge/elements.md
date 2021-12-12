@@ -757,13 +757,13 @@ Double a number or repeat a string twice
 -------------------------------
 ## e (Exponentiation)
 
-Exponentiate two numbers / get every nth character of a string / get length of a regex match
+Exponentiate two numbers / extend string / get length of a regex match
 
 ### Overloads
 
 - num a, num b: `a ** b (exponentiation)`
-- str a, num b: `every bth character of a`
-- num a, str b: `every ath character of b`
+- str a, num b: `append a[0] until a is length b (spaces are used if a is empty)`
+- num a, str b: `append b[0] until b is length a (spaces are used if b is empty)`
 - str a, str b: `regex.search(pattern=a, string=b).span() (Length of regex match)`
 -------------------------------
 ## f (Flatten)
@@ -2418,7 +2418,7 @@ Solve a quadratic equation of the form x^2 + ax + b = 0
 - num a, num b: `roots(a, b) / x^2 + ax + b = 0`
 - num a, str b: `evaluate single variable expression b with x=a`
 - str a, num b: `evaluate single variable expression a with x=b`
-- str a, str b: `solve equation a < b for x`
+- str a, str b: `solve equations a and b simultaneously`
 -------------------------------
 ## ∆s (Sine)
 
