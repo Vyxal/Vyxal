@@ -456,7 +456,6 @@ def brackets_balanced(lhs, ctx):
     brackets = {"(": ")", "[": "]", "{": "}", "<": ">"}
     temp = []
     for char in lhs:
-        print(char, temp)
         if char in brackets.keys():
             temp.append(brackets[char])
         elif char in brackets.values():
@@ -466,7 +465,6 @@ def brackets_balanced(lhs, ctx):
                 return 0
             else:
                 temp.pop()
-        print(temp, "\n-----")
     return int(len(temp) == 0)
 
 
@@ -843,7 +841,6 @@ def evenly_distribute(lhs, rhs, ctx):
                    adding each part
     """
     lhs = iterable(lhs, ctx=ctx)
-    print("evenly dist,", lhs, rhs)
     if not lhs:
         return lhs
 
@@ -2609,7 +2606,6 @@ def polynomial_roots(lhs, ctx):
         )
     )
 
-    print(equation)
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
@@ -2959,7 +2955,6 @@ def run_length_decoding(lhs, ctx):
     (lst) -> Run length decoding
     """
     temp = list(map(lambda elem: elem[0] * elem[1], lhs))
-    print(temp)
     if all(isinstance(x[0], str) for x in lhs):
         return "".join(temp)
     else:
@@ -3873,7 +3868,6 @@ def vy_sort(lhs, ctx):
         sign = 1 if lhs >= 0 else -1
         number = str(sympy.N(abs(lhs), 15))
         parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
-        print(parts)
         return sympy.nsimplify(".".join(parts), rational=True) * sign
 
     elif isinstance(lhs, str):
