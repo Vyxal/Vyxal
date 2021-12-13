@@ -119,7 +119,7 @@ def transpile_token(
         elif token.value[0] == "_":
             return indent_str(f"stack.append(ctx.VAR_{token.value})", indent)
         else:
-            return indent_str(f"stack.append(VAR_{token.value})", indent)
+            return indent_str(f"stack.append(VAR_{token.value});", indent)
     elif token.name == TokenType.VARIABLE_SET:
         if token.value == "":
             return indent_str(
@@ -131,7 +131,8 @@ def transpile_token(
             )
         else:
             return indent_str(
-                f"VAR_{token.value} = pop(stack, 1, ctx=ctx)", indent
+                f"VAR_{token.value} = pop(stack, 1, ctx=ctx)",
+                indent,
             )
     elif token.name == TokenType.CODEPAGE_NUMBER:
         return indent_str(
@@ -270,7 +271,6 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
-            + indent_str(f"globals()['VAR_{var}'] = VAR_{var}", indent)
         )
     if isinstance(struct, vyxal.structure.Lambda):
         id_ = secrets.token_hex(16)
