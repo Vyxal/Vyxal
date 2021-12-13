@@ -2843,20 +2843,18 @@ def repeat(lhs, rhs, ctx):
                 yield val
 
         return gen()
-
+    elif ts == (str, NUMBER_TYPE):
+        return lhs * int(abs(rhs))
+    elif ts == (NUMBER_TYPE, str):
+        return rhs * int(abs(lhs))
+    elif ts == (str, str):
+        return lhs + rhs
+    elif ts[0] == NUMBER_TYPE:
+        return LazyList(rhs for _ in range(int(abs(lhs))))
+    elif ts[1] == NUMBER_TYPE:
+        return LazyList(lhs for _ in range(int(abs(rhs))))
     else:
-        return {
-            (NUMBER_TYPE, ts[1]): lambda: LazyList(
-                itertools.repeat(iterable(rhs, ctx=ctx), int(abs(lhs)))
-            ),
-            (ts[0], NUMBER_TYPE): lambda: LazyList(
-                itertools.repeat(iterable(lhs, ctx=ctx), int(abs(rhs)))
-            ),
-            (str, NUMBER_TYPE): lambda: lhs * int(rhs),
-            (NUMBER_TYPE, str): lambda: rhs * int(lhs),
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: str(lhs) * rhs,
-            (str, str): lambda: lhs + " " + rhs,
-        }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
+        return vectorise(repeat, lhs, rhs, ctx=ctx)
 
 
 def replace(lhs, rhs, other, ctx):

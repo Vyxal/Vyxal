@@ -7427,6 +7427,27 @@ def test_Repeat():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in [0, 4]]
+    expected = vyxalify([0, 0, 0, 0])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('ẋ')
+    # print('ẋ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_ExclusiveRangeLength():
 
     stack = [vyxalify(item) for item in ["abc"]]
