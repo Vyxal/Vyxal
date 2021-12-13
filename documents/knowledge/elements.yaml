@@ -1027,18 +1027,18 @@
 
 - element: "e"
   name: Exponentiation
-  description: Exponentiate two numbers / get every nth character of a string / get length of a regex match
+  description: Exponentiate two numbers / extend string / get length of a regex match
   arity: 2
   overloads:
     num-num: a ** b (exponentiation)
-    str-num: every bth character of a
-    num-str: every ath character of b
+    str-num: append a[0] until a is length b (spaces are used if a is empty)
+    num-str: append b[0] until b is length a (spaces are used if b is empty)
     str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
   vectorise: true
   tests:
     - "[5,3] : 125"
     - "[0,0] : 1"
-    - '["hello",2] : "hlo"'
+    - '["hello",7] : "hellohh"'
 
 - element: "f"
   name: Flatten
@@ -1678,6 +1678,7 @@
   tests:
     - "[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]"
     - '["x",5] : "xxxxx"'
+    - "[0, 4] : [0, 0, 0, 0]"
 
 - element: "ẏ"
   name: Exclusive Range Length
@@ -1975,12 +1976,26 @@
     - '["kH"] : "Hello, World!"'
 
 - element: "Ḟ"
-  name: Generator from function with initial vector
+  name: Generator / Modulo Index / Format
   arity: 2
-  description: Make a generator from function a with initial vector b.
+  description: Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
   overloads:
+    num-num: sympy.N(a, b) (evaluate a to b decimal places)
+    num-str: every ath letter of b
+    str-num: every bth letter of a
+    str-str: replace spaces in a with b
+    lst-num: every bth item of a
     fun-lst: Generator from function a with initial vector b
   vectorise: false
+  tests:
+    - '[4.51, 3] : "4.51"'
+    - '[1.69, 10] : "1.690000000"'
+    - '["Hello, World!", 3] : "Hl r!"'
+    - '["LQYWXUAOL", 2] : "LYXAL"'
+    - '[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [1, 5, 9]'
+    - '[["Hello", "World!", "Gaming", "Pogchamp", "A"], 2] : ["Hello", "Gaming", "A"]'
+    - '["    1111", "0"] : "00001111"'
+    - '["But who was phone?", "!"] : "But!who!was!phone?"'
 
 - element: "Ġ"
   name: Group consecutive
@@ -3335,7 +3350,7 @@
     num-num: roots(a, b) / x^2 + ax + b = 0
     num-str: evaluate single variable expression b with x=a
     str-num: evaluate single variable expression a with x=b
-    str-str: solve equation a < b for x
+    str-str: solve equations a and b simultaneously
   vectorise: true
   tests:
     - "[1, -2] : [-2, 1]"

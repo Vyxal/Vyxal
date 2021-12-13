@@ -456,7 +456,6 @@ def brackets_balanced(lhs, ctx):
     brackets = {"(": ")", "[": "]", "{": "}", "<": ">"}
     temp = []
     for char in lhs:
-        print(char, temp)
         if char in brackets.keys():
             temp.append(brackets[char])
         elif char in brackets.values():
@@ -466,7 +465,6 @@ def brackets_balanced(lhs, ctx):
                 return 0
             else:
                 temp.pop()
-        print(temp, "\n-----")
     return int(len(temp) == 0)
 
 
@@ -843,7 +841,6 @@ def evenly_distribute(lhs, rhs, ctx):
                    adding each part
     """
     lhs = iterable(lhs, ctx=ctx)
-    print("evenly dist,", lhs, rhs)
     if not lhs:
         return lhs
 
@@ -936,16 +933,18 @@ def expe_minus_1(lhs, ctx):
 def exponent(lhs, rhs, ctx):
     """Element e
     (num, num) -> a ** b (exponentiation)
-    (str, num) -> every bth character of a
-    (num, str) -> every ath character of b
+    (num, str) -> append b[0] to b until b is length a (spaces if b is empty)
+    (str, num) -> append a[0] to a until a is length b (spaces if a is empty)
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
     """
 
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
-        (NUMBER_TYPE, str): lambda: rhs[:: int(lhs)],
-        (str, NUMBER_TYPE): lambda: lhs[:: int(rhs)],
+        (NUMBER_TYPE, str): lambda: rhs
+        + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
+        (str, NUMBER_TYPE): lambda: lhs
+        + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
@@ -1163,11 +1162,26 @@ def from_base(lhs, rhs, ctx):
 
 def gen_from_fn(lhs, rhs, ctx):
     """Element Ḟ
-    (fun, lst) -> Generator from a with initial vector b
-    (lst, fun) -> Generator from b with initial vector a
+    (num, num) -> sympy.N(a, b) (evaluate a to b decimal places)
+    (num, str) -> every ath letter of b
+    (str, num) -> every bth letter of a
+    (str, str) -> replace spaces in a with b
+    (lst, num) -> every bth item of a
+    (fun, lst) -> Generator from function a with initial vector b
     """
 
-    lhs, rhs = (rhs, lhs) if vy_type(lhs) is types.FunctionType else (lhs, rhs)
+    ts = vy_type(lhs, rhs, simple=True)
+    if types.FunctionType not in ts:
+        return {
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: str(sympy.N(lhs, rhs)),
+            (NUMBER_TYPE, str): lambda: rhs[::lhs],
+            (str, NUMBER_TYPE): lambda: lhs[::rhs],
+            (str, str): lambda: lhs.replace(" ", rhs),
+            (list, NUMBER_TYPE): lambda: index(lhs, [None, None, rhs], ctx),
+            (NUMBER_TYPE, list): lambda: index(rhs, [None, None, lhs], ctx),
+        }.get(ts, lambda: vectorise(gen_from_fn, lhs, rhs, ctx=ctx))()
+
+    lhs, rhs = (rhs, lhs) if ts[0] is types.FunctionType else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
     @lazylist
@@ -1437,7 +1451,7 @@ def index(lhs, rhs, ctx):
 
     elif ts[-1] == NUMBER_TYPE:
         if len(iterable(lhs)):
-            return iterable(lhs, ctx)[int(rhs) % len(iterable(lhs, ctx))]
+            return iterable(lhs, ctx=ctx)[int(rhs) % len(iterable(lhs, ctx))]
         else:
             return "" if ts[0] is str else 0
 
@@ -1448,7 +1462,14 @@ def index(lhs, rhs, ctx):
         return vectorise(index, lhs, rhs, ctx=ctx)
 
     else:
-        return iterable(lhs, ctx)[slice(*rhs)]
+        originally_string = False
+        if isinstance(lhs, str):
+            lhs = LazyList(list(lhs))
+            originally_string = True
+        temp = iterable(lhs, ctx=ctx)[slice(*rhs)]
+        if originally_string:
+            return "".join(temp)
+        return temp
 
 
 def index_indices_or_cycle(lhs, rhs, ctx):
@@ -2585,7 +2606,6 @@ def polynomial_roots(lhs, ctx):
         )
     )
 
-    print(equation)
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
@@ -2823,20 +2843,18 @@ def repeat(lhs, rhs, ctx):
                 yield val
 
         return gen()
-
+    elif ts == (str, NUMBER_TYPE):
+        return lhs * int(abs(rhs))
+    elif ts == (NUMBER_TYPE, str):
+        return rhs * int(abs(lhs))
+    elif ts == (str, str):
+        return lhs + rhs
+    elif ts[0] == NUMBER_TYPE:
+        return LazyList(rhs for _ in range(int(abs(lhs))))
+    elif ts[1] == NUMBER_TYPE:
+        return LazyList(lhs for _ in range(int(abs(rhs))))
     else:
-        return {
-            (NUMBER_TYPE, ts[1]): lambda: LazyList(
-                itertools.repeat(iterable(rhs, ctx=ctx), int(abs(lhs)))
-            ),
-            (ts[0], NUMBER_TYPE): lambda: LazyList(
-                itertools.repeat(iterable(lhs, ctx=ctx), int(abs(rhs)))
-            ),
-            (str, NUMBER_TYPE): lambda: lhs * int(rhs),
-            (NUMBER_TYPE, str): lambda: rhs * int(lhs),
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: str(lhs) * rhs,
-            (str, str): lambda: lhs + " " + rhs,
-        }.get(ts, lambda: vectorise(repeat, lhs, rhs, ctx=ctx))()
+        return vectorise(repeat, lhs, rhs, ctx=ctx)
 
 
 def replace(lhs, rhs, other, ctx):
@@ -2935,7 +2953,6 @@ def run_length_decoding(lhs, ctx):
     (lst) -> Run length decoding
     """
     temp = list(map(lambda elem: elem[0] * elem[1], lhs))
-    print(temp)
     if all(isinstance(x[0], str) for x in lhs):
         return "".join(temp)
     else:
@@ -3849,7 +3866,6 @@ def vy_sort(lhs, ctx):
         sign = 1 if lhs >= 0 else -1
         number = str(sympy.N(abs(lhs), 15))
         parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
-        print(parts)
         return sympy.nsimplify(".".join(parts), rational=True) * sign
 
     elif isinstance(lhs, str):
@@ -3864,7 +3880,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs))
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
         if ctx is not None and not ctx.print_decimals
         else str(eval(sympy.pycode(sympy.nsimplify(lhs)))),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
@@ -3908,7 +3924,7 @@ def vy_print(lhs, end="\n", ctx=None):
         res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
         vy_print(res, ctx=ctx)
     else:
-        if ts == NUMBER_TYPE:
+        if is_sympy(lhs):
             if ctx.print_decimals:
                 lhs = eval(sympy.pycode(sympy.nsimplify(lhs)))
             else:
@@ -4436,7 +4452,7 @@ elements: dict[str, tuple[str, int]] = {
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
         + "    stack.append(merge(index(lhs, [rhs, None, None], ctx), "
-        + "index(lhs, [None, rhs, None], ctx)))\n"
+        + "index(lhs, [None, rhs, None], ctx), ctx))\n"
         + "else:\n"
         + "    stack.append(merge(index(rhs, [1, None, None], ctx), "
         + "index(rhs, 0, ctx), ctx))\n",
@@ -4634,7 +4650,7 @@ elements: dict[str, tuple[str, int]] = {
     "kv": process_element('"aeiou"', 0),
     "kV": process_element('"AEIOU"', 0),
     "k∨": process_element('"aeiouAEIOU"', 0),
-    "k⟇": process_element("codepage", 0),
+    "k⟇": process_element("vyxal.encoding.codepage", 0),
     "k½": process_element("LazyList([1,2])", 0),
     "kḭ": process_element("2 ** 32", 0),
     "k₁": process_element("LazyList([1, 1])", 0),

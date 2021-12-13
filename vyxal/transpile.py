@@ -91,7 +91,7 @@ def transpile_token(
 
         # So instead, we have to manually escape the string
         string = f"{string!r}"
-        string = re.sub(r"\\([ntbrf])", r"\1", string).replace("\\`", "`")
+        string = re.sub(r"\\?\\([ntbrf])", r"\\\1", string).replace("\\`", "`")
         return indent_str(f"stack.append({string})", indent)
     elif token.name == TokenType.NUMBER:
         parts = [
@@ -99,13 +99,12 @@ def transpile_token(
         ]
 
         parts = "+".join(parts)
-
         if parts[0] == "+":
-            parts = "0" + parts + "j"
+            parts = (parts or "1") + "I"
         elif parts[-1] == "+":
-            parts = parts + "1j"
+            parts = parts + "1 * I"
         elif "+" in parts:
-            parts = parts + "j"
+            parts = parts + "* I"
 
         return indent_str(f'stack.append(sympy.nsimplify("{parts}"))', indent)
     elif token.name == TokenType.GENERAL:
