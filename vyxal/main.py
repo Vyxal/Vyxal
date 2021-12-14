@@ -143,7 +143,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.stacks.append(stack)
     try:
-        exec(code)
+        exec(code, locals() | globals())
     except Exception as e:
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
