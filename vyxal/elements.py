@@ -1478,18 +1478,25 @@ def index_indices_or_cycle(lhs, rhs, ctx):
     (any, fun) -> Repeatedly apply b to a until cycle is formed, then
                   return cycle, not including the repeated item"""
 
-    if vy_type(rhs) is types.FunctionType:
+    if types.FunctionType in [type(lhs), type(rhs)]:
+        # swap lhs and rhs such that rhs contains the function
+        lhs, rhs = (rhs, lhs) if type(lhs) is types.FunctionType else (lhs, rhs)
         prevs = []
-        curr = None
 
-        while True:
-            curr = safe_apply(rhs, lhs, ctx=ctx)
+        @lazylist
+        def gen():
+            curr = lhs
+            while True:
+                curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
+                print(curr)
+                if curr in prevs:
+                    yield from prevs
+                    break
 
-            for i in range(prevs):
-                if equals(prevs[i], curr):
-                    return prevs[i:]
+                prevs.append(curr)
 
-            prevs.append(curr)
+        return gen()
+
     else:
         lhs = iterable(lhs)
         rhs = iterable(rhs)
@@ -2835,8 +2842,10 @@ def repeat(lhs, rhs, ctx):
         @lazylist
         def gen():
             prev = value
+            val = value
             while True:
-                val = safe_apply(function, value, ctx=ctx)
+                val = safe_apply(function, val, ctx=ctx)
+                print(val)
                 if val == prev:
                     break
                 prev = val

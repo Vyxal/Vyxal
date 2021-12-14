@@ -2028,14 +2028,14 @@
     - "[0.2] : 0.2"
 
 - element: "İ"
-  name: Index into or find cycle
+  name: Index into or collect while unique
   arity: 1
   description: >-
     Index into list at indices /
-    Repeatedly apply function to value while results are non-unique
+    Collect values while values are unique
   overloads:
     any-lst: "[a[item] for item in b]"
-    any-fun: Repeatedly apply b to a until a cycle is formed, return the cycle
+    any-fun: apply b on a and collect unique values
   vectorise: false
   tests: # TODO more tests for the second overload
     - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
