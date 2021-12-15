@@ -1475,8 +1475,7 @@ def index(lhs, rhs, ctx):
 def index_indices_or_cycle(lhs, rhs, ctx):
     """Element İ
     (any, lst) -> [a[item] for item in b]
-    (any, fun) -> Repeatedly apply b to a until cycle is formed, then
-                  return cycle, not including the repeated item"""
+    (any, fun) -> apply b on a and collect unique values"""
 
     if types.FunctionType in [type(lhs), type(rhs)]:
         # swap lhs and rhs such that rhs contains the function
