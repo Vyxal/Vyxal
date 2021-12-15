@@ -9100,7 +9100,7 @@ def test_HeadRemoveBehead():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Indexintoorfindcycle():
+def test_Indexintoorcollectwhileunique():
 
     stack = [vyxalify(item) for item in [["foo", "bar", -69, 420, "baz"], [0, 2, 4]]]
     expected = vyxalify(["foo", -69, "baz"])

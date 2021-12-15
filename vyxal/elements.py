@@ -1475,21 +1475,27 @@ def index(lhs, rhs, ctx):
 def index_indices_or_cycle(lhs, rhs, ctx):
     """Element İ
     (any, lst) -> [a[item] for item in b]
-    (any, fun) -> Repeatedly apply b to a until cycle is formed, then
-                  return cycle, not including the repeated item"""
+    (any, fun) -> apply b on a and collect unique values"""
 
-    if vy_type(rhs) is types.FunctionType:
+    if types.FunctionType in [type(lhs), type(rhs)]:
+        # swap lhs and rhs such that rhs contains the function
+        lhs, rhs = (rhs, lhs) if type(lhs) is types.FunctionType else (lhs, rhs)
         prevs = []
-        curr = None
 
-        while True:
-            curr = safe_apply(rhs, lhs, ctx=ctx)
+        @lazylist
+        def gen():
+            curr = lhs
+            while True:
+                curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
+                print(curr)
+                if curr in prevs:
+                    yield from prevs
+                    break
 
-            for i in range(prevs):
-                if equals(prevs[i], curr):
-                    return prevs[i:]
+                prevs.append(curr)
 
-            prevs.append(curr)
+        return gen()
+
     else:
         lhs = iterable(lhs)
         rhs = iterable(rhs)
@@ -2835,12 +2841,13 @@ def repeat(lhs, rhs, ctx):
         @lazylist
         def gen():
             prev = value
+            curr = value
             while True:
-                val = safe_apply(function, value, ctx=ctx)
-                if val == prev:
+                curr = safe_apply(function, curr, ctx=ctx)
+                if curr == prev:
                     break
-                prev = val
-                yield val
+                prev = curr
+                yield curr
 
         return gen()
     elif ts == (str, NUMBER_TYPE):

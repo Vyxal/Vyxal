@@ -1454,12 +1454,17 @@ Executes as Vyxal / Reciprocal of number
 - str a: `vy_exec(a)`
 - num a: `1 / a`
 -------------------------------
-## Ḟ (Generator from function with initial vector)
+## Ḟ (Generator / Modulo Index / Format)
 
-Make a generator from function a with initial vector b.
+Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
 
 ### Overloads
 
+- num a, num b: `sympy.N(a, b) (evaluate a to b decimal places)`
+- num a, str b: `every ath letter of b`
+- str a, num b: `every bth letter of a`
+- str a, str b: `replace spaces in a with b`
+- lst a, num b: `every bth item of a`
 - fun a, lst b: `Generator from function a with initial vector b`
 -------------------------------
 ## Ġ (Group consecutive)
@@ -1482,14 +1487,14 @@ All but the first item of a list / Drop 1
 - str a: `a[1:] or '' if empty`
 - num a: `Remove first digit or do nothing if <1`
 -------------------------------
-## İ (Index into or find cycle)
+## İ (Index into or collect while unique)
 
-Index into list at indices / Repeatedly apply function to value while results are non-unique
+Index into list at indices / Collect values while values are unique
 
 ### Overloads
 
 - any a, lst b: `[a[item] for item in b]`
-- any a, fun b: `Repeatedly apply b to a until a cycle is formed, return the cycle`
+- any a, fun b: `apply b on a and collect unique values`
 -------------------------------
 ## Ŀ (Transliterate)
 
