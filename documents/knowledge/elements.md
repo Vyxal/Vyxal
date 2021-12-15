@@ -3141,3 +3141,19 @@ Print a value with a space after it, without popping it
 
 - any a: `Print a value with a space after it, without popping it`
 -------------------------------
+## ¨> (Strict Greater Than)
+
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+
+### Overloads
+
+- any a, any b: `Non-vectorising greater than - useful for lists`
+-------------------------------
+## ¨< (Strict Less Than)
+
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+
+### Overloads
+
+- any a, any b: `Non-vectorising greater than - useful for lists`
+-------------------------------

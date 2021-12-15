@@ -781,7 +781,7 @@ def dyadic_maximum(lhs, rhs, ctx):
     (any, any) -> max(a, b)
     """
 
-    return lhs if greater_than(lhs, rhs, ctx) else rhs
+    return lhs if strict_greater_than(lhs, rhs, ctx) else rhs
 
 
 def dyadic_minimum(lhs, rhs, ctx):
@@ -789,7 +789,7 @@ def dyadic_minimum(lhs, rhs, ctx):
     (any, any) -> min(a, b)
     """
 
-    return lhs if less_than(lhs, rhs, ctx) else rhs
+    return lhs if strict_less_than(lhs, rhs, ctx) else rhs
 
 
 def e_digits(lhs, ctx):
@@ -3126,6 +3126,33 @@ def square_root(lhs, ctx):
     }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
 
 
+def strict_greater_than(lhs, rhs, ctx):
+    """Element ¨>
+    Non-vectorising greater than
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
+        (str, str): lambda: int(lhs > rhs),
+    }.get(ts, lambda: int(list(lhs) > list(rhs)))()
+
+
+def strict_less_than(lhs, rhs, ctx):
+    """Element ¨>
+    Non-vectorising less than
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
+        (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
+        (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
+        (str, str): lambda: int(lhs < rhs),
+    }.get(ts, lambda: int(list(lhs) < list(rhs)))()
+
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
@@ -4598,6 +4625,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "¨M": process_element(apply_at, 3),
     "¨U": ("if ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))", 1),
+    "¨>": process_element(strict_greater_than, 2),
+    "¨<": process_element(strict_less_than, 2),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
