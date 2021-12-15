@@ -2845,7 +2845,6 @@ def repeat(lhs, rhs, ctx):
             val = value
             while True:
                 val = safe_apply(function, val, ctx=ctx)
-                print(val)
                 if val == prev:
                     break
                 prev = val
