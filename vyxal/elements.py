@@ -2842,13 +2842,13 @@ def repeat(lhs, rhs, ctx):
         @lazylist
         def gen():
             prev = value
-            val = value
+            curr = value
             while True:
-                val = safe_apply(function, val, ctx=ctx)
-                if val == prev:
+                curr = safe_apply(function, curr, ctx=ctx)
+                if curr == prev:
                     break
-                prev = val
-                yield val
+                prev = curr
+                yield curr
 
         return gen()
     elif ts == (str, NUMBER_TYPE):
