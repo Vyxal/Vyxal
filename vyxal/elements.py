@@ -2427,6 +2427,20 @@ def nth_e(lhs, ctx):
         return vectorise(nth_e, lhs, ctx=ctx)
 
 
+def nth_ordinal(lhs, ctx):
+    """Element ∆o
+    Nth item of Þo
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: num2words.num2words(
+            lhs, lang="en", to="ordinal"
+        ),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_ordinal, lhs, ctx=ctx))()
+
+
 def nth_pi(lhs, ctx):
     """Element ∆i
     (int) -> nth_pi(a)
@@ -2446,6 +2460,8 @@ def one_slice(lhs, rhs, ctx):
     (num, any) -> b[1:a] (Slice from 1 until a)
     (str, str) -> re.match(pattern=a,string=b)
     """
+
+    # no, not one_shot, one_slice.
 
     ts = vy_type(lhs, rhs)
     return {
@@ -4567,6 +4583,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆Ŀ": process_element(lowest_common_multiple, 2),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
+    "∆o": process_element(nth_ordinal, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

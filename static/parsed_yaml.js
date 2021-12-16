@@ -1868,6 +1868,16 @@ codepage_descriptions[90] += `
 Pad a string with zeros to a given length
 str, num a -> zfill(a, b)
 `
+codepage_descriptions[142] += `
+∆ċ (Nth Cardinal)
+Get the nth cardinal / convert number to words
+num a -> num_to_words(a)
+`
+codepage_descriptions[111] += `
+∆o (Nth Ordinal)
+Get the nth ordinal / convert number to wordth ordinal
+num a -> num_to_ordinal(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string

@@ -2329,6 +2329,20 @@ k□ (Directions)
 
     str, num a: zfill(a, b)
 -------------------------------
+∆ċ (Nth Cardinal)
+
+- Get the nth cardinal / convert number to words
+
+    num a: num_to_words(a)
+    otherwise: vectorise
+-------------------------------
+∆o (Nth Ordinal)
+
+- Get the nth ordinal / convert number to wordth ordinal
+
+    num a: num_to_ordinal(a)
+    otherwise: vectorise
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string

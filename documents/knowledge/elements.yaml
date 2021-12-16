@@ -3769,6 +3769,24 @@
     - "[6] : 'six'"
     - "[7] : 'seven'"
 
+
+- element: "∆o"
+  name: Nth Ordinal
+  arity: 1
+  description: Get the nth ordinal / convert number to wordth ordinal
+  overloads:
+    num: num_to_ordinal(a)
+  vectorise: true
+  tests:
+    - "[0] : 'zeroth'"
+    - "[1] : 'first'"
+    - "[2] : 'second'"
+    - "[3] : 'third'"
+    - "[4] : 'fourth'"
+    - "[5] : 'fifth'"
+    - "[6] : 'sixth'"
+    - "[7] : 'seventh'"
+
 - element: "øb"
   name: Parenthesise
   arity: 1
