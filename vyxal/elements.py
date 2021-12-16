@@ -1507,7 +1507,7 @@ def infinite_cardinals(_, ctx=None):
     infinite sequence of cardinals
     """
 
-    return LazyList(itertools.count(1))
+    return LazyList(map(num2words.num2words, itertools.count(1)))
 
 
 def infinite_ordinals(_, ctx=None):
