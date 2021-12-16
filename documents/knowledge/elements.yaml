@@ -3752,6 +3752,23 @@
     str, num: zfill(a, b)
   vectorise: false
 
+- element: "∆ċ"
+  name: Nth Cardinal
+  arity: 1
+  description: Get the nth cardinal / convert number to words
+  overloads:
+    num: num_to_words(a)
+  vectorise: true
+  tests:
+    - "[0] : 'zero'"
+    - "[1] : 'one'"
+    - "[2] : 'two'"
+    - "[3] : 'three'"
+    - "[4] : 'four'"
+    - "[5] : 'five'"
+    - "[6] : 'six'"
+    - "[7] : 'seven'"
+
 - element: "øb"
   name: Parenthesise
   arity: 1

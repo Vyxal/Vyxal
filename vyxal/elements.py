@@ -2393,6 +2393,21 @@ def not_equals(lhs, rhs, ctx):
     )
 
 
+def nth_cardinal(lhs, ctx):
+    """Element ∆ċ
+    Given a number, return that number as a cardinal - minus one, zero,
+    one, two, three etc
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: num2words.num2words(
+            lhs, lang="en", to="cardinal"
+        ),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_cardinal, lhs, ctx=ctx))()
+
+
 def nth_e(lhs, ctx):
     """Element ∆ė
     (int) -> nth_e(a)
@@ -4551,6 +4566,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
     "∆Z": process_element(zfiller, 2),
+    "∆ċ": process_element(nth_cardinal, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
