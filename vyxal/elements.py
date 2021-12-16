@@ -3870,7 +3870,7 @@ def vy_map(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
-        return LazyList([[lhs, x] for x in rhs])
+        return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
     itr = iterable(itr, range, ctx=ctx)
