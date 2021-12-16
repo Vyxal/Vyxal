@@ -64,7 +64,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     P   Print lists as their python representation
 """
         vy_print(flag_string, ctx=ctx)
-        exit(0)
+        sys.exit(0)
 
     if "e" in flags:  # Program is file name
         code = file_name
@@ -131,7 +131,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     except Exception as e:
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
-            exit(1)
+            sys.exit(1)
         else:
             raise e
 
@@ -147,7 +147,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     except Exception as e:
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
-            exit(1)
+            sys.exit(1)
         else:
             raise
 
