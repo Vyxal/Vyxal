@@ -2175,3 +2175,13 @@ codepage_descriptions[215] += `
 Print a value with a space after it, without popping it
 any a -> Print a value with a space after it, without popping it
 `
+codepage_descriptions[62] += `
+¨> (Strict Greater Than)
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+any a, any b -> Non-vectorising greater than - useful for lists
+`
+codepage_descriptions[60] += `
+¨< (Strict Less Than)
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+any a, any b -> Non-vectorising greater than - useful for lists
+`
