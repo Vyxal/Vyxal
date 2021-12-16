@@ -4113,14 +4113,14 @@ def wrap(lhs, rhs, ctx):
             for item in vector:
                 temp.append(item)
                 if len(temp) == chunk_size:
-                    if all([type(x) is str for x in temp]):
+                    if all(type(x) is str for x in temp):
                         ret.append("".join(temp))
                     else:
                         ret.append(temp[::])
                     temp = []
 
             if len(temp) < chunk_size and temp:
-                if all([type(x) is str for x in temp]):
+                if all(type(x) is str for x in temp):
                     ret.append("".join(temp))
                 else:
                     ret.append(temp[::])
