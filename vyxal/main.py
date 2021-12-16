@@ -151,7 +151,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         else:
             raise
 
-    originally_empty = not len(stack)
+    originally_empty = not stack
     output = pop(stack, 1, ctx)
     for flag in flags:
         if flag == "j":
@@ -220,7 +220,7 @@ def repl():
         exec(line)
 
         res = []
-        while len(stack):
+        while stack:
             top = stack.pop()
             if isinstance(top, types.FunctionType):
                 res.append(top(stack, top, ctx=ctx)[-1])

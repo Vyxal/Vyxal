@@ -29,7 +29,7 @@ class LazyList:
 
     def __contains__(self, lhs):
         if self.infinite:
-            if len(self.generated):
+            if self.generated:
                 last = self.generated[-1]
             else:
                 last = 0
@@ -150,7 +150,7 @@ class LazyList:
         vy_print("⟨ " if ctx.vyxal_lists else "[", "", ctx=ctx)
         for lhs in self.generated[:-1]:
             vy_print(lhs, " | " if ctx.vyxal_lists else ", ", ctx=ctx)
-        if len(self.generated):
+        if self.generated:
             vy_print(self.generated[-1], "", ctx=ctx)
 
         try:
