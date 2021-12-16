@@ -214,6 +214,15 @@ $(document).ready(e => {
                 if (e_code.doc.getValue() == 'lyxal') {
                     location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                 }
+                if (flags.value.indexOf('Ḣ') !== -1) {
+                    const container = document.getElementById("html-rendered-output")
+                    const iframe = document.createElement("iframe")
+                    iframe.srcdoc = res.stdout
+                    container.innerHTML = iframe.outerHTML
+                    container.hidden = false
+                } else {
+                    document.getElementById("html-rendered-output").hidden = true
+                }
                 expandBoxes()
             })
         } else {

@@ -107,3 +107,19 @@ button:hover {
 i {
   font-size: 24px;
 }
+
+#html-rendered-output {
+    resize: both;
+    overflow: hidden;
+    background: white;
+    margin-bottom: .5em;
+    width: fit-content;  /* initial width before being resized */
+    max-width: 100%;
+}
+
+#html-rendered-output > iframe {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: none;
+}
