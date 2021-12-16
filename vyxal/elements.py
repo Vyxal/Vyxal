@@ -4,6 +4,7 @@
 the python equivalent of command is stored
 """
 
+import collections
 import itertools
 import math
 import random
@@ -2105,6 +2106,16 @@ def mirror(lhs, ctx):
         return add(lhs, reverse(lhs, ctx), ctx)
     else:
         return concat(lhs, reverse(lhs, ctx), ctx)
+
+
+def mode(lhs, ctx):
+    """Element ∆M
+    Most common item in a list.
+    Equivalent to Ċ↑h
+    """
+
+    item_counts = collections.Counter(iterable(lhs, ctx=ctx))
+    return item_counts.most_common(1)[0][0]
 
 
 def modulo(lhs, rhs, ctx):
@@ -4584,6 +4595,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
+    "∆M": process_element(mode, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
