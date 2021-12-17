@@ -4490,7 +4490,11 @@ elements: dict[str, tuple[str, int]] = {
     "Ŀ": process_element(transliterate, 3),
     "Ṁ": process_element(insert_or_map_nth, 3),
     "Ṅ": process_element(integer_parts_or_join_spaces, 1),
-    "Ȯ": process_element("index(stack, -2, ctx)", 0),
+    "Ȯ": (
+        "if len(stack) > 1: stack.append(index(stack, -2, ctx))\n"
+        "else: stack.append(get_input(ctx))",
+        0,
+    ),
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
