@@ -3760,14 +3760,7 @@
     num: num_to_words(a)
   vectorise: true
   tests:
-    - "[0] : 'zero'"
-    - "[1] : 'one'"
-    - "[2] : 'two'"
-    - "[3] : 'three'"
-    - "[4] : 'four'"
-    - "[5] : 'five'"
-    - "[6] : 'six'"
-    - "[7] : 'seven'"
+    - "[[4324, -48294, 0.5, 93424, 2.3]] : ['four thousand, three hundred and twenty-four', 'minus forty-eight thousand, two hundred and ninety-four', 'zero point five', 'ninety-three thousand, four hundred and twenty-four', 'two point three']"
 
 - element: "∆o"
   name: Nth Ordinal
