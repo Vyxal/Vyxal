@@ -2661,6 +2661,38 @@ Pad a string with zeros to a given length
 
 - str, num a: `zfill(a, b)`
 -------------------------------
+## ∆ċ (Nth Cardinal)
+
+Get the nth cardinal / convert number to words
+
+### Overloads
+
+- num a: `num_to_words(a)`
+-------------------------------
+## ∆o (Nth Ordinal)
+
+Get the nth ordinal / convert number to wordth ordinal
+
+### Overloads
+
+- num a: `num_to_ordinal(a)`
+-------------------------------
+## ∆M (Mode)
+
+Get the mode of a list
+
+### Overloads
+
+- lst a: `mode(a)`
+-------------------------------
+## ∆ṁ (Median)
+
+Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
+
+### Overloads
+
+- lst a: `median(a)`
+-------------------------------
 ## øb (Parenthesise)
 
 Parenthesise a string
@@ -3108,6 +3140,14 @@ Mold a list without repeating elements.
 ### Overloads
 
 - lst a, lst b: `Mold a list without repeating elements.`
+-------------------------------
+## ÞM (Maximal Indicies)
+
+Indicies of the maximal elements of a list.
+
+### Overloads
+
+- lst a: `Indicies of the maximal elements of a list.`
 -------------------------------
 ## ¨U (Get Request)
 

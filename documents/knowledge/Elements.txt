@@ -2329,6 +2329,32 @@ k□ (Directions)
 
     str, num a: zfill(a, b)
 -------------------------------
+∆ċ (Nth Cardinal)
+
+- Get the nth cardinal / convert number to words
+
+    num a: num_to_words(a)
+    otherwise: vectorise
+-------------------------------
+∆o (Nth Ordinal)
+
+- Get the nth ordinal / convert number to wordth ordinal
+
+    num a: num_to_ordinal(a)
+    otherwise: vectorise
+-------------------------------
+∆M (Mode)
+
+- Get the mode of a list
+
+    lst a: mode(a)
+-------------------------------
+∆ṁ (Median)
+
+- Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
+
+    lst a: median(a)
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string
@@ -2681,6 +2707,12 @@ k□ (Directions)
 - Mold a list without repeating elements.
 
     lst a, lst b: Mold a list without repeating elements.
+-------------------------------
+ÞM (Maximal Indicies)
+
+- Indicies of the maximal elements of a list.
+
+    lst a: Indicies of the maximal elements of a list.
 -------------------------------
 ¨U (Get Request)
 

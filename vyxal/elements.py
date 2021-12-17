@@ -4,6 +4,7 @@
 the python equivalent of command is stored
 """
 
+import collections
 import itertools
 import math
 import random
@@ -2030,6 +2031,21 @@ def max_by_tail(lhs, ctx):
         return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
+def maximal_indices(lhs, ctx):
+    """Element ÞM
+    Return the indexes of maximal objects in lhs
+    """
+
+    @lazylist
+    def gen():
+        biggest = monadic_maximum(lhs, ctx=ctx)
+        for i, item in enumerate(lhs):
+            if non_vectorising_equals(item, biggest, ctx=ctx):
+                yield i
+
+    return gen()
+
+
 def mean(lhs, ctx):
     """Element ṁ
     (num) -> random.randint(0, a)
@@ -2041,6 +2057,17 @@ def mean(lhs, ctx):
         (NUMBER_TYPE): lambda: random.randint(0, lhs),
         (str): lambda: palindromise(lhs, ctx),
     }.get(ts, lambda: divide(vy_sum(lhs, ctx), len(lhs), ctx))()
+
+
+def median(lhs, ctx):
+    """Element ∆ṁ
+    Return the median of a list - the middle item(s)
+    """
+
+    lhs = iterable(vy_sort(lhs, ctx), ctx=ctx)
+    if len(lhs) % 2 == 0:
+        return [lhs[len(lhs) // 2 - 1], lhs[len(lhs) // 2]]
+    return lhs[len(lhs) // 2]
 
 
 def merge(lhs, rhs, ctx):
@@ -2105,6 +2132,16 @@ def mirror(lhs, ctx):
         return add(lhs, reverse(lhs, ctx), ctx)
     else:
         return concat(lhs, reverse(lhs, ctx), ctx)
+
+
+def mode(lhs, ctx):
+    """Element ∆M
+    Most common item in a list.
+    Equivalent to Ċ↑h
+    """
+
+    item_counts = collections.Counter(iterable(lhs, ctx=ctx))
+    return item_counts.most_common(1)[0][0]
 
 
 def modulo(lhs, rhs, ctx):
@@ -2393,6 +2430,21 @@ def not_equals(lhs, rhs, ctx):
     )
 
 
+def nth_cardinal(lhs, ctx):
+    """Element ∆ċ
+    Given a number, return that number as a cardinal - minus one, zero,
+    one, two, three etc
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: num2words.num2words(
+            lhs, lang="en", to="cardinal"
+        ),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_cardinal, lhs, ctx=ctx))()
+
+
 def nth_e(lhs, ctx):
     """Element ∆ė
     (int) -> nth_e(a)
@@ -2410,6 +2462,20 @@ def nth_e(lhs, ctx):
             return int(str(sympy.N(sympy.E, int(lhs) + 2))[lhs + 1])
     else:
         return vectorise(nth_e, lhs, ctx=ctx)
+
+
+def nth_ordinal(lhs, ctx):
+    """Element ∆o
+    Nth item of Þo
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: num2words.num2words(
+            lhs, lang="en", to="ordinal"
+        ),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_ordinal, lhs, ctx=ctx))()
 
 
 def nth_pi(lhs, ctx):
@@ -2431,6 +2497,8 @@ def one_slice(lhs, rhs, ctx):
     (num, any) -> b[1:a] (Slice from 1 until a)
     (str, str) -> re.match(pattern=a,string=b)
     """
+
+    # no, not one_shot, one_slice.
 
     ts = vy_type(lhs, rhs)
     return {
@@ -3396,9 +3464,9 @@ def transliterate(lhs, rhs, other, ctx):
         return ret
 
 
-def truthy_indicies(lhs, ctx):
+def truthy_indices(lhs, ctx):
     """Element T
-    (any) -> indicies of truthy elements
+    (any) -> indices of truthy elements
     (num) -> lhs * 3
     """
 
@@ -4292,11 +4360,13 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "S": process_element(vy_str, 1),
-    "T": process_element(truthy_indicies, 1),
+    "T": process_element(truthy_indices, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": (
-        "temp = list(deep_copy(stack)); pop(stack, len(stack), ctx); "
+        "temp = stack[::]\n"
+        "for item in stack:\n"
+        "    stack.pop()\n"
         "stack.append(temp)",
         0,
     ),
@@ -4551,6 +4621,10 @@ elements: dict[str, tuple[str, int]] = {
     "∆W": process_element(round_to, 2),
     "∆Ŀ": process_element(lowest_common_multiple, 2),
     "∆Z": process_element(zfiller, 2),
+    "∆ċ": process_element(nth_cardinal, 1),
+    "∆o": process_element(nth_ordinal, 1),
+    "∆M": process_element(mode, 1),
+    "∆ṁ": process_element(median, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -4617,6 +4691,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
+    "ÞM": process_element(maximal_indices, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
@@ -4627,6 +4702,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨U": ("if ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))", 1),
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
+    "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
