@@ -24,8 +24,8 @@ if len(codepage) != 256:
 def vyxal_to_utf8(code):
     # Taken from the old 05AB1E interpreter
     processed_code = ""
-    for char in code:
-        processed_code += codepage[char]
+    for character in code:
+        processed_code += codepage[character]
 
     return processed_code
 
@@ -33,8 +33,8 @@ def vyxal_to_utf8(code):
 def utf8_to_vyxal(code):
     # Taken from the old 05AB1E interpreter
     processed_code = ""
-    for char in code:
-        processed_code += chr(codepage.index(char))
+    for character in code:
+        processed_code += chr(codepage.index(character))
 
     return processed_code
 
