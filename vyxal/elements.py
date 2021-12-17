@@ -2044,6 +2044,17 @@ def mean(lhs, ctx):
     }.get(ts, lambda: divide(vy_sum(lhs, ctx), len(lhs), ctx))()
 
 
+def median(lhs, ctx):
+    """Element ∆ṁ
+    Return the median of a list - the middle item(s)
+    """
+
+    lhs = iterable(vy_sort(lhs, ctx), ctx=ctx)
+    if len(lhs) % 2 == 0:
+        return [lhs[len(lhs) // 2 - 1], lhs[len(lhs) // 2]]
+    return lhs[len(lhs) // 2]
+
+
 def merge(lhs, rhs, ctx):
     """Element J
     (scl, scl) -> concatenate a and b
@@ -4596,6 +4607,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
     "∆M": process_element(mode, 1),
+    "∆ṁ": process_element(median, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
