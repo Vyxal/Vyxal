@@ -4349,8 +4349,10 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": (
-        "temp = list(deep_copy(stack)); pop(stack, len(stack), ctx); "
-        "stack.append(temp)",
+        "temp = stack[::]\n"
+        "for item in stack:\n"
+        "    stack.pop()\n"
+        "stack.append([temp])",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
