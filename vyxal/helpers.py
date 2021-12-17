@@ -712,10 +712,16 @@ def uncompress_dict(source: str) -> str:
     while characters:
         char = characters.popleft()
         if escaped:
+            if temp_scc:
+                pos = vyxal.encoding.compression.find(temp_scc)
+                if pos < len(vyxal.dictionary.small_dictionary):
+                    ret += vyxal.dictionary.small_dictionary[pos]
+                temp_scc = ""
             if char not in vyxal.encoding.compression:
                 ret += "\\"
             ret += char
             escaped = False
+
         elif char == "\\":
             escaped = True
         elif char in vyxal.encoding.compression:
