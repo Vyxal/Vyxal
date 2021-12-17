@@ -1388,7 +1388,8 @@ def head_remove(lhs, ctx):
         return lhs
     if isinstance(lhs, int):
         return int(str(lhs)[1:])
-    assert isinstance(lhs, sympy.Rational)
+    if not isinstance(lhs, sympy.Rational):
+        raise AssertionError
     return sympy.Rational(str(float(lhs))[1:])
 
 
@@ -1578,7 +1579,8 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     """
 
     lhs = iterable(lhs, ctx)
-    assert vy_type(rhs) == NUMBER_TYPE
+    if vy_type(rhs) != NUMBER_TYPE:
+        raise AssertionError
 
     if vy_type(other) != types.FunctionType:
         if vy_type(lhs) is str:
@@ -4106,7 +4108,8 @@ def vy_type(item, rhs=None, other=None, simple=False):
         or is_sympy(item)
         or isinstance(item, numpy.number)
     ):
-        assert x is not float
+        if x is float:
+            raise AssertionError
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
         return list

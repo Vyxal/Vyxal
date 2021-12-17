@@ -17,7 +17,8 @@ codepage += "⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥"
 codepage += "≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑ"
 codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 
-assert len(codepage) == 256
+if len(codepage) != 256:
+    raise AssertionError
 
 
 def vyxal_to_utf8(code):

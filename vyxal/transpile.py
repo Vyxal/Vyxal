@@ -471,4 +471,5 @@ def transpile_structure(
             print(struct.parent_structure)
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
-    assert False
+    if not False:
+        raise AssertionError

@@ -162,7 +162,8 @@ def parse(
                     )
                 else:
                     # No body, so it's a function call
-                    assert not parameters
+                    if parameters:
+                        raise AssertionError
                     structures.append(structure.FunctionCall(name))
 
             elif structure_cls == structure.Lambda:

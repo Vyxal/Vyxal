@@ -529,7 +529,8 @@ def primitive_type(item: Any) -> Union[str, type]:
 
     if type(item) in [int, sympy.Rational, str] or is_sympy(item):
         return SCALAR_TYPE
-    assert type(item) in [list, LazyList]
+    if type(item) not in [list, LazyList]:
+        raise AssertionError
     return list
 
 
