@@ -1669,7 +1669,7 @@ def interleave(lhs, rhs, ctx):
             if i < len(rhs):
                 yield rhs[i]
 
-    if type(lhs) == type(rhs) == str:
+    if type(lhs) is type(rhs) is str:
         return "".join(f())
     else:
         return f()
