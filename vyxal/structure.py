@@ -4,6 +4,7 @@ See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structu
 """
 
 from typing import Union
+
 from vyxal.lexer import Token
 
 Branch = Union[str, list["Structure"], list["Token"]]

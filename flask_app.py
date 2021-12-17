@@ -1,10 +1,10 @@
-from hashlib import sha256
-from hmac import compare_digest
 import multiprocessing
 import os
 import secrets
 import shutil
 import sys
+from hashlib import sha256
+from hmac import compare_digest
 
 from flask import Flask, render_template, request
 from flask_cors import CORS
