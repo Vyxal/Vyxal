@@ -801,7 +801,9 @@ def vyxalify(value: Any) -> Any:
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (float, complex, numpy.number)):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (int, sympy.Rational, str, LazyList)):
+    elif isinstance(
+        value, (int, sympy.Rational, str, LazyList, types.FunctionType)
+    ):
         return value
     elif isinstance(value, list):
         return list(map(vyxalify, value))
