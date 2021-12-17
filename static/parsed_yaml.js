@@ -1868,6 +1868,26 @@ codepage_descriptions[90] += `
 Pad a string with zeros to a given length
 str, num a -> zfill(a, b)
 `
+codepage_descriptions[142] += `
+∆ċ (Nth Cardinal)
+Get the nth cardinal / convert number to words
+num a -> num_to_words(a)
+`
+codepage_descriptions[111] += `
+∆o (Nth Ordinal)
+Get the nth ordinal / convert number to wordth ordinal
+num a -> num_to_ordinal(a)
+`
+codepage_descriptions[77] += `
+∆M (Mode)
+Get the mode of a list
+lst a -> mode(a)
+`
+codepage_descriptions[150] += `
+∆ṁ (Median)
+Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
+lst a -> median(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
@@ -2155,6 +2175,11 @@ codepage_descriptions[150] += `
 Mold a list without repeating elements.
 lst a, lst b -> Mold a list without repeating elements.
 `
+codepage_descriptions[77] += `
+ÞM (Maximal Indicies)
+Indicies of the maximal elements of a list.
+lst a -> Indicies of the maximal elements of a list.
+`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL
@@ -2174,4 +2199,14 @@ codepage_descriptions[215] += `
 ¨… (Print With Space Without Popping)
 Print a value with a space after it, without popping it
 any a -> Print a value with a space after it, without popping it
+`
+codepage_descriptions[62] += `
+¨> (Strict Greater Than)
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+any a, any b -> Non-vectorising greater than - useful for lists
+`
+codepage_descriptions[60] += `
+¨< (Strict Less Than)
+Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+any a, any b -> Non-vectorising greater than - useful for lists
 `

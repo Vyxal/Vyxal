@@ -810,13 +810,13 @@ def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
     for item in vector:
         temp.append(item)
         if len(temp) == width:
-            if all([type(x) is str for x in temp]):
+            if all(type(x) is str for x in temp):
                 ret.append("".join(temp))
             else:
                 ret.append(temp[::])
             temp = []
     if len(temp) < width and temp:
-        if all([type(x) is str for x in temp]):
+        if all(type(x) is str for x in temp):
             ret.append("".join(temp))
         else:
             ret.append(temp[::])

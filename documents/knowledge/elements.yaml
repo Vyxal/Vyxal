@@ -3752,6 +3752,55 @@
     str, num: zfill(a, b)
   vectorise: false
 
+- element: "∆ċ"
+  name: Nth Cardinal
+  arity: 1
+  description: Get the nth cardinal / convert number to words
+  overloads:
+    num: num_to_words(a)
+  vectorise: true
+  tests:
+    - "[[4324, -48294, 0.5, 93424, 2.3]] : ['four thousand, three hundred and twenty-four', 'minus forty-eight thousand, two hundred and ninety-four', 'zero point five', 'ninety-three thousand, four hundred and twenty-four', 'two point three']"
+
+- element: "∆o"
+  name: Nth Ordinal
+  arity: 1
+  description: Get the nth ordinal / convert number to wordth ordinal
+  overloads:
+    num: num_to_ordinal(a)
+  vectorise: true
+  tests:
+    - "[0] : 'zeroth'"
+    - "[1] : 'first'"
+    - "[2] : 'second'"
+    - "[3] : 'third'"
+    - "[4] : 'fourth'"
+    - "[5] : 'fifth'"
+    - "[6] : 'sixth'"
+    - "[7] : 'seventh'"
+
+- element: "∆M"
+  name: Mode
+  arity: 1
+  description: Get the mode of a list
+  overloads:
+    lst: mode(a)
+  vectorise: false
+  tests:
+    - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4]] : [1]"
+    - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4]] : [1]"
+
+- element: "∆ṁ"
+  name: Median
+  arity: 1
+  description: Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
+  overloads:
+    lst: median(a)
+  vectorise: false
+  tests:
+    - "[[1, 2, 3, 4, 5]] : 3"
+    - "[[1, 2, 3, 4, 5, 6]] : [3, 4]"
+
 - element: "øb"
   name: Parenthesise
   arity: 1
@@ -4345,6 +4394,16 @@
   tests:
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
 
+- element: "ÞM"
+  name: Maximal Indicies
+  description: Indicies of the maximal elements of a list.
+  arity: 1
+  overloads:
+    lst: Indicies of the maximal elements of a list.
+  vectorise: false
+  tests:
+    - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
+
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL
@@ -4376,3 +4435,25 @@
   overloads:
     any: Print a value with a space after it, without popping it
   vectorise: false
+
+- element: "¨>"
+  name: Strict Greater Than
+  description: Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+  arity: 2
+  overloads:
+    any-any: Non-vectorising greater than - useful for lists
+  vectorise: false
+  tests:
+     - "[[1, 1, 1], [9, 9, 9]] : 0"
+     - "[[1, 2, '3'], [1, 2, '2']] : 1"
+
+- element: "¨<"
+  name: Strict Less Than
+  description: Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
+  arity: 2
+  overloads:
+    any-any: Non-vectorising greater than - useful for lists
+  vectorise: false
+  tests:
+     - "[[1, 1, 1], [9, 9, 9]] : 1"
+     - "[[1, 2, '3'], [1, 2, '2']] : 0"

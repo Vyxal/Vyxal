@@ -206,6 +206,13 @@ $(document).ready(e => {
                 footer: e_footer.doc.getValue(),
                 header: e_header.doc.getValue()
             }, res => {
+                if (flags.value.includes('E')) {
+                    alert('Please read and ensure you 100% trust the JavaScript code which is about to be evaluated. The code is (see next alert):')
+                    alert(res.stdout)
+                    if (confirm('Do you want to execute it? If you are remotely unsure, click Cancel!')) {
+                        res.stdout = new Function(res.stdout)()
+                    }
+                }
                 output.value = res.stdout
                 extra.value = res.stderr
                 run.innerHTML =
@@ -213,6 +220,15 @@ $(document).ready(e => {
                     `;
                 if (e_code.doc.getValue() == 'lyxal') {
                     location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                }
+                if (flags.value.includes('Ḣ')) {
+                    const container = document.getElementById("html-rendered-output")
+                    const iframe = document.createElement("iframe")
+                    iframe.srcdoc = res.stdout
+                    container.innerHTML = iframe.outerHTML
+                    container.hidden = false
+                } else {
+                    document.getElementById("html-rendered-output").hidden = true
                 }
                 expandBoxes()
             })
