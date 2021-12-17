@@ -2343,6 +2343,18 @@ k□ (Directions)
     num a: num_to_ordinal(a)
     otherwise: vectorise
 -------------------------------
+∆M (Mode)
+
+- Get the mode of a list
+
+    lst a: mode(a)
+-------------------------------
+∆ṁ (Median)
+
+- Get the median of a list
+
+    lst a: median(a)
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string

@@ -1878,6 +1878,16 @@ codepage_descriptions[111] += `
 Get the nth ordinal / convert number to wordth ordinal
 num a -> num_to_ordinal(a)
 `
+codepage_descriptions[77] += `
+∆M (Mode)
+Get the mode of a list
+lst a -> mode(a)
+`
+codepage_descriptions[150] += `
+∆ṁ (Median)
+Get the median of a list
+lst a -> median(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
