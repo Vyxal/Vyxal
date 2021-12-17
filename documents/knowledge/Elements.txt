@@ -2708,6 +2708,12 @@ k□ (Directions)
 
     lst a, lst b: Mold a list without repeating elements.
 -------------------------------
+ÞM (Maximial Indicies)
+
+- Indicies of the maximal elements of a list.
+
+    lst a: Indicies of the maximal elements of a list.
+-------------------------------
 ¨U (Get Request)
 
 - Send a GET request to a URL

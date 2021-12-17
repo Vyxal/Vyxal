@@ -3141,6 +3141,14 @@ Mold a list without repeating elements.
 
 - lst a, lst b: `Mold a list without repeating elements.`
 -------------------------------
+## ÞM (Maximial Indicies)
+
+Indicies of the maximal elements of a list.
+
+### Overloads
+
+- lst a: `Indicies of the maximal elements of a list.`
+-------------------------------
 ## ¨U (Get Request)
 
 Send a GET request to a URL

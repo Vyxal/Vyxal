@@ -2175,6 +2175,11 @@ codepage_descriptions[150] += `
 Mold a list without repeating elements.
 lst a, lst b -> Mold a list without repeating elements.
 `
+codepage_descriptions[77] += `
+ÞM (Maximial Indicies)
+Indicies of the maximal elements of a list.
+lst a -> Indicies of the maximal elements of a list.
+`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL

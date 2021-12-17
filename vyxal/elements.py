@@ -2031,6 +2031,20 @@ def max_by_tail(lhs, ctx):
         return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
+def maximal_indicies(lhs, ctx):
+    """Element ÞM
+    Return the indexes of maximal objects in lhs
+    """
+
+    @lazylist
+    def gen():
+        biggest = monadic_maximum(lhs, ctx=ctx)
+        for i, item in enumerate(lhs):
+            if non_vectorising_equals(item, biggest, ctx=ctx):
+                yield i
+    return gen()
+
+
 def mean(lhs, ctx):
     """Element ṁ
     (num) -> random.randint(0, a)
@@ -4676,6 +4690,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
+    "ÞM": process_element(maximal_indicies, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

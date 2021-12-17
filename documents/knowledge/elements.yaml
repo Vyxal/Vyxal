@@ -4401,6 +4401,16 @@
   tests:
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
 
+- element: "ÞM"
+  name: Maximial Indicies
+  description: Indicies of the maximal elements of a list.
+  arity: 1
+  overloads:
+    lst: Indicies of the maximal elements of a list.
+  vectorise: false
+  tests:
+    - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
+
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL
