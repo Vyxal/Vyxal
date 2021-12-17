@@ -3439,10 +3439,7 @@ def transliterate(lhs, rhs, other, ctx):
                        mapping rhs->other
     """
 
-    mapping = {
-        x: y
-        for x, y in vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx)
-    }
+    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     ret = []
 
