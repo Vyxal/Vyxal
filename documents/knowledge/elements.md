@@ -2687,7 +2687,7 @@ Get the mode of a list
 -------------------------------
 ## ∆ṁ (Median)
 
-Get the median of a list
+Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
 
 ### Overloads
 
@@ -3141,7 +3141,7 @@ Mold a list without repeating elements.
 
 - lst a, lst b: `Mold a list without repeating elements.`
 -------------------------------
-## ÞM (Maximial Indicies)
+## ÞM (Maximal Indicies)
 
 Indicies of the maximal elements of a list.
 

@@ -3800,7 +3800,7 @@
 - element: "∆ṁ"
   name: Median
   arity: 1
-  description: Get the median of a list
+  description: Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
   overloads:
     lst: median(a)
   vectorise: false
@@ -4402,7 +4402,7 @@
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
 
 - element: "ÞM"
-  name: Maximial Indicies
+  name: Maximal Indicies
   description: Indicies of the maximal elements of a list.
   arity: 1
   overloads:

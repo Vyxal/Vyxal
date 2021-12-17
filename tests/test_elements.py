@@ -18529,7 +18529,7 @@ def test_Moldwithoutrepeat():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_MaximialIndicies():
+def test_MaximalIndicies():
 
     stack = [vyxalify(item) for item in [[9,2,3,4,5,6,7,8,9]]]
     expected = vyxalify([0,8])

@@ -1885,7 +1885,7 @@ lst a -> mode(a)
 `
 codepage_descriptions[150] += `
 ∆ṁ (Median)
-Get the median of a list
+Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
 lst a -> median(a)
 `
 codepage_descriptions[98] += `
@@ -2176,7 +2176,7 @@ Mold a list without repeating elements.
 lst a, lst b -> Mold a list without repeating elements.
 `
 codepage_descriptions[77] += `
-ÞM (Maximial Indicies)
+ÞM (Maximal Indicies)
 Indicies of the maximal elements of a list.
 lst a -> Indicies of the maximal elements of a list.
 `

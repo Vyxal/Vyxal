@@ -2031,7 +2031,7 @@ def max_by_tail(lhs, ctx):
         return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
-def maximal_indicies(lhs, ctx):
+def maximal_indices(lhs, ctx):
     """Element ÞM
     Return the indexes of maximal objects in lhs
     """
@@ -3464,9 +3464,9 @@ def transliterate(lhs, rhs, other, ctx):
         return ret
 
 
-def truthy_indicies(lhs, ctx):
+def truthy_indices(lhs, ctx):
     """Element T
-    (any) -> indicies of truthy elements
+    (any) -> indices of truthy elements
     (num) -> lhs * 3
     """
 
@@ -4360,7 +4360,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "S": process_element(vy_str, 1),
-    "T": process_element(truthy_indicies, 1),
+    "T": process_element(truthy_indices, 1),
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": (
@@ -4691,7 +4691,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
-    "ÞM": process_element(maximal_indicies, 1),
+    "ÞM": process_element(maximal_indices, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
