@@ -13,18 +13,18 @@ import textwrap
 import types
 from typing import Any, List, Union
 
+import numpy
 import sympy
 from sympy.parsing.sympy_parser import (
     convert_xor,
     implicit_multiplication_application,
     standard_transformations,
 )
-import numpy
 
+import vyxal.dictionary
 import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-import vyxal.dictionary
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
