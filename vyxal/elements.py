@@ -4367,7 +4367,7 @@ elements: dict[str, tuple[str, int]] = {
         "temp = stack[::]\n"
         "for item in stack:\n"
         "    stack.pop()\n"
-        "stack.append([temp])",
+        "stack.append(temp)",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
