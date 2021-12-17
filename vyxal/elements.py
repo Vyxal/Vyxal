@@ -2570,7 +2570,7 @@ def overlapping_groups(lhs, rhs, ctx):
     @lazylist
     def gen():
         window = "" if stringify else []
-        for item in lhs:
+        for item in iterable(lhs, ctx=ctx):
             if stringify:
                 window += item
             else:
