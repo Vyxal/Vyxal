@@ -2042,6 +2042,7 @@ def maximal_indicies(lhs, ctx):
         for i, item in enumerate(lhs):
             if non_vectorising_equals(item, biggest, ctx=ctx):
                 yield i
+
     return gen()
 
 
@@ -4701,6 +4702,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨U": ("if ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))", 1),
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
+    "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
