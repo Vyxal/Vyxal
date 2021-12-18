@@ -19,7 +19,6 @@ def lambda_wrap(
 
     elements pass their arity on to the lambda
     """
-
     if len(branch) == 1:
         if isinstance(branch[0], vyxal.structure.GenericStatement):
             return vyxal.structure.Lambda(
@@ -147,7 +146,6 @@ def transpile_structure(
     struct: vyxal.structure.Structure, indent: int, dict_compress: bool = True
 ) -> str:
     """Transpile a single vyxal.structure."""
-
     if isinstance(struct, vyxal.structure.GenericStatement):
         return transpile_single(
             struct.branches[0][0], indent, dict_compress=dict_compress
