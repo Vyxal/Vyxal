@@ -2204,6 +2204,7 @@ k□ (Directions)
 - Get the value of e raised to the power of a minus 1
 
     num a: (e ** a) - 1
+    str a: expand expression a
     otherwise: vectorise
 -------------------------------
 ∆L (Natural Logarithm)
@@ -2293,6 +2294,14 @@ k□ (Directions)
 - Get the nth digit of pi
 
     num a: nth_digit_of_pi(a)
+    otherwise: vectorise
+-------------------------------
+∆Ė (N Digits of E / Sympy Evaluate)
+
+- Get the first n digits of e / evaluate an expression as sympy
+
+    num a: First n digits of e
+    str a: evaluate(a)
     otherwise: vectorise
 -------------------------------
 ∆ė (nth Digit of e)

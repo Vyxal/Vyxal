@@ -1777,6 +1777,7 @@ codepage_descriptions[69] += `
 ∆E ((e raised to power a) - 1)
 Get the value of e raised to the power of a minus 1
 num a -> (e ** a) - 1
+str a -> expand expression a
 `
 codepage_descriptions[76] += `
 ∆L (Natural Logarithm)
@@ -1842,6 +1843,12 @@ codepage_descriptions[105] += `
 ∆i (nth Digit of Pi)
 Get the nth digit of pi
 num a -> nth_digit_of_pi(a)
+`
+codepage_descriptions[187] += `
+∆Ė (N Digits of E / Sympy Evaluate)
+Get the first n digits of e / evaluate an expression as sympy
+num a -> First n digits of e
+str a -> evaluate(a)
 `
 codepage_descriptions[144] += `
 ∆ė (nth Digit of e)

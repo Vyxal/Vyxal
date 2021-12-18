@@ -2516,6 +2516,7 @@ Get the value of e raised to the power of a minus 1
 ### Overloads
 
 - num a: `(e ** a) - 1`
+- str a: `expand expression a`
 -------------------------------
 ## ∆L (Natural Logarithm)
 
@@ -2620,6 +2621,15 @@ Get the nth digit of pi
 ### Overloads
 
 - num a: `nth_digit_of_pi(a)`
+-------------------------------
+## ∆Ė (N Digits of E / Sympy Evaluate)
+
+Get the first n digits of e / evaluate an expression as sympy
+
+### Overloads
+
+- num a: `First n digits of e`
+- str a: `evaluate(a)`
 -------------------------------
 ## ∆ė (nth Digit of e)
 
