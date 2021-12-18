@@ -13802,7 +13802,7 @@ def test_PerfectSquare():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_Eulersraisedtopowera():
+def test_EulersNumbereraisedtopowera():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(1)
@@ -13888,7 +13888,7 @@ def test_Eulersraisedtopowera():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_EulersNumberRaisedtoPowera_1():
+def test_EulersNumbereRaisedtoPowera_1():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(0)
@@ -15659,7 +15659,7 @@ def test_nthDigitofPi():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_NDigitsofEulersNumberSympyEvaluate():
+def test_NDigitsofEulersNumbereSympyEvaluate():
 
     stack = [vyxalify(item) for item in [[0, 1, 2, '5 ** 2']]]
     expected = vyxalify([[2], [2, 7], [2, 7, 1], 25])
@@ -15682,7 +15682,7 @@ def test_NDigitsofEulersNumberSympyEvaluate():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_NthDigitofEulersNumber():
+def test_NthDigitofEulersNumbere():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(2)

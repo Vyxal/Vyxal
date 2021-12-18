@@ -2007,9 +2007,9 @@ Rotate Stack Right
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
 
 -------------------------------
-## ke (e, Eulers number)
+## ke (e, Euler's number)
 
-2.718281828459045 (math.e, Eulers number)
+2.718281828459045 (math.e, Euler's number)
 
 -------------------------------
 ## kf (Fizz)
@@ -2500,18 +2500,18 @@ Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 
 - num a: `is_perfect_square(a)`
 -------------------------------
-## ∆e (Euler's raised to power a)
+## ∆e (Euler's Number (e) raised to power a)
 
-Get the value of Euler's numberraised to the power of a
+Get the value of Euler's number (e) raised to the power of a
 
 ### Overloads
 
 - num a: `e ** a`
 - str a: `simplify expression a`
 -------------------------------
-## ∆E ((Euler's Number Raised to Power a) - 1)
+## ∆E ((Euler's Number (e) Raised to Power a) - 1)
 
-Get the value of Euler's number raised to the power of a minus 1
+Get the value of Euler's number (e) raised to the power of a minus 1
 
 ### Overloads
 
@@ -2622,18 +2622,18 @@ Get the nth digit of pi
 
 - num a: `nth_digit_of_pi(a)`
 -------------------------------
-## ∆Ė (N Digits of Euler's Number / Sympy Evaluate)
+## ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
 
-Get the first n digits of Eulter's number / evaluate an expression as sympy
+Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
 
 ### Overloads
 
 - num a: `First n digits of e`
 - str a: `evaluate(a)`
 -------------------------------
-## ∆ė (Nth Digit of Euler's Number)
+## ∆ė (Nth Digit of Euler's Number (e))
 
-Get the nth digit of euler's number
+Get the nth digit of euler's number (e)
 
 ### Overloads
 
