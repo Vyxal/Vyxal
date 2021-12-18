@@ -13,18 +13,18 @@ import textwrap
 import types
 from typing import Any, List, Union
 
+import numpy
 import sympy
 from sympy.parsing.sympy_parser import (
     convert_xor,
     implicit_multiplication_application,
     standard_transformations,
 )
-import numpy
 
+import vyxal.dictionary
 import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-import vyxal.dictionary
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -696,10 +696,16 @@ def uncompress_dict(source: str) -> str:
     while characters:
         char = characters.popleft()
         if escaped:
+            if temp_scc:
+                pos = vyxal.encoding.compression.find(temp_scc)
+                if pos < len(vyxal.dictionary.small_dictionary):
+                    ret += vyxal.dictionary.small_dictionary[pos]
+                temp_scc = ""
             if char not in vyxal.encoding.compression:
                 ret += "\\"
             ret += char
             escaped = False
+
         elif char == "\\":
             escaped = True
         elif char in vyxal.encoding.compression:
@@ -777,7 +783,9 @@ def vyxalify(value: Any) -> Any:
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (float, complex, numpy.number)):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (int, sympy.Rational, str, LazyList)):
+    elif isinstance(
+        value, (int, sympy.Rational, str, LazyList, types.FunctionType)
+    ):
         return value
     elif isinstance(value, list):
         return list(map(vyxalify, value))
