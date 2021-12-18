@@ -800,7 +800,7 @@ def e_digits(lhs, ctx):
     (str) -> evaluate as sympy
     """
     if vy_type(lhs) == NUMBER_TYPE:
-        estr = str(sympy.N(sympy.E, int(lhs) + 1))
+        estr = str(sympy.N(sympy.E, int(lhs) + 2))
         estr = estr[0] + estr[2:-1]
         return LazyList(map(int, estr))
     elif vy_type(lhs) is str:
