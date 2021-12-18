@@ -3493,12 +3493,14 @@
   description: Get the value of e raised to the power of a minus 1
   overloads:
     num: (e ** a) - 1
+    str: expand expression a
   vectorise: true
   tests:
     - "[0] : 0"
     - "[1] : 1.718281828459045"
     - "[2] : 6.38905609893065"
     - "[3] : 19.085536923187668"
+    - "['(x + 1)^2'] : 'x**2 + 2*x + 1'"
 
 - element: "∆L"
   name: Natural Logarithm
@@ -3695,6 +3697,17 @@
     - "[8] : 5"
     - "[9] : 3"
 
+- element: "∆Ė"
+  name: N Digits of E / Sympy Evaluate
+  arity: 1
+  description: Get the first n digits of e / evaluate an expression as sympy
+  overloads:
+    num: First n digits of e
+    str: evaluate(a)
+  vectorise: true
+  tests:
+    - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 1], [2, 1, 7], 25]"
+
 - element: "∆ė"
   name: nth Digit of e
   arity: 1
@@ -3709,6 +3722,7 @@
     - "[3] : 8"
     - "[4] : 2"
     - "[5] : 8"
+
 - element: "∆f"
   name: nth Fibonacci Number
   arity: 1

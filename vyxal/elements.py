@@ -278,6 +278,7 @@ def apply_at(lhs, rhs, other, ctx):
 def arccos(lhs, ctx):
     """Element ∆C
     (num) -> arccos(lhs)
+    (str) -> arccos(expression)
     """
 
     ts = vy_type(lhs)
@@ -796,11 +797,14 @@ def dyadic_minimum(lhs, rhs, ctx):
 def e_digits(lhs, ctx):
     """Element ∆Ė
     (int) -> e_digits(a)
+    (str) -> evaluate as sympy
     """
     if vy_type(lhs) == NUMBER_TYPE:
         estr = str(sympy.N(sympy.E, int(lhs) + 1))
         estr = estr[0] + estr[2:-1]
         return LazyList(map(int, estr))
+    elif vy_type(lhs) is str:
+        return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
 
