@@ -2191,17 +2191,17 @@ k□ (Directions)
     num a: is_perfect_square(a)
     otherwise: vectorise
 -------------------------------
-∆e (e raised to power a)
+∆e (Euler's raised to power a)
 
-- Get the value of e raised to the power of a
+- Get the value of Euler's numberraised to the power of a
 
     num a: e ** a
     str a: simplify expression a
     otherwise: vectorise
 -------------------------------
-∆E ((e raised to power a) - 1)
+∆E ((Euler's Number Raised to Power a) - 1)
 
-- Get the value of e raised to the power of a minus 1
+- Get the value of Euler's number raised to the power of a minus 1
 
     num a: (e ** a) - 1
     str a: expand expression a
@@ -2296,17 +2296,17 @@ k□ (Directions)
     num a: nth_digit_of_pi(a)
     otherwise: vectorise
 -------------------------------
-∆Ė (N Digits of E / Sympy Evaluate)
+∆Ė (N Digits of Euler's Number / Sympy Evaluate)
 
-- Get the first n digits of e / evaluate an expression as sympy
+- Get the first n digits of Eulter's number / evaluate an expression as sympy
 
     num a: First n digits of e
     str a: evaluate(a)
     otherwise: vectorise
 -------------------------------
-∆ė (nth Digit of e)
+∆ė (Nth Digit of Euler's Number)
 
-- Get the nth digit of e
+- Get the nth digit of euler's number
 
     num a: nth_digit_of_e(a)
     otherwise: vectorise

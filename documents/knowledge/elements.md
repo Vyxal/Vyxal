@@ -2500,18 +2500,18 @@ Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 
 - num a: `is_perfect_square(a)`
 -------------------------------
-## ∆e (e raised to power a)
+## ∆e (Euler's raised to power a)
 
-Get the value of e raised to the power of a
+Get the value of Euler's numberraised to the power of a
 
 ### Overloads
 
 - num a: `e ** a`
 - str a: `simplify expression a`
 -------------------------------
-## ∆E ((e raised to power a) - 1)
+## ∆E ((Euler's Number Raised to Power a) - 1)
 
-Get the value of e raised to the power of a minus 1
+Get the value of Euler's number raised to the power of a minus 1
 
 ### Overloads
 
@@ -2622,18 +2622,18 @@ Get the nth digit of pi
 
 - num a: `nth_digit_of_pi(a)`
 -------------------------------
-## ∆Ė (N Digits of E / Sympy Evaluate)
+## ∆Ė (N Digits of Euler's Number / Sympy Evaluate)
 
-Get the first n digits of e / evaluate an expression as sympy
+Get the first n digits of Eulter's number / evaluate an expression as sympy
 
 ### Overloads
 
 - num a: `First n digits of e`
 - str a: `evaluate(a)`
 -------------------------------
-## ∆ė (nth Digit of e)
+## ∆ė (Nth Digit of Euler's Number)
 
-Get the nth digit of e
+Get the nth digit of euler's number
 
 ### Overloads
 

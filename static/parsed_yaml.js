@@ -1768,14 +1768,14 @@ Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 num a -> is_perfect_square(a)
 `
 codepage_descriptions[101] += `
-∆e (e raised to power a)
-Get the value of e raised to the power of a
+∆e (Euler's raised to power a)
+Get the value of Euler's numberraised to the power of a
 num a -> e ** a
 str a -> simplify expression a
 `
 codepage_descriptions[69] += `
-∆E ((e raised to power a) - 1)
-Get the value of e raised to the power of a minus 1
+∆E ((Euler's Number Raised to Power a) - 1)
+Get the value of Euler's number raised to the power of a minus 1
 num a -> (e ** a) - 1
 str a -> expand expression a
 `
@@ -1845,14 +1845,14 @@ Get the nth digit of pi
 num a -> nth_digit_of_pi(a)
 `
 codepage_descriptions[187] += `
-∆Ė (N Digits of E / Sympy Evaluate)
-Get the first n digits of e / evaluate an expression as sympy
+∆Ė (N Digits of Euler's Number / Sympy Evaluate)
+Get the first n digits of Eulter's number / evaluate an expression as sympy
 num a -> First n digits of e
 str a -> evaluate(a)
 `
 codepage_descriptions[144] += `
-∆ė (nth Digit of e)
-Get the nth digit of e
+∆ė (Nth Digit of Euler's Number)
+Get the nth digit of euler's number
 num a -> nth_digit_of_e(a)
 `
 codepage_descriptions[102] += `

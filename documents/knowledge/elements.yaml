@@ -3474,9 +3474,9 @@
     - "[1.5] : 0"
 
 - element: "∆e"
-  name: e raised to power a
+  name: Euler's raised to power a
   arity: 1
-  description: Get the value of e raised to the power of a
+  description: Get the value of Euler's numberraised to the power of a
   overloads:
     num: e ** a
     str: simplify expression a
@@ -3488,9 +3488,9 @@
     - "[3] : 20.085536923187668"
 
 - element: "∆E"
-  name: (e raised to power a) - 1
+  name: (Euler's Number Raised to Power a) - 1
   arity: 1
-  description: Get the value of e raised to the power of a minus 1
+  description: Get the value of Euler's number raised to the power of a minus 1
   overloads:
     num: (e ** a) - 1
     str: expand expression a
@@ -3698,9 +3698,9 @@
     - "[9] : 3"
 
 - element: "∆Ė"
-  name: N Digits of E / Sympy Evaluate
+  name: N Digits of Euler's Number / Sympy Evaluate
   arity: 1
-  description: Get the first n digits of e / evaluate an expression as sympy
+  description: Get the first n digits of Eulter's number / evaluate an expression as sympy
   overloads:
     num: First n digits of e
     str: evaluate(a)
@@ -3709,9 +3709,9 @@
     - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
 
 - element: "∆ė"
-  name: nth Digit of e
+  name: Nth Digit of Euler's Number
   arity: 1
-  description: Get the nth digit of e
+  description: Get the nth digit of euler's number
   overloads:
     num: nth_digit_of_e(a)
   vectorise: true
