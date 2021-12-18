@@ -15662,7 +15662,7 @@ def test_nthDigitofPi():
 def test_NDigitsofESympyEvaluate():
 
     stack = [vyxalify(item) for item in [[0, 1, 2, '5 ** 2']]]
-    expected = vyxalify([[2], [2, 1], [2, 1, 7], 25])
+    expected = vyxalify([[2], [2, 7], [2, 7, 1], 25])
     ctx = Context()
     
     ctx.stacks.append(stack)

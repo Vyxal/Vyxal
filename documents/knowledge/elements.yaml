@@ -3706,7 +3706,7 @@
     str: evaluate(a)
   vectorise: true
   tests:
-    - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 1], [2, 1, 7], 25]"
+    - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
 
 - element: "∆ė"
   name: nth Digit of e
