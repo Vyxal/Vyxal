@@ -284,31 +284,33 @@ def arccos(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.acos(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.acos(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
 def arcsin(lhs, ctx):
     """Element ∆S
     (num) -> arcsin(a)
+    (str) -> arcsin(expression)
     """
 
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.asin(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.asin(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
 def arctan(lhs, ctx):
     """Element ∆T
     (num) -> arctan(a)
+    (str) -> arctan(expression)
     """
 
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.atan(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.atan(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -609,12 +611,13 @@ def copy_sign(lhs, rhs, ctx):
 def cosine(lhs, ctx):
     """Element ∆c
     (num) -> cosine(a)
+    (str) -> cosine(expression)
     """
 
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs)),
-        str: lambda: sympy.nsimplify(sympy.cos(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.cos(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -3054,12 +3057,13 @@ def sign_of(lhs, ctx):
 def sine(lhs, ctx):
     """Element ∆s
     (num) -> sin(a)
+    (str) -> sin(expression)
     """
 
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs)),
-        str: lambda: sympy.nsimplify(sympy.sin(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.sin(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -3376,12 +3380,13 @@ def tail_remove(lhs, ctx):
 def tangent(lhs, ctx):
     """Element ∆t
     (num) -> tan(a)
+    (str) -> tan(expression)
     """
 
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs)),
-        str: lambda: sympy.nsimplify(sympy.tan(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.tan(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
