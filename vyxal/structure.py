@@ -16,7 +16,6 @@ class Structure:
 
     def transpile(self) -> str:
         """Return the transpiled version of the structure"""
-
         return "{}"
 
     def __repr__(self):
