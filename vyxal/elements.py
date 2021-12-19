@@ -443,7 +443,7 @@ def brackets_balanced(lhs, ctx):
     brackets = {"(": ")", "[": "]", "{": "}", "<": ">"}
     temp = []
     for char in lhs:
-        if char in brackets.keys():
+        if char in brackets:
             temp.append(brackets[char])
         elif char in brackets.values():
             if temp and temp[-1] != char:
