@@ -13,18 +13,18 @@ import textwrap
 import types
 from typing import Any, List, Union
 
+import numpy
 import sympy
 from sympy.parsing.sympy_parser import (
     convert_xor,
     implicit_multiplication_application,
     standard_transformations,
 )
-import numpy
 
+import vyxal.dictionary
 import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
-import vyxal.dictionary
 from vyxal.LazyList import *
 
 NUMBER_TYPE = "number"
@@ -35,7 +35,6 @@ VyList = Union[list, LazyList]
 def case_of(value: str) -> int:
     """Returns 1 for all uppercase, 0 for all lowercase, and -1 for
     mixed case."""
-
     if all(map(lambda x: x.isupper(), value)):
         return 1
     elif all(map(lambda x: x.islower(), value)):
@@ -72,7 +71,6 @@ def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
 
 def deep_copy(value: Any) -> Any:
     """Because lists and lazylists use memory references. Frick them."""
-
     if type(value) not in (list, LazyList):
         return value  # because primitives are all like "ooh look at me
         # I don't have any fancy memory references because I'm an epic
@@ -83,7 +81,6 @@ def deep_copy(value: Any) -> Any:
 
 def dict_to_list(dictionary: dict) -> List[Any]:
     """Returns a dictionary as [[key, value]]"""
-
     return [[str(key), dictionary[key]] for key in dictionary]
 
 
@@ -102,7 +99,6 @@ def enumerate_md(haystack: VyList, index_stack: List[int] = []) -> VyList:
     """
     Gets all the multi-dimensional indicies of haystack
     """
-
     for i, item in enumerate(haystack):
         if type(item) in (list, LazyList):
             yield from enumerate_md(item, index_stack + [i])
@@ -118,7 +114,6 @@ def fixed_point(
 ) -> List[Any]:
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
-
     previous = None
     current = simplify(initial)
 
@@ -155,7 +150,6 @@ def format_string(pattern: str, data: Union[str, VyList]) -> str:
     a string, then the string is reused if there is more than one % to
     be formatted. Otherwise (the data is a list), % are cyclically
     substituted"""
-
     ret = ""
     index = 0
     f_index = 0
@@ -176,7 +170,6 @@ def format_string(pattern: str, data: Union[str, VyList]) -> str:
 def from_base_alphabet(value: str, alphabet: str) -> int:
     """Returns value in base 10 using base len(alphabet)
     [bijective base]"""
-
     ret = 0
     for digit in value:
         ret = len(alphabet) * ret + alphabet.find(digit)
@@ -197,7 +190,6 @@ def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
 def get_input(ctx: Context) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
-
     if ctx.use_top_input:
         if ctx.inputs[0][0]:
             ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
@@ -316,14 +308,12 @@ def keep(haystack: Any, needle: Any) -> Any:
 
 def make_equation(eqn: str) -> sympy:
     """Returns a sympy equation from a string"""
-
     eqn = eqn.split("=")
     return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
 
 
 def make_expression(expr: str) -> sympy:
     """Turns a string into a nice sympy expression"""
-
     transformations = standard_transformations + (
         implicit_multiplication_application,
         convert_xor,
@@ -413,7 +403,6 @@ def mold(
     VyList
     The content, molded into the shape.
     """
-
     final = []
     original, content = itertools.tee(content)
     for item in shape:
@@ -450,7 +439,6 @@ def mold_without_repeat(
     VyList
     The content, molded into the shape.
     """
-
     final = []
     _, content = itertools.tee(content)
     for item in shape:
@@ -526,7 +514,6 @@ def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
 def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
-
     if type(item) in [int, sympy.Rational, str] or is_sympy(item):
         return SCALAR_TYPE
     assert type(item) in [list, LazyList]
@@ -568,7 +555,6 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
 
     *args does NOT contain ctx
     """
-
     if function.__name__.startswith("_lambda"):
         ret = function(list(args)[::-1], function, len(args), ctx=ctx)
         if len(ret):
@@ -643,7 +629,6 @@ def takes_ctx(function: types.FunctionType) -> bool:
 
 def to_base_digits(value: int, base: int) -> List[int]:
     """Returns value in base 'base' from base 10 as a list of digits"""
-
     ret = []
     n = value
 
@@ -656,7 +641,6 @@ def to_base_digits(value: int, base: int) -> List[int]:
 
 def to_base_alphabet(value: int, alphabet: str) -> str:
     """to_base_digit with a custom base"""
-
     temp = to_base_digits(value, len(alphabet))
     return "".join([alphabet[i] for i in temp])
 
@@ -712,10 +696,16 @@ def uncompress_dict(source: str) -> str:
     while characters:
         char = characters.popleft()
         if escaped:
+            if temp_scc:
+                pos = vyxal.encoding.compression.find(temp_scc)
+                if pos < len(vyxal.dictionary.small_dictionary):
+                    ret += vyxal.dictionary.small_dictionary[pos]
+                temp_scc = ""
             if char not in vyxal.encoding.compression:
                 ret += "\\"
             ret += char
             escaped = False
+
         elif char == "\\":
             escaped = True
         elif char in vyxal.encoding.compression:
@@ -766,7 +756,6 @@ def urlify(item: str) -> str:
 def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
-
     if ctx.online:
         try:
             t = ast.literal_eval(item)
@@ -788,14 +777,15 @@ def vy_eval(item: str, ctx: Context) -> Any:
 
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
-
     if isinstance(value, sympy.core.numbers.Integer):
         return int(value)
     elif is_sympy(value):
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (float, complex, numpy.number)):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (int, sympy.Rational, str, LazyList)):
+    elif isinstance(
+        value, (int, sympy.Rational, str, LazyList, types.FunctionType)
+    ):
         return value
     elif isinstance(value, list):
         return list(map(vyxalify, value))

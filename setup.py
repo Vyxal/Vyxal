@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="vyxal",
-    version="2.7.0",
+    version="2.7.1",
     description="The Vyxal Programming Language",
     url="https://github.com/Vyxal/Vyxal",
     author="Vyxal Organisation",

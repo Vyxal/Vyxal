@@ -37,7 +37,6 @@ class Context:
 
     def copy(self):
         """Copy itself so a modified version can be passed elsewhere."""
-
         ctx = Context()
 
         ctx.context_values = self.context_values

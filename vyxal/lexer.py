@@ -43,7 +43,6 @@ class Token:
 
     def __str__(self) -> str:
         """Give a nicely formatted representation of the token"""
-
         return f"{self.name.value}: {self.value}"
 
     def __repr__(self) -> str:
@@ -63,7 +62,6 @@ def tokenise(source_str: str) -> list[Token]:
 
     Returns a list of Token objects.
     """
-
     tokens = []
     source: collections.deque[str] = collections.deque(source_str)
 

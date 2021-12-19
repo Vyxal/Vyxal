@@ -13802,7 +13802,7 @@ def test_PerfectSquare():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_eraisedtopowera():
+def test_EulersNumbereraisedtopowera():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(1)
@@ -13888,7 +13888,7 @@ def test_eraisedtopowera():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_eraisedtopowera_1():
+def test_EulersNumbereRaisedtoPowera_1():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(0)
@@ -13955,6 +13955,27 @@ def test_eraisedtopowera_1():
 
     stack = [vyxalify(item) for item in [3]]
     expected = vyxalify(19.085536923187668)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆E')
+    # print('∆E', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['(x + 1)^2']]
+    expected = vyxalify('x**2 + 2*x + 1')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -15638,7 +15659,30 @@ def test_nthDigitofPi():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_nthDigitofe():
+def test_NDigitsofEulersNumbereSympyEvaluate():
+
+    stack = [vyxalify(item) for item in [[0, 1, 2, '5 ** 2']]]
+    expected = vyxalify([[2], [2, 7], [2, 7, 1], 25])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆Ė')
+    # print('∆Ė', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+def test_NthDigitofEulersNumbere():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(2)

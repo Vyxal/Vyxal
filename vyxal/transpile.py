@@ -19,7 +19,6 @@ def lambda_wrap(
 
     elements pass their arity on to the lambda
     """
-
     if len(branch) == 1:
         if isinstance(branch[0], vyxal.structure.GenericStatement):
             return vyxal.structure.Lambda(
@@ -147,7 +146,6 @@ def transpile_structure(
     struct: vyxal.structure.Structure, indent: int, dict_compress: bool = True
 ) -> str:
     """Transpile a single vyxal.structure."""
-
     if isinstance(struct, vyxal.structure.GenericStatement):
         return transpile_single(
             struct.branches[0][0], indent, dict_compress=dict_compress
@@ -446,9 +444,9 @@ def transpile_structure(
     if isinstance(struct, vyxal.structure.RecurseStatement):
         if struct.parent_structure == vyxal.structure.IfStatement:
             return indent_str("pass", indent)
-        elif (
-            struct.parent_structure == vyxal.structure.ForLoop
-            or struct.parent_structure == vyxal.structure.WhileLoop
+        elif struct.parent_structure in (
+            vyxal.structure.ForLoop,
+            vyxal.structure.WhileLoop,
         ):
             return indent_str("continue", indent)
         elif struct.parent_structure == vyxal.structure.FunctionDef:
@@ -457,10 +455,10 @@ def transpile_structure(
             )
         elif struct.parent_structure == vyxal.structure.Lambda:
             return indent_str("stack += this(stack, this, ctx=ctx)", indent)
-        elif (
-            struct.parent_structure == vyxal.structure.MonadicModifier
-            or struct.parent_structure == vyxal.structure.DyadicModifier
-            or struct.parent_structure == vyxal.structure.TriadicModifier
+        elif struct.parent_structure in (
+            vyxal.structure.MonadicModifier,
+            vyxal.structure.DyadicModifier,
+            vyxal.structure.TriadicModifier,
         ):
             return indent_str(
                 "stack += ctx.function_stack[-2](stack, ctx.function_stack[-2],"

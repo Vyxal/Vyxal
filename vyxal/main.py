@@ -60,8 +60,10 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
     J    Print the entire stack, separated by newlines.
-    t   Lists are considered truthy if they are not empty
-    P   Print lists as their python representation
+    t    Lists are considered truthy if they are not empty
+    P    Print lists as their python representation
+    E    Evaluate stdout as JavaScript (online interpreter only)
+    Ḣ    Render stdout as HTML (online interpreter only)
 """
         vy_print(flag_string, ctx=ctx)
         sys.exit(0)

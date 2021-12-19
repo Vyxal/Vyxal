@@ -66,7 +66,6 @@ def absolute_difference(lhs, rhs, ctx):
     (num, num) -> abs(a - b)
     (any, str) -> Transpose a (filling with b), join on newlines
     """
-
     ts = vy_type(lhs, rhs)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
         return abs(lhs - rhs)
@@ -81,7 +80,6 @@ def add(lhs, rhs, ctx):
     (str, num) -> lhs + str(rhs)
     (str, str) -> lhs + rhs
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
@@ -95,7 +93,6 @@ def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
     """
-
     all_without_replacement = map(
         lambda x: itertools.combinations(lhs, x), range(1, len(lhs) + 1)
     )
@@ -116,7 +113,6 @@ def all_combos_with_replacement(lhs, ctx):
     """Element Þ×
     (any) -> all combinations with replacement of lhs (all lengths)
     """
-
     all_with_replacement = map(
         lambda x: itertools.combinations_with_replacement(lhs, x),
         range(1, len(lhs) + 1),
@@ -164,7 +160,6 @@ def all_equal(lhs, ctx):
     """Element ≈
     (any) -> are all items in a the same?
     """
-
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return 1
@@ -198,7 +193,6 @@ def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
     """
-
     lhs = iterable(lhs, ctx=ctx)
 
     @lazylist
@@ -226,7 +220,6 @@ def all_unique(lhs, ctx):
     """Element Þu
     (any) -> Are all elements of a unique?
     """
-
     return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
 
 
@@ -264,7 +257,6 @@ def apply_at(lhs, rhs, other, ctx):
     (lst, lst, fun) -> Map a function to elements of a list whose
                        indices are in another list
     """
-
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
@@ -278,36 +270,36 @@ def apply_at(lhs, rhs, other, ctx):
 def arccos(lhs, ctx):
     """Element ∆C
     (num) -> arccos(lhs)
+    (str) -> arccos(expression)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.acos(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.acos(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
 def arcsin(lhs, ctx):
     """Element ∆S
     (num) -> arcsin(a)
+    (str) -> arcsin(expression)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.asin(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.asin(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
 def arctan(lhs, ctx):
     """Element ∆T
     (num) -> arctan(a)
+    (str) -> arctan(expression)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs)),
-        (str): lambda: sympy.nsimplify(sympy.atan(make_expression(lhs))),
+        (str): lambda: str(sympy.nsimplify(sympy.atan(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -315,7 +307,6 @@ def assign_iterable(lhs, rhs, other, ctx):
     """Element Ȧ
     (any, num, any) -> a but item b (0-indexed) is set to c
     """
-
     lhs = iterable(lhs, ctx=ctx)
     if type(rhs) is str:
         rhs = chr_ord(rhs, ctx)
@@ -362,7 +353,6 @@ def bitwise_and(lhs, rhs, ctx):
     (str, num) -> a.center(b)
     (str, str) -> a.center(len(b) - len(a))
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs & rhs,
@@ -379,7 +369,6 @@ def bitwise_or(lhs, rhs, ctx):
     (str, num) -> a[:b]+a[b+1:]
     (str, str) -> merge_join(a,b)
     """
-
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
         suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
@@ -401,7 +390,6 @@ def bitwise_not(lhs, ctx):
     (num) -> ~a
     (str) -> any_upper(a)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: ~lhs,
@@ -416,7 +404,6 @@ def bitwise_xor(lhs, rhs, ctx):
     (str, num) -> a + " " * b
     (str, str) -> levenshtein_distance(a,b)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ^ rhs,
@@ -430,7 +417,6 @@ def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
     """
-
     if vy_type(lhs, simple=True) is list:
         if ctx.truthy_lists:
             return any_true(lhs, ctx)
@@ -457,7 +443,7 @@ def brackets_balanced(lhs, ctx):
     brackets = {"(": ")", "[": "]", "{": "}", "<": ">"}
     temp = []
     for char in lhs:
-        if char in brackets.keys():
+        if char in brackets:
             temp.append(brackets[char])
         elif char in brackets.values():
             if temp and temp[-1] != char:
@@ -511,7 +497,6 @@ def chr_ord(lhs, ctx):
     (num) -> chr(a)
     (str) -> ord(a)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: chr(int(lhs)),
@@ -526,7 +511,6 @@ def combinations_with_replacement(lhs, rhs, ctx):
     (fun, any) -> apply lhs on rhs until the result does not change. Collects intermediate values
     (any, fun) -> apply rhs on lhs until the result does not change. Collects intermediate values
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, ts[1]): lambda: vyxalify(
@@ -555,7 +539,6 @@ def contains(lhs, rhs, ctx):
     """Element c
     (any, any) -> count of a in b
     """
-
     lhs = iterable(lhs, ctx=ctx)
     for item in lhs:
         if item == rhs:
@@ -574,7 +557,6 @@ def coords_deepmap(lhs, rhs, ctx):
 
     https://chat.stackexchange.com/transcript/message/59662626#59662626
     """
-
     lhs, rhs = (lhs, rhs) if type(rhs) is types.FunctionType else (rhs, lhs)
     # arrange so that lhs is always the list and rhs is always the
     # function
@@ -599,7 +581,6 @@ def copy_sign(lhs, rhs, ctx):
     """Element ∆±
     (num, num) -> math.copysign(a, b)
     """
-
     return multiply(
         vy_abs(lhs, ctx), (-1 if less_than(rhs, 0, ctx) else 1), ctx
     )
@@ -608,12 +589,12 @@ def copy_sign(lhs, rhs, ctx):
 def cosine(lhs, ctx):
     """Element ∆c
     (num) -> cosine(a)
+    (str) -> cosine(expression)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs)),
-        str: lambda: sympy.nsimplify(sympy.cos(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.cos(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -621,7 +602,6 @@ def count(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
-
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
@@ -634,7 +614,6 @@ def cumulative_sum(lhs, ctx):
     """Element ¦
     (any) -> cumulative sum of a
     """
-
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
 
 
@@ -681,7 +660,6 @@ def decrement(lhs, ctx):
     (num) -> a - 1
     (str) -> a + "-"
     """
-
     ts = vy_type(lhs)
     return {NUMBER_TYPE: lambda: lhs - 1, str: lambda: lhs + "-"}.get(
         ts, lambda: vectorise(decrement, lhs, ctx=ctx)
@@ -726,7 +704,6 @@ def divide(lhs, rhs, ctx):
     (str, num) -> a split into b even length pieces, possibly with an extra part
     (str, str) -> split a on b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
@@ -744,7 +721,6 @@ def divisors(lhs, ctx):
     (str) -> all substrings of a that occur more than once
     (lst) -> prefixes(a) # Prefixes of a
     """
-
     ts = vy_type(lhs)
     if ts == NUMBER_TYPE:
         return sympy.divisors(lhs)
@@ -765,7 +741,6 @@ def divisor_sum(lhs, ctx):
     """Element ∆K
     (num) -> sum of proper divisors of a
     """
-
     return vy_sum(divisors(lhs, ctx)[:-1], ctx)
 
 
@@ -773,7 +748,6 @@ def dot_product(lhs, rhs, ctx):
     """Element Þ•
     Return the dot product of lhs and rhs
     """
-
     return vy_sum(multiply(lhs, rhs, ctx), ctx)
 
 
@@ -781,7 +755,6 @@ def dyadic_maximum(lhs, rhs, ctx):
     """Element ∴
     (any, any) -> max(a, b)
     """
-
     return lhs if strict_greater_than(lhs, rhs, ctx) else rhs
 
 
@@ -789,18 +762,20 @@ def dyadic_minimum(lhs, rhs, ctx):
     """Element ∵
     (any, any) -> min(a, b)
     """
-
     return lhs if strict_less_than(lhs, rhs, ctx) else rhs
 
 
 def e_digits(lhs, ctx):
     """Element ∆Ė
     (int) -> e_digits(a)
+    (str) -> evaluate as sympy
     """
     if vy_type(lhs) == NUMBER_TYPE:
-        estr = str(sympy.N(sympy.E, int(lhs) + 1))
+        estr = str(sympy.N(sympy.E, int(lhs) + 2))
         estr = estr[0] + estr[2:-1]
         return LazyList(map(int, estr))
+    elif vy_type(lhs) is str:
+        return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
 
@@ -830,7 +805,6 @@ def euclidean_distance(lhs, rhs, ctx):
     """Element ∆d
     (num, num) -> distance between a and b
     """
-
     return square_root(
         vy_sum(exponent(subtract(lhs, rhs, ctx), 2, ctx), ctx), ctx
     )
@@ -872,7 +846,6 @@ def exclusive_one_range(lhs, ctx):
     (num) -> range(1, a)
     (str) -> a.lower()
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: LazyList(range(1, int(lhs))),
@@ -910,7 +883,6 @@ def expe(lhs, ctx):
     (num) -> e ** a
     (str) -> simplify expression a
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs),
@@ -923,7 +895,6 @@ def expe_minus_1(lhs, ctx):
     (num) -> (e ** a) - 1
     (str) -> expand expression a
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.exp(lhs) - 1,
@@ -938,7 +909,6 @@ def exponent(lhs, rhs, ctx):
     (str, num) -> append a[0] to a until a is length b (spaces if a is empty)
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
@@ -955,7 +925,6 @@ def factorial(lhs, ctx):
     (num) -> factorial(a) (math.gamma(a + 1))
     (str) -> a.sentence_case()
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: vyxalify(sympy.factorial(abs(lhs))),
@@ -1011,7 +980,6 @@ def find(lhs, rhs, ctx):
     (any, any) -> a.find(b)
     (any, fun) -> truthy indices of mapping b over a
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
         pos = 0
@@ -1047,7 +1015,6 @@ def first_integer(lhs, ctx):
     (lst) -> "".join(a)
     (fun) -> first integer x where a(x) is truthy
     """
-
     if isinstance(lhs, types.FunctionType):
         value = 1
 
@@ -1088,7 +1055,6 @@ def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
     """
-
     result = lhs.split("\n")
     for i in range(len(result)):
         result[i] += invert_brackets(result[i])[::-1]
@@ -1109,7 +1075,6 @@ def foldl_columns(lhs, rhs, ctx):
     """Element ÞC
     (lst, fun) -> reduce the columns of a by function b
     """
-
     lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
     lhs = transpose(iterable(lhs, ctx=ctx), ctx=ctx)
     return [foldl(rhs, col, ctx=ctx) for col in lhs]
@@ -1119,7 +1084,6 @@ def foldl_rows(lhs, rhs, ctx):
     """Element ÞR
     (lst, fun) -> reduce the rows of a by function b
     """
-
     lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
 
     return [foldl(rhs, row, ctx=ctx) for row in iterable(lhs, ctx=ctx)]
@@ -1132,7 +1096,6 @@ def function_call(lhs, ctx):
     (str) -> vyxal exec lhs
     (lst) -> vectorised not
     """
-
     # Modifies lhs, because lhs = stack
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
@@ -1150,7 +1113,6 @@ def from_base(lhs, rhs, ctx):
     """Element β
     Convert lhs from base rhs to base 10
     """
-
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
         return from_base_alphabet(lhs, rhs)
@@ -1170,7 +1132,6 @@ def gen_from_fn(lhs, rhs, ctx):
     (lst, num) -> every bth item of a
     (fun, lst) -> Generator from function a with initial vector b
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType not in ts:
         return {
@@ -1206,7 +1167,6 @@ def general_quadratic_solver(lhs, rhs, ctx):
     (str, num) -> evaluate single variable expression a with x=b
     (str, str) -> solve a and b simulatenously
     """
-
     ts = vy_type(lhs, rhs)
     x, y = sympy.symbols("x y")
     return {
@@ -1227,7 +1187,6 @@ def grade_up(lhs, ctx):
     (str) -> a.upper()
     (num) -> a + 2
     """
-
     ts = vy_type(lhs)
     return {(NUMBER_TYPE): lambda: lhs + 2, (str): lambda: lhs.upper()}.get(
         ts,
@@ -1246,7 +1205,6 @@ def grade_down(lhs, ctx):
     (str) -> a.lower()
     (num) -> a - 2
     """
-
     ts = vy_type(lhs)
     return {(NUMBER_TYPE): lambda: lhs - 2, (str): lambda: lhs.lower()}.get(
         ts,
@@ -1268,7 +1226,6 @@ def greater_than(lhs, rhs, ctx):
     (str, num) -> a > str(b)
     (str, str) -> a > b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
@@ -1285,7 +1242,6 @@ def greater_than_or_equal(lhs, rhs, ctx):
     (str, num) -> a ≥ str(b)
     (str, str) -> a ≥ b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs >= rhs)),
@@ -1300,7 +1256,6 @@ def group_consecutive(lhs, ctx):
     (lst) -> Group consecutive identical items
     (str) -> Group consecutive identical characters
     (num) -> Group consecutive identical digits"""
-
     typ = vy_type(lhs)
 
     if typ == NUMBER_TYPE:
@@ -1381,7 +1336,6 @@ def head_remove(lhs, ctx):
     (lst) -> a[1:] or [] if empty
     (str) -> a[1:] or '' if empty
     (num) -> Remove first digit or do nothing if <1"""
-
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else lhs
     if lhs < 1:
@@ -1397,7 +1351,6 @@ def inclusive_one_range(lhs, ctx):
     (num) -> range(1, a + 1)
     (str) -> a.uppercase()
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: LazyList(range(1, int(lhs) + 1)),
@@ -1440,7 +1393,6 @@ def index(lhs, rhs, ctx):
     (any, [x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
     (num, any) -> b[a] (Index)
     """
-
     ts = vy_type(lhs, rhs)
     lhs = deep_copy(lhs)
     if ts == (str, str):
@@ -1477,7 +1429,6 @@ def index_indices_or_cycle(lhs, rhs, ctx):
     """Element İ
     (any, lst) -> [a[item] for item in b]
     (any, fun) -> apply b on a and collect unique values"""
-
     if types.FunctionType in [type(lhs), type(rhs)]:
         # swap lhs and rhs such that rhs contains the function
         lhs, rhs = (rhs, lhs) if type(lhs) is types.FunctionType else (lhs, rhs)
@@ -1507,7 +1458,6 @@ def infinite_cardinals(_, ctx=None):
     """Element Þc
     infinite sequence of cardinals
     """
-
     return LazyList(map(num2words.num2words, itertools.count(1)))
 
 
@@ -1550,7 +1500,6 @@ def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
     """
-
     orig_type = type(lhs)
 
     prev = deep_copy(lhs)
@@ -1576,7 +1525,6 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     If `ind` is negative, the absolute value is used. If `ind` is greater than
     or equal to the LazyList's length, `other` is appended to the end.
     """
-
     lhs = iterable(lhs, ctx)
     assert vy_type(rhs) == NUMBER_TYPE
 
@@ -1615,7 +1563,6 @@ def integer_divide(lhs, rhs, ctx):
     (any, fun) -> Right reduce a by b (foldr)
     (fun, any) -> Right reduce b by a (foldr)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
@@ -1636,7 +1583,6 @@ def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
     (any) -> Join on spaces"""
-
     if vy_type(lhs) == NUMBER_TYPE:
         if lhs == 0:
             return []
@@ -1669,7 +1615,7 @@ def interleave(lhs, rhs, ctx):
             if i < len(rhs):
                 yield rhs[i]
 
-    if type(lhs) == type(rhs) == str:
+    if type(lhs) is type(rhs) is str:
         return "".join(f())
     else:
         return f()
@@ -1681,7 +1627,6 @@ def into_two(lhs, ctx):
     (str) -> equivlaent to `qp`
     (lst) -> split a list into two halves
     """
-
     ts = vy_type(lhs, simple=True)
     return {
         NUMBER_TYPE: lambda: " " * int(lhs),
@@ -1704,7 +1649,6 @@ def is_divisible(lhs, rhs, ctx):
     fourth overloads and a list of copies of the top of the stack
     otherwise, not a single value!
     """
-
     ts = vy_type(lhs, rhs)
 
     def helper(lhs, rhs):
@@ -1727,7 +1671,6 @@ def is_divisible_by_three(lhs, ctx):
     (num) -> a % 3 == 0
     (str) -> len(a) == 1
     """
-
     if vy_type(lhs) == NUMBER_TYPE:
         return int(lhs % 3 == 0)
     else:
@@ -1740,7 +1683,6 @@ def is_divisible_by_five(lhs, ctx):
     (num) -> a % 5 == 0
     (str) -> a, len(a)
     """
-
     # wrap in list because you might need to return more than 1 item
     if vy_type(lhs) == NUMBER_TYPE:
         return [int(lhs % 5 == 0)]
@@ -1763,7 +1705,6 @@ def is_falsey(lhs, ctx):
     """Element ċ
     (any) -> a != 1
     """
-
     return vectorised_not(equals(lhs, 1, ctx=ctx), ctx=ctx)
 
 
@@ -1774,7 +1715,6 @@ def is_prime(lhs, ctx):
              0 if all letters in a are lowercase,
             -1 if mixed case)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: int(sympy.ntheory.isprime(lhs)),
@@ -1801,7 +1741,6 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
-
     return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
 
 
@@ -1809,7 +1748,6 @@ def join_newlines(lhs, ctx):
     """Element ⁋
     (any) -> a.join("\n")
     """
-
     ret = []
     for n in iterable(lhs, ctx):
         if vy_type(n) in [list, LazyList]:
@@ -1826,7 +1764,6 @@ def left_bit_shift(lhs, rhs, ctx):
     (str, num) -> b.ljust(a)
     (str, str) -> a.ljust(len(b)-len(a))
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs << rhs,
@@ -1840,7 +1777,6 @@ def length(lhs, ctx):
     """Element L
     (any) -> len(a)
     """
-
     return len(iterable(lhs, ctx=ctx))
 
 
@@ -1851,7 +1787,6 @@ def less_than(lhs, rhs, ctx):
     (str, num) -> a < str(b)
     (str, str) -> a < b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
@@ -1868,7 +1803,6 @@ def less_than_or_equal(lhs, rhs, ctx):
     (str, num) -> a ≤ str(b)
     (str, str) -> a ≤ b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs <= rhs)),
@@ -1893,7 +1827,6 @@ def ljust(lhs, rhs, other, ctx):
                        # Collect the results of apply a on c while b(c)
                        # is truthy
     """
-
     ts = vy_type(lhs, rhs, other)
     return {
         (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: int(
@@ -1928,7 +1861,6 @@ def log_10(lhs, ctx):
     """Element ∆τ
     (num) -> log10(a)
     """
-
     return log_mold_multi(lhs, 10, ctx)
     # no I'm not lazy why do you think that don't think that I
     # would never just reuse vyxal functions for the sake of not
@@ -1939,7 +1871,6 @@ def log_2(lhs, ctx):
     """Element ∆l
     (num) -> log2(a)
     """
-
     return log_mold_multi(lhs, 2, ctx)
     # okay fine maybe I would. shut up
 
@@ -1952,7 +1883,6 @@ def log_mold_multi(lhs, rhs, ctx):
     (str, str) -> lhs.with_capitalisation_of(rhs)
     (lst, lst) -> lhs molded to the shape of rhs
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs)),
@@ -1967,7 +1897,6 @@ def lowest_common_multiple(lhs, rhs, ctx):
     """Element ∆Ŀ
     (num, num) -> lcm(a, b)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
@@ -1983,7 +1912,6 @@ def matrix_determinant(lhs, ctx):
     """Element ∆∆
     (mat) -> determinant(a)
     """
-
     lhs = pad_to_square(iterable(lhs, ctx=ctx))
     return sympy.det(sympy.Matrix(lhs))
 
@@ -1992,7 +1920,6 @@ def matrix_multiply(lhs, rhs, ctx):
     """Element ÞṀ
     (lst, lst) -> Matrix multiplication
     """
-
     rhs = transpose(rhs, ctx)
 
     return LazyList(
@@ -2004,7 +1931,6 @@ def max_by_function(lhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
-
     lhs, rhs = (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
@@ -2023,7 +1949,6 @@ def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
     """
-
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return []
@@ -2063,7 +1988,6 @@ def median(lhs, ctx):
     """Element ∆ṁ
     Return the median of a list - the middle item(s)
     """
-
     lhs = iterable(vy_sort(lhs, ctx), ctx=ctx)
     if len(lhs) % 2 == 0:
         return [lhs[len(lhs) // 2 - 1], lhs[len(lhs) // 2]]
@@ -2077,7 +2001,6 @@ def merge(lhs, rhs, ctx):
     (scl, lst) -> prepend a to b
     (lst, lst) -> merged a and b
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
@@ -2096,7 +2019,6 @@ def min_by_function(lhs, rhs, ctx):
     """Element Þ↓
     (lst, fun) -> Minimum value of a by applying b to each element
     """
-
     lhs, rhs = (lhs, rhs) if isinstance(rhs, types.FunctionType) else (rhs, lhs)
     lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
@@ -2139,7 +2061,6 @@ def mode(lhs, ctx):
     Most common item in a list.
     Equivalent to Ċ↑h
     """
-
     item_counts = collections.Counter(iterable(lhs, ctx=ctx))
     return item_counts.most_common(1)[0][0]
 
@@ -2151,7 +2072,6 @@ def modulo(lhs, rhs, ctx):
     (str, num) -> (a split into b equal pieces)[-1]
     (str, str) -> a.format(b)
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
@@ -2176,7 +2096,6 @@ def modulo_3(lhs, ctx):
 def mold_special(lhs, rhs, ctx):
     """Element Þṁ
     (lst, lst) -> mold, but don't reuse items"""
-
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     return mold_without_repeat(lhs, rhs)
 
@@ -2185,7 +2104,6 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input (deep flattens first)
     """
-
     lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
@@ -2197,7 +2115,6 @@ def monadic_minimum(lhs, ctx):
     """Element g
     (any) -> Smallest item of a (deep flattens)
     """
-
     lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
@@ -2210,7 +2127,6 @@ def multi_dimensional_search(lhs, rhs, ctx):
     (lst, any) -> Find the first occurrence of a in b and return as a
                   multidimensional index
     """
-
     lhs = iterable(lhs, ctx=ctx)
     indexes = enumerate_md(lhs)
 
@@ -2228,7 +2144,6 @@ def multi_dimensional_index(lhs, rhs, ctx):
     (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
                   a as initial value
     """
-
     for item in iterable(rhs, ctx=ctx):
         lhs = index(lhs, item, ctx)
 
@@ -2260,7 +2175,6 @@ def multiply(lhs, rhs, ctx):
     (str, num) -> repeat a b times
     (str, str) -> ring translate b according to a
     """
-
     ts = vy_type(lhs, rhs)
 
     if ts[0] is types.FunctionType:
@@ -2284,7 +2198,6 @@ def natural_log(lhs, ctx):
     (num) -> ln(a)
     (str) -> inverse of expression a
     """
-
     x, y = sympy.symbols("x, y")
     ts = vy_type(lhs)
     return {
@@ -2303,7 +2216,6 @@ def n_choose_r(lhs, rhs, ctx):
     (str, num) -> [random.choice(a) for _ in range(b)]
     (str, str) -> does a have the same characters as b
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.binomial(lhs, rhs),
@@ -2324,7 +2236,6 @@ def n_pick_r(lhs, rhs, ctx):
     (str, num) -> n_pick_r(len(a), b)
     (str, str) -> n_pick_r(len(a), len(b))
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: divide(
@@ -2341,7 +2252,6 @@ def nearest_prime(lhs, ctx):
     (num) -> nearest prime to a
     (str) -> python code from expression
     """
-
     ts = vy_type(lhs)
     if ts == NUMBER_TYPE:
         if lhs < 2:
@@ -2364,7 +2274,6 @@ def negate(lhs, ctx):
     (num) -> -a
     (str) -> swapcase of a
     """
-
     ts = vy_type(lhs)
     return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
         ts, lambda: vectorise(negate, lhs, ctx=ctx)
@@ -2387,7 +2296,6 @@ def next_prime(lhs, ctx):
     (num) -> next prime after a
     (str) -> discrimiant of a
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nextprime(lhs),
@@ -2401,7 +2309,6 @@ def non_vectorising_equals(lhs, rhs, ctx):
     (str, str) -> a == b
     (lst, lst) -> a == b
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     return int(
         {
@@ -2420,7 +2327,6 @@ def not_equals(lhs, rhs, ctx):
     (str, str) -> a != b
     (lst, lst) -> a != b
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     return int(
         {
@@ -2435,7 +2341,6 @@ def nth_cardinal(lhs, ctx):
     Given a number, return that number as a cardinal - minus one, zero,
     one, two, three etc
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: num2words.num2words(
@@ -2468,7 +2373,6 @@ def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: num2words.num2words(
@@ -2483,7 +2387,6 @@ def nth_pi(lhs, ctx):
     (int) -> nth_pi(a)
     (str) -> indefinte integral of a
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
@@ -2497,9 +2400,7 @@ def one_slice(lhs, rhs, ctx):
     (num, any) -> b[1:a] (Slice from 1 until a)
     (str, str) -> re.match(pattern=a,string=b)
     """
-
     # no, not one_shot, one_slice.
-
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], NUMBER_TYPE): lambda: index(
@@ -2536,7 +2437,6 @@ def orderless_range(lhs, rhs, ctx):
     (any, fun) -> cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
     (str, str) -> regex.has_match(pattern=a,string= b) ( Does b match a)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(
@@ -2561,7 +2461,6 @@ def overlapping_groups(lhs, rhs, ctx):
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
     """
-
     if vy_type(rhs) != NUMBER_TYPE:
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
 
@@ -2570,7 +2469,7 @@ def overlapping_groups(lhs, rhs, ctx):
     @lazylist
     def gen():
         window = "" if stringify else []
-        for item in lhs:
+        for item in iterable(lhs, ctx=ctx):
             if stringify:
                 window += item
             else:
@@ -2588,7 +2487,6 @@ def palindromise(lhs, ctx):
     (str) -> a + a[:-1:-1]
     (lst) -> a + a[:-1:-1]
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: mirror(lhs, ctx),
@@ -2617,7 +2515,6 @@ def parity(lhs, ctx):
     (num) -> parity of a
     (str) -> parity of a
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: int(lhs % 2),
@@ -2629,7 +2526,6 @@ def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
     """
-
     return LazyList(
         map(
             lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
@@ -2654,7 +2550,6 @@ def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
     """
-
     eqn = " * ".join(map(lambda x: "(x - " + str(x) + ")", lhs))
     x = sympy.symbols("x")
     return sympy.Poly(eqn, x).coeffs()
@@ -2664,7 +2559,6 @@ def polynomial_roots(lhs, ctx):
     """Element ∆P
     (lst) -> roots(a)
     """
-
     x = sympy.symbols("x")
 
     equation = make_expression(
@@ -2700,7 +2594,6 @@ def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.prevprime(int(lhs)) if lhs >= 3 else 1,
@@ -2713,7 +2606,6 @@ def prime_factors(lhs, ctx):
     (num) -> prime_factors(a) (with duplicates)
     (str) -> title_case(a)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: deep_flatten(
@@ -2742,7 +2634,6 @@ def prepend(lhs, rhs, ctx):
     """Element p
     (any, any) -> a.prepend(b) (Prepend b to a)
     """
-
     ts = vy_type(lhs, rhs)
     return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
         ts, lambda: [rhs] + lhs
@@ -2762,7 +2653,6 @@ def quadratic_solver(lhs, rhs, ctx):
     (str, num) -> evaluate single variable equation a with x=b
     (str, str) -> solve equation a = b for x
     """
-
     ts = vy_type(lhs, rhs)
     x = sympy.symbols("x")
     return {
@@ -2785,7 +2675,6 @@ def quotify(lhs, ctx):
     """Element q
     (any) -> ` + a + ` (Quotify a)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: "`{}`".format(lhs),
@@ -2798,7 +2687,6 @@ def rand_bits(lhs, ctx):
     """Element ÞB
     (int) -> rand_bits(a)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): [random.randint(0, 1) for i in range(lhs)],
@@ -2821,7 +2709,6 @@ def regex_sub(lhs, rhs, other, ctx):
     (str, str, str) -> Replace matches of a with c in b
     (any, any, fun) -> Apply c to matches of a in b
     """
-
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
 
     if ts[-1] != types.FunctionType:
@@ -2860,7 +2747,6 @@ def remove_non_alphabets(lhs, ctx):
     (str) -> filter(isalpha, a)
     (num) -> 2 ** a
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: 2 ** lhs,
@@ -2872,7 +2758,6 @@ def remove_until_no_change(lhs, rhs, ctx):
     """Element øo
     (any, any) -> a.remove_until_no_change(b)
     """
-
     loop = True
     prev = deep_copy(lhs)
 
@@ -2899,7 +2784,6 @@ def repeat(lhs, rhs, ctx):
     (fun, any) -> repeat function a on b while the function results are not-unique
     (any, fun) -> repeat function b on a while the function results are not-unique
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
         function, value = (
@@ -2936,7 +2820,6 @@ def replace(lhs, rhs, other, ctx):
     """Element V
     (any, any, any) -> a.replace(b, c)
     """
-
     if vy_type(lhs, simple=True) is not list:
         return str(lhs).replace(str(rhs), str(other))
     else:
@@ -2982,7 +2865,6 @@ def right_bit_shift(lhs, rhs, ctx):
     (num, str) -> b.rjust(a, " ")
     (str, str) -> a.rjust(len(b)-len(a), " ")
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) >> int(rhs),
@@ -2996,7 +2878,6 @@ def round_to(lhs, rhs, ctx):
     """Element ∆W
     (num, num) -> round(a, no_dec_places=b)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
@@ -3013,7 +2894,6 @@ def run_length_encoding(lhs, ctx):
     """Element øe
     (str) -> List of the form [[character, count], ...]
     """
-
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
@@ -3039,7 +2919,6 @@ def sign_of(lhs, ctx):
     (num) -> sign_of(a) (positive = 1, 0 = 0; negative = -1)
     (str) -> is a numeric
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.sign(lhs),
@@ -3050,12 +2929,12 @@ def sign_of(lhs, ctx):
 def sine(lhs, ctx):
     """Element ∆s
     (num) -> sin(a)
+    (str) -> sin(expression)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs)),
-        str: lambda: sympy.nsimplify(sympy.sin(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.sin(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -3065,7 +2944,6 @@ def slice_from(lhs, rhs, ctx):
     (any, num) -> a[b:] (Slice from b to the end)
     (str, str) -> vertically merge a and b
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
         function, count = (
@@ -3099,7 +2977,6 @@ def sort_by(lhs, rhs, ctx):
     (num, num) -> range(a, b + 1) (Inclusive range from a to b)
     (str, str) -> regex.split(pattern=b, string=a)
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
         function, vector = (
@@ -3142,7 +3019,6 @@ def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
     """
-
     if isinstance(lhs, str):
         return re.split(f"({re.escape(vy_str(rhs))})", lhs)
     else:
@@ -3186,7 +3062,6 @@ def square_root(lhs, ctx):
     (num) -> sqrt(a)
     (str) -> every second character of a
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.sqrt(lhs),
@@ -3198,7 +3073,6 @@ def strict_greater_than(lhs, rhs, ctx):
     """Element ¨>
     Non-vectorising greater than
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
@@ -3228,7 +3102,6 @@ def strip(lhs, rhs, ctx):
 
     def list_helper(left, right):
         """This doesn't make sense anywhere but here"""
-
         if vy_type(left) is LazyList:
             left = left.listify()
         if vy_type(right) is LazyList:
@@ -3291,7 +3164,6 @@ def substrings(lhs, ctx):
     (num) -> ath prime
     (str) -> all substrings of a
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.prime(int(lhs) + 1),
@@ -3313,7 +3185,6 @@ def subtract(lhs, rhs, ctx):
     (str, num) -> lhs + ("-" * rhs)
     (str, str) -> lhs.replace(rhs, "")
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs - rhs,
@@ -3327,7 +3198,6 @@ def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
     """
-
     lhs = uniquify(iterable(lhs, ctx=ctx), ctx)
     rhs = uniquify(iterable(rhs, ctx=ctx), ctx)
 
@@ -3347,7 +3217,6 @@ def tail(lhs, ctx):
     """Element t
     (any) -> a[-1]
     """
-
     return (
         iterable(lhs, ctx)[-1]
         if len(iterable(lhs, ctx))
@@ -3361,7 +3230,6 @@ def tail_remove(lhs, ctx):
     """Element Ṫ
     (any) -> a[:-1] (All but the last item)
     """
-
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
     if isinstance(lhs, int) and all(isinstance(x, int) for x in temp):
         return int("".join(str(x) for x in temp))
@@ -3372,12 +3240,12 @@ def tail_remove(lhs, ctx):
 def tangent(lhs, ctx):
     """Element ∆t
     (num) -> tan(a)
+    (str) -> tan(expression)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs)),
-        str: lambda: sympy.nsimplify(sympy.tan(make_expression(lhs))),
+        str: lambda: str(sympy.nsimplify(sympy.tan(make_expression(lhs)))),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
@@ -3385,7 +3253,6 @@ def to_base(lhs, rhs, ctx):
     """Element τ
     Convert lhs from base 10 to base rhs
     """
-
     if vy_type(lhs) is not NUMBER_TYPE:
         raise ValueError("to_base only works on numbers")
 
@@ -3413,7 +3280,6 @@ def to_degrees(lhs, ctx):
     """Element ∆D
     (num) -> a * (180 / pi)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (180 / sympy.pi),
@@ -3425,7 +3291,6 @@ def to_radians(lhs, ctx):
     """Element ∆R
     (num) -> a * (pi / 180)
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
@@ -3438,11 +3303,7 @@ def transliterate(lhs, rhs, other, ctx):
     (any, any, any) -> transliterate lhs according to the
                        mapping rhs->other
     """
-
-    mapping = {
-        x: y
-        for x, y in vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx)
-    }
+    mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     ret = []
 
@@ -3469,7 +3330,6 @@ def truthy_indices(lhs, ctx):
     (any) -> indices of truthy elements
     (num) -> lhs * 3
     """
-
     if vy_type(lhs) == NUMBER_TYPE:
         return lhs * 3
 
@@ -3526,7 +3386,6 @@ def uniquify(lhs, ctx):
     """Element U
     (any) -> only unique items of a
     """
-
     if type(lhs) is str:
         seen = ""
         for item in lhs:
@@ -3581,7 +3440,6 @@ def untruth(lhs, ctx):
     """Element Þǔ
     (any) -> [int(x in a) for x in range(max(a))]
     """
-
     lhs = iterable(lhs, ctx=ctx)
     return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
 
@@ -3593,7 +3451,6 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
     """
-
     if other is not None:
         # That is, three argument vectorisation
         # That is:
@@ -3754,7 +3611,6 @@ def vy_bin(lhs, ctx):
     (num) -> list of binary digits
     (str) -> binary of each codepoint
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
@@ -3769,7 +3625,6 @@ def vy_ceil(lhs, ctx):
     (num) -> ceil(a)
     (str) -> a.split(' ') # split a on spaces
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: math.ceil(lhs),
@@ -3783,7 +3638,6 @@ def vy_divmod(lhs, rhs, ctx):
     (iterable, num) -> combinations of a with length b
     (str, str) ->  overwrite the start of a with b
     """
-
     ts = vy_type(lhs, rhs, simple=True)
 
     return {
@@ -3804,7 +3658,6 @@ def vy_enumerate(lhs, ctx):
     """Element ė
     (any) -> Zip with a range of the same length
     """
-
     return LazyList(enumerate(iterable(lhs, ctx=ctx)))
 
 
@@ -3838,7 +3691,6 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     (any, fun) -> Keep elements in a that b is true for
     (any, any) -> Remove elements of a that are in b
     """
-
     ts = vy_type(lhs, rhs)
     if ts[0] == types.FunctionType:
         return LazyList(
@@ -3864,7 +3716,6 @@ def vy_floor(lhs, ctx):
     (num) -> floor(a)
     (str) -> integer part of a
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: math.floor(lhs),
@@ -3896,7 +3747,6 @@ def vy_hex(lhs, ctx):
     (num) -> hex(a)
     (str) -> int(a, 16)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: hex(lhs)[2:],
@@ -3907,7 +3757,6 @@ def vy_hex(lhs, ctx):
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit."""
-
     """Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
@@ -3935,7 +3784,6 @@ def vy_map(lhs, rhs, ctx):
     (any, fun) -> apply function b to each element of a
     (any, any) -> a paired with each item of b
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
         return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
@@ -3955,10 +3803,8 @@ def vy_sort(lhs, ctx):
     """
     (any) -> sorted(a)
     """
-
     # This one deviates from the usual type dictionary, because lambas
     # just don't cut it.
-
     if isinstance(lhs, int):
         if lhs >= 0:
             return int("".join(sorted(str(lhs))))
@@ -4006,7 +3852,6 @@ def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
     """
-
     return foldl(add, iterable(lhs, ctx=ctx), ctx=ctx)
 
 
@@ -4014,7 +3859,6 @@ def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
     """
-
     ctx.printed = True
     ts = vy_type(lhs)
 
@@ -4042,7 +3886,6 @@ def vy_reduce(lhs, rhs, ctx):
     (any, fun) -> Reduce a by function b
     (fun, any) -> Reduce b by function a
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], types.FunctionType): lambda: foldl(
@@ -4082,7 +3925,6 @@ def vy_round(lhs, ctx):
     (str) -> quad palindromize with overlap
     (lst) -> vectorised
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: round(lhs),
@@ -4165,9 +4007,7 @@ def wrap(lhs, rhs, ctx):
     (fun, any) -> Apply a to every second item of b
     (str, str) -> split a on first occurance of b
     """
-
     # Because textwrap.wrap doesn't consistently play nice with spaces
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
         function, vector = (
@@ -4227,7 +4067,6 @@ def zero_matrix(lhs, ctx):
     Return a matrix with dimensions each item of a, where the first is the
     innermost and the last is the outermost
     """
-
     mat = []
     temp = 0
     for index in iterable(lhs, ctx=ctx):
@@ -4245,7 +4084,6 @@ def zero_slice(lhs, rhs, ctx):
     (num, any) -> b[0:a]
     (str, str) -> regex.findall(pattern=a,string=b) (Find all matches for a regex)
     """
-
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], NUMBER_TYPE): lambda: index(
@@ -4490,7 +4328,11 @@ elements: dict[str, tuple[str, int]] = {
     "Ŀ": process_element(transliterate, 3),
     "Ṁ": process_element(insert_or_map_nth, 3),
     "Ṅ": process_element(integer_parts_or_join_spaces, 1),
-    "Ȯ": process_element("index(stack, -2, ctx)", 0),
+    "Ȯ": (
+        "if len(stack) > 1: stack.append(index(stack, -2, ctx))\n"
+        "else: stack.append(get_input(ctx))",
+        0,
+    ),
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
