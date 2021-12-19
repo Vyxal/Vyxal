@@ -3700,7 +3700,7 @@
 - element: "∆Ė"
   name: N Digits of Euler's Number (e) / Sympy Evaluate
   arity: 1
-  description: Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
+  description: Get the first n digits of Euler's number (e) / evaluate an expression as sympy
   overloads:
     num: First n digits of e
     str: evaluate(a)
@@ -3711,7 +3711,7 @@
 - element: "∆ė"
   name: Nth Digit of Euler's Number (e)
   arity: 1
-  description: Get the nth digit of euler's number (e)
+  description: Get the nth digit of Euler's number (e)
   overloads:
     num: nth_digit_of_e(a)
   vectorise: true
