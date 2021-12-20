@@ -23155,7 +23155,7 @@ https://stackoverflow.com/a/
 ₁ƛ₍₃₅kF½*∑∴,
 :ɾ:Ẋv∑Ȯẇ
 :ɾ:Ẋƛ⁽=R;Ȯẇ
-isdo
+idso
 ›‹²…
 n't
 cos(x)
