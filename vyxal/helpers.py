@@ -645,7 +645,7 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
     d_dx = sympy.diff(sympy.sympify(lhs), x)
     zeros = sympy.solve(d_dx, x)
 
-    return LazyList(z for z in zeros)
+    return LazyList(zeros)
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:

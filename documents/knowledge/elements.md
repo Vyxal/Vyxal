@@ -2484,13 +2484,14 @@ Copy the sign of one number to the other
 
 - num a, num b: `math.copysign(a, b)`
 -------------------------------
-## ∆K (Sum of Proper Divisors)
+## ∆K (Sum of Proper Divisors / Stationary Points)
 
-Get the sum of all proper divisors of a number
+Get the sum of all proper divisors of a number /  get the stationary points of a function
 
 ### Overloads
 
 - num a: `sum_of_proper_divisors(a)`
+- str a: `stationary_points(a)`
 -------------------------------
 ## ∆² (Perfect Square?)
 
@@ -2528,21 +2529,19 @@ Get the natural logarithm of a number
 -------------------------------
 ## ∆l (Logarithm (log_2) / Staionary Points)
 
-Get the logarithm of a number to base 2 / get the stationary points of a function
+Get the logarithm of a number to base 2
 
 ### Overloads
 
 - num a: `math.log2(a)`
-- str a: `stationary_points(a)`
 -------------------------------
-## ∆τ (Common Logarithm / Local Maxima)
+## ∆τ (Common Logarithm)
 
-Get the common logarithm of a number / local maxima of a function
+Get the common logarithm of a number
 
 ### Overloads
 
 - num a: `math.log10(a)`
-- str a: `local_maxima(a)`
 -------------------------------
 ## ∆d (Straight Line Distance)
 
@@ -2725,6 +2724,15 @@ Get the polynomial expression from a list of coefficients
 - num a: `polynomial of degree n`
 - str a: `a`
 - lst a: `polynomial_expression(a)`
+-------------------------------
+## ∆¢ (Carmichael Function)
+
+Get the Carmichael function of a number / Local Maxima
+
+### Overloads
+
+- num a: `carmichael(a)`
+- str a: `local_maxima(a)`
 -------------------------------
 ## øb (Parenthesise)
 

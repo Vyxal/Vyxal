@@ -13483,7 +13483,7 @@ def test_CopySign():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_SumofProperDivisors():
+def test_SumofProperDivisorsStationaryPoints():
 
     stack = [vyxalify(item) for item in [43]]
     expected = vyxalify([1])
@@ -13571,6 +13571,27 @@ def test_SumofProperDivisors():
 
     stack = [vyxalify(item) for item in [18]]
     expected = vyxalify([21])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆K')
+    # print('∆K', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
+    expected = vyxalify([-1, 1])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -14398,28 +14419,7 @@ def test_Logarithmlog_2StaionaryPoints():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
-    expected = vyxalify([-1, 1])
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('∆l')
-    # print('∆l', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-def test_CommonLogarithmLocalMaxima():
+def test_CommonLogarithm():
 
     stack = [vyxalify(item) for item in [1]]
     expected = vyxalify(0)
@@ -14612,27 +14612,6 @@ def test_CommonLogarithmLocalMaxima():
 
     stack = [vyxalify(item) for item in [10]]
     expected = vyxalify(1)
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('∆τ')
-    # print('∆τ', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
-    expected = vyxalify([-1])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -16546,6 +16525,50 @@ def test_PolynomialExpressionFromCoefficients():
 
     code = transpile('∆Ċ')
     # print('∆Ċ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+def test_CarmichaelFunction():
+
+    stack = [vyxalify(item) for item in [[3, 8, 12, 78, 234, 786, 1234]]]
+    expected = vyxalify([2, 2, 2, 12, 12, 130, 616])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆¢')
+    # print('∆¢', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
+    expected = vyxalify([-1])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆¢')
+    # print('∆¢', code)
     exec(code)
 
     ctx.stacks.pop()

@@ -3441,11 +3441,12 @@
     - "[1, 203] : 1"
 
 - element: "∆K"
-  name: Sum of Proper Divisors
+  name: Sum of Proper Divisors / Stationary Points
   arity: 1
-  description: Get the sum of all proper divisors of a number
+  description: Get the sum of all proper divisors of a number /  get the stationary points of a function
   overloads:
     num: sum_of_proper_divisors(a)
+    str: stationary_points(a)
   vectorise: true
   tests:
     - "[43] : [1]"
@@ -3453,6 +3454,7 @@
     - "[97] : [1]"
     - "[34] : [20]"
     - "[18] : [21]"
+    - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆²"
   name: Perfect Square?
@@ -3531,23 +3533,20 @@
 - element: "∆l"
   name: Logarithm (log_2) / Staionary Points
   arity: 1
-  description: Get the logarithm of a number to base 2 / get the stationary points of a function
+  description: Get the logarithm of a number to base 2
   overloads:
     num: math.log2(a)
-    str: stationary_points(a)
   vectorise: true
   tests:
     - "[1] : 0"
     - "[2] : 1"
-    - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆τ"
-  name: Common Logarithm / Local Maxima
+  name: Common Logarithm
   arity: 1
-  description: Get the common logarithm of a number / local maxima of a function
+  description: Get the common logarithm of a number
   overloads:
     num: math.log10(a)
-    str: local_maxima(a)
   vectorise: true
   tests:
     - "[1] : 0"
@@ -3560,7 +3559,6 @@
     - "[8] : 0.9030899869919435"
     - "[9] : 0.9542425094393249"
     - "[10] : 1"
-    - "['(x**2 + x + 1) / x'] : [-1]"
 
 - element: "∆d"
   name: Straight Line Distance
@@ -3853,6 +3851,18 @@
     - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3*x**2 + 4*x + 5'"
     - "[3] : 'x**3 + x**2 + x + 1'"
     - "[[69, 420]] : '69*x + 420'"
+  
+- element: "∆¢"
+  name: Carmichael Function
+  arity: 1
+  description: Get the Carmichael function of a number / Local Maxima
+  overloads:
+    num: carmichael(a)
+    str: local_maxima(a)
+  vectorise: true
+  tests:
+    - "[[3, 8, 12, 78, 234, 786, 1234]] : [2, 2, 2, 12, 12, 130, 616]"
+    - "['(x**2 + x + 1) / x'] : [-1]"
 
 - element: "øb"
   name: Parenthesise
@@ -4510,3 +4520,4 @@
   tests:
      - "[[1, 1, 1], [9, 9, 9]] : 1"
      - "[[1, 2, '3'], [1, 2, '2']] : 0"
+
