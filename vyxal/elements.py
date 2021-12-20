@@ -1295,7 +1295,7 @@ def group_consecutive(lhs, ctx):
 
         for item in lhs[1:]:
             if not non_vectorising_equals(prev, item, ctx):
-                yield [prev] * count
+                yield [prev] * no_found
                 prev = item
                 no_found = 1
             else:
