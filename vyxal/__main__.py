@@ -1,5 +1,6 @@
-import vyxal.main
 import sys
+
+import vyxal.main
 
 if len(sys.argv) > 1:
     file_name = sys.argv[1]
