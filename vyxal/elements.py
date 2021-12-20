@@ -2985,7 +2985,9 @@ def sort_by(lhs, rhs, ctx):
         return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
     else:
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1) if lhs <= rhs else range(lhs, rhs - 1, -1),
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
+            if lhs <= rhs
+            else range(lhs, rhs - 1, -1),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
