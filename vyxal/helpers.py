@@ -294,6 +294,32 @@ def levenshtein_distance(s1: str, s2: str) -> int:
     return distances[-1]
 
 
+def local_minima(lhs: str) -> List[Union[int, float]]:
+    """Find the local minima of a mathematical function using Sympy"""
+
+    x = sympy.symbols("x")
+    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    second_dx = sympy.diff(d_dx, x)
+    zeros = sympy.solve(d_dx, x)
+
+    return LazyList(
+        sympy.sympify(lhs).subs(x, z) for z in zeros if second_dx.subs(x, z) < 0
+    )
+
+
+def local_maxima(lhs: str) -> List[Union[int, float]]:
+    """Find the local minima of a mathematical function using Sympy"""
+
+    x = sympy.symbols("x")
+    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    second_dx = sympy.diff(d_dx, x)
+    zeros = sympy.solve(d_dx, x)
+
+    return LazyList(
+        sympy.sympify(lhs).subs(x, z) for z in zeros if second_dx.subs(x, z) > 0
+    )
+
+
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
     out = "" if type(haystack) is str else []
@@ -614,6 +640,16 @@ def simplify(value: Any) -> Union[int, float, str, list]:
         return eval(sympy.pycode(value))
     else:
         return [simplify(x) for x in value]
+
+
+def stationary_points(lhs: str) -> List[Union[int, float]]:
+    """Returns a list of stationary points of a mathematical function"""
+
+    x = sympy.symbols("x")
+    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    zeros = sympy.solve(d_dx, x)
+
+    return LazyList(sympy.sympify(lhs).subs(x, z) for z in zeros)
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:

@@ -2526,21 +2526,23 @@ Get the natural logarithm of a number
 
 - num a: `math.log(a)`
 -------------------------------
-## ∆l (Logarithm (log_2))
+## ∆l (Logarithm (log_2) / Staionary Points)
 
-Get the logarithm of a number to base 2
+Get the logarithm of a number to base 2 / get the stationary points of a function
 
 ### Overloads
 
 - num a: `math.log2(a)`
+- str a: `stationary_points(a)`
 -------------------------------
-## ∆τ (Common Logarithm)
+## ∆τ (Common Logarithm / Local Maxima)
 
-Get the common logarithm of a number
+Get the common logarithm of a number / local maxima of a function
 
 ### Overloads
 
 - num a: `math.log10(a)`
+- str a: `local_maxima(a)`
 -------------------------------
 ## ∆d (Straight Line Distance)
 
@@ -2566,25 +2568,27 @@ Convert an angle from degrees to radians
 
 - num a: `math.radians(a)`
 -------------------------------
-## ∆Ṗ (Next Prime After a Number)
+## ∆Ṗ (Next Prime After a Number / Discrimant of Polynomial)
 
-Get the next prime number after a given number
+Get the next prime number after a given number / the discrimant of a polynomial
 
 ### Overloads
 
 - num a: `next_prime(a)`
+- str a: `discriminant(a)`
 -------------------------------
-## ∆ṗ (First Prime Before a Number)
+## ∆ṗ (First Prime Before a Number / Factorise Expression)
 
-Get the first prime number before a given number
+Get the first prime number before a given number / factorise a mathematical expression
 
 ### Overloads
 
 - num a: `prev_prime(a)`
+- str a: `factorise(a)`
 -------------------------------
-## ∆p (Nearest Prime to a Number)
+## ∆p (Nearest Prime to a Number / Python equivalent of an expression)
 
-Get the prime number closest to a given number, get the greater to break ties
+Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression
 
 ### Overloads
 
@@ -2624,7 +2628,7 @@ Get the nth digit of pi
 -------------------------------
 ## ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
 
-Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
+Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 
 ### Overloads
 
@@ -2633,7 +2637,7 @@ Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
 -------------------------------
 ## ∆ė (Nth Digit of Euler's Number (e))
 
-Get the nth digit of euler's number (e)
+Get the nth digit of Euler's number (e)
 
 ### Overloads
 
@@ -2662,6 +2666,15 @@ Get a random float in the range [0, 1), pseudo random number
 ### Overloads
 
 - num a: `random.random()`
+-------------------------------
+## ∆ṫ (Totient Function / Local Minima)
+
+Get the totient function of a number / local minima of a function
+
+### Overloads
+
+- num a: `totient(a)`
+- str a: `local_minima(a)`
 -------------------------------
 ## ∆Z (ZFill)
 
@@ -2702,6 +2715,16 @@ Get the median of a list - returns a list of the two middle items if even length
 ### Overloads
 
 - lst a: `median(a)`
+-------------------------------
+## ∆Ċ (Polynomial Expression From Coefficients)
+
+Get the polynomial expression from a list of coefficients
+
+### Overloads
+
+- num a: `polynomial of degree n`
+- str a: `a`
+- lst a: `polynomial_expression(a)`
 -------------------------------
 ## øb (Parenthesise)
 
@@ -3158,6 +3181,22 @@ Indicies of the maximal elements of a list.
 ### Overloads
 
 - lst a: `Indicies of the maximal elements of a list.`
+-------------------------------
+## Þ∴ (Elementwise Vectorised Dyadic Maximum)
+
+Elementwise vectorised dyadic maximum.
+
+### Overloads
+
+- lst a, lst b: `Elementwise vectorised dyadic maximum.`
+-------------------------------
+## Þ∵ (Elementwise Vectorised Dyadic Minimum)
+
+Elementwise vectorised dyadic minimum.
+
+### Overloads
+
+- lst a, lst b: `Elementwise vectorised dyadic minimum.`
 -------------------------------
 ## ¨U (Get Request)
 

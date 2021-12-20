@@ -28,6 +28,8 @@ from vyxal.encoding import (
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
 
+from helpers import local_maxima
+
 currentdate = datetime.now()
 
 NUMBER_TYPE = "number"
@@ -1860,19 +1862,25 @@ def ljust(lhs, rhs, other, ctx):
 def log_10(lhs, ctx):
     """Element ∆τ
     (num) -> log10(a)
+    (str) -> local_maxima(a)
     """
-    return log_mold_multi(lhs, 10, ctx)
-    # no I'm not lazy why do you think that don't think that I
-    # would never just reuse vyxal functions for the sake of not
-    # having to think of an original and creative string overload.
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 10),
+        (str): lambda: local_maxima(lhs),
+    }.get(ts, lambda: vectorise(log_10, lhs, ctx=ctx))()
 
 
 def log_2(lhs, ctx):
     """Element ∆l
     (num) -> log2(a)
+    (str) -> stationary points of a
     """
-    return log_mold_multi(lhs, 2, ctx)
-    # okay fine maybe I would. shut up
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 2),
+        (str): lambda: stationary_points(lhs),
+    }.get(ts, lambda: vectorise(log_2, lhs, ctx=ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -1927,7 +1935,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
-def max_by_function(lhs, ctx):
+def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
@@ -2546,6 +2554,27 @@ def pluralise_count(lhs, rhs, ctx):
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
+def polynomial_expr_from_coeffs(lhs, ctx):
+    """Element ∆Ċ
+    (num) -> symbolic math representation of polynomial of degree n
+             where each coefficient is 1
+    (str) -> a
+    (lst) -> symbolic math representation of polynomial with coeffs in
+             lhs
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: " + ".join(
+            ["x**" + str(i) + "*" + str(1) for i in range(len(lhs))]
+        ),
+        str: lambda: lhs,
+        list: lambda: " + ".join(
+            ["x**" + str(i) + "*" + str(x) for i, x in enumerate(lhs)]
+        ),
+    }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
+
+
 def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
@@ -2593,6 +2622,7 @@ def powerset(lhs, ctx):
 def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
+    (str) -> factorise expression
     """
     ts = vy_type(lhs)
     return {
@@ -3081,7 +3111,12 @@ def strict_greater_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
-    }.get(ts, lambda: int(list(lhs) > list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) > list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strict_less_than(lhs, rhs, ctx):
@@ -3094,7 +3129,12 @@ def strict_less_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
-    }.get(ts, lambda: int(list(lhs) < list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) < list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strip(lhs, rhs, ctx):
@@ -3298,6 +3338,18 @@ def to_radians(lhs, ctx):
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
         str: lambda: sympy.N(lhs) * (sympy.pi / 180),
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
+
+
+def totient(lhs, ctx):
+    """Element ∆ṫ
+    (num) -> Euler's totient function
+    (str) -> local minima of a function
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.totient(lhs),
+        str: lambda: local_minima(lhs),
+    }.get(ts, lambda: vectorise(totient, lhs, ctx=ctx))()
 
 
 def transliterate(lhs, rhs, other, ctx):
@@ -3839,14 +3891,14 @@ def vy_str(lhs, ctx=None):
         ),
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -3910,14 +3962,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -4469,6 +4521,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆o": process_element(nth_ordinal, 1),
     "∆M": process_element(mode, 1),
     "∆ṁ": process_element(median, 1),
+    "∆ṫ": process_element(totient, 1),
+    "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -4536,6 +4590,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
+    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

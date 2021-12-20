@@ -3529,22 +3529,24 @@
     - "[17] : 2.833213344056216"
 
 - element: "∆l"
-  name: Logarithm (log_2)
+  name: Logarithm (log_2) / Staionary Points
   arity: 1
-  description: Get the logarithm of a number to base 2
+  description: Get the logarithm of a number to base 2 / get the stationary points of a function
   overloads:
     num: math.log2(a)
+    str: stationary_points(a)
   vectorise: true
   tests:
     - "[1] : 0"
     - "[2] : 1"
 
 - element: "∆τ"
-  name: Common Logarithm
+  name: Common Logarithm / Local Maxima
   arity: 1
-  description: Get the common logarithm of a number
+  description: Get the common logarithm of a number / local maxima of a function
   overloads:
     num: math.log10(a)
+    str: local_maxima(a)
   vectorise: true
   tests:
     - "[1] : 0"
@@ -3597,11 +3599,12 @@
     - "[360] : 6.283185307179586"
 
 - element: "∆Ṗ"
-  name: Next Prime After a Number
+  name: Next Prime After a Number / Discrimant of Polynomial
   arity: 1
-  description: Get the next prime number after a given number
+  description: Get the next prime number after a given number / the discrimant of a polynomial
   overloads:
     num: next_prime(a)
+    str: discriminant(a)
   vectorise: true
   tests:
     - "[1] : 2"
@@ -3612,11 +3615,12 @@
     - "[69] : 71"
 
 - element: "∆ṗ"
-  name: First Prime Before a Number
+  name: First Prime Before a Number / Factorise Expression
   arity: 1
-  description: Get the first prime number before a given number
+  description: Get the first prime number before a given number / factorise a mathematical expression
   overloads:
     num: prev_prime(a)
+    str: factorise(a)
   vectorise: true
   tests:
     - "[1] : 1"
@@ -3627,9 +3631,9 @@
     - "[69] : 67"
 
 - element: "∆p"
-  name: Nearest Prime to a Number
+  name: Nearest Prime to a Number / Python equivalent of an expression
   arity: 1
-  description: Get the prime number closest to a given number, get the greater to break ties
+  description: Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression
   overloads:
     num: nearest_prime(a)
   vectorise: true
@@ -3758,6 +3762,18 @@
     num: random.random()
   vectorise: true
 
+- element: "∆ṫ"
+  name: Totient Function / Local Minima
+  arity: 1
+  description: Get the totient function of a number / local minima of a function
+  overloads:
+    num: totient(a)
+    str: local_minima(a)
+  vectorise: true
+  tests:
+    - "[[23, 76, 1234, 68, 234, 87, 12, 567]] : [22, 36, 616, 32, 72, 56, 4, 324]"
+
+
 - element: "∆Z"
   name: ZFill
   arity: 2
@@ -3814,6 +3830,21 @@
   tests:
     - "[[1, 2, 3, 4, 5]] : 3"
     - "[[1, 2, 3, 4, 5, 6]] : [3, 4]"
+
+- element: "∆Ċ"
+  name: Polynomial Expression From Coefficients
+  arity: 1
+  description: Get the polynomial expression from a list of coefficients
+  overloads:
+    num: polynomial of degree n
+    str: a
+    lst: polynomial_expression(a)
+  vectorise: false
+  tests:
+    - "[[1,-12,45,8]] : 'x**3 + -12*x**2 + 45*x + 8'"
+    - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3x ** 2 + 4x + 5'"
+    - "[3] : 'x**3'"
+    - "[[69, 420]] : '420*x + 69'"
 
 - element: "øb"
   name: Parenthesise
@@ -4417,6 +4448,26 @@
   vectorise: false
   tests:
     - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
+
+- element: "Þ∴"
+  name: Elementwise Vectorised Dyadic Maximum
+  description: Elementwise vectorised dyadic maximum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic maximum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
+
+- element: "Þ∵"
+  name: Elementwise Vectorised Dyadic Minimum
+  description: Elementwise vectorised dyadic minimum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic minimum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
 
 - element: "¨U"
   name: Get Request
