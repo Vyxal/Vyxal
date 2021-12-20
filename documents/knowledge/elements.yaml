@@ -3637,9 +3637,10 @@
 - element: "∆p"
   name: Nearest Prime to a Number / Python equivalent of an expression
   arity: 1
-  description: Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression
+  description: Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
   overloads:
     num: nearest_prime(a)
+    str: sympy.nsimplify(a).pycode()
   vectorise: true
   tests:
     - "[1] : 2"
