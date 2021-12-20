@@ -3839,14 +3839,14 @@ def vy_str(lhs, ctx=None):
         ),
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -3910,14 +3910,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
