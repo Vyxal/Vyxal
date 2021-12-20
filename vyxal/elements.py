@@ -1927,7 +1927,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
-def max_by_function(lhs, ctx):
+def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
