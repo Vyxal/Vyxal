@@ -3182,22 +3182,6 @@ Indicies of the maximal elements of a list.
 
 - lst a: `Indicies of the maximal elements of a list.`
 -------------------------------
-## Þ∴ (Elementwise Vectorised Dyadic Maximum)
-
-Elementwise vectorised dyadic maximum.
-
-### Overloads
-
-- lst a, lst b: `Elementwise vectorised dyadic maximum.`
--------------------------------
-## Þ∵ (Elementwise Vectorised Dyadic Minimum)
-
-Elementwise vectorised dyadic minimum.
-
-### Overloads
-
-- lst a, lst b: `Elementwise vectorised dyadic minimum.`
--------------------------------
 ## ¨U (Get Request)
 
 Send a GET request to a URL

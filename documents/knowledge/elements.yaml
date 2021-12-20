@@ -3539,6 +3539,7 @@
   tests:
     - "[1] : 0"
     - "[2] : 1"
+    - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆τ"
   name: Common Logarithm / Local Maxima
@@ -3559,6 +3560,7 @@
     - "[8] : 0.9030899869919435"
     - "[9] : 0.9542425094393249"
     - "[10] : 1"
+    - "['(x**2 + x + 1) / x'] : [-1]"
 
 - element: "∆d"
   name: Straight Line Distance
@@ -3613,6 +3615,7 @@
     - "[4] : 5"
     - "[5] : 7"
     - "[69] : 71"
+    - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
 
 - element: "∆ṗ"
   name: First Prime Before a Number / Factorise Expression
@@ -3629,6 +3632,9 @@
     - "[4] : 3"
     - "[5] : 3"
     - "[69] : 67"
+    - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
+    - "['x*3 + x**2'] : 'x*(x + 3)'"
+
 
 - element: "∆p"
   name: Nearest Prime to a Number / Python equivalent of an expression
@@ -3772,6 +3778,8 @@
   vectorise: true
   tests:
     - "[[23, 76, 1234, 68, 234, 87, 12, 567]] : [22, 36, 616, 32, 72, 56, 4, 324]"
+    - "['5*x**2 - 34*x + 213'] : [3.4]"
+    - "['(x**2 + x + 1) / x'] : [1]"
 
 
 - element: "∆Z"
@@ -3841,10 +3849,10 @@
     lst: polynomial_expression(a)
   vectorise: false
   tests:
-    - "[[1,-12,45,8]] : 'x**3 + -12*x**2 + 45*x + 8'"
-    - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3x ** 2 + 4x + 5'"
-    - "[3] : 'x**3'"
-    - "[[69, 420]] : '420*x + 69'"
+    - "[[1,-12,45,8]] : 'x**3 - 12*x**2 + 45*x + 8'"
+    - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3*x**2 + 4*x + 5'"
+    - "[3] : 'x**3 + x**2 + x + 1'"
+    - "[[69, 420]] : '69*x + 420'"
 
 - element: "øb"
   name: Parenthesise
@@ -4448,26 +4456,6 @@
   vectorise: false
   tests:
     - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
-
-- element: "Þ∴"
-  name: Elementwise Vectorised Dyadic Maximum
-  description: Elementwise vectorised dyadic maximum.
-  arity: 2
-  overloads:
-    lst-lst: Elementwise vectorised dyadic maximum.
-  vectorise: true
-  tests:
-    - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
-
-- element: "Þ∵"
-  name: Elementwise Vectorised Dyadic Minimum
-  description: Elementwise vectorised dyadic minimum.
-  arity: 2
-  overloads:
-    lst-lst: Elementwise vectorised dyadic minimum.
-  vectorise: true
-  tests:
-    - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
 
 - element: "¨U"
   name: Get Request

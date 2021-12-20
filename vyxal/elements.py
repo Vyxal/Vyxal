@@ -2562,13 +2562,19 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     """
 
     ts = vy_type(lhs)
+    x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: " + ".join(
-            ["x**" + str(i) + "*" + str(1) for i in range(len(lhs))]
+        NUMBER_TYPE: lambda: str(
+            sum(map(lambda arg: x ** arg, range(0, lhs + 1)))
         ),
         str: lambda: lhs,
-        list: lambda: " + ".join(
-            ["x**" + str(i) + "*" + str(x) for i, x in enumerate(lhs)]
+        list: lambda: str(
+            sum(
+                map(
+                    lambda arg: arg[1] * x ** arg[0],
+                    enumerate(reverse(lhs, ctx)),
+                )
+            )
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -4588,8 +4594,6 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
-    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
-    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

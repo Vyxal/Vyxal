@@ -302,9 +302,7 @@ def local_minima(lhs: str) -> List[Union[int, float]]:
     second_dx = sympy.diff(d_dx, x)
     zeros = sympy.solve(d_dx, x)
 
-    return LazyList(
-        sympy.sympify(lhs).subs(x, z) for z in zeros if second_dx.subs(x, z) < 0
-    )
+    return LazyList(z for z in zeros if second_dx.subs(x, z) > 0)
 
 
 def local_maxima(lhs: str) -> List[Union[int, float]]:
@@ -315,9 +313,7 @@ def local_maxima(lhs: str) -> List[Union[int, float]]:
     second_dx = sympy.diff(d_dx, x)
     zeros = sympy.solve(d_dx, x)
 
-    return LazyList(
-        sympy.sympify(lhs).subs(x, z) for z in zeros if second_dx.subs(x, z) > 0
-    )
+    return LazyList(z for z in zeros if second_dx.subs(x, z) < 0)
 
 
 def keep(haystack: Any, needle: Any) -> Any:
@@ -649,7 +645,7 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
     d_dx = sympy.diff(sympy.sympify(lhs), x)
     zeros = sympy.solve(d_dx, x)
 
-    return LazyList(sympy.sympify(lhs).subs(x, z) for z in zeros)
+    return LazyList(z for z in zeros)
 
 
 def suffixes(string: str, ctx: Context) -> List[str]:

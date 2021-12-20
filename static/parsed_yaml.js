@@ -2204,16 +2204,6 @@ codepage_descriptions[77] += `
 Indicies of the maximal elements of a list.
 lst a -> Indicies of the maximal elements of a list.
 `
-codepage_descriptions[129] += `
-Þ∴ (Elementwise Vectorised Dyadic Maximum)
-Elementwise vectorised dyadic maximum.
-lst a, lst b -> Elementwise vectorised dyadic maximum.
-`
-codepage_descriptions[130] += `
-Þ∵ (Elementwise Vectorised Dyadic Minimum)
-Elementwise vectorised dyadic minimum.
-lst a, lst b -> Elementwise vectorised dyadic minimum.
-`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL

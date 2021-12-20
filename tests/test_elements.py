@@ -14398,6 +14398,27 @@ def test_Logarithmlog_2StaionaryPoints():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
+    expected = vyxalify([-1, 1])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆l')
+    # print('∆l', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_CommonLogarithmLocalMaxima():
 
     stack = [vyxalify(item) for item in [1]]
@@ -14591,6 +14612,27 @@ def test_CommonLogarithmLocalMaxima():
 
     stack = [vyxalify(item) for item in [10]]
     expected = vyxalify(1)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆τ')
+    # print('∆τ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
+    expected = vyxalify([-1])
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -14975,6 +15017,27 @@ def test_NextPrimeAfteraNumberDiscrimantofPolynomial():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in ['3 * x ** 2 + 493 * x - 2319']]
+    expected = vyxalify(270877)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆Ṗ')
+    # print('∆Ṗ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_FirstPrimeBeforeaNumberFactoriseExpression():
 
     stack = [vyxalify(item) for item in [1]]
@@ -15084,6 +15147,48 @@ def test_FirstPrimeBeforeaNumberFactoriseExpression():
 
     stack = [vyxalify(item) for item in [69]]
     expected = vyxalify(67)
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ṗ')
+    # print('∆ṗ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['x**2 - 1']]
+    expected = vyxalify('(x - 1)*(x + 1)')
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ṗ')
+    # print('∆ṗ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['x*3 + x**2']]
+    expected = vyxalify('x*(x + 3)')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -16045,6 +16150,48 @@ def test_TotientFunctionLocalMinima():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in ['5*x**2 - 34*x + 213']]
+    expected = vyxalify([3.4])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ṫ')
+    # print('∆ṫ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
+    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
+    expected = vyxalify([1])
+    ctx = Context()
+    
+    ctx.stacks.append(stack)
+
+    code = transpile('∆ṫ')
+    # print('∆ṫ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_NthCardinal():
 
     stack = [vyxalify(item) for item in [[4324, -48294, 0.5, 93424, 2.3]]]
@@ -16329,7 +16476,7 @@ def test_Median():
 def test_PolynomialExpressionFromCoefficients():
 
     stack = [vyxalify(item) for item in [[1,-12,45,8]]]
-    expected = vyxalify('x**3 + -12*x**2 + 45*x + 8')
+    expected = vyxalify('x**3 - 12*x**2 + 45*x + 8')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -16350,7 +16497,7 @@ def test_PolynomialExpressionFromCoefficients():
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5]]]
-    expected = vyxalify('x**4 + 2*x**3 + 3x ** 2 + 4x + 5')
+    expected = vyxalify('x**4 + 2*x**3 + 3*x**2 + 4*x + 5')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -16371,7 +16518,7 @@ def test_PolynomialExpressionFromCoefficients():
 
 
     stack = [vyxalify(item) for item in [3]]
-    expected = vyxalify('x**3')
+    expected = vyxalify('x**3 + x**2 + x + 1')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -16392,7 +16539,7 @@ def test_PolynomialExpressionFromCoefficients():
 
 
     stack = [vyxalify(item) for item in [[69, 420]]]
-    expected = vyxalify('420*x + 69')
+    expected = vyxalify('69*x + 420')
     ctx = Context()
     
     ctx.stacks.append(stack)
@@ -18545,52 +18692,6 @@ def test_MaximalIndicies():
 
     code = transpile('ÞM')
     # print('ÞM', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-def test_ElementwiseVectorisedDyadicMaximum():
-
-    stack = [vyxalify(item) for item in [[1,5,3],[4,2,6]]]
-    expected = vyxalify([4, 5, 6])
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('Þ∴')
-    # print('Þ∴', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
-
-
-def test_ElementwiseVectorisedDyadicMinimum():
-
-    stack = [vyxalify(item) for item in [[1,5,3],[4,2,6]]]
-    expected = vyxalify([1, 2, 3])
-    ctx = Context()
-    
-    ctx.stacks.append(stack)
-
-    code = transpile('Þ∵')
-    # print('Þ∵', code)
     exec(code)
 
     ctx.stacks.pop()
