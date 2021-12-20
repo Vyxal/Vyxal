@@ -4418,6 +4418,26 @@
   tests:
     - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
 
+- element: "Þ∴"
+  name: Elementwise Vectorised Dyadic Maximum
+  description: Elementwise vectorised dyadic maximum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic maximum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
+
+- element: "Þ∵"
+  name: Elementwise Vectorised Dyadic Minimum
+  description: Elementwise vectorised dyadic minimum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic minimum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
+
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL

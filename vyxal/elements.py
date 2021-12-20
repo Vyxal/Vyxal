@@ -780,6 +780,26 @@ def e_digits(lhs, ctx):
         return vectorise(e_digits, lhs, ctx=ctx)
 
 
+def element_wise_dyadic_maximum(lhs, rhs, ctx):
+    """Element Þ∴
+    (lst, lst) -> max(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_maximum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
+
+
+def element_wise_dyadic_minimum(lhs, rhs, ctx):
+    """Element Þ∵
+    (lst, lst) -> min(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_minimum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
+
+
 def equals(lhs, rhs, ctx):
     """Element =
     (num, num) -> lhs == rhs
@@ -3081,7 +3101,12 @@ def strict_greater_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
-    }.get(ts, lambda: int(list(lhs) > list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) > list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strict_less_than(lhs, rhs, ctx):
@@ -3094,7 +3119,12 @@ def strict_less_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
-    }.get(ts, lambda: int(list(lhs) < list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) < list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strip(lhs, rhs, ctx):
@@ -4536,6 +4566,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
+    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
