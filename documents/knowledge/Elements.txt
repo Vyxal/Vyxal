@@ -2298,7 +2298,7 @@ k□ (Directions)
 -------------------------------
 ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
 
-- Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
+- Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 
     num a: First n digits of e
     str a: evaluate(a)
@@ -2306,7 +2306,7 @@ k□ (Directions)
 -------------------------------
 ∆ė (Nth Digit of Euler's Number (e))
 
-- Get the nth digit of euler's number (e)
+- Get the nth digit of Euler's number (e)
 
     num a: nth_digit_of_e(a)
     otherwise: vectorise
@@ -2722,6 +2722,20 @@ k□ (Directions)
 - Indicies of the maximal elements of a list.
 
     lst a: Indicies of the maximal elements of a list.
+-------------------------------
+Þ∴ (Elementwise Vectorised Dyadic Maximum)
+
+- Elementwise vectorised dyadic maximum.
+
+    lst a, lst b: Elementwise vectorised dyadic maximum.
+    otherwise: vectorise
+-------------------------------
+Þ∵ (Elementwise Vectorised Dyadic Minimum)
+
+- Elementwise vectorised dyadic minimum.
+
+    lst a, lst b: Elementwise vectorised dyadic minimum.
+    otherwise: vectorise
 -------------------------------
 ¨U (Get Request)
 

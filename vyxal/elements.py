@@ -11,6 +11,7 @@ import random
 import re
 import string
 import types
+import urllib
 from datetime import datetime
 from typing import Union
 
@@ -138,20 +139,20 @@ def all_diagonals(lhs, ctx):
     def gen():
         vector = list(map(lambda x: iterable(x, ctx=ctx), lhs))
         diag_num = 0
-        diagonal = numpy.diag(vector)
+        current_diagonal = numpy.diag(vector)
         # postive diags first
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num += 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
         diag_num = -1
-        diagonal = numpy.diag(vector, k=diag_num)
+        current_diagonal = numpy.diag(vector, k=diag_num)
         # now the other diagonals
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num -= 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
     return gen()
 
@@ -371,9 +372,9 @@ def bitwise_or(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
-        suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
-        prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
-        common = suffixes & prefixes
+        suffix_set = {lhs[-i:] for i in range(1, len(lhs) + 1)}
+        prefix_set = {rhs[:i] for i in range(1, len(rhs) + 1)}
+        common = suffix_set & prefix_set
         if len(common) == 0:
             return lhs + rhs
         common = sorted(common, key=lambda x: len(x))[-1]
@@ -598,16 +599,20 @@ def cosine(lhs, ctx):
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
-def count(lhs, rhs, ctx):
+def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
+    if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
+        lhs, rhs = rhs, lhs
+    if type(lhs) is str:
+        rhs = str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
 def counts(lhs, ctx):
     temp = uniquify(lhs, ctx=ctx)
-    return [[x, count(lhs, x, ctx)] for x in temp]
+    return [[x, count_item(lhs, x, ctx)] for x in temp]
 
 
 def cumulative_sum(lhs, ctx):
@@ -778,6 +783,26 @@ def e_digits(lhs, ctx):
         return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
+
+
+def element_wise_dyadic_maximum(lhs, rhs, ctx):
+    """Element Þ∴
+    (lst, lst) -> max(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_maximum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
+
+
+def element_wise_dyadic_minimum(lhs, rhs, ctx):
+    """Element Þ∵
+    (lst, lst) -> min(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_minimum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
 
 
 def equals(lhs, rhs, ctx):
@@ -1266,16 +1291,16 @@ def group_consecutive(lhs, ctx):
 
     def gen():
         prev = lhs[0]
-        count = 1
+        no_found = 1
 
         for item in lhs[1:]:
             if not non_vectorising_equals(prev, item, ctx):
-                yield [prev] * count
+                yield [prev] * no_found
                 prev = item
-                count = 1
+                no_found = 1
             else:
-                count += 1
-        yield [prev] * count
+                no_found += 1
+        yield [prev] * no_found
 
     if typ is LazyList:
         return LazyList(gen())
@@ -1588,8 +1613,8 @@ def integer_parts_or_join_spaces(lhs, ctx):
             return []
         sign = -1 if lhs < 0 else 1
 
-        def helper(n, min):
-            for i in range(min, n // 2 + 1):
+        def helper(n, minimum):
+            for i in range(minimum, n // 2 + 1):
                 for part in helper(n - i, i):
                     yield part + [i * sign]
             yield [n * sign]
@@ -1927,7 +1952,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
-def max_by_function(lhs, ctx):
+def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
@@ -2157,11 +2182,11 @@ def multiplicity(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        count = 0
+        times = 0
         while lhs % rhs == 0:
             lhs /= rhs
-            count += 1
-        return count
+            times += 1
+        return times
     elif ts == (str, str):
         return remove_until_no_change(lhs, rhs, ctx)
     else:
@@ -2419,13 +2444,13 @@ def optimal_compress(lhs, ctx):
     """
     DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
     DP[0] = ""
-    for index in range(1, len(lhs) + 1):
-        for left in range(max(0, index - dictionary.max_word_len), index - 1):
-            i = dictionary.word_index(lhs[left:index])
+    for ind in range(1, len(lhs) + 1):
+        for left in range(max(0, ind - dictionary.max_word_len), ind - 1):
+            i = dictionary.word_index(lhs[left:ind])
             if i != -1:
-                DP[index] = min([DP[index], DP[left] + i], key=len)
+                DP[ind] = min([DP[ind], DP[left] + i], key=len)
                 break
-        DP[index] = min([DP[index], DP[index - 1] + lhs[index - 1]], key=len)
+        DP[ind] = min([DP[ind], DP[ind - 1] + lhs[ind - 1]], key=len)
     return "`" + DP[-1] + "`"
 
 
@@ -3081,7 +3106,12 @@ def strict_greater_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
-    }.get(ts, lambda: int(list(lhs) > list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) > list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strict_less_than(lhs, rhs, ctx):
@@ -3094,7 +3124,12 @@ def strict_less_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
-    }.get(ts, lambda: int(list(lhs) < list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) < list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strip(lhs, rhs, ctx):
@@ -3839,14 +3874,14 @@ def vy_str(lhs, ctx=None):
         ),
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -3910,14 +3945,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -4187,7 +4222,7 @@ elements: dict[str, tuple[str, int]] = {
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
-    "O": process_element(count, 2),
+    "O": process_element(count_item, 2),
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
@@ -4536,6 +4571,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
+    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

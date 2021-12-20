@@ -2624,7 +2624,7 @@ Get the nth digit of pi
 -------------------------------
 ## ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
 
-Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
+Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 
 ### Overloads
 
@@ -2633,7 +2633,7 @@ Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
 -------------------------------
 ## ∆ė (Nth Digit of Euler's Number (e))
 
-Get the nth digit of euler's number (e)
+Get the nth digit of Euler's number (e)
 
 ### Overloads
 
@@ -3158,6 +3158,22 @@ Indicies of the maximal elements of a list.
 ### Overloads
 
 - lst a: `Indicies of the maximal elements of a list.`
+-------------------------------
+## Þ∴ (Elementwise Vectorised Dyadic Maximum)
+
+Elementwise vectorised dyadic maximum.
+
+### Overloads
+
+- lst a, lst b: `Elementwise vectorised dyadic maximum.`
+-------------------------------
+## Þ∵ (Elementwise Vectorised Dyadic Minimum)
+
+Elementwise vectorised dyadic minimum.
+
+### Overloads
+
+- lst a, lst b: `Elementwise vectorised dyadic minimum.`
 -------------------------------
 ## ¨U (Get Request)
 
