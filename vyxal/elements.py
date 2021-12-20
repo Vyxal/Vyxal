@@ -139,20 +139,20 @@ def all_diagonals(lhs, ctx):
     def gen():
         vector = list(map(lambda x: iterable(x, ctx=ctx), lhs))
         diag_num = 0
-        diagonal = numpy.diag(vector)
+        current_diagonal = numpy.diag(vector)
         # postive diags first
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num += 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
         diag_num = -1
-        diagonal = numpy.diag(vector, k=diag_num)
+        current_diagonal = numpy.diag(vector, k=diag_num)
         # now the other diagonals
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num -= 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
     return gen()
 
@@ -372,9 +372,9 @@ def bitwise_or(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
-        suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
-        prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
-        common = suffixes & prefixes
+        suffix_set = {lhs[-i:] for i in range(1, len(lhs) + 1)}
+        prefix_set = {rhs[:i] for i in range(1, len(rhs) + 1)}
+        common = suffix_set & prefix_set
         if len(common) == 0:
             return lhs + rhs
         common = sorted(common, key=lambda x: len(x))[-1]
@@ -599,7 +599,7 @@ def cosine(lhs, ctx):
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
-def count(lhs, rhs, ctx):
+def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
@@ -612,7 +612,7 @@ def count(lhs, rhs, ctx):
 
 def counts(lhs, ctx):
     temp = uniquify(lhs, ctx=ctx)
-    return [[x, count(lhs, x, ctx)] for x in temp]
+    return [[x, count_item(lhs, x, ctx)] for x in temp]
 
 
 def cumulative_sum(lhs, ctx):
@@ -1291,16 +1291,16 @@ def group_consecutive(lhs, ctx):
 
     def gen():
         prev = lhs[0]
-        count = 1
+        no_found = 1
 
         for item in lhs[1:]:
             if not non_vectorising_equals(prev, item, ctx):
                 yield [prev] * count
                 prev = item
-                count = 1
+                no_found = 1
             else:
-                count += 1
-        yield [prev] * count
+                no_found += 1
+        yield [prev] * no_found
 
     if typ is LazyList:
         return LazyList(gen())
@@ -1613,8 +1613,8 @@ def integer_parts_or_join_spaces(lhs, ctx):
             return []
         sign = -1 if lhs < 0 else 1
 
-        def helper(n, min):
-            for i in range(min, n // 2 + 1):
+        def helper(n, minimum):
+            for i in range(minimum, n // 2 + 1):
                 for part in helper(n - i, i):
                     yield part + [i * sign]
             yield [n * sign]
@@ -2182,11 +2182,11 @@ def multiplicity(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        count = 0
+        times = 0
         while lhs % rhs == 0:
             lhs /= rhs
-            count += 1
-        return count
+            times += 1
+        return times
     elif ts == (str, str):
         return remove_until_no_change(lhs, rhs, ctx)
     else:
@@ -2444,13 +2444,13 @@ def optimal_compress(lhs, ctx):
     """
     DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
     DP[0] = ""
-    for index in range(1, len(lhs) + 1):
-        for left in range(max(0, index - dictionary.max_word_len), index - 1):
-            i = dictionary.word_index(lhs[left:index])
+    for ind in range(1, len(lhs) + 1):
+        for left in range(max(0, ind - dictionary.max_word_len), ind - 1):
+            i = dictionary.word_index(lhs[left:ind])
             if i != -1:
-                DP[index] = min([DP[index], DP[left] + i], key=len)
+                DP[ind] = min([DP[ind], DP[left] + i], key=len)
                 break
-        DP[index] = min([DP[index], DP[index - 1] + lhs[index - 1]], key=len)
+        DP[ind] = min([DP[ind], DP[ind - 1] + lhs[ind - 1]], key=len)
     return "`" + DP[-1] + "`"
 
 
@@ -4222,7 +4222,7 @@ elements: dict[str, tuple[str, int]] = {
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
-    "O": process_element(count, 2),
+    "O": process_element(count_item, 2),
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
