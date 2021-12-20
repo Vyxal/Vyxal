@@ -1846,13 +1846,13 @@ num a -> nth_digit_of_pi(a)
 `
 codepage_descriptions[187] += `
 ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
-Get the first n digits of Eulter's number (e) / evaluate an expression as sympy
+Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 num a -> First n digits of e
 str a -> evaluate(a)
 `
 codepage_descriptions[144] += `
 ∆ė (Nth Digit of Euler's Number (e))
-Get the nth digit of euler's number (e)
+Get the nth digit of Euler's number (e)
 num a -> nth_digit_of_e(a)
 `
 codepage_descriptions[102] += `
@@ -2186,6 +2186,16 @@ codepage_descriptions[77] += `
 ÞM (Maximal Indicies)
 Indicies of the maximal elements of a list.
 lst a -> Indicies of the maximal elements of a list.
+`
+codepage_descriptions[129] += `
+Þ∴ (Elementwise Vectorised Dyadic Maximum)
+Elementwise vectorised dyadic maximum.
+lst a, lst b -> Elementwise vectorised dyadic maximum.
+`
+codepage_descriptions[130] += `
+Þ∵ (Elementwise Vectorised Dyadic Minimum)
+Elementwise vectorised dyadic minimum.
+lst a, lst b -> Elementwise vectorised dyadic minimum.
 `
 codepage_descriptions[85] += `
 ¨U (Get Request)
