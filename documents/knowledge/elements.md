@@ -2587,11 +2587,12 @@ Get the first prime number before a given number / factorise a mathematical expr
 -------------------------------
 ## ∆p (Nearest Prime to a Number / Python equivalent of an expression)
 
-Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression
+Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
 
 ### Overloads
 
 - num a: `nearest_prime(a)`
+- str a: `sympy.nsimplify(a).pycode()`
 -------------------------------
 ## ∆ṙ (Polynomial from Roots)
 

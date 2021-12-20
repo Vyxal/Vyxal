@@ -1824,8 +1824,9 @@ str a -> factorise(a)
 `
 codepage_descriptions[112] += `
 ∆p (Nearest Prime to a Number / Python equivalent of an expression)
-Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression
+Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
 num a -> nearest_prime(a)
+str a -> sympy.nsimplify(a).pycode()
 `
 codepage_descriptions[154] += `
 ∆ṙ (Polynomial from Roots)
