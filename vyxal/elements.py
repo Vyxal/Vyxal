@@ -28,8 +28,6 @@ from vyxal.encoding import (
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
 
-from helpers import local_maxima
-
 currentdate = datetime.now()
 
 NUMBER_TYPE = "number"
