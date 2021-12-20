@@ -602,6 +602,10 @@ def count(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
+    if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
+        lhs, rhs = rhs, lhs
+    if type(lhs) is str:
+        rhs = str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
