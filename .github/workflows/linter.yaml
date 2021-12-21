@@ -5,7 +5,7 @@ name: Run linter
 
 on:
   push:
-    branches-ignore: [ production ]
+    branches: [ main ]
   pull_request:
     branches-ignore: [ production ]
 
