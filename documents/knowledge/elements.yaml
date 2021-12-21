@@ -3531,7 +3531,7 @@
     - "[17] : 2.833213344056216"
 
 - element: "∆l"
-  name: Logarithm (log_2) / Stationary Points
+  name: Logarithm (log_2)
   arity: 1
   description: Get the logarithm of a number to base 2
   overloads:
@@ -3616,9 +3616,9 @@
     - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
 
 - element: "∆ṗ"
-  name: First Prime Before a Number / Factorise Expression
+  name: First Prime Before a Number / Factor Expression
   arity: 1
-  description: Get the first prime number before a given number / factorise a mathematical expression
+  description: Get the first prime number before a given number / factor a mathematical expression
   overloads:
     num: prev_prime(a)
     str: factorise(a)
