@@ -2584,7 +2584,7 @@ def polynomial_expr_from_coeffs(lhs, ctx):
         NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(arg[1] * x ** arg[0] for arg in enumerate(reverse(lhs, ctx)))
+            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
