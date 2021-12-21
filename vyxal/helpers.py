@@ -177,11 +177,11 @@ def from_base_alphabet(value: str, alphabet: str) -> int:
     return ret
 
 
-def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
+def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     """Returns digits in base 10 using arbitrary base 'base'"""
     # I may have stolen this from Jelly
     ret = 0
-    for digit in digits:
+    for digit in digit_list:
         ret = base * ret + digit
 
     return ret
