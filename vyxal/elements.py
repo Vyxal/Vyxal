@@ -3430,7 +3430,7 @@ def truthy_indices(lhs, ctx):
 
     @lazylist
     def helper():
-        for i in range(len(lhs)):
+        for i in enumerate(lhs):
             if lhs[i]:
                 yield i
 

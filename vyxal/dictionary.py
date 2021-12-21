@@ -23190,7 +23190,7 @@ def word_index(word):
 
 
 if __name__ == "__main__":
-    for i in range(len(small_dictionary)):
+    for i in enumerate(small_dictionary):
         print(
             small_dictionary[i],
             helpers.to_base_alphabet(i, encoding.compression),
