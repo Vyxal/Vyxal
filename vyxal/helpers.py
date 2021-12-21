@@ -514,20 +514,20 @@ def pi_digits(n: int):
     return gen()
 
 
-def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
+def pop(iterable_object: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
     popped_items = []
     for _ in range(count):
-        if iterable:
-            popped_items.append(iterable.pop())
+        if iterable_object:
+            popped_items.append(iterable_object.pop())
         else:
             temp = get_input(ctx)
             popped_items.append(temp)
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
-            iterable.append(item)
+            iterable_object.append(item)
 
     if ctx.reverse_flag:
         popped_items = popped_items[::-1]
