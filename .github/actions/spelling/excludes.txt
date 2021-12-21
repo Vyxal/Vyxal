@@ -18,3 +18,4 @@ ignore$
 ^documents/knowledge/[eE]lements\.(md|txt)$
 ^static/parsed_yaml\.js$
 ^tests/test_elements.py$
+^vyxal/dictionary.py$
