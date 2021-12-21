@@ -206,7 +206,7 @@ $(document).ready(e => {
                 footer: e_footer.doc.getValue(),
                 header: e_header.doc.getValue()
             }, res => {
-                if (flags.value.includes('E')) {
+                if (flags.value.includes('E') && !flags.value.includes("h")) {
                     alert('Please read and ensure you 100% trust the JavaScript code which is about to be evaluated. The code is (see next alert):')
                     alert(res.stdout)
                     if (confirm('Do you want to execute it? If you are remotely unsure, click Cancel!')) {
@@ -221,7 +221,7 @@ $(document).ready(e => {
                 if (e_code.doc.getValue() == 'lyxal') {
                     location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
                 }
-                if (flags.value.includes('Ḣ')) {
+                if (flags.value.includes('Ḣ') && !flags.value.includes("h")) {
                     const container = document.getElementById("html-rendered-output")
                     const iframe = document.createElement("iframe")
                     iframe.srcdoc = res.stdout

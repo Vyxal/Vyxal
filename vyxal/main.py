@@ -5,15 +5,14 @@ offline.
 
 import os
 import sys
-import types
 import traceback
-
+import types
 
 import vyxal.encoding
 from vyxal.context import Context
 from vyxal.elements import *
-from vyxal.transpile import transpile
 from vyxal.helpers import *
+from vyxal.transpile import transpile
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)

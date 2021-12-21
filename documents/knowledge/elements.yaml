@@ -3441,11 +3441,12 @@
     - "[1, 203] : 1"
 
 - element: "∆K"
-  name: Sum of Proper Divisors
+  name: Sum of Proper Divisors / Stationary Points
   arity: 1
-  description: Get the sum of all proper divisors of a number
+  description: Get the sum of all proper divisors of a number /  get the stationary points of a function
   overloads:
     num: sum_of_proper_divisors(a)
+    str: stationary_points(a)
   vectorise: true
   tests:
     - "[43] : [1]"
@@ -3453,6 +3454,7 @@
     - "[97] : [1]"
     - "[34] : [20]"
     - "[18] : [21]"
+    - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆²"
   name: Perfect Square?
@@ -3597,11 +3599,12 @@
     - "[360] : 6.283185307179586"
 
 - element: "∆Ṗ"
-  name: Next Prime After a Number
+  name: Next Prime After a Number / Discriminant of Polynomial
   arity: 1
-  description: Get the next prime number after a given number
+  description: Get the next prime number after a given number / the discriminant of a polynomial
   overloads:
     num: next_prime(a)
+    str: discriminant(a)
   vectorise: true
   tests:
     - "[1] : 2"
@@ -3610,13 +3613,15 @@
     - "[4] : 5"
     - "[5] : 7"
     - "[69] : 71"
+    - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
 
 - element: "∆ṗ"
-  name: First Prime Before a Number
+  name: First Prime Before a Number / Factor Expression
   arity: 1
-  description: Get the first prime number before a given number
+  description: Get the first prime number before a given number / factor a mathematical expression
   overloads:
     num: prev_prime(a)
+    str: factorise(a)
   vectorise: true
   tests:
     - "[1] : 1"
@@ -3625,13 +3630,17 @@
     - "[4] : 3"
     - "[5] : 3"
     - "[69] : 67"
+    - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
+    - "['x*3 + x**2'] : 'x*(x + 3)'"
+
 
 - element: "∆p"
-  name: Nearest Prime to a Number
+  name: Nearest Prime to a Number / Python equivalent of an expression
   arity: 1
-  description: Get the prime number closest to a given number, get the greater to break ties
+  description: Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
   overloads:
     num: nearest_prime(a)
+    str: sympy.nsimplify(a).pycode()
   vectorise: true
   tests:
     - "[1] : 2"
@@ -3758,6 +3767,20 @@
     num: random.random()
   vectorise: true
 
+- element: "∆ṫ"
+  name: Totient Function / Local Minima
+  arity: 1
+  description: Get the totient function of a number / local minima of a function
+  overloads:
+    num: totient(a)
+    str: local_minima(a)
+  vectorise: true
+  tests:
+    - "[[23, 76, 1234, 68, 234, 87, 12, 567]] : [22, 36, 616, 32, 72, 56, 4, 324]"
+    - "['5*x**2 - 34*x + 213'] : [3.4]"
+    - "['(x**2 + x + 1) / x'] : [1]"
+
+
 - element: "∆Z"
   name: ZFill
   arity: 2
@@ -3814,6 +3837,33 @@
   tests:
     - "[[1, 2, 3, 4, 5]] : 3"
     - "[[1, 2, 3, 4, 5, 6]] : [3, 4]"
+
+- element: "∆Ċ"
+  name: Polynomial Expression From Coefficients
+  arity: 1
+  description: Get the polynomial expression from a list of coefficients
+  overloads:
+    num: polynomial of degree n
+    str: a
+    lst: polynomial_expression(a)
+  vectorise: false
+  tests:
+    - "[[1,-12,45,8]] : 'x**3 - 12*x**2 + 45*x + 8'"
+    - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3*x**2 + 4*x + 5'"
+    - "[3] : 'x**3 + x**2 + x + 1'"
+    - "[[69, 420]] : '69*x + 420'"
+  
+- element: "∆¢"
+  name: Carmichael Function
+  arity: 1
+  description: Get the Carmichael function of a number / Local Maxima
+  overloads:
+    num: carmichael(a)
+    str: local_maxima(a)
+  vectorise: true
+  tests:
+    - "[[3, 8, 12, 78, 234, 786, 1234]] : [2, 2, 2, 12, 12, 130, 616]"
+    - "['(x**2 + x + 1) / x'] : [-1]"
 
 - element: "øb"
   name: Parenthesise
@@ -4417,6 +4467,26 @@
   vectorise: false
   tests:
     - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
+
+- element: "Þ∴"
+  name: Elementwise Vectorised Dyadic Maximum
+  description: Elementwise vectorised dyadic maximum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic maximum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
+
+- element: "Þ∵"
+  name: Elementwise Vectorised Dyadic Minimum
+  description: Elementwise vectorised dyadic minimum.
+  arity: 2
+  overloads:
+    lst-lst: Elementwise vectorised dyadic minimum.
+  vectorise: true
+  tests:
+    - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
 
 - element: "¨U"
   name: Get Request

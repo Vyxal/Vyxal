@@ -11,6 +11,7 @@ import random
 import re
 import string
 import types
+import urllib
 from datetime import datetime
 from typing import Union
 
@@ -138,20 +139,20 @@ def all_diagonals(lhs, ctx):
     def gen():
         vector = list(map(lambda x: iterable(x, ctx=ctx), lhs))
         diag_num = 0
-        diagonal = numpy.diag(vector)
+        current_diagonal = numpy.diag(vector)
         # postive diags first
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num += 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
         diag_num = -1
-        diagonal = numpy.diag(vector, k=diag_num)
+        current_diagonal = numpy.diag(vector, k=diag_num)
         # now the other diagonals
-        while len(diagonal):
-            yield vyxalify(diagonal)
+        while len(current_diagonal):
+            yield vyxalify(current_diagonal)
             diag_num -= 1
-            diagonal = numpy.diag(vector, k=diag_num)
+            current_diagonal = numpy.diag(vector, k=diag_num)
 
     return gen()
 
@@ -371,9 +372,9 @@ def bitwise_or(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     if ts == (str, str):
-        suffixes = {lhs[-i:] for i in range(1, len(lhs) + 1)}
-        prefixes = {rhs[:i] for i in range(1, len(rhs) + 1)}
-        common = suffixes & prefixes
+        suffix_set = {lhs[-i:] for i in range(1, len(lhs) + 1)}
+        prefix_set = {rhs[:i] for i in range(1, len(rhs) + 1)}
+        common = suffix_set & prefix_set
         if len(common) == 0:
             return lhs + rhs
         common = sorted(common, key=lambda x: len(x))[-1]
@@ -453,6 +454,18 @@ def brackets_balanced(lhs, ctx):
             else:
                 temp.pop()
     return int(len(temp) == 0)
+
+
+def carmichael_function(lhs, ctx):
+    """Element ∆¢
+    (num) -> is lhs a Carmichael number?
+    (str) -> local maxima
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.ntheory.reduced_totient(lhs),
+        str: lambda: local_maxima(lhs),
+    }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
 
 
 def cartesian_power(lhs, rhs, ctx):
@@ -598,16 +611,20 @@ def cosine(lhs, ctx):
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
-def count(lhs, rhs, ctx):
+def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
+    if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
+        lhs, rhs = rhs, lhs
+    if type(lhs) is str:
+        rhs = str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
 def counts(lhs, ctx):
     temp = uniquify(lhs, ctx=ctx)
-    return [[x, count(lhs, x, ctx)] for x in temp]
+    return [[x, count_item(lhs, x, ctx)] for x in temp]
 
 
 def cumulative_sum(lhs, ctx):
@@ -740,8 +757,13 @@ def divisors(lhs, ctx):
 def divisor_sum(lhs, ctx):
     """Element ∆K
     (num) -> sum of proper divisors of a
+    (str) -> stationary points of a
     """
-    return vy_sum(divisors(lhs, ctx)[:-1], ctx)
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: vy_sum(divisors(lhs, ctx)[:-1], ctx),
+        str: lambda: stationary_points(lhs),
+    }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
 
 def dot_product(lhs, rhs, ctx):
@@ -778,6 +800,26 @@ def e_digits(lhs, ctx):
         return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
+
+
+def element_wise_dyadic_maximum(lhs, rhs, ctx):
+    """Element Þ∴
+    (lst, lst) -> max(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_maximum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
+
+
+def element_wise_dyadic_minimum(lhs, rhs, ctx):
+    """Element Þ∵
+    (lst, lst) -> min(a, b)
+    """
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
+    return LazyList(
+        dyadic_minimum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
+    )
 
 
 def equals(lhs, rhs, ctx):
@@ -1266,16 +1308,16 @@ def group_consecutive(lhs, ctx):
 
     def gen():
         prev = lhs[0]
-        count = 1
+        no_found = 1
 
         for item in lhs[1:]:
             if not non_vectorising_equals(prev, item, ctx):
-                yield [prev] * count
+                yield [prev] * no_found
                 prev = item
-                count = 1
+                no_found = 1
             else:
-                count += 1
-        yield [prev] * count
+                no_found += 1
+        yield [prev] * no_found
 
     if typ is LazyList:
         return LazyList(gen())
@@ -1588,8 +1630,8 @@ def integer_parts_or_join_spaces(lhs, ctx):
             return []
         sign = -1 if lhs < 0 else 1
 
-        def helper(n, min):
-            for i in range(min, n // 2 + 1):
+        def helper(n, minimum):
+            for i in range(minimum, n // 2 + 1):
                 for part in helper(n - i, i):
                     yield part + [i * sign]
             yield [n * sign]
@@ -1733,7 +1775,7 @@ def is_square(lhs, ctx):
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
-        str: lambda: str(sympy.expand(lhs + " ** 2")),
+        str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
 
@@ -1860,19 +1902,25 @@ def ljust(lhs, rhs, other, ctx):
 def log_10(lhs, ctx):
     """Element ∆τ
     (num) -> log10(a)
+    (str) -> log10(a)
     """
-    return log_mold_multi(lhs, 10, ctx)
-    # no I'm not lazy why do you think that don't think that I
-    # would never just reuse vyxal functions for the sake of not
-    # having to think of an original and creative string overload.
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 10),
+        (str): lambda: str(sympy.log(make_expression(lhs), 10)),
+    }.get(ts, lambda: vectorise(log_10, lhs, ctx=ctx))()
 
 
 def log_2(lhs, ctx):
     """Element ∆l
     (num) -> log2(a)
+    (str) -> log2(a)
     """
-    return log_mold_multi(lhs, 2, ctx)
-    # okay fine maybe I would. shut up
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 2),
+        (str): lambda: str(sympy.log(make_expression(lhs), 2)),
+    }.get(ts, lambda: vectorise(log_2, lhs, ctx=ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -1927,7 +1975,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
-def max_by_function(lhs, ctx):
+def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
     """
@@ -2157,11 +2205,11 @@ def multiplicity(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        count = 0
+        times = 0
         while lhs % rhs == 0:
             lhs /= rhs
-            count += 1
-        return count
+            times += 1
+        return times
     elif ts == (str, str):
         return remove_until_no_change(lhs, rhs, ctx)
     else:
@@ -2390,7 +2438,7 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: str(sympy.integrate(make_expression(lhs))),
+        (str): lambda: sympy.integrate(make_expression(lhs)),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
@@ -2419,13 +2467,13 @@ def optimal_compress(lhs, ctx):
     """
     DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
     DP[0] = ""
-    for index in range(1, len(lhs) + 1):
-        for left in range(max(0, index - dictionary.max_word_len), index - 1):
-            i = dictionary.word_index(lhs[left:index])
+    for ind in range(1, len(lhs) + 1):
+        for left in range(max(0, ind - dictionary.max_word_len), ind - 1):
+            i = dictionary.word_index(lhs[left:ind])
             if i != -1:
-                DP[index] = min([DP[index], DP[left] + i], key=len)
+                DP[ind] = min([DP[ind], DP[left] + i], key=len)
                 break
-        DP[index] = min([DP[index], DP[index - 1] + lhs[index - 1]], key=len)
+        DP[ind] = min([DP[ind], DP[ind - 1] + lhs[ind - 1]], key=len)
     return "`" + DP[-1] + "`"
 
 
@@ -2546,6 +2594,26 @@ def pluralise_count(lhs, rhs, ctx):
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
+def polynomial_expr_from_coeffs(lhs, ctx):
+    """Element ∆Ċ
+    (num) -> symbolic math representation of polynomial of degree n
+             where each coefficient is 1
+    (str) -> a
+    (lst) -> symbolic math representation of polynomial with coeffs in
+             lhs
+    """
+
+    ts = vy_type(lhs)
+    x = sympy.symbols("x")
+    return {
+        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
+        str: lambda: lhs,
+        list: lambda: str(
+            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
+        ),
+    }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
+
+
 def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
@@ -2593,6 +2661,7 @@ def powerset(lhs, ctx):
 def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
+    (str) -> factorise expression
     """
     ts = vy_type(lhs)
     return {
@@ -2985,7 +3054,9 @@ def sort_by(lhs, rhs, ctx):
         return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
     else:
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1),
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
+            if lhs <= rhs
+            else range(lhs, rhs - 1, -1),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
@@ -3079,7 +3150,12 @@ def strict_greater_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
         (str, NUMBER_TYPE): lambda: int(lhs > str(rhs)),
         (str, str): lambda: int(lhs > rhs),
-    }.get(ts, lambda: int(list(lhs) > list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) > list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strict_less_than(lhs, rhs, ctx):
@@ -3092,7 +3168,12 @@ def strict_less_than(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
         (str, NUMBER_TYPE): lambda: int(lhs < str(rhs)),
         (str, str): lambda: int(lhs < rhs),
-    }.get(ts, lambda: int(list(lhs) < list(rhs)))()
+    }.get(
+        ts,
+        lambda: int(
+            bool(list(iterable(lhs, ctx=ctx)) < list(iterable(rhs, ctx=ctx)))
+        ),
+    )()
 
 
 def strip(lhs, rhs, ctx):
@@ -3296,6 +3377,18 @@ def to_radians(lhs, ctx):
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
         str: lambda: sympy.N(lhs) * (sympy.pi / 180),
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
+
+
+def totient(lhs, ctx):
+    """Element ∆ṫ
+    (num) -> Euler's totient function
+    (str) -> local minima of a function
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.totient(lhs),
+        str: lambda: local_minima(lhs),
+    }.get(ts, lambda: vectorise(totient, lhs, ctx=ctx))()
 
 
 def transliterate(lhs, rhs, other, ctx):
@@ -3837,14 +3930,14 @@ def vy_str(lhs, ctx=None):
         ),
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -3908,14 +4001,14 @@ def vy_repr(lhs, ctx):
         # actually make the repr kinda make sense
     }.get(
         ts,
-        lambda: "⟨ "
-        + " | ".join(
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
             map(
                 lambda x: vy_repr(x, ctx),
                 list(lhs) or [],
             )
         )
-        + " ⟩",
+        + (" ⟩" if ctx.vyxal_lists else "]"),
     )()
 
 
@@ -4185,7 +4278,7 @@ elements: dict[str, tuple[str, int]] = {
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
-    "O": process_element(count, 2),
+    "O": process_element(count_item, 2),
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
@@ -4467,6 +4560,9 @@ elements: dict[str, tuple[str, int]] = {
     "∆o": process_element(nth_ordinal, 1),
     "∆M": process_element(mode, 1),
     "∆ṁ": process_element(median, 1),
+    "∆ṫ": process_element(totient, 1),
+    "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
+    "∆¢": process_element(carmichael_function, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -4534,6 +4630,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
+    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
