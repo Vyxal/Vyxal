@@ -129,7 +129,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     try:
         code = transpile(code, ctx.dictionary_compression)
-    except Exception as e:
+    except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
             sys.exit(1)
@@ -145,7 +145,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.stacks.append(stack)
     try:
         exec(code, locals() | globals())
-    except Exception as e:
+    except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
             sys.exit(1)

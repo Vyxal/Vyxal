@@ -200,7 +200,7 @@ def get_input(ctx: Context) -> Any:
                 temp = vy_eval(input("> " * ctx.repl_mode), ctx)
                 if ctx.empty_input_is_zero and temp == "":
                     return 0
-            except Exception:
+            except Exception:  # skipcq: PYL-W0703
                 temp = 0
             return temp
     else:
@@ -798,7 +798,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
-        except Exception:
+        except Exception:  # skipcq: PYL-W0703
             # TODO: eval as vyxal
             return item
     else:
@@ -807,7 +807,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
-        except Exception:
+        except Exception:  # skipcq: PYL-W0703
             return item
 
 
