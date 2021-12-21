@@ -433,12 +433,17 @@ def mold(
             item = [item]
         for _ in item:
             obj = next(content, None)
+            print(obj)
             if obj is None:
                 content = itertools.tee(original)[1]
                 obj = next(content)
             temp.append(obj)
         if temp:
-            final.append(temp[::])
+            if len(temp) == 1:
+                temp = deep_copy(temp[0])
+            else:
+                temp = deep_copy(temp)
+            final.append(temp)
 
     return final
 
