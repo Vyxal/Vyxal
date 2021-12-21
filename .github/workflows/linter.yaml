@@ -41,5 +41,5 @@ jobs:
         # you know what? we're all gamers here, so we can run our _own_ black check
         # because who tf needs external workflows amiright or amiright?
         # ~ lyxal
-        
+
         black . --check

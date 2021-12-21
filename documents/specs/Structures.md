@@ -1,6 +1,6 @@
 # Structure Specifications
 
-Very simply, a _structure_ is an element that is made of sub-elements grouped together. Structures can have branches that impact either a) the attributes of the structure or b) how the structure is executed. Branches are created by using `|`. 
+Very simply, a _structure_ is an element that is made of sub-elements grouped together. Structures can have branches that impact either a) the attributes of the structure or b) how the structure is executed. Branches are created by using `|`.
 
 Here is a list of every structure defined within version 2:
 

@@ -14,7 +14,7 @@ Vyxal is also deliberately designed to be an easy language to learn. While it ma
 
 Ultimately, Vyxal is a language for golfers, by golfers.
 
-## Usage 
+## Usage
 
     python3 -m vyxal  <file> <flags (single string of flags)> <input(s)>
 

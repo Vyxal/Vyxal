@@ -26,7 +26,7 @@ function_template = """
     stack = [vyxalify(item) for item in {}]
     expected = vyxalify({})
     ctx = Context()
-    
+
     ctx.stacks.append(stack)
 
     code = transpile({})
