@@ -433,7 +433,6 @@ def mold(
             item = [item]
         for _ in item:
             obj = next(content, None)
-            print(obj)
             if obj is None:
                 content = itertools.tee(original)[1]
                 obj = next(content)
