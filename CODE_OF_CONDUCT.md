@@ -1,6 +1,3 @@
-<!--haha funny name-->
-
-
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
