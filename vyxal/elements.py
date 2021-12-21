@@ -1613,10 +1613,10 @@ def integer_divide(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: divide(lhs, rhs, ctx=ctx)[0],
         (str, NUMBER_TYPE): lambda: divide(rhs, lhs, ctx=ctx)[0],
         (ts[0], types.FunctionType): lambda: foldl(
-            rhs, reverse(iterable(lhs, ctx=ctx), ctx=ctx), ctx
+            rhs, reverse(iterable(lhs, ctx=ctx), ctx=ctx), ctx=ctx
         ),
         (types.FunctionType, ts[1]): lambda: foldl(
-            lhs, reverse(iterable(rhs, ctx=ctx), ctx=ctx), ctx
+            lhs, reverse(iterable(rhs, ctx=ctx), ctx=ctx), ctx=ctx
         ),
     }.get(ts, lambda: vectorise(integer_divide, lhs, rhs, ctx=ctx))()
 
@@ -2012,7 +2012,7 @@ def maximal_indices(lhs, ctx):
     @lazylist
     def gen():
         biggest = monadic_maximum(lhs, ctx=ctx)
-        for i, item in enumerate(lhs):
+        for i, item in enumerate(list(lhs)):
             if non_vectorising_equals(item, biggest, ctx=ctx):
                 yield i
 
@@ -2602,7 +2602,6 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     (lst) -> symbolic math representation of polynomial with coeffs in
              lhs
     """
-
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
@@ -3430,7 +3429,7 @@ def truthy_indices(lhs, ctx):
 
     @lazylist
     def helper():
-        for i in range(len(lhs)):
+        for i, _ in enumerate(lhs):
             if lhs[i]:
                 yield i
 

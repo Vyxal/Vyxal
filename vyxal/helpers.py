@@ -48,6 +48,8 @@ def collect_until_false(
     initial: Any,
     ctx: Context,
 ) -> List[Any]:
+    """Given a function, apply it on a given value while a predicate function
+    returns True. Return the list of values that were collected."""
     val = initial
     while safe_apply(predicate, val, ctx=ctx):
         yield val
@@ -177,11 +179,11 @@ def from_base_alphabet(value: str, alphabet: str) -> int:
     return ret
 
 
-def from_base_digits(digits: List[NUMBER_TYPE], base: int) -> int:
+def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     """Returns digits in base 10 using arbitrary base 'base'"""
     # I may have stolen this from Jelly
     ret = 0
-    for digit in digits:
+    for digit in digit_list:
         ret = base * ret + digit
 
     return ret
@@ -200,7 +202,7 @@ def get_input(ctx: Context) -> Any:
                 temp = vy_eval(input("> " * ctx.repl_mode), ctx)
                 if ctx.empty_input_is_zero and temp == "":
                     return 0
-            except Exception:
+            except Exception:  # skipcq: PYL-W0703
                 temp = 0
             return temp
     else:
@@ -296,7 +298,6 @@ def levenshtein_distance(s1: str, s2: str) -> int:
 
 def local_minima(lhs: str) -> List[Union[int, float]]:
     """Find the local minima of a mathematical function using Sympy"""
-
     x = sympy.symbols("x")
     d_dx = sympy.diff(sympy.sympify(lhs), x)
     second_dx = sympy.diff(d_dx, x)
@@ -307,7 +308,6 @@ def local_minima(lhs: str) -> List[Union[int, float]]:
 
 def local_maxima(lhs: str) -> List[Union[int, float]]:
     """Find the local minima of a mathematical function using Sympy"""
-
     x = sympy.symbols("x")
     d_dx = sympy.diff(sympy.sympify(lhs), x)
     second_dx = sympy.diff(d_dx, x)
@@ -438,7 +438,11 @@ def mold(
                 obj = next(content)
             temp.append(obj)
         if temp:
-            final.append(temp[::])
+            if len(temp) == 1:
+                temp = deep_copy(temp[0])
+            else:
+                temp = deep_copy(temp)
+            final.append(temp)
 
     return final
 
@@ -510,20 +514,20 @@ def pi_digits(n: int):
     return gen()
 
 
-def pop(iterable: VyList, count: int, ctx: Context) -> List[Any]:
+def pop(iterable_object: VyList, count: int, ctx: Context) -> List[Any]:
     """Pops (count) items from iterable. If there isn't enough items
     within iterable, input is used as filler."""
     popped_items = []
     for _ in range(count):
-        if iterable:
-            popped_items.append(iterable.pop())
+        if iterable_object:
+            popped_items.append(iterable_object.pop())
         else:
             temp = get_input(ctx)
             popped_items.append(temp)
 
     if ctx.retain_popped:
         for item in popped_items[::-1]:
-            iterable.append(item)
+            iterable_object.append(item)
 
     if ctx.reverse_flag:
         popped_items = popped_items[::-1]
@@ -622,7 +626,10 @@ def sentence_case(item: str) -> str:
     ret = ""
     capitalise = True
     for char in item:
-        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise:
+            ret += char.upper()
+        else:
+            ret += char.lower()
         if capitalise and char != " ":
             capitalise = False
         capitalise = capitalise or char in "!?."
@@ -640,7 +647,6 @@ def simplify(value: Any) -> Union[int, float, str, list]:
 
 def stationary_points(lhs: str) -> List[Union[int, float]]:
     """Returns a list of stationary points of a mathematical function"""
-
     x = sympy.symbols("x")
     d_dx = sympy.diff(sympy.sympify(lhs), x)
     zeros = sympy.solve(d_dx, x)
@@ -794,7 +800,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
-        except Exception:
+        except Exception:  # skipcq: PYL-W0703
             # TODO: eval as vyxal
             return item
     else:
@@ -803,7 +809,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if type(t) is float:
                 t = sympy.Rational(str(t))
             return vyxalify(t)
-        except Exception:
+        except Exception:  # skipcq: PYL-W0703
             return item
 
 
