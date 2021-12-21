@@ -626,7 +626,10 @@ def sentence_case(item: str) -> str:
     ret = ""
     capitalise = True
     for char in item:
-        ret += (lambda: char.lower(), lambda: char.upper())[capitalise]()
+        if capitalise:
+            ret += char.upper()
+        else:
+            ret += char.lower()
         if capitalise and char != " ":
             capitalise = False
         capitalise = capitalise or char in "!?."
