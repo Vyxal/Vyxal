@@ -3531,7 +3531,7 @@
     - "[17] : 2.833213344056216"
 
 - element: "∆l"
-  name: Logarithm (log_2) / Staionary Points
+  name: Logarithm (log_2) / Stationary Points
   arity: 1
   description: Get the logarithm of a number to base 2
   overloads:
@@ -3599,9 +3599,9 @@
     - "[360] : 6.283185307179586"
 
 - element: "∆Ṗ"
-  name: Next Prime After a Number / Discrimant of Polynomial
+  name: Next Prime After a Number / Discriminant of Polynomial
   arity: 1
-  description: Get the next prime number after a given number / the discrimant of a polynomial
+  description: Get the next prime number after a given number / the discriminant of a polynomial
   overloads:
     num: next_prime(a)
     str: discriminant(a)
