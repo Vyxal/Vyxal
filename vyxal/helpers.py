@@ -48,6 +48,8 @@ def collect_until_false(
     initial: Any,
     ctx: Context,
 ) -> List[Any]:
+    """Given a function, apply it on a given value while a predicate function
+    returns True. Return the list of values that were collected."""
     val = initial
     while safe_apply(predicate, val, ctx=ctx):
         yield val
