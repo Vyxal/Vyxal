@@ -1,6 +1,6 @@
 # Parser
 
-The parser is responsible for converting tokenised code into a list of structures. 
+The parser is responsible for converting tokenised code into a list of structures.
 
 The following list of structure types should be comprehensive and complete.
 

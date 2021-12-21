@@ -5,8 +5,8 @@ to what gets executed after transpilation, not the element functions. Note that 
 
 ## Elements
 
-There will be a function called `process_element` that will take a single expression (called `expr`) as a string (don't pass raw code). 
-`expr` must be a python _expression_, not a _statement_; an easy way to think of this is that you must be able to put `expr` inside a 
+There will be a function called `process_element` that will take a single expression (called `expr`) as a string (don't pass raw code).
+`expr` must be a python _expression_, not a _statement_; an easy way to think of this is that you must be able to put `expr` inside a
 lambda without syntax errors. The function wraps `expr` in one of the following templates:
 
 ### Nilads
@@ -98,7 +98,7 @@ def FN_"""FunctionName"""(arg_stack, self, arity=-1, ctx=None):
   ctx.inputs.pop()
   return stack
 ```
-    
+
 ### Lambdas
 
 ```python
@@ -116,7 +116,7 @@ def _lambda_{}(arg_stack, self, arity=-1, ctx=None):
   return res
 stack.append(_lambda_"""x""")
 ```
-   
+
 ### Lists
 
 ```python

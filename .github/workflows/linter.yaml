@@ -7,16 +7,14 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches-ignore: [ production ]
 
 jobs:
-  build:
-
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.9]
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -39,5 +37,5 @@ jobs:
         # you know what? we're all gamers here, so we can run our _own_ black check
         # because who tf needs external workflows amiright or amiright?
         # ~ lyxal
-        
+
         black . --check
