@@ -2012,7 +2012,7 @@ def maximal_indices(lhs, ctx):
     @lazylist
     def gen():
         biggest = monadic_maximum(lhs, ctx=ctx)
-        for i, item in enumerate(lhs):
+        for i, item in enumerate(list(lhs)):
             if non_vectorising_equals(item, biggest, ctx=ctx):
                 yield i
 
@@ -3429,7 +3429,7 @@ def truthy_indices(lhs, ctx):
 
     @lazylist
     def helper():
-        for i in enumerate(lhs):
+        for i, _ in enumerate(lhs):
             if lhs[i]:
                 yield i
 
