@@ -456,6 +456,18 @@ def brackets_balanced(lhs, ctx):
     return int(len(temp) == 0)
 
 
+def carmichael_function(lhs, ctx):
+    """Element ∆¢
+    (num) -> is lhs a Carmichael number?
+    (str) -> local maxima
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.ntheory.reduced_totient(lhs),
+        str: lambda: local_maxima(lhs),
+    }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
+
+
 def cartesian_power(lhs, rhs, ctx):
     """Element ÞẊ
     (any, num) -> cartesian_power(a, b)
@@ -745,8 +757,13 @@ def divisors(lhs, ctx):
 def divisor_sum(lhs, ctx):
     """Element ∆K
     (num) -> sum of proper divisors of a
+    (str) -> stationary points of a
     """
-    return vy_sum(divisors(lhs, ctx)[:-1], ctx)
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: vy_sum(divisors(lhs, ctx)[:-1], ctx),
+        str: lambda: stationary_points(lhs),
+    }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
 
 def dot_product(lhs, rhs, ctx):
@@ -1758,7 +1775,7 @@ def is_square(lhs, ctx):
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
-        str: lambda: str(sympy.expand(lhs + " ** 2")),
+        str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
 
@@ -1885,19 +1902,25 @@ def ljust(lhs, rhs, other, ctx):
 def log_10(lhs, ctx):
     """Element ∆τ
     (num) -> log10(a)
+    (str) -> log10(a)
     """
-    return log_mold_multi(lhs, 10, ctx)
-    # no I'm not lazy why do you think that don't think that I
-    # would never just reuse vyxal functions for the sake of not
-    # having to think of an original and creative string overload.
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 10),
+        (str): lambda: str(sympy.log(make_expression(lhs), 10)),
+    }.get(ts, lambda: vectorise(log_10, lhs, ctx=ctx))()
 
 
 def log_2(lhs, ctx):
     """Element ∆l
     (num) -> log2(a)
+    (str) -> log2(a)
     """
-    return log_mold_multi(lhs, 2, ctx)
-    # okay fine maybe I would. shut up
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.log(lhs, 2),
+        (str): lambda: str(sympy.log(make_expression(lhs), 2)),
+    }.get(ts, lambda: vectorise(log_2, lhs, ctx=ctx))()
 
 
 def log_mold_multi(lhs, rhs, ctx):
@@ -2415,7 +2438,7 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: str(sympy.integrate(make_expression(lhs))),
+        (str): lambda: sympy.integrate(make_expression(lhs)),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
@@ -2571,6 +2594,26 @@ def pluralise_count(lhs, rhs, ctx):
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
+def polynomial_expr_from_coeffs(lhs, ctx):
+    """Element ∆Ċ
+    (num) -> symbolic math representation of polynomial of degree n
+             where each coefficient is 1
+    (str) -> a
+    (lst) -> symbolic math representation of polynomial with coeffs in
+             lhs
+    """
+
+    ts = vy_type(lhs)
+    x = sympy.symbols("x")
+    return {
+        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
+        str: lambda: lhs,
+        list: lambda: str(
+            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
+        ),
+    }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
+
+
 def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
@@ -2618,6 +2661,7 @@ def powerset(lhs, ctx):
 def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
+    (str) -> factorise expression
     """
     ts = vy_type(lhs)
     return {
@@ -3333,6 +3377,18 @@ def to_radians(lhs, ctx):
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
         str: lambda: sympy.N(lhs) * (sympy.pi / 180),
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
+
+
+def totient(lhs, ctx):
+    """Element ∆ṫ
+    (num) -> Euler's totient function
+    (str) -> local minima of a function
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.totient(lhs),
+        str: lambda: local_minima(lhs),
+    }.get(ts, lambda: vectorise(totient, lhs, ctx=ctx))()
 
 
 def transliterate(lhs, rhs, other, ctx):
@@ -4504,6 +4560,9 @@ elements: dict[str, tuple[str, int]] = {
     "∆o": process_element(nth_ordinal, 1),
     "∆M": process_element(mode, 1),
     "∆ṁ": process_element(median, 1),
+    "∆ṫ": process_element(totient, 1),
+    "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
+    "∆¢": process_element(carmichael_function, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

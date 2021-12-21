@@ -1758,9 +1758,10 @@ Copy the sign of one number to the other
 num a, num b -> math.copysign(a, b)
 `
 codepage_descriptions[75] += `
-∆K (Sum of Proper Divisors)
-Get the sum of all proper divisors of a number
+∆K (Sum of Proper Divisors / Stationary Points)
+Get the sum of all proper divisors of a number /  get the stationary points of a function
 num a -> sum_of_proper_divisors(a)
+str a -> stationary_points(a)
 `
 codepage_descriptions[208] += `
 ∆² (Perfect Square?)
@@ -1785,7 +1786,7 @@ Get the natural logarithm of a number
 num a -> math.log(a)
 `
 codepage_descriptions[108] += `
-∆l (Logarithm (log_2))
+∆l (Logarithm (log_2) / Staionary Points)
 Get the logarithm of a number to base 2
 num a -> math.log2(a)
 `
@@ -1810,19 +1811,22 @@ Convert an angle from degrees to radians
 num a -> math.radians(a)
 `
 codepage_descriptions[196] += `
-∆Ṗ (Next Prime After a Number)
-Get the next prime number after a given number
+∆Ṗ (Next Prime After a Number / Discrimant of Polynomial)
+Get the next prime number after a given number / the discrimant of a polynomial
 num a -> next_prime(a)
+str a -> discriminant(a)
 `
 codepage_descriptions[153] += `
-∆ṗ (First Prime Before a Number)
-Get the first prime number before a given number
+∆ṗ (First Prime Before a Number / Factorise Expression)
+Get the first prime number before a given number / factorise a mathematical expression
 num a -> prev_prime(a)
+str a -> factorise(a)
 `
 codepage_descriptions[112] += `
-∆p (Nearest Prime to a Number)
-Get the prime number closest to a given number, get the greater to break ties
+∆p (Nearest Prime to a Number / Python equivalent of an expression)
+Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
 num a -> nearest_prime(a)
+str a -> sympy.nsimplify(a).pycode()
 `
 codepage_descriptions[154] += `
 ∆ṙ (Polynomial from Roots)
@@ -1870,6 +1874,12 @@ codepage_descriptions[197] += `
 Get a random float in the range [0, 1), pseudo random number
 num a -> random.random()
 `
+codepage_descriptions[156] += `
+∆ṫ (Totient Function / Local Minima)
+Get the totient function of a number / local minima of a function
+num a -> totient(a)
+str a -> local_minima(a)
+`
 codepage_descriptions[90] += `
 ∆Z (ZFill)
 Pad a string with zeros to a given length
@@ -1894,6 +1904,19 @@ codepage_descriptions[150] += `
 ∆ṁ (Median)
 Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
 lst a -> median(a)
+`
+codepage_descriptions[185] += `
+∆Ċ (Polynomial Expression From Coefficients)
+Get the polynomial expression from a list of coefficients
+num a -> polynomial of degree n
+str a -> a
+lst a -> polynomial_expression(a)
+`
+codepage_descriptions[21] += `
+∆¢ (Carmichael Function)
+Get the Carmichael function of a number / Local Maxima
+num a -> carmichael(a)
+str a -> local_maxima(a)
 `
 codepage_descriptions[98] += `
 øb (Parenthesise)
