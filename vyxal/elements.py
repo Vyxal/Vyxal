@@ -2602,7 +2602,6 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     (lst) -> symbolic math representation of polynomial with coeffs in
              lhs
     """
-
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
