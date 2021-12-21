@@ -1,0 +1,3 @@
+^documents/.*\.(md|txt)$
+^documents/knowledge/elements.yaml$
+README.md
