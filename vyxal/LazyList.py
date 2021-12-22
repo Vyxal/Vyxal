@@ -69,13 +69,12 @@ class LazyList:
             else:
                 ret = []
                 if step < 0:
-                    print(start, stop, step)
                     return LazyList(
                         itertools.islice(self.listify(), start, stop, step)
                     )
                 if stop < 0:
                     stop = len(self) + stop
-                for i in range(start, stop, step):
+                for i in range(start or 0, stop, step):
                     ret.append(self.__getitem__(i))
                 return ret
         else:
