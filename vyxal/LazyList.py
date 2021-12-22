@@ -53,7 +53,7 @@ class LazyList:
     def __getitem__(self, position):
         if isinstance(position, slice):
             start, stop, step = (
-                position.start or 0,
+                position.start,
                 position.stop,
                 position.step or 1,
             )
@@ -62,14 +62,19 @@ class LazyList:
                 @lazylist
                 def infinite_index():
                     x = self.listify()
+                    print(start, stop, step)
                     yield from x[start:stop:step]
 
                 return infinite_index()
             else:
                 ret = []
+                if step < 0:
+                    return LazyList(
+                        itertools.islice(self.listify(), start, stop, step)
+                    )
                 if stop < 0:
                     stop = len(self) + stop
-                for i in range(start, stop, step):
+                for i in range(start or 0, stop, step):
                     ret.append(self.__getitem__(i))
                 return ret
         else:

@@ -204,6 +204,20 @@ def all_partitions(lhs, ctx):
     return gen()
 
 
+def all_slices(lhs, rhs, ctx):
+    """Element Þs
+    (lst, int) -> Get all slices of a list, skipping a certain number of items
+    """
+
+    ts = vy_type(lhs, rhs)
+    lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
+
+    return LazyList(
+        index(lhs, [start, None, rhs], ctx) for start in range(len(lhs))
+    )
+
+
 def all_true(lhs, ctx):
     """Element A
     (lst) -> all of lhs is truthy?
@@ -1461,7 +1475,9 @@ def index(lhs, rhs, ctx):
         if isinstance(lhs, str):
             lhs = LazyList(list(lhs))
             originally_string = True
-        temp = iterable(lhs, ctx=ctx)[slice(*rhs)]
+        temp = iterable(lhs, ctx=ctx)[
+            slice(*[None if vy_type(v) != NUMBER_TYPE else int(v) for v in rhs])
+        ]
         if originally_string:
             return "".join(temp)
         return temp
@@ -1481,7 +1497,6 @@ def index_indices_or_cycle(lhs, rhs, ctx):
             curr = lhs
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
-                print(curr)
                 if curr in prevs:
                     yield from prevs
                     break
@@ -4631,6 +4646,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞM": process_element(maximal_indices, 1),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
+    "Þs": process_element(all_slices, 2),
+    "Þ¾": ("ctx.global_array = []", 0),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
