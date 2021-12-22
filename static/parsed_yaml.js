@@ -2225,6 +2225,10 @@ codepage_descriptions[115] += `
 Get all slices of a list, skipping a certain number of items
 lst a, int b -> Get all slices of a list, skipping a certain number of items
 `
+codepage_descriptions[252] += `
+Þ¾ (Empty the Global Array)
+Empty the global array.
+`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL

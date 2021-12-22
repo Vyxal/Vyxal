@@ -3215,6 +3215,11 @@ Get all slices of a list, skipping a certain number of items
 
 - lst a, int b: `Get all slices of a list, skipping a certain number of items`
 -------------------------------
+## `` Þ¾ `` (Empty the Global Array)
+
+Empty the global array.
+
+-------------------------------
 ## `` ¨U `` (Get Request)
 
 Send a GET request to a URL
