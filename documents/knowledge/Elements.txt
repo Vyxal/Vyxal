@@ -2215,7 +2215,7 @@ k□ (Directions)
     num a: math.log(a)
     otherwise: vectorise
 -------------------------------
-∆l (Logarithm (log_2) / Staionary Points)
+∆l (Logarithm (log_2))
 
 - Get the logarithm of a number to base 2
 
@@ -2249,17 +2249,17 @@ k□ (Directions)
     num a: math.radians(a)
     otherwise: vectorise
 -------------------------------
-∆Ṗ (Next Prime After a Number / Discrimant of Polynomial)
+∆Ṗ (Next Prime After a Number / Discriminant of Polynomial)
 
-- Get the next prime number after a given number / the discrimant of a polynomial
+- Get the next prime number after a given number / the discriminant of a polynomial
 
     num a: next_prime(a)
     str a: discriminant(a)
     otherwise: vectorise
 -------------------------------
-∆ṗ (First Prime Before a Number / Factorise Expression)
+∆ṗ (First Prime Before a Number / Factor Expression)
 
-- Get the first prime number before a given number / factorise a mathematical expression
+- Get the first prime number before a given number / factor a mathematical expression
 
     num a: prev_prime(a)
     str a: factorise(a)
@@ -2764,6 +2764,12 @@ k□ (Directions)
 
     lst a, lst b: Elementwise vectorised dyadic minimum.
     otherwise: vectorise
+-------------------------------
+Þs (All Slices of a List)
+
+- Get all slices of a list, skipping a certain number of items
+
+    lst a, int b: Get all slices of a list, skipping a certain number of items
 -------------------------------
 ¨U (Get Request)
 

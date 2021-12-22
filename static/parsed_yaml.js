@@ -1786,7 +1786,7 @@ Get the natural logarithm of a number
 num a -> math.log(a)
 `
 codepage_descriptions[108] += `
-∆l (Logarithm (log_2) / Staionary Points)
+∆l (Logarithm (log_2))
 Get the logarithm of a number to base 2
 num a -> math.log2(a)
 `
@@ -1811,14 +1811,14 @@ Convert an angle from degrees to radians
 num a -> math.radians(a)
 `
 codepage_descriptions[196] += `
-∆Ṗ (Next Prime After a Number / Discrimant of Polynomial)
-Get the next prime number after a given number / the discrimant of a polynomial
+∆Ṗ (Next Prime After a Number / Discriminant of Polynomial)
+Get the next prime number after a given number / the discriminant of a polynomial
 num a -> next_prime(a)
 str a -> discriminant(a)
 `
 codepage_descriptions[153] += `
-∆ṗ (First Prime Before a Number / Factorise Expression)
-Get the first prime number before a given number / factorise a mathematical expression
+∆ṗ (First Prime Before a Number / Factor Expression)
+Get the first prime number before a given number / factor a mathematical expression
 num a -> prev_prime(a)
 str a -> factorise(a)
 `
@@ -2219,6 +2219,11 @@ codepage_descriptions[130] += `
 Þ∵ (Elementwise Vectorised Dyadic Minimum)
 Elementwise vectorised dyadic minimum.
 lst a, lst b -> Elementwise vectorised dyadic minimum.
+`
+codepage_descriptions[115] += `
+Þs (All Slices of a List)
+Get all slices of a list, skipping a certain number of items
+lst a, int b -> Get all slices of a list, skipping a certain number of items
 `
 codepage_descriptions[85] += `
 ¨U (Get Request)

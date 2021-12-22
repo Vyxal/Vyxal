@@ -3207,6 +3207,14 @@ Elementwise vectorised dyadic minimum.
 
 - lst a, lst b: `Elementwise vectorised dyadic minimum.`
 -------------------------------
+## `` Þs `` (All Slices of a List)
+
+Get all slices of a list, skipping a certain number of items
+
+### Overloads
+
+- lst a, int b: `Get all slices of a list, skipping a certain number of items`
+-------------------------------
 ## `` ¨U `` (Get Request)
 
 Send a GET request to a URL
