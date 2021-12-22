@@ -16,7 +16,7 @@ from vyxal.LazyList import *
 def test_exec():
     stack = []
     ctx = Context()
-    
+
     ctx.stacks.append(stack)
 
     vyxal.main.execute_vyxal("tests/exec_test.vy", "a", """6,10
