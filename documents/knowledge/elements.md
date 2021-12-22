@@ -1,14 +1,14 @@
-## λ (Lambda)
+## `` λ `` (Lambda)
 
 Open a lambda - λ...;
 
 -------------------------------
-## ƛ (Lambda Map)
+## `` ƛ `` (Lambda Map)
 
 Open a mapping lambda - ƛ
 
 -------------------------------
-## ¬ (Logical Not)
+## `` ¬ `` (Logical Not)
 
 Return the inverse (negation) of the truthiness of an item.
 
@@ -18,7 +18,7 @@ Return the inverse (negation) of the truthiness of an item.
 - str a: `a != "" | len(a) > 0`
 - lst a: `a != [] | len(a) > 0`
 -------------------------------
-## ∧ (Logical And)
+## `` ∧ `` (Logical And)
 
 Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
 
@@ -26,7 +26,7 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 
 - any a, any b: `a and b`
 -------------------------------
-## ⟑ (Reversed Logical And)
+## `` ⟑ `` (Reversed Logical And)
 
 Returns the same as logical and but with reversed arguments.
 
@@ -34,7 +34,7 @@ Returns the same as logical and but with reversed arguments.
 
 - any a, any b: `b and a`
 -------------------------------
-## ∨ (Logical Or)
+## `` ∨ `` (Logical Or)
 
 Returns the first truthy argument, otherwise the first falsey argument.
 
@@ -42,7 +42,7 @@ Returns the first truthy argument, otherwise the first falsey argument.
 
 - any a, any b: `a or b`
 -------------------------------
-## ⟇ (Reversed Logical Or)
+## `` ⟇ `` (Reversed Logical Or)
 
 Returns  the same as logical or but with reversed arguments.
 
@@ -50,7 +50,7 @@ Returns  the same as logical or but with reversed arguments.
 
 - any a, any b: `b or a`
 -------------------------------
-## ÷ (Item Split)
+## `` ÷ `` (Item Split)
 
 Pushes each item of the top of the stack onto the stack.
 
@@ -60,32 +60,32 @@ Pushes each item of the top of the stack onto the stack.
 - str a: `Push each character of a`
 - lst a: `Push each item of a`
 -------------------------------
-## × (Asterisk Literal)
+## `` × `` (Asterisk Literal)
 
 the string "*" (asterisk)
 
 -------------------------------
-## « (Base Compressed String)
+## `` « `` (Base Compressed String)
 
 Open/close a bijective base-255 compressed string - «...«
 
 -------------------------------
-## ␤ (Newline)
+## `` ␤ `` (Newline)
 
 NOP
 
 -------------------------------
-## » (Base Compressed Number)
+## `` » `` (Base Compressed Number)
 
 Open/close a bijective base-255 compressed number - »...»
 
 -------------------------------
-## ° (Complex Number Separator)
+## `` ° `` (Complex Number Separator)
 
 Separates the real and imaginary parts of a complex number
 
 -------------------------------
-## • (MultiCommand)
+## `` • `` (MultiCommand)
 
 Logarithm / Repeat Character / Capitalisation transfer
 
@@ -97,7 +97,7 @@ Logarithm / Repeat Character / Capitalisation transfer
 - str a, str b: `a.with_capitalisation_of(b)`
 - lst a, lst b: `a molded  to  the shape of b`
 -------------------------------
-## ß (Conditional Execute)
+## `` ß `` (Conditional Execute)
 Executes element A if the top of the stack is truthy
 
 Usage:
@@ -106,7 +106,7 @@ Usage:
 ```
 
 -------------------------------
-## † (Function Call)
+## `` † `` (Function Call)
 
 Calls a function / executes as python / len(prime factors) / vectorised not
 
@@ -117,7 +117,7 @@ Calls a function / executes as python / len(prime factors) / vectorised not
 - str a: `exec as python`
 - lst a: `vectorised not`
 -------------------------------
-## € (Split On)
+## `` € `` (Split On)
 
 Split a on b (works on lists and numbers as well)
 
@@ -125,7 +125,7 @@ Split a on b (works on lists and numbers as well)
 
 - any a, any b: `a split on b`
 -------------------------------
-## ½ (Halve)
+## `` ½ `` (Halve)
 
 Halves an item
 
@@ -134,17 +134,17 @@ Halves an item
 - num a: `a / 2`
 - str a: `a split into two strings of equal lengths (as close as possible)`
 -------------------------------
-## ∆ (Mathematic Digraph)
+## `` ∆ `` (Mathematic Digraph)
 
 Used for mathematical digraphs
 
 -------------------------------
-## ø (String Digraph)
+## `` ø `` (String Digraph)
 
 Used for string-based digraphs
 
 -------------------------------
-## ↔ (Combinations/Remove/Fixed Point Collection)
+## `` ↔ `` (Combinations/Remove/Fixed Point Collection)
 
 Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
 
@@ -155,7 +155,7 @@ Does either combinations_with_replacement, removes items from a not in b, or app
 - any a, str b: `Remove elements from a that are not in b`
 - any a, lst b: `Remove elements from a that are not in b.`
 -------------------------------
-## ¢ (Infinite Replacement)
+## `` ¢ `` (Infinite Replacement)
 
 Replace b in a with c until a does not change
 
@@ -163,7 +163,7 @@ Replace b in a with c until a does not change
 
 - any a, any b, any c: `replace b in a with c until a does not change`
 -------------------------------
-## ⌐ (Complement / Comma Split)
+## `` ⌐ `` (Complement / Comma Split)
 
 1 - a if number, split by commas if string.
 
@@ -172,7 +172,7 @@ Replace b in a with c until a does not change
 - num a: `1 - a`
 - str a: `a.split(",")`
 -------------------------------
-## æ (Is Prime / Case Check)
+## `` æ `` (Is Prime / Case Check)
 
 (a is prime) if a is a number, else check which case a is
 
@@ -181,7 +181,7 @@ Replace b in a with c until a does not change
 - num a: `is a prime?`
 - str a: `caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case`
 -------------------------------
-## ʀ (Inclusive Zero Range)
+## `` ʀ `` (Inclusive Zero Range)
 
 Inclusive range or whether each character is alphabetical
 
@@ -190,7 +190,7 @@ Inclusive range or whether each character is alphabetical
 - num a: `range(0,a + 1) (inclusive range from 0)`
 - str a: `[is v alphabetical? for v in a]`
 -------------------------------
-## ʁ (Exclusive Zero Range)
+## `` ʁ `` (Exclusive Zero Range)
 
 Exclusive range or palindromised
 
@@ -199,7 +199,7 @@ Exclusive range or palindromised
 - num a: `range(0,a) (exclusive range from 0)`
 - str a: `palindromised a`
 -------------------------------
-## ɾ (Inclusive One Range)
+## `` ɾ `` (Inclusive One Range)
 
 Inclusive range or uppercase
 
@@ -208,7 +208,7 @@ Inclusive range or uppercase
 - num a: `range(1,a+1) (inclusive range from 1)`
 - str a: `a.uppercase()`
 -------------------------------
-## ɽ (Exclusive One Range / Lowercase)
+## `` ɽ `` (Exclusive One Range / Lowercase)
 
 Exclusive range or lowercase
 
@@ -217,12 +217,12 @@ Exclusive range or lowercase
 - num a: `range(1,a) (exclusive range from 0)`
 - str a: `a.lowercase()`
 -------------------------------
-## Þ (List Digraph)
+## `` Þ `` (List Digraph)
 
 Used for list-related digraphs
 
 -------------------------------
-## ƈ (Choose / random choice / set same)
+## `` ƈ `` (Choose / random choice / set same)
 
 Binomial coefficient / choose a random items from b / same except duplicates
 
@@ -233,7 +233,7 @@ Binomial coefficient / choose a random items from b / same except duplicates
 - str a, num b: `Choose b random items from a`
 - str a, str b: `Check if lists are the same except for duplicates`
 -------------------------------
-## ∞ (Palindromise)
+## `` ∞ `` (Palindromise)
 
 Palindromise a
 
@@ -241,22 +241,22 @@ Palindromise a
 
 - any a: `palindromised a`
 -------------------------------
-## ¨ (Other Digraphs)
+## `` ¨ `` (Other Digraphs)
 
 Used for various random digraphs
 
 -------------------------------
-##   (Space)
+## ``   `` (Space)
 
 NOP
 
 -------------------------------
-## ! (Stack Length)
+## `` ! `` (Stack Length)
 
 Push the length of the stack
 
 -------------------------------
-## " (Pair)
+## `` " `` (Pair)
 
 Place the top two items into a single list
 
@@ -264,12 +264,12 @@ Place the top two items into a single list
 
 - any a, any b: `[a, b]`
 -------------------------------
-## # (Comment)
+## `` # `` (Comment)
 
 The characters until the next newline are commented out
 
 -------------------------------
-## $ (Swap)
+## `` $ `` (Swap)
 
 Swap the top two items
 
@@ -277,7 +277,7 @@ Swap the top two items
 
 - any a, any b: `b, a`
 -------------------------------
-## % (Modulo / Format)
+## `` % `` (Modulo / Format)
 
 Modulo two numbers / format two strings
 
@@ -289,7 +289,7 @@ Modulo two numbers / format two strings
 - str a, str b: `a.format(b) (replace % in a with b)`
 - str a, lst b: `a.format(b) (replace % in a with each item of b)`
 -------------------------------
-## & (Apply To Register)
+## `` & `` (Apply To Register)
 Apply the next element to the register
 
 Usage:
@@ -298,22 +298,22 @@ Usage:
 ```
 
 -------------------------------
-## ' (Lambda Filter)
+## `` ' `` (Lambda Filter)
 
 Open a filter lambda - '...;
 
 -------------------------------
-## ( (Open For Loop)
+## `` ( `` (Open For Loop)
 
 Start a for loop, iterating over the popped top of stack.
 
 -------------------------------
-## ) (Close For loop)
+## `` ) `` (Close For loop)
 
 Close a for loop
 
 -------------------------------
-## * (Multiplication)
+## `` * `` (Multiplication)
 
 Multiply two numbers or strings
 
@@ -324,7 +324,7 @@ Multiply two numbers or strings
 - str a, num b: `a repeated b times`
 - str a, str b: `ring translate b according to a`
 -------------------------------
-## + (Addition)
+## `` + `` (Addition)
 
 Adds the top two items on the stack
 
@@ -335,7 +335,7 @@ Adds the top two items on the stack
 - str a, num b: `a + str(b)`
 - str a, str b: `a + b`
 -------------------------------
-## , (Print)
+## `` , `` (Print)
 
 Print a with trailing newline
 
@@ -343,7 +343,7 @@ Print a with trailing newline
 
 - any a: `print(a)`
 -------------------------------
-## - (Subtract)
+## `` - `` (Subtract)
 
 Subtracts the top two items on the stack
 
@@ -354,12 +354,12 @@ Subtracts the top two items on the stack
 - str a, num b: `a + ("-" * b)`
 - str a, str b: `a.replace(b, '')`
 -------------------------------
-## . (Decimal Separator)
+## `` . `` (Decimal Separator)
 
 Decimal separator
 
 -------------------------------
-## / (Divide / Split)
+## `` / `` (Divide / Split)
 
 Divide two numbers or split strings
 
@@ -370,57 +370,57 @@ Divide two numbers or split strings
 - str a, num b: `a split into b even length pieces, possibly with an extra part`
 - str a, str b: `a.split(b)`
 -------------------------------
-## 0 (Literal digit 0)
+## `` 0 `` (Literal digit 0)
 
 Literal digit 0
 
 -------------------------------
-## 1 (Literal digit 1)
+## `` 1 `` (Literal digit 1)
 
 Literal digit 1
 
 -------------------------------
-## 2 (Literal digit 2)
+## `` 2 `` (Literal digit 2)
 
 Literal digit 2
 
 -------------------------------
-## 3 (Literal digit 3)
+## `` 3 `` (Literal digit 3)
 
 Literal digit 3
 
 -------------------------------
-## 4 (Literal digit 4)
+## `` 4 `` (Literal digit 4)
 
 Literal digit 4
 
 -------------------------------
-## 5 (Literal digit 5)
+## `` 5 `` (Literal digit 5)
 
 Literal digit 5
 
 -------------------------------
-## 6 (Literal digit 6)
+## `` 6 `` (Literal digit 6)
 
 Literal digit 6
 
 -------------------------------
-## 7 (Literal digit 7)
+## `` 7 `` (Literal digit 7)
 
 Literal digit 7
 
 -------------------------------
-## 8 (Literal digit 8)
+## `` 8 `` (Literal digit 8)
 
 Literal digit 8
 
 -------------------------------
-## 9 (Literal digit 9)
+## `` 9 `` (Literal digit 9)
 
 Literal digit 9
 
 -------------------------------
-## : (Duplicate)
+## `` : `` (Duplicate)
 
 Push a twice
 
@@ -428,12 +428,12 @@ Push a twice
 
 - any a: `a,a`
 -------------------------------
-## ; (Close Structure)
+## `` ; `` (Close Structure)
 
 Close a lambda / map lambda / sort lambda / function
 
 -------------------------------
-## < (Less Than)
+## `` < `` (Less Than)
 
 Basic comparison - less than
 
@@ -444,7 +444,7 @@ Basic comparison - less than
 - str a, num b: `a < str(b)`
 - str a, str b: `a < b`
 -------------------------------
-## = (Equals)
+## `` = `` (Equals)
 
 Basic comparison - equals
 
@@ -455,7 +455,7 @@ Basic comparison - equals
 - str a, num b: `a == str(b)`
 - str a, str b: `a == b`
 -------------------------------
-## > (Greater Than)
+## `` > `` (Greater Than)
 
 Basic comparison - greater than
 
@@ -466,17 +466,17 @@ Basic comparison - greater than
 - str a, num b: `a > str(b)`
 - str a, str b: `a > b`
 -------------------------------
-## ? (Input)
+## `` ? `` (Input)
 
 Get the next input from the input source
 
 -------------------------------
-## @ (Function Call / Declaration)
+## `` @ `` (Function Call / Declaration)
 
 Call / declare function (@name; / @name|code;)
 
 -------------------------------
-## A (All)
+## `` A `` (All)
 
 Chck if all items in a list are truthy / check if a character is a vowel
 
@@ -485,7 +485,7 @@ Chck if all items in a list are truthy / check if a character is a vowel
 - str a: `is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters`
 - any a: `all(a)`
 -------------------------------
-## B (Binary To Decimal)
+## `` B `` (Binary To Decimal)
 
 Convert a binary string or list to base 10
 
@@ -493,7 +493,7 @@ Convert a binary string or list to base 10
 
 - any a: `int(a,2) (convert from base 2 to base 10)`
 -------------------------------
-## C (Chr / Ord)
+## `` C `` (Chr / Ord)
 
 Convert between characters and ordinals
 
@@ -502,12 +502,12 @@ Convert between characters and ordinals
 - num a: `chr(a)`
 - str a: `ord(a) if length 1 else list of ordinals`
 -------------------------------
-## D (Triplicate)
+## `` D `` (Triplicate)
 
 Push three copies of a to stack
 
 -------------------------------
-## E (Two Power / Python Eval)
+## `` E `` (Two Power / Python Eval)
 
 2 ** a, or eval(a)
 
@@ -516,7 +516,7 @@ Push three copies of a to stack
 - num a: `2 ** a`
 - str a: `eval(a) (safe-eval as python)`
 -------------------------------
-## F (Filter)
+## `` F `` (Filter)
 
 Filter a list by another list or function.
 
@@ -525,7 +525,7 @@ Filter a list by another list or function.
 - any a, fun b: `filter(b,a) (filter a by the ones that b returns a truthy result for)`
 - any a, any b: `remove elements of a that are in b`
 -------------------------------
-## G (Max)
+## `` G `` (Max)
 
 Maximum value or a
 
@@ -533,7 +533,7 @@ Maximum value or a
 
 - any a: `max(a)`
 -------------------------------
-## H (Hex To Decimal)
+## `` H `` (Hex To Decimal)
 
 Convert hexadecimal to decimal
 
@@ -541,7 +541,7 @@ Convert hexadecimal to decimal
 
 - any a: `int(a,16) (from hexadecimal)`
 -------------------------------
-## I (Into Two Pieces)
+## `` I `` (Into Two Pieces)
 
 Push n spaces / quine cheese / into two pieces
 
@@ -551,7 +551,7 @@ Push n spaces / quine cheese / into two pieces
 - str a: `equivlaent to `qp``
 - lst a: `split a list into two halves`
 -------------------------------
-## J (Merge)
+## `` J `` (Merge)
 
 Join two lists or items
 
@@ -564,7 +564,7 @@ Join two lists or items
 - lst a, lst b: `merged(a,b) (Merge)`
 - any a, any b: `a + b (Concatenate)`
 -------------------------------
-## K (Factors / Substrings / Prefixes)
+## `` K `` (Factors / Substrings / Prefixes)
 
 Get either the factors of a, substrings that occur more than once, or prefixes
 
@@ -574,7 +574,7 @@ Get either the factors of a, substrings that occur more than once, or prefixes
 - str a: `All substrings of a that occur more than once in a`
 - lst a: `prefixes(a) (prefixes)`
 -------------------------------
-## L (Length)
+## `` L `` (Length)
 
 Get length of a
 
@@ -582,7 +582,7 @@ Get length of a
 
 - any a: `len(a)`
 -------------------------------
-## M (Map)
+## `` M `` (Map)
 
 Map b over a
 
@@ -591,7 +591,7 @@ Map b over a
 - any a, fun b: `map(b,a) (apply b to each of a)`
 - any a, any b: `pair each item of b with a`
 -------------------------------
-## N (Negate / Swap Case)
+## `` N `` (Negate / Swap Case)
 
 Negate a or swap its case
 
@@ -600,7 +600,7 @@ Negate a or swap its case
 - num a: `-a  (negate)`
 - str a: `swap_case(a) (toggle case)`
 -------------------------------
-## O (Count)
+## `` O `` (Count)
 
 Count number of times b occurs in a
 
@@ -608,7 +608,7 @@ Count number of times b occurs in a
 
 - any a, any b: `a.count(b)`
 -------------------------------
-## P (Strip)
+## `` P `` (Strip)
 
 a.strip(b) - trim b from both ends of a
 
@@ -616,12 +616,12 @@ a.strip(b) - trim b from both ends of a
 
 - any a, any b: `a.strip(b)`
 -------------------------------
-## Q (Quit)
+## `` Q `` (Quit)
 
 Quit the program
 
 -------------------------------
-## R (Reduce)
+## `` R `` (Reduce)
 
 Reduce a by b, or reverse each item of b
 
@@ -630,7 +630,7 @@ Reduce a by b, or reverse each item of b
 - any a, fun b: `reduce(b,a) (Reduce a by b)`
 - any a, any b: `a, vectorised_reverse(b)`
 -------------------------------
-## S (Stringify)
+## `` S `` (Stringify)
 
 Stringify a list or number
 
@@ -638,7 +638,7 @@ Stringify a list or number
 
 - any a: `str(a) (Stringify)`
 -------------------------------
-## T (Truthy Indices)
+## `` T `` (Truthy Indices)
 
 Get indices of truthy elements or triple
 
@@ -647,7 +647,7 @@ Get indices of truthy elements or triple
 - num a: `a * 3`
 - any a: `truthy_indices(a)`
 -------------------------------
-## U (Uniquify)
+## `` U `` (Uniquify)
 
 Remove duplicates
 
@@ -655,7 +655,7 @@ Remove duplicates
 
 - any a: `uniquify(a) (Remove duplicates)`
 -------------------------------
-## V (Replace)
+## `` V `` (Replace)
 
 Replace b with c in a
 
@@ -663,17 +663,17 @@ Replace b with c in a
 
 - any a, any b, any c: `a.replace(b,c) (replace)`
 -------------------------------
-## W (Wrap)
+## `` W `` (Wrap)
 
 Stack wrapped into a list
 
 -------------------------------
-## X (Break)
+## `` X `` (Break)
 
 Break out of the current loop or function
 
 -------------------------------
-## Y (Interleave)
+## `` Y `` (Interleave)
 
 Interleave two lists
 
@@ -681,7 +681,7 @@ Interleave two lists
 
 - any a, any b: `interleave(a,b)`
 -------------------------------
-## Z (Zip)
+## `` Z `` (Zip)
 
 Zip two lists or Zip a with b mapped over a
 
@@ -690,37 +690,37 @@ Zip two lists or Zip a with b mapped over a
 - any a, any b: `zip(a,b)`
 - any a, fun b: `zip(a,map(b,a)) (Zipmap, map and zip)`
 -------------------------------
-## [ (Open If Statement)
+## `` [ `` (Open If Statement)
 
 Open an if Statement
 
 -------------------------------
-## \ (Single char Literal)
+## `` \ `` (Single char Literal)
 
 Pushes a single character
 
 -------------------------------
-## ] (Close If Statement)
+## `` ] `` (Close If Statement)
 
 Close an if Statement
 
 -------------------------------
-## ` (String Literal)
+## `` ` `` (String Literal)
 
 A string literal - `...`
 
 -------------------------------
-## ^ (Reverse Stack)
+## `` ^ `` (Reverse Stack)
 
 Reverse the stack.
 
 -------------------------------
-## _ (Pop)
+## `` _ `` (Pop)
 
 Pop the top item of the stack
 
 -------------------------------
-## a (Any)
+## `` a `` (Any)
 
 Check if any items of a list are truthy / Check if a character is an uppercase letter
 
@@ -729,7 +729,7 @@ Check if any items of a list are truthy / Check if a character is an uppercase l
 - str a: `is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters`
 - lst a: `any(a) (Are any items truthy?)`
 -------------------------------
-## b (Binary)
+## `` b `` (Binary)
 
 Convert a number or string to binary
 
@@ -738,7 +738,7 @@ Convert a number or string to binary
 - num a: `bin(a) - list of binary digits of A`
 - str a: `[bin(ord(char)) for char in a] - binary of each codepoint`
 -------------------------------
-## c (Contains)
+## `` c `` (Contains)
 
 Check if one thing contains another.
 
@@ -746,7 +746,7 @@ Check if one thing contains another.
 
 - any a, any b: `b in a (Does a contain b, membership, contains)`
 -------------------------------
-## d (Double)
+## `` d `` (Double)
 
 Double a number or repeat a string twice
 
@@ -755,7 +755,7 @@ Double a number or repeat a string twice
 - num a: `a * 2 (double)`
 - str a: `a * 2 (repeated twice)`
 -------------------------------
-## e (Exponentiation)
+## `` e `` (Exponentiation)
 
 Exponentiate two numbers / extend string / get length of a regex match
 
@@ -766,7 +766,7 @@ Exponentiate two numbers / extend string / get length of a regex match
 - num a, str b: `append b[0] until b is length a (spaces are used if b is empty)`
 - str a, str b: `regex.search(pattern=a, string=b).span() (Length of regex match)`
 -------------------------------
-## f (Flatten)
+## `` f `` (Flatten)
 
 Turn a number into a list of digits, a string into a list of characters, and flatten a list.
 
@@ -776,7 +776,7 @@ Turn a number into a list of digits, a string into a list of characters, and fla
 - str a: `a split into list of characters`
 - lst a: `flatten(a) (Deep flatten)`
 -------------------------------
-## g (Minimum)
+## `` g `` (Minimum)
 
 Take the minimum of a list
 
@@ -784,7 +784,7 @@ Take the minimum of a list
 
 - any a: `min(a)`
 -------------------------------
-## h (Head)
+## `` h `` (Head)
 
 First item of something
 
@@ -792,7 +792,7 @@ First item of something
 
 - any a: `a[0] (First item)`
 -------------------------------
-## i (Index)
+## `` i `` (Index)
 
 Index into a list
 
@@ -803,7 +803,7 @@ Index into a list
 - any a, [x,y] b: `a[x:y] (x to yth item of a)`
 - any a, [x,y,m] b: `a[x:y:m] (x to yth item of a, taking every mth)`
 -------------------------------
-## j (Join)
+## `` j `` (Join)
 
 Join a list by a string
 
@@ -811,12 +811,12 @@ Join a list by a string
 
 - any a, any b: `a.join(b)`
 -------------------------------
-## k (Constant Digraph)
+## `` k `` (Constant Digraph)
 
 Used for constant digraphs.
 
 -------------------------------
-## l (Cumulative Groups)
+## `` l `` (Cumulative Groups)
 
 Cumulative grouping / equal length
 
@@ -825,7 +825,7 @@ Cumulative grouping / equal length
 - any a, num b: `n-wise_group(a,b) ( Overlapping groups of a of length b)`
 - any a, any b: `length(a) == length(b)`
 -------------------------------
-## m (Mirror)
+## `` m `` (Mirror)
 
 Append input reversed to itself.
 
@@ -835,12 +835,12 @@ Append input reversed to itself.
 - str a: `a + reversed(a)`
 - lst a: `Append reversed(a) to a`
 -------------------------------
-## n (Context)
+## `` n `` (Context)
 
 Context variable, value of the current loop or function.
 
 -------------------------------
-## o (Remove)
+## `` o `` (Remove)
 
 Remove instances of b in a
 
@@ -848,7 +848,7 @@ Remove instances of b in a
 
 - any a, any b: `a.replace(b,"")`
 -------------------------------
-## p (Prepend)
+## `` p `` (Prepend)
 
 Prepend b to a
 
@@ -856,7 +856,7 @@ Prepend b to a
 
 - any a, any b: `a.prepend(b) ( Prepend b to a)`
 -------------------------------
-## q (Uneval)
+## `` q `` (Uneval)
 
 Enclose in backticks, escape backslashes and backticks.
 
@@ -864,7 +864,7 @@ Enclose in backticks, escape backslashes and backticks.
 
 - any a: `uneval(a) (Enclose in bacticks + escape)`
 -------------------------------
-## r (Range)
+## `` r `` (Range)
 
 Range betweeen two numbers, or cumulative reduce, or regex match
 
@@ -876,7 +876,7 @@ Range betweeen two numbers, or cumulative reduce, or regex match
 - any a, fun b: `cumulative_reduce(a,function=b) (Prefixes of a reduced by b)`
 - str a, str b: `regex.has_match(pattern=a,string= b) ( Does b match a)`
 -------------------------------
-## s (sort)
+## `` s `` (sort)
 
 Sort a list or string
 
@@ -884,7 +884,7 @@ Sort a list or string
 
 - any a: `sorted(a) (Sort)`
 -------------------------------
-## t (Tail)
+## `` t `` (Tail)
 
 Last item
 
@@ -892,12 +892,12 @@ Last item
 
 - any a: `a[-1] (Last item)`
 -------------------------------
-## u (Minus One)
+## `` u `` (Minus One)
 
 Push -1
 
 -------------------------------
-## v (Vectorise)
+## `` v `` (Vectorise)
 Vectorise an element
 
 Usage:
@@ -906,7 +906,7 @@ v<element>
 ```
 
 -------------------------------
-## w (Listify)
+## `` w `` (Listify)
 
 a wrapped in a singleton list
 
@@ -914,12 +914,12 @@ a wrapped in a singleton list
 
 - any a: `[a] (Wrapped in singleton list)`
 -------------------------------
-## x (Recurse)
+## `` x `` (Recurse)
 
 Call current function (Recursion)
 
 -------------------------------
-## y (Uninterleave)
+## `` y `` (Uninterleave)
 
 Push every other item of a, and the rest.
 
@@ -927,7 +927,7 @@ Push every other item of a, and the rest.
 
 - any a: `a[::2], a[1::2] (Every second item, the rest)`
 -------------------------------
-## z (Zip-self)
+## `` z `` (Zip-self)
 
 Zip a with itself
 
@@ -935,22 +935,22 @@ Zip a with itself
 
 - any a: `zip(a,a)`
 -------------------------------
-## { (Open While Loop)
+## `` { `` (Open While Loop)
 
 Open a while loop - `{...}`
 
 -------------------------------
-## | (Branch In Structure)
+## `` | `` (Branch In Structure)
 
 Branch the structure - means various things depending on context
 
 -------------------------------
-## } (Close While Loop)
+## `` } `` (Close While Loop)
 
 Close a while loop
 
 -------------------------------
-## ~ (Filter / Execute Without Pop)
+## `` ~ `` (Filter / Execute Without Pop)
 For monads, filter a list by that. For dyads, execute without popping from the stack.
 
 Usage:
@@ -959,7 +959,7 @@ Usage:
 ```
 
 -------------------------------
-## ↑ (Max by Tail)
+## `` ↑ `` (Max by Tail)
 
 Maximum by last item
 
@@ -967,7 +967,7 @@ Maximum by last item
 
 - any a: `max(a, key=lambda x: x[-1]) (Maximum by last item)`
 -------------------------------
-## ↓ (Min by Tail)
+## `` ↓ `` (Min by Tail)
 
 Minimum by last item
 
@@ -975,7 +975,7 @@ Minimum by last item
 
 - any a: `min(a, key=lambda x: x[-1]) (Minimum by last item)`
 -------------------------------
-## ∴ (Dyadic Maximum)
+## `` ∴ `` (Dyadic Maximum)
 
 Maximum of two values
 
@@ -983,7 +983,7 @@ Maximum of two values
 
 - any a, any b: `max(a,b)`
 -------------------------------
-## ∵ (Dyadic Minimum)
+## `` ∵ `` (Dyadic Minimum)
 
 Minimum of two values
 
@@ -991,7 +991,7 @@ Minimum of two values
 
 - any a, any b: `min(a,b)`
 -------------------------------
-## › (Increment / Space Replace With 0)
+## `` › `` (Increment / Space Replace With 0)
 
 Add 1 to a number / replace all spaces in a string with "0"
 
@@ -1000,7 +1000,7 @@ Add 1 to a number / replace all spaces in a string with "0"
 - num a: `a + 1`
 - string a: `a.replace(" ","0")`
 -------------------------------
-## ‹ (Decrement)
+## `` ‹ `` (Decrement)
 
 Subtract 1 from a number
 
@@ -1009,7 +1009,7 @@ Subtract 1 from a number
 - num a: `a - 1`
 - str a: `a + "-"`
 -------------------------------
-## ∷ (Parity)
+## `` ∷ `` (Parity)
 
 A number modulo 2
 
@@ -1018,27 +1018,27 @@ A number modulo 2
 - num a: `a % 2 (Odd?)`
 - str a: `Second half of A`
 -------------------------------
-## ¤ (Empty String)
+## `` ¤ `` (Empty String)
 
 The empty string
 
 -------------------------------
-## ð (Space)
+## `` ð `` (Space)
 
 A Space
 
 -------------------------------
-## → (Variable Set)
+## `` → `` (Variable Set)
 
 Set variable (→name)
 
 -------------------------------
-## ← (Variable Get)
+## `` ← `` (Variable Get)
 
 Get the value of a variable (←name)
 
 -------------------------------
-## β (To Base Ten / From Custom Base)
+## `` β `` (To Base Ten / From Custom Base)
 
 Convert a number from a custom base to base 10
 
@@ -1047,7 +1047,7 @@ Convert a number from a custom base to base 10
 - any a, num b: `a to base 10 from number base b, treating list items / string items as digits`
 - str a, str b: `a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10`
 -------------------------------
-## τ (From Base Ten / To Custom Base)
+## `` τ `` (From Base Ten / To Custom Base)
 
 Convert a number to a different base from base 10.
 
@@ -1057,7 +1057,7 @@ Convert a number to a different base from base 10.
 - num a, str b: `a converted into a string of characters of b`
 - num a, lst b: `a converted into a list of arbitrary values from b`
 -------------------------------
-## ȧ (Absolute value)
+## `` ȧ `` (Absolute value)
 
 Take the absolute value of a number, or remove whitespace from a string
 
@@ -1066,7 +1066,7 @@ Take the absolute value of a number, or remove whitespace from a string
 - num a: `abs(a) (Absolute value)`
 - str a: `Remove whitespace from a`
 -------------------------------
-## ḃ (Boolify)
+## `` ḃ `` (Boolify)
 
 Convert an arbitrary value into a truthy or falsy value
 
@@ -1074,7 +1074,7 @@ Convert an arbitrary value into a truthy or falsy value
 
 - any a: `bool(a) (Booliify)`
 -------------------------------
-## ċ (Not One)
+## `` ċ `` (Not One)
 
 Check if something is not equal to 1
 
@@ -1082,7 +1082,7 @@ Check if something is not equal to 1
 
 - any a: `a != 1`
 -------------------------------
-## ḋ (Divmod)
+## `` ḋ `` (Divmod)
 
 Divmod / combinations / trim
 
@@ -1093,7 +1093,7 @@ Divmod / combinations / trim
 - lst a, num b: `Combinations of a with length b`
 - str a, str b: `overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef``
 -------------------------------
-## ė (Enumerate)
+## `` ė `` (Enumerate)
 
 Zip with a range of the same length
 
@@ -1101,7 +1101,7 @@ Zip with a range of the same length
 
 - any a: `enumerate(a) (Zip with 1...len(a))`
 -------------------------------
-## ḟ (Find)
+## `` ḟ `` (Find)
 
 Find a value in another
 
@@ -1110,7 +1110,7 @@ Find a value in another
 - any a, any b: `a.find(b) (Indexing)`
 - any a, fun b: `truthy indices of mapping b over a`
 -------------------------------
-## ġ (Gcd)
+## `` ġ `` (Gcd)
 
 Greatest Common Denominator of a list or some numbers
 
@@ -1120,7 +1120,7 @@ Greatest Common Denominator of a list or some numbers
 - num a, num b: `gcd(a,b) (Dyadic gcd)`
 - str a, str b: `Longest common suffix of a and b`
 -------------------------------
-## ḣ (Head Extract)
+## `` ḣ `` (Head Extract)
 
 Separate the first item of something and push both to stack
 
@@ -1128,7 +1128,7 @@ Separate the first item of something and push both to stack
 
 - any a: `a[0], a[1:] (Head extract)`
 -------------------------------
-## ḭ (Floor Division)
+## `` ḭ `` (Floor Division)
 
 Floor divide a by b
 
@@ -1140,7 +1140,7 @@ Floor divide a by b
 - any a, fun b: `Right reduce a by b (foldr)`
 - fun a, any b: `Right reduce b by a (foldr)`
 -------------------------------
-## ŀ (Left Justify / Gridify / Infinite Replace / Collect until fale)
+## `` ŀ `` (Left Justify / Gridify / Infinite Replace / Collect until fale)
 
 Find one value inside another, starting from a certain index.
 
@@ -1156,7 +1156,7 @@ Find one value inside another, starting from a certain index.
 - str a, str b, str c: `a.infinite_replace(b, c)`
 - fun a, fun b, any c: `collect_until_false(predicate=a, modifying_function=b, inital=c)`
 -------------------------------
-## ṁ (Mean)
+## `` ṁ `` (Mean)
 
 Average of a list - sum / length
 
@@ -1165,7 +1165,7 @@ Average of a list - sum / length
 - str a: `palindromise(a)`
 - lst a: `mean(a)`
 -------------------------------
-## ṅ (Join By Nothing)
+## `` ṅ `` (Join By Nothing)
 
 Join a list by the empty string
 
@@ -1174,7 +1174,7 @@ Join a list by the empty string
 - fun a: `First integer for which a(x) is truthy`
 - any a: `Join by empty string`
 -------------------------------
-## ȯ (Slice)
+## `` ȯ `` (Slice)
 
 Slice from an index to the end
 
@@ -1184,7 +1184,7 @@ Slice from an index to the end
 - any a, num b: `a[b:] (Slice from b to the end)`
 - str a, str b: `vertically merge a and b`
 -------------------------------
-## ṗ (Powerset)
+## `` ṗ `` (Powerset)
 
 All possible combinations of a
 
@@ -1192,7 +1192,7 @@ All possible combinations of a
 
 - any a: `All possible combinations of a`
 -------------------------------
-## ṙ (Round)
+## `` ṙ `` (Round)
 
 Round a number to the nearest integer
 
@@ -1201,7 +1201,7 @@ Round a number to the nearest integer
 - num a: `round(a)`
 - str a: `quad palindromize with overlap`
 -------------------------------
-## ṡ (Sort by Function)
+## `` ṡ `` (Sort by Function)
 
 Sort a list by a function / create a range / split on a regex
 
@@ -1211,7 +1211,7 @@ Sort a list by a function / create a range / split on a regex
 - num a, num b: `range(a, b + 1) (Inclusive range from a to b)`
 - str a, str b: `regex.split(pattern=b, string=a)`
 -------------------------------
-## ṫ (Tail Extract)
+## `` ṫ `` (Tail Extract)
 
 Remove the last item and push both onto the stack
 
@@ -1219,7 +1219,7 @@ Remove the last item and push both onto the stack
 
 - any a: `a[:-1],a[-1]`
 -------------------------------
-## ẇ (Chunk Wrap)
+## `` ẇ `` (Chunk Wrap)
 
 Wrap a list in chunks of a certain length / apply a function to every second item of a list
 
@@ -1230,7 +1230,7 @@ Wrap a list in chunks of a certain length / apply a function to every second ite
 - fun a, any b: `Apply a to every second item of b`
 - str a, str b: `split a on first occurance of b`
 -------------------------------
-## ẋ (Repeat)
+## `` ẋ `` (Repeat)
 
 Repeat a value several times
 
@@ -1243,7 +1243,7 @@ Repeat a value several times
 - fun a, any b: `repeat function a on b while the function results are not-unique`
 - any a, fun b: `repeat function b on a while the function results are not-unique`
 -------------------------------
-## ẏ (Exclusive Range Length)
+## `` ẏ `` (Exclusive Range Length)
 
 Range from 0 to length of a
 
@@ -1251,7 +1251,7 @@ Range from 0 to length of a
 
 - any a: `range(0, len(a)) (Exclusive range from 0 to length of a)`
 -------------------------------
-## ż (Inclusive Range Length)
+## `` ż `` (Inclusive Range Length)
 
 Range from 1 to length of a inclusive
 
@@ -1259,7 +1259,7 @@ Range from 1 to length of a inclusive
 
 - any a: `range(1, len(a)+1) (Inclusive range from 1 to length of a)`
 -------------------------------
-## √ (Square Root)
+## `` √ `` (Square Root)
 
 Square root a number / every second character of a
 
@@ -1268,32 +1268,32 @@ Square root a number / every second character of a
 - num a: `sqrt(a) (Square root)`
 - str a: `every second character of a`
 -------------------------------
-## ⟨ (Open List)
+## `` ⟨ `` (Open List)
 
 Open a list - ⟨...⟩
 
 -------------------------------
-## ⟩ (Close list)
+## `` ⟩ `` (Close list)
 
 Close a list - ⟨...⟩
 
 -------------------------------
-## ‛ (Two Character String)
+## `` ‛ `` (Two Character String)
 
 Collect the next two characters as a string - ‛..
 
 -------------------------------
-## ₀ (Ten)
+## `` ₀ `` (Ten)
 
 Push 10 to the stack
 
 -------------------------------
-## ₁ (Hundred)
+## `` ₁ `` (Hundred)
 
 Push 100 to the stack
 
 -------------------------------
-## ₂ (Is Even)
+## `` ₂ `` (Is Even)
 
 Check if a value is even
 
@@ -1302,7 +1302,7 @@ Check if a value is even
 - num a: `a % 2 == 0 (Even?)`
 - any a: `len(a) % 2 == 0 (Length even?)`
 -------------------------------
-## ₃ (Divisible By three)
+## `` ₃ `` (Divisible By three)
 
 Check if a is divisible by 3
 
@@ -1311,12 +1311,12 @@ Check if a is divisible by 3
 - num a: `a % 3 == 0 (divisible by 3?)`
 - any a: `len(a) == 1 (Length is 1?)`
 -------------------------------
-## ₄ (Twenty Six)
+## `` ₄ `` (Twenty Six)
 
 Push 26 to the stack
 
 -------------------------------
-## ₅ (Divisible By Five)
+## `` ₅ `` (Divisible By Five)
 
 Check if a is divisible by 5
 
@@ -1325,27 +1325,27 @@ Check if a is divisible by 5
 - num a: `a % 5 == 0`
 - any a: `a, len(a)`
 -------------------------------
-## ₆ (Sixty Four)
+## `` ₆ `` (Sixty Four)
 
 Push 64 to the stack
 
 -------------------------------
-## ₇ (One Twenty Eight)
+## `` ₇ `` (One Twenty Eight)
 
 Push 128 to the stack
 
 -------------------------------
-## ₈ (Two Fifty Six)
+## `` ₈ `` (Two Fifty Six)
 
 Push 256 to the stack
 
 -------------------------------
-## ¶ (Newline)
+## `` ¶ `` (Newline)
 
 Push a newline to the stack
 
 -------------------------------
-## ⁋ (Join On Newlines)
+## `` ⁋ `` (Join On Newlines)
 
 Join the top of the stack on newlines (insert "\n" between items)
 
@@ -1353,7 +1353,7 @@ Join the top of the stack on newlines (insert "\n" between items)
 
 - any a: `"\\n".join(a)`
 -------------------------------
-## § (Vertical Join)
+## `` § `` (Vertical Join)
 
 Transpose (filling with spaces) and then join on newlines
 
@@ -1361,7 +1361,7 @@ Transpose (filling with spaces) and then join on newlines
 
 - any a: `Transpose a, join on newlines`
 -------------------------------
-## ε (Absolute Difference / Padded Vertical Join)
+## `` ε `` (Absolute Difference / Padded Vertical Join)
 
 Returns the aboslute different (|a - b|) or vertically joins using padding
 
@@ -1370,7 +1370,7 @@ Returns the aboslute different (|a - b|) or vertically joins using padding
 - num a, num b: `abs(a - b)`
 - any a, str b: `Transpose a (filling with b), join on newlines`
 -------------------------------
-## ¡ (Factorial)
+## `` ¡ `` (Factorial)
 
 Returns the factorial of the top of the stack
 
@@ -1379,7 +1379,7 @@ Returns the factorial of the top of the stack
 - num a: `factorial(a) (math.gamma(a + 1))`
 - str a: `a.sentence_case()`
 -------------------------------
-## ∑ (Summate)
+## `` ∑ `` (Summate)
 
 Returns the sum of the top of the stack (reduce by addition)
 
@@ -1389,7 +1389,7 @@ Returns the sum of the top of the stack (reduce by addition)
 - str a: `a`
 - lst a: `sum(a)`
 -------------------------------
-## ¦ (Cumulative Sum)
+## `` ¦ `` (Cumulative Sum)
 
 Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
 
@@ -1397,7 +1397,7 @@ Returns the sums of the prefixes of the top of the stack (cumulatively reduce by
 
 - any a: `cumulative_sum(a)`
 -------------------------------
-## ≈ (All Equal)
+## `` ≈ `` (All Equal)
 
 Returns whether all items are equal
 
@@ -1405,12 +1405,12 @@ Returns whether all items are equal
 
 - any a: `are all items in a equal?`
 -------------------------------
-## µ (Sorting Lambda)
+## `` µ `` (Sorting Lambda)
 
 Sort the top of the stack by the function µ...;
 
 -------------------------------
-## Ȧ (Assign)
+## `` Ȧ `` (Assign)
 
 The equivalent of a[b] = c
 
@@ -1418,7 +1418,7 @@ The equivalent of a[b] = c
 
 - any a, num b, any c: `a but item b (0-indexed) is set to c`
 -------------------------------
-## Ḃ (Bifurcate)
+## `` Ḃ `` (Bifurcate)
 
 Pushes the top of the stack then its reverse. Literally duplicate and reverse
 
@@ -1426,7 +1426,7 @@ Pushes the top of the stack then its reverse. Literally duplicate and reverse
 
 - any a: `a, reversed(a)`
 -------------------------------
-## Ċ (Counts)
+## `` Ċ `` (Counts)
 
 Returns a list of [item, count of item in the top of stack]
 
@@ -1434,7 +1434,7 @@ Returns a list of [item, count of item in the top of stack]
 
 - any a: `[[x, a.count(x)] for x in a]`
 -------------------------------
-## Ḋ (Is Divisible / Arbitrary Duplicate)
+## `` Ḋ `` (Is Divisible / Arbitrary Duplicate)
 
 Returns whether two items are divisble / numerious copies of the top of the stack
 
@@ -1445,7 +1445,7 @@ Returns whether two items are divisble / numerious copies of the top of the stac
 - str a, num b: `b copies of a`
 - str a, str b: `b + " " + a`
 -------------------------------
-## Ė (Vyxal Exec / Reciprocal)
+## `` Ė `` (Vyxal Exec / Reciprocal)
 
 Executes as Vyxal / Reciprocal of number
 
@@ -1454,7 +1454,7 @@ Executes as Vyxal / Reciprocal of number
 - str a: `vy_exec(a)`
 - num a: `1 / a`
 -------------------------------
-## Ḟ (Generator / Modulo Index / Format)
+## `` Ḟ `` (Generator / Modulo Index / Format)
 
 Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
 
@@ -1467,7 +1467,7 @@ Make a generator from function a with initial vector b, or get every nth item or
 - lst a, num b: `every bth item of a`
 - fun a, lst b: `Generator from function a with initial vector b`
 -------------------------------
-## Ġ (Group consecutive)
+## `` Ġ `` (Group consecutive)
 
 Group consecutive identical items
 
@@ -1477,7 +1477,7 @@ Group consecutive identical items
 - str a: `Group consecutive identical characters`
 - num a: `Group consecutive identical digits`
 -------------------------------
-## Ḣ (Head Remove / Behead)
+## `` Ḣ `` (Head Remove / Behead)
 
 All but the first item of a list / Drop 1
 
@@ -1487,7 +1487,7 @@ All but the first item of a list / Drop 1
 - str a: `a[1:] or '' if empty`
 - num a: `Remove first digit or do nothing if <1`
 -------------------------------
-## İ (Index into or collect while unique)
+## `` İ `` (Index into or collect while unique)
 
 Index into list at indices / Collect values while values are unique
 
@@ -1496,7 +1496,7 @@ Index into list at indices / Collect values while values are unique
 - any a, lst b: `[a[item] for item in b]`
 - any a, fun b: `apply b on a and collect unique values`
 -------------------------------
-## Ŀ (Transliterate)
+## `` Ŀ `` (Transliterate)
 
 Replace each item of one value in another value with the corresponding element from a third value
 
@@ -1505,7 +1505,7 @@ Replace each item of one value in another value with the corresponding element f
 - any a, any b, any c: `transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)`
 - fun a, fun b, any c: `Call b on c until a(c) is falsey.`
 -------------------------------
-## Ṁ (Insert)
+## `` Ṁ `` (Insert)
 
 Insert a value at a specified index / Map a function over every nth item of a list
 
@@ -1514,7 +1514,7 @@ Insert a value at a specified index / Map a function over every nth item of a li
 - any a, num b, any c: `a.insert(b,c) (Insert c at position b in a)`
 - any a, num b, fun c: `c mapped over every bth item of a`
 -------------------------------
-## Ṅ (Integer partitions)
+## `` Ṅ `` (Integer partitions)
 
 Integer partitions / join by space
 
@@ -1523,12 +1523,12 @@ Integer partitions / join by space
 - num a: `integer_partitions(a) (Integer partitions)`
 - any a: `" ".join(a) (Join by space)`
 -------------------------------
-## Ȯ (Over)
+## `` Ȯ `` (Over)
 
 Push the second-last item of stack to the top
 
 -------------------------------
-## Ṗ (Permutations)
+## `` Ṗ `` (Permutations)
 
 Get all permutations of a value
 
@@ -1536,7 +1536,7 @@ Get all permutations of a value
 
 - any a: `permutations(a) (Get all permutations)`
 -------------------------------
-## Ṙ (Reverse)
+## `` Ṙ `` (Reverse)
 
 Reverse a value
 
@@ -1544,12 +1544,12 @@ Reverse a value
 
 - any a: `a, reversed(a)`
 -------------------------------
-## Ṡ (Vectorised sums)
+## `` Ṡ `` (Vectorised sums)
 
 Reduce stack by addition
 
 -------------------------------
-## Ṫ (Tail Remove)
+## `` Ṫ `` (Tail Remove)
 
 Cut off the last item of a list
 
@@ -1557,7 +1557,7 @@ Cut off the last item of a list
 
 - any a: `a[:-1] (All but the last item)`
 -------------------------------
-## Ẇ (Split And Keep Delimiter)
+## `` Ẇ `` (Split And Keep Delimiter)
 
 Split a value and keep the delimiter
 
@@ -1565,7 +1565,7 @@ Split a value and keep the delimiter
 
 - any a, any b: `a.split_and_keep_delimiter(b) (Split and keep the delimiter)`
 -------------------------------
-## Ẋ (Cartesian Product)
+## `` Ẋ `` (Cartesian Product)
 
 Take the Cartesian Product of two values, or apply a function until there is no change.
 
@@ -1574,7 +1574,7 @@ Take the Cartesian Product of two values, or apply a function until there is no 
 - any a, any b: `cartesian-product(a,b)`
 - fun a, any b: `Apply a on b until b does not change`
 -------------------------------
-## Ẏ (Slice Until)
+## `` Ẏ `` (Slice Until)
 
 Slice a list until a certain index / find all results for a regex match
 
@@ -1584,7 +1584,7 @@ Slice a list until a certain index / find all results for a regex match
 - num a, any b: `b[0:a] (Slice until a)`
 - str a, str b: `regex.findall(pattern=a,string=b) (Find all matches for a regex)`
 -------------------------------
-## Ż (Slice From One Until)
+## `` Ż `` (Slice From One Until)
 
 Slice from index 1 until a number / get groups of a gregex match
 
@@ -1594,7 +1594,7 @@ Slice from index 1 until a number / get groups of a gregex match
 - num a, any b: `b[1:a] (Slice from 1 until a)`
 - str a, str b: `regex.match(pattern=a,string=b).groups() (Get groups for a regex match)`
 -------------------------------
-## ₌ (Parallel Apply)
+## `` ₌ `` (Parallel Apply)
 Parallel apply two elements to the top of the stack
 
 Usage:
@@ -1603,7 +1603,7 @@ Usage:
 ```
 
 -------------------------------
-## ₍ (Parallel Apply Wrap)
+## `` ₍ `` (Parallel Apply Wrap)
 Parallel apply two elements and wrap the results in a list
 
 Usage:
@@ -1612,17 +1612,17 @@ Usage:
 ```
 
 -------------------------------
-## ⁰ (First Input)
+## `` ⁰ `` (First Input)
 
 Push the first input
 
 -------------------------------
-## ¹ (Second Input)
+## `` ¹ `` (Second Input)
 
 Push the second input
 
 -------------------------------
-## ² (Square)
+## `` ² `` (Square)
 
 Square a number / Format a string into a square
 
@@ -1631,7 +1631,7 @@ Square a number / Format a string into a square
 - num a: `a ** 2 (Squared)`
 - str a: `a formatted as a square`
 -------------------------------
-## ∇ (Shift)
+## `` ∇ `` (Shift)
 
 Shift the top of stack two values down
 
@@ -1639,7 +1639,7 @@ Shift the top of stack two values down
 
 - any a, any b, any c: `c,a,b (Shift)`
 -------------------------------
-## ⌈ (Ceiling)
+## `` ⌈ `` (Ceiling)
 
 Take the ceiling of a number / split a string on spaces
 
@@ -1648,7 +1648,7 @@ Take the ceiling of a number / split a string on spaces
 - num a: `ceil(a) (Ceiling)`
 - str a: `Split on spaces`
 -------------------------------
-## ⌊ (Floor)
+## `` ⌊ `` (Floor)
 
 Floor a number / extract the integer part of a string
 
@@ -1657,7 +1657,7 @@ Floor a number / extract the integer part of a string
 - num a: `floor(a) (Floor)`
 - str a: `Integer part of a`
 -------------------------------
-## ¯ (Deltas)
+## `` ¯ `` (Deltas)
 
 Deltas (consecutive differences)
 
@@ -1665,7 +1665,7 @@ Deltas (consecutive differences)
 
 - any a: `deltas(a) (consecutive differences)`
 -------------------------------
-## ± (Sign)
+## `` ± `` (Sign)
 
 Get the sign of a number
 
@@ -1674,22 +1674,22 @@ Get the sign of a number
 - num a: `sign_of(a) (positive = 1, 0 = 0; negative = -1)`
 - str a: `is a numeric`
 -------------------------------
-## ₴ (Print Without Newline)
+## `` ₴ `` (Print Without Newline)
 
 Print a value without a trailing newline
 
 -------------------------------
-## … (Print Without Popping)
+## `` … `` (Print Without Popping)
 
 Print a value without popping the stack
 
 -------------------------------
-## □ (Input List)
+## `` □ `` (Input List)
 
 All inputs wrapped in a list
 
 -------------------------------
-## ↳ (Right Bit Shift)
+## `` ↳ `` (Right Bit Shift)
 
 Right-bitshift a value / right-justify a string
 
@@ -1700,7 +1700,7 @@ Right-bitshift a value / right-justify a string
 - str a, num b: `b.rjust(a)`
 - str a, str b: `a.rjust(len(b)-len(a))`
 -------------------------------
-## ↲ (Left Bit Shift)
+## `` ↲ `` (Left Bit Shift)
 
 Left-bitshift a value / left-justify a string
 
@@ -1711,7 +1711,7 @@ Left-bitshift a value / left-justify a string
 - str a, num b: `b.ljust(a)`
 - str a, str b: `a.ljust(len(b)-len(a))`
 -------------------------------
-## ⋏ (Bitwise And)
+## `` ⋏ `` (Bitwise And)
 
 Performs bitwise and between two numbers / centre a string
 
@@ -1722,7 +1722,7 @@ Performs bitwise and between two numbers / centre a string
 - str a, num b: `a.center(b)`
 - str a, str b: `a.center(len(b) - len(a))`
 -------------------------------
-## ⋎ (Bitwise Or)
+## `` ⋎ `` (Bitwise Or)
 
 Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
 
@@ -1733,7 +1733,7 @@ Performs bitwise or between two numbers / Removes a character at nth index / Mer
 - str a, num b: `a[:b]+a[b+1:]`
 - str a, str b: `merge_join(a,b)`
 -------------------------------
-## ꘍ (Bitwise Xor)
+## `` ꘍ `` (Bitwise Xor)
 
 Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
 
@@ -1744,7 +1744,7 @@ Performs bitwise xor between two numbers / appends n spaces to a string / prepen
 - str a, num b: `a + \" \" * b`
 - str a, str b: `levenshtein_distance(a,b)`
 -------------------------------
-## ꜝ (Bitwise Not)
+## `` ꜝ `` (Bitwise Not)
 
 Performs bitwise not on a number / check if any letters are uppercase
 
@@ -1753,7 +1753,7 @@ Performs bitwise not on a number / check if any letters are uppercase
 - num a: `~a`
 - str a: `any_upper(a)`
 -------------------------------
-## ℅ (Random Choice)
+## `` ℅ `` (Random Choice)
 
 Random choice of single item from array
 
@@ -1761,7 +1761,7 @@ Random choice of single item from array
 
 - lst a: `random.choice(a)`
 -------------------------------
-## ≤ (Lesser Than or Equal To)
+## `` ≤ `` (Lesser Than or Equal To)
 
 a is lesser than or equal to b?
 
@@ -1769,7 +1769,7 @@ a is lesser than or equal to b?
 
 - any a, any b: `a <= b`
 -------------------------------
-## ≥ (Greater Than or Equal To)
+## `` ≥ `` (Greater Than or Equal To)
 
 a is greater than or equal to b?
 
@@ -1777,7 +1777,7 @@ a is greater than or equal to b?
 
 - any a, any b: `a >= b`
 -------------------------------
-## ≠ (Not Equal To)
+## `` ≠ `` (Not Equal To)
 
 a is not equal to b?
 
@@ -1785,7 +1785,7 @@ a is not equal to b?
 
 - any a, any b: `a != b`
 -------------------------------
-## ⁼ (Exactly Equal To)
+## `` ⁼ `` (Exactly Equal To)
 
 a equal to b? (non-vectorizing)
 
@@ -1793,7 +1793,7 @@ a equal to b? (non-vectorizing)
 
 - any a, any b: `a == b`
 -------------------------------
-## ƒ (Reduce by)
+## `` ƒ `` (Reduce by)
 Reduce by an element
 
 Usage:
@@ -1802,7 +1802,7 @@ Usage:
 ```
 
 -------------------------------
-## ɖ (Scan by)
+## `` ɖ `` (Scan by)
 Cumulatively reduce by an element
 
 Usage:
@@ -1811,7 +1811,7 @@ Usage:
 ```
 
 -------------------------------
-## ∪ (Set Union)
+## `` ∪ `` (Set Union)
 
 Merge two arrays without duplicates
 
@@ -1819,7 +1819,7 @@ Merge two arrays without duplicates
 
 - any a, any b: `list(set(a).union(set(b)))`
 -------------------------------
-## ∩ (Tranpose)
+## `` ∩ `` (Tranpose)
 
 Transpose an array
 
@@ -1827,7 +1827,7 @@ Transpose an array
 
 - any a: `Transposed array`
 -------------------------------
-## ⊍ (Symmetric Set difference)
+## `` ⊍ `` (Symmetric Set difference)
 
 Uncommon elements of two arrays
 
@@ -1835,7 +1835,7 @@ Uncommon elements of two arrays
 
 - any a, any b: `list(set(a) ^ set(b))`
 -------------------------------
-## £ (Set Register)
+## `` £ `` (Set Register)
 
 set the register to argument value
 
@@ -1843,12 +1843,12 @@ set the register to argument value
 
 - any a: `set_register(a)`
 -------------------------------
-## ¥ (Push Register)
+## `` ¥ `` (Push Register)
 
 Push the current register value
 
 -------------------------------
-## ⇧ (Grade Up)
+## `` ⇧ `` (Grade Up)
 
 Indices of elements to sort in ascending order / uppercase / increment number twice
 
@@ -1858,7 +1858,7 @@ Indices of elements to sort in ascending order / uppercase / increment number tw
 - str a: `a.upper()`
 - num a: `a + 2`
 -------------------------------
-## ⇩ (Grade Down)
+## `` ⇩ `` (Grade Down)
 
 Indices of elements to sort in descending order / lowercase / decrement number twice
 
@@ -1868,7 +1868,7 @@ Indices of elements to sort in descending order / lowercase / decrement number t
 - str a: `a.lower()`
 - num a: `a - 2`
 -------------------------------
-## Ǎ (Remove non-alphabets)
+## `` Ǎ `` (Remove non-alphabets)
 
 Remove non-alphabetical characters / power with base 2
 
@@ -1877,7 +1877,7 @@ Remove non-alphabetical characters / power with base 2
 - str a: `filter(isalpha, a)`
 - num a: `2 ** a`
 -------------------------------
-## ǎ (Nth prime)
+## `` ǎ `` (Nth prime)
 
 nth prime / all substrings
 
@@ -1886,7 +1886,7 @@ nth prime / all substrings
 - str a: `substrings(a)`
 - num a: `nth_prime(a)`
 -------------------------------
-## Ǐ (Prime factorization)
+## `` Ǐ `` (Prime factorization)
 
 prime factorization / append first element
 
@@ -1895,7 +1895,7 @@ prime factorization / append first element
 - num a: `prime_factorization(a)`
 - str a: `a + a[0]`
 -------------------------------
-## ǐ (Prime factors)
+## `` ǐ `` (Prime factors)
 
 all prime factors / Title Case string
 
@@ -1904,7 +1904,7 @@ all prime factors / Title Case string
 - num a: `prime_factors(a)`
 - str a: `title_case(a)`
 -------------------------------
-## Ǒ (Multiplicity)
+## `` Ǒ `` (Multiplicity)
 
 Order, Multiplicity, Valuation / remove till fixpoint
 
@@ -1913,7 +1913,7 @@ Order, Multiplicity, Valuation / remove till fixpoint
 - num a, num b: `multiplicity(a,b)`
 - str a, str b: `remove_till_fixpoint(a,b)`
 -------------------------------
-## ǒ (Modulo 3)
+## `` ǒ `` (Modulo 3)
 
 Modulo 3 / Split into Length 2
 
@@ -1922,7 +1922,7 @@ Modulo 3 / Split into Length 2
 - num a: `a % 3`
 - str a: `a split into chunks of length 2`
 -------------------------------
-## Ǔ (Rotate Left)
+## `` Ǔ `` (Rotate Left)
 
 Rotate Left / Rotate Left Once
 
@@ -1931,7 +1931,7 @@ Rotate Left / Rotate Left Once
 - any a, num b: `rotate_left(a,b)`
 - any a, any b: `a,(b[1:]+b[:1])`
 -------------------------------
-## ǔ (Rotate Right)
+## `` ǔ `` (Rotate Right)
 
 Rotate Right / Rotate Right Once
 
@@ -1940,27 +1940,27 @@ Rotate Right / Rotate Right Once
 - any a, num b: `rotate_right(a,b)`
 - any a, any b: `a,(b[-1:]+b[:-1])`
 -------------------------------
-## ⁽ (One Byte Lambda)
+## `` ⁽ `` (One Byte Lambda)
 
 One Byte lambda function (prefix)
 
 -------------------------------
-## ‡ (Two Byte Lambda)
+## `` ‡ `` (Two Byte Lambda)
 
 Two Byte lambda function (prefix)
 
 -------------------------------
-## ≬ (Three Byte Lambda)
+## `` ≬ `` (Three Byte Lambda)
 
 Three Byte lambda function (prefix)
 
 -------------------------------
-## ⁺ (Index of next character in codepage)
+## `` ⁺ `` (Index of next character in codepage)
 
 Compressed number in 1-128 (prefix)
 
 -------------------------------
-## ↵ (Split On newlines)
+## `` ↵ `` (Split On newlines)
 
 Split on newlines / Power with base 10
 
@@ -1969,22 +1969,22 @@ Split on newlines / Power with base 10
 - str a: `a.split("\n")`
 - num a: `10 ** a`
 -------------------------------
-## ⅛ (Push To Global Array)
+## `` ⅛ `` (Push To Global Array)
 
 Push to global array (no popping)
 
 -------------------------------
-## ¼ (Pop From Global Array)
+## `` ¼ `` (Pop From Global Array)
 
 Pop from global array, push to stack
 
 -------------------------------
-## ¾ (Push Global Array)
+## `` ¾ `` (Push Global Array)
 
 Push global array, no modification of global array
 
 -------------------------------
-## Π (Product of Array)
+## `` Π `` (Product of Array)
 
 Product of Array
 
@@ -1992,402 +1992,402 @@ Product of Array
 
 - lst a: `prod(a)`
 -------------------------------
-## „ (Rotate Stack Left)
+## `` „ `` (Rotate Stack Left)
 
 Rotate Stack Left
 
 -------------------------------
-## ‟ (Rotate Stack Right)
+## `` ‟ `` (Rotate Stack Right)
 
 Rotate Stack Right
 
 -------------------------------
-## kA (Uppercase alphabet)
+## `` kA `` (Uppercase alphabet)
 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
 
 -------------------------------
-## ke (e, Euler's number)
+## `` ke `` (e, Euler's number)
 
 2.718281828459045 (math.e, Euler's number)
 
 -------------------------------
-## kf (Fizz)
+## `` kf `` (Fizz)
 
 Fizz
 
 -------------------------------
-## kb (Buzz)
+## `` kb `` (Buzz)
 
 Buzz
 
 -------------------------------
-## kF (FizzBuzz)
+## `` kF `` (FizzBuzz)
 
 FizzBuzz
 
 -------------------------------
-## kH (Hello, World!)
+## `` kH `` (Hello, World!)
 
 Hello, World!
 
 -------------------------------
-## kh (Hello World (No Punctuation))
+## `` kh `` (Hello World (No Punctuation))
 
 Hello World
 
 -------------------------------
-## k1 (1000)
+## `` k1 `` (1000)
 
 10^3 / 1000
 
 -------------------------------
-## k2 (10000)
+## `` k2 `` (10000)
 
 10^4 / 10000
 
 -------------------------------
-## k3 (100000)
+## `` k3 `` (100000)
 
 10^5 / 100000
 
 -------------------------------
-## k4 (1000000)
+## `` k4 `` (1000000)
 
 10^6 / 1000000
 
 -------------------------------
-## ka (Lowercase alphabet)
+## `` ka `` (Lowercase alphabet)
 
 "abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
 
 -------------------------------
-## kL (Lowercase and uppercase alphabet)
+## `` kL `` (Lowercase and uppercase alphabet)
 
 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
 
 -------------------------------
-## kd (Digits)
+## `` kd `` (Digits)
 
 "0123456789" (Digits 0-9)
 
 -------------------------------
-## k6 (Hex digits (lowercase))
+## `` k6 `` (Hex digits (lowercase))
 
 "0123456789abcdef" (Hex digits)
 
 -------------------------------
-## k^ (Hex digits (uppercase))
+## `` k^ `` (Hex digits (uppercase))
 
 "0123456789ABCDEF" (Hex digits uppercase)
 
 -------------------------------
-## ko (Octal digits)
+## `` ko `` (Octal digits)
 
 "01234567" (Octal digits)
 
 -------------------------------
-## kp (Punctuation)
+## `` kp `` (Punctuation)
 
 string.punctuation (Punctuations)
 
 -------------------------------
-## kP (Printable ASCII)
+## `` kP `` (Printable ASCII)
 
 printable ascii
 
 -------------------------------
-## kw (ASCII Whitespace)
+## `` kw `` (ASCII Whitespace)
 
 All ASCII whitespace
 
 -------------------------------
-## kr (Digits, lowercase alphabet, and uppercase alphabet)
+## `` kr `` (Digits, lowercase alphabet, and uppercase alphabet)
 
 "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
 
 -------------------------------
-## kB (Uppercase and lowercase alphabet)
+## `` kB `` (Uppercase and lowercase alphabet)
 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
 
 -------------------------------
-## kZ (Uppercase alphabet reversed)
+## `` kZ `` (Uppercase alphabet reversed)
 
 "ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
 
 -------------------------------
-## kz (Lowercase alphabet reversed)
+## `` kz `` (Lowercase alphabet reversed)
 
 "zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
 
 -------------------------------
-## kl (Uppercase and lowercase alphabet, reversed)
+## `` kl `` (Uppercase and lowercase alphabet, reversed)
 
 "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
 
 -------------------------------
-## ki (Pi)
+## `` ki `` (Pi)
 
 3.141592653589793 (Pi)
 
 -------------------------------
-## kn (NaN)
+## `` kn `` (NaN)
 
 math.nan
 
 -------------------------------
-## kg (Golden ratio/phi)
+## `` kg `` (Golden ratio/phi)
 
 1.618033988749895 (golden ratio/phi)
 
 -------------------------------
-## kD (Current day in the format YYYY-MM-DD)
+## `` kD `` (Current day in the format YYYY-MM-DD)
 
 Current day in the format YYYY-MM-DD
 
 -------------------------------
-## kN (Current time as a list of ⟨hh|mm|ss⟩)
+## `` kN `` (Current time as a list of ⟨hh|mm|ss⟩)
 
 Current time as a list of ⟨hh|mm|ss⟩
 
 -------------------------------
-## kḋ (Current day in the format DD/MM/YYYY)
+## `` kḋ `` (Current day in the format DD/MM/YYYY)
 
 Current day in the format DD/MM/YYYY
 
 -------------------------------
-## kḊ (Current day in the format MM/DD/YYYY)
+## `` kḊ `` (Current day in the format MM/DD/YYYY)
 
 Current day in the format MM/DD/YYYY
 
 -------------------------------
-## kð (Current day in the format ⟨DD|MM|YYYY⟩)
+## `` kð `` (Current day in the format ⟨DD|MM|YYYY⟩)
 
 Current day in the format ⟨DD|MM|YYYY⟩
 
 -------------------------------
-## kβ (Braces, square brackets, angle brackets, and parentheses)
+## `` kβ `` (Braces, square brackets, angle brackets, and parentheses)
 
 {}[]<>()
 
 -------------------------------
-## kḂ (Parentheses, square brackets, and braces)
+## `` kḂ `` (Parentheses, square brackets, and braces)
 
 "()[]{}" (Brackets)
 
 -------------------------------
-## kß (Parentheses and square brackets)
+## `` kß `` (Parentheses and square brackets)
 
 ()[]
 
 -------------------------------
-## kḃ (Opening brackets)
+## `` kḃ `` (Opening brackets)
 
 "([{" (Open brackets)
 
 -------------------------------
-## k≥ (Closing brackets)
+## `` k≥ `` (Closing brackets)
 
 ")]}" (Close brackets)
 
 -------------------------------
-## k≤ (Opening brackets (with <))
+## `` k≤ `` (Opening brackets (with <))
 
 "([{<" (Fish bones :P)
 
 -------------------------------
-## kΠ (Closing brackets (with >))
+## `` kΠ `` (Closing brackets (with >))
 
 ")]}>" (Closing brackets)
 
 -------------------------------
-## kv (Lowercase vowels)
+## `` kv `` (Lowercase vowels)
 
 "aeiou" (Vowels lowercase)
 
 -------------------------------
-## kV (Upercase vowels)
+## `` kV `` (Upercase vowels)
 
 "AEIOU" (Vowels uppercase)
 
 -------------------------------
-## k∨ (Lowercase and uppercase vowels)
+## `` k∨ `` (Lowercase and uppercase vowels)
 
 "aeiouAEIOU" (vowelsVOWELS)
 
 -------------------------------
-## k⟇ (Vyxal codepage)
+## `` k⟇ `` (Vyxal codepage)
 
 Yields the Vyxal codepage
 
 -------------------------------
-## k½ ([1, 2])
+## `` k½ `` ([1, 2])
 
 [1, 2]
 
 -------------------------------
-## kḭ (4294967296)
+## `` kḭ `` (4294967296)
 
 2 ** 32, 2^32, 4294967296
 
 -------------------------------
-## k+ ([1, -1])
+## `` k+ `` ([1, -1])
 
 [1, -1]
 
 -------------------------------
-## k- ([-1, 1])
+## `` k- `` ([-1, 1])
 
 [-1, 1]
 
 -------------------------------
-## k≈ ([0, 1])
+## `` k≈ `` ([0, 1])
 
 [0, 1]
 
 -------------------------------
-## k/ (Slashes)
+## `` k/ `` (Slashes)
 
 "/\\" (Forwardslash, backslash)
 
 -------------------------------
-## kR (360)
+## `` kR `` (360)
 
 360
 
 -------------------------------
-## kW (https://)
+## `` kW `` (https://)
 
 https://
 
 -------------------------------
-## k℅ (http://)
+## `` k℅ `` (http://)
 
 http://
 
 -------------------------------
-## k↳ (https://www.)
+## `` k↳ `` (https://www.)
 
 https://www.
 
 -------------------------------
-## k² (http://www.)
+## `` k² `` (http://www.)
 
 http://www.
 
 -------------------------------
-## k¶ (512)
+## `` k¶ `` (512)
 
 512
 
 -------------------------------
-## k⁋ (1024)
+## `` k⁋ `` (1024)
 
 1024
 
 -------------------------------
-## k¦ (2048)
+## `` k¦ `` (2048)
 
 2048
 
 -------------------------------
-## kṄ (4096)
+## `` kṄ `` (4096)
 
 4096
 
 -------------------------------
-## kṅ (8192)
+## `` kṅ `` (8192)
 
 8192
 
 -------------------------------
-## k¡ (16384)
+## `` k¡ `` (16384)
 
 16384
 
 -------------------------------
-## kε (32768)
+## `` kε `` (32768)
 
 32768
 
 -------------------------------
-## k₴ (65536)
+## `` k₴ `` (65536)
 
 65536
 
 -------------------------------
-## k× (2147483648)
+## `` k× `` (2147483648)
 
 2147483648
 
 -------------------------------
-## k⁰ (Lowercase consonants with y)
+## `` k⁰ `` (Lowercase consonants with y)
 
 bcdfghjklmnpqrstvwxyz
 
 -------------------------------
-## k¹ (Lowercase consonants without y)
+## `` k¹ `` (Lowercase consonants without y)
 
 bcdfghjklmnpqrstvwxz
 
 -------------------------------
-## kT (BF command set)
+## `` kT `` (BF command set)
 
 BF command set ("[]<>-+.,")
 
 -------------------------------
-## kṗ (Bracket pair list)
+## `` kṗ `` (Bracket pair list)
 
 List of bracket pairs ("[(),[],{},<>]")
 
 -------------------------------
-## kṖ (Nested brackets)
+## `` kṖ `` (Nested brackets)
 
 String of all brackets nested ("([{<>}])")
 
 -------------------------------
-## kS (Amogus)
+## `` kS `` (Amogus)
 
 Amogus ("ඞ")
 
 -------------------------------
-## k₁ ([1, 1])
+## `` k₁ `` ([1, 1])
 
 The list [1, 1]
 
 -------------------------------
-## k₂ (2 ** 20)
+## `` k₂ `` (2 ** 20)
 
 2 to the power of 20, 1048576
 
 -------------------------------
-## k₃ (2 ** 30)
+## `` k₃ `` (2 ** 30)
 
 2 to the power of 30, 1073741824
 
 -------------------------------
-## k∪ (Lowercase Vowels With Y)
+## `` k∪ `` (Lowercase Vowels With Y)
 
 Lowercase vowels with y, "aeiouy"
 
 -------------------------------
-## k⊍ (Uppercase Vowels With Y)
+## `` k⊍ `` (Uppercase Vowels With Y)
 
 Uppercase vowels with y, "AEIOUY"
 
 -------------------------------
-## k∩ (Vowels With Y)
+## `` k∩ `` (Vowels With Y)
 
 Vowels with y, "aeiouyAEIOUY"
 
 -------------------------------
-## k□ (Directions)
+## `` k□ `` (Directions)
 
 Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 
 -------------------------------
-## ∆c (Cosine)
+## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians
 
@@ -2395,7 +2395,7 @@ Get the cosine of an angle in radians
 
 - num a: `math.cos(a)`
 -------------------------------
-## ∆C (Arc Cosine)
+## `` ∆C `` (Arc Cosine)
 
 Get the arccosine of an angle in radians
 
@@ -2403,7 +2403,7 @@ Get the arccosine of an angle in radians
 
 - num a: `math.arrcos(a)`
 -------------------------------
-## ∆q (Quadratic Solver)
+## `` ∆q `` (Quadratic Solver)
 
 Solve a quadratic equation of the form ax^2 + bx = 0
 
@@ -2414,7 +2414,7 @@ Solve a quadratic equation of the form ax^2 + bx = 0
 - str a, num b: `solve b such that b = a`
 - str a, str b: `solve equation a = b for x`
 -------------------------------
-## ∆Q (General Quadratic Solver)
+## `` ∆Q `` (General Quadratic Solver)
 
 Solve a quadratic equation of the form x^2 + ax + b = 0
 
@@ -2425,7 +2425,7 @@ Solve a quadratic equation of the form x^2 + ax + b = 0
 - str a, num b: `evaluate single variable expression a with x=b`
 - str a, str b: `solve equations a and b simultaneously`
 -------------------------------
-## ∆s (Sine)
+## `` ∆s `` (Sine)
 
 Get the sine of an angle in radians
 
@@ -2433,7 +2433,7 @@ Get the sine of an angle in radians
 
 - num a: `math.sin(a)`
 -------------------------------
-## ∆S (Arc Sine)
+## `` ∆S `` (Arc Sine)
 
 Get the arcsine of an angle in radians
 
@@ -2441,7 +2441,7 @@ Get the arcsine of an angle in radians
 
 - num a: `math.arcsin(a)`
 -------------------------------
-## ∆t (Tangent)
+## `` ∆t `` (Tangent)
 
 Get the tangent of an angle in radians
 
@@ -2449,7 +2449,7 @@ Get the tangent of an angle in radians
 
 - num a: `math.tan(a)`
 -------------------------------
-## ∆T (Arc Tangent)
+## `` ∆T `` (Arc Tangent)
 
 Get the arctangent of an angle in radians
 
@@ -2457,7 +2457,7 @@ Get the arctangent of an angle in radians
 
 - num a: `math.arctan(a)`
 -------------------------------
-## ∆P (Polynomial Solver)
+## `` ∆P `` (Polynomial Solver)
 
 Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
 
@@ -2465,7 +2465,7 @@ Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
 
 - lst a: `roots(a)`
 -------------------------------
-## ∆ƈ (n Pick r (npr))
+## `` ∆ƈ `` (n Pick r (npr))
 
 Get the number of combinations of r items from a set of n items
 
@@ -2476,7 +2476,7 @@ Get the number of combinations of r items from a set of n items
 - str a, num b: `n_pick_r(len(a), b)`
 - str a, str b: `n_pick_r(len(a), len(b))`
 -------------------------------
-## ∆± (Copy Sign)
+## `` ∆± `` (Copy Sign)
 
 Copy the sign of one number to the other
 
@@ -2484,7 +2484,7 @@ Copy the sign of one number to the other
 
 - num a, num b: `math.copysign(a, b)`
 -------------------------------
-## ∆K (Sum of Proper Divisors / Stationary Points)
+## `` ∆K `` (Sum of Proper Divisors / Stationary Points)
 
 Get the sum of all proper divisors of a number /  get the stationary points of a function
 
@@ -2493,7 +2493,7 @@ Get the sum of all proper divisors of a number /  get the stationary points of a
 - num a: `sum_of_proper_divisors(a)`
 - str a: `stationary_points(a)`
 -------------------------------
-## ∆² (Perfect Square?)
+## `` ∆² `` (Perfect Square?)
 
 Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 
@@ -2501,7 +2501,7 @@ Is the number a perfect square? (1, 4, 9, 16, 25, 36)
 
 - num a: `is_perfect_square(a)`
 -------------------------------
-## ∆e (Euler's Number (e) raised to power a)
+## `` ∆e `` (Euler's Number (e) raised to power a)
 
 Get the value of Euler's number (e) raised to the power of a
 
@@ -2510,7 +2510,7 @@ Get the value of Euler's number (e) raised to the power of a
 - num a: `e ** a`
 - str a: `simplify expression a`
 -------------------------------
-## ∆E ((Euler's Number (e) Raised to Power a) - 1)
+## `` ∆E `` ((Euler's Number (e) Raised to Power a) - 1)
 
 Get the value of Euler's number (e) raised to the power of a minus 1
 
@@ -2519,7 +2519,7 @@ Get the value of Euler's number (e) raised to the power of a minus 1
 - num a: `(e ** a) - 1`
 - str a: `expand expression a`
 -------------------------------
-## ∆L (Natural Logarithm)
+## `` ∆L `` (Natural Logarithm)
 
 Get the natural logarithm of a number
 
@@ -2527,7 +2527,7 @@ Get the natural logarithm of a number
 
 - num a: `math.log(a)`
 -------------------------------
-## ∆l (Logarithm (log_2) / Staionary Points)
+## `` ∆l `` (Logarithm (log_2))
 
 Get the logarithm of a number to base 2
 
@@ -2535,7 +2535,7 @@ Get the logarithm of a number to base 2
 
 - num a: `math.log2(a)`
 -------------------------------
-## ∆τ (Common Logarithm)
+## `` ∆τ `` (Common Logarithm)
 
 Get the common logarithm of a number
 
@@ -2543,7 +2543,7 @@ Get the common logarithm of a number
 
 - num a: `math.log10(a)`
 -------------------------------
-## ∆d (Straight Line Distance)
+## `` ∆d `` (Straight Line Distance)
 
 Get the straight line distance between two points (x1, y1) and (x2, y2)
 
@@ -2551,7 +2551,7 @@ Get the straight line distance between two points (x1, y1) and (x2, y2)
 
 - lst a, lst b: `euclidian_distance(a, b)`
 -------------------------------
-## ∆D (To Degrees)
+## `` ∆D `` (To Degrees)
 
 Convert an angle from radians to degrees
 
@@ -2559,7 +2559,7 @@ Convert an angle from radians to degrees
 
 - num a: `math.degrees(a)`
 -------------------------------
-## ∆R (To Radians)
+## `` ∆R `` (To Radians)
 
 Convert an angle from degrees to radians
 
@@ -2567,25 +2567,25 @@ Convert an angle from degrees to radians
 
 - num a: `math.radians(a)`
 -------------------------------
-## ∆Ṗ (Next Prime After a Number / Discrimant of Polynomial)
+## `` ∆Ṗ `` (Next Prime After a Number / Discriminant of Polynomial)
 
-Get the next prime number after a given number / the discrimant of a polynomial
+Get the next prime number after a given number / the discriminant of a polynomial
 
 ### Overloads
 
 - num a: `next_prime(a)`
 - str a: `discriminant(a)`
 -------------------------------
-## ∆ṗ (First Prime Before a Number / Factorise Expression)
+## `` ∆ṗ `` (First Prime Before a Number / Factor Expression)
 
-Get the first prime number before a given number / factorise a mathematical expression
+Get the first prime number before a given number / factor a mathematical expression
 
 ### Overloads
 
 - num a: `prev_prime(a)`
 - str a: `factorise(a)`
 -------------------------------
-## ∆p (Nearest Prime to a Number / Python equivalent of an expression)
+## `` ∆p `` (Nearest Prime to a Number / Python equivalent of an expression)
 
 Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
 
@@ -2594,7 +2594,7 @@ Get the prime number closest to a given number, get the greater to break ties / 
 - num a: `nearest_prime(a)`
 - str a: `sympy.nsimplify(a).pycode()`
 -------------------------------
-## ∆ṙ (Polynomial from Roots)
+## `` ∆ṙ `` (Polynomial from Roots)
 
 Get the polynomial with coefficients from the roots of a polynomial
 
@@ -2602,7 +2602,7 @@ Get the polynomial with coefficients from the roots of a polynomial
 
 - list a: `polynomial(a)`
 -------------------------------
-## ∆W (Round to n Decimal Places)
+## `` ∆W `` (Round to n Decimal Places)
 
 Round a number to n decimal places
 
@@ -2610,7 +2610,7 @@ Round a number to n decimal places
 
 - num a, num b: `round(a, no_dec_places=b)`
 -------------------------------
-## ∆Ŀ (Least Common Multiple)
+## `` ∆Ŀ `` (Least Common Multiple)
 
 Get the least common multiple of two numbers
 
@@ -2618,7 +2618,7 @@ Get the least common multiple of two numbers
 
 - num a, num b: `lcm(a, b)`
 -------------------------------
-## ∆i (nth Digit of Pi)
+## `` ∆i `` (nth Digit of Pi)
 
 Get the nth digit of pi
 
@@ -2626,7 +2626,7 @@ Get the nth digit of pi
 
 - num a: `nth_digit_of_pi(a)`
 -------------------------------
-## ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
+## `` ∆Ė `` (N Digits of Euler's Number (e) / Sympy Evaluate)
 
 Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 
@@ -2635,7 +2635,7 @@ Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 - num a: `First n digits of e`
 - str a: `evaluate(a)`
 -------------------------------
-## ∆ė (Nth Digit of Euler's Number (e))
+## `` ∆ė `` (Nth Digit of Euler's Number (e))
 
 Get the nth digit of Euler's number (e)
 
@@ -2643,7 +2643,7 @@ Get the nth digit of Euler's number (e)
 
 - num a: `nth_digit_of_e(a)`
 -------------------------------
-## ∆f (nth Fibonacci Number)
+## `` ∆f `` (nth Fibonacci Number)
 
 Get the nth fibonacci number
 
@@ -2651,7 +2651,7 @@ Get the nth fibonacci number
 
 - num a: `nth_fibonacci(a)`
 -------------------------------
-## ∆B (Random Bits)
+## `` ∆B `` (Random Bits)
 
 Get a list of random bits to length n
 
@@ -2659,7 +2659,7 @@ Get a list of random bits to length n
 
 - num a: `random_bits(a)`
 -------------------------------
-## ∆Ṙ (Random Float)
+## `` ∆Ṙ `` (Random Float)
 
 Get a random float in the range [0, 1), pseudo random number
 
@@ -2667,7 +2667,7 @@ Get a random float in the range [0, 1), pseudo random number
 
 - num a: `random.random()`
 -------------------------------
-## ∆ṫ (Totient Function / Local Minima)
+## `` ∆ṫ `` (Totient Function / Local Minima)
 
 Get the totient function of a number / local minima of a function
 
@@ -2676,7 +2676,7 @@ Get the totient function of a number / local minima of a function
 - num a: `totient(a)`
 - str a: `local_minima(a)`
 -------------------------------
-## ∆Z (ZFill)
+## `` ∆Z `` (ZFill)
 
 Pad a string with zeros to a given length
 
@@ -2684,7 +2684,7 @@ Pad a string with zeros to a given length
 
 - str, num a: `zfill(a, b)`
 -------------------------------
-## ∆ċ (Nth Cardinal)
+## `` ∆ċ `` (Nth Cardinal)
 
 Get the nth cardinal / convert number to words
 
@@ -2692,7 +2692,7 @@ Get the nth cardinal / convert number to words
 
 - num a: `num_to_words(a)`
 -------------------------------
-## ∆o (Nth Ordinal)
+## `` ∆o `` (Nth Ordinal)
 
 Get the nth ordinal / convert number to wordth ordinal
 
@@ -2700,7 +2700,7 @@ Get the nth ordinal / convert number to wordth ordinal
 
 - num a: `num_to_ordinal(a)`
 -------------------------------
-## ∆M (Mode)
+## `` ∆M `` (Mode)
 
 Get the mode of a list
 
@@ -2708,7 +2708,7 @@ Get the mode of a list
 
 - lst a: `mode(a)`
 -------------------------------
-## ∆ṁ (Median)
+## `` ∆ṁ `` (Median)
 
 Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
 
@@ -2716,7 +2716,7 @@ Get the median of a list - returns a list of the two middle items if even length
 
 - lst a: `median(a)`
 -------------------------------
-## ∆Ċ (Polynomial Expression From Coefficients)
+## `` ∆Ċ `` (Polynomial Expression From Coefficients)
 
 Get the polynomial expression from a list of coefficients
 
@@ -2726,7 +2726,7 @@ Get the polynomial expression from a list of coefficients
 - str a: `a`
 - lst a: `polynomial_expression(a)`
 -------------------------------
-## ∆¢ (Carmichael Function)
+## `` ∆¢ `` (Carmichael Function)
 
 Get the Carmichael function of a number / Local Maxima
 
@@ -2735,7 +2735,7 @@ Get the Carmichael function of a number / Local Maxima
 - num a: `carmichael(a)`
 - str a: `local_maxima(a)`
 -------------------------------
-## øb (Parenthesise)
+## `` øb `` (Parenthesise)
 
 Parenthesise a string
 
@@ -2743,7 +2743,7 @@ Parenthesise a string
 
 - any a: `"("" + a + ")"`
 -------------------------------
-## øB (Bracketify)
+## `` øB `` (Bracketify)
 
 Enclose a string in brackets
 
@@ -2751,7 +2751,7 @@ Enclose a string in brackets
 
 - any a: `"["" + a + "]"`
 -------------------------------
-## øḃ (Curly Bracketify)
+## `` øḃ `` (Curly Bracketify)
 
 Enclose a string in curly brackets
 
@@ -2759,7 +2759,7 @@ Enclose a string in curly brackets
 
 - any a: `"{"" + a + "}"`
 -------------------------------
-## øḂ (Angle Bracketify)
+## `` øḂ `` (Angle Bracketify)
 
 Enclose a string in angle brackets
 
@@ -2767,7 +2767,7 @@ Enclose a string in angle brackets
 
 - any a: `"<"" + a + ">"`
 -------------------------------
-## øβ (Balanced Brackets)
+## `` øβ `` (Balanced Brackets)
 
 Check if brackets in a string ("{}()[]<>") are balanced
 
@@ -2775,7 +2775,7 @@ Check if brackets in a string ("{}()[]<>") are balanced
 
 - any a: `balanced_brackets(a)`
 -------------------------------
-## ø↳ (Custom Pad Left)
+## `` ø↳ `` (Custom Pad Left)
 
 Pad a string to the left with a certain character
 
@@ -2784,7 +2784,7 @@ Pad a string to the left with a certain character
 - any a, str b, num c: `Pad a to the left with c so a has length b`
 - any a, num b, str c: `Pad a to the left with b so a has length c`
 -------------------------------
-## ø↲ (Custom Pad Right)
+## `` ø↲ `` (Custom Pad Right)
 
 Pad a string to the right with a certain character
 
@@ -2793,7 +2793,7 @@ Pad a string to the right with a certain character
 - any a, str b, num c: `Pad a to the right with c so a has length b`
 - any a, num b, str c: `Pad a to the right with b so a has length c`
 -------------------------------
-## øM (Flip Brackets Vertical Palindromise)
+## `` øM `` (Flip Brackets Vertical Palindromise)
 
 Vertically palindromise and reverse brackets and slashes, without duplicating center
 
@@ -2801,7 +2801,7 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 
 - any a: `Palindromise, without duplicating center, and flip brackets and slashes in the second half`
 -------------------------------
-## øo (Remove Until No change)
+## `` øo `` (Remove Until No change)
 
 Remove b from a until a does not change
 
@@ -2810,7 +2810,7 @@ Remove b from a until a does not change
 - str a, str b: `Remove b from a until a does not change`
 - str a, lst b: `Remove everything in b (in order) from a until a does not change`
 -------------------------------
-## øV (Replace Until No Change)
+## `` øV `` (Replace Until No Change)
 
 Replace b with c in a until a does not change
 
@@ -2818,7 +2818,7 @@ Replace b with c in a until a does not change
 
 - str a, str b, str c: `a.replace_until_no_change(b,c)`
 -------------------------------
-## øc (String Compress)
+## `` øc `` (String Compress)
 
 Compress a string of lowercase letters and spaces in base 255
 
@@ -2826,7 +2826,7 @@ Compress a string of lowercase letters and spaces in base 255
 
 - str a: `base_255_string_compress(a)`
 -------------------------------
-## øC (Number Compress)
+## `` øC `` (Number Compress)
 
 Compress a positive integer in base 255
 
@@ -2834,7 +2834,7 @@ Compress a positive integer in base 255
 
 - num a: `base_255_number_compress(a)`
 -------------------------------
-## øĊ (Center)
+## `` øĊ `` (Center)
 
 Center a list of strings
 
@@ -2842,7 +2842,7 @@ Center a list of strings
 
 - lst a: `Center(a) (Pad each item with spaces so all are centered)`
 -------------------------------
-## øe (Run Length Encoding)
+## `` øe `` (Run Length Encoding)
 
 Run length encoding, convert from string to list of characters and amount repeated.
 
@@ -2850,7 +2850,7 @@ Run length encoding, convert from string to list of characters and amount repeat
 
 - str a: `run_length_encoded(a)`
 -------------------------------
-## ød (Run Length Decoding)
+## `` ød `` (Run Length Decoding)
 
 Run length decoding, convert from list of characters and lengths to a string
 
@@ -2858,7 +2858,7 @@ Run length decoding, convert from list of characters and lengths to a string
 
 - lst a: `run_length_decoded(a)`
 -------------------------------
-## øD (Dictionary Compression)
+## `` øD `` (Dictionary Compression)
 
 Optimally compress a string of English using words from the Vyxal dictionary
 
@@ -2866,7 +2866,7 @@ Optimally compress a string of English using words from the Vyxal dictionary
 
 - str a: `dictionary_compressed(a)`
 -------------------------------
-## øW (Group on words)
+## `` øW `` (Group on words)
 
 Group a string on words
 
@@ -2874,7 +2874,7 @@ Group a string on words
 
 - str a: `Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character`
 -------------------------------
-## øṙ (Regex replace)
+## `` øṙ `` (Regex replace)
 
 Replace matches of a with c in b
 
@@ -2883,7 +2883,7 @@ Replace matches of a with c in b
 - any a, any b, fun c: `Apply c to matches of a in b`
 - any a, any b, any c: `Replace matches of a with c in b`
 -------------------------------
-## øp (Starts With)
+## `` øp `` (Starts With)
 
 Check if one value starts with another
 
@@ -2891,7 +2891,7 @@ Check if one value starts with another
 
 - any a, any b: `a.startswith(b) (Starts with b?)`
 -------------------------------
-## øP (Pluralise Count)
+## `` øP `` (Pluralise Count)
 
 Create a sentence of the form 'a bs'
 
@@ -2899,7 +2899,7 @@ Create a sentence of the form 'a bs'
 
 - num a, str b: `a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)`
 -------------------------------
-## øṁ (Vertical Mirror)
+## `` øṁ `` (Vertical Mirror)
 
 Vertical Mirror - Split by newlines, mirror each line, join by newlines
 
@@ -2907,7 +2907,7 @@ Vertical Mirror - Split by newlines, mirror each line, join by newlines
 
 - str a: `vertical_mirror(a)`
 -------------------------------
-## øṀ (Flip Brackets Vertical Mirror)
+## `` øṀ `` (Flip Brackets Vertical Mirror)
 
 Vertical mirror, and swap brackets and slashes in the second half.
 
@@ -2915,7 +2915,7 @@ Vertical mirror, and swap brackets and slashes in the second half.
 
 - any a: `vertical_mirror(a,mapping  = flip brackets and slashes)`
 -------------------------------
-## øṖ (String Partitions)
+## `` øṖ `` (String Partitions)
 
 All partitions of a string/list
 
@@ -2923,7 +2923,7 @@ All partitions of a string/list
 
 - any a: `all_partitions(a)`
 -------------------------------
-## øḋ (To Decimal)
+## `` øḋ `` (To Decimal)
 
 Convert a rational to its decimal representation.
 
@@ -2931,22 +2931,22 @@ Convert a rational to its decimal representation.
 
 - num a: `to_decimal(a)`
 -------------------------------
-## Þo (Ordinals)
+## `` Þo `` (Ordinals)
 
 An infinite list of first, second, third, fourth etc
 
 -------------------------------
-## Þc (Cardinals)
+## `` Þc `` (Cardinals)
 
 An infinite list of one, two, three, four etc
 
 -------------------------------
-## Þp (Primes)
+## `` Þp `` (Primes)
 
 An infinite list of primes
 
 -------------------------------
-## Þu (All Unique)
+## `` Þu `` (All Unique)
 
 Are all elements of a list/string unique?
 
@@ -2954,7 +2954,7 @@ Are all elements of a list/string unique?
 
 - any a: `all_unique(a)`
 -------------------------------
-## ÞẊ (Cartesian Power)
+## `` ÞẊ `` (Cartesian Power)
 
 Cartesian power, cartesian product with self n times
 
@@ -2963,7 +2963,7 @@ Cartesian power, cartesian product with self n times
 - any a, num b: `cartesian_power(a, b)`
 - num a, any b: `cartesian_power(b, a)`
 -------------------------------
-## Þf (Flatten By depth)
+## `` Þf `` (Flatten By depth)
 
 Flatten a list by a certain depth (default 1)
 
@@ -2972,7 +2972,7 @@ Flatten a list by a certain depth (default 1)
 - lst a, num b: `Flatten a by depth b`
 - any a, lst b: `Flatten b by depth 1, push a as well`
 -------------------------------
-## ÞB (Random Bits)
+## `` ÞB `` (Random Bits)
 
 Fill a list with random bits
 
@@ -2981,7 +2981,7 @@ Fill a list with random bits
 - num a: `List of length a filled with random bits`
 - any a: `List of length n(a) filled with random bits`
 -------------------------------
-## Þ< (All Less Than Increasing)
+## `` Þ< `` (All Less Than Increasing)
 
 Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
 
@@ -2989,7 +2989,7 @@ Find all numbers less than a certain value in a (potentially infinite) list assu
 
 - any a, num b: `All values of a up to (not including) the first greater than or equal to b`
 -------------------------------
-## Þǔ (Untruth)
+## `` Þǔ `` (Untruth)
 
 Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 
@@ -2997,7 +2997,7 @@ Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 
 - any a: `[int(x in a) for x in range(len(a))]`
 -------------------------------
-## Þi (Multidimensional Indexing)
+## `` Þi `` (Multidimensional Indexing)
 
 Index a list of coordinates into a value.
 
@@ -3005,7 +3005,7 @@ Index a list of coordinates into a value.
 
 - lst a, lst b: `a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value`
 -------------------------------
-## Þḟ (Multidimensional Search)
+## `` Þḟ `` (Multidimensional Search)
 
 Find the first multidimensional index of a value in another
 
@@ -3013,7 +3013,7 @@ Find the first multidimensional index of a value in another
 
 - lst a, any b: `Find the first occurrence of a in b and return as a multidimensional index`
 -------------------------------
-## Þm (Zero Matrix)
+## `` Þm `` (Zero Matrix)
 
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
 
@@ -3021,7 +3021,7 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 - lst a: `Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost`
 -------------------------------
-## ÞZ (Fill By Coordinates)
+## `` ÞZ `` (Fill By Coordinates)
 
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
 
@@ -3029,7 +3029,7 @@ Fill a matrix by calling a function with the lists of coordinates in the matrix.
 
 - any a, fun b: `For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.`
 -------------------------------
-## Þ… (Evenly Distribute)
+## `` Þ… `` (Evenly Distribute)
 
 Evenly distribute a number over elements of a list
 
@@ -3037,7 +3037,7 @@ Evenly distribute a number over elements of a list
 
 - list a, num b: `Evenly distribute a over all elements of b, adding each part.`
 -------------------------------
-## Þ↓ (Minimum By Function)
+## `` Þ↓ `` (Minimum By Function)
 
 Find the minimum value of a list by applying a function to each element
 
@@ -3045,7 +3045,7 @@ Find the minimum value of a list by applying a function to each element
 
 - lst a, fun b: `Minimum value of a by applying b to each element`
 -------------------------------
-## Þ↑ (Maximum By Function)
+## `` Þ↑ `` (Maximum By Function)
 
 Find the maximum value of a list by applying a function to each element
 
@@ -3053,7 +3053,7 @@ Find the maximum value of a list by applying a function to each element
 
 - lst a, fun b: `Maximum value of a by applying b to each element`
 -------------------------------
-## Þ× (All Combinations)
+## `` Þ× `` (All Combinations)
 
 All combinations of a list / string, of all lengths, with replacement
 
@@ -3061,7 +3061,7 @@ All combinations of a list / string, of all lengths, with replacement
 
 - any a: `All combinations of a list / string, of all lengths and all orders, with replacement`
 -------------------------------
-## Þx (All Combinations Without Replacement)
+## `` Þx `` (All Combinations Without Replacement)
 
 All combinations of a list / string, of all lengths, without replacement
 
@@ -3069,17 +3069,17 @@ All combinations of a list / string, of all lengths, without replacement
 
 - any a: `All combinations of a list / string, of all lengths and all orders, without replacement`
 -------------------------------
-## ÞF (All Fibbonacci)
+## `` ÞF `` (All Fibbonacci)
 
 All Fibbonacci numbers as a LazyList.
 
 -------------------------------
-## Þ! (All Factorials)
+## `` Þ! `` (All Factorials)
 
 All factorials as a LazyList.
 
 -------------------------------
-## ÞU (Uniquify Mask)
+## `` ÞU `` (Uniquify Mask)
 
 A list of booleans describing which elements of a will remain after uniquifying.
 
@@ -3087,7 +3087,7 @@ A list of booleans describing which elements of a will remain after uniquifying.
 
 - any a: `A list of booleans describing which elements of a will remain after uniquifying.`
 -------------------------------
-## ÞD (Diagonals)
+## `` ÞD `` (Diagonals)
 
 Diagonals of a matrix, starting with the main diagonal.
 
@@ -3095,7 +3095,7 @@ Diagonals of a matrix, starting with the main diagonal.
 
 - lst a: `Diagonals of a matrix, starting with the main diagonal.`
 -------------------------------
-## ÞS (Sublists)
+## `` ÞS `` (Sublists)
 
 Sublists of a list.
 
@@ -3103,7 +3103,7 @@ Sublists of a list.
 
 - lst a: `Sublists of a list.`
 -------------------------------
-## ÞṪ (Transpose With Filler)
+## `` ÞṪ `` (Transpose With Filler)
 
 Transpose a matrix, with a filler value for empty cells.
 
@@ -3111,7 +3111,7 @@ Transpose a matrix, with a filler value for empty cells.
 
 - lst a, any b: `Transpose a matrix, with a filler value for empty cells.`
 -------------------------------
-## Þ℅ (Random Permutation)
+## `` Þ℅ `` (Random Permutation)
 
 Random permutation of a list / string
 
@@ -3119,7 +3119,7 @@ Random permutation of a list / string
 
 - any a: `Random permutation of a list / string`
 -------------------------------
-## ÞṀ (Matrix Multiplication)
+## `` ÞṀ `` (Matrix Multiplication)
 
 Multiply two matrices together.
 
@@ -3127,7 +3127,7 @@ Multiply two matrices together.
 
 - lst a, lst b: `Matrix multiplication`
 -------------------------------
-## ÞḊ (Matrix Determinant)
+## `` ÞḊ `` (Matrix Determinant)
 
 Calculate the determinant of a matrix.
 
@@ -3135,7 +3135,7 @@ Calculate the determinant of a matrix.
 
 - lst a: `Calculate the determinant of a matrix.`
 -------------------------------
-## Þ\ (Antidiagonal)
+## `` Þ\ `` (Antidiagonal)
 
 Antidiagonal of a matrix
 
@@ -3143,7 +3143,7 @@ Antidiagonal of a matrix
 
 - lst a: `Antidiagonal of a matrix`
 -------------------------------
-## Þ/ (Main Diagonal)
+## `` Þ/ `` (Main Diagonal)
 
 Diagonal of a matrix
 
@@ -3151,7 +3151,7 @@ Diagonal of a matrix
 
 - lst a: `Diagonal of a matrix`
 -------------------------------
-## ÞR (Matrix Row Reduce)
+## `` ÞR `` (Matrix Row Reduce)
 
 Reduce rows of a matrix by a function.
 
@@ -3159,7 +3159,7 @@ Reduce rows of a matrix by a function.
 
 - lst a, fun b: `Reduce rows of a matrix by a function.`
 -------------------------------
-## ÞC (Matrix Column Reduce)
+## `` ÞC `` (Matrix Column Reduce)
 
 Reduce columns of a matrix by a function.
 
@@ -3167,7 +3167,7 @@ Reduce columns of a matrix by a function.
 
 - lst a, fun b: `Reduce columns of a matrix by a function.`
 -------------------------------
-## Þ• (Dot Product)
+## `` Þ• `` (Dot Product)
 
 Dot product of two lists.
 
@@ -3175,7 +3175,7 @@ Dot product of two lists.
 
 - lst a, lst b: `Dot product of two lists.`
 -------------------------------
-## Þṁ (Mold without repeat)
+## `` Þṁ `` (Mold without repeat)
 
 Mold a list without repeating elements.
 
@@ -3183,7 +3183,7 @@ Mold a list without repeating elements.
 
 - lst a, lst b: `Mold a list without repeating elements.`
 -------------------------------
-## ÞM (Maximal Indicies)
+## `` ÞM `` (Maximal Indicies)
 
 Indicies of the maximal elements of a list.
 
@@ -3191,7 +3191,7 @@ Indicies of the maximal elements of a list.
 
 - lst a: `Indicies of the maximal elements of a list.`
 -------------------------------
-## Þ∴ (Elementwise Vectorised Dyadic Maximum)
+## `` Þ∴ `` (Elementwise Vectorised Dyadic Maximum)
 
 Elementwise vectorised dyadic maximum.
 
@@ -3199,7 +3199,7 @@ Elementwise vectorised dyadic maximum.
 
 - lst a, lst b: `Elementwise vectorised dyadic maximum.`
 -------------------------------
-## Þ∵ (Elementwise Vectorised Dyadic Minimum)
+## `` Þ∵ `` (Elementwise Vectorised Dyadic Minimum)
 
 Elementwise vectorised dyadic minimum.
 
@@ -3207,7 +3207,7 @@ Elementwise vectorised dyadic minimum.
 
 - lst a, lst b: `Elementwise vectorised dyadic minimum.`
 -------------------------------
-## ¨U (Get Request)
+## `` ¨U `` (Get Request)
 
 Send a GET request to a URL
 
@@ -3215,7 +3215,7 @@ Send a GET request to a URL
 
 - str a: `Send a GET request to a URL`
 -------------------------------
-## ¨M (Map To Indices)
+## `` ¨M `` (Map To Indices)
 
 Map a function to elements of a list whose indices are in another list
 
@@ -3223,7 +3223,7 @@ Map a function to elements of a list whose indices are in another list
 
 - lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
 -------------------------------
-## ¨, (Print With Space)
+## `` ¨, `` (Print With Space)
 
 Print a value with a space after it
 
@@ -3231,7 +3231,7 @@ Print a value with a space after it
 
 - any a: `Print a value with a space after it`
 -------------------------------
-## ¨… (Print With Space Without Popping)
+## `` ¨… `` (Print With Space Without Popping)
 
 Print a value with a space after it, without popping it
 
@@ -3239,7 +3239,7 @@ Print a value with a space after it, without popping it
 
 - any a: `Print a value with a space after it, without popping it`
 -------------------------------
-## ¨> (Strict Greater Than)
+## `` ¨> `` (Strict Greater Than)
 
 Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
 
@@ -3247,7 +3247,7 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 
 - any a, any b: `Non-vectorising greater than - useful for lists`
 -------------------------------
-## ¨< (Strict Less Than)
+## `` ¨< `` (Strict Less Than)
 
 Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
 
