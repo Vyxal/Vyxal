@@ -12,15 +12,15 @@ with open(ELEMENTS_MD, "w", encoding="utf-8") as output:
     for element in data:
         if "modifier" in element:
             output.write(
-                "## `" + element["modifier"] + "` (" + element["name"] + ")\n"
+                "## `` " + element["modifier"] + " `` (" + element["name"] + ")\n"
             )
             output.write(element["description"] + "\n\n")
             output.write("Usage:\n```\n" + element["usage"] + "\n```\n\n")
 
         else:
             output.write(
-                str("## `" + element["element"])
-                + "` ("
+                str("## `` " + element["element"])
+                + " `` ("
                 + str(element["name"])
                 + ")\n\n"
             )
