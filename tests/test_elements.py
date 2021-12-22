@@ -18777,7 +18777,7 @@ def test_ElementwiseVectorisedDyadicMinimum():
 def test_AllSlicesofaList():
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5, 6, 7, 8, 9], 2]]
-    expected = vyxalify([[[1, 3, 5, 7, 9], [2, 4, 6, 8], [3, 5, 7, 9], [4, 6, 8], [5, 7, 9], [6, 8], [7, 9], [8], [9]]])
+    expected = vyxalify([[1, 3, 5, 7, 9], [2, 4, 6, 8], [3, 5, 7, 9], [4, 6, 8], [5, 7, 9], [6, 8], [7, 9], [8], [9]])
     ctx = Context()
 
     ctx.stacks.append(stack)
