@@ -1478,7 +1478,6 @@ def index(lhs, rhs, ctx):
         temp = iterable(lhs, ctx=ctx)[
             slice(*[None if vy_type(v) != NUMBER_TYPE else int(v) for v in rhs])
         ]
-        print(list(temp))
         if originally_string:
             return "".join(temp)
         return temp
@@ -1498,7 +1497,6 @@ def index_indices_or_cycle(lhs, rhs, ctx):
             curr = lhs
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
-                print(curr)
                 if curr in prevs:
                     yield from prevs
                     break
@@ -4649,6 +4647,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
+    "Þ¾": ("ctx.global_array = []", 0),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
