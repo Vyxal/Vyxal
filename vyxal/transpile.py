@@ -259,7 +259,7 @@ def transpile_structure(
                 "ctx.context_values.append(parameters[::])", indent + 1
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
-            + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
+            + indent_str("ctx.inputs.append([parameters[::-1], 0])", indent + 1)
             + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
@@ -311,7 +311,7 @@ def transpile_structure(
                 indent + 1,
             )
             + indent_str(
-                "ctx.inputs.append([list(deep_copy(stack)), 0]);",
+                "ctx.inputs.append([list(deep_copy(stack))[::-1], 0]);",
                 indent + 1,
             )
             + indent_str("ctx.stacks.append(stack);", indent + 1)
