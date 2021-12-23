@@ -23167,7 +23167,44 @@ atan(x)
 x^2
 x^3
 x+1
-x-1""".split(
+x-1
+<p>
+</p>
+<s>
+</s>
+<strong>
+</strong>
+<em>
+</em>
+<a href="
+</a>
+<img src="
+</img>
+</br>
+<script>
+</script>
+<style>
+</style>
+<h1>
+</h1>
+<h2>
+</h2>
+<div>
+</div>
+<body>
+<svg>
+</body>
+</svg>
+<h3>
+</h3>
+<ul>
+</ul>
+<ol>
+</ol>
+<li>
+</li>
+<kbd>
+</kbd>""".split(
     "\n"
 )  # TODO: Add more words
 
