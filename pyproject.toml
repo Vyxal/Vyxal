@@ -5,6 +5,9 @@ description = "A golfing language that has aspects of traditional programming la
 authors = []
 license = "MIT"
 
+[tool.poetry.scripts]
+vyxal = "vyxal.main:cli"
+
 [tool.poetry.dependencies]
 python = "^3.9,<3.11"
 numpy = "^1.21.5"
