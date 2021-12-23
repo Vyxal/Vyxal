@@ -23102,7 +23102,17 @@ mna
 mne
 mni
 mnu
-mny""".split(
+mny
+Rick Astley
+rick astley
+rickroll
+Rickroll
+pxeger
+Aaroneous
+emanresuA
+Niko
+Okie
+""".split(
     "\n"
 )
 
