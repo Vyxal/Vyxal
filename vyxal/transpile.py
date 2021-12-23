@@ -90,11 +90,10 @@ def transpile_token(
 
         # So instead, we have to manually escape the string
         temp = ""
-        string = collections.deque(string)
-        while string:
-            char = string.popleft()
-            if char == "\\" and string:
-                temp += "\\" + string.popleft()
+        iterator = iter(string)
+        for char in iterator:
+            if char == "\\":
+                temp += "\\" + next(iterator, "")
             elif char == '"':
                 temp += '\\"'
             else:
