@@ -4506,6 +4506,32 @@
   description: Empty the global array.
   arity: 0
 
+- element: "¨□"
+  name: Parse direction arrow to integer
+  description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
+  arity: 1
+  overloads:
+    str: Map characters in `>^<v` to integers
+  vectorise: true
+  tests:
+    - '["v"] : 3'
+    - '["^<><>"] : [1, 2, 0, 2, 0]'
+    - '[["^"]] : [1]'
+    - '["1V_☭"] : [-1, -1, -1, -1]'
+
+- element: "¨^"
+  name: Parse direction arrow to vector
+  description: Map characters in `>^<v` to direction vectors
+  arity: 1
+  overloads:
+    str: Map characters in `>^<v` to direction vectors
+  vectorise: true
+  tests:
+    - '["v"] : [0, -1]'
+    - '["^<><>"] : [[0, 1], [-1, 0], [1, 0], [-1, 0], [1, 0]]'
+    - '[["^"]] : [[0, 1]]'
+    - '["1V_☭"] : [[0, 0], [0, 0], [0, 0], [0, 0]]'
+
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL
