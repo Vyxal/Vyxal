@@ -1,3 +1,28 @@
+[tool.poetry]
+name = "vyxal"
+version = "2.7.1"
+description = "A golfing language that has aspects of traditional programming languages."
+authors = []
+license = "MIT"
+
+[tool.poetry.scripts]
+vyxal = "vyxal.main:cli"
+
+[tool.poetry.dependencies]
+python = "^3.9,<3.11"
+numpy = "^1.21.5"
+sympy = "^1.9"
+num2words = "^0.5.10"
+
+[tool.poetry.dev-dependencies]
+black = "^21.12b0"
+pytest = "^6.2.5"
+isort = "^5.10.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 80
 target-version = ['py39']

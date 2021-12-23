@@ -3,7 +3,7 @@ set -e
 
 cd /home/Vyxal/mysite
 git pull
-pip install --user --upgrade -r requirements.txt -r requirements_flask_app.txt
+pip install --user --upgrade -r requirements_flask_app.txt .
 curl \
     -X POST \
     -H "Authorization: Token $API_TOKEN" \
