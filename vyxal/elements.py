@@ -1036,6 +1036,12 @@ def find(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
+        lhs, rhs = (
+            (rhs, lhs)
+            if primitive_type(lhs) != SCALAR_TYPE
+            and primitive_type(rhs) == SCALAR_TYPE
+            else (lhs, rhs)
+        )
         pos = 0
         lhs = iterable(lhs, ctx=ctx)
         while pos < len(lhs):
