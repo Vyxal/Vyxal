@@ -89,9 +89,18 @@ def transpile_token(
         # screws up escape sequences.
 
         # So instead, we have to manually escape the string
-        string = f"{string!r}"
-        string = re.sub(r"\\?\\([ntbrf])", r"\\\1", string).replace("\\`", "`")
-        return indent_str(f"stack.append({string})", indent)
+        temp = ""
+        iterator = iter(string)
+        for char in iterator:
+            if char == "\\":
+                temp += "\\" + next(iterator, "")
+            elif char == '"':
+                temp += '\\"'
+            elif char == "\n":
+                temp += "\\n"
+            else:
+                temp += char
+        return indent_str(f'stack.append("{temp}")', indent)
     elif token.name == TokenType.NUMBER:
         parts = [
             "0.5" if part == "." else part for part in token.value.split("°")
@@ -259,7 +268,7 @@ def transpile_structure(
                 "ctx.context_values.append(parameters[::])", indent + 1
             )
             + indent_str("ctx.stacks.append(stack)", indent + 1)
-            + indent_str("ctx.inputs.append([parameters[::], 0])", indent + 1)
+            + indent_str("ctx.inputs.append([parameters[::-1], 0])", indent + 1)
             + indent_str(f"this = VAR_{var}", indent + 1)
             + indent_str(
                 transpile_ast(struct.body, dict_compress=dict_compress),
@@ -311,7 +320,7 @@ def transpile_structure(
                 indent + 1,
             )
             + indent_str(
-                "ctx.inputs.append([list(deep_copy(stack)), 0]);",
+                "ctx.inputs.append([list(deep_copy(stack))[::-1], 0]);",
                 indent + 1,
             )
             + indent_str("ctx.stacks.append(stack);", indent + 1)
