@@ -23189,7 +23189,6 @@ x-1
 <a href="
 </a>
 <img src="
-</img>
 </br>
 <script>
 </script>
