@@ -96,6 +96,8 @@ def transpile_token(
                 temp += "\\" + next(iterator, "")
             elif char == '"':
                 temp += '\\"'
+            elif char == "\n":
+                temp += "\\n"
             else:
                 temp += char
         return indent_str(f'stack.append("{temp}")', indent)
