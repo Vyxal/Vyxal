@@ -213,9 +213,7 @@ def all_slices(lhs, rhs, ctx):
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
-    return LazyList(
-        index(lhs, [start, None, rhs], ctx) for start in range(len(lhs))
-    )
+    return LazyList(index(lhs, [start, None, rhs], ctx) for start in range(rhs))
 
 
 def all_true(lhs, ctx):
