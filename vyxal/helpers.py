@@ -759,6 +759,8 @@ def uncompress_dict(source: str) -> str:
                 if pos < len(vyxal.dictionary.small_dictionary):
                     ret += vyxal.dictionary.small_dictionary[pos]
                 temp_scc = ""
+                if char == " ":
+                    continue
             ret += char
 
     if temp_scc:
