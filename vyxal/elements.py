@@ -3445,8 +3445,8 @@ def truthy_indices(lhs, ctx):
     (any) -> indices of truthy elements
     (num) -> lhs * 3
     """
-    if vy_type(lhs) == NUMBER_TYPE:
-        return lhs * 3
+    if vy_type(lhs) in (ts.FunctionType, NUMBER_TYPE):
+        return multiply(lhs, 3, ctx)
 
     lhs = iterable(lhs, ctx=ctx)
 
