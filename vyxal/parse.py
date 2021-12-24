@@ -225,7 +225,8 @@ def parse(
             # needed to satisfy the arity of the modifier. It's import-
             # -ant that you break the while loop after dealing with the
             # modifier.
-
+            if not tokens:
+                break
             remaining = parse(tokens, structure.MonadicModifier)
             if head.value == "⁽":
                 # 1-element lambda
@@ -237,6 +238,8 @@ def parse(
             structures += remaining[1:]
             break
         elif head.value in DYADIC_MODIFIERS:
+            if not tokens:
+                break
             remaining = parse(tokens, structure.DyadicModifier)
             if head.value == "‡":
                 # 2-element lambda
@@ -252,6 +255,8 @@ def parse(
             structures += remaining[2:]
             break
         elif head.value in TRIADIC_MODIFIERS:
+            if not tokens:
+                break
             remaining = parse(tokens, structure.TriadicModifier)
             if head.value == "≬":
                 # 3-element lambda
