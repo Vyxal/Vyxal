@@ -1024,7 +1024,7 @@ def fibonaacis(_, ctx):
             yield sympy.fibonacci(i + 1)
             i += 1
 
-    return LazyList(gen(), isinf=False)
+    return LazyList(gen(), isinf=True)
 
 
 def find(lhs, rhs, ctx):
