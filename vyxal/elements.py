@@ -213,9 +213,7 @@ def all_slices(lhs, rhs, ctx):
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
-    return LazyList(
-        index(lhs, [start, None, rhs], ctx) for start in range(len(lhs))
-    )
+    return LazyList(index(lhs, [start, None, rhs], ctx) for start in range(rhs))
 
 
 def all_true(lhs, ctx):
@@ -994,14 +992,13 @@ def factorials(_, ctx):
     An infinite lazylist of factorials
     """
 
-    @lazylist
     def gen():
         i = 0
         while True:
             yield factorial(i, ctx)
             i += 1
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def factorial_of_range(lhs, ctx):
@@ -1021,14 +1018,13 @@ def fibonaacis(_, ctx):
     An infinite lazylist of fibonaaci numbers
     """
 
-    @lazylist
     def gen():
         i = 0
         while True:
             yield sympy.fibonacci(i + 1)
             i += 1
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def find(lhs, rhs, ctx):
@@ -1038,9 +1034,24 @@ def find(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     if types.FunctionType not in ts:
+        lhs, rhs = (
+            (rhs, lhs)
+            if primitive_type(rhs) != SCALAR_TYPE
+            and primitive_type(lhs) == SCALAR_TYPE
+            else (lhs, rhs)
+        )
         pos = 0
         lhs = iterable(lhs, ctx=ctx)
+        if vy_type(lhs) is LazyList and lhs.infinite:
+            while strict_less_than(
+                lhs[pos], rhs, ctx
+            ) or not non_vectorising_equals(lhs[pos], rhs, ctx):
+                if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
+                    return pos
+                pos += 1
+            return -1
         while pos < len(lhs):
+            print(pos)
             if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                 return pos
             pos += 1
@@ -1515,7 +1526,7 @@ def infinite_cardinals(_, ctx=None):
     """Element Þc
     infinite sequence of cardinals
     """
-    return LazyList(map(num2words.num2words, itertools.count(1)))
+    return LazyList(map(num2words.num2words, itertools.count(1)), isinf=True)
 
 
 def infinite_ordinals(_, ctx=None):
@@ -1527,14 +1538,13 @@ def infinite_ordinals(_, ctx=None):
     form of each ordinal number starting at first.
     """
 
-    @lazylist
     def gen():
         i = 1
         while True:
             yield num2words.num2words(i, to="ordinal")
             i += 1
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def infinite_primes(_, ctx=None):
@@ -1542,7 +1552,6 @@ def infinite_primes(_, ctx=None):
     An infinite list of primes
     """
 
-    @lazylist
     def gen():
         i = 1
         while True:
@@ -1550,7 +1559,7 @@ def infinite_primes(_, ctx=None):
             if is_prime(i, ctx):
                 yield i
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def infinite_replace(lhs, rhs, other, ctx):

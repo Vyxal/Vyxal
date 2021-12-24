@@ -18777,7 +18777,7 @@ def test_ElementwiseVectorisedDyadicMinimum():
 def test_AllSlicesofaList():
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5, 6, 7, 8, 9], 2]]
-    expected = vyxalify([[1, 3, 5, 7, 9], [2, 4, 6, 8], [3, 5, 7, 9], [4, 6, 8], [5, 7, 9], [6, 8], [7, 9], [8], [9]])
+    expected = vyxalify([[1, 3, 5, 7, 9], [2, 4, 6, 8]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -18797,8 +18797,8 @@ def test_AllSlicesofaList():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], -4]]
-    expected = vyxalify([[3], [1], [7], [21], [5, 3], [76, 1], [14, 7], [4, 21], [123, 5, 3], [543, 76, 1]])
+    stack = [vyxalify(item) for item in [[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], 4]]
+    expected = vyxalify([[3, 5, 123], [1, 76, 543], [7, 14], [21, 4]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -18819,7 +18819,7 @@ def test_AllSlicesofaList():
 
 
     stack = [vyxalify(item) for item in [[3, 1, 2, 4, 6, 4, 5, 2, 1, 9, 5, 3, 9, 3], -4]]
-    expected = vyxalify([[3], [1], [2], [4], [6, 3], [4, 1], [5, 2], [2, 4], [1, 6, 3], [9, 4, 1], [5, 5, 2], [3, 2, 4], [9, 1, 6, 3], [3, 9, 4, 1]])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
