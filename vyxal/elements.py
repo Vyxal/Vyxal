@@ -2782,9 +2782,8 @@ def random_choice(lhs, ctx):
     (lst) -> random element of a
     (num) -> Random integer from 0 to a
     """
-    if vy_type(lhs) == NUMBER_TYPE:
-        return random.randint(0, lhs)
-    return random.choice(iterable(lhs, ctx=ctx))
+
+    return random.choice(iterable(lhs, range, ctx=ctx))
 
 
 def regex_sub(lhs, rhs, other, ctx):
