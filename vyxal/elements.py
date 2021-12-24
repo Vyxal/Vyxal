@@ -3862,7 +3862,7 @@ def vy_hex(lhs, ctx):
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit.
-    
+
     Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
@@ -4049,10 +4049,7 @@ def vy_type(item, rhs=None, other=None, simple=False):
         )
     elif rhs is not None:
         return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (
-        (x := type(item)) in (int, complex, float)
-        or is_sympy(item)
-    ):
+    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
         assert x is not float
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
