@@ -3862,7 +3862,7 @@ def vy_hex(lhs, ctx):
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
     each item was a digit.
-    
+
     Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
