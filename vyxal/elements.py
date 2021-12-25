@@ -470,6 +470,15 @@ def carmichael_function(lhs, ctx):
     }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
 
 
+def cartesian_over_list(lhs, ctx):
+    """Element Þ*
+    (lst) -> itertools.product(*lhs)
+    """
+    # todo maybe handle generators separately
+    lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    return vyxalify(itertools.product(*lhs))
+
+
 def cartesian_power(lhs, rhs, ctx):
     """Element ÞẊ
     (any, num) -> cartesian_power(a, b)
@@ -4596,6 +4605,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "Þ*": process_element(cartesian_over_list, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
