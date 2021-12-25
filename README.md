@@ -2,7 +2,6 @@
 
 [![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
 
-
 Vyxal is a golfing language with a unique design philosophy: make things as short as possible but retain elegance while doing so. In very simple terms, this means
 keeping aspects of traditional programming languages that most developers are familiar with, while still providing commands that allow golfers to actually _win_
 challenges.
