@@ -2593,6 +2593,38 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+def parse_direction_arrow_to_integer(lhs, ctx):
+    """Element ¨^
+    (str) -> map characters in `>^<v` to integers
+    """
+    ts = vy_type(lhs)
+    if ts is str and len(lhs) == 1:
+        return {
+            ">": 0,
+            "^": 1,
+            "<": 2,
+            "v": 3,
+        }.get(lhs, -1)
+    else:
+        return vectorise(parse_direction_arrow_to_integer, lhs, ctx=ctx)()
+
+
+def parse_direction_arrow_to_vector(lhs, ctx):
+    """Element ¨^
+    (str) -> map characters in `>^<v` to direction vectors
+    """
+    ts = vy_type(lhs)
+    if ts is str and len(lhs) == 1:
+        return {
+            ">": [+1, 0],
+            "^": [0, +1],
+            "<": [-1, 0],
+            "v": [0, -1],
+        }.get(lhs, [0, 0])
+    else:
+        return vectorise(parse_direction_arrow_to_vector, lhs, ctx=ctx)()
+
+
 def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
@@ -4653,6 +4685,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
     "Þ¾": ("ctx.global_array = []", 0),
+    "¨□": process_element(parse_direction_arrow_to_integer, 1),
+    "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "

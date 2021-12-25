@@ -2229,6 +2229,16 @@ codepage_descriptions[252] += `
 Þ¾ (Empty the Global Array)
 Empty the global array.
 `
+codepage_descriptions[216] += `
+¨□ (Parse direction arrow to integer)
+Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
+str a -> Map characters in \`>^<v\` to integers
+`
+codepage_descriptions[95] += `
+¨^ (Parse direction arrow to vector)
+Map characters in `>^<v` to direction vectors
+str a -> Map characters in \`>^<v\` to direction vectors
+`
 codepage_descriptions[85] += `
 ¨U (Get Request)
 Send a GET request to a URL

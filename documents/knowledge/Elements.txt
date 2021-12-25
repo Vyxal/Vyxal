@@ -2776,6 +2776,20 @@ k□ (Directions)
 - Empty the global array.
 
 -------------------------------
+¨□ (Parse direction arrow to integer)
+
+- Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
+
+    str a: Map characters in `>^<v` to integers
+    otherwise: vectorise
+-------------------------------
+¨^ (Parse direction arrow to vector)
+
+- Map characters in `>^<v` to direction vectors
+
+    str a: Map characters in `>^<v` to direction vectors
+    otherwise: vectorise
+-------------------------------
 ¨U (Get Request)
 
 - Send a GET request to a URL
