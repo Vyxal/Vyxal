@@ -13,7 +13,6 @@ import textwrap
 import types
 from typing import Any, List, Union
 
-import numpy
 import sympy
 from sympy.parsing.sympy_parser import (
     convert_xor,
@@ -485,13 +484,15 @@ def mold_without_repeat(
 def pad_to_square(array: VyList) -> VyList:
     """
     Returns an array padded to the square of the largest dimension.
-    https://stackoverflow.com/a/11763827/9363594
     """
-    array = numpy.asarray(array)
-    m = array.reshape((array.shape[0], -1))
-    padded = 0 * numpy.ones(2 * [max(m.shape)], dtype=m.dtype)
-    padded[0 : m.shape[0], 0 : m.shape[1]] = m
-    return vyxalify(padded)
+    mat = list(map(list, array))
+    max_dim = max(len(mat), max(map(len, mat)))
+    for row in mat:
+        for _ in range(max_dim - len(row)):
+            row.append(0)
+    if max_dim > len(mat):
+        mat += [[0] * max_dim for _ in range(max_dim - len(mat))]
+    return mat
 
 
 def pi_digits(n: int):
@@ -639,7 +640,7 @@ def sentence_case(item: str) -> str:
 def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
-    elif is_sympy(value) or isinstance(value, numpy.number):
+    elif is_sympy(value):
         return eval(sympy.pycode(value))
     else:
         return [simplify(x) for x in value]
@@ -821,7 +822,7 @@ def vyxalify(value: Any) -> Any:
         return int(value)
     elif is_sympy(value):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (float, complex, numpy.number)):
+    elif isinstance(value, (float, complex)):
         return sympy.nsimplify(value, rational=True)
     elif isinstance(
         value, (int, sympy.Rational, str, LazyList, types.FunctionType)

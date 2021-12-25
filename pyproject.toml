@@ -10,7 +10,6 @@ vyxal = "vyxal.main:cli"
 
 [tool.poetry.dependencies]
 python = "^3.9,<3.11"
-numpy = "^1.21.5"
 sympy = "^1.9"
 num2words = "^0.5.10"
 

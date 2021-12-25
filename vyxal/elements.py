@@ -16,7 +16,6 @@ from datetime import datetime
 from typing import Union
 
 import num2words
-import numpy
 import sympy
 
 from vyxal import dictionary
@@ -135,26 +134,15 @@ def all_diagonals(lhs, ctx):
     Diagonals of a matrix, starting with the main diagonal.
     """
 
-    @lazylist
-    def gen():
-        vector = list(map(lambda x: iterable(x, ctx=ctx), lhs))
-        diag_num = 0
-        current_diagonal = numpy.diag(vector)
-        # postive diags first
-        while len(current_diagonal):
-            yield vyxalify(current_diagonal)
-            diag_num += 1
-            current_diagonal = numpy.diag(vector, k=diag_num)
-
-        diag_num = -1
-        current_diagonal = numpy.diag(vector, k=diag_num)
-        # now the other diagonals
-        while len(current_diagonal):
-            yield vyxalify(current_diagonal)
-            diag_num -= 1
-            current_diagonal = numpy.diag(vector, k=diag_num)
-
-    return gen()
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    all_diags = [[] for _ in range(len(vector) * 2 - 1)]
+    start = 0
+    print(vector)
+    for row in vector:
+        for i in range(len(vector)):
+            all_diags[(start + i) % len(all_diags)].append(row[i])
+        start -= 1
+    return all_diags
 
 
 def all_equal(lhs, ctx):
@@ -247,9 +235,11 @@ def angle_bracketify(lhs, ctx):
 
 
 def anti_diagonal(lhs, ctx):
-    lhs = numpy.asarray(iterable(lhs, ctx=ctx))
-    lhs = numpy.fliplr(lhs)
-    return vyxalify(lhs.diagonal())
+    """Element Þ\\
+    (lst) -> Antidiagonal of matrix
+    """
+    lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    return [lhs[i][len(lhs) - i - 1] for i in range(len(lhs))]
 
 
 def any_true(lhs, ctx):
@@ -722,8 +712,8 @@ def diagonal(lhs, ctx):
     """Element Þ/
     (any) -> diagonal of a
     """
-    lhs = numpy.asarray(iterable(lhs, ctx=ctx))
-    return vyxalify(lhs.diagonal())
+    lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    return [lhs[i][i] for i in range(len(lhs))]
 
 
 def divide(lhs, rhs, ctx):
@@ -3871,8 +3861,9 @@ def vy_hex(lhs, ctx):
 
 def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     """Converts the item to the given base. Lists are treated as if
-    each item was a digit."""
-    """Used for multiple elements, and has to be here because it uses
+    each item was a digit.
+
+    Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
     if t_item not in [str, float, int, complex]:
@@ -3887,7 +3878,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         except ValueError:
             return 0
     elif t_item is complex:
-        return numpy.real(item)
+        return item.real
     elif t_item is float:
         return int(item)
     elif t_item:
@@ -4058,11 +4049,7 @@ def vy_type(item, rhs=None, other=None, simple=False):
         )
     elif rhs is not None:
         return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (
-        (x := type(item)) in (int, complex, float)
-        or is_sympy(item)
-        or isinstance(item, numpy.number)
-    ):
+    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
         assert x is not float
         return NUMBER_TYPE
     elif simple and isinstance(item, LazyList):
