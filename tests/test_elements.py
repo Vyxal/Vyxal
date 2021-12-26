@@ -5296,7 +5296,7 @@ def test_Prepend():
 def test_Uneval():
 
     stack = [vyxalify(item) for item in ["\\"]]
-    expected = vyxalify("`\\`")
+    expected = vyxalify("`\\\\`")
     ctx = Context()
 
     ctx.stacks.append(stack)
