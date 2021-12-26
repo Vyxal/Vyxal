@@ -2801,7 +2801,9 @@ def quotify(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: "`{}`".format(lhs),
-        str: lambda: "`{}`".format(lhs.replace("`", "\\`")),
+        str: lambda: "`{}`".format(
+            lhs.replace("\\", "\\\\").replace("`", "\\`")
+        ),
         types.FunctionType: lambda: "`{}`".format(lhs.__name__),
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
