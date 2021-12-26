@@ -43,7 +43,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
             out.write(
                 str(element["element"]) + " (" + str(element["name"]) + ")\n"
             )
-            out.write(str(element["description"]) + "\n")
+            out.write(str(element["description"]).replace("`", "\\`") + "\n")
             if "overloads" in element:
                 for overload in element["overloads"]:
                     data_types = map(
