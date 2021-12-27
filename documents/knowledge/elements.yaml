@@ -431,7 +431,7 @@
     - "[4,-2] : -8"
     - '[4,"*"] : "****"'
     - '["x",5] : "xxxxx"'
-    - '["aeiou","hello"] : "hillu"'
+    - '["aeiou","hello"] : "alihu"'
 
 - element: "+"
   name: Addition
