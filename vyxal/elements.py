@@ -1697,8 +1697,8 @@ def into_two(lhs, ctx):
         NUMBER_TYPE: lambda: " " * int(lhs),
         str: lambda: quotify(lhs, ctx) + lhs,
         list: lambda: [
-            index(lhs, [None, int(len(lhs) / 2)], ctx),
-            index(lhs, [int(len(lhs) / 2), None], ctx),
+            index(lhs, [None, int(len(lhs) / 2) + len(lhs) % 2], ctx),
+            index(lhs, [int(len(lhs) / 2) + len(lhs) % 2, None], ctx),
         ],
     }.get(ts)()
 
