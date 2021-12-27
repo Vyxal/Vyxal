@@ -2995,7 +2995,7 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
-    }.get(ts)()
+    }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 
 def round_to(lhs, rhs, ctx):
