@@ -1911,7 +1911,7 @@ def test_Multiplication():
 
 
     stack = [vyxalify(item) for item in ["aeiou","hello"]]
-    expected = vyxalify("hillu")
+    expected = vyxalify("alihu")
     ctx = Context()
 
     ctx.stacks.append(stack)

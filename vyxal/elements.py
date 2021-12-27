@@ -1697,8 +1697,8 @@ def into_two(lhs, ctx):
         NUMBER_TYPE: lambda: " " * int(lhs),
         str: lambda: quotify(lhs, ctx) + lhs,
         list: lambda: [
-            index(lhs, [None, int(len(lhs) / 2)], ctx),
-            index(lhs, [int(len(lhs) / 2), None], ctx),
+            index(lhs, [None, int(len(lhs) / 2) + len(lhs) % 2], ctx),
+            index(lhs, [int(len(lhs) / 2) + len(lhs) % 2, None], ctx),
         ],
     }.get(ts)()
 
@@ -2995,7 +2995,7 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
-    }.get(ts)()
+    }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 
 def round_to(lhs, rhs, ctx):
