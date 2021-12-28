@@ -385,14 +385,14 @@
   arity: 2
   overloads:
     num-num: a % b
-    num-str: last of (b split into a equal pieces)
-    str-num: last of (a split into b equal pieces)
+    num-str: b.format(a) (replace % in b with a)
+    str-num: a.format(b) (replace % in a with b)
     str-str: a.format(b) (replace % in a with b)
     str-lst: a.format(b) (replace % in a with each item of b)
   vectorise: true
   tests:
     - "[5,3] : 2"
-    - '["hello!",3] : "o!"'
+    - '["hello %!",3] : "hello 3!"'
     - '["Hel%ld!","lo, Wor"] : "Hello, World!"'
     - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
 - modifier: "&"
