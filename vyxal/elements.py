@@ -4783,14 +4783,14 @@ elements: dict[str, tuple[str, int]] = {
     "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
     "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
-    "kD": process_element('currenttime.strftime("%Y-%m-%d")', 0),
+    "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
-        'LazyList(eval(currenttime.strftime("[%H,%M,%S]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%H,%M,%S]")))', 0
     ),
-    "kḋ": process_element('currenttime.strftime("%d/%m/%Y")', 0),
-    "kḊ": process_element('currenttime.strftime("%m/%d/%Y")', 0),
+    "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
+    "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
     "kð": process_element(
-        'LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%d,%m,%Y]")))', 0
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
