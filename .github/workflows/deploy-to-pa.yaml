@@ -1,4 +1,4 @@
-name: Deploy to PythonAnywhere
+name: deploy-to-pa
 on:
   push:
     branches: [ production ]
