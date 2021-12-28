@@ -3023,7 +3023,7 @@ def roman_numeral(lhs, ctx):
         return result
     elif(vy_type(lhs) is list):
         return vectorise(roman_numeral, lhs, ctx=ctx)
-    
+
 
 def round_to(lhs, rhs, ctx):
     """Element ∆W
