@@ -3292,6 +3292,14 @@
   tests:
     - '[] : [[0,1],[1,0],[0,-1],[-1,0]]'
 
+- element: "kṘ"
+  name: Roman Numerals
+  arity: 0
+  description: IVXLCDM
+  vectorise: false
+  tests:
+    - '[] : "IVXLCDM"'
+
 # Add constants with the following format:
 #
 #- element: ""
@@ -4139,6 +4147,56 @@
   overloads:
     num: to_decimal(a)
   vectorise: false
+
+- element: "øṘ"
+  name: Roman Numeral
+  description: Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
+  arity: 1
+  overloads:
+    num: to_roman_numeral(a)
+    str: from_roman_numeral(a)
+  vectorise: false
+  tests:
+    - '[1] : "I"'
+    - '[2] : "II"'
+    - '[3] : "III"'
+    - '[4] : "IV"'
+    - '[5] : "V"'
+    - '[6] : "VI"'
+    - '[10] : "X"'
+    - '[15] : "XV"'
+    - '[20] : "XX"'
+    - '[30] : "XXX"'
+    - '[40] : "XL"'
+    - '[50] : "L"'
+    - '[60] : "LX"'
+    - '[100] : "C"'
+    - '[400] : "CD"'
+    - '[500] : "D"'
+    - '[900] : "CM"'
+    - '[1000] : "M"'
+    - '[2000] : "MM"'
+    - '[3000] : "MMM"'
+    - '["I"] : 1'
+    - '["II"] : 2'
+    - '["III"] : 3'
+    - '["IV"] : 4'
+    - '["V"] : 5'
+    - '["VI"] : 6'
+    - '["X"] : 10'
+    - '["XV"] : 15'
+    - '["XX"] : 20'
+    - '["XXX"] : 30'
+    - '["XL"] : 40'
+    - '["L"] : 50'
+    - '["LX"] : 60'
+    - '["C"] : 100'
+    - '["CD"] : 400'
+    - '["D"] : 500'
+    - '["CM"] : 900'
+    - '["M"] : 1000'
+    - '["MM"] : 2000'
+    - '["MMM"] : 3000'
 
 - element: "Þo"
   name: Ordinals

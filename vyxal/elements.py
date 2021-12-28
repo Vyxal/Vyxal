@@ -2954,6 +2954,33 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts)()
 
+def roman_numeral(lhs, ctx):
+    """Element øṘ
+    (num) -> roman numeral of a
+    (str) -> a to decimal from roman numeral
+    """
+    ints = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    nums = ("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    if(vy_type(lhs) is NUMBER_TYPE):
+        if not 0 < lhs < 4000:
+            raise ValueError("Number must be between 1 and 3999")
+
+        result = ""
+        for i in range(len(ints)):
+            count = int(lhs / ints[i])
+            result += nums[i] * count
+            lhs -= ints[i] * count
+        return result
+    elif(vy_type(lhs) is str):
+        result = 0
+        for i in range(len(nums)):
+            while lhs.startswith(nums[i]):
+                result += ints[i]
+                lhs = lhs[len(nums[i]):]
+        return result
+    elif(vy_type(lhs) is list):
+        return vectorise(roman_numeral, lhs, ctx=ctx)
+    
 
 def round_to(lhs, rhs, ctx):
     """Element ∆W
@@ -4596,6 +4623,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øṘ": process_element(roman_numeral, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
@@ -4747,6 +4775,7 @@ elements: dict[str, tuple[str, int]] = {
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
+    "kṘ": process_element('"IVXLCDM"', 0),
 }
 modifiers: dict[str, str] = {
     "&": (
