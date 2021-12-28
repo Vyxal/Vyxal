@@ -4057,7 +4057,9 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1] # lgtm[py/call-to-non-callable]
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
+            -1
+        ]  # lgtm[py/call-to-non-callable]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
