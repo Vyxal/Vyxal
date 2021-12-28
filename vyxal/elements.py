@@ -2144,8 +2144,8 @@ def modulo(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
-        (NUMBER_TYPE, str): lambda: divide(rhs, lhs, ctx)[-1],
-        (str, NUMBER_TYPE): lambda: divide(lhs, rhs, ctx)[-1],
+        (NUMBER_TYPE, str): lambda: format_string(rhs, [lhs]),
+        (str, NUMBER_TYPE): lambda: format_string(lhs, [rhs]),
         (str, str): lambda: format_string(lhs, [rhs]),
         (str, list): lambda: format_string(lhs, rhs),
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
