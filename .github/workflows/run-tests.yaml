@@ -30,6 +30,7 @@ jobs:
         poetry install
     - name: Generate tests
       run: |
+        python -m pip install pyyaml
         cd documents/knowledge
         python processor.py
         cd ../..
