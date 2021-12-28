@@ -2997,14 +2997,29 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
+
 def roman_numeral(lhs, ctx):
     """Element øṘ
     (num) -> roman numeral of a
     (str) -> a to decimal from roman numeral
     """
     ints = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-    nums = ("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
-    if(vy_type(lhs) is NUMBER_TYPE):
+    nums = (
+        "M",
+        "CM",
+        "D",
+        "CD",
+        "C",
+        "XC",
+        "L",
+        "XL",
+        "X",
+        "IX",
+        "V",
+        "IV",
+        "I",
+    )
+    if vy_type(lhs) is NUMBER_TYPE:
         if not 0 < lhs < 4000:
             raise ValueError("Number must be between 1 and 3999")
 
@@ -3014,14 +3029,14 @@ def roman_numeral(lhs, ctx):
             result += nums[i] * count
             lhs -= ints[i] * count
         return result
-    elif(vy_type(lhs) is str):
+    elif vy_type(lhs) is str:
         result = 0
         for i in range(len(nums)):
             while lhs.startswith(nums[i]):
                 result += ints[i]
-                lhs = lhs[len(nums[i]):]
+                lhs = lhs[len(nums[i]) :]
         return result
-    elif(vy_type(lhs) is list):
+    elif vy_type(lhs) is list:
         return vectorise(roman_numeral, lhs, ctx=ctx)
 
 
