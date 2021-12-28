@@ -17214,7 +17214,7 @@ def test_ReplaceUntilNoChange():
 def test_StringCompress():
 
     stack = [vyxalify(item) for item in ["hello"]]
-    expected = vyxalify("«D\n=")
+    expected = vyxalify("«D\n=«")
     ctx = Context()
 
     ctx.stacks.append(stack)

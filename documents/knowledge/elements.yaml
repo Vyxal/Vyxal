@@ -3995,7 +3995,7 @@
     str: base_255_string_compress(a)
   vectorise: false
   tests:
-    - '["hello"] : "«D\n="'
+    - '["hello"] : "«D\n=«"'
     - '["hello world"] : "«⟇%J^9vŀ«"'
 
 - element: "øC"
