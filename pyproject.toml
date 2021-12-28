@@ -4,6 +4,7 @@ version = "2.7.2.post1"
 description = "A golfing language that has aspects of traditional programming languages."
 authors = []
 license = "MIT"
+readme = "README.md"
 
 [tool.poetry.scripts]
 vyxal = "vyxal.main:cli"
