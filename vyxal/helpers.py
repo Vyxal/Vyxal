@@ -484,7 +484,6 @@ def mold_without_repeat(
 def pad_to_square(array: VyList) -> VyList:
     """
     Returns an array padded to the square of the largest dimension.
-    https://stackoverflow.com/a/11763827/9363594
     """
     mat = list(map(list, array))
     max_dim = max(len(mat), max(map(len, mat)))
@@ -559,7 +558,7 @@ def reverse_number(
     return vyxalify(sympy.Rational(eval(rev) * sign))
 
 
-def ring_translate(map_source: Union[str, list], string: str) -> str:
+def ring_translate(string: str, map_source: Union[str, list]) -> str:
     """Ring translates a given string according to the provided mapping
     - that is, map matching elements to the subsequent element in the
     translation ring. The ring wraps around."""

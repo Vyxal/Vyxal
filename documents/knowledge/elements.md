@@ -3220,6 +3220,22 @@ Get all slices of a list, skipping a certain number of items
 Empty the global array.
 
 -------------------------------
+## `` ¨□ `` (Parse direction arrow to integer)
+
+Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
+
+### Overloads
+
+- str a: `Map characters in `>^<v` to integers`
+-------------------------------
+## `` ¨^ `` (Parse direction arrow to vector)
+
+Map characters in `>^<v` to direction vectors
+
+### Overloads
+
+- str a: `Map characters in `>^<v` to direction vectors`
+-------------------------------
 ## `` ¨U `` (Get Request)
 
 Send a GET request to a URL

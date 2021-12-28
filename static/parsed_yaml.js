@@ -2042,6 +2042,11 @@ codepage_descriptions[143] += `
 Convert a rational to its decimal representation.
 num a -> to_decimal(a)
 `
+codepage_descriptions[42] += `
+Þ* (Cartesian product over list)
+Cartesian product over a list of lists
+lst a -> itertools.product(*a)
+`
 codepage_descriptions[111] += `
 Þo (Ordinals)
 An infinite list of first, second, third, fourth etc
@@ -2228,6 +2233,16 @@ lst a, int b -> Get all slices of a list, skipping a certain number of items
 codepage_descriptions[252] += `
 Þ¾ (Empty the Global Array)
 Empty the global array.
+`
+codepage_descriptions[216] += `
+¨□ (Parse direction arrow to integer)
+Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
+str a -> Map characters in \`>^<v\` to integers
+`
+codepage_descriptions[95] += `
+¨^ (Parse direction arrow to vector)
+Map characters in \`>^<v\` to direction vectors
+str a -> Map characters in \`>^<v\` to direction vectors
 `
 codepage_descriptions[85] += `
 ¨U (Get Request)

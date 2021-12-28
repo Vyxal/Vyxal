@@ -93,7 +93,11 @@ def transpile_token(
         iterator = iter(string)
         for char in iterator:
             if char == "\\":
-                temp += "\\" + next(iterator, "")
+                after_char = next(iterator, "")
+                if after_char == "`":
+                    temp += "`"
+                else:
+                    temp += "\\" + after_char
             elif char == '"':
                 temp += '\\"'
             elif char == "\n":

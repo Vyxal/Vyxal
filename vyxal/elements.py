@@ -470,6 +470,15 @@ def carmichael_function(lhs, ctx):
     }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
 
 
+def cartesian_over_list(lhs, ctx):
+    """Element Þ*
+    (lst) -> itertools.product(*lhs)
+    """
+    # todo maybe handle generators separately
+    lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    return vyxalify(itertools.product(*lhs))
+
+
 def cartesian_power(lhs, rhs, ctx):
     """Element ÞẊ
     (any, num) -> cartesian_power(a, b)
@@ -1688,8 +1697,8 @@ def into_two(lhs, ctx):
         NUMBER_TYPE: lambda: " " * int(lhs),
         str: lambda: quotify(lhs, ctx) + lhs,
         list: lambda: [
-            index(lhs, [None, int(len(lhs) / 2)], ctx),
-            index(lhs, [int(len(lhs) / 2), None], ctx),
+            index(lhs, [None, int(len(lhs) / 2) + len(lhs) % 2], ctx),
+            index(lhs, [int(len(lhs) / 2) + len(lhs) % 2, None], ctx),
         ],
     }.get(ts)()
 
@@ -2584,6 +2593,38 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+def parse_direction_arrow_to_integer(lhs, ctx):
+    """Element ¨^
+    (str) -> map characters in `>^<v` to integers
+    """
+    ts = vy_type(lhs)
+    if ts is str and len(lhs) == 1:
+        return {
+            ">": 0,
+            "^": 1,
+            "<": 2,
+            "v": 3,
+        }.get(lhs, -1)
+    else:
+        return vectorise(parse_direction_arrow_to_integer, lhs, ctx=ctx)()
+
+
+def parse_direction_arrow_to_vector(lhs, ctx):
+    """Element ¨^
+    (str) -> map characters in `>^<v` to direction vectors
+    """
+    ts = vy_type(lhs)
+    if ts is str and len(lhs) == 1:
+        return {
+            ">": [+1, 0],
+            "^": [0, +1],
+            "<": [-1, 0],
+            "v": [0, -1],
+        }.get(lhs, [0, 0])
+    else:
+        return vectorise(parse_direction_arrow_to_vector, lhs, ctx=ctx)()
+
+
 def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
@@ -2760,7 +2801,9 @@ def quotify(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: "`{}`".format(lhs),
-        str: lambda: "`{}`".format(lhs.replace("`", "\\`")),
+        str: lambda: "`{}`".format(
+            lhs.replace("\\", "\\\\").replace("`", "\\`")
+        ),
         types.FunctionType: lambda: "`{}`".format(lhs.__name__),
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
@@ -2952,7 +2995,7 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
-    }.get(ts)()
+    }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 def roman_numeral(lhs, ctx):
     """Element øṘ
@@ -3462,8 +3505,8 @@ def truthy_indices(lhs, ctx):
     (any) -> indices of truthy elements
     (num) -> lhs * 3
     """
-    if vy_type(lhs) == NUMBER_TYPE:
-        return lhs * 3
+    if vy_type(lhs) in (types.FunctionType, NUMBER_TYPE):
+        return multiply(lhs, 3, ctx)
 
     lhs = iterable(lhs, ctx=ctx)
 
@@ -4624,6 +4667,7 @@ elements: dict[str, tuple[str, int]] = {
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "øṘ": process_element(roman_numeral, 1),
+    "Þ*": process_element(cartesian_over_list, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
@@ -4671,6 +4715,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
     "Þ¾": ("ctx.global_array = []", 0),
+    "¨□": process_element(parse_direction_arrow_to_integer, 1),
+    "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
         "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
