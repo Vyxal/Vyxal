@@ -3307,7 +3307,8 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs))
+            vy_str(lhs).strip(vy_str(rhs)),
+            ctx,
         ),
         (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
@@ -4058,7 +4059,7 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1] # lgtm[py/call-to-non-callable]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
