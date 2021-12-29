@@ -303,7 +303,7 @@ function initCodeMirror() {
         })
         resize(globalThis['e_' + boxId])
 
-        box = getCodeMirrorTextArea(boxId)
+        var box = getCodeMirrorTextArea(boxId)
         if (box) {
             const capturedId = boxId
             box.addEventListener('focusin', event => selectedBox = capturedId)
