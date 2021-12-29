@@ -1791,7 +1791,6 @@ def is_square(lhs, ctx):
     (str) -> square the expression
     """
     ts = vy_type(lhs)
-    x = sympy.Symbol("x")
     return {
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
