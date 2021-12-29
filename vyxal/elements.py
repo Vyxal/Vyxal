@@ -563,10 +563,7 @@ def contains(lhs, rhs, ctx):
     """
     if list in vy_type(lhs, rhs, simple=True):
         lhs = iterable(lhs, ctx=ctx)
-        for item in lhs:
-            if item == rhs:
-                return 1
-        return 0
+        return int(rhs in lhs)
     return int(vy_str(rhs) in vy_str(lhs))
 
 
