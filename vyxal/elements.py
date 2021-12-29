@@ -3078,6 +3078,16 @@ def run_length_decoding(lhs, ctx):
         return LazyList(temp)
 
 
+def shuffle(lhs, ctx):
+    """Element Þ℅
+    (lst) -> Return a random permutation of a
+    """
+
+    temp = deep_copy(lhs)
+    random.shuffle(temp)
+    return temp
+
+
 def sign_of(lhs, ctx):
     """
     (num) -> sign_of(a) (positive = 1, 0 = 0; negative = -1)
@@ -4720,9 +4730,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞZ": process_element(coords_deepmap, 2),
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
-    "Þ℅": process_element(
-        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx)))", 1
-    ),
+    "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
