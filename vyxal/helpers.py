@@ -8,7 +8,7 @@ import ast
 import collections
 import inspect
 import itertools
-import math
+import math  # lgtm [py/unused-import]
 import textwrap
 import types
 from typing import Any, List, Union
@@ -558,7 +558,7 @@ def reverse_number(
     return vyxalify(sympy.Rational(eval(rev) * sign))
 
 
-def ring_translate(map_source: Union[str, list], string: str) -> str:
+def ring_translate(string: str, map_source: Union[str, list]) -> str:
     """Ring translates a given string according to the provided mapping
     - that is, map matching elements to the subsequent element in the
     translation ring. The ring wraps around."""

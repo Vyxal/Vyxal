@@ -6,7 +6,7 @@ from typing import Union
 
 from vyxal import encoding, helpers, lexer, parse, structure
 from vyxal.elements import *
-from vyxal.helpers import indent_str, uncompress, vyxalify
+from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 
 

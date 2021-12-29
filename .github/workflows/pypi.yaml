@@ -1,0 +1,25 @@
+name: Publish to PyPI
+
+on:
+  push:
+    tags: ['*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip poetry
+          poetry install
+      - name: Build
+        run: poetry build
+      - name: Upload to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PXEGER_PYPI_TOKEN }}

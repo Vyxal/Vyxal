@@ -28,8 +28,6 @@ from vyxal.encoding import (
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
 
-currentdate = datetime.now()
-
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
@@ -1697,8 +1695,8 @@ def into_two(lhs, ctx):
         NUMBER_TYPE: lambda: " " * int(lhs),
         str: lambda: quotify(lhs, ctx) + lhs,
         list: lambda: [
-            index(lhs, [None, int(len(lhs) / 2)], ctx),
-            index(lhs, [int(len(lhs) / 2), None], ctx),
+            index(lhs, [None, int(len(lhs) / 2) + len(lhs) % 2], ctx),
+            index(lhs, [int(len(lhs) / 2) + len(lhs) % 2, None], ctx),
         ],
     }.get(ts)()
 
@@ -1793,7 +1791,6 @@ def is_square(lhs, ctx):
     (str) -> square the expression
     """
     ts = vy_type(lhs)
-    x = sympy.Symbol("x")
     return {
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
@@ -2146,8 +2143,8 @@ def modulo(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
-        (NUMBER_TYPE, str): lambda: divide(rhs, lhs, ctx)[-1],
-        (str, NUMBER_TYPE): lambda: divide(lhs, rhs, ctx)[-1],
+        (NUMBER_TYPE, str): lambda: format_string(rhs, [lhs]),
+        (str, NUMBER_TYPE): lambda: format_string(lhs, [rhs]),
         (str, str): lambda: format_string(lhs, [rhs]),
         (str, list): lambda: format_string(lhs, rhs),
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
@@ -2995,7 +2992,49 @@ def right_bit_shift(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs.rjust(int(rhs), " "),
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
-    }.get(ts)()
+    }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
+
+
+def roman_numeral(lhs, ctx):
+    """Element øṘ
+    (num) -> roman numeral of a
+    (str) -> a to decimal from roman numeral
+    """
+    ints = (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+    nums = (
+        "M",
+        "CM",
+        "D",
+        "CD",
+        "C",
+        "XC",
+        "L",
+        "XL",
+        "X",
+        "IX",
+        "V",
+        "IV",
+        "I",
+    )
+    if vy_type(lhs) is NUMBER_TYPE:
+        if not 0 < lhs < 4000:
+            raise ValueError("Number must be between 1 and 3999")
+
+        result = ""
+        for i in range(len(ints)):
+            count = int(lhs / ints[i])
+            result += nums[i] * count
+            lhs -= ints[i] * count
+        return result
+    elif vy_type(lhs) is str:
+        result = 0
+        for i in range(len(nums)):
+            while lhs.startswith(nums[i]):
+                result += ints[i]
+                lhs = lhs[len(nums[i]) :]
+        return result
+    elif vy_type(lhs) is list:
+        return vectorise(roman_numeral, lhs, ctx=ctx)
 
 
 def round_to(lhs, rhs, ctx):
@@ -3036,6 +3075,16 @@ def run_length_decoding(lhs, ctx):
         return "".join(temp)
     else:
         return LazyList(temp)
+
+
+def shuffle(lhs, ctx):
+    """Element Þ℅
+    (lst) -> Return a random permutation of a
+    """
+
+    temp = deep_copy(lhs)
+    random.shuffle(temp)
+    return temp
 
 
 def sign_of(lhs, ctx):
@@ -3265,7 +3314,8 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs))
+            vy_str(lhs).strip(vy_str(rhs)),
+            ctx,
         ),
         (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
@@ -4016,7 +4066,9 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
+            -1
+        ]  # lgtm[py/call-to-non-callable]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
@@ -4639,6 +4691,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øṘ": process_element(roman_numeral, 1),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
@@ -4676,9 +4729,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞZ": process_element(coords_deepmap, 2),
     "ÞF": process_element(fibonaacis, 0),
     "Þ!": process_element(factorials, 0),
-    "Þ℅": process_element(
-        "random.sample(iterable(lhs, ctx=ctx), len(iterable(lhs, ctx=ctx)))", 1
-    ),
+    "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
@@ -4740,14 +4791,14 @@ elements: dict[str, tuple[str, int]] = {
     "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
     "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
-    "kD": process_element('currenttime.strftime("%Y-%m-%d")', 0),
+    "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
-        'LazyList(eval(currenttime.strftime("[%H,%M,%S]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%H,%M,%S]")))', 0
     ),
-    "kḋ": process_element('currenttime.strftime("%d/%m/%Y")', 0),
-    "kḊ": process_element('currenttime.strftime("%m/%d/%Y")', 0),
+    "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
+    "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
     "kð": process_element(
-        'LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%d,%m,%Y]")))', 0
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
@@ -4793,6 +4844,7 @@ elements: dict[str, tuple[str, int]] = {
     "k⊍": process_element('"AEIOUY"', 0),
     "k∩": process_element('"aeiouyAEIOUY"', 0),
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
+    "kṘ": process_element('"IVXLCDM"', 0),
 }
 modifiers: dict[str, str] = {
     "&": (

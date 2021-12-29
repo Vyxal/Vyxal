@@ -1,6 +1,6 @@
 # Vyxal
 
-[![forthebadge](https://forthebadge.com/images/badges/gluten-free.svg)](https://forthebadge.com)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Vyxal/Vyxal.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Vyxal/Vyxal/context:python) ![Test status](https://github.com/Vyxal/Vyxal/actions/workflows/run-tests.yaml/badge.svg)
 
 Vyxal is a golfing language with a unique design philosophy: make things as short as possible but retain elegance while doing so. In very simple terms, this means
 keeping aspects of traditional programming languages that most developers are familiar with, while still providing commands that allow golfers to actually _win_
@@ -38,3 +38,4 @@ Put simply, Vyxal exists because golfers need a golfing language - and because g
 -->
 - [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 - [Elements](https://github.com/Vyxal/Vyxal/blob/v2.6.0/documents/knowledge/elements.md)
+- [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
