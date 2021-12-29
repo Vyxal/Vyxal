@@ -8,6 +8,7 @@ import ast
 import collections
 import inspect
 import itertools
+import math  # lgtm [py/unused-import]
 import textwrap
 import types
 from typing import Any, List, Union
