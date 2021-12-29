@@ -28,8 +28,6 @@ from vyxal.encoding import (
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
 
-currentdate = datetime.now()
-
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
@@ -2145,8 +2143,8 @@ def modulo(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
-        (NUMBER_TYPE, str): lambda: divide(rhs, lhs, ctx)[-1],
-        (str, NUMBER_TYPE): lambda: divide(lhs, rhs, ctx)[-1],
+        (NUMBER_TYPE, str): lambda: format_string(rhs, [lhs]),
+        (str, NUMBER_TYPE): lambda: format_string(lhs, [rhs]),
         (str, str): lambda: format_string(lhs, [rhs]),
         (str, list): lambda: format_string(lhs, rhs),
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
@@ -3306,7 +3304,8 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs)), ctx
+            vy_str(lhs).strip(vy_str(rhs)),
+            ctx,
         ),
         (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
@@ -4057,7 +4056,9 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[-1]
+        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
+            -1
+        ]  # lgtm[py/call-to-non-callable]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
@@ -4782,14 +4783,14 @@ elements: dict[str, tuple[str, int]] = {
     "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
     "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
-    "kD": process_element('currenttime.strftime("%Y-%m-%d")', 0),
+    "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
-        'LazyList(eval(currenttime.strftime("[%H,%M,%S]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%H,%M,%S]")))', 0
     ),
-    "kḋ": process_element('currenttime.strftime("%d/%m/%Y")', 0),
-    "kḊ": process_element('currenttime.strftime("%m/%d/%Y")', 0),
+    "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
+    "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
     "kð": process_element(
-        'LazyList(eval(currenttime.strftime("[%d,%m,%Y]")))', 0
+        'LazyList(eval(datetime.now().strftime("[%d,%m,%Y]")))', 0
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
