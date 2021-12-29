@@ -53,7 +53,6 @@
 
         function glyphSearch() {
             var query = document.getElementById("filterBox").value.toLowerCase();
-            var descriptions = codepage_descriptions
 
             console.log('in glyphsearch, selectedBox=' + selectedBox)
 
@@ -68,7 +67,7 @@
                 var raw = query.split().map(char => `[^${char}]*${char}`).join("");
                 var pattern = new RegExp(raw);
 
-                for (element of document.getElementsByClassName("key")) {
+                for (var element of document.getElementsByClassName("key")) {
                     if (element.title.toLowerCase().match(pattern)) {
                         element.style.display = "inline-block";
                     } else {
