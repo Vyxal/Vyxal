@@ -284,8 +284,8 @@ Modulo two numbers / format two strings
 ### Overloads
 
 - num a, num b: `a % b`
-- num a, str b: `last of (b split into a equal pieces)`
-- str a, num b: `last of (a split into b equal pieces)`
+- num a, str b: `b.format(a) (replace % in b with a)`
+- str a, num b: `a.format(b) (replace % in a with b)`
 - str a, str b: `a.format(b) (replace % in a with b)`
 - str a, lst b: `a.format(b) (replace % in a with each item of b)`
 -------------------------------
@@ -2387,6 +2387,11 @@ Vowels with y, "aeiouyAEIOUY"
 Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 
 -------------------------------
+## `` kṘ `` (Roman Numerals)
+
+IVXLCDM
+
+-------------------------------
 ## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians
@@ -2930,6 +2935,23 @@ Convert a rational to its decimal representation.
 ### Overloads
 
 - num a: `to_decimal(a)`
+-------------------------------
+## `` øṘ `` (Roman Numeral)
+
+Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
+
+### Overloads
+
+- num a: `to_roman_numeral(a)`
+- str a: `from_roman_numeral(a)`
+-------------------------------
+## `` Þ* `` (Cartesian product over list)
+
+Cartesian product over a list of lists
+
+### Overloads
+
+- lst a: `itertools.product(*a)`
 -------------------------------
 ## `` Þo `` (Ordinals)
 
