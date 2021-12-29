@@ -9,3 +9,37 @@ repos:
     rev: 21.12b0
     hooks:
       - id: black
+
+  - repo: local
+    hooks:
+      - id: regen-test-elements-py
+        name: Regenerate tests/test_elements.py
+        entry: python documents/knowledge/processor.py
+        language: python
+        additional_dependencies: [pyyaml]
+        files: documents/knowledge/elements.yaml
+        pass_filenames: false
+
+      - id: yaml-to-txt
+        name: Generate documents/knowledge/Elements.txt
+        entry: python documents/knowledge/yaml_to_txt.py
+        language: python
+        additional_dependencies: [pyyaml]
+        files: documents/knowledge/elements.yaml
+        pass_filenames: false
+
+      - id: yaml-to-md
+        name: Generate documents/knowledge/elements.md
+        entry: python documents/knowledge/yaml_to_md.py
+        language: python
+        additional_dependencies: [pyyaml]
+        files: documents/knowledge/elements.yaml
+        pass_filenames: false
+
+      - id: yaml-to-js
+        name: Generate static/parsed_yaml.js
+        entry: python documents/knowledge/yaml_to_js.py
+        language: python
+        additional_dependencies: [pyyaml]
+        files: documents/knowledge/elements.yaml
+        pass_filenames: false
