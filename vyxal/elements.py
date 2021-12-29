@@ -562,7 +562,9 @@ def contains(lhs, rhs, ctx):
     (any, any) -> count of a in b
     """
     if list in vy_type(lhs, rhs, simple=True):
-        lhs, rhs = (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
+        lhs, rhs = (
+            (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
+        )
         lhs = iterable(lhs, ctx=ctx)
         return int(rhs in lhs)
     return int(vy_str(rhs) in vy_str(lhs))
