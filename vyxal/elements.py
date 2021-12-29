@@ -561,11 +561,13 @@ def contains(lhs, rhs, ctx):
     """Element c
     (any, any) -> count of a in b
     """
-    lhs = iterable(lhs, ctx=ctx)
-    for item in lhs:
-        if item == rhs:
-            return 1
-    return 0
+    if list in vy_type(lhs, rhs, simple=True):
+        lhs = iterable(lhs, ctx=ctx)
+        for item in lhs:
+            if item == rhs:
+                return 1
+        return 0
+    return int(vy_str(rhs) in vy_str(lhs))
 
 
 def coords_deepmap(lhs, rhs, ctx):
