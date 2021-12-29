@@ -5,6 +5,8 @@ description = "A golfing language that has aspects of traditional programming la
 authors = []
 license = "MIT"
 readme = "README.md"
+repository = "https://github.com/Vyxal/Vyxal/"
+homepage = "https://vyxal.pythonanywhere.com/"
 
 [tool.poetry.scripts]
 vyxal = "vyxal.main:cli"
