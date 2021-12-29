@@ -3,7 +3,7 @@ import yaml
 
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 ELEMENTS_YAML = os.path.join(CURR_DIR, "elements.yaml")
-ELEMENTS_TXT = os.path.join(CURR_DIR, "Elements.txt")
+ELEMENTS_TXT = os.path.join(CURR_DIR, "elements.txt")
 
 with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
     data = yaml.safe_load(elements)

@@ -21,7 +21,7 @@ repos:
         pass_filenames: false
 
       - id: yaml-to-txt
-        name: Generate documents/knowledge/Elements.txt
+        name: Generate documents/knowledge/elements.txt
         entry: python documents/knowledge/yaml_to_txt.py
         language: python
         additional_dependencies: [pyyaml]
