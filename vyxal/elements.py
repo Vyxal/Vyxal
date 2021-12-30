@@ -3892,20 +3892,16 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     (any, any) -> Remove elements of a that are in b
     """
     ts = vy_type(lhs, rhs)
-    if ts[0] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
-            )
+    if types.FunctionType in ts:
+        lhs, rhs = (rhs, lhs) if ts[1] is types.FunctionType else (lhs, rhs)
+        ret = filter(
+            lambda x: safe_apply(lhs, x, ctx=ctx),
+            iterable(rhs, range, ctx=ctx),
         )
-    elif ts[1] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
-            )
-        )
+        if lhs.force_eval:
+            return list(ret)
+        return LazyList(ret)
+
     elif ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
     return LazyList([elem for elem in lhs if elem not in rhs])
@@ -3997,6 +3993,8 @@ def vy_map(lhs, rhs, ctx):
         for element in itr:
             yield safe_apply(function, element, ctx=ctx)
 
+    if function.force_eval:
+        return list(gen())
     return gen()
 
 
