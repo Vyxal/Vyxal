@@ -3702,7 +3702,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             ret = simple.get(ts)()
 
-        if function.force_eval:
+        if "force_eval" in dir(function) and function.force_eval:
             return list(ret)
         else:
             return LazyList(ret)
@@ -3745,7 +3745,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             ret = simple.get(ts)
 
-        if function.force_eval:
+        if "force_eval" in dir(function) and function.force_eval:
             return list(ret())
         else:
             return LazyList(ret())
@@ -3756,7 +3756,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             lhs = iterable(lhs, ctx=ctx)
         ret = (safe_apply(function, x, ctx=ctx) for x in lhs)
-        if function.force_eval:
+        if "force_eval" in dir(function) and function.force_eval:
             return list(ret)
         return LazyList(ret)
 

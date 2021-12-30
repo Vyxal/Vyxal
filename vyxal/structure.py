@@ -173,9 +173,13 @@ def can_print(structures: list[Structure]) -> bool:
         else:
             for branch in struct.branches:
                 if isinstance(branch, (Structure)):
-                    branch = [branch]
+                    branch = [branch]  # Wrap singleton structures into a
+                    # list so they can just be plugged
+                    # into can_print
                 if isinstance(branch, (list, tuple)):
                     if can_print(branch):
                         return True
+            # These if statements exist because sometimes, a structure
+            # has non-structure stuff in its branches.
 
     return False
