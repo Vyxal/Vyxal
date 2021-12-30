@@ -2034,7 +2034,7 @@ str a -> vertical_mirror(a)
 codepage_descriptions[193] += `
 øṀ (Flip Brackets Vertical Mirror)
 Vertical mirror, and swap brackets and slashes in the second half.
-any a -> vertical_mirror(a,mapping  = flip brackets and slashes)
+any a -> vertical_mirror(a, mapping = flip brackets and slashes)
 `
 codepage_descriptions[196] += `
 øṖ (String Partitions)

@@ -2918,7 +2918,7 @@ Vertical mirror, and swap brackets and slashes in the second half.
 
 ### Overloads
 
-- any a: `vertical_mirror(a,mapping  = flip brackets and slashes)`
+- any a: `vertical_mirror(a, mapping = flip brackets and slashes)`
 -------------------------------
 ## `` øṖ `` (String Partitions)
 
