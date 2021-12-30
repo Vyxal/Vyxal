@@ -1119,7 +1119,7 @@ def flatten_by(lhs, rhs, ctx):
 
 def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
-    (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
+    (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
     """
     result = lhs.split("\n")
     for i in range(len(result)):
@@ -4684,6 +4684,7 @@ elements: dict[str, tuple[str, int]] = {
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
+    "øṁ": process_element(vertical_mirror, 1),
     "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
