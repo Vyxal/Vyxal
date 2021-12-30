@@ -3157,7 +3157,12 @@ def sort_by(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
+        ret = sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
+
+        if function.force_eval:
+            return list(ret)
+        else:
+            return LazyList(ret)
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
@@ -3690,14 +3695,17 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         }
 
         if explicit:
-            return LazyList(
-                (
-                    safe_apply(function, x, rhs, other, ctx=ctx)
-                    for x in iterable(lhs, ctx=ctx)
-                )
+            ret = (
+                safe_apply(function, x, rhs, other, ctx=ctx)
+                for x in iterable(lhs, ctx=ctx)
             )
         else:
-            return LazyList(simple.get(ts)())
+            ret = simple.get(ts)()
+
+        if function.force_eval:
+            return list(ret)
+        else:
+            return LazyList(ret)
     elif rhs is not None:
         # That is, two argument vectorisation
         ts = primitive_type(lhs), primitive_type(rhs)
@@ -3733,17 +3741,24 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         }
 
         if explicit:
-            return LazyList(explicit_dict.get(ts)())
+            ret = explicit_dict.get(ts)
         else:
-            return LazyList(simple.get(ts)())
+            ret = simple.get(ts)
+
+        if function.force_eval:
+            return list(ret())
+        else:
+            return LazyList(ret())
     else:
         # That is, single argument vectorisation
         if explicit:
             lhs = iterable(lhs, range, ctx=ctx)
         else:
             lhs = iterable(lhs, ctx=ctx)
-
-        return LazyList((safe_apply(function, x, ctx=ctx) for x in lhs))
+        ret = (safe_apply(function, x, ctx=ctx) for x in lhs)
+        if function.force_eval:
+            return list(ret)
+        return LazyList(ret)
 
 
 def vectorised_not(lhs, ctx):
