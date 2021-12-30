@@ -13,7 +13,7 @@ Branch = Union[str, list["Structure"], list["Token"]]
 class Structure:
     def __init__(self, *branches: Branch):
         # Don't do anything with the arguments
-        self.branches = branches
+        self.branches = list(branches)
 
     def transpile(self) -> str:
         """Return the transpiled version of the structure"""
@@ -91,6 +91,7 @@ class Lambda(Structure):
         super().__init__(str(arity), body)
         self.arity = arity
         self.body = body
+        self.force_eval = can_print(body)
 
 
 class LambdaMap(Lambda):
@@ -151,3 +152,30 @@ class TriadicModifier(Structure):
         return (
             f"{type(self).__name__}({repr(self.branches)}, {self.modifier!r})"
         )
+
+
+def can_print(structures: list[Structure]) -> bool:
+    """Checks if the structures are printing instructions"""
+    for struct in structures:
+        if isinstance(
+            struct,
+            (
+                BreakStatement,
+                RecurseStatement,
+                FunctionCall,
+            ),
+        ):
+            continue  # These statements can't possibly print, so it's
+            # okay to just continue.
+        elif isinstance(struct, GenericStatement):
+            if struct.branches[0][0].value in list(",₴…") + ["¨,", "¨…"]:
+                return True
+        else:
+            for branch in struct.branches:
+                if isinstance(branch, (Structure)):
+                    branch = [branch]
+                if isinstance(branch, (list, tuple)):
+                    if can_print(branch):
+                        return True
+
+    return False

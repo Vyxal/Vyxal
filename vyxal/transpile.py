@@ -282,6 +282,7 @@ def transpile_structure(
             + indent_str("ctx.inputs.pop()", indent + 1)
             + indent_str("ctx.stacks.pop()", indent + 1)
             + indent_str("return stack", indent + 1)
+            + indent_str(f"VAR_{var}.force_eval = {struct.force_eval}", indent)
         )
     if isinstance(struct, vyxal.structure.Lambda):
         id_ = secrets.token_hex(16)
@@ -346,6 +347,9 @@ def transpile_structure(
                     else "ctx.default_arity"
                 ),
                 indent,
+            )
+            + indent_str(
+                f"_lambda_{id_}.force_eval = {struct.force_eval}", indent
             )
             + indent_str(f"stack.append(_lambda_{id_})", indent)
         )

@@ -40,41 +40,52 @@ BREAK_CHARACTER = "X"
 RECURSE_CHARACTER = "x"
 
 
-def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
-    """Handles the tokens from the first branch of a function defintion structure
+def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
+    branches: list[structure.Branch] = [[]]
+    # important: each branch is a list of tokens, hence why
+    # it's a double nested list to start with - each
+    # token gets appended to the last branch in the branches
+    # list.
 
-    Returns a tuple of the name and parameters."""
-    token_values = [token.value for token in tokens]
-    branch_data = "".join(token_values)
-    components = branch_data.split(":")
+    while tokens and bracket_stack:
+        # that is, while there are still tokens to consider,
+        # while we are still in the structure and while the
+        # next value isn't the closing character for the
+        # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
+        # where x = the corresponding closing character).
+        token: lexer.Token = tokens.popleft()
+        if (
+            token.name == lexer.TokenType.GENERAL
+            and token.value
+            and token.value in OPENING_CHARACTERS
+        ):
+            branches[-1].append(token)
+            bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
 
-    name = components[0]
-    parameters = []
-    # this'll be the list that is returned
+        elif token.value == "|":
+            if len(bracket_stack) == 1:
+                # that is, we are in the outer-most structure.
+                branches.append([])
+            else:
+                branches[-1].append(token)
+        elif (
+            token.name == lexer.TokenType.GENERAL
+            and token.value
+            and token.value in CLOSING_CHARACTERS
+        ):
+            # that is, it's a closing character that isn't
+            # the one we're expecting.
+            if token.value == bracket_stack[-1]:
+                # that is, if it's closing the inner-most
+                # structure
 
-    for parameter in components[1:]:
-        if parameter.isnumeric() or parameter == "*":
-            parameters.append(parameter)
+                bracket_stack.pop()
+                if bracket_stack:
+                    branches[-1].append(token)
         else:
-            parameters.append(re.sub(r"[^A-z_]", "", parameter))
+            branches[-1].append(token)
 
-    return name, parameters
-
-
-def variable_name(tokens: list[lexer.Token]) -> str:
-    """Concatenates the value of all tokens and removes non-identifier characters
-
-    The only characters kept are A-Z, a-z, and _
-    """
-    token_values = [token.value for token in tokens]
-    name = "".join(token_values)
-    return_name = ""
-
-    for char in name:
-        if char in string.ascii_letters + "_":
-            return_name += char
-
-    return return_name
+    return branches
 
 
 def parse(
@@ -288,49 +299,38 @@ def parse(
     return structures
 
 
-def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
-    branches: list[structure.Branch] = [[]]
-    # important: each branch is a list of tokens, hence why
-    # it's a double nested list to start with - each
-    # token gets appended to the last branch in the branches
-    # list.
+def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
+    """Handles the tokens from the first branch of a function defintion structure
 
-    while tokens and bracket_stack:
-        # that is, while there are still tokens to consider,
-        # while we are still in the structure and while the
-        # next value isn't the closing character for the
-        # structure (i.e. isn't Token(TokenType.GENERAL, "x"))
-        # where x = the corresponding closing character).
-        token: lexer.Token = tokens.popleft()
-        if (
-            token.name == lexer.TokenType.GENERAL
-            and token.value
-            and token.value in OPENING_CHARACTERS
-        ):
-            branches[-1].append(token)
-            bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
+    Returns a tuple of the name and parameters."""
+    token_values = [token.value for token in tokens]
+    branch_data = "".join(token_values)
+    components = branch_data.split(":")
 
-        elif token.value == "|":
-            if len(bracket_stack) == 1:
-                # that is, we are in the outer-most structure.
-                branches.append([])
-            else:
-                branches[-1].append(token)
-        elif (
-            token.name == lexer.TokenType.GENERAL
-            and token.value
-            and token.value in CLOSING_CHARACTERS
-        ):
-            # that is, it's a closing character that isn't
-            # the one we're expecting.
-            if token.value == bracket_stack[-1]:
-                # that is, if it's closing the inner-most
-                # structure
+    name = components[0]
+    parameters = []
+    # this'll be the list that is returned
 
-                bracket_stack.pop()
-                if bracket_stack:
-                    branches[-1].append(token)
+    for parameter in components[1:]:
+        if parameter.isnumeric() or parameter == "*":
+            parameters.append(parameter)
         else:
-            branches[-1].append(token)
+            parameters.append(re.sub(r"[^A-z_]", "", parameter))
 
-    return branches
+    return name, parameters
+
+
+def variable_name(tokens: list[lexer.Token]) -> str:
+    """Concatenates the value of all tokens and removes non-identifier characters
+
+    The only characters kept are A-Z, a-z, and _
+    """
+    token_values = [token.value for token in tokens]
+    name = "".join(token_values)
+    return_name = ""
+
+    for char in name:
+        if char in string.ascii_letters + "_":
+            return_name += char
+
+    return return_name
