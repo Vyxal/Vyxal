@@ -202,8 +202,8 @@ any a, any b -> b, a
 codepage_descriptions.push(`Modulo / Format
 Modulo two numbers / format two strings
 num a, num b -> a % b
-num a, str b -> last of (b split into a equal pieces)
-str a, num b -> last of (a split into b equal pieces)
+num a, str b -> b.format(a) (replace % in b with a)
+str a, num b -> a.format(b) (replace % in a with b)
 str a, str b -> a.format(b) (replace % in a with b)
 str a, lst b -> a.format(b) (replace % in a with each item of b)
 `)
@@ -1693,6 +1693,10 @@ codepage_descriptions[216] += `
 k□ (Directions)
 Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 `
+codepage_descriptions[197] += `
+kṘ (Roman Numerals)
+IVXLCDM
+`
 codepage_descriptions[99] += `
 ∆c (Cosine)
 Get the cosine of an angle in radians
@@ -2041,6 +2045,12 @@ codepage_descriptions[143] += `
 øḋ (To Decimal)
 Convert a rational to its decimal representation.
 num a -> to_decimal(a)
+`
+codepage_descriptions[197] += `
+øṘ (Roman Numeral)
+Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
+num a -> to_roman_numeral(a)
+str a -> from_roman_numeral(a)
 `
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
