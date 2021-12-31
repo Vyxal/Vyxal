@@ -4117,13 +4117,15 @@
   overloads:
     str: vertical_mirror(a)
   vectorise: true
+  tests:
+    - '["abc"] : "abccba"'
 
 - element: "øṀ"
   name: Flip Brackets Vertical Mirror
   description: Vertical mirror, and swap brackets and slashes in the second half.
   arity: 1
   overloads:
-    any: vertical_mirror(a,mapping  = flip brackets and slashes)
+    any: vertical_mirror(a, mapping = flip brackets and slashes)
   vectorise: false
   tests:
     - '["[}"] : "[}{]"'
