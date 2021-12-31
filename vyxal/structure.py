@@ -9,6 +9,8 @@ from vyxal.lexer import Token
 
 Branch = Union[str, list["Structure"], list["Token"]]
 
+PRINTING_ELEMENTS = list(",₴…") + ["¨,", "¨…"]
+
 
 class Structure:
     def __init__(self, *branches: Branch):
@@ -168,7 +170,7 @@ def can_print(structures: list[Structure]) -> bool:
             continue  # These statements can't possibly print, so it's
             # okay to just continue.
         elif isinstance(struct, GenericStatement):
-            if struct.branches[0][0].value in list(",₴…") + ["¨,", "¨…"]:
+            if struct.branches[0][0].value in PRINTING_ELEMENTS:
                 return True
         else:
             for branch in struct.branches:

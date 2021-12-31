@@ -31,6 +31,8 @@ from vyxal.LazyList import LazyList, lazylist
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 
+FORCE_EVAL = "force_eval"
+
 EPSILON = 1e-10
 
 
@@ -3159,7 +3161,7 @@ def sort_by(lhs, rhs, ctx):
         )
         ret = sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
 
-        if "force_eval" in dir(function) and function.force_eval:
+        if FORCE_EVAL in dir(function) and function.force_eval:
             return list(ret)
         else:
             return LazyList(ret)
@@ -3702,7 +3704,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             ret = simple.get(ts)()
 
-        if "force_eval" in dir(function) and function.force_eval:
+        if FORCE_EVAL in dir(function) and function.force_eval:
             return list(ret)
         else:
             return LazyList(ret)
@@ -3745,7 +3747,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             ret = simple.get(ts)
 
-        if "force_eval" in dir(function) and function.force_eval:
+        if FORCE_EVAL in dir(function) and function.force_eval:
             return list(ret())
         else:
             return LazyList(ret())
@@ -3756,7 +3758,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
         else:
             lhs = iterable(lhs, ctx=ctx)
         ret = (safe_apply(function, x, ctx=ctx) for x in lhs)
-        if "force_eval" in dir(function) and function.force_eval:
+        if FORCE_EVAL in dir(function) and function.force_eval:
             return list(ret)
         return LazyList(ret)
 
@@ -3913,7 +3915,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             lambda x: safe_apply(lhs, x, ctx=ctx),
             iterable(rhs, range, ctx=ctx),
         )
-        if "force_eval" in dir(lhs) and lhs.force_eval:
+        if FORCE_EVAL in dir(lhs) and lhs.force_eval:
             return list(ret)
         return LazyList(ret)
 
@@ -4008,7 +4010,7 @@ def vy_map(lhs, rhs, ctx):
         for element in itr:
             yield safe_apply(function, element, ctx=ctx)
 
-    if "force_eval" in dir(function) and function.force_eval:
+    if FORCE_EVAL in dir(function) and function.force_eval:
         return list(gen())
     return gen()
 
