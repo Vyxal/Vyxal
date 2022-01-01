@@ -13,9 +13,28 @@ Vyxal is also deliberately designed to be an easy language to learn. While it ma
 
 Ultimately, Vyxal is a language for golfers, by golfers.
 
+## Installation
+
+If you only want to run Vyxal, all you need to run is this:
+```
+pip install vyxal
+```
+If you are working on Vyxal, you can clone this repo and then run
+```
+pip install -e <folder where you cloned Vyxal>
+```
+
 ## Usage
 
-    python3 -m vyxal  <file> <flags (single string of flags)> <input(s)>
+To run using the script:
+```
+vyxal <file> <flags (single string of flags)> <input(s)>
+```
+
+To run using Python:
+```
+python3 -m vyxal  <file> <flags (single string of flags)> <input(s)>
+```
 
 ## Why Make Another Golfing Language When There's Like Hundreds of Them Already?
 
