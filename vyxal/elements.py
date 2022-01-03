@@ -3521,6 +3521,27 @@ def transliterate(lhs, rhs, other, ctx):
     (any, any, any) -> transliterate lhs according to the
                        mapping rhs->other
     """
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+    if types.FunctionType in ts:
+        if ts.count(types.FunctionType) < 2:
+            raise TypeError(
+                "Repeat while false requires two or three functions"
+            )
+        # Swap the arguments so that the scalar is always in other if
+        # there's a scalar else leave as is
+
+        functions = list(
+            filter(lambda x: isinstance(x, types.FunctionType), ts)
+        )
+        scalars = list(
+            filter(lambda x: not isinstance(x, types.FunctionType), ts)
+        )
+
+        function, predicate, scalar = functions + scalars
+
+        result = collect_until_false(predicate, function, scalar)
+        return safe_apply(function, result[-1], ctx=ctx)
+
     mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     ret = []
