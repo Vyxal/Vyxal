@@ -846,6 +846,8 @@ Remove instances of b in a
 
 ### Overloads
 
+- num a, fun b: `first a positive integers where b is truthy`
+- fun a, num b: `first b positive integers where a is truthy`
 - any a, any b: `a.replace(b,"")`
 -------------------------------
 ## `` p `` (Prepend)
