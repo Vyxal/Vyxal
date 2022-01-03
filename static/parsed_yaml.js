@@ -598,6 +598,8 @@ Context variable, value of the current loop or function.
 
 codepage_descriptions.push(`Remove
 Remove instances of b in a
+num a, fun b -> first a positive integers where b is truthy
+fun a, num b -> first b positive integers where a is truthy
 any a, any b -> a.replace(b,"")
 `)
 
