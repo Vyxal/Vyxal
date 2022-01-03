@@ -43,8 +43,8 @@ def case_of(value: str) -> int:
 
 @lazylist
 def collect_until_false(
-    function: types.FunctionType,
     predicate: types.FunctionType,
+    function: types.FunctionType,
     initial: Any,
     ctx: Context,
 ) -> List[Any]:
