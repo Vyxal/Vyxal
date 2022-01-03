@@ -585,18 +585,19 @@ def coords_deepmap(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
 
-    f = lambda a, g, pos=(): [
-        f(b, g, (*pos, i))
-        if isinstance(b, list)
-        else safe_apply(g, [*pos, i], ctx=ctx)
-        for i, b in enumerate(a)
-    ]
+    def f(a, g, pos):
+        return [
+            f(b, g, (*pos, i))
+            if isinstance(b, list)
+            else safe_apply(g, [*pos, i], ctx=ctx)
+            for i, b in enumerate(a)
+        ]
 
     # the above curtosey of pxeger
     # https://chat.stackexchange.com/transcript/message/59662694#59662694
     # thank you very cool
 
-    return f(lhs, rhs)
+    return f(lhs, rhs, ())
 
 
 def copy_sign(lhs, rhs, ctx):
@@ -2961,7 +2962,7 @@ def request(lhs, ctx):
     x = urllib.request.urlopen(urlify(lhs)).read()
     try:
         return x.decode("utf-8")
-    except Exception as e:
+    except Exception:
         return x.decode("latin-1")
 
 
@@ -3020,17 +3021,17 @@ def roman_numeral(lhs, ctx):
             raise ValueError("Number must be between 1 and 3999")
 
         result = ""
-        for i in range(len(ints)):
-            count = int(lhs / ints[i])
+        for i, n in enumerate(ints):
+            count = int(lhs / n)
             result += nums[i] * count
-            lhs -= ints[i] * count
+            lhs -= n * count
         return result
     elif vy_type(lhs) is str:
         result = 0
-        for i in range(len(nums)):
-            while lhs.startswith(nums[i]):
+        for i, n in enumerate(nums):
+            while lhs.startswith(n):
                 result += ints[i]
-                lhs = lhs[len(nums[i]) :]
+                lhs = lhs[len(n) :]
         return result
     elif vy_type(lhs) is list:
         return vectorise(roman_numeral, lhs, ctx=ctx)
@@ -4263,9 +4264,9 @@ def zero_matrix(lhs, ctx):
     """
     mat = []
     temp = 0
-    for index in iterable(lhs, ctx=ctx):
+    for ind in iterable(lhs, ctx=ctx):
         mat = []
-        for _ in range(index):
+        for _ in range(ind):
             mat.append(temp)
         temp = deep_copy(mat)
 

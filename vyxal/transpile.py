@@ -434,9 +434,9 @@ def transpile_structure(
     if isinstance(struct, vyxal.structure.BreakStatement):
         if struct.parent_structure == vyxal.structure.IfStatement:
             return indent_str("pass", indent)
-        elif (
-            struct.parent_structure == vyxal.structure.ForLoop
-            or struct.parent_structure == vyxal.structure.WhileLoop
+        elif struct.parent_structure in (
+            vyxal.structure.ForLoop,
+            vyxal.structure.WhileLoop,
         ):
             return indent_str("break", indent)
         elif struct.parent_structure == vyxal.structure.FunctionDef:

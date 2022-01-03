@@ -35,9 +35,12 @@ class LazyList:
                 last = 0
 
             while last <= lhs:
-                last = next(self)
-                if last == lhs:
-                    return 1
+                try:
+                    last = next(self)
+                    if last == lhs:
+                        return 1
+                except StopIteration:
+                    break
             return 0
         else:
             for temp in self:
