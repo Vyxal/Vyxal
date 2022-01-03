@@ -1648,7 +1648,8 @@ def integer_divide(lhs, rhs, ctx):
 def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
-    (any) -> Join on spaces"""
+    (any) -> Join on spaces
+    """
     if vy_type(lhs) == NUMBER_TYPE:
         if lhs == 0:
             return []
@@ -1661,6 +1662,7 @@ def integer_parts_or_join_spaces(lhs, ctx):
             yield [n * sign]
 
         return helper(abs(lhs), 1)
+
     return join(lhs, " ", ctx)
 
 
@@ -2853,10 +2855,26 @@ def regex_sub(lhs, rhs, other, ctx):
 
 def remove(lhs, rhs, ctx):
     """Element o
+    (num, fun) -> first a positive integers where b is truthy
+    (fun, num) -> first b positive integers where a is truthy
     (any, any) -> a.remove(b)
     """
     lhs = iterable(lhs)
     ts = vy_type(lhs)
+    if set(vy_type(lhs, rhs)) == {types.FunctionType, NUMBER_TYPE}:
+        lhs, rhs = (rhs, lhs) if ts is types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            value = 1
+            found = 0
+            while found != rhs:
+                if lhs(value):
+                    yield value
+                    found += 1
+                value += 1
+
+        return gen()
     if ts == str:
         return replace(lhs, rhs, "", ctx)
     elif ts == LazyList:
@@ -3504,6 +3522,27 @@ def transliterate(lhs, rhs, other, ctx):
     (any, any, any) -> transliterate lhs according to the
                        mapping rhs->other
     """
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+    if types.FunctionType in ts:
+        if ts.count(types.FunctionType) < 2:
+            raise TypeError(
+                "Repeat while false requires two or three functions"
+            )
+        # Swap the arguments so that the scalar is always in other if
+        # there's a scalar else leave as is
+
+        functions = list(
+            filter(lambda x: isinstance(x, types.FunctionType), ts)
+        )
+        scalars = list(
+            filter(lambda x: not isinstance(x, types.FunctionType), ts)
+        )
+
+        function, predicate, scalar = functions + scalars
+
+        result = collect_until_false(predicate, function, scalar)
+        return safe_apply(function, result[-1], ctx=ctx)
+
     mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     ret = []
