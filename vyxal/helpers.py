@@ -41,7 +41,6 @@ def case_of(value: str) -> int:
     return -1
 
 
-@lazylist
 def collect_until_false(
     function: types.FunctionType,
     predicate: types.FunctionType,
