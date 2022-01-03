@@ -1149,6 +1149,8 @@
   arity: 2
   overloads:
     any-any: a.replace(b,"")
+    num-fun: first a positive integers where b is truthy
+    fun-num: first b positive integers where a is truthy
   vectorise: false
   tests:
     - '["hello","l"] : "heo"'
