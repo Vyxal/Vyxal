@@ -131,7 +131,6 @@ def all_diagonals(lhs, ctx):
     """Element ÞD
     Diagonals of a matrix, starting with the main diagonal.
     """
-
     vector = [iterable(x, ctx=ctx) for x in lhs]
     all_diags = [[] for _ in range(len(vector) * 2 - 1)]
     start = 0
@@ -194,7 +193,6 @@ def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
     """
-
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
@@ -2823,7 +2821,6 @@ def random_choice(lhs, ctx):
     (lst) -> random element of a
     (num) -> Random integer from 0 to a
     """
-
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
@@ -3083,7 +3080,6 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-
     temp = deep_copy(lhs)
     random.shuffle(temp)
     return temp
@@ -4193,8 +4189,7 @@ def vy_zip(lhs, rhs, ctx):
                     exhausted += 1
                 if exhausted == 2:
                     break
-                else:
-                    yield [left_item, right_item]
+                yield [left_item, right_item]
 
         return f()
 

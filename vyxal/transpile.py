@@ -316,7 +316,7 @@ def transpile_structure(
                 + ", ctx)",
                 indent + 1,
             )
-            + indent_str(f"this = self", indent + 1)
+            + indent_str("this = self", indent + 1)
             + indent_str("ctx.function_stack.append(this)", indent + 1)
             + indent_str(
                 "ctx.context_values.append(list(deep_copy(stack)) "
