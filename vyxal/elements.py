@@ -2855,8 +2855,9 @@ def regex_sub(lhs, rhs, other, ctx):
 
 def remove(lhs, rhs, ctx):
     """Element o
-    (any, any) -> a.remove(b)
+    (num, fun) -> first a positive integers where b is truthy
     (fun, num) -> first b positive integers where a is truthy
+    (any, any) -> a.remove(b)
     """
     lhs = iterable(lhs)
     ts = vy_type(lhs)
