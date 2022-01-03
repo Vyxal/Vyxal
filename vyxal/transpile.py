@@ -36,6 +36,12 @@ def lambda_wrap(
 
 
 def transpile(program: str, dict_compress: bool = True) -> str:
+    """Transpile an entire Vyxal program
+    Parameters:
+    program: str
+      The Vyxal program to transpile
+    dict_compress: bool = True
+      Whether or not to use dictionary compression"""
     return transpile_ast(
         vyxal.parse.parse(vyxal.lexer.tokenise(program)),
         dict_compress=dict_compress,
@@ -61,6 +67,7 @@ def transpile_single(
     indent: int,
     dict_compress: bool = True,
 ) -> str:
+    """Transpile a single token or structure"""
     if isinstance(token_or_struct, Token):
         return transpile_token(
             token_or_struct, indent, dict_compress=dict_compress
@@ -79,6 +86,7 @@ def transpile_single(
 def transpile_token(
     token: Token, indent: int, dict_compress: bool = True
 ) -> str:
+    """Transpile a single token"""
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
         if dict_compress:

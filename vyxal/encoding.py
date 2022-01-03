@@ -20,7 +20,8 @@ codepage += "ǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟"
 assert len(codepage) == 256
 
 
-def vyxal_to_utf8(code):
+def vyxal_to_utf8(code: list[int]) -> str:
+    """Turn characters on Vyxal codepage into actual UTF-8 characters"""
     # Taken from the old 05AB1E interpreter
     processed_code = ""
     for char in code:
@@ -29,7 +30,8 @@ def vyxal_to_utf8(code):
     return processed_code
 
 
-def utf8_to_vyxal(code):
+def utf8_to_vyxal(code: str) -> list[int]:
+    """Turn UTF-8 characters into integers on the Vyxal codepage"""
     # Taken from the old 05AB1E interpreter
     processed_code = ""
     for char in code:

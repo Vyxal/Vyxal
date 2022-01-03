@@ -643,6 +643,10 @@ def sentence_case(item: str) -> str:
 
 
 def simplify(value: Any) -> Union[int, float, str, list]:
+    """
+    Simplify values.
+    Turns sympy values into floats, including sympy values in lists
+    """
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
@@ -778,6 +782,7 @@ def uncompress_dict(source: str) -> str:
 
 
 def uncompress_str(string: str) -> str:
+    """Decompress a base 255 compressed string"""
     base_10_representation = from_base_alphabet(
         string, vyxal.encoding.codepage_string_compress
     )
@@ -789,6 +794,7 @@ def uncompress_str(string: str) -> str:
 
 
 def uncompress_num(num: str) -> int:
+    """Decompress a base 255 compressed number"""
     return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
 
 

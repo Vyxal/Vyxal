@@ -633,6 +633,8 @@ def count_item(lhs, rhs, ctx):
 
 
 def counts(lhs, ctx):
+    """Element Ċ
+    (any) -> Counts: [[x, a.count(x)] for x in a]"""
     temp = uniquify(lhs, ctx=ctx)
     return [[x, count_item(lhs, x, ctx)] for x in temp]
 
@@ -2959,6 +2961,8 @@ def replace_until_no_change(lhs, rhs, other, ctx):
 
 
 def request(lhs, ctx):
+    """Element ¨U
+    (str) -> Send a GET request to a URL if online"""
     x = urllib.request.urlopen(urlify(lhs)).read()
     try:
         return x.decode("utf-8")
@@ -3744,6 +3748,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
 
 
 def vectorised_not(lhs, ctx):
+    """List overload for element †"""
     return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
         vy_type(lhs), lambda: vectorise(vectorised_not, lhs, ctx=ctx)
     )()
@@ -4135,6 +4140,18 @@ def vy_round(lhs, ctx):
 
 
 def vy_type(item, rhs=None, other=None, simple=False):
+    """
+    Get the Vyxal-friendly type(s) of 1-3 values.
+    If only `item` is given, returns the Vyxal type of `item`.
+    If both`item` and `rhs` or all three (`item`, `rhs`, and `other`)
+    are given, then it returns a tuple containing their types.
+
+    Returns `list` for lists
+    Returns `str` for strings
+    Returns `NUMBER_TYPE` if a value is int, complex, float, or sympy
+    Returns `LazyList` for `LazyList`s if `simple` is `False`
+      (the default) but `list` if `simple` is `True`
+    """
     if other is not None:
         return (
             vy_type(item, simple=simple),
