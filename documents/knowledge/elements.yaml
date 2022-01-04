@@ -67,7 +67,7 @@
 - element: "⟇"
   name: Remove at Index
   arity: 2
-  description: Returns every item in a list except the item at the given index. 
+  description: Returns every item in a list except the item at the given index.
   overloads:
     any-num: Remove item b of a
   vectorise: false

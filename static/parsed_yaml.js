@@ -35,9 +35,9 @@ Returns the first truthy argument, otherwise the first falsey argument.
 any a, any b -> a or b
 `)
 
-codepage_descriptions.push(`Reversed Logical Or
-Returns  the same as logical or but with reversed arguments.
-any a, any b -> b or a
+codepage_descriptions.push(`Remove at Index
+Returns every item in a list except the item at the given index.
+any a, num b -> Remove item b of a
 `)
 
 codepage_descriptions.push(`Item Split

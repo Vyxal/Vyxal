@@ -42,13 +42,13 @@ Returns the first truthy argument, otherwise the first falsey argument.
 
 - any a, any b: `a or b`
 -------------------------------
-## `` ⟇ `` (Reversed Logical Or)
+## `` ⟇ `` (Remove at Index)
 
-Returns  the same as logical or but with reversed arguments.
+Returns every item in a list except the item at the given index.
 
 ### Overloads
 
-- any a, any b: `b or a`
+- any a, num b: `Remove item b of a`
 -------------------------------
 ## `` ÷ `` (Item Split)
 
