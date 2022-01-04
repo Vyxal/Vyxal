@@ -645,6 +645,14 @@ def cumulative_sum(lhs, ctx):
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
 
 
+def cumul_sum_sans_last_prepend_zero(lhs, ctx):
+    """Element ÞR
+    Remove the last item of the cumulative sums of a list and prepend 0.
+    """
+
+    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
+
+
 def curly_bracketify(lhs, ctx):
     """Element øḃ
     (any) -> "[" + lhs + "]"
@@ -3097,6 +3105,18 @@ def run_length_decoding(lhs, ctx):
         return LazyList(temp)
 
 
+def sans_last_prepend_zero(lhs, ctx):
+    """Element Þr
+    Remove the last item of a list and prepend 0
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: tail_remove(lhs, ctx),  # prepending a 0 to
+        # a number just makes it the same number
+        str: lambda: "0" + lhs[:-1],
+    }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
+
+
 def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
@@ -4780,6 +4800,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
     "Þ¾": ("ctx.global_array = []", 0),
+    "Þr": process_element(sans_last_prepend_zero, 1),
+    "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
