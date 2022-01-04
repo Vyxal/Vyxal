@@ -2246,6 +2246,16 @@ codepage_descriptions[252] += `
 Þ¾ (Empty the Global Array)
 Empty the global array.
 `
+codepage_descriptions[114] += `
+Þr (Remove Last Item and Prepend 0)
+Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+lst a -> Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+`
+codepage_descriptions[82] += `
+ÞR (Remove Last Item From Cumulative Sums and Prepend 0)
+Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+lst a -> Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
