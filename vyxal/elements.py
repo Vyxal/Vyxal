@@ -2829,6 +2829,17 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
+def remove_at_index(lhs, rhs, ctx):
+    """Element ⟇
+    (any, num) -> remove item b of a
+    """
+
+    lhs, rhs = (rhs, lhs) if vy_type(rhs) != NUMBER_TYPE else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
+
+    return LazyList(item for i, item in enumerate(lhs) if i != rhs)
+
+
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -4368,7 +4379,7 @@ elements: dict[str, tuple[str, int]] = {
     "∧": process_element("lhs and rhs", 2),
     "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
-    "⟇": process_element("rhs or lhs", 2),
+    "⟇": process_element(remove_at_index, 2),
     "÷": (
         "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
         1,
