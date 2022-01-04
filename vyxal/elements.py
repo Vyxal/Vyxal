@@ -2984,7 +2984,7 @@ def request(lhs, ctx):
     x = urllib.request.urlopen(urlify(lhs)).read()
     try:
         return x.decode("utf-8")
-    except Exception:
+    except UnicodeDecodeError:
         return x.decode("latin-1")
 
 
