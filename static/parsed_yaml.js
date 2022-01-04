@@ -38,6 +38,7 @@ any a, any b -> a or b
 codepage_descriptions.push(`Remove at Index
 Returns every item in a list except the item at the given index.
 any a, num b -> Remove item b of a
+num a, any b -> Remove item a of b
 `)
 
 codepage_descriptions.push(`Item Split

@@ -49,6 +49,7 @@ Returns every item in a list except the item at the given index.
 ### Overloads
 
 - any a, num b: `Remove item b of a`
+- num a, any b: `Remove item a of b`
 -------------------------------
 ## `` ÷ `` (Item Split)
 

@@ -440,7 +440,7 @@ def test_RemoveatIndex():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [[1,2,3,1], 3]]
+    stack = [vyxalify(item) for item in [3, [1,2,3,1]]]
     expected = vyxalify([1,2,3])
     ctx = Context()
 
@@ -461,7 +461,7 @@ def test_RemoveatIndex():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-    stack = [vyxalify(item) for item in [[1,2,3,1], 0]]
+    stack = [vyxalify(item) for item in [0, [1,2,3,1]]]
     expected = vyxalify([2,3,1])
     ctx = Context()
 
