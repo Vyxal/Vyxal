@@ -3113,7 +3113,7 @@ def sans_last_prepend_zero(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: tail_remove(lhs, ctx),  # prepending a 0 to
         # a number just makes it the same number
-        str: lambda: "0" + lhs[:-1],
+        str: lambda: "0" + lhs[:-1],  # leave as string
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
 
 
