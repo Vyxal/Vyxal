@@ -60,9 +60,11 @@ def execute():
     with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
         f.write(input_list)
 
-    with open(f"sessions/{session}/.stdin", "r", encoding="utf-8") as x, open(
-        f"sessions/{session}/.stdout", "w", encoding="utf-8"
-    ) as y, open(f"sessions/{session}/.stderr", "w", encoding="utf-8") as z:
+    with (
+        open(f"sessions/{session}/.stdin", "r", encoding="utf-8") as x,
+        open(f"sessions/{session}/.stdout", "w", encoding="utf-8") as y,
+        open(f"sessions/{session}/.stderr", "w", encoding="utf-8") as z,
+    ):
         manager = multiprocessing.Manager()
         ret = manager.dict()
 
