@@ -70,12 +70,13 @@
   description: Returns every item in a list except the item at the given index.
   overloads:
     any-num: Remove item b of a
+    num-any: Remove item a of b
   vectorise: false
   tests:
     - "[[1,2,3], 0] : [2,3]"
     - "[[1,2,3], 1] : [1,3]"
-    - "[[1,2,3,1], 3] : [1,2,3]"
-    - "[[1,2,3,1], 0] : [2,3,1]"
+    - "[3, [1,2,3,1]] : [1,2,3]"
+    - "[0, [1,2,3,1]] : [2,3,1]"
 
 - element: "÷"
   name: Item Split
