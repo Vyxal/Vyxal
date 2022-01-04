@@ -585,7 +585,7 @@ def coords_deepmap(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
 
-    def f(a, g, pos):
+    def f(a, g, pos=()):
         return [
             f(b, g, (*pos, i))
             if isinstance(b, list)
@@ -597,7 +597,7 @@ def coords_deepmap(lhs, rhs, ctx):
     # https://chat.stackexchange.com/transcript/message/59662694#59662694
     # thank you very cool
 
-    return f(lhs, rhs, ())
+    return f(lhs, rhs)
 
 
 def copy_sign(lhs, rhs, ctx):
