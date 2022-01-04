@@ -34,11 +34,12 @@
 
     any a, any b: a or b
 -------------------------------
-⟇ (Reversed Logical Or)
+⟇ (Remove at Index)
 
-- Returns  the same as logical or but with reversed arguments.
+- Returns every item in a list except the item at the given index.
 
-    any a, any b: b or a
+    any a, num b: Remove item b of a
+    num a, any b: Remove item a of b
 -------------------------------
 ÷ (Item Split)
 
