@@ -143,7 +143,6 @@ class LazyList:
                 yield item
 
     def listify(self):
-        """Turn into a list"""
         from vyxal.helpers import vyxalify
 
         temp = self.generated + vyxalify(list(self.raw_object))
@@ -152,7 +151,6 @@ class LazyList:
         return temp
 
     def output(self, end="\n", ctx=None):
-        """Print this LazyList"""
         from vyxal.elements import vy_print, vy_repr
 
         ctx.stacks.append(self.generated)
@@ -178,7 +176,6 @@ class LazyList:
 
     @lazylist
     def reversed(self):
-        """Reversed version of this LazyList"""
         self.generated += list(itertools.tee(self.raw_object)[-1])
         for item in self.generated[::-1]:
             yield item
