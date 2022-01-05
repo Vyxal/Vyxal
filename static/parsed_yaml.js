@@ -35,9 +35,10 @@ Returns the first truthy argument, otherwise the first falsey argument.
 any a, any b -> a or b
 `)
 
-codepage_descriptions.push(`Reversed Logical Or
-Returns  the same as logical or but with reversed arguments.
-any a, any b -> b or a
+codepage_descriptions.push(`Remove at Index
+Returns every item in a list except the item at the given index.
+any a, num b -> Remove item b of a
+num a, any b -> Remove item a of b
 `)
 
 codepage_descriptions.push(`Item Split
@@ -202,8 +203,8 @@ any a, any b -> b, a
 codepage_descriptions.push(`Modulo / Format
 Modulo two numbers / format two strings
 num a, num b -> a % b
-num a, str b -> last of (b split into a equal pieces)
-str a, num b -> last of (a split into b equal pieces)
+num a, str b -> b.format(a) (replace % in b with a)
+str a, num b -> a.format(b) (replace % in a with b)
 str a, str b -> a.format(b) (replace % in a with b)
 str a, lst b -> a.format(b) (replace % in a with each item of b)
 `)
@@ -598,6 +599,8 @@ Context variable, value of the current loop or function.
 
 codepage_descriptions.push(`Remove
 Remove instances of b in a
+num a, fun b -> first a positive integers where b is truthy
+fun a, num b -> first b positive integers where a is truthy
 any a, any b -> a.replace(b,"")
 `)
 
@@ -1693,6 +1696,10 @@ codepage_descriptions[216] += `
 k□ (Directions)
 Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 `
+codepage_descriptions[197] += `
+kṘ (Roman Numerals)
+IVXLCDM
+`
 codepage_descriptions[99] += `
 ∆c (Cosine)
 Get the cosine of an angle in radians
@@ -2030,7 +2037,7 @@ str a -> vertical_mirror(a)
 codepage_descriptions[193] += `
 øṀ (Flip Brackets Vertical Mirror)
 Vertical mirror, and swap brackets and slashes in the second half.
-any a -> vertical_mirror(a,mapping  = flip brackets and slashes)
+any a -> vertical_mirror(a, mapping = flip brackets and slashes)
 `
 codepage_descriptions[196] += `
 øṖ (String Partitions)
@@ -2041,6 +2048,12 @@ codepage_descriptions[143] += `
 øḋ (To Decimal)
 Convert a rational to its decimal representation.
 num a -> to_decimal(a)
+`
+codepage_descriptions[197] += `
+øṘ (Roman Numeral)
+Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
+num a -> to_roman_numeral(a)
+str a -> from_roman_numeral(a)
 `
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
@@ -2233,6 +2246,16 @@ lst a, int b -> Get all slices of a list, skipping a certain number of items
 codepage_descriptions[252] += `
 Þ¾ (Empty the Global Array)
 Empty the global array.
+`
+codepage_descriptions[114] += `
+Þr (Remove Last Item and Prepend 0)
+Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+lst a -> Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+`
+codepage_descriptions[82] += `
+ÞR (Remove Last Item From Cumulative Sums and Prepend 0)
+Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+lst a -> Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
 `
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)

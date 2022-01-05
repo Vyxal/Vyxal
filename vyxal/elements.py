@@ -561,11 +561,13 @@ def contains(lhs, rhs, ctx):
     """Element c
     (any, any) -> count of a in b
     """
-    lhs = iterable(lhs, ctx=ctx)
-    for item in lhs:
-        if item == rhs:
-            return 1
-    return 0
+    if list in vy_type(lhs, rhs, simple=True):
+        lhs, rhs = (
+            (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
+        )
+        lhs = iterable(lhs, ctx=ctx)
+        return int(rhs in lhs)
+    return int(vy_str(rhs) in vy_str(lhs))
 
 
 def coords_deepmap(lhs, rhs, ctx):
@@ -641,6 +643,14 @@ def cumulative_sum(lhs, ctx):
     (any) -> cumulative sum of a
     """
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
+
+
+def cumul_sum_sans_last_prepend_zero(lhs, ctx):
+    """Element ÞR
+    Remove the last item of the cumulative sums of a list and prepend 0.
+    """
+
+    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
 
 
 def curly_bracketify(lhs, ctx):
@@ -1117,7 +1127,7 @@ def flatten_by(lhs, rhs, ctx):
 
 def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
-    (str) -> vertical_mirror(a,mapping  = flip brackets and slashes)
+    (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
     """
     result = lhs.split("\n")
     for i in range(len(result)):
@@ -1645,7 +1655,8 @@ def integer_divide(lhs, rhs, ctx):
 def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
-    (any) -> Join on spaces"""
+    (any) -> Join on spaces
+    """
     if vy_type(lhs) == NUMBER_TYPE:
         if lhs == 0:
             return []
@@ -1658,6 +1669,7 @@ def integer_parts_or_join_spaces(lhs, ctx):
             yield [n * sign]
 
         return helper(abs(lhs), 1)
+
     return join(lhs, " ", ctx)
 
 
@@ -2825,6 +2837,17 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
+def remove_at_index(lhs, rhs, ctx):
+    """Element ⟇
+    (any, num) -> remove item b of a
+    """
+
+    lhs, rhs = (rhs, lhs) if vy_type(rhs) != NUMBER_TYPE else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
+
+    return LazyList(item for i, item in enumerate(lhs) if i != rhs)
+
+
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -2851,10 +2874,26 @@ def regex_sub(lhs, rhs, other, ctx):
 
 def remove(lhs, rhs, ctx):
     """Element o
+    (num, fun) -> first a positive integers where b is truthy
+    (fun, num) -> first b positive integers where a is truthy
     (any, any) -> a.remove(b)
     """
     lhs = iterable(lhs)
     ts = vy_type(lhs)
+    if set(vy_type(lhs, rhs)) == {types.FunctionType, NUMBER_TYPE}:
+        lhs, rhs = (rhs, lhs) if ts is types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            value = 1
+            found = 0
+            while found != rhs:
+                if lhs(value):
+                    yield value
+                    found += 1
+                value += 1
+
+        return gen()
     if ts == str:
         return replace(lhs, rhs, "", ctx)
     elif ts == LazyList:
@@ -3075,6 +3114,18 @@ def run_length_decoding(lhs, ctx):
         return "".join(temp)
     else:
         return LazyList(temp)
+
+
+def sans_last_prepend_zero(lhs, ctx):
+    """Element Þr
+    Remove the last item of a list and prepend 0
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: tail_remove(lhs, ctx),  # prepending a 0 to
+        # a number just makes it the same number
+        str: lambda: "0" + lhs[:-1],  # leave as string
+    }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
 
 
 def shuffle(lhs, ctx):
@@ -3501,6 +3552,27 @@ def transliterate(lhs, rhs, other, ctx):
     (any, any, any) -> transliterate lhs according to the
                        mapping rhs->other
     """
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+    if types.FunctionType in ts:
+        if ts.count(types.FunctionType) < 2:
+            raise TypeError(
+                "Repeat while false requires two or three functions"
+            )
+        # Swap the arguments so that the scalar is always in other if
+        # there's a scalar else leave as is
+
+        functions = list(
+            filter(lambda x: isinstance(x, types.FunctionType), ts)
+        )
+        scalars = list(
+            filter(lambda x: not isinstance(x, types.FunctionType), ts)
+        )
+
+        function, predicate, scalar = functions + scalars
+
+        result = collect_until_false(predicate, function, scalar)
+        return safe_apply(function, result[-1], ctx=ctx)
+
     mapping = dict(vy_zip(iterable(rhs, ctx), iterable(other, ctx), ctx=ctx))
 
     ret = []
@@ -4314,7 +4386,7 @@ elements: dict[str, tuple[str, int]] = {
     "∧": process_element("lhs and rhs", 2),
     "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
-    "⟇": process_element("rhs or lhs", 2),
+    "⟇": process_element(remove_at_index, 2),
     "÷": (
         "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
         1,
@@ -4682,6 +4754,7 @@ elements: dict[str, tuple[str, int]] = {
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
+    "øṁ": process_element(vertical_mirror, 1),
     "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
@@ -4738,6 +4811,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
     "Þ¾": ("ctx.global_array = []", 0),
+    "Þr": process_element(sans_last_prepend_zero, 1),
+    "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

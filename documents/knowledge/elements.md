@@ -42,13 +42,14 @@ Returns the first truthy argument, otherwise the first falsey argument.
 
 - any a, any b: `a or b`
 -------------------------------
-## `` ⟇ `` (Reversed Logical Or)
+## `` ⟇ `` (Remove at Index)
 
-Returns  the same as logical or but with reversed arguments.
+Returns every item in a list except the item at the given index.
 
 ### Overloads
 
-- any a, any b: `b or a`
+- any a, num b: `Remove item b of a`
+- num a, any b: `Remove item a of b`
 -------------------------------
 ## `` ÷ `` (Item Split)
 
@@ -284,8 +285,8 @@ Modulo two numbers / format two strings
 ### Overloads
 
 - num a, num b: `a % b`
-- num a, str b: `last of (b split into a equal pieces)`
-- str a, num b: `last of (a split into b equal pieces)`
+- num a, str b: `b.format(a) (replace % in b with a)`
+- str a, num b: `a.format(b) (replace % in a with b)`
 - str a, str b: `a.format(b) (replace % in a with b)`
 - str a, lst b: `a.format(b) (replace % in a with each item of b)`
 -------------------------------
@@ -846,6 +847,8 @@ Remove instances of b in a
 
 ### Overloads
 
+- num a, fun b: `first a positive integers where b is truthy`
+- fun a, num b: `first b positive integers where a is truthy`
 - any a, any b: `a.replace(b,"")`
 -------------------------------
 ## `` p `` (Prepend)
@@ -2387,6 +2390,11 @@ Vowels with y, "aeiouyAEIOUY"
 Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 
 -------------------------------
+## `` kṘ `` (Roman Numerals)
+
+IVXLCDM
+
+-------------------------------
 ## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians
@@ -2913,7 +2921,7 @@ Vertical mirror, and swap brackets and slashes in the second half.
 
 ### Overloads
 
-- any a: `vertical_mirror(a,mapping  = flip brackets and slashes)`
+- any a: `vertical_mirror(a, mapping = flip brackets and slashes)`
 -------------------------------
 ## `` øṖ `` (String Partitions)
 
@@ -2930,6 +2938,23 @@ Convert a rational to its decimal representation.
 ### Overloads
 
 - num a: `to_decimal(a)`
+-------------------------------
+## `` øṘ `` (Roman Numeral)
+
+Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
+
+### Overloads
+
+- num a: `to_roman_numeral(a)`
+- str a: `from_roman_numeral(a)`
+-------------------------------
+## `` Þ* `` (Cartesian product over list)
+
+Cartesian product over a list of lists
+
+### Overloads
+
+- lst a: `itertools.product(*a)`
 -------------------------------
 ## `` Þo `` (Ordinals)
 
@@ -3219,6 +3244,22 @@ Get all slices of a list, skipping a certain number of items
 
 Empty the global array.
 
+-------------------------------
+## `` Þr `` (Remove Last Item and Prepend 0)
+
+Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+
+### Overloads
+
+- lst a: `Remove the last item of a list and prepend 0. A shortcut for Ṫ0p`
+-------------------------------
+## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
+
+Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+
+### Overloads
+
+- lst a: `Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
