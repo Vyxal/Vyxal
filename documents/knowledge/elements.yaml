@@ -4577,6 +4577,28 @@
   description: Empty the global array.
   arity: 0
 
+- element: "Þr"
+  name: Remove Last Item and Prepend 0
+  description: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+  arity: 1
+  overloads:
+    lst: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+  vectorise: false
+  tests:
+    - "[[1,2,3,4,5,6,7,8,9]] : [0,1,2,3,4,5,6,7,8]"
+    - "['abcde'] : '0abcd'"
+
+- element: "ÞR"
+  name: Remove Last Item From Cumulative Sums and Prepend 0
+  description: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+  arity: 1
+  overloads:
+    lst: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+  vectorise: false
+  tests:
+    - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
+    - "['abcde'] : [0, 'a', 'ab', 'abc', 'abcd']"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
