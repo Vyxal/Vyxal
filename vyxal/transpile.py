@@ -61,6 +61,7 @@ def transpile_single(
     indent: int,
     dict_compress: bool = True,
 ) -> str:
+    """Transpile a single token or structure"""
     if isinstance(token_or_struct, Token):
         return transpile_token(
             token_or_struct, indent, dict_compress=dict_compress
@@ -79,6 +80,7 @@ def transpile_single(
 def transpile_token(
     token: Token, indent: int, dict_compress: bool = True
 ) -> str:
+    """Transpile a single token"""
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
         if dict_compress:
@@ -316,7 +318,7 @@ def transpile_structure(
                 + ", ctx)",
                 indent + 1,
             )
-            + indent_str(f"this = self", indent + 1)
+            + indent_str("this = self", indent + 1)
             + indent_str("ctx.function_stack.append(this)", indent + 1)
             + indent_str(
                 "ctx.context_values.append(list(deep_copy(stack)) "
@@ -434,9 +436,9 @@ def transpile_structure(
     if isinstance(struct, vyxal.structure.BreakStatement):
         if struct.parent_structure == vyxal.structure.IfStatement:
             return indent_str("pass", indent)
-        elif (
-            struct.parent_structure == vyxal.structure.ForLoop
-            or struct.parent_structure == vyxal.structure.WhileLoop
+        elif struct.parent_structure in (
+            vyxal.structure.ForLoop,
+            vyxal.structure.WhileLoop,
         ):
             return indent_str("break", indent)
         elif struct.parent_structure == vyxal.structure.FunctionDef:

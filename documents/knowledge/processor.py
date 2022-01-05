@@ -9,7 +9,8 @@ TEST_ELEMENTS_PY = os.path.join(
 )
 
 
-prologue = """import os
+prologue = """# flake8: noqa
+import os
 import sys
 import sympy
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'

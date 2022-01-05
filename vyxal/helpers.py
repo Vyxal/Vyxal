@@ -97,17 +97,15 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def enumerate_md(haystack: VyList, index_stack: List[int] = []) -> VyList:
-    """
-    Gets all the multi-dimensional indicies of haystack
-    """
+def enumerate_md(haystack: VyList, _index_stack: tuple = ()) -> VyList:
+    """Gets all the multi-dimensional indices of haystack"""
     for i, item in enumerate(haystack):
         if type(item) in (list, LazyList):
-            yield from enumerate_md(item, index_stack + [i])
+            yield from enumerate_md(item, _index_stack + (i,))
         elif type(item) is str and len(item) > 1:
-            yield from enumerate_md(list(item), index_stack + [i])
+            yield from enumerate_md(list(item), _index_stack + (i,))
         else:
-            yield index_stack + [i]
+            yield list(_index_stack) + [i]
 
 
 @lazylist
@@ -639,6 +637,10 @@ def sentence_case(item: str) -> str:
 
 
 def simplify(value: Any) -> Union[int, float, str, list]:
+    """
+    Simplify values.
+    Turns sympy values into floats, including sympy values in lists
+    """
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
@@ -774,6 +776,7 @@ def uncompress_dict(source: str) -> str:
 
 
 def uncompress_str(string: str) -> str:
+    """Decompress a base 255 compressed string"""
     base_10_representation = from_base_alphabet(
         string, vyxal.encoding.codepage_string_compress
     )
@@ -785,6 +788,7 @@ def uncompress_str(string: str) -> str:
 
 
 def uncompress_num(num: str) -> int:
+    """Decompress a base 255 compressed number"""
     return from_base_alphabet(num, vyxal.encoding.codepage_number_compress)
 
 

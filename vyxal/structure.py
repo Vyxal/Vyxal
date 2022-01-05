@@ -15,19 +15,12 @@ class Structure:
         # Don't do anything with the arguments
         self.branches = branches
 
-    def transpile(self) -> str:
-        """Return the transpiled version of the structure"""
-        return "{}"
-
     def __repr__(self):
         return f"{type(self).__name__}({repr(self.branches)})"
 
 
 class GenericStatement(Structure):
     """Generic statements are elements and so on"""
-
-    def __init__(self, *branches: Branch):
-        super().__init__(*branches)
 
 
 class BreakStatement(Structure):
