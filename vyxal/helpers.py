@@ -97,22 +97,15 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def _enumerate_md(haystack: VyList, index_stack: List[int]) -> VyList:
-    """Recursive helper for :func:`enumerate_md`"""
+def enumerate_md(haystack: VyList, _index_stack: tuple = ()) -> VyList:
+    """Gets all the multi-dimensional indices of haystack"""
     for i, item in enumerate(haystack):
         if type(item) in (list, LazyList):
-            yield from _enumerate_md(item, index_stack + [i])
+            yield from enumerate_md(item, _index_stack + (i,))
         elif type(item) is str and len(item) > 1:
-            yield from _enumerate_md(list(item), index_stack + [i])
+            yield from enumerate_md(list(item), _index_stack + (i,))
         else:
-            yield index_stack + [i]
-
-
-def enumerate_md(haystack: VyList) -> VyList:
-    """
-    Gets all the multi-dimensional indices of haystack
-    """
-    return _enumerate_md(haystack, [])
+            yield list(_index_stack) + [i]
 
 
 @lazylist
