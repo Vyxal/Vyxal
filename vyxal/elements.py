@@ -4277,7 +4277,8 @@ def vy_zip(lhs, rhs, ctx):
                     exhausted += 1
                 if exhausted == 2:
                     break
-                yield [left_item, right_item]
+                else:
+                    yield [left_item, right_item]
 
         return f()
 
