@@ -36,12 +36,6 @@ def lambda_wrap(
 
 
 def transpile(program: str, dict_compress: bool = True) -> str:
-    """Transpile an entire Vyxal program
-    Parameters:
-    program: str
-      The Vyxal program to transpile
-    dict_compress: bool = True
-      Whether or not to use dictionary compression"""
     return transpile_ast(
         vyxal.parse.parse(vyxal.lexer.tokenise(program)),
         dict_compress=dict_compress,
