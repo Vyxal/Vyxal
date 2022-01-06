@@ -3874,7 +3874,7 @@ def vy_abs(lhs, ctx):
     """
     return {
         NUMBER_TYPE: lambda: abs(lhs),
-        str: lambda: lhs.replace(" ", ""),
+        str: lambda: "".join(lhs.split()),
     }.get(vy_type(lhs), lambda: vectorise(vy_abs, lhs, ctx=ctx))()
 
 
