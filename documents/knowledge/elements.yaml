@@ -1581,10 +1581,13 @@
   overloads:
     fun: First integer for which a(x) is truthy
     any: Join by empty string
+    num: abs(a) <= 1
   vectorise: false
   tests:
     - '[["a","b","c"]] : "abc"'
     - "[[1,2,3]] : '123'"
+    - "[5] : 0"
+    - "[0.54] : 1"
 
 - element: "ȯ"
   name: Slice
