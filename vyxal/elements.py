@@ -1100,7 +1100,7 @@ def first_integer(lhs, ctx):
 
     ts = vy_type(lhs, simple=True)
     return {
-        (NUMBER_TYPE): lambda: abs(lhs) <= 1,
+        (NUMBER_TYPE): lambda: int(bool(abs(lhs) <= 1)),
         (str): lambda: lhs.zfill(len(lhs) + (8 - len(lhs) % 8)),
         (list): lambda: join(lhs, "", ctx),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
@@ -3874,7 +3874,7 @@ def vy_abs(lhs, ctx):
     """
     return {
         NUMBER_TYPE: lambda: abs(lhs),
-        str: lambda: lhs.replace(" ", ""),
+        str: lambda: "".join(lhs.split()),
     }.get(vy_type(lhs), lambda: vectorise(vy_abs, lhs, ctx=ctx))()
 
 

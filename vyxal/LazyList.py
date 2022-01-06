@@ -115,7 +115,7 @@ class LazyList:
 
     def __len__(self):
         temp = self.listify()
-        self = LazyList(temp[::])
+        self.raw_object = iter(temp[::])
         return len(temp)
 
     def __next__(self):
