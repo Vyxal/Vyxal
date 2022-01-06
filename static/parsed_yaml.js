@@ -822,6 +822,7 @@ codepage_descriptions.push(`Join By Nothing
 Join a list by the empty string
 fun a -> First integer for which a(x) is truthy
 any a -> Join by empty string
+num a -> abs(a) <= 1
 `)
 
 codepage_descriptions.push(`Slice
