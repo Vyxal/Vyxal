@@ -2856,7 +2856,9 @@ def regex_sub(lhs, rhs, other, ctx):
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
 
     if ts[-1] != types.FunctionType:
-        return re.sub(vy_str(lhs, ctx=ctx), vy_str(other, ctx=ctx), vy_str(rhs, ctx=ctx))
+        return re.sub(
+            vy_str(lhs, ctx=ctx), vy_str(other, ctx=ctx), vy_str(rhs, ctx=ctx)
+        )
     else:
         parts = re.split("(" + lhs + ")", rhs)
         out = ""
@@ -3369,7 +3371,9 @@ def strip(lhs, rhs, ctx):
             vy_str(lhs, ctx=ctx).strip(vy_str(rhs, ctx=ctx)),
             ctx,
         ),
-        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs, ctx=ctx).strip(rhs), ctx),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).strip(rhs), ctx
+        ),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
     }.get(ts, lambda: list_helper(lhs, rhs))()
