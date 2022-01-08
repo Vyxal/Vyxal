@@ -1816,7 +1816,7 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
-    return vy_str(rhs, ctx=ctx).join(map(vy_str, iterable(lhs, ctx=ctx)))
+    return vy_str(rhs, ctx=ctx).join(map(lambda a: vy_str(a,ctx=ctx), iterable(lhs, ctx=ctx)))
 
 
 def join_newlines(lhs, ctx):
