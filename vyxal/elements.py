@@ -565,7 +565,7 @@ def contains(lhs, rhs, ctx):
         )
         lhs = iterable(lhs, ctx=ctx)
         return int(rhs in lhs)
-    return int(vy_str(rhs) in vy_str(lhs))
+    return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
 def coords_deepmap(lhs, rhs, ctx):
@@ -1816,7 +1816,9 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
-    return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
+    return vy_str(rhs, ctx=ctx).join(
+        map(lambda a: vy_str(a, ctx=ctx), iterable(lhs, ctx=ctx))
+    )
 
 
 def join_newlines(lhs, ctx):
@@ -1909,10 +1911,10 @@ def ljust(lhs, rhs, other, ctx):
         ),
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
-        (NUMBER_TYPE, str, str): lambda: vy_str(rhs).ljust(lhs, other),
+        (NUMBER_TYPE, str, str): lambda: vy_str(rhs, ctx=ctx).ljust(lhs, other),
         (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
-        (str, NUMBER_TYPE, str): lambda: vy_str(lhs).ljust(rhs, other),
-        (str, str, NUMBER_TYPE): lambda: vy_str(lhs).ljust(rhs, other),
+        (str, NUMBER_TYPE, str): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
         (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
         (
             types.FunctionType,
@@ -2856,7 +2858,9 @@ def regex_sub(lhs, rhs, other, ctx):
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
 
     if ts[-1] != types.FunctionType:
-        return re.sub(vy_str(lhs), vy_str(other), vy_str(rhs))
+        return re.sub(
+            vy_str(lhs, ctx=ctx), vy_str(other, ctx=ctx), vy_str(rhs, ctx=ctx)
+        )
     else:
         parts = re.split("(" + lhs + ")", rhs)
         out = ""
@@ -3247,7 +3251,7 @@ def split_keep(lhs, rhs, ctx):
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
     """
     if isinstance(lhs, str):
-        return re.split(f"({re.escape(vy_str(rhs))})", lhs)
+        return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:
         lhs = iterable(lhs, ctx)
 
@@ -3366,10 +3370,12 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs)),
+            vy_str(lhs, ctx=ctx).strip(vy_str(rhs, ctx=ctx)),
             ctx,
         ),
-        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).strip(rhs), ctx
+        ),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
     }.get(ts, lambda: list_helper(lhs, rhs))()
