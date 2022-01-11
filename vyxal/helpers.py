@@ -612,6 +612,7 @@ def scanl(
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
     working = None
+    vector = iterable(vector, ctx=ctx)
     for item in vector:
         if working is None:
             working = item

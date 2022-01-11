@@ -3211,7 +3211,10 @@ def sort_by(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
+        return sorted(
+            iterable(vector, ctx=ctx),
+            key=lambda x: safe_apply(function, x, ctx=ctx),
+        )
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)

@@ -46,3 +46,23 @@ def test_vertical_mirror():
 
     actual = stack[-1]
     assert actual == expected
+
+
+def test_sort_by():
+    """Test µ"""
+
+    stack = run_vyxal("314 µ;", [])
+    assert stack[-1] == [1, 3, 4]
+
+    stack = run_vyxal("59104 µ;", [])
+    assert stack[-1] == [0, 1, 4, 5, 9]
+
+
+def test_cumulative_reduce():
+    """Test ɖ"""
+
+    stack = run_vyxal("12345 ɖ+")
+    assert stack[-1] == [1, 3, 6, 10, 15]
+
+    stack = run_vyxal("34212 ɖ-")
+    assert stack[-1] == [3, -1, -3, -4, -6]
