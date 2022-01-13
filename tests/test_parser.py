@@ -46,8 +46,7 @@ def test_fizzbuzz():
     assert str(fully_parse("₁ƛ₍₃₅kF½*∑∴")) == str(
         [
             GenericStatement([Token(TokenType.GENERAL, "₁")]),
-            Lambda(
-                "1",
+            LambdaMap(
                 [
                     DyadicModifier(
                         "₍",
@@ -59,9 +58,8 @@ def test_fizzbuzz():
                     GenericStatement([Token(TokenType.GENERAL, "*")]),
                     GenericStatement([Token(TokenType.GENERAL, "∑")]),
                     GenericStatement([Token(TokenType.GENERAL, "∴")]),
-                ],
+                ]
             ),
-            GenericStatement([Token(TokenType.GENERAL, "M")]),
         ]
     )
 
