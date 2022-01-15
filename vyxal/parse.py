@@ -182,36 +182,18 @@ def parse(
 
             elif structure_cls == structure.LambdaMap:
                 structures.append(
-                    structure.Lambda(1, parse(branches[0], structure_cls))
+                    structure.LambdaMap(parse(branches[0], structure_cls))
                 )
-                structures.append(
-                    structure.GenericStatement(
-                        [lexer.Token(lexer.TokenType.GENERAL, "M")]
-                    )
-                )
-                # laziness ftw
 
             elif structure_cls == structure.LambdaFilter:
                 structures.append(
-                    structure.Lambda(1, parse(branches[0], structure_cls))
+                    structure.LambdaFilter(parse(branches[0], structure_cls))
                 )
-                structures.append(
-                    structure.GenericStatement(
-                        [lexer.Token(lexer.TokenType.GENERAL, "F")]
-                    )
-                )
-                # laziness ftw
 
             elif structure_cls == structure.LambdaSort:
                 structures.append(
-                    structure.Lambda(1, parse(branches[0], structure_cls))
+                    structure.LambdaSort(parse(branches[0], structure_cls))
                 )
-                structures.append(
-                    structure.GenericStatement(
-                        [lexer.Token(lexer.TokenType.GENERAL, "ṡ")]
-                    )
-                )
-                # laziness ftw
 
             else:
                 branches = list(

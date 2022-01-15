@@ -66,3 +66,9 @@ def test_cumulative_reduce():
 
     stack = run_vyxal("34212 ɖ-")
     assert stack[-1] == [3, -1, -3, -4, -6]
+
+
+def test_map_lambda_as_element():
+    """Test that a map lambda is held as a single element"""
+    stack = run_vyxal("⁽ƛ1+;M", inputs=[[[1, 2], [3, 4]]])
+    assert stack[-1] == [[2, 3], [4, 5]]

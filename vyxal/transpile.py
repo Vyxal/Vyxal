@@ -286,71 +286,7 @@ def transpile_structure(
             + indent_str("return stack", indent + 1)
         )
     if isinstance(struct, vyxal.structure.Lambda):
-        id_ = secrets.token_hex(16)
-        # The lambda id used to be based on time.time() until
-        # I realised just how useless that was, because the calls to
-        # time.time() happened within only a few milliseconds of each
-        # other, meaning int(time.time()) would return the exact same
-        # lambda name for multiple lambdas.
-
-        return (
-            indent_str(
-                f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
-                indent,
-            )
-            + indent_str(
-                "if arity != -1: stack = wrapify(arg_stack, arity, "
-                + "ctx=ctx)",
-                indent + 1,
-            )
-            + indent_str(
-                "elif 'stored_arity' in dir(self): "
-                + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
-                indent + 1,
-            )
-            + indent_str(
-                "else: stack = wrapify(arg_stack, "
-                + (
-                    str(struct.arity)
-                    if struct.arity != "default"
-                    else "ctx.default_arity"
-                )
-                + ", ctx)",
-                indent + 1,
-            )
-            + indent_str("this = self", indent + 1)
-            + indent_str("ctx.function_stack.append(this)", indent + 1)
-            + indent_str(
-                "ctx.context_values.append(list(deep_copy(stack)) "
-                "if len(stack) != 1 else deep_copy(stack[0]))",
-                indent + 1,
-            )
-            + indent_str(
-                "ctx.inputs.append([list(deep_copy(stack))[::-1], 0]);",
-                indent + 1,
-            )
-            + indent_str("ctx.stacks.append(stack);", indent + 1)
-            + indent_str(
-                transpile_ast(struct.body, dict_compress=dict_compress),
-                indent + 1,
-            )
-            + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
-            + indent_str("ctx.context_values.pop()", indent + 1)
-            + indent_str("ctx.inputs.pop()", indent + 1)
-            + indent_str("ctx.stacks.pop()", indent + 1)
-            + indent_str("ctx.function_stack.pop()", indent + 1)
-            + indent_str("return res", indent + 1)
-            + indent_str(
-                f"_lambda_{id_}.arity = "
-                + (
-                    str(struct.arity)
-                    if struct.arity != "default"
-                    else "ctx.default_arity"
-                ),
-                indent,
-            )
-            + indent_str(f"stack.append(_lambda_{id_})", indent)
-        )
+        return transpile_lambda(struct, indent, dict_compress=dict_compress)
 
     if isinstance(struct, vyxal.structure.ListLiteral):
         # We have to manually build this because we don't know how
@@ -484,4 +420,82 @@ def transpile_structure(
             print(struct.parent_structure)
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
-    assert False
+    raise ValueError(f"Structure {struct} was not of the right kind")
+
+
+def transpile_lambda(
+    lam: vyxal.structure.Lambda, indent: int, dict_compress: bool = True
+):
+    id_ = secrets.token_hex(16)
+    # The lambda id used to be based on time.time() until
+    # I realised just how useless that was, because the calls to
+    # time.time() happened within only a few milliseconds of each
+    # other, meaning int(time.time()) would return the exact same
+    # lambda name for multiple lambdas.
+
+    transpiled = (
+        indent_str(
+            f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
+            indent,
+        )
+        + indent_str(
+            "if arity != -1: stack = wrapify(arg_stack, arity, " + "ctx=ctx)",
+            indent + 1,
+        )
+        + indent_str(
+            "elif 'stored_arity' in dir(self): "
+            + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
+            indent + 1,
+        )
+        + indent_str(
+            "else: stack = wrapify(arg_stack, "
+            + (
+                str(lam.arity)
+                if lam.arity != "default"
+                else "ctx.default_arity"
+            )
+            + ", ctx)",
+            indent + 1,
+        )
+        + indent_str("this = self", indent + 1)
+        + indent_str("ctx.function_stack.append(this)", indent + 1)
+        + indent_str(
+            "ctx.context_values.append(list(deep_copy(stack)) "
+            "if len(stack) != 1 else deep_copy(stack[0]))",
+            indent + 1,
+        )
+        + indent_str(
+            "ctx.inputs.append([list(deep_copy(stack))[::-1], 0]);",
+            indent + 1,
+        )
+        + indent_str("ctx.stacks.append(stack);", indent + 1)
+        + indent_str(
+            transpile_ast(lam.body, dict_compress=dict_compress),
+            indent + 1,
+        )
+        + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
+        + indent_str("ctx.context_values.pop()", indent + 1)
+        + indent_str("ctx.inputs.pop()", indent + 1)
+        + indent_str("ctx.stacks.pop()", indent + 1)
+        + indent_str("ctx.function_stack.pop()", indent + 1)
+        + indent_str("return res", indent + 1)
+        + indent_str(
+            f"_lambda_{id_}.arity = "
+            + (
+                str(lam.arity)
+                if lam.arity != "default"
+                else "ctx.default_arity"
+            ),
+            indent,
+        )
+        + indent_str(f"stack.append(_lambda_{id_})", indent)
+    )
+    if lam.after:
+        after = transpile_token(
+            Token(TokenType.GENERAL, lam.after),
+            indent,
+            dict_compress=dict_compress,
+        )
+        transpiled += "\n" + after
+
+    return transpiled
