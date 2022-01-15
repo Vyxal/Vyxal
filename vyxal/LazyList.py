@@ -35,9 +35,12 @@ class LazyList:
                 last = 0
 
             while last <= lhs:
-                last = next(self)
-                if last == lhs:
-                    return 1
+                try:
+                    last = next(self)
+                    if last == lhs:
+                        return 1
+                except StopIteration:
+                    break
             return 0
         else:
             for temp in self:
@@ -112,7 +115,7 @@ class LazyList:
 
     def __len__(self):
         temp = self.listify()
-        self = LazyList(temp[::])
+        self.raw_object = iter(temp[::])
         return len(temp)
 
     def __next__(self):
@@ -128,17 +131,16 @@ class LazyList:
         self.generated[position] = value
 
     def count(self, other):
+        """Number of occurrences of `other` in this `LazyList`"""
         temp = self.listify()
         return temp.count(other)
 
+    @lazylist
     def filter(self, fn):
-        @lazylist
-        def gen():
-            for item in self:
-                if fn(item):
-                    yield item
-
-        return gen()
+        """A `LazyList` containing only elements for whom `fn` is true"""
+        for item in self:
+            if fn(item):
+                yield item
 
     def listify(self):
         from vyxal.helpers import vyxalify
@@ -172,11 +174,8 @@ class LazyList:
         except StopIteration:
             vy_print(" ⟩" if ctx.vyxal_lists else "]", end, ctx=ctx)
 
+    @lazylist
     def reversed(self):
-        @lazylist
-        def temp():
-            self.generated += list(itertools.tee(self.raw_object)[-1])
-            for item in self.generated[::-1]:
-                yield item
-
-        return temp()
+        self.generated += list(itertools.tee(self.raw_object)[-1])
+        for item in self.generated[::-1]:
+            yield item

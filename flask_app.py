@@ -60,53 +60,52 @@ def execute():
     with open(f"sessions/{session}/.stdin", "w", encoding="utf-8") as f:
         f.write(input_list)
 
-    with open(f"sessions/{session}/.stdin", "r", encoding="utf-8") as x:
-        with open(f"sessions/{session}/.stdout", "w", encoding="utf-8") as y:
-            with open(
-                f"sessions/{session}/.stderr", "w", encoding="utf-8"
-            ) as z:
-                manager = multiprocessing.Manager()
-                ret = manager.dict()
+    with (
+        open(f"sessions/{session}/.stdin", "r", encoding="utf-8") as x,
+        open(f"sessions/{session}/.stdout", "w", encoding="utf-8") as y,
+        open(f"sessions/{session}/.stderr", "w", encoding="utf-8") as z,
+    ):
+        manager = multiprocessing.Manager()
+        ret = manager.dict()
 
-                if "5" in flags:
-                    time = 5
-                elif "T" in flags:
-                    time = 60
-                elif "b" in flags:
-                    time = 15
-                elif "B" in flags:
-                    time = 30
-                else:
-                    time = 10
-                ret[1] = ""
-                ret[2] = ""
-                fcode = (
-                    (header and (header + "\n"))
-                    + code
-                    + (footer and ("\n" + footer))
-                )
+        if "5" in flags:
+            time = 5
+        elif "T" in flags:
+            time = 60
+        elif "b" in flags:
+            time = 15
+        elif "B" in flags:
+            time = 30
+        else:
+            time = 10
+        ret[1] = ""
+        ret[2] = ""
+        fcode = (
+            (header and (header + "\n")) + code + (footer and ("\n" + footer))
+        )
 
-                sessions[session] = multiprocessing.Process(
-                    target=execute_vyxal,
-                    args=(fcode, flags, input_list, ret, True),
-                )
-                sessions[session].start()
-                sessions[session].join(time)
+        sessions[session] = multiprocessing.Process(
+            target=execute_vyxal,
+            args=(fcode, flags, input_list, ret, True),
+        )
+        sessions[session].start()
+        sessions[session].join(time)
 
-                if session in terminated:
-                    terminated.remove(session)
-                    ret[2] += "\nSession terminated upon user request"
+        if session in terminated:
+            terminated.remove(session)
+            ret[2] += "\nSession terminated upon user request"
 
-                if sessions[session].is_alive():
+        if sessions[session].is_alive():
 
-                    sessions[session].kill()
-                    if 2 in ret:
-                        ret[2] += "\n" + f"Code timed out after {time} seconds"
-                y.write(ret[1])
-                z.write(ret[2])
-    with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x:
-        with open(f"sessions/{session}/.stderr", "r", encoding="utf-8") as y:
-            val = {"stdout": x.read(), "stderr": y.read()}
+            sessions[session].kill()
+            if 2 in ret:
+                ret[2] += "\n" + f"Code timed out after {time} seconds"
+        y.write(ret[1])
+        z.write(ret[2])
+    with open(f"sessions/{session}/.stdout", "r", encoding="utf-8") as x, open(
+        f"sessions/{session}/.stderr", "r", encoding="utf-8"
+    ) as y:
+        val = {"stdout": x.read(), "stderr": y.read()}
     shutil.rmtree(f"sessions/{session}", ignore_errors=True)
     return val
 

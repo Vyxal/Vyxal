@@ -131,7 +131,6 @@ def all_diagonals(lhs, ctx):
     """Element ÞD
     Diagonals of a matrix, starting with the main diagonal.
     """
-
     vector = [iterable(x, ctx=ctx) for x in lhs]
     all_diags = [[] for _ in range(len(vector) * 2 - 1)]
     start = 0
@@ -194,7 +193,6 @@ def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
     """
-
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
@@ -567,7 +565,7 @@ def contains(lhs, rhs, ctx):
         )
         lhs = iterable(lhs, ctx=ctx)
         return int(rhs in lhs)
-    return int(vy_str(rhs) in vy_str(lhs))
+    return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
 def coords_deepmap(lhs, rhs, ctx):
@@ -587,12 +585,13 @@ def coords_deepmap(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)  # Make sure lhs is actually iterable
 
-    f = lambda a, g, pos=(): [
-        f(b, g, (*pos, i))
-        if isinstance(b, list)
-        else safe_apply(g, [*pos, i], ctx=ctx)
-        for i, b in enumerate(a)
-    ]
+    def f(a, g, pos=()):
+        return [
+            f(b, g, (*pos, i))
+            if isinstance(b, list)
+            else safe_apply(g, [*pos, i], ctx=ctx)
+            for i, b in enumerate(a)
+        ]
 
     # the above curtosey of pxeger
     # https://chat.stackexchange.com/transcript/message/59662694#59662694
@@ -634,6 +633,8 @@ def count_item(lhs, rhs, ctx):
 
 
 def counts(lhs, ctx):
+    """Element Ċ
+    (any) -> Counts: [[x, a.count(x)] for x in a]"""
     temp = uniquify(lhs, ctx=ctx)
     return [[x, count_item(lhs, x, ctx)] for x in temp]
 
@@ -1099,7 +1100,7 @@ def first_integer(lhs, ctx):
 
     ts = vy_type(lhs, simple=True)
     return {
-        (NUMBER_TYPE): lambda: abs(lhs) <= 1,
+        (NUMBER_TYPE): lambda: int(bool(abs(lhs) <= 1)),
         (str): lambda: lhs.zfill(len(lhs) + (8 - len(lhs) % 8)),
         (list): lambda: join(lhs, "", ctx),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
@@ -1815,7 +1816,9 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
-    return vy_str(rhs).join(map(vy_str, iterable(lhs, ctx=ctx)))
+    return vy_str(rhs, ctx=ctx).join(
+        map(lambda a: vy_str(a, ctx=ctx), iterable(lhs, ctx=ctx))
+    )
 
 
 def join_newlines(lhs, ctx):
@@ -1908,10 +1911,10 @@ def ljust(lhs, rhs, other, ctx):
         ),
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
-        (NUMBER_TYPE, str, str): lambda: vy_str(rhs).ljust(lhs, other),
+        (NUMBER_TYPE, str, str): lambda: vy_str(rhs, ctx=ctx).ljust(lhs, other),
         (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
-        (str, NUMBER_TYPE, str): lambda: vy_str(lhs).ljust(rhs, other),
-        (str, str, NUMBER_TYPE): lambda: vy_str(lhs).ljust(rhs, other),
+        (str, NUMBER_TYPE, str): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
         (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
         (
             types.FunctionType,
@@ -2833,7 +2836,6 @@ def random_choice(lhs, ctx):
     (lst) -> random element of a
     (num) -> Random integer from 0 to a
     """
-
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
@@ -2856,7 +2858,9 @@ def regex_sub(lhs, rhs, other, ctx):
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
 
     if ts[-1] != types.FunctionType:
-        return re.sub(vy_str(lhs), vy_str(other), vy_str(rhs))
+        return re.sub(
+            vy_str(lhs, ctx=ctx), vy_str(other, ctx=ctx), vy_str(rhs, ctx=ctx)
+        )
     else:
         parts = re.split("(" + lhs + ")", rhs)
         out = ""
@@ -2998,10 +3002,12 @@ def replace_until_no_change(lhs, rhs, other, ctx):
 
 
 def request(lhs, ctx):
+    """Element ¨U
+    (str) -> Send a GET request to a URL if online"""
     x = urllib.request.urlopen(urlify(lhs)).read()
     try:
         return x.decode("utf-8")
-    except Exception as e:
+    except UnicodeDecodeError:
         return x.decode("latin-1")
 
 
@@ -3060,17 +3066,17 @@ def roman_numeral(lhs, ctx):
             raise ValueError("Number must be between 1 and 3999")
 
         result = ""
-        for i in range(len(ints)):
-            count = int(lhs / ints[i])
+        for i, n in enumerate(ints):
+            count = int(lhs / n)
             result += nums[i] * count
-            lhs -= ints[i] * count
+            lhs -= n * count
         return result
     elif vy_type(lhs) is str:
         result = 0
-        for i in range(len(nums)):
-            while lhs.startswith(nums[i]):
+        for i, n in enumerate(nums):
+            while lhs.startswith(n):
                 result += ints[i]
-                lhs = lhs[len(nums[i]) :]
+                lhs = lhs[len(n) :]
         return result
     elif vy_type(lhs) is list:
         return vectorise(roman_numeral, lhs, ctx=ctx)
@@ -3132,7 +3138,6 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-
     temp = deep_copy(lhs)
     random.shuffle(temp)
     return temp
@@ -3206,7 +3211,10 @@ def sort_by(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return sorted(vector, key=lambda x: safe_apply(function, x, ctx=ctx))
+        return sorted(
+            iterable(vector, ctx=ctx),
+            key=lambda x: safe_apply(function, x, ctx=ctx),
+        )
     else:
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
@@ -3246,7 +3254,7 @@ def split_keep(lhs, rhs, ctx):
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
     """
     if isinstance(lhs, str):
-        return re.split(f"({re.escape(vy_str(rhs))})", lhs)
+        return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:
         lhs = iterable(lhs, ctx)
 
@@ -3365,10 +3373,12 @@ def strip(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs).strip(vy_str(rhs)),
+            vy_str(lhs, ctx=ctx).strip(vy_str(rhs, ctx=ctx)),
             ctx,
         ),
-        (NUMBER_TYPE, str): lambda: vy_eval(vy_str(lhs).strip(rhs), ctx),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).strip(rhs), ctx
+        ),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
     }.get(ts, lambda: list_helper(lhs, rhs))()
@@ -3817,6 +3827,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
 
 
 def vectorised_not(lhs, ctx):
+    """List overload for element †"""
     return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
         vy_type(lhs), lambda: vectorise(vectorised_not, lhs, ctx=ctx)
     )()
@@ -3872,7 +3883,7 @@ def vy_abs(lhs, ctx):
     """
     return {
         NUMBER_TYPE: lambda: abs(lhs),
-        str: lambda: lhs.replace(" ", ""),
+        str: lambda: "".join(lhs.split()),
     }.get(vy_type(lhs), lambda: vectorise(vy_abs, lhs, ctx=ctx))()
 
 
@@ -4208,6 +4219,18 @@ def vy_round(lhs, ctx):
 
 
 def vy_type(item, rhs=None, other=None, simple=False):
+    """
+    Get the Vyxal-friendly type(s) of 1-3 values.
+    If only `item` is given, returns the Vyxal type of `item`.
+    If both`item` and `rhs` or all three (`item`, `rhs`, and `other`)
+    are given, then it returns a tuple containing their types.
+
+    Returns `list` for lists
+    Returns `str` for strings
+    Returns `NUMBER_TYPE` if a value is int, complex, float, or sympy
+    Returns `LazyList` for `LazyList`s if `simple` is `False`
+      (the default) but `list` if `simple` is `True`
+    """
     if other is not None:
         return (
             vy_type(item, simple=simple),
@@ -4338,9 +4361,9 @@ def zero_matrix(lhs, ctx):
     """
     mat = []
     temp = 0
-    for index in iterable(lhs, ctx=ctx):
+    for ind in iterable(lhs, ctx=ctx):
         mat = []
-        for _ in range(index):
+        for _ in range(ind):
             mat.append(temp)
         temp = deep_copy(mat)
 

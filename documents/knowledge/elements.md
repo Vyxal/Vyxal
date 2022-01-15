@@ -1176,6 +1176,7 @@ Join a list by the empty string
 
 - fun a: `First integer for which a(x) is truthy`
 - any a: `Join by empty string`
+- num a: `abs(a) <= 1`
 -------------------------------
 ## `` ȯ `` (Slice)
 

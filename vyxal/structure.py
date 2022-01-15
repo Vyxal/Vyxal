@@ -3,7 +3,7 @@
 See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structures.md
 """
 
-from typing import Union
+from typing import Optional, Union
 
 from vyxal.lexer import Token
 
@@ -15,19 +15,12 @@ class Structure:
         # Don't do anything with the arguments
         self.branches = branches
 
-    def transpile(self) -> str:
-        """Return the transpiled version of the structure"""
-        return "{}"
-
     def __repr__(self):
         return f"{type(self).__name__}({repr(self.branches)})"
 
 
 class GenericStatement(Structure):
     """Generic statements are elements and so on"""
-
-    def __init__(self, *branches: Branch):
-        super().__init__(*branches)
 
 
 class BreakStatement(Structure):
@@ -87,25 +80,30 @@ class FunctionDef(Structure):
 
 
 class Lambda(Structure):
-    def __init__(self, arity: int, body: list[Structure]):
+    def __init__(
+        self, arity: int, body: list[Structure], after: Optional[str] = None
+    ):
+        """`after` is for map, filter, and sort lambdas, to execute an
+        element after the lambda is pushed onto the stack"""
         super().__init__(str(arity), body)
         self.arity = arity
         self.body = body
+        self.after = after
 
 
 class LambdaMap(Lambda):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body)
+        super().__init__(1, body, after="M")
 
 
 class LambdaFilter(Lambda):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body)
+        super().__init__(1, body, after="F")
 
 
 class LambdaSort(Lambda):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body)
+        super().__init__(1, body, after="ṡ")
 
 
 class ListLiteral(Structure):
