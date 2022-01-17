@@ -16,12 +16,14 @@ from vyxal.helpers import *
 from vyxal.LazyList import *
 
 
-def run_vyxal(vy_code, inputs=[]):
+def run_vyxal(vy_code, inputs=[], *, debug=False):
     stack = list(map(vyxalify, inputs))
     ctx = Context()
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
+    if debug:
+        print(py_code)
     exec(py_code)
 
     ctx.stacks.pop()
@@ -72,3 +74,8 @@ def test_map_lambda_as_element():
     """Test that a map lambda is held as a single element"""
     stack = run_vyxal("⁽ƛ1+;M", inputs=[[[1, 2], [3, 4]]])
     assert stack[-1] == [[2, 3], [4, 5]]
+
+def test_vectorise_map_lambda():
+    """Test that a map lambda can be vectorised"""
+    stack = run_vyxal("vƛ30∴;", inputs=[[[34,1324,23],[45,3]]])
+    assert simplify(stack[-1]) == [[34,1324,30],[45,30]]

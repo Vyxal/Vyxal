@@ -287,6 +287,14 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.Lambda):
         return transpile_lambda(struct, indent, dict_compress=dict_compress)
+    if isinstance(struct, vyxal.structure.LambdaOp):
+        return transpile_lambda(
+            struct.lam, indent, dict_compress=dict_compress
+        ) + transpile_token(
+            Token(TokenType.GENERAL, struct.after),
+            indent,
+            dict_compress=dict_compress,
+        )
 
     if isinstance(struct, vyxal.structure.ListLiteral):
         # We have to manually build this because we don't know how
@@ -433,7 +441,7 @@ def transpile_lambda(
     # other, meaning int(time.time()) would return the exact same
     # lambda name for multiple lambdas.
 
-    transpiled = (
+    return (
         indent_str(
             f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
             indent,
@@ -490,12 +498,3 @@ def transpile_lambda(
         )
         + indent_str(f"stack.append(_lambda_{id_})", indent)
     )
-    if lam.after:
-        after = transpile_token(
-            Token(TokenType.GENERAL, lam.after),
-            indent,
-            dict_compress=dict_compress,
-        )
-        transpiled += "\n" + after
-
-    return transpiled

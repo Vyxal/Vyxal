@@ -30,8 +30,8 @@ def vyxal_to_utf8(code: list[int]) -> str:
     return processed_code
 
 
-def utf8_to_vyxal(code: str) -> list[int]:
-    """Turn UTF-8 characters into integers on the Vyxal codepage"""
+def utf8_to_vyxal(code: str) -> str:
+    """Turn UTF-8 characters into bytes according to the codepage"""
     # Taken from the old 05AB1E interpreter
     processed_code = ""
     for char in code:
