@@ -863,7 +863,9 @@ def wrap_with_width(vector: Union[str, list], width: int) -> list[Any]:
     return ret
 
 
-def wrapify(item: Any, count: int = None, ctx: Context = DEFAULT_CTX) -> List[Any]:
+def wrapify(
+    item: Any, count: int = None, ctx: Context = DEFAULT_CTX
+) -> List[Any]:
     """Leaves lists as lists, wraps scalars into a list"""
     if count is not None:
         temp = pop(item, count, ctx)

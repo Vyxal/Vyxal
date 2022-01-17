@@ -75,7 +75,8 @@ def test_map_lambda_as_element():
     stack = run_vyxal("⁽ƛ1+;M", inputs=[[[1, 2], [3, 4]]])
     assert stack[-1] == [[2, 3], [4, 5]]
 
+
 def test_vectorise_map_lambda():
     """Test that a map lambda can be vectorised"""
-    stack = run_vyxal("vƛ30∴;", inputs=[[[34,1324,23],[45,3]]])
-    assert simplify(stack[-1]) == [[34,1324,30],[45,30]]
+    stack = run_vyxal("vƛ30∴;", inputs=[[[34, 1324, 23], [45, 3]]])
+    assert simplify(stack[-1]) == [[34, 1324, 30], [45, 30]]
