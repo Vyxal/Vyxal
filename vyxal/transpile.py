@@ -70,7 +70,6 @@ def transpile_single(
         return transpile_structure(
             token_or_struct, indent, dict_compress=dict_compress
         )
-    print(type(token_or_struct))
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"
@@ -425,7 +424,6 @@ def transpile_structure(
                 indent,
             )
         else:
-            print(struct.parent_structure)
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
     raise ValueError(f"Structure {struct} was not of the right kind")

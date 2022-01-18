@@ -1059,7 +1059,6 @@ def find(lhs, rhs, ctx):
                 pos += 1
             return -1
         while pos < len(lhs):
-            print(pos)
             if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                 return pos
             pos += 1
