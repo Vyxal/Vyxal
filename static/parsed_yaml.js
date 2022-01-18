@@ -1095,7 +1095,7 @@ Split a value and keep the delimiter
 any a, any b -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
 `)
 
-codepage_descriptions.push(`Cartesian Product
+codepage_descriptions.push(`Cartesian Product / Fixpoint
 Take the Cartesian Product of two values, or apply a function until there is no change.
 any a, any b -> cartesian-product(a,b)
 fun a, any b -> Apply a on b until b does not change

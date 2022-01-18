@@ -9667,7 +9667,7 @@ def test_SplitAndKeepDelimiter():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_CartesianProduct():
+def test_CartesianProductFixpoint():
 
     stack = [vyxalify(item) for item in ["ab","cd"]]
     expected = vyxalify(["ac","ad","bc","bd"])

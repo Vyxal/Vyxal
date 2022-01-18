@@ -494,14 +494,25 @@ def cartesian_power(lhs, rhs, ctx):
 def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
+    (fun, any) -> Apply a to b until no change (fixpoint)
     """
-    return LazyList(
-        left + right
-        if isinstance(left, str) and isinstance(right, str)
-        else [left, right]
-        for left in iterable(lhs, range, ctx=ctx)
-        for right in iterable(rhs, range, ctx=ctx)
-    )
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        prev = arg
+        arg = safe_apply(fn, arg, ctx=ctx)
+        while simplify(prev) != simplify(arg):
+            prev = arg
+            arg = safe_apply(fn, arg, ctx=ctx)
+        return prev
+    else:
+        return LazyList(
+            left + right
+            if isinstance(left, str) and isinstance(right, str)
+            else [left, right]
+            for left in iterable(lhs, range, ctx=ctx)
+            for right in iterable(rhs, range, ctx=ctx)
+        )
 
 
 def center(lhs, ctx):
