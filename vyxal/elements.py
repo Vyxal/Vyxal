@@ -4018,8 +4018,8 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (NUMBER_TYPE, str): lambda: vy_gcd(
             lhs, wrapify(chr_ord(rhs, ctx), None, ctx), ctx=ctx
         ),
-        (str, str): lambda: monadic_maximum(
-            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx
+        (str, str): lambda: max(
+            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
         ),
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
