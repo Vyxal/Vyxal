@@ -4554,7 +4554,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ḣ": (
-        "top = iterable(pop(stack, 1, ctx), ctx=ctx;"
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(head(top, ctx));"
         " stack.append(index(top, [1, None], ctx))",
         1,
