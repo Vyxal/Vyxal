@@ -3254,6 +3254,11 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `Remove the last item of a list and prepend 0. A shortcut for Ṫ0p`
 -------------------------------
+## `` Þ∞ `` (Infinite List)
+
+An infinite list of positive integers
+
+-------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
 
 Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
