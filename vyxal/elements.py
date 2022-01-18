@@ -494,14 +494,25 @@ def cartesian_power(lhs, rhs, ctx):
 def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
+    (fun, any) -> Apply a to b until no change (fixpoint)
     """
-    return LazyList(
-        left + right
-        if isinstance(left, str) and isinstance(right, str)
-        else [left, right]
-        for left in iterable(lhs, range, ctx=ctx)
-        for right in iterable(rhs, range, ctx=ctx)
-    )
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        prev = arg
+        arg = safe_apply(fn, arg, ctx=ctx)
+        while simplify(prev) != simplify(arg):
+            prev = arg
+            arg = safe_apply(fn, arg, ctx=ctx)
+        return prev
+    else:
+        return LazyList(
+            left + right
+            if isinstance(left, str) and isinstance(right, str)
+            else [left, right]
+            for left in iterable(lhs, range, ctx=ctx)
+            for right in iterable(rhs, range, ctx=ctx)
+        )
 
 
 def center(lhs, ctx):
@@ -705,15 +716,18 @@ def decrement(lhs, ctx):
 
 def deep_flatten(lhs, ctx):
     """Element f
-    (any) -> flatten list
+    (any) -> flatten list completely
     """
-    ret = []
-    for item in iterable(lhs, ctx=ctx):
-        if type(item) in (LazyList, list):
-            ret += deep_flatten(item, ctx)
-        else:
-            ret.append(item)
-    return ret
+
+    @lazylist
+    def gen():
+        for item in iterable(lhs, ctx=ctx):
+            if type(item) in (LazyList, list):
+                yield from deep_flatten(item, ctx)
+            else:
+                yield item
+
+    return gen()
 
 
 def deltas(lhs, ctx):
@@ -1393,12 +1407,9 @@ def head(lhs, ctx):
     """Element h
     (any) -> a[0]
     """
-    return (
-        iterable(lhs, ctx)[0]
-        if len(iterable(lhs, ctx))
-        else ""
-        if type(lhs) is str
-        else 0
+    return next(
+        iter(lhs) if type(lhs) is str else iter(iterable(lhs, ctx=ctx)),
+        "" if type(lhs) is str else 0,
     )
 
 
@@ -1672,6 +1683,7 @@ def integer_parts_or_join_spaces(lhs, ctx):
             return []
         sign = -1 if lhs < 0 else 1
 
+        @lazylist
         def helper(n, minimum):
             for i in range(minimum, n // 2 + 1):
                 for part in helper(n - i, i):
