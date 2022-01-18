@@ -4715,12 +4715,12 @@ elements: dict[str, tuple[str, int]] = {
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
     "„": (
-        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += temp[1:] + [temp[0]]",
         0,
     ),
     "‟": (
-        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += [temp[-1]] + temp[:-1]",
         0,
     ),
