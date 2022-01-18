@@ -1680,6 +1680,7 @@ def integer_parts_or_join_spaces(lhs, ctx):
             return []
         sign = -1 if lhs < 0 else 1
 
+        @lazylist
         def helper(n, minimum):
             for i in range(minimum, n // 2 + 1):
                 for part in helper(n - i, i):
