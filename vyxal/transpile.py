@@ -205,6 +205,8 @@ def transpile_structure(
         )
         var = re.sub("[^A-Za-z0-9_]", "", var)
         var = f"VAR_{var}"
+        if var == "VAR_":
+            var = "ctx.ghost_variable"
         return (
             indent_str(
                 f"for {var} in iterable(pop(stack, 1, ctx=ctx), range, ctx):",
