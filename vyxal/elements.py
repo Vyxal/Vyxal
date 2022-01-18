@@ -744,7 +744,7 @@ def divide(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
-        if lhs == rhs == 0
+        if rhs == 0
         else vyxalify(sympy.nsimplify(lhs / rhs)),
         (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs, ctx),
         (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
@@ -1639,9 +1639,7 @@ def integer_divide(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
-        if lhs == rhs == 0
-        else lhs // rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: 0 if rhs == 0 else lhs // rhs,
         (NUMBER_TYPE, str): lambda: divide(lhs, rhs, ctx=ctx)[0],
         (str, NUMBER_TYPE): lambda: divide(rhs, lhs, ctx=ctx)[0],
         (ts[0], types.FunctionType): lambda: foldl(
