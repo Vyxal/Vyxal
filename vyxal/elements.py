@@ -3724,6 +3724,19 @@ def untruth(lhs, ctx):
     return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
 
 
+def unwrap(lhs, ctx):
+    """Element Þẇ
+    (lst) -> Take a and push a[0]+a[-1] and a[1:-1]
+    """
+    lhs = iterable(lhs, ctx=ctx)
+
+    if vy_type(lhs) is str:
+        return (lhs[0] + lhs[-1], lhs[1:-1])
+    else:
+        rest = head_remove(tail_remove(lhs, ctx), ctx)
+        return ([lhs[0], lhs[-1]], rest)
+
+
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
     """
     Maps a function over arguments
@@ -4836,7 +4849,11 @@ elements: dict[str, tuple[str, int]] = {
     "Þ¾": ("ctx.global_array = []", 0),
     "Þr": process_element(sans_last_prepend_zero, 1),
     "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
-    "Þẇ": process_element(unwrap, 1),
+    "Þẇ": (
+        "res = unwrap(pop(stack, 1, ctx), ctx); "
+        "stack.append(res[0]); stack.append(res[1])",
+        1,
+    ),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
