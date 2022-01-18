@@ -2258,6 +2258,11 @@ codepage_descriptions[82] += `
 Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
 lst a -> Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
 `
+codepage_descriptions[157] += `
+Þẇ (Unwrap)
+Take a and push a[0]+a[-1] and a[1:-1]
+lst a -> Take a and push a[0]+a[-1] and a[1:-1]
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

@@ -3262,6 +3262,14 @@ Remove the last item of the cumulative sums of a list and prepend 0. A shortcut 
 
 - lst a: `Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p`
 -------------------------------
+## `` Þẇ `` (Unwrap)
+
+Take a and push a[0]+a[-1] and a[1:-1]
+
+### Overloads
+
+- lst a: `Take a and push a[0]+a[-1] and a[1:-1]`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

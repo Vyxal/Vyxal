@@ -4601,7 +4601,7 @@
   tests:
     - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
     - "['abcde'] : [0, 'a', 'ab', 'abc', 'abcd']"
-  
+
 - element: "Þẇ"
   name: Unwrap
   description: Take a and push a[0]+a[-1] and a[1:-1]
