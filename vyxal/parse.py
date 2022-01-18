@@ -12,6 +12,7 @@ import re
 import string
 from collections import deque
 from collections.abc import Iterable
+from typing import Optional
 
 from vyxal import lexer, structure
 
@@ -78,10 +79,10 @@ def variable_name(tokens: list[lexer.Token]) -> str:
 
 
 def parse(
-    token_list: Iterable[lexer.Token], parent: structure.Structure = None
+    token_list: Iterable[lexer.Token], parent: Optional[type] = None
 ) -> list[structure.Structure]:
     """Main parse function: transforms a list of Tokens into a list of Structures."""
-    structures = []
+    structures: list[structure.Structure] = []
     bracket_stack = []  # all currently open structures
     tokens = deque(token_list)
     branches: list[structure.Branch] = []  # This will serve as a way

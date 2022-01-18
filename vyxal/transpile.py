@@ -70,7 +70,6 @@ def transpile_single(
         return transpile_structure(
             token_or_struct, indent, dict_compress=dict_compress
         )
-    print(type(token_or_struct))
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"
@@ -205,6 +204,8 @@ def transpile_structure(
         )
         var = re.sub("[^A-Za-z0-9_]", "", var)
         var = f"VAR_{var}"
+        if var == "VAR_":
+            var = "ctx.ghost_variable"
         return (
             indent_str(
                 f"for {var} in iterable(pop(stack, 1, ctx=ctx), range, ctx):",
@@ -287,6 +288,14 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.Lambda):
         return transpile_lambda(struct, indent, dict_compress=dict_compress)
+    if isinstance(struct, vyxal.structure.LambdaOp):
+        return transpile_lambda(
+            struct.lam, indent, dict_compress=dict_compress
+        ) + transpile_token(
+            Token(TokenType.GENERAL, struct.after),
+            indent,
+            dict_compress=dict_compress,
+        )
 
     if isinstance(struct, vyxal.structure.ListLiteral):
         # We have to manually build this because we don't know how
@@ -417,7 +426,6 @@ def transpile_structure(
                 indent,
             )
         else:
-            print(struct.parent_structure)
             return indent_str("vy_print(stack, ctx=ctx)", indent)
 
     raise ValueError(f"Structure {struct} was not of the right kind")
@@ -433,7 +441,7 @@ def transpile_lambda(
     # other, meaning int(time.time()) would return the exact same
     # lambda name for multiple lambdas.
 
-    transpiled = (
+    return (
         indent_str(
             f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
             indent,
@@ -490,12 +498,3 @@ def transpile_lambda(
         )
         + indent_str(f"stack.append(_lambda_{id_})", indent)
     )
-    if lam.after:
-        after = transpile_token(
-            Token(TokenType.GENERAL, lam.after),
-            indent,
-            dict_compress=dict_compress,
-        )
-        transpiled += "\n" + after
-
-    return transpiled

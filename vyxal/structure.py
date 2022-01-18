@@ -7,7 +7,7 @@ from typing import Optional, Union
 
 from vyxal.lexer import Token
 
-Branch = Union[str, list["Structure"], list["Token"]]
+Branch = Union[str, "Structure", list["Structure"], list["Token"]]
 
 
 class Structure:
@@ -80,30 +80,34 @@ class FunctionDef(Structure):
 
 
 class Lambda(Structure):
-    def __init__(
-        self, arity: int, body: list[Structure], after: Optional[str] = None
-    ):
-        """`after` is for map, filter, and sort lambdas, to execute an
-        element after the lambda is pushed onto the stack"""
+    def __init__(self, arity: int, body: list[Structure]):
         super().__init__(str(arity), body)
         self.arity = arity
         self.body = body
+
+
+class LambdaOp(Structure):
+    """A lambda followed by a monad"""
+
+    def __init__(self, body: list[Structure], after: str):
+        super().__init__(body, after)
+        self.lam = Lambda(1, body)
         self.after = after
 
 
-class LambdaMap(Lambda):
+class LambdaMap(LambdaOp):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body, after="M")
+        super().__init__(body, after="M")
 
 
-class LambdaFilter(Lambda):
+class LambdaFilter(LambdaOp):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body, after="F")
+        super().__init__(body, after="F")
 
 
-class LambdaSort(Lambda):
+class LambdaSort(LambdaOp):
     def __init__(self, body: list[Structure]):
-        super().__init__(1, body, after="ṡ")
+        super().__init__(body, after="ṡ")
 
 
 class ListLiteral(Structure):
