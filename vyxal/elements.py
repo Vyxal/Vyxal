@@ -2524,8 +2524,12 @@ def orderless_range(lhs, rhs, ctx):
             # int(bool(...)) is needed because sympy decides to
             # return a special boolean class sometimes
         ),
-        (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
-        (str, NUMBER_TYPE): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
+        (NUMBER_TYPE, str): lambda: rhs + (" " * abs(len(rhs) - lhs))
+        if len(rhs) < lhs
+        else rhs,
+        (str, NUMBER_TYPE): lambda: (" " * abs(len(lhs) - rhs)) + lhs
+        if len(lhs) < rhs
+        else lhs,
         (ts[0], types.FunctionType): lambda: scanl(
             multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
         ),
@@ -3475,7 +3479,7 @@ def tail_remove(lhs, ctx):
     (any) -> a[:-1] (All but the last item)
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
-    if isinstance(lhs, int) and all(isinstance(x, int) for x in temp):
+    if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
         return int("".join(str(x) for x in temp))
     else:
         return temp
@@ -4710,12 +4714,12 @@ elements: dict[str, tuple[str, int]] = {
     "¾": process_element("list(deep_copy(ctx.global_array))", 0),
     "Π": process_element(product, 1),
     "„": (
-        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += temp[1:] + [temp[0]]",
         0,
     ),
     "‟": (
-        "temp = pop(stack, len(stack), ctx)[::-1]; "
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += [temp[-1]] + temp[:-1]",
         0,
     ),
