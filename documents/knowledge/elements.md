@@ -2625,6 +2625,7 @@ Get the least common multiple of two numbers
 
 ### Overloads
 
+- lst a: `lcm(a)`
 - num a, num b: `lcm(a, b)`
 -------------------------------
 ## `` ∆i `` (nth Digit of Pi)

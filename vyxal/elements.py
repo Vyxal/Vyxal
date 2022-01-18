@@ -1971,10 +1971,12 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
-def lowest_common_multiple(lhs, rhs, ctx):
+def lowest_common_multiple(lhs, rhs=None, ctx=None):
     """Element ∆Ŀ
     (num, num) -> lcm(a, b)
     """
+    if rhs is None:
+        return sympy.lcm(lhs)
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
@@ -4755,7 +4757,14 @@ elements: dict[str, tuple[str, int]] = {
     "∆p": process_element(nearest_prime, 1),
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
-    "∆Ŀ": process_element(lowest_common_multiple, 2),
+    "∆Ŀ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top, simple=True) is list:\n"
+        "    stack.append(lowest_common_multiple(top, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
+        2,
+    ),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
