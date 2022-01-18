@@ -4591,6 +4591,11 @@
     - "[[1,2,3,4,5,6,7,8,9]] : [0,1,2,3,4,5,6,7,8]"
     - "['abcde'] : '0abcd'"
 
+- element: "Þ∞"
+  name: Infinite List
+  description: An infinite list of positive integers
+  arity: 0
+
 - element: "ÞR"
   name: Remove Last Item From Cumulative Sums and Prepend 0
   description: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
