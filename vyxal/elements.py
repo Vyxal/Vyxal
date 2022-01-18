@@ -4836,6 +4836,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ¾": ("ctx.global_array = []", 0),
     "Þr": process_element(sans_last_prepend_zero, 1),
     "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
+    "Þẇ": process_element(unwrap, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
