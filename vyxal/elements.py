@@ -13,7 +13,7 @@ import string
 import types
 import urllib
 from datetime import datetime
-from typing import Union
+from typing import Callable, Union
 
 import num2words
 import sympy
@@ -35,7 +35,7 @@ EPSILON = 1e-10
 
 
 def process_element(
-    expr: Union[str, types.FunctionType], arity: int
+    expr: Union[str, Callable[..., Any]], arity: int
 ) -> tuple[str, int]:
     """Take a python expression and adds boilerplate for element functions to it
 
@@ -47,7 +47,7 @@ def process_element(
     if arity:
         arguments = ["third", "rhs", "lhs"][-arity:]
     else:
-        arguments = "_"
+        arguments = ["_"]
     if isinstance(expr, types.FunctionType):
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:

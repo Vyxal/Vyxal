@@ -11,7 +11,7 @@ import itertools
 import math  # lgtm [py/unused-import]
 import textwrap
 import types
-from typing import Any, List, Union
+from typing import Any, Iterable, List, Union
 
 import sympy
 from sympy.parsing.sympy_parser import (
@@ -56,7 +56,7 @@ def collect_until_false(
         val = safe_apply(function, val, ctx=ctx)
 
 
-def concat(vec1: VyList, vec2: VyList, ctx: Context = None) -> VyList:
+def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
     """Concatenate two lists/lazylists"""
     if LazyList not in (type(vec1), type(vec2)):
         return vec1 + vec2
@@ -280,7 +280,7 @@ def levenshtein_distance(s1: str, s2: str) -> int:
     if len(s1) > len(s2):
         s1, s2 = s2, s1
 
-    distances = range(len(s1) + 1)
+    distances: Iterable[int] = range(len(s1) + 1)
     for i2, c2 in enumerate(s2):
         distances_ = [i2 + 1]
         for i1, c1 in enumerate(s1):
@@ -646,6 +646,8 @@ def simplify(value: Any) -> Union[int, float, str, list]:
         return value
     elif is_sympy(value):
         return eval(sympy.pycode(value))
+    elif isinstance(value, types.FunctionType):
+        return str(value)
     else:
         return [simplify(x) for x in value]
 
@@ -706,7 +708,7 @@ def transfer_capitalisation(source: str, target: str) -> str:
 
 
 def transpose(
-    vector: VyList, filler: Any = None, ctx: Context = None
+    vector: VyList, filler: Any = None, ctx: Context = DEFAULT_CTX
 ) -> VyList:
     """Transposes a vector"""
     vector = iterable(vector, ctx=ctx)
@@ -840,9 +842,9 @@ def vyxalify(value: Any) -> Any:
         return LazyList(map(vyxalify, value))
 
 
-def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
+def wrap_with_width(vector: Union[str, list], width: int) -> list[Any]:
     """A version of textwrap.wrap that plays nice with spaces"""
-    ret = []
+    ret: list[Union[str, list]] = []
     temp = []
     for item in vector:
         temp.append(item)
@@ -861,7 +863,9 @@ def wrap_with_width(vector: Union[str, list], width: int) -> List[Any]:
     return ret
 
 
-def wrapify(item: Any, count: int = None, ctx: Context = None) -> List[Any]:
+def wrapify(
+    item: Any, count: int = None, ctx: Context = DEFAULT_CTX
+) -> List[Any]:
     """Leaves lists as lists, wraps scalars into a list"""
     if count is not None:
         temp = pop(item, count, ctx)
