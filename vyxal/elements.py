@@ -716,15 +716,18 @@ def decrement(lhs, ctx):
 
 def deep_flatten(lhs, ctx):
     """Element f
-    (any) -> flatten list
+    (any) -> flatten list completely
     """
-    ret = []
-    for item in iterable(lhs, ctx=ctx):
-        if type(item) in (LazyList, list):
-            ret += deep_flatten(item, ctx)
-        else:
-            ret.append(item)
-    return ret
+
+    @lazylist
+    def gen():
+        for item in iterable(lhs, ctx=ctx):
+            if type(item) in (LazyList, list):
+                yield from deep_flatten(item, ctx)
+            else:
+                yield item
+
+    return gen()
 
 
 def deltas(lhs, ctx):
