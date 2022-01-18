@@ -1407,7 +1407,10 @@ def head(lhs, ctx):
     """Element h
     (any) -> a[0]
     """
-    return next(iterable(lhs, ctx=ctx), "" if type(lhs) is str else 0)
+    return next(
+        iterable(lhs, ctx=ctx) if type(lhs) is not str else iter(lhs),
+        "" if type(lhs) is str else 0,
+    )
 
 
 def head_remove(lhs, ctx):
