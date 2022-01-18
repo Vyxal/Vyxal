@@ -1179,7 +1179,7 @@ def function_call(lhs, ctx):
         return None
     return {
         NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
-        str: lambda: exec(lhs) or [],
+        str: lambda: exec(top) or [] if not ctx.online else [],
         list: lambda: vectorised_not(top, ctx=ctx),
     }.get(ts)()
 
