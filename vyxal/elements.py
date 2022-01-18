@@ -1551,6 +1551,21 @@ def infinite_ordinals(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+def infinite_positives(_, ctx=None):
+    """Element Þ∞
+    An infinite list of positive numbers
+    """
+
+    @lazylist
+    def gen():
+        i = 1
+        while True:
+            yield i
+            i += 1
+
+    return gen()
+
+
 def infinite_primes(_, ctx=None):
     """Element Þp
     An infinite list of primes
@@ -1560,7 +1575,7 @@ def infinite_primes(_, ctx=None):
         i = 1
         while True:
             i += 1
-            if is_prime(i, ctx):
+            if i == 2 or (i % 2 == 1 and is_prime(i, ctx)):
                 yield i
 
     return LazyList(gen(), isinf=True)
@@ -4853,6 +4868,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∞": process_element(infinite_positives, 0),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
