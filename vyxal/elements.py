@@ -4845,6 +4845,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
+    "Þ∞": process_element(infinite_positives, 0),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
