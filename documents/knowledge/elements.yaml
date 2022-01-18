@@ -3692,14 +3692,16 @@
 
 - element: "∆Ŀ"
   name: Least Common Multiple
-  arity: 2
+  arity: 1 or 2
   description: Get the least common multiple of two numbers
   overloads:
+    lst: lcm(a)
     num-num: lcm(a, b)
   vectorise: true
   tests:
     - "[1, 2] : 2"
     - "[69, 420] : 9660"
+    - "[[3,4,5,6]] : 60"
 
 - element: "∆i"
   name: nth Digit of Pi
@@ -4601,6 +4603,19 @@
   tests:
     - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
     - "['abcde'] : [0, 'a', 'ab', 'abc', 'abcd']"
+
+- element: "Þẇ"
+  name: Unwrap
+  description: Take a and push a[0]+a[-1] and a[1:-1]
+  arity: 1
+  overloads:
+    lst: Take a and push a[0]+a[-1] and a[1:-1]
+  vectorise: false
+  tests:
+    - "['abcde'] : 'bcd'"
+    - "[[1,2,3,4,5,6,7,8,9]] : [2, 3, 4, 5, 6, 7, 8]"
+    - "[[1,2,3,4,5,6,7,8,9,10]] : [2, 3, 4, 5, 6, 7, 8, 9]"
+    - "['lsusp'] : 'sus'"
 
 - element: "¨□"
   name: Parse direction arrow to integer

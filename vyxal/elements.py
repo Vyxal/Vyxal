@@ -1356,9 +1356,6 @@ def group_consecutive(lhs, ctx):
 
     res = list(gen())
 
-    if typ == NUMBER_TYPE:
-        res = [vy_int("".join(group)) for group in res]
-
     return res
 
 
@@ -1973,10 +1970,12 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
-def lowest_common_multiple(lhs, rhs, ctx):
+def lowest_common_multiple(lhs, rhs=None, ctx=None):
     """Element ∆Ŀ
     (num, num) -> lcm(a, b)
     """
+    if rhs is None:
+        return sympy.lcm(lhs)
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
@@ -2642,6 +2641,7 @@ def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
     """
+    lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
             lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
@@ -3637,6 +3637,7 @@ def uninterleave(lhs, ctx):
       - '["abcde"] : "bd"'
       - "[[1,2,3,4]] : [2,4]"
     """
+    lhs = iterable(lhs, ctx=ctx)
     return [
         index(deep_copy(lhs), [None, None, 2], ctx),
         index(lhs, [1, None, 2], ctx),
@@ -3723,6 +3724,19 @@ def untruth(lhs, ctx):
     """
     lhs = iterable(lhs, ctx=ctx)
     return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
+
+
+def unwrap(lhs, ctx):
+    """Element Þẇ
+    (lst) -> Take a and push a[0]+a[-1] and a[1:-1]
+    """
+    lhs = iterable(lhs, ctx=ctx)
+
+    if vy_type(lhs) is str:
+        return (lhs[0] + lhs[-1], lhs[1:-1])
+    else:
+        rest = head_remove(tail_remove(lhs, ctx), ctx)
+        return ([lhs[0], lhs[-1]], rest)
 
 
 def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
@@ -3848,7 +3862,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     any: Transpose a (filling with b), join on newlines
     """
     # Make every list in lhs the same length, padding left with b
-
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
         [rhs] * (len(x) < max_length and max_length - len(x)) + x
@@ -4018,8 +4032,8 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (NUMBER_TYPE, str): lambda: vy_gcd(
             lhs, wrapify(chr_ord(rhs, ctx), None, ctx), ctx=ctx
         ),
-        (str, str): lambda: monadic_maximum(
-            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), ctx=ctx
+        (str, str): lambda: max(
+            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
         ),
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
@@ -4556,7 +4570,8 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ḣ": (
-        "top = pop(stack, 1, ctx); stack.append(head(top, ctx));"
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
+        " stack.append(head(top, ctx));"
         " stack.append(index(top, [1, None], ctx))",
         1,
     ),
@@ -4569,7 +4584,7 @@ elements: dict[str, tuple[str, int]] = {
     "ṙ": process_element(vy_round, 1),
     "ṡ": process_element(sort_by, 2),
     "ṫ": (
-        "top = pop(stack, 1, ctx);"
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(index(top, [None, -1], ctx));"
         " stack.append(tail(top, ctx))",
         1,
@@ -4754,7 +4769,14 @@ elements: dict[str, tuple[str, int]] = {
     "∆p": process_element(nearest_prime, 1),
     "∆ṙ": process_element(polynomial_from_roots, 1),
     "∆W": process_element(round_to, 2),
-    "∆Ŀ": process_element(lowest_common_multiple, 2),
+    "∆Ŀ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top, simple=True) is list:\n"
+        "    stack.append(lowest_common_multiple(top, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
+        2,
+    ),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
@@ -4837,6 +4859,11 @@ elements: dict[str, tuple[str, int]] = {
     "Þ¾": ("ctx.global_array = []", 0),
     "Þr": process_element(sans_last_prepend_zero, 1),
     "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
+    "Þẇ": (
+        "res = unwrap(pop(stack, 1, ctx), ctx); "
+        "stack.append(res[0]); stack.append(res[1])",
+        1,
+    ),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
