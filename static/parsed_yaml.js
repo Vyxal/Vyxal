@@ -1849,6 +1849,7 @@ num a, num b -> round(a, no_dec_places=b)
 codepage_descriptions[192] += `
 ∆Ŀ (Least Common Multiple)
 Get the least common multiple of two numbers
+lst a -> lcm(a)
 num a, num b -> lcm(a, b)
 `
 codepage_descriptions[105] += `
@@ -2261,6 +2262,11 @@ codepage_descriptions[82] += `
 ÞR (Remove Last Item From Cumulative Sums and Prepend 0)
 Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
 lst a -> Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+`
+codepage_descriptions[157] += `
+Þẇ (Unwrap)
+Take a and push a[0]+a[-1] and a[1:-1]
+lst a -> Take a and push a[0]+a[-1] and a[1:-1]
 `
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
