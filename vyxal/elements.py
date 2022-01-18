@@ -1179,7 +1179,7 @@ def function_call(lhs, ctx):
         return None
     return {
         NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
-        str: lambda: exec(lhs) or [],
+        str: lambda: exec(top) or [] if not ctx.online else [],
         list: lambda: vectorised_not(top, ctx=ctx),
     }.get(ts)()
 
@@ -3480,7 +3480,7 @@ def tail_remove(lhs, ctx):
     (any) -> a[:-1] (All but the last item)
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
-    if isinstance(lhs, int) and all(isinstance(x, int) for x in temp):
+    if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
         return int("".join(str(x) for x in temp))
     else:
         return temp
