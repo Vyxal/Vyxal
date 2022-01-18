@@ -1357,9 +1357,6 @@ def group_consecutive(lhs, ctx):
 
     res = list(gen())
 
-    if typ == NUMBER_TYPE:
-        res = [vy_int("".join(group)) for group in res]
-
     return res
 
 
@@ -2643,6 +2640,7 @@ def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
     """
+    lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
             lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
@@ -3638,6 +3636,7 @@ def uninterleave(lhs, ctx):
       - '["abcde"] : "bd"'
       - "[[1,2,3,4]] : [2,4]"
     """
+    lhs = iterable(lhs, ctx=ctx)
     return [
         index(deep_copy(lhs), [None, None, 2], ctx),
         index(lhs, [1, None, 2], ctx),
@@ -3849,7 +3848,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     any: Transpose a (filling with b), join on newlines
     """
     # Make every list in lhs the same length, padding left with b
-
+    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
         [rhs] * (len(x) < max_length and max_length - len(x)) + x
@@ -4557,7 +4556,8 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ḣ": (
-        "top = pop(stack, 1, ctx); stack.append(head(top, ctx));"
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
+        " stack.append(head(top, ctx));"
         " stack.append(index(top, [1, None], ctx))",
         1,
     ),
@@ -4570,7 +4570,7 @@ elements: dict[str, tuple[str, int]] = {
     "ṙ": process_element(vy_round, 1),
     "ṡ": process_element(sort_by, 2),
     "ṫ": (
-        "top = pop(stack, 1, ctx);"
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(index(top, [None, -1], ctx));"
         " stack.append(tail(top, ctx))",
         1,
