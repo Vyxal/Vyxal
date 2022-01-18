@@ -2525,8 +2525,12 @@ def orderless_range(lhs, rhs, ctx):
             # int(bool(...)) is needed because sympy decides to
             # return a special boolean class sometimes
         ),
-        (NUMBER_TYPE, str): lambda: rhs + ("0" * abs(len(rhs) - lhs)),
-        (str, NUMBER_TYPE): lambda: ("0" * abs(len(rhs) - lhs)) + lhs,
+        (NUMBER_TYPE, str): lambda: rhs + (" " * abs(len(rhs) - lhs))
+        if len(rhs) < lhs
+        else rhs,
+        (str, NUMBER_TYPE): lambda: (" " * abs(len(lhs) - rhs)) + lhs
+        if len(lhs) < rhs
+        else lhs,
         (ts[0], types.FunctionType): lambda: scanl(
             multiply(rhs, 2, ctx), iterable(lhs, range, ctx=ctx), ctx=ctx
         ),
