@@ -1408,7 +1408,7 @@ def head(lhs, ctx):
     (any) -> a[0]
     """
     return next(
-        iter(lhs) if type(lhs) is str else iterable(lhs, ctx=ctx),
+        iter(lhs) if type(lhs) is str else iter(iterable(lhs, ctx=ctx)),
         "" if type(lhs) is str else 0,
     )
 
