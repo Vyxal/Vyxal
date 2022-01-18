@@ -65,7 +65,6 @@ class LazyList:
                 @lazylist
                 def infinite_index():
                     x = self.listify()
-                    print(start, stop, step)
                     yield from x[start:stop:step]
 
                 return infinite_index()

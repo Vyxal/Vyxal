@@ -2625,6 +2625,7 @@ Get the least common multiple of two numbers
 
 ### Overloads
 
+- lst a: `lcm(a)`
 - num a, num b: `lcm(a, b)`
 -------------------------------
 ## `` ∆i `` (nth Digit of Pi)
@@ -3254,6 +3255,11 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `Remove the last item of a list and prepend 0. A shortcut for Ṫ0p`
 -------------------------------
+## `` Þ∞ `` (Infinite List)
+
+An infinite list of positive integers
+
+-------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
 
 Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
@@ -3261,6 +3267,14 @@ Remove the last item of the cumulative sums of a list and prepend 0. A shortcut 
 ### Overloads
 
 - lst a: `Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p`
+-------------------------------
+## `` Þẇ `` (Unwrap)
+
+Take a and push a[0]+a[-1] and a[1:-1]
+
+### Overloads
+
+- lst a: `Take a and push a[0]+a[-1] and a[1:-1]`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
