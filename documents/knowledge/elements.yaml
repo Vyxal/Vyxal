@@ -2150,7 +2150,7 @@
     - '["xyzabc123abc","b"] : ["xyza","b","c123a","b","c"]'
 
 - element: "Ẋ"
-  name: Cartesian Product
+  name: Cartesian Product / Fixpoint
   description: Take the Cartesian Product of two values, or apply a function until there is no change.
   arity: 2
   overloads:
