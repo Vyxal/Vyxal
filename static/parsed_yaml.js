@@ -1849,6 +1849,7 @@ num a, num b -> round(a, no_dec_places=b)
 codepage_descriptions[192] += `
 ∆Ŀ (Least Common Multiple)
 Get the least common multiple of two numbers
+lst a -> lcm(a)
 num a, num b -> lcm(a, b)
 `
 codepage_descriptions[105] += `

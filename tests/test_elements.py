@@ -15597,6 +15597,27 @@ def test_LeastCommonMultiple():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
+    stack = [vyxalify(item) for item in [[3,4,5,6]]]
+    expected = vyxalify(60)
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('∆Ŀ')
+    # print('∆Ŀ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+
+
 def test_nthDigitofPi():
 
     stack = [vyxalify(item) for item in [0]]
