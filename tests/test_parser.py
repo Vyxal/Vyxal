@@ -160,3 +160,9 @@ def test_structures():
             )
         ]
     )
+
+
+def test_modifiers_in_char_literals():
+    assert str(fully_parse("\\&")) == str(
+        [GenericStatement([Token(TokenType.CHARACTER, "&")])]
+    )

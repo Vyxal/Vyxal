@@ -80,3 +80,8 @@ def test_vectorise_map_lambda():
     """Test that a map lambda can be vectorised"""
     stack = run_vyxal("vƛ30∴;", inputs=[[[34, 1324, 23], [45, 3]]])
     assert simplify(stack[-1]) == [[34, 1324, 30], [45, 30]]
+
+
+def test_overdot_X_function_overload():
+    stack = run_vyxal("4λ2ḭ;Ẋ")
+    assert stack[-1] == 0
