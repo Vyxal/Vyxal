@@ -3709,7 +3709,7 @@
   description: Get the nth digit of pi
   overloads:
     num: nth_digit_of_pi(a)
-    str: antiderivative of a 
+    str: antiderivative of a
   vectorise: true
   tests:
     - "[0] : 3"
