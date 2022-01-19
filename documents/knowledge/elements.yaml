@@ -3704,11 +3704,12 @@
     - "[[3,4,5,6]] : 60"
 
 - element: "∆i"
-  name: nth Digit of Pi
+  name: nth Digit of Pi / Integrate
   arity: 1
   description: Get the nth digit of pi
   overloads:
     num: nth_digit_of_pi(a)
+    str: antiderivative of a 
   vectorise: true
   tests:
     - "[0] : 3"
@@ -3734,11 +3735,12 @@
     - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
 
 - element: "∆ė"
-  name: Nth Digit of Euler's Number (e)
+  name: Nth Digit of Euler's Number (e) / Differentiate
   arity: 1
   description: Get the nth digit of Euler's number (e)
   overloads:
     num: nth_digit_of_e(a)
+    str: derivative(a)
   vectorise: true
   tests:
     - "[0] : 2"
