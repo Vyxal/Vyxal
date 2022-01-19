@@ -15618,7 +15618,7 @@ def test_LeastCommonMultiple():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_nthDigitofPi():
+def test_nthDigitofPiIntegrate():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(3)
@@ -15853,7 +15853,7 @@ def test_NDigitsofEulersNumbereSympyEvaluate():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
 
 
-def test_NthDigitofEulersNumbere():
+def test_NthDigitofEulersNumbereDifferentiate():
 
     stack = [vyxalify(item) for item in [0]]
     expected = vyxalify(2)
