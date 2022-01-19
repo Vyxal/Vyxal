@@ -4536,7 +4536,7 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": (
-        "stack[:] = [deep_copy(stack)]"
+        "stack[:] = [deep_copy(stack)]",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
