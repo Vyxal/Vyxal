@@ -1082,7 +1082,7 @@ any a -> a, reversed(a)
 `)
 
 codepage_descriptions.push(`Vectorised sums
-Reduce stack by addition
+Sum of each item in a list
 `)
 
 codepage_descriptions.push(`Tail Remove
@@ -1342,16 +1342,16 @@ any a, num b -> rotate_right(a,b)
 any a, any b -> a,(b[-1:]+b[:-1])
 `)
 
-codepage_descriptions.push(`One Byte Lambda
-One Byte lambda function (prefix)
+codepage_descriptions.push(`One Element Lambda
+One Element lambda function (prefix)
 `)
 
-codepage_descriptions.push(`Two Byte Lambda
-Two Byte lambda function (prefix)
+codepage_descriptions.push(`Two Element Lambda
+Two Element lambda function (prefix)
 `)
 
-codepage_descriptions.push(`Three Byte Lambda
-Three Byte lambda function (prefix)
+codepage_descriptions.push(`Three Element Lambda
+Three Element lambda function (prefix)
 `)
 
 codepage_descriptions.push(`Index of next character in codepage
@@ -1853,9 +1853,10 @@ lst a -> lcm(a)
 num a, num b -> lcm(a, b)
 `
 codepage_descriptions[105] += `
-∆i (nth Digit of Pi)
+∆i (nth Digit of Pi / Integrate)
 Get the nth digit of pi
 num a -> nth_digit_of_pi(a)
+str a -> antiderivative of a
 `
 codepage_descriptions[187] += `
 ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
@@ -1864,9 +1865,10 @@ num a -> First n digits of e
 str a -> evaluate(a)
 `
 codepage_descriptions[144] += `
-∆ė (Nth Digit of Euler's Number (e))
+∆ė (Nth Digit of Euler's Number (e) / Differentiate)
 Get the nth digit of Euler's number (e)
 num a -> nth_digit_of_e(a)
+str a -> derivative(a)
 `
 codepage_descriptions[102] += `
 ∆f (nth Fibonacci Number)
