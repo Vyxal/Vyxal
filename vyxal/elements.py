@@ -550,8 +550,8 @@ def combinations_with_replacement(lhs, rhs, ctx):
         (ts[0], NUMBER_TYPE): lambda: vyxalify(
             itertools.product(iterable(lhs, ctx), repeat=rhs)
         ),
-        (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs),
-        (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs),
+        (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx),
+        (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx),
     }.get(ts, lambda: keep(lhs, rhs))()
 
 
