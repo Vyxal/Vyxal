@@ -29,9 +29,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -50,9 +50,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -71,9 +71,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [""]]
@@ -92,9 +92,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -113,9 +113,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[]]]
@@ -134,9 +134,9 @@ def test_LogicalNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LogicalAnd():
@@ -157,9 +157,9 @@ def test_LogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["", 1]]
@@ -178,9 +178,9 @@ def test_LogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 0]]
@@ -199,9 +199,9 @@ def test_LogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 2]]
@@ -220,9 +220,9 @@ def test_LogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ReversedLogicalAnd():
@@ -243,9 +243,9 @@ def test_ReversedLogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["", 1]]
@@ -264,9 +264,9 @@ def test_ReversedLogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 0]]
@@ -285,9 +285,9 @@ def test_ReversedLogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 2]]
@@ -306,9 +306,9 @@ def test_ReversedLogicalAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LogicalOr():
@@ -329,9 +329,9 @@ def test_LogicalOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["", 1]]
@@ -350,9 +350,9 @@ def test_LogicalOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 0]]
@@ -371,9 +371,9 @@ def test_LogicalOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 2]]
@@ -392,9 +392,9 @@ def test_LogicalOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RemoveatIndex():
@@ -415,9 +415,9 @@ def test_RemoveatIndex():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 1]]
@@ -436,9 +436,9 @@ def test_RemoveatIndex():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3, [1,2,3,1]]]
@@ -457,9 +457,9 @@ def test_RemoveatIndex():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0, [1,2,3,1]]]
@@ -478,9 +478,9 @@ def test_RemoveatIndex():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ItemSplit():
@@ -501,9 +501,9 @@ def test_ItemSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -522,9 +522,9 @@ def test_ItemSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -543,9 +543,9 @@ def test_ItemSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AsteriskLiteral():
@@ -566,9 +566,9 @@ def test_AsteriskLiteral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MultiCommand():
@@ -589,9 +589,9 @@ def test_MultiCommand():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcde", 4]]
@@ -610,9 +610,9 @@ def test_MultiCommand():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcde", "FgHIj"]]
@@ -631,9 +631,9 @@ def test_MultiCommand():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]]]
@@ -652,9 +652,9 @@ def test_MultiCommand():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FunctionCall():
@@ -675,9 +675,9 @@ def test_FunctionCall():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 0, 1]]]
@@ -696,9 +696,9 @@ def test_FunctionCall():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SplitOn():
@@ -719,9 +719,9 @@ def test_SplitOn():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc3def", 3]]
@@ -740,9 +740,9 @@ def test_SplitOn():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 3, 2, 1], 4]]
@@ -761,9 +761,9 @@ def test_SplitOn():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Halve():
@@ -784,9 +784,9 @@ def test_Halve():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["FizzBuzz"]]
@@ -805,9 +805,9 @@ def test_Halve():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[2, 4, 6, 8]]]
@@ -826,9 +826,9 @@ def test_Halve():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CombinationsRemoveFixedPointCollection():
@@ -849,9 +849,9 @@ def test_CombinationsRemoveFixedPointCollection():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,3,5,6,7,7,1],[1,3,5]]]
@@ -870,9 +870,9 @@ def test_CombinationsRemoveFixedPointCollection():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2],2]]
@@ -891,9 +891,9 @@ def test_CombinationsRemoveFixedPointCollection():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_InfiniteReplacement():
@@ -914,9 +914,9 @@ def test_InfiniteReplacement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1444,44,34]]
@@ -935,9 +935,9 @@ def test_InfiniteReplacement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ComplementCommaSplit():
@@ -958,9 +958,9 @@ def test_ComplementCommaSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-5]]
@@ -979,9 +979,9 @@ def test_ComplementCommaSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a,b,c"]]
@@ -1000,9 +1000,9 @@ def test_ComplementCommaSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_IsPrimeCaseCheck():
@@ -1023,9 +1023,9 @@ def test_IsPrimeCaseCheck():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -1044,9 +1044,9 @@ def test_IsPrimeCaseCheck():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a"]]
@@ -1065,9 +1065,9 @@ def test_IsPrimeCaseCheck():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["A"]]
@@ -1086,9 +1086,9 @@ def test_IsPrimeCaseCheck():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["!"]]
@@ -1107,9 +1107,9 @@ def test_IsPrimeCaseCheck():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_InclusiveZeroRange():
@@ -1130,9 +1130,9 @@ def test_InclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1]]]
@@ -1151,9 +1151,9 @@ def test_InclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -1172,9 +1172,9 @@ def test_InclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ExclusiveZeroRange():
@@ -1195,9 +1195,9 @@ def test_ExclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1]]]
@@ -1216,9 +1216,9 @@ def test_ExclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -1237,9 +1237,9 @@ def test_ExclusiveZeroRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_InclusiveOneRange():
@@ -1260,9 +1260,9 @@ def test_InclusiveOneRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[4, 5]]]
@@ -1281,9 +1281,9 @@ def test_InclusiveOneRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -1302,9 +1302,9 @@ def test_InclusiveOneRange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ExclusiveOneRangeLowercase():
@@ -1325,9 +1325,9 @@ def test_ExclusiveOneRangeLowercase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0]]]
@@ -1346,9 +1346,9 @@ def test_ExclusiveOneRangeLowercase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -1367,9 +1367,9 @@ def test_ExclusiveOneRangeLowercase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Chooserandomchoicesetsame():
@@ -1390,9 +1390,9 @@ def test_Chooserandomchoicesetsame():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc","aaccb"]]
@@ -1411,9 +1411,9 @@ def test_Chooserandomchoicesetsame():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc","abcd"]]
@@ -1432,9 +1432,9 @@ def test_Chooserandomchoicesetsame():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Palindromise():
@@ -1455,9 +1455,9 @@ def test_Palindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4]]]
@@ -1476,9 +1476,9 @@ def test_Palindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5]]]
@@ -1497,9 +1497,9 @@ def test_Palindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6]]]
@@ -1518,9 +1518,9 @@ def test_Palindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -1539,9 +1539,9 @@ def test_Palindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StackLength():
@@ -1562,9 +1562,9 @@ def test_StackLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1,1,1,1,1]]
@@ -1583,9 +1583,9 @@ def test_StackLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in []]
@@ -1604,9 +1604,9 @@ def test_StackLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Pair():
@@ -1627,9 +1627,9 @@ def test_Pair():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 2, 3]]
@@ -1648,9 +1648,9 @@ def test_Pair():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3], "abc", 3]]
@@ -1669,9 +1669,9 @@ def test_Pair():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Swap():
@@ -1692,9 +1692,9 @@ def test_Swap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 2, 3]]
@@ -1713,9 +1713,9 @@ def test_Swap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3], "abc", 3]]
@@ -1734,9 +1734,9 @@ def test_Swap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ModuloFormat():
@@ -1757,9 +1757,9 @@ def test_ModuloFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello %!",3]]
@@ -1778,9 +1778,9 @@ def test_ModuloFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hel%ld!","lo, Wor"]]
@@ -1799,9 +1799,9 @@ def test_ModuloFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["% and % and %",[1,2,3]]]
@@ -1820,9 +1820,9 @@ def test_ModuloFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Multiplication():
@@ -1843,9 +1843,9 @@ def test_Multiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4,-2]]
@@ -1864,9 +1864,9 @@ def test_Multiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4,"*"]]
@@ -1885,9 +1885,9 @@ def test_Multiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["x",5]]
@@ -1906,9 +1906,9 @@ def test_Multiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["aeiou","hello"]]
@@ -1927,9 +1927,9 @@ def test_Multiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Addition():
@@ -1950,9 +1950,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0, -5]]
@@ -1971,9 +1971,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc", 5]]
@@ -1992,9 +1992,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5, "abc"]]
@@ -2013,9 +2013,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello, ", "World!"]]
@@ -2034,9 +2034,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 4]]
@@ -2055,9 +2055,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], [4,5,6]]]
@@ -2076,9 +2076,9 @@ def test_Addition():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Subtract():
@@ -2099,9 +2099,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0, -5]]
@@ -2120,9 +2120,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["|", 5]]
@@ -2141,9 +2141,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3, "> arrow"]]
@@ -2162,9 +2162,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcbde", "b"]]
@@ -2183,9 +2183,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["aaa", "a"]]
@@ -2204,9 +2204,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3], [1, 2, 3]]]
@@ -2225,9 +2225,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[10, 20, 30], 5]]
@@ -2246,9 +2246,9 @@ def test_Subtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DivideSplit():
@@ -2269,9 +2269,9 @@ def test_DivideSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdef",3]]
@@ -2290,9 +2290,9 @@ def test_DivideSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["1,2,3",","]]
@@ -2311,9 +2311,9 @@ def test_DivideSplit():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LessThan():
@@ -2334,9 +2334,9 @@ def test_LessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2, 1]]
@@ -2355,9 +2355,9 @@ def test_LessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a","b"]]
@@ -2376,9 +2376,9 @@ def test_LessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-5,2]]
@@ -2397,9 +2397,9 @@ def test_LessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],2]]
@@ -2418,9 +2418,9 @@ def test_LessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Equals():
@@ -2441,9 +2441,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2, 1]]
@@ -2462,9 +2462,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a","b"]]
@@ -2483,9 +2483,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["xyz","xyz"]]
@@ -2504,9 +2504,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],2]]
@@ -2525,9 +2525,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1,"1"]]
@@ -2546,9 +2546,9 @@ def test_Equals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GreaterThan():
@@ -2569,9 +2569,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2, 1]]
@@ -2590,9 +2590,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a","b"]]
@@ -2611,9 +2611,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2,-5]]
@@ -2632,9 +2632,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],2]]
@@ -2653,9 +2653,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["5",10]]
@@ -2674,9 +2674,9 @@ def test_GreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_All():
@@ -2697,9 +2697,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0,1,2]]]
@@ -2718,9 +2718,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["",1,2]]]
@@ -2739,9 +2739,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[]]]
@@ -2760,9 +2760,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [""]]
@@ -2781,9 +2781,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -2802,9 +2802,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a"]]
@@ -2823,9 +2823,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["y"]]
@@ -2844,9 +2844,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi"]]
@@ -2865,9 +2865,9 @@ def test_All():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BinaryToDecimal():
@@ -2888,9 +2888,9 @@ def test_BinaryToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,1,1]]]
@@ -2909,9 +2909,9 @@ def test_BinaryToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["1011"]]
@@ -2930,9 +2930,9 @@ def test_BinaryToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ChrOrd():
@@ -2953,9 +2953,9 @@ def test_ChrOrd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8482]]
@@ -2974,9 +2974,9 @@ def test_ChrOrd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Z"]]
@@ -2995,9 +2995,9 @@ def test_ChrOrd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["ABC"]]
@@ -3016,9 +3016,9 @@ def test_ChrOrd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[123,124,125]]]
@@ -3037,9 +3037,9 @@ def test_ChrOrd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TwoPowerPythonEval():
@@ -3060,9 +3060,9 @@ def test_TwoPowerPythonEval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -3081,9 +3081,9 @@ def test_TwoPowerPythonEval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["[1,2,3]"]]
@@ -3102,9 +3102,9 @@ def test_TwoPowerPythonEval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Filter():
@@ -3125,9 +3125,9 @@ def test_Filter():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdef","daffodil"]]
@@ -3146,9 +3146,9 @@ def test_Filter():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Max():
@@ -3169,9 +3169,9 @@ def test_Max():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["python"]]
@@ -3190,9 +3190,9 @@ def test_Max():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_HexToDecimal():
@@ -3213,9 +3213,9 @@ def test_HexToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["b"]]
@@ -3234,9 +3234,9 @@ def test_HexToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["beedab"]]
@@ -3255,9 +3255,9 @@ def test_HexToDecimal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_IntoTwoPieces():
@@ -3278,9 +3278,9 @@ def test_IntoTwoPieces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [":I"]]
@@ -3299,9 +3299,9 @@ def test_IntoTwoPieces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4]]]
@@ -3320,9 +3320,9 @@ def test_IntoTwoPieces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Merge():
@@ -3343,9 +3343,9 @@ def test_Merge():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc","def"]]
@@ -3364,9 +3364,9 @@ def test_Merge():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1,[2,3,4]]]
@@ -3385,9 +3385,9 @@ def test_Merge():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2],[3,4]]]
@@ -3406,9 +3406,9 @@ def test_Merge():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FactorsSubstringsPrefixes():
@@ -3429,9 +3429,9 @@ def test_FactorsSubstringsPrefixes():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -3450,9 +3450,9 @@ def test_FactorsSubstringsPrefixes():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["adbcdbcd"]]
@@ -3471,9 +3471,9 @@ def test_FactorsSubstringsPrefixes():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -3492,9 +3492,9 @@ def test_FactorsSubstringsPrefixes():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Length():
@@ -3515,9 +3515,9 @@ def test_Length():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -3536,9 +3536,9 @@ def test_Length():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,"wrfwerfgbr",6]]]
@@ -3557,9 +3557,9 @@ def test_Length():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Map():
@@ -3580,9 +3580,9 @@ def test_Map():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["z","hi"]]
@@ -3601,9 +3601,9 @@ def test_Map():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NegateSwapCase():
@@ -3624,9 +3624,9 @@ def test_NegateSwapCase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-1]]
@@ -3645,9 +3645,9 @@ def test_NegateSwapCase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a"]]
@@ -3666,9 +3666,9 @@ def test_NegateSwapCase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["aBc"]]
@@ -3687,9 +3687,9 @@ def test_NegateSwapCase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Count():
@@ -3710,9 +3710,9 @@ def test_Count():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdbacsabdcabca","a"]]
@@ -3731,9 +3731,9 @@ def test_Count():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Strip():
@@ -3754,9 +3754,9 @@ def test_Strip():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["    Hello, World!    ", " "]]
@@ -3775,9 +3775,9 @@ def test_Strip():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Reduce():
@@ -3798,9 +3798,9 @@ def test_Reduce():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2]]]]
@@ -3819,9 +3819,9 @@ def test_Reduce():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Stringify():
@@ -3842,9 +3842,9 @@ def test_Stringify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -3863,9 +3863,9 @@ def test_Stringify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["X"]]
@@ -3884,9 +3884,9 @@ def test_Stringify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TruthyIndices():
@@ -3907,9 +3907,9 @@ def test_TruthyIndices():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-4]]
@@ -3928,9 +3928,9 @@ def test_TruthyIndices():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0,1,0,2]]]
@@ -3949,9 +3949,9 @@ def test_TruthyIndices():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4]]]
@@ -3970,9 +3970,9 @@ def test_TruthyIndices():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uniquify():
@@ -3993,9 +3993,9 @@ def test_Uniquify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abdbcdbch"]]
@@ -4014,9 +4014,9 @@ def test_Uniquify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Replace():
@@ -4037,9 +4037,9 @@ def test_Replace():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["banana","n","nan"]]
@@ -4058,9 +4058,9 @@ def test_Replace():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Wrap():
@@ -4081,9 +4081,9 @@ def test_Wrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in []]
@@ -4102,9 +4102,9 @@ def test_Wrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello",1,9]]
@@ -4123,9 +4123,9 @@ def test_Wrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Interleave():
@@ -4146,9 +4146,9 @@ def test_Interleave():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["srn","tig"]]
@@ -4167,9 +4167,9 @@ def test_Interleave():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Zip():
@@ -4190,9 +4190,9 @@ def test_Zip():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc",[1,2,3]]]
@@ -4211,9 +4211,9 @@ def test_Zip():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Any():
@@ -4234,9 +4234,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0,0,0]]]
@@ -4255,9 +4255,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0,1,2]]]
@@ -4276,9 +4276,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["A"]]
@@ -4297,9 +4297,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a"]]
@@ -4318,9 +4318,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hi"]]
@@ -4339,9 +4339,9 @@ def test_Any():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Binary():
@@ -4362,9 +4362,9 @@ def test_Binary():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [" "]]
@@ -4383,9 +4383,9 @@ def test_Binary():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[2,3]]]
@@ -4404,9 +4404,9 @@ def test_Binary():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Contains():
@@ -4427,9 +4427,9 @@ def test_Contains():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["xyz","a"]]
@@ -4448,9 +4448,9 @@ def test_Contains():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],1]]
@@ -4469,9 +4469,9 @@ def test_Contains():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],0]]
@@ -4490,9 +4490,9 @@ def test_Contains():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Double():
@@ -4513,9 +4513,9 @@ def test_Double():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -4534,9 +4534,9 @@ def test_Double():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2]]]
@@ -4555,9 +4555,9 @@ def test_Double():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["x"]]
@@ -4576,9 +4576,9 @@ def test_Double():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["ha"]]
@@ -4597,9 +4597,9 @@ def test_Double():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Exponentiation():
@@ -4620,9 +4620,9 @@ def test_Exponentiation():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0,0]]
@@ -4641,9 +4641,9 @@ def test_Exponentiation():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello",7]]
@@ -4662,9 +4662,9 @@ def test_Exponentiation():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Flatten():
@@ -4685,9 +4685,9 @@ def test_Flatten():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi"]]
@@ -4706,9 +4706,9 @@ def test_Flatten():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[[1,2],3,[[4,[5]],6],7],[8,[9]]]]]
@@ -4727,9 +4727,9 @@ def test_Flatten():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-1]]
@@ -4748,9 +4748,9 @@ def test_Flatten():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Minimum():
@@ -4771,9 +4771,9 @@ def test_Minimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,4,-2]]]
@@ -4792,9 +4792,9 @@ def test_Minimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[5,3,9]]]
@@ -4813,9 +4813,9 @@ def test_Minimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Head():
@@ -4836,9 +4836,9 @@ def test_Head():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -4857,9 +4857,9 @@ def test_Head():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Index():
@@ -4880,9 +4880,9 @@ def test_Index():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 0]]
@@ -4901,9 +4901,9 @@ def test_Index():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[2,3,4,5], [2]]]
@@ -4922,9 +4922,9 @@ def test_Index():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,3,5,7],[1,3]]]
@@ -4943,9 +4943,9 @@ def test_Index():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]]
@@ -4964,9 +4964,9 @@ def test_Index():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Join():
@@ -4987,9 +4987,9 @@ def test_Join():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["he","","o, wor","d!"], "l"]]
@@ -5008,9 +5008,9 @@ def test_Join():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CumulativeGroups():
@@ -5031,9 +5031,9 @@ def test_CumulativeGroups():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["cake",2]]
@@ -5052,9 +5052,9 @@ def test_CumulativeGroups():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["cheese","cake"]]
@@ -5073,9 +5073,9 @@ def test_CumulativeGroups():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["cheese","salads"]]
@@ -5094,9 +5094,9 @@ def test_CumulativeGroups():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Mirror():
@@ -5117,9 +5117,9 @@ def test_Mirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi"]]
@@ -5138,9 +5138,9 @@ def test_Mirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -5159,9 +5159,9 @@ def test_Mirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Remove():
@@ -5182,9 +5182,9 @@ def test_Remove():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,1,2],1]]
@@ -5203,9 +5203,9 @@ def test_Remove():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["bananas and naan","an"]]
@@ -5224,9 +5224,9 @@ def test_Remove():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Prepend():
@@ -5247,9 +5247,9 @@ def test_Prepend():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],13]]
@@ -5268,9 +5268,9 @@ def test_Prepend():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3,4,5],"23"]]
@@ -5289,9 +5289,9 @@ def test_Prepend():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uneval():
@@ -5312,9 +5312,9 @@ def test_Uneval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["`"]]
@@ -5333,9 +5333,9 @@ def test_Uneval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["a"]]
@@ -5354,9 +5354,9 @@ def test_Uneval():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Range():
@@ -5377,9 +5377,9 @@ def test_Range():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4,8]]
@@ -5398,9 +5398,9 @@ def test_Range():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_sort():
@@ -5421,9 +5421,9 @@ def test_sort():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["bca"]]
@@ -5442,9 +5442,9 @@ def test_sort():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Tail():
@@ -5465,9 +5465,9 @@ def test_Tail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -5486,9 +5486,9 @@ def test_Tail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MinusOne():
@@ -5509,9 +5509,9 @@ def test_MinusOne():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Listify():
@@ -5532,9 +5532,9 @@ def test_Listify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -5553,9 +5553,9 @@ def test_Listify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -5574,9 +5574,9 @@ def test_Listify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uninterleave():
@@ -5597,9 +5597,9 @@ def test_Uninterleave():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4]]]
@@ -5618,9 +5618,9 @@ def test_Uninterleave():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Zip_self():
@@ -5641,9 +5641,9 @@ def test_Zip_self():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["zap"]]
@@ -5662,9 +5662,9 @@ def test_Zip_self():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MaxbyTail():
@@ -5685,9 +5685,9 @@ def test_MaxbyTail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2,3],[2,5]]]]
@@ -5706,9 +5706,9 @@ def test_MaxbyTail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MinbyTail():
@@ -5729,9 +5729,9 @@ def test_MinbyTail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2,3],[2,5]]]]
@@ -5750,9 +5750,9 @@ def test_MinbyTail():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DyadicMaximum():
@@ -5773,9 +5773,9 @@ def test_DyadicMaximum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","goodbye"]]
@@ -5794,9 +5794,9 @@ def test_DyadicMaximum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3,"(stuff)"]]
@@ -5815,9 +5815,9 @@ def test_DyadicMaximum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DyadicMinimum():
@@ -5838,9 +5838,9 @@ def test_DyadicMinimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","goodbye"]]
@@ -5859,9 +5859,9 @@ def test_DyadicMinimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3,"(stuff)"]]
@@ -5880,9 +5880,9 @@ def test_DyadicMinimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_IncrementSpaceReplaceWith0():
@@ -5903,9 +5903,9 @@ def test_IncrementSpaceReplaceWith0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3,4]]]
@@ -5924,9 +5924,9 @@ def test_IncrementSpaceReplaceWith0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["  101"]]
@@ -5945,9 +5945,9 @@ def test_IncrementSpaceReplaceWith0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Decrement():
@@ -5968,9 +5968,9 @@ def test_Decrement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3,4]]]
@@ -5989,9 +5989,9 @@ def test_Decrement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -6010,9 +6010,9 @@ def test_Decrement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parity():
@@ -6033,9 +6033,9 @@ def test_Parity():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -6054,9 +6054,9 @@ def test_Parity():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello!"]]
@@ -6075,9 +6075,9 @@ def test_Parity():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_EmptyString():
@@ -6098,9 +6098,9 @@ def test_EmptyString():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Space():
@@ -6121,9 +6121,9 @@ def test_Space():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ToBaseTenFromCustomBase():
@@ -6144,9 +6144,9 @@ def test_ToBaseTenFromCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["banana","nab"]]
@@ -6165,9 +6165,9 @@ def test_ToBaseTenFromCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[15,23,9],31]]
@@ -6186,9 +6186,9 @@ def test_ToBaseTenFromCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FromBaseTenToCustomBase():
@@ -6209,9 +6209,9 @@ def test_FromBaseTenToCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1234567,5]]
@@ -6230,9 +6230,9 @@ def test_FromBaseTenToCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [928343,["he","ll","o"]]]
@@ -6251,9 +6251,9 @@ def test_FromBaseTenToCustomBase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Absolutevalue():
@@ -6274,9 +6274,9 @@ def test_Absolutevalue():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-1]]
@@ -6295,9 +6295,9 @@ def test_Absolutevalue():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [" ch ee s e "]]
@@ -6316,9 +6316,9 @@ def test_Absolutevalue():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[-1,2,-5]]]
@@ -6337,9 +6337,9 @@ def test_Absolutevalue():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Boolify():
@@ -6360,9 +6360,9 @@ def test_Boolify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -6381,9 +6381,9 @@ def test_Boolify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[69, 0]]]
@@ -6402,9 +6402,9 @@ def test_Boolify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["x"]]
@@ -6423,9 +6423,9 @@ def test_Boolify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NotOne():
@@ -6446,9 +6446,9 @@ def test_NotOne():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["1"]]
@@ -6467,9 +6467,9 @@ def test_NotOne():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -6488,9 +6488,9 @@ def test_NotOne():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -6509,9 +6509,9 @@ def test_NotOne():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Divmod():
@@ -6532,9 +6532,9 @@ def test_Divmod():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcd",3]]
@@ -6553,9 +6553,9 @@ def test_Divmod():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],2]]
@@ -6574,9 +6574,9 @@ def test_Divmod():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdef", "Joe"]]
@@ -6595,9 +6595,9 @@ def test_Divmod():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Enumerate():
@@ -6618,9 +6618,9 @@ def test_Enumerate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -6639,9 +6639,9 @@ def test_Enumerate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Find():
@@ -6662,9 +6662,9 @@ def test_Find():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","l"]]
@@ -6683,9 +6683,9 @@ def test_Find():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Gcd():
@@ -6706,9 +6706,9 @@ def test_Gcd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[60,42,108]]]
@@ -6727,9 +6727,9 @@ def test_Gcd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [50,35]]
@@ -6748,9 +6748,9 @@ def test_Gcd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["laugh","cough"]]
@@ -6769,9 +6769,9 @@ def test_Gcd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_HeadExtract():
@@ -6792,9 +6792,9 @@ def test_HeadExtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -6813,9 +6813,9 @@ def test_HeadExtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FloorDivision():
@@ -6836,9 +6836,9 @@ def test_FloorDivision():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello!",3]]
@@ -6857,9 +6857,9 @@ def test_FloorDivision():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3,"hello!"]]
@@ -6878,9 +6878,9 @@ def test_FloorDivision():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
@@ -6901,9 +6901,9 @@ def test_LeftJustifyGridifyInfiniteReplaceCollectuntilfale():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Mean():
@@ -6924,9 +6924,9 @@ def test_Mean():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[4,71,-63]]]
@@ -6945,9 +6945,9 @@ def test_Mean():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_JoinByNothing():
@@ -6968,9 +6968,9 @@ def test_JoinByNothing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -6989,9 +6989,9 @@ def test_JoinByNothing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -7010,9 +7010,9 @@ def test_JoinByNothing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0.54]]
@@ -7031,9 +7031,9 @@ def test_JoinByNothing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Slice():
@@ -7054,9 +7054,9 @@ def test_Slice():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],1]]
@@ -7075,9 +7075,9 @@ def test_Slice():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Powerset():
@@ -7098,9 +7098,9 @@ def test_Powerset():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -7119,9 +7119,9 @@ def test_Powerset():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Round():
@@ -7142,9 +7142,9 @@ def test_Round():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3.2]]
@@ -7163,9 +7163,9 @@ def test_Round():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[5.5,3.2]]]
@@ -7184,9 +7184,9 @@ def test_Round():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-4.7]]
@@ -7205,9 +7205,9 @@ def test_Round():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-4.5]]
@@ -7226,9 +7226,9 @@ def test_Round():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SortbyFunction():
@@ -7249,9 +7249,9 @@ def test_SortbyFunction():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1,5]]
@@ -7270,9 +7270,9 @@ def test_SortbyFunction():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc1def2ghi","\\d+"]]
@@ -7291,9 +7291,9 @@ def test_SortbyFunction():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TailExtract():
@@ -7314,9 +7314,9 @@ def test_TailExtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -7335,9 +7335,9 @@ def test_TailExtract():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ChunkWrap():
@@ -7358,9 +7358,9 @@ def test_ChunkWrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6],3]]
@@ -7379,9 +7379,9 @@ def test_ChunkWrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdefghi",[2,3,4]]]
@@ -7400,9 +7400,9 @@ def test_ChunkWrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5], [2,3] ]]
@@ -7421,9 +7421,9 @@ def test_ChunkWrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Repeat():
@@ -7444,9 +7444,9 @@ def test_Repeat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["x",5]]
@@ -7465,9 +7465,9 @@ def test_Repeat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0, 4]]
@@ -7486,9 +7486,9 @@ def test_Repeat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ExclusiveRangeLength():
@@ -7509,9 +7509,9 @@ def test_ExclusiveRangeLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2]]]
@@ -7530,9 +7530,9 @@ def test_ExclusiveRangeLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_InclusiveRangeLength():
@@ -7553,9 +7553,9 @@ def test_InclusiveRangeLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2]]]
@@ -7574,9 +7574,9 @@ def test_InclusiveRangeLength():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SquareRoot():
@@ -7597,9 +7597,9 @@ def test_SquareRoot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -7618,9 +7618,9 @@ def test_SquareRoot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Ten():
@@ -7641,9 +7641,9 @@ def test_Ten():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Hundred():
@@ -7664,9 +7664,9 @@ def test_Hundred():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_IsEven():
@@ -7687,9 +7687,9 @@ def test_IsEven():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -7708,9 +7708,9 @@ def test_IsEven():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -7729,9 +7729,9 @@ def test_IsEven():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2]]]
@@ -7750,9 +7750,9 @@ def test_IsEven():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DivisibleBythree():
@@ -7773,9 +7773,9 @@ def test_DivisibleBythree():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -7794,9 +7794,9 @@ def test_DivisibleBythree():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi"]]
@@ -7815,9 +7815,9 @@ def test_DivisibleBythree():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1]]]
@@ -7836,9 +7836,9 @@ def test_DivisibleBythree():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TwentySix():
@@ -7859,9 +7859,9 @@ def test_TwentySix():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DivisibleByFive():
@@ -7882,9 +7882,9 @@ def test_DivisibleByFive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -7903,9 +7903,9 @@ def test_DivisibleByFive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -7924,9 +7924,9 @@ def test_DivisibleByFive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -7945,9 +7945,9 @@ def test_DivisibleByFive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SixtyFour():
@@ -7968,9 +7968,9 @@ def test_SixtyFour():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_OneTwentyEight():
@@ -7991,9 +7991,9 @@ def test_OneTwentyEight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TwoFiftySix():
@@ -8014,9 +8014,9 @@ def test_TwoFiftySix():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Newline():
@@ -8037,9 +8037,9 @@ def test_Newline():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_JoinOnNewlines():
@@ -8060,9 +8060,9 @@ def test_JoinOnNewlines():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["Hello", "World!"]]]
@@ -8081,9 +8081,9 @@ def test_JoinOnNewlines():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_VerticalJoin():
@@ -8104,9 +8104,9 @@ def test_VerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["***", "****", "*****"]]]
@@ -8125,9 +8125,9 @@ def test_VerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AbsoluteDifferencePaddedVerticalJoin():
@@ -8148,9 +8148,9 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 5]]
@@ -8169,9 +8169,9 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3, 3]]
@@ -8190,9 +8190,9 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["***", "****", "*****"], "."]]
@@ -8211,9 +8211,9 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["abc", "def", "ghi"], "."]]
@@ -8232,9 +8232,9 @@ def test_AbsoluteDifferencePaddedVerticalJoin():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Factorial():
@@ -8255,9 +8255,9 @@ def test_Factorial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello my name jeff. ur sussy baka"]]
@@ -8276,9 +8276,9 @@ def test_Factorial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5]]]
@@ -8297,9 +8297,9 @@ def test_Factorial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Summate():
@@ -8320,9 +8320,9 @@ def test_Summate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["abc", "def", 10]]]
@@ -8341,9 +8341,9 @@ def test_Summate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [12345]]
@@ -8362,9 +8362,9 @@ def test_Summate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CumulativeSum():
@@ -8385,9 +8385,9 @@ def test_CumulativeSum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdef"]]
@@ -8406,9 +8406,9 @@ def test_CumulativeSum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5]]]
@@ -8427,9 +8427,9 @@ def test_CumulativeSum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllEqual():
@@ -8450,9 +8450,9 @@ def test_AllEqual():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["acc"]]
@@ -8471,9 +8471,9 @@ def test_AllEqual():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 2, 1]]]
@@ -8492,9 +8492,9 @@ def test_AllEqual():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[]]]
@@ -8513,9 +8513,9 @@ def test_AllEqual():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Assign():
@@ -8536,9 +8536,9 @@ def test_Assign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello ", 5, ", World!"]]
@@ -8557,9 +8557,9 @@ def test_Assign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69320, 2, 4]]
@@ -8578,9 +8578,9 @@ def test_Assign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Bifurcate():
@@ -8601,9 +8601,9 @@ def test_Bifurcate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -8622,9 +8622,9 @@ def test_Bifurcate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4]]]
@@ -8643,9 +8643,9 @@ def test_Bifurcate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Counts():
@@ -8666,9 +8666,9 @@ def test_Counts():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello, World!"]]
@@ -8687,9 +8687,9 @@ def test_Counts():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_IsDivisibleArbitraryDuplicate():
@@ -8710,9 +8710,9 @@ def test_IsDivisibleArbitraryDuplicate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc", 3]]
@@ -8731,9 +8731,9 @@ def test_IsDivisibleArbitraryDuplicate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[5, 13, 29, 48, 12], 2]]
@@ -8752,9 +8752,9 @@ def test_IsDivisibleArbitraryDuplicate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_VyxalExecReciprocal():
@@ -8775,9 +8775,9 @@ def test_VyxalExecReciprocal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["kH"]]
@@ -8796,9 +8796,9 @@ def test_VyxalExecReciprocal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GeneratorModuloIndexFormat():
@@ -8819,9 +8819,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.69, 10]]
@@ -8840,9 +8840,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello, World!", 3]]
@@ -8861,9 +8861,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["LQYWXUAOL", 2]]
@@ -8882,9 +8882,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5, 6, 7, 8, 9], 4]]
@@ -8903,9 +8903,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["Hello", "World!", "Gaming", "Pogchamp", "A"], 2]]
@@ -8924,9 +8924,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["    1111", "0"]]
@@ -8945,9 +8945,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["But who was phone?", "!"]]
@@ -8966,9 +8966,9 @@ def test_GeneratorModuloIndexFormat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Groupconsecutive():
@@ -8989,9 +8989,9 @@ def test_Groupconsecutive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello, World!"]]
@@ -9010,9 +9010,9 @@ def test_Groupconsecutive():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_HeadRemoveBehead():
@@ -9033,9 +9033,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[]]]
@@ -9054,9 +9054,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["foo"]]
@@ -9075,9 +9075,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [""]]
@@ -9096,9 +9096,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1234.56]]
@@ -9117,9 +9117,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0.2]]
@@ -9138,9 +9138,9 @@ def test_HeadRemoveBehead():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Indexintoorcollectwhileunique():
@@ -9161,9 +9161,9 @@ def test_Indexintoorcollectwhileunique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Transliterate():
@@ -9184,9 +9184,9 @@ def test_Transliterate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,0], [2], [5]]]
@@ -9205,9 +9205,9 @@ def test_Transliterate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc","ab",["bb","cc"]]]
@@ -9226,9 +9226,9 @@ def test_Transliterate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Insert():
@@ -9249,9 +9249,9 @@ def test_Insert():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["wyz",1,"x"]]
@@ -9270,9 +9270,9 @@ def test_Insert():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["jknop",2,"lm"]]
@@ -9291,9 +9291,9 @@ def test_Insert():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Integerpartitions():
@@ -9314,9 +9314,9 @@ def test_Integerpartitions():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -9335,9 +9335,9 @@ def test_Integerpartitions():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -9356,9 +9356,9 @@ def test_Integerpartitions():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Over():
@@ -9379,9 +9379,9 @@ def test_Over():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi","bye"]]
@@ -9400,9 +9400,9 @@ def test_Over():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Permutations():
@@ -9423,9 +9423,9 @@ def test_Permutations():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2]]]
@@ -9444,9 +9444,9 @@ def test_Permutations():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Reverse():
@@ -9467,9 +9467,9 @@ def test_Reverse():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -9488,9 +9488,9 @@ def test_Reverse():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4]]]
@@ -9509,9 +9509,9 @@ def test_Reverse():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Vectorisedsums():
@@ -9532,9 +9532,9 @@ def test_Vectorisedsums():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3,4,5]]]
@@ -9553,9 +9553,9 @@ def test_Vectorisedsums():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2,3], [1, 2, 3, 4]]]]
@@ -9574,9 +9574,9 @@ def test_Vectorisedsums():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TailRemove():
@@ -9597,9 +9597,9 @@ def test_TailRemove():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -9618,9 +9618,9 @@ def test_TailRemove():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SplitAndKeepDelimiter():
@@ -9641,9 +9641,9 @@ def test_SplitAndKeepDelimiter():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["xyzabc123abc","b"]]
@@ -9662,9 +9662,9 @@ def test_SplitAndKeepDelimiter():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CartesianProductFixpoint():
@@ -9685,9 +9685,9 @@ def test_CartesianProductFixpoint():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2],[3,4]]]
@@ -9706,9 +9706,9 @@ def test_CartesianProductFixpoint():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SliceUntil():
@@ -9729,9 +9729,9 @@ def test_SliceUntil():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],2]]
@@ -9750,9 +9750,9 @@ def test_SliceUntil():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SliceFromOneUntil():
@@ -9773,9 +9773,9 @@ def test_SliceFromOneUntil():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],3]]
@@ -9794,9 +9794,9 @@ def test_SliceFromOneUntil():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Square():
@@ -9817,9 +9817,9 @@ def test_Square():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -9838,9 +9838,9 @@ def test_Square():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["bye"]]
@@ -9859,9 +9859,9 @@ def test_Square():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -9880,9 +9880,9 @@ def test_Square():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Shift():
@@ -9903,9 +9903,9 @@ def test_Shift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["my","hi","bye"]]
@@ -9924,9 +9924,9 @@ def test_Shift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Ceiling():
@@ -9947,9 +9947,9 @@ def test_Ceiling():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4.5]]
@@ -9968,9 +9968,9 @@ def test_Ceiling():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1.52,2.9,3.3]]]
@@ -9989,9 +9989,9 @@ def test_Ceiling():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello world"]]
@@ -10010,9 +10010,9 @@ def test_Ceiling():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Floor():
@@ -10033,9 +10033,9 @@ def test_Floor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[5.3,4.7]]]
@@ -10054,9 +10054,9 @@ def test_Floor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["123abc"]]
@@ -10075,9 +10075,9 @@ def test_Floor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Deltas():
@@ -10098,9 +10098,9 @@ def test_Deltas():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,1,1]]]
@@ -10119,9 +10119,9 @@ def test_Deltas():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[40,61,3]]]
@@ -10140,9 +10140,9 @@ def test_Deltas():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Sign():
@@ -10163,9 +10163,9 @@ def test_Sign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hi"]]
@@ -10184,9 +10184,9 @@ def test_Sign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-5]]
@@ -10205,9 +10205,9 @@ def test_Sign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -10226,9 +10226,9 @@ def test_Sign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RightBitShift():
@@ -10249,9 +10249,9 @@ def test_RightBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8,"green"]]
@@ -10270,9 +10270,9 @@ def test_RightBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","cheeseburger"]]
@@ -10291,9 +10291,9 @@ def test_RightBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LeftBitShift():
@@ -10314,9 +10314,9 @@ def test_LeftBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8,"green"]]
@@ -10335,9 +10335,9 @@ def test_LeftBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","cheeseburger"]]
@@ -10356,9 +10356,9 @@ def test_LeftBitShift():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BitwiseAnd():
@@ -10379,9 +10379,9 @@ def test_BitwiseAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc", 10]]
@@ -10400,9 +10400,9 @@ def test_BitwiseAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["no", "gamers"]]
@@ -10421,9 +10421,9 @@ def test_BitwiseAnd():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BitwiseOr():
@@ -10444,9 +10444,9 @@ def test_BitwiseOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2, "abc"]]
@@ -10465,9 +10465,9 @@ def test_BitwiseOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc", 2]]
@@ -10486,9 +10486,9 @@ def test_BitwiseOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello", "lower"]]
@@ -10507,9 +10507,9 @@ def test_BitwiseOr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BitwiseXor():
@@ -10530,9 +10530,9 @@ def test_BitwiseXor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5, "ab"]]
@@ -10551,9 +10551,9 @@ def test_BitwiseXor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["ab", 5]]
@@ -10572,9 +10572,9 @@ def test_BitwiseXor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["atoll", "bowl"]]
@@ -10593,9 +10593,9 @@ def test_BitwiseXor():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BitwiseNot():
@@ -10616,9 +10616,9 @@ def test_BitwiseNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Hello"]]
@@ -10637,9 +10637,9 @@ def test_BitwiseNot():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LesserThanorEqualTo():
@@ -10660,9 +10660,9 @@ def test_LesserThanorEqualTo():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GreaterThanorEqualTo():
@@ -10683,9 +10683,9 @@ def test_GreaterThanorEqualTo():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NotEqualTo():
@@ -10706,9 +10706,9 @@ def test_NotEqualTo():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ExactlyEqualTo():
@@ -10729,9 +10729,9 @@ def test_ExactlyEqualTo():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SetUnion():
@@ -10752,9 +10752,9 @@ def test_SetUnion():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Tranpose():
@@ -10775,9 +10775,9 @@ def test_Tranpose():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SymmetricSetdifference():
@@ -10798,9 +10798,9 @@ def test_SymmetricSetdifference():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GradeUp():
@@ -10821,9 +10821,9 @@ def test_GradeUp():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Heloo"]]
@@ -10842,9 +10842,9 @@ def test_GradeUp():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -10863,9 +10863,9 @@ def test_GradeUp():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GradeDown():
@@ -10886,9 +10886,9 @@ def test_GradeDown():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Heloo"]]
@@ -10907,9 +10907,9 @@ def test_GradeDown():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -10928,9 +10928,9 @@ def test_GradeDown():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Removenon_alphabets():
@@ -10951,9 +10951,9 @@ def test_Removenon_alphabets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8]]
@@ -10972,9 +10972,9 @@ def test_Removenon_alphabets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Nthprime():
@@ -10995,9 +10995,9 @@ def test_Nthprime():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -11016,9 +11016,9 @@ def test_Nthprime():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Primefactorization():
@@ -11039,9 +11039,9 @@ def test_Primefactorization():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc"]]
@@ -11060,9 +11060,9 @@ def test_Primefactorization():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Primefactors():
@@ -11083,9 +11083,9 @@ def test_Primefactors():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc def"]]
@@ -11104,9 +11104,9 @@ def test_Primefactors():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Multiplicity():
@@ -11127,9 +11127,9 @@ def test_Multiplicity():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["aaabbbc", "ab"]]
@@ -11148,9 +11148,9 @@ def test_Multiplicity():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Modulo3():
@@ -11171,9 +11171,9 @@ def test_Modulo3():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abcdefghi"]]
@@ -11192,9 +11192,9 @@ def test_Modulo3():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RotateLeft():
@@ -11215,9 +11215,9 @@ def test_RotateLeft():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3, [1, 2, 3, 4]]]
@@ -11236,9 +11236,9 @@ def test_RotateLeft():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RotateRight():
@@ -11259,9 +11259,9 @@ def test_RotateRight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3, [1, 2, 3, 4]]]
@@ -11280,9 +11280,9 @@ def test_RotateRight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SplitOnnewlines():
@@ -11303,9 +11303,9 @@ def test_SplitOnnewlines():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -11324,9 +11324,9 @@ def test_SplitOnnewlines():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ProductofArray():
@@ -11347,9 +11347,9 @@ def test_ProductofArray():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uppercasealphabet():
@@ -11370,9 +11370,9 @@ def test_Uppercasealphabet():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_eEulersnumber():
@@ -11393,9 +11393,9 @@ def test_eEulersnumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Fizz():
@@ -11416,9 +11416,9 @@ def test_Fizz():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Buzz():
@@ -11439,9 +11439,9 @@ def test_Buzz():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FizzBuzz():
@@ -11462,9 +11462,9 @@ def test_FizzBuzz():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_HelloWorld():
@@ -11485,9 +11485,9 @@ def test_HelloWorld():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_HelloWorldNoPunctuation():
@@ -11508,9 +11508,9 @@ def test_HelloWorldNoPunctuation():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_1000():
@@ -11531,9 +11531,9 @@ def test_1000():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_10000():
@@ -11554,9 +11554,9 @@ def test_10000():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_100000():
@@ -11577,9 +11577,9 @@ def test_100000():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_1000000():
@@ -11600,9 +11600,9 @@ def test_1000000():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercasealphabet():
@@ -11623,9 +11623,9 @@ def test_Lowercasealphabet():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercaseanduppercasealphabet():
@@ -11646,9 +11646,9 @@ def test_Lowercaseanduppercasealphabet():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Digits():
@@ -11669,9 +11669,9 @@ def test_Digits():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Hexdigitslowercase():
@@ -11692,9 +11692,9 @@ def test_Hexdigitslowercase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Hexdigitsuppercase():
@@ -11715,9 +11715,9 @@ def test_Hexdigitsuppercase():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Octaldigits():
@@ -11738,9 +11738,9 @@ def test_Octaldigits():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Punctuation():
@@ -11761,9 +11761,9 @@ def test_Punctuation():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PrintableASCII():
@@ -11784,9 +11784,9 @@ def test_PrintableASCII():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Digitslowercasealphabetanduppercasealphabet():
@@ -11807,9 +11807,9 @@ def test_Digitslowercasealphabetanduppercasealphabet():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uppercaseandlowercasealphabet():
@@ -11830,9 +11830,9 @@ def test_Uppercaseandlowercasealphabet():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uppercasealphabetreversed():
@@ -11853,9 +11853,9 @@ def test_Uppercasealphabetreversed():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercasealphabetreversed():
@@ -11876,9 +11876,9 @@ def test_Lowercasealphabetreversed():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Uppercaseandlowercasealphabetreversed():
@@ -11899,9 +11899,9 @@ def test_Uppercaseandlowercasealphabetreversed():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Pi():
@@ -11922,9 +11922,9 @@ def test_Pi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Goldenratiophi():
@@ -11945,9 +11945,9 @@ def test_Goldenratiophi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Bracessquarebracketsanglebracketsandparentheses():
@@ -11968,9 +11968,9 @@ def test_Bracessquarebracketsanglebracketsandparentheses():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parenthesessquarebracketsandbraces():
@@ -11991,9 +11991,9 @@ def test_Parenthesessquarebracketsandbraces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parenthesesandsquarebrackets():
@@ -12014,9 +12014,9 @@ def test_Parenthesesandsquarebrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Openingbrackets():
@@ -12037,9 +12037,9 @@ def test_Openingbrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Closingbrackets():
@@ -12060,9 +12060,9 @@ def test_Closingbrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Openingbracketswith():
@@ -12083,9 +12083,9 @@ def test_Openingbracketswith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Closingbracketswith():
@@ -12106,9 +12106,9 @@ def test_Closingbracketswith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercasevowels():
@@ -12129,9 +12129,9 @@ def test_Lowercasevowels():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Upercasevowels():
@@ -12152,9 +12152,9 @@ def test_Upercasevowels():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercaseanduppercasevowels():
@@ -12175,9 +12175,9 @@ def test_Lowercaseanduppercasevowels():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_12():
@@ -12198,9 +12198,9 @@ def test_12():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_4294967296():
@@ -12221,9 +12221,9 @@ def test_4294967296():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_1_1():
@@ -12244,9 +12244,9 @@ def test_1_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test__11():
@@ -12267,9 +12267,9 @@ def test__11():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_01():
@@ -12290,9 +12290,9 @@ def test_01():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Slashes():
@@ -12313,9 +12313,9 @@ def test_Slashes():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_360():
@@ -12336,9 +12336,9 @@ def test_360():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_https():
@@ -12359,9 +12359,9 @@ def test_https():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_http():
@@ -12382,9 +12382,9 @@ def test_http():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_httpswww():
@@ -12405,9 +12405,9 @@ def test_httpswww():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_httpwww():
@@ -12428,9 +12428,9 @@ def test_httpwww():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_512():
@@ -12451,9 +12451,9 @@ def test_512():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_1024():
@@ -12474,9 +12474,9 @@ def test_1024():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_2048():
@@ -12497,9 +12497,9 @@ def test_2048():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_4096():
@@ -12520,9 +12520,9 @@ def test_4096():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_8192():
@@ -12543,9 +12543,9 @@ def test_8192():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_16384():
@@ -12566,9 +12566,9 @@ def test_16384():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_32768():
@@ -12589,9 +12589,9 @@ def test_32768():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_65536():
@@ -12612,9 +12612,9 @@ def test_65536():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_2147483648():
@@ -12635,9 +12635,9 @@ def test_2147483648():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Lowercaseconsonantswithy():
@@ -12658,9 +12658,9 @@ def test_Lowercaseconsonantswithy():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BFcommandset():
@@ -12681,9 +12681,9 @@ def test_BFcommandset():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Bracketpairlist():
@@ -12704,9 +12704,9 @@ def test_Bracketpairlist():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Nestedbrackets():
@@ -12727,9 +12727,9 @@ def test_Nestedbrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Amogus():
@@ -12750,9 +12750,9 @@ def test_Amogus():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_11():
@@ -12773,9 +12773,9 @@ def test_11():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_220():
@@ -12796,9 +12796,9 @@ def test_220():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_230():
@@ -12819,9 +12819,9 @@ def test_230():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LowercaseVowelsWithY():
@@ -12842,9 +12842,9 @@ def test_LowercaseVowelsWithY():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_UppercaseVowelsWithY():
@@ -12865,9 +12865,9 @@ def test_UppercaseVowelsWithY():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_VowelsWithY():
@@ -12888,9 +12888,9 @@ def test_VowelsWithY():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Directions():
@@ -12911,9 +12911,9 @@ def test_Directions():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RomanNumerals():
@@ -12934,9 +12934,9 @@ def test_RomanNumerals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Cosine():
@@ -12957,9 +12957,9 @@ def test_Cosine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -12978,9 +12978,9 @@ def test_Cosine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6.283185307]]
@@ -12999,9 +12999,9 @@ def test_Cosine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ArcCosine():
@@ -13022,9 +13022,9 @@ def test_ArcCosine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -13043,9 +13043,9 @@ def test_ArcCosine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_QuadraticSolver():
@@ -13066,9 +13066,9 @@ def test_QuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, -2]]
@@ -13087,9 +13087,9 @@ def test_QuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69, 420]]
@@ -13108,9 +13108,9 @@ def test_QuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_GeneralQuadraticSolver():
@@ -13131,9 +13131,9 @@ def test_GeneralQuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [29, -30]]
@@ -13152,9 +13152,9 @@ def test_GeneralQuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69, 420]]
@@ -13173,9 +13173,9 @@ def test_GeneralQuadraticSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Sine():
@@ -13196,9 +13196,9 @@ def test_Sine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -13217,9 +13217,9 @@ def test_Sine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6.28318530717959]]
@@ -13238,9 +13238,9 @@ def test_Sine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ArcSine():
@@ -13261,9 +13261,9 @@ def test_ArcSine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -13282,9 +13282,9 @@ def test_ArcSine():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Tangent():
@@ -13305,9 +13305,9 @@ def test_Tangent():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -13326,9 +13326,9 @@ def test_Tangent():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6.2831853071795864769]]
@@ -13347,9 +13347,9 @@ def test_Tangent():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ArcTangent():
@@ -13370,9 +13370,9 @@ def test_ArcTangent():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -13391,9 +13391,9 @@ def test_ArcTangent():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PolynomialSolver():
@@ -13414,9 +13414,9 @@ def test_PolynomialSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[69, 420, -1]]]
@@ -13435,9 +13435,9 @@ def test_PolynomialSolver():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_nPickrnpr():
@@ -13458,9 +13458,9 @@ def test_nPickrnpr():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CopySign():
@@ -13481,9 +13481,9 @@ def test_CopySign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, -69]]
@@ -13502,9 +13502,9 @@ def test_CopySign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-1, -420]]
@@ -13523,9 +13523,9 @@ def test_CopySign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1, 203]]
@@ -13544,9 +13544,9 @@ def test_CopySign():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_SumofProperDivisorsStationaryPoints():
@@ -13567,9 +13567,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [12]]
@@ -13588,9 +13588,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [97]]
@@ -13609,9 +13609,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [34]]
@@ -13630,9 +13630,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [18]]
@@ -13651,9 +13651,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
@@ -13672,9 +13672,9 @@ def test_SumofProperDivisorsStationaryPoints():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PerfectSquare():
@@ -13695,9 +13695,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -13716,9 +13716,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [9]]
@@ -13737,9 +13737,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [16]]
@@ -13758,9 +13758,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [25]]
@@ -13779,9 +13779,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [36]]
@@ -13800,9 +13800,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [37]]
@@ -13821,9 +13821,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [-1]]
@@ -13842,9 +13842,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0]]
@@ -13863,9 +13863,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.5]]
@@ -13884,9 +13884,9 @@ def test_PerfectSquare():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_EulersNumbereraisedtopowera():
@@ -13907,9 +13907,9 @@ def test_EulersNumbereraisedtopowera():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -13928,9 +13928,9 @@ def test_EulersNumbereraisedtopowera():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -13949,9 +13949,9 @@ def test_EulersNumbereraisedtopowera():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -13970,9 +13970,9 @@ def test_EulersNumbereraisedtopowera():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_EulersNumbereRaisedtoPowera_1():
@@ -13993,9 +13993,9 @@ def test_EulersNumbereRaisedtoPowera_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -14014,9 +14014,9 @@ def test_EulersNumbereRaisedtoPowera_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14035,9 +14035,9 @@ def test_EulersNumbereRaisedtoPowera_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -14056,9 +14056,9 @@ def test_EulersNumbereRaisedtoPowera_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['(x + 1)^2']]
@@ -14077,9 +14077,9 @@ def test_EulersNumbereRaisedtoPowera_1():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NaturalLogarithm():
@@ -14100,9 +14100,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14121,9 +14121,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -14142,9 +14142,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -14163,9 +14163,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -14184,9 +14184,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -14205,9 +14205,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [7]]
@@ -14226,9 +14226,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8]]
@@ -14247,9 +14247,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [9]]
@@ -14268,9 +14268,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [10]]
@@ -14289,9 +14289,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [11]]
@@ -14310,9 +14310,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [12]]
@@ -14331,9 +14331,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [13]]
@@ -14352,9 +14352,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [14]]
@@ -14373,9 +14373,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [15]]
@@ -14394,9 +14394,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [16]]
@@ -14415,9 +14415,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [17]]
@@ -14436,9 +14436,9 @@ def test_NaturalLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Logarithmlog_2():
@@ -14459,9 +14459,9 @@ def test_Logarithmlog_2():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14480,9 +14480,9 @@ def test_Logarithmlog_2():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CommonLogarithm():
@@ -14503,9 +14503,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14524,9 +14524,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -14545,9 +14545,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -14566,9 +14566,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -14587,9 +14587,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -14608,9 +14608,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [7]]
@@ -14629,9 +14629,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8]]
@@ -14650,9 +14650,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [9]]
@@ -14671,9 +14671,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [10]]
@@ -14692,9 +14692,9 @@ def test_CommonLogarithm():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StraightLineDistance():
@@ -14715,9 +14715,9 @@ def test_StraightLineDistance():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ToDegrees():
@@ -14738,9 +14738,9 @@ def test_ToDegrees():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -14759,9 +14759,9 @@ def test_ToDegrees():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.5707963267948966]]
@@ -14780,9 +14780,9 @@ def test_ToDegrees():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14801,9 +14801,9 @@ def test_ToDegrees():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -14822,9 +14822,9 @@ def test_ToDegrees():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ToRadians():
@@ -14845,9 +14845,9 @@ def test_ToRadians():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [90]]
@@ -14866,9 +14866,9 @@ def test_ToRadians():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [180]]
@@ -14887,9 +14887,9 @@ def test_ToRadians():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [270]]
@@ -14908,9 +14908,9 @@ def test_ToRadians():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [360]]
@@ -14929,9 +14929,9 @@ def test_ToRadians():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
@@ -14952,9 +14952,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -14973,9 +14973,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -14994,9 +14994,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -15015,9 +15015,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -15036,9 +15036,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69]]
@@ -15057,9 +15057,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['3 * x ** 2 + 493 * x - 2319']]
@@ -15078,9 +15078,9 @@ def test_NextPrimeAfteraNumberDiscriminantofPolynomial():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FirstPrimeBeforeaNumberFactorExpression():
@@ -15101,9 +15101,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -15122,9 +15122,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -15143,9 +15143,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -15164,9 +15164,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -15185,9 +15185,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69]]
@@ -15206,9 +15206,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['x**2 - 1']]
@@ -15227,9 +15227,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['x*3 + x**2']]
@@ -15248,9 +15248,9 @@ def test_FirstPrimeBeforeaNumberFactorExpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NearestPrimetoaNumberPythonequivalentofanexpression():
@@ -15271,9 +15271,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -15292,9 +15292,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -15313,9 +15313,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -15334,9 +15334,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -15355,9 +15355,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [38]]
@@ -15376,9 +15376,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [40]]
@@ -15397,9 +15397,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69]]
@@ -15418,9 +15418,9 @@ def test_NearestPrimetoaNumberPythonequivalentofanexpression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PolynomialfromRoots():
@@ -15441,9 +15441,9 @@ def test_PolynomialfromRoots():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[19, 43, 12, 5, 129]]]
@@ -15462,9 +15462,9 @@ def test_PolynomialfromRoots():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RoundtonDecimalPlaces():
@@ -15485,9 +15485,9 @@ def test_RoundtonDecimalPlaces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.2345, 3]]
@@ -15506,9 +15506,9 @@ def test_RoundtonDecimalPlaces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.2345, 4]]
@@ -15527,9 +15527,9 @@ def test_RoundtonDecimalPlaces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1.2345, 5]]
@@ -15548,9 +15548,9 @@ def test_RoundtonDecimalPlaces():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_LeastCommonMultiple():
@@ -15571,9 +15571,9 @@ def test_LeastCommonMultiple():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [69, 420]]
@@ -15592,9 +15592,9 @@ def test_LeastCommonMultiple():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3,4,5,6]]]
@@ -15613,9 +15613,9 @@ def test_LeastCommonMultiple():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_nthDigitofPi():
@@ -15636,9 +15636,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -15657,9 +15657,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -15678,9 +15678,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -15699,9 +15699,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -15720,9 +15720,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -15741,9 +15741,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -15762,9 +15762,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [7]]
@@ -15783,9 +15783,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8]]
@@ -15804,9 +15804,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [9]]
@@ -15825,9 +15825,9 @@ def test_nthDigitofPi():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NDigitsofEulersNumbereSympyEvaluate():
@@ -15848,9 +15848,9 @@ def test_NDigitsofEulersNumbereSympyEvaluate():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NthDigitofEulersNumbere():
@@ -15871,9 +15871,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -15892,9 +15892,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -15913,9 +15913,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -15934,9 +15934,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -15955,9 +15955,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -15976,9 +15976,9 @@ def test_NthDigitofEulersNumbere():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_nthFibonacciNumber():
@@ -15999,9 +15999,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -16020,9 +16020,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -16041,9 +16041,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -16062,9 +16062,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -16083,9 +16083,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16104,9 +16104,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -16125,9 +16125,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [7]]
@@ -16146,9 +16146,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [8]]
@@ -16167,9 +16167,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [9]]
@@ -16188,9 +16188,9 @@ def test_nthFibonacciNumber():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TotientFunctionLocalMinima():
@@ -16211,9 +16211,9 @@ def test_TotientFunctionLocalMinima():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['5*x**2 - 34*x + 213']]
@@ -16232,9 +16232,9 @@ def test_TotientFunctionLocalMinima():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
@@ -16253,9 +16253,9 @@ def test_TotientFunctionLocalMinima():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NthCardinal():
@@ -16276,9 +16276,9 @@ def test_NthCardinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NthOrdinal():
@@ -16299,9 +16299,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1]]
@@ -16320,9 +16320,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -16341,9 +16341,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -16362,9 +16362,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -16383,9 +16383,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16404,9 +16404,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -16425,9 +16425,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [7]]
@@ -16446,9 +16446,9 @@ def test_NthOrdinal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Mode():
@@ -16469,9 +16469,9 @@ def test_Mode():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4]]]
@@ -16490,9 +16490,9 @@ def test_Mode():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Median():
@@ -16513,9 +16513,9 @@ def test_Median():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5, 6]]]
@@ -16534,9 +16534,9 @@ def test_Median():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PolynomialExpressionFromCoefficients():
@@ -16557,9 +16557,9 @@ def test_PolynomialExpressionFromCoefficients():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5]]]
@@ -16578,9 +16578,9 @@ def test_PolynomialExpressionFromCoefficients():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -16599,9 +16599,9 @@ def test_PolynomialExpressionFromCoefficients():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[69, 420]]]
@@ -16620,9 +16620,9 @@ def test_PolynomialExpressionFromCoefficients():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CarmichaelFunction():
@@ -16643,9 +16643,9 @@ def test_CarmichaelFunction():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
@@ -16664,9 +16664,9 @@ def test_CarmichaelFunction():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parenthesise():
@@ -16687,9 +16687,9 @@ def test_Parenthesise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16708,9 +16708,9 @@ def test_Parenthesise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -16729,9 +16729,9 @@ def test_Parenthesise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Bracketify():
@@ -16752,9 +16752,9 @@ def test_Bracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16773,9 +16773,9 @@ def test_Bracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -16794,9 +16794,9 @@ def test_Bracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CurlyBracketify():
@@ -16817,9 +16817,9 @@ def test_CurlyBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16838,9 +16838,9 @@ def test_CurlyBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -16859,9 +16859,9 @@ def test_CurlyBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AngleBracketify():
@@ -16882,9 +16882,9 @@ def test_AngleBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -16903,9 +16903,9 @@ def test_AngleBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -16924,9 +16924,9 @@ def test_AngleBracketify():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_BalancedBrackets():
@@ -16947,9 +16947,9 @@ def test_BalancedBrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["([)]"]]
@@ -16968,9 +16968,9 @@ def test_BalancedBrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["({<[]>})"]]
@@ -16989,9 +16989,9 @@ def test_BalancedBrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [")("]]
@@ -17010,9 +17010,9 @@ def test_BalancedBrackets():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CustomPadLeft():
@@ -17033,9 +17033,9 @@ def test_CustomPadLeft():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["123","&",8]]
@@ -17054,9 +17054,9 @@ def test_CustomPadLeft():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["324"," ",2]]
@@ -17075,9 +17075,9 @@ def test_CustomPadLeft():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CustomPadRight():
@@ -17098,9 +17098,9 @@ def test_CustomPadRight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["123","&",8]]
@@ -17119,9 +17119,9 @@ def test_CustomPadRight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["324"," ",2]]
@@ -17140,9 +17140,9 @@ def test_CustomPadRight():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FlipBracketsVerticalPalindromise():
@@ -17163,9 +17163,9 @@ def test_FlipBracketsVerticalPalindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["{] "]]
@@ -17184,9 +17184,9 @@ def test_FlipBracketsVerticalPalindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["/*>X"]]
@@ -17205,9 +17205,9 @@ def test_FlipBracketsVerticalPalindromise():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RemoveUntilNochange():
@@ -17228,9 +17228,9 @@ def test_RemoveUntilNochange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["--+--+-",["--","+-"]]]
@@ -17249,9 +17249,9 @@ def test_RemoveUntilNochange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ReplaceUntilNoChange():
@@ -17272,9 +17272,9 @@ def test_ReplaceUntilNoChange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abb","ab","aa"]]
@@ -17293,9 +17293,9 @@ def test_ReplaceUntilNoChange():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StringCompress():
@@ -17316,9 +17316,9 @@ def test_StringCompress():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello world"]]
@@ -17337,9 +17337,9 @@ def test_StringCompress():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_NumberCompress():
@@ -17360,9 +17360,9 @@ def test_NumberCompress():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [27914632409837421]]
@@ -17381,9 +17381,9 @@ def test_NumberCompress():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Center():
@@ -17404,9 +17404,9 @@ def test_Center():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["xyz","a","bcdef"]]]
@@ -17425,9 +17425,9 @@ def test_Center():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RunLengthEncoding():
@@ -17448,9 +17448,9 @@ def test_RunLengthEncoding():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["aaa"]]
@@ -17469,9 +17469,9 @@ def test_RunLengthEncoding():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RunLengthDecoding():
@@ -17492,9 +17492,9 @@ def test_RunLengthDecoding():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[["z",2],["a",3]]]]
@@ -17513,9 +17513,9 @@ def test_RunLengthDecoding():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DictionaryCompression():
@@ -17536,9 +17536,9 @@ def test_DictionaryCompression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello"]]
@@ -17557,9 +17557,9 @@ def test_DictionaryCompression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Vyxal"]]
@@ -17578,9 +17578,9 @@ def test_DictionaryCompression():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Grouponwords():
@@ -17601,9 +17601,9 @@ def test_Grouponwords():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["$$$"]]
@@ -17622,9 +17622,9 @@ def test_Grouponwords():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Regexreplace():
@@ -17645,9 +17645,9 @@ def test_Regexreplace():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["\\W","Hello, World!","E"]]
@@ -17666,9 +17666,9 @@ def test_Regexreplace():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StartsWith():
@@ -17689,9 +17689,9 @@ def test_StartsWith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","hello"]]
@@ -17710,9 +17710,9 @@ def test_StartsWith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello","x"]]
@@ -17731,9 +17731,9 @@ def test_StartsWith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["hello",""]]
@@ -17752,9 +17752,9 @@ def test_StartsWith():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_PluraliseCount():
@@ -17775,9 +17775,9 @@ def test_PluraliseCount():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1,"hello"]]
@@ -17796,9 +17796,9 @@ def test_PluraliseCount():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [0,"hello"]]
@@ -17817,9 +17817,9 @@ def test_PluraliseCount():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_VerticalMirror():
@@ -17840,9 +17840,9 @@ def test_VerticalMirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FlipBracketsVerticalMirror():
@@ -17863,9 +17863,9 @@ def test_FlipBracketsVerticalMirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [")X"]]
@@ -17884,9 +17884,9 @@ def test_FlipBracketsVerticalMirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["</tag>"]]
@@ -17905,9 +17905,9 @@ def test_FlipBracketsVerticalMirror():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StringPartitions():
@@ -17928,9 +17928,9 @@ def test_StringPartitions():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RomanNumeral():
@@ -17951,9 +17951,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2]]
@@ -17972,9 +17972,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3]]
@@ -17993,9 +17993,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [4]]
@@ -18014,9 +18014,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [5]]
@@ -18035,9 +18035,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [6]]
@@ -18056,9 +18056,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [10]]
@@ -18077,9 +18077,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [15]]
@@ -18098,9 +18098,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [20]]
@@ -18119,9 +18119,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [30]]
@@ -18140,9 +18140,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [40]]
@@ -18161,9 +18161,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [50]]
@@ -18182,9 +18182,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [60]]
@@ -18203,9 +18203,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [100]]
@@ -18224,9 +18224,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [400]]
@@ -18245,9 +18245,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [500]]
@@ -18266,9 +18266,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [900]]
@@ -18287,9 +18287,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [1000]]
@@ -18308,9 +18308,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [2000]]
@@ -18329,9 +18329,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [3000]]
@@ -18350,9 +18350,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["I", "II", "III"]]]
@@ -18371,9 +18371,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["IV"]]
@@ -18392,9 +18392,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["V"]]
@@ -18413,9 +18413,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["VI"]]
@@ -18434,9 +18434,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["X"]]
@@ -18455,9 +18455,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["XV"]]
@@ -18476,9 +18476,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["XX"]]
@@ -18497,9 +18497,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["XXX"]]
@@ -18518,9 +18518,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["XL"]]
@@ -18539,9 +18539,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["L"]]
@@ -18560,9 +18560,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["LX"]]
@@ -18581,9 +18581,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["C"]]
@@ -18602,9 +18602,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["CD"]]
@@ -18623,9 +18623,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["D"]]
@@ -18644,9 +18644,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["CM"]]
@@ -18665,9 +18665,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["M"]]
@@ -18686,9 +18686,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["MM"]]
@@ -18707,9 +18707,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["MMM"]]
@@ -18728,9 +18728,9 @@ def test_RomanNumeral():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Cartesianproductoverlist():
@@ -18751,9 +18751,9 @@ def test_Cartesianproductoverlist():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1, 2], [3, 4], []]]]
@@ -18772,9 +18772,9 @@ def test_Cartesianproductoverlist():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllUnique():
@@ -18795,9 +18795,9 @@ def test_AllUnique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["eeee"]]
@@ -18816,9 +18816,9 @@ def test_AllUnique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["Gaming"]]
@@ -18837,9 +18837,9 @@ def test_AllUnique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
@@ -18858,9 +18858,9 @@ def test_AllUnique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,1,1]]]
@@ -18879,9 +18879,9 @@ def test_AllUnique():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_CartesianPower():
@@ -18902,9 +18902,9 @@ def test_CartesianPower():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2],3]]
@@ -18923,9 +18923,9 @@ def test_CartesianPower():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["abc",3]]
@@ -18944,9 +18944,9 @@ def test_CartesianPower():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_FlattenBydepth():
@@ -18967,9 +18967,9 @@ def test_FlattenBydepth():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["xyz",[1,2,[3,4,[5,6]]]]]
@@ -18988,9 +18988,9 @@ def test_FlattenBydepth():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllLessThanIncreasing():
@@ -19011,9 +19011,9 @@ def test_AllLessThanIncreasing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,1,2,3,3,2,4,5,6,7], 4]]
@@ -19032,9 +19032,9 @@ def test_AllLessThanIncreasing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Untruth():
@@ -19055,9 +19055,9 @@ def test_Untruth():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[0,3,4,6]]]
@@ -19076,9 +19076,9 @@ def test_Untruth():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MultidimensionalIndexing():
@@ -19099,9 +19099,9 @@ def test_MultidimensionalIndexing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["xyzabc"], [0,4]]]
@@ -19120,9 +19120,9 @@ def test_MultidimensionalIndexing():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MultidimensionalSearch():
@@ -19143,9 +19143,9 @@ def test_MultidimensionalSearch():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["abc","def",["hij","klm","nop"]], "m"]]
@@ -19164,9 +19164,9 @@ def test_MultidimensionalSearch():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ZeroMatrix():
@@ -19187,9 +19187,9 @@ def test_ZeroMatrix():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[2,3,2]]]
@@ -19208,9 +19208,9 @@ def test_ZeroMatrix():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_EvenlyDistribute():
@@ -19231,9 +19231,9 @@ def test_EvenlyDistribute():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3],5]]
@@ -19252,9 +19252,9 @@ def test_EvenlyDistribute():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllCombinations():
@@ -19275,9 +19275,9 @@ def test_AllCombinations():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['ab']]
@@ -19296,9 +19296,9 @@ def test_AllCombinations():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllCombinationsWithoutReplacement():
@@ -19319,9 +19319,9 @@ def test_AllCombinationsWithoutReplacement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["ab"]]
@@ -19340,9 +19340,9 @@ def test_AllCombinationsWithoutReplacement():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_UniquifyMask():
@@ -19363,9 +19363,9 @@ def test_UniquifyMask():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,1,1,2,3,1,2,2,1,3]]]
@@ -19384,9 +19384,9 @@ def test_UniquifyMask():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Diagonals():
@@ -19407,9 +19407,9 @@ def test_Diagonals():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Sublists():
@@ -19430,9 +19430,9 @@ def test_Sublists():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_TransposeWithFiller():
@@ -19453,9 +19453,9 @@ def test_TransposeWithFiller():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2,3,4],[5,6],[7,8,9],[0]],"X"]]
@@ -19474,9 +19474,9 @@ def test_TransposeWithFiller():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MatrixMultiplication():
@@ -19497,9 +19497,9 @@ def test_MatrixMultiplication():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MatrixDeterminant():
@@ -19520,9 +19520,9 @@ def test_MatrixDeterminant():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[[1,2,3],[4,5,6],[7,8,9]]]]
@@ -19541,9 +19541,9 @@ def test_MatrixDeterminant():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Antidiagonal():
@@ -19564,9 +19564,9 @@ def test_Antidiagonal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MainDiagonal():
@@ -19587,9 +19587,9 @@ def test_MainDiagonal():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_DotProduct():
@@ -19610,9 +19610,9 @@ def test_DotProduct():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[69, 420], [21, 42]]]
@@ -19631,9 +19631,9 @@ def test_DotProduct():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Moldwithoutrepeat():
@@ -19654,9 +19654,9 @@ def test_Moldwithoutrepeat():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_MaximalIndicies():
@@ -19677,9 +19677,9 @@ def test_MaximalIndicies():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ElementwiseVectorisedDyadicMaximum():
@@ -19700,9 +19700,9 @@ def test_ElementwiseVectorisedDyadicMaximum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_ElementwiseVectorisedDyadicMinimum():
@@ -19723,9 +19723,9 @@ def test_ElementwiseVectorisedDyadicMinimum():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_AllSlicesofaList():
@@ -19746,9 +19746,9 @@ def test_AllSlicesofaList():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], 4]]
@@ -19767,9 +19767,9 @@ def test_AllSlicesofaList():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[3, 1, 2, 4, 6, 4, 5, 2, 1, 9, 5, 3, 9, 3], -4]]
@@ -19788,9 +19788,9 @@ def test_AllSlicesofaList():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RemoveLastItemandPrepend0():
@@ -19811,9 +19811,9 @@ def test_RemoveLastItemandPrepend0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['abcde']]
@@ -19832,9 +19832,9 @@ def test_RemoveLastItemandPrepend0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_RemoveLastItemFromCumulativeSumsandPrepend0():
@@ -19855,9 +19855,9 @@ def test_RemoveLastItemFromCumulativeSumsandPrepend0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['abcde']]
@@ -19876,9 +19876,9 @@ def test_RemoveLastItemFromCumulativeSumsandPrepend0():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Unwrap():
@@ -19899,9 +19899,9 @@ def test_Unwrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8,9]]]
@@ -19920,9 +19920,9 @@ def test_Unwrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8,9,10]]]
@@ -19941,9 +19941,9 @@ def test_Unwrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ['lsusp']]
@@ -19962,9 +19962,9 @@ def test_Unwrap():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parsedirectionarrowtointeger():
@@ -19985,9 +19985,9 @@ def test_Parsedirectionarrowtointeger():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["^<><>"]]
@@ -20006,9 +20006,9 @@ def test_Parsedirectionarrowtointeger():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["^"]]]
@@ -20027,9 +20027,9 @@ def test_Parsedirectionarrowtointeger():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["1V_☭"]]
@@ -20048,9 +20048,9 @@ def test_Parsedirectionarrowtointeger():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_Parsedirectionarrowtovector():
@@ -20071,9 +20071,9 @@ def test_Parsedirectionarrowtovector():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["^<><>"]]
@@ -20092,9 +20092,9 @@ def test_Parsedirectionarrowtovector():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [["^"]]]
@@ -20113,9 +20113,9 @@ def test_Parsedirectionarrowtovector():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in ["1V_☭"]]
@@ -20134,9 +20134,9 @@ def test_Parsedirectionarrowtovector():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StrictGreaterThan():
@@ -20157,9 +20157,9 @@ def test_StrictGreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, '3'], [1, 2, '2']]]
@@ -20178,9 +20178,9 @@ def test_StrictGreaterThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
 def test_StrictLessThan():
@@ -20201,9 +20201,9 @@ def test_StrictLessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
     stack = [vyxalify(item) for item in [[1, 2, '3'], [1, 2, '2']]]
@@ -20222,8 +20222,8 @@ def test_StrictLessThan():
     print(simplify(expected), simplify(actual))
 
     if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx)
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
     else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx)
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 

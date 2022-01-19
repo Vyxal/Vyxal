@@ -20,9 +20,12 @@ def lazylist(fn):
 
 class LazyList:
     def __add__(self, rhs):
-        from vyxal.helpers import join_with
+        @lazylist
+        def gen():
+            yield from self
+            yield from rhs
 
-        return LazyList(join_with(self.raw_object, rhs))
+        return gen()
 
     def __call__(self, *args, **kwargs):
         return self
@@ -51,7 +54,19 @@ class LazyList:
     def __eq__(self, other):
         from vyxal.helpers import simplify
 
-        return self.listify() == simplify(other)
+        if isinstance(other, list):
+            return self.listify() == simplify(other)
+        elif isinstance(other, LazyList):
+            return self.listify() == other.listify()
+        else:
+            return False
+
+    def __bool__(self):
+        try:
+            next(self)
+            return True
+        except StopIteration:
+            return False
 
     def __getitem__(self, position):
         if isinstance(position, slice):
@@ -64,8 +79,22 @@ class LazyList:
 
                 @lazylist
                 def infinite_index():
-                    x = self.listify()
-                    yield from x[start:stop:step]
+                    copy = iter(self)
+                    for _ in range(start or 0):
+                        try:
+                            next(copy)
+                        except StopIteration:
+                            return
+                    i = 0
+                    while True:
+                        try:
+                            item = next(copy)
+                        except StopIteration:
+                            break
+                        if i % step == 0:
+                            print("yielding ", item, ", position was", position)
+                            yield item
+                        i += 1
 
                 return infinite_index()
             else:
@@ -106,16 +135,22 @@ class LazyList:
         self.infinite = isinf
 
     def __iter__(self):
-        from vyxal.helpers import join_with
-
-        raw_object_clones = itertools.tee(self.raw_object)
-        self.raw_object = raw_object_clones[0]
-        return join_with(self.generated[::], raw_object_clones[1])
+        yield from self.generated
+        while True:
+            try:
+                yield self.__next__()
+            except StopIteration:
+                break
 
     def __len__(self):
-        temp = self.listify()
-        self.raw_object = iter(temp[::])
-        return len(temp)
+        length = len(self.generated)
+        while True:
+            try:
+                next(self)
+                length += 1
+            except StopIteration:
+                break
+        return length
 
     def __next__(self):
         from vyxal.helpers import vyxalify
@@ -142,11 +177,12 @@ class LazyList:
                 yield item
 
     def listify(self):
-        from vyxal.helpers import vyxalify
-
-        temp = self.generated + vyxalify(list(self.raw_object))
-        self.raw_object = iter(temp[::])
-        self.generated = []
+        temp = self.generated[::]
+        while True:
+            try:
+                temp.append(self.__next__())
+            except StopIteration:
+                break
         return temp
 
     def output(self, end="\n", ctx=None):
