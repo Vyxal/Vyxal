@@ -119,6 +119,11 @@ def test_compare_infinite_lists():
     assert LazyList([2, 3]) > stack[-1]
 
 
+def test_prefixes_of_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ K")
+    assert stack[-1][:3] == [[1], [1, 2], [1, 2, 3]]
+
+
 def test_cartesian_product_infinite_lists():
     stack = run_vyxal("⁽›1Ḟ :Ẋ")
     assert stack[-1][:7] == [
@@ -132,6 +137,12 @@ def test_cartesian_product_infinite_lists():
     ]
 
 
+
 def test_slice_to_end_infinite_lists():
     stack = run_vyxal("⁽›1Ḟ 20 ȯ")
     assert stack[-1][:5] == [21, 22, 23, 24, 25]
+
+def test_interleave():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
+    assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
+

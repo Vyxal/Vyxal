@@ -821,7 +821,7 @@ def divisors(lhs, ctx):
     def gen():
         temp = []
         for item in iterable(lhs, ctx=ctx):
-            temp.append(deep_copy(item))
+            temp += [deep_copy(item)]
             yield temp
 
     return gen()
@@ -1744,17 +1744,25 @@ def interleave(lhs, rhs, ctx):
     rhs = iterable(rhs, ctx=ctx)
 
     @lazylist
-    def f():
-        for i in range(max(len(lhs), len(rhs))):
-            if i < len(lhs):
-                yield lhs[i]
-            if i < len(rhs):
-                yield rhs[i]
+    def gen():
+        lhs_iter = iter(lhs)
+        rhs_iter = iter(rhs)
+        while True:
+            try:
+                yield next(lhs_iter)
+            except StopIteration:
+                yield from rhs_iter
+                break
+            try:
+                yield next(rhs_iter)
+            except StopIteration:
+                yield from lhs_iter
+                break
 
     if type(lhs) is type(rhs) is str:
-        return "".join(f())
+        return "".join(gen())
     else:
-        return f()
+        return gen()
 
 
 def into_two(lhs, ctx):
@@ -4637,7 +4645,7 @@ elements: dict[str, tuple[str, int]] = {
     "ḣ": (
         "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(head(top, ctx));"
-        " stack.append(index(top, [1, None], ctx))",
+        " stack.append(top[1:])",
         1,
     ),
     "ḭ": process_element(integer_divide, 2),
