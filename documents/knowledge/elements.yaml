@@ -2120,7 +2120,7 @@
 
 - element: "Ṡ"
   name: Vectorised sums
-  description: Reduce stack by addition
+  description: Sum of each item in a list
   arity: 0
   tests:
     - "[[[1,2,3],[4,5,6]]] : [6, 15]"
@@ -2616,21 +2616,21 @@
     - "[3, [1, 2, 3, 4]] : [4, 1, 2, 3]"
 
 - element: "⁽"
-  name: One Byte Lambda
+  name: One Element Lambda
   arity: 0
-  description: One Byte lambda function (prefix)
+  description: One Element lambda function (prefix)
   vectorise: false
 
 - element: "‡"
-  name: Two Byte Lambda
+  name: Two Element Lambda
   arity: 0
-  description: Two Byte lambda function (prefix)
+  description: Two Element lambda function (prefix)
   vectorise: false
 
 - element: "≬"
-  name: Three Byte Lambda
+  name: Three Element Lambda
   arity: 0
-  description: Three Byte lambda function (prefix)
+  description: Three Element lambda function (prefix)
   vectorise: false
 
 - element: "⁺"
@@ -3704,11 +3704,12 @@
     - "[[3,4,5,6]] : 60"
 
 - element: "∆i"
-  name: nth Digit of Pi
+  name: nth Digit of Pi / Integrate
   arity: 1
   description: Get the nth digit of pi
   overloads:
     num: nth_digit_of_pi(a)
+    str: antiderivative of a
   vectorise: true
   tests:
     - "[0] : 3"
@@ -3734,11 +3735,12 @@
     - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
 
 - element: "∆ė"
-  name: Nth Digit of Euler's Number (e)
+  name: Nth Digit of Euler's Number (e) / Differentiate
   arity: 1
   description: Get the nth digit of Euler's number (e)
   overloads:
     num: nth_digit_of_e(a)
+    str: derivative(a)
   vectorise: true
   tests:
     - "[0] : 2"

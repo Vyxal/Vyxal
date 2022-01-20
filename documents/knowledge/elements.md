@@ -1550,7 +1550,7 @@ Reverse a value
 -------------------------------
 ## `` Ṡ `` (Vectorised sums)
 
-Reduce stack by addition
+Sum of each item in a list
 
 -------------------------------
 ## `` Ṫ `` (Tail Remove)
@@ -1944,19 +1944,19 @@ Rotate Right / Rotate Right Once
 - any a, num b: `rotate_right(a,b)`
 - any a, any b: `a,(b[-1:]+b[:-1])`
 -------------------------------
-## `` ⁽ `` (One Byte Lambda)
+## `` ⁽ `` (One Element Lambda)
 
-One Byte lambda function (prefix)
-
--------------------------------
-## `` ‡ `` (Two Byte Lambda)
-
-Two Byte lambda function (prefix)
+One Element lambda function (prefix)
 
 -------------------------------
-## `` ≬ `` (Three Byte Lambda)
+## `` ‡ `` (Two Element Lambda)
 
-Three Byte lambda function (prefix)
+Two Element lambda function (prefix)
+
+-------------------------------
+## `` ≬ `` (Three Element Lambda)
+
+Three Element lambda function (prefix)
 
 -------------------------------
 ## `` ⁺ `` (Index of next character in codepage)
@@ -2628,13 +2628,14 @@ Get the least common multiple of two numbers
 - lst a: `lcm(a)`
 - num a, num b: `lcm(a, b)`
 -------------------------------
-## `` ∆i `` (nth Digit of Pi)
+## `` ∆i `` (nth Digit of Pi / Integrate)
 
 Get the nth digit of pi
 
 ### Overloads
 
 - num a: `nth_digit_of_pi(a)`
+- str a: `antiderivative of a`
 -------------------------------
 ## `` ∆Ė `` (N Digits of Euler's Number (e) / Sympy Evaluate)
 
@@ -2645,13 +2646,14 @@ Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 - num a: `First n digits of e`
 - str a: `evaluate(a)`
 -------------------------------
-## `` ∆ė `` (Nth Digit of Euler's Number (e))
+## `` ∆ė `` (Nth Digit of Euler's Number (e) / Differentiate)
 
 Get the nth digit of Euler's number (e)
 
 ### Overloads
 
 - num a: `nth_digit_of_e(a)`
+- str a: `derivative(a)`
 -------------------------------
 ## `` ∆f `` (nth Fibonacci Number)
 
