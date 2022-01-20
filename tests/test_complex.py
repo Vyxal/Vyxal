@@ -64,6 +64,7 @@ def test_list_sort():
     stack = run_vyxal("⟨ ⟨ 9 | 6 | 9 | 6 | 7 ⟩ | ⟨ 7 | 6 | 4 | 1 | 8 ⟩ | ⟨ 4 | 9 | 4 | 3 | 2 ⟩ | ⟨ 7 | 3 | 3 | 6 | 9 ⟩ | ⟨ 2 | 9 | 1 | 2 | 6 ⟩ ⟩ vs s")
     assert simplify(stack[-1]) == [[1, 2, 2, 6, 9], [1, 4, 6, 7, 8], [2, 3, 4, 4, 9], [3, 3, 6, 7, 9], [6, 6, 7, 9, 9]]
 
+    
 def test_cumulative_reduce():
     """Test ɖ"""
 
@@ -101,18 +102,70 @@ def test_beheading_infinite_lists():
     stack = run_vyxal("⁽› 1 Ḟ Ḣ")
     assert stack[-1][0:5] == [2, 3, 4, 5, 6]
 
+
 def test_equal_lazylists():
     assert LazyList(range(10)) == LazyList(range(10))
+
 
 def test_lessthan_lazylists():
     assert LazyList(range(10)) < LazyList(range(11))
     assert LazyList([4, 5, 6]) < LazyList([6, 7, 8])
-    
+
+
 def test_greaterthan_lazylists():
     assert LazyList([1, 2, 3]) > LazyList([1, 1])
     assert LazyList(range(11)) > LazyList(range(10))
+
 
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     assert LazyList([2, 3]) > stack[-1]
+
+
+def test_infinite_list_sublists():
+    stack = run_vyxal("⁽›1 Ḟ ÞS")
+    assert stack[-1][:5] == [[1], [1, 2], [2], [1, 2, 3], [2, 3]]
+
+
+def test_prefixes_of_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ K")
+    assert stack[-1][:3] == [[1], [1, 2], [1, 2, 3]]
+
+
+def test_cartesian_product_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ :Ẋ")
+    assert stack[-1][:7] == [
+        [1, 1],
+        [1, 2],
+        [2, 1],
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [1, 4],
+    ]
+
+
+def test_ath_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ 4 Ḟ")
+    assert stack[-1][:5] == [1, 5, 9, 13, 17]
+
+
+def test_filter_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ 3 Ẏ F")
+    assert stack[-1][:4] == [2, 4, 6, 7]
+
+
+def test_all_equal_infinite_lists():
+    stack = run_vyxal("Þ∞ ≈")
+    assert stack[-1] == 0
+
+
+def test_slice_to_end_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ 20 ȯ")
+    assert stack[-1][:5] == [21, 22, 23, 24, 25]
+
+
+def test_interleave():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
+    assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]

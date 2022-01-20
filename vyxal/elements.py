@@ -147,14 +147,13 @@ def all_equal(lhs, ctx):
     (any) -> are all items in a the same?
     """
     lhs = iterable(lhs, ctx=ctx)
-    if len(lhs) == 0:
-        return 1
-    else:
-        first = lhs[0]
-        for item in lhs[1:]:
-            if not non_vectorising_equals(item, first, ctx):
-                return 0
-        return 1
+    first = None
+    for item in lhs:
+        if first is None:
+            first = item
+        elif not non_vectorising_equals(item, first, ctx):
+            return 0
+    return 1
 
 
 def all_less_than_increasing(lhs, rhs, ctx):
@@ -495,6 +494,7 @@ def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
     (fun, any) -> Apply a to b until no change (fixpoint)
+    (any, fun) -> Apply a to b until no change (fixpoint)
     """
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
@@ -505,14 +505,44 @@ def cartesian_product(lhs, rhs, ctx):
             prev = arg
             arg = safe_apply(fn, arg, ctx=ctx)
         return prev
+    elif ts == (str, str):
+        return [left + right for left in lhs for right in rhs]
     else:
-        return LazyList(
-            left + right
-            if isinstance(left, str) and isinstance(right, str)
-            else [left, right]
-            for left in iterable(lhs, range, ctx=ctx)
-            for right in iterable(rhs, range, ctx=ctx)
-        )
+        lhs = iterable(lhs, range, ctx=ctx)
+        rhs = iterable(rhs, range, ctx=ctx)
+
+        @lazylist
+        def gen():
+            if not (lhs and rhs):
+                return
+
+            diag_num = 0
+            lhs_max = len(lhs) - 1 if isinstance(lhs, list) else None
+            rhs_max = len(rhs) - 1 if isinstance(rhs, list) else None
+            while True:
+                lhs_start = max(0, diag_num - rhs_max) if rhs_max else 0
+                lhs_end = min(diag_num, lhs_max) if lhs_max else diag_num
+                # Whether at least 1 new pair was yielded
+                touched = False
+                for left in range(lhs_start, lhs_end + 1):
+                    right = diag_num - left
+                    if rhs_max and right > rhs_max:
+                        continue
+                    if not has_ind(rhs, right):
+                        rhs_max = right
+                        continue
+                    if lhs_max and left > lhs_max:
+                        break
+                    if not has_ind(lhs, left):
+                        lhs_max = left
+                        break
+                    touched = True
+                    yield [lhs[left], rhs[right]]
+                if not touched:
+                    break
+                diag_num += 1
+
+        return gen()
 
 
 def center(lhs, ctx):
@@ -766,7 +796,7 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
-def divisors(lhs, ctx):
+def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
     (str) -> all substrings of a that occur more than once
@@ -785,7 +815,8 @@ def divisors(lhs, ctx):
             ),
             ctx,
         )
-    return LazyList((lhs[: x + 1] for x in range(len(lhs))))
+    else:
+        return prefixes(lhs, ctx=ctx)
 
 
 def divisor_sum(lhs, ctx):
@@ -795,7 +826,7 @@ def divisor_sum(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: vy_sum(divisors(lhs, ctx)[:-1], ctx),
+        NUMBER_TYPE: lambda: vy_sum(divisors_or_prefixes(lhs, ctx)[:-1], ctx),
         str: lambda: stationary_points(lhs),
     }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
@@ -1218,7 +1249,8 @@ def gen_from_fn(lhs, rhs, ctx):
     (str, num) -> every bth letter of a
     (str, str) -> replace spaces in a with b
     (lst, num) -> every bth item of a
-    (fun, lst) -> Generator from function a with initial vector b
+    (num, lst) -> every ath item of b
+    (fun, any) -> Generator from function a with initial vector b
     """
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType not in ts:
@@ -1236,14 +1268,14 @@ def gen_from_fn(lhs, rhs, ctx):
 
     @lazylist
     def gen():
-        for item in lhs:
-            yield item
+        yield from lhs
 
-        made = list(lhs)
+        made = lhs
 
         while True:
-            made.append(safe_apply(rhs, *made, ctx=ctx))
-            yield made[-1]
+            next_item = safe_apply(rhs, *made, ctx=ctx)
+            made.append(next_item)
+            yield next_item
 
     return gen()
 
@@ -1419,7 +1451,7 @@ def head_remove(lhs, ctx):
     (str) -> a[1:] or '' if empty
     (num) -> Remove first digit or do nothing if <1"""
     if vy_type(lhs, simple=True) in (list, str):
-        return lhs[1:] if lhs else lhs
+        return lhs[1:] if lhs else []
     if lhs < 1:
         return lhs
     if isinstance(lhs, int):
@@ -1705,17 +1737,25 @@ def interleave(lhs, rhs, ctx):
     rhs = iterable(rhs, ctx=ctx)
 
     @lazylist
-    def f():
-        for i in range(max(len(lhs), len(rhs))):
-            if i < len(lhs):
-                yield lhs[i]
-            if i < len(rhs):
-                yield rhs[i]
+    def gen():
+        lhs_iter = iter(lhs)
+        rhs_iter = iter(rhs)
+        while True:
+            try:
+                yield next(lhs_iter)
+            except StopIteration:
+                yield from rhs_iter
+                break
+            try:
+                yield next(rhs_iter)
+            except StopIteration:
+                yield from lhs_iter
+                break
 
     if type(lhs) is type(rhs) is str:
-        return "".join(f())
+        return "".join(gen())
     else:
-        return f()
+        return gen()
 
 
 def into_two(lhs, ctx):
@@ -3426,10 +3466,8 @@ def sublists(lhs, ctx):
 
     @lazylist
     def gen():
-        length = len(lhs)
-        for size in range(1, length + 1):
-            for sub in range((length - size) + 1):
-                yield index(lhs, [sub, sub + size], ctx)
+        for prefix in prefixes(lhs, ctx=ctx):
+            yield from suffixes(prefix, ctx=ctx)
 
     return gen()
 
@@ -3507,7 +3545,7 @@ def tail_remove(lhs, ctx):
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
     if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
-        return int("".join(str(x) for x in temp))
+        return int("".join(str(x) for x in temp or "0"))
     else:
         return temp
 
@@ -4031,7 +4069,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
         )
     elif ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList([elem for elem in lhs if elem not in rhs])
+    return LazyList(elem for elem in lhs if elem not in rhs)
 
 
 def vy_floor(lhs, ctx):
@@ -4447,7 +4485,7 @@ def zfiller(lhs, rhs, ctx):
 
 
 elements: dict[str, tuple[str, int]] = {
-    "¬": process_element("int(not lhs)", 1),
+    "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("lhs and rhs", 2),
     "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
@@ -4515,7 +4553,7 @@ elements: dict[str, tuple[str, int]] = {
     "H": process_element(vy_hex, 1),
     "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
-    "K": process_element(divisors, 1),
+    "K": process_element(divisors_or_prefixes, 1),
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
@@ -4598,7 +4636,7 @@ elements: dict[str, tuple[str, int]] = {
     "ḣ": (
         "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(head(top, ctx));"
-        " stack.append(index(top, [1, None], ctx))",
+        " stack.append(top[1:])",
         1,
     ),
     "ḭ": process_element(integer_divide, 2),
