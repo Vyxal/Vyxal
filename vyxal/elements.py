@@ -1875,7 +1875,7 @@ def is_square(lhs, ctx):
 
 def join(lhs, rhs, ctx):
     """Element j
-    (any, any) -> a.join(b)
+    (any, any) -> join a on b
     """
     return vy_str(rhs, ctx=ctx).join(
         map(lambda a: vy_str(a, ctx=ctx), iterable(lhs, ctx=ctx))
