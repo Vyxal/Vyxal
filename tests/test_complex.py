@@ -130,3 +130,8 @@ def test_cartesian_product_infinite_lists():
         [3, 1],
         [1, 4],
     ]
+
+
+def test_all_equal_infinite_lists():
+    stack = run_vyxal("Þ∞ ≈")
+    assert stack[-1] == 0

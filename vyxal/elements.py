@@ -147,14 +147,13 @@ def all_equal(lhs, ctx):
     (any) -> are all items in a the same?
     """
     lhs = iterable(lhs, ctx=ctx)
-    if len(lhs) == 0:
-        return 1
-    else:
-        first = lhs[0]
-        for item in lhs[1:]:
-            if not non_vectorising_equals(item, first, ctx):
-                return 0
-        return 1
+    first = None
+    for item in lhs:
+        if first is None:
+            first = item
+        elif not non_vectorising_equals(item, first, ctx):
+            return 0
+    return 1
 
 
 def all_less_than_increasing(lhs, rhs, ctx):
