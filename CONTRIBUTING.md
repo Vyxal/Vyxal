@@ -12,8 +12,6 @@ influence how you contribute.
 
 Finally, as a general principle, decisions should not be made, PRs should not be merged, issues should not be closed or perhaps even worked on, until several people are agreed and all discussion is at least somewhat finalised. Take things a bit slower!
 
-
-
 Right. On to the fun stuff.
 
 ## What to do when...
@@ -65,7 +63,11 @@ Tell us in the Vyxal chatroom, and we'll respond accordingly.
 
 ### You want to make a Pull Request
 
-Wow. You actually took the time to dive into Vyxal source code and make a meaningful change. Aren't you an epic gamer! Before you merge your changes, make sure to:
+Wow. You actually took the time to dive into Vyxal source code and make a meaningful change. Aren't you an epic gamer!
+
+For instructions on how to set up the development environment, see the [README](./README.md#installation).
+
+Before you merge your changes, make sure to:
 
 - Clearly describe what it is that you are changing.
 - Get approval from two other contributors (via requesting a review)
