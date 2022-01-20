@@ -821,7 +821,7 @@ def divisors(lhs, ctx):
     def gen():
         temp = []
         for item in iterable(lhs, ctx=ctx):
-            temp.append(deep_copy(item))
+            temp += [deep_copy(item)]
             yield temp
 
     return gen()
