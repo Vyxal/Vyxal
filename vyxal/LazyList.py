@@ -92,7 +92,6 @@ class LazyList:
                         except StopIteration:
                             break
                         if i % step == 0:
-                            print("yielding ", item, ", position was", position)
                             yield item
                         i += 1
 
