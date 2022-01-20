@@ -30,6 +30,11 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     return stack
 
 
+def test_deltas():
+    stack = run_vyxal("Þ∞ ¯")
+    assert stack[-1][:4] == [1, 1, 1, 1]
+
+
 def test_vertical_mirror():
     """Test øṁ"""
     # Join these on newlines into one string and check if the result
