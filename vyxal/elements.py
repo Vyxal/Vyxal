@@ -785,7 +785,15 @@ def divisors(lhs, ctx):
             ),
             ctx,
         )
-    return LazyList((lhs[: x + 1] for x in range(len(lhs))))
+
+    @lazylist
+    def gen():
+        temp = []
+        for item in iterable(lhs, ctx=ctx):
+            temp.append(deep_copy(item))
+            yield temp
+
+    return gen()
 
 
 def divisor_sum(lhs, ctx):
