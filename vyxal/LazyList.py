@@ -178,7 +178,7 @@ class LazyList:
                     return 0
                 else:
                     return -1
-            try: 
+            try:
                 other_item = next(other_clone)
             try:
                 other_item = next(other)
