@@ -27,6 +27,13 @@ class LazyList:
 
         return gen()
 
+    def __bool__(self):
+        try:
+            next(self)
+            return True
+        except StopIteration:
+            return False
+
     def __call__(self, *args, **kwargs):
         return self
 
@@ -61,12 +68,8 @@ class LazyList:
         else:
             return False
 
-    def __bool__(self):
-        try:
-            next(self)
-            return True
-        except StopIteration:
-            return False
+    def __ge__(self, other):
+        return self.compare(other) >= 0
 
     def __getitem__(self, position):
         if isinstance(position, slice):
@@ -124,6 +127,9 @@ class LazyList:
                 else:
                     return 0
 
+    def __gt__(self, other):
+        return self.compare(other) > 0
+
     def __init__(self, source, isinf=False):
         self.raw_object = source
         if isinstance(self.raw_object, types.FunctionType):
@@ -151,6 +157,12 @@ class LazyList:
                 break
         return length
 
+    def __le__(self, other):
+        return self.compare(other) <= 0
+
+    def __lt__(self, other):
+        return self.compare(other) == -1
+
     def __next__(self):
         from vyxal.helpers import vyxalify
 
@@ -162,6 +174,30 @@ class LazyList:
         if position >= len(self.generated):
             self.__getitem__(position)
         self.generated[position] = value
+
+    def compare(self, other):
+        # Returns -1 / 0 / 1 depending on whether this is smaller / equal /
+        # greater than `other`
+
+        # Should work for infinite lists
+        item = next(self)
+        other_item = next(other)
+        while item == other_item:
+            try:
+                item = next(self)
+            except StopIteration:
+                if self == other:
+                    return 0
+                else:
+                    return -1
+            try:
+                other_item = next(other)
+            except StopIteration:
+                return 1
+        if item > other_item:
+            return 1
+        else:
+            return -1
 
     def count(self, other):
         """Number of occurrences of `other` in this `LazyList`"""
