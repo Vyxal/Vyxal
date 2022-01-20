@@ -785,7 +785,15 @@ def divisors(lhs, ctx):
             ),
             ctx,
         )
-    return LazyList((lhs[: x + 1] for x in range(len(lhs))))
+
+    @lazylist
+    def gen():
+        temp = []
+        for item in iterable(lhs, ctx=ctx):
+            temp.append(deep_copy(item))
+            yield temp
+
+    return gen()
 
 
 def divisor_sum(lhs, ctx):
@@ -3507,7 +3515,7 @@ def tail_remove(lhs, ctx):
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
     if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
-        return int("".join(str(x) for x in temp))
+        return int("".join(str(x) for x in temp or "0"))
     else:
         return temp
 
