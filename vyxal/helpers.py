@@ -324,14 +324,10 @@ def local_maxima(lhs: str) -> List[Union[int, float]]:
 
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
-    out = "" if type(haystack) is str else []
-    for item in haystack:
-        if item in needle:
-            if type(haystack) is str:
-                out += item
-            else:
-                out.append(item)
-    return out
+    if isinstance(haystack, str):
+        return "".join(char for char in haystack if char in needle)
+    else:
+        return LazyList(item for item in haystack if item in needle)
 
 
 def make_equation(eqn: str) -> sympy:
