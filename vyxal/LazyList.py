@@ -67,7 +67,7 @@ class LazyList:
             return self.listify() == other.listify()
         else:
             return False
-    
+
     def __ge__(self, other):
         return self.compare(other) >= 0
 
@@ -156,7 +156,7 @@ class LazyList:
             except StopIteration:
                 break
         return length
-    
+
     def __le__(self, other):
         return self.compare(other) <= 0
 
@@ -190,7 +190,7 @@ class LazyList:
                     return 0
                 else:
                     return -1
-            try: 
+            try:
                 other_item = next(other)
             except StopIteration:
                 return 1

@@ -97,16 +97,20 @@ def test_beheading_infinite_lists():
     stack = run_vyxal("⁽› 1 Ḟ Ḣ")
     assert stack[-1][0:5] == [2, 3, 4, 5, 6]
 
+
 def test_equal_lazylists():
     assert LazyList(range(10)) == LazyList(range(10))
+
 
 def test_lessthan_lazylists():
     assert LazyList(range(10)) < LazyList(range(11))
     assert LazyList([4, 5, 6]) < LazyList([6, 7, 8])
-    
+
+
 def test_greaterthan_lazylists():
     assert LazyList([1, 2, 3]) > LazyList([1, 1])
     assert LazyList(range(11)) > LazyList(range(10))
+
 
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
