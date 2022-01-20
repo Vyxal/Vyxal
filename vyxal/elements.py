@@ -4070,7 +4070,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
         )
     elif ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList([elem for elem in lhs if elem not in rhs])
+    return LazyList(elem for elem in lhs if elem not in rhs)
 
 
 def vy_floor(lhs, ctx):

@@ -130,3 +130,8 @@ def test_cartesian_product_infinite_lists():
         [3, 1],
         [1, 4],
     ]
+
+
+def test_filter_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ 3 Ẏ F")
+    assert stack[-1][:4] == [2, 4, 6, 7]
