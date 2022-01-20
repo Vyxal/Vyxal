@@ -135,3 +135,8 @@ def test_cartesian_product_infinite_lists():
         [3, 1],
         [1, 4],
     ]
+
+
+def test_interleave():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
+    assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
