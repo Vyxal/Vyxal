@@ -15,13 +15,16 @@ Ultimately, Vyxal is a language for golfers, by golfers.
 
 ## Installation
 
+You can also use the [online interpreter](https://vyxal.pythonanywhere.com) with no need to install!
+
 If you only want to run Vyxal, all you need to run is this:
 ```
 pip install vyxal
 ```
-If you are working on Vyxal, you can clone this repo and then run
+
+If you are working on Vyxal, install [Poetry](https://python-poetry.org), and then you can clone this repo and run:
 ```
-pip install -e <folder where you cloned Vyxal>
+poetry install
 ```
 
 ## Usage
@@ -31,9 +34,9 @@ To run using the script:
 vyxal <file> <flags (single string of flags)> <input(s)>
 ```
 
-To run using Python:
+If you're using Poetry:
 ```
-python3 -m vyxal  <file> <flags (single string of flags)> <input(s)>
+poetry run vyxal <file> <flags (single string of flags)> <input(s)>
 ```
 
 ## Why Make Another Golfing Language When There's Like Hundreds of Them Already?
