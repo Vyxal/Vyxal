@@ -3515,7 +3515,7 @@ def tail_remove(lhs, ctx):
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
     if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
-        return int("".join(str(x) for x in temp))
+        return int("".join(str(x) for x in temp or "0"))
     else:
         return temp
 
