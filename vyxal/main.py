@@ -200,6 +200,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         elif flag == "…":
             if vy_type(output, simple=True) is list:
                 output = output[:100]
+        elif flag == "l":
+            output = length(output, ctx)
         else:
             pass
     if not (ctx.printed or "O" in flags) or "o" in flags:
