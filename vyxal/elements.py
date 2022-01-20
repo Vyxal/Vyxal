@@ -765,9 +765,16 @@ def deltas(lhs, ctx):
     (any) -> deltas of a
     """
     lhs = iterable(lhs, ctx=ctx)
-    return LazyList(
-        subtract(lhs[i + 1], lhs[i], ctx=ctx) for i in range(len(lhs) - 1)
-    )
+
+    @lazylist
+    def gen():
+        prev = None
+        for item in lhs:
+            if prev is not None:
+                yield subtract(item, prev, ctx=ctx)
+            prev = item
+
+    return gen()
 
 
 def diagonal(lhs, ctx):
