@@ -5,7 +5,7 @@ very happy with what you do.
 
 ## Preface
 
-Whenever you contribute anything, make sure that you are abiding by the Vyxal [Code of Conduct](https://github.com/Vyxal/Vyxal/blob/Fresh-Beginnings/documents/protocols/CoC.md). Doing so makes everyone's life easier and it makes you an absolute pogchamp.
+Whenever you contribute anything, make sure that you are abiding by the Vyxal [Code of Conduct](https://github.com/Vyxal/Vyxal/blob/main/CODE_OF_CONDUCT.md). Doing so makes everyone's life easier and it makes you an absolute pogchamp.
 
 Also, this whole entire thing (except for the above sentence) is a guide. It does not need to be followed (except for the above sentence) exactly, but it _should_
 influence how you contribute.

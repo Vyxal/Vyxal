@@ -785,7 +785,15 @@ def divisors(lhs, ctx):
             ),
             ctx,
         )
-    return LazyList((lhs[: x + 1] for x in range(len(lhs))))
+
+    @lazylist
+    def gen():
+        temp = []
+        for item in iterable(lhs, ctx=ctx):
+            temp.append(deep_copy(item))
+            yield temp
+
+    return gen()
 
 
 def divisor_sum(lhs, ctx):
@@ -3507,7 +3515,7 @@ def tail_remove(lhs, ctx):
     """
     temp = index(iterable(lhs, ctx=ctx), [0, -1], ctx=ctx)
     if is_sympy(lhs) and all(isinstance(x, int) for x in temp):
-        return int("".join(str(x) for x in temp))
+        return int("".join(str(x) for x in temp or "0"))
     else:
         return temp
 
@@ -4447,7 +4455,7 @@ def zfiller(lhs, rhs, ctx):
 
 
 elements: dict[str, tuple[str, int]] = {
-    "¬": process_element("int(not lhs)", 1),
+    "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("lhs and rhs", 2),
     "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
@@ -4536,10 +4544,9 @@ elements: dict[str, tuple[str, int]] = {
     "U": process_element(uniquify, 1),
     "V": process_element(replace, 3),
     "W": (
-        "temp = stack[::]\n"
-        "for item in stack:\n"
-        "    stack.pop()\n"
-        "stack.append(temp)",
+        "temp = list(deep_copy(stack))\n"
+        "pop(stack, len(stack), ctx)\n"
+        "stack.append(temp); print(stack)",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
