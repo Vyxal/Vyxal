@@ -147,14 +147,13 @@ def all_equal(lhs, ctx):
     (any) -> are all items in a the same?
     """
     lhs = iterable(lhs, ctx=ctx)
-    if len(lhs) == 0:
-        return 1
-    else:
-        first = lhs[0]
-        for item in lhs[1:]:
-            if not non_vectorising_equals(item, first, ctx):
-                return 0
-        return 1
+    first = None
+    for item in lhs:
+        if first is None:
+            first = item
+        elif not non_vectorising_equals(item, first, ctx):
+            return 0
+    return 1
 
 
 def all_less_than_increasing(lhs, rhs, ctx):
@@ -818,7 +817,6 @@ def divisors_or_prefixes(lhs, ctx):
         )
     else:
         return prefixes(lhs, ctx=ctx)
-
 
 def divisor_sum(lhs, ctx):
     """Element ∆K
@@ -1737,17 +1735,25 @@ def interleave(lhs, rhs, ctx):
     rhs = iterable(rhs, ctx=ctx)
 
     @lazylist
-    def f():
-        for i in range(max(len(lhs), len(rhs))):
-            if i < len(lhs):
-                yield lhs[i]
-            if i < len(rhs):
-                yield rhs[i]
+    def gen():
+        lhs_iter = iter(lhs)
+        rhs_iter = iter(rhs)
+        while True:
+            try:
+                yield next(lhs_iter)
+            except StopIteration:
+                yield from rhs_iter
+                break
+            try:
+                yield next(rhs_iter)
+            except StopIteration:
+                yield from lhs_iter
+                break
 
     if type(lhs) is type(rhs) is str:
-        return "".join(f())
+        return "".join(gen())
     else:
-        return f()
+        return gen()
 
 
 def into_two(lhs, ctx):
@@ -4061,7 +4067,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
         )
     elif ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList([elem for elem in lhs if elem not in rhs])
+    return LazyList(elem for elem in lhs if elem not in rhs)
 
 
 def vy_floor(lhs, ctx):
@@ -4628,7 +4634,7 @@ elements: dict[str, tuple[str, int]] = {
     "ḣ": (
         "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
         " stack.append(head(top, ctx));"
-        " stack.append(index(top, [1, None], ctx))",
+        " stack.append(top[1:])",
         1,
     ),
     "ḭ": process_element(integer_divide, 2),
