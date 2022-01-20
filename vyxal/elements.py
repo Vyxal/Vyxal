@@ -4455,7 +4455,7 @@ def zfiller(lhs, rhs, ctx):
 
 
 elements: dict[str, tuple[str, int]] = {
-    "¬": process_element("int(not lhs)", 1),
+    "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("lhs and rhs", 2),
     "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
