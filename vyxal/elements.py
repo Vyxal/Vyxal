@@ -796,7 +796,7 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
-def divisors(lhs, ctx):
+def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
     (str) -> all substrings of a that occur more than once
@@ -815,15 +815,8 @@ def divisors(lhs, ctx):
             ),
             ctx,
         )
-
-    @lazylist
-    def gen():
-        temp = []
-        for item in iterable(lhs, ctx=ctx):
-            temp += [deep_copy(item)]
-            yield temp
-
-    return gen()
+    else:
+        return prefixes(lhs, ctx=ctx)
 
 
 def divisor_sum(lhs, ctx):
@@ -833,7 +826,7 @@ def divisor_sum(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: vy_sum(divisors(lhs, ctx)[:-1], ctx),
+        NUMBER_TYPE: lambda: vy_sum(divisors_or_prefixes(lhs, ctx)[:-1], ctx),
         str: lambda: stationary_points(lhs),
     }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
@@ -1457,7 +1450,7 @@ def head_remove(lhs, ctx):
     (str) -> a[1:] or '' if empty
     (num) -> Remove first digit or do nothing if <1"""
     if vy_type(lhs, simple=True) in (list, str):
-        return lhs[1:] if lhs else lhs
+        return lhs[1:] if lhs else []
     if lhs < 1:
         return lhs
     if isinstance(lhs, int):
@@ -3472,10 +3465,8 @@ def sublists(lhs, ctx):
 
     @lazylist
     def gen():
-        length = len(lhs)
-        for size in range(1, length + 1):
-            for sub in range((length - size) + 1):
-                yield index(lhs, [sub, sub + size], ctx)
+        for prefix in prefixes(lhs, ctx=ctx):
+            yield from suffixes(prefix, ctx=ctx)
 
     return gen()
 
@@ -4561,7 +4552,7 @@ elements: dict[str, tuple[str, int]] = {
     "H": process_element(vy_hex, 1),
     "I": process_element(into_two, 1),
     "J": process_element(merge, 2),
-    "K": process_element(divisors, 1),
+    "K": process_element(divisors_or_prefixes, 1),
     "L": process_element(length, 1),
     "M": process_element(vy_map, 2),
     "N": process_element(negate, 1),
