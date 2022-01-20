@@ -122,3 +122,16 @@ def test_compare_infinite_lists():
 def test_infinite_list_sublists():
     stack = run_vyxal("⁽›1 Ḟ ÞS")
     assert stack[-1][:5] == [[1], [1, 2], [2], [1, 2, 3], [2, 3]]
+
+
+def test_cartesian_product_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ :Ẋ")
+    assert stack[-1][:7] == [
+        [1, 1],
+        [1, 2],
+        [2, 1],
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [1, 4],
+    ]

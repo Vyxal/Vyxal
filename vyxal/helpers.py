@@ -218,6 +218,14 @@ def get_input(ctx: Context) -> Any:
                 return 0
 
 
+def has_ind(lst: VyList, ind: int) -> bool:
+    """Whether or not the list is long enough for that index"""
+    if isinstance(lst, LazyList):
+        return lst.has_ind(ind)
+    else:
+        return 0 <= ind < len(lst)
+
+
 def indent_str(string: str, indent: int, end="\n") -> str:
     """Indent a multiline string with 4 spaces, with a newline or `end` afterwards."""
     return textwrap.indent(string, "    " * indent) + end
@@ -605,8 +613,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
         else:
             return []
     elif function.__name__.startswith("VAR_"):
-        ret = function(list(args)[::-1], function, ctx=ctx)[-1]
-        return ret
+        return function(list(args)[::-1], function, ctx=ctx)[-1]
     elif takes_ctx(function):
         return function(*args, ctx=ctx)
     return function(*args)
