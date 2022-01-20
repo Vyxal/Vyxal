@@ -1257,6 +1257,7 @@ def gen_from_fn(lhs, rhs, ctx):
     (str, num) -> every bth letter of a
     (str, str) -> replace spaces in a with b
     (lst, num) -> every bth item of a
+    (num, lst) -> every ath item of b
     (fun, any) -> Generator from function a with initial vector b
     """
     ts = vy_type(lhs, rhs, simple=True)
