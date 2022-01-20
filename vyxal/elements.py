@@ -818,6 +818,7 @@ def divisors_or_prefixes(lhs, ctx):
     else:
         return prefixes(lhs, ctx=ctx)
 
+
 def divisor_sum(lhs, ctx):
     """Element ∆K
     (num) -> sum of proper divisors of a
