@@ -324,14 +324,10 @@ def local_maxima(lhs: str) -> List[Union[int, float]]:
 
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
-    out = "" if type(haystack) is str else []
-    for item in haystack:
-        if item in needle:
-            if type(haystack) is str:
-                out += item
-            else:
-                out.append(item)
-    return out
+    if isinstance(haystack, str):
+        return "".join(char for char in haystack if char in needle)
+    else:
+        return LazyList(item for item in haystack if item in needle)
 
 
 def make_equation(eqn: str) -> sympy:
@@ -545,6 +541,23 @@ def pop(iterable_object: VyList, count: int, ctx: Context) -> List[Any]:
     return popped_items
 
 
+def prefixes(lhs: Union[VyList, str], ctx: Context) -> VyList:
+    """Returns a list of prefixes of a string or list
+    (not including [] or '')"""
+    if isinstance(lhs, str):
+        return [lhs[: i + 1] for i in range(len(lhs))]
+    else:
+
+        @lazylist
+        def gen():
+            temp = []
+            for item in iterable(lhs, ctx=ctx):
+                temp.append(deep_copy(item))
+                yield temp
+
+        return gen()
+
+
 def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
@@ -668,9 +681,21 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
     return LazyList(zeros)
 
 
-def suffixes(string: str, ctx: Context) -> List[str]:
-    """Returns a list of suffixes of string"""
-    return [string[-i:] for i in range(len(string))]
+def suffixes(lhs: Union[str, VyList], ctx: Context) -> VyList:
+    """Returns a list of suffixes, including the original list"""
+    if isinstance(lhs, str):
+        return [lhs[-i:] for i in range(len(lhs))]
+
+    lst = iterable(lhs, ctx=ctx)
+
+    @lazylist
+    def gen():
+        nonlocal lst
+        while lst:
+            yield lst
+            lst = lst[1:]
+
+    return gen()
 
 
 def takes_ctx(function: types.FunctionType) -> bool:
