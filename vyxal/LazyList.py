@@ -9,6 +9,7 @@ import itertools
 import types
 import vyxal.helpers
 
+
 def lazylist(fn):
     """A decorator to wrap function return values in `LazyList`"""
 
