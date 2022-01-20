@@ -180,8 +180,6 @@ class LazyList:
                     return -1
             try:
                 other_item = next(other_clone)
-            try:
-                other_item = next(other)
             except StopIteration:
                 return 1
         if item > other_item:
