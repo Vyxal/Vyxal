@@ -117,3 +117,8 @@ def test_compare_infinite_lists():
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     stack = run_vyxal("Þ∞")
     assert LazyList([2, 3]) > stack[-1]
+
+
+def test_prefixes_of_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ K")
+    assert stack[-1][:3] == [[1], [1, 2], [1, 2, 3]]
