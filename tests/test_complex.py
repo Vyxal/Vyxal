@@ -91,3 +91,8 @@ def test_deep_flatten_inf_list():
 def test_overdot_X_function_overload():
     stack = run_vyxal("4λ2ḭ;Ẋ")
     assert stack[-1] == 0
+
+
+def test_beheading_infinite_lists():
+    stack = run_vyxal("⁽› 1 Ḟ Ḣ")
+    assert stack[-1][0:5] == [2, 3, 4, 5, 6]
