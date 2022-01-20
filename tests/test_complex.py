@@ -130,3 +130,8 @@ def test_cartesian_product_infinite_lists():
         [3, 1],
         [1, 4],
     ]
+
+
+def test_slice_to_end_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ 20 ȯ")
+    assert stack[-1][:5] == [21, 22, 23, 24, 25]
