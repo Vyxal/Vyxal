@@ -495,6 +495,7 @@ def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
     (fun, any) -> Apply a to b until no change (fixpoint)
+    (any, fun) -> Apply a to b until no change (fixpoint)
     """
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
@@ -505,14 +506,44 @@ def cartesian_product(lhs, rhs, ctx):
             prev = arg
             arg = safe_apply(fn, arg, ctx=ctx)
         return prev
+    elif ts == (str, str):
+        return [left + right for left in lhs for right in rhs]
     else:
-        return LazyList(
-            left + right
-            if isinstance(left, str) and isinstance(right, str)
-            else [left, right]
-            for left in iterable(lhs, range, ctx=ctx)
-            for right in iterable(rhs, range, ctx=ctx)
-        )
+        lhs = iterable(lhs, range, ctx=ctx)
+        rhs = iterable(rhs, range, ctx=ctx)
+
+        @lazylist
+        def gen():
+            if not (lhs and rhs):
+                return
+
+            diag_num = 0
+            lhs_max = len(lhs) - 1 if isinstance(lhs, list) else None
+            rhs_max = len(rhs) - 1 if isinstance(rhs, list) else None
+            while True:
+                lhs_start = max(0, diag_num - rhs_max) if rhs_max else 0
+                lhs_end = min(diag_num, lhs_max) if lhs_max else diag_num
+                # Whether at least 1 new pair was yielded
+                touched = False
+                for left in range(lhs_start, lhs_end + 1):
+                    right = diag_num - left
+                    if rhs_max and right > rhs_max:
+                        continue
+                    if not has_ind(rhs, right):
+                        rhs_max = right
+                        continue
+                    if lhs_max and left > lhs_max:
+                        break
+                    if not has_ind(lhs, left):
+                        lhs_max = left
+                        break
+                    touched = True
+                    yield [lhs[left], rhs[right]]
+                if not touched:
+                    break
+                diag_num += 1
+
+        return gen()
 
 
 def center(lhs, ctx):
@@ -1226,7 +1257,7 @@ def gen_from_fn(lhs, rhs, ctx):
     (str, num) -> every bth letter of a
     (str, str) -> replace spaces in a with b
     (lst, num) -> every bth item of a
-    (fun, lst) -> Generator from function a with initial vector b
+    (fun, any) -> Generator from function a with initial vector b
     """
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType not in ts:
@@ -1244,14 +1275,14 @@ def gen_from_fn(lhs, rhs, ctx):
 
     @lazylist
     def gen():
-        for item in lhs:
-            yield item
+        yield from lhs
 
-        made = list(lhs)
+        made = lhs
 
         while True:
-            made.append(safe_apply(rhs, *made, ctx=ctx))
-            yield made[-1]
+            next_item = safe_apply(rhs, *made, ctx=ctx)
+            made.append(next_item)
+            yield next_item
 
     return gen()
 
