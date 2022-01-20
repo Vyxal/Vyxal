@@ -82,21 +82,10 @@ class LazyList:
 
                 @lazylist
                 def infinite_index():
-                    copy = iter(self)
-                    for _ in range(start or 0):
-                        try:
-                            next(copy)
-                        except StopIteration:
-                            return
-                    i = 0
-                    while True:
-                        try:
-                            item = next(copy)
-                        except StopIteration:
-                            break
-                        if i % step == 0:
-                            yield item
-                        i += 1
+                    i = start or 0
+                    while self.has_ind(i):
+                        yield self[i]
+                        i += step
 
                 return infinite_index()
             else:
@@ -108,7 +97,7 @@ class LazyList:
                 if stop < 0:
                     stop = len(self) + stop
                 for i in range(start or 0, stop, step):
-                    ret.append(self.__getitem__(i))
+                    ret.append(self[i])
                 return ret
         else:
             if position < 0:
@@ -141,21 +130,18 @@ class LazyList:
 
     def __iter__(self):
         yield from self.generated
-        while True:
-            try:
-                yield self.__next__()
-            except StopIteration:
-                break
+        i = len(self.generated)
+        while self.has_ind(i):
+            yield self[i]
+            i += 1
 
     def __len__(self):
-        length = len(self.generated)
         while True:
             try:
                 next(self)
-                length += 1
             except StopIteration:
                 break
-        return length
+        return len(self.generated)
 
     def __le__(self, other):
         return self.compare(other) <= 0
@@ -166,9 +152,9 @@ class LazyList:
     def __next__(self):
         from vyxal.helpers import vyxalify
 
-        lhs = vyxalify(next(self.raw_object))
-        self.generated.append(lhs)
-        return lhs
+        item = vyxalify(next(self.raw_object))
+        self.generated.append(item)
+        return item
 
     def __setitem__(self, position, value):
         if position >= len(self.generated):
@@ -210,6 +196,18 @@ class LazyList:
         for item in self:
             if fn(item):
                 yield item
+
+    def has_ind(self, ind: int):
+        """Whether or not this list is long enough for index `ind`"""
+        if ind < len(self.generated):
+            return 0 <= ind
+        else:
+            for _ in range(ind - len(self.generated) + 1):
+                try:
+                    next(self)
+                except StopIteration:
+                    return False
+            return True
 
     def listify(self):
         temp = self.generated[::]
