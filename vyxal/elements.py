@@ -4897,8 +4897,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
     "Þf": (
-        "rhs = pop(stack, 1, ctx)\n" "if vy_type(rhs) != NUMBER_TYPE:\n"
-        # "    print(\"foo\"); raise 0\n"
+        "rhs = pop(stack, 1, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
         "    stack.append(flatten_by(rhs, 1, ctx))\n"
         "else:\n"
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
