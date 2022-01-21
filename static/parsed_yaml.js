@@ -1026,6 +1026,7 @@ num a, str b -> every ath letter of b
 str a, num b -> every bth letter of a
 str a, str b -> replace spaces in a with b
 lst a, num b -> every bth item of a
+num a, lst b -> every ath item of b
 fun a, lst b -> Generator from function a with initial vector b
 `)
 

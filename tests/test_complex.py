@@ -30,6 +30,11 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     return stack
 
 
+def test_deltas():
+    stack = run_vyxal("Þ∞ ¯")
+    assert stack[-1][:4] == [1, 1, 1, 1]
+
+
 def test_vertical_mirror():
     """Test øṁ"""
     # Join these on newlines into one string and check if the result
@@ -58,6 +63,19 @@ def test_sort_by():
 
     stack = run_vyxal("59104 µ;", [])
     assert stack[-1] == [0, 1, 4, 5, 9]
+
+
+def test_list_sort():
+    stack = run_vyxal(
+        "⟨ ⟨ 9 | 6 | 9 | 6 | 7 ⟩ | ⟨ 7 | 6 | 4 | 1 | 8 ⟩ | ⟨ 4 | 9 | 4 | 3 | 2 ⟩ | ⟨ 7 | 3 | 3 | 6 | 9 ⟩ | ⟨ 2 | 9 | 1 | 2 | 6 ⟩ ⟩ vs s"
+    )
+    assert simplify(stack[-1]) == [
+        [1, 2, 2, 6, 9],
+        [1, 4, 6, 7, 8],
+        [2, 3, 4, 4, 9],
+        [3, 3, 6, 7, 9],
+        [6, 6, 7, 9, 9],
+    ]
 
 
 def test_cumulative_reduce():
@@ -115,5 +133,67 @@ def test_greaterthan_lazylists():
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    stack = run_vyxal("Þ∞")
     assert LazyList([2, 3]) > stack[-1]
+
+
+def test_infinite_list_sublists():
+    stack = run_vyxal("⁽›1 Ḟ ÞS")
+    assert stack[-1][:5] == [[1], [1, 2], [2], [1, 2, 3], [2, 3]]
+
+
+def test_prefixes_of_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ K")
+    assert stack[-1][:3] == [[1], [1, 2], [1, 2, 3]]
+
+
+def test_cartesian_product_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ :Ẋ")
+    assert stack[-1][:7] == [
+        [1, 1],
+        [1, 2],
+        [2, 1],
+        [1, 3],
+        [2, 2],
+        [3, 1],
+        [1, 4],
+    ]
+
+
+def test_ath_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ 4 Ḟ")
+    assert stack[-1][:5] == [1, 5, 9, 13, 17]
+
+
+def test_filter_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ 3 Ẏ F")
+    assert stack[-1][:4] == [2, 4, 6, 7]
+
+
+def test_all_equal_infinite_lists():
+    stack = run_vyxal("Þ∞ ≈")
+    assert stack[-1] == 0
+
+
+def test_shallow_flatten():
+    stack = run_vyxal("⁽› 1 5rw Ḟ Þf", debug=True)
+    assert stack[-1][:9] == [1, 2, 3, 4, 2, 3, 4, 5, 3]
+
+
+def test_slice_to_end_infinite_lists():
+    stack = run_vyxal("⁽›1Ḟ 20 ȯ")
+    assert stack[-1][:5] == [21, 22, 23, 24, 25]
+
+
+def test_interleave():
+    stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
+    assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
+
+
+def test_compressed_strings():
+    stack = run_vyxal("«×Fṫ«")
+    assert stack[-1] == "a hyb"
+
+
+def test_to_base_digits():
+    stack = to_base_digits(64, 2)
+    assert stack == [1, 0, 0, 0, 0, 0, 0]

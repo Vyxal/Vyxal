@@ -1991,6 +1991,7 @@
     str-num: every bth letter of a
     str-str: replace spaces in a with b
     lst-num: every bth item of a
+    num-lst: every ath item of b
     fun-lst: Generator from function a with initial vector b
   vectorise: false
   tests:
@@ -4437,7 +4438,7 @@
     lst: Sublists of a list.
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1],[2],[3],[1,2],[2,3],[1,2,3]]"
+    - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
 
 - element: "ÞṪ"
   name: Transpose With Filler

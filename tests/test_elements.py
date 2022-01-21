@@ -19415,7 +19415,7 @@ def test_Diagonals():
 def test_Sublists():
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify([[1],[2],[3],[1,2],[2,3],[1,2,3]])
+    expected = vyxalify([[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]])
     ctx = Context()
 
     ctx.stacks.append(stack)
