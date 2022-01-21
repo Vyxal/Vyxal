@@ -176,6 +176,7 @@ def test_interleave():
     stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
     assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
 
+
 def test_compressed_strings():
     stack = run_vyxal("«×Fṫ«")
     assert stack[-1] == "a hyb"
