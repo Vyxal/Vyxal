@@ -175,3 +175,13 @@ def test_slice_to_end_infinite_lists():
 def test_interleave():
     stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
     assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
+
+
+def test_compressed_strings():
+    stack = run_vyxal("«×Fṫ«")
+    assert stack[-1] == "a hyb"
+
+
+def test_to_base_digits():
+    stack = to_base_digits(64, 2)
+    assert stack == [1, 0, 0, 0, 0, 0, 0]
