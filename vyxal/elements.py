@@ -1162,19 +1162,23 @@ def flatten_by(lhs, rhs, ctx):
     (lst, num) -> Flatten a by depth b
     (any, lst) -> Flatten b by depth 1, push a as well
     """
-    flat = []
-
-    if rhs == 0:
+    if rhs < 0:
+        raise ValueError(f"Cannot flatten by depth {rhs}")
+    if int(rhs) == 0:
         return lhs
     elif vy_type(lhs, simple=True) is list:
-        for item in lhs:
-            if vy_type(item, simple=True) is list:
-                flat += flatten_by(item, int(rhs - 1), ctx)
-            else:
-                flat.append(item)
+
+        @lazylist
+        def gen():
+            for item in lhs:
+                if vy_type(item, simple=True) is list:
+                    yield from flatten_by(item, int(rhs - 1), ctx)
+                else:
+                    yield item
+
+        return gen()
     else:
-        flat.append(lhs)
-    return flat
+        return [lhs]
 
 
 def flip_brackets_vertical_mirror(lhs, ctx):
@@ -4893,8 +4897,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
     "Þf": (
-        "rhs = pop(stack, 1, ctx)\n"
-        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "rhs = pop(stack, 1, ctx)\n" "if vy_type(rhs) != NUMBER_TYPE:\n"
+        # "    print(\"foo\"); raise 0\n"
         "    stack.append(flatten_by(rhs, 1, ctx))\n"
         "else:\n"
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
