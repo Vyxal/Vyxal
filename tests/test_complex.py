@@ -197,3 +197,8 @@ def test_compressed_strings():
 def test_to_base_digits():
     stack = to_base_digits(64, 2)
     assert stack == [1, 0, 0, 0, 0, 0, 0]
+
+
+def test_wrap_inf():
+    stack = run_vyxal("⁽› 1 Ḟ 3 ẇ")
+    assert stack[-1][:3] == [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
