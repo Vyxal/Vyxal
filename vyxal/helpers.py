@@ -709,7 +709,7 @@ def to_base_digits(value: int, base: int) -> List[int]:
     ret = []
     n = value
 
-    while n > base:
+    while n >= base:
         n, digit = divmod(n, base)
         ret.append(digit)
     ret.append(n)
