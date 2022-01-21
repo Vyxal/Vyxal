@@ -65,6 +65,19 @@ def test_sort_by():
     assert stack[-1] == [0, 1, 4, 5, 9]
 
 
+def test_list_sort():
+    stack = run_vyxal(
+        "⟨ ⟨ 9 | 6 | 9 | 6 | 7 ⟩ | ⟨ 7 | 6 | 4 | 1 | 8 ⟩ | ⟨ 4 | 9 | 4 | 3 | 2 ⟩ | ⟨ 7 | 3 | 3 | 6 | 9 ⟩ | ⟨ 2 | 9 | 1 | 2 | 6 ⟩ ⟩ vs s"
+    )
+    assert simplify(stack[-1]) == [
+        [1, 2, 2, 6, 9],
+        [1, 4, 6, 7, 8],
+        [2, 3, 4, 4, 9],
+        [3, 3, 6, 7, 9],
+        [6, 6, 7, 9, 9],
+    ]
+
+
 def test_cumulative_reduce():
     """Test ɖ"""
 
@@ -120,7 +133,6 @@ def test_greaterthan_lazylists():
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    stack = run_vyxal("Þ∞")
     assert LazyList([2, 3]) > stack[-1]
 
 
