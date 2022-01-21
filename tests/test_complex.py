@@ -202,3 +202,8 @@ def test_to_base_digits():
 def test_wrap_inf():
     stack = run_vyxal("⁽› 1 Ḟ 3 ẇ")
     assert stack[-1][:3] == [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+
+def test_apply_to_every_other_inf_list():
+    stack = run_vyxal("⁽› 1 Ḟ ⁽› ẇ")
+    assert stack[-1][:4] == [1, 3, 3, 5]
