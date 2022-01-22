@@ -2247,6 +2247,7 @@ codepage_descriptions[115] += `
 Þs (All Slices of a List)
 Get all slices of a list, skipping a certain number of items
 lst a, int b -> Get all slices of a list, skipping a certain number of items
+int a, lst b -> Same as lst-int but with arguments swapped
 `
 codepage_descriptions[252] += `
 Þ¾ (Empty the Global Array)
