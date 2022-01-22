@@ -1277,7 +1277,6 @@ def gen_from_fn(lhs, rhs, ctx):
     lhs, rhs = (rhs, lhs) if ts[0] is types.FunctionType else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
-    @lazylist
     def gen():
         yield from lhs
 
@@ -1288,7 +1287,7 @@ def gen_from_fn(lhs, rhs, ctx):
             made.append(next_item)
             yield next_item
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def general_quadratic_solver(lhs, rhs, ctx):
@@ -3425,27 +3424,44 @@ def strip(lhs, rhs, ctx):
 
     def list_helper(left, right):
         """This doesn't make sense anywhere but here"""
-        if vy_type(left) is LazyList:
-            left = left.listify()
-        if vy_type(right) is LazyList:
-            right = right.listify()
-        if len(left) == 0:
+        inf_left, inf_right = False, False
+        if vy_type(left) is LazyList and left.infinite:
+            inf_left = True
+        if vy_type(right) is LazyList and right.infinite:
+            inf_right = True
+        if not left:
             return []  # how you gonna strip from nothing
+        if not right:
+            return left
 
         # Strip from the right side first
         # check to make sure there's stuff to strip
 
-        if len(left) < len(right):
+        if not inf_left and not inf_right and len(left) < len(right):
             # left is smaller than right
             # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
             if left in (right[: len(left)], right[: len(left) : -1]):
                 return []
 
-        if left[-len(right) :] == right[::-1]:
-            del left[-len(right) :]
+        def strip_front(lst, unwanted):
+            """Strip from only the front"""
+            start_ind = 0
+            it = iter(unwanted)
+            for item in lst:
+                try:
+                    to_strip = next(it)
+                    if not equals(item, to_strip, ctx=ctx):
+                        break
+                except StopIteration:
+                    break
+                start_ind += 1
 
-        if left[: len(right)] == right:
-            del left[: len(right)]
+            return lst[start_ind:]
+
+        left = strip_front(left, right)
+
+        if not inf_left:
+            left = strip_front(left[::-1], right)
 
         return left
 
