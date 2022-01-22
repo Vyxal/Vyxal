@@ -191,6 +191,7 @@ def all_partitions(lhs, ctx):
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
+    (int, lst) -> Same as (lst, int) but swapped
     """
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
@@ -1392,7 +1393,7 @@ def group_consecutive(lhs, ctx):
     if typ == NUMBER_TYPE:
         lhs = digits(lhs)
 
-    if len(lhs) < 1:
+    if not lhs:
         return lhs
 
     def gen():
@@ -2096,7 +2097,7 @@ def max_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in biggest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
@@ -2184,7 +2185,7 @@ def min_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in smallest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest

@@ -30,6 +30,12 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     return stack
 
 
+def test_all_slices_inf():
+    stack = run_vyxal("⁽›1Ḟ 4 Þs")
+    expected = [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+    assert [slice[:3] for slice in stack[-1][:4]] == expected
+
+
 def test_deltas():
     stack = run_vyxal("Þ∞ ¯")
     assert stack[-1][:4] == [1, 1, 1, 1]
@@ -120,6 +126,11 @@ def test_equal_lazylists():
     assert LazyList(range(10)) == LazyList(range(10))
 
 
+def test_group_consecutive_inf_lists():
+    stack = run_vyxal("⁽› 1 Ḟ ½ ⌊ Ġ")
+    assert stack[-1][:3] == [[0], [1, 1], [2, 2]]
+
+
 def test_lessthan_lazylists():
     assert LazyList(range(10)) < LazyList(range(11))
     assert LazyList([4, 5, 6]) < LazyList([6, 7, 8])
@@ -207,3 +218,13 @@ def test_wrap_inf():
 def test_apply_to_every_other_inf_list():
     stack = run_vyxal("⁽› 1 Ḟ ⁽› ẇ")
     assert stack[-1][:4] == [1, 3, 3, 5]
+
+    
+def test_max_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↑")
+    assert stack[-1] == "wordiest"
+
+
+def test_min_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↓")
+    assert stack[-1] == "word"
