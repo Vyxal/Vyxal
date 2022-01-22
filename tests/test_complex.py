@@ -185,6 +185,11 @@ def test_all_equal_infinite_lists():
     assert stack[-1] == 0
 
 
+def test_powerset_inf():
+    stack = run_vyxal("⁽› 1 Ḟ ṗ", debug=True)
+    assert stack[-1][:4] == [[], [1], [2], [1, 2]]
+
+
 def test_shallow_flatten():
     stack = run_vyxal("⁽› 1 5rw Ḟ Þf", debug=True)
     assert stack[-1][:9] == [1, 2, 3, 4, 2, 3, 4, 5, 3]
