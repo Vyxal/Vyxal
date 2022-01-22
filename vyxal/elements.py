@@ -2097,7 +2097,7 @@ def max_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in biggest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
@@ -2185,7 +2185,7 @@ def min_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in smallest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest

@@ -203,3 +203,13 @@ def test_compressed_strings():
 def test_to_base_digits():
     stack = to_base_digits(64, 2)
     assert stack == [1, 0, 0, 0, 0, 0, 0]
+
+
+def test_max_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↑")
+    assert stack[-1] == "wordiest"
+
+
+def test_min_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↓")
+    assert stack[-1] == "word"
