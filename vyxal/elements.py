@@ -2790,17 +2790,25 @@ def polynomial_roots(lhs, ctx):
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
+@lazylist
 def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
-    # TODO make this work with infinite Lazylists
-    return LazyList(
-        itertools.chain.from_iterable(
-            itertools.combinations(iterable(lhs, ctx), r)
-            for r in range(len(iterable(lhs, ctx)) + 1)
-        )
-    )
+
+    lhs = iterable(lhs, ctx=ctx)
+    it = iter(lhs)
+
+    prev_sets = [[]]
+    yield []
+    while True:
+        try:
+            elem = next(it)
+        except StopIteration:
+            break
+        new_sets = [prev + [elem] for prev in prev_sets]
+        prev_sets += [subset[:] for subset in new_sets]
+        yield from new_sets
 
 
 def prev_prime(lhs, ctx):
