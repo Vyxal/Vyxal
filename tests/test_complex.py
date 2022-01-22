@@ -126,6 +126,11 @@ def test_equal_lazylists():
     assert LazyList(range(10)) == LazyList(range(10))
 
 
+def test_group_consecutive_inf_lists():
+    stack = run_vyxal("⁽› 1 Ḟ ½ ⌊ Ġ")
+    assert stack[-1][:3] == [[0], [1, 1], [2, 2]]
+
+
 def test_lessthan_lazylists():
     assert LazyList(range(10)) < LazyList(range(11))
     assert LazyList([4, 5, 6]) < LazyList([6, 7, 8])
