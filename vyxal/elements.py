@@ -1392,7 +1392,7 @@ def group_consecutive(lhs, ctx):
     if typ == NUMBER_TYPE:
         lhs = digits(lhs)
 
-    if len(lhs) < 1:
+    if not lhs:
         return lhs
 
     def gen():
