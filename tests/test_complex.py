@@ -219,7 +219,7 @@ def test_apply_to_every_other_inf_list():
     stack = run_vyxal("⁽› 1 Ḟ ⁽› ẇ")
     assert stack[-1][:4] == [1, 3, 3, 5]
 
-    
+
 def test_max_by_function():
     stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↑")
     assert stack[-1] == "wordiest"
