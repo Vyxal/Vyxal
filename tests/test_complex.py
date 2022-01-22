@@ -30,6 +30,12 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     return stack
 
 
+def test_all_slices_inf():
+    stack = run_vyxal("⁽›1Ḟ 4 Þs")
+    expected = [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+    assert [slice[:3] for slice in stack[-1][:4]] == expected
+
+
 def test_deltas():
     stack = run_vyxal("Þ∞ ¯")
     assert stack[-1][:4] == [1, 1, 1, 1]
