@@ -191,6 +191,7 @@ def all_partitions(lhs, ctx):
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
+    (int, lst) -> Same as (lst, int) but swapped
     """
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
@@ -1391,7 +1392,7 @@ def group_consecutive(lhs, ctx):
     if typ == NUMBER_TYPE:
         lhs = digits(lhs)
 
-    if len(lhs) < 1:
+    if not lhs:
         return lhs
 
     def gen():
@@ -2095,7 +2096,7 @@ def max_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in biggest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
@@ -2183,7 +2184,7 @@ def min_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in smallest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest
@@ -4412,10 +4413,18 @@ def wrap(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return LazyList(
-            safe_apply(function, vector[i], ctx=ctx) if i % 2 else vector[i]
-            for i in range(len(vector))
-        )
+
+        @lazylist
+        def gen():
+            switch = False
+            for item in vector:
+                if switch:
+                    yield safe_apply(function, item, ctx=ctx)
+                else:
+                    yield item
+                switch = not switch
+
+        return gen()
 
     else:
         if ts == (str, str):
@@ -4442,23 +4451,25 @@ def wrap(lhs, rhs, ctx):
 
                 return gen()
 
-            ret, temp = [], []
+            @lazylist
+            def gen():
+                temp = []
+                for item in vector:
+                    temp.append(item)
+                    if len(temp) == chunk_size:
+                        if all(type(x) is str for x in temp):
+                            yield "".join(temp)
+                        else:
+                            yield temp[::]
+                        temp = []
 
-            for item in vector:
-                temp.append(item)
-                if len(temp) == chunk_size:
+                if len(temp) < chunk_size and temp:
                     if all(type(x) is str for x in temp):
-                        ret.append("".join(temp))
+                        yield "".join(temp)
                     else:
-                        ret.append(temp[::])
-                    temp = []
+                        yield temp[::]
 
-            if len(temp) < chunk_size and temp:
-                if all(type(x) is str for x in temp):
-                    ret.append("".join(temp))
-                else:
-                    ret.append(temp[::])
-            return ret
+            return gen()
 
 
 def zero_matrix(lhs, ctx):
