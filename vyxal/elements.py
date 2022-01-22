@@ -191,6 +191,7 @@ def all_partitions(lhs, ctx):
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
+    (int, lst) -> Same as (lst, int) but swapped
     """
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
