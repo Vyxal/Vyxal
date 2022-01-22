@@ -4397,10 +4397,18 @@ def wrap(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return LazyList(
-            safe_apply(function, vector[i], ctx=ctx) if i % 2 else vector[i]
-            for i in range(len(vector))
-        )
+
+        @lazylist
+        def gen():
+            switch = False
+            for item in vector:
+                if switch:
+                    yield safe_apply(function, item, ctx=ctx)
+                else:
+                    yield item
+                switch = not switch
+
+        return gen()
 
     else:
         if ts == (str, str):
@@ -4427,23 +4435,25 @@ def wrap(lhs, rhs, ctx):
 
                 return gen()
 
-            ret, temp = [], []
+            @lazylist
+            def gen():
+                temp = []
+                for item in vector:
+                    temp.append(item)
+                    if len(temp) == chunk_size:
+                        if all(type(x) is str for x in temp):
+                            yield "".join(temp)
+                        else:
+                            yield temp[::]
+                        temp = []
 
-            for item in vector:
-                temp.append(item)
-                if len(temp) == chunk_size:
+                if len(temp) < chunk_size and temp:
                     if all(type(x) is str for x in temp):
-                        ret.append("".join(temp))
+                        yield "".join(temp)
                     else:
-                        ret.append(temp[::])
-                    temp = []
+                        yield temp[::]
 
-            if len(temp) < chunk_size and temp:
-                if all(type(x) is str for x in temp):
-                    ret.append("".join(temp))
-                else:
-                    ret.append(temp[::])
-            return ret
+            return gen()
 
 
 def zero_matrix(lhs, ctx):
