@@ -228,7 +228,7 @@ class LazyList:
             sep = " | " if ctx.vyxal_lists else ", "
         if close is None:
             close = " ⟩" if ctx.vyxal_lists else "]"
-        
+
         vy_print(open, "", ctx=ctx)
         for lhs in self.generated[:-1]:
             vy_print(lhs, sep, ctx=ctx)
