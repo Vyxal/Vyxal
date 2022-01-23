@@ -7,6 +7,7 @@ and other stuff that needs to be lazily evaluated.
 
 import itertools
 import types
+import vyxal.helpers
 
 
 def lazylist(fn):
@@ -14,6 +15,8 @@ def lazylist(fn):
 
     def wrapped(*args, **kwargs):
         return LazyList(fn(*args, **kwargs))
+
+    wrapped.__name__ = fn.__name__
 
     return wrapped
 
@@ -166,18 +169,20 @@ class LazyList:
         # greater than `other`
 
         # Should work for infinite lists
-        item = next(self)
-        other_item = next(other)
+        self_clone = vyxal.helpers.deep_copy(self)
+        other_clone = vyxal.helpers.deep_copy(other)
+        item = next(self_clone)
+        other_item = next(other_clone)
         while item == other_item:
             try:
-                item = next(self)
+                item = next(self_clone)
             except StopIteration:
-                if self == other:
+                if self_clone == other_clone:
                     return 0
                 else:
                     return -1
             try:
-                other_item = next(other)
+                other_item = next(other_clone)
             except StopIteration:
                 return 1
         if item > other_item:

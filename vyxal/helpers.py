@@ -254,6 +254,11 @@ def invert_brackets(lhs: str) -> str:
     return res
 
 
+def is_inf(lst: VyList) -> bool:
+    """Whether or not a list/LazyList is infinite"""
+    return isinstance(lst, LazyList) and lst.infinite
+
+
 def is_sympy(value):
     """Whether or not this is a Sympy type"""
     return isinstance(value, sympy.Basic)
@@ -709,7 +714,7 @@ def to_base_digits(value: int, base: int) -> List[int]:
     ret = []
     n = value
 
-    while n > base:
+    while n >= base:
         n, digit = divmod(n, base)
         ret.append(digit)
     ret.append(n)

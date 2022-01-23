@@ -30,6 +30,17 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     return stack
 
 
+def test_all_slices_inf():
+    stack = run_vyxal("⁽›1Ḟ 4 Þs")
+    expected = [[1, 5, 9], [2, 6, 10], [3, 7, 11], [4, 8, 12]]
+    assert [slice[:3] for slice in stack[-1][:4]] == expected
+
+
+def test_deltas():
+    stack = run_vyxal("Þ∞ ¯")
+    assert stack[-1][:4] == [1, 1, 1, 1]
+
+
 def test_vertical_mirror():
     """Test øṁ"""
     # Join these on newlines into one string and check if the result
@@ -58,6 +69,19 @@ def test_sort_by():
 
     stack = run_vyxal("59104 µ;", [])
     assert stack[-1] == [0, 1, 4, 5, 9]
+
+
+def test_list_sort():
+    stack = run_vyxal(
+        "⟨ ⟨ 9 | 6 | 9 | 6 | 7 ⟩ | ⟨ 7 | 6 | 4 | 1 | 8 ⟩ | ⟨ 4 | 9 | 4 | 3 | 2 ⟩ | ⟨ 7 | 3 | 3 | 6 | 9 ⟩ | ⟨ 2 | 9 | 1 | 2 | 6 ⟩ ⟩ vs s"
+    )
+    assert simplify(stack[-1]) == [
+        [1, 2, 2, 6, 9],
+        [1, 4, 6, 7, 8],
+        [2, 3, 4, 4, 9],
+        [3, 3, 6, 7, 9],
+        [6, 6, 7, 9, 9],
+    ]
 
 
 def test_cumulative_reduce():
@@ -102,6 +126,11 @@ def test_equal_lazylists():
     assert LazyList(range(10)) == LazyList(range(10))
 
 
+def test_group_consecutive_inf_lists():
+    stack = run_vyxal("⁽› 1 Ḟ ½ ⌊ Ġ")
+    assert stack[-1][:3] == [[0], [1, 1], [2, 2]]
+
+
 def test_lessthan_lazylists():
     assert LazyList(range(10)) < LazyList(range(11))
     assert LazyList([4, 5, 6]) < LazyList([6, 7, 8])
@@ -115,7 +144,6 @@ def test_greaterthan_lazylists():
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    stack = run_vyxal("Þ∞")
     assert LazyList([2, 3]) > stack[-1]
 
 
@@ -157,11 +185,57 @@ def test_all_equal_infinite_lists():
     assert stack[-1] == 0
 
 
+def test_powerset_inf():
+    stack = run_vyxal("⁽› 1 Ḟ ṗ", debug=True)
+    assert stack[-1][:4] == [[], [1], [2], [1, 2]]
+
+
+def test_shallow_flatten():
+    stack = run_vyxal("⁽› 1 5rw Ḟ Þf", debug=True)
+    assert stack[-1][:9] == [1, 2, 3, 4, 2, 3, 4, 5, 3]
+
+
 def test_slice_to_end_infinite_lists():
     stack = run_vyxal("⁽›1Ḟ 20 ȯ")
     assert stack[-1][:5] == [21, 22, 23, 24, 25]
 
 
+def test_strip_infinite_lists():
+    """Ensure that P only strips from the start for infinite lists"""
+    stack = run_vyxal("⁽›1Ḟ 1 9 r P")
+    assert stack[-1][:4] == [9, 10, 11, 12]
+
+
 def test_interleave():
     stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
     assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
+
+
+def test_compressed_strings():
+    stack = run_vyxal("«×Fṫ«")
+    assert stack[-1] == "a hyb"
+
+
+def test_to_base_digits():
+    stack = to_base_digits(64, 2)
+    assert stack == [1, 0, 0, 0, 0, 0, 0]
+
+
+def test_wrap_inf():
+    stack = run_vyxal("⁽› 1 Ḟ 3 ẇ")
+    assert stack[-1][:3] == [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+
+
+def test_apply_to_every_other_inf_list():
+    stack = run_vyxal("⁽› 1 Ḟ ⁽› ẇ")
+    assert stack[-1][:4] == [1, 3, 3, 5]
+
+
+def test_max_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↑")
+    assert stack[-1] == "wordiest"
+
+
+def test_min_by_function():
+    stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↓")
+    assert stack[-1] == "word"
