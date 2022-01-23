@@ -200,6 +200,12 @@ def test_slice_to_end_infinite_lists():
     assert stack[-1][:5] == [21, 22, 23, 24, 25]
 
 
+def test_strip_infinite_lists():
+    """Ensure that P only strips from the start for infinite lists"""
+    stack = run_vyxal("⁽›1Ḟ 1 9 r P")
+    assert stack[-1][:4] == [9, 10, 11, 12]
+
+
 def test_interleave():
     stack = run_vyxal("⁽›1Ḟ ⁽⇧1Ḟ Y")
     assert stack[-1][:6] == [1, 1, 2, 3, 3, 5]
