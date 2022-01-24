@@ -292,6 +292,7 @@ function initCodeMirror() {
     let mode = {
         mode: 'vyxal',
         lineWrapping: true,
+        autofocus: true,
     }
 
     for (const boxId of ['header', 'code', 'footer']) {
