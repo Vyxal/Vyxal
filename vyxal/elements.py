@@ -4071,7 +4071,7 @@ def vy_exec(lhs, ctx):
         import vyxal.transpile
 
         stack = ctx.stacks[-1]
-        exec(vyxal.transpile.transpile(lhs))
+        exec(vyxal.transpile.transpile(lhs, ctx.dictionary_compression, ctx.variable_length_1))
         return []
 
     def helper(lhs):

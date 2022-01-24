@@ -35,9 +35,13 @@ def lambda_wrap(
         return vyxal.structure.Lambda(1, branch)
 
 
-def transpile(program: str, dict_compress: bool = True) -> str:
+def transpile(
+    program: str,
+    dict_compress: bool = True,
+    variables_as_digraphs: bool = False,
+) -> str:
     return transpile_ast(
-        vyxal.parse.parse(vyxal.lexer.tokenise(program)),
+        vyxal.parse.parse(vyxal.lexer.tokenise(program, variables_as_digraphs)),
         dict_compress=dict_compress,
     )
 
@@ -120,7 +124,7 @@ def transpile_token(
             parts = parts + "* I"
 
         return indent_str(f'stack.append(sympy.nsimplify("{parts}"))', indent)
-    elif token.name == TokenType.GENERAL:
+    elif token.name == TokenType.GENERAL:            
         return indent_str(elements.get(token.value, ("pass\n", -1))[0], indent)
     elif token.name == TokenType.COMPRESSED_NUMBER:
         return indent_str(f"stack.append({uncompress(token)})", indent)
