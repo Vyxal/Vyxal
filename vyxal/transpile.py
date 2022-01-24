@@ -35,9 +35,13 @@ def lambda_wrap(
         return vyxal.structure.Lambda(1, branch)
 
 
-def transpile(program: str, dict_compress: bool = True) -> str:
+def transpile(
+    program: str,
+    dict_compress: bool = True,
+    variables_as_digraphs: bool = False,
+) -> str:
     return transpile_ast(
-        vyxal.parse.parse(vyxal.lexer.tokenise(program)),
+        vyxal.parse.parse(vyxal.lexer.tokenise(program, variables_as_digraphs)),
         dict_compress=dict_compress,
     )
 

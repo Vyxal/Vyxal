@@ -16,6 +16,8 @@ def lazylist(fn):
     def wrapped(*args, **kwargs):
         return LazyList(fn(*args, **kwargs))
 
+    wrapped.__name__ = fn.__name__
+
     return wrapped
 
 

@@ -3244,6 +3244,7 @@ Get all slices of a list, skipping a certain number of items
 ### Overloads
 
 - lst a, int b: `Get all slices of a list, skipping a certain number of items`
+- int a, lst b: `Same as lst-int but with arguments swapped`
 -------------------------------
 ## `` Þ¾ `` (Empty the Global Array)
 

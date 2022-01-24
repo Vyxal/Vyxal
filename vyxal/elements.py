@@ -191,6 +191,7 @@ def all_partitions(lhs, ctx):
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
+    (int, lst) -> Same as (lst, int) but swapped
     """
     ts = vy_type(lhs, rhs)
     lhs, rhs = (rhs, lhs) if ts[1] != NUMBER_TYPE else (lhs, rhs)
@@ -1277,7 +1278,6 @@ def gen_from_fn(lhs, rhs, ctx):
     lhs, rhs = (rhs, lhs) if ts[0] is types.FunctionType else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
-    @lazylist
     def gen():
         yield from lhs
 
@@ -1288,7 +1288,7 @@ def gen_from_fn(lhs, rhs, ctx):
             made.append(next_item)
             yield next_item
 
-    return gen()
+    return LazyList(gen(), isinf=True)
 
 
 def general_quadratic_solver(lhs, rhs, ctx):
@@ -1392,7 +1392,7 @@ def group_consecutive(lhs, ctx):
     if typ == NUMBER_TYPE:
         lhs = digits(lhs)
 
-    if len(lhs) < 1:
+    if not lhs:
         return lhs
 
     def gen():
@@ -2096,7 +2096,7 @@ def max_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in biggest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
@@ -2184,7 +2184,7 @@ def min_by_function(lhs, rhs, ctx):
         return lhs[0]
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
-        for item in smallest[1:]:
+        for item in lhs[1:]:
             if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest
@@ -2790,17 +2790,25 @@ def polynomial_roots(lhs, ctx):
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
+@lazylist
 def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
-    # TODO make this work with infinite Lazylists
-    return LazyList(
-        itertools.chain.from_iterable(
-            itertools.combinations(iterable(lhs, ctx), r)
-            for r in range(len(iterable(lhs, ctx)) + 1)
-        )
-    )
+
+    lhs = iterable(lhs, ctx=ctx)
+    it = iter(lhs)
+
+    prev_sets = [[]]
+    yield []
+    while True:
+        try:
+            elem = next(it)
+        except StopIteration:
+            break
+        new_sets = [prev + [elem] for prev in prev_sets]
+        prev_sets += [subset[:] for subset in new_sets]
+        yield from new_sets
 
 
 def prev_prime(lhs, ctx):
@@ -3425,27 +3433,44 @@ def strip(lhs, rhs, ctx):
 
     def list_helper(left, right):
         """This doesn't make sense anywhere but here"""
-        if vy_type(left) is LazyList:
-            left = left.listify()
-        if vy_type(right) is LazyList:
-            right = right.listify()
-        if len(left) == 0:
+        inf_left, inf_right = False, False
+        if vy_type(left) is LazyList and left.infinite:
+            inf_left = True
+        if vy_type(right) is LazyList and right.infinite:
+            inf_right = True
+        if not left:
             return []  # how you gonna strip from nothing
+        if not right:
+            return left
 
         # Strip from the right side first
         # check to make sure there's stuff to strip
 
-        if len(left) < len(right):
+        if not inf_left and not inf_right and len(left) < len(right):
             # left is smaller than right
             # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
             if left in (right[: len(left)], right[: len(left) : -1]):
                 return []
 
-        if left[-len(right) :] == right[::-1]:
-            del left[-len(right) :]
+        def strip_front(lst, unwanted):
+            """Strip from only the front"""
+            start_ind = 0
+            it = iter(unwanted)
+            for item in lst:
+                try:
+                    to_strip = next(it)
+                    if not equals(item, to_strip, ctx=ctx):
+                        break
+                except StopIteration:
+                    break
+                start_ind += 1
 
-        if left[: len(right)] == right:
-            del left[: len(right)]
+            return lst[start_ind:]
+
+        left = strip_front(left, right)
+
+        if not inf_left:
+            left = strip_front(left[::-1], right)
 
         return left
 
@@ -4046,7 +4071,11 @@ def vy_exec(lhs, ctx):
         import vyxal.transpile
 
         stack = ctx.stacks[-1]
-        exec(vyxal.transpile.transpile(lhs))
+        exec(
+            vyxal.transpile.transpile(
+                lhs, ctx.dictionary_compression, ctx.variable_length_1
+            )
+        )
         return []
 
     def helper(lhs):
@@ -4274,9 +4303,12 @@ def vy_reduce(lhs, rhs, ctx):
 
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
+    string_character = "`" if ctx.vyxal_lists else '"'
     return {
         (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
-        (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
+        (str): lambda: string_character
+        + lhs.replace(string_character, "\\" + string_character)
+        + string_character,
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
         )
@@ -4396,10 +4428,18 @@ def wrap(lhs, rhs, ctx):
         function, vector = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         )
-        return LazyList(
-            safe_apply(function, vector[i], ctx=ctx) if i % 2 else vector[i]
-            for i in range(len(vector))
-        )
+
+        @lazylist
+        def gen():
+            switch = False
+            for item in vector:
+                if switch:
+                    yield safe_apply(function, item, ctx=ctx)
+                else:
+                    yield item
+                switch = not switch
+
+        return gen()
 
     else:
         if ts == (str, str):
@@ -4426,23 +4466,25 @@ def wrap(lhs, rhs, ctx):
 
                 return gen()
 
-            ret, temp = [], []
+            @lazylist
+            def gen():
+                temp = []
+                for item in vector:
+                    temp.append(item)
+                    if len(temp) == chunk_size:
+                        if all(type(x) is str for x in temp):
+                            yield "".join(temp)
+                        else:
+                            yield temp[::]
+                        temp = []
 
-            for item in vector:
-                temp.append(item)
-                if len(temp) == chunk_size:
+                if len(temp) < chunk_size and temp:
                     if all(type(x) is str for x in temp):
-                        ret.append("".join(temp))
+                        yield "".join(temp)
                     else:
-                        ret.append(temp[::])
-                    temp = []
+                        yield temp[::]
 
-            if len(temp) < chunk_size and temp:
-                if all(type(x) is str for x in temp):
-                    ret.append("".join(temp))
-                else:
-                    ret.append(temp[::])
-            return ret
+            return gen()
 
 
 def zero_matrix(lhs, ctx):

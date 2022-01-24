@@ -7104,7 +7104,7 @@ def test_Powerset():
 
 
     stack = [vyxalify(item) for item in [[1,2,3]]]
-    expected = vyxalify([[],[1],[2],[3],[1,2],[1,3],[2,3],[1,2,3]])
+    expected = vyxalify([[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]])
     ctx = Context()
 
     ctx.stacks.append(stack)

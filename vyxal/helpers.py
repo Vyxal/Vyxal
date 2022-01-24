@@ -254,6 +254,11 @@ def invert_brackets(lhs: str) -> str:
     return res
 
 
+def is_inf(lst: VyList) -> bool:
+    """Whether or not a list/LazyList is infinite"""
+    return isinstance(lst, LazyList) and lst.infinite
+
+
 def is_sympy(value):
     """Whether or not this is a Sympy type"""
     return isinstance(value, sympy.Basic)
