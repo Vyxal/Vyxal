@@ -9,6 +9,7 @@ types, go to documents/specs/Lexer.md
 from __future__ import annotations
 
 import collections
+from multiprocessing import context
 import string
 from enum import Enum
 
@@ -56,7 +57,9 @@ class Token:
         return self.name == rhs.name and self.value == rhs.value
 
 
-def tokenise(source_str: str) -> list[Token]:
+def tokenise(
+    source_str: str, variables_as_digraphs: bool = False
+) -> list[Token]:
     """Main lexing function: transforms a Vyxal program into a list of tokens
 
 
@@ -134,6 +137,8 @@ def tokenise(source_str: str) -> list[Token]:
             contextual_token_value = ""
             while source and source[0] in string.ascii_letters + "_":
                 contextual_token_value += source.popleft()
+                if variables_as_digraphs:
+                    break
 
             if head == "→":
                 tokens.append(

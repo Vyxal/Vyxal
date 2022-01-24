@@ -128,7 +128,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 1
 
     try:
-        code = transpile(code, ctx.dictionary_compression)
+        code = transpile(
+            code, ctx.dictionary_compression, ctx.variable_length_1
+        )
     except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
