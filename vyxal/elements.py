@@ -4299,9 +4299,12 @@ def vy_reduce(lhs, rhs, ctx):
 
 def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
+    string_character = "`" if ctx.vyxal_lists else '"'
     return {
         (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
-        (str): lambda: "`" + lhs.replace("`", "\\`") + "`",
+        (str): lambda: string_character
+        + lhs.replace(string_character, "\\" + string_character)
+        + string_character,
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
         )
