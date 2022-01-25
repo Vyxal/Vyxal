@@ -869,6 +869,8 @@ def vyxalify(value: Any) -> Any:
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (float, complex)):
         return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, bool):
+        return str(value)
     elif isinstance(
         value, (int, sympy.Rational, str, LazyList, types.FunctionType)
     ):
