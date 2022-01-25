@@ -4016,7 +4016,9 @@ def vy_bin(lhs, ctx):
         else:
             return [int(x) for x in bin(int(lhs))[2:]]
     elif ts == (str):
-        return vectorise(vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx=ctx), ctx=ctx)
+        return vectorise(
+            vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx=ctx), ctx=ctx
+        )
     else:
         return vectorise(vy_bin, lhs, ctx=ctx)
 
