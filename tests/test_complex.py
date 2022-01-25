@@ -257,7 +257,7 @@ def test_map_to_every_second_item():
         8,
         "          ",
     ]
-    
+
 
 def test_bool_input():
     stack = run_vyxal("1+", inputs=[True])
