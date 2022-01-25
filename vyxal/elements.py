@@ -4009,12 +4009,16 @@ def vy_bin(lhs, ctx):
     (str) -> binary of each codepoint
     """
     ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
-        (str): lambda: vectorise(
-            vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx), ctx=ctx
-        ),
-    }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
+    if ts == (NUMBER_TYPE):
+        if lhs < 0:
+            temp = [int(x) for x in bin(int(lhs))[3:]]
+            return vectorise(negate, temp, ctx=ctx)
+        else:
+            return [int(x) for x in bin(int(lhs))[2:]]
+    elif ts == (str):
+        return vectorise(vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx=ctx), ctx=ctx)
+    else:
+        return vectorise(vy_bin, lhs, ctx=ctx)
 
 
 def vy_ceil(lhs, ctx):
