@@ -3339,7 +3339,25 @@ def split_on(lhs, rhs, ctx):
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+    (fun, any) -> apply a to every second item of b starting with the first item
     """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        lhs, rhs = (rhs, lhs) if ts[1] is types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            switch = True
+            for item in rhs:
+                if switch:
+                    yield safe_apply(lhs, item, ctx=ctx)
+                    switch = False
+                else:
+                    yield item
+                    switch = True
+
+        return gen()
     if isinstance(lhs, str):
         return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:

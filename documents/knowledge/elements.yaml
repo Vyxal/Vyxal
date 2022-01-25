@@ -2146,6 +2146,7 @@
   arity: 2
   overloads:
     any-any: a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+    fun-any: apply a to every second item of b starting on the first item
   vectorise: false
   tests:
     - '["a b c"," "] : ["a"," ","b"," ","c"]'
