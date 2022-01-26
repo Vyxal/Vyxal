@@ -182,7 +182,7 @@ function copyToClipboard(arg) {
     document.execCommand("copy")
 }
 
-$(document).ready(e => {
+window.addEventListener("DOMContentLoaded", e => {
     const run = document.getElementById("run_button")
     const session = $("session-code")[0].innerHTML
 
