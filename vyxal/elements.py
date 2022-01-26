@@ -134,7 +134,6 @@ def all_diagonals(lhs, ctx):
     vector = [iterable(x, ctx=ctx) for x in lhs]
     all_diags = [[] for _ in range(len(vector) * 2 - 1)]
     start = 0
-    print(vector)
     for row in vector:
         for i in range(len(vector)):
             all_diags[(start + i) % len(all_diags)].append(row[i])
@@ -4653,7 +4652,7 @@ elements: dict[str, tuple[str, int]] = {
     "W": (
         "temp = list(deep_copy(stack))\n"
         "pop(stack, len(stack), ctx)\n"
-        "stack.append(temp); print(stack)",
+        "stack.append(temp)",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
