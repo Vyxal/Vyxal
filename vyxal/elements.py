@@ -3339,7 +3339,25 @@ def split_on(lhs, rhs, ctx):
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+    (fun, any) -> apply a to every second item of b starting with the first item
     """
+
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        lhs, rhs = (rhs, lhs) if ts[1] is types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            switch = True
+            for item in rhs:
+                if switch:
+                    yield safe_apply(lhs, item, ctx=ctx)
+                    switch = False
+                else:
+                    yield item
+                    switch = True
+
+        return gen()
     if isinstance(lhs, str):
         return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:
@@ -4009,12 +4027,18 @@ def vy_bin(lhs, ctx):
     (str) -> binary of each codepoint
     """
     ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: [int(x) for x in bin(int(lhs))[2:]],
-        (str): lambda: vectorise(
-            vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx), ctx=ctx
-        ),
-    }.get(ts, lambda: vectorise(vy_bin, lhs, ctx=ctx))()
+    if ts == NUMBER_TYPE:
+        if lhs < 0:
+            temp = [int(x) for x in bin(int(lhs))[3:]]
+            return vectorise(negate, temp, ctx=ctx)
+        else:
+            return [int(x) for x in bin(int(lhs))[2:]]
+    elif ts == str:
+        return vectorise(
+            vy_bin, wrapify(chr_ord(lhs, ctx=ctx), None, ctx=ctx), ctx=ctx
+        )
+    else:
+        return vectorise(vy_bin, lhs, ctx=ctx)
 
 
 def vy_ceil(lhs, ctx):

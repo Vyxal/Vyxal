@@ -1569,6 +1569,7 @@ Split a value and keep the delimiter
 ### Overloads
 
 - any a, any b: `a.split_and_keep_delimiter(b) (Split and keep the delimiter)`
+- fun a, any b: `apply a to every second item of b starting on the first item`
 -------------------------------
 ## `` Ẋ `` (Cartesian Product / Fixpoint)
 

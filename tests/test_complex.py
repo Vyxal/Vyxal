@@ -239,3 +239,21 @@ def test_max_by_function():
 def test_min_by_function():
     stack = run_vyxal("`word wordier wordiest` ⌈⁽LÞ↓")
     assert stack[-1] == "word"
+
+
+def test_map_to_every_second_item():
+    stack = run_vyxal("1 10r ‡›I ẇ")
+    assert stack[-1] == [1, "   ", 3, "     ", 5, "       ", 7, "         ", 9]
+
+    stack = run_vyxal("1 10r ‡›I Ẇ")
+    assert stack[-1] == [
+        "  ",
+        2,
+        "    ",
+        4,
+        "      ",
+        6,
+        "        ",
+        8,
+        "          ",
+    ]
