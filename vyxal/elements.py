@@ -5126,10 +5126,13 @@ modifiers: dict[str, str] = {
         "\n"
     ),
     "~": (
-        "ctx.retain_popped = True\n"
-        "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
-        "ctx.retain_popped = False\n"
-        "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "if function_A.arity >= 2:\n"
+        "    ctx.retain_popped = True\n"
+        "    arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
+        "    ctx.retain_popped = False\n"
+        "    stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "elif function_A.arity == 1:\n"
+        "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A, ctx=ctx))\n"
     ),
     "₌": (
         "stack_copy = list(deep_copy(stack))\n"
