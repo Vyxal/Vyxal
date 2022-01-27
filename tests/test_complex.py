@@ -262,3 +262,13 @@ def test_map_to_every_second_item():
 def test_bool_input():
     stack = run_vyxal("1+", inputs=[True])
     assert stack == ["True1"]
+
+
+def test_tilde_monad():
+    stack = run_vyxal("⟨ `a*` | `*-` | ` b ` | `` | `+c` | `d` | `()` ⟩ ~Ǎ")
+    assert stack[-1][:4] == ["a*", " b ", "+c", "d"]
+
+
+def test_tilde_dyad():
+    stack = run_vyxal("1 2 ~+")
+    assert stack = [1, 2, 3]
