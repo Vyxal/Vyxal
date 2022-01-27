@@ -271,4 +271,4 @@ def test_tilde_monad():
 
 def test_tilde_dyad():
     stack = run_vyxal("1 2 ~+")
-    assert stack = [1, 2, 3]
+    assert stack == [1, 2, 3]
