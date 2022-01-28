@@ -29,9 +29,9 @@ def lambda_wrap(
     elements pass their arity on to the lambda
     """
     if len(branch) == 1:
-        if branch[0].branches[0][0].name in NILADIC_TYPES:
-            return vyxal.structure.Lambda(0, branch)
         elif isinstance(branch[0], vyxal.structure.GenericStatement):
+            if branch[0].branches[0][0].name in NILADIC_TYPES:
+                return vyxal.structure.Lambda(0, branch)
             return vyxal.structure.Lambda(
                 elements.get(branch[0].branches[0][0].value, ("", 1))[1],
                 branch,
