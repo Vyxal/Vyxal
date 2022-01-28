@@ -9,6 +9,13 @@ from vyxal.elements import *
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 
+NILADIC_TYPES = (TokenType.STRING,
+                 TokenType.NUMBER,
+                 TokenType.COMPRESSED_NUMBER,
+                 TokenType.COMPRESSED_STRING,
+                 TokenType.VARIABLE_GET,
+                 TokenType.CODEPAGE_NUMBER)
+
 
 def lambda_wrap(
     branch: list[vyxal.structure.Structure],
@@ -20,7 +27,9 @@ def lambda_wrap(
     elements pass their arity on to the lambda
     """
     if len(branch) == 1:
-        if isinstance(branch[0], vyxal.structure.GenericStatement):
+        if branch[0].branches[0][0].name in NILADIC_TYPES:
+            return vyxal.structure.Lambda(0, branch)
+        elif isinstance(branch[0], vyxal.structure.GenericStatement):
             return vyxal.structure.Lambda(
                 elements.get(branch[0].branches[0][0].value, ("", 1))[1],
                 branch,
