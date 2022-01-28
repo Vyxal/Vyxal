@@ -272,3 +272,8 @@ def test_tilde_monad():
 def test_tilde_dyad():
     stack = run_vyxal("1 2 ~+")
     assert stack == [1, 2, 3]
+
+
+def test_vectorised_nilad():
+    stack = run_vyxal("123 f vkd")
+    assert stack[-1][:3] == ["0123456789", "0123456789", "0123456789"]
