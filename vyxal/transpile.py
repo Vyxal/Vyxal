@@ -9,12 +9,14 @@ from vyxal.elements import *
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
 
-NILADIC_TYPES = (TokenType.STRING,
-                 TokenType.NUMBER,
-                 TokenType.COMPRESSED_NUMBER,
-                 TokenType.COMPRESSED_STRING,
-                 TokenType.VARIABLE_GET,
-                 TokenType.CODEPAGE_NUMBER)
+NILADIC_TYPES = (
+    TokenType.STRING,
+    TokenType.NUMBER,
+    TokenType.COMPRESSED_NUMBER,
+    TokenType.COMPRESSED_STRING,
+    TokenType.VARIABLE_GET,
+    TokenType.CODEPAGE_NUMBER,
+)
 
 
 def lambda_wrap(
