@@ -58,7 +58,7 @@ Put simply, Vyxal exists because golfers need a golfing language - and because g
 - [Tutorial](https://github.com/Vyxal/Vyxal/blob/master/docs/Tutorial.md)
 - [Codepage](https://github.com/Vyxal/Vyxal/blob/master/docs/codepage.txt)
 -->
-- [Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
+- [Main Chat Room (SE Chat)](https://chat.stackexchange.com/rooms/106764/vyxal)
 - [Vycord (Discord)](https://discord.gg/hER4Avd6fz)
 - [Elements](https://github.com/Vyxal/Vyxal/blob/v2.6.0/documents/knowledge/elements.md)
 - [Vyxapedia](https://vyxapedia.hyper-neutrino.xyz/)
