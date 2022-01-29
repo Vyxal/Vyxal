@@ -646,8 +646,8 @@ a wrapped in a singleton list
 any a -> [a] (Wrapped in singleton list)
 `)
 
-codepage_descriptions.push(`Recurse
-Call current function (Recursion)
+codepage_descriptions.push(`Recurse / Continue / Print Stack
+Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
 `)
 
 codepage_descriptions.push(`Uninterleave
