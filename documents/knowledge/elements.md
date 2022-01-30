@@ -917,9 +917,9 @@ a wrapped in a singleton list
 
 - any a: `[a] (Wrapped in singleton list)`
 -------------------------------
-## `` x `` (Recurse)
+## `` x `` (Recurse / Continue / Print Stack)
 
-Call current function (Recursion)
+Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
 
 -------------------------------
 ## `` y `` (Uninterleave)
