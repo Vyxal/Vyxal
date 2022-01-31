@@ -987,7 +987,7 @@ def exp2_or_eval(lhs, ctx):
     ts = vy_type(lhs)
 
     return {
-        NUMBER_TYPE: lambda: 2 ** lhs,
+        NUMBER_TYPE: lambda: 2**lhs,
         str: lambda: vy_eval(lhs, ctx),
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
@@ -1025,7 +1025,7 @@ def exponent(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs**rhs,
         (NUMBER_TYPE, str): lambda: rhs
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
@@ -1301,7 +1301,7 @@ def general_quadratic_solver(lhs, rhs, ctx):
     x, y = sympy.symbols("x y")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq(x ** 2 + lhs * x + rhs, 0), x
+            sympy.Eq(x**2 + lhs * x + rhs, 0), x
         ),
         (NUMBER_TYPE, str): lambda: make_expression(rhs).subs(x, lhs),
         (str, NUMBER_TYPE): lambda: make_expression(lhs).subs(x, rhs),
@@ -2442,7 +2442,7 @@ def newline_split(lhs, ctx):
     (str) -> a.split("\\n")
     """
     return {
-        (NUMBER_TYPE): lambda: 10 ** lhs,
+        (NUMBER_TYPE): lambda: 10**lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
@@ -2750,10 +2750,10 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
+        NUMBER_TYPE: lambda: str(sum(x**arg for arg in range(0, lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
+            sum(c * x**i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -2878,7 +2878,7 @@ def quadratic_solver(lhs, rhs, ctx):
     x = sympy.symbols("x")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
+            sympy.Eq((lhs * x**2) + rhs * x, 0), x
         ),
         (NUMBER_TYPE, str): lambda: sympy.solve(
             sympy.Eq(make_expression(rhs), lhs), x
@@ -2999,7 +2999,7 @@ def remove_non_alphabets(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: 2 ** lhs,
+        NUMBER_TYPE: lambda: 2**lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
