@@ -223,29 +223,36 @@ class LazyList:
                 break
         return temp
 
-    def output(self, end="\n", ctx=None):
+    def output(self, open=None, sep=None, close=None, end="\n", ctx=None):
         from vyxal.elements import vy_print, vy_repr
 
         ctx.stacks.append(self.generated)
-        vy_print("⟨ " if ctx.vyxal_lists else "[", "", ctx=ctx)
+        if open is None:
+            open = "⟨ " if ctx.vyxal_lists else "["
+        if sep is None:
+            sep = " | " if ctx.vyxal_lists else ", "
+        if close is None:
+            close = " ⟩" if ctx.vyxal_lists else "]"
+
+        vy_print(open, "", ctx=ctx)
         for lhs in self.generated[:-1]:
-            vy_print(lhs, " | " if ctx.vyxal_lists else ", ", ctx=ctx)
+            vy_print(lhs, sep, ctx=ctx)
         if self.generated:
             vy_print(self.generated[-1], "", ctx=ctx)
 
         try:
             lhs = next(self)
             if len(self.generated) > 1:
-                vy_print(" | " if ctx.vyxal_lists else ", ", "", ctx=ctx)
+                vy_print(sep, "", ctx=ctx)
             while True:
                 if isinstance(lhs, (types.FunctionType, LazyList)):
                     vy_print(lhs, "", ctx=ctx)
                 else:
                     vy_print(vy_repr(lhs, ctx), "", ctx=ctx)
                 lhs = next(self)
-                vy_print(" | " if ctx.vyxal_lists else ", ", "", ctx=ctx)
+                vy_print(sep, "", ctx=ctx)
         except StopIteration:
-            vy_print(" ⟩" if ctx.vyxal_lists else "]", end, ctx=ctx)
+            vy_print(close, end, ctx=ctx)
 
     @lazylist
     def reversed(self):

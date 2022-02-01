@@ -158,7 +158,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     output = pop(stack, 1, ctx)
     for flag in flags:
         if flag == "j":
-            output = join(output, "\n", ctx)
+            if isinstance(output, LazyList):
+                output.output(sep="\n", ctx=ctx)
+                break
+            else:
+                output = join(output, "\n", ctx)
         elif flag == "s":
             output = vy_sum(output, ctx)
         elif flag == "d":
@@ -173,7 +177,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         elif flag == "L":
             output = vertical_join(output, ctx=ctx)
         elif flag == "S":
-            output = join(output, " ", ctx)
+            if isinstance(output, LazyList):
+                output.output(sep=" ", ctx=ctx)
+                break
+            else:
+                output = join(output, " ", ctx)
         elif flag == "C":
             output = center(output, ctx)
             output = join(output, "\n", ctx)
