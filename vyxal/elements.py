@@ -4069,8 +4069,12 @@ def vy_divmod(lhs, rhs, ctx):
             map(vy_sum, itertools.combinations(lhs, rhs))
         ),
         (str, str): lambda: rhs + lhs[len(rhs) :],
-        (list, NUMBER_TYPE): lambda: vyxalify(itertools.combinations(lhs, rhs)),
-        (NUMBER_TYPE, list): lambda: vyxalify(itertools.combinations(rhs, lhs)),
+        (list, NUMBER_TYPE): lambda: LazyList(
+            filter(lambda x: len(x) == rhs, powerset(lhs, ctx))
+        ),
+        (NUMBER_TYPE, list): LazyList(
+            filter(lambda x: len(x) == lhs, powerset(rhs, ctx))
+        ),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
