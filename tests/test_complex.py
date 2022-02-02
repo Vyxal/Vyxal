@@ -36,6 +36,11 @@ def test_all_slices_inf():
     assert [slice[:3] for slice in stack[-1][:4]] == expected
 
 
+def test_combs_without_replace():
+    stack = run_vyxal("Þp3ḋ")
+    assert stack[-1][:4] == [[2, 3, 5], [2, 3, 7], [2, 5, 7], [3, 5, 7]]
+
+
 def test_deltas():
     stack = run_vyxal("Þ∞ ¯")
     assert stack[-1][:4] == [1, 1, 1, 1]
@@ -257,3 +262,23 @@ def test_map_to_every_second_item():
         8,
         "          ",
     ]
+
+
+def test_bool_input():
+    stack = run_vyxal("1+", inputs=[True])
+    assert stack == ["True1"]
+
+
+def test_tilde_monad():
+    stack = run_vyxal("⟨ `a*` | `*-` | ` b ` | `` | `+c` | `d` | `()` ⟩ ~Ǎ")
+    assert stack[-1][:4] == ["a*", " b ", "+c", "d"]
+
+
+def test_tilde_dyad():
+    stack = run_vyxal("1 2 ~+")
+    assert stack == [1, 2, 3]
+
+
+def test_vectorised_nilad():
+    stack = run_vyxal("123 f vkd")
+    assert stack[-1][:3] == ["0123456789", "0123456789", "0123456789"]

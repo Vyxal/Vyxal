@@ -917,9 +917,9 @@ a wrapped in a singleton list
 
 - any a: `[a] (Wrapped in singleton list)`
 -------------------------------
-## `` x `` (Recurse)
+## `` x `` (Recurse / Continue / Print Stack)
 
-Call current function (Recursion)
+Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
 
 -------------------------------
 ## `` y `` (Uninterleave)
@@ -3280,6 +3280,30 @@ Take a and push a[0]+a[-1] and a[1:-1]
 ### Overloads
 
 - lst a: `Take a and push a[0]+a[-1] and a[1:-1]`
+-------------------------------
+## `` Þg `` (Shortest By Length)
+
+Return the shortest item in a list.
+
+### Overloads
+
+- lst a: `Return the shortest item in a list.`
+-------------------------------
+## `` ÞG `` (Longest By Length)
+
+Return the longest item in a list.
+
+### Overloads
+
+- lst a: `Return the longest item in a list.`
+-------------------------------
+## `` Þṡ `` (Sort By Length)
+
+Sort a list by length.
+
+### Overloads
+
+- lst a: `Sort a list by length.`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

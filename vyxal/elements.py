@@ -134,7 +134,6 @@ def all_diagonals(lhs, ctx):
     vector = [iterable(x, ctx=ctx) for x in lhs]
     all_diags = [[] for _ in range(len(vector) * 2 - 1)]
     start = 0
-    print(vector)
     for row in vector:
         for i in range(len(vector)):
             all_diags[(start + i) % len(all_diags)].append(row[i])
@@ -988,7 +987,7 @@ def exp2_or_eval(lhs, ctx):
     ts = vy_type(lhs)
 
     return {
-        NUMBER_TYPE: lambda: 2 ** lhs,
+        NUMBER_TYPE: lambda: 2**lhs,
         str: lambda: vy_eval(lhs, ctx),
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
@@ -1026,7 +1025,7 @@ def exponent(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs**rhs,
         (NUMBER_TYPE, str): lambda: rhs
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
@@ -1302,7 +1301,7 @@ def general_quadratic_solver(lhs, rhs, ctx):
     x, y = sympy.symbols("x y")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq(x ** 2 + lhs * x + rhs, 0), x
+            sympy.Eq(x**2 + lhs * x + rhs, 0), x
         ),
         (NUMBER_TYPE, str): lambda: make_expression(rhs).subs(x, lhs),
         (str, NUMBER_TYPE): lambda: make_expression(lhs).subs(x, rhs),
@@ -1906,6 +1905,14 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+def longest(lhs, ctx):
+    """Element ÞG
+    (lst) -> Return the longest item in a list
+    """
+
+    return max_by_function(lhs, length, ctx)
+
+
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -2097,7 +2104,9 @@ def max_by_function(lhs, rhs, ctx):
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
+            if strict_greater_than(
+                safe_apply(rhs, item, ctx=ctx), biggest_fn, ctx
+            ):
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
 
@@ -2185,7 +2194,9 @@ def min_by_function(lhs, rhs, ctx):
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
+            if strict_less_than(
+                safe_apply(rhs, item, ctx=ctx), smallest_fn, ctx
+            ):
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest
 
@@ -2443,7 +2454,7 @@ def newline_split(lhs, ctx):
     (str) -> a.split("\\n")
     """
     return {
-        (NUMBER_TYPE): lambda: 10 ** lhs,
+        (NUMBER_TYPE): lambda: 10**lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
@@ -2751,10 +2762,10 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
+        NUMBER_TYPE: lambda: str(sum(x**arg for arg in range(0, lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
+            sum(c * x**i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -2879,7 +2890,7 @@ def quadratic_solver(lhs, rhs, ctx):
     x = sympy.symbols("x")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
+            sympy.Eq((lhs * x**2) + rhs * x, 0), x
         ),
         (NUMBER_TYPE, str): lambda: sympy.solve(
             sympy.Eq(make_expression(rhs), lhs), x
@@ -3000,7 +3011,7 @@ def remove_non_alphabets(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: 2 ** lhs,
+        NUMBER_TYPE: lambda: 2**lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
@@ -3221,6 +3232,14 @@ def sans_last_prepend_zero(lhs, ctx):
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
 
 
+def shortest(lhs, ctx):
+    """Element Þg
+    (lst) -> Return the shortest item in a list.
+    """
+
+    return min_by_function(lhs, length, ctx)
+
+
 def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
@@ -3309,6 +3328,14 @@ def sort_by(lhs, rhs, ctx):
             else range(lhs, rhs - 1, -1),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
+
+
+def sort_by_length(lhs, ctx):
+    """Element Þṡ
+    (lst) -> Sort a list by length.
+    """
+
+    return sort_by(lhs, length, ctx)
 
 
 def split_on(lhs, rhs, ctx):
@@ -4070,8 +4097,8 @@ def vy_divmod(lhs, rhs, ctx):
             map(vy_sum, itertools.combinations(lhs, rhs))
         ),
         (str, str): lambda: rhs + lhs[len(rhs) :],
-        (list, NUMBER_TYPE): lambda: vyxalify(itertools.combinations(lhs, rhs)),
-        (NUMBER_TYPE, list): lambda: vyxalify(itertools.combinations(rhs, lhs)),
+        (list, NUMBER_TYPE): lambda: combinations(lhs, rhs),
+        (NUMBER_TYPE, list): lambda: combinations(rhs, lhs),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
@@ -4653,7 +4680,7 @@ elements: dict[str, tuple[str, int]] = {
     "W": (
         "temp = list(deep_copy(stack))\n"
         "pop(stack, len(stack), ctx)\n"
-        "stack.append(temp); print(stack)",
+        "stack.append(temp)",
         0,
     ),
     # X doesn't need to be implemented here, because it's already a structure
@@ -5006,6 +5033,9 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(res[0]); stack.append(res[1])",
         1,
     ),
+    "Þg": process_element(shortest, 1),
+    "ÞG": process_element(longest, 1),
+    "Þṡ": process_element(sort_by_length, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
@@ -5121,16 +5151,19 @@ modifiers: dict[str, str] = {
         "pop(stack, function_A.arity, ctx), ctx=ctx)\n"
     ),
     "v": (
-        "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
         "\n"
     ),
     "~": (
-        "ctx.retain_popped = True\n"
-        "arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
-        "ctx.retain_popped = False\n"
-        "stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "if function_A.arity >= 2:\n"
+        "    ctx.retain_popped = True\n"
+        "    arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
+        "    ctx.retain_popped = False\n"
+        "    stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "elif function_A.arity == 1:\n"
+        "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A, ctx=ctx))\n"
     ),
     "₌": (
         "stack_copy = list(deep_copy(stack))\n"

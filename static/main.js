@@ -210,7 +210,11 @@ window.addEventListener("DOMContentLoaded", e => {
                     alert('Please read and ensure you 100% trust the JavaScript code which is about to be evaluated. The code is (see next alert):')
                     alert(res.stdout)
                     if (confirm('Do you want to execute it? If you are remotely unsure, click Cancel!')) {
-                        res.stdout = new Function(res.stdout)()
+                        try {
+                            res.stdout = new Function(res.stdout)()
+                        } catch (e) {
+                            res.stdout = e
+                        }
                     }
                 }
                 output.value = res.stdout

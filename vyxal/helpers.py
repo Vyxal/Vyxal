@@ -56,6 +56,29 @@ def collect_until_false(
         val = safe_apply(function, val, ctx=ctx)
 
 
+def combinations(lst: VyList, size: int) -> VyList:
+    """Combinations without replacement"""
+    if size == 0:
+        return [[]]
+    elif isinstance(lst, list):
+        return vyxalify(itertools.combinations(lst, size))
+
+    # Infinite LazyLists won't work with itertools.combinations
+    @lazylist
+    def gen():
+        prev_combs = [[]]
+        for elem in lst:
+            new_combs = []
+            for comb in prev_combs:
+                if len(comb) == size - 1:
+                    yield comb + [elem]
+                else:
+                    new_combs.append(comb + [elem])
+            prev_combs += new_combs
+
+    return gen()
+
+
 def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
     """Concatenate two lists/lazylists"""
     if LazyList not in (type(vec1), type(vec2)):
@@ -869,6 +892,8 @@ def vyxalify(value: Any) -> Any:
         return sympy.nsimplify(value, rational=True)
     elif isinstance(value, (float, complex)):
         return sympy.nsimplify(value, rational=True)
+    elif isinstance(value, bool):
+        return str(value)
     elif isinstance(
         value, (int, sympy.Rational, str, LazyList, types.FunctionType)
     ):
