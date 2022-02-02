@@ -1905,6 +1905,14 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+def longest(lhs, ctx):
+    """Element ÞG
+    (lst) -> Return the longest item in a list
+    """
+
+    return max_by_function(lhs, length, ctx)
+
+
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -2096,7 +2104,9 @@ def max_by_function(lhs, rhs, ctx):
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
+            if strict_greater_than(
+                safe_apply(rhs, item, ctx=ctx), biggest_fn, ctx
+            ):
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
 
@@ -2184,7 +2194,9 @@ def min_by_function(lhs, rhs, ctx):
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
+            if strict_less_than(
+                safe_apply(rhs, item, ctx=ctx), smallest_fn, ctx
+            ):
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest
 
@@ -3220,6 +3232,14 @@ def sans_last_prepend_zero(lhs, ctx):
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
 
 
+def shortest(lhs, ctx):
+    """Element Þg
+    (lst) -> Return the shortest item in a list.
+    """
+
+    return min_by_function(lhs, length, ctx)
+
+
 def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
@@ -3308,6 +3328,14 @@ def sort_by(lhs, rhs, ctx):
             else range(lhs, rhs - 1, -1),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
+
+
+def sort_by_length(lhs, ctx):
+    """Element Þṡ
+    (lst) -> Sort a list by length.
+    """
+
+    return sort_by(lhs, length, ctx)
 
 
 def split_on(lhs, rhs, ctx):
@@ -5005,6 +5033,9 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(res[0]); stack.append(res[1])",
         1,
     ),
+    "Þg": process_element(shortest, 1),
+    "ÞG": process_element(longest, 1),
+    "Þṡ": process_element(sort_by_length, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
