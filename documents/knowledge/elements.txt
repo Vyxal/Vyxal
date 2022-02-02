@@ -2828,6 +2828,18 @@ kṘ (Roman Numerals)
 
     lst a: Take a and push a[0]+a[-1] and a[1:-1]
 -------------------------------
+Þg (Shortest By Length)
+
+- Return the shortest item in a list.
+
+    lst a: Return the shortest item in a list.
+-------------------------------
+ÞG (Longest By Length)
+
+- Return the longest item in a list.
+
+    lst a: Return the longest item in a list.
+-------------------------------
 ¨□ (Parse direction arrow to integer)
 
 - Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

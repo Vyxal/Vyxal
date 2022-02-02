@@ -987,7 +987,7 @@ def exp2_or_eval(lhs, ctx):
     ts = vy_type(lhs)
 
     return {
-        NUMBER_TYPE: lambda: 2**lhs,
+        NUMBER_TYPE: lambda: 2 ** lhs,
         str: lambda: vy_eval(lhs, ctx),
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
@@ -1025,7 +1025,7 @@ def exponent(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs**rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
         (NUMBER_TYPE, str): lambda: rhs
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
@@ -1301,7 +1301,7 @@ def general_quadratic_solver(lhs, rhs, ctx):
     x, y = sympy.symbols("x y")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq(x**2 + lhs * x + rhs, 0), x
+            sympy.Eq(x ** 2 + lhs * x + rhs, 0), x
         ),
         (NUMBER_TYPE, str): lambda: make_expression(rhs).subs(x, lhs),
         (str, NUMBER_TYPE): lambda: make_expression(lhs).subs(x, rhs),
@@ -1905,6 +1905,14 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+def longest(lhs, ctx):
+    """Element ÞG
+    (lst) -> Return the longest item in a list
+    """
+
+    return max_by_function(lhs, length, ctx)
+
+
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -2184,7 +2192,9 @@ def min_by_function(lhs, rhs, ctx):
     else:
         smallest, smallest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) < smallest_fn:
+            if strict_less_than(
+                safe_apply(rhs, item, ctx=ctx), smallest_fn, ctx
+            ):
                 smallest, smallest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return smallest
 
@@ -2442,7 +2452,7 @@ def newline_split(lhs, ctx):
     (str) -> a.split("\\n")
     """
     return {
-        (NUMBER_TYPE): lambda: 10**lhs,
+        (NUMBER_TYPE): lambda: 10 ** lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
@@ -2750,10 +2760,10 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: str(sum(x**arg for arg in range(0, lhs + 1))),
+        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(c * x**i for i, c in enumerate(reverse(lhs, ctx)))
+            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -2878,7 +2888,7 @@ def quadratic_solver(lhs, rhs, ctx):
     x = sympy.symbols("x")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq((lhs * x**2) + rhs * x, 0), x
+            sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
         ),
         (NUMBER_TYPE, str): lambda: sympy.solve(
             sympy.Eq(make_expression(rhs), lhs), x
@@ -2999,7 +3009,7 @@ def remove_non_alphabets(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: 2**lhs,
+        NUMBER_TYPE: lambda: 2 ** lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
@@ -3218,6 +3228,14 @@ def sans_last_prepend_zero(lhs, ctx):
         # a number just makes it the same number
         str: lambda: "0" + lhs[:-1],  # leave as string
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
+
+
+def shortest(lhs, ctx):
+    """Element Þg
+    (lst) -> Return the shortest item in a list.
+    """
+
+    return min_by_function(lhs, length, ctx)
 
 
 def shuffle(lhs, ctx):
@@ -5005,6 +5023,8 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(res[0]); stack.append(res[1])",
         1,
     ),
+    "Þg": process_element(shortest, 1),
+    "ÞG": process_element(longest, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
