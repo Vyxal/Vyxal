@@ -2283,6 +2283,11 @@ codepage_descriptions[71] += `
 Return the longest item in a list.
 lst a -> Return the longest item in a list.
 `
+codepage_descriptions[155] += `
+Þṡ (Sort By Length)
+Sort a list by length.
+lst a -> Sort a list by length.
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

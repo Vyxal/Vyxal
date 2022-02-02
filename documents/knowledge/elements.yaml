@@ -4651,6 +4651,18 @@
     - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcdef'"
     - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcdefg'"
 
+- element: "Þṡ"
+  name: Sort By Length
+  description: Sort a list by length.
+  arity: 1
+  overloads:
+    lst: Sort a list by length.
+  vectorise: false
+  tests:
+    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
+    - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
+    - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

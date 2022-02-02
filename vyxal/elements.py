@@ -3328,6 +3328,14 @@ def sort_by(lhs, rhs, ctx):
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
 
+def sort_by_length(lhs, ctx):
+    """Element Þṡ
+    (lst) -> Sort a list by length.
+    """
+
+    return sort_by(lhs, length, ctx)
+
+
 def split_on(lhs, rhs, ctx):
     """
     Element €
@@ -5025,6 +5033,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
+    "Þṡ": process_element(sort_by_length, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
