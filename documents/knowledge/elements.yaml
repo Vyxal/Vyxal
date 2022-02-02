@@ -4638,7 +4638,7 @@
     - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'ab'"
     - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcd'"
     - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcde'"
-  
+
 - element: "ÞG"
   name: Longest By Length
   description: Return the longest item in a list.
