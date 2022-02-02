@@ -2104,7 +2104,7 @@ def max_by_function(lhs, rhs, ctx):
     else:
         biggest, biggest_fn = lhs[0], safe_apply(rhs, lhs[0], ctx=ctx)
         for item in lhs[1:]:
-            if safe_apply(rhs, item, ctx=ctx) > biggest_fn:
+            if strict_greater_than(safe_apply(rhs, item, ctx=ctx), biggest_fn):
                 biggest, biggest_fn = item, safe_apply(rhs, item, ctx=ctx)
         return biggest
 
