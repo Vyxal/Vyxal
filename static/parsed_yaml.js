@@ -2273,6 +2273,21 @@ codepage_descriptions[157] += `
 Take a and push a[0]+a[-1] and a[1:-1]
 lst a -> Take a and push a[0]+a[-1] and a[1:-1]
 `
+codepage_descriptions[103] += `
+Þg (Shortest By Length)
+Return the shortest item in a list.
+lst a -> Return the shortest item in a list.
+`
+codepage_descriptions[71] += `
+ÞG (Longest By Length)
+Return the longest item in a list.
+lst a -> Return the longest item in a list.
+`
+codepage_descriptions[155] += `
+Þṡ (Sort By Length)
+Sort a list by length.
+lst a -> Sort a list by length.
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

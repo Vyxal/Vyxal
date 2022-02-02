@@ -4582,7 +4582,6 @@
     - '[[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], 4] : [[3, 5, 123], [1, 76, 543], [7, 14], [21, 4]]'
     - '[[3, 1, 2, 4, 6, 4, 5, 2, 1, 9, 5, 3, 9, 3], -4] : []'
 
-
 - element: "Þ¾"
   name: Empty the Global Array
   description: Empty the global array.
@@ -4627,6 +4626,42 @@
     - "[[1,2,3,4,5,6,7,8,9]] : [2, 3, 4, 5, 6, 7, 8]"
     - "[[1,2,3,4,5,6,7,8,9,10]] : [2, 3, 4, 5, 6, 7, 8, 9]"
     - "['lsusp'] : 'sus'"
+
+- element: "Þg"
+  name: Shortest By Length
+  description: Return the shortest item in a list.
+  arity: 1
+  overloads:
+    lst: Return the shortest item in a list.
+  vectorise: false
+  tests:
+    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'ab'"
+    - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcd'"
+    - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcde'"
+
+- element: "ÞG"
+  name: Longest By Length
+  description: Return the longest item in a list.
+  arity: 1
+  overloads:
+    lst: Return the longest item in a list.
+  vectorise: false
+  tests:
+    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'abcde'"
+    - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcdef'"
+    - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcdefg'"
+
+- element: "Þṡ"
+  name: Sort By Length
+  description: Sort a list by length.
+  arity: 1
+  overloads:
+    lst: Sort a list by length.
+  vectorise: false
+  tests:
+    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
+    - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
+    - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
 
 - element: "¨□"
   name: Parse direction arrow to integer
