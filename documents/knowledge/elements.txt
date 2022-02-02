@@ -924,7 +924,6 @@ z (Zip-self)
 - Convert an arbitrary value into a truthy or falsy value
 
     any a: bool(a) (Booliify)
-    otherwise: vectorise
 -------------------------------
 ċ (Not One)
 
