@@ -36,6 +36,11 @@ def test_all_slices_inf():
     assert [slice[:3] for slice in stack[-1][:4]] == expected
 
 
+def test_combs_without_replace():
+    stack = run_vyxal("Þp3ḋ")
+    assert stack[-1][:4] == [[2, 3, 5], [2, 3, 7], [2, 5, 7], [3, 5, 7]]
+
+
 def test_deltas():
     stack = run_vyxal("Þ∞ ¯")
     assert stack[-1][:4] == [1, 1, 1, 1]
