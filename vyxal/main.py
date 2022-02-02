@@ -4,6 +4,7 @@ offline.
 """
 
 import os
+from re import A
 import sys
 import traceback
 import types
@@ -18,20 +19,9 @@ THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
 
 
-def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
-    ctx = Context()
-    stack = []
-    ctx.online_output = output_var
-    ctx.online = online_mode
+__all__ = ["execute_vyxal", "repl", "cli"]
 
-    if online_mode:
-        inputs = inputs.split("\n")  # have to do this here because file writing
-        if inputs[0] == "":
-            inputs = inputs[1:]
-
-    # Handle input handling flags
-    if "h" in flags:  # Help flag
-        flag_string = """ALL flags should be used as is (no '-' prefix)
+FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     H    Preset stack to 100
     j    Print top of stack joined by newlines on end of execution
     L    Print top of stack joined by newlines (Vertically) on end of execution
@@ -64,7 +54,22 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     E    Evaluate stdout as JavaScript (online interpreter only)
     Ḣ    Render stdout as HTML (online interpreter only)
 """
-        vy_print(flag_string, ctx=ctx)
+
+
+def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
+    ctx = Context()
+    stack = []
+    ctx.online_output = output_var
+    ctx.online = online_mode
+
+    if online_mode:
+        inputs = inputs.split("\n")  # have to do this here because file writing
+        if inputs[0] == "":
+            inputs = inputs[1:]
+
+    # Handle input handling flags
+    if "h" in flags:  # Help flag
+        vy_print(FLAG_STRING, ctx=ctx)
         sys.exit(0)
 
     if "e" in flags:  # Program is file name
@@ -156,65 +161,84 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     originally_empty = not stack
     output = pop(stack, 1, ctx)
-    for flag in flags:
-        if flag == "j":
-            if isinstance(output, LazyList):
-                output.output(sep="\n", ctx=ctx)
-                break
-            else:
-                output = join(output, "\n", ctx)
-        elif flag == "s":
-            output = vy_sum(output, ctx)
-        elif flag == "d":
-            output = vy_sum(deep_flatten(output, ctx), ctx)
-        elif flag == "Ṫ":
-            if originally_empty:
-                output = []
-            else:
-                stack.append(output)
-                output = vy_sum(stack, ctx)
-            stack = [output]
-        elif flag == "L":
-            output = vertical_join(output, ctx=ctx)
-        elif flag == "S":
-            if isinstance(output, LazyList):
-                output.output(sep=" ", ctx=ctx)
-                break
-            else:
-                output = join(output, " ", ctx)
-        elif flag == "C":
-            output = center(output, ctx)
-            output = join(output, "\n", ctx)
-        elif flag == "G":
-            output = monadic_maximum(output, ctx)
-        elif flag == "g":
-            output = monadic_minimum(output, ctx)
-        elif flag == "W":
-            if originally_empty:
-                output = []
-            else:
-                stack.append(output)
-                output = vy_str(stack, ctx)
-        elif flag == "ṡ":
-            if originally_empty:
-                output = []
-            else:
-                stack.append(output)
-                output = join(stack, " ", ctx)
-        elif flag == "J":
-            if originally_empty:
-                output = []
-            else:
-                stack.append(output)
-                output = join(stack, "\n", ctx)
-        elif flag == "…":
-            if vy_type(output, simple=True) is list:
-                output = output[:100]
-        elif flag == "l":
-            output = length(output, ctx)
-        else:
-            pass
     if not (ctx.printed or "O" in flags) or "o" in flags:
+        for flag in flags:
+            if flag == "j":
+                if isinstance(output, LazyList):
+                    output.output(sep="\n", ctx=ctx)
+                    break
+                else:
+                    output = join(output, "\n", ctx)
+            elif flag == "s":
+                if not isinstance(output, LazyList) or not output.has_ind(0):
+                    output = vy_sum(output, ctx)
+                else:
+                    acc = None
+                    is_str = False
+                    for elem in output:
+                        if is_str:
+                            vy_print(elem, end="", ctx=ctx)
+                            continue
+                        if acc is None:
+                            # For the first element
+                            acc = elem
+                        else:
+                            acc = add(acc, elem, ctx)
+                        if isinstance(acc, str):
+                            # We've encountered a string, now print that
+                            # Everything else will also be immediately
+                            # printed
+                            vy_print(acc, end="", ctx=ctx)
+                            is_str = True
+            elif flag == "d":
+                output = vy_sum(deep_flatten(output, ctx), ctx)
+            elif flag == "Ṫ":
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = vy_sum(stack, ctx)
+                stack = [output]
+            elif flag == "L":
+                output = vertical_join(output, ctx=ctx)
+            elif flag == "S":
+                if isinstance(output, LazyList):
+                    output.output(sep=" ", ctx=ctx)
+                    break
+                else:
+                    output = join(output, " ", ctx)
+            elif flag == "C":
+                output = center(output, ctx)
+                output = join(output, "\n", ctx)
+            elif flag == "G":
+                output = monadic_maximum(output, ctx)
+            elif flag == "g":
+                output = monadic_minimum(output, ctx)
+            elif flag == "W":
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = vy_str(stack, ctx)
+            elif flag == "ṡ":
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = join(stack, " ", ctx)
+            elif flag == "J":
+                if originally_empty:
+                    output = []
+                else:
+                    stack.append(output)
+                    output = join(stack, "\n", ctx)
+            elif flag == "…":
+                if vy_type(output, simple=True) is list:
+                    output = output[:100]
+            elif flag == "l":
+                output = length(output, ctx)
+            else:
+                pass
         vy_print(output, ctx=ctx)
 
 
