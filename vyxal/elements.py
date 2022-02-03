@@ -415,6 +415,12 @@ def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
     """
+    if vy_type(lhs, simple=True) is list:
+        if ctx.vectorise_boolify:
+            return vectorise(boolify, lhs, ctx=ctx)
+        else:
+            return any_true(lhs, ctx)
+
     return int(bool(lhs))
 
 

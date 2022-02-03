@@ -49,7 +49,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
     J    Print the entire stack, separated by newlines.
-    t    Lists are considered truthy if they are not empty
+    t    Vectorise boolify on Lists
     P    Print lists as their python representation
     E    Evaluate stdout as JavaScript (online interpreter only)
     Ḣ    Render stdout as HTML (online interpreter only)
@@ -120,7 +120,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.number_as_range = "R" in flags
     ctx.dictionary_compression = "D" not in flags
     ctx.variable_length_1 = "V" in flags
-    ctx.truthy_lists = "t" in flags  # L431 in elements.py
+    ctx.vectorise_boolify = "t" in flags  # L431 in elements.py
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
     ctx.empty_input_is_zero = "?" not in flags
