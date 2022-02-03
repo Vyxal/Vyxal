@@ -4091,8 +4091,8 @@ def vy_divmod(lhs, rhs, ctx):
             map(vy_sum, itertools.combinations(lhs, rhs))
         ),
         (str, str): lambda: rhs + lhs[len(rhs) :],
-        (list, NUMBER_TYPE): lambda: vyxalify(itertools.combinations(lhs, rhs)),
-        (NUMBER_TYPE, list): lambda: vyxalify(itertools.combinations(rhs, lhs)),
+        (list, NUMBER_TYPE): lambda: combinations(lhs, rhs),
+        (NUMBER_TYPE, list): lambda: combinations(rhs, lhs),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
@@ -4310,7 +4310,7 @@ def vy_print(lhs, end="\n", ctx=None):
     ts = vy_type(lhs)
 
     if ts is LazyList:
-        lhs.output(end, ctx)
+        lhs.output(end=end, ctx=ctx)
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
