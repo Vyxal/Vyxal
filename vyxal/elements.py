@@ -4316,7 +4316,7 @@ def vy_print(lhs, end="\n", ctx=None):
     ts = vy_type(lhs)
 
     if ts is LazyList:
-        lhs.output(end, ctx)
+        lhs.output(end=end, ctx=ctx)
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:

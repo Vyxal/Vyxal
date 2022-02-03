@@ -168,7 +168,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     output.output(sep="\n", ctx=ctx)
                     break
                 else:
-                    output = join(output, "\n", ctx)
+                    output = join(output, "\n", ctx=ctx)
             elif flag == "s":
                 if not isinstance(output, LazyList) or not output.has_ind(0):
                     output = vy_sum(output, ctx)
