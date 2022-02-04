@@ -120,7 +120,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.number_as_range = "R" in flags
     ctx.dictionary_compression = "D" not in flags
     ctx.variable_length_1 = "V" in flags
-    ctx.vectorise_boolify = "t" in flags  # L431 in elements.py
+    ctx.vectorise_boolify = "t" in flags  # see boolify in elements.py
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
     ctx.empty_input_is_zero = "?" not in flags
