@@ -1071,7 +1071,7 @@ Take the absolute value of a number, or remove whitespace from a string
 -------------------------------
 ## `` ḃ `` (Boolify)
 
-Convert an arbitrary value into a truthy or falsy value
+Convert an arbitrary value into a truthy or falsy value, vetorises with flag t
 
 ### Overloads
 

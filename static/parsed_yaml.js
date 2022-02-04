@@ -750,7 +750,7 @@ str a -> Remove whitespace from a
 `)
 
 codepage_descriptions.push(`Boolify
-Convert an arbitrary value into a truthy or falsy value
+Convert an arbitrary value into a truthy or falsy value, vetorises with flag t
 any a -> bool(a) (Booliify)
 `)
 
