@@ -415,13 +415,10 @@ def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
     """
-    if vy_type(lhs, simple=True) is list:
-        if ctx.vectorise_boolify:
-            return vectorise(boolify, lhs, ctx=ctx)
-        else:
-            return int(bool(lhs))
-
-    return int(bool(lhs))
+    if ctx.vectorise_boolify and vy_type(lhs, simple=True) is list:
+        return vectorise(boolify, lhs, ctx=ctx)
+    else:
+        return int(bool(lhs))
 
 
 def bracketify(lhs, ctx):
