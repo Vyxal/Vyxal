@@ -333,7 +333,7 @@ def levenshtein_distance(s1: str, s2: str) -> int:
 def local_minima(lhs: str) -> List[Union[int, float]]:
     """Find the local minima of a mathematical function using Sympy"""
     x = sympy.symbols("x")
-    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    d_dx = sympy.diff(lhs, x)
     second_dx = sympy.diff(d_dx, x)
     zeros = sympy.solve(d_dx, x)
 
@@ -343,7 +343,7 @@ def local_minima(lhs: str) -> List[Union[int, float]]:
 def local_maxima(lhs: str) -> List[Union[int, float]]:
     """Find the local minima of a mathematical function using Sympy"""
     x = sympy.symbols("x")
-    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    d_dx = sympy.diff(lhs, x)
     second_dx = sympy.diff(d_dx, x)
     zeros = sympy.solve(d_dx, x)
 
@@ -703,7 +703,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
 def stationary_points(lhs: str) -> List[Union[int, float]]:
     """Returns a list of stationary points of a mathematical function"""
     x = sympy.symbols("x")
-    d_dx = sympy.diff(sympy.sympify(lhs), x)
+    d_dx = sympy.diff(lhs, x)
     zeros = sympy.solve(d_dx, x)
 
     return LazyList(zeros)
