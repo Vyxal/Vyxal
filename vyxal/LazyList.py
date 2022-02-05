@@ -86,9 +86,14 @@ class LazyList:
                 @lazylist
                 def infinite_index():
                     i = start or 0
-                    while self.has_ind(i):
-                        yield self[i]
-                        i += step
+                    if i >= 0:
+                        while self.has_ind(i):
+                            yield self[i]
+                            i += step
+                    else:
+                        while i < 0:
+                            yield self[i]
+                            i += step
 
                 return infinite_index()
             else:
