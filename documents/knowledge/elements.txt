@@ -921,10 +921,9 @@ z (Zip-self)
 -------------------------------
 ḃ (Boolify)
 
-- Convert an arbitrary value into a truthy or falsy value
+- Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
 
     any a: bool(a) (Booliify)
-    otherwise: vectorise
 -------------------------------
 ċ (Not One)
 

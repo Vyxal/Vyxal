@@ -28,7 +28,7 @@ class Context:
         self.retain_popped = False
         self.reverse_flag = False
         self.stacks = []
-        self.truthy_lists = False
+        self.vectorise_boolify = False
         self.last_popped = []
         self.use_top_input = False
         self.variable_length_1 = False
