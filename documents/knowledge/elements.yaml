@@ -39,17 +39,9 @@
     - "[1, 2] : 2"
 
 - element: "⟑"
-  name: Reversed Logical And
-  arity: 2
-  description: Returns the same as logical and but with reversed arguments.
-  overloads:
-    any-any: b and a
-  vectorise: false
-  tests:
-    - "[0, 0] : 0"
-    - '["", 1] : ""'
-    - "[[1,2,3], 0] : 0"
-    - "[1, 2] : 1"
+  name: Apply Lambda
+  arity: 1
+  description: Like a mapping lambda, but the results are evaluated immediantly, instead of being lazily evaluated
 
 - element: "∨"
   name: Logical Or
