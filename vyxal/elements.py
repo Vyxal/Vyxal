@@ -1019,6 +1019,7 @@ def exponent(lhs, rhs, ctx):
     (num, str) -> append b[0] to b until b is length a (spaces if b is empty)
     (str, num) -> append a[0] to a until a is length b (spaces if a is empty)
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
+    (any, fun) -> map b to a, but don't lazily evaluate the result
     """
     ts = vy_type(lhs, rhs)
     return {
@@ -1028,6 +1029,8 @@ def exponent(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
+        (ts[0], types.FunctionType): lambda: list(vy_map(lhs, rhs, ctx)),
+        (types.FunctionType, ts[1]): lambda: list(vy_map(rhs, lhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 

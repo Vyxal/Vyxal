@@ -26,6 +26,7 @@ STRUCTURE_INFORMATION = {
     "ƛ": (structure.LambdaMap, ";"),
     "'": (structure.LambdaFilter, ";"),
     "µ": (structure.LambdaSort, ";"),
+    "⟑": (structure.LambdaMapEager, ";"),
     "⟨": (structure.ListLiteral, "⟩"),
 }
 
@@ -184,6 +185,11 @@ def parse(
             elif structure_cls == structure.LambdaMap:
                 structures.append(
                     structure.LambdaMap(parse(branches[0], structure_cls))
+                )
+
+            elif structure_cls == structure.LambdaMapEager:
+                structures.append(
+                    structure.LambdaMapEager(parse(branches[0], structure_cls))
                 )
 
             elif structure_cls == structure.LambdaFilter:
