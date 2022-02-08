@@ -543,9 +543,10 @@ def cartesian_product(lhs, rhs, ctx):
 
 
 def center(lhs, ctx):
-    """Element øc
+    """Element øĊ
     (list) -> center align list by padding with spaces
     """
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     focal = max(map(lambda x: len(iterable(x, ctx=ctx)), lhs))
     return [line.center(focal) for line in lhs]
 
@@ -4013,6 +4014,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     any: Transpose a (filling with b), join on newlines
     """
     # Make every list in lhs the same length, padding left with b
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
