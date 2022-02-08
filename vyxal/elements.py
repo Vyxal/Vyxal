@@ -3585,6 +3585,14 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+def suffixes_element(lhs, ctx):
+    """Element ÞK
+    (lst) -> Suffixes of a
+    """
+
+    return suffixes(lhs, ctx)
+
+
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -5033,6 +5041,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
+    "ÞK": process_element(suffixes_element, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
