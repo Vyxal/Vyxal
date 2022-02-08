@@ -1850,6 +1850,7 @@
   tests:
     - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
     - '[["***", "****", "*****"]] : "  *\n **\n***\n***\n***"'
+    - '[[1, 22, 333]] : "  3\n 23\n123"'
 
 - element: "ε"
   name: Absolute Difference / Padded Vertical Join
@@ -4041,6 +4042,7 @@
   tests:
     - '[["ab","cdef"]] : [" ab ","cdef"]'
     - '[["xyz","a","bcdef"]] : [" xyz ","  a  ","bcdef"]'
+    - '[[1, 333, 55555]] : ["  1  ", " 333 ", "55555"]'
 
 - element: "øe"
   name: Run Length Encoding
