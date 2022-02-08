@@ -26,13 +26,10 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 
 - any a, any b: `a and b`
 -------------------------------
-## `` ⟑ `` (Reversed Logical And)
+## `` ⟑ `` (Apply Lambda)
 
-Returns the same as logical and but with reversed arguments.
+Like a mapping lambda, but the results are evaluated immediantly, instead of being lazily evaluated
 
-### Overloads
-
-- any a, any b: `b and a`
 -------------------------------
 ## `` ∨ `` (Logical Or)
 
