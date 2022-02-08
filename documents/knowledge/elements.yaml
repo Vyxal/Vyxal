@@ -4664,6 +4664,19 @@
     - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
     - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
 
+
+- element: "ÞK"
+  name: Suffixes
+  description: Suffixes of a list.
+  arity: 1
+  overloads:
+    lst: Suffixes of a list.
+  vectorise: false
+  tests:
+    - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
+    - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
+    - "[[]] : [[]]"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

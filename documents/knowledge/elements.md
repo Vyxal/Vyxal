@@ -3305,6 +3305,14 @@ Sort a list by length.
 
 - lst a: `Sort a list by length.`
 -------------------------------
+## `` ÞK `` (Suffixes)
+
+Suffixes of a list.
+
+### Overloads
+
+- lst a: `Suffixes of a list.`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
