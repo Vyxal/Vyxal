@@ -4675,7 +4675,7 @@
   tests:
     - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
     - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
-    - "[[]] : [[]]"
+    - "[[]] : []"
 
 - element: "¨□"
   name: Parse direction arrow to integer

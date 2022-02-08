@@ -20291,7 +20291,7 @@ def test_Suffixes():
 
 
     stack = [vyxalify(item) for item in [[]]]
-    expected = vyxalify([[]])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
