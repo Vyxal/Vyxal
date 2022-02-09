@@ -10,6 +10,7 @@ import math
 import random
 import re
 import string
+import sys
 import types
 import urllib
 from datetime import datetime
@@ -900,13 +901,26 @@ def equals(lhs, rhs, ctx):
     (str, str) -> lhs == rhs
     """
     ts = vy_type(lhs, rhs)
+    if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        abs_lhs = abs(lhs)
+        abs_rhs = abs(rhs)
+        abs_diff = abs(simplify(lhs - rhs))
+        if lhs == rhs:
+            return 1  # Takes care of the easy stuff
+        elif abs_diff > 1:
+            return 0
+        elif (
+            lhs == 0
+            or rhs == 0
+            or abs_diff < sys.float_info.min
+            or sympy.im(lhs)
+            or sympy.im(rhs)
+        ):
+            return int(bool(abs_diff < EPSILON))
+        else:
+            return int(bool(abs_diff / (abs_lhs + abs_rhs) < EPSILON))
+
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            bool(
-                abs(simplify(lhs - rhs)) < EPSILON
-                or abs(simplify(lhs - rhs)) < EPSILON * abs(lhs)
-            )
-        ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
         (str, str): lambda: int(lhs == rhs),
