@@ -41,7 +41,7 @@
 - element: "⟑"
   name: Apply Lambda
   arity: 1
-  description: Like a mapping lambda, but the results are evaluated immediantly, instead of being lazily evaluated
+  description: Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 
 - element: "∨"
   name: Logical Or
