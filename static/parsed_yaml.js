@@ -26,7 +26,7 @@ any a, any b -> a and b
 `)
 
 codepage_descriptions.push(`Apply Lambda
-Like a mapping lambda, but the results are evaluated immediantly, instead of being lazily evaluated
+Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 `)
 
 codepage_descriptions.push(`Logical Or

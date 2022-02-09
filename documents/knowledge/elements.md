@@ -28,7 +28,7 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 -------------------------------
 ## `` ⟑ `` (Apply Lambda)
 
-Like a mapping lambda, but the results are evaluated immediantly, instead of being lazily evaluated
+Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 
 -------------------------------
 ## `` ∨ `` (Logical Or)
