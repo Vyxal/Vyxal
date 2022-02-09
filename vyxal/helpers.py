@@ -712,7 +712,7 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
 def suffixes(lhs: Union[str, VyList], ctx: Context) -> VyList:
     """Returns a list of suffixes, including the original list"""
     if isinstance(lhs, str):
-        return [lhs[-i:] for i in range(len(lhs))]
+        return [lhs[-i:] for i in range(len(lhs), 0, -1)]
 
     lst = iterable(lhs, ctx=ctx)
 

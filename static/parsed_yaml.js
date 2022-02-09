@@ -2287,6 +2287,11 @@ codepage_descriptions[155] += `
 Sort a list by length.
 lst a -> Sort a list by length.
 `
+codepage_descriptions[75] += `
+ÞK (Suffixes)
+Suffixes of a list.
+lst a -> Suffixes of a list.
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

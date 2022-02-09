@@ -543,9 +543,10 @@ def cartesian_product(lhs, rhs, ctx):
 
 
 def center(lhs, ctx):
-    """Element øc
+    """Element øĊ
     (list) -> center align list by padding with spaces
     """
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     focal = max(map(lambda x: len(iterable(x, ctx=ctx)), lhs))
     return [line.center(focal) for line in lhs]
 
@@ -3588,6 +3589,14 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+def suffixes_element(lhs, ctx):
+    """Element ÞK
+    (lst) -> Suffixes of a
+    """
+
+    return suffixes(lhs, ctx)
+
+
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -4008,6 +4017,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     any: Transpose a (filling with b), join on newlines
     """
     # Make every list in lhs the same length, padding left with b
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
@@ -5036,6 +5046,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
+    "ÞK": process_element(suffixes_element, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

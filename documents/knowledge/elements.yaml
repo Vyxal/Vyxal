@@ -1842,6 +1842,7 @@
   tests:
     - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
     - '[["***", "****", "*****"]] : "  *\n **\n***\n***\n***"'
+    - '[[1, 22, 333]] : "  3\n 23\n123"'
 
 - element: "ε"
   name: Absolute Difference / Padded Vertical Join
@@ -4033,6 +4034,7 @@
   tests:
     - '[["ab","cdef"]] : [" ab ","cdef"]'
     - '[["xyz","a","bcdef"]] : [" xyz ","  a  ","bcdef"]'
+    - '[[1, 333, 55555]] : ["  1  ", " 333 ", "55555"]'
 
 - element: "øe"
   name: Run Length Encoding
@@ -4655,6 +4657,19 @@
     - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
     - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
     - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
+
+
+- element: "ÞK"
+  name: Suffixes
+  description: Suffixes of a list.
+  arity: 1
+  overloads:
+    lst: Suffixes of a list.
+  vectorise: false
+  tests:
+    - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
+    - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
+    - "[[]] : []"
 
 - element: "¨□"
   name: Parse direction arrow to integer
