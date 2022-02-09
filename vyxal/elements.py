@@ -4336,7 +4336,7 @@ def vy_print(lhs, end="\n", ctx=None):
             if ctx.print_decimals:
                 lhs = str(float(lhs)).strip(".0")
             else:
-                lhs = sympy.nsimplify(sympy.N(lhs, 50), rational=True)
+                lhs = sympy.nsimplify(lhs.round(20), rational=True)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
