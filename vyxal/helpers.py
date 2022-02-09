@@ -693,7 +693,10 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
-        return eval(sympy.pycode(value))
+        if value.is_real:
+            return float(value)
+        else:
+            return complex(value)
     elif isinstance(value, types.FunctionType):
         return str(value)
     else:
