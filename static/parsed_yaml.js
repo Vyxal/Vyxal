@@ -25,9 +25,8 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 any a, any b -> a and b
 `)
 
-codepage_descriptions.push(`Reversed Logical And
-Returns the same as logical and but with reversed arguments.
-any a, any b -> b and a
+codepage_descriptions.push(`Apply Lambda
+Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 `)
 
 codepage_descriptions.push(`Logical Or
