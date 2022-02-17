@@ -11,3 +11,27 @@
       program: "`Hello, World!` L¡"
       output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
     
+- element: "×"
+  name: Multiplication / Ring Translate
+  description: Multiply two numbers together / Repeat a string / Ring translate one string according to another
+  arity: 2
+  overloads:
+    num-num: lhs * rhs
+    num-str: rhs repeated lhs times
+    str-num: lhs repeated rhs times
+    str-str: ring translate rhs according to lhs
+  vectorise: true
+  tests:
+    - test:
+      inputs: [5, 20]
+      output: 100
+    - test:
+      inputs: ["abc", 5]
+      output: "abcabcabcabcabc"
+    - test:
+      inputs: [3, "abcde"]
+      output: "abcdeabcdeabcde"
+    - test:
+      inputs: ["aeiou", "hello"]
+      output: "alihu"
+  
