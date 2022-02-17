@@ -19,7 +19,6 @@
     - program: "`abc` λ4*"
       output: "abcabcabc"
   
-
 - element: "×"
   name: Multiplication / Ring Translate
   description: Multiply two numbers together / Repeat a string / Ring translate one string according to another
