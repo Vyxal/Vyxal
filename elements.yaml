@@ -1,6 +1,8 @@
 - modifier: "¡"
   name: Map Over Prefixes
+  description: Map an element over the prefixes of an item.
   arity: 1
+  elements: 1
   tests:
     - test: 
       program: "⟨1|2|3|4|5|6⟩ ∑¡"
