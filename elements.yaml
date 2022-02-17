@@ -4,11 +4,9 @@
   arity: 1
   elements: 1
   tests:
-    - test: 
-      program: "⟨1|2|3|4|5|6⟩ ∑¡"
+    - program: "⟨1|2|3|4|5|6⟩ ∑¡"
       output: [1, 3, 6, 10, 15, 21]
-    - test:
-      program: "`Hello, World!` L¡"
+    - program: "`Hello, World!` L¡"
       output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
 - syntax: "λ"
@@ -16,11 +14,9 @@
   description: Open a lambda statement - an anonymous function that gets pushed to the stack
   arity: varies
   tests:
-    - test:
-      program: "3 6 λ2|+;"
+    - program: "3 6 λ2|+;"
       output: 9
-    - test:
-      program: "`abc` λ4*"
+    - program: "`abc` λ4*"
       output: "abcabcabc"
   
 
@@ -35,16 +31,12 @@
     str-str: ring translate rhs according to lhs
   vectorise: true
   tests:
-    - test:
-      inputs: [5, 20]
+    - inputs: [5, 20]
       output: 100
-    - test:
-      inputs: ["abc", 5]
+    - inputs: ["abc", 5]
       output: "abcabcabcabcabc"
-    - test:
-      inputs: [3, "abcde"]
+    - inputs: [3, "abcde"]
       output: "abcdeabcdeabcde"
-    - test:
-      inputs: ["aeiou", "hello"]
+    - inputs: ["aeiou", "hello"]
       output: "alihu"
   
