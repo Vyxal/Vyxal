@@ -1,2 +1,3 @@
 -- One thing per line --
 -- Modifier requests are also okay --
+base64 encode/decode - Seggan
