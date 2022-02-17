@@ -10,7 +10,20 @@
     - test:
       program: "`Hello, World!` L¡"
       output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-    
+
+- syntax: "λ"
+  name: Lambda
+  description: Open a lambda statement - an anonymous function that gets pushed to the stack
+  arity: varies
+  tests:
+    - test:
+      program: "3 6 λ2|+;"
+      output: 9
+    - test:
+      program: "`abc` λ4*"
+      output: "abcabcabc"
+  
+
 - element: "×"
   name: Multiplication / Ring Translate
   description: Multiply two numbers together / Repeat a string / Ring translate one string according to another
