@@ -9,6 +9,46 @@
     - program: "`Hello, World!` L¡"
       output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
+- modifier: "¿"
+  name: Conditional Execution
+  description: Execute an element if the top of the stack is truthy.
+  arity: 1
+  elements: 1
+  tests:
+    - program: "5 6 1 +¿"
+      output: 11
+    - program: "5 6 0 +¿"
+      output: 6
+
+- modifier: "¤"
+  name: Last Element as a Function
+  description: Pushes the last element as a lambda.
+  arity: 0
+  elements: 1
+  # This needs to be a parser test
+
+- modifier: "¢"
+  name: Last Two Elements as a Function
+  description: Pushes the last two elements as a lambda.
+  arity: 0
+  elements: 2
+  # This needs to be a parser test
+  
+- element: "€"
+  name: Last Three Elements as a Function
+  description: Pushes the last three elements as a lambda.
+  arity: 0
+  elements: 3
+  # This needs to be a parser test
+
+
+- element: "§"
+  name: Last Four Elements as a Function
+  description: Pushes the last four elements as a lambda.
+  arity: 0
+  elements: 4
+  # This needs to be a parser test
+
 - syntax: "λ"
   name: Lambda
   description: Open a lambda statement - an anonymous function that gets pushed to the stack
