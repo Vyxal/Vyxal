@@ -34,7 +34,7 @@
   elements: 2
   # This needs to be a parser test
   
-- element: "€"
+- modifier: "€"
   name: Last Three Elements as a Function
   description: Pushes the last three elements as a lambda.
   arity: 0
@@ -42,12 +42,36 @@
   # This needs to be a parser test
 
 
-- element: "§"
+- modifier: "§"
   name: Last Four Elements as a Function
   description: Pushes the last four elements as a lambda.
   arity: 0
   elements: 4
   # This needs to be a parser test
+ 
+ 
+- modifier: "©"
+  name: Filter By Element
+  description: Keep all items that satisfy a condition.
+  arity: 1
+  elements: 1
+  tests:
+    - program: "⟨1|2|3|4|5|6|7⟩ 3<¢©"
+      output: [1, 2]
+    - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§©"
+      output: [2, 4, 6]
+ 
+ 
+- modifier: "®"
+  name: Reject by Element
+  description: Discard all items that satisfy a condition.
+  arity: 1
+  elements: 1
+  tests:
+    - program: "⟨1|2|3|4|5|6|7⟩ 3<¢®"
+      output: [3, 4, 5, 6, 7]
+    - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§®"
+      output: [1, 3, 5, 7]
 
 - syntax: "λ"
   name: Lambda
