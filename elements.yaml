@@ -74,6 +74,12 @@
       output: [1, 3, 5, 7]
 
 
+- syntax: "\n"
+  name: Newline
+  description: NOP
+  arity: Not Applicable
+
+
 - modifier: "æ"
   name: Apply to Each Stack Item
   description: Apply an element to every item on the stack
@@ -85,6 +91,25 @@
     - program: "5 1 7 2 4 2+¢æ W"
       output: [7, 3, 9, 4, 6]
   
+  
+- modifier: "ð"
+  name: Outer Product / Table
+  description: Take the cartesian product of an item with itself and reduce each pair by an element
+  arity: 1
+  elements: 1
+  tests:
+     - program: "⟨1|2|3⟩ ×ð"
+       output: [1, 2, 2, 3, 4, 3, 6, 6, 9]
+
+- syntax: "▲"
+  name: Base Compressed String
+  description: Open or close a bijective base 255 compressed string
+  arity: 0
+
+- syntax: "▼"
+  name: Base Compressed Number
+  description: Open or close a bijective base 255 compressed number
+  arity: 0
 
 - syntax: "λ"
   name: Lambda
