@@ -48,9 +48,11 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     D    Treat all strings as raw strings (don't decompress strings)
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
-    J    Print the entire stack, separated by newlines.
+    J    Print the entire stack, separated by newlines
     t    Vectorise boolify on Lists
     P    Print lists as their python representation
+    ḋ    Print rationals in their decimal form
+    V    Variables are one character long
     E    Evaluate stdout as JavaScript (online interpreter only)
     Ḣ    Render stdout as HTML (online interpreter only)
 """
