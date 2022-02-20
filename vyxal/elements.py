@@ -4259,7 +4259,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         return vy_int(iterable(item, ctx=ctx), base)
 
 
-def vy_map(lhs, rhs, ctx):
+def vy_map_or_pair_each(lhs, rhs, ctx):
     """Element M
     (any, fun) -> apply function b to each element of a
     (any, any) -> a paired with each item of b
@@ -4269,14 +4269,7 @@ def vy_map(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
-    itr = iterable(itr, range, ctx=ctx)
-
-    @lazylist
-    def gen():
-        for element in itr:
-            yield safe_apply(function, element, ctx=ctx)
-
-    return gen()
+    return vy_map(function, iterable(itr, range, ctx=ctx))
 
 
 def vy_sort(lhs, ctx):
@@ -4685,7 +4678,7 @@ elements: dict[str, tuple[str, int]] = {
     "J": process_element(merge, 2),
     "K": process_element(divisors_or_prefixes, 1),
     "L": process_element(length, 1),
-    "M": process_element(vy_map, 2),
+    "M": process_element(vy_map_or_pair_each, 2),
     "N": process_element(negate, 1),
     "O": process_element(count_item, 2),
     "P": process_element(strip, 2),

@@ -11,7 +11,7 @@ import itertools
 import math  # lgtm [py/unused-import]
 import textwrap
 import types
-from typing import Any, Iterable, List, Union
+from typing import Any, Iterable, List, Optional, Union
 
 import sympy
 from sympy.parsing.sympy_parser import (
@@ -770,14 +770,34 @@ def transfer_capitalisation(source: str, target: str) -> str:
     return ret
 
 
+@lazylist
 def transpose(
-    vector: VyList, filler: Any = None, ctx: Context = DEFAULT_CTX
+    matrix: VyList, filler: Optional[Any] = None, ctx: Context = DEFAULT_CTX
 ) -> VyList:
-    """Transposes a vector"""
-    vector = iterable(vector, ctx=ctx)
-    temp = itertools.zip_longest(*map(iterable, vector), fillvalue=filler)
+    """Transposes a matrix
+    In order to handle infinite lists, it generates the transpose
+    antidiagonal by antidiagonal.
+    """
+    matrix = iterable(matrix, ctx=ctx)
+    matrix = vy_map(iterable, matrix, ctx=ctx)
 
-    return vyxalify((item for item in x if item is not None) for x in temp)
+    @lazylist
+    def gen_row(r: int):
+        c = 0
+        while has_ind(matrix, c):
+            if has_ind(matrix[c], r):
+                yield matrix[c][r]
+            elif filler is not None:
+                yield filler
+            c += 1
+
+    r = 0
+    while r < 10:
+        if any(has_ind(row, r) for row in matrix):
+            yield gen_row(r)
+        else:
+            break
+        r += 1
 
 
 def uncompress(token: lexer.Token) -> Union[int, str]:
@@ -885,6 +905,13 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return vyxalify(t)
         except Exception:  # skipcq: PYL-W0703
             return item
+
+
+@lazylist
+def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
+    """Apply function to every element of vector"""
+    for element in vector:
+        yield safe_apply(function, element, ctx=ctx)
 
 
 def vyxalify(value: Any) -> Any:
