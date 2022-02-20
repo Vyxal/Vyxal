@@ -3670,8 +3670,11 @@ def to_base(lhs, rhs, ctx):
     """Element τ
     Convert lhs from base 10 to base rhs
     """
-    if vy_type(lhs) is not NUMBER_TYPE:
-        raise ValueError("to_base only works on numbers")
+    if vy_type(lhs) not in [NUMBER_TYPE, list, LazyList]:
+        raise ValueError("to_base only works on numbers and lists")
+
+    if vy_type(lhs, simple=True) is list:
+        return vectorise(to_base, lhs, rhs, ctx=ctx)
 
     if vy_type(rhs) == NUMBER_TYPE:
         rhs = list(range(0, int(rhs)))
