@@ -178,7 +178,46 @@
   tests:
     - program: "1 10r µ10n-;"
       output: [9, 8, 7, 6, 5, 4, 3, 2, 1]
-    
+  
+- syntax: "∆"
+  name: Mathematical Digraphs
+  description: Used for mathematical digraphs
+  arity: NA
+
+- syntax: "ø"
+  name: String Digraphs
+  description: Used for string-based digraphs
+  arity: NA
+
+- syntax: "Þ"
+  name: List Digraphs
+  description: Used for list related digraphs
+  arity: NA
+
+- syntax: "Œ"
+  name: Miscellaneous Digraphs
+  description: "Used for digraphs that don't have their own category"
+  arity: NA
+
+- element: "ʑ"
+  name: Exclusive Zero Range / Palindromise
+  description: Range from 0 to a number minus one / Palidromise a string around its centre
+  arity: 1
+  overloads:
+    num: range(0, lhs)
+    str: palindromised lhs
+  vectorise: true
+  tests:
+    inputs: ["1234"]
+    output: "1234321"
+    inputs: [1]
+    output: [0]
+    inputs: [3]
+    output: [0, 1, 2]
+    inputs: [[4, 6, 7]]
+    output: [[0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6]]
+    inputs: ["abc"]
+    output: "abcba"
   
 - element: "×"
   name: Multiplication / Ring Translate
