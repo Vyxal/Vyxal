@@ -228,7 +228,9 @@ class LazyList:
                 break
         return temp
 
-    def output(self, open=None, sep=None, close=None, end="\n", ctx=None):
+    def output(
+        self, open=None, sep=None, close=None, end="\n", ctx=None
+    ):
         from vyxal.elements import vy_print, vy_repr
 
         ctx.stacks.append(self.generated)
