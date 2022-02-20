@@ -100,6 +100,11 @@ class LambdaMap(LambdaOp):
         super().__init__(body, after="M")
 
 
+class LambdaMapEager(LambdaOp):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body, after="e")
+
+
 class LambdaFilter(LambdaOp):
     def __init__(self, body: list[Structure]):
         super().__init__(body, after="F")

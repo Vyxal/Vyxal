@@ -693,7 +693,10 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
-        return eval(sympy.pycode(value))
+        if value.is_real:
+            return float(value)
+        else:
+            return complex(value)
     elif isinstance(value, types.FunctionType):
         return str(value)
     else:
@@ -712,7 +715,7 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
 def suffixes(lhs: Union[str, VyList], ctx: Context) -> VyList:
     """Returns a list of suffixes, including the original list"""
     if isinstance(lhs, str):
-        return [lhs[-i:] for i in range(len(lhs))]
+        return [lhs[-i:] for i in range(len(lhs), 0, -1)]
 
     lst = iterable(lhs, ctx=ctx)
 

@@ -26,13 +26,10 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 
 - any a, any b: `a and b`
 -------------------------------
-## `` ⟑ `` (Reversed Logical And)
+## `` ⟑ `` (Apply Lambda)
 
-Returns the same as logical and but with reversed arguments.
+Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 
-### Overloads
-
-- any a, any b: `b and a`
 -------------------------------
 ## `` ∨ `` (Logical Or)
 
@@ -1071,7 +1068,7 @@ Take the absolute value of a number, or remove whitespace from a string
 -------------------------------
 ## `` ḃ `` (Boolify)
 
-Convert an arbitrary value into a truthy or falsy value
+Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
 
 ### Overloads
 
@@ -3304,6 +3301,14 @@ Sort a list by length.
 ### Overloads
 
 - lst a: `Sort a list by length.`
+-------------------------------
+## `` ÞK `` (Suffixes)
+
+Suffixes of a list.
+
+### Overloads
+
+- lst a: `Suffixes of a list.`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

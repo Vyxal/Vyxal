@@ -10,6 +10,7 @@ import math
 import random
 import re
 import string
+import sys
 import types
 import urllib
 from datetime import datetime
@@ -415,11 +416,8 @@ def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
     """
-    if vy_type(lhs, simple=True) is list:
-        if ctx.truthy_lists:
-            return any_true(lhs, ctx)
-        else:
-            return vectorise(boolify, lhs, ctx=ctx)
+    if ctx.vectorise_boolify and vy_type(lhs, simple=True) is list:
+        return vectorise(boolify, lhs, ctx=ctx)
     else:
         return int(bool(lhs))
 
@@ -546,9 +544,10 @@ def cartesian_product(lhs, rhs, ctx):
 
 
 def center(lhs, ctx):
-    """Element øc
+    """Element øĊ
     (list) -> center align list by padding with spaces
     """
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     focal = max(map(lambda x: len(iterable(x, ctx=ctx)), lhs))
     return [line.center(focal) for line in lhs]
 
@@ -902,13 +901,26 @@ def equals(lhs, rhs, ctx):
     (str, str) -> lhs == rhs
     """
     ts = vy_type(lhs, rhs)
+    if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        abs_lhs = abs(lhs)
+        abs_rhs = abs(rhs)
+        abs_diff = abs(simplify(lhs - rhs))
+        if lhs == rhs:
+            return 1  # Takes care of the easy stuff
+        elif abs_diff > 1:
+            return 0
+        elif (
+            lhs == 0
+            or rhs == 0
+            or abs_diff < sys.float_info.min
+            or sympy.im(lhs)
+            or sympy.im(rhs)
+        ):
+            return int(bool(abs_diff < EPSILON))
+        else:
+            return int(bool(abs_diff / (abs_lhs + abs_rhs) < EPSILON))
+
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            bool(
-                abs(simplify(lhs - rhs)) < EPSILON
-                or abs(simplify(lhs - rhs)) < EPSILON * abs(lhs)
-            )
-        ),
         (NUMBER_TYPE, str): lambda: int(str(lhs) == rhs),
         (str, NUMBER_TYPE): lambda: int(lhs == str(rhs)),
         (str, str): lambda: int(lhs == rhs),
@@ -1022,6 +1034,7 @@ def exponent(lhs, rhs, ctx):
     (num, str) -> append b[0] to b until b is length a (spaces if b is empty)
     (str, num) -> append a[0] to a until a is length b (spaces if a is empty)
     (str, str) -> regex.search(pattern=a, string=b).span() (Length of regex match)
+    (any, fun) -> map b to a, but don't lazily evaluate the result
     """
     ts = vy_type(lhs, rhs)
     return {
@@ -1031,6 +1044,8 @@ def exponent(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
+        (ts[0], types.FunctionType): lambda: list(vy_map(lhs, rhs, ctx)),
+        (types.FunctionType, ts[1]): lambda: list(vy_map(rhs, lhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 
@@ -3588,6 +3603,14 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+def suffixes_element(lhs, ctx):
+    """Element ÞK
+    (lst) -> Suffixes of a
+    """
+
+    return suffixes(lhs, ctx)
+
+
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -3647,8 +3670,11 @@ def to_base(lhs, rhs, ctx):
     """Element τ
     Convert lhs from base 10 to base rhs
     """
-    if vy_type(lhs) is not NUMBER_TYPE:
-        raise ValueError("to_base only works on numbers")
+    if vy_type(lhs) not in [NUMBER_TYPE, list, LazyList]:
+        raise ValueError("to_base only works on numbers and lists")
+
+    if vy_type(lhs, simple=True) is list:
+        return vectorise(to_base, lhs, rhs, ctx=ctx)
 
     if vy_type(rhs) == NUMBER_TYPE:
         rhs = list(range(0, int(rhs)))
@@ -4008,6 +4034,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     any: Transpose a (filling with b), join on newlines
     """
     # Make every list in lhs the same length, padding left with b
+    lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
     max_length = max(len(x) for x in lhs)
     temp = [
@@ -4329,7 +4356,7 @@ def vy_print(lhs, end="\n", ctx=None):
             if ctx.print_decimals:
                 lhs = str(float(lhs)).strip(".0")
             else:
-                lhs = sympy.nsimplify(sympy.N(lhs, 50), rational=True)
+                lhs = sympy.nsimplify(lhs.round(20), rational=True)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
@@ -4591,7 +4618,6 @@ def zfiller(lhs, rhs, ctx):
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("lhs and rhs", 2),
-    "⟑": process_element("rhs and lhs", 2),
     "∨": process_element("lhs or rhs", 2),
     "⟇": process_element(remove_at_index, 2),
     "÷": (
@@ -5036,6 +5062,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
+    "ÞK": process_element(suffixes_element, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

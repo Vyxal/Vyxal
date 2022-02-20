@@ -48,9 +48,11 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     D    Treat all strings as raw strings (don't decompress strings)
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
-    J    Print the entire stack, separated by newlines.
-    t    Lists are considered truthy if they are not empty
+    J    Print the entire stack, separated by newlines
+    t    Vectorise boolify on Lists
     P    Print lists as their python representation
+    ḋ    Print rationals in their decimal form
+    V    Variables are one character long
     E    Evaluate stdout as JavaScript (online interpreter only)
     Ḣ    Render stdout as HTML (online interpreter only)
 """
@@ -120,7 +122,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.number_as_range = "R" in flags
     ctx.dictionary_compression = "D" not in flags
     ctx.variable_length_1 = "V" in flags
-    ctx.truthy_lists = "t" in flags  # L431 in elements.py
+    ctx.vectorise_boolify = "t" in flags  # see boolify in elements.py
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
     ctx.empty_input_is_zero = "?" not in flags
@@ -190,6 +192,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                             # printed
                             vy_print(acc, end="", ctx=ctx)
                             is_str = True
+                    output = acc
                     break
             elif flag == "d":
                 output = vy_sum(deep_flatten(output, ctx), ctx)

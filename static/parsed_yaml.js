@@ -25,9 +25,8 @@ Returns the first truthy argument if both are truthy, otherwise returns the firs
 any a, any b -> a and b
 `)
 
-codepage_descriptions.push(`Reversed Logical And
-Returns the same as logical and but with reversed arguments.
-any a, any b -> b and a
+codepage_descriptions.push(`Apply Lambda
+Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
 `)
 
 codepage_descriptions.push(`Logical Or
@@ -750,7 +749,7 @@ str a -> Remove whitespace from a
 `)
 
 codepage_descriptions.push(`Boolify
-Convert an arbitrary value into a truthy or falsy value
+Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
 any a -> bool(a) (Booliify)
 `)
 
@@ -2287,6 +2286,11 @@ codepage_descriptions[155] += `
 Þṡ (Sort By Length)
 Sort a list by length.
 lst a -> Sort a list by length.
+`
+codepage_descriptions[75] += `
+ÞK (Suffixes)
+Suffixes of a list.
+lst a -> Suffixes of a list.
 `
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
