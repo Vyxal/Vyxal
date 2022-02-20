@@ -286,4 +286,8 @@ def test_vectorised_nilad():
 
 def test_transpose_inf():
     stack = run_vyxal("Þ∞ ƛÞ∞ +; ∩")
-    assert [row[:3] for row in stack[-1][:3]] == [[2, 3, 4], [3, 4, 5], [4, 5, 6]]
+    assert [row[:3] for row in stack[-1][:3]] == [
+        [2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+    ]
