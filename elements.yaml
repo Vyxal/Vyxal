@@ -148,7 +148,7 @@
       output: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     - program: "`abcdef` ƛ2×;"
       output: ["aa", "bb", "cc", "dd", "ee", "ff"]
-    - program: "1 11r ƛ4%0=;
+    - program: "1 11r ƛ4%0=;"
       output: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
 
 - syntax: "Ω"
@@ -160,6 +160,25 @@
       output: [2, 4, 6, 8, 10]
     - program: "`Big Shot` Ω`io`nc¬;"
       output: ["B", "g", "S", "h", "t"]
+
+- syntax: "Λ"
+  name: Reduce Lambda
+  description: Reduce a list by a function
+  arity: 1
+  tests:
+    - program: "1 10r Λ+;`
+      output: 45
+    - program: "⟨6|1|5|3|9⟩ Λ×;"
+      output: 810
+
+- syntax: "µ"
+  name: Sorting Lambda
+  description: Sort a list by the results of a function
+  arity: 1
+  tests:
+    - program: "1 10r µ10n-;"
+      output: [9, 8, 7, 6, 5, 4, 3, 2, 1]
+    
   
 - element: "×"
   name: Multiplication / Ring Translate
