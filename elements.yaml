@@ -111,6 +111,24 @@
   description: Open or close a bijective base 255 compressed number
   arity: 0
 
+
+- syntax: "⟨"
+  name: List Open
+  description: Open a list literal
+  arity: 0
+  tests:
+    - program: "⟨1|2|3|4|5⟩"
+      output: [1, 2, 3, 4, 5]
+    - program: "⟨`abc`|`def`|`ghi`⟩"
+      output: ["abc", "def", "ghi"]
+    - program: "⟨⟨1|2|3⟩|4|`abc`⟩"
+      output: [[1, 2, 3], 4, "abc"]
+
+- syntax: "⟩"
+  name: List Close
+  description: Close a list literal
+  arity: 0
+
 - syntax: "λ"
   name: Lambda
   description: Open a lambda statement - an anonymous function that gets pushed to the stack
@@ -120,6 +138,28 @@
       output: 9
     - program: "`abc` λ4*"
       output: "abcabcabc"
+    
+- syntax: "ƛ"
+  name: Map Lambda
+  description: Map a function over an item.
+  arity: 1
+  tests:
+    - program: "10 ƛ1+;`
+      output: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    - program: "`abcdef` ƛ2×;"
+      output: ["aa", "bb", "cc", "dd", "ee", "ff"]
+    - program: "1 11r ƛ4%0=;
+      output: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
+
+- syntax: "Ω"
+  name: Filter Lambda
+  description: Keep items from a list where a predicate is truthy
+  arity: 1
+  tests:
+    - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=;"
+      output: [2, 4, 6, 8, 10]
+    - program: "`Big Shot` Ω`io`nc¬;"
+      output: ["B", "g", "S", "h", "t"]
   
 - element: "×"
   name: Multiplication / Ring Translate
