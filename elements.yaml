@@ -208,16 +208,40 @@
     str: palindromised lhs
   vectorise: true
   tests:
-    inputs: ["1234"]
-    output: "1234321"
-    inputs: [1]
-    output: [0]
-    inputs: [3]
-    output: [0, 1, 2]
-    inputs: [[4, 6, 7]]
-    output: [[0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6]]
-    inputs: ["abc"]
-    output: "abcba"
+    - inputs: ["1234"]
+      output: "1234321"
+    - inputs: [1]
+      output: [0]
+    - inputs: [0]
+      output: []
+    - inputs: [3]
+      output: [0, 1, 2]
+    - inputs: [[4, 6, 7]]
+      output: [[0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6]]
+    - inputs: ["abc"]
+      output: "abcba"
+    - inputs: [-1]
+      output: []
+
+- element: "ʒ"
+  name: Inclusive One Range / Is Vowel?
+  description: Range from 1 to a number / Is each character in a string a vowel? (y is not a vowel)
+  arity: 1
+  overloads:
+    num: range(1, lhs + 1)
+    str: "[char in 'aeiou' for char in lhs]"
+  vectorise: true
+  tests:
+    - inputs: [4]
+      output: [1, 2, 3, 4]
+    - inputs: [1]
+      output: []
+    - inputs: [0]
+      output: []
+    - inputs: [-1]
+      output: []
+    - inputs: ["Hello", 6, [2, 3, 4]]
+      output: [[0, 1, 0, 0, 1], [1, 2, 3, 4, 5, 6], [[1, 2], [1, 2, 3], [1, 2, 3, 4]]]
   
 - element: "×"
   name: Multiplication / Ring Translate
