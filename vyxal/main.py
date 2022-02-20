@@ -167,7 +167,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         for flag in flags:
             if flag == "j":
                 if isinstance(output, LazyList):
-                    output.output(sep="\n", ctx=ctx)
+                    for item in output:
+                        vy_print(item, ctx=ctx)
                     break
                 else:
                     output = join(output, "\n", ctx=ctx)
@@ -243,7 +244,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 output = length(output, ctx)
             else:
                 pass
-        vy_print(output, ctx=ctx)
+        else:
+            vy_print(output, ctx=ctx)
 
 
 def repl():
