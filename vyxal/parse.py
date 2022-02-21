@@ -299,7 +299,7 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
             branches[-1].append(token)
             bracket_stack.append(STRUCTURE_INFORMATION[token.value][-1])
 
-        elif token.value == "|":
+        elif token.name == lexer.TokenType.GENERAL and token.value == "|":
             if len(bracket_stack) == 1:
                 # that is, we are in the outer-most structure.
                 branches.append([])
