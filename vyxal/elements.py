@@ -1044,8 +1044,8 @@ def exponent(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
-        (ts[0], types.FunctionType): lambda: list(vy_map(lhs, rhs, ctx)),
-        (types.FunctionType, ts[1]): lambda: list(vy_map(rhs, lhs, ctx)),
+        (ts[0], types.FunctionType): lambda: list(vy_map(rhs, lhs, ctx)),
+        (types.FunctionType, ts[1]): lambda: list(vy_map(lhs, rhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 
@@ -1591,7 +1591,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
     else:
         lhs = iterable(lhs)
         rhs = iterable(rhs)
-        return vy_map(rhs, lambda item: lhs[item], ctx=ctx)
+        return vy_map(lambda item: lhs[item], rhs, ctx=ctx)
 
 
 def infinite_cardinals(_, ctx=None):
