@@ -169,6 +169,11 @@ class LazyList:
             self.__getitem__(position)
         self.generated[position] = value
 
+    def __delitem__(self, index):
+        if index >= len(self.generated):
+            self.__getitem__(index)
+        del self.generated[index]
+
     def compare(self, other):
         # Returns -1 / 0 / 1 depending on whether this is smaller / equal /
         # greater than `other`

@@ -282,3 +282,12 @@ def test_tilde_dyad():
 def test_vectorised_nilad():
     stack = run_vyxal("123 f vkd")
     assert stack[-1][:3] == ["0123456789", "0123456789", "0123456789"]
+
+
+def test_transpose_inf():
+    stack = run_vyxal("Þ∞ ƛÞ∞ +; ∩")
+    assert [row[:3] for row in stack[-1][:3]] == [
+        [2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+    ]
