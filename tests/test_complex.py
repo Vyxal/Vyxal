@@ -282,3 +282,15 @@ def test_tilde_dyad():
 def test_vectorised_nilad():
     stack = run_vyxal("123 f vkd")
     assert stack[-1][:3] == ["0123456789", "0123456789", "0123456789"]
+
+
+def test_cart_pow_inf():
+    stack = run_vyxal("⁽› 1 Ḟ 3 ÞẊ")
+    assert stack[-1][:5] == [[1, 1, 1], [2, 1, 1], [1, 2, 1], [1, 1, 2], [3, 1, 1]]
+
+
+def test_cart_pow_finite():
+    # Make sure cartesian product actually stops with finite lazylists
+    stack = run_vyxal("2ÞẊ", inputs=[LazyList(iter([0, 1, 2]))])
+    assert stack[-1].listify() == [
+        [0, 0], [1, 0], [0, 1], [2, 0], [1, 1], [0, 2], [2, 1], [1, 2], [2, 2]]
