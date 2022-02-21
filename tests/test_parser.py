@@ -166,3 +166,28 @@ def test_modifiers_in_char_literals():
     assert str(fully_parse("\\&")) == str(
         [GenericStatement([Token(TokenType.CHARACTER, "&")])]
     )
+
+
+def test_branch_literals_in_structures():
+    assert str(fully_parse("(`|`,")) == str(
+        [
+            ForLoop(
+                [],
+                [
+                    GenericStatement([Token(TokenType.STRING, "|")]),
+                    GenericStatement([Token(TokenType.GENERAL, ",")]),
+                ],
+            )
+        ]
+    )
+
+    assert str(fully_parse("[\\|,")) == str(
+        [
+            IfStatement(
+                [
+                    GenericStatement([Token(TokenType.CHARACTER, "|")]),
+                    GenericStatement([Token(TokenType.GENERAL, ",")]),
+                ],
+            )
+        ]
+    )
