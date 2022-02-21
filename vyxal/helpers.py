@@ -792,7 +792,7 @@ def transpose(
             c += 1
 
     r = 0
-    while r < 10:
+    while True:
         if any(has_ind(row, r) for row in matrix):
             yield gen_row(r)
         else:
