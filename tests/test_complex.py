@@ -309,3 +309,12 @@ def test_cart_pow_finite():
         [1, 2],
         [2, 2],
     ]
+
+
+def test_transpose_inf():
+    stack = run_vyxal("Þ∞ ƛÞ∞ +; ∩")
+    assert [row[:3] for row in stack[-1][:3]] == [
+        [2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+    ]
