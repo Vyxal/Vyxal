@@ -194,11 +194,22 @@
   description: Used for list related digraphs
   arity: NA
 
-- syntax: "Œ"
-  name: Miscellaneous Digraphs
-  description: "Used for digraphs that don't have their own category"
-  arity: NA
-
+- element: "½"
+  name: Half
+  description: Halve a number / Split a string into two halves
+  arity: 1
+  overloads:
+    num: lhs / 2
+    str: split lhs into two strings of equal lengths (as close as possible)
+  vectorise: true
+  tests:
+    - inputs: [8]
+      output: 4
+    - inputs: ["FizzBuzz"]
+      output: ["Fizz", "Buzz"]
+    - inputs: [[1, 4, 8, "Hello", "Even Length "]
+      output: [0.5, 2, 4, ["Hel", "lo"], ["Even L", "ength "]]
+      
 - element: "ʑ"
   name: Exclusive Zero Range / Palindromise
   description: Range from 0 to a number minus one / Palidromise a string around its centre
