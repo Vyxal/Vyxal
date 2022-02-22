@@ -320,3 +320,45 @@
       output: ["1", "2", "3"]
     - inputs: [[8, 4, 6, 2], 2]
       output: [4, 2, 3, 1]
+
+- element: "£"
+  name: Set Register
+  description: Pop the top of the stack into the global register
+  arity: 1
+  vectorise: false
+  # Requires a special test case that can inspect the value of the register
+  
+- element: "¥"
+  name: Get Register
+  description: Push the current register value
+  arity: 0
+  vectorise: false
+  tests:
+    - program: "4£¥"
+      output: 4
+    - program: "`abcde`£¥"
+      output: "abcde"
+
+- syntax: " "
+  name: Space
+  description: NOP
+  arity: Not Applicable
+
+- element: "!"
+  name: Factorial / Sentence Case
+  description: Factorial of the top of the stack / Sentence case the top of the stack
+  arity: 1
+  overloads:
+    num: gamma(abs(lhs)) (alternatively, math.gamma(abs(lhs) + 1))
+    str: sentence cased lhs
+  vectorise: true
+  tests:
+    - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9]]
+      output: [1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+    - inputs: ["hello my name jeff. ur sussy baka"]
+      output: "Hello my name jeff. Ur sussy baka"
+    - inputs: ["heLLo! hOW are yOU toDay? hOpEfulLy yOu are okay!"]
+      output: "Hello! How are you today? Hopefully you are okay!"
+  
+  
+  
