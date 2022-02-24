@@ -207,7 +207,7 @@
       output: 4
     - inputs: ["FizzBuzz"]
       output: ["Fizz", "Buzz"]
-    - inputs: [[1, 4, 8, "Hello", "Even Length "]
+    - inputs: [[1, 4, 8, "Hello", "Even Length "]]
       output: [0.5, 2, 4, ["Hel", "lo"], ["Even L", "ength "]]
       
 - element: "ʑ"
@@ -361,4 +361,69 @@
       output: "Hello! How are you today? Hopefully you are okay!"
   
   
-  
+- syntax: "#"
+  name: Miscellaneous Digraphs
+  description: Used for miscellaneous digraphs
+  arity: NA
+
+- modifier: "$"
+  name: Sort By Element
+  description: Sort a list by the results of an element
+  arity: 1
+  elements: 1
+  tests:
+    - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ 2%×€$"
+      output: [2, 4, 6, 8, 10, 1, 3, 5, 7, 9]
+
+- element: "%"
+  name: Modulus / String Formatting
+  description: Modulus of two numbers / Format a string
+  arity: 2
+  overloads:
+    num-num: a % b
+    num-str: b.format(a) (replace % in b with a)
+    str-num: a.format(b) (replace % in a with b)
+    str-str: a.format(b) (replace % in a with b)
+    str-lst: a.format(b) (replace % in a with each item of b)
+  vectorise: true
+  tests:
+    - inputs: [3, 2]
+      output: 1
+    - inputs: [5, 3]
+      output: 2
+    - inputs: [5.6, 4]
+      output: 1.6
+    - inputs: [-1, 10]
+      output: 9
+    - inputs: [5, 0]
+      output: 0
+    - inputs: ["Hello, %", "World"]
+      output: "Hello, World"
+    - inputs: ["Hello, %", ["World", "!"]]
+      output: "Hello, World"
+    - inputs: ["%, %, %", [1, 2, 3]]
+      output: "1, 2, 3"
+    - inputs: ["%", 234.234]
+      output: "234.234"
+    - inputs: ["%", ""]
+      output: ""
+    - inputs: ["%", []]
+      output: ""
+    - inputs: ["%, %", [4]]
+      output: "4, 4"
+    - inputs: ["%, %", "abc"]
+      output: "abc, abc"
+
+- modifier: "&"
+  name: Apply to Register
+  description: Apply an element to the register and store the value in the register
+  arity: varies
+  elements: 1
+  tests:
+    - program: "5 £ 6 +& ¥"
+      output: 11
+    - program: "5 £ d& ¥"
+      output: 10
+    - program: "5 £ 6& ¥"
+      output: 6
+
