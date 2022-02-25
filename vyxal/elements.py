@@ -480,12 +480,69 @@ def cartesian_power(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
     if NUMBER_TYPE not in ts:
         return rhs
+
+    vector, n = (lhs, rhs) if ts[-1] == NUMBER_TYPE else (rhs, lhs)
+    vector = iterable(vector, ctx=ctx)
+    n = int(n)
+    if n < 1 or not vector:
+        return []
+    elif n == 1:
+        return vector
+    elif not isinstance(vector, LazyList):
+        return LazyList(
+            "".join(x) if all(isinstance(y, str) for y in x) else x
+            for x in itertools.product(vector, repeat=n)
+        )
     else:
-        lhs, rhs = (lhs, rhs) if ts[-1] == NUMBER_TYPE else (rhs, lhs)
-    return LazyList(
-        "".join(x) if all(isinstance(y, str) for y in x) else x
-        for x in itertools.product(iterable(lhs, ctx=ctx), repeat=int(rhs))
-    )
+        # Will be updated later
+        length = None
+
+        def gen_diag(
+            diag_num: int, dim: int = 0, prevss: list[list[list]] = None
+        ):
+            """Generate the diag_num'th n-dimensional diagonal slice
+            The ith element of prevss is a list of all the previous
+            partial power elements whose indices in vector added up to i
+            """
+            nonlocal length
+            if prevss is None:
+                prevss = [[] for _ in range(diag_num)]
+            if dim == n:
+                return prevss[-1]
+            new_prevss = [[] for _ in range(diag_num)]
+            end = diag_num if length is None else min(diag_num, length)
+            for i in range(end):
+                if not has_ind(vector, i):
+                    length = i
+                    break
+                curr = vector[i]
+                for j in range(diag_num - i):
+                    prevs = prevss[j]
+                    if not prevs:
+                        if j == 0:
+                            new_prev = [vector[0] for _ in range(dim + 1)]
+                            new_prev[dim] = curr
+                            new_prevss[i + j] = [new_prev]
+                    else:
+                        for prev in prevs:
+                            new_prevss[i + j].append(prev + [curr])
+            return gen_diag(diag_num, dim + 1, new_prevss)
+
+        @lazylist
+        def gen():
+            diag_num = 1
+            while True:
+                diag = gen_diag(diag_num)
+                if length and not vector.infinite:
+                    if math.ceil((diag_num - 1) / n) >= length:
+                        break
+                if diag:
+                    yield from diag
+                else:
+                    break
+                diag_num += 1
+
+        return gen()
 
 
 def cartesian_product(lhs, rhs, ctx):
@@ -1044,8 +1101,8 @@ def exponent(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
         (str, str): lambda: list(re.search(lhs, rhs).span()),
-        (ts[0], types.FunctionType): lambda: list(vy_map(lhs, rhs, ctx)),
-        (types.FunctionType, ts[1]): lambda: list(vy_map(rhs, lhs, ctx)),
+        (ts[0], types.FunctionType): lambda: list(vy_map(rhs, lhs, ctx)),
+        (types.FunctionType, ts[1]): lambda: list(vy_map(lhs, rhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 
@@ -1591,7 +1648,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
     else:
         lhs = iterable(lhs)
         rhs = iterable(rhs)
-        return vy_map(rhs, lambda item: lhs[item], ctx=ctx)
+        return vy_map(lambda item: lhs[item], rhs, ctx=ctx)
 
 
 def infinite_cardinals(_, ctx=None):
@@ -4259,7 +4316,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         return vy_int(iterable(item, ctx=ctx), base)
 
 
-def vy_map(lhs, rhs, ctx):
+def vy_map_or_pair_each(lhs, rhs, ctx):
     """Element M
     (any, fun) -> apply function b to each element of a
     (any, any) -> a paired with each item of b
@@ -4269,14 +4326,7 @@ def vy_map(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
-    itr = iterable(itr, range, ctx=ctx)
-
-    @lazylist
-    def gen():
-        for element in itr:
-            yield safe_apply(function, element, ctx=ctx)
-
-    return gen()
+    return vy_map(function, iterable(itr, range, ctx=ctx))
 
 
 def vy_sort(lhs, ctx):
@@ -4685,7 +4735,7 @@ elements: dict[str, tuple[str, int]] = {
     "J": process_element(merge, 2),
     "K": process_element(divisors_or_prefixes, 1),
     "L": process_element(length, 1),
-    "M": process_element(vy_map, 2),
+    "M": process_element(vy_map_or_pair_each, 2),
     "N": process_element(negate, 1),
     "O": process_element(count_item, 2),
     "P": process_element(strip, 2),
