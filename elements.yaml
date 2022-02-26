@@ -134,7 +134,7 @@
   description: Open a lambda statement - an anonymous function that gets pushed to the stack
   arity: varies
   tests:
-    - program: "3 6 λ2|+;"
+    - program: "3 6 λ2|+}"
       output: 9
     - program: "`abc` λ4*"
       output: "abcabcabc"
@@ -144,11 +144,11 @@
   description: Map a function over an item.
   arity: 1
   tests:
-    - program: "10 ƛ1+;`
+    - program: "10 ƛ1+}"
       output: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    - program: "`abcdef` ƛ2×;"
+    - program: "`abcdef` ƛ2×}"
       output: ["aa", "bb", "cc", "dd", "ee", "ff"]
-    - program: "1 11r ƛ4%0=;"
+    - program: "1 11r ƛ4%0=}"
       output: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
 
 - syntax: "Ω"
@@ -158,7 +158,7 @@
   tests:
     - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=;"
       output: [2, 4, 6, 8, 10]
-    - program: "`Big Shot` Ω`io`nc¬;"
+    - program: "`Big Shot` Ω`io`nc¬}"
       output: ["B", "g", "S", "h", "t"]
 
 - syntax: "Λ"
@@ -168,7 +168,7 @@
   tests:
     - program: "1 10r Λ+;`
       output: 45
-    - program: "⟨6|1|5|3|9⟩ Λ×;"
+    - program: "⟨6|1|5|3|9⟩ Λ×}"
       output: 810
 
 - syntax: "µ"
@@ -176,7 +176,7 @@
   description: Sort a list by the results of a function
   arity: 1
   tests:
-    - program: "1 10r µ10n-;"
+    - program: "1 10r µ10n-}"
       output: [9, 8, 7, 6, 5, 4, 3, 2, 1]
   
 - syntax: "∆"
@@ -360,7 +360,9 @@
     - inputs: ["heLLo! hOW are yOU toDay? hOpEfulLy yOu are okay!"]
       output: "Hello! How are you today? Hopefully you are okay!"
   
-  
+#- <whatever>: '"'
+#  to-be-determined-once: the poll results are in
+
 - syntax: "#"
   name: Miscellaneous Digraphs
   description: Used for miscellaneous digraphs
@@ -427,3 +429,52 @@
     - program: "5 £ 6& ¥"
       output: 6
 
+# - syntax: "'"
+#   name: To be determined once the poll comes in - most likely single char string
+
+- syntax: "("
+  name: For loop
+  description: Start a for loop, iterating over the popped top of stack.
+  arity: 1
+  tests:
+    - program: "10 (n 4+⁺} ⁾"
+      output: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+
+- modifier: ")"
+  name: Lambda to Newline
+  description: Collect elements into a lambda until a newline or start of file is reached
+  arity: varies
+  elements: varies
+  # Requires parser tests
+
+- element: "*"
+  name: Exponentiation / String Extend / Regex Match Span
+  description: Exponentiation of two numbers / Extend a string / Span of a regex match
+  arity: 2
+  overloads:
+    num-num: a ** b (exponentiation)
+    str-num: append a[0] until a is length b (spaces are used if a is empty)
+    num-str: append b[0] until b is length a (spaces are used if b is empty)
+    str-str: regex.search(pattern=a, string=b).span() - start and stop of regex match
+  vectorise: true
+  tests:
+    - inputs: [0, 0]
+      output: 1
+    - inputs: [4, 2]
+      output: 16
+    - inputs: [5, 3]
+      output: 125
+    - inputs: [5, 0]
+      output: 1
+    - inputs: ["Hello", 7]
+      output: "HelloHe"
+    - inputs: ["Hello", 5]
+      output: "Hello"
+    - inputs: ["Hello", 0]
+      output: "Hello"
+    - inputs: ["", 4]
+      output: "    "
+    - inputs: ["letters42069letters", "\\d+"]
+      output: [7, 12]
+    - inputs: ["no digits", "\\d+"]
+      output: []
