@@ -484,3 +484,35 @@
       output: [7, 12]
     - inputs: ["no digits", "\\d+"]
       output: []
+
+- element: "+"
+  name: Addition / Concatenation
+  description: Addition of two numbers / Concatenation of two strings
+  arity: 2
+  overloads:
+    num-num: a + b
+    num-str: a + to_string(b)
+    str-num: to_string(a) + b
+    str-str: a + b
+  vectorise: true
+  tests:
+    - inputs: [0, 0]
+      output: 0
+    - inputs: [4, 2]
+      output: 6
+    - inputs: [5, 3]
+      output: 8
+    - inputs: [5, 0]
+      output: 5
+    - inputs: ["Hello", 7]
+      output: "Hello7"
+    - inputs: ["Hello", 5]
+      output: "Hello5"
+    - inputs: ["Hello", 0]
+      output: "Hello0"
+    - inputs: ["", 4]
+      output: "4"
+    - inputs: ["Hello, ", "World"]
+      output: "Hello, World"
+    - inputs: ["Hello, ", ["World", "!"]]
+      output: ["Hello, World", "Hello, !"]
