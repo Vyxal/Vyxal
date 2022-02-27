@@ -359,9 +359,12 @@
       output: "Hello my name jeff. Ur sussy baka"
     - inputs: ["heLLo! hOW are yOU toDay? hOpEfulLy yOu are okay!"]
       output: "Hello! How are you today? Hopefully you are okay!"
-  
-#- <whatever>: '"'
-#  to-be-determined-once: the poll results are in
+
+- syntax: '"'
+  name: String Literal
+  description: Push a string literal onto the stack
+  arity: 0
+  # This requires parser tests
 
 - syntax: "#"
   name: Miscellaneous Digraphs
@@ -429,8 +432,11 @@
     - program: "5 £ 6& ¥"
       output: 6
 
-# - syntax: "'"
-#   name: To be determined once the poll comes in - most likely single char string
+- syntax: "'"
+  name: Single Character String
+  description: Push a single character string onto the stack
+  arity: 0
+  # This requires parser tests
 
 - syntax: "("
   name: For loop
