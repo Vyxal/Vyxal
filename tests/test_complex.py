@@ -318,3 +318,12 @@ def test_transpose_inf():
         [3, 4, 5],
         [4, 5, 6],
     ]
+
+
+def test_function_arity_change():
+    stack = run_vyxal("λWL; 6 * 4 4 4 4 4 4 ^†")
+    assert stack[-1] == 6
+    stack = run_vyxal("λWL; 4 4 4 4 4 4 ^†")
+    assert stack[-1] == 1
+    stack = run_vyxal("λWL; 7 * 4 4 4 4 4 4 ^†")
+    assert stack[-1] == 7
