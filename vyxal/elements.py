@@ -2418,10 +2418,14 @@ def multiply(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
 
     if ts[0] is types.FunctionType:
+        if ts[1] in (list, LazyList):
+            return vectorise(multiply, lhs, rhs, ctx=ctx)
         lhs.stored_arity = rhs
         return lhs
 
     elif ts[1] is types.FunctionType:
+        if ts[0] in (list, LazyList):
+            return vectorise(multiply, lhs, rhs, ctx=ctx)
         rhs.stored_arity = lhs
         return rhs
     else:
