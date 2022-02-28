@@ -190,6 +190,11 @@ def test_all_equal_infinite_lists():
     assert stack[-1] == 0
 
 
+def test_vectorised_lambda_multiplication():
+    stack = run_vyxal("λWL; ⟨3|6|2|3|6|3|5|1⟩ * ƛ6 9 6 9 6 9 6 9 6 9 n†;")
+    assert stack[-1] == [3, 6, 2, 3, 6, 3, 5, 1]
+
+
 def test_powerset_inf():
     stack = run_vyxal("⁽› 1 Ḟ ṗ", debug=True)
     assert stack[-1][:4] == [[], [1], [2], [1, 2]]
