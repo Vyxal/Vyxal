@@ -859,8 +859,8 @@
     - '["X"] : "X"'
 
 - element: "T"
-  name: Truthy Indices / Triadify
-  description: Get indices of truthy elements or make the arity of a function 3
+  name: Truthy Indices / Triple / Triadify
+  description: Get indices of truthy elements, triple, or make the arity of a function 3
   arity: 1
   overloads:
     num: a * 3
