@@ -410,14 +410,16 @@
   arity: NA
 
 - element: "*"
-  name: Multiplication
-  description: Multiply two numbers or strings
+  name: Multiplication / Arity Change
+  description: Multiply two numbers or strings / Change the arity of a function
   arity: 2
   overloads:
     num-num: a * b
     num-str: b repeated a times
     str-num: a repeated b times
     str-str: ring translate b according to a
+    fun-num: change the arity of function a to b
+    num-fun: change the arity of function b to a
   vectorise: true
   tests:
     - "[3,5] : 15"
