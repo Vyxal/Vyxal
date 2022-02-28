@@ -3803,7 +3803,7 @@ def test_Stringify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_TruthyIndicesTriadify():
+def test_TruthyIndicesTripleTriadify():
 
     stack = [vyxalify(item) for item in [1]]
     expected = vyxalify(3)

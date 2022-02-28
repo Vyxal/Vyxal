@@ -638,9 +638,9 @@ Stringify a list or number
 
 - any a: `str(a) (Stringify)`
 -------------------------------
-## `` T `` (Truthy Indices / Triadify)
+## `` T `` (Truthy Indices / Triple / Triadify)
 
-Get indices of truthy elements or make the arity of a function 3
+Get indices of truthy elements, triple, or make the arity of a function 3
 
 ### Overloads
 

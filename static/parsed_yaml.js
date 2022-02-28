@@ -457,8 +457,8 @@ Stringify a list or number
 any a -> str(a) (Stringify)
 `)
 
-codepage_descriptions.push(`Truthy Indices / Triadify
-Get indices of truthy elements or make the arity of a function 3
+codepage_descriptions.push(`Truthy Indices / Triple / Triadify
+Get indices of truthy elements, triple, or make the arity of a function 3
 num a -> a * 3
 any a -> truthy_indices(a)
 fun a -> set the arity of function a to 3
