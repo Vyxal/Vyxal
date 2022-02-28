@@ -859,12 +859,13 @@
     - '["X"] : "X"'
 
 - element: "T"
-  name: Truthy Indices
-  description: Get indices of truthy elements or triple
+  name: Truthy Indices / Triadify
+  description: Get indices of truthy elements or make the arity of a function 3
   arity: 1
   overloads:
     num: a * 3
     any: truthy_indices(a)
+    fun: set the arity of function a to 3
   vectorise: false
   tests:
     - "[1] : 3"
@@ -1007,12 +1008,13 @@
     - "[[1,2,3],0] : 0"
 
 - element: "d"
-  name: Double
-  description: Double a number or repeat a string twice
+  name: Double / Dyadify
+  description: Double a number or repeat a string twice / make a function dyadic
   arity: 1
   overloads:
     num: a * 2 (double)
     str: a * 2 (repeated twice)
+    fun: change the arity of the function to 2
   vectorise: true
   tests:
     - "[5] : 10"
