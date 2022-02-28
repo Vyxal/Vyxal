@@ -111,6 +111,12 @@ def test_vectorise_map_lambda():
     assert simplify(stack[-1]) == [[34, 1324, 30], [45, 30]]
 
 
+def test_map_can_take_input():
+    """Test that a map lambda can take an input"""
+    stack = run_vyxal("5 ƛ?4+;", inputs=[[1]])
+    assert stack[-1] == [5, 5, 5, 5, 5]
+
+
 def test_deep_flatten_inf_list():
     """Test that an infinite list can be fully flattened"""
     stack = run_vyxal("⁽› 1 5 r w Ḟ f")
