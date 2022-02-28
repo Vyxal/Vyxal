@@ -1739,7 +1739,7 @@ def test_ModuloFormat():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Multiplication():
+def test_MultiplicationArityChange():
 
     stack = [vyxalify(item) for item in [3,5]]
     expected = vyxalify(15)
@@ -3803,7 +3803,7 @@ def test_Stringify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_TruthyIndices():
+def test_TruthyIndicesTriadify():
 
     stack = [vyxalify(item) for item in [1]]
     expected = vyxalify(3)
@@ -4430,7 +4430,7 @@ def test_Contains():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Double():
+def test_DoubleDyadify():
 
     stack = [vyxalify(item) for item in [5]]
     expected = vyxalify(10)

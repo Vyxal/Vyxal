@@ -224,12 +224,14 @@ codepage_descriptions.push(`Close For loop
 Close a for loop
 `)
 
-codepage_descriptions.push(`Multiplication
-Multiply two numbers or strings
+codepage_descriptions.push(`Multiplication / Arity Change
+Multiply two numbers or strings / Change the arity of a function
 num a, num b -> a * b
 num a, str b -> b repeated a times
 str a, num b -> a repeated b times
 str a, str b -> ring translate b according to a
+fun a, num b -> change the arity of function a to b
+num a, fun b -> change the arity of function b to a
 `)
 
 codepage_descriptions.push(`Addition
@@ -455,10 +457,11 @@ Stringify a list or number
 any a -> str(a) (Stringify)
 `)
 
-codepage_descriptions.push(`Truthy Indices
-Get indices of truthy elements or triple
+codepage_descriptions.push(`Truthy Indices / Triadify
+Get indices of truthy elements or make the arity of a function 3
 num a -> a * 3
 any a -> truthy_indices(a)
+fun a -> set the arity of function a to 3
 `)
 
 codepage_descriptions.push(`Uniquify
@@ -531,10 +534,11 @@ Check if one thing contains another.
 any a, any b -> b in a (Does a contain b, membership, contains)
 `)
 
-codepage_descriptions.push(`Double
-Double a number or repeat a string twice
+codepage_descriptions.push(`Double / Dyadify
+Double a number or repeat a string twice / make a function dyadic
 num a -> a * 2 (double)
 str a -> a * 2 (repeated twice)
+fun a -> change the arity of the function to 2
 `)
 
 codepage_descriptions.push(`Exponentiation
