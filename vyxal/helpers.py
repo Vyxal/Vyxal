@@ -910,7 +910,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
 @lazylist
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
-    for element in vector:
+    for element in iterable(vector, range, ctx=ctx):
         yield safe_apply(function, element, ctx=ctx)
 
 
