@@ -2418,10 +2418,14 @@ def multiply(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs)
 
     if ts[0] is types.FunctionType:
+        if ts[1] in (list, LazyList):
+            return vectorise(multiply, lhs, rhs, ctx=ctx)
         lhs.stored_arity = rhs
         return lhs
 
     elif ts[1] is types.FunctionType:
+        if ts[0] in (list, LazyList):
+            return vectorise(multiply, lhs, rhs, ctx=ctx)
         rhs.stored_arity = lhs
         return rhs
     else:
@@ -4326,7 +4330,7 @@ def vy_map_or_pair_each(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
-    return vy_map(function, iterable(itr, range, ctx=ctx))
+    return vy_map(function, iterable(itr, range, ctx=ctx), ctx=ctx)
 
 
 def vy_sort(lhs, ctx):

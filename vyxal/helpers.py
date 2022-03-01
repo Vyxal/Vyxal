@@ -589,7 +589,9 @@ def prefixes(lhs: Union[VyList, str], ctx: Context) -> VyList:
 def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
-    if type(item) in [int, sympy.Rational, str] or is_sympy(item):
+    if type(item) in [int, sympy.Rational, str, types.FunctionType] or is_sympy(
+        item
+    ):
         return SCALAR_TYPE
     assert type(item) in [list, LazyList]
     return list
@@ -910,7 +912,7 @@ def vy_eval(item: str, ctx: Context) -> Any:
 @lazylist
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
-    for element in vector:
+    for element in iterable(vector, range, ctx=ctx):
         yield safe_apply(function, element, ctx=ctx)
 
 

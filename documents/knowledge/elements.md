@@ -311,9 +311,9 @@ Start a for loop, iterating over the popped top of stack.
 Close a for loop
 
 -------------------------------
-## `` * `` (Multiplication)
+## `` * `` (Multiplication / Arity Change)
 
-Multiply two numbers or strings
+Multiply two numbers or strings / Change the arity of a function
 
 ### Overloads
 
@@ -321,6 +321,8 @@ Multiply two numbers or strings
 - num a, str b: `b repeated a times`
 - str a, num b: `a repeated b times`
 - str a, str b: `ring translate b according to a`
+- fun a, num b: `change the arity of function a to b`
+- num a, fun b: `change the arity of function b to a`
 -------------------------------
 ## `` + `` (Addition)
 
@@ -636,14 +638,15 @@ Stringify a list or number
 
 - any a: `str(a) (Stringify)`
 -------------------------------
-## `` T `` (Truthy Indices)
+## `` T `` (Truthy Indices / Triple / Triadify)
 
-Get indices of truthy elements or triple
+Get indices of truthy elements, triple, or make the arity of a function 3
 
 ### Overloads
 
 - num a: `a * 3`
 - any a: `truthy_indices(a)`
+- fun a: `set the arity of function a to 3`
 -------------------------------
 ## `` U `` (Uniquify)
 
@@ -744,14 +747,15 @@ Check if one thing contains another.
 
 - any a, any b: `b in a (Does a contain b, membership, contains)`
 -------------------------------
-## `` d `` (Double)
+## `` d `` (Double / Dyadify)
 
-Double a number or repeat a string twice
+Double a number or repeat a string twice / make a function dyadic
 
 ### Overloads
 
 - num a: `a * 2 (double)`
 - str a: `a * 2 (repeated twice)`
+- fun a: `change the arity of the function to 2`
 -------------------------------
 ## `` e `` (Exponentiation)
 
