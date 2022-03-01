@@ -4330,7 +4330,7 @@ def vy_map_or_pair_each(lhs, rhs, ctx):
         return LazyList([[lhs, x] for x in iterable(rhs, range, ctx=ctx)])
 
     function, itr = (rhs, lhs) if ts[-1] is types.FunctionType else (lhs, rhs)
-    return vy_map(function, iterable(itr, range, ctx=ctx))
+    return vy_map(function, iterable(itr, range, ctx=ctx), ctx=ctx)
 
 
 def vy_sort(lhs, ctx):
