@@ -5014,7 +5014,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element(nth_fibonacii, 1),
+    "∆f": process_element(nth_fibonacci, 1),
     "∆±": process_element(copy_sign, 2),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
