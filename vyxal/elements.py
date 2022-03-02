@@ -2613,6 +2613,19 @@ def nth_e(lhs, ctx):
         return vectorise(nth_e, lhs, ctx=ctx)
 
 
+def nth_fibonacci(lhs, ctx):
+    """Element ∆f
+    (num) -> nth fibonacci number # sympy.fibonacci(lhs + 1)
+    (str) -> nop
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.fibonacci(lhs + 1),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+
+
 def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
@@ -5001,7 +5014,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element("sympy.fibonacci(lhs + 1)", 1),
+    "∆f": process_element(nth_fibonacii, 1),
     "∆±": process_element(copy_sign, 2),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
