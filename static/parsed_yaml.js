@@ -1381,9 +1381,10 @@ codepage_descriptions.push(`Push Global Array
 Push global array, no modification of global array
 `)
 
-codepage_descriptions.push(`Product of Array
-Product of Array
-lst a -> prod(a)
+codepage_descriptions.push(`Product of Array / Cartesian product over list
+Product of Array / Cartesian product over a list of lists
+lst[num] a -> reduce list by multiplication
+lst[str|lst] a -> reduce list by cartesian product
 `)
 
 codepage_descriptions.push(`Rotate Stack Left

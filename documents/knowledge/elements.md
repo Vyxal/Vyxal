@@ -1991,13 +1991,14 @@ Pop from global array, push to stack
 Push global array, no modification of global array
 
 -------------------------------
-## `` Π `` (Product of Array)
+## `` Π `` (Product of Array / Cartesian product over list)
 
-Product of Array
+Product of Array / Cartesian product over a list of lists
 
 ### Overloads
 
-- lst a: `prod(a)`
+- lst[num] a: `reduce list by multiplication`
+- lst[str|lst] a: `reduce list by cartesian product`
 -------------------------------
 ## `` „ `` (Rotate Stack Left)
 
