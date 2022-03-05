@@ -3314,6 +3314,14 @@ Suffixes of a list.
 
 - lst a: `Suffixes of a list.`
 -------------------------------
+## `` Þİ `` (First n Items and Rest)
+
+a[:b] and a[b:]
+
+### Overloads
+
+- lst a, int b: `a[:b] and a[b:]`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
