@@ -5136,12 +5136,6 @@ elements: dict[str, tuple[str, int]] = {
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
     "ÞK": process_element(suffixes_element, 1),
-    "Þİ": (
-        "rhs, lhs = pop(stack, 2, ctx)\n"
-        "stack.append(index(lhs, [0, rhs], ctx))\n"
-        "stack.append(index(lhs, [rhs, None], ctx))\n",
-        2,
-    ),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
