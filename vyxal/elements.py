@@ -2965,7 +2965,7 @@ def prepend(lhs, rhs, ctx):
 def product(lhs, ctx):
     """Element Π
     (lst[num]) -> product(list)
-    (lst[num|lst]) -> Cartesian product over a list of lists
+    (lst[str|lst]) -> Cartesian product over a list of lists
     """
 
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
