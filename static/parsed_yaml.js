@@ -2296,11 +2296,6 @@ codepage_descriptions[75] += `
 Suffixes of a list.
 lst a -> Suffixes of a list.
 `
-codepage_descriptions[191] += `
-Þİ (First n Items and Rest)
-a[:b] and a[b:]
-lst a, int b -> a[:b] and a[b:]
-`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
