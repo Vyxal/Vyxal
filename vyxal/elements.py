@@ -4381,7 +4381,7 @@ def vy_str(lhs, ctx=None):
     return {
         (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
         if ctx is not None and not ctx.print_decimals
-        else str(sympy.N(lhs, 20)).strip("0"),
+        else str(float(lhs)),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -5060,7 +5060,7 @@ elements: dict[str, tuple[str, int]] = {
     "øĊ": process_element(center, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
-    "øḋ": process_element("str(float(lhs)).strip('.0')", 1),
+    "øḋ": process_element("str(float(lhs))", 1),
     "øe": process_element(run_length_encoding, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
