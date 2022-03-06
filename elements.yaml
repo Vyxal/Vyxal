@@ -584,4 +584,12 @@
   name: Reduce By Element
   description: Reduce the top of the stack by an element
   arity: 2
+  elements: 1
+  tests:
+    - program: "⟨1|2|3|4|5⟩ +/"
+      output: 15
+    - program: "⟨1|2|3|4|5⟩ ×/"
+      output: 120
+    - program: "⟨1|2|3|4|5⟩ -/"
+      output: -13
 
