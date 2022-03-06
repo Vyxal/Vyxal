@@ -3191,7 +3191,11 @@ def replace_until_no_change(lhs, rhs, other, ctx):
 def request(lhs, ctx):
     """Element ¨U
     (str) -> Send a GET request to a URL if online"""
-    x = urllib.request.urlopen(urlify(lhs)).read()
+
+    req = urllib.request.Request(
+        urlify(lhs), headers={"User-Agent": "Mozilla/5.0 Vyxal"}
+    )
+    x = urllib.request.urlopen(req).read()
     try:
         return x.decode("utf-8")
     except UnicodeDecodeError:
