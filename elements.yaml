@@ -592,4 +592,155 @@
       output: 120
     - program: "⟨1|2|3|4|5⟩ -/"
       output: -13
+    - program: "⟨1|2|3|4|5⟩ ÷/"
+      output: 0.008333333333333333
 
+- syntax: "0"
+  name: Digit Literal 0
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "1"
+  name: Digit Literal 1
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "2"
+  name: Digit Literal 2
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "3"
+  name: Digit Literal 3
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "4"
+  name: Digit Literal 4
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "5"
+  name: Digit Literal 5
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "6"
+  name: Digit Literal 6
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "7"
+  name: Digit Literal 7
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "8"
+  name: Digit Literal 8
+  description: Used for numeric literal construction
+  arity: 0
+
+- syntax: "9"
+  name: Digit Literal 9
+  description: Used for numeric literal construction
+  arity: 0
+
+- element: ":"
+  name: Duplicate
+  description: Duplicate the top of the stack
+  arity: 1
+  overloads:
+    any: lhs, lhs
+  vectorise: false
+  # Requires testing elsewhere
+
+- modifier: ";"
+  name: Key
+  description: Map a link over the groups formed by identical items
+  arity: 1
+  elements: 1
+  tests:
+    - program: "⟨1|1|2|2|3|3|4|4|5|5⟩ L;"
+      output: [2, 2, 2, 2, 2]
+    - program: '"abcaabbbcc" h;'
+      output: "abcabc"
+
+- element: "<"
+  name: Less Than
+  description: Basic comparison - less than
+  arity: 2
+  overloads:
+    num-num: lhs < rhs
+    num-str: str(lhs) < rhs
+    str-num: lhs < str(rhs)
+    str-str: lhs < rhs
+  vectorise: true
+  tests:
+    - inputs: [1, 2]
+      output: 1
+    - inputs: [2, 1]
+      output: 0
+    - inputs: [0, 0]
+      output: 0
+    - inputs: ["1", 1]
+      output: 0
+    - inputs: [2000, "abc"]
+      output: 1
+    - inputs: ["abc", "def"]
+      output: 1
+    - inputs: ["abc", "abc"]
+      output: 0
+
+- element: "="
+  name: Equal
+  description: Basic comparison - equal
+  arity: 2
+  overloads:
+    num-num: lhs == rhs
+    num-str: str(lhs) == rhs
+    str-num: lhs == str(rhs)
+    str-str: lhs == rhs
+  vectorise: true
+  tests:
+    - inputs: [1, 1]
+      output: 1
+    - inputs: [1, 2]
+      output: 0
+    - inputs: [2, 1]
+      output: 0
+    - inputs: [0, 0]
+      output: 1
+    - inputs: ["1", 1]
+      output: 1
+    - inputs: [2000, "abc"]
+      output: 0
+    - inputs: ["abc", "def"]
+      output: 0
+    - inputs: ["abc", "abc"]
+      output: 1
+
+- element: ">"
+  name: Greater Than
+  description: Basic comparison - greater than
+  arity: 2
+  overloads:
+    num-num: lhs > rhs
+    num-str: str(lhs) > rhs
+    str-num: lhs > str(rhs)
+    str-str: lhs > rhs
+  vectorise: true
+  tests:
+    - inputs: [1, 2]
+      output: 0
+    - inputs: [2, 1]
+      output: 1
+    - inputs: [0, 0]
+      output: 0
+    - inputs: ["1", 1]
+      output: 0
+    - inputs: [2000, "abc"]
+      output: 0
+    - inputs: ["abc", "def"]
+      output: 0
+    - inputs: ["abc", "abc"]
+      output: 0
