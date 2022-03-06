@@ -744,3 +744,17 @@
       output: 0
     - inputs: ["abc", "abc"]
       output: 0
+  
+- element: "?"
+  name: Input
+  description: Get the next input from the input source
+  arity: 0
+  vectorise: false
+  # Tests required elsewhere
+
+- syntax: "@"
+  name: Function Call / Declaration
+  description: Call / declare function (@name; / @name|code;)
+  arity: varies
+  # Tests required elsewhere
+
