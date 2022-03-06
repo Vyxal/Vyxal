@@ -469,7 +469,10 @@ def cartesian_over_list(lhs, ctx):
     """
     # todo maybe handle generators separately
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return vyxalify(itertools.product(*lhs))
+    return LazyList(
+        "".join(x) if all(isinstance(y, str) for y in x) else list(x)
+        for x in itertools.product(*lhs)
+    )
 
 
 def cartesian_power(lhs, rhs, ctx):
