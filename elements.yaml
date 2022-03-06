@@ -758,3 +758,24 @@
   arity: varies
   # Tests required elsewhere
 
+- element: "A"
+  name: All Truthy / Is Vowel?
+  description: Are all items in a list truthy? / Is a character a vowel?
+  arity: 1
+  overloads:
+    num: are all digits in lhs truthy?
+    str: "[char in 'aeiou' for char in lhs]"
+    lst: are all items in lhs truthy?
+  vectorise: false
+  tests:
+    - inputs: [[1, 2, 3]]
+      output: 1
+    - inputs: [[1, 2, 3, 0]]
+      output: 0
+    - inputs: ["abc"]
+      output: [1, 0, 0]
+    - inputs: [""]
+      output: []
+    - inputs: [[]]
+      output: 1
+
