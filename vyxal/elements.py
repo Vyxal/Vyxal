@@ -469,7 +469,10 @@ def cartesian_over_list(lhs, ctx):
     """
     # todo maybe handle generators separately
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return vyxalify(itertools.product(*lhs))
+    return LazyList(
+        "".join(x) if all(isinstance(y, str) for y in x) else list(x)
+        for x in itertools.product(*lhs)
+    )
 
 
 def cartesian_power(lhs, rhs, ctx):
@@ -2613,6 +2616,19 @@ def nth_e(lhs, ctx):
         return vectorise(nth_e, lhs, ctx=ctx)
 
 
+def nth_fibonacci(lhs, ctx):
+    """Element ∆f
+    (num) -> nth fibonacci number # sympy.fibonacci(lhs + 1)
+    (str) -> nop
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.fibonacci(lhs + 1),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+
+
 def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
@@ -2951,8 +2967,14 @@ def prepend(lhs, rhs, ctx):
 
 def product(lhs, ctx):
     """Element Π
-    (lst) -> product(list)"""
-    return vy_reduce(multiply, lhs, ctx=ctx)
+    (lst[num]) -> product(list)
+    (lst[str|lst]) -> Cartesian product over a list of lists
+    """
+
+    if all(vy_type(x) == NUMBER_TYPE for x in lhs):
+        return vy_reduce(multiply, lhs, ctx=ctx)
+
+    return cartesian_over_list(lhs, ctx)
 
 
 def quadratic_solver(lhs, rhs, ctx):
@@ -3178,7 +3200,11 @@ def replace_until_no_change(lhs, rhs, other, ctx):
 def request(lhs, ctx):
     """Element ¨U
     (str) -> Send a GET request to a URL if online"""
-    x = urllib.request.urlopen(urlify(lhs)).read()
+
+    req = urllib.request.Request(
+        urlify(lhs), headers={"User-Agent": "Mozilla/5.0 Vyxal"}
+    )
+    x = urllib.request.urlopen(req).read()
     try:
         return x.decode("utf-8")
     except UnicodeDecodeError:
@@ -4364,7 +4390,7 @@ def vy_str(lhs, ctx=None):
     return {
         (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
         if ctx is not None and not ctx.print_decimals
-        else str(sympy.N(lhs, 20)).strip("0"),
+        else str(float(lhs)),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -5001,7 +5027,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element("sympy.fibonacci(lhs + 1)", 1),
+    "∆f": process_element(nth_fibonacci, 1),
     "∆±": process_element(copy_sign, 2),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
@@ -5043,7 +5069,7 @@ elements: dict[str, tuple[str, int]] = {
     "øĊ": process_element(center, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
-    "øḋ": process_element("str(float(lhs)).strip('.0')", 1),
+    "øḋ": process_element("str(float(lhs))", 1),
     "øe": process_element(run_length_encoding, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
@@ -5117,6 +5143,12 @@ elements: dict[str, tuple[str, int]] = {
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
     "ÞK": process_element(suffixes_element, 1),
+    "Þİ": (
+        "rhs, lhs = pop(stack, 2, ctx)\n"
+        "stack.append(index(lhs, [0, rhs], ctx))\n"
+        "stack.append(index(lhs, [rhs, None], ctx))\n",
+        2,
+    ),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
