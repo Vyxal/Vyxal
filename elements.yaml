@@ -779,3 +779,75 @@
     - inputs: [[]]
       output: 1
 
+- element: "B"
+  name: From Binary
+  description: Convert a number from base 2 to base 10
+  arity: 1
+  overloads:
+    num: convert lhs to a list of digits and convert that list of digits to base 10
+    str: int(lhs, 2)
+    lst: convert list of digits to base 10
+  vectorise: false
+  tests:
+    - inputs: [0]
+      output: 0
+    - inputs: [1]
+      output: 1
+    - inputs: [11110]
+      output: 30
+    - inputs: [""]
+      output: 0
+    - inputs: ["1101"]
+      output: 13
+    - inputs: ["wait this isn't binary..."]
+      output: 0
+    - inputs: [[]]
+      output: 0
+    - inputs: [[1, 0, 1, 1]]
+      output: 11
+    - inputs: [["binary?", "I just want", "to grill for", "goodness sakes"]]
+      output: 0
+
+- element: "C"
+  name: Count
+  description: Count the number of occurances of one item in another item
+  arity: 2
+  overloads:
+    num-num: the number of occurances of rhs in lhs
+    num-str: the number of occurances of rhs in lhs
+    num-lst: the number of occurances of lhs in rhs
+    str-num: the number of occurances of rhs in lhs
+    str-str: the number of occurances of rhs in lhs
+    str-lst: the number of occurances of lhs in rhs
+    lst-num: the number of occurances of rhs in lhs
+    lst-str: the number of occurances of rhs in lhs
+    lst-lst: the number of occurances of rhs in lhs
+  vectorise: false
+  tests:
+    - inputs: [1011, 1]
+      output: 3
+    - inputs: [69420, 3]
+      output: 0
+    - inputs: ["12222", 2]
+      output: 4
+    - inputs: [555553, "53"]
+      output: 1
+    - inputs: ["", 2]
+      output: 0
+    - inputs: [2, ""]
+      output: 0
+    - inputs: ["Vyxal", "x"]
+      output: 1
+    - inputs: ["Vyxal", ""]
+      output: 0
+    - inputs: ["", ""]
+      output: 1
+    - inputs: [[1, 2, 2, 2, 2, 3, 2, 1], 2]
+      output: 5
+    - inputs: [["1", 1, 2, 2, 1], 1]
+      output: 2
+    - inputs: [[], []]
+      output: 0
+    
+
+    
