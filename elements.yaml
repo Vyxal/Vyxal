@@ -848,6 +848,38 @@
       output: 2
     - inputs: [[], []]
       output: 0
-    
 
-    
+- element: "D"
+  name: Triplicate
+  description: Push an item 3 times
+  arity: 1
+  overloads:
+    any: lhs, lhs, lhs
+  vectorise: false
+  # Requires tests elsewhere
+
+- element: "E"
+  name: Two Power / Execute Vyxal
+  description: Raise 2 to the power of a number / Execute Vyxal code from a string
+  arity: 1
+  overloads:
+    num: 2 ** lhs
+    str: exec(lhs)
+  vectorise: true
+  tests:
+    - inputs: [1]
+      output: 2
+    - inputs: [2]
+      output: 4
+    - inputs: [3]
+      output: 8
+    - inputs: [-1]
+      output: 0.5
+    - inputs: ["1 1+"]
+      output: 2
+    - inputs: [""]
+      output: 0
+    - inputs: [[1, 2, 3, 4, 5, 6]]
+      output: [2, 4, 8, 16, 32, 64]
+    - inputs: [["1 1 +", "4 5 -"]]
+      output: [2, -1]
