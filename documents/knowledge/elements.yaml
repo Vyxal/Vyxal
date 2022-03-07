@@ -4681,6 +4681,17 @@
     - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
     - "[[]] : []"
 
+- element: "Þİ"
+  name: First n Items and Rest
+  description: a[:b] and a[b:]
+  arity: 2
+  overloads:
+    lst-int: a[:b] and a[b:]
+  vectorise: false
+  tests:
+    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
+    - "['abcde', 2] : 'cde'"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
