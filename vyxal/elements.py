@@ -469,7 +469,10 @@ def cartesian_over_list(lhs, ctx):
     """
     # todo maybe handle generators separately
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return vyxalify(itertools.product(*lhs))
+    return LazyList(
+        "".join(x) if all(isinstance(y, str) for y in x) else list(x)
+        for x in itertools.product(*lhs)
+    )
 
 
 def cartesian_power(lhs, rhs, ctx):
@@ -2964,8 +2967,14 @@ def prepend(lhs, rhs, ctx):
 
 def product(lhs, ctx):
     """Element Π
-    (lst) -> product(list)"""
-    return vy_reduce(multiply, lhs, ctx=ctx)
+    (lst[num]) -> product(list)
+    (lst[str|lst]) -> Cartesian product over a list of lists
+    """
+
+    if all(vy_type(x) == NUMBER_TYPE for x in lhs):
+        return vy_reduce(multiply, lhs, ctx=ctx)
+
+    return cartesian_over_list(lhs, ctx)
 
 
 def quadratic_solver(lhs, rhs, ctx):

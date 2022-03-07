@@ -2674,14 +2674,19 @@
   vectorise: false
 
 - element: "Π"
-  name: Product of Array
+  name: Product of Array / Cartesian product over list
   arity: 1
-  description: Product of Array
+  description: Product of Array / Cartesian product over a list of lists
   overloads:
-    lst: prod(a)
+    lst[num]: reduce list by multiplication
+    lst[str|lst]: reduce list by cartesian product
   vectorise: false
   tests:
     - "[[3,4,5]] : 60"
+    - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
+    - "[[[1, 2], [3, 4], []]] : []"
+    - '[["ab","cd"]] : ["ac","ad","bc","bd"]'
+    - '[["abc", "def", "ghi"]] : ["adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"]'
 
 - element: "„"
   name: Rotate Stack Left
@@ -4676,7 +4681,6 @@
     - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
     - "[[]] : []"
 
-
 - element: "Þİ"
   name: First n Items and Rest
   description: a[:b] and a[b:]
@@ -4687,6 +4691,7 @@
   tests:
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
     - "['abcde', 2] : 'cde'"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
