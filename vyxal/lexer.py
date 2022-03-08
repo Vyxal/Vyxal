@@ -111,18 +111,16 @@ def tokenise(
             tokens.append(Token(token_type, contextual_token_value))
             if source:
                 source.popleft()
-        elif head in f'{string.digits}.°':
+        elif head in f"{string.digits}.°":
             contextual_token_value = head
             if contextual_token_value != "0" or (source and source[0] in "°."):
                 while (
                     source
-                    and source[0] in f'{string.digits}.°'
+                    and source[0] in f"{string.digits}.°"
                     and (contextual_token_value + source[0]).count("°") < 2
                     and all(
                         x.count(".") < 2
-                        for x in (contextual_token_value + source[0]).split(
-                            "°"
-                        )
+                        for x in (contextual_token_value + source[0]).split("°")
                     )
                 ):
                     contextual_token_value += source.popleft()
@@ -135,7 +133,7 @@ def tokenise(
             tokens.append(Token(TokenType.STRING, contextual_token_value))
         elif head in "→←":
             contextual_token_value = ""
-            while source and source[0] in f'{string.ascii_letters}_':
+            while source and source[0] in f"{string.ascii_letters}_":
                 contextual_token_value += source.popleft()
                 if variables_as_digraphs:
                     break

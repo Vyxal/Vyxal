@@ -794,7 +794,7 @@ def decrement(lhs, ctx):
     (str) -> a + "-"
     """
     ts = vy_type(lhs)
-    return {NUMBER_TYPE: lambda: lhs - 1, str: lambda: f'{lhs}-'}.get(
+    return {NUMBER_TYPE: lambda: lhs - 1, str: lambda: f"{lhs}-"}.get(
         ts, lambda: vectorise(decrement, lhs, ctx=ctx)
     )()
 
@@ -1870,7 +1870,7 @@ def is_divisible(lhs, rhs, ctx):
             (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs % rhs == 0),
             (NUMBER_TYPE, str): lambda: [rhs] * lhs,
             (str, NUMBER_TYPE): lambda: [lhs] * rhs,
-            (str, str): lambda: f'{rhs} {lhs}',
+            (str, str): lambda: f"{rhs} {lhs}",
         }.get(ts, lambda: vectorise(helper, lhs, rhs, ctx=ctx))()
 
     return {
@@ -1945,7 +1945,7 @@ def is_square(lhs, ctx):
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
-        str: lambda: str(sympy.expand(make_expression(f'{lhs} ** 2'))),
+        str: lambda: str(sympy.expand(make_expression(f"{lhs} ** 2"))),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
 
 
@@ -2182,7 +2182,9 @@ def max_by_tail(lhs, ctx):
     (any) -> max(a, key=lambda x: x[-1])
     """
     lhs = iterable(lhs, ctx=ctx)
-    return [] if len(lhs) == 0 else max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+    return (
+        [] if len(lhs) == 0 else max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+    )
 
 
 def maximal_indices(lhs, ctx):
@@ -2269,7 +2271,9 @@ def min_by_tail(lhs, ctx):
     (any) -> min(a, key=lambda x: x[-1])
     """
     lhs = iterable(lhs, ctx=ctx)
-    return [] if len(lhs) == 0 else min_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+    return (
+        [] if len(lhs) == 0 else min_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+    )
 
 
 def mirror(lhs, ctx):
@@ -2352,9 +2356,16 @@ def multi_dimensional_search(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     indexes = enumerate_md(lhs)
 
-    return next((ind for ind in indexes if non_vectorising_equals(
-            multi_dimensional_index(lhs, ind, ctx), rhs, ctx
-        )), [])
+    return next(
+        (
+            ind
+            for ind in indexes
+            if non_vectorising_equals(
+                multi_dimensional_index(lhs, ind, ctx), rhs, ctx
+            )
+        ),
+        [],
+    )
 
 
 def multi_dimensional_index(lhs, rhs, ctx):
@@ -2815,7 +2826,7 @@ def pluralise_count(lhs, rhs, ctx):
     """
     if isinstance(lhs, int):
         return pluralise_count(rhs, lhs, ctx)
-    return f'{str(rhs)} {str(lhs)}' + "s" * (rhs != 1)
+    return f"{str(rhs)} {str(lhs)}" + "s" * (rhs != 1)
 
 
 def polynomial_expr_from_coeffs(lhs, ctx):
@@ -2829,10 +2840,10 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(lhs + 1))),
+        NUMBER_TYPE: lambda: str(sum(x**arg for arg in range(lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
+            sum(c * x**i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -3388,9 +3399,7 @@ def sort_by(lhs, rhs, ctx):
             else range(lhs, rhs - 1, -1),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
-    function, vector = (
-        (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
-    )
+    function, vector = (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
     return sorted(
         iterable(vector, ctx=ctx),
         key=lambda x: safe_apply(function, x, ctx=ctx),
@@ -4055,7 +4064,11 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             return LazyList(simple.get(ts)())
     else:
         # That is, single argument vectorisation
-        lhs = iterable(lhs, range, ctx=ctx) if explicit else iterable(lhs, ctx=ctx)
+        lhs = (
+            iterable(lhs, range, ctx=ctx)
+            if explicit
+            else iterable(lhs, ctx=ctx)
+        )
         return LazyList((safe_apply(function, x, ctx=ctx) for x in lhs))
 
 

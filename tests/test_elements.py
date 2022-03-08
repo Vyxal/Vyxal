@@ -2,7 +2,7 @@
 import os
 import sys
 import sympy
-THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/..'
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.transpile import *

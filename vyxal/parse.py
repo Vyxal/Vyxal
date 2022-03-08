@@ -70,7 +70,7 @@ def variable_name(tokens: list[lexer.Token]) -> str:
     """
     token_values = [token.value for token in tokens]
     name = "".join(token_values)
-    return "".join(char for char in name if char in f'{string.ascii_letters}_')
+    return "".join(char for char in name if char in f"{string.ascii_letters}_")
 
 
 def parse(

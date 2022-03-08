@@ -240,7 +240,9 @@ def get_input(ctx: Context) -> Any:
 
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
-    return lst.has_ind(ind) if isinstance(lst, LazyList) else 0 <= ind < len(lst)
+    return (
+        lst.has_ind(ind) if isinstance(lst, LazyList) else 0 <= ind < len(lst)
+    )
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:

@@ -16,7 +16,7 @@ from vyxal.elements import *
 from vyxal.helpers import *
 from vyxal.transpile import transpile
 
-THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
+THIS_FOLDER = f"{os.path.dirname(os.path.abspath(__file__))}/.."
 sys.path.insert(1, THIS_FOLDER)
 
 
