@@ -59,33 +59,32 @@ with open(TEST_ELEMENTS_PY, "w", encoding="utf-8") as tests:
 
     for element in data:
         try:
-            if "tests" in element:
-                cases = element["tests"] or []
-                name = re.sub("[^A-Za-z0-9_\-]", "", str(element["name"]))
-                name = name.replace("-", "_")
-                names.append(name)
-                tests.write(f"def test_{name}():\n")
-                if not cases:
-                    tests.write("    pass #TODO implement this test!!!\n\n")
-                    continue
-                for test in cases:
-                    try:
-                        stack, expected = test.split(" : ", 1)
-                    except Exception as e:
-                        print("Failed on test", test)
-                        raise e
-
-                    tests.write(
-                        function_template.format(
-                            stack,
-                            expected,
-                            repr(element["element"]),
-                            repr(element["element"]),
-                        )
-                    )
-                tests.write("\n")
-            else:
+            if "tests" not in element:
                 continue
+            cases = element["tests"] or []
+            name = re.sub("[^A-Za-z0-9_\-]", "", str(element["name"]))
+            name = name.replace("-", "_")
+            names.append(name)
+            tests.write(f"def test_{name}():\n")
+            if not cases:
+                tests.write("    pass #TODO implement this test!!!\n\n")
+                continue
+            for test in cases:
+                try:
+                    stack, expected = test.split(" : ", 1)
+                except Exception as e:
+                    print("Failed on test", test)
+                    raise e
+
+                tests.write(
+                    function_template.format(
+                        stack,
+                        expected,
+                        repr(element["element"]),
+                        repr(element["element"]),
+                    )
+                )
+            tests.write("\n")
         except Exception as e:
             print("Failed in element", element)
             raise e

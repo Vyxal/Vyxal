@@ -42,11 +42,7 @@ class LazyList:
 
     def __contains__(self, lhs):
         if self.infinite:
-            if self.generated:
-                last = self.generated[-1]
-            else:
-                last = 0
-
+            last = self.generated[-1] if self.generated else 0
             while last <= lhs:
                 try:
                     last = next(self)
@@ -54,12 +50,12 @@ class LazyList:
                         return 1
                 except StopIteration:
                     break
-            return 0
         else:
             for temp in self:
                 if temp == lhs:
                     return 1
-            return 0
+
+        return 0
 
     def __eq__(self, other):
         from vyxal.helpers import simplify
@@ -187,18 +183,12 @@ class LazyList:
             try:
                 item = next(self_clone)
             except StopIteration:
-                if self_clone == other_clone:
-                    return 0
-                else:
-                    return -1
+                return 0 if self_clone == other_clone else -1
             try:
                 other_item = next(other_clone)
             except StopIteration:
                 return 1
-        if item > other_item:
-            return 1
-        else:
-            return -1
+        return 1 if item > other_item else -1
 
     def count(self, other):
         """Number of occurrences of `other` in this `LazyList`"""
@@ -215,14 +205,13 @@ class LazyList:
     def has_ind(self, ind: int):
         """Whether or not this list is long enough for index `ind`"""
         if ind < len(self.generated):
-            return 0 <= ind
-        else:
-            for _ in range(ind - len(self.generated) + 1):
-                try:
-                    next(self)
-                except StopIteration:
-                    return False
-            return True
+            return ind >= 0
+        for _ in range(ind - len(self.generated) + 1):
+            try:
+                next(self)
+            except StopIteration:
+                return False
+        return True
 
     def listify(self):
         temp = self.generated[::]
@@ -267,5 +256,4 @@ class LazyList:
     @lazylist
     def reversed(self):
         self.generated += list(itertools.tee(self.raw_object)[-1])
-        for item in self.generated[::-1]:
-            yield item
+        yield from self.generated[::-1]

@@ -2,11 +2,12 @@
 This file is for testing specific elements that can't go in elements.yaml
 """
 
+
 import os
 import sys
 import sympy
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.transpile import *
@@ -124,7 +125,7 @@ def test_overdot_X_function_overload():
 
 def test_beheading_infinite_lists():
     stack = run_vyxal("⁽› 1 Ḟ Ḣ")
-    assert stack[-1][0:5] == [2, 3, 4, 5, 6]
+    assert stack[-1][:5] == [2, 3, 4, 5, 6]
 
 
 def test_equal_lazylists():

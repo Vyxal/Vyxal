@@ -1,7 +1,7 @@
 import os
 import sys
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.lexer import *

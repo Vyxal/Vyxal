@@ -99,7 +99,7 @@ def tokenise(
                     # Handle the escape by just dequeueing the next
                     # character
                     if source:
-                        contextual_token_value += "\\" + source.popleft()
+                        contextual_token_value += f"\\{source.popleft()}"
                 else:
                     contextual_token_value += character
             if head == "`":
@@ -111,23 +111,23 @@ def tokenise(
             tokens.append(Token(token_type, contextual_token_value))
             if source:
                 source.popleft()
-        elif head in string.digits + ".°":
+        elif head in f'{string.digits}.°':
             contextual_token_value = head
-            if head == "0" and not (source and source[0] in "°."):
-                # Handle the special case of 0.
-                tokens.append(Token(TokenType.NUMBER, contextual_token_value))
-            else:
+            if contextual_token_value != "0" or (source and source[0] in "°."):
                 while (
                     source
-                    and source[0] in string.digits + ".°"
+                    and source[0] in f'{string.digits}.°'
                     and (contextual_token_value + source[0]).count("°") < 2
                     and all(
                         x.count(".") < 2
-                        for x in (contextual_token_value + source[0]).split("°")
+                        for x in (contextual_token_value + source[0]).split(
+                            "°"
+                        )
                     )
                 ):
                     contextual_token_value += source.popleft()
-                tokens.append(Token(TokenType.NUMBER, contextual_token_value))
+            # Handle the special case of 0.
+            tokens.append(Token(TokenType.NUMBER, contextual_token_value))
         elif head == "‛":
             contextual_token_value = ""
             while source and len(contextual_token_value) != 2:
@@ -135,7 +135,7 @@ def tokenise(
             tokens.append(Token(TokenType.STRING, contextual_token_value))
         elif head in "→←":
             contextual_token_value = ""
-            while source and source[0] in string.ascii_letters + "_":
+            while source and source[0] in f'{string.ascii_letters}_':
                 contextual_token_value += source.popleft()
                 if variables_as_digraphs:
                     break
