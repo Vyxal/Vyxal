@@ -23226,13 +23226,12 @@ for index, word in enumerate(contents):
 
 
 def word_index(word):
-    if word in lookup:
-        ret = helpers.to_base_alphabet(lookup[word], encoding.compression)
-        if len(ret) == 1:
-            ret = "λ" + ret
-        return ret
-    else:
+    if word not in lookup:
         return -1
+    ret = helpers.to_base_alphabet(lookup[word], encoding.compression)
+    if len(ret) == 1:
+        ret = f"λ{ret}"
+    return ret
 
 
 if __name__ == "__main__":

@@ -86,10 +86,8 @@ def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
 
     @lazylist
     def gen():
-        for item in vec1:
-            yield item
-        for item in vec2:
-            yield item
+        yield from vec1
+        yield from vec2
 
     return gen()
 
@@ -154,7 +152,7 @@ def foldl(
     ctx: Context,
 ) -> Any:
     """Reduce vector by function"""
-    if len(vector) == 0:
+    if not vector:
         return 0
 
     working = initial
@@ -179,7 +177,7 @@ def format_string(pattern: str, data: Union[str, VyList]) -> str:
 
     while index < len(pattern):
         if pattern[index] == "\\":
-            ret += "\\" + pattern[index + 1]
+            ret += f"\\{pattern[index + 1]}"
             index += 1
         elif pattern[index] == "%":
             ret += str(data[f_index % len(data)])
@@ -226,27 +224,23 @@ def get_input(ctx: Context) -> Any:
             except Exception:  # skipcq: PYL-W0703
                 temp = 0
             return temp
+    elif ctx.inputs[-1][0]:
+        ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
+        ctx.inputs[-1][1] += 1
+        return ret
     else:
-        if ctx.inputs[-1][0]:
-            ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
-            ctx.inputs[-1][1] += 1
-            return ret
+        if len(ctx.inputs) == 1:
+            ctx.use_top_input = True
+            temp = get_input(ctx)
+            ctx.use_top_input = False
+            return temp
         else:
-            if len(ctx.inputs) == 1:
-                ctx.use_top_input = True
-                temp = get_input(ctx)
-                ctx.use_top_input = False
-                return temp
-            else:
-                return 0
+            return 0
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
-    if isinstance(lst, LazyList):
-        return lst.has_ind(ind)
-    else:
-        return 0 <= ind < len(lst)
+    return lst.has_ind(ind) if isinstance(lst, LazyList) else 0 <= ind < len(lst)
 
 
 def indent_str(string: str, indent: int, end="\n") -> str:
@@ -468,10 +462,7 @@ def mold(
                 obj = next(content)
             temp.append(obj)
         if temp:
-            if len(temp) == 1:
-                temp = deep_copy(temp[0])
-            else:
-                temp = deep_copy(temp)
+            temp = deep_copy(temp[0]) if len(temp) == 1 else deep_copy(temp)
             final.append(temp)
 
     return final
@@ -534,7 +525,7 @@ def pi_digits(n: int):
         x = n + 1
         k, a, b, a1, b1 = 2, 4, 1, 12, 4
         while x > 0:
-            p, q, k = k * k, 2 * k + 1, k + 1
+            p, q, k = k**2, 2 * k + 1, k + 1
             a, b, a1, b1 = a1, b1, p * a + q * a1, p * b + q * b1
             d, d1 = a / b, a1 / b1
             while d == d1 and x > 0:
@@ -612,13 +603,12 @@ def ring_translate(string: str, map_source: Union[str, list]) -> str:
     """Ring translates a given string according to the provided mapping
     - that is, map matching elements to the subsequent element in the
     translation ring. The ring wraps around."""
-    ret = ""
-    for char in string:
-        if char in map_source:
-            ret += map_source[(map_source.index(char) + 1) % len(map_source)]
-        else:
-            ret += char
-    return ret
+    return "".join(
+        map_source[(map_source.index(char) + 1) % len(map_source)]
+        if char in map_source
+        else char
+        for char in string
+    )
 
 
 def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
@@ -634,10 +624,7 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     """
     if function.__name__.startswith("_lambda"):
         ret = function(list(args)[::-1], function, len(args), ctx=ctx)
-        if len(ret):
-            return ret[-1]
-        else:
-            return []
+        return ret[-1] if len(ret) else []
     elif function.__name__.startswith("VAR_"):
         return function(list(args)[::-1], function, ctx=ctx)[-1]
     elif takes_ctx(function):
@@ -647,11 +634,8 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
 
 def scalarify(value: Any) -> Union[Any, List[Any]]:
     """Returns value[0] if value is a list of length 1, else value"""
-    if type(value) in (list, LazyList):
-        if len(value) == 1:
-            return value[0]
-        else:
-            return value
+    if type(value) in (list, LazyList) and len(value) == 1:
+        return value[0]
     else:
         return value
 
@@ -677,10 +661,7 @@ def sentence_case(item: str) -> str:
     ret = ""
     capitalise = True
     for char in item:
-        if capitalise:
-            ret += char.upper()
-        else:
-            ret += char.lower()
+        ret += char.upper() if capitalise else char.lower()
         if capitalise and char != " ":
             capitalise = False
         capitalise = capitalise or char in "!?."
@@ -695,10 +676,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     if isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
-        if value.is_real:
-            return float(value)
-        else:
-            return complex(value)
+        return float(value) if value.is_real else complex(value)
     elif isinstance(value, types.FunctionType):
         return str(value)
     else:
@@ -869,10 +847,9 @@ def uncompress_str(string: str) -> str:
         string, vyxal.encoding.codepage_string_compress
     )
 
-    actual = to_base_alphabet(
+    return to_base_alphabet(
         base_10_representation, vyxal.encoding.base_27_alphabet
     )
-    return actual
 
 
 def uncompress_num(num: str) -> int:
@@ -883,30 +860,21 @@ def uncompress_num(num: str) -> int:
 def urlify(item: str) -> str:
     """Makes a url ready for requesting"""
     if not (item.startswith("http://") or item.startswith("https://")):
-        return "https://" + item
+        return f"https://{item}"
     return item
 
 
 def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
-    if ctx.online:
-        try:
-            t = ast.literal_eval(item)
-            if type(t) is float:
-                t = sympy.Rational(str(t))
-            return vyxalify(t)
-        except Exception:  # skipcq: PYL-W0703
-            # TODO: eval as vyxal
-            return item
-    else:
-        try:
-            t = eval(item)
-            if type(t) is float:
-                t = sympy.Rational(str(t))
-            return vyxalify(t)
-        except Exception:  # skipcq: PYL-W0703
-            return item
+    try:
+        t = ast.literal_eval(item) if ctx.online else eval(item)
+        if type(t) is float:
+            t = sympy.Rational(str(t))
+        return vyxalify(t)
+    except Exception:  # skipcq: PYL-W0703
+        # TODO: eval as vyxal
+        return item
 
 
 @lazylist
@@ -961,14 +929,7 @@ def wrapify(
     item: Any, count: int = None, ctx: Context = DEFAULT_CTX
 ) -> List[Any]:
     """Leaves lists as lists, wraps scalars into a list"""
-    if count is not None:
-        temp = pop(item, count, ctx)
-        if count == 1:
-            return [temp]
-        else:
-            return temp
-    else:
-        if primitive_type(item) == SCALAR_TYPE:
-            return [item]
-        else:
-            return item
+    if count is None:
+        return [item] if primitive_type(item) == SCALAR_TYPE else item
+    temp = pop(item, count, ctx)
+    return [temp] if count == 1 else temp

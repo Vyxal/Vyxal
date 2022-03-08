@@ -3,6 +3,7 @@ offline.
 
 """
 
+
 import os
 from re import A
 import sys
@@ -15,7 +16,7 @@ from vyxal.elements import *
 from vyxal.helpers import *
 from vyxal.transpile import transpile
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
 sys.path.insert(1, THIS_FOLDER)
 
 
@@ -98,11 +99,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     if "a" in flags:  # All inputs as array
         inputs = [inputs]
 
-    if "H" in flags:  # Pre-initalise stack to 100
-        stack = [100]
-    else:
-        stack = []
-
+    stack = [100] if "H" in flags else []
     ctx.inputs[0][0] = inputs
     ctx.stacks.append(stack)
 
@@ -139,12 +136,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             code, ctx.dictionary_compression, ctx.variable_length_1
         )
     except Exception as e:  # skipcq: PYL-W0703
-        if ctx.online:
-            ctx.online_output[2] += "\n" + traceback.format_exc()
-            sys.exit(1)
-        else:
+        if not ctx.online:
             raise e
 
+        ctx.online_output[2] += "\n" + traceback.format_exc()
+        sys.exit(1)
     if "c" in flags:  # Show transpiled code
         if ctx.online:
             ctx.online_output[2] += code
@@ -155,15 +151,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     try:
         exec(code, locals() | globals())
     except Exception as e:  # skipcq: PYL-W0703
-        if ctx.online:
-            ctx.online_output[2] += "\n" + traceback.format_exc()
-            sys.exit(1)
-        else:
+        if not ctx.online:
             raise
 
+        ctx.online_output[2] += "\n" + traceback.format_exc()
+        sys.exit(1)
     originally_empty = not stack
     output = pop(stack, 1, ctx)
-    if not (ctx.printed or "O" in flags) or "o" in flags:
+    if not ctx.printed and "O" not in flags or "o" in flags:
         for flag in flags:
             if flag == "j":
                 if isinstance(output, LazyList):
@@ -182,11 +177,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                         if is_str:
                             vy_print(elem, end="", ctx=ctx)
                             continue
-                        if acc is None:
-                            # For the first element
-                            acc = elem
-                        else:
-                            acc = add(acc, elem, ctx)
+                        acc = elem if acc is None else add(acc, elem, ctx)
                         if isinstance(acc, str):
                             # We've encountered a string, now print that
                             # Everything else will also be immediately
@@ -242,8 +233,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     output = output[:100]
             elif flag == "l":
                 output = length(output, ctx)
-            else:
-                pass
         else:
             vy_print(output, ctx=ctx)
 

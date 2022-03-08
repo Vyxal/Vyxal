@@ -2,8 +2,7 @@ import os
 import yaml
 
 
-codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€"
-codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
+codepage = "λƛ¬∧⟑∨⟇÷×«␤»°•ß†€" + "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠"
 codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"

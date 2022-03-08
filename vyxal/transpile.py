@@ -28,20 +28,19 @@ def lambda_wrap(
 
     elements pass their arity on to the lambda
     """
-    if len(branch) == 1:
-        if isinstance(branch[0], vyxal.structure.GenericStatement):
-            if branch[0].branches[0][0].name in NILADIC_TYPES:
-                return vyxal.structure.Lambda(0, branch)
-            return vyxal.structure.Lambda(
-                elements.get(branch[0].branches[0][0].value, ("", 1))[1],
-                branch,
-            )
-        elif isinstance(branch[0], vyxal.structure.RecurseStatement):
-            return vyxal.structure.Lambda(1, branch)
-        elif isinstance(branch[0], vyxal.structure.Lambda):
-            return branch[0]
-        else:
-            return vyxal.structure.Lambda(1, branch)
+    if len(branch) != 1:
+        return vyxal.structure.Lambda(1, branch)
+    if isinstance(branch[0], vyxal.structure.GenericStatement):
+        if branch[0].branches[0][0].name in NILADIC_TYPES:
+            return vyxal.structure.Lambda(0, branch)
+        return vyxal.structure.Lambda(
+            elements.get(branch[0].branches[0][0].value, ("", 1))[1],
+            branch,
+        )
+    elif isinstance(branch[0], vyxal.structure.RecurseStatement):
+        return vyxal.structure.Lambda(1, branch)
+    elif isinstance(branch[0], vyxal.structure.Lambda):
+        return branch[0]
     else:
         return vyxal.structure.Lambda(1, branch)
 
@@ -97,10 +96,7 @@ def transpile_token(
     """Transpile a single token"""
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
-        if dict_compress:
-            string = uncompress(token)
-        else:
-            string = token.value
+        string = uncompress(token) if dict_compress else token.value
         # Can't use {string!r} inside the f-string because that
         # screws up escape sequences.
 
@@ -110,10 +106,7 @@ def transpile_token(
         for char in iterator:
             if char == "\\":
                 after_char = next(iterator, "")
-                if after_char == "`":
-                    temp += "`"
-                else:
-                    temp += "\\" + after_char
+                temp += "`" if after_char == "`" else f"\\{after_char}"
             elif char == '"':
                 temp += '\\"'
             elif char == "\n":
@@ -130,9 +123,9 @@ def transpile_token(
         if parts[0] == "+":
             parts = (parts or "1") + "I"
         elif parts[-1] == "+":
-            parts = parts + "1 * I"
+            parts = f'{parts}1 * I'
         elif "+" in parts:
-            parts = parts + "* I"
+            parts = f'{parts}* I'
 
         return indent_str(f'stack.append(sympy.nsimplify("{parts}"))', indent)
     elif token.name == TokenType.GENERAL:

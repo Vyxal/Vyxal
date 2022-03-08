@@ -1,7 +1,6 @@
 import string
 
-codepage = "λƛ¬∧⟑∨⟇÷×«\n»°•ß†€"
-codepage += "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
+codepage = "λƛ¬∧⟑∨⟇÷×«\n»°•ß†€" + "½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨ "
 codepage += "!\"#$%&'()*+,-./01"
 codepage += "23456789:;<=>?@A"
 codepage += "BCDEFGHIJKLMNOPQ"
@@ -22,22 +21,12 @@ assert len(codepage) == 256
 
 def vyxal_to_utf8(code: list[int]) -> str:
     """Turn characters on Vyxal codepage into actual UTF-8 characters"""
-    # Taken from the old 05AB1E interpreter
-    processed_code = ""
-    for char in code:
-        processed_code += codepage[char]
-
-    return processed_code
+    return "".join(codepage[char] for char in code)
 
 
 def utf8_to_vyxal(code: str) -> str:
     """Turn UTF-8 characters into bytes according to the codepage"""
-    # Taken from the old 05AB1E interpreter
-    processed_code = ""
-    for char in code:
-        processed_code += chr(codepage.index(char))
-
-    return processed_code
+    return "".join(chr(codepage.index(char)) for char in code)
 
 
 compression = codepage

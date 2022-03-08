@@ -9,7 +9,7 @@ import sys
 from flask import Flask, render_template, request
 from flask_cors import CORS
 
-THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
+THIS_FOLDER = f'{os.path.dirname(os.path.abspath(__file__))}/..'
 sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.main import execute_vyxal
@@ -128,20 +128,21 @@ def oeis():
 @app.route("/update", methods=("POST",))
 def update():
     key = request.headers.get("X-funky-password", "")
-    if compare_digest(sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH):
-        if os.fork() == 0:
-            os.system("/home/Vyxal/mysite/funky_upgrade.sh")
-            os._exit()
-        return "updated successfully", 200
-    else:
+    if not compare_digest(
+        sha256(key.encode()).hexdigest(), FUNKY_PASSWORD_HASH
+    ):
         return "incorrect or missing X-funky-password header", 403
+    if os.fork() == 0:
+        os.system("/home/Vyxal/mysite/funky_upgrade.sh")
+        os._exit()
+    return "updated successfully", 200
 
 
 @app.route("/version", methods=("GET",))
 def version():
     import subprocess
 
-    VERSION = (
+    return (
         subprocess.check_output(
             [
                 "git",
@@ -156,5 +157,3 @@ def version():
         .decode()
         .strip()
     )
-
-    return VERSION
