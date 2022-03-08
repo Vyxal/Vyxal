@@ -188,7 +188,7 @@
   arity: NA
 
 - element: "½"
-  name: Half
+  name: Halve
   description: Halve a number / Split a string into two halves
   arity: 1
   overloads:
