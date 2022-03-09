@@ -1935,6 +1935,18 @@ Get the Carmichael function of a number / Local Maxima
 num a -> carmichael(a)
 str a -> local_maxima(a)
 `
+codepage_descriptions[131] += `
+∆› (Increment until false)
+Increment a until b(a) is false
+any a, fun b -> while b(a): a += 1
+fun a, any b -> while a(b): b += 1
+`
+codepage_descriptions[132] += `
+∆‹ (Decrement until false)
+Decrement a until b(a) is false
+any a, fun b -> while b(a): a -= 1
+fun a, any b -> while a(b): b -= 1
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
