@@ -4365,6 +4365,12 @@
     - "[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]"
     - "[[2,3,2]] : [[[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0]]]"
 
+- element: "ÞṄ"
+  name: Infinite Integer Partitions
+  description: Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+  arity: 0
+  vectorise: false
+
 - element: "ÞZ"
   name: Fill By Coordinates
   description: Fill a matrix by calling a function with the lists of coordinates in the matrix.
@@ -4774,6 +4780,14 @@
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
     - "['abcde', 2] : 'cde'"
 
+- element: "ÞN"
+  name: Alternating Negation
+  description: An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+  arity: 1
+  overloads:
+    any: "[a, -a, a, -a, ...]"
+  vectorise: false
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
@@ -4860,3 +4874,12 @@
   tests:
     - "[[1, 1, 1], [9, 9, 9]] : 1"
     - "[[1, 2, '3'], [1, 2, '2']] : 0"
+
+- element: "¨*"
+  name: All Multiples
+  description: Return all multiples of a
+  arity: 1
+  overloads:
+    num: "[a*1, a*2, a*3, a*4, ...]"
+    str: "[a*1, a*2, a*3, a*4, ...]"
+  vectorise: true
