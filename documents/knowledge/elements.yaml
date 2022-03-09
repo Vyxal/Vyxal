@@ -4710,6 +4710,14 @@
     - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
     - "['abcde', 2] : 'cde'"
 
+- element: "ÞN"
+  name: Alternating Negation
+  description: An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+  arity: 1
+  overloads:
+    any: "[a, -a, a, -a, ...]"
+  vectorise: false
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
