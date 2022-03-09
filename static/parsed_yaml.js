@@ -2142,6 +2142,10 @@ codepage_descriptions[109] += `
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
 lst a -> Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
 `
+codepage_descriptions[194] += `
+ÞṄ (Infinite Integer Partitions)
+Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+`
 codepage_descriptions[90] += `
 ÞZ (Fill By Coordinates)
 Fill a matrix by calling a function with the lists of coordinates in the matrix.

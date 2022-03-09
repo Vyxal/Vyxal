@@ -1713,6 +1713,16 @@ def infinite_cardinals(_, ctx=None):
     return LazyList(map(num2words.num2words, itertools.count(1)), isinf=True)
 
 
+def infinite_integer_partitions(_, ctx=None):
+    """Element ÞṄ"""
+
+    def gen():
+        for n in itertools.count(1):
+            yield from integer_parts_or_join_spaces(n, ctx=ctx)
+
+    return LazyList(gen(), isinf=True)
+
+
 def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
@@ -5175,6 +5185,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ↑": process_element(max_by_function, 2),
     "ÞZ": process_element(coords_deepmap, 2),
     "ÞF": process_element(fibonaacis, 0),
+    "ÞṄ": process_element(infinite_integer_partitions, 0),
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),

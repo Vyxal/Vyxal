@@ -3072,6 +3072,11 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 - lst a: `Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost`
 -------------------------------
+## `` ÞṄ `` (Infinite Integer Partitions)
+
+Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+
+-------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
