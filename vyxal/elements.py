@@ -174,6 +174,15 @@ def all_less_than_increasing(lhs, rhs, ctx):
     return gen()
 
 
+def all_multiples(lhs, ctx):
+    """Element ¨*
+    (num) -> [a*1, a*2, a*3, a*4, ...]
+    (str) -> [a*1, a*2, a*3, a*4, ...]
+    """
+
+    return multiply(lhs, infinite_positives(ctx), ctx)
+
+
 def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
@@ -5162,6 +5171,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
+    "¨*": process_element(all_multiples, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
