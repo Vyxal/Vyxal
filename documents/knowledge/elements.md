@@ -2751,6 +2751,24 @@ Get the Carmichael function of a number / Local Maxima
 - num a: `carmichael(a)`
 - str a: `local_maxima(a)`
 -------------------------------
+## `` ∆› `` (Increment until false)
+
+Increment a until b(a) is false
+
+### Overloads
+
+- any a, fun b: `while b(a): a += 1`
+- fun a, any b: `while a(b): b += 1`
+-------------------------------
+## `` ∆‹ `` (Decrement until false)
+
+Decrement a until b(a) is false
+
+### Overloads
+
+- any a, fun b: `while b(a): a -= 1`
+- fun a, any b: `while a(b): b -= 1`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
@@ -3378,6 +3396,15 @@ Send a GET request to a URL
 ### Overloads
 
 - str a: `Send a GET request to a URL`
+-------------------------------
+## `` ¨= `` (Invariant After Application)
+Push whether the result of applying an element to an item is the same as the original item
+
+Usage:
+```
+¨=<element>
+```
+
 -------------------------------
 ## `` ¨M `` (Map To Indices)
 
