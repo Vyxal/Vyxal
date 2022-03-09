@@ -5336,4 +5336,9 @@ modifiers: dict[str, str] = {
         "    stack.append(function_A)\n"
         "    function_call(stack, ctx)"
     ),
+    "¨=": (
+        "original = pop(stack, 1, ctx)\n"
+        "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
+        "stack.append(non_vectorising_equals(original, res, ctx=ctx))"
+    ),
 }

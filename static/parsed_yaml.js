@@ -2329,6 +2329,10 @@ codepage_descriptions[85] += `
 Send a GET request to a URL
 str a -> Send a GET request to a URL
 `
+codepage_descriptions.push(`Invariant After Application
+Push whether the result of applying an element to an item is the same as the original item
+`)
+
 codepage_descriptions[77] += `
 ¨M (Map To Indices)
 Map a function to elements of a list whose indices are in another list
