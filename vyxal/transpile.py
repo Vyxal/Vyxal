@@ -236,7 +236,7 @@ def transpile_structure(
         return (
             transpile_ast(struct.condition, indent, dict_compress=dict_compress)
             + indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
-            + indent_str("counter = 1", indent)
+            + indent_str("counter = ctx.range_start", indent)
             + indent_str("while boolify(condition, ctx):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + indent_str("    ctx.context_values.append(counter)", indent)
