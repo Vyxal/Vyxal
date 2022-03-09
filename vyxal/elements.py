@@ -174,6 +174,15 @@ def all_less_than_increasing(lhs, rhs, ctx):
     return gen()
 
 
+def all_multiples(lhs, ctx):
+    """Element ¨*
+    (num) -> [a*1, a*2, a*3, a*4, ...]
+    (str) -> [a*1, a*2, a*3, a*4, ...]
+    """
+
+    return multiply(lhs, infinite_positives(ctx), ctx)
+
+
 def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
@@ -218,6 +227,21 @@ def all_unique(lhs, ctx):
     (any) -> Are all elements of a unique?
     """
     return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
+
+
+def alternating_negations(lhs, ctx):
+    """Element ÞN
+    (any) -> alternating negations of lhs
+    """
+
+    @lazylist
+    def gen():
+        flag = False
+        while True:
+            yield negate(lhs, ctx) if flag else lhs
+            flag = not flag
+
+    return gen()
 
 
 def angle_bracketify(lhs, ctx):
@@ -5190,6 +5214,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(index(lhs, [rhs, None], ctx))\n",
         2,
     ),
+    "ÞN": process_element(alternating_negations, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
@@ -5203,6 +5228,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
+    "¨*": process_element(all_multiples, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
