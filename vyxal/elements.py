@@ -803,6 +803,20 @@ def decrement(lhs, ctx):
     )()
 
 
+def decrement_until_false(lhs, rhs, ctx):
+    """Element ∆‹
+    (any, fun) -> while b(a): a -= 1
+    (fun, any) -> while a(b): b -= 1
+    """
+
+    function, value = (
+        (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
+    )
+    while safe_apply(function, value, ctx=ctx):
+        value = decrement(value, ctx)
+    return value
+
+
 def deep_flatten(lhs, ctx):
     """Element f
     (any) -> flatten list completely
@@ -1581,6 +1595,20 @@ def increment(lhs, ctx):
         NUMBER_TYPE: lambda: lhs + 1,
         str: lambda: lhs.replace(" ", "0"),
     }.get(ts, lambda: vectorise(increment, lhs, ctx=ctx))()
+
+
+def increment_until_false(lhs, rhs, ctx):
+    """Element ∆‹
+    (any, fun) -> while b(a): a += 1
+    (fun, any) -> while a(b): b += 1
+    """
+
+    function, value = (
+        (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
+    )
+    while safe_apply(function, value, ctx=ctx):
+        value = increment(value, ctx)
+    return value
 
 
 def index(lhs, rhs, ctx):
@@ -5069,6 +5097,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṫ": process_element(totient, 1),
     "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
     "∆¢": process_element(carmichael_function, 1),
+    "∆›": process_element(increment_until_false, 2),
+    "∆‹": process_element(decrement_until_false, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -5316,5 +5346,10 @@ modifiers: dict[str, str] = {
         "if boolify(pop(stack, 1, ctx), ctx):\n"
         "    stack.append(function_A)\n"
         "    function_call(stack, ctx)"
+    ),
+    "¨=": (
+        "original = pop(stack, 1, ctx)\n"
+        "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
+        "stack.append(non_vectorising_equals(original, res, ctx=ctx))"
     ),
 }
