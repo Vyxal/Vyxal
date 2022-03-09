@@ -2308,6 +2308,26 @@ codepage_descriptions[155] += `
 Sort a list by length.
 lst a -> Sort a list by length.
 `
+codepage_descriptions[198] += `
+ÞṠ (Is Sorted?)
+Returns true if an item is sorted in ascending order using default sorting rules.
+lst a -> Returns true if an item is sorted in ascending order using default sorting rules.
+`
+codepage_descriptions[197] += `
+ÞṘ (Is Sorted in Reverse?)
+Returns true if an item is sorted in descending order using default sorting rules.
+lst a -> Returns true if an item is sorted in descending order using default sorting rules.
+`
+codepage_descriptions[195] += `
+ÞȮ (Is Ordered?)
+Returns true if the item is sorted in either descending or ascending order.
+lst a -> Returns true if the item is sorted in either descending or ascending order.
+`
+codepage_descriptions[185] += `
+ÞĊ (Is Unordered?)
+Returns true if the item is not sorted in either descending or ascending order.
+lst a -> Returns true if the item is not sorted in either descending or ascending order.
+`
 codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.

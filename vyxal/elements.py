@@ -1992,6 +1992,15 @@ def is_falsey(lhs, ctx):
     return vectorised_not(equals(lhs, 1, ctx=ctx), ctx=ctx)
 
 
+def is_ordered(lhs, ctx):
+    """Element ÞȮ
+    (lst) -> Returns true if the item is sorted in either descending
+             or ascending order.
+    """
+
+    return is_sorted_ascending(lhs, ctx) or is_sorted_descending(lhs, ctx)
+
+
 def is_prime(lhs, ctx):
     """Element æ
     (num) -> is a prime?
@@ -2006,6 +2015,26 @@ def is_prime(lhs, ctx):
     }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
 
 
+def is_sorted_ascending(lhs, ctx):
+    """Element ÞṠ
+    (lst) -> Returns true if an item is sorted in ascending order
+             using default sorting rules.
+    """
+
+    return non_vectorising_equals(lhs, vy_sort(lhs, ctx), ctx=ctx)
+
+
+def is_sorted_descending(lhs, ctx):
+    """Element ÞṠ
+    (lst) -> Returns true if an item is sorted in ascending order
+             using default sorting rules.
+    """
+
+    return non_vectorising_equals(
+        reverse(deep_copy(lhs), ctx), vy_sort(lhs, ctx), ctx=ctx
+    )
+
+
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -2018,6 +2047,15 @@ def is_square(lhs, ctx):
         ),
         str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
+
+
+def is_unordered(lhs, ctx):
+    """Element ÞĊ
+    (lst) -> Returns true if the item is not sorted in either
+            descending or ascending order. (i.e. chaos chaos)
+    """
+
+    return int(not is_ordered(lhs, ctx))
 
 
 def join(lhs, rhs, ctx):
@@ -5207,6 +5245,10 @@ elements: dict[str, tuple[str, int]] = {
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
+    "ÞṠ": process_element(is_sorted_ascending, 1),
+    "ÞṘ": process_element(is_sorted_descending, 1),
+    "ÞȮ": process_element(is_ordered, 1),
+    "ÞĊ": process_element(is_unordered, 1),
     "ÞK": process_element(suffixes_element, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"

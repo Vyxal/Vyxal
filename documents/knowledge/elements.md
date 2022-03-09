@@ -3330,6 +3330,38 @@ Sort a list by length.
 
 - lst a: `Sort a list by length.`
 -------------------------------
+## `` ÞṠ `` (Is Sorted?)
+
+Returns true if an item is sorted in ascending order using default sorting rules.
+
+### Overloads
+
+- lst a: `Returns true if an item is sorted in ascending order using default sorting rules.`
+-------------------------------
+## `` ÞṘ `` (Is Sorted in Reverse?)
+
+Returns true if an item is sorted in descending order using default sorting rules.
+
+### Overloads
+
+- lst a: `Returns true if an item is sorted in descending order using default sorting rules.`
+-------------------------------
+## `` ÞȮ `` (Is Ordered?)
+
+Returns true if the item is sorted in either descending or ascending order.
+
+### Overloads
+
+- lst a: `Returns true if the item is sorted in either descending or ascending order.`
+-------------------------------
+## `` ÞĊ `` (Is Unordered?)
+
+Returns true if the item is not sorted in either descending or ascending order.
+
+### Overloads
+
+- lst a: `Returns true if the item is not sorted in either descending or ascending order.`
+-------------------------------
 ## `` ÞK `` (Suffixes)
 
 Suffixes of a list.
