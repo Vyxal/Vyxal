@@ -3898,7 +3898,7 @@
     any-fun: "while b(a): a += 1"
     fun-any: "while a(b): b += 1"
   vectorise: false
-  
+
 - element: "∆‹"
   name: Decrement until false
   description: Decrement a until b(a) is false
