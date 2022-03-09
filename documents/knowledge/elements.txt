@@ -2911,3 +2911,11 @@ kṘ (Roman Numerals)
 
     any a, any b: Non-vectorising greater than - useful for lists
 -------------------------------
+¨* (All Multiples)
+
+- Return all multiples of a
+
+    num a: [a*1, a*2, a*3, a*4, ...]
+    str a: [a*1, a*2, a*3, a*4, ...]
+    otherwise: vectorise
+-------------------------------
