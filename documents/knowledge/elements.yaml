@@ -4699,7 +4699,7 @@
   overloads:
     any: "[a, -a, a, -a, ...]"
   vectorise: false
-  
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

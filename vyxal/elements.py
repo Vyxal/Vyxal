@@ -219,17 +219,21 @@ def all_unique(lhs, ctx):
     """
     return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
 
+
 def alternating_negations(lhs, ctx):
     """Element ÞN
     (any) -> alternating negations of lhs
     """
+
     @lazylist
     def gen():
         flag = False
         while True:
             yield negate(lhs, ctx) if flag else lhs
             flag = not flag
+
     return gen()
+
 
 def angle_bracketify(lhs, ctx):
     """Element øḂ

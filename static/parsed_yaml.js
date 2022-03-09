@@ -2302,6 +2302,11 @@ codepage_descriptions[191] += `
 a[:b] and a[b:]
 lst a, int b -> a[:b] and a[b:]
 `
+codepage_descriptions[78] += `
+ÞN (Alternating Negation)
+An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+any a -> [a, -a, a, -a, ...]
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
