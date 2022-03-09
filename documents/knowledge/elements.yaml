@@ -4726,6 +4726,13 @@
     str: Send a GET request to a URL
   vectorise: false
 
+
+- modifier: "¨="
+  name: Invariant After Application
+  arity: 1
+  usage: "¨=<element>"
+  description: Push whether the result of applying an element to an item is the same as the original item
+
 - element: "¨M"
   name: Map To Indices
   description: Map a function to elements of a list whose indices are in another list
