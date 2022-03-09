@@ -4669,6 +4669,21 @@
     - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
 
 
+- element: "ÞṠ"
+  name: Is Sorted?
+  description: Returns true if an item is sorted in ascending order using default sorting rules.
+  arity: 1
+  overloads:
+    lst: Returns true if an item is sorted in ascending order using default sorting rules.
+  vectorise: false
+  tests:
+    - '[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1'
+    - '["abcde"] : 1'
+    - '[4315] : 0'
+    - '[[3, 2, 1]] : 0'
+    - '[[4, 1, 4, 2]] : 0'
+    - '[[4, 6, 8, 10, 3432, 65543]] : 1'
+
 - element: "ÞK"
   name: Suffixes
   description: Suffixes of a list.
