@@ -368,3 +368,25 @@ def test_function_arity_change():
     assert stack[-1] == 1
     stack = run_vyxal("λWL; 7 * 4 4 4 4 4 4 ^†")
     assert stack[-1] == 7
+
+
+def test_all_multiples():
+    stack = run_vyxal("3 ¨*")
+    assert stack[-1][:10] == [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+    stack = run_vyxal("0 ¨*")
+    assert stack[-1][:10] == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    stack = run_vyxal("1 ¨*")
+    assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    stack = run_vyxal("`Kromer` ¨*")
+    assert stack[-1][:10] == [
+        "Kromer",
+        "KromerKromer",
+        "KromerKromerKromer",
+        "KromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromerKromerKromer",
+    ]

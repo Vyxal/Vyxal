@@ -4804,3 +4804,12 @@
   tests:
     - "[[1, 1, 1], [9, 9, 9]] : 1"
     - "[[1, 2, '3'], [1, 2, '2']] : 0"
+
+- element: "¨*"
+  name: All Multiples
+  description: Return all multiples of a
+  arity: 1
+  overloads:
+    num: "[a*1, a*2, a*3, a*4, ...]"
+    str: "[a*1, a*2, a*3, a*4, ...]"
+  vectorise: true
