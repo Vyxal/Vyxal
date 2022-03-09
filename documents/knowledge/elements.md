@@ -3387,3 +3387,12 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 
 - any a, any b: `Non-vectorising greater than - useful for lists`
 -------------------------------
+## `` ¨* `` (All Multiples)
+
+Return all multiples of a
+
+### Overloads
+
+- num a: `[a*1, a*2, a*3, a*4, ...]`
+- str a: `[a*1, a*2, a*3, a*4, ...]`
+-------------------------------

@@ -2342,3 +2342,9 @@ codepage_descriptions[60] += `
 Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
 any a, any b -> Non-vectorising greater than - useful for lists
 `
+codepage_descriptions[42] += `
+¨* (All Multiples)
+Return all multiples of a
+num a -> [a*1, a*2, a*3, a*4, ...]
+str a -> [a*1, a*2, a*3, a*4, ...]
+`
