@@ -316,6 +316,28 @@ def test_cart_pow_finite():
     ]
 
 
+def test_alternating_negations():
+    stack = run_vyxal("5 ÞN")
+    assert stack[-1][:10] == [5, -5, 5, -5, 5, -5, 5, -5, 5, -5]
+    stack = run_vyxal("6 ÞN")
+    assert stack[-1][:10] == [6, -6, 6, -6, 6, -6, 6, -6, 6, -6]
+    stack = run_vyxal("0 ÞN")
+    assert stack[-1][:10] == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    stack = run_vyxal("`Kromer` ÞN")
+    assert stack[-1][:10] == [
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+    ]
+
+
 def test_transpose_inf():
     stack = run_vyxal("Þ∞ ƛÞ∞ +; ∩")
     assert [row[:3] for row in stack[-1][:3]] == [
