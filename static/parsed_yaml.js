@@ -1935,6 +1935,18 @@ Get the Carmichael function of a number / Local Maxima
 num a -> carmichael(a)
 str a -> local_maxima(a)
 `
+codepage_descriptions[131] += `
+∆› (Increment until false)
+Increment a until b(a) is false
+any a, fun b -> while b(a): a += 1
+fun a, any b -> while a(b): b += 1
+`
+codepage_descriptions[132] += `
+∆‹ (Decrement until false)
+Decrement a until b(a) is false
+any a, fun b -> while b(a): a -= 1
+fun a, any b -> while a(b): b -= 1
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
@@ -2317,6 +2329,10 @@ codepage_descriptions[85] += `
 Send a GET request to a URL
 str a -> Send a GET request to a URL
 `
+codepage_descriptions.push(`Invariant After Application
+Push whether the result of applying an element to an item is the same as the original item
+`)
+
 codepage_descriptions[77] += `
 ¨M (Map To Indices)
 Map a function to elements of a list whose indices are in another list

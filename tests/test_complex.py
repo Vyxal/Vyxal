@@ -190,6 +190,20 @@ def test_all_equal_infinite_lists():
     assert stack[-1] == 0
 
 
+def test_increment_until_false():
+    stack = run_vyxal("20 λ9%; ∆›")
+    assert stack[-1] == 27
+    stack = run_vyxal("20 λ50<; ∆›")
+    assert stack[-1] == 50
+
+
+def test_decrement_until_false():
+    stack = run_vyxal("20 λ9%; ∆‹")
+    assert stack[-1] == 18
+    stack = run_vyxal("20 λ10≥;∆‹")
+    assert stack[-1] == 9
+
+
 def test_vectorised_lambda_multiplication():
     stack = run_vyxal("λWL; ⟨3|6|2|3|6|3|5|1⟩ * ƛ6 9 6 9 6 9 6 9 6 9 n†;")
     assert stack[-1] == [3, 6, 2, 3, 6, 3, 5, 1]

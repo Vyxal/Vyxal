@@ -3890,6 +3890,24 @@
     - "[[3, 8, 12, 78, 234, 786, 1234]] : [2, 2, 2, 12, 12, 130, 616]"
     - "['(x**2 + x + 1) / x'] : [-1]"
 
+- element: "∆›"
+  name: Increment until false
+  description: Increment a until b(a) is false
+  arity: 2
+  overloads:
+    any-fun: "while b(a): a += 1"
+    fun-any: "while a(b): b += 1"
+  vectorise: false
+
+- element: "∆‹"
+  name: Decrement until false
+  description: Decrement a until b(a) is false
+  arity: 2
+  overloads:
+    any-fun: "while b(a): a -= 1"
+    fun-any: "while a(b): b -= 1"
+  vectorise: false
+
 - element: "øb"
   name: Parenthesise
   arity: 1
@@ -4725,6 +4743,13 @@
   overloads:
     str: Send a GET request to a URL
   vectorise: false
+
+
+- modifier: "¨="
+  name: Invariant After Application
+  arity: 1
+  usage: "¨=<element>"
+  description: Push whether the result of applying an element to an item is the same as the original item
 
 - element: "¨M"
   name: Map To Indices
