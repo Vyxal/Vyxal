@@ -4684,6 +4684,21 @@
     - '[[4, 1, 4, 2]] : 0'
     - '[[4, 6, 8, 10, 3432, 65543]] : 1'
 
+- element: "ÞṘ"
+  name: Is Sorted in Reverse?
+  description: Returns true if an item is sorted in descending order using default sorting rules.
+  arity: 1
+  overloads:
+    lst: Returns true if an item is sorted in descending order using default sorting rules.
+  vectorise: false
+  tests:
+    - '[[6, 5, 4, 4, 4, 3, 3, 3, 2, 2, 1]] : 1'
+    - '["edcba"] : 1'
+    - '[4315] : 0'
+    - '[[3, 2, 1]] : 1'
+    - '[[4, 1, 4, 2]] : 0'
+    - '[[4, 6, 8, 10, 3432, 65543]] : 0'
+
 - element: "ÞK"
   name: Suffixes
   description: Suffixes of a list.

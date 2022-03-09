@@ -1953,6 +1953,17 @@ def is_sorted_ascending(lhs, ctx):
     return non_vectorising_equals(lhs, vy_sort(lhs, ctx), ctx=ctx)
 
 
+def is_sorted_descending(lhs, ctx):
+    """Element ÞṠ
+    (lst) -> Returns true if an item is sorted in ascending order
+             using default sorting rules.
+    """
+
+    return non_vectorising_equals(
+        reverse(deep_copy(lhs), ctx), vy_sort(lhs, ctx), ctx=ctx
+    )
+
+
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -5152,6 +5163,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
     "ÞṠ": process_element(is_sorted_ascending, 1),
+    "ÞṘ": process_element(is_sorted_descending, 1),
     "ÞK": process_element(suffixes_element, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
