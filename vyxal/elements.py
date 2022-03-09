@@ -1667,7 +1667,6 @@ def infinite_integer_partitions(_, ctx=None):
     def gen():
         for n in itertools.count(1):
             yield from integer_parts_or_join_spaces(n, ctx=ctx)
-    
 
     return LazyList(gen(), isinf=True)
 
