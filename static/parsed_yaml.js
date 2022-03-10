@@ -2142,6 +2142,10 @@ codepage_descriptions[109] += `
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
 lst a -> Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
 `
+codepage_descriptions[194] += `
+ÞṄ (Infinite Integer Partitions)
+Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+`
 codepage_descriptions[90] += `
 ÞZ (Fill By Coordinates)
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
@@ -2304,6 +2308,26 @@ codepage_descriptions[155] += `
 Sort a list by length.
 lst a -> Sort a list by length.
 `
+codepage_descriptions[198] += `
+ÞṠ (Is Sorted?)
+Returns true if an item is sorted in ascending order using default sorting rules.
+lst a -> Returns true if an item is sorted in ascending order using default sorting rules.
+`
+codepage_descriptions[197] += `
+ÞṘ (Is Sorted in Reverse?)
+Returns true if an item is sorted in descending order using default sorting rules.
+lst a -> Returns true if an item is sorted in descending order using default sorting rules.
+`
+codepage_descriptions[195] += `
+ÞȮ (Is Ordered?)
+Returns true if the item is sorted in either descending or ascending order.
+lst a -> Returns true if the item is sorted in either descending or ascending order.
+`
+codepage_descriptions[185] += `
+ÞĊ (Is Unordered?)
+Returns true if the item is not sorted in either descending or ascending order.
+lst a -> Returns true if the item is not sorted in either descending or ascending order.
+`
 codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
@@ -2313,6 +2337,11 @@ codepage_descriptions[191] += `
 Þİ (First n Items and Rest)
 a[:b] and a[b:]
 lst a, int b -> a[:b] and a[b:]
+`
+codepage_descriptions[78] += `
+ÞN (Alternating Negation)
+An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+any a -> [a, -a, a, -a, ...]
 `
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
@@ -2357,4 +2386,10 @@ codepage_descriptions[60] += `
 ¨< (Strict Less Than)
 Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
 any a, any b -> Non-vectorising greater than - useful for lists
+`
+codepage_descriptions[42] += `
+¨* (All Multiples)
+Return all multiples of a
+num a -> [a*1, a*2, a*3, a*4, ...]
+str a -> [a*1, a*2, a*3, a*4, ...]
 `
