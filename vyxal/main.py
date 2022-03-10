@@ -26,7 +26,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     j    Print top of stack joined by newlines on end of execution
     L    Print top of stack joined by newlines (Vertically) on end of execution
     s    Sum/concatenate top of stack on end of execution
-    M    Make implicit range generation start at 0 instead of 1 (and while loop counter too)
+    M    Make implicit range generation and while loop counter start at 0 instead of 1
     m    Make implicit range generation end at n-1 instead of n
     Ṁ    Equivalent to having both m and M flags
     v    Use Vyxal encoding for input file
