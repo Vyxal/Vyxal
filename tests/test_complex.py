@@ -298,6 +298,42 @@ def test_tilde_dyad():
     assert stack == [1, 2, 3]
 
 
+def test_infinite_integer_partitions():
+    stack = run_vyxal("ÞṄ")
+    assert stack[-1][:30] == [
+        [1],
+        [1, 1],
+        [2],
+        [1, 1, 1],
+        [2, 1],
+        [3],
+        [1, 1, 1, 1],
+        [2, 1, 1],
+        [3, 1],
+        [2, 2],
+        [4],
+        [1, 1, 1, 1, 1],
+        [2, 1, 1, 1],
+        [3, 1, 1],
+        [2, 2, 1],
+        [4, 1],
+        [3, 2],
+        [5],
+        [1, 1, 1, 1, 1, 1],
+        [2, 1, 1, 1, 1],
+        [3, 1, 1, 1],
+        [2, 2, 1, 1],
+        [4, 1, 1],
+        [3, 2, 1],
+        [5, 1],
+        [2, 2, 2],
+        [4, 2],
+        [3, 3],
+        [6],
+        [1, 1, 1, 1, 1, 1, 1],
+    ]
+
+
 def test_vectorised_nilad():
     stack = run_vyxal("123 f vkd")
     assert stack[-1][:3] == ["0123456789", "0123456789", "0123456789"]
@@ -330,6 +366,28 @@ def test_cart_pow_finite():
     ]
 
 
+def test_alternating_negations():
+    stack = run_vyxal("5 ÞN")
+    assert stack[-1][:10] == [5, -5, 5, -5, 5, -5, 5, -5, 5, -5]
+    stack = run_vyxal("6 ÞN")
+    assert stack[-1][:10] == [6, -6, 6, -6, 6, -6, 6, -6, 6, -6]
+    stack = run_vyxal("0 ÞN")
+    assert stack[-1][:10] == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    stack = run_vyxal("`Kromer` ÞN")
+    assert stack[-1][:10] == [
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+        "Kromer",
+        "kROMER",
+    ]
+
+
 def test_transpose_inf():
     stack = run_vyxal("Þ∞ ƛÞ∞ +; ∩")
     assert [row[:3] for row in stack[-1][:3]] == [
@@ -346,3 +404,25 @@ def test_function_arity_change():
     assert stack[-1] == 1
     stack = run_vyxal("λWL; 7 * 4 4 4 4 4 4 ^†")
     assert stack[-1] == 7
+
+
+def test_all_multiples():
+    stack = run_vyxal("3 ¨*")
+    assert stack[-1][:10] == [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+    stack = run_vyxal("0 ¨*")
+    assert stack[-1][:10] == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    stack = run_vyxal("1 ¨*")
+    assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    stack = run_vyxal("`Kromer` ¨*")
+    assert stack[-1][:10] == [
+        "Kromer",
+        "KromerKromer",
+        "KromerKromerKromer",
+        "KromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromerKromer",
+        "KromerKromerKromerKromerKromerKromerKromerKromerKromerKromer",
+    ]
