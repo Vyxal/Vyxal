@@ -1822,8 +1822,9 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
             i = 0
             places = chr_ord(rhs) if isinstance(rhs, str) else rhs
             for elem in lhs:
-                if vy_type(places) == NUMBER_TYPE and i == places:
-                    yield other
+                if vy_type(places) == NUMBER_TYPE:
+                    if i == places:
+                        yield other
                 elif i in places:
                     yield other
                 yield elem
@@ -1836,6 +1837,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     @lazylist
     def gen():
         i = 0
+        assert vy_type(rhs) == NUMBER_TYPE
         for item in lhs:
             yield safe_apply(other, item, ctx=ctx) if i % rhs == 0 else item
             i += 1
