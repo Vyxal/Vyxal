@@ -174,6 +174,15 @@ def all_less_than_increasing(lhs, rhs, ctx):
     return gen()
 
 
+def all_multiples(lhs, ctx):
+    """Element ¨*
+    (num) -> [a*1, a*2, a*3, a*4, ...]
+    (str) -> [a*1, a*2, a*3, a*4, ...]
+    """
+
+    return multiply(lhs, infinite_positives(ctx), ctx)
+
+
 def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
@@ -218,6 +227,21 @@ def all_unique(lhs, ctx):
     (any) -> Are all elements of a unique?
     """
     return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
+
+
+def alternating_negations(lhs, ctx):
+    """Element ÞN
+    (any) -> alternating negations of lhs
+    """
+
+    @lazylist
+    def gen():
+        flag = False
+        while True:
+            yield negate(lhs, ctx) if flag else lhs
+            flag = not flag
+
+    return gen()
 
 
 def angle_bracketify(lhs, ctx):
@@ -801,6 +825,20 @@ def decrement(lhs, ctx):
     return {NUMBER_TYPE: lambda: lhs - 1, str: lambda: lhs + "-"}.get(
         ts, lambda: vectorise(decrement, lhs, ctx=ctx)
     )()
+
+
+def decrement_until_false(lhs, rhs, ctx):
+    """Element ∆‹
+    (any, fun) -> while b(a): a -= 1
+    (fun, any) -> while a(b): b -= 1
+    """
+
+    function, value = (
+        (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
+    )
+    while safe_apply(function, value, ctx=ctx):
+        value = decrement(value, ctx)
+    return value
 
 
 def deep_flatten(lhs, ctx):
@@ -1583,6 +1621,20 @@ def increment(lhs, ctx):
     }.get(ts, lambda: vectorise(increment, lhs, ctx=ctx))()
 
 
+def increment_until_false(lhs, rhs, ctx):
+    """Element ∆‹
+    (any, fun) -> while b(a): a += 1
+    (fun, any) -> while a(b): b += 1
+    """
+
+    function, value = (
+        (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
+    )
+    while safe_apply(function, value, ctx=ctx):
+        value = increment(value, ctx)
+    return value
+
+
 def index(lhs, rhs, ctx):
     """Element i
     (any, num) -> a[b] (Index)
@@ -1659,6 +1711,16 @@ def infinite_cardinals(_, ctx=None):
     infinite sequence of cardinals
     """
     return LazyList(map(num2words.num2words, itertools.count(1)), isinf=True)
+
+
+def infinite_integer_partitions(_, ctx=None):
+    """Element ÞṄ"""
+
+    def gen():
+        for n in itertools.count(1):
+            yield from integer_parts_or_join_spaces(n, ctx=ctx)
+
+    return LazyList(gen(), isinf=True)
 
 
 def infinite_ordinals(_, ctx=None):
@@ -1930,6 +1992,15 @@ def is_falsey(lhs, ctx):
     return vectorised_not(equals(lhs, 1, ctx=ctx), ctx=ctx)
 
 
+def is_ordered(lhs, ctx):
+    """Element ÞȮ
+    (lst) -> Returns true if the item is sorted in either descending
+             or ascending order.
+    """
+
+    return is_sorted_ascending(lhs, ctx) or is_sorted_descending(lhs, ctx)
+
+
 def is_prime(lhs, ctx):
     """Element æ
     (num) -> is a prime?
@@ -1944,6 +2015,26 @@ def is_prime(lhs, ctx):
     }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
 
 
+def is_sorted_ascending(lhs, ctx):
+    """Element ÞṠ
+    (lst) -> Returns true if an item is sorted in ascending order
+             using default sorting rules.
+    """
+
+    return non_vectorising_equals(lhs, vy_sort(lhs, ctx), ctx=ctx)
+
+
+def is_sorted_descending(lhs, ctx):
+    """Element ÞṠ
+    (lst) -> Returns true if an item is sorted in ascending order
+             using default sorting rules.
+    """
+
+    return non_vectorising_equals(
+        reverse(deep_copy(lhs), ctx), vy_sort(lhs, ctx), ctx=ctx
+    )
+
+
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -1956,6 +2047,15 @@ def is_square(lhs, ctx):
         ),
         str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
     }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
+
+
+def is_unordered(lhs, ctx):
+    """Element ÞĊ
+    (lst) -> Returns true if the item is not sorted in either
+            descending or ascending order. (i.e. chaos chaos)
+    """
+
+    return int(not is_ordered(lhs, ctx))
 
 
 def join(lhs, rhs, ctx):
@@ -5059,6 +5159,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆ṫ": process_element(totient, 1),
     "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
     "∆¢": process_element(carmichael_function, 1),
+    "∆›": process_element(increment_until_false, 2),
+    "∆‹": process_element(decrement_until_false, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -5121,6 +5223,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ↑": process_element(max_by_function, 2),
     "ÞZ": process_element(coords_deepmap, 2),
     "ÞF": process_element(fibonaacis, 0),
+    "ÞṄ": process_element(infinite_integer_partitions, 0),
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),
@@ -5142,6 +5245,10 @@ elements: dict[str, tuple[str, int]] = {
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
+    "ÞṠ": process_element(is_sorted_ascending, 1),
+    "ÞṘ": process_element(is_sorted_descending, 1),
+    "ÞȮ": process_element(is_ordered, 1),
+    "ÞĊ": process_element(is_unordered, 1),
     "ÞK": process_element(suffixes_element, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
@@ -5149,6 +5256,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(index(lhs, [rhs, None], ctx))\n",
         2,
     ),
+    "ÞN": process_element(alternating_negations, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
@@ -5162,6 +5270,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
+    "¨*": process_element(all_multiples, 1),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
@@ -5305,5 +5414,10 @@ modifiers: dict[str, str] = {
         "if boolify(pop(stack, 1, ctx), ctx):\n"
         "    stack.append(function_A)\n"
         "    function_call(stack, ctx)"
+    ),
+    "¨=": (
+        "original = pop(stack, 1, ctx)\n"
+        "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
+        "stack.append(non_vectorising_equals(original, res, ctx=ctx))"
     ),
 }

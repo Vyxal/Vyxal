@@ -2751,6 +2751,24 @@ Get the Carmichael function of a number / Local Maxima
 - num a: `carmichael(a)`
 - str a: `local_maxima(a)`
 -------------------------------
+## `` ∆› `` (Increment until false)
+
+Increment a until b(a) is false
+
+### Overloads
+
+- any a, fun b: `while b(a): a += 1`
+- fun a, any b: `while a(b): b += 1`
+-------------------------------
+## `` ∆‹ `` (Decrement until false)
+
+Decrement a until b(a) is false
+
+### Overloads
+
+- any a, fun b: `while b(a): a -= 1`
+- fun a, any b: `while a(b): b -= 1`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
@@ -3054,6 +3072,11 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 - lst a: `Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost`
 -------------------------------
+## `` ÞṄ `` (Infinite Integer Partitions)
+
+Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+
+-------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
@@ -3307,6 +3330,38 @@ Sort a list by length.
 
 - lst a: `Sort a list by length.`
 -------------------------------
+## `` ÞṠ `` (Is Sorted?)
+
+Returns true if an item is sorted in ascending order using default sorting rules.
+
+### Overloads
+
+- lst a: `Returns true if an item is sorted in ascending order using default sorting rules.`
+-------------------------------
+## `` ÞṘ `` (Is Sorted in Reverse?)
+
+Returns true if an item is sorted in descending order using default sorting rules.
+
+### Overloads
+
+- lst a: `Returns true if an item is sorted in descending order using default sorting rules.`
+-------------------------------
+## `` ÞȮ `` (Is Ordered?)
+
+Returns true if the item is sorted in either descending or ascending order.
+
+### Overloads
+
+- lst a: `Returns true if the item is sorted in either descending or ascending order.`
+-------------------------------
+## `` ÞĊ `` (Is Unordered?)
+
+Returns true if the item is not sorted in either descending or ascending order.
+
+### Overloads
+
+- lst a: `Returns true if the item is not sorted in either descending or ascending order.`
+-------------------------------
 ## `` ÞK `` (Suffixes)
 
 Suffixes of a list.
@@ -3322,6 +3377,14 @@ a[:b] and a[b:]
 ### Overloads
 
 - lst a, int b: `a[:b] and a[b:]`
+-------------------------------
+## `` ÞN `` (Alternating Negation)
+
+An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+
+### Overloads
+
+- any a: `[a, -a, a, -a, ...]`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
@@ -3346,6 +3409,15 @@ Send a GET request to a URL
 ### Overloads
 
 - str a: `Send a GET request to a URL`
+-------------------------------
+## `` ¨= `` (Invariant After Application)
+Push whether the result of applying an element to an item is the same as the original item
+
+Usage:
+```
+¨=<element>
+```
+
 -------------------------------
 ## `` ¨M `` (Map To Indices)
 
@@ -3386,4 +3458,13 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 ### Overloads
 
 - any a, any b: `Non-vectorising greater than - useful for lists`
+-------------------------------
+## `` ¨* `` (All Multiples)
+
+Return all multiples of a
+
+### Overloads
+
+- num a: `[a*1, a*2, a*3, a*4, ...]`
+- str a: `[a*1, a*2, a*3, a*4, ...]`
 -------------------------------
