@@ -1213,6 +1213,15 @@ def find(lhs, rhs, ctx):
             and primitive_type(lhs) == SCALAR_TYPE
             else (lhs, rhs)
         )
+
+        if list not in ts and LazyList not in ts:
+            lhs, rhs = str(lhs), str(rhs)
+            needle, haystack = (
+                sorted((lhs, rhs), key=len)
+                if len(lhs) != len(rhs)
+                else (rhs, lhs)
+            )
+            return haystack.find(needle)
         pos = 0
         lhs = iterable(lhs, ctx=ctx)
         if vy_type(lhs) is LazyList and lhs.infinite:
