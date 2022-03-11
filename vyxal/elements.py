@@ -1810,21 +1810,26 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     or equal to the LazyList's length, `other` is appended to the end.
     """
     lhs = iterable(lhs, ctx)
-    assert vy_type(rhs) == NUMBER_TYPE
 
     if vy_type(other) != types.FunctionType:
         if vy_type(lhs) is str:
+            if vy_type(other) == NUMBER_TYPE and vy_type(rhs) != NUMBER_TYPE:
+                rhs, other = other, rhs
             return lhs[: int(rhs)] + str(other) + lhs[int(rhs) :]
 
         @lazylist
         def gen():
             i = 0
+            places = chr_ord(rhs) if isinstance(rhs, str) else rhs
             for elem in lhs:
-                if i == rhs:
+                if vy_type(places) == NUMBER_TYPE:
+                    if i == places:
+                        yield other
+                elif i in places:
                     yield other
                 yield elem
                 i += 1
-            if i < rhs:
+            if vy_type(places) == NUMBER_TYPE and i < places:
                 yield other
 
         return gen()
@@ -1832,6 +1837,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     @lazylist
     def gen():
         i = 0
+        assert vy_type(rhs) == NUMBER_TYPE
         for item in lhs:
             yield safe_apply(other, item, ctx=ctx) if i % rhs == 0 else item
             i += 1
