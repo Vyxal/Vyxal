@@ -210,10 +210,12 @@ def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
-def get_input(ctx: Context) -> Any:
+def get_input(ctx: Context, explicit=False) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
     if ctx.use_top_input:
+        if ctx.array_inputs and not explicit:
+            return ctx.inputs[0][0]
         if ctx.inputs[0][0]:
             ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
             ctx.inputs[0][1] += 1
@@ -227,18 +229,17 @@ def get_input(ctx: Context) -> Any:
                 temp = 0
             return temp
     else:
-        if ctx.inputs[-1][0]:
+        if len(ctx.inputs) == 1:
+            ctx.use_top_input = True
+            temp = get_input(ctx)
+            ctx.use_top_input = False
+            return temp
+        elif ctx.inputs[-1][0]:
             ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
             ctx.inputs[-1][1] += 1
             return ret
         else:
-            if len(ctx.inputs) == 1:
-                ctx.use_top_input = True
-                temp = get_input(ctx)
-                ctx.use_top_input = False
-                return temp
-            else:
-                return 0
+            return 0
 
 
 def has_ind(lst: VyList, ind: int) -> bool:

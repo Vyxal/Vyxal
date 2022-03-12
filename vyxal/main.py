@@ -95,9 +95,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
-    if "a" in flags:  # All inputs as array
-        inputs = [inputs]
-
     if "H" in flags:  # Pre-initalise stack to 100
         stack = [100]
     else:
@@ -126,6 +123,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
     ctx.empty_input_is_zero = "?" not in flags
+    ctx.array_inputs = "a" in flags
 
     if "2" in flags:
         ctx.default_arity = 2
