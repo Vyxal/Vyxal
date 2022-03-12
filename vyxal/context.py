@@ -27,6 +27,7 @@ class Context:
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False
+        self.array_inputs = False # a flag
         self.stacks = []
         self.vectorise_boolify = False
         self.last_popped = []

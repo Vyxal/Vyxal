@@ -4862,7 +4862,7 @@ elements: dict[str, tuple[str, int]] = {
     "=": process_element(equals, 2),
     ">": process_element(greater_than, 2),
     "?": (
-        "ctx.use_top_input = True; lhs = get_input(ctx); "
+        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True); "
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
