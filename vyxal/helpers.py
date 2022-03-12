@@ -210,7 +210,7 @@ def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
-def get_input(ctx: Context, explicit = False) -> Any:
+def get_input(ctx: Context, explicit=False) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
     if ctx.use_top_input:

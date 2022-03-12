@@ -150,12 +150,10 @@ def test_a_flag_inputs():
     stack = []
     ctx = Context()
     ctx.stacks.append(stack)
-    ctx.inputs = [[
-        [3, 4, 5], 0
-    ]]
+    ctx.inputs = [[[3, 4, 5], 0]]
     ctx.array_inputs = True
 
-    py_code = transpile('? $')
+    py_code = transpile("? $")
     exec(py_code)
 
     result = ctx.stacks.pop()
