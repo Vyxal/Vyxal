@@ -99,6 +99,7 @@ def test_comments():
 
 def test_numbers():
     assert token_equal("23", [Token(TokenType.NUMBER, "23")])
+    assert token_equal("6.", [Token(TokenType.NUMBER, "6.5")])
     # TODO: More number cases
 
 
