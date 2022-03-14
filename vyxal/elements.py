@@ -1722,6 +1722,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
                 return lhs[value]
             else:
                 return [recursive_helper(v) for v in value]
+
         return recursive_helper(rhs)
 
 
