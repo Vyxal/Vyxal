@@ -2048,6 +2048,10 @@
   vectorise: false
   tests: # TODO more tests for the second overload
     - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
+    - '[[3, 4, 5, 6, 7, 8, 9, 10], [0, 2, 4, 6, 8]] : [3, 5, 7, 9, 3]'
+    - '[[1, 4, 9, 16], [[0, 1], [2, 3]]] : [[1, 4], [9, 16]]'
+    - '["Hello, World!", [0, 2, 4, 6, 8]] : ["H", "l", "o", " ", "o"]'
+    - '[[0, 2, 4, 6, 8], "Hello, World!"] : ["H", "l", "o", " ", "o"]'
 
 - element: "Ŀ"
   name: Transliterate

@@ -1710,9 +1710,20 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return gen()
 
     else:
-        lhs = iterable(lhs)
+        if primitive_type(rhs) is SCALAR_TYPE:
+            lhs, rhs = rhs, lhs
+        lhs = LazyList(iterable(lhs))
         rhs = iterable(rhs)
-        return vy_map(lambda item: lhs[item], rhs, ctx=ctx)
+
+        # Don't ask me why vectorise doesn't work here
+        # I tried.
+        def recursive_helper(value):
+            if primitive_type(value) is SCALAR_TYPE:
+                return lhs[value]
+            else:
+                return [recursive_helper(v) for v in value]
+
+        return recursive_helper(rhs)
 
 
 def infinite_cardinals(_, ctx=None):
