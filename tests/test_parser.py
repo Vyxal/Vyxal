@@ -67,7 +67,9 @@ def test_fizzbuzz():
 def test_modifiers():
     assert str(fully_parse("⁽*r")) == str(
         [
-            Lambda("1", [GenericStatement([Token(TokenType.GENERAL, "*")])]),
+            Lambda(
+                "default", [GenericStatement([Token(TokenType.GENERAL, "*")])]
+            ),
             GenericStatement([Token(TokenType.GENERAL, "r")]),
         ]
     )
@@ -86,7 +88,7 @@ def test_modifiers():
     assert str(fully_parse("‡₌*ġḭd†")) == str(
         [
             Lambda(
-                "1",
+                "default",
                 [
                     DyadicModifier(
                         "₌",
