@@ -204,7 +204,7 @@ def test_LogicalAnd():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1, 2]]
+    stack = [vyxalify(item) for item in [2, 1]]
     expected = vyxalify(2)
     ctx = Context()
 
