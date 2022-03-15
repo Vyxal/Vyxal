@@ -1141,7 +1141,9 @@ def exponent(lhs, rhs, ctx):
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
-        (str, str): lambda: list(re.search(lhs, rhs).span()),
+        (str, str): lambda: []
+        if (mobj := re.search(rhs, lhs)) is None
+        else list(mobj.span()),
         (ts[0], types.FunctionType): lambda: list(vy_map(rhs, lhs, ctx)),
         (types.FunctionType, ts[1]): lambda: list(vy_map(lhs, rhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
@@ -2795,7 +2797,7 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [1, lhs], ctx
         ),
-        (str, str): lambda: vyxalify(re.match(lhs, rhs).groups()),
+        (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -2842,7 +2844,7 @@ def orderless_range(lhs, rhs, ctx):
         (types.FunctionType, ts[1]): lambda: scanl(
             multiply(lhs, 2, ctx), iterable(rhs, range, ctx=ctx), ctx=ctx
         ),
-        (str, str): lambda: int(re.compile(lhs).search(rhs)),
+        (str, str): lambda: int(bool(re.compile(rhs).search(lhs))),
     }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
 
 
@@ -4803,7 +4805,7 @@ def zero_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [0, lhs], ctx=ctx
         ),
-        (str, str): lambda: re.findall(lhs, rhs),
+        (str, str): lambda: re.findall(rhs, lhs),
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
 
 
