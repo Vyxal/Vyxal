@@ -2400,6 +2400,11 @@ Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
 IVXLCDM
 
 -------------------------------
+## `` k• `` (Qwerty Keyboard)
+
+The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+
+-------------------------------
 ## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians
