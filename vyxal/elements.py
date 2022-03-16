@@ -1317,6 +1317,11 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
     """
+    ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        return lhs
+    elif ts in (list, LazyList):
+        return vectorise(flip_brackets_vertical_palindromise, lhs, ctx=ctx)
     result = lhs.split("\n")
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
