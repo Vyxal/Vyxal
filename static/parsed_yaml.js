@@ -1707,6 +1707,10 @@ codepage_descriptions[197] += `
 kṘ (Roman Numerals)
 IVXLCDM
 `
+codepage_descriptions[13] += `
+k• (Qwerty Keyboard)
+The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+`
 codepage_descriptions[99] += `
 ∆c (Cosine)
 Get the cosine of an angle in radians
