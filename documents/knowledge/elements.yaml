@@ -3319,6 +3319,14 @@
   tests:
     - '[] : "IVXLCDM"'
 
+- element: "k•"
+  name: Qwerty Keyboard
+  arity: 0
+  description: The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+  vectorise: false
+  tests:
+    - "[] : [\"qwertyuiop\",\"asdfghjkl\",\"zxcvbnm\"]"
+
 # Add constants with the following format:
 #
 #- element: ""
