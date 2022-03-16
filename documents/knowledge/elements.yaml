@@ -36,7 +36,7 @@
     - "[0, 0] : 0"
     - '["", 1] : ""'
     - "[[1,2,3], 0] : 0"
-    - "[1, 2] : 2"
+    - "[2, 1] : 2"
 
 - element: "⟑"
   name: Apply Lambda
@@ -54,7 +54,7 @@
     - "[0, 0] : 0"
     - '["", 1] : 1'
     - "[[1,2,3], 0] : [1,2,3]"
-    - "[1, 2] : 1"
+    - "[2, 1] : 1"
 
 - element: "⟇"
   name: Remove at Index
@@ -3318,6 +3318,14 @@
   vectorise: false
   tests:
     - '[] : "IVXLCDM"'
+
+- element: "k•"
+  name: Qwerty Keyboard
+  arity: 0
+  description: The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+  vectorise: false
+  tests:
+    - "[] : [\"qwertyuiop\",\"asdfghjkl\",\"zxcvbnm\"]"
 
 # Add constants with the following format:
 #

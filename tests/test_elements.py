@@ -204,7 +204,7 @@ def test_LogicalAnd():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1, 2]]
+    stack = [vyxalify(item) for item in [2, 1]]
     expected = vyxalify(2)
     ctx = Context()
 
@@ -290,7 +290,7 @@ def test_LogicalOr():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1, 2]]
+    stack = [vyxalify(item) for item in [2, 1]]
     expected = vyxalify(1)
     ctx = Context()
 
@@ -13134,6 +13134,29 @@ def test_RomanNumerals():
 
     code = transpile('kṘ')
     # print('kṘ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_QwertyKeyboard():
+
+    stack = [vyxalify(item) for item in []]
+    expected = vyxalify(["qwertyuiop","asdfghjkl","zxcvbnm"])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('k•')
+    # print('k•', code)
     exec(code)
 
     ctx.stacks.pop()
