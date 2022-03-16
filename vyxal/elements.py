@@ -1317,6 +1317,11 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
     """
+    ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        return lhs
+    elif ts in (list, LazyList):
+        return vectorise(flip_brackets_vertical_palindromise, lhs, ctx=ctx)
     result = lhs.split("\n")
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
@@ -4825,8 +4830,8 @@ def zfiller(lhs, rhs, ctx):
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
-    "∧": process_element("lhs and rhs", 2),
-    "∨": process_element("lhs or rhs", 2),
+    "∧": process_element("rhs and lhs", 2),
+    "∨": process_element("rhs or lhs", 2),
     "⟇": process_element(remove_at_index, 2),
     "÷": (
         "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
@@ -5393,6 +5398,7 @@ elements: dict[str, tuple[str, int]] = {
     "k∩": process_element('"aeiouyAEIOUY"', 0),
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
+    "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
 }
 modifiers: dict[str, str] = {
     "&": (
