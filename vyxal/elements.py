@@ -5186,7 +5186,7 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
         2,
     ),
-    "∆Ṙ": process_element("random.random()", 0),
+    "∆Ṙ": process_element("sympy.nsimplify(random.random())", 0),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
