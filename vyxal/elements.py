@@ -3422,7 +3422,7 @@ def rotate_left(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     ts = vy_type(lhs)
 
-    if (ts is LazyList and lhs.is_empty()) or len(lhs) == 0:
+    if (ts is LazyList and bool(lhs)) or len(lhs) == 0:
         return lhs
 
     if ts is str:
@@ -3447,7 +3447,7 @@ def rotate_right(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     ts = vy_type(lhs)
 
-    if (ts is LazyList and lhs.is_empty()) or len(lhs) == 0:
+    if (ts is LazyList and bool(lhs)) or len(lhs) == 0:
         return lhs
 
     if ts is str:

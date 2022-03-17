@@ -269,10 +269,3 @@ class LazyList:
         self.generated += list(itertools.tee(self.raw_object)[-1])
         for item in self.generated[::-1]:
             yield item
-
-    def is_empty(self):
-        try:
-            next(self)
-            return False
-        except StopIteration:
-            return True
