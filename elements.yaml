@@ -1095,3 +1095,89 @@
       output: [[4, 1], [4, 2], [4, 3]]
     - inputs: [[], 4]
       output: [[[], 1], [[], 2], [[], 3], [[], 4]]
+
+- element: "N"
+  name: Negate / Swapcase
+  description: >-
+   Negate a number / Invert the case of each letter in a string
+  arity: 1
+  overloads:
+    num: -lhs
+    str: lhs.swapcase()
+  vectorise: true
+  tests:
+    - inputs: [1]
+      output: -1
+    - inputs: [0]
+      output: 0
+    - inputs: [-1]
+      output: 1
+    - inputs: [1.5]
+      output: -1.5
+    - inputs: [-1.5]
+      output: 1.5
+    - inputs: [""]
+      output: ""
+    - inputs: ["Vyxal"]
+      output: "vYXAL"
+    - inputs: ["vYXaL"]
+      output: "VyxAL"
+    - inputs: ["VYXAL"]
+      output: "vyxal"
+
+- element: "O"
+  name: Ordinal Value / To Character
+  description: >-
+   Return the ordinal value of a character / Convert a string of characters to their ordinal value / Convert a number to a character
+  arity: 1
+  overloads:
+    num: chr(lhs)
+    str: ord(lhs)
+  vectorise: true
+  tests:
+    - inputs: [69]
+      outuput: "E"
+    - inputs: [420]
+      output: "Ƥ"
+    - inputs: ["H"]
+      output: 72
+    - inputs: [""]
+      output: 0
+    - inputs: ["Vyxal"]
+      output: [86, 121, 120, 97, 108]
+
+- element: "P"
+  name: Prepend
+  description: >-
+   Prepend an item to a list / Prepend an item to a string
+  arity: 2
+  overloads:
+    any-any: prepend rhs to lhs
+  vectorise: false
+  tests:
+    - inputs: [1, [2, 3, 4]]
+      output: [1, 2, 3, 4]
+    - inputs: [1, []]
+      output: [1]
+    - inputs: [1, [2, 3, 4, 5, 6, 7, 8, 9, 10]]
+      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    - inputs: [1, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]]
+      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    - inputs: [1, []]
+      output: [1]
+    - inputs: ["", [1, 2, 3]]
+      output: ["", 1, 2, 3]
+    - inputs: ["", []]
+      output: [""]
+    - inputs: ["Vyxal", [1, 2, 3]]
+      output: ["Vyxal", 1, 2, 3]
+    - inputs: ["Vyxal", []]
+      output: ["Vyxal"]
+    - inputs: [3, 4]
+      output: 43
+    - inputs: [3, 0]
+      output: 3
+    - inputs: [3, -1]
+      output: -13
+    - inputs: [-3, -4]
+      output: "-3-4"
