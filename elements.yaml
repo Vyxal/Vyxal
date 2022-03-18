@@ -1022,5 +1022,29 @@
     - inputs: [[], [1, 2, 3]]
       output: [1, 2, 3]
 
+- element: "K"
+  name: Keep / Reject
+  description: >-
+   Keep items of a list where applying a function is falsey / Remove items of a list
+   that are not in another - the inverse of F
+  arity: 2
+  overloads:
+    any-fun: reject(rhs, lhs) (reject lhs by falsey function results)
+    fun-any: reject(lhs, rhs) (reject rhs by falsey function results)
+    any-any: remove elements of lhs that are not in rhs
+  vectorise: false
+  tests:
+    - inputs: [[1,2,3],[2,4,6]]
+      output: [2]
+    - inputs: ["abcdef","daffodil"]
+      output: "adf"
+    - inputs: [[], []]
+      output: []
+    - inputs: [[1, 2, 3, 4, 5], []]
+      output: []
+    - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; K"
+      output: [1, 3, 5, 7, 9]
+    - program: '"Vyxal" λ"aeiou"nc; F'
+      output: "Vyxl"
 
   
