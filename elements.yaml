@@ -978,3 +978,49 @@
       output: "Vyxal"
     - inputs: ["V\ny         x    \n\nal"]
       output: "Vyxal"
+
+- element: "J"
+  name: Join Together / Merge
+  description: >-
+   Join two lists together / Merge two lists together
+  arity: 2
+  overloads:
+    lst-str: lhs.append(rhs) (Append)
+    lst-num: lhs.append(rhs) (Append)
+    str-lst: rhs.prepend(lhs) (Prepend)
+    num-lst: rhs.prepend(lhs) (Prepend)
+    lst-lst: merged(lhs, rhs) (Merge)
+    any-any: lhs + rhs (Concatenate)
+  vectorise: false
+  tests:
+    - inputs: [6, 9]
+      output: 69
+    - inputs: [10, 550]
+      output: 10550
+    - inputs: ["", ""]
+      output: ""
+    - inputs: ["abc", ""]
+      output: "abc"
+    - inputs: ["", "abc"]
+      output: "abc"
+    - inputs: ["abc", "def"]
+      output: "abcdef"
+    - inputs: [[1, 2, 3], 4]
+      output: [1, 2, 3, 4]
+    - inputs: [4, [1, 2, 3]]
+      output: [4, 1, 2, 3]
+    - inputs: [[1, 2, 3], ""]
+      output: [1, 2, 3, ""]
+    - inputs: ["", [1, 2, 3]]
+      output: ["", 1, 2, 3]
+    - inputs: [[1, 2, 3], [4, 5, 6]]
+      output: [1, 2, 3, 4, 5, 6]
+    - inputs: [[1, 2, 3], [4, 5, 6, 7, 8, 9]]
+      output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    - inputs: [[1, 2, 3], []]
+      output: [1, 2, 3]
+    - inputs: [[], [1, 2, 3]]
+      output: [1, 2, 3]
+
+
+  
