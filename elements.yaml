@@ -1047,4 +1047,51 @@
     - program: '"Vyxal" λ"aeiou"nc; F'
       output: "Vyxl"
 
-  
+- element: "L"
+  name: Length / Count
+  description: >-
+   Return the length of a list / Return the number of items in a list
+  arity: 1
+  overloads:
+    lst: len(lhs)
+    str: len(lhs)
+    any: len(lhs)
+  vectorise: true
+  tests:
+    - inputs: [1]
+      output: 1
+    - inputs: [9534]
+      output: 9
+    - inputs: [1111122]
+      output: 7
+    - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+      output: 10
+    - inputs: [[]]
+      output: 0
+    - inputs: [""]
+      output: 0
+    - inputs: ["Vyxal"]
+      output: 5
+
+- element: "M"
+  name: Map / Pair to Each
+  description: >-
+   Map a function over a list / Pair each item in a list with another object
+  arity: 2
+  overloads:
+      any-fun: map(b,a) (apply b to each of a)
+      any-any: pair each item of b with a
+  vectorise: false
+  tests:
+    - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2×; M"
+      output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+    - program: "10 λ2×; M"
+      output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+    - program: "\"\" λ2×; M"
+      output: []
+    - inputs: [[1, 2, 3], 4]
+      output: [[1, 4], [2, 4], [3, 4]]
+    - inputs: [4, [1, 2, 3]]
+      output: [[4, 1], [4, 2], [4, 3]]
+    - inputs: [[], 4]
+      output: [[[], 1], [[], 2], [[], 3], [[], 4]]
