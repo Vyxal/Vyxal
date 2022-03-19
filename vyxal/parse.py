@@ -41,6 +41,8 @@ TRIADIC_MODIFIERS = list("≬")
 BREAK_CHARACTER = "X"
 RECURSE_CHARACTER = "x"
 
+DEFAULT_ARITY = "default"
+
 
 def process_parameters(tokens: list[lexer.Token]) -> tuple[str, list[str]]:
     """Handles the tokens from the first branch of a function defintion structure
@@ -168,7 +170,7 @@ def parse(
             elif structure_cls == structure.Lambda:
                 if len(branches) == 1:
                     # that is, there is only a body - no arity
-                    arity = "default"
+                    arity = DEFAULT_ARITY
                 else:
                     try:
                         arity = int(branches[0][0].value)
@@ -219,7 +221,9 @@ def parse(
             remaining = parse(tokens, structure.MonadicModifier)
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(structure.Lambda(1, [remaining[0]]))
+                structures.append(
+                    structure.Lambda(DEFAULT_ARITY, [remaining[0]])
+                )
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])
@@ -233,7 +237,9 @@ def parse(
             if head.value == "‡":
                 # 2-element lambda
                 structures.append(
-                    structure.Lambda(1, [remaining[0], remaining[1]])
+                    structure.Lambda(
+                        DEFAULT_ARITY, [remaining[0], remaining[1]]
+                    )
                 )
             else:
                 structures.append(
@@ -251,7 +257,8 @@ def parse(
                 # 3-element lambda
                 structures.append(
                     structure.Lambda(
-                        1, [remaining[0], remaining[1], remaining[2]]
+                        DEFAULT_ARITY,
+                        [remaining[0], remaining[1], remaining[2]],
                     )
                 )
             else:
