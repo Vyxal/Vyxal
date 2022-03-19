@@ -3415,6 +3415,56 @@ def roman_numeral(lhs, ctx):
         return vectorise(roman_numeral, lhs, ctx=ctx)
 
 
+def rotate_left(lhs, rhs, ctx):
+    """Element Ǔ
+    (any, num) -> a rotated left by b
+    (any) -> a rotated left by 1
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    ts = vy_type(lhs)
+
+    if (ts is LazyList and not bool(lhs)) or len(lhs) == 0:
+        return lhs
+
+    if ts is str:
+        return lhs[rhs:] + lhs[:rhs]
+
+    @lazylist
+    def gen():
+        rotating_list = lhs
+        for _ in range(rhs):
+            rotating_list = rotating_list[1:] + [rotating_list[0]]
+        yield from rotating_list
+
+    return gen()
+
+
+def rotate_right(lhs, rhs, ctx):
+    """Element ǔ
+    (any, num) -> a rotated right by b
+    (any) -> a rotated right by 1
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    ts = vy_type(lhs)
+
+    if (ts is LazyList and not bool(lhs)) or len(lhs) == 0:
+        return lhs
+
+    if ts is str:
+        return lhs[-rhs:] + lhs[:-rhs]
+
+    @lazylist
+    def gen():
+        rotating_list = list(lhs)
+        for _ in range(abs(int(rhs))):
+            rotating_list = [rotating_list[-1]] + rotating_list[:-1]
+        yield from rotating_list
+
+    return gen()
+
+
 def round_to(lhs, rhs, ctx):
     """Element ∆W
     (num, num) -> round(a, no_dec_places=b)
@@ -5114,22 +5164,18 @@ elements: dict[str, tuple[str, int]] = {
         "rhs = pop(stack, 1, ctx)\n"
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(merge(index(lhs, [rhs, None, None], ctx), "
-        + "index(lhs, [None, rhs, None], ctx), ctx))\n"
+        + "    stack.append(rotate_left(lhs, rhs, ctx))\n"
         + "else:\n"
-        + "    stack.append(merge(index(rhs, [1, None, None], ctx), "
-        + "index(rhs, 0, ctx), ctx))\n",
+        + "    stack.append(rotate_left(rhs, 1, ctx))\n",
         2,
     ),
     "ǔ": (
         "rhs = pop(stack, 1, ctx)\n"
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(merge(index(lhs, [-rhs, None, None], ctx), "
-        + "index(lhs, [None, -rhs, None], ctx), ctx))\n"
+        + "    stack.append(rotate_right(lhs, rhs, ctx))\n"
         + "else:\n"
-        + "    stack.append(merge(index(rhs, -1, ctx), "
-        + "index(rhs, [None, -1, None], ctx), ctx))\n",
+        + "    stack.append(rotate_right(rhs, 1, ctx))\n",
         2,
     ),
     "↵": process_element(newline_split, 1),
