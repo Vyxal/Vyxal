@@ -127,6 +127,12 @@ def tokenise(
                     )
                 ):
                     contextual_token_value += source.popleft()
+                if (
+                    contextual_token_value.endswith(".")
+                    and contextual_token_value != "."
+                ):
+                    # Handles case of x. which should be x.5
+                    contextual_token_value += "5"
                 tokens.append(Token(TokenType.NUMBER, contextual_token_value))
         elif head == "‛":
             contextual_token_value = ""

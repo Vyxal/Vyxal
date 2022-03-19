@@ -146,6 +146,20 @@ def test_greaterthan_lazylists():
     assert LazyList(range(11)) > LazyList(range(10))
 
 
+def test_a_flag_inputs():
+    stack = []
+    ctx = Context()
+    ctx.stacks.append(stack)
+    ctx.inputs = [[[3, 4, 5], 0]]
+    ctx.array_inputs = True
+
+    py_code = transpile("? $")
+    exec(py_code)
+
+    result = ctx.stacks.pop()
+    assert result == [3, [3, 4, 5]]
+
+
 def test_compare_infinite_lists():
     stack = run_vyxal("Þ∞")
     assert stack[-1] > LazyList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])

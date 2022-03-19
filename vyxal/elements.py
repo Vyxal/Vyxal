@@ -796,10 +796,10 @@ def custom_pad_left(lhs, rhs, other, ctx):
     """
     if isinstance(lhs, LazyList):
         return vectorise(custom_pad_left, lhs, rhs, other)
-    if isinstance(rhs, int):
-        return lhs.ljust(rhs, other)
-    if isinstance(other, int):
-        return lhs.ljust(other, rhs)
+    if vy_type(rhs) == NUMBER_TYPE:
+        return lhs.ljust(int(rhs), other)
+    if vy_type(other) == NUMBER_TYPE:
+        return lhs.ljust(int(other), rhs)
 
 
 def custom_pad_right(lhs, rhs, other, ctx):
@@ -810,10 +810,10 @@ def custom_pad_right(lhs, rhs, other, ctx):
     """
     if isinstance(lhs, LazyList):
         return vectorise(custom_pad_left, lhs, rhs, other)
-    if isinstance(rhs, int):
-        return lhs.rjust(rhs, other)
-    if isinstance(other, int):
-        return lhs.rjust(other, rhs)
+    if vy_type(rhs) == NUMBER_TYPE:
+        return lhs.rjust(int(rhs), other)
+    if vy_type(other) == NUMBER_TYPE:
+        return lhs.rjust(int(other), rhs)
 
 
 def decrement(lhs, ctx):
@@ -1141,7 +1141,9 @@ def exponent(lhs, rhs, ctx):
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
         + ((lhs[0] or " ") * (int(rhs) - len(lhs))),
-        (str, str): lambda: list(re.search(lhs, rhs).span()),
+        (str, str): lambda: []
+        if (mobj := re.search(rhs, lhs)) is None
+        else list(mobj.span()),
         (ts[0], types.FunctionType): lambda: list(vy_map(rhs, lhs, ctx)),
         (types.FunctionType, ts[1]): lambda: list(vy_map(lhs, rhs, ctx)),
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
@@ -1213,6 +1215,15 @@ def find(lhs, rhs, ctx):
             and primitive_type(lhs) == SCALAR_TYPE
             else (lhs, rhs)
         )
+
+        if list not in ts and LazyList not in ts:
+            lhs, rhs = str(lhs), str(rhs)
+            needle, haystack = (
+                sorted((lhs, rhs), key=len)
+                if len(lhs) != len(rhs)
+                else (rhs, lhs)
+            )
+            return haystack.find(needle)
         pos = 0
         lhs = iterable(lhs, ctx=ctx)
         if vy_type(lhs) is LazyList and lhs.infinite:
@@ -1308,6 +1319,11 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
     """
+    ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        return lhs
+    elif ts in (list, LazyList):
+        return vectorise(flip_brackets_vertical_palindromise, lhs, ctx=ctx)
     result = lhs.split("\n")
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
@@ -1701,9 +1717,20 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return gen()
 
     else:
-        lhs = iterable(lhs)
+        if primitive_type(rhs) is SCALAR_TYPE:
+            lhs, rhs = rhs, lhs
+        lhs = LazyList(iterable(lhs))
         rhs = iterable(rhs)
-        return vy_map(lambda item: lhs[item], rhs, ctx=ctx)
+
+        # Don't ask me why vectorise doesn't work here
+        # I tried.
+        def recursive_helper(value):
+            if primitive_type(value) is SCALAR_TYPE:
+                return lhs[value]
+            else:
+                return [recursive_helper(v) for v in value]
+
+        return recursive_helper(rhs)
 
 
 def infinite_cardinals(_, ctx=None):
@@ -1801,21 +1828,26 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     or equal to the LazyList's length, `other` is appended to the end.
     """
     lhs = iterable(lhs, ctx)
-    assert vy_type(rhs) == NUMBER_TYPE
 
     if vy_type(other) != types.FunctionType:
         if vy_type(lhs) is str:
+            if vy_type(other) == NUMBER_TYPE and vy_type(rhs) != NUMBER_TYPE:
+                rhs, other = other, rhs
             return lhs[: int(rhs)] + str(other) + lhs[int(rhs) :]
 
         @lazylist
         def gen():
             i = 0
+            places = chr_ord(rhs) if isinstance(rhs, str) else rhs
             for elem in lhs:
-                if i == rhs:
+                if vy_type(places) == NUMBER_TYPE:
+                    if i == places:
+                        yield other
+                elif i in places:
                     yield other
                 yield elem
                 i += 1
-            if i < rhs:
+            if vy_type(places) == NUMBER_TYPE and i < places:
                 yield other
 
         return gen()
@@ -1823,6 +1855,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     @lazylist
     def gen():
         i = 0
+        assert vy_type(rhs) == NUMBER_TYPE
         for item in lhs:
             yield safe_apply(other, item, ctx=ctx) if i % rhs == 0 else item
             i += 1
@@ -2161,7 +2194,7 @@ def ljust(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other)
     return {
         (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            lhs <= other <= rhs
+            simplify(lhs) <= simplify(other) <= simplify(rhs)
         ),
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
@@ -2769,7 +2802,7 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [1, lhs], ctx
         ),
-        (str, str): lambda: vyxalify(re.match(lhs, rhs).groups()),
+        (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -2816,7 +2849,7 @@ def orderless_range(lhs, rhs, ctx):
         (types.FunctionType, ts[1]): lambda: scanl(
             multiply(lhs, 2, ctx), iterable(rhs, range, ctx=ctx), ctx=ctx
         ),
-        (str, str): lambda: int(re.compile(lhs).search(rhs)),
+        (str, str): lambda: int(bool(re.compile(rhs).search(lhs))),
     }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
 
 
@@ -2938,8 +2971,8 @@ def pluralise_count(lhs, rhs, ctx):
     (str, num) -> count lhs lots of rhs
     (num, str) -> count rhs lots of lhs
     """
-    if isinstance(lhs, int):
-        return pluralise_count(rhs, lhs, ctx)
+    if vy_type(lhs) == NUMBER_TYPE:
+        return pluralise_count(rhs, int(lhs), ctx)
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
@@ -3380,6 +3413,56 @@ def roman_numeral(lhs, ctx):
         return result
     elif vy_type(lhs) is list:
         return vectorise(roman_numeral, lhs, ctx=ctx)
+
+
+def rotate_left(lhs, rhs, ctx):
+    """Element Ǔ
+    (any, num) -> a rotated left by b
+    (any) -> a rotated left by 1
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    ts = vy_type(lhs)
+
+    if (ts is LazyList and not bool(lhs)) or len(lhs) == 0:
+        return lhs
+
+    if ts is str:
+        return lhs[rhs:] + lhs[:rhs]
+
+    @lazylist
+    def gen():
+        rotating_list = lhs
+        for _ in range(rhs):
+            rotating_list = rotating_list[1:] + [rotating_list[0]]
+        yield from rotating_list
+
+    return gen()
+
+
+def rotate_right(lhs, rhs, ctx):
+    """Element ǔ
+    (any, num) -> a rotated right by b
+    (any) -> a rotated right by 1
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    ts = vy_type(lhs)
+
+    if (ts is LazyList and not bool(lhs)) or len(lhs) == 0:
+        return lhs
+
+    if ts is str:
+        return lhs[-rhs:] + lhs[:-rhs]
+
+    @lazylist
+    def gen():
+        rotating_list = list(lhs)
+        for _ in range(abs(int(rhs))):
+            rotating_list = [rotating_list[-1]] + rotating_list[:-1]
+        yield from rotating_list
+
+    return gen()
 
 
 def round_to(lhs, rhs, ctx):
@@ -4565,7 +4648,9 @@ def vy_repr(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
         (str): lambda: string_character
-        + lhs.replace(string_character, "\\" + string_character)
+        + lhs.replace("\\", "\\\\").replace(
+            string_character, "\\" + string_character
+        )
         + string_character,
         (types.FunctionType): lambda: vy_repr(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -4775,7 +4860,7 @@ def zero_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [0, lhs], ctx=ctx
         ),
-        (str, str): lambda: re.findall(lhs, rhs),
+        (str, str): lambda: re.findall(rhs, lhs),
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -4797,8 +4882,8 @@ def zfiller(lhs, rhs, ctx):
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
-    "∧": process_element("lhs and rhs", 2),
-    "∨": process_element("lhs or rhs", 2),
+    "∧": process_element("rhs and lhs", 2),
+    "∨": process_element("rhs or lhs", 2),
     "⟇": process_element(remove_at_index, 2),
     "÷": (
         "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
@@ -4845,7 +4930,7 @@ elements: dict[str, tuple[str, int]] = {
     "=": process_element(equals, 2),
     ">": process_element(greater_than, 2),
     "?": (
-        "ctx.use_top_input = True; lhs = get_input(ctx); "
+        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True); "
         "ctx.use_top_input = False; stack.append(lhs)",
         0,
     ),
@@ -5079,22 +5164,18 @@ elements: dict[str, tuple[str, int]] = {
         "rhs = pop(stack, 1, ctx)\n"
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(merge(index(lhs, [rhs, None, None], ctx), "
-        + "index(lhs, [None, rhs, None], ctx), ctx))\n"
+        + "    stack.append(rotate_left(lhs, rhs, ctx))\n"
         + "else:\n"
-        + "    stack.append(merge(index(rhs, [1, None, None], ctx), "
-        + "index(rhs, 0, ctx), ctx))\n",
+        + "    stack.append(rotate_left(rhs, 1, ctx))\n",
         2,
     ),
     "ǔ": (
         "rhs = pop(stack, 1, ctx)\n"
         + "if vy_type(rhs) == NUMBER_TYPE: \n"
         + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(merge(index(lhs, [-rhs, None, None], ctx), "
-        + "index(lhs, [None, -rhs, None], ctx), ctx))\n"
+        + "    stack.append(rotate_right(lhs, rhs, ctx))\n"
         + "else:\n"
-        + "    stack.append(merge(index(rhs, -1, ctx), "
-        + "index(rhs, [None, -1, None], ctx), ctx))\n",
+        + "    stack.append(rotate_right(rhs, 1, ctx))\n",
         2,
     ),
     "↵": process_element(newline_split, 1),
@@ -5151,6 +5232,7 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
         2,
     ),
+    "∆Ṙ": process_element("sympy.nsimplify(random.random())", 0),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
@@ -5365,6 +5447,7 @@ elements: dict[str, tuple[str, int]] = {
     "k∩": process_element('"aeiouyAEIOUY"', 0),
     "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
     "kṘ": process_element('"IVXLCDM"', 0),
+    "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
 }
 modifiers: dict[str, str] = {
     "&": (

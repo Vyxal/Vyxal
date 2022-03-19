@@ -210,14 +210,16 @@ def from_base_digits(digit_list: List[NUMBER_TYPE], base: int) -> int:
     return ret
 
 
-def get_input(ctx: Context) -> Any:
+def get_input(ctx: Context, explicit=False) -> Any:
     """Returns the next input depending on where ctx tells to get the
     input from."""
     if ctx.use_top_input:
+        if ctx.array_inputs and not explicit:
+            return vyxalify(ctx.inputs[0][0])
         if ctx.inputs[0][0]:
             ret = ctx.inputs[0][0][ctx.inputs[0][1] % len(ctx.inputs[0][0])]
             ctx.inputs[0][1] += 1
-            return ret
+            return vyxalify(ret)
         else:
             try:
                 temp = vy_eval(input("> " * ctx.repl_mode), ctx)
@@ -227,18 +229,17 @@ def get_input(ctx: Context) -> Any:
                 temp = 0
             return temp
     else:
-        if ctx.inputs[-1][0]:
+        if len(ctx.inputs) == 1:
+            ctx.use_top_input = True
+            temp = get_input(ctx)
+            ctx.use_top_input = False
+            return vyxalify(temp)
+        elif ctx.inputs[-1][0]:
             ret = ctx.inputs[-1][0][ctx.inputs[-1][1] % len(ctx.inputs[-1][0])]
             ctx.inputs[-1][1] += 1
-            return ret
+            return vyxalify(ret)
         else:
-            if len(ctx.inputs) == 1:
-                ctx.use_top_input = True
-                temp = get_input(ctx)
-                ctx.use_top_input = False
-                return temp
-            else:
-                return 0
+            return 0
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
@@ -459,7 +460,7 @@ def mold(
     original, content = itertools.tee(content)
     for item in shape:
         temp = []
-        if isinstance(item, (int, str)):
+        if isinstance(item, str) or is_sympy(item):
             item = [item]
         for _ in item:
             obj = next(content, None)
@@ -918,17 +919,13 @@ def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
 
 def vyxalify(value: Any) -> Any:
     """Takes a value and returns it as one of the four types we use here."""
-    if isinstance(value, sympy.core.numbers.Integer):
-        return int(value)
+    if isinstance(value, bool):
+        return str(value)
     elif is_sympy(value):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, (float, complex)):
+    elif isinstance(value, (float, complex, int)):
         return sympy.nsimplify(value, rational=True)
-    elif isinstance(value, bool):
-        return str(value)
-    elif isinstance(
-        value, (int, sympy.Rational, str, LazyList, types.FunctionType)
-    ):
+    elif isinstance(value, (str, LazyList, types.FunctionType)):
         return value
     elif isinstance(value, list):
         return list(map(vyxalify, value))

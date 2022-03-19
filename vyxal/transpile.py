@@ -37,13 +37,13 @@ def lambda_wrap(
                 branch,
             )
         elif isinstance(branch[0], vyxal.structure.RecurseStatement):
-            return vyxal.structure.Lambda(1, branch)
+            return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
         else:
-            return vyxal.structure.Lambda(1, branch)
+            return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
     else:
-        return vyxal.structure.Lambda(1, branch)
+        return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
 
 
 def transpile(
