@@ -796,10 +796,10 @@ def custom_pad_left(lhs, rhs, other, ctx):
     """
     if isinstance(lhs, LazyList):
         return vectorise(custom_pad_left, lhs, rhs, other)
-    if isinstance(rhs, int):
-        return lhs.ljust(rhs, other)
-    if isinstance(other, int):
-        return lhs.ljust(other, rhs)
+    if vy_type(rhs) == NUMBER_TYPE:
+        return lhs.ljust(int(rhs), other)
+    if vy_type(other) == NUMBER_TYPE:
+        return lhs.ljust(int(other), rhs)
 
 
 def custom_pad_right(lhs, rhs, other, ctx):
@@ -810,10 +810,10 @@ def custom_pad_right(lhs, rhs, other, ctx):
     """
     if isinstance(lhs, LazyList):
         return vectorise(custom_pad_left, lhs, rhs, other)
-    if isinstance(rhs, int):
-        return lhs.rjust(rhs, other)
-    if isinstance(other, int):
-        return lhs.rjust(other, rhs)
+    if vy_type(rhs) == NUMBER_TYPE:
+        return lhs.rjust(int(rhs), other)
+    if vy_type(other) == NUMBER_TYPE:
+        return lhs.rjust(int(other), rhs)
 
 
 def decrement(lhs, ctx):
@@ -2194,7 +2194,7 @@ def ljust(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other)
     return {
         (NUMBER_TYPE, NUMBER_TYPE, NUMBER_TYPE): lambda: int(
-            lhs <= other <= rhs
+            simplify(lhs) <= simplify(other) <= simplify(rhs)
         ),
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
@@ -2971,8 +2971,8 @@ def pluralise_count(lhs, rhs, ctx):
     (str, num) -> count lhs lots of rhs
     (num, str) -> count rhs lots of lhs
     """
-    if isinstance(lhs, int):
-        return pluralise_count(rhs, lhs, ctx)
+    if vy_type(lhs) == NUMBER_TYPE:
+        return pluralise_count(rhs, int(lhs), ctx)
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
