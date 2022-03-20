@@ -4198,6 +4198,20 @@
     num: to_decimal(a)
   vectorise: false
 
+- element: "ø⟇"
+  name: Get Codepage Character / Get Codepage Index
+  description: Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
+  arity: 1
+  overloads:
+    num: vyxal_codepage[a]
+    str: vyxal_codepage.index(a)
+  vectorise: true
+  tests:
+    - '[0] : "λ"'
+    - '["₁ƛ₍₃₅kF½*∑∴;⁋"] : [166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]'
+    - '[[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]] : "₁ƛ₍₃₅kF½*∑∴;⁋"]'
+    - '[["a", 244, "!", 90, "∑∑∑"]] : [97, "ǔ", 33, "Z", [179, 179, 179]]'
+
 - element: "øṘ"
   name: Roman Numeral
   description: Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
