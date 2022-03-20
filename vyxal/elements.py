@@ -5519,4 +5519,10 @@ modifiers: dict[str, str] = {
         "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
         "stack.append(non_vectorising_equals(original, res, ctx=ctx))"
     ),
+    "¨£": (
+        "rhs, lhs = pop(stack, 2, ctx)\n"
+        "zipped = vy_zip(lhs, rhs, ctx)\n"
+        "mapped = map(lambda item: vy_reduce(function_A, item, ctx), zipped)\n"
+        "stack.append(LazyList(mapped))\n"
+    ),
 }

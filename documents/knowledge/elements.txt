@@ -2988,3 +2988,10 @@ k• (Qwerty Keyboard)
     str a: [a*1, a*2, a*3, a*4, ...]
     otherwise: vectorise
 -------------------------------
+¨£ (Star Map)
+
+- Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
+
+    ¨£<element>
+
+-------------------------------

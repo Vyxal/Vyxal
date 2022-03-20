@@ -3482,3 +3482,12 @@ Return all multiples of a
 - num a: `[a*1, a*2, a*3, a*4, ...]`
 - str a: `[a*1, a*2, a*3, a*4, ...]`
 -------------------------------
+## `` ¨£ `` (Star Map)
+Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
+
+Usage:
+```
+¨£<element>
+```
+
+-------------------------------
