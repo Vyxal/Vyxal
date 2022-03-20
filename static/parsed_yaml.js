@@ -2075,6 +2075,12 @@ codepage_descriptions[143] += `
 Convert a rational to its decimal representation.
 num a -> to_decimal(a)
 `
+codepage_descriptions[6] += `
+ø⟇ (Get Codepage Character / Get Codepage Index)
+Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
+num a -> vyxal_codepage[a]
+str a -> vyxal_codepage.index(a)
+`
 codepage_descriptions[197] += `
 øṘ (Roman Numeral)
 Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
@@ -2397,3 +2403,7 @@ Return all multiples of a
 num a -> [a*1, a*2, a*3, a*4, ...]
 str a -> [a*1, a*2, a*3, a*4, ...]
 `
+codepage_descriptions.push(`Star Map
+Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
+`)
+
