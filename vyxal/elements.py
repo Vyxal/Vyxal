@@ -657,8 +657,11 @@ def codepage_digraph(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
-        (str): lambda: vyxal.encoding.codepage.find(lhs) if len(lhs) <= 1 else vectorise(codepage_digraph, lhs, ctx=ctx),
+        (str): lambda: vyxal.encoding.codepage.find(lhs)
+        if len(lhs) <= 1
+        else vectorise(codepage_digraph, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
+
 
 def combinations_with_replacement(lhs, rhs, ctx):
     """Element ↔
