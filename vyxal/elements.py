@@ -648,6 +648,21 @@ def chr_ord(lhs, ctx):
     }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
+def codepage_digraph(lhs, ctx):
+    """Element ø⟇
+    (num) -> vyxal_codepage[a]
+    (str) -> vyxal_codepage.index(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
+        (str): lambda: vyxal.encoding.codepage.find(lhs)
+        if len(lhs) <= 1
+        else vectorise(codepage_digraph, lhs, ctx=ctx),
+    }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
+
+
 def combinations_with_replacement(lhs, rhs, ctx):
     """Element ↔
     (any, num) -> combinations of lhs of length rhs with replacement
@@ -5269,6 +5284,7 @@ elements: dict[str, tuple[str, int]] = {
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "øṘ": process_element(roman_numeral, 1),
+    "ø⟇": process_element(codepage_digraph, 1),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
@@ -5466,21 +5482,27 @@ modifiers: dict[str, str] = {
         "    ctx.retain_popped = True\n"
         "    arguments = wrapify(stack, function_A.arity, ctx=ctx)\n"
         "    ctx.retain_popped = False\n"
-        "    stack.append(safe_apply(function_A, *(arguments[::-1]), ctx=ctx))\n"
+        "    stack.append(safe_apply(function_A, *(arguments[::-1]), "
+        "ctx=ctx))\n"
         "elif function_A.arity == 1:\n"
-        "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A, ctx=ctx))\n"
+        "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A,"
+        "ctx=ctx))\n"
     ),
     "₌": (
         "stack_copy = list(deep_copy(stack))\n"
-        "arguments_A = wrapify(stack_copy, function_A.arity, ctx=ctx)\n"
-        "arguments_B = wrapify(stack, function_B.arity, ctx=ctx)\n"
+        "arguments_A = wrapify(stack_copy, max(function_A.arity, "
+        "len(stack_copy)), ctx=ctx)\n"
+        "arguments_B = wrapify(stack, max(function_B.arity, len(stack)), "
+        "ctx=ctx)\n"
         "stack.append(safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx))\n"
         "stack.append(safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx))\n"
     ),
     "₍": (
         "stack_copy = list(deep_copy(stack))\n"
-        "arguments_A = wrapify(stack_copy, function_A.arity, ctx=ctx)\n"
-        "arguments_B = wrapify(stack, function_B.arity, ctx=ctx)\n"
+        "arguments_A = wrapify(stack_copy, max(function_A.arity, "
+        "len(stack_copy)), ctx=ctx)\n"
+        "arguments_B = wrapify(stack, max(function_B.arity, len(stack)), "
+        "ctx=ctx)\n"
         "res_A = safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx)\n"
         "res_B = safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx)\n"
         "stack.append([res_A, res_B])\n"
@@ -5502,5 +5524,11 @@ modifiers: dict[str, str] = {
         "original = pop(stack, 1, ctx)\n"
         "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
         "stack.append(non_vectorising_equals(original, res, ctx=ctx))"
+    ),
+    "¨£": (
+        "rhs, lhs = pop(stack, 2, ctx)\n"
+        "zipped = vy_zip(lhs, rhs, ctx)\n"
+        "mapped = map(lambda item: vy_reduce(function_A, item, ctx), zipped)\n"
+        "stack.append(LazyList(mapped))\n"
     ),
 }
