@@ -18229,8 +18229,8 @@ def test_GetCodepageCharacterGetCodepageIndex():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]]]
-    expected = vyxalify("₁ƛ₍₃₅kF½*∑∴;⁋")
+    stack = [vyxalify(item) for item in [[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]]]
+    expected = vyxalify(["₁", "ƛ", "₍", "₃", "₅", "k", "F", "½", "*", "∑", "∴", ";", "⁋"])
     ctx = Context()
 
     ctx.stacks.append(stack)
