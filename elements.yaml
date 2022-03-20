@@ -1181,3 +1181,70 @@
       output: -13
     - inputs: [-3, -4]
       output: "-3-4"
+
+- element: "Q"
+  name: Quit
+  description: >-
+   Quit the program / Exit the program
+  arity: 0
+  overloads:
+    any: quit()
+  vectorise: false
+
+- element: "R"
+  name: Reduce / Vectorised Reverse / Foldl by Function
+  description: >-
+   Reduce a list by a function / Reverse each item in a list
+  arity: 2
+  overloads:
+    any-fun: reduce(rhs, lhs) (fold list lhs by function rhs)
+    fun-any: reduce(lhs, rhs) (fold list rhs by function lhs)
+    any-any: reverse each item of rhs
+  vectorise: false
+  tests:
+    - program: "⟨1|2|3|4|5⟩ λ+; R"
+      output: 15
+    - program: "⟨1|2|3|4|5⟩ λ×; R"
+      output: 120
+    - program: "λ-; ⟨1|2|3|4|5⟩ R"
+      output: -13
+    - program: "λ÷; ⟨1|2|3|4|5⟩ R"
+      output: 0.008333333333333333
+    - inputs: [[[1,2],[3,4]]]
+      output: [[2,1],[4,3]]
+    - inputs: [[[1,2]]]
+      output: [[2,1]]
+    - inputs: [[[1,2],[3,4]], [[5,6],[7,8]]]
+      output: [[3,4],[1,2],[7,8],[5,6]]
+
+- element: "S"
+  name: Stringify / To String
+  description: >-
+   Convert a number to a string / Convert a list to a string
+  arity: 1
+  overloads:
+    any: str(lhs) / lhs.toString()
+  vectorise: false
+  tests:
+    - inputs: [1]
+      output: "1"
+    - inputs: [0]
+      output: "0"
+    - inputs: [-1]
+      output: "-1"
+    - inputs: [1.5]
+      output: "1.5"
+    - inputs: [-1.5]
+      output: "-1.5"
+    - inputs: [""]
+      output: ""
+    - inputs: ["Vyxal"]
+      output: "Vyxal"
+    - inputs: ["VYXAL"]
+      output: "VYXAL"
+    - inputs: ["vYXaL"]
+      output: "vYXaL"
+    - inputs: [[1, 2, 3]]
+      output: "[1, 2, 3]"
+    - inputs: [[[1, 2, 3], [4, 5, 6]]]
+      output: "[[1, 2, 3], [4, 5, 6]]"
