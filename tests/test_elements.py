@@ -18230,7 +18230,7 @@ def test_GetCodepageCharacterGetCodepageIndex():
 
 
     stack = [vyxalify(item) for item in [[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]]]
-    expected = vyxalify("₁ƛ₍₃₅kF½*∑∴;⁋"])
+    expected = vyxalify("₁ƛ₍₃₅kF½*∑∴;⁋")
     ctx = Context()
 
     ctx.stacks.append(stack)
