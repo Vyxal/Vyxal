@@ -2970,6 +2970,15 @@ Convert a rational to its decimal representation.
 
 - num a: `to_decimal(a)`
 -------------------------------
+## `` ø⟇ `` (Get Codepage Character / Get Codepage Index)
+
+Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
+
+### Overloads
+
+- num a: `vyxal_codepage[a]`
+- str a: `vyxal_codepage.index(a)`
+-------------------------------
 ## `` øṘ `` (Roman Numeral)
 
 Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.

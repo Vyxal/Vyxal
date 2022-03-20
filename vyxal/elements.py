@@ -648,6 +648,21 @@ def chr_ord(lhs, ctx):
     }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
+def codepage_digraph(lhs, ctx):
+    """Element ø⟇
+    (num) -> vyxal_codepage[a]
+    (str) -> vyxal_codepage.index(a)
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
+        (str): lambda: vyxal.encoding.codepage.find(lhs)
+        if len(lhs) <= 1
+        else vectorise(codepage_digraph, lhs, ctx=ctx),
+    }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
+
+
 def combinations_with_replacement(lhs, rhs, ctx):
     """Element ↔
     (any, num) -> combinations of lhs of length rhs with replacement
@@ -5269,6 +5284,7 @@ elements: dict[str, tuple[str, int]] = {
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
     "øṘ": process_element(roman_numeral, 1),
+    "ø⟇": process_element(codepage_digraph, 1),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
