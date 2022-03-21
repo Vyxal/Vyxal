@@ -1801,7 +1801,31 @@ def infinite_primes(_, ctx=None):
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
+    (lst, fun, lst) -> apply function b to items in a at indices in c
+    (lst, lst, fun) -> apply function c to items in a at indices in b
+    (fun, lst, lst) -> apply function a to items in b at indices in c
     """
+
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+    if types.FunctionType in ts:
+        function = first_where(
+            lambda val: isinstance(val, types.FunctionType),
+            (lhs, rhs, other),
+            ctx,
+        )
+
+        vector, indicies = filter(
+            lambda val: not isinstance(val, types.FunctionType),
+            (lhs, rhs, other),
+        )
+        values = safe_apply(
+            function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
+        )
+        for i in range(len(indicies)):
+            vector[indicies[i]] = values[i]
+
+        return vector
+
     orig_type = type(lhs)
 
     prev = deep_copy(lhs)

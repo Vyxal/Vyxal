@@ -200,11 +200,14 @@
     - "[[1,2],2] : [[1,1],[1,2],[2,1],[2,2]]"
 
 - element: "¢"
-  name: Infinite Replacement
+  name: Infinite Replacement / Apply at Indices
   arity: 3
-  description: Replace b in a with c until a does not change
+  description: Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
   overloads:
     any-any-any: replace b in a with c until a does not change
+    lst-fun-lst: apply function b to items at indices in a
+    lst-lst-fun: apply function c to items in a at indices in b
+    fun-lst-lst: apply function a to items in b at indices in c
   vectorise: false
   tests:
     - '["{[[[]]]}","[]",""] : "{}"'
