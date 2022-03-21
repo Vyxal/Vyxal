@@ -115,9 +115,12 @@ any a, str b -> Remove elements from a that are not in b
 any a, lst b -> Remove elements from a that are not in b.
 `)
 
-codepage_descriptions.push(`Infinite Replacement
-Replace b in a with c until a does not change
+codepage_descriptions.push(`Infinite Replacement / Apply at Indices
+Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
 any a, any b, any c -> replace b in a with c until a does not change
+lst a, fun b, lst c -> apply function b to items at indices in a
+lst a, lst b, fun c -> apply function c to items in a at indices in b
+fun a, lst b, lst c -> apply function a to items in b at indices in c
 `)
 
 codepage_descriptions.push(`Complement / Comma Split
