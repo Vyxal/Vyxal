@@ -45,7 +45,7 @@ def process_element(
 
     See documents/specs/Transpilation.md for information on what happens here.
     """
-    if arity:
+    if arity > 0:
         arguments = ["third", "rhs", "lhs"][-arity:]
     else:
         arguments = ["_"]
@@ -53,10 +53,14 @@ def process_element(
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
         pushed = expr
-    py_code = (
-        f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
-        f"stack.append({pushed})"
-    )
+
+    if arity != -1:
+        py_code = (
+            f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
+            f"stack.append({pushed})"
+        )
+    else:
+        py_code = f"stack.append({pushed})"
     return py_code, arity
 
 
@@ -4923,7 +4927,7 @@ elements: dict[str, tuple[str, int]] = {
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
     "∞": process_element(palindromise, 1),
-    "!": process_element("len(stack)", 0),
+    "!": process_element("len(stack)", -1),
     '"': process_element("[lhs, rhs]", 2),
     "$": (
         "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
@@ -4987,12 +4991,12 @@ elements: dict[str, tuple[str, int]] = {
         "temp = list(deep_copy(stack))\n"
         "pop(stack, len(stack), ctx)\n"
         "stack.append(temp)",
-        0,
+        -1,
     ),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack += wrapify(stack, len(stack), ctx)", 0),
+    "^": ("stack += wrapify(stack, len(stack), ctx)", -1),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -5201,12 +5205,12 @@ elements: dict[str, tuple[str, int]] = {
     "„": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += temp[1:] + [temp[0]]",
-        0,
+        -1,
     ),
     "‟": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += [temp[-1]] + temp[:-1]",
-        0,
+        -1,
     ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
@@ -5484,6 +5488,11 @@ modifiers: dict[str, str] = {
         "    ctx.retain_popped = False\n"
         "    stack.append(safe_apply(function_A, *(arguments[::-1]), "
         "ctx=ctx))\n"
+        "elif function_A.arity == -1:\n"
+        "    arguments = list(deep_copy(stack))\n"
+        "    pop(stack, len(stack), ctx)\n"
+        "    stack += wrapify(safe_apply(function_A, arguments, ctx=ctx, arity_override=-1),"
+        " ctx=ctx)\n"
         "elif function_A.arity == 1:\n"
         "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A,"
         "ctx=ctx))\n"
