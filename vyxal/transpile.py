@@ -465,9 +465,6 @@ def transpile_lambda(
             indent,
         )
         + indent_str(
-            "print('a', arg_stack, arity, " + str(lam.arity) + ")", indent + 1
-        )
-        + indent_str(
             "if arity is not None: stack = wrapify(arg_stack, arity, "
             + "ctx=ctx) if arity != -1 else arg_stack[-1]",
             indent + 1,
@@ -490,7 +487,7 @@ def transpile_lambda(
             indent + 1,
         )
         + indent_str(
-            "this = self; print('s', stack, 'stored_arity' in dir(self))",
+            "this = self",
             indent + 1,
         )
         + indent_str("ctx.function_stack.append(this)", indent + 1)
@@ -527,7 +524,7 @@ def transpile_lambda(
         + indent_str("ctx.context_values.pop()", indent + 1)
         + indent_str("ctx.inputs.pop()", indent + 1)
         + indent_str("ctx.stacks.pop()", indent + 1)
-        + indent_str("ctx.function_stack.pop(); print(stack, res)", indent + 1)
+        + indent_str("ctx.function_stack.pop()", indent + 1)
         + indent_str("return res", indent + 1)
         + indent_str(
             f"_lambda_{id_}.arity = "
