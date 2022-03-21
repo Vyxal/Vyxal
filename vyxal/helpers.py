@@ -131,6 +131,17 @@ def enumerate_md(haystack: VyList, _index_stack: tuple = ()) -> VyList:
             yield list(_index_stack) + [i]
 
 
+def first_where(
+    function: types.FunctionType, vector: VyList, ctx: Context
+) -> Any:
+    """Returns the first element in vector where function returns True"""
+    for item in vector:
+        if safe_apply(function, item, ctx=ctx):
+            return item
+
+    return None
+
+
 @lazylist
 def fixed_point(
     function: types.FunctionType, initial: Any, ctx: Context
