@@ -18185,6 +18185,92 @@ def test_StringPartitions():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_GetCodepageCharacterGetCodepageIndex():
+
+    stack = [vyxalify(item) for item in [0]]
+    expected = vyxalify("λ")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø⟇')
+    # print('ø⟇', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["₁ƛ₍₃₅kF½*∑∴;⁋"]]
+    expected = vyxalify([166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø⟇')
+    # print('ø⟇', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]]]
+    expected = vyxalify(["₁", "ƛ", "₍", "₃", "₅", "k", "F", "½", "*", "∑", "∴", ";", "⁋"])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø⟇')
+    # print('ø⟇', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [["a", 244, "!", 90, "∑∑∑"]]]
+    expected = vyxalify([97, "ǔ", 33, "Z", [179, 179, 179]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø⟇')
+    # print('ø⟇', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_RomanNumeral():
 
     stack = [vyxalify(item) for item in [1]]

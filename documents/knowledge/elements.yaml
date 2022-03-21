@@ -4201,6 +4201,20 @@
     num: to_decimal(a)
   vectorise: false
 
+- element: "ø⟇"
+  name: Get Codepage Character / Get Codepage Index
+  description: Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
+  arity: 1
+  overloads:
+    num: vyxal_codepage[a]
+    str: vyxal_codepage.index(a)
+  vectorise: true
+  tests:
+    - '[0] : "λ"'
+    - '["₁ƛ₍₃₅kF½*∑∴;⁋"] : [166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]'
+    - '[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]] : ["₁", "ƛ", "₍", "₃", "₅", "k", "F", "½", "*", "∑", "∴", ";", "⁋"]'
+    - '[["a", 244, "!", 90, "∑∑∑"]] : [97, "ǔ", 33, "Z", [179, 179, 179]]'
+
 - element: "øṘ"
   name: Roman Numeral
   description: Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
@@ -4898,3 +4912,8 @@
     num: "[a*1, a*2, a*3, a*4, ...]"
     str: "[a*1, a*2, a*3, a*4, ...]"
   vectorise: true
+
+- modifier: "¨£"
+  name: Star Map
+  description: Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
+  usage: "¨£<element>"
