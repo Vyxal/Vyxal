@@ -487,7 +487,7 @@ def transpile_lambda(
             indent + 1,
         )
         + indent_str(
-            "this = self",
+            "this = self;",
             indent + 1,
         )
         + indent_str("ctx.function_stack.append(this)", indent + 1)

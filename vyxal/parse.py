@@ -173,13 +173,16 @@ def parse(
                     arity = DEFAULT_ARITY
                 else:
                     try:
-                        arity = int(branches[0][0].value)
+                        token_values = [token.value for token in branches[0]]
+                        arity = int("".join(token_values))
                     except ValueError as ve:
                         raise ValueError(
-                            "Arity must be parseable as an integer"
+                            "Arity must be parsable as an integer"
                         ) from ve
-                    if arity < 0:
-                        raise ValueError("Arity must be non-negative")
+                    if arity < -1:
+                        raise ValueError(
+                            "Arity must be greater than or equal to -1"
+                        )
                 structures.append(
                     structure.Lambda(arity, parse(branches[-1], structure_cls))
                 )

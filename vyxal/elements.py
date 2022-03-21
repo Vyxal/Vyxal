@@ -1378,7 +1378,12 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += wrapify(top(lhs, top, ctx=ctx))
+        args = pop(lhs, top.arity, ctx=ctx) if top.arity != -1 else [lhs]
+        arity_override = None if top.arity != -1 else top.arity
+        lhs += wrapify(
+            safe_apply(top, *args, ctx=ctx, arity_override=arity_override),
+            ctx=ctx,
+        )
         return None
     return {
         NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
@@ -4629,9 +4634,16 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
-            -1
-        ]  # lgtm[py/call-to-non-callable]
+        args = (
+            wrapify(ctx.stacks[-1], lhs.arity, ctx=ctx)
+            if lhs.arity != -1
+            else [ctx.stacks[-1]]
+        )
+
+        override = None if lhs.arity != -1 else lhs.arity
+        res = safe_apply(lhs, *args, ctx=ctx, arity_override=override)
+        if lhs.arity == -1:
+            res = res[-1]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
