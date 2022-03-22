@@ -2798,7 +2798,7 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: sympy.integrate(make_expression(lhs)),
+        (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
