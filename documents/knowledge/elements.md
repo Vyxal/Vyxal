@@ -3403,6 +3403,14 @@ An infinite list of an item. then that item negated, then that item, and so on. 
 
 - any a: `[a, -a, a, -a, ...]`
 -------------------------------
+## `` Þ□ `` (Identity Matrix of Size n)
+
+A matrix with 1s on the main diagonal and zeroes elsewhere
+
+### Overloads
+
+- num a: `A matrix with 1s on the main diagonal and zeroes elsewhere`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
