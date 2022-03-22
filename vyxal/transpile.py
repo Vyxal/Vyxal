@@ -465,13 +465,13 @@ def transpile_lambda(
             indent,
         )
         + indent_str(
-            "if arity is not None: stack = wrapify(arg_stack, arity, "
-            + "ctx=ctx) if arity != -1 else arg_stack[-1]",
+            "if 'stored_arity' in dir(self): "
+            + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
             indent + 1,
         )
         + indent_str(
-            "elif 'stored_arity' in dir(self): "
-            + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
+            "elif arity is not None: stack = wrapify(arg_stack, arity, "
+            + "ctx=ctx) if arity != -1 else arg_stack[-1]",
             indent + 1,
         )
         + indent_str(

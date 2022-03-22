@@ -1378,7 +1378,7 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        args = pop(lhs, top.arity, ctx=ctx) if top.arity != -1 else [lhs]
+        args = wrapify(lhs, top.arity, ctx=ctx) if top.arity != -1 else [lhs]
         arity_override = None if top.arity != -1 else top.arity
         lhs += wrapify(
             safe_apply(top, *args, ctx=ctx, arity_override=arity_override),
