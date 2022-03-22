@@ -810,7 +810,7 @@ def test_CombinationsRemoveFixedPointCollection():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_InfiniteReplacement():
+def test_InfiniteReplacementApplyatIndices():
 
     stack = [vyxalify(item) for item in ["{[[[]]]}","[]",""]]
     expected = vyxalify("{}")
