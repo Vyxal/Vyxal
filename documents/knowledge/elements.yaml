@@ -4262,6 +4262,7 @@
     - '["M"] : 1000'
     - '["MM"] : 2000'
     - '["MMM"] : 3000'
+
 - element: "Þ*"
   name: Cartesian product over list
   description: Cartesian product over a list of lists
@@ -4272,6 +4273,27 @@
   tests:
     - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
     - "[[[1, 2], [3, 4], []]] : []"
+
+- element: "Þa"
+  name: Adjacency matrix (Directed)
+  description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
+  arity: 1
+  overloads:
+    lst: Adjacency matrix
+  vectorise: false
+  tests:
+    - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,2,0],[1,0,0,0,0]]"
+
+- element: "ÞA"
+  name: Adjacency matrix (Undirected)
+  description: Adjacency matrix of undirected graph
+  arity: 1
+  overloads:
+    lst: Adjacency matrix
+  vectorise: false
+  tests:
+    - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,1,1,2,0],[1,0,0,0,0]]"
+    - "[[[1,3]]] : [[0,0,1],[0,0,0],[1,0,0]]"
 
 - element: "Þo"
   name: Ordinals

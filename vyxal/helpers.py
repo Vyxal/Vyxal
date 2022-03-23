@@ -253,6 +253,37 @@ def get_input(ctx: Context, explicit=False) -> Any:
             return 0
 
 
+def edges_to_dir_graph(edges: list, ctx: Context) -> dict:
+    """Convert a list of edges to a directed graph (as a dictionary)"""
+
+    edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
+    graph = dict()
+    for edge in edges:
+        if len(edge) != 2:
+            raise ValueError(
+                "Graph edge expected to be list of 2 elements,"
+                f"got {edge} instead.")
+        if edge[0] in graph:
+            graph[edge[0]].append(edge[1])
+        else:
+            graph[edge[0]] = [edge[1]]
+        if edge[1] not in graph:
+            graph[edge[1]] = []
+    
+    vertices = graph.keys()
+    if all(isinstance(vert, int) or (isinstance(vert, float) and int(vert) == vert) for vert in vertices):
+        # If we have just integers, assume the graph vertices are a range
+        # and fill in the middle disconnected vertices
+        # TODO make this behavior configurable with flags
+        min_vert = min_by(vertices, ctx=ctx)
+        max_vert = max_by(vertices, ctx=ctx)
+        vertices = LazyList(range(int(min_vert), int(max_vert) + 1))
+        for vert in vertices:
+            if vert not in graph:
+                graph[vert] = []
+    
+    return graph
+
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
     if isinstance(lst, LazyList):

@@ -88,6 +88,34 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+def adjacency_matrix_dir(lhs, ctx):
+    """Element Þa
+    (lst) -> adjacency matrix of directed graph.
+    If A_ij is nonzero, it means there are edges from i to j"""
+    graph = edges_to_dir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph, ctx=ctx)
+    adj = [[0] * len(vertices) for _ in vertices]
+    for i, elem1 in enumerate(vertices):
+        for j, elem2 in enumerate(vertices):
+            adj[i][j] += graph[elem1].count(elem2)
+    return adj
+
+
+def adjacency_matrix_undir(lhs, ctx):
+    """Element ÞA
+    (lst) -> adjacency matrix of undirected graph"""
+    graph = edges_to_dir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph, ctx=ctx)
+    adj = [[0] * len(vertices) for _ in vertices]
+    for i, elem1 in enumerate(vertices):
+        for j in range(i):
+            elem2 = vertices[j]
+            n_edges = graph[elem1].count(elem2) + graph[elem2].count(elem1)
+            adj[i][j] += n_edges
+            adj[j][i] += n_edges
+    return adj
+
+
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -5324,6 +5352,8 @@ elements: dict[str, tuple[str, int]] = {
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
     "Þ*": process_element(cartesian_over_list, 1),
+    "Þa": process_element(adjacency_matrix_dir, 1),
+    "ÞA": process_element(adjacency_matrix_undir, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
