@@ -2999,6 +2999,22 @@ Cartesian product over a list of lists
 
 - lst a: `itertools.product(*a)`
 -------------------------------
+## `` Þa `` (Adjacency matrix (Directed))
+
+Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
+
+### Overloads
+
+- lst a: `Adjacency matrix`
+-------------------------------
+## `` ÞA `` (Adjacency matrix (Undirected))
+
+Adjacency matrix of undirected graph
+
+### Overloads
+
+- lst a: `Adjacency matrix`
+-------------------------------
 ## `` Þo `` (Ordinals)
 
 An infinite list of first, second, third, fourth etc

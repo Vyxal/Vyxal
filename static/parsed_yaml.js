@@ -2095,6 +2095,16 @@ codepage_descriptions[42] += `
 Cartesian product over a list of lists
 lst a -> itertools.product(*a)
 `
+codepage_descriptions[97] += `
+Þa (Adjacency matrix (Directed))
+Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
+lst a -> Adjacency matrix
+`
+codepage_descriptions[65] += `
+ÞA (Adjacency matrix (Undirected))
+Adjacency matrix of undirected graph
+lst a -> Adjacency matrix
+`
 codepage_descriptions[111] += `
 Þo (Ordinals)
 An infinite list of first, second, third, fourth etc
