@@ -257,7 +257,7 @@ def edges_to_dir_graph(edges: list, ctx: Context) -> dict:
     """Convert a list of edges to a directed graph (as a dictionary)"""
 
     edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
-    graph = dict()
+    graph = {}
     for edge in edges:
         if len(edge) != 2:
             raise ValueError(
@@ -293,7 +293,7 @@ def edges_to_undir_graph(edges: list, ctx: Context) -> dict:
     """Convert a list of edges representing an undirected graph to a dictionary"""
 
     edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
-    graph = dict()
+    graph = {}
     for edge in edges:
         if len(edge) != 2:
             raise ValueError(
