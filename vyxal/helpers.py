@@ -311,7 +311,8 @@ def edges_to_undir_graph(edges: list, ctx: Context) -> dict:
 
     vertices = graph.keys()
     if all(
-        isinstance(vert, int) or ((isinstance(vert, float) or is_sympy(vert)) and int(vert) == vert)
+        isinstance(vert, int)
+        or ((isinstance(vert, float) or is_sympy(vert)) and int(vert) == vert)
         for vert in vertices
     ):
         # If we have just integers, assume the graph vertices are a range
