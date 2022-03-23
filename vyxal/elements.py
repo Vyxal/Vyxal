@@ -93,7 +93,7 @@ def adjacency_matrix_dir(lhs, ctx):
     (lst) -> adjacency matrix of directed graph.
     If A_ij is nonzero, it means there are edges from i to j"""
     graph = edges_to_dir_graph(lhs, ctx=ctx)
-    vertices = vy_sort(graph, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
     adj = [[0] * len(vertices) for _ in vertices]
     for i, elem1 in enumerate(vertices):
         for j, elem2 in enumerate(vertices):
@@ -104,13 +104,13 @@ def adjacency_matrix_dir(lhs, ctx):
 def adjacency_matrix_undir(lhs, ctx):
     """Element ÞA
     (lst) -> adjacency matrix of undirected graph"""
-    graph = edges_to_dir_graph(lhs, ctx=ctx)
-    vertices = vy_sort(graph, ctx=ctx)
+    graph = edges_to_undir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
     adj = [[0] * len(vertices) for _ in vertices]
     for i, elem1 in enumerate(vertices):
-        for j in range(i):
+        for j in range(i + 1):
             elem2 = vertices[j]
-            n_edges = graph[elem1].count(elem2) + graph[elem2].count(elem1)
+            n_edges = graph[elem1].count(elem2)
             adj[i][j] += n_edges
             adj[j][i] += n_edges
     return adj

@@ -19118,7 +19118,7 @@ def test_Cartesianproductoverlist():
 def test_AdjacencymatrixDirected():
 
     stack = [vyxalify(item) for item in [[[1,5],[2,4],[3,4],[4,4]]]]
-    expected = vyxalify([[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,2,0],[1,0,0,0,0]])
+    expected = vyxalify([[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]])
     ctx = Context()
 
     ctx.stacks.append(stack)
