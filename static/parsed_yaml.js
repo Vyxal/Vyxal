@@ -2371,6 +2371,12 @@ codepage_descriptions[216] += `
 A matrix with 1s on the main diagonal and zeroes elsewhere
 num a -> A matrix with 1s on the main diagonal and zeroes elsewhere
 `
+codepage_descriptions[101] += `
+Þe (Matrix Exponentiation)
+A matrix mutliplied by itself n times
+num a, lst b -> Matrix a mutliplied by itself b times
+lst a, num b -> Matrix b mutliplied by itself a times
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

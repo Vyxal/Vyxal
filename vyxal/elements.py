@@ -2392,7 +2392,7 @@ def matrix_exponentiation(lhs, rhs, ctx):
     original_matrix = deep_copy(matrix)
     for _ in range(times):
         matrix = multiply(matrix, original_matrix, ctx=ctx)
-    
+
     return matrix
 
 
