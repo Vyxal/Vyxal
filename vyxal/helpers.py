@@ -708,7 +708,9 @@ def ring_translate(string: str, map_source: Union[str, list]) -> str:
     return ret
 
 
-def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
+def safe_apply(
+    function: types.FunctionType, *args, ctx, arity_override=None
+) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.
     If the function is a _lambda (it's been defined within λ...;), it passes a
@@ -720,7 +722,9 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     *args does NOT contain ctx
     """
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args)[::-1], function, len(args), ctx=ctx)
+        ret = function(
+            list(args)[::-1], function, arity_override or len(args), ctx=ctx
+        )
         if len(ret):
             return ret[-1]
         else:
