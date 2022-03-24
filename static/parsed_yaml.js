@@ -2391,9 +2391,10 @@ Push whether the result of applying an element to an item is the same as the ori
 `)
 
 codepage_descriptions[77] += `
-¨M (Map To Indices)
-Map a function to elements of a list whose indices are in another list
+¨M (Map At Indices)
+Map a function at elements of a list whose indices are in another list
 lst a, lst b, fun c -> Map a function to elements of a list whose indices are in another list
+lst a, num b, fun c -> Apply a function to element b within list a
 `
 codepage_descriptions[44] += `
 ¨, (Print With Space)

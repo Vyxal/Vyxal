@@ -312,6 +312,7 @@ def apply_at(lhs, rhs, other, ctx):
     (lst, lst, fun) -> Map a function to elements of a list whose
                        indices are in another list
     """
+
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
