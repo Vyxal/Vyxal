@@ -1623,6 +1623,20 @@ def head_remove(lhs, ctx):
     return sympy.Rational(str(float(lhs))[1:])
 
 
+def identity_matrix(lhs, ctx):
+    """Element Þ□
+    (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            [1 if i == j else 0 for j in range(lhs)] for i in range(lhs)
+        ],
+        str: lambda: lhs,
+    }.get(ts, lambda: vectorise(identity_matrix, lhs, ctx=ctx))()
+
+
 def inclusive_one_range(lhs, ctx):
     """Element ɾ
     (num) -> range(1, a + 1)
@@ -5395,6 +5409,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ÞN": process_element(alternating_negations, 1),
+    "Þ□": process_element(identity_matrix, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

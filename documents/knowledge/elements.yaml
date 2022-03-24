@@ -4721,7 +4721,6 @@
     - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
     - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
 
-
 - element: "ÞṠ"
   name: Is Sorted?
   description: Returns true if an item is sorted in ascending order using default sorting rules.
@@ -4817,6 +4816,18 @@
     any: "[a, -a, a, -a, ...]"
   vectorise: false
 
+- element: "Þ□"
+  name: Identity Matrix of Size n
+  description: A matrix with 1s on the main diagonal and zeroes elsewhere
+  arity: 1
+  overloads:
+    num: A matrix with 1s on the main diagonal and zeroes elsewhere
+  vectorise: true
+  tests:
+    - "[3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
+    - "[4] : [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]"
+    - "[[3, 4, 5]] : [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]]]"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
@@ -4850,7 +4861,6 @@
   overloads:
     str: Send a GET request to a URL
   vectorise: false
-
 
 - modifier: "¨="
   name: Invariant After Application

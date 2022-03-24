@@ -2357,6 +2357,11 @@ An infinite list of an item. then that item negated, then that item, and so on. 
 any a -> [a, -a, a, -a, ...]
 `
 codepage_descriptions[216] += `
+Þ□ (Identity Matrix of Size n)
+A matrix with 1s on the main diagonal and zeroes elsewhere
+num a -> A matrix with 1s on the main diagonal and zeroes elsewhere
+`
+codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
 str a -> Map characters in \`>^<v\` to integers
