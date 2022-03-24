@@ -3460,13 +3460,14 @@ Usage:
 ```
 
 -------------------------------
-## `` ¨M `` (Map To Indices)
+## `` ¨M `` (Map At Indices)
 
-Map a function to elements of a list whose indices are in another list
+Map a function at elements of a list whose indices are in another list
 
 ### Overloads
 
 - lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
+- lst a, num b, fun c: `Apply a function to element b within list a`
 -------------------------------
 ## `` ¨, `` (Print With Space)
 
