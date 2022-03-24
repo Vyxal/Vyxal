@@ -2378,6 +2378,24 @@ def matrix_determinant(lhs, ctx):
     return sympy.det(sympy.Matrix(lhs))
 
 
+def matrix_exponentiation(lhs, rhs, ctx):
+    """Element Þe
+    (lst, num) -> (a * a) b times
+    (num, lst) -> (b * b) a times
+    """
+
+    ts = vy_type(lhs, rhs, simple=True)
+    if set(ts) != {list, NUMBER_TYPE}:
+        raise TypeError("matrix exponentiation only works on lists and numbers")
+
+    matrix, times = lhs, rhs if ts[0] == NUMBER_TYPE else rhs
+    original_matrix = deep_copy(matrix)
+    for _ in range(times):
+        matrix = multiply(matrix, original_matrix, ctx=ctx)
+    
+    return matrix
+
+
 def matrix_multiply(lhs, rhs, ctx):
     """Element ÞṀ
     (lst, lst) -> Matrix multiplication
@@ -5440,6 +5458,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ÞN": process_element(alternating_negations, 1),
     "Þ□": process_element(identity_matrix, 1),
+    "Þe": process_element(matrix_exponentiation, 2),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
