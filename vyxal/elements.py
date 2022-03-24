@@ -45,7 +45,7 @@ def process_element(
 
     See documents/specs/Transpilation.md for information on what happens here.
     """
-    if arity:
+    if arity > 0:
         arguments = ["third", "rhs", "lhs"][-arity:]
     else:
         arguments = ["_"]
@@ -53,10 +53,14 @@ def process_element(
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
         pushed = expr
-    py_code = (
-        f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
-        f"stack.append({pushed})"
-    )
+
+    if arity != -1:
+        py_code = (
+            f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
+            f"stack.append({pushed})"
+        )
+    else:
+        py_code = f"stack.append({pushed})"
     return py_code, arity
 
 
@@ -1374,7 +1378,12 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += wrapify(top(lhs, top, ctx=ctx))
+        args = wrapify(lhs, top.arity, ctx=ctx) if top.arity != -1 else [lhs]
+        arity_override = None if top.arity != -1 else top.arity
+        lhs += wrapify(
+            safe_apply(top, *args, ctx=ctx, arity_override=arity_override),
+            ctx=ctx,
+        )
         return None
     return {
         NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
@@ -1612,6 +1621,20 @@ def head_remove(lhs, ctx):
         return int(str(lhs)[1:])
     assert isinstance(lhs, sympy.Rational)
     return sympy.Rational(str(float(lhs))[1:])
+
+
+def identity_matrix(lhs, ctx):
+    """Element Þ□
+    (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            [1 if i == j else 0 for j in range(lhs)] for i in range(lhs)
+        ],
+        str: lambda: lhs,
+    }.get(ts, lambda: vectorise(identity_matrix, lhs, ctx=ctx))()
 
 
 def inclusive_one_range(lhs, ctx):
@@ -4649,9 +4672,16 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
-            -1
-        ]  # lgtm[py/call-to-non-callable]
+        args = (
+            wrapify(ctx.stacks[-1], lhs.arity, ctx=ctx)
+            if lhs.arity != -1
+            else [ctx.stacks[-1]]
+        )
+
+        override = None if lhs.arity != -1 else lhs.arity
+        res = safe_apply(lhs, *args, ctx=ctx, arity_override=override)
+        if lhs.arity == -1:
+            res = res[-1]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
@@ -4947,7 +4977,7 @@ elements: dict[str, tuple[str, int]] = {
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
     "∞": process_element(palindromise, 1),
-    "!": process_element("len(stack)", 0),
+    "!": process_element("len(stack)", -1),
     '"': process_element("[lhs, rhs]", 2),
     "$": (
         "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
@@ -5011,12 +5041,12 @@ elements: dict[str, tuple[str, int]] = {
         "temp = list(deep_copy(stack))\n"
         "pop(stack, len(stack), ctx)\n"
         "stack.append(temp)",
-        0,
+        -1,
     ),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack += wrapify(stack, len(stack), ctx)", 0),
+    "^": ("stack += wrapify(stack, len(stack), ctx)", -1),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -5225,12 +5255,12 @@ elements: dict[str, tuple[str, int]] = {
     "„": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += temp[1:] + [temp[0]]",
-        0,
+        -1,
     ),
     "‟": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += [temp[-1]] + temp[:-1]",
-        0,
+        -1,
     ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
@@ -5379,6 +5409,7 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ÞN": process_element(alternating_negations, 1),
+    "Þ□": process_element(identity_matrix, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
@@ -5508,6 +5539,11 @@ modifiers: dict[str, str] = {
         "    ctx.retain_popped = False\n"
         "    stack.append(safe_apply(function_A, *(arguments[::-1]), "
         "ctx=ctx))\n"
+        "elif function_A.arity == -1:\n"
+        "    arguments = list(deep_copy(stack))\n"
+        "    pop(stack, len(stack), ctx)\n"
+        "    stack += wrapify(safe_apply(function_A, arguments, ctx=ctx, arity_override=-1),"
+        " ctx=ctx)\n"
         "elif function_A.arity == 1:\n"
         "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A,"
         "ctx=ctx))\n"
