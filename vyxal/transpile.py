@@ -461,16 +461,17 @@ def transpile_lambda(
 
     return (
         indent_str(
-            f"def _lambda_{id_}(arg_stack, self, arity=-1, ctx=None):",
+            f"def _lambda_{id_}(arg_stack, self, arity=None, ctx=None):",
             indent,
         )
         + indent_str(
-            "if arity != -1: stack = wrapify(arg_stack, arity, " + "ctx=ctx)",
+            "if 'stored_arity' in dir(self): "
+            + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
             indent + 1,
         )
         + indent_str(
-            "elif 'stored_arity' in dir(self): "
-            + "stack = wrapify(arg_stack, self.stored_arity, ctx)",
+            "elif arity is not None: stack = wrapify(arg_stack, arity, "
+            + "ctx=ctx) if arity != -1 else arg_stack[-1]",
             indent + 1,
         )
         + indent_str(
@@ -480,10 +481,15 @@ def transpile_lambda(
                 if lam.arity != "default"
                 else "ctx.default_arity"
             )
-            + ", ctx)",
+            + ", ctx)"
+            if lam.arity != -1
+            else "else: stack = arg_stack[-1]",
             indent + 1,
         )
-        + indent_str("this = self", indent + 1)
+        + indent_str(
+            "this = self;",
+            indent + 1,
+        )
         + indent_str("ctx.function_stack.append(this)", indent + 1)
         + indent_str(
             "ctx.context_values.append(list(deep_copy(stack)) "
@@ -499,7 +505,22 @@ def transpile_lambda(
             transpile_ast(lam.body, dict_compress=dict_compress),
             indent + 1,
         )
-        + indent_str("res = [pop(stack, 1, ctx)]", indent + 1)
+        + indent_str(
+            "if arity is not None: res = [pop(stack, 1, ctx=ctx)] if arity != -1"
+            " else [stack]",
+            indent + 1,
+        )
+        + indent_str(
+            "elif 'stored_arity' in dir(self): res = [pop(stack, 1, ctx=ctx)] "
+            "if self.stored_arity != -1 else [stack]",
+            indent + 1,
+        )
+        + indent_str(
+            "else: res = [pop(stack, 1, ctx=ctx)]"
+            if lam.arity != -1
+            else "else: res = [stack]",
+            indent + 1,
+        )
         + indent_str("ctx.context_values.pop()", indent + 1)
         + indent_str("ctx.inputs.pop()", indent + 1)
         + indent_str("ctx.stacks.pop()", indent + 1)
