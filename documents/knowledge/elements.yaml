@@ -4904,11 +4904,12 @@
   description: Push whether the result of applying an element to an item is the same as the original item
 
 - element: "¨M"
-  name: Map To Indices
-  description: Map a function to elements of a list whose indices are in another list
+  name: Map At Indices
+  description: Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
     lst-lst-fun: Map a function to elements of a list whose indices are in another list
+    lst-num-fun: Apply a function to element b within list a
   vectorise: false
 
 - element: "¨,"
