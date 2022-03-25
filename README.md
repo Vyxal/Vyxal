@@ -1,17 +1,14 @@
 # Vyxal
 
+![Vyxal Logo](./documents/logo/vylogo.png)
+
 [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/Vyxal/Vyxal.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Vyxal/Vyxal/context:python) ![Test status](https://github.com/Vyxal/Vyxal/actions/workflows/run-tests.yaml/badge.svg)
 
-Vyxal is a golfing language with a unique design philosophy: make things as short as possible but retain elegance while doing so. In very simple terms, this means
-keeping aspects of traditional programming languages that most developers are familiar with, while still providing commands that allow golfers to actually _win_
-challenges.
+Welcome to Vyxal, a stack-based golfing language that has features that aren't neccesarily code golf. It's been reported that Vyxal is easier to learn and use than
+most golfing languages, so you should do so by checking out the [tutorial](https://vyxapedia.hyper-neutrino.xyz/beginners) and the [element list](https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md)
 
-Vyxal is _not_ a language which forces users to mash random characters togther until something works. Nor is it a language that needs to be verbose. Vyxal is terse when
-it needs to be, and readable/stylish when it wants to be.
+Btw we also have cookies (the tasty kind, not the track your info kind).
 
-Vyxal is also deliberately designed to be an easy language to learn. While it may be possible to teach golfers how to program in Vyxal, it is far more likely that they will just learn through experience. The language is designed to be easy to understand, and to allow for fast development.
-
-Ultimately, Vyxal is a language for golfers, by golfers.
 
 ## Installation
 
@@ -39,16 +36,6 @@ If you're using Poetry:
 poetry run vyxal <file> <flags (single string of flags)> <input(s)>
 ```
 
-## Why Make Another Golfing Language When There's Like Hundreds of Them Already?
-
-Most golfing languages are created with the intent of terse code - a goal that is obviously essential to the very core of what a golfing language is. However, this is
-mostly done at the expense of losing constructs within traditional programming languages that make things simple to do. Vyxal's raison d'être is to provide structures
-of practical languages - such as functions, variables and comments - that are oftentimes lost within the modern golfing language market.
-
-Another reason for Vyxal is to provide an easy to use golfing language that anyone can quickly pick up - by providing tools that both new and experienced users are
-familiar with, Vyxal aims to cater to a wide demographic of golfers.
-
-Put simply, Vyxal exists because golfers need a golfing language - and because golfing languages could be better.
 
 ## Links
 
