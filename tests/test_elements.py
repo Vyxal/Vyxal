@@ -21360,7 +21360,7 @@ def test_MatrixExponentiation():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5], 4]]]
+    stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5], 4]]
     expected = vyxalify([1, 32, 243, 1024, 3125])
     ctx = Context()
 
