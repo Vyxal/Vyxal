@@ -2387,7 +2387,7 @@ def matrix_exponentiation(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs, simple=True)
     if set(ts) != {list, NUMBER_TYPE}:
-        raise TypeError("matrix exponentiation only works on lists and numbers")
+        raise TypeError("Matrix exponentiation requires a matrix and a number")
 
     matrix, times = lhs, rhs if ts[0] == NUMBER_TYPE else rhs
     original_matrix = deep_copy(matrix)
