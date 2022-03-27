@@ -2569,9 +2569,8 @@ def mold_special(lhs, rhs, ctx):
 
 def monadic_maximum(lhs, ctx):
     """Element G
-    (any) -> Maximal element of the input (deep flattens first)
+    (any) -> Maximal element of the input
     """
-    lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
     else:
@@ -2580,9 +2579,8 @@ def monadic_maximum(lhs, ctx):
 
 def monadic_minimum(lhs, ctx):
     """Element g
-    (any) -> Smallest item of a (deep flattens)
+    (any) -> Smallest item of a
     """
-    lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
     else:
