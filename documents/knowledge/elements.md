@@ -153,13 +153,16 @@ Does either combinations_with_replacement, removes items from a not in b, or app
 - any a, str b: `Remove elements from a that are not in b`
 - any a, lst b: `Remove elements from a that are not in b.`
 -------------------------------
-## `` ¢ `` (Infinite Replacement)
+## `` ¢ `` (Infinite Replacement / Apply at Indices)
 
-Replace b in a with c until a does not change
+Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
 
 ### Overloads
 
 - any a, any b, any c: `replace b in a with c until a does not change`
+- lst a, fun b, lst c: `apply function b to items at indices in a`
+- lst a, lst b, fun c: `apply function c to items in a at indices in b`
+- fun a, lst b, lst c: `apply function a to items in b at indices in c`
 -------------------------------
 ## `` ⌐ `` (Complement / Comma Split)
 
@@ -2996,6 +2999,22 @@ Cartesian product over a list of lists
 
 - lst a: `itertools.product(*a)`
 -------------------------------
+## `` Þa `` (Adjacency matrix (Directed))
+
+Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
+
+### Overloads
+
+- lst a: `Adjacency matrix`
+-------------------------------
+## `` ÞA `` (Adjacency matrix (Undirected))
+
+Adjacency matrix of undirected graph
+
+### Overloads
+
+- lst a: `Adjacency matrix`
+-------------------------------
 ## `` Þo `` (Ordinals)
 
 An infinite list of first, second, third, fourth etc
@@ -3400,6 +3419,23 @@ An infinite list of an item. then that item negated, then that item, and so on. 
 
 - any a: `[a, -a, a, -a, ...]`
 -------------------------------
+## `` Þ□ `` (Identity Matrix of Size n)
+
+A matrix with 1s on the main diagonal and zeroes elsewhere
+
+### Overloads
+
+- num a: `A matrix with 1s on the main diagonal and zeroes elsewhere`
+-------------------------------
+## `` Þe `` (Matrix Exponentiation)
+
+A matrix mutliplied by itself n times
+
+### Overloads
+
+- num a, lst b: `Matrix a mutliplied by itself b times`
+- lst a, num b: `Matrix b mutliplied by itself a times`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
@@ -3433,13 +3469,14 @@ Usage:
 ```
 
 -------------------------------
-## `` ¨M `` (Map To Indices)
+## `` ¨M `` (Map At Indices)
 
-Map a function to elements of a list whose indices are in another list
+Map a function at elements of a list whose indices are in another list
 
 ### Overloads
 
 - lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
+- lst a, num b, fun c: `Apply a function to element b within list a`
 -------------------------------
 ## `` ¨, `` (Print With Space)
 

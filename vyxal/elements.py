@@ -45,7 +45,7 @@ def process_element(
 
     See documents/specs/Transpilation.md for information on what happens here.
     """
-    if arity:
+    if arity > 0:
         arguments = ["third", "rhs", "lhs"][-arity:]
     else:
         arguments = ["_"]
@@ -53,10 +53,14 @@ def process_element(
         pushed = f"{expr.__name__}({', '.join(arguments[::-1])}, ctx=ctx)"
     else:
         pushed = expr
-    py_code = (
-        f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
-        f"stack.append({pushed})"
-    )
+
+    if arity != -1:
+        py_code = (
+            f"{', '.join(arguments)} = pop(stack, {arity}, ctx); "
+            f"stack.append({pushed})"
+        )
+    else:
+        py_code = f"stack.append({pushed})"
     return py_code, arity
 
 
@@ -86,6 +90,34 @@ def add(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: lhs + str(rhs),
         (str, str): lambda: lhs + rhs,
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
+
+
+def adjacency_matrix_dir(lhs, ctx):
+    """Element Þa
+    (lst) -> adjacency matrix of directed graph.
+    If A_ij is nonzero, it means there are edges from i to j"""
+    graph = edges_to_dir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    adj = [[0] * len(vertices) for _ in vertices]
+    for i, elem1 in enumerate(vertices):
+        for j, elem2 in enumerate(vertices):
+            adj[i][j] += graph[elem1].count(elem2)
+    return adj
+
+
+def adjacency_matrix_undir(lhs, ctx):
+    """Element ÞA
+    (lst) -> adjacency matrix of undirected graph"""
+    graph = edges_to_undir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    adj = [[0] * len(vertices) for _ in vertices]
+    for i, elem1 in enumerate(vertices):
+        for j in range(i + 1):
+            elem2 = vertices[j]
+            n_edges = graph[elem1].count(elem2)
+            adj[i][j] += n_edges
+            adj[j][i] += n_edges
+    return adj
 
 
 def all_combos(lhs, ctx):
@@ -280,6 +312,7 @@ def apply_at(lhs, rhs, other, ctx):
     (lst, lst, fun) -> Map a function to elements of a list whose
                        indices are in another list
     """
+
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
@@ -1374,7 +1407,12 @@ def function_call(lhs, ctx):
     top = pop(lhs, 1, ctx=ctx)
     ts = vy_type(top, simple=True)
     if isinstance(top, types.FunctionType):
-        lhs += wrapify(top(lhs, top, ctx=ctx))
+        args = wrapify(lhs, top.arity, ctx=ctx) if top.arity != -1 else [lhs]
+        arity_override = None if top.arity != -1 else top.arity
+        lhs += wrapify(
+            safe_apply(top, *args, ctx=ctx, arity_override=arity_override),
+            ctx=ctx,
+        )
         return None
     return {
         NUMBER_TYPE: lambda: len(prime_factorisation(top, ctx)),
@@ -1614,6 +1652,20 @@ def head_remove(lhs, ctx):
     return sympy.Rational(str(float(lhs))[1:])
 
 
+def identity_matrix(lhs, ctx):
+    """Element Þ□
+    (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            [1 if i == j else 0 for j in range(lhs)] for i in range(lhs)
+        ],
+        str: lambda: lhs,
+    }.get(ts, lambda: vectorise(identity_matrix, lhs, ctx=ctx))()
+
+
 def inclusive_one_range(lhs, ctx):
     """Element ɾ
     (num) -> range(1, a + 1)
@@ -1816,7 +1868,31 @@ def infinite_primes(_, ctx=None):
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
+    (lst, fun, lst) -> apply function b to items in a at indices in c
+    (lst, lst, fun) -> apply function c to items in a at indices in b
+    (fun, lst, lst) -> apply function a to items in b at indices in c
     """
+
+    ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
+    if types.FunctionType in ts:
+        function = first_where(
+            lambda val: isinstance(val, types.FunctionType),
+            (lhs, rhs, other),
+            ctx,
+        )
+
+        vector, indicies = filter(
+            lambda val: not isinstance(val, types.FunctionType),
+            (lhs, rhs, other),
+        )
+        values = safe_apply(
+            function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
+        )
+        for i in range(len(indicies)):
+            vector[indicies[i]] = values[i]
+
+        return vector
+
     orig_type = type(lhs)
 
     prev = deep_copy(lhs)
@@ -2303,6 +2379,24 @@ def matrix_determinant(lhs, ctx):
     return sympy.det(sympy.Matrix(lhs))
 
 
+def matrix_exponentiation(lhs, rhs, ctx):
+    """Element Þe
+    (lst, num) -> (a * a) b times
+    (num, lst) -> (b * b) a times
+    """
+
+    ts = vy_type(lhs, rhs, simple=True)
+    if set(ts) != {list, NUMBER_TYPE}:
+        raise TypeError("Matrix exponentiation requires a matrix and a number")
+
+    matrix, times = lhs, rhs if ts[0] == NUMBER_TYPE else rhs
+    original_matrix = matrix
+    for _ in range(times):
+        matrix = multiply(matrix, original_matrix, ctx=ctx)
+
+    return matrix
+
+
 def matrix_multiply(lhs, rhs, ctx):
     """Element ÞṀ
     (lst, lst) -> Matrix multiplication
@@ -2342,7 +2436,7 @@ def max_by_tail(lhs, ctx):
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+        return max_by(lhs, key=tail, cmp=greater_than, ctx=ctx)
 
 
 def maximal_indices(lhs, ctx):
@@ -2493,24 +2587,23 @@ def mold_special(lhs, rhs, ctx):
 
 def monadic_maximum(lhs, ctx):
     """Element G
-    (any) -> Maximal element of the input (deep flattens first)
+    (any) -> Maximal element of the input
     """
-    lhs = deep_flatten(lhs, ctx)
+
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, cmp=less_than, ctx=ctx)
+        return max_by(lhs, cmp=strict_greater_than, ctx=ctx)
 
 
 def monadic_minimum(lhs, ctx):
     """Element g
-    (any) -> Smallest item of a (deep flattens)
+    (any) -> Smallest item of a
     """
-    lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
     else:
-        return min_by(lhs, cmp=less_than, ctx=ctx)
+        return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
 def multi_dimensional_search(lhs, rhs, ctx):
@@ -2798,7 +2891,7 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: sympy.integrate(make_expression(lhs)),
+        (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
@@ -4625,9 +4718,16 @@ def vy_print(lhs, end="\n", ctx=None):
     elif ts is list:
         vy_print(vy_str(lhs, ctx=ctx), end, ctx)
     elif ts is types.FunctionType:
-        res = lhs(ctx.stacks[-1], lhs, ctx=ctx)[
-            -1
-        ]  # lgtm[py/call-to-non-callable]
+        args = (
+            wrapify(ctx.stacks[-1], lhs.arity, ctx=ctx)
+            if lhs.arity != -1
+            else [ctx.stacks[-1]]
+        )
+
+        override = None if lhs.arity != -1 else lhs.arity
+        res = safe_apply(lhs, *args, ctx=ctx, arity_override=override)
+        if lhs.arity == -1:
+            res = res[-1]
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
@@ -4923,7 +5023,7 @@ elements: dict[str, tuple[str, int]] = {
     "ɽ": process_element(exclusive_one_range, 1),
     "ƈ": process_element(n_choose_r, 2),
     "∞": process_element(palindromise, 1),
-    "!": process_element("len(stack)", 0),
+    "!": process_element("len(stack)", -1),
     '"': process_element("[lhs, rhs]", 2),
     "$": (
         "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
@@ -4987,12 +5087,12 @@ elements: dict[str, tuple[str, int]] = {
         "temp = list(deep_copy(stack))\n"
         "pop(stack, len(stack), ctx)\n"
         "stack.append(temp)",
-        0,
+        -1,
     ),
     # X doesn't need to be implemented here, because it's already a structure
     "Y": process_element(interleave, 2),
     "Z": process_element(vy_zip, 2),
-    "^": ("stack += wrapify(stack, len(stack), ctx)", 0),
+    "^": ("stack += wrapify(stack, len(stack), ctx)", -1),
     "_": ("pop(stack, 1, ctx)", 1),
     "a": process_element(any_true, 1),
     "b": process_element(vy_bin, 1),
@@ -5201,12 +5301,12 @@ elements: dict[str, tuple[str, int]] = {
     "„": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += temp[1:] + [temp[0]]",
-        0,
+        -1,
     ),
     "‟": (
         "temp = wrapify(stack, len(stack), ctx)[::-1]; "
         "stack += [temp[-1]] + temp[:-1]",
-        0,
+        -1,
     ),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
@@ -5286,6 +5386,8 @@ elements: dict[str, tuple[str, int]] = {
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
     "Þ*": process_element(cartesian_over_list, 1),
+    "Þa": process_element(adjacency_matrix_dir, 1),
+    "ÞA": process_element(adjacency_matrix_undir, 1),
     "Þo": process_element(infinite_ordinals, 0),
     "Þc": process_element(infinite_cardinals, 0),
     "Þp": process_element(infinite_primes, 0),
@@ -5355,6 +5457,8 @@ elements: dict[str, tuple[str, int]] = {
         2,
     ),
     "ÞN": process_element(alternating_negations, 1),
+    "Þ□": process_element(identity_matrix, 1),
+    "Þe": process_element(matrix_exponentiation, 2),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
@@ -5484,6 +5588,11 @@ modifiers: dict[str, str] = {
         "    ctx.retain_popped = False\n"
         "    stack.append(safe_apply(function_A, *(arguments[::-1]), "
         "ctx=ctx))\n"
+        "elif function_A.arity == -1:\n"
+        "    arguments = list(deep_copy(stack))\n"
+        "    pop(stack, len(stack), ctx)\n"
+        "    stack += wrapify(safe_apply(function_A, arguments, ctx=ctx, arity_override=-1),"
+        " ctx=ctx)\n"
         "elif function_A.arity == 1:\n"
         "    stack.append(vy_filter(pop(stack, 1, ctx=ctx), function_A,"
         "ctx=ctx))\n"

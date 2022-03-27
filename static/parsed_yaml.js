@@ -115,9 +115,12 @@ any a, str b -> Remove elements from a that are not in b
 any a, lst b -> Remove elements from a that are not in b.
 `)
 
-codepage_descriptions.push(`Infinite Replacement
-Replace b in a with c until a does not change
+codepage_descriptions.push(`Infinite Replacement / Apply at Indices
+Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
 any a, any b, any c -> replace b in a with c until a does not change
+lst a, fun b, lst c -> apply function b to items at indices in a
+lst a, lst b, fun c -> apply function c to items in a at indices in b
+fun a, lst b, lst c -> apply function a to items in b at indices in c
 `)
 
 codepage_descriptions.push(`Complement / Comma Split
@@ -2092,6 +2095,16 @@ codepage_descriptions[42] += `
 Cartesian product over a list of lists
 lst a -> itertools.product(*a)
 `
+codepage_descriptions[97] += `
+Þa (Adjacency matrix (Directed))
+Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
+lst a -> Adjacency matrix
+`
+codepage_descriptions[65] += `
+ÞA (Adjacency matrix (Undirected))
+Adjacency matrix of undirected graph
+lst a -> Adjacency matrix
+`
 codepage_descriptions[111] += `
 Þo (Ordinals)
 An infinite list of first, second, third, fourth etc
@@ -2354,6 +2367,17 @@ An infinite list of an item. then that item negated, then that item, and so on. 
 any a -> [a, -a, a, -a, ...]
 `
 codepage_descriptions[216] += `
+Þ□ (Identity Matrix of Size n)
+A matrix with 1s on the main diagonal and zeroes elsewhere
+num a -> A matrix with 1s on the main diagonal and zeroes elsewhere
+`
+codepage_descriptions[101] += `
+Þe (Matrix Exponentiation)
+A matrix mutliplied by itself n times
+num a, lst b -> Matrix a mutliplied by itself b times
+lst a, num b -> Matrix b mutliplied by itself a times
+`
+codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
 str a -> Map characters in \`>^<v\` to integers
@@ -2373,9 +2397,10 @@ Push whether the result of applying an element to an item is the same as the ori
 `)
 
 codepage_descriptions[77] += `
-¨M (Map To Indices)
-Map a function to elements of a list whose indices are in another list
+¨M (Map At Indices)
+Map a function at elements of a list whose indices are in another list
 lst a, lst b, fun c -> Map a function to elements of a list whose indices are in another list
+lst a, num b, fun c -> Apply a function to element b within list a
 `
 codepage_descriptions[44] += `
 ¨, (Print With Space)

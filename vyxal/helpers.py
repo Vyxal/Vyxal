@@ -131,6 +131,17 @@ def enumerate_md(haystack: VyList, _index_stack: tuple = ()) -> VyList:
             yield list(_index_stack) + [i]
 
 
+def first_where(
+    function: types.FunctionType, vector: VyList, ctx: Context
+) -> Any:
+    """Returns the first element in vector where function returns True"""
+    for item in vector:
+        if safe_apply(function, item, ctx=ctx):
+            return item
+
+    return None
+
+
 @lazylist
 def fixed_point(
     function: types.FunctionType, initial: Any, ctx: Context
@@ -240,6 +251,81 @@ def get_input(ctx: Context, explicit=False) -> Any:
             return vyxalify(ret)
         else:
             return 0
+
+
+def edges_to_dir_graph(edges: list, ctx: Context) -> dict:
+    """Convert a list of edges to a directed graph (as a dictionary)"""
+
+    edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
+    graph = {}
+    for edge in edges:
+        if len(edge) != 2:
+            raise ValueError(
+                "Graph edge expected to be list of 2 elements,"
+                f"got {edge} instead."
+            )
+        if edge[0] in graph:
+            graph[edge[0]].append(edge[1])
+        else:
+            graph[edge[0]] = [edge[1]]
+        if edge[1] not in graph:
+            graph[edge[1]] = []
+
+    vertices = graph.keys()
+    if all(
+        isinstance(vert, int) or (isinstance(vert, float) and int(vert) == vert)
+        for vert in vertices
+    ):
+        # If we have just integers, assume the graph vertices are a range
+        # and fill in the middle disconnected vertices
+        # TODO make this behavior configurable with flags
+        min_vert = min_by(vertices, ctx=ctx)
+        max_vert = max_by(vertices, ctx=ctx)
+        vertices = LazyList(range(int(min_vert), int(max_vert) + 1))
+        for vert in vertices:
+            if vert not in graph:
+                graph[vert] = []
+
+    return graph
+
+
+def edges_to_undir_graph(edges: list, ctx: Context) -> dict:
+    """Convert a list of edges representing an undirected graph to a dictionary"""
+
+    edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
+    graph = {}
+    for edge in edges:
+        if len(edge) != 2:
+            raise ValueError(
+                "Graph edge expected to be list of 2 elements,"
+                f"got {edge} instead."
+            )
+        if edge[0] not in graph:
+            graph[edge[0]] = []
+        graph[edge[0]].append(edge[1])
+
+        if edge[1] not in graph:
+            graph[edge[1]] = [edge[0]]
+        elif edge[0] != edge[1]:
+            graph[edge[1]].append(edge[0])
+
+    vertices = graph.keys()
+    if all(
+        isinstance(vert, int)
+        or ((isinstance(vert, float) or is_sympy(vert)) and int(vert) == vert)
+        for vert in vertices
+    ):
+        # If we have just integers, assume the graph vertices are a range
+        # and fill in the middle disconnected vertices
+        # TODO make this behavior configurable with flags
+        min_vert = min_by(vertices, ctx=ctx)
+        max_vert = max_by(vertices, ctx=ctx)
+        vertices = LazyList(range(int(min_vert), int(max_vert) + 1))
+        for vert in vertices:
+            if vert not in graph:
+                graph[vert] = []
+
+    return graph
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
@@ -393,17 +479,17 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
     if cmp is None:
 
         def cmp(a, b, ctx=None):
-            return a < b
+            return a > b
 
     return foldl(
-        lambda a, b, ctx=ctx: b
+        lambda a, b, ctx=ctx: a
         if safe_apply(
             cmp,
             safe_apply(key, a, ctx=ctx),
             safe_apply(key, b, ctx=ctx),
             ctx=ctx,
         )
-        else a,
+        else b,
         vec,
         ctx=ctx,
     )
@@ -622,7 +708,9 @@ def ring_translate(string: str, map_source: Union[str, list]) -> str:
     return ret
 
 
-def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
+def safe_apply(
+    function: types.FunctionType, *args, ctx, arity_override=None
+) -> Any:
     """
     Applies function to args that adapts to the input style of the passed function.
     If the function is a _lambda (it's been defined within λ...;), it passes a
@@ -634,7 +722,9 @@ def safe_apply(function: types.FunctionType, *args, ctx) -> Any:
     *args does NOT contain ctx
     """
     if function.__name__.startswith("_lambda"):
-        ret = function(list(args)[::-1], function, len(args), ctx=ctx)
+        ret = function(
+            list(args)[::-1], function, arity_override or len(args), ctx=ctx
+        )
         if len(ret):
             return ret[-1]
         else:
