@@ -2571,10 +2571,11 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
+
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, cmp=less_than, ctx=ctx)
+        return max_by(lhs, cmp=strict_greater_than, ctx=ctx)
 
 
 def monadic_minimum(lhs, ctx):
@@ -2584,7 +2585,7 @@ def monadic_minimum(lhs, ctx):
     if len(lhs) == 0:
         return []
     else:
-        return min_by(lhs, cmp=less_than, ctx=ctx)
+        return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
 def multi_dimensional_search(lhs, rhs, ctx):

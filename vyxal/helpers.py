@@ -479,17 +479,17 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
     if cmp is None:
 
         def cmp(a, b, ctx=None):
-            return a < b
+            return a > b
 
     return foldl(
-        lambda a, b, ctx=ctx: b
+        lambda a, b, ctx=ctx: a
         if safe_apply(
             cmp,
             safe_apply(key, a, ctx=ctx),
             safe_apply(key, b, ctx=ctx),
             ctx=ctx,
         )
-        else a,
+        else b,
         vec,
         ctx=ctx,
     )
