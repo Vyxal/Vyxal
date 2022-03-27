@@ -206,7 +206,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 output = vertical_join(output, ctx=ctx)
             elif flag == "S":
                 if isinstance(output, LazyList):
-                    output.output(sep=" ", ctx=ctx)
+                    for item in output:
+                        vy_print(item, end=" ", ctx=ctx)
                     break
                 else:
                     output = join(output, " ", ctx)
