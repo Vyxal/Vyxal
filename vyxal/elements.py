@@ -2436,7 +2436,7 @@ def max_by_tail(lhs, ctx):
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+        return max_by(lhs, key=tail, cmp=greater_than, ctx=ctx)
 
 
 def maximal_indices(lhs, ctx):
@@ -2587,24 +2587,23 @@ def mold_special(lhs, rhs, ctx):
 
 def monadic_maximum(lhs, ctx):
     """Element G
-    (any) -> Maximal element of the input (deep flattens first)
+    (any) -> Maximal element of the input
     """
-    lhs = deep_flatten(lhs, ctx)
+
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, cmp=less_than, ctx=ctx)
+        return max_by(lhs, cmp=strict_greater_than, ctx=ctx)
 
 
 def monadic_minimum(lhs, ctx):
     """Element g
-    (any) -> Smallest item of a (deep flattens)
+    (any) -> Smallest item of a
     """
-    lhs = deep_flatten(lhs, ctx)
     if len(lhs) == 0:
         return []
     else:
-        return min_by(lhs, cmp=less_than, ctx=ctx)
+        return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
 def multi_dimensional_search(lhs, rhs, ctx):
