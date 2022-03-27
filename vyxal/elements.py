@@ -2390,7 +2390,7 @@ def matrix_exponentiation(lhs, rhs, ctx):
         raise TypeError("Matrix exponentiation requires a matrix and a number")
 
     matrix, times = lhs, rhs if ts[0] == NUMBER_TYPE else rhs
-    original_matrix = deep_copy(matrix)
+    original_matrix = matrix
     for _ in range(times):
         matrix = multiply(matrix, original_matrix, ctx=ctx)
 
