@@ -2418,7 +2418,7 @@ def max_by_tail(lhs, ctx):
     if len(lhs) == 0:
         return []
     else:
-        return max_by(lhs, key=tail, cmp=less_than, ctx=ctx)
+        return max_by(lhs, key=tail, cmp=greater_than, ctx=ctx)
 
 
 def maximal_indices(lhs, ctx):
