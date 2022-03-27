@@ -3427,6 +3427,15 @@ A matrix with 1s on the main diagonal and zeroes elsewhere
 
 - num a: `A matrix with 1s on the main diagonal and zeroes elsewhere`
 -------------------------------
+## `` Þe `` (Matrix Exponentiation)
+
+A matrix mutliplied by itself n times
+
+### Overloads
+
+- num a, lst b: `Matrix a mutliplied by itself b times`
+- lst a, num b: `Matrix b mutliplied by itself a times`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

@@ -21337,6 +21337,50 @@ def test_IdentityMatrixofSizen():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_MatrixExponentiation():
+
+    stack = [vyxalify(item) for item in [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3]]
+    expected = vyxalify([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þe')
+    # print('Þe', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5], 4]]
+    expected = vyxalify([1, 32, 243, 1024, 3125])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þe')
+    # print('Þe', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Parsedirectionarrowtointeger():
 
     stack = [vyxalify(item) for item in ["v"]]
