@@ -165,9 +165,7 @@ class LazyList:
         return item
 
     def __setitem__(self, position, value):
-        if position >= len(self.generated):
-            self.__getitem__(position)
-        self.generated[position] = value
+        raise NotImplementedError("LazyList does not support assignment")
 
     def __delitem__(self, index):
         if index >= len(self.generated):
