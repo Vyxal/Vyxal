@@ -1280,3 +1280,31 @@
       output: [1, 3, 5, 7, 9]
     - inputs: ["abdbcdbch"]
       output: "abdch"
+  
+- element: "V"
+  name: Replace
+  description: >-
+   Replace a substring in a string with another string / Replace an item in a list with another item
+  arity: 3
+  overloads:
+    any-any-any: lhs.replace(rhs, other)
+  vectorise: false
+  tests:
+    - inputs: ["Vyxal", "a", "V"]
+      output: "VyxVl"
+    - inputs: ["Vyxal", "a", ""]
+      output: "Vyxl"
+    - inputs: [123, 3, 456] 
+      output: 12456
+    - inputs: [123, 3, ""]
+      output: 12
+    - inputs: ["123", 3, ""]
+      output: "12"
+    - inputs: ["123", 3, "456"]
+      output: "12456"
+    - inputs: [[1, 2, 3, 4], 3, 4]
+      output: [1, 2, 4, 4]
+    - inputs: [[1, 2, 3, 4], 3, 5]
+      output: [1, 2, 5, 4]
+    - inputs: [[1, [2, 3, 4], [5]], [2, 3, 4], 6]
+    
