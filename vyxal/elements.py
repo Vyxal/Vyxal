@@ -376,8 +376,9 @@ def assign_iterable(lhs, rhs, other, ctx):
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
     else:
-        lhs[rhs] = other
-        return lhs
+        yield from lhs[:rhs]
+        yield other
+        yield from lhs[rhs + 1 :]
 
 
 def base_255_string_compress(lhs, ctx):
@@ -1888,10 +1889,13 @@ def infinite_replace(lhs, rhs, other, ctx):
         values = safe_apply(
             function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
         )
-        for i in range(len(indicies)):
-            vector[indicies[i]] = values[i]
-
-        return vector
+        new_vector = []
+        for i, v in enumerate(vector):
+            if i in indicies:
+                new_vector.append(values[i])
+            else:
+                new_vector.append(v)
+        return new_vector
 
     orig_type = type(lhs)
 
