@@ -29,3 +29,4 @@ build-backend = "poetry.core.masonry.api"
 line-length = 80
 target-version = ['py39']
 extend-exclude = '^/tests/test_elements.py'
+
