@@ -4683,9 +4683,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
-        if ctx is not None and not ctx.print_decimals
-        else str(float(lhs)),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -4735,8 +4733,8 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
-            if ctx.print_decimals:
-                lhs = str(float(lhs)).strip(".0")
+            if ctx.print_decimals and not lhs.is_Integer:
+                lhs = str(float(lhs))
             else:
                 lhs = sympy.nsimplify(lhs.round(20), rational=True)
         if ctx.online:
