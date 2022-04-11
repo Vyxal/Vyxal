@@ -149,7 +149,7 @@
   description: Keep items from a list where a predicate is truthy
   arity: 1
   tests:
-      - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=;"
+      - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=}"
         output: [2, 4, 6, 8, 10]
       - program: '"Big Shot" Ω"io"nc¬}'
         output: ["B", "g", "S", "h", "t"]
@@ -159,9 +159,9 @@
   description: Reduce a list by a function
   arity: 1
   tests:
-      - program: "1 10r Λ+;"
+      - program: "1 10r Λ+}"
         output: 45
-      - program: "⟨6|1|5|3|9⟩ Λ×;"
+      - program: "⟨6|1|5|3|9⟩ Λ×}"
         output: 810
 
 - syntax: "µ"
@@ -757,7 +757,7 @@
 
 - syntax: "@"
   name: Function Call / Declaration
-  description: Call / declare function (@name; / @name|code;)
+  description: Call / declare function (@name} / @name|code})
   arity: varies
   # Tests required elsewhere
 
@@ -907,9 +907,9 @@
         output: []
       - inputs: [[1, 2, 3, 4, 5], []]
         output: [1, 2, 3, 4, 5]
-      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; F"
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=} F"
         output: [2, 4, 6, 8, 10]
-      - program: '"Vyxal" λ"aeiou"nc; F'
+      - program: '"Vyxal" λ"aeiou"nc} F'
         output: "a"
 
 - element: "G"
@@ -1046,9 +1046,9 @@
         output: []
       - inputs: [[1, 2, 3, 4, 5], []]
         output: []
-      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; K"
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=} K"
         output: [1, 3, 5, 7, 9]
-      - program: '"Vyxal" λ"aeiou"nc; F'
+      - program: '"Vyxal" λ"aeiou"nc} K'
         output: "Vyxl"
 
 - element: "L"
@@ -1087,11 +1087,11 @@
       any-any: pair each item of b with a
   vectorise: false
   tests:
-      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2×; M"
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2×} M"
         output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-      - program: "10 λ2×; M"
+      - program: "10 λ2×} M"
         output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-      - program: '"" λ2×; M'
+      - program: '"" λ2×} M'
         output: []
       - inputs: [[1, 2, 3], 4]
         output: [[1, 4], [2, 4], [3, 4]]
@@ -1252,13 +1252,13 @@
       any-any: reverse each item of rhs
   vectorise: false
   tests:
-      - program: "⟨1|2|3|4|5⟩ λ+; R"
+      - program: "⟨1|2|3|4|5⟩ λ+} R"
         output: 15
-      - program: "⟨1|2|3|4|5⟩ λ×; R"
+      - program: "⟨1|2|3|4|5⟩ λ×} R"
         output: 120
-      - program: "λ-; ⟨1|2|3|4|5⟩ R"
+      - program: "λ-} ⟨1|2|3|4|5⟩ R"
         output: -13
-      - program: "λ÷; ⟨1|2|3|4|5⟩ R"
+      - program: "λ÷} ⟨1|2|3|4|5⟩ R"
         output: 0.008333333333333333
       - inputs: [[[1, 2], [3, 4]]]
         output: [[2, 1], [4, 3]]
@@ -1507,5 +1507,5 @@
   description: >-
       Open an if-statement. Pops the top of the stack as a condition, and if that
       value is considered truthy, the first branch is executed. Otherwise, the second
-      branch (empty if not given) is executed. >
+      branch (empty if not given) is executed.
   arity: 1
