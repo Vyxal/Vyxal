@@ -1361,3 +1361,38 @@
       output: [1, 4, 2, 5, 3, 6]
     - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
       output: ["V", 4, "y", 2, "x", 0, "a", 6, "l", 9]
+
+- element: "Z"
+  name: Zip / Zipmap
+  description: Zip two items together, filling with 0s if needed. / Zip a list with the result of mapping a function to that list
+  arity: 2
+  overloads:
+    any-any: zip(a,b)
+    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
+  vectorise: false
+  tests:
+    - inputs: [[1, 2, 3], [4, 5, 6]]
+      output: [[1, 4], [2, 5], [3, 6]]
+    - inputs: [[1, 2, 3], [4, 5, 6, 7]]
+      output: [[1, 4], [2, 5], [3, 6], [0, 7]]
+    - inputs: [[1, 2, 3, 4], [5, 6]]
+      output: [[1, 5], [2, 6], [3, 0], [4, 0]]
+    - inputs: ["Vyxal", "Good"]
+      output: [["V", "G"], ["y", "o"], ["x", "o"], ["a", "d"], ["l", 0]]
+    - inputs: ["Vyxal", ""]
+      output: [["V", 0], ["y", 0], ["x", 0], ["a", 0], ["l", 0]]
+    - inputs: [[1, 2, 3], []]
+      output: [[1, 0], [2, 0], [3, 0]]
+    - inputs: [[], [1, 2, 3]]
+      output: [[0, 1], [0, 2], [0, 3]]
+    - inputs: [123, 456]
+      output: [[1, 4], [2, 5], [3, 6]]
+    - inputs: [123, ""]
+      output: [[1, 0], [2, 0], [3, 0]]
+    - inputs: [123, [4, 5, 6]]
+      output: [[1, 4], [2, 5], [3, 6]]
+    - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
+      output: [["V", 4], ["y", 2], ["x", 0], ["a", 6], ["l", 9]]
+    - program: "10ʒN¤Z"
+      output: [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5], [6, -6], [7, -7], [8, -8], [9, -9], [10, -10]]
+    
