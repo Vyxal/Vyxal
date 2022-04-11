@@ -1509,3 +1509,10 @@
       value is considered truthy, the first branch is executed. Otherwise, the second
       branch (empty if not given) is executed.
   arity: 1
+  tests:
+      - program: '4 ["Truthy"|"Falsey"}'
+        output: "Truthy"
+      - program: '69 0 ["Nothing"]'
+        output: 69
+      - program: '69 1 ["Nothing"]'
+        output: "Nothing"
