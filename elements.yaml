@@ -4,10 +4,10 @@
   arity: 1
   elements: 1
   tests:
-    - program: "⟨1|2|3|4|5|6⟩ ∑¡"
-      output: [1, 3, 6, 10, 15, 21]
-    - program: "\"Hello, Vyxal!\" L¡"
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+      - program: "⟨1|2|3|4|5|6⟩ ∑¡"
+        output: [1, 3, 6, 10, 15, 21]
+      - program: '"Hello, Vyxal!" L¡'
+        output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
 
 - modifier: "¿"
   name: Conditional Execution
@@ -15,10 +15,10 @@
   arity: 1
   elements: 1
   tests:
-    - program: "5 6 1 +¿"
-      output: 11
-    - program: "5 6 0 +¿"
-      output: 6
+      - program: "5 6 1 +¿"
+        output: 11
+      - program: "5 6 0 +¿"
+        output: 6
 
 - modifier: "¤"
   name: Last Element as a Function
@@ -33,7 +33,7 @@
   arity: 0
   elements: 2
   # This needs to be a parser test
-  
+
 - modifier: "€"
   name: Last Three Elements as a Function
   description: Pushes the last three elements as a lambda.
@@ -47,28 +47,28 @@
   arity: 0
   elements: 4
   # This needs to be a parser test
- 
+
 - modifier: "©"
   name: Filter By Element
   description: Keep all items that satisfy a condition.
   arity: 1
   elements: 1
   tests:
-    - program: "⟨1|2|3|4|5|6|7⟩ 3<¢©"
-      output: [1, 2]
-    - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§©"
-      output: [2, 4, 6]
- 
+      - program: "⟨1|2|3|4|5|6|7⟩ 3<¢©"
+        output: [1, 2]
+      - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§©"
+        output: [2, 4, 6]
+
 - modifier: "®"
   name: Reject by Element
   description: Discard all items that satisfy a condition.
   arity: 1
   elements: 1
   tests:
-    - program: "⟨1|2|3|4|5|6|7⟩ 3<¢®"
-      output: [3, 4, 5, 6, 7]
-    - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§®"
-      output: [1, 3, 5, 7]
+      - program: "⟨1|2|3|4|5|6|7⟩ 3<¢®"
+        output: [3, 4, 5, 6, 7]
+      - program: "⟨1|2|3|4|5|6|7⟩ 2%0=§®"
+        output: [1, 3, 5, 7]
 
 - syntax: "\n"
   name: Newline
@@ -81,19 +81,19 @@
   arity: varies
   elements: 1
   tests:
-    - program: "1 2 3 4 dæ W"
-      output: [2, 4, 6, 8]
-    - program: "5 1 7 2 4 2+¢æ W"
-      output: [7, 3, 9, 4, 6]
-  
+      - program: "1 2 3 4 dæ W"
+        output: [2, 4, 6, 8]
+      - program: "5 1 7 2 4 2+¢æ W"
+        output: [7, 3, 9, 4, 6]
+
 - modifier: "ð"
   name: Outer Product / Table
   description: Take the cartesian product of an item with itself and reduce each pair by an element
   arity: 1
   elements: 1
   tests:
-     - program: "⟨1|2|3⟩ ×ð"
-       output: [1, 2, 2, 3, 4, 3, 6, 6, 9]
+      - program: "⟨1|2|3⟩ ×ð"
+        output: [1, 2, 2, 3, 4, 3, 6, 6, 9]
 
 - syntax: "▲"
   name: Base Compressed String
@@ -110,12 +110,12 @@
   description: Open a list literal
   arity: 0
   tests:
-    - program: "⟨1|2|3|4|5⟩"
-      output: [1, 2, 3, 4, 5]
-    - program: "⟨\"abc\"|\"def\"|\"ghi\"⟩"
-      output: ["abc", "def", "ghi"]
-    - program: "⟨⟨1|2|3⟩|4|\"abc\"⟩"
-      output: [[1, 2, 3], 4, "abc"]
+      - program: "⟨1|2|3|4|5⟩"
+        output: [1, 2, 3, 4, 5]
+      - program: '⟨"abc"|"def"|"ghi"⟩'
+        output: ["abc", "def", "ghi"]
+      - program: '⟨⟨1|2|3⟩|4|"abc"⟩'
+        output: [[1, 2, 3], 4, "abc"]
 
 - syntax: "⟩"
   name: List Close
@@ -127,51 +127,51 @@
   description: Open a lambda statement - an anonymous function that gets pushed to the stack
   arity: varies
   tests:
-    - program: "3 6 λ2|+}"
-      output: 9
-    - program: "\"abc\" λ4*"
-      output: "abcabcabc"
-    
+      - program: "3 6 λ2|+}"
+        output: 9
+      - program: '"abc" λ4*'
+        output: "abcabcabc"
+
 - syntax: "ƛ"
   name: Map Lambda
   description: Map a function over an item.
   arity: 1
   tests:
-    - program: "10 ƛ1+}"
-      output: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    - program: "\"abcdef\" ƛ2×}"
-      output: ["aa", "bb", "cc", "dd", "ee", "ff"]
-    - program: "1 11r ƛ4%0=}"
-      output: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
+      - program: "10 ƛ1+}"
+        output: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+      - program: '"abcdef" ƛ2×}'
+        output: ["aa", "bb", "cc", "dd", "ee", "ff"]
+      - program: "1 11r ƛ4%0=}"
+        output: [0, 0, 0, 1, 0, 0, 0, 1, 0, 0]
 
 - syntax: "Ω"
   name: Filter Lambda
   description: Keep items from a list where a predicate is truthy
   arity: 1
   tests:
-    - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=;"
-      output: [2, 4, 6, 8, 10]
-    - program: "\"Big Shot\" Ω\"io\"nc¬}"
-      output: ["B", "g", "S", "h", "t"]
+      - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ Ω2%0=;"
+        output: [2, 4, 6, 8, 10]
+      - program: '"Big Shot" Ω"io"nc¬}'
+        output: ["B", "g", "S", "h", "t"]
 
 - syntax: "Λ"
   name: Reduce Lambda
   description: Reduce a list by a function
   arity: 1
   tests:
-    - program: "1 10r Λ+;\"
-      output: 45
-    - program: "⟨6|1|5|3|9⟩ Λ×}"
-      output: 810
+      - program: "1 10r Λ+;"
+        output: 45
+      - program: "⟨6|1|5|3|9⟩ Λ×;"
+        output: 810
 
 - syntax: "µ"
   name: Sorting Lambda
   description: Sort a list by the results of a function
   arity: 1
   tests:
-    - program: "1 10r µ10n-}"
-      output: [9, 8, 7, 6, 5, 4, 3, 2, 1]
-  
+      - program: "1 10r µ10n-}"
+        output: [9, 8, 7, 6, 5, 4, 3, 2, 1]
+
 - syntax: "∆"
   name: Mathematical Digraphs
   description: Used for mathematical digraphs
@@ -192,126 +192,131 @@
   description: Halve a number / Split a string into two halves
   arity: 1
   overloads:
-    num: lhs / 2
-    str: split lhs into two strings of equal lengths (as close as possible)
+      num: lhs / 2
+      str: split lhs into two strings of equal lengths (as close as possible)
   vectorise: true
   tests:
-    - inputs: [8]
-      output: 4
-    - inputs: ["FizzBuzz"]
-      output: ["Fizz", "Buzz"]
-    - inputs: [[1, 4, 8, "Vyxal", "Even Length "]]
-      output: [0.5, 2, 4, ["Vyx", "al"], ["Even L", "ength "]]
-      
+      - inputs: [8]
+        output: 4
+      - inputs: ["FizzBuzz"]
+        output: ["Fizz", "Buzz"]
+      - inputs: [[1, 4, 8, "Vyxal", "Even Length "]]
+        output: [0.5, 2, 4, ["Vyx", "al"], ["Even L", "ength "]]
+
 - element: "ʑ"
   name: Exclusive Zero Range / Palindromise
   description: Range from 0 to a number minus one / Palidromise a string around its centre
   arity: 1
   overloads:
-    num: range(0, lhs)
-    str: palindromised lhs
+      num: range(0, lhs)
+      str: palindromised lhs
   vectorise: true
   tests:
-    - inputs: ["1234"]
-      output: "1234321"
-    - inputs: [1]
-      output: [0]
-    - inputs: [0]
-      output: []
-    - inputs: [3]
-      output: [0, 1, 2]
-    - inputs: [[4, 6, 7]]
-      output: [[0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6]]
-    - inputs: ["abc"]
-      output: "abcba"
-    - inputs: [-1]
-      output: []
+      - inputs: ["1234"]
+        output: "1234321"
+      - inputs: [1]
+        output: [0]
+      - inputs: [0]
+        output: []
+      - inputs: [3]
+        output: [0, 1, 2]
+      - inputs: [[4, 6, 7]]
+        output: [[0, 1, 2, 3], [0, 1, 2, 3, 4, 5], [0, 1, 2, 3, 4, 5, 6]]
+      - inputs: ["abc"]
+        output: "abcba"
+      - inputs: [-1]
+        output: []
 
 - element: "ʒ"
   name: Inclusive One Range / Is Vowel?
   description: Range from 1 to a number / Is each character in a string a vowel? (y is not a vowel)
   arity: 1
   overloads:
-    num: range(1, lhs + 1)
-    str: "[char in 'aeiou' for char in lhs]"
+      num: range(1, lhs + 1)
+      str: "[char in 'aeiou' for char in lhs]"
   vectorise: true
   tests:
-    - inputs: [4]
-      output: [1, 2, 3, 4]
-    - inputs: [1]
-      output: []
-    - inputs: [0]
-      output: []
-    - inputs: [-1]
-      output: []
-    - inputs: ["Vyxal", 6, [2, 3, 4]]
-      output: [[0, 0, 0, 1, 0], [1, 2, 3, 4, 5, 6], [[1, 2], [1, 2, 3], [1, 2, 3, 4]]]
-    
+      - inputs: [4]
+        output: [1, 2, 3, 4]
+      - inputs: [1]
+        output: []
+      - inputs: [0]
+        output: []
+      - inputs: [-1]
+        output: []
+      - inputs: ["Vyxal", 6, [2, 3, 4]]
+        output:
+            [
+                [0, 0, 0, 1, 0],
+                [1, 2, 3, 4, 5, 6],
+                [[1, 2], [1, 2, 3], [1, 2, 3, 4]],
+            ]
+
 - element: "ʓ"
   name: Exlcusive One Range / Is Digit?
   description: Range from 1 to a number minus one / Is each character in a string a digit?
   arity: 1
   overloads:
-    num: range(1, lhs)
-    str: "[char in string.digits for char in lhs]"
+      num: range(1, lhs)
+      str: "[char in string.digits for char in lhs]"
   vectorise: true
   tests:
-    - inputs: [4]
-      output: [1, 2, 3]
-    - inputs: [1]
-      output: []
-    - inputs: [0]
-      output: []
-    - inputs: [-1]
-      output: []
-    - inputs: ["1!!3", 6, [2, 3, 4]]
-      output: [[1, 0, 0, 1], [1, 2, 3, 4, 5], [[1], [1, 2], [1, 2, 3]]]
-  
+      - inputs: [4]
+        output: [1, 2, 3]
+      - inputs: [1]
+        output: []
+      - inputs: [0]
+        output: []
+      - inputs: [-1]
+        output: []
+      - inputs: ["1!!3", 6, [2, 3, 4]]
+        output: [[1, 0, 0, 1], [1, 2, 3, 4, 5], [[1], [1, 2], [1, 2, 3]]]
+
 - element: "×"
   name: Multiplication / Ring Translate
   description: Multiply two numbers together / Repeat a string / Ring translate one string according to another
   arity: 2
   overloads:
-    num-num: lhs * rhs
-    num-str: rhs repeated lhs times
-    str-num: lhs repeated rhs times
-    str-str: ring translate rhs according to lhs
+      num-num: lhs * rhs
+      num-str: rhs repeated lhs times
+      str-num: lhs repeated rhs times
+      str-str: ring translate rhs according to lhs
   vectorise: true
   tests:
-    - inputs: [5, 20]
-      output: 100
-    - inputs: ["abc", 5]
-      output: "abcabcabcabcabc"
-    - inputs: [3, "abcde"]
-      output: "abcdeabcdeabcde"
-    - inputs: ["aeiou", "hello"]
-      output: "alihu"
-  
+      - inputs: [5, 20]
+        output: 100
+      - inputs: ["abc", 5]
+        output: "abcabcabcabcabc"
+      - inputs: [3, "abcde"]
+        output: "abcdeabcdeabcde"
+      - inputs: ["aeiou", "hello"]
+        output: "alihu"
+
 - element: "÷"
   name: Division / Split
   description: Divide two numbers / Split a string into pieces / Split one string on another
   arity: 2
   overloads:
-    num-num: lhs ÷ rhs
-    num-str: str(lhs) split on rhs
-    str-num: lhs.split(str(rhs))
-    str-str: lhs.split(rhs)
+      num-num: lhs ÷ rhs
+      num-str: str(lhs) split on rhs
+      str-num: lhs.split(str(rhs))
+      str-str: lhs.split(rhs)
   vectorise: true
   tests:
-    - inputs: [4, 2]
-      output: 2
-    - inputs: [1, 0]
-      output: 0
-    - inputs: ["abcdef", 3]
-      output: ["ab", "cd", "ef"]
-    - inputs: [7, "lyxal was here"]
-      output: ["ly", "xa", "l ", "wa", "s ", "he", "re"]
-    - inputs: ["testing", 2]
-      output: ["tes", "tin", "g"]
-    - inputs: ["1,2,3", ","]
-      output: ["1", "2", "3"]
-    - inputs: [[8, 4, 6, 2], 2]
-      output: [4, 2, 3, 1]
+      - inputs: [4, 2]
+        output: 2
+      - inputs: [1, 0]
+        output: 0
+      - inputs: ["abcdef", 3]
+        output: ["ab", "cd", "ef"]
+      - inputs: [7, "lyxal was here"]
+        output: ["ly", "xa", "l ", "wa", "s ", "he", "re"]
+      - inputs: ["testing", 2]
+        output: ["tes", "tin", "g"]
+      - inputs: ["1,2,3", ","]
+        output: ["1", "2", "3"]
+      - inputs: [[8, 4, 6, 2], 2]
+        output: [4, 2, 3, 1]
 
 - element: "£"
   name: Set Register
@@ -319,17 +324,17 @@
   arity: 1
   vectorise: false
   # Requires a special test case that can inspect the value of the register
-  
+
 - element: "¥"
   name: Get Register
   description: Push the current register value
   arity: 0
   vectorise: false
   tests:
-    - program: "4£¥"
-      output: 4
-    - program: "\"abcde\"£¥"
-      output: "abcde"
+      - program: "4£¥"
+        output: 4
+      - program: '"abcde"£¥'
+        output: "abcde"
 
 - syntax: " "
   name: Space
@@ -341,16 +346,16 @@
   description: Factorial of the top of the stack / Sentence case the top of the stack
   arity: 1
   overloads:
-    num: gamma(abs(lhs)) (alternatively, math.gamma(abs(lhs) + 1))
-    str: sentence cased lhs
+      num: gamma(abs(lhs)) (alternatively, math.gamma(abs(lhs) + 1))
+      str: sentence cased lhs
   vectorise: true
   tests:
-    - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9]]
-      output: [1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
-    - inputs: ["hello my name jeff. ur sussy baka"]
-      output: "Hello my name jeff. Ur sussy baka"
-    - inputs: ["heLLo! hOW are yOU toDay? hOpEfulLy yOu are okay!"]
-      output: "Hello! How are you today? Hopefully you are okay!"
+      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9]]
+        output: [1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+      - inputs: ["hello my name jeff. ur sussy baka"]
+        output: "Hello my name jeff. Ur sussy baka"
+      - inputs: ["heLLo! hOW are yOU toDay? hOpEfulLy yOu are okay!"]
+        output: "Hello! How are you today? Hopefully you are okay!"
 
 - syntax: '"'
   name: String Literal
@@ -369,47 +374,47 @@
   arity: 1
   elements: 1
   tests:
-    - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ 2%×€$"
-      output: [2, 4, 6, 8, 10, 1, 3, 5, 7, 9]
+      - program: "⟨ 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 ⟩ 2%×€$"
+        output: [2, 4, 6, 8, 10, 1, 3, 5, 7, 9]
 
 - element: "%"
   name: Modulus / String Formatting
   description: Modulus of two numbers / Format a string
   arity: 2
   overloads:
-    num-num: a % b
-    num-str: b.format(a) (replace % in b with a)
-    str-num: a.format(b) (replace % in a with b)
-    str-str: a.format(b) (replace % in a with b)
-    str-lst: a.format(b) (replace % in a with each item of b)
+      num-num: a % b
+      num-str: b.format(a) (replace % in b with a)
+      str-num: a.format(b) (replace % in a with b)
+      str-str: a.format(b) (replace % in a with b)
+      str-lst: a.format(b) (replace % in a with each item of b)
   vectorise: true
   tests:
-    - inputs: [3, 2]
-      output: 1
-    - inputs: [5, 3]
-      output: 2
-    - inputs: [5.6, 4]
-      output: 1.6
-    - inputs: [-1, 10]
-      output: 9
-    - inputs: [5, 0]
-      output: 0
-    - inputs: ["Hello, %", "World"]
-      output: "Hello, World"
-    - inputs: ["Hello, %", ["World", "!"]]
-      output: "Hello, World"
-    - inputs: ["%, %, %", [1, 2, 3]]
-      output: "1, 2, 3"
-    - inputs: ["%", 234.234]
-      output: "234.234"
-    - inputs: ["%", ""]
-      output: ""
-    - inputs: ["%", []]
-      output: ""
-    - inputs: ["%, %", [4]]
-      output: "4, 4"
-    - inputs: ["%, %", "abc"]
-      output: "abc, abc"
+      - inputs: [3, 2]
+        output: 1
+      - inputs: [5, 3]
+        output: 2
+      - inputs: [5.6, 4]
+        output: 1.6
+      - inputs: [-1, 10]
+        output: 9
+      - inputs: [5, 0]
+        output: 0
+      - inputs: ["Hello, %", "World"]
+        output: "Hello, World"
+      - inputs: ["Hello, %", ["World", "!"]]
+        output: "Hello, World"
+      - inputs: ["%, %, %", [1, 2, 3]]
+        output: "1, 2, 3"
+      - inputs: ["%", 234.234]
+        output: "234.234"
+      - inputs: ["%", ""]
+        output: ""
+      - inputs: ["%", []]
+        output: ""
+      - inputs: ["%, %", [4]]
+        output: "4, 4"
+      - inputs: ["%, %", "abc"]
+        output: "abc, abc"
 
 - modifier: "&"
   name: Apply to Register
@@ -417,12 +422,12 @@
   arity: varies
   elements: 1
   tests:
-    - program: "5 £ 6 +& ¥"
-      output: 11
-    - program: "5 £ d& ¥"
-      output: 10
-    - program: "5 £ 6& ¥"
-      output: 6
+      - program: "5 £ 6 +& ¥"
+        output: 11
+      - program: "5 £ d& ¥"
+        output: 10
+      - program: "5 £ 6& ¥"
+        output: 6
 
 - syntax: "'"
   name: Single Character String
@@ -435,8 +440,8 @@
   description: Start a for loop, iterating over the popped top of stack.
   arity: 1
   tests:
-    - program: "10 (n 4+⁺} ⁾"
-      output: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+      - program: "10 (n 4+⁺} ⁾"
+        output: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 - modifier: ")"
   name: Lambda to Newline
@@ -450,71 +455,71 @@
   description: Exponentiation of two numbers / Extend a string / Span of a regex match
   arity: 2
   overloads:
-    num-num: a ** b (exponentiation)
-    str-num: append a[0] until a is length b (spaces are used if a is empty)
-    num-str: append b[0] until b is length a (spaces are used if b is empty)
-    str-str: regex.search(pattern=a, string=b).span() - start and stop of regex match
+      num-num: a ** b (exponentiation)
+      str-num: append a[0] until a is length b (spaces are used if a is empty)
+      num-str: append b[0] until b is length a (spaces are used if b is empty)
+      str-str: regex.search(pattern=a, string=b).span() - start and stop of regex match
   vectorise: true
   tests:
-    - inputs: [0, 0]
-      output: 1
-    - inputs: [4, 2]
-      output: 16
-    - inputs: [5, 3]
-      output: 125
-    - inputs: [5, 0]
-      output: 1
-    - inputs: ["Hello", 7]
-      output: "HelloHe"
-    - inputs: ["Hello", 5]
-      output: "Hello"
-    - inputs: ["Hello", 0]
-      output: "Hello"
-    - inputs: ["", 4]
-      output: "    "
-    - inputs: ["letters42069letters", "\\d+"]
-      output: [7, 12]
-    - inputs: ["no digits", "\\d+"]
-      output: []
+      - inputs: [0, 0]
+        output: 1
+      - inputs: [4, 2]
+        output: 16
+      - inputs: [5, 3]
+        output: 125
+      - inputs: [5, 0]
+        output: 1
+      - inputs: ["Hello", 7]
+        output: "HelloHe"
+      - inputs: ["Hello", 5]
+        output: "Hello"
+      - inputs: ["Hello", 0]
+        output: "Hello"
+      - inputs: ["", 4]
+        output: "    "
+      - inputs: ["letters42069letters", "\\d+"]
+        output: [7, 12]
+      - inputs: ["no digits", "\\d+"]
+        output: []
 
 - element: "+"
   name: Addition / Concatenation
   description: Addition of two numbers / Concatenation of two strings
   arity: 2
   overloads:
-    num-num: a + b
-    num-str: a + to_string(b)
-    str-num: to_string(a) + b
-    str-str: a + b
+      num-num: a + b
+      num-str: a + to_string(b)
+      str-num: to_string(a) + b
+      str-str: a + b
   vectorise: true
   tests:
-    - inputs: [0, 0]
-      output: 0
-    - inputs: [4, 2]
-      output: 6
-    - inputs: [5, 3]
-      output: 8
-    - inputs: [5, 0]
-      output: 5
-    - inputs: ["Hello", 7]
-      output: "Hello7"
-    - inputs: ["Hello", 5]
-      output: "Hello5"
-    - inputs: ["Hello", 0]
-      output: "Hello0"
-    - inputs: ["", 4]
-      output: "4"
-    - inputs: ["Hello, ", "World"]
-      output: "Hello, World"
-    - inputs: ["Hello, ", ["World", "!"]]
-      output: ["Hello, World", "Hello, !"]
+      - inputs: [0, 0]
+        output: 0
+      - inputs: [4, 2]
+        output: 6
+      - inputs: [5, 3]
+        output: 8
+      - inputs: [5, 0]
+        output: 5
+      - inputs: ["Hello", 7]
+        output: "Hello7"
+      - inputs: ["Hello", 5]
+        output: "Hello5"
+      - inputs: ["Hello", 0]
+        output: "Hello0"
+      - inputs: ["", 4]
+        output: "4"
+      - inputs: ["Hello, ", "World"]
+        output: "Hello, World"
+      - inputs: ["Hello, ", ["World", "!"]]
+        output: ["Hello, World", "Hello, !"]
 
 - element: ","
   name: Print
   description: Print the top of the stack
   arity: 1
   overloads:
-    any: print(lhs)
+      any: print(lhs)
   vectorise: false
   # Tests to be done elsewhere
 
@@ -523,60 +528,60 @@
   description: Subtraction of two numbers / Remove a string from another string
   arity: 2
   overloads:
-    num-num: lhs - rhs
-    num-str: remove digits in rhs from lhs
-    str-num: lhs.replace(str(rhs), "")
-    str-str: lhs.replace(rhs, "")
+      num-num: lhs - rhs
+      num-str: remove digits in rhs from lhs
+      str-num: lhs.replace(str(rhs), "")
+      str-str: lhs.replace(rhs, "")
   vectorise: true
   tests:
-    - inputs: [0, 0]
-      output: 0
-    - inputs: [4, 2]
-      output: 2
-    - inputs: [5, 3]
-      output: 2
-    - inputs: [5, 0]
-      output: 5
-    - inputs: ["Hello", 7]
-      output: "Hello-------"
-    - inputs: ["Hello", 5]
-      output: "Hello-----"
-    - inputs: ["Hello", 0]
-      output: "Hello"
-    - inputs: ["", 4]
-      output: "----"
-    - inputs: [6, "Hello"]
-      output: "------Hello"
-    - inputs: [2, "Hello"]
-      output: "--Hello"
-    - inputs: [2, "Hello, World"]
-      output: "--Hello, World"
-    - inputs: ["Hello", "l"]
-      output: "Heo"
-    - inputs: ["Hello", "llo"]
-      output: "He"
-    - inputs: ["Hello", ""]
-      output: "Hello"
-    - inputs: ["", "Hello"]
-      output: ""
+      - inputs: [0, 0]
+        output: 0
+      - inputs: [4, 2]
+        output: 2
+      - inputs: [5, 3]
+        output: 2
+      - inputs: [5, 0]
+        output: 5
+      - inputs: ["Hello", 7]
+        output: "Hello-------"
+      - inputs: ["Hello", 5]
+        output: "Hello-----"
+      - inputs: ["Hello", 0]
+        output: "Hello"
+      - inputs: ["", 4]
+        output: "----"
+      - inputs: [6, "Hello"]
+        output: "------Hello"
+      - inputs: [2, "Hello"]
+        output: "--Hello"
+      - inputs: [2, "Hello, World"]
+        output: "--Hello, World"
+      - inputs: ["Hello", "l"]
+        output: "Heo"
+      - inputs: ["Hello", "llo"]
+        output: "He"
+      - inputs: ["Hello", ""]
+        output: "Hello"
+      - inputs: ["", "Hello"]
+        output: ""
 
 - syntax: "."
   name: Decimal Separator
   description: Push the decimal onto the stack
   arity: Not Applicable
   tests:
-    - program: "5. 6 +"
-      output: 11.5
-    - program: ".5 6 +"
-      output: 6.5
-    - program: "5. 6. 7 +"
-      output: 13.5
-    - program: "..+"
-      output: 1.0
-    - program: "234.234"
-      output: 234.234
-    - program: "."
-      output: 0.5
+      - program: "5. 6 +"
+        output: 11.5
+      - program: ".5 6 +"
+        output: 6.5
+      - program: "5. 6. 7 +"
+        output: 13.5
+      - program: "..+"
+        output: 1.0
+      - program: "234.234"
+        output: 234.234
+      - program: "."
+        output: 0.5
 
 - modifier: "/"
   name: Reduce By Element
@@ -584,14 +589,14 @@
   arity: 2
   elements: 1
   tests:
-    - program: "⟨1|2|3|4|5⟩ +/"
-      output: 15
-    - program: "⟨1|2|3|4|5⟩ ×/"
-      output: 120
-    - program: "⟨1|2|3|4|5⟩ -/"
-      output: -13
-    - program: "⟨1|2|3|4|5⟩ ÷/"
-      output: 0.008333333333333333
+      - program: "⟨1|2|3|4|5⟩ +/"
+        output: 15
+      - program: "⟨1|2|3|4|5⟩ ×/"
+        output: 120
+      - program: "⟨1|2|3|4|5⟩ -/"
+        output: -13
+      - program: "⟨1|2|3|4|5⟩ ÷/"
+        output: 0.008333333333333333
 
 - syntax: "0"
   name: Digit Literal 0
@@ -648,7 +653,7 @@
   description: Duplicate the top of the stack
   arity: 1
   overloads:
-    any: lhs, lhs
+      any: lhs, lhs
   vectorise: false
   # Requires testing elsewhere
 
@@ -658,91 +663,91 @@
   arity: 1
   elements: 1
   tests:
-    - program: "⟨1|1|2|2|3|3|4|4|5|5⟩ L;"
-      output: [2, 2, 2, 2, 2]
-    - program: '"abcaabbbcc" h;'
-      output: "abcabc"
+      - program: "⟨1|1|2|2|3|3|4|4|5|5⟩ L;"
+        output: [2, 2, 2, 2, 2]
+      - program: '"abcaabbbcc" h;'
+        output: "abcabc"
 
 - element: "<"
   name: Less Than
   description: Basic comparison - less than
   arity: 2
   overloads:
-    num-num: lhs < rhs
-    num-str: str(lhs) < rhs
-    str-num: lhs < str(rhs)
-    str-str: lhs < rhs
+      num-num: lhs < rhs
+      num-str: str(lhs) < rhs
+      str-num: lhs < str(rhs)
+      str-str: lhs < rhs
   vectorise: true
   tests:
-    - inputs: [1, 2]
-      output: 1
-    - inputs: [2, 1]
-      output: 0
-    - inputs: [0, 0]
-      output: 0
-    - inputs: ["1", 1]
-      output: 0
-    - inputs: [2000, "abc"]
-      output: 1
-    - inputs: ["abc", "def"]
-      output: 1
-    - inputs: ["abc", "abc"]
-      output: 0
+      - inputs: [1, 2]
+        output: 1
+      - inputs: [2, 1]
+        output: 0
+      - inputs: [0, 0]
+        output: 0
+      - inputs: ["1", 1]
+        output: 0
+      - inputs: [2000, "abc"]
+        output: 1
+      - inputs: ["abc", "def"]
+        output: 1
+      - inputs: ["abc", "abc"]
+        output: 0
 
 - element: "="
   name: Equal
   description: Basic comparison - equal
   arity: 2
   overloads:
-    num-num: lhs == rhs
-    num-str: str(lhs) == rhs
-    str-num: lhs == str(rhs)
-    str-str: lhs == rhs
+      num-num: lhs == rhs
+      num-str: str(lhs) == rhs
+      str-num: lhs == str(rhs)
+      str-str: lhs == rhs
   vectorise: true
   tests:
-    - inputs: [1, 1]
-      output: 1
-    - inputs: [1, 2]
-      output: 0
-    - inputs: [2, 1]
-      output: 0
-    - inputs: [0, 0]
-      output: 1
-    - inputs: ["1", 1]
-      output: 1
-    - inputs: [2000, "abc"]
-      output: 0
-    - inputs: ["abc", "def"]
-      output: 0
-    - inputs: ["abc", "abc"]
-      output: 1
+      - inputs: [1, 1]
+        output: 1
+      - inputs: [1, 2]
+        output: 0
+      - inputs: [2, 1]
+        output: 0
+      - inputs: [0, 0]
+        output: 1
+      - inputs: ["1", 1]
+        output: 1
+      - inputs: [2000, "abc"]
+        output: 0
+      - inputs: ["abc", "def"]
+        output: 0
+      - inputs: ["abc", "abc"]
+        output: 1
 
 - element: ">"
   name: Greater Than
   description: Basic comparison - greater than
   arity: 2
   overloads:
-    num-num: lhs > rhs
-    num-str: str(lhs) > rhs
-    str-num: lhs > str(rhs)
-    str-str: lhs > rhs
+      num-num: lhs > rhs
+      num-str: str(lhs) > rhs
+      str-num: lhs > str(rhs)
+      str-str: lhs > rhs
   vectorise: true
   tests:
-    - inputs: [1, 2]
-      output: 0
-    - inputs: [2, 1]
-      output: 1
-    - inputs: [0, 0]
-      output: 0
-    - inputs: ["1", 1]
-      output: 0
-    - inputs: [2000, "abc"]
-      output: 0
-    - inputs: ["abc", "def"]
-      output: 0
-    - inputs: ["abc", "abc"]
-      output: 0
-  
+      - inputs: [1, 2]
+        output: 0
+      - inputs: [2, 1]
+        output: 1
+      - inputs: [0, 0]
+        output: 0
+      - inputs: ["1", 1]
+        output: 0
+      - inputs: [2000, "abc"]
+        output: 0
+      - inputs: ["abc", "def"]
+        output: 0
+      - inputs: ["abc", "abc"]
+        output: 0
+
 - element: "?"
   name: Input
   description: Get the next input from the input source
@@ -761,98 +766,98 @@
   description: Are all items in a list truthy? / Is a character a vowel?
   arity: 1
   overloads:
-    num: are all digits in lhs truthy?
-    str: "[char in 'aeiou' for char in lhs]"
-    lst: are all items in lhs truthy?
+      num: are all digits in lhs truthy?
+      str: "[char in 'aeiou' for char in lhs]"
+      lst: are all items in lhs truthy?
   vectorise: false
   tests:
-    - inputs: [[1, 2, 3]]
-      output: 1
-    - inputs: [[1, 2, 3, 0]]
-      output: 0
-    - inputs: ["abc"]
-      output: [1, 0, 0]
-    - inputs: [""]
-      output: []
-    - inputs: [[]]
-      output: 1
+      - inputs: [[1, 2, 3]]
+        output: 1
+      - inputs: [[1, 2, 3, 0]]
+        output: 0
+      - inputs: ["abc"]
+        output: [1, 0, 0]
+      - inputs: [""]
+        output: []
+      - inputs: [[]]
+        output: 1
 
 - element: "B"
   name: From Binary
   description: Convert a number from base 2 to base 10
   arity: 1
   overloads:
-    num: convert lhs to a list of digits and convert that list of digits to base 10
-    str: int(lhs, 2)
-    lst: convert list of digits to base 10
+      num: convert lhs to a list of digits and convert that list of digits to base 10
+      str: int(lhs, 2)
+      lst: convert list of digits to base 10
   vectorise: false
   tests:
-    - inputs: [0]
-      output: 0
-    - inputs: [1]
-      output: 1
-    - inputs: [11110]
-      output: 30
-    - inputs: [""]
-      output: 0
-    - inputs: ["1101"]
-      output: 13
-    - inputs: ["wait this isn't binary..."]
-      output: 0
-    - inputs: [[]]
-      output: 0
-    - inputs: [[1, 0, 1, 1]]
-      output: 11
-    - inputs: [["binary?", "I just want", "to grill for", "goodness sakes"]]
-      output: 0
+      - inputs: [0]
+        output: 0
+      - inputs: [1]
+        output: 1
+      - inputs: [11110]
+        output: 30
+      - inputs: [""]
+        output: 0
+      - inputs: ["1101"]
+        output: 13
+      - inputs: ["wait this isn't binary..."]
+        output: 0
+      - inputs: [[]]
+        output: 0
+      - inputs: [[1, 0, 1, 1]]
+        output: 11
+      - inputs: [["binary?", "I just want", "to grill for", "goodness sakes"]]
+        output: 0
 
 - element: "C"
   name: Count
   description: Count the number of occurances of one item in another item
   arity: 2
   overloads:
-    num-num: the number of occurances of rhs in lhs
-    num-str: the number of occurances of rhs in lhs
-    num-lst: the number of occurances of lhs in rhs
-    str-num: the number of occurances of rhs in lhs
-    str-str: the number of occurances of rhs in lhs
-    str-lst: the number of occurances of lhs in rhs
-    lst-num: the number of occurances of rhs in lhs
-    lst-str: the number of occurances of rhs in lhs
-    lst-lst: the number of occurances of rhs in lhs
+      num-num: the number of occurances of rhs in lhs
+      num-str: the number of occurances of rhs in lhs
+      num-lst: the number of occurances of lhs in rhs
+      str-num: the number of occurances of rhs in lhs
+      str-str: the number of occurances of rhs in lhs
+      str-lst: the number of occurances of lhs in rhs
+      lst-num: the number of occurances of rhs in lhs
+      lst-str: the number of occurances of rhs in lhs
+      lst-lst: the number of occurances of rhs in lhs
   vectorise: false
   tests:
-    - inputs: [1011, 1]
-      output: 3
-    - inputs: [69420, 3]
-      output: 0
-    - inputs: ["12222", 2]
-      output: 4
-    - inputs: [555553, "53"]
-      output: 1
-    - inputs: ["", 2]
-      output: 0
-    - inputs: [2, ""]
-      output: 0
-    - inputs: ["Vyxal", "x"]
-      output: 1
-    - inputs: ["Vyxal", ""]
-      output: 0
-    - inputs: ["", ""]
-      output: 1
-    - inputs: [[1, 2, 2, 2, 2, 3, 2, 1], 2]
-      output: 5
-    - inputs: [["1", 1, 2, 2, 1], 1]
-      output: 2
-    - inputs: [[], []]
-      output: 0
+      - inputs: [1011, 1]
+        output: 3
+      - inputs: [69420, 3]
+        output: 0
+      - inputs: ["12222", 2]
+        output: 4
+      - inputs: [555553, "53"]
+        output: 1
+      - inputs: ["", 2]
+        output: 0
+      - inputs: [2, ""]
+        output: 0
+      - inputs: ["Vyxal", "x"]
+        output: 1
+      - inputs: ["Vyxal", ""]
+        output: 0
+      - inputs: ["", ""]
+        output: 1
+      - inputs: [[1, 2, 2, 2, 2, 3, 2, 1], 2]
+        output: 5
+      - inputs: [["1", 1, 2, 2, 1], 1]
+        output: 2
+      - inputs: [[], []]
+        output: 0
 
 - element: "D"
   name: Triplicate
   description: Push an item 3 times
   arity: 1
   overloads:
-    any: lhs, lhs, lhs
+      any: lhs, lhs, lhs
   vectorise: false
   # Requires tests elsewhere
 
@@ -861,453 +866,498 @@
   description: Raise 2 to the power of a number / Execute Vyxal code from a string
   arity: 1
   overloads:
-    num: 2 ** lhs
-    str: exec(lhs)
+      num: 2 ** lhs
+      str: exec(lhs)
   vectorise: true
   tests:
-    - inputs: [1]
-      output: 2
-    - inputs: [2]
-      output: 4
-    - inputs: [3]
-      output: 8
-    - inputs: [-1]
-      output: 0.5
-    - inputs: ["1 1+"]
-      output: 2
-    - inputs: [""]
-      output: 0
-    - inputs: [[1, 2, 3, 4, 5, 6]]
-      output: [2, 4, 8, 16, 32, 64]
-    - inputs: [["1 1 +", "4 5 -"]]
-      output: [2, -1]
+      - inputs: [1]
+        output: 2
+      - inputs: [2]
+        output: 4
+      - inputs: [3]
+        output: 8
+      - inputs: [-1]
+        output: 0.5
+      - inputs: ["1 1+"]
+        output: 2
+      - inputs: [""]
+        output: 0
+      - inputs: [[1, 2, 3, 4, 5, 6]]
+        output: [2, 4, 8, 16, 32, 64]
+      - inputs: [["1 1 +", "4 5 -"]]
+        output: [2, -1]
 
 - element: "F"
   name: Filter / Remove
   description: >-
-   Keep items a list where applying a function is truthy / Remove elements of
-   one item that are in another
+      Keep items a list where applying a function is truthy / Remove elements of
+      one item that are in another
   arity: 2
   overloads:
-    any-fun: filter(rhs, lhs) (filter lhs by truthy function results)
-    fun-any: filter(lhs, rhs) (filter rhs by truthy function results)
-    any-any: remove elements of lhs that are in rhs
+      any-fun: filter(rhs, lhs) (filter lhs by truthy function results)
+      fun-any: filter(lhs, rhs) (filter rhs by truthy function results)
+      any-any: remove elements of lhs that are in rhs
   vectorise: false
   tests:
-    - inputs: [[1,2,3],[2,4,6]]
-      output: [1,3]
-    - inputs: ["abcdef","daffodil"]
-      output: "bce"
-    - inputs: [[], []]
-      output: []
-    - inputs: [[1, 2, 3, 4, 5], []]
-      output: [1, 2, 3, 4, 5]
-    - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; F"
-      output: [2, 4, 6, 8, 10]
-    - program: '"Vyxal" λ"aeiou"nc; F'
-      output: "a"
+      - inputs: [[1, 2, 3], [2, 4, 6]]
+        output: [1, 3]
+      - inputs: ["abcdef", "daffodil"]
+        output: "bce"
+      - inputs: [[], []]
+        output: []
+      - inputs: [[1, 2, 3, 4, 5], []]
+        output: [1, 2, 3, 4, 5]
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; F"
+        output: [2, 4, 6, 8, 10]
+      - program: '"Vyxal" λ"aeiou"nc; F'
+        output: "a"
 
 - element: "G"
   name: Monadic Maximum (Greatest)
   description: Return the maximal value within a list.
   arity: 1
   overloads:
-    num: max(digits(lhs))
-    str: max(lhs)
-    lst: max(lhs)
+      num: max(digits(lhs))
+      str: max(lhs)
+      lst: max(lhs)
   vectorise: false
   tests:
-    - inputs: [1]
-      output: 1
-    - inputs: [9534]
-      output: 9
-    - inputs: [1111122]
-      output: 2
-    - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
-      output: 10
-    - inputs: [[]]
-      output: []
-    - inputs: [""]
-      output: ""
-    - inputs: ["Vyxal"]
-      output: "y"
+      - inputs: [1]
+        output: 1
+      - inputs: [9534]
+        output: 9
+      - inputs: [1111122]
+        output: 2
+      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+        output: 10
+      - inputs: [[]]
+        output: []
+      - inputs: [""]
+        output: ""
+      - inputs: ["Vyxal"]
+        output: "y"
 
 - element: "H"
   name: To Hexadecimal / From Hexadecimal
   description: Convert a number from base 10 to base 16 or vice versa
   arity: 1
   overloads:
-    num: hex(lhs)
-    str: int(lhs, 16)
+      num: hex(lhs)
+      str: int(lhs, 16)
   vectorise: true
   tests:
-    - inputs: [0]
-      output: "0"
-    - inputs: [20]
-      output: "14"
-    - inputs: [32]
-      output: "20"
-    - inputs: [255]
-      output: "FF"
-    - inputs: ["BEEDAB"]
-      output: 12512683
-    - inputs: [""]
-      output: 0
-
+      - inputs: [0]
+        output: "0"
+      - inputs: [20]
+        output: "14"
+      - inputs: [32]
+        output: "20"
+      - inputs: [255]
+        output: "FF"
+      - inputs: ["BEEDAB"]
+        output: 12512683
+      - inputs: [""]
+        output: 0
 
 - element: "I"
   name: Insignificant / Remove Whitespace
-  description: >- 
-   Is the absolute value of a number less than or equal to one?
-   / Remove all whitespace from a string
+  description: >-
+      Is the absolute value of a number less than or equal to one?
+      / Remove all whitespace from a string
   arity: 1
   overloads:
-    num: abs(lhs) <= 1
-    str: Remove whitespace from lhs
+      num: abs(lhs) <= 1
+      str: Remove whitespace from lhs
   vectorise: true
   tests:
-    - inputs: [[0, 1, -1, -1.1, 1.1]]
-      output: [1, 1, 1, 0, 0]
-    - inputs: [[0.4, 0.6, 0.9, -0.5, -0.9]]
-      output: [1, 1, 1, 1, 1]
-    - inputs: ["V y          x a    l"]
-      output: "Vyxal"
-    - inputs: [""]
-      output: ""
-    - inputs: ["V y x a l"]
-      output: "Vyxal"
-    - inputs: ["V\ny         x    \n\nal"]
-      output: "Vyxal"
+      - inputs: [[0, 1, -1, -1.1, 1.1]]
+        output: [1, 1, 1, 0, 0]
+      - inputs: [[0.4, 0.6, 0.9, -0.5, -0.9]]
+        output: [1, 1, 1, 1, 1]
+      - inputs: ["V y          x a    l"]
+        output: "Vyxal"
+      - inputs: [""]
+        output: ""
+      - inputs: ["V y x a l"]
+        output: "Vyxal"
+      - inputs: ["V\ny         x    \n\nal"]
+        output: "Vyxal"
 
 - element: "J"
   name: Join Together / Merge
   description: >-
-   Join two lists together / Merge two lists together
+      Join two lists together / Merge two lists together
   arity: 2
   overloads:
-    lst-str: lhs.append(rhs) (Append)
-    lst-num: lhs.append(rhs) (Append)
-    str-lst: rhs.prepend(lhs) (Prepend)
-    num-lst: rhs.prepend(lhs) (Prepend)
-    lst-lst: merged(lhs, rhs) (Merge)
-    any-any: lhs + rhs (Concatenate)
+      lst-str: lhs.append(rhs) (Append)
+      lst-num: lhs.append(rhs) (Append)
+      str-lst: rhs.prepend(lhs) (Prepend)
+      num-lst: rhs.prepend(lhs) (Prepend)
+      lst-lst: merged(lhs, rhs) (Merge)
+      any-any: lhs + rhs (Concatenate)
   vectorise: false
   tests:
-    - inputs: [6, 9]
-      output: 69
-    - inputs: [10, 550]
-      output: 10550
-    - inputs: ["", ""]
-      output: ""
-    - inputs: ["abc", ""]
-      output: "abc"
-    - inputs: ["", "abc"]
-      output: "abc"
-    - inputs: ["abc", "def"]
-      output: "abcdef"
-    - inputs: [[1, 2, 3], 4]
-      output: [1, 2, 3, 4]
-    - inputs: [4, [1, 2, 3]]
-      output: [4, 1, 2, 3]
-    - inputs: [[1, 2, 3], ""]
-      output: [1, 2, 3, ""]
-    - inputs: ["", [1, 2, 3]]
-      output: ["", 1, 2, 3]
-    - inputs: [[1, 2, 3], [4, 5, 6]]
-      output: [1, 2, 3, 4, 5, 6]
-    - inputs: [[1, 2, 3], [4, 5, 6, 7, 8, 9]]
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    - inputs: [[1, 2, 3], []]
-      output: [1, 2, 3]
-    - inputs: [[], [1, 2, 3]]
-      output: [1, 2, 3]
+      - inputs: [6, 9]
+        output: 69
+      - inputs: [10, 550]
+        output: 10550
+      - inputs: ["", ""]
+        output: ""
+      - inputs: ["abc", ""]
+        output: "abc"
+      - inputs: ["", "abc"]
+        output: "abc"
+      - inputs: ["abc", "def"]
+        output: "abcdef"
+      - inputs: [[1, 2, 3], 4]
+        output: [1, 2, 3, 4]
+      - inputs: [4, [1, 2, 3]]
+        output: [4, 1, 2, 3]
+      - inputs: [[1, 2, 3], ""]
+        output: [1, 2, 3, ""]
+      - inputs: ["", [1, 2, 3]]
+        output: ["", 1, 2, 3]
+      - inputs: [[1, 2, 3], [4, 5, 6]]
+        output: [1, 2, 3, 4, 5, 6]
+      - inputs: [[1, 2, 3], [4, 5, 6, 7, 8, 9]]
+        output: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      - inputs: [[1, 2, 3], []]
+        output: [1, 2, 3]
+      - inputs: [[], [1, 2, 3]]
+        output: [1, 2, 3]
 
 - element: "K"
   name: Keep / Reject
   description: >-
-   Keep items of a list where applying a function is falsey / Remove items of a list
-   that are not in another - the inverse of F
+      Keep items of a list where applying a function is falsey / Remove items of a list
+      that are not in another - the inverse of F
   arity: 2
   overloads:
-    any-fun: reject(rhs, lhs) (reject lhs by falsey function results)
-    fun-any: reject(lhs, rhs) (reject rhs by falsey function results)
-    any-any: remove elements of lhs that are not in rhs
+      any-fun: reject(rhs, lhs) (reject lhs by falsey function results)
+      fun-any: reject(lhs, rhs) (reject rhs by falsey function results)
+      any-any: remove elements of lhs that are not in rhs
   vectorise: false
   tests:
-    - inputs: [[1,2,3],[2,4,6]]
-      output: [2]
-    - inputs: ["abcdef","daffodil"]
-      output: "adf"
-    - inputs: [[], []]
-      output: []
-    - inputs: [[1, 2, 3, 4, 5], []]
-      output: []
-    - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; K"
-      output: [1, 3, 5, 7, 9]
-    - program: '"Vyxal" λ"aeiou"nc; F'
-      output: "Vyxl"
+      - inputs: [[1, 2, 3], [2, 4, 6]]
+        output: [2]
+      - inputs: ["abcdef", "daffodil"]
+        output: "adf"
+      - inputs: [[], []]
+        output: []
+      - inputs: [[1, 2, 3, 4, 5], []]
+        output: []
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2%0=; K"
+        output: [1, 3, 5, 7, 9]
+      - program: '"Vyxal" λ"aeiou"nc; F'
+        output: "Vyxl"
 
 - element: "L"
   name: Length / Count
   description: >-
-   Return the length of a list / Return the number of items in a list
+      Return the length of a list / Return the number of items in a list
   arity: 1
   overloads:
-    lst: len(lhs)
-    str: len(lhs)
-    any: len(lhs)
+      lst: len(lhs)
+      str: len(lhs)
+      any: len(lhs)
   vectorise: true
   tests:
-    - inputs: [1]
-      output: 1
-    - inputs: [9534]
-      output: 9
-    - inputs: [1111122]
-      output: 7
-    - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
-      output: 10
-    - inputs: [[]]
-      output: 0
-    - inputs: [""]
-      output: 0
-    - inputs: ["Vyxal"]
-      output: 5
+      - inputs: [1]
+        output: 1
+      - inputs: [9534]
+        output: 9
+      - inputs: [1111122]
+        output: 7
+      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+        output: 10
+      - inputs: [[]]
+        output: 0
+      - inputs: [""]
+        output: 0
+      - inputs: ["Vyxal"]
+        output: 5
 
 - element: "M"
   name: Map / Pair to Each
   description: >-
-   Map a function over a list / Pair each item in a list with another object
+      Map a function over a list / Pair each item in a list with another object
   arity: 2
   overloads:
       any-fun: map(b,a) (apply b to each of a)
       any-any: pair each item of b with a
   vectorise: false
   tests:
-    - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2×; M"
-      output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-    - program: "10 λ2×; M"
-      output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-    - program: "\"\" λ2×; M"
-      output: []
-    - inputs: [[1, 2, 3], 4]
-      output: [[1, 4], [2, 4], [3, 4]]
-    - inputs: [4, [1, 2, 3]]
-      output: [[4, 1], [4, 2], [4, 3]]
-    - inputs: [[], 4]
-      output: [[[], 1], [[], 2], [[], 3], [[], 4]]
+      - program: "⟨1|2|3|4|5|6|7|8|9|10⟩ λ2×; M"
+        output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+      - program: "10 λ2×; M"
+        output: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+      - program: '"" λ2×; M'
+        output: []
+      - inputs: [[1, 2, 3], 4]
+        output: [[1, 4], [2, 4], [3, 4]]
+      - inputs: [4, [1, 2, 3]]
+        output: [[4, 1], [4, 2], [4, 3]]
+      - inputs: [[], 4]
+        output: [[[], 1], [[], 2], [[], 3], [[], 4]]
 
 - element: "N"
   name: Negate / Swapcase
   description: >-
-   Negate a number / Invert the case of each letter in a string
+      Negate a number / Invert the case of each letter in a string
   arity: 1
   overloads:
-    num: -lhs
-    str: lhs.swapcase()
+      num: -lhs
+      str: lhs.swapcase()
   vectorise: true
   tests:
-    - inputs: [1]
-      output: -1
-    - inputs: [0]
-      output: 0
-    - inputs: [-1]
-      output: 1
-    - inputs: [1.5]
-      output: -1.5
-    - inputs: [-1.5]
-      output: 1.5
-    - inputs: [""]
-      output: ""
-    - inputs: ["Vyxal"]
-      output: "vYXAL"
-    - inputs: ["vYXaL"]
-      output: "VyxAL"
-    - inputs: ["VYXAL"]
-      output: "vyxal"
+      - inputs: [1]
+        output: -1
+      - inputs: [0]
+        output: 0
+      - inputs: [-1]
+        output: 1
+      - inputs: [1.5]
+        output: -1.5
+      - inputs: [-1.5]
+        output: 1.5
+      - inputs: [""]
+        output: ""
+      - inputs: ["Vyxal"]
+        output: "vYXAL"
+      - inputs: ["vYXaL"]
+        output: "VyxAL"
+      - inputs: ["VYXAL"]
+        output: "vyxal"
 
 - element: "O"
   name: Ordinal Value / To Character
   description: >-
-   Return the ordinal value of a character / Convert a string of characters to their ordinal value / Convert a number to a character
+      Return the ordinal value of a character / Convert a string of characters to their ordinal value / Convert a number to a character
   arity: 1
   overloads:
-    num: chr(lhs)
-    str: ord(lhs)
+      num: chr(lhs)
+      str: ord(lhs)
   vectorise: true
   tests:
-    - inputs: [69]
-      outuput: "E"
-    - inputs: [420]
-      output: "Ƥ"
-    - inputs: ["H"]
-      output: 72
-    - inputs: [""]
-      output: 0
-    - inputs: ["Vyxal"]
-      output: [86, 121, 120, 97, 108]
+      - inputs: [69]
+        outuput: "E"
+      - inputs: [420]
+        output: "Ƥ"
+      - inputs: ["H"]
+        output: 72
+      - inputs: [""]
+        output: 0
+      - inputs: ["Vyxal"]
+        output: [86, 121, 120, 97, 108]
 
 - element: "P"
   name: Prepend
   description: >-
-   Prepend an item to a list / Prepend an item to a string
+      Prepend an item to a list / Prepend an item to a string
   arity: 2
   overloads:
-    any-any: prepend rhs to lhs
+      any-any: prepend rhs to lhs
   vectorise: false
   tests:
-    - inputs: [1, [2, 3, 4]]
-      output: [1, 2, 3, 4]
-    - inputs: [1, []]
-      output: [1]
-    - inputs: [1, [2, 3, 4, 5, 6, 7, 8, 9, 10]]
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    - inputs: [1, [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]]
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    - inputs: [1, []]
-      output: [1]
-    - inputs: ["", [1, 2, 3]]
-      output: ["", 1, 2, 3]
-    - inputs: ["", []]
-      output: [""]
-    - inputs: ["Vyxal", [1, 2, 3]]
-      output: ["Vyxal", 1, 2, 3]
-    - inputs: ["Vyxal", []]
-      output: ["Vyxal"]
-    - inputs: [3, 4]
-      output: 43
-    - inputs: [3, 0]
-      output: 3
-    - inputs: [3, -1]
-      output: -13
-    - inputs: [-3, -4]
-      output: "-3-4"
+      - inputs: [1, [2, 3, 4]]
+        output: [1, 2, 3, 4]
+      - inputs: [1, []]
+        output: [1]
+      - inputs: [1, [2, 3, 4, 5, 6, 7, 8, 9, 10]]
+        output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      - inputs:
+            [
+                1,
+                [
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                ],
+            ]
+        output:
+            [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+            ]
+      - inputs: [1, []]
+        output: [1]
+      - inputs: ["", [1, 2, 3]]
+        output: ["", 1, 2, 3]
+      - inputs: ["", []]
+        output: [""]
+      - inputs: ["Vyxal", [1, 2, 3]]
+        output: ["Vyxal", 1, 2, 3]
+      - inputs: ["Vyxal", []]
+        output: ["Vyxal"]
+      - inputs: [3, 4]
+        output: 43
+      - inputs: [3, 0]
+        output: 3
+      - inputs: [3, -1]
+        output: -13
+      - inputs: [-3, -4]
+        output: "-3-4"
 
 - element: "Q"
   name: Quit
   description: >-
-   Quit the program / Exit the program
+      Quit the program / Exit the program
   arity: 0
   overloads:
-    any: quit()
+      any: quit()
   vectorise: false
 
 - element: "R"
   name: Reduce / Vectorised Reverse / Foldl by Function
   description: >-
-   Reduce a list by a function / Reverse each item in a list
+      Reduce a list by a function / Reverse each item in a list
   arity: 2
   overloads:
-    any-fun: reduce(rhs, lhs) (fold list lhs by function rhs)
-    fun-any: reduce(lhs, rhs) (fold list rhs by function lhs)
-    any-any: reverse each item of rhs
+      any-fun: reduce(rhs, lhs) (fold list lhs by function rhs)
+      fun-any: reduce(lhs, rhs) (fold list rhs by function lhs)
+      any-any: reverse each item of rhs
   vectorise: false
   tests:
-    - program: "⟨1|2|3|4|5⟩ λ+; R"
-      output: 15
-    - program: "⟨1|2|3|4|5⟩ λ×; R"
-      output: 120
-    - program: "λ-; ⟨1|2|3|4|5⟩ R"
-      output: -13
-    - program: "λ÷; ⟨1|2|3|4|5⟩ R"
-      output: 0.008333333333333333
-    - inputs: [[[1,2],[3,4]]]
-      output: [[2,1],[4,3]]
-    - inputs: [[[1,2]]]
-      output: [[2,1]]
-    - inputs: [[[1,2],[3,4]], [[5,6],[7,8]]]
-      output: [[3,4],[1,2],[7,8],[5,6]]
+      - program: "⟨1|2|3|4|5⟩ λ+; R"
+        output: 15
+      - program: "⟨1|2|3|4|5⟩ λ×; R"
+        output: 120
+      - program: "λ-; ⟨1|2|3|4|5⟩ R"
+        output: -13
+      - program: "λ÷; ⟨1|2|3|4|5⟩ R"
+        output: 0.008333333333333333
+      - inputs: [[[1, 2], [3, 4]]]
+        output: [[2, 1], [4, 3]]
+      - inputs: [[[1, 2]]]
+        output: [[2, 1]]
+      - inputs: [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+        output: [[3, 4], [1, 2], [7, 8], [5, 6]]
 
 - element: "S"
   name: Stringify / To String
   description: >-
-   Convert a number to a string / Convert a list to a string
+      Convert a number to a string / Convert a list to a string
   arity: 1
   overloads:
-    any: str(lhs) / lhs.toString()
+      any: str(lhs) / lhs.toString()
   vectorise: false
   tests:
-    - inputs: [1]
-      output: "1"
-    - inputs: [0]
-      output: "0"
-    - inputs: [-1]
-      output: "-1"
-    - inputs: [1.5]
-      output: "1.5"
-    - inputs: [-1.5]
-      output: "-1.5"
-    - inputs: [""]
-      output: ""
-    - inputs: ["Vyxal"]
-      output: "Vyxal"
-    - inputs: ["VYXAL"]
-      output: "VYXAL"
-    - inputs: ["vYXaL"]
-      output: "vYXaL"
-    - inputs: [[1, 2, 3]]
-      output: "[1, 2, 3]"
-    - inputs: [[[1, 2, 3], [4, 5, 6]]]
-      output: "[[1, 2, 3], [4, 5, 6]]"
-  
+      - inputs: [1]
+        output: "1"
+      - inputs: [0]
+        output: "0"
+      - inputs: [-1]
+        output: "-1"
+      - inputs: [1.5]
+        output: "1.5"
+      - inputs: [-1.5]
+        output: "-1.5"
+      - inputs: [""]
+        output: ""
+      - inputs: ["Vyxal"]
+        output: "Vyxal"
+      - inputs: ["VYXAL"]
+        output: "VYXAL"
+      - inputs: ["vYXaL"]
+        output: "vYXaL"
+      - inputs: [[1, 2, 3]]
+        output: "[1, 2, 3]"
+      - inputs: [[[1, 2, 3], [4, 5, 6]]]
+        output: "[[1, 2, 3], [4, 5, 6]]"
+
 - element: "T"
   name: Transpose
   description: >-
-   Transpose a matrix / Transpose a list of lists
+      Transpose a matrix / Transpose a list of lists
   arity: 1
   overloads:
-    any: transpose(lhs)
+      any: transpose(lhs)
   vectorise: false
   tests:
-    - inputs: [[[1,2],[2,3,4]]]
-      output: [[1, 2], [2, 3], [4]]
-    - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]]
-      output: [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
-    - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9]]]
-      output: [[1, 6], [2, 7], [3, 8], [4, 9], [5]]
+      - inputs: [[[1, 2], [2, 3, 4]]]
+        output: [[1, 2], [2, 3], [4]]
+      - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]]
+        output: [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
+      - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9]]]
+        output: [[1, 6], [2, 7], [3, 8], [4, 9], [5]]
 
 - element: "U"
   name: Uniquify
   description: >-
-   Remove duplicate items from a list / Remove duplicate items from a string
+      Remove duplicate items from a list / Remove duplicate items from a string
   arity: 1
   overloads:
-    any: uniquify(a) (Remove duplicates)
+      any: uniquify(a) (Remove duplicates)
   vectorise: false
   tests:
-    - inputs: [[1,3,5,5]]
-      output: [1, 3, 5]
-    - inputs: [[1,3,5,5,7,9]]
-      output: [1, 3, 5, 7, 9]
-    - inputs: ["abdbcdbch"]
-      output: "abdch"
-  
+      - inputs: [[1, 3, 5, 5]]
+        output: [1, 3, 5]
+      - inputs: [[1, 3, 5, 5, 7, 9]]
+        output: [1, 3, 5, 7, 9]
+      - inputs: ["abdbcdbch"]
+        output: "abdch"
+
 - element: "V"
   name: Replace
   description: >-
-   Replace a substring in a string with another string / Replace an item in a list with another item
+      Replace a substring in a string with another string / Replace an item in a list with another item
   arity: 3
   overloads:
-    any-any-any: lhs.replace(rhs, other)
+      any-any-any: lhs.replace(rhs, other)
   vectorise: false
   tests:
-    - inputs: ["Vyxal", "a", "V"]
-      output: "VyxVl"
-    - inputs: ["Vyxal", "a", ""]
-      output: "Vyxl"
-    - inputs: [123, 3, 456] 
-      output: 12456
-    - inputs: [123, 3, ""]
-      output: 12
-    - inputs: ["123", 3, ""]
-      output: "12"
-    - inputs: ["123", 3, "456"]
-      output: "12456"
-    - inputs: [[1, 2, 3, 4], 3, 4]
-      output: [1, 2, 4, 4]
-    - inputs: [[1, 2, 3, 4], 3, 5]
-      output: [1, 2, 5, 4]
-    - inputs: [[1, [2, 3, 4], [5]], [2, 3, 4], 6]
-      output: [[1, 6, [5]]]
+      - inputs: ["Vyxal", "a", "V"]
+        output: "VyxVl"
+      - inputs: ["Vyxal", "a", ""]
+        output: "Vyxl"
+      - inputs: [123, 3, 456]
+        output: 12456
+      - inputs: [123, 3, ""]
+        output: 12
+      - inputs: ["123", 3, ""]
+        output: "12"
+      - inputs: ["123", 3, "456"]
+        output: "12456"
+      - inputs: [[1, 2, 3, 4], 3, 4]
+        output: [1, 2, 4, 4]
+      - inputs: [[1, 2, 3, 4], 3, 5]
+        output: [1, 2, 5, 4]
+      - inputs: [[1, [2, 3, 4], [5]], [2, 3, 4], 6]
+        output: [[1, 6, [5]]]
 
 - element: "W"
   name: Wrap Stack
@@ -1315,12 +1365,56 @@
   arity: varies
   vectorise: false
   tests:
-    - inputs: [1, 2, 3, 4, 5]
-      output: [1, 2, 3, 4, 5]
-    - inputs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    - inputs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      - inputs: [1, 2, 3, 4, 5]
+        output: [1, 2, 3, 4, 5]
+      - inputs: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        output: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      - inputs:
+            [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+            ]
+        output:
+            [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19,
+                20,
+            ]
 
 - element: "X"
   name: Break / Return
@@ -1334,65 +1428,84 @@
   description: Interleave two items / flat zip
   arity: 2
   overloads:
-    any-any: interleave(a,b)
+      any-any: interleave(a,b)
   vectorise: false
   tests:
-    - inputs: [[1, 2], [3, 4]]
-      output: [1, 3, 2, 4]
-    - inputs: ["abc", "def"]
-      output: "adbecf"
-    - inputs: [[1, 2], [3, 4, 5]]
-      output: [1, 3, 2, 4, 5]
-    - inputs: [[1, 2], [3, 4, 5, 6]]
-      output: [1, 3, 2, 4, 5, 6]
-    - inputs: [[1, 2, 3, 4], [5, 6]]
-      output: [1, 5, 2, 6, 3, 4]
-    - inputs: ["Vyxal", ""]
-      output: "Vyxal"
-    - inputs: [[1, 2, 3], []]
-      output: [1, 2, 3]
-    - inputs: [[], [1, 2, 3]]
-      output: [1, 2, 3]
-    - inputs: [123, 456]
-      output: [1, 4, 2, 5, 3, 6]
-    - inputs: [123, ""]
-      output: "123"
-    - inputs: [123, [4, 5, 6]]
-      output: [1, 4, 2, 5, 3, 6]
-    - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
-      output: ["V", 4, "y", 2, "x", 0, "a", 6, "l", 9]
+      - inputs: [[1, 2], [3, 4]]
+        output: [1, 3, 2, 4]
+      - inputs: ["abc", "def"]
+        output: "adbecf"
+      - inputs: [[1, 2], [3, 4, 5]]
+        output: [1, 3, 2, 4, 5]
+      - inputs: [[1, 2], [3, 4, 5, 6]]
+        output: [1, 3, 2, 4, 5, 6]
+      - inputs: [[1, 2, 3, 4], [5, 6]]
+        output: [1, 5, 2, 6, 3, 4]
+      - inputs: ["Vyxal", ""]
+        output: "Vyxal"
+      - inputs: [[1, 2, 3], []]
+        output: [1, 2, 3]
+      - inputs: [[], [1, 2, 3]]
+        output: [1, 2, 3]
+      - inputs: [123, 456]
+        output: [1, 4, 2, 5, 3, 6]
+      - inputs: [123, ""]
+        output: "123"
+      - inputs: [123, [4, 5, 6]]
+        output: [1, 4, 2, 5, 3, 6]
+      - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
+        output: ["V", 4, "y", 2, "x", 0, "a", 6, "l", 9]
 
 - element: "Z"
   name: Zip / Zipmap
   description: Zip two items together, filling with 0s if needed. / Zip a list with the result of mapping a function to that list
   arity: 2
   overloads:
-    any-any: zip(a,b)
-    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
+      any-any: zip(a,b)
+      any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
   vectorise: false
   tests:
-    - inputs: [[1, 2, 3], [4, 5, 6]]
-      output: [[1, 4], [2, 5], [3, 6]]
-    - inputs: [[1, 2, 3], [4, 5, 6, 7]]
-      output: [[1, 4], [2, 5], [3, 6], [0, 7]]
-    - inputs: [[1, 2, 3, 4], [5, 6]]
-      output: [[1, 5], [2, 6], [3, 0], [4, 0]]
-    - inputs: ["Vyxal", "Good"]
-      output: [["V", "G"], ["y", "o"], ["x", "o"], ["a", "d"], ["l", 0]]
-    - inputs: ["Vyxal", ""]
-      output: [["V", 0], ["y", 0], ["x", 0], ["a", 0], ["l", 0]]
-    - inputs: [[1, 2, 3], []]
-      output: [[1, 0], [2, 0], [3, 0]]
-    - inputs: [[], [1, 2, 3]]
-      output: [[0, 1], [0, 2], [0, 3]]
-    - inputs: [123, 456]
-      output: [[1, 4], [2, 5], [3, 6]]
-    - inputs: [123, ""]
-      output: [[1, 0], [2, 0], [3, 0]]
-    - inputs: [123, [4, 5, 6]]
-      output: [[1, 4], [2, 5], [3, 6]]
-    - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
-      output: [["V", 4], ["y", 2], ["x", 0], ["a", 6], ["l", 9]]
-    - program: "10ʒN¤Z"
-      output: [[1, -1], [2, -2], [3, -3], [4, -4], [5, -5], [6, -6], [7, -7], [8, -8], [9, -9], [10, -10]]
-    
+      - inputs: [[1, 2, 3], [4, 5, 6]]
+        output: [[1, 4], [2, 5], [3, 6]]
+      - inputs: [[1, 2, 3], [4, 5, 6, 7]]
+        output: [[1, 4], [2, 5], [3, 6], [0, 7]]
+      - inputs: [[1, 2, 3, 4], [5, 6]]
+        output: [[1, 5], [2, 6], [3, 0], [4, 0]]
+      - inputs: ["Vyxal", "Good"]
+        output: [["V", "G"], ["y", "o"], ["x", "o"], ["a", "d"], ["l", 0]]
+      - inputs: ["Vyxal", ""]
+        output: [["V", 0], ["y", 0], ["x", 0], ["a", 0], ["l", 0]]
+      - inputs: [[1, 2, 3], []]
+        output: [[1, 0], [2, 0], [3, 0]]
+      - inputs: [[], [1, 2, 3]]
+        output: [[0, 1], [0, 2], [0, 3]]
+      - inputs: [123, 456]
+        output: [[1, 4], [2, 5], [3, 6]]
+      - inputs: [123, ""]
+        output: [[1, 0], [2, 0], [3, 0]]
+      - inputs: [123, [4, 5, 6]]
+        output: [[1, 4], [2, 5], [3, 6]]
+      - inputs: ["Vyxal", [4, 2, 0, 6, 9]]
+        output: [["V", 4], ["y", 2], ["x", 0], ["a", 6], ["l", 9]]
+      - program: "10ʒN¤Z"
+        output:
+            [
+                [1, -1],
+                [2, -2],
+                [3, -3],
+                [4, -4],
+                [5, -5],
+                [6, -6],
+                [7, -7],
+                [8, -8],
+                [9, -9],
+                [10, -10],
+            ]
+
+- syntax: "["
+  name: If Statement
+  description: >-
+      Open an if-statement. Pops the top of the stack as a condition, and if that
+      value is considered truthy, the first branch is executed. Otherwise, the second
+      branch (empty if not given) is executed. >
+  arity: 1
