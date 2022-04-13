@@ -4862,6 +4862,26 @@
     - "[[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
     - "[[1, 2, 3, 4, 5], 4] : [1, 32, 243, 1024, 3125]"
 
+- element: "Þd"
+  name: Distance matrix (Directed)
+  description: Distance matrix of undirected graph
+  arity: 1
+  overloads:
+    lst: Dstance matrix
+  vectorise: false
+  tests:
+    - "[[[1,2],[2,3],[3,4],[4,1],[1,4],[3,6],[5,6]]] : [[0,1,2,1,float('inf'),3],[3,0,1,2,float('inf'),2],[2,3,0,1,float('inf'),1],[1,2,3,0,float('inf'),4],[float('inf'),float('inf'),float('inf'),float('inf'),0,1],[float('inf'),float('inf'),float('inf'),float('inf'),float('inf'),0]]"
+
+- element: "Þw"
+  name: Distance matrix (Undirected)
+  description: Distance matrix of undirected graph
+  arity: 1
+  overloads:
+    lst: Dstance matrix
+  vectorise: false
+  tests:
+    - "[[[1,3],[2,4],[3,4]]] : [[0,3,1,2],[3,0,2,1],[1,2,0,1],[2,1,1,0]]"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
