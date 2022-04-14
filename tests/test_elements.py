@@ -19094,7 +19094,7 @@ def test_ReplaceFirstOccurrence():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[1, 2, 3, 4, 1, 2, 3, 4]], 3, 6]]
+    stack = [vyxalify(item) for item in [[1, 2, 3, 4, 1, 2, 3, 4], 3, 6]]
     expected = vyxalify([1, 2, 6, 4, 1, 2, 3, 4])
     ctx = Context()
 
