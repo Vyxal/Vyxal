@@ -2090,6 +2090,11 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 num a -> to_roman_numeral(a)
 str a -> from_roman_numeral(a)
 `
+codepage_descriptions[188] += `
+øḞ (Replace First Occurrence)
+Replace the first instance of an item with another item
+any a, any b, any c -> a.replace_first(b, c)
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists
