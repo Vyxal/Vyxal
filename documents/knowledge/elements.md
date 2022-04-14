@@ -3442,7 +3442,7 @@ Distance matrix of undirected graph
 
 ### Overloads
 
-- lst a: `Dstance matrix`
+- lst a: `Distance matrix`
 -------------------------------
 ## `` Þw `` (Distance matrix (Undirected))
 
@@ -3450,7 +3450,7 @@ Distance matrix of undirected graph
 
 ### Overloads
 
-- lst a: `Dstance matrix`
+- lst a: `Distance matrix`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

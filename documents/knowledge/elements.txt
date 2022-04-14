@@ -2956,13 +2956,13 @@ k• (Qwerty Keyboard)
 
 - Distance matrix of undirected graph
 
-    lst a: Dstance matrix
+    lst a: Distance matrix
 -------------------------------
 Þw (Distance matrix (Undirected))
 
 - Distance matrix of undirected graph
 
-    lst a: Dstance matrix
+    lst a: Distance matrix
 -------------------------------
 ¨□ (Parse direction arrow to integer)
 
