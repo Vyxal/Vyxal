@@ -4536,15 +4536,28 @@ def vy_exec(lhs, ctx):
                 lhs, ctx.dictionary_compression, ctx.variable_length_1
             )
         )
+
         return []
 
     def helper(lhs):
         if vy_type(lhs) == NUMBER_TYPE:
             return divide(1, lhs, ctx)
+        elif vy_type(lhs) is str:
+            import vyxal.transpile
+
+            stack = ctx.stacks[-1]
+            exec(
+                vyxal.transpile.transpile(
+                    lhs, ctx.dictionary_compression, ctx.variable_length_1
+                )
+            )
+
+            return [stack[-1]]
         else:
             return vectorise(helper, lhs, ctx=ctx)
 
-    return [helper(lhs)]
+    temp = helper(lhs)
+    return temp
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
