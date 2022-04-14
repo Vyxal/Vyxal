@@ -412,7 +412,7 @@ def bitwise_and(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs & rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) & int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.center(lhs),
         (str, NUMBER_TYPE): lambda: lhs.center(rhs),
         (str, str): lambda: lhs.center(abs(len(rhs) - len(lhs))),
@@ -436,7 +436,7 @@ def bitwise_or(lhs, rhs, ctx):
         common = sorted(common, key=lambda x: len(x))[-1]
         return lhs[: -len(common)] + common + rhs[len(common) :]
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs | rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) | int(rhs),
         (NUMBER_TYPE, str): lambda: rhs[:lhs] + rhs[lhs + 1 :],
         (str, NUMBER_TYPE): lambda: lhs[:rhs] + lhs[rhs + 1 :],
     }.get(ts, lambda: vectorise(bitwise_or, lhs, rhs, ctx=ctx))()
@@ -449,7 +449,7 @@ def bitwise_not(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: ~lhs,
+        NUMBER_TYPE: lambda: ~int(lhs),
         str: lambda: int(any(char.isupper() for char in lhs)),
     }.get(ts, lambda: vectorise(bitwise_not, lhs, ctx=ctx))()
 
@@ -463,7 +463,7 @@ def bitwise_xor(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ^ rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) ^ int(rhs),
         (NUMBER_TYPE, str): lambda: " " * lhs + rhs,
         (str, NUMBER_TYPE): lambda: lhs + " " * rhs,
         (str, str): lambda: levenshtein_distance(lhs, rhs),
