@@ -4545,19 +4545,19 @@ def vy_exec(lhs, ctx):
         elif vy_type(lhs) is str:
             import vyxal.transpile
 
-            stack = ctx.stacks[-1]
+            stack = []
             exec(
                 vyxal.transpile.transpile(
                     lhs, ctx.dictionary_compression, ctx.variable_length_1
                 )
             )
 
-            return [stack[-1]]
+            return pop(stack, 1, ctx)
         else:
             return vectorise(helper, lhs, ctx=ctx)
 
     temp = helper(lhs)
-    return temp
+    return [temp]
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
