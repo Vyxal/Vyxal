@@ -3448,7 +3448,6 @@ def replace_first(lhs, rhs, other, ctx):
                     yield item
                 elif non_vectorising_equals(rhs, item, ctx):
                     yield other
-                    break
                 else:
                     yield item
 
