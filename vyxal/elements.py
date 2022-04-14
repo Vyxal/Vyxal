@@ -3431,6 +3431,30 @@ def replace(lhs, rhs, other, ctx):
         return [other if value == rhs else value for value in iterable(lhs)]
 
 
+def replace_first(lhs, rhs, other, ctx):
+    """Element ø
+    (any, any, any) -> a.replace_first(b, c)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        return str(lhs).replace(str(rhs), str(other), 1)
+    else:
+
+        @lazylist
+        def gen():
+            first_found = False
+            for item in iterable(lhs, ctx=ctx):
+                if first_found:
+                    yield item
+                elif non_vectorising_equals(rhs, item, ctx):
+                    yield other
+                    break
+                else:
+                    yield item
+
+        return gen()
+
+
 def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
