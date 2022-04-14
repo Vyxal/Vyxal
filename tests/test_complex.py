@@ -440,7 +440,8 @@ def test_all_multiples():
         "KromerKromerKromerKromerKromerKromerKromerKromerKromer",
         "KromerKromerKromerKromerKromerKromerKromerKromerKromerKromer",
     ]
-    
+
+
 def test_empty_lists():
     stack = run_vyxal("69 ⟨1|2|3|||6⟩")
     assert stack[-1] == [1, 2, 3, 6]
