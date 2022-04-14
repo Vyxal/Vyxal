@@ -931,6 +931,28 @@ def diagonal(lhs, ctx):
     return [lhs[i][i] for i in range(len(lhs))]
 
 
+def dist_matrix_dir(lhs, ctx):
+    """Element Þd
+    (lst) -> distance matrix of directed graph"""
+    graph = edges_to_dir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    return [
+        [graph_distance(graph, elem1, elem2) for elem2 in vertices]
+        for elem1 in vertices
+    ]
+
+
+def dist_matrix_undir(lhs, ctx):
+    """Element Þw
+    (lst) -> distance matrix of undirected graph"""
+    graph = edges_to_undir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    return [
+        [graph_distance(graph, elem1, elem2) for elem2 in vertices]
+        for elem1 in vertices
+    ]
+
+
 def divide(lhs, rhs, ctx):
     """Element /
     (num, num) -> a / b
@@ -5458,6 +5480,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞN": process_element(alternating_negations, 1),
     "Þ□": process_element(identity_matrix, 1),
     "Þe": process_element(matrix_exponentiation, 2),
+    "Þd": process_element(dist_matrix_dir, 1),
+    "Þw": process_element(dist_matrix_undir, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

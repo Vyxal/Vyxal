@@ -21381,6 +21381,52 @@ def test_MatrixExponentiation():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_DistancematrixDirected():
+
+    stack = [vyxalify(item) for item in [[[1,2],[2,3],[3,4],[4,1],[1,4],[3,6],[5,6]]]]
+    expected = vyxalify([[0,1,2,1,float('inf'),3],[3,0,1,2,float('inf'),2],[2,3,0,1,float('inf'),1],[1,2,3,0,float('inf'),4],[float('inf'),float('inf'),float('inf'),float('inf'),0,1],[float('inf'),float('inf'),float('inf'),float('inf'),float('inf'),0]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þd')
+    # print('Þd', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_DistancematrixUndirected():
+
+    stack = [vyxalify(item) for item in [[[1,3],[2,4],[3,4]]]]
+    expected = vyxalify([[0,3,1,2],[3,0,2,1],[1,2,0,1],[2,1,1,0]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þw')
+    # print('Þw', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Parsedirectionarrowtointeger():
 
     stack = [vyxalify(item) for item in ["v"]]

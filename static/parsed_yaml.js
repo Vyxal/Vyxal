@@ -2377,6 +2377,16 @@ A matrix mutliplied by itself n times
 num a, lst b -> Matrix a mutliplied by itself b times
 lst a, num b -> Matrix b mutliplied by itself a times
 `
+codepage_descriptions[100] += `
+Þd (Distance matrix (Directed))
+Distance matrix of undirected graph
+lst a -> Distance matrix
+`
+codepage_descriptions[119] += `
+Þw (Distance matrix (Undirected))
+Distance matrix of undirected graph
+lst a -> Distance matrix
+`
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
 Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)

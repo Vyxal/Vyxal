@@ -328,6 +328,33 @@ def edges_to_undir_graph(edges: list, ctx: Context) -> dict:
     return graph
 
 
+def graph_distance(
+    graph: dict, vert1, vert2, prev: list = []
+) -> list[list[int]]:
+    """Find the distance from vert1 to vert2 in a directed graph
+
+    Parameters:
+    graph: `dict[Vertex, list[Vertex]]`\\
+    A dictionary where keys are vertices and values are lists of
+    neighboring vertices
+    prev: `list[Vertex]`\\
+    A list of previously visited vertices, to avoid going in cycles"""
+    if vert1 == vert2:
+        return 0
+    # I know this is the American spelling, but it's shorter than neighbour
+    neighbors = [neighbor for neighbor in graph[vert1] if neighbor not in prev]
+    if not neighbors:
+        return float("inf")
+    elif vert2 in neighbors:
+        return 1
+    else:
+        new_prev = prev + [vert1]
+        return 1 + min(
+            graph_distance(graph, neighbor, vert2, new_prev)
+            for neighbor in neighbors
+        )
+
+
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
     if isinstance(lst, LazyList):
