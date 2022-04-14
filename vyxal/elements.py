@@ -3432,7 +3432,7 @@ def replace(lhs, rhs, other, ctx):
 
 
 def replace_first(lhs, rhs, other, ctx):
-    """Element ø
+    """Element øḞ
     (any, any, any) -> a.replace_first(b, c)
     """
 
@@ -5408,6 +5408,7 @@ elements: dict[str, tuple[str, int]] = {
     "øṙ": process_element(regex_sub, 3),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
+    "øḞ": process_element(replace_first, 3),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
