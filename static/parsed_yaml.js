@@ -352,7 +352,7 @@ Call / declare function (@name; / @name|code;)
 `)
 
 codepage_descriptions.push(`All
-Chck if all items in a list are truthy / check if a character is a vowel
+Check if all items in a list are truthy / check if a character is a vowel
 str a -> is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
 any a -> all(a)
 `)
@@ -1012,7 +1012,7 @@ any a -> [[x, a.count(x)] for x in a]
 `)
 
 codepage_descriptions.push(`Is Divisible / Arbitrary Duplicate
-Returns whether two items are divisble / numerious copies of the top of the stack
+Returns whether two items are divisible / numerous copies of the top of the stack
 num a, num b -> a % b == 0
 num a, str b -> a copies of b
 str a, num b -> b copies of a
