@@ -321,15 +321,18 @@ def transpile_structure(
 
         temp = indent_str("temp_list = []", indent)
         for x in struct.items:
-            temp += (
-                indent_str("def list_item(s, ctx):", indent)
-                + indent_str("stack = list(deep_copy(s))", indent + 1)
-                + transpile_ast(x, indent + 1, dict_compress=dict_compress)
-                + indent_str("if len(stack) == 0: return", indent + 1)
-                + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
-                + indent_str("f = list_item(stack, ctx)", indent)
-                + indent_str("if f is not None: temp_list.append(f)", indent)
-            )
+            if x:
+                temp += (
+                    indent_str("def list_item(s, ctx):", indent)
+                    + indent_str("stack = list(deep_copy(s))", indent + 1)
+                    + transpile_ast(x, indent + 1, dict_compress=dict_compress)
+                    + indent_str("if len(stack) == 0: return", indent + 1)
+                    + indent_str("return pop(stack, 1, ctx=ctx)", indent + 1)
+                    + indent_str("f = list_item(stack, ctx)", indent)
+                    + indent_str(
+                        "if f is not None: temp_list.append(f)", indent
+                    )
+                )
 
         temp += indent_str("stack.append(list(deep_copy(temp_list)))", indent)
         return temp
