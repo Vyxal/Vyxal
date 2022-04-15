@@ -481,7 +481,7 @@ Call / declare function (@name; / @name|code;)
 -------------------------------
 ## `` A `` (All)
 
-Chck if all items in a list are truthy / check if a character is a vowel
+Check if all items in a list are truthy / check if a character is a vowel
 
 ### Overloads
 
@@ -1444,7 +1444,7 @@ Returns a list of [item, count of item in the top of stack]
 -------------------------------
 ## `` Ḋ `` (Is Divisible / Arbitrary Duplicate)
 
-Returns whether two items are divisble / numerious copies of the top of the stack
+Returns whether two items are divisible / numerous copies of the top of the stack
 
 ### Overloads
 
