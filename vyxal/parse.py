@@ -221,7 +221,15 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens, structure.MonadicModifier)
+            remaining = parse(tokens)
+            relevant = remaining[0]
+
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
             if head.value == "⁽":
                 # 1-element lambda
                 structures.append(
@@ -237,6 +245,19 @@ def parse(
             if not tokens:
                 break
             remaining = parse(tokens, structure.DyadicModifier)
+
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
+            if isinstance(
+                remaining[1],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[1].parent_structure = parent
+
             if head.value == "‡":
                 # 2-element lambda
                 structures.append(
@@ -255,6 +276,23 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
+            if isinstance(
+                remaining[1],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[1].parent_structure = parent
+
+            if isinstance(
+                remaining[2],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[2].parent_structure = parent
             remaining = parse(tokens, structure.TriadicModifier)
             if head.value == "≬":
                 # 3-element lambda
