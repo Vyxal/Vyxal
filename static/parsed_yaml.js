@@ -352,7 +352,7 @@ Call / declare function (@name; / @name|code;)
 `)
 
 codepage_descriptions.push(`All
-Chck if all items in a list are truthy / check if a character is a vowel
+Check if all items in a list are truthy / check if a character is a vowel
 str a -> is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
 any a -> all(a)
 `)
@@ -805,7 +805,7 @@ any a, fun b -> Right reduce a by b (foldr)
 fun a, any b -> Right reduce b by a (foldr)
 `)
 
-codepage_descriptions.push(`Left Justify / Gridify / Infinite Replace / Collect until fale
+codepage_descriptions.push(`Left Justify / Gridify / Infinite Replace / Collect until false
 Find one value inside another, starting from a certain index.
 num a, num b, num c -> a <= c <= b
 num a, num b, str c -> a by b grid of c
@@ -1012,7 +1012,7 @@ any a -> [[x, a.count(x)] for x in a]
 `)
 
 codepage_descriptions.push(`Is Divisible / Arbitrary Duplicate
-Returns whether two items are divisble / numerious copies of the top of the stack
+Returns whether two items are divisible / numerous copies of the top of the stack
 num a, num b -> a % b == 0
 num a, str b -> a copies of b
 str a, num b -> b copies of a
@@ -2090,6 +2090,11 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 num a -> to_roman_numeral(a)
 str a -> from_roman_numeral(a)
 `
+codepage_descriptions[188] += `
+øḞ (Replace First Occurrence)
+Replace the first instance of an item with another item
+any a, any b, any c -> a.replace_first(b, c)
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists
@@ -2376,6 +2381,16 @@ codepage_descriptions[101] += `
 A matrix mutliplied by itself n times
 num a, lst b -> Matrix a mutliplied by itself b times
 lst a, num b -> Matrix b mutliplied by itself a times
+`
+codepage_descriptions[100] += `
+Þd (Distance matrix (Directed))
+Distance matrix of undirected graph
+lst a -> Distance matrix
+`
+codepage_descriptions[119] += `
+Þw (Distance matrix (Undirected))
+Distance matrix of undirected graph
+lst a -> Distance matrix
 `
 codepage_descriptions[216] += `
 ¨□ (Parse direction arrow to integer)
