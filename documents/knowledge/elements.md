@@ -3444,6 +3444,22 @@ A matrix mutliplied by itself n times
 - num a, lst b: `Matrix a mutliplied by itself b times`
 - lst a, num b: `Matrix b mutliplied by itself a times`
 -------------------------------
+## `` Þd `` (Distance matrix (Directed))
+
+Distance matrix of undirected graph
+
+### Overloads
+
+- lst a: `Distance matrix`
+-------------------------------
+## `` Þw `` (Distance matrix (Undirected))
+
+Distance matrix of undirected graph
+
+### Overloads
+
+- lst a: `Distance matrix`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
