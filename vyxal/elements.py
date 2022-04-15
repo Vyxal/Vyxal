@@ -46,7 +46,7 @@ def process_element(
     See documents/specs/Transpilation.md for information on what happens here.
     """
     if arity > 0:
-        arguments = ["third", "rhs", "lhs"][-arity:]
+        arguments = ["fourth", "third", "rhs", "lhs"][-arity:]
     else:
         arguments = ["_"]
     if isinstance(expr, types.FunctionType):
@@ -3477,6 +3477,38 @@ def replace_first(lhs, rhs, other, ctx):
         return gen()
 
 
+def replace_nth_occurrence(lhs, rhs, other, n, ctx):
+    """Element øṄ
+    (any, any, any, num) -> a.replace_nth_occurrence(b, c, d)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        try:
+            where = [m.start() for m in re.finditer(str(rhs), str(lhs))][n if n < 0 else n-1]
+        except IndexError:
+            return str(lhs)
+        before = str(lhs)[:where]
+        after = str(lhs)[where:].replace(str(rhs), str(other), 1)
+        return before + after
+    else:
+        @lazylist
+        def gen():
+            if n >= 0:
+                num = 1
+            else:
+                num = -list(lhs).count(rhs)
+            for item in iterable(lhs, ctx=ctx):
+                if item == rhs and num == n:
+                    yield other
+                    num += 1
+                else:
+                    if item == rhs:
+                        num += 1
+                    yield item
+
+        return gen()
+
+
 def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
@@ -5428,6 +5460,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øṄ": process_element(replace_nth_occurrence, 4),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
     "øḞ": process_element(replace_first, 3),
