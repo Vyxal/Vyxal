@@ -3484,13 +3484,16 @@ def replace_nth_occurrence(lhs, rhs, other, n, ctx):
 
     if vy_type(lhs, simple=True) is not list:
         try:
-            where = [m.start() for m in re.finditer(str(rhs), str(lhs))][n if n < 0 else n-1]
+            where = [m.start() for m in re.finditer(str(rhs), str(lhs))][
+                n if n < 0 else n - 1
+            ]
         except IndexError:
             return str(lhs)
         before = str(lhs)[:where]
         after = str(lhs)[where:].replace(str(rhs), str(other), 1)
         return before + after
     else:
+
         @lazylist
         def gen():
             if n >= 0:
