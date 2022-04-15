@@ -1548,7 +1548,7 @@
       - '[3,"hello!"] : "he"'
 
 - element: "ŀ"
-  name: Left Justify / Gridify / Infinite Replace / Collect until fale
+  name: Left Justify / Gridify / Infinite Replace / Collect until false
   description: Find one value inside another, starting from a certain index.
   arity: 3
   overloads:
