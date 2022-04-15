@@ -13,30 +13,30 @@
   arity: 1
   description: Return the inverse (negation) of the truthiness of an item.
   overloads:
-    num: not a
-    str: a != "" | len(a) > 0
-    lst: a != [] | len(a) > 0
+      num: not a
+      str: a != "" | len(a) > 0
+      lst: a != [] | len(a) > 0
   vectorise: false
   tests:
-    - "[1] : 0"
-    - "[0] : 1"
-    - '["abc"] : 0'
-    - '[""] : 1'
-    - "[[1,2,3]] : 0"
-    - "[[]] : 1"
+      - "[1] : 0"
+      - "[0] : 1"
+      - '["abc"] : 0'
+      - '[""] : 1'
+      - "[[1,2,3]] : 0"
+      - "[[]] : 1"
 
 - element: "∧"
   name: Logical And
   arity: 2
   description: Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
   overloads:
-    any-any: a and b
+      any-any: a and b
   vectorise: false
   tests:
-    - "[0, 0] : 0"
-    - '["", 1] : ""'
-    - "[[1,2,3], 0] : 0"
-    - "[2, 1] : 2"
+      - "[0, 0] : 0"
+      - '["", 1] : ""'
+      - "[[1,2,3], 0] : 0"
+      - "[2, 1] : 2"
 
 - element: "⟑"
   name: Apply Lambda
@@ -48,41 +48,41 @@
   arity: 2
   description: Returns the first truthy argument, otherwise the first falsey argument.
   overloads:
-    any-any: a or b
+      any-any: a or b
   vectorise: false
   tests:
-    - "[0, 0] : 0"
-    - '["", 1] : 1'
-    - "[[1,2,3], 0] : [1,2,3]"
-    - "[2, 1] : 1"
+      - "[0, 0] : 0"
+      - '["", 1] : 1'
+      - "[[1,2,3], 0] : [1,2,3]"
+      - "[2, 1] : 1"
 
 - element: "⟇"
   name: Remove at Index
   arity: 2
   description: Returns every item in a list except the item at the given index.
   overloads:
-    any-num: Remove item b of a
-    num-any: Remove item a of b
+      any-num: Remove item b of a
+      num-any: Remove item a of b
   vectorise: false
   tests:
-    - "[[1,2,3], 0] : [2,3]"
-    - "[[1,2,3], 1] : [1,3]"
-    - "[3, [1,2,3,1]] : [1,2,3]"
-    - "[0, [1,2,3,1]] : [2,3,1]"
+      - "[[1,2,3], 0] : [2,3]"
+      - "[[1,2,3], 1] : [1,3]"
+      - "[3, [1,2,3,1]] : [1,2,3]"
+      - "[0, [1,2,3,1]] : [2,3,1]"
 
 - element: "÷"
   name: Item Split
   arity: 1
   description: Pushes each item of the top of the stack onto the stack.
   overloads:
-    num: Push each digit of a
-    str: Push each character of a
-    lst: Push each item of a
+      num: Push each digit of a
+      str: Push each character of a
+      lst: Push each item of a
   vectorise: false
   tests:
-    - "[123456] : 6"
-    - '["abc"] : "c"'
-    - "[[1,2,3]] : 3"
+      - "[123456] : 6"
+      - '["abc"] : "c"'
+      - "[[1,2,3]] : 3"
 
 - element: "×"
   name: Asterisk Literal
@@ -90,7 +90,7 @@
   description: the string "*" (asterisk)
   vectorise: false
   tests:
-    - '[] : "*"'
+      - '[] : "*"'
 
 - element: "«"
   name: Base Compressed String
@@ -117,17 +117,17 @@
   arity: 2
   description: "Logarithm / Repeat Character / Capitalisation transfer"
   overloads:
-    num-num: log_a(b)
-    num-str: "[char * a for char in b]"
-    str-num: "[char * b for char in a]"
-    str-str: a.with_capitalisation_of(b)
-    lst-lst: a molded  to  the shape of b
+      num-num: log_a(b)
+      num-str: "[char * a for char in b]"
+      str-num: "[char * b for char in a]"
+      str-str: a.with_capitalisation_of(b)
+      lst-lst: a molded  to  the shape of b
   vectorise: true
   tests:
-    - "[8, 2] : 3.0"
-    - '["abcde", 4] : "aaaabbbbccccddddeeee"'
-    - '["abcde", "FgHIj"] : "AbCDe"'
-    - "[[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]] : [[1, 2], 3, 4, 5, [6, 7]]"
+      - "[8, 2] : 3.0"
+      - '["abcde", 4] : "aaaabbbbccccddddeeee"'
+      - '["abcde", "FgHIj"] : "AbCDe"'
+      - "[[1,2,3,4,5,6,7], [[8, 9], 10, 11, 12, [13, 14]]] : [[1, 2], 3, 4, 5, [6, 7]]"
 
 - modifier: "ß"
   name: Conditional Execute
@@ -140,39 +140,39 @@
   arity: 1
   description: Calls a function / executes as python / len(prime factors) / vectorised not
   overloads:
-    fun: a()
-    num: len(prime_factors(a))
-    str: exec as python
-    lst: vectorised not
+      fun: a()
+      num: len(prime_factors(a))
+      str: exec as python
+      lst: vectorised not
   vectorise: false
   tests:
-    - "[12] : 2"
-    - "[[1, 0, 1]] : [0, 1, 0]"
+      - "[12] : 2"
+      - "[[1, 0, 1]] : [0, 1, 0]"
 
 - element: "€"
   name: Split On
   arity: 2
   description: Split a on b (works on lists and numbers as well)
   overloads:
-    any-any: a split on b
+      any-any: a split on b
   vectorise: false
   tests:
-    - '[1231234, 3] : ["12", "12", "4"]'
-    - '["abc3def", 3] : ["abc", "def"]'
-    - "[[1, 2, 3, 4, 3, 2, 1], 4] : [[1, 2, 3], [3, 2, 1]]"
+      - '[1231234, 3] : ["12", "12", "4"]'
+      - '["abc3def", 3] : ["abc", "def"]'
+      - "[[1, 2, 3, 4, 3, 2, 1], 4] : [[1, 2, 3], [3, 2, 1]]"
 
 - element: "½"
   name: Halve
   arity: 1
   description: Halves an item
   overloads:
-    num: a / 2
-    str: a split into two strings of equal lengths (as close as possible)
+      num: a / 2
+      str: a split into two strings of equal lengths (as close as possible)
   vectorise: true
   tests:
-    - "[8] : 4"
-    - '["FizzBuzz"] : ["Fizz", "Buzz"]'
-    - "[[2, 4, 6, 8]] : [1, 2, 3, 4]"
+      - "[8] : 4"
+      - '["FizzBuzz"] : ["Fizz", "Buzz"]'
+      - "[[2, 4, 6, 8]] : [1, 2, 3, 4]"
 
 - element: "∆"
   name: Mathematic Digraph
@@ -189,109 +189,109 @@
   arity: 2
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
   overloads:
-    any-num: combinations_with_replacement(a, length=b)
-    fun-any: Apply a on b until the result does not change, yielding intermediate values
-    any-str: Remove elements from a that are not in b
-    any-lst: Remove elements from a that are not in b.
+      any-num: combinations_with_replacement(a, length=b)
+      fun-any: Apply a on b until the result does not change, yielding intermediate values
+      any-str: Remove elements from a that are not in b
+      any-lst: Remove elements from a that are not in b.
   vectorise: false
   tests:
-    - '["cabbage", "abcde"] : "cabbae"'
-    - "[[1,3,5,6,7,7,1],[1,3,5]] : [1,3,5,1]"
-    - "[[1,2],2] : [[1,1],[1,2],[2,1],[2,2]]"
+      - '["cabbage", "abcde"] : "cabbae"'
+      - "[[1,3,5,6,7,7,1],[1,3,5]] : [1,3,5,1]"
+      - "[[1,2],2] : [[1,1],[1,2],[2,1],[2,2]]"
 
 - element: "¢"
   name: Infinite Replacement / Apply at Indices
   arity: 3
   description: Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
   overloads:
-    any-any-any: replace b in a with c until a does not change
-    lst-fun-lst: apply function b to items at indices in a
-    lst-lst-fun: apply function c to items in a at indices in b
-    fun-lst-lst: apply function a to items in b at indices in c
+      any-any-any: replace b in a with c until a does not change
+      lst-fun-lst: apply function b to items at indices in a
+      lst-lst-fun: apply function c to items in a at indices in b
+      fun-lst-lst: apply function a to items in b at indices in c
   vectorise: false
   tests:
-    - '["{[[[]]]}","[]",""] : "{}"'
-    - "[1444,44,34] : 1334"
+      - '["{[[[]]]}","[]",""] : "{}"'
+      - "[1444,44,34] : 1334"
 
 - element: "⌐"
   name: Complement / Comma Split
   description: 1 - a if number, split by commas if string.
   arity: 1
   overloads:
-    num: 1 - a
-    str: a.split(",")
+      num: 1 - a
+      str: a.split(",")
   vectorise: true
   tests:
-    - "[5] : -4"
-    - "[-5] : 6"
-    - '["a,b,c"] : ["a","b","c"]'
+      - "[5] : -4"
+      - "[-5] : 6"
+      - '["a,b,c"] : ["a","b","c"]'
 
 - element: "æ"
   name: Is Prime / Case Check
   description: (a is prime) if a is a number, else check which case a is
   arity: 1
   overloads:
-    num: is a prime?
-    str: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
+      num: is a prime?
+      str: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
   vectorise: true
   tests:
-    - "[2] : 1"
-    - "[4] : 0"
-    - '["a"] : 0'
-    - '["A"] : 1'
-    - '["!"] : -1'
+      - "[2] : 1"
+      - "[4] : 0"
+      - '["a"] : 0'
+      - '["A"] : 1'
+      - '["!"] : -1'
 
 - element: "ʀ"
   name: Inclusive Zero Range
   description: Inclusive range or whether each character is alphabetical
   arity: 1
   overloads:
-    num: range(0,a + 1) (inclusive range from 0)
-    str: "[is v alphabetical? for v in a]"
+      num: range(0,a + 1) (inclusive range from 0)
+      str: "[is v alphabetical? for v in a]"
   vectorise: true
   tests:
-    - '["a$c"] : [1, 0, 1]'
-    - "[[1]] : [[0, 1]]"
-    - "[3] : [0,1,2,3]"
+      - '["a$c"] : [1, 0, 1]'
+      - "[[1]] : [[0, 1]]"
+      - "[3] : [0,1,2,3]"
 
 - element: "ʁ"
   name: Exclusive Zero Range
   description: Exclusive range or palindromised
   arity: 1
   overloads:
-    num: range(0,a) (exclusive range from 0)
-    str: palindromised a
+      num: range(0,a) (exclusive range from 0)
+      str: palindromised a
   vectorise: true
   tests:
-    - '["1234"] : "1234321"'
-    - "[[1]] : [[0]]"
-    - "[3] : [0,1,2]"
+      - '["1234"] : "1234321"'
+      - "[[1]] : [[0]]"
+      - "[3] : [0,1,2]"
 
 - element: "ɾ"
   name: Inclusive One Range
   description: Inclusive range or uppercase
   arity: 1
   overloads:
-    num: range(1,a+1) (inclusive range from 1)
-    str: a.uppercase()
+      num: range(1,a+1) (inclusive range from 1)
+      str: a.uppercase()
   vectorise: true
   tests:
-    - '["abc"] : "ABC"'
-    - "[[4, 5]] : [[1, 2, 3, 4], [1, 2, 3, 4, 5]]"
-    - "[3] : [1,2,3]"
+      - '["abc"] : "ABC"'
+      - "[[4, 5]] : [[1, 2, 3, 4], [1, 2, 3, 4, 5]]"
+      - "[3] : [1,2,3]"
 
 - element: "ɽ"
   name: Exclusive One Range / Lowercase
   description: Exclusive range or lowercase
   arity: 1
   overloads:
-    num: range(1,a) (exclusive range from 0)
-    str: a.lowercase()
+      num: range(1,a) (exclusive range from 0)
+      str: a.lowercase()
   vectorise: true
   tests:
-    - '["1aBC"] : "1abc"'
-    - "[[0]] : [[]]"
-    - "[3] : [1,2]"
+      - '["1aBC"] : "1abc"'
+      - "[[0]] : [[]]"
+      - "[3] : [1,2]"
 
 - element: "Þ"
   name: List Digraph
@@ -303,29 +303,29 @@
   description: Binomial coefficient / choose a random items from b / same except duplicates
   arity: 2
   overloads:
-    num-num: a choose b (binomial coefficient)
-    num-str: Choose a random items from b
-    str-num: Choose b random items from a
-    str-str: Check if lists are the same except for duplicates
+      num-num: a choose b (binomial coefficient)
+      num-str: Choose a random items from b
+      str-num: Choose b random items from a
+      str-str: Check if lists are the same except for duplicates
   vectorise: true
   tests:
-    - "[5,3] : 10"
-    - '["abc","aaccb"] : 1'
-    - '["abc","abcd"] : 0'
+      - "[5,3] : 10"
+      - '["abc","aaccb"] : 1'
+      - '["abc","abcd"] : 0'
 
 - element: "∞"
   name: Palindromise
   description: Palindromise a
   arity: 1
   overloads:
-    any: palindromised a
+      any: palindromised a
   vectorise: false
   tests:
-    - "[[1,2,3]] : [1,2,3,2,1]"
-    - "[[1,2,3,4]] : [1,2,3,4,3,2,1]"
-    - "[[1,2,3,4,5]] : [1,2,3,4,5,4,3,2,1]"
-    - "[[1,2,3,4,5,6]] : [1,2,3,4,5,6,5,4,3,2,1]"
-    - '["hello"] : "hellolleh"'
+      - "[[1,2,3]] : [1,2,3,2,1]"
+      - "[[1,2,3,4]] : [1,2,3,4,3,2,1]"
+      - "[[1,2,3,4,5]] : [1,2,3,4,5,4,3,2,1]"
+      - "[[1,2,3,4,5,6]] : [1,2,3,4,5,6,5,4,3,2,1]"
+      - '["hello"] : "hellolleh"'
 
 - element: "¨"
   name: Other Digraphs
@@ -342,21 +342,21 @@
   description: Push the length of the stack
   arity: 0
   tests:
-    - "[0,1,2] : 3"
-    - "[1,1,1,1,1] : 5"
-    - "[] : 0"
+      - "[0,1,2] : 3"
+      - "[1,1,1,1,1] : 5"
+      - "[] : 0"
 
 - element: '"'
   name: Pair
   arity: 2
   description: Place the top two items into a single list
   overloads:
-    any-any: "[a, b]"
+      any-any: "[a, b]"
   vectorise: false
   tests:
-    - "[1, 2] : [1, 2]"
-    - "[1, 2, 3] : [2, 3]"
-    - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
+      - "[1, 2] : [1, 2]"
+      - "[1, 2, 3] : [2, 3]"
+      - '[[1, 2, 3], "abc", 3] : ["abc", 3]'
 
 - element: "#"
   name: Comment
@@ -368,29 +368,29 @@
   arity: 2
   description: Swap the top two items
   overloads:
-    any-any: "b, a"
+      any-any: "b, a"
   vectorise: false
   tests:
-    - "[1, 2] : 1"
-    - "[1, 2, 3] : 2"
-    - '[[1, 2, 3], "abc", 3] : "abc"'
+      - "[1, 2] : 1"
+      - "[1, 2, 3] : 2"
+      - '[[1, 2, 3], "abc", 3] : "abc"'
 
 - element: "%"
   name: Modulo / Format
   description: Modulo two numbers / format two strings
   arity: 2
   overloads:
-    num-num: a % b
-    num-str: b.format(a) (replace % in b with a)
-    str-num: a.format(b) (replace % in a with b)
-    str-str: a.format(b) (replace % in a with b)
-    str-lst: a.format(b) (replace % in a with each item of b)
+      num-num: a % b
+      num-str: b.format(a) (replace % in b with a)
+      str-num: a.format(b) (replace % in a with b)
+      str-str: a.format(b) (replace % in a with b)
+      str-lst: a.format(b) (replace % in a with each item of b)
   vectorise: true
   tests:
-    - "[5,3] : 2"
-    - '["hello %!",3] : "hello 3!"'
-    - '["Hel%ld!","lo, Wor"] : "Hello, World!"'
-    - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
+      - "[5,3] : 2"
+      - '["hello %!",3] : "hello 3!"'
+      - '["Hel%ld!","lo, Wor"] : "Hello, World!"'
+      - '["% and % and %",[1,2,3]] : "1 and 2 and 3"'
 - modifier: "&"
   name: Apply To Register
   arity: "*"
@@ -417,45 +417,45 @@
   description: Multiply two numbers or strings / Change the arity of a function
   arity: 2
   overloads:
-    num-num: a * b
-    num-str: b repeated a times
-    str-num: a repeated b times
-    str-str: ring translate b according to a
-    fun-num: change the arity of function a to b
-    num-fun: change the arity of function b to a
+      num-num: a * b
+      num-str: b repeated a times
+      str-num: a repeated b times
+      str-str: ring translate b according to a
+      fun-num: change the arity of function a to b
+      num-fun: change the arity of function b to a
   vectorise: true
   tests:
-    - "[3,5] : 15"
-    - "[4,-2] : -8"
-    - '[4,"*"] : "****"'
-    - '["x",5] : "xxxxx"'
-    - '["aeiou","hello"] : "alihu"'
+      - "[3,5] : 15"
+      - "[4,-2] : -8"
+      - '[4,"*"] : "****"'
+      - '["x",5] : "xxxxx"'
+      - '["aeiou","hello"] : "alihu"'
 
 - element: "+"
   name: Addition
   arity: 2
   description: Adds the top two items on the stack
   overloads:
-    num-num: a + b
-    num-str: str(a) + b
-    str-num: a + str(b)
-    str-str: a + b
+      num-num: a + b
+      num-str: str(a) + b
+      str-num: a + str(b)
+      str-str: a + b
   vectorise: true
   tests:
-    - "[1, 1] : 2"
-    - "[0, -5] : -5"
-    - '["abc", 5] : "abc5"'
-    - '[5, "abc"] : "5abc"'
-    - '["Hello, ", "World!"] : "Hello, World!"'
-    - "[[1,2,3], 4] : [5, 6, 7]"
-    - "[[1,2,3], [4,5,6]] : [5, 7, 9]"
+      - "[1, 1] : 2"
+      - "[0, -5] : -5"
+      - '["abc", 5] : "abc5"'
+      - '[5, "abc"] : "5abc"'
+      - '["Hello, ", "World!"] : "Hello, World!"'
+      - "[[1,2,3], 4] : [5, 6, 7]"
+      - "[[1,2,3], [4,5,6]] : [5, 7, 9]"
 
 - element: ","
   name: Print
   description: Print a with trailing newline
   arity: 1
   overloads:
-    any: print(a)
+      any: print(a)
   vectorise: false
 
 - element: "-"
@@ -463,20 +463,20 @@
   arity: 2
   description: Subtracts the top two items on the stack
   overloads:
-    num-num: a - b
-    num-str: '("-" * a) + b'
-    str-num: 'a + ("-" * b)'
-    str-str: a.replace(b, '')
+      num-num: a - b
+      num-str: '("-" * a) + b'
+      str-num: 'a + ("-" * b)'
+      str-str: a.replace(b, '')
   vectorise: true
   tests:
-    - "[5, 4] : 1"
-    - "[0, -5] : 5"
-    - '["|", 5] : "|-----"'
-    - '[3, "> arrow"] : "---> arrow"'
-    - '["abcbde", "b"] : "acde"'
-    - '["aaa", "a"] : ""'
-    - "[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]"
-    - "[[10, 20, 30], 5] : [5, 15, 25]"
+      - "[5, 4] : 1"
+      - "[0, -5] : 5"
+      - '["|", 5] : "|-----"'
+      - '[3, "> arrow"] : "---> arrow"'
+      - '["abcbde", "b"] : "acde"'
+      - '["aaa", "a"] : ""'
+      - "[[1, 2, 3], [1, 2, 3]] : [0, 0, 0]"
+      - "[[10, 20, 30], 5] : [5, 15, 25]"
 
 - element: "."
   name: Decimal Separator
@@ -488,15 +488,15 @@
   description: Divide two numbers or split strings
   arity: 2
   overloads:
-    num-num: a / b
-    num-str: b split into a even length pieces, possibly with an extra part
-    str-num: a split into b even length pieces, possibly with an extra part
-    str-str: a.split(b)
+      num-num: a / b
+      num-str: b split into a even length pieces, possibly with an extra part
+      str-num: a split into b even length pieces, possibly with an extra part
+      str-str: a.split(b)
   vectorise: true
   tests:
-    - "[4,2] : 2"
-    - '["abcdef",3] : ["ab","cd","ef"]'
-    - '["1,2,3",","] : ["1","2","3"]'
+      - "[4,2] : 2"
+      - '["abcdef",3] : ["ab","cd","ef"]'
+      - '["1,2,3",","] : ["1","2","3"]'
 
 - element: "0"
   name: Literal digit 0
@@ -553,7 +553,7 @@
   description: Push a twice
   arity: 1
   overloads:
-    any: a,a
+      any: a,a
   vectorise: false
 
 - element: ";"
@@ -566,53 +566,53 @@
   description: Basic comparison - less than
   arity: 2
   overloads:
-    num-num: a < b
-    num-str: str(a) < b
-    str-num: a < str(b)
-    str-str: a < b
+      num-num: a < b
+      num-str: str(a) < b
+      str-num: a < str(b)
+      str-str: a < b
   vectorise: true
   tests:
-    - "[1, 2] : 1"
-    - "[2, 1] : 0"
-    - '["a","b"] : 1'
-    - "[-5,2] : 1"
-    - "[[1,2,3],2] : [1,0,0]"
+      - "[1, 2] : 1"
+      - "[2, 1] : 0"
+      - '["a","b"] : 1'
+      - "[-5,2] : 1"
+      - "[[1,2,3],2] : [1,0,0]"
 
 - element: "="
   name: Equals
   description: Basic comparison - equals
   arity: 2
   overloads:
-    num-num: a == b
-    num-str: str(a) == b
-    str-num: a == str(b)
-    str-str: a == b
+      num-num: a == b
+      num-str: str(a) == b
+      str-num: a == str(b)
+      str-str: a == b
   vectorise: true
   tests:
-    - "[1, 1] : 1"
-    - "[2, 1] : 0"
-    - '["a","b"] : 0'
-    - '["xyz","xyz"] : 1'
-    - "[[1,2,3],2] : [0,1,0]"
-    - '[1,"1"] : 1'
+      - "[1, 1] : 1"
+      - "[2, 1] : 0"
+      - '["a","b"] : 0'
+      - '["xyz","xyz"] : 1'
+      - "[[1,2,3],2] : [0,1,0]"
+      - '[1,"1"] : 1'
 
 - element: ">"
   name: Greater Than
   description: Basic comparison - greater than
   arity: 2
   overloads:
-    num-num: a > b
-    num-str: str(a) > b
-    str-num: a > str(b)
-    str-str: a > b
+      num-num: a > b
+      num-str: str(a) > b
+      str-num: a > str(b)
+      str-str: a > b
   vectorise: true
   tests:
-    - "[1, 2] : 0"
-    - "[2, 1] : 1"
-    - '["a","b"] : 0'
-    - "[2,-5] : 1"
-    - "[[1,2,3],2] : [0,0,1]"
-    - '["5",10] : 1'
+      - "[1, 2] : 0"
+      - "[2, 1] : 1"
+      - '["a","b"] : 0'
+      - "[2,-5] : 1"
+      - "[[1,2,3],2] : [0,0,1]"
+      - '["5",10] : 1'
 
 - element: "?"
   name: Input
@@ -630,46 +630,46 @@
   description: Chck if all items in a list are truthy / check if a character is a vowel
   arity: 1
   overloads:
-    str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-    any: all(a)
+      str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+      any: all(a)
   vectorise: false
   tests:
-    - "[[1,2,3]] : 1"
-    - "[[0,1,2]] : 0"
-    - '[["",1,2]] : 0'
-    - "[[]] : 1"
-    - '[""] : []'
-    - "[0] : 0"
-    - '["a"] : 1'
-    - '["y"] : 0'
-    - '["hi"] : [0,1]'
+      - "[[1,2,3]] : 1"
+      - "[[0,1,2]] : 0"
+      - '[["",1,2]] : 0'
+      - "[[]] : 1"
+      - '[""] : []'
+      - "[0] : 0"
+      - '["a"] : 1'
+      - '["y"] : 0'
+      - '["hi"] : [0,1]'
 
 - element: "B"
   name: Binary To Decimal
   description: Convert a binary string or list to base 10
   arity: 1
   overloads:
-    any: int(a,2) (convert from base 2 to base 10)
+      any: int(a,2) (convert from base 2 to base 10)
   vectorise: false
   tests:
-    - "[[1,0,1]] : 5"
-    - "[[1,1,1]] : 7"
-    - '["1011"] : 11'
+      - "[[1,0,1]] : 5"
+      - "[[1,1,1]] : 7"
+      - '["1011"] : 11'
 
 - element: "C"
   name: Chr / Ord
   description: Convert between characters and ordinals
   arity: 1
   overloads:
-    num: chr(a)
-    str: ord(a) if length 1 else list of ordinals
+      num: chr(a)
+      str: ord(a) if length 1 else list of ordinals
   vectorise: true
   tests:
-    - '[65] : "A"'
-    - '[8482] : "™"'
-    - '["Z"] : 90'
-    - '["ABC"] : [65,66,67]'
-    - '[[123,124,125]] : ["{","|","}"]'
+      - '[65] : "A"'
+      - '[8482] : "™"'
+      - '["Z"] : 90'
+      - '["ABC"] : [65,66,67]'
+      - '[[123,124,125]] : ["{","|","}"]'
 
 - element: "D"
   name: Triplicate
@@ -682,107 +682,107 @@
   description: 2 ** a, or eval(a)
   arity: 1
   overloads:
-    num: 2 ** a
-    str: eval(a) (safe-eval as python)
+      num: 2 ** a
+      str: eval(a) (safe-eval as python)
   vectorise: true
   tests:
-    - "[0] : 1"
-    - "[2] : 4"
-    - '["[1,2,3]"] : [1,2,3]'
+      - "[0] : 1"
+      - "[2] : 4"
+      - '["[1,2,3]"] : [1,2,3]'
 
 - element: "F"
   name: Filter
   description: Filter a list by another list or function.
   arity: 2
   overloads:
-    any-fun: filter(b,a) (filter a by the ones that b returns a truthy result for)
-    any-any: remove elements of a that are in b
+      any-fun: filter(b,a) (filter a by the ones that b returns a truthy result for)
+      any-any: remove elements of a that are in b
   vectorise: false
   tests:
-    - "[[1,2,3],[2,4,6]] : [1,3]"
-    - '["abcdef","daffodil"] : "bce"'
+      - "[[1,2,3],[2,4,6]] : [1,3]"
+      - '["abcdef","daffodil"] : "bce"'
 
 - element: "G"
   name: Max
   description: Maximum value or a
   arity: 1
   overloads:
-    any: max(a)
+      any: max(a)
   vectorise: false
   tests:
-    - "[[1,3,2]] : 3"
-    - '["python"] : "y"'
+      - "[[1,3,2]] : 3"
+      - '["python"] : "y"'
 
 - element: "H"
   name: Hex To Decimal
   description: Convert hexadecimal to decimal
   arity: 1
   overloads:
-    any: int(a,16) (from hexadecimal)
+      any: int(a,16) (from hexadecimal)
   vectorise: false
   tests:
-    - "[32] : '20'"
-    - '["b"] : 11'
-    - '["beedab"] : 12512683'
+      - "[32] : '20'"
+      - '["b"] : 11'
+      - '["beedab"] : 12512683'
 
 - element: "I"
   name: Into Two Pieces
   description: Push n spaces / quine cheese / into two pieces
   arity: 1
   overloads:
-    num: push a spaces
-    str: equivlaent to `qp`
-    lst: split a list into two halves
+      num: push a spaces
+      str: equivlaent to `qp`
+      lst: split a list into two halves
   vectorise: false
   tests:
-    - '[6] : "      "'
-    - '[":I"] : "`:I`:I"'
-    - "[[1, 2, 3, 4]] : [[1, 2], [3, 4]]"
+      - '[6] : "      "'
+      - '[":I"] : "`:I`:I"'
+      - "[[1, 2, 3, 4]] : [[1, 2], [3, 4]]"
 
 - element: "J"
   name: Merge
   description: Join two lists or items
   arity: 2
   overloads:
-    lst-str: a.append(b) (Append)
-    lst-num: a.append(b) (Append)
-    str-lst: b.prepend(a) (Prepend)
-    num-lst: b.prepend(a) (Prepend)
-    lst-lst: merged(a,b) (Merge)
-    any-any: a + b (Concatenate)
+      lst-str: a.append(b) (Append)
+      lst-num: a.append(b) (Append)
+      str-lst: b.prepend(a) (Prepend)
+      num-lst: b.prepend(a) (Prepend)
+      lst-lst: merged(a,b) (Merge)
+      any-any: a + b (Concatenate)
   vectorise: false
   tests:
-    - "[[1,2,3],4] : [1,2,3,4]"
-    - '["abc","def"] : "abcdef"'
-    - "[1,[2,3,4]] : [1,2,3,4]"
-    - "[[1,2],[3,4]] : [1,2,3,4]"
+      - "[[1,2,3],4] : [1,2,3,4]"
+      - '["abc","def"] : "abcdef"'
+      - "[1,[2,3,4]] : [1,2,3,4]"
+      - "[[1,2],[3,4]] : [1,2,3,4]"
 
 - element: "K"
   name: Factors / Substrings / Prefixes
   description: Get either the factors of a, substrings that occur more than once, or prefixes
   arity: 1
   overloads:
-    num: divisors(a) (factors)
-    str: All substrings of a that occur more than once in a
-    lst: prefixes(a) (prefixes)
+      num: divisors(a) (factors)
+      str: All substrings of a that occur more than once in a
+      lst: prefixes(a) (prefixes)
   vectorise: false
   tests:
-    - "[20] : [1,2,4,5,10,20]"
-    - "[1] : [1]"
-    - '["adbcdbcd"] : ["d", "db", "dbc", "b", "bc", "bcd", "c", "cd"]'
-    - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
+      - "[20] : [1,2,4,5,10,20]"
+      - "[1] : [1]"
+      - '["adbcdbcd"] : ["d", "db", "dbc", "b", "bc", "bcd", "c", "cd"]'
+      - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
 
 - element: "L"
   name: Length
   description: Get length of a
   arity: 1
   overloads:
-    any: len(a)
+      any: len(a)
   vectorise: false
   tests:
-    - '["abc"] : 3'
-    - "[[1,2,3]] : 3"
-    - '[[1,2,"wrfwerfgbr",6]] : 4'
+      - '["abc"] : 3'
+      - "[[1,2,3]] : 3"
+      - '[[1,2,"wrfwerfgbr",6]] : 4'
 
 - element: "M"
   name: Map
@@ -790,47 +790,47 @@
   arity: 2
   vectorise: false
   overloads:
-    any-fun: map(b,a) (apply b to each of a)
-    any-any: pair each item of b with a
+      any-fun: map(b,a) (apply b to each of a)
+      any-any: pair each item of b with a
   tests:
-    - "[5,[1,2,3]] : [[5,1],[5,2],[5,3]]"
-    - '["z","hi"] : [["z","h"],["z","i"]]'
+      - "[5,[1,2,3]] : [[5,1],[5,2],[5,3]]"
+      - '["z","hi"] : [["z","h"],["z","i"]]'
 
 - element: "N"
   name: Negate / Swap Case
   description: Negate a or swap its case
   arity: 1
   overloads:
-    num: -a  (negate)
-    str: swap_case(a) (toggle case)
+      num: -a  (negate)
+      str: swap_case(a) (toggle case)
   vectorise: true
   tests:
-    - "[5] : -5"
-    - "[-1] : 1"
-    - '["a"] : "A"'
-    - '["aBc"] : "AbC"'
+      - "[5] : -5"
+      - "[-1] : 1"
+      - '["a"] : "A"'
+      - '["aBc"] : "AbC"'
 
 - element: "O"
   name: Count
   description: Count number of times b occurs in a
   arity: 2
   overloads:
-    any-any: a.count(b)
+      any-any: a.count(b)
   vectorise: false
   tests:
-    - "[[1,2,3,4,5,4,3], 4] : 2"
-    - '["abcdbacsabdcabca","a"] : 5'
+      - "[[1,2,3,4,5,4,3], 4] : 2"
+      - '["abcdbacsabdcabca","a"] : 5'
 
 - element: "P"
   name: Strip
   description: a.strip(b) - trim b from both ends of a
   arity: 2
   overloads:
-    any-any: a.strip(b)
+      any-any: a.strip(b)
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
-    - '["    Hello, World!    ", " "] : "Hello, World!"'
+      - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
+      - '["    Hello, World!    ", " "] : "Hello, World!"'
 
 - element: "Q"
   name: Quit
@@ -842,61 +842,61 @@
   description: Reduce a by b, or reverse each item of b
   arity: 2
   overloads:
-    any-fun: reduce(b,a) (Reduce a by b)
-    any-any: a, vectorised_reverse(b)
+      any-fun: reduce(b,a) (Reduce a by b)
+      any-any: a, vectorised_reverse(b)
   vectorise: false
   tests:
-    - "[[[1,2],[3,4]]] : [[2,1],[4,3]]"
-    - "[[[1,2]]] : [[2,1]]"
+      - "[[[1,2],[3,4]]] : [[2,1],[4,3]]"
+      - "[[[1,2]]] : [[2,1]]"
 
 - element: "S"
   name: Stringify
   description: Stringify a list or number
   arity: 1
   overloads:
-    any: str(a) (Stringify)
+      any: str(a) (Stringify)
   vectorise: false
   tests:
-    - '[5] : "5"'
-    - '[[1,2,3]] : "⟨ 1 | 2 | 3 ⟩"'
-    - '["X"] : "X"'
+      - '[5] : "5"'
+      - '[[1,2,3]] : "⟨ 1 | 2 | 3 ⟩"'
+      - '["X"] : "X"'
 
 - element: "T"
   name: Truthy Indices / Triple / Triadify
   description: Get indices of truthy elements, triple, or make the arity of a function 3
   arity: 1
   overloads:
-    num: a * 3
-    any: truthy_indices(a)
-    fun: set the arity of function a to 3
+      num: a * 3
+      any: truthy_indices(a)
+      fun: set the arity of function a to 3
   vectorise: false
   tests:
-    - "[1] : 3"
-    - "[-4] : -12"
-    - "[[0,1,0,2]] : [1,3]"
-    - "[[1,2,3,4]] : [0,1,2,3]"
+      - "[1] : 3"
+      - "[-4] : -12"
+      - "[[0,1,0,2]] : [1,3]"
+      - "[[1,2,3,4]] : [0,1,2,3]"
 
 - element: "U"
   name: Uniquify
   description: Remove duplicates
   arity: 1
   overloads:
-    any: uniquify(a) (Remove duplicates)
+      any: uniquify(a) (Remove duplicates)
   vectorise: false
   tests:
-    - "[[1,3,5,5]] : [1,3,5]"
-    - '["abdbcdbch"] : "abdch"'
+      - "[[1,3,5,5]] : [1,3,5]"
+      - '["abdbcdbch"] : "abdch"'
 
 - element: "V"
   name: Replace
   description: Replace b with c in a
   arity: 3
   overloads:
-    any-any-any: a.replace(b,c) (replace)
+      any-any-any: a.replace(b,c) (replace)
   vectorise: false
   tests:
-    - '["hela","a","lo"] : "hello"'
-    - '["banana","n","nan"] : "banananana"'
+      - '["hela","a","lo"] : "hello"'
+      - '["banana","n","nan"] : "banananana"'
 
 - element: "W"
   name: Wrap
@@ -904,9 +904,9 @@
   arity: 0
   vectorise: false
   tests:
-    - "[1,2,3] : [1,2,3]"
-    - "[] : []"
-    - '["hello",1,9] : ["hello",1,9]'
+      - "[1,2,3] : [1,2,3]"
+      - "[] : []"
+      - '["hello",1,9] : ["hello",1,9]'
 
 - element: "X" # TODO: IMPLEMENT
   name: Break
@@ -918,23 +918,23 @@
   description: Interleave two lists
   arity: 2
   overloads:
-    any-any: interleave(a,b)
+      any-any: interleave(a,b)
   vectorise: false
   tests:
-    - "[[1,3,5],[2,4]] : [1,2,3,4,5]"
-    - '["srn","tig"] : "string"'
+      - "[[1,3,5],[2,4]] : [1,2,3,4,5]"
+      - '["srn","tig"] : "string"'
 
 - element: "Z"
   name: Zip
   description: Zip two lists or Zip a with b mapped over a
   arity: 2
   overloads:
-    any-any: zip(a,b)
-    any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
+      any-any: zip(a,b)
+      any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
   vectorise: false
   tests:
-    - "[[1,2],[3,4]] : [[1,3],[2,4]]"
-    - '["abc",[1,2,3]] : [["a",1],["b",2],["c",3]]'
+      - "[[1,2],[3,4]] : [[1,3],[2,4]]"
+      - '["abc",[1,2,3]] : [["a",1],["b",2],["c",3]]'
 
 - element: "["
   name: Open If Statement
@@ -972,139 +972,139 @@
   description: Check if any items of a list are truthy / Check if a character is an uppercase letter
   arity: 1
   overloads:
-    str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-    lst: any(a) (Are any items truthy?)
+      str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+      lst: any(a) (Are any items truthy?)
   vectorise: false
   tests:
-    - "[[1,2,3]] : 1"
-    - "[[0,0,0]] : 0"
-    - "[[0,1,2]] : 1"
-    - '["A"] : 1'
-    - '["a"] : 0'
-    - '["Hi"] : [1,0]'
+      - "[[1,2,3]] : 1"
+      - "[[0,0,0]] : 0"
+      - "[[0,1,2]] : 1"
+      - '["A"] : 1'
+      - '["a"] : 0'
+      - '["Hi"] : [1,0]'
 
 - element: "b"
   name: Binary
   description: Convert a number or string to binary
   arity: 1
   overloads:
-    num: "bin(a) - list of binary digits of A"
-    str: "[bin(ord(char)) for char in a] - binary of each codepoint"
+      num: "bin(a) - list of binary digits of A"
+      str: "[bin(ord(char)) for char in a] - binary of each codepoint"
   vectorise: true
   tests:
-    - "[5] : [1,0,1]"
-    - '[" "] : [[1,0,0,0,0,0]]'
-    - "[[2,3]] : [[1,0],[1,1]]"
-    - "[-10] : [-1, 0, -1, 0]"
+      - "[5] : [1,0,1]"
+      - '[" "] : [[1,0,0,0,0,0]]'
+      - "[[2,3]] : [[1,0],[1,1]]"
+      - "[-10] : [-1, 0, -1, 0]"
 
 - element: "c"
   name: Contains
   description: Check if one thing contains another.
   arity: 2
   overloads:
-    any-any: b in a (Does a contain b, membership, contains)
+      any-any: b in a (Does a contain b, membership, contains)
   vectorise: false
   tests:
-    - '["abcdef","a"] : 1'
-    - '["xyz","a"] : 0'
-    - "[[1,2,3],1] : 1"
-    - "[[1,2,3],0] : 0"
+      - '["abcdef","a"] : 1'
+      - '["xyz","a"] : 0'
+      - "[[1,2,3],1] : 1"
+      - "[[1,2,3],0] : 0"
 
 - element: "d"
   name: Double / Dyadify
   description: Double a number or repeat a string twice / make a function dyadic
   arity: 1
   overloads:
-    num: a * 2 (double)
-    str: a * 2 (repeated twice)
-    fun: change the arity of the function to 2
+      num: a * 2 (double)
+      str: a * 2 (repeated twice)
+      fun: change the arity of the function to 2
   vectorise: true
   tests:
-    - "[5] : 10"
-    - "[0] : 0"
-    - "[[1,2]] : [2,4]"
-    - '["x"] : "xx"'
-    - '["ha"] : "haha"'
+      - "[5] : 10"
+      - "[0] : 0"
+      - "[[1,2]] : [2,4]"
+      - '["x"] : "xx"'
+      - '["ha"] : "haha"'
 
 - element: "e"
   name: Exponentiation
   description: Exponentiate two numbers / extend string / get length of a regex match
   arity: 2
   overloads:
-    num-num: a ** b (exponentiation)
-    str-num: append a[0] until a is length b (spaces are used if a is empty)
-    num-str: append b[0] until b is length a (spaces are used if b is empty)
-    str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
+      num-num: a ** b (exponentiation)
+      str-num: append a[0] until a is length b (spaces are used if a is empty)
+      num-str: append b[0] until b is length a (spaces are used if b is empty)
+      str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
   vectorise: true
   tests:
-    - "[5,3] : 125"
-    - "[0,0] : 1"
-    - '["hello",7] : "hellohh"'
+      - "[5,3] : 125"
+      - "[0,0] : 1"
+      - '["hello",7] : "hellohh"'
 
 - element: "f"
   name: Flatten
   description: Turn a number into a list of digits, a string into a list of characters, and flatten a list.
   arity: 1
   overloads:
-    num: digits of a
-    str: a split into list of characters
-    lst: flatten(a) (Deep flatten)
+      num: digits of a
+      str: a split into list of characters
+      lst: flatten(a) (Deep flatten)
   vectorise: false
   tests:
-    - "[135] : [1,3,5]"
-    - '["hi"] : ["h","i"]'
-    - "[[[[1,2],3,[[4,[5]],6],7],[8,[9]]]] : [1,2,3,4,5,6,7,8,9]"
-    - '[-1] : ["-",1]'
+      - "[135] : [1,3,5]"
+      - '["hi"] : ["h","i"]'
+      - "[[[[1,2],3,[[4,[5]],6],7],[8,[9]]]] : [1,2,3,4,5,6,7,8,9]"
+      - '[-1] : ["-",1]'
 
 - element: "g"
   name: Minimum
   description: Take the minimum of a list
   arity: 1
   overloads:
-    any: min(a)
+      any: min(a)
   vectorise: false
   tests:
-    - '["abc"] : "a"'
-    - "[[1,4,-2]] : -2"
-    - "[[5,3,9]] : 3"
+      - '["abc"] : "a"'
+      - "[[1,4,-2]] : -2"
+      - "[[5,3,9]] : 3"
 
 - element: "h"
   name: Head
   description: First item of something
   arity: 1
   overloads:
-    any: a[0] (First item)
+      any: a[0] (First item)
   tests:
-    - '["hello"] : "h"'
-    - "[[1,2,3]] : 1"
+      - '["hello"] : "h"'
+      - "[[1,2,3]] : 1"
 
 - element: "i"
   name: Index
   description: Index into a list
   arity: 2
   overloads:
-    any-num: a[b] (Index)
-    any-[x]: a[:b] (0 to bth item of a)
-    any-[x,y]: a[x:y] (x to yth item of a)
-    any-[x,y,m]: a[x:y:m] (x to yth item of a, taking every mth)
+      any-num: a[b] (Index)
+      any-[x]: a[:b] (0 to bth item of a)
+      any-[x,y]: a[x:y] (x to yth item of a)
+      any-[x,y,m]: a[x:y:m] (x to yth item of a, taking every mth)
   vectorise: false
   tests:
-    - '["abc",1] : "b"'
-    - "[[1,2,3], 0] : 1"
-    - "[[2,3,4,5], [2]] : [2,3]"
-    - "[[1,3,5,7],[1,3]] : [3,5]"
-    - "[[1,2,3,4,5,6,7,8,9,10],[1,8,2]] : [2,4,6,8]"
+      - '["abc",1] : "b"'
+      - "[[1,2,3], 0] : 1"
+      - "[[2,3,4,5], [2]] : [2,3]"
+      - "[[1,3,5,7],[1,3]] : [3,5]"
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,8,2]] : [2,4,6,8]"
 
 - element: "j"
   name: Join
   description: Join a list by a string
   arity: 2
   overloads:
-    any-any: a.join(b)
+      any-any: a.join(b)
   vectorise: false
   tests:
-    - '[[1,2,3],"penguin"] : "1penguin2penguin3"'
-    - '[["he","","o, wor","d!"], "l"] : "hello, world!"'
+      - '[[1,2,3],"penguin"] : "1penguin2penguin3"'
+      - '[["he","","o, wor","d!"], "l"] : "hello, world!"'
 
 - element: "k"
   name: Constant Digraph
@@ -1116,28 +1116,28 @@
   description: Cumulative grouping / equal length
   arity: 2
   overloads:
-    any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
-    any-any: length(a) == length(b)
+      any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
+      any-any: length(a) == length(b)
   vectorise: false
   tests:
-    - '["hello",3] : ["hel","ell","llo"]'
-    - '["cake",2] : ["ca","ak","ke"]'
-    - '["cheese","cake"] : 0'
-    - '["cheese","salads"] : 1'
+      - '["hello",3] : ["hel","ell","llo"]'
+      - '["cake",2] : ["ca","ak","ke"]'
+      - '["cheese","cake"] : 0'
+      - '["cheese","salads"] : 1'
 
 - element: "m"
   name: Mirror
   description: Append input reversed to itself.
   arity: 1
   overloads:
-    num: a + reversed(a) (as number)
-    str: a + reversed(a)
-    lst: Append reversed(a) to a
+      num: a + reversed(a) (as number)
+      str: a + reversed(a)
+      lst: Append reversed(a) to a
   vectorise: false
   tests:
-    - "[123] : 444"
-    - '["hi"] : "hiih"'
-    - "[[1,2,3]] : [1,2,3,3,2,1]"
+      - "[123] : 444"
+      - '["hi"] : "hiih"'
+      - "[[1,2,3]] : [1,2,3,3,2,1]"
 
 - element: "n"
   name: Context
@@ -1149,82 +1149,82 @@
   description: Remove instances of b in a
   arity: 2
   overloads:
-    num-fun: first a positive integers where b is truthy
-    fun-num: first b positive integers where a is truthy
-    any-any: a.replace(b,"")
+      num-fun: first a positive integers where b is truthy
+      fun-num: first b positive integers where a is truthy
+      any-any: a.replace(b,"")
   vectorise: false
   tests:
-    - '["hello","l"] : "heo"'
-    - "[[1,2,3,1,2],1] : [2,3,2]"
-    - '["bananas and naan","an"] : "bas d na"'
+      - '["hello","l"] : "heo"'
+      - "[[1,2,3,1,2],1] : [2,3,2]"
+      - '["bananas and naan","an"] : "bas d na"'
 
 - element: "p"
   name: Prepend
   description: Prepend b to a
   overloads:
-    any-any: a.prepend(b) ( Prepend b to a)
+      any-any: a.prepend(b) ( Prepend b to a)
   arity: 2
   vectorise: false
   tests:
-    - '["ld","wor"] : "world"'
-    - "[[1,2,3],13] : [13,1,2,3]"
-    - '[[3,4,5],"23"] : ["23",3,4,5]'
+      - '["ld","wor"] : "world"'
+      - "[[1,2,3],13] : [13,1,2,3]"
+      - '[[3,4,5],"23"] : ["23",3,4,5]'
 
 - element: "q"
   name: Uneval
   description: Enclose in backticks, escape backslashes and backticks.
   arity: 1
   overloads:
-    any: uneval(a) (Enclose in bacticks + escape)
+      any: uneval(a) (Enclose in bacticks + escape)
   vectorise: false
   tests:
-    - '["\\"] : "`\\\\`"'
-    - '["`"] : "`\\``"'
-    - '["a"] : "`a`"'
+      - '["\\"] : "`\\\\`"'
+      - '["`"] : "`\\``"'
+      - '["a"] : "`a`"'
 
 - element: "r"
   name: Range
   description: Range betweeen two numbers, or cumulative reduce, or regex match
   arity: 2
   overloads:
-    num-num: range(a,b) (Range form a to b)
-    num-str: append spaces to b to make it length a
-    str-num: preprend spaces to a to make it length b
-    any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
-    str-str: regex.has_match(pattern=a,string= b) ( Does b match a)
+      num-num: range(a,b) (Range form a to b)
+      num-str: append spaces to b to make it length a
+      str-num: preprend spaces to a to make it length b
+      any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
+      str-str: regex.has_match(pattern=a,string= b) ( Does b match a)
   vectorise: true
   tests:
-    - "[3,6] : [3,4,5]"
-    - "[4,8] : [4,5,6,7]"
+      - "[3,6] : [3,4,5]"
+      - "[4,8] : [4,5,6,7]"
 
 - element: "s"
   name: sort
   description: Sort a list or string
   arity: 1
   overloads:
-    any: sorted(a) (Sort)
+      any: sorted(a) (Sort)
   vectorise: false
   tests:
-    - "[[3,1,2]] : [1,2,3]"
-    - '["bca"] : "abc"'
+      - "[[3,1,2]] : [1,2,3]"
+      - '["bca"] : "abc"'
 
 - element: "t"
   name: Tail
   description: Last item
   arity: 1
   overloads:
-    any: a[-1] (Last item)
+      any: a[-1] (Last item)
   vectorise: false
   tests:
-    - '["hello"] : "o"'
-    - "[[1,2,3]] : 3"
+      - '["hello"] : "o"'
+      - "[[1,2,3]] : 3"
 
 - element: "u"
   name: Minus One
   description: Push -1
   arity: 0
   tests:
-    - "[] : -1"
+      - "[] : -1"
 
 - modifier: "v"
   name: Vectorise
@@ -1237,12 +1237,12 @@
   description: a wrapped in a singleton list
   arity: 1
   overloads:
-    any: "[a] (Wrapped in singleton list)"
+      any: "[a] (Wrapped in singleton list)"
   vectorise: false
   tests:
-    - "[1] : [1]"
-    - '["hello"] : ["hello"]'
-    - "[[1,2,3]] : [[1,2,3]]"
+      - "[1] : [1]"
+      - '["hello"] : ["hello"]'
+      - "[[1,2,3]] : [[1,2,3]]"
 
 - element: "x"
   name: Recurse / Continue / Print Stack
@@ -1253,22 +1253,22 @@
   description: Push every other item of a, and the rest.
   arity: 1
   overloads:
-    any: a[::2], a[1::2] (Every second item, the rest)
+      any: a[::2], a[1::2] (Every second item, the rest)
   vectorise: false
   tests:
-    - '["abcde"] : "bd"'
-    - "[[1,2,3,4]] : [2,4]"
+      - '["abcde"] : "bd"'
+      - "[[1,2,3,4]] : [2,4]"
 
 - element: "z"
   name: Zip-self
   description: Zip a with itself
   arity: 1
   overloads:
-    any: zip(a,a)
+      any: zip(a,a)
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1,1],[2,2],[3,3]]"
-    - '["zap"] : [["z","z"], ["a","a"],["p","p"]]'
+      - "[[1,2,3]] : [[1,1],[2,2],[3,3]]"
+      - '["zap"] : [["z","z"], ["a","a"],["p","p"]]'
 
 - element: "{"
   name: Open While Loop
@@ -1292,99 +1292,99 @@
   description: Maximum by last item
   arity: 1
   overloads:
-    any: "max(a, key=lambda x: x[-1]) (Maximum by last item)"
+      any: "max(a, key=lambda x: x[-1]) (Maximum by last item)"
   vectorise: false
   tests:
-    - "[[[3,4],[9,2]]] : [3,4]"
-    - "[[[1,2,3],[2,5]]] : [2,5]"
+      - "[[[3,4],[9,2]]] : [3,4]"
+      - "[[[1,2,3],[2,5]]] : [2,5]"
 
 - element: "↓"
   name: Min by Tail
   description: Minimum by last item
   arity: 1
   overloads:
-    any: "min(a, key=lambda x: x[-1]) (Minimum by last item)"
+      any: "min(a, key=lambda x: x[-1]) (Minimum by last item)"
   vectorise: false
   tests:
-    - "[[[3,4],[9,2]]] : [9,2]"
-    - "[[[1,2,3],[2,5]]] : [1,2,3]"
+      - "[[[3,4],[9,2]]] : [9,2]"
+      - "[[[1,2,3],[2,5]]] : [1,2,3]"
 
 - element: "∴"
   name: Dyadic Maximum
   description: Maximum of two values
   arity: 2
   overloads:
-    any-any: max(a,b)
+      any-any: max(a,b)
   vectorise: false
   tests:
-    - "[5,3] : 5"
-    - '["hello","goodbye"] : "hello"'
-    - '[3,"(stuff)"] : 3'
+      - "[5,3] : 5"
+      - '["hello","goodbye"] : "hello"'
+      - '[3,"(stuff)"] : 3'
 
 - element: "∵"
   name: Dyadic Minimum
   description: Minimum of two values
   arity: 2
   overloads:
-    any-any: min(a,b)
+      any-any: min(a,b)
   vectorise: false
   tests:
-    - "[5,3] : 3"
-    - '["hello","goodbye"] : "goodbye"'
-    - '[3,"(stuff)"] : "(stuff)"'
+      - "[5,3] : 3"
+      - '["hello","goodbye"] : "goodbye"'
+      - '[3,"(stuff)"] : "(stuff)"'
 
 - element: "›"
   name: Increment / Space Replace With 0
   description: Add 1 to a number / replace all spaces in a string with "0"
   arity: 1
   overloads:
-    num: a + 1
-    string: a.replace(" ","0")
+      num: a + 1
+      string: a.replace(" ","0")
   vectorise: true
   tests:
-    - "[5] : 6"
-    - "[[3,4]] : [4,5]"
-    - '["  101"] : "00101"'
+      - "[5] : 6"
+      - "[[3,4]] : [4,5]"
+      - '["  101"] : "00101"'
 
 - element: "‹"
   name: Decrement
   description: Subtract 1 from a number
   arity: 1
   overloads:
-    num: a - 1
-    str: a + "-"
+      num: a - 1
+      str: a + "-"
   vectorise: true
   tests:
-    - "[5] : 4"
-    - "[[3,4]] : [2,3]"
-    - '["hello"] : "hello-"'
+      - "[5] : 4"
+      - "[[3,4]] : [2,3]"
+      - '["hello"] : "hello-"'
 
 - element: "∷"
   name: Parity
   description: A number modulo 2
   arity: 1
   overloads:
-    num: a % 2 (Odd?)
-    str: Second half of A
+      num: a % 2 (Odd?)
+      str: Second half of A
   vectorise: true
   tests:
-    - "[2] : 0"
-    - "[3] : 1"
-    - '["hello!"] : "lo!"'
+      - "[2] : 0"
+      - "[3] : 1"
+      - '["hello!"] : "lo!"'
 
 - element: "¤"
   name: Empty String
   description: The empty string
   arity: 0
   tests:
-    - '[] : ""'
+      - '[] : ""'
 
 - element: "ð"
   name: Space
   description: A Space
   arity: 0
   tests:
-    - '[] : " "'
+      - '[] : " "'
 
 - element: "→"
   name: Variable Set
@@ -1401,328 +1401,328 @@
   description: Convert a number from a custom base to base 10
   arity: 2
   overloads:
-    any-num: a to base 10 from number base b, treating list items / string items as digits
-    str-str: a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
+      any-num: a to base 10 from number base b, treating list items / string items as digits
+      str-str: a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
   vectorise: false
   tests:
-    - "[43,5] : 23"
-    - '["banana","nab"] : 577'
-    - "[[15,23,9],31] : 15137"
+      - "[43,5] : 23"
+      - '["banana","nab"] : 577'
+      - "[[15,23,9],31] : 15137"
 
 - element: "τ"
   name: From Base Ten / To Custom Base
   description: Convert a number to a different base from base 10.
   arity: 2
   overloads:
-    num-num: List of digits of a in base b
-    num-str: a converted into a string of characters of b
-    num-lst: a converted into a list of arbitrary values from b
+      num-num: List of digits of a in base b
+      num-str: a converted into a string of characters of b
+      num-lst: a converted into a list of arbitrary values from b
   vectorise: false
   tests:
-    - '[1234567,"abc"] : "cacccabbbbcab"'
-    - "[1234567,5] : [3,0,4,0,0,1,2,3,2]"
-    - '[928343,["he","ll","o"]] : ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]'
-    - '[[10, 12, 6, 2, 8, 145], 2] : [[1, 0, 1, 0], [1, 1, 0, 0], [1, 1, 0], [1, 0], [1, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 1]]'
+      - '[1234567,"abc"] : "cacccabbbbcab"'
+      - "[1234567,5] : [3,0,4,0,0,1,2,3,2]"
+      - '[928343,["he","ll","o"]] : ["ll","o","he","o","he","ll","ll","ll","ll","he","he","he","o"]'
+      - "[[10, 12, 6, 2, 8, 145], 2] : [[1, 0, 1, 0], [1, 1, 0, 0], [1, 1, 0], [1, 0], [1, 0, 0, 0], [1, 0, 0, 1, 0, 0, 0, 1]]"
 
 - element: "ȧ"
   name: Absolute value
   description: Take the absolute value of a number, or remove whitespace from a string
   arity: 1
   overloads:
-    num: abs(a) (Absolute value)
-    str: Remove whitespace from a
+      num: abs(a) (Absolute value)
+      str: Remove whitespace from a
   vectorise: true
   tests:
-    - "[1] : 1"
-    - "[-1] : 1"
-    - '[" ch ee s e "] : "cheese"'
-    - "[[-1,2,-5]] : [1,2,5]"
+      - "[1] : 1"
+      - "[-1] : 1"
+      - '[" ch ee s e "] : "cheese"'
+      - "[[-1,2,-5]] : [1,2,5]"
 
 - element: "ḃ"
   name: Boolify
   description: Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
   arity: 1
   overloads:
-    any: bool(a) (Booliify)
+      any: bool(a) (Booliify)
   vectorise: false
   tests:
-    - "[0] : 0"
-    - "[1] : 1"
-    - "[[69, 0]] : 1"
-    - '["x"] : 1'
-    - '[["", []]] : 1'
-    - "[[]] : 0"
+      - "[0] : 0"
+      - "[1] : 1"
+      - "[[69, 0]] : 1"
+      - '["x"] : 1'
+      - '[["", []]] : 1'
+      - "[[]] : 0"
 
 - element: "ċ"
   name: Not One
   description: Check if something is not equal to 1
   arity: 1
   overloads:
-    any: a != 1
+      any: a != 1
   vectorise: true
   tests:
-    - "[[1, 0]] : [0, 1]"
-    - '["1"] : 0'
-    - "[5] : 1"
-    - "[1] : 0"
+      - "[[1, 0]] : [0, 1]"
+      - '["1"] : 0'
+      - "[5] : 1"
+      - "[1] : 0"
 
 - element: "ḋ"
   name: Divmod
   description: Divmod / combinations / trim
   arity: 2
   overloads:
-    num-num: "[a // b, a % b] (Divmod - division and modulo)"
-    str-num: Combinations of a with length b
-    lst-num: Combinations of a with length b
-    str-str: overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef`
+      num-num: "[a // b, a % b] (Divmod - division and modulo)"
+      str-num: Combinations of a with length b
+      lst-num: Combinations of a with length b
+      str-str: overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef`
   vectorise: false
   tests:
-    - "[5,3] : [1,2]"
-    - '["abcd",3] : ["abc","abd","acd","bcd"]'
-    - "[[1,2,3],2] : [[1,2],[1,3],[2,3]]"
-    - '["abcdef", "Joe"] : "Joedef"'
+      - "[5,3] : [1,2]"
+      - '["abcd",3] : ["abc","abd","acd","bcd"]'
+      - "[[1,2,3],2] : [[1,2],[1,3],[2,3]]"
+      - '["abcdef", "Joe"] : "Joedef"'
 
 - element: "ė"
   name: Enumerate
   description: Zip with a range of the same length
   arity: 1
   overloads:
-    any: enumerate(a) (Zip with 1...len(a))
+      any: enumerate(a) (Zip with 1...len(a))
   vectorise: false
   tests:
-    - '["abc"] : [[0,"a"],[1,"b"],[2,"c"]]'
-    - "[[1,2,3]] : [[0,1],[1,2],[2,3]]"
+      - '["abc"] : [[0,"a"],[1,"b"],[2,"c"]]'
+      - "[[1,2,3]] : [[0,1],[1,2],[2,3]]"
 
 - element: "ḟ"
   name: Find
   description: Find a value in another
   arity: 2
   overloads:
-    any-any: a.find(b) (Indexing)
-    any-fun: truthy indices of mapping b over a
+      any-any: a.find(b) (Indexing)
+      any-fun: truthy indices of mapping b over a
   vectorise: false
   tests:
-    - "[[1,2,3],2] : 1"
-    - '["hello","l"] : 2'
+      - "[[1,2,3],2] : 1"
+      - '["hello","l"] : 2'
 
 - element: "ġ"
   name: Gcd
   description: Greatest Common Denominator of a list or some numbers
   arity: "*"
   overloads:
-    lst: GCD(a) (Gcd of whole list)
-    num-num: gcd(a,b) (Dyadic gcd)
-    str-str: Longest common suffix of a and b
+      lst: GCD(a) (Gcd of whole list)
+      num-num: gcd(a,b) (Dyadic gcd)
+      str-str: Longest common suffix of a and b
   vectorise: false
   tests:
-    - "[[1,3,2]] : 1"
-    - "[[60,42,108]] : 6"
-    - "[50,35] : 5"
-    - '["laugh","cough"] : "ugh"'
+      - "[[1,3,2]] : 1"
+      - "[[60,42,108]] : 6"
+      - "[50,35] : 5"
+      - '["laugh","cough"] : "ugh"'
 
 - element: "ḣ"
   name: Head Extract
   description: Separate the first item of something and push both to stack
   arity: 1
   overloads:
-    any: a[0], a[1:] (Head extract)
+      any: a[0], a[1:] (Head extract)
   vectorise: false
   tests:
-    - '["hello"] : "ello"'
-    - "[[1,2,3]] : [2,3]"
+      - '["hello"] : "ello"'
+      - "[[1,2,3]] : [2,3]"
 
 - element: "ḭ"
   name: Floor Division
   description: Floor divide a by b
   arity: 2
   overloads:
-    num-num: a // b (Floor division, floor(a / b))
-    str-num: (a divided into b pieces)[0]
-    num-str: (b divided into a pieces)[0]
-    any-fun: Right reduce a by b (foldr)
-    fun-any: Right reduce b by a (foldr)
+      num-num: a // b (Floor division, floor(a / b))
+      str-num: (a divided into b pieces)[0]
+      num-str: (b divided into a pieces)[0]
+      any-fun: Right reduce a by b (foldr)
+      fun-any: Right reduce b by a (foldr)
   vectorise: false
   tests:
-    - "[5,3] : 1"
-    - '["hello!",3] : "he"'
-    - '[3,"hello!"] : "he"'
+      - "[5,3] : 1"
+      - '["hello!",3] : "he"'
+      - '[3,"hello!"] : "he"'
 
 - element: "ŀ"
   name: Left Justify / Gridify / Infinite Replace / Collect until false
   description: Find one value inside another, starting from a certain index.
   arity: 3
   overloads:
-    num-num-num: a <= c <= b
-    num-num-str: a by b grid of c
-    num-str-num: a by c grid of b
-    num-str-str: b.ljust(a,filler=c)
-    str-num-num: b by c grid of a
-    str-num-str: a.ljust(c,filler=b)
-    str-str-num: a.ljust(b,filler=c)
-    str-str-str: a.infinite_replace(b, c)
-    fun-fun-any: collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply a on c while b(c) is truthy
+      num-num-num: a <= c <= b
+      num-num-str: a by b grid of c
+      num-str-num: a by c grid of b
+      num-str-str: b.ljust(a,filler=c)
+      str-num-num: b by c grid of a
+      str-num-str: a.ljust(c,filler=b)
+      str-str-num: a.ljust(b,filler=c)
+      str-str-str: a.infinite_replace(b, c)
+      fun-fun-any: collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply a on c while b(c) is truthy
   vectorise: true
   tests: # TODO: More test cases
-    - "[1, 3, 2] : 1"
+      - "[1, 3, 2] : 1"
 
 - element: "ṁ"
   name: Mean
   description: Average of a list - sum / length
   arity: 1
   overloads:
-    str: palindromise(a)
-    lst: mean(a)
+      str: palindromise(a)
+      lst: mean(a)
   vectorise: false
   tests:
-    - "[[1,2,3]] : 2"
-    - "[[4,71,-63]] : 4"
+      - "[[1,2,3]] : 2"
+      - "[[4,71,-63]] : 4"
 
 - element: "ṅ"
   name: Join By Nothing
   description: Join a list by the empty string
   arity: 1
   overloads:
-    fun: First integer for which a(x) is truthy
-    any: Join by empty string
-    num: abs(a) <= 1
+      fun: First integer for which a(x) is truthy
+      any: Join by empty string
+      num: abs(a) <= 1
   vectorise: false
   tests:
-    - '[["a","b","c"]] : "abc"'
-    - "[[1,2,3]] : '123'"
-    - "[5] : 0"
-    - "[0.54] : 1"
+      - '[["a","b","c"]] : "abc"'
+      - "[[1,2,3]] : '123'"
+      - "[5] : 0"
+      - "[0.54] : 1"
 
 - element: "ȯ"
   name: Slice
   description: Slice from an index to the end
   arity: 2
   overloads:
-    fun-num: First b integers for which a(x) is truthy
-    any-num: a[b:] (Slice from b to the end)
-    str-str: vertically merge a and b
+      fun-num: First b integers for which a(x) is truthy
+      any-num: a[b:] (Slice from b to the end)
+      str-str: vertically merge a and b
   vectorise: false
   tests:
-    - '["hello",2] : "llo"'
-    - "[[1,2,3],1] : [2,3]"
-    - "[[1,2,3],-2] : [2,3]"
+      - '["hello",2] : "llo"'
+      - "[[1,2,3],1] : [2,3]"
+      - "[[1,2,3],-2] : [2,3]"
 
 - element: "ṗ"
   name: Powerset
   description: All possible combinations of a
   arity: 1
   overloads:
-    any: All possible combinations of a
+      any: All possible combinations of a
   vectorise: false
   tests:
-    - '["ab"] : [[],["a"],["b"],["a","b"]]'
-    - "[[1,2,3]] : [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]"
+      - '["ab"] : [[],["a"],["b"],["a","b"]]'
+      - "[[1,2,3]] : [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]"
 
 - element: "ṙ"
   name: Round
   description: Round a number to the nearest integer
   arity: 1
   overloads:
-    num: round(a)
-    str: quad palindromize with overlap
+      num: round(a)
+      str: quad palindromize with overlap
   vectorise: true
   tests:
-    - "[5.5] : 6"
-    - "[3.2] : 3"
-    - "[[5.5,3.2]] : [6,3]"
-    - "[-4.7] : -5"
-    - "[-4.5] : -4"
+      - "[5.5] : 6"
+      - "[3.2] : 3"
+      - "[[5.5,3.2]] : [6,3]"
+      - "[-4.7] : -5"
+      - "[-4.5] : -4"
 
 - element: "ṡ"
   name: Sort by Function
   description: Sort a list by a function / create a range / split on a regex
   arity: 2
   overloads:
-    any-fun: sorted(a, key=b) (Sort by b)
-    num-num: range(a, b + 1) (Inclusive range from a to b)
-    str-str: regex.split(pattern=b, string=a)
+      any-fun: sorted(a, key=b) (Sort by b)
+      num-num: range(a, b + 1) (Inclusive range from a to b)
+      str-str: regex.split(pattern=b, string=a)
   vectorise: false
   tests:
-    - "[3,4] : [3,4]"
-    - "[1,5] : [1,2,3,4,5]"
-    - '["abc1def2ghi","\\d+"] : ["abc","def","ghi"]'
+      - "[3,4] : [3,4]"
+      - "[1,5] : [1,2,3,4,5]"
+      - '["abc1def2ghi","\\d+"] : ["abc","def","ghi"]'
 
 - element: "ṫ"
   name: Tail Extract
   description: Remove the last item and push both onto the stack
   arity: 1
   overloads:
-    any: a[:-1],a[-1]
+      any: a[:-1],a[-1]
   vectorise: false
   tests:
-    - '["abc"] : "c"'
-    - "[[1,2,3]] : 3"
+      - '["abc"] : "c"'
+      - "[[1,2,3]] : 3"
 
 - element: "ẇ"
   name: Chunk Wrap
   description: Wrap a list in chunks of a certain length / apply a function to every second item of a list
   arity: 2
   overloads:
-    any-num: a wrapped in chunks of length b
-    any-fun: Apply b to every second item of a
-    fun-any: Apply a to every second item of b
-    str-str: split a on first occurance of b
+      any-num: a wrapped in chunks of length b
+      any-fun: Apply b to every second item of a
+      fun-any: Apply a to every second item of b
+      str-str: split a on first occurance of b
   vectorise: false
   tests:
-    - '["abcdef",2] : ["ab","cd","ef"]'
-    - "[[1,2,3,4,5,6],3] : [[1,2,3],[4,5,6]]"
-    - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
-    - "[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]"
+      - '["abcdef",2] : ["ab","cd","ef"]'
+      - "[[1,2,3,4,5,6],3] : [[1,2,3],[4,5,6]]"
+      - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
+      - "[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]"
 
 - element: "ẋ"
   name: Repeat
   description: Repeat a value several times
   arity: "*"
   overloads:
-    str-num: a * b
-    num-str: b * a
-    any-num: Repeat a b times
-    str-str: a + " " + b
-    fun-any: repeat function a on b while the function results are not-unique
-    any-fun: repeat function b on a while the function results are not-unique
+      str-num: a * b
+      num-str: b * a
+      any-num: Repeat a b times
+      str-str: a + " " + b
+      fun-any: repeat function a on b while the function results are not-unique
+      any-fun: repeat function b on a while the function results are not-unique
   vectorise: false
   tests:
-    - "[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]"
-    - '["x",5] : "xxxxx"'
-    - "[0, 4] : [0, 0, 0, 0]"
+      - "[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]"
+      - '["x",5] : "xxxxx"'
+      - "[0, 4] : [0, 0, 0, 0]"
 
 - element: "ẏ"
   name: Exclusive Range Length
   description: Range from 0 to length of a
   arity: 1
   overloads:
-    any: range(0, len(a)) (Exclusive range from 0 to length of a)
+      any: range(0, len(a)) (Exclusive range from 0 to length of a)
   vectorise: false
   tests:
-    - '["abc"] : [0,1,2]'
-    - "[[1,2]] : [0,1]"
+      - '["abc"] : [0,1,2]'
+      - "[[1,2]] : [0,1]"
 
 - element: "ż"
   name: Inclusive Range Length
   description: Range from 1 to length of a inclusive
   arity: 1
   overloads:
-    any: range(1, len(a)+1) (Inclusive range from 1 to length of a)
+      any: range(1, len(a)+1) (Inclusive range from 1 to length of a)
   vectorise: false
   tests:
-    - '["abc"] : [1,2,3]'
-    - "[[1,2]] : [1,2]"
+      - '["abc"] : [1,2,3]'
+      - "[[1,2]] : [1,2]"
 
 - element: "√"
   name: Square Root
   description: Square root a number / every second character of a
   arity: 1
   overloads:
-    num: sqrt(a) (Square root)
-    str: every second character of a
+      num: sqrt(a) (Square root)
+      str: every second character of a
   vectorise: true
   tests:
-    - "[4] : 2"
-    - '["hello"] : "hlo"'
+      - "[4] : 2"
+      - '["hello"] : "hlo"'
 
 - element: "⟨"
   name: Open List
@@ -1744,180 +1744,180 @@
   description: Push 10 to the stack
   arity: 0
   tests:
-    - "[] : 10"
+      - "[] : 10"
 
 - element: "₁"
   name: Hundred
   description: Push 100 to the stack
   arity: 0
   tests:
-    - "[] : 100"
+      - "[] : 100"
 
 - element: "₂"
   name: Is Even
   description: Check if a value is even
   arity: 1
   overloads:
-    num: a % 2 == 0 (Even?)
-    any: len(a) % 2 == 0 (Length even?)
+      num: a % 2 == 0 (Even?)
+      any: len(a) % 2 == 0 (Length even?)
   vectorise: false
   tests:
-    - "[5] : 0"
-    - "[2] : 1"
-    - '["hello"] : 0'
-    - "[[1,2]] : 1"
+      - "[5] : 0"
+      - "[2] : 1"
+      - '["hello"] : 0'
+      - "[[1,2]] : 1"
 
 - element: "₃"
   name: Divisible By three
   description: Check if a is divisible by 3
   arity: 1
   overloads:
-    num: a % 3 == 0 (divisible by 3?)
-    any: len(a) == 1 (Length is 1?)
+      num: a % 3 == 0 (divisible by 3?)
+      any: len(a) == 1 (Length is 1?)
   vectorise: false
   tests:
-    - "[5] : 0"
-    - "[6] : 1"
-    - '["hi"] : 0'
-    - "[[1]] : 1"
+      - "[5] : 0"
+      - "[6] : 1"
+      - '["hi"] : 0'
+      - "[[1]] : 1"
 
 - element: "₄"
   name: Twenty Six
   description: Push 26 to the stack
   arity: 0
   tests:
-    - "[] : 26"
+      - "[] : 26"
 
 - element: "₅"
   name: Divisible By Five
   description: Check if a is divisible by 5
   arity: 1
   overloads:
-    num: a % 5 == 0
-    any: a, len(a)
+      num: a % 5 == 0
+      any: a, len(a)
   vectorise: false
   tests:
-    - "[4] : 0"
-    - "[5] : 1"
-    - '["hello"] : 5'
-    - "[[1,2,3]] : 3"
+      - "[4] : 0"
+      - "[5] : 1"
+      - '["hello"] : 5'
+      - "[[1,2,3]] : 3"
 
 - element: "₆"
   name: Sixty Four
   description: Push 64 to the stack
   arity: 0
   tests:
-    - "[] : 64"
+      - "[] : 64"
 
 - element: "₇"
   name: One Twenty Eight
   description: Push 128 to the stack
   arity: 0
   tests:
-    - "[] : 128"
+      - "[] : 128"
 
 - element: "₈"
   name: Two Fifty Six
   description: Push 256 to the stack
   arity: 0
   tests:
-    - "[] : 256"
+      - "[] : 256"
 
 - element: "¶"
   name: Newline
   description: Push a newline to the stack
   arity: 0
   tests:
-    - '[] : "\n"'
+      - '[] : "\n"'
 
 - element: "⁋"
   name: Join On Newlines
   description: Join the top of the stack on newlines (insert "\n" between items)
   arity: 1
   overloads:
-    any: '"\\n".join(a)'
+      any: '"\\n".join(a)'
   tests:
-    - '[[1, 2, 3, 4, 5, 6]] : "1\n2\n3\n4\n5\n6"'
-    - '[["Hello", "World!"]] : "Hello\nWorld!"'
+      - '[[1, 2, 3, 4, 5, 6]] : "1\n2\n3\n4\n5\n6"'
+      - '[["Hello", "World!"]] : "Hello\nWorld!"'
 
 - element: "§"
   name: Vertical Join
   arity: 1
   description: Transpose (filling with spaces) and then join on newlines
   overloads:
-    any: Transpose a, join on newlines
+      any: Transpose a, join on newlines
   vectorise: false
   tests:
-    - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
-    - '[["***", "****", "*****"]] : "  *\n **\n***\n***\n***"'
-    - '[[1, 22, 333]] : "  3\n 23\n123"'
+      - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
+      - '[["***", "****", "*****"]] : "  *\n **\n***\n***\n***"'
+      - '[[1, 22, 333]] : "  3\n 23\n123"'
 
 - element: "ε"
   name: Absolute Difference / Padded Vertical Join
   arity: 2
   description: Returns the aboslute different (|a - b|) or vertically joins using padding
   overloads:
-    num-num: abs(a - b)
-    any-str: Transpose a (filling with b), join on newlines
+      num-num: abs(a - b)
+      any-str: Transpose a (filling with b), join on newlines
   vectorise: false
   tests:
-    - "[5, 1] : 4"
-    - "[1, 5] : 4"
-    - "[3, 3] : 0"
-    - '[["***", "****", "*****"], "."] : "..*\n.**\n***\n***\n***"'
-    - '[["abc", "def", "ghi"], "."] : "adg\nbeh\ncfi"'
+      - "[5, 1] : 4"
+      - "[1, 5] : 4"
+      - "[3, 3] : 0"
+      - '[["***", "****", "*****"], "."] : "..*\n.**\n***\n***\n***"'
+      - '[["abc", "def", "ghi"], "."] : "adg\nbeh\ncfi"'
 
 - element: "¡"
   name: Factorial
   arity: 1
   description: Returns the factorial of the top of the stack
   overloads:
-    num: factorial(a) (math.gamma(a + 1))
-    str: a.sentence_case()
+      num: factorial(a) (math.gamma(a + 1))
+      str: a.sentence_case()
   vectorise: true
   tests:
-    - "[5] : 120"
-    - '["hello my name jeff. ur sussy baka"] : "Hello my name jeff. Ur sussy baka"'
-    - "[[1, 2, 3, 4, 5]] : [1, 2, 6, 24, 120]"
+      - "[5] : 120"
+      - '["hello my name jeff. ur sussy baka"] : "Hello my name jeff. Ur sussy baka"'
+      - "[[1, 2, 3, 4, 5]] : [1, 2, 6, 24, 120]"
 
 - element: "∑"
   name: Summate
   arity: 1
   description: Returns the sum of the top of the stack (reduce by addition)
   overloads:
-    num: sum(digits of a)
-    str: a
-    lst: sum(a)
+      num: sum(digits of a)
+      str: a
+      lst: sum(a)
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5]] : 15"
-    - '[["abc", "def", 10]] : "abcdef10"'
-    - "[12345] : 15"
+      - "[[1, 2, 3, 4, 5]] : 15"
+      - '[["abc", "def", 10]] : "abcdef10"'
+      - "[12345] : 15"
 
 - element: "¦"
   name: Cumulative Sum
   arity: 1
   description: Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
   overloads:
-    any: cumulative_sum(a)
+      any: cumulative_sum(a)
   vectorise: false
   tests:
-    - "[12345] : [1, 3, 6, 10, 15]"
-    - '["abcdef"] : ["a", "ab", "abc", "abcd", "abcde", "abcdef"]'
-    - "[[1, 2, 3, 4, 5]] : [1, 3, 6, 10, 15]"
+      - "[12345] : [1, 3, 6, 10, 15]"
+      - '["abcdef"] : ["a", "ab", "abc", "abcd", "abcde", "abcdef"]'
+      - "[[1, 2, 3, 4, 5]] : [1, 3, 6, 10, 15]"
 
 - element: "≈"
   name: All Equal
   arity: 1
   description: Returns whether all items are equal
   overloads:
-    any: are all items in a equal?
+      any: are all items in a equal?
   vectorise: false
   tests:
-    - "[1111] : 1"
-    - '["acc"] : 0'
-    - "[[1, 2, 2, 1]] : 0"
-    - "[[]] : 1"
+      - "[1111] : 1"
+      - '["acc"] : 0'
+      - "[[1, 2, 2, 1]] : 0"
+      - "[[]] : 1"
 
 - element: "µ"
   name: Sorting Lambda
@@ -1929,173 +1929,173 @@
   arity: 3
   description: The equivalent of a[b] = c
   overloads:
-    any-num-any: a but item b (0-indexed) is set to c
+      any-num-any: a but item b (0-indexed) is set to c
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4], 1, 0] : [1, 0, 3, 4]"
-    - '["Hello ", 5, ", World!"] : "Hello, World!"'
-    - "[69320, 2, 4] : [6, 9, 4, 2, 0]"
+      - "[[1, 2, 3, 4], 1, 0] : [1, 0, 3, 4]"
+      - '["Hello ", 5, ", World!"] : "Hello, World!"'
+      - "[69320, 2, 4] : [6, 9, 4, 2, 0]"
 
 - element: "Ḃ"
   name: Bifurcate
   arity: 1
   description: Pushes the top of the stack then its reverse. Literally duplicate and reverse
   overloads:
-    any: a, reversed(a)
+      any: a, reversed(a)
   vectorise: false
   tests:
-    - "[203] : 302"
-    - '["abc"] : "cba"'
-    - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
+      - "[203] : 302"
+      - '["abc"] : "cba"'
+      - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ċ"
   name: Counts
   arity: 1
   description: Returns a list of [item, count of item in the top of stack]
   overloads:
-    any: "[[x, a.count(x)] for x in a]"
+      any: "[[x, a.count(x)] for x in a]"
   vectorise: false
   tests:
-    - "[[1, 2, 2, 3, 3, 3, 3]] : [[1, 1], [2, 2], [3, 4]]"
-    - '["Hello, World!"] : [["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]]'
+      - "[[1, 2, 2, 3, 3, 3, 3]] : [[1, 1], [2, 2], [3, 4]]"
+      - '["Hello, World!"] : [["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]]'
 
 - element: "Ḋ"
   name: Is Divisible / Arbitrary Duplicate
   arity: 2
   description: Returns whether two items are divisble / numerious copies of the top of the stack
   overloads:
-    num-num: a % b == 0
-    num-str: a copies of b
-    str-num: b copies of a
-    str-str: b + " " + a
+      num-num: a % b == 0
+      num-str: a copies of b
+      str-num: b copies of a
+      str-str: b + " " + a
   vectorise: true
   tests:
-    - "[15, 5] : 1"
-    - '["abc", 3] : "abc"'
-    - "[[5, 13, 29, 48, 12], 2] : [0, 0, 0, 1, 1]"
+      - "[15, 5] : 1"
+      - '["abc", 3] : "abc"'
+      - "[[5, 13, 29, 48, 12], 2] : [0, 0, 0, 1, 1]"
 
 - element: "Ė"
   name: Vyxal Exec / Reciprocal
   arity: 1
   description: Executes as Vyxal / Reciprocal of number
   overloads:
-    str: vy_exec(a)
-    num: 1 / a
+      str: vy_exec(a)
+      num: 1 / a
   vectorise: true
   tests:
-    - "[[2, 3, -1]] : [0.5, 1/3, -1]"
-    - '["kH"] : "Hello, World!"'
+      - "[[2, 3, -1]] : [0.5, 1/3, -1]"
+      - '["kH"] : "Hello, World!"'
 
 - element: "Ḟ"
   name: Generator / Modulo Index / Format
   arity: 2
   description: Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
   overloads:
-    num-num: sympy.N(a, b) (evaluate a to b decimal places)
-    num-str: every ath letter of b
-    str-num: every bth letter of a
-    str-str: replace spaces in a with b
-    lst-num: every bth item of a
-    num-lst: every ath item of b
-    fun-lst: Generator from function a with initial vector b
+      num-num: sympy.N(a, b) (evaluate a to b decimal places)
+      num-str: every ath letter of b
+      str-num: every bth letter of a
+      str-str: replace spaces in a with b
+      lst-num: every bth item of a
+      num-lst: every ath item of b
+      fun-lst: Generator from function a with initial vector b
   vectorise: false
   tests:
-    - '[4.51, 3] : "4.51"'
-    - '[1.69, 10] : "1.690000000"'
-    - '["Hello, World!", 3] : "Hl r!"'
-    - '["LQYWXUAOL", 2] : "LYXAL"'
-    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [1, 5, 9]"
-    - '[["Hello", "World!", "Gaming", "Pogchamp", "A"], 2] : ["Hello", "Gaming", "A"]'
-    - '["    1111", "0"] : "00001111"'
-    - '["But who was phone?", "!"] : "But!who!was!phone?"'
+      - '[4.51, 3] : "4.51"'
+      - '[1.69, 10] : "1.690000000"'
+      - '["Hello, World!", 3] : "Hl r!"'
+      - '["LQYWXUAOL", 2] : "LYXAL"'
+      - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [1, 5, 9]"
+      - '[["Hello", "World!", "Gaming", "Pogchamp", "A"], 2] : ["Hello", "Gaming", "A"]'
+      - '["    1111", "0"] : "00001111"'
+      - '["But who was phone?", "!"] : "But!who!was!phone?"'
 
 - element: "Ġ"
   name: Group consecutive
   arity: 1
   description: Group consecutive identical items
   overloads:
-    lst: Group consecutive identical items
-    str: Group consecutive identical characters
-    num: Group consecutive identical digits
+      lst: Group consecutive identical items
+      str: Group consecutive identical characters
+      num: Group consecutive identical digits
   vectorise: false
   tests:
-    - "[[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]] : [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]"
-    - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]'
+      - "[[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]] : [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]"
+      - '["Hello, World!"] : [["H"], ["e"], ["l", "l"], ["o"], [","], [" "], ["W"], ["o"], ["r"], ["l"], ["d"], ["!"]]'
 
 - element: "Ḣ"
   name: Head Remove / Behead
   arity: 1
   description: All but the first item of a list / Drop 1
   overloads:
-    lst: a[1:] or [] if empty
-    str: a[1:] or '' if empty
-    num: Remove first digit or do nothing if <1
+      lst: a[1:] or [] if empty
+      str: a[1:] or '' if empty
+      num: Remove first digit or do nothing if <1
   vectorise: false
   tests:
-    - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
-    - "[[]] : []"
-    - '["foo"] : "oo"'
-    - '[""] : ""'
-    - "[1234.56] : 234.56"
-    - "[0.2] : 0.2"
+      - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
+      - "[[]] : []"
+      - '["foo"] : "oo"'
+      - '[""] : ""'
+      - "[1234.56] : 234.56"
+      - "[0.2] : 0.2"
 
 - element: "İ"
   name: Index into or collect while unique
   arity: 1
   description: >-
-    Index into list at indices /
-    Collect values while values are unique
+      Index into list at indices /
+      Collect values while values are unique
   overloads:
-    any-lst: "[a[item] for item in b]"
-    any-fun: apply b on a and collect unique values
+      any-lst: "[a[item] for item in b]"
+      any-fun: apply b on a and collect unique values
   vectorise: false
   tests: # TODO more tests for the second overload
-    - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
-    - '[[3, 4, 5, 6, 7, 8, 9, 10], [0, 2, 4, 6, 8]] : [3, 5, 7, 9, 3]'
-    - '[[1, 4, 9, 16], [[0, 1], [2, 3]]] : [[1, 4], [9, 16]]'
-    - '["Hello, World!", [0, 2, 4, 6, 8]] : ["H", "l", "o", " ", "o"]'
-    - '[[0, 2, 4, 6, 8], "Hello, World!"] : ["H", "l", "o", " ", "o"]'
+      - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
+      - "[[3, 4, 5, 6, 7, 8, 9, 10], [0, 2, 4, 6, 8]] : [3, 5, 7, 9, 3]"
+      - "[[1, 4, 9, 16], [[0, 1], [2, 3]]] : [[1, 4], [9, 16]]"
+      - '["Hello, World!", [0, 2, 4, 6, 8]] : ["H", "l", "o", " ", "o"]'
+      - '[[0, 2, 4, 6, 8], "Hello, World!"] : ["H", "l", "o", " ", "o"]'
 
 - element: "Ŀ"
   name: Transliterate
   description: Replace each item of one value in another value with the corresponding element from a third value
   arity: 3
   overloads:
-    any-any-any: transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)
-    fun-fun-any: Call b on c until a(c) is falsey.
+      any-any-any: transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)
+      fun-fun-any: Call b on c until a(c) is falsey.
   vectorise: false
   tests:
-    - '["abcdefcba","abc","123"] : "123def321"'
-    - "[[1,2,0], [2], [5]] : [1,5,0]"
-    - '["abc","ab",["bb","cc"]] : ["bb","cc","c"]'
+      - '["abcdefcba","abc","123"] : "123def321"'
+      - "[[1,2,0], [2], [5]] : [1,5,0]"
+      - '["abc","ab",["bb","cc"]] : ["bb","cc","c"]'
 
 - element: "Ṁ"
   name: Insert
   description: >-
-    Insert a value at a specified index /
-    Map a function over every nth item of a list
+      Insert a value at a specified index /
+      Map a function over every nth item of a list
   arity: 3
   overloads:
-    any-num-any: a.insert(b,c) (Insert c at position b in a)
-    any-num-fun: c mapped over every bth item of a
+      any-num-any: a.insert(b,c) (Insert c at position b in a)
+      any-num-fun: c mapped over every bth item of a
   vectorise: false
   tests:
-    - "[[1,3,4],1,2] : [1,2,3,4]"
-    - '["wyz",1,"x"] : "wxyz"'
-    - '["jknop",2,"lm"] : "jklmnop"'
+      - "[[1,3,4],1,2] : [1,2,3,4]"
+      - '["wyz",1,"x"] : "wxyz"'
+      - '["jknop",2,"lm"] : "jklmnop"'
 
 - element: "Ṅ"
   name: Integer partitions
   description: Integer partitions / join by space
   arity: 1
   overloads:
-    num: integer_partitions(a) (Integer partitions)
-    any: '" ".join(a) (Join by space)'
+      num: integer_partitions(a) (Integer partitions)
+      any: '" ".join(a) (Join by space)'
   vectorise: false
   tests:
-    - "[5] : [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]"
-    - '["hello"] : "h e l l o"'
-    - '[[1,2,3]] : "1 2 3"'
+      - "[5] : [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]"
+      - '["hello"] : "h e l l o"'
+      - '[[1,2,3]] : "1 2 3"'
 
 - element: "Ȯ"
   name: Over
@@ -2103,100 +2103,100 @@
   arity: 0
   vectorise: false
   tests:
-    - "[4,5] : 4"
-    - '["hi","bye"] : "hi"'
+      - "[4,5] : 4"
+      - '["hi","bye"] : "hi"'
 
 - element: "Ṗ"
   name: Permutations
   description: Get all permutations of a value
   arity: 1
   overloads:
-    any: permutations(a) (Get all permutations)
+      any: permutations(a) (Get all permutations)
   tests:
-    - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
-    - "[[1,2]] : [[1,2],[2,1]]"
+      - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
+      - "[[1,2]] : [[1,2],[2,1]]"
 
 - element: "Ṙ"
   name: Reverse
   description: Reverse a value
   arity: 1
   overloads:
-    any: a, reversed(a)
+      any: a, reversed(a)
   vectorise: false
   tests:
-    - "[203] : 302"
-    - '["abc"] : "cba"'
-    - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
+      - "[203] : 302"
+      - '["abc"] : "cba"'
+      - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ṡ"
   name: Vectorised sums
   description: Sum of each item in a list
   arity: 0
   tests:
-    - "[[[1,2,3],[4,5,6]]] : [6, 15]"
-    - "[[3,4,5]] : [3, 4, 5]"
-    - "[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]"
+      - "[[[1,2,3],[4,5,6]]] : [6, 15]"
+      - "[[3,4,5]] : [3, 4, 5]"
+      - "[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]"
 
 - element: "Ṫ"
   name: Tail Remove
   description: Cut off the last item of a list
   arity: 1
   overloads:
-    any: a[:-1] (All but the last item)
+      any: a[:-1] (All but the last item)
   vectorise: false
   tests:
-    - '["1234"] : "123"'
-    - "[[1,2,3]] : [1,2]"
+      - '["1234"] : "123"'
+      - "[[1,2,3]] : [1,2]"
 
 - element: "Ẇ"
   name: Split And Keep Delimiter
   description: Split a value and keep the delimiter
   arity: 2
   overloads:
-    any-any: a.split_and_keep_delimiter(b) (Split and keep the delimiter)
-    fun-any: apply a to every second item of b starting on the first item
+      any-any: a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+      fun-any: apply a to every second item of b starting on the first item
   vectorise: false
   tests:
-    - '["a b c"," "] : ["a"," ","b"," ","c"]'
-    - '["xyzabc123abc","b"] : ["xyza","b","c123a","b","c"]'
+      - '["a b c"," "] : ["a"," ","b"," ","c"]'
+      - '["xyzabc123abc","b"] : ["xyza","b","c123a","b","c"]'
 
 - element: "Ẋ"
   name: Cartesian Product / Fixpoint
   description: Take the Cartesian Product of two values, or apply a function until there is no change.
   arity: 2
   overloads:
-    any-any: cartesian-product(a,b)
-    fun-any: Apply a on b until b does not change
+      any-any: cartesian-product(a,b)
+      fun-any: Apply a on b until b does not change
   vectorise: false
   tests:
-    - '["ab","cd"] : ["ac","ad","bc","bd"]'
-    - "[[1,2],[3,4]] : [[1,3],[1,4],[2,3],[2,4]]"
+      - '["ab","cd"] : ["ac","ad","bc","bd"]'
+      - "[[1,2],[3,4]] : [[1,3],[1,4],[2,3],[2,4]]"
 
 - element: "Ẏ"
   name: Slice Until
   description: Slice a list until a certain index / find all results for a regex match
   arity: 2
   overloads:
-    any-num: a[0:b] (Slice until b)
-    num-any: b[0:a] (Slice until a)
-    str-str: regex.findall(pattern=a,string=b) (Find all matches for a regex)
+      any-num: a[0:b] (Slice until b)
+      num-any: b[0:a] (Slice until a)
+      str-str: regex.findall(pattern=a,string=b) (Find all matches for a regex)
   vectorise: true
   tests:
-    - '["abc",1] : "a"'
-    - "[[1,2,3],2] : [1,2]"
+      - '["abc",1] : "a"'
+      - "[[1,2,3],2] : [1,2]"
 
 - element: "Ż"
   name: Slice From One Until
   description: Slice from index 1 until a number / get groups of a gregex match
   arity: 2
   overloads:
-    any-num: a[1:b] (Slice from 1 until b)
-    num-any: b[1:a] (Slice from 1 until a)
-    str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+      any-num: a[1:b] (Slice from 1 until b)
+      num-any: b[1:a] (Slice from 1 until a)
+      str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
   vectorise: true
   tests:
-    - '["abc",2] : "b"'
-    - "[[1,2,3],3] : [2,3]"
+      - '["abc",2] : "b"'
+      - "[[1,2,3],3] : [2,3]"
 - modifier: "₌"
   name: Parallel Apply
   description: Parallel apply two elements to the top of the stack
@@ -2221,78 +2221,78 @@
   description: Square a number / Format a string into a square
   arity: 1
   overloads:
-    num: a ** 2 (Squared)
-    str: a formatted as a square
+      num: a ** 2 (Squared)
+      str: a formatted as a square
   vectorise: true
   tests:
-    - "[5] : 25"
-    - '["hello"] : ["hel","lo ", "   "]'
-    - '["bye"] : ["by","e "]'
-    - "[[1,2,3]] : [1,4,9]"
+      - "[5] : 25"
+      - '["hello"] : ["hel","lo ", "   "]'
+      - '["bye"] : ["by","e "]'
+      - "[[1,2,3]] : [1,4,9]"
 
 - element: "∇"
   name: Shift
   description: Shift the top of stack two values down
   arity: 3
   overloads:
-    any-any-any: c,a,b (Shift)
+      any-any-any: c,a,b (Shift)
   vectorise: false
   tests:
-    - "[1,4,5] : 4"
-    - '["my","hi","bye"] : "hi"'
+      - "[1,4,5] : 4"
+      - '["my","hi","bye"] : "hi"'
 
 - element: "⌈"
   name: Ceiling
   description: Take the ceiling of a number / split a string on spaces
   arity: 1
   overloads:
-    num: ceil(a) (Ceiling)
-    str: Split on spaces
+      num: ceil(a) (Ceiling)
+      str: Split on spaces
   vectorise: true
   tests:
-    - "[5] : 5"
-    - "[4.5] : 5"
-    - "[[1.52,2.9,3.3]] : [2,3,4]"
-    - '["hello world"] : ["hello","world"]'
+      - "[5] : 5"
+      - "[4.5] : 5"
+      - "[[1.52,2.9,3.3]] : [2,3,4]"
+      - '["hello world"] : ["hello","world"]'
 
 - element: "⌊"
   name: "Floor"
   description: Floor a number / extract the integer part of a string
   arity: 1
   overloads:
-    num: floor(a) (Floor)
-    str: Integer part of a
+      num: floor(a) (Floor)
+      str: Integer part of a
   vectorise: true
   tests:
-    - "[5.3] : 5"
-    - "[[5.3,4.7]] : [5, 4]"
-    - '["123abc"] : 123'
+      - "[5.3] : 5"
+      - "[[5.3,4.7]] : [5, 4]"
+      - '["123abc"] : 123'
 
 - element: "¯"
   name: Deltas
   description: Deltas (consecutive differences)
   arity: 1
   overloads:
-    any: deltas(a) (consecutive differences)
+      any: deltas(a) (consecutive differences)
   vectorise: true
   tests:
-    - "[[1,2,3]] : [1,1]"
-    - "[[1,1,1]] : [0,0]"
-    - "[[40,61,3]] : [21,-58]"
+      - "[[1,2,3]] : [1,1]"
+      - "[[1,1,1]] : [0,0]"
+      - "[[40,61,3]] : [21,-58]"
 
 - element: "±"
   name: Sign
   description: Get the sign of a number
   arity: 1
   overloads:
-    num: sign_of(a) (positive = 1, 0 = 0; negative = -1)
-    str: is a numeric
+      num: sign_of(a) (positive = 1, 0 = 0; negative = -1)
+      str: is a numeric
   vectorise: true
   tests:
-    - "[1] : 1"
-    - '["hi"] : 0'
-    - "[-5] : -1"
-    - "[0] : 0"
+      - "[1] : 1"
+      - '["hi"] : 0'
+      - "[-5] : -1"
+      - "[0] : 0"
 
 - element: "₴"
   name: Print Without Newline
@@ -2314,96 +2314,96 @@
   description: Right-bitshift a value / right-justify a string
   arity: 2
   overloads:
-    num-num: a << b
-    num-str: a.rjust(b)
-    str-num: b.rjust(a)
-    str-str: a.rjust(len(b)-len(a))
+      num-num: a << b
+      num-str: a.rjust(b)
+      str-num: b.rjust(a)
+      str-str: a.rjust(len(b)-len(a))
   vectorise: true
   tests:
-    - "[4,1] : 2"
-    - '[8,"green"] : "   green"'
-    - '["hello","cheeseburger"] : "       hello"'
+      - "[4,1] : 2"
+      - '[8,"green"] : "   green"'
+      - '["hello","cheeseburger"] : "       hello"'
 
 - element: "↲"
   name: Left Bit Shift
   description: Left-bitshift a value / left-justify a string
   arity: 2
   overloads:
-    num-num: a >> b
-    num-str: a.ljust(b)
-    str-num: b.ljust(a)
-    str-str: a.ljust(len(b)-len(a))
+      num-num: a >> b
+      num-str: a.ljust(b)
+      str-num: b.ljust(a)
+      str-str: a.ljust(len(b)-len(a))
   vectorise: true
   tests:
-    - "[4,1] : 8"
-    - '[8,"green"] : "green   "'
-    - '["hello","cheeseburger"] : "hello       "'
+      - "[4,1] : 8"
+      - '[8,"green"] : "green   "'
+      - '["hello","cheeseburger"] : "hello       "'
 
 - element: "⋏"
   name: Bitwise And
   arity: 2
   description: Performs bitwise and between two numbers / centre a string
   overloads:
-    num-num: a & b
-    num-str: b.center(a)
-    str-num: a.center(b)
-    str-str: a.center(len(b) - len(a))
+      num-num: a & b
+      num-str: b.center(a)
+      str-num: a.center(b)
+      str-str: a.center(len(b) - len(a))
   vectorise: true
   tests:
-    - "[420, 69] : 4"
-    - '["abc", 10] : "   abc    "'
-    - '["no", "gamers"] : " no "'
+      - "[420, 69] : 4"
+      - '["abc", 10] : "   abc    "'
+      - '["no", "gamers"] : " no "'
 
 - element: "⋎"
   name: Bitwise Or
   arity: 2
   description: Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
   overloads:
-    num-num: a | b
-    num-str: b[:a]+b[a+1:]
-    str-num: a[:b]+a[b+1:]
-    str-str: merge_join(a,b)
+      num-num: a | b
+      num-str: b[:a]+b[a+1:]
+      str-num: a[:b]+a[b+1:]
+      str-str: merge_join(a,b)
   vectorise: true
   tests:
-    - "[420, 69] : 485"
-    - '[2, "abc"] : "ab"'
-    - '["abc", 2] : "ab"'
-    - '["Hello", "lower"] : "Hellower"'
+      - "[420, 69] : 485"
+      - '[2, "abc"] : "ab"'
+      - '["abc", 2] : "ab"'
+      - '["Hello", "lower"] : "Hellower"'
 
 - element: "꘍"
   name: Bitwise Xor
   arity: 2
   description: Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
   overloads:
-    num-num: a ^ b
-    num-str: \" \" * a + b
-    str-num: a + \" \" * b
-    str-str: levenshtein_distance(a,b)
+      num-num: a ^ b
+      num-str: \" \" * a + b
+      str-num: a + \" \" * b
+      str-str: levenshtein_distance(a,b)
   vectorise: true
   tests:
-    - "[420, 69] : 481"
-    - '[5, "ab"] : "     ab"'
-    - '["ab", 5] : "ab     "'
-    - '["atoll", "bowl"] : 3'
+      - "[420, 69] : 481"
+      - '[5, "ab"] : "     ab"'
+      - '["ab", 5] : "ab     "'
+      - '["atoll", "bowl"] : 3'
 
 - element: "ꜝ"
   name: Bitwise Not
   arity: 1
   description: Performs bitwise not on a number / check if any letters are uppercase
   overloads:
-    num: ~a
-    str: any_upper(a)
+      num: ~a
+      str: any_upper(a)
   vectorise: true
   tests:
-    - "[220] : -221"
-    - '["Hello"] : 1'
+      - "[220] : -221"
+      - '["Hello"] : 1'
 
 - element: "℅"
   name: Random Choice
   arity: 1
   description: Random choice of single item from array
   overloads:
-    lst: random.choice(a)
+      lst: random.choice(a)
   vectorise: false
 
 - element: "≤"
@@ -2411,40 +2411,40 @@
   arity: 2
   description: a is lesser than or equal to b?
   overloads:
-    any-any: a <= b
+      any-any: a <= b
   vectorise: true
   tests:
-    - "[1,2] : 1"
+      - "[1,2] : 1"
 
 - element: "≥"
   name: Greater Than or Equal To
   arity: 2
   description: a is greater than or equal to b?
   overloads:
-    any-any: a >= b
+      any-any: a >= b
   vectorise: true
   tests:
-    - "[1,2] : 0"
+      - "[1,2] : 0"
 
 - element: "≠"
   name: Not Equal To
   arity: 2
   description: a is not equal to b?
   overloads:
-    any-any: a != b
+      any-any: a != b
   vectorise: false
   tests:
-    - "[1,2] : 1"
+      - "[1,2] : 1"
 
 - element: "⁼"
   name: Exactly Equal To
   arity: 2
   description: a equal to b? (non-vectorizing)
   overloads:
-    any-any: a == b
+      any-any: a == b
   vectorise: false
   tests:
-    - "[1,2] : 0"
+      - "[1,2] : 0"
 
 - modifier: "ƒ"
   name: Reduce by
@@ -2463,37 +2463,37 @@
   arity: 2
   description: Merge two arrays without duplicates
   overloads:
-    any-any: list(set(a).union(set(b)))
+      any-any: list(set(a).union(set(b)))
   vectorise: false
   tests:
-    - "[[1,2],[2,3,4]] : [1,2,3,4]"
+      - "[[1,2],[2,3,4]] : [1,2,3,4]"
 
 - element: "∩"
   name: Tranpose
   arity: 1
   description: Transpose an array
   overloads:
-    any: Transposed array
+      any: Transposed array
   vectorise: false
   tests:
-    - "[[[1,2],[2,3,4]]] : [[1, 2], [2, 3], [4]]"
+      - "[[[1,2],[2,3,4]]] : [[1, 2], [2, 3], [4]]"
 
 - element: "⊍"
   name: Symmetric Set difference
   arity: 2
   description: Uncommon elements of two arrays
   overloads:
-    any-any: list(set(a) ^ set(b))
+      any-any: list(set(a) ^ set(b))
   vectorise: false
   tests:
-    - "[[1,2],[2,3,4]] : [1,3,4]"
+      - "[[1,2],[2,3,4]] : [1,3,4]"
 
 - element: "£"
   name: Set Register
   arity: 1
   description: set the register to argument value
   overloads:
-    any: set_register(a)
+      any: set_register(a)
   vectorise: false
 
 - element: "¥"
@@ -2507,124 +2507,124 @@
   arity: 1
   description: Indices of elements to sort in ascending order / uppercase / increment number twice
   overloads:
-    lst: graded_up(a)
-    str: a.upper()
-    num: a + 2
+      lst: graded_up(a)
+      str: a.upper()
+      num: a + 2
   vectorise: false
   tests:
-    - "[[420,69,1337]] : [1,0,2]"
-    - '["Heloo"] : "HELOO"'
-    - "[4] : 6"
+      - "[[420,69,1337]] : [1,0,2]"
+      - '["Heloo"] : "HELOO"'
+      - "[4] : 6"
 
 - element: "⇩"
   name: Grade Down
   arity: 1
   description: "Indices of elements to sort in descending order / lowercase / decrement number twice"
   overloads:
-    lst: graded_down(a)
-    str: a.lower()
-    num: a - 2
+      lst: graded_down(a)
+      str: a.lower()
+      num: a - 2
   vectorise: false
   tests:
-    - "[[420,69,1337]] : [2,0,1]"
-    - '["Heloo"] : "heloo"'
-    - "[4] : 2"
+      - "[[420,69,1337]] : [2,0,1]"
+      - '["Heloo"] : "heloo"'
+      - "[4] : 2"
 
 - element: "Ǎ"
   name: Remove non-alphabets
   arity: 1
   description: Remove non-alphabetical characters / power with base 2
   overloads:
-    str: filter(isalpha, a)
-    num: 2 ** a
+      str: filter(isalpha, a)
+      num: 2 ** a
   vectorise: true
   tests:
-    - '["Helo1233adc__"] : "Heloadc"'
-    - "[8] : 256"
+      - '["Helo1233adc__"] : "Heloadc"'
+      - "[8] : 256"
 
 - element: "ǎ"
   name: Nth prime
   arity: 1
   description: nth prime / all substrings
   overloads:
-    str: substrings(a)
-    num: nth_prime(a)
+      str: substrings(a)
+      num: nth_prime(a)
   vectorise: true
   tests:
-    - "[3] : 7"
-    - '["abc"] : ["a","ab","abc","b","bc","c"]'
+      - "[3] : 7"
+      - '["abc"] : ["a","ab","abc","b","bc","c"]'
 
 - element: "Ǐ"
   name: Prime factorization
   arity: 1
   description: prime factorization / append first element
   overloads:
-    num: prime_factorization(a)
-    str: a + a[0]
+      num: prime_factorization(a)
+      str: a + a[0]
   vectorise: true
   tests:
-    - "[45] : [3,5]"
-    - '["abc"] : "abca"'
+      - "[45] : [3,5]"
+      - '["abc"] : "abca"'
 
 - element: "ǐ"
   name: Prime factors
   arity: 1
   description: all prime factors / Title Case string
   overloads:
-    num: prime_factors(a)
-    str: title_case(a)
+      num: prime_factors(a)
+      str: title_case(a)
   vectorise: true
   tests:
-    - "[45] : [3, 3, 5]"
-    - '["abc def"] : "Abc Def"'
+      - "[45] : [3, 3, 5]"
+      - '["abc def"] : "Abc Def"'
 
 - element: "Ǒ"
   name: Multiplicity
   arity: 2
   description: Order, Multiplicity, Valuation / remove till fixpoint
   overloads:
-    num-num: multiplicity(a,b)
-    str-str: remove_till_fixpoint(a,b)
+      num-num: multiplicity(a,b)
+      str-str: remove_till_fixpoint(a,b)
   vectorise: false
   tests:
-    - "[45, 3] : 2"
-    - '["aaabbbc", "ab"] : "c"'
+      - "[45, 3] : 2"
+      - '["aaabbbc", "ab"] : "c"'
 
 - element: "ǒ"
   name: Modulo 3
   arity: 1
   description: Modulo 3 / Split into Length 2
   overloads:
-    num: a % 3
-    str: a split into chunks of length 2
+      num: a % 3
+      str: a split into chunks of length 2
   vectorise: true
   tests:
-    - "[45] : 0"
-    - '["abcdefghi"] : ["ab", "cd", "ef", "gh", "i"]'
+      - "[45] : 0"
+      - '["abcdefghi"] : ["ab", "cd", "ef", "gh", "i"]'
 
 - element: "Ǔ"
   name: Rotate Left
   arity: 2
   description: Rotate Left / Rotate Left Once
   overloads:
-    any-num: rotate_left(a,b)
-    any-any: a,(b[1:]+b[:1])
+      any-num: rotate_left(a,b)
+      any-any: a,(b[1:]+b[:1])
   vectorise: false
   tests:
-    - "[3, [4, 5, 5, 6]] : [5, 5, 6, 4]"
-    - "[3, [1, 2, 3, 4]] : [2, 3, 4, 1]"
+      - "[3, [4, 5, 5, 6]] : [5, 5, 6, 4]"
+      - "[3, [1, 2, 3, 4]] : [2, 3, 4, 1]"
 
 - element: "ǔ"
   name: Rotate Right
   arity: 2
   description: Rotate Right / Rotate Right Once
   overloads:
-    any-num: rotate_right(a,b)
-    any-any: a,(b[-1:]+b[:-1])
+      any-num: rotate_right(a,b)
+      any-any: a,(b[-1:]+b[:-1])
   vectorise: false
   tests:
-    - "[3, [4, 5, 5, 6]] : [6, 4, 5, 5]"
-    - "[3, [1, 2, 3, 4]] : [4, 1, 2, 3]"
+      - "[3, [4, 5, 5, 6]] : [6, 4, 5, 5]"
+      - "[3, [1, 2, 3, 4]] : [4, 1, 2, 3]"
 
 - element: "⁽"
   name: One Element Lambda
@@ -2655,12 +2655,12 @@
   arity: 1
   description: Split on newlines / Power with base 10
   overloads:
-    str: a.split("\n")
-    num: 10 ** a
+      str: a.split("\n")
+      num: 10 ** a
   vectorise: true
   tests:
-    - '["a\nb\nc"] : ["a", "b", "c"]'
-    - "[3] : 1000"
+      - '["a\nb\nc"] : ["a", "b", "c"]'
+      - "[3] : 1000"
 
 - element: "⅛"
   name: Push To Global Array
@@ -2685,15 +2685,15 @@
   arity: 1
   description: Product of Array / Cartesian product over a list of lists
   overloads:
-    lst[num]: reduce list by multiplication
-    lst[str|lst]: reduce list by cartesian product
+      lst[num]: reduce list by multiplication
+      lst[str|lst]: reduce list by cartesian product
   vectorise: false
   tests:
-    - "[[3,4,5]] : 60"
-    - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
-    - "[[[1, 2], [3, 4], []]] : []"
-    - '[["ab","cd"]] : ["ac","ad","bc","bd"]'
-    - '[["abc", "def", "ghi"]] : ["adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"]'
+      - "[[3,4,5]] : 60"
+      - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
+      - "[[[1, 2], [3, 4], []]] : []"
+      - '[["ab","cd"]] : ["ac","ad","bc","bd"]'
+      - '[["abc", "def", "ghi"]] : ["adg", "adh", "adi", "aeg", "aeh", "aei", "afg", "afh", "afi", "bdg", "bdh", "bdi", "beg", "beh", "bei", "bfg", "bfh", "bfi", "cdg", "cdh", "cdi", "ceg", "ceh", "cei", "cfg", "cfh", "cfi"]'
 
 - element: "„"
   name: Rotate Stack Left
@@ -2715,7 +2715,7 @@
   description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)'
   vectorise: false
   tests:
-    - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"'
+      - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZ"'
 
 - element: "ke"
   name: e, Euler's number
@@ -2723,7 +2723,7 @@
   description: 2.718281828459045 (math.e, Euler's number)
   vectorise: false
   tests:
-    - "[] : 2.7182818284590452354"
+      - "[] : 2.7182818284590452354"
 
 - element: "kf"
   name: Fizz
@@ -2731,7 +2731,7 @@
   description: "Fizz"
   vectorise: false
   tests:
-    - '[] : "Fizz"'
+      - '[] : "Fizz"'
 
 - element: "kb"
   name: Buzz
@@ -2739,7 +2739,7 @@
   description: "Buzz"
   vectorise: false
   tests:
-    - '[] : "Buzz"'
+      - '[] : "Buzz"'
 
 - element: "kF"
   name: FizzBuzz
@@ -2747,7 +2747,7 @@
   description: "FizzBuzz"
   vectorise: false
   tests:
-    - '[] : "FizzBuzz"'
+      - '[] : "FizzBuzz"'
 
 - element: "kH"
   name: Hello, World!
@@ -2755,7 +2755,7 @@
   description: "Hello, World!"
   vectorise: false
   tests:
-    - '[] : "Hello, World!"'
+      - '[] : "Hello, World!"'
 
 - element: "kh"
   name: Hello World (No Punctuation)
@@ -2763,7 +2763,7 @@
   description: "Hello World"
   vectorise: false
   tests:
-    - '[] : "Hello World"'
+      - '[] : "Hello World"'
 
 - element: "k1"
   name: 1000
@@ -2771,7 +2771,7 @@
   description: 10^3 / 1000
   vectorise: false
   tests:
-    - "[] : 1000"
+      - "[] : 1000"
 
 - element: "k2"
   name: 10000
@@ -2779,7 +2779,7 @@
   description: 10^4 / 10000
   vectorise: false
   tests:
-    - "[] : 10000"
+      - "[] : 10000"
 
 - element: "k3"
   name: 100000
@@ -2787,7 +2787,7 @@
   description: 10^5 / 100000
   vectorise: false
   tests:
-    - "[] : 100000"
+      - "[] : 100000"
 
 - element: "k4"
   name: 1000000
@@ -2795,7 +2795,7 @@
   description: 10^6 / 1000000
   vectorise: false
   tests:
-    - "[] : 1000000"
+      - "[] : 1000000"
 
 - element: "ka"
   name: Lowercase alphabet
@@ -2803,7 +2803,7 @@
   description: '"abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)'
   vectorise: false
   tests:
-    - '[] : "abcdefghijklmnopqrstuvwxyz"'
+      - '[] : "abcdefghijklmnopqrstuvwxyz"'
 
 - element: "kL"
   name: Lowercase and uppercase alphabet
@@ -2811,7 +2811,7 @@
   description: '"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)'
   vectorise: false
   tests:
-    - '[] : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
+      - '[] : "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
 
 - element: "kd"
   name: Digits
@@ -2819,7 +2819,7 @@
   description: '"0123456789" (Digits 0-9)'
   vectorise: false
   tests:
-    - '[] : "0123456789"'
+      - '[] : "0123456789"'
 
 - element: "k6"
   name: Hex digits (lowercase)
@@ -2827,7 +2827,7 @@
   description: '"0123456789abcdef" (Hex digits)'
   vectorise: false
   tests:
-    - '[] : "0123456789abcdef"'
+      - '[] : "0123456789abcdef"'
 
 - element: "k^"
   name: Hex digits (uppercase)
@@ -2835,7 +2835,7 @@
   description: '"0123456789ABCDEF" (Hex digits uppercase)'
   vectorise: false
   tests:
-    - '[] : "0123456789ABCDEF"'
+      - '[] : "0123456789ABCDEF"'
 
 - element: "ko"
   name: Octal digits
@@ -2843,7 +2843,7 @@
   description: '"01234567" (Octal digits)'
   vectorise: false
   tests:
-    - '[] : "01234567"'
+      - '[] : "01234567"'
 
 - element: "kp"
   name: Punctuation
@@ -2851,7 +2851,7 @@
   description: string.punctuation (Punctuations)
   vectorise: false
   tests:
-    - "[] : string.punctuation"
+      - "[] : string.punctuation"
 
 - element: "kP"
   name: Printable ASCII
@@ -2859,7 +2859,7 @@
   description: printable ascii
   vectorise: false
   tests:
-    - "[] : '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~'"
+      - "[] : '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~'"
 
 - element: "kw"
   name: ASCII Whitespace
@@ -2874,7 +2874,7 @@
   description: '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)'
   vectorise: false
   tests:
-    - '[] : "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
+      - '[] : "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"'
 
 - element: "kB"
   name: Uppercase and lowercase alphabet
@@ -2882,7 +2882,7 @@
   description: '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)'
   vectorise: false
   tests:
-    - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"'
+      - '[] : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"'
 
 - element: "kZ"
   name: Uppercase alphabet reversed
@@ -2890,7 +2890,7 @@
   description: '"ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)'
   vectorise: false
   tests:
-    - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBA"'
+      - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBA"'
 
 - element: "kz"
   name: Lowercase alphabet reversed
@@ -2898,7 +2898,7 @@
   description: '"zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)'
   vectorise: false
   tests:
-    - '[] : "zyxwvutsrqponmlkjihgfedcba"'
+      - '[] : "zyxwvutsrqponmlkjihgfedcba"'
 
 - element: "kl"
   name: Uppercase and lowercase alphabet, reversed
@@ -2906,7 +2906,7 @@
   description: '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)'
   vectorise: false
   tests:
-    - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"'
+      - '[] : "ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"'
 
 - element: "ki"
   name: Pi
@@ -2914,7 +2914,7 @@
   description: 3.141592653589793 (Pi)
   vectorise: false
   tests:
-    - "[] : 3.141592653589793"
+      - "[] : 3.141592653589793"
 
 - element: "kn"
   name: NaN
@@ -2928,7 +2928,7 @@
   description: 1.618033988749895 (golden ratio/phi)
   vectorise: false
   tests:
-    - "[] : 1.618033988749895"
+      - "[] : 1.618033988749895"
 
 - element: "kD"
   name: Current day in the format YYYY-MM-DD
@@ -2971,7 +2971,7 @@
   description: "{}[]<>()"
   vectorise: false
   tests:
-    - '[] : "{}[]<>()"'
+      - '[] : "{}[]<>()"'
 
 - element: "kḂ"
   name: Parentheses, square brackets, and braces
@@ -2979,7 +2979,7 @@
   description: '"()[]{}" (Brackets)'
   vectorise: false
   tests:
-    - '[] : "()[]{}"'
+      - '[] : "()[]{}"'
 
 - element: "kß"
   name: Parentheses and square brackets
@@ -2987,7 +2987,7 @@
   description: "()[]"
   vectorise: false
   tests:
-    - '[] : "()[]"'
+      - '[] : "()[]"'
 
 - element: "kḃ"
   name: Opening brackets
@@ -2995,7 +2995,7 @@
   description: '"([{" (Open brackets)'
   vectorise: false
   tests:
-    - '[] : "([{"'
+      - '[] : "([{"'
 
 - element: "k≥"
   name: Closing brackets
@@ -3003,7 +3003,7 @@
   description: '")]}" (Close brackets)'
   vectorise: false
   tests:
-    - '[] : ")]}"'
+      - '[] : ")]}"'
 
 - element: "k≤"
   name: Opening brackets (with <)
@@ -3011,7 +3011,7 @@
   description: '"([{<" (Fish bones :P)'
   vectorise: false
   tests:
-    - '[] : "([{<"'
+      - '[] : "([{<"'
 
 - element: "kΠ"
   name: Closing brackets (with >)
@@ -3019,7 +3019,7 @@
   description: '")]}>" (Closing brackets)'
   vectorise: false
   tests:
-    - '[] : ")]}>"'
+      - '[] : ")]}>"'
 
 - element: "kv"
   name: Lowercase vowels
@@ -3027,7 +3027,7 @@
   description: '"aeiou" (Vowels lowercase)'
   vectorise: false
   tests:
-    - '[] : "aeiou"'
+      - '[] : "aeiou"'
 
 - element: "kV"
   name: Upercase vowels
@@ -3035,7 +3035,7 @@
   description: '"AEIOU" (Vowels uppercase)'
   vectorise: false
   tests:
-    - '[] : "AEIOU"'
+      - '[] : "AEIOU"'
 
 - element: "k∨"
   name: Lowercase and uppercase vowels
@@ -3043,7 +3043,7 @@
   description: '"aeiouAEIOU" (vowelsVOWELS)'
   vectorise: false
   tests:
-    - '[] : "aeiouAEIOU"'
+      - '[] : "aeiouAEIOU"'
 
 - element: "k⟇"
   name: Vyxal codepage
@@ -3058,7 +3058,7 @@
   description: [1, 2]
   vectorise: false
   tests:
-    - "[] : [1, 2]"
+      - "[] : [1, 2]"
 
 - element: "kḭ"
   name: 4294967296
@@ -3066,7 +3066,7 @@
   description: 2 ** 32, 2^32, 4294967296
   vectorise: false
   tests:
-    - "[] : 4294967296"
+      - "[] : 4294967296"
 
 - element: "k+"
   name: [1, -1]
@@ -3074,7 +3074,7 @@
   description: [1, -1]
   vectorise: false
   tests:
-    - "[] : [1, -1]"
+      - "[] : [1, -1]"
 
 - element: "k-"
   name: [-1, 1]
@@ -3082,7 +3082,7 @@
   description: [-1, 1]
   vectorise: false
   tests:
-    - "[] : [-1, 1]"
+      - "[] : [-1, 1]"
 
 - element: "k≈"
   name: [0, 1]
@@ -3090,7 +3090,7 @@
   description: [0, 1]
   vectorise: false
   tests:
-    - "[] : [0, 1]"
+      - "[] : [0, 1]"
 
 - element: "k/"
   name: Slashes
@@ -3098,7 +3098,7 @@
   description: '"/\\" (Forwardslash, backslash)'
   vectorise: false
   tests:
-    - '[] : "/\\"'
+      - '[] : "/\\"'
 
 - element: "kR"
   name: 360
@@ -3106,7 +3106,7 @@
   description: 360
   vectorise: false
   tests:
-    - "[] : 360"
+      - "[] : 360"
 
 - element: "kW"
   name: https://
@@ -3114,7 +3114,7 @@
   description: "https://"
   vectorise: false
   tests:
-    - '[] : "https://"'
+      - '[] : "https://"'
 
 - element: "k℅"
   name: http://
@@ -3122,7 +3122,7 @@
   description: "http://"
   vectorise: false
   tests:
-    - '[] : "http://"'
+      - '[] : "http://"'
 
 - element: "k↳"
   name: https://www.
@@ -3130,7 +3130,7 @@
   description: "https://www."
   vectorise: false
   tests:
-    - '[] : "https://www."'
+      - '[] : "https://www."'
 
 - element: "k²"
   name: http://www.
@@ -3138,7 +3138,7 @@
   description: "http://www."
   vectorise: false
   tests:
-    - '[] : "http://www."'
+      - '[] : "http://www."'
 
 - element: "k¶"
   name: 512
@@ -3146,7 +3146,7 @@
   description: 512
   vectorise: false
   tests:
-    - "[] : 512"
+      - "[] : 512"
 
 - element: "k⁋"
   name: 1024
@@ -3154,7 +3154,7 @@
   description: 1024
   vectorise: false
   tests:
-    - "[] : 1024"
+      - "[] : 1024"
 
 - element: "k¦"
   name: 2048
@@ -3162,7 +3162,7 @@
   description: 2048
   vectorise: false
   tests:
-    - "[] : 2048"
+      - "[] : 2048"
 
 - element: "kṄ"
   name: 4096
@@ -3170,7 +3170,7 @@
   description: 4096
   vectorise: false
   tests:
-    - "[] : 4096"
+      - "[] : 4096"
 
 - element: "kṅ"
   name: 8192
@@ -3178,7 +3178,7 @@
   description: 8192
   vectorise: false
   tests:
-    - "[] : 8192"
+      - "[] : 8192"
 
 - element: "k¡"
   name: 16384
@@ -3186,7 +3186,7 @@
   description: 16384
   vectorise: false
   tests:
-    - "[] : 16384"
+      - "[] : 16384"
 
 - element: "kε"
   name: 32768
@@ -3194,7 +3194,7 @@
   description: 32768
   vectorise: false
   tests:
-    - "[] : 32768"
+      - "[] : 32768"
 
 - element: "k₴"
   name: 65536
@@ -3202,7 +3202,7 @@
   description: 65536
   vectorise: false
   tests:
-    - "[] : 65536"
+      - "[] : 65536"
 
 - element: "k×"
   name: 2147483648
@@ -3210,7 +3210,7 @@
   description: 2147483648
   vectorise: false
   tests:
-    - "[] : 2147483648"
+      - "[] : 2147483648"
 
 - element: "k⁰"
   name: Lowercase consonants with y
@@ -3218,7 +3218,7 @@
   description: "bcdfghjklmnpqrstvwxyz"
   vectorise: false
   tests:
-    - '[] : "bcdfghjklmnpqrstvwxyz"'
+      - '[] : "bcdfghjklmnpqrstvwxyz"'
 
 - element: "k¹"
   name: Lowercase consonants without y
@@ -3232,7 +3232,7 @@
   description: BF command set ("[]<>-+.,")
   vectorise: false
   tests:
-    - '[] : "[]<>-+.,"'
+      - '[] : "[]<>-+.,"'
 
 - element: "kṗ"
   name: Bracket pair list
@@ -3240,7 +3240,7 @@
   description: List of bracket pairs ("[(),[],{},<>]")
   vectorise: false
   tests:
-    - '[] : ["()","[]","{}","<>"]'
+      - '[] : ["()","[]","{}","<>"]'
 
 - element: "kṖ"
   name: Nested brackets
@@ -3248,7 +3248,7 @@
   description: String of all brackets nested ("([{<>}])")
   vectorise: false
   tests:
-    - '[] : "([{<>}])"'
+      - '[] : "([{<>}])"'
 
 - element: "kS"
   name: Amogus
@@ -3256,7 +3256,7 @@
   description: Amogus ("ඞ")
   vectorise: false
   tests:
-    - '[] : "ඞ"'
+      - '[] : "ඞ"'
 
 - element: "k₁"
   name: [1, 1]
@@ -3264,7 +3264,7 @@
   description: The list [1, 1]
   vectorise: false
   tests:
-    - "[] : [1, 1]"
+      - "[] : [1, 1]"
 
 - element: "k₂"
   name: 2 ** 20
@@ -3272,7 +3272,7 @@
   description: 2 to the power of 20, 1048576
   vectorise: false
   tests:
-    - "[] : 1048576"
+      - "[] : 1048576"
 
 - element: "k₃"
   name: 2 ** 30
@@ -3280,7 +3280,7 @@
   description: 2 to the power of 30, 1073741824
   vectorise: false
   tests:
-    - "[] : 1073741824"
+      - "[] : 1073741824"
 
 - element: "k∪"
   name: Lowercase Vowels With Y
@@ -3288,7 +3288,7 @@
   description: Lowercase vowels with y, "aeiouy"
   vectorise: false
   tests:
-    - '[] : "aeiouy"'
+      - '[] : "aeiouy"'
 
 - element: "k⊍"
   name: Uppercase Vowels With Y
@@ -3296,7 +3296,7 @@
   description: Uppercase vowels with y, "AEIOUY"
   vectorise: false
   tests:
-    - '[] : "AEIOUY"'
+      - '[] : "AEIOUY"'
 
 - element: "k∩"
   name: Vowels With Y
@@ -3304,7 +3304,7 @@
   description: Vowels with y, "aeiouyAEIOUY"
   vectorise: false
   tests:
-    - '[] : "aeiouyAEIOUY"'
+      - '[] : "aeiouyAEIOUY"'
 
 - element: "k□"
   name: Directions
@@ -3312,7 +3312,7 @@
   description: Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
   vectorise: false
   tests:
-    - "[] : [[0,1],[1,0],[0,-1],[-1,0]]"
+      - "[] : [[0,1],[1,0],[0,-1],[-1,0]]"
 
 - element: "kṘ"
   name: Roman Numerals
@@ -3320,7 +3320,7 @@
   description: IVXLCDM
   vectorise: false
   tests:
-    - '[] : "IVXLCDM"'
+      - '[] : "IVXLCDM"'
 
 - element: "k•"
   name: Qwerty Keyboard
@@ -3328,7 +3328,7 @@
   description: The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
   vectorise: false
   tests:
-    - "[] : [\"qwertyuiop\",\"asdfghjkl\",\"zxcvbnm\"]"
+      - '[] : ["qwertyuiop","asdfghjkl","zxcvbnm"]'
 
 # Add constants with the following format:
 #
@@ -3347,457 +3347,457 @@
   arity: 1
   description: Get the cosine of an angle in radians
   overloads:
-    num: math.cos(a)
+      num: math.cos(a)
   vectorise: true
   tests:
-    - "[3.14159265358979] : -1"
-    - "[0] : 1"
-    - "[6.283185307] : 1"
+      - "[3.14159265358979] : -1"
+      - "[0] : 1"
+      - "[6.283185307] : 1"
 
 - element: "∆C"
   name: Arc Cosine
   arity: 1
   description: Get the arccosine of an angle in radians
   overloads:
-    num: math.arrcos(a)
+      num: math.arrcos(a)
   vectorise: true
   tests:
-    - "[-1] : 3.14159265358979"
-    - "[1] : 0"
+      - "[-1] : 3.14159265358979"
+      - "[1] : 0"
 
 - element: "∆q"
   name: Quadratic Solver
   arity: 2
   description: Solve a quadratic equation of the form ax^2 + bx = 0
   overloads:
-    num-num: x such that ax^2 + bx = 0
-    num-str: solve a such that a = b
-    str-num: solve b such that b = a
-    str-str: solve equation a = b for x
+      num-num: x such that ax^2 + bx = 0
+      num-str: solve a such that a = b
+      str-num: solve b such that b = a
+      str-str: solve equation a = b for x
   vectorise: true
   tests:
-    - "[1, 2] : [-2, 0]"
-    - "[1, -2] : [0, 2]"
-    - "[69, 420] : [-140/23, 0.0]"
+      - "[1, 2] : [-2, 0]"
+      - "[1, -2] : [0, 2]"
+      - "[69, 420] : [-140/23, 0.0]"
 
 - element: "∆Q"
   name: General Quadratic Solver
   arity: 2
   description: Solve a quadratic equation of the form x^2 + ax + b = 0
   overloads:
-    num-num: roots(a, b) / x^2 + ax + b = 0
-    num-str: evaluate single variable expression b with x=a
-    str-num: evaluate single variable expression a with x=b
-    str-str: solve equations a and b simultaneously
+      num-num: roots(a, b) / x^2 + ax + b = 0
+      num-str: evaluate single variable expression b with x=a
+      str-num: evaluate single variable expression a with x=b
+      str-str: solve equations a and b simultaneously
   vectorise: true
   tests:
-    - "[1, -2] : [-2, 1]"
-    - "[29, -30] : [-30, 1]"
-    - "[69, 420] : [-62.2533781727558, -6.74662182724416]"
+      - "[1, -2] : [-2, 1]"
+      - "[29, -30] : [-30, 1]"
+      - "[69, 420] : [-62.2533781727558, -6.74662182724416]"
 
 - element: "∆s"
   name: Sine
   arity: 1
   description: Get the sine of an angle in radians
   overloads:
-    num: math.sin(a)
+      num: math.sin(a)
   vectorise: true
   tests:
-    - "[3.14159265358979] : 0"
-    - "[0] : 0"
-    - "[6.28318530717959] : 0"
+      - "[3.14159265358979] : 0"
+      - "[0] : 0"
+      - "[6.28318530717959] : 0"
 
 - element: "∆S"
   name: Arc Sine
   arity: 1
   description: Get the arcsine of an angle in radians
   overloads:
-    num: math.arcsin(a)
+      num: math.arcsin(a)
   vectorise: true
   tests:
-    - "[-1] : -1.5707963267948966"
-    - "[1] : 1.5707963267948966"
+      - "[-1] : -1.5707963267948966"
+      - "[1] : 1.5707963267948966"
 
 - element: "∆t"
   name: Tangent
   arity: 1
   description: Get the tangent of an angle in radians
   overloads:
-    num: math.tan(a)
+      num: math.tan(a)
   vectorise: true
   tests:
-    - "[3.1415926535897932385] : 0"
-    - "[0] : 0"
-    - "[6.2831853071795864769] : 0"
+      - "[3.1415926535897932385] : 0"
+      - "[0] : 0"
+      - "[6.2831853071795864769] : 0"
 
 - element: "∆T"
   name: Arc Tangent
   arity: 1
   description: Get the arctangent of an angle in radians
   overloads:
-    num: math.arctan(a)
+      num: math.arctan(a)
   vectorise: true
   tests:
-    - "[-1] : -0.78539816339744830962"
-    - "[1] : 0.78539816339744830962"
+      - "[-1] : -0.78539816339744830962"
+      - "[1] : 0.78539816339744830962"
 
 - element: "∆P"
   name: Polynomial Solver
   arity: 1
   description: Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
   overloads:
-    lst: roots(a)
+      lst: roots(a)
   vectorise: false
   tests:
-    - "[[4, -1005, 3, 4]] : [(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)]"
-    - "[[69, 420, -1]] : [0.00238002178391728, -6.08933654352305]"
+      - "[[4, -1005, 3, 4]] : [(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)]"
+      - "[[69, 420, -1]] : [0.00238002178391728, -6.08933654352305]"
 
 - element: "∆ƈ"
   name: n Pick r (npr)
   arity: 2
   description: Get the number of combinations of r items from a set of n items
   overloads:
-    num-num: n_pick_r(a, b)
-    num-str: n_pick_r(a, len(b))
-    str-num: n_pick_r(len(a), b)
-    str-str: n_pick_r(len(a), len(b))
+      num-num: n_pick_r(a, b)
+      num-str: n_pick_r(a, len(b))
+      str-num: n_pick_r(len(a), b)
+      str-str: n_pick_r(len(a), len(b))
   vectorise: true
   tests:
-    - "[[3, 4, 5, 6], [1, 2, 3, 4]] : [3,12,60,360]"
+      - "[[3, 4, 5, 6], [1, 2, 3, 4]] : [3,12,60,360]"
 
 - element: "∆±"
   name: Copy Sign
   arity: 2
   description: Copy the sign of one number to the other
   overloads:
-    num-num: math.copysign(a, b)
+      num-num: math.copysign(a, b)
   vectorise: true
   tests:
-    - "[-1, 4] : 1"
-    - "[1, -69] : -1"
-    - "[-1, -420] : -1"
-    - "[1, 203] : 1"
+      - "[-1, 4] : 1"
+      - "[1, -69] : -1"
+      - "[-1, -420] : -1"
+      - "[1, 203] : 1"
 
 - element: "∆K"
   name: Sum of Proper Divisors / Stationary Points
   arity: 1
   description: Get the sum of all proper divisors of a number /  get the stationary points of a function
   overloads:
-    num: sum_of_proper_divisors(a)
-    str: stationary_points(a)
+      num: sum_of_proper_divisors(a)
+      str: stationary_points(a)
   vectorise: true
   tests:
-    - "[43] : [1]"
-    - "[12] : [16]"
-    - "[97] : [1]"
-    - "[34] : [20]"
-    - "[18] : [21]"
-    - "['(x**2 + x + 1) / x'] : [-1, 1]"
+      - "[43] : [1]"
+      - "[12] : [16]"
+      - "[97] : [1]"
+      - "[34] : [20]"
+      - "[18] : [21]"
+      - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆²"
   name: Perfect Square?
   arity: 1
   description: Is the number a perfect square? (1, 4, 9, 16, 25, 36)
   overloads:
-    num: is_perfect_square(a)
+      num: is_perfect_square(a)
   vectorise: true
   tests:
-    - "[1] : 1"
-    - "[4] : 1"
-    - "[9] : 1"
-    - "[16] : 1"
-    - "[25] : 1"
-    - "[36] : 1"
-    - "[37] : 0"
-    - "[-1] : 0"
-    - "[0] : 1"
-    - "[1.5] : 0"
+      - "[1] : 1"
+      - "[4] : 1"
+      - "[9] : 1"
+      - "[16] : 1"
+      - "[25] : 1"
+      - "[36] : 1"
+      - "[37] : 0"
+      - "[-1] : 0"
+      - "[0] : 1"
+      - "[1.5] : 0"
 
 - element: "∆e"
   name: Euler's Number (e) raised to power a
   arity: 1
   description: Get the value of Euler's number (e) raised to the power of a
   overloads:
-    num: e ** a
-    str: simplify expression a
+      num: e ** a
+      str: simplify expression a
   vectorise: true
   tests:
-    - "[0] : 1"
-    - "[1] : 2.718281828459045"
-    - "[2] : 7.38905609893065"
-    - "[3] : 20.085536923187668"
+      - "[0] : 1"
+      - "[1] : 2.718281828459045"
+      - "[2] : 7.38905609893065"
+      - "[3] : 20.085536923187668"
 
 - element: "∆E"
   name: (Euler's Number (e) Raised to Power a) - 1
   arity: 1
   description: Get the value of Euler's number (e) raised to the power of a minus 1
   overloads:
-    num: (e ** a) - 1
-    str: expand expression a
+      num: (e ** a) - 1
+      str: expand expression a
   vectorise: true
   tests:
-    - "[0] : 0"
-    - "[1] : 1.718281828459045"
-    - "[2] : 6.38905609893065"
-    - "[3] : 19.085536923187668"
-    - "['(x + 1)^2'] : 'x**2 + 2*x + 1'"
+      - "[0] : 0"
+      - "[1] : 1.718281828459045"
+      - "[2] : 6.38905609893065"
+      - "[3] : 19.085536923187668"
+      - "['(x + 1)^2'] : 'x**2 + 2*x + 1'"
 
 - element: "∆L"
   name: Natural Logarithm
   arity: 1
   description: Get the natural logarithm of a number
   overloads:
-    num: math.log(a)
+      num: math.log(a)
   vectorise: true
   tests:
-    - "[1] : 0"
-    - "[2] : 0.6931471805599453"
-    - "[3] : 1.0986122886681098"
-    - "[4] : 1.3862943611198906"
-    - "[5] : 1.6094379124341003"
-    - "[6] : 1.791759469228055"
-    - "[7] : 1.9459101490553132"
-    - "[8] : 2.0794415416798357"
-    - "[9] : 2.1972245773362196"
-    - "[10] : 2.302585092994046"
-    - "[11] : 2.3978952727983707"
-    - "[12] : 2.4849066497880004"
-    - "[13] : 2.5649493574615367"
-    - "[14] : 2.6390573296152586"
-    - "[15] : 2.70805020110221"
-    - "[16] : 2.7725887222397813"
-    - "[17] : 2.833213344056216"
+      - "[1] : 0"
+      - "[2] : 0.6931471805599453"
+      - "[3] : 1.0986122886681098"
+      - "[4] : 1.3862943611198906"
+      - "[5] : 1.6094379124341003"
+      - "[6] : 1.791759469228055"
+      - "[7] : 1.9459101490553132"
+      - "[8] : 2.0794415416798357"
+      - "[9] : 2.1972245773362196"
+      - "[10] : 2.302585092994046"
+      - "[11] : 2.3978952727983707"
+      - "[12] : 2.4849066497880004"
+      - "[13] : 2.5649493574615367"
+      - "[14] : 2.6390573296152586"
+      - "[15] : 2.70805020110221"
+      - "[16] : 2.7725887222397813"
+      - "[17] : 2.833213344056216"
 
 - element: "∆l"
   name: Logarithm (log_2)
   arity: 1
   description: Get the logarithm of a number to base 2
   overloads:
-    num: math.log2(a)
+      num: math.log2(a)
   vectorise: true
   tests:
-    - "[1] : 0"
-    - "[2] : 1"
+      - "[1] : 0"
+      - "[2] : 1"
 
 - element: "∆τ"
   name: Common Logarithm
   arity: 1
   description: Get the common logarithm of a number
   overloads:
-    num: math.log10(a)
+      num: math.log10(a)
   vectorise: true
   tests:
-    - "[1] : 0"
-    - "[2] : 0.3010299956639812"
-    - "[3] : 0.47712125471966244"
-    - "[4] : 0.6020599913279624"
-    - "[5] : 0.6989700043360189"
-    - "[6] : 0.7781512503836436"
-    - "[7] : 0.8450980400142568"
-    - "[8] : 0.9030899869919435"
-    - "[9] : 0.9542425094393249"
-    - "[10] : 1"
+      - "[1] : 0"
+      - "[2] : 0.3010299956639812"
+      - "[3] : 0.47712125471966244"
+      - "[4] : 0.6020599913279624"
+      - "[5] : 0.6989700043360189"
+      - "[6] : 0.7781512503836436"
+      - "[7] : 0.8450980400142568"
+      - "[8] : 0.9030899869919435"
+      - "[9] : 0.9542425094393249"
+      - "[10] : 1"
 
 - element: "∆d"
   name: Straight Line Distance
   arity: 2
   description: Get the straight line distance between two points (x1, y1) and (x2, y2)
   overloads:
-    lst-lst: euclidian_distance(a, b)
+      lst-lst: euclidian_distance(a, b)
   vectorise: false
   tests:
-    - "[[69, 420], [21, 42]] : 381.03543142337827"
+      - "[[69, 420], [21, 42]] : 381.03543142337827"
 
 - element: "∆D"
   name: To Degrees
   arity: 1
   description: Convert an angle from radians to degrees
   overloads:
-    num: math.degrees(a)
+      num: math.degrees(a)
   vectorise: true
   tests:
-    - "[0] : 0"
-    - "[1] : 57.29577951308232"
-    - "[1.5707963267948966] : 90"
-    - "[2] : 114.59155902616465"
-    - "[3] : 171.88733853924697"
+      - "[0] : 0"
+      - "[1] : 57.29577951308232"
+      - "[1.5707963267948966] : 90"
+      - "[2] : 114.59155902616465"
+      - "[3] : 171.88733853924697"
 
 - element: "∆R"
   name: To Radians
   arity: 1
   description: Convert an angle from degrees to radians
   overloads:
-    num: math.radians(a)
+      num: math.radians(a)
   vectorise: true
   tests:
-    - "[0] : 0"
-    - "[90] : 1.5707963267948966"
-    - "[180] : 3.141592653589793"
-    - "[270] : 4.71238898038469"
-    - "[360] : 6.283185307179586"
+      - "[0] : 0"
+      - "[90] : 1.5707963267948966"
+      - "[180] : 3.141592653589793"
+      - "[270] : 4.71238898038469"
+      - "[360] : 6.283185307179586"
 
 - element: "∆Ṗ"
   name: Next Prime After a Number / Discriminant of Polynomial
   arity: 1
   description: Get the next prime number after a given number / the discriminant of a polynomial
   overloads:
-    num: next_prime(a)
-    str: discriminant(a)
+      num: next_prime(a)
+      str: discriminant(a)
   vectorise: true
   tests:
-    - "[1] : 2"
-    - "[2] : 3"
-    - "[3] : 5"
-    - "[4] : 5"
-    - "[5] : 7"
-    - "[69] : 71"
-    - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
+      - "[1] : 2"
+      - "[2] : 3"
+      - "[3] : 5"
+      - "[4] : 5"
+      - "[5] : 7"
+      - "[69] : 71"
+      - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
 
 - element: "∆ṗ"
   name: First Prime Before a Number / Factor Expression
   arity: 1
   description: Get the first prime number before a given number / factor a mathematical expression
   overloads:
-    num: prev_prime(a)
-    str: factorise(a)
+      num: prev_prime(a)
+      str: factorise(a)
   vectorise: true
   tests:
-    - "[1] : 1"
-    - "[2] : 1"
-    - "[3] : 2"
-    - "[4] : 3"
-    - "[5] : 3"
-    - "[69] : 67"
-    - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
-    - "['x*3 + x**2'] : 'x*(x + 3)'"
+      - "[1] : 1"
+      - "[2] : 1"
+      - "[3] : 2"
+      - "[4] : 3"
+      - "[5] : 3"
+      - "[69] : 67"
+      - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
+      - "['x*3 + x**2'] : 'x*(x + 3)'"
 
 - element: "∆p"
   name: Nearest Prime to a Number / Python equivalent of an expression
   arity: 1
   description: Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
   overloads:
-    num: nearest_prime(a)
-    str: sympy.nsimplify(a).pycode()
+      num: nearest_prime(a)
+      str: sympy.nsimplify(a).pycode()
   vectorise: true
   tests:
-    - "[1] : 2"
-    - "[2] : 2"
-    - "[3] : 3"
-    - "[4] : 5"
-    - "[5] : 5"
-    - "[38] : 37"
-    - "[40] : 41"
-    - "[69] : 71"
+      - "[1] : 2"
+      - "[2] : 2"
+      - "[3] : 3"
+      - "[4] : 5"
+      - "[5] : 5"
+      - "[38] : 37"
+      - "[40] : 41"
+      - "[69] : 71"
 
 - element: "∆ṙ"
   name: Polynomial from Roots
   arity: 1
   description: Get the polynomial with coefficients from the roots of a polynomial
   overloads:
-    list: polynomial(a)
+      list: polynomial(a)
   vectorise: false
   tests:
-    - "[[1, 2, 3]] : [1, -6, 11, -6]"
-    - "[[19, 43, 12, 5, 129]] : [1, -208, 12122, -266708, 2320581, -6323580]"
+      - "[[1, 2, 3]] : [1, -6, 11, -6]"
+      - "[[19, 43, 12, 5, 129]] : [1, -208, 12122, -266708, 2320581, -6323580]"
 
 - element: "∆W"
   name: Round to n Decimal Places
   arity: 2
   description: Round a number to n decimal places
   overloads:
-    num-num: round(a, no_dec_places=b)
+      num-num: round(a, no_dec_places=b)
   vectorise: true
   tests:
-    - "[1.2345, 2] : 1.23"
-    - "[1.2345, 3] : 1.234"
-    - "[1.2345, 4] : 1.2345"
-    - "[1.2345, 5] : 1.2345"
+      - "[1.2345, 2] : 1.23"
+      - "[1.2345, 3] : 1.234"
+      - "[1.2345, 4] : 1.2345"
+      - "[1.2345, 5] : 1.2345"
 
 - element: "∆Ŀ"
   name: Least Common Multiple
   arity: 1 or 2
   description: Get the least common multiple of two numbers
   overloads:
-    lst: lcm(a)
-    num-num: lcm(a, b)
+      lst: lcm(a)
+      num-num: lcm(a, b)
   vectorise: true
   tests:
-    - "[1, 2] : 2"
-    - "[69, 420] : 9660"
-    - "[[3,4,5,6]] : 60"
+      - "[1, 2] : 2"
+      - "[69, 420] : 9660"
+      - "[[3,4,5,6]] : 60"
 
 - element: "∆i"
   name: nth Digit of Pi / Integrate
   arity: 1
   description: Get the nth digit of pi
   overloads:
-    num: nth_digit_of_pi(a)
-    str: antiderivative of a
+      num: nth_digit_of_pi(a)
+      str: antiderivative of a
   vectorise: true
   tests:
-    - "[0] : 3"
-    - "[1] : 1"
-    - "[2] : 4"
-    - "[3] : 1"
-    - "[4] : 5"
-    - "[5] : 9"
-    - "[6] : 2"
-    - "[7] : 6"
-    - "[8] : 5"
-    - "[9] : 3"
+      - "[0] : 3"
+      - "[1] : 1"
+      - "[2] : 4"
+      - "[3] : 1"
+      - "[4] : 5"
+      - "[5] : 9"
+      - "[6] : 2"
+      - "[7] : 6"
+      - "[8] : 5"
+      - "[9] : 3"
 
 - element: "∆Ė"
   name: N Digits of Euler's Number (e) / Sympy Evaluate
   arity: 1
   description: Get the first n digits of Euler's number (e) / evaluate an expression as sympy
   overloads:
-    num: First n digits of e
-    str: evaluate(a)
+      num: First n digits of e
+      str: evaluate(a)
   vectorise: true
   tests:
-    - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
+      - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
 
 - element: "∆ė"
   name: Nth Digit of Euler's Number (e) / Differentiate
   arity: 1
   description: Get the nth digit of Euler's number (e)
   overloads:
-    num: nth_digit_of_e(a)
-    str: derivative(a)
+      num: nth_digit_of_e(a)
+      str: derivative(a)
   vectorise: true
   tests:
-    - "[0] : 2"
-    - "[1] : 7"
-    - "[2] : 1"
-    - "[3] : 8"
-    - "[4] : 2"
-    - "[5] : 8"
+      - "[0] : 2"
+      - "[1] : 7"
+      - "[2] : 1"
+      - "[3] : 8"
+      - "[4] : 2"
+      - "[5] : 8"
 
 - element: "∆f"
   name: nth Fibonacci Number
   arity: 1
   description: Get the nth fibonacci number
   overloads:
-    num: nth_fibonacci(a)
+      num: nth_fibonacci(a)
   vectorise: true
   tests:
-    - "[0] : 1"
-    - "[1] : 1"
-    - "[2] : 2"
-    - "[3] : 3"
-    - "[4] : 5"
-    - "[5] : 8"
-    - "[6] : 13"
-    - "[7] : 21"
-    - "[8] : 34"
-    - "[9] : 55"
+      - "[0] : 1"
+      - "[1] : 1"
+      - "[2] : 2"
+      - "[3] : 3"
+      - "[4] : 5"
+      - "[5] : 8"
+      - "[6] : 13"
+      - "[7] : 21"
+      - "[8] : 34"
+      - "[9] : 55"
 
 - element: "∆B"
   name: Random Bits
   arity: 1
   description: Get a list of random bits to length n
   overloads:
-    num: random_bits(a)
+      num: random_bits(a)
   vectorise: true
 
 - element: "∆Ṙ"
@@ -3805,7 +3805,7 @@
   arity: 0
   description: Get a random float in the range [0, 1), pseudo random number
   overloads:
-    num: random.random()
+      num: random.random()
   vectorise: true
 
 - element: "∆ṫ"
@@ -3813,20 +3813,20 @@
   arity: 1
   description: Get the totient function of a number / local minima of a function
   overloads:
-    num: totient(a)
-    str: local_minima(a)
+      num: totient(a)
+      str: local_minima(a)
   vectorise: true
   tests:
-    - "[[23, 76, 1234, 68, 234, 87, 12, 567]] : [22, 36, 616, 32, 72, 56, 4, 324]"
-    - "['5*x**2 - 34*x + 213'] : [3.4]"
-    - "['(x**2 + x + 1) / x'] : [1]"
+      - "[[23, 76, 1234, 68, 234, 87, 12, 567]] : [22, 36, 616, 32, 72, 56, 4, 324]"
+      - "['5*x**2 - 34*x + 213'] : [3.4]"
+      - "['(x**2 + x + 1) / x'] : [1]"
 
 - element: "∆Z"
   name: ZFill
   arity: 2
   description: Pad a string with zeros to a given length
   overloads:
-    str, num: zfill(a, b)
+      str, num: zfill(a, b)
   vectorise: false
 
 - element: "∆ċ"
@@ -3834,84 +3834,84 @@
   arity: 1
   description: Get the nth cardinal / convert number to words
   overloads:
-    num: num_to_words(a)
+      num: num_to_words(a)
   vectorise: true
   tests:
-    - "[[4324, -48294, 0.5, 93424, 2.3]] : ['four thousand, three hundred and twenty-four', 'minus forty-eight thousand, two hundred and ninety-four', 'zero point five', 'ninety-three thousand, four hundred and twenty-four', 'two point three']"
+      - "[[4324, -48294, 0.5, 93424, 2.3]] : ['four thousand, three hundred and twenty-four', 'minus forty-eight thousand, two hundred and ninety-four', 'zero point five', 'ninety-three thousand, four hundred and twenty-four', 'two point three']"
 
 - element: "∆o"
   name: Nth Ordinal
   arity: 1
   description: Get the nth ordinal / convert number to wordth ordinal
   overloads:
-    num: num_to_ordinal(a)
+      num: num_to_ordinal(a)
   vectorise: true
   tests:
-    - "[0] : 'zeroth'"
-    - "[1] : 'first'"
-    - "[2] : 'second'"
-    - "[3] : 'third'"
-    - "[4] : 'fourth'"
-    - "[5] : 'fifth'"
-    - "[6] : 'sixth'"
-    - "[7] : 'seventh'"
+      - "[0] : 'zeroth'"
+      - "[1] : 'first'"
+      - "[2] : 'second'"
+      - "[3] : 'third'"
+      - "[4] : 'fourth'"
+      - "[5] : 'fifth'"
+      - "[6] : 'sixth'"
+      - "[7] : 'seventh'"
 
 - element: "∆M"
   name: Mode
   arity: 1
   description: Get the mode of a list
   overloads:
-    lst: mode(a)
+      lst: mode(a)
   vectorise: false
   tests:
-    - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4]] : [1]"
-    - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4]] : [1]"
+      - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4]] : [1]"
+      - "[[1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4]] : [1]"
 
 - element: "∆ṁ"
   name: Median
   arity: 1
   description: Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
   overloads:
-    lst: median(a)
+      lst: median(a)
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5]] : 3"
-    - "[[1, 2, 3, 4, 5, 6]] : [3, 4]"
+      - "[[1, 2, 3, 4, 5]] : 3"
+      - "[[1, 2, 3, 4, 5, 6]] : [3, 4]"
 
 - element: "∆Ċ"
   name: Polynomial Expression From Coefficients
   arity: 1
   description: Get the polynomial expression from a list of coefficients
   overloads:
-    num: polynomial of degree n
-    str: a
-    lst: polynomial_expression(a)
+      num: polynomial of degree n
+      str: a
+      lst: polynomial_expression(a)
   vectorise: false
   tests:
-    - "[[1,-12,45,8]] : 'x**3 - 12*x**2 + 45*x + 8'"
-    - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3*x**2 + 4*x + 5'"
-    - "[3] : 'x**3 + x**2 + x + 1'"
-    - "[[69, 420]] : '69*x + 420'"
+      - "[[1,-12,45,8]] : 'x**3 - 12*x**2 + 45*x + 8'"
+      - "[[1,2,3,4,5]] : 'x**4 + 2*x**3 + 3*x**2 + 4*x + 5'"
+      - "[3] : 'x**3 + x**2 + x + 1'"
+      - "[[69, 420]] : '69*x + 420'"
 
 - element: "∆¢"
   name: Carmichael Function
   arity: 1
   description: Get the Carmichael function of a number / Local Maxima
   overloads:
-    num: carmichael(a)
-    str: local_maxima(a)
+      num: carmichael(a)
+      str: local_maxima(a)
   vectorise: true
   tests:
-    - "[[3, 8, 12, 78, 234, 786, 1234]] : [2, 2, 2, 12, 12, 130, 616]"
-    - "['(x**2 + x + 1) / x'] : [-1]"
+      - "[[3, 8, 12, 78, 234, 786, 1234]] : [2, 2, 2, 12, 12, 130, 616]"
+      - "['(x**2 + x + 1) / x'] : [-1]"
 
 - element: "∆›"
   name: Increment until false
   description: Increment a until b(a) is false
   arity: 2
   overloads:
-    any-fun: "while b(a): a += 1"
-    fun-any: "while a(b): b += 1"
+      any-fun: "while b(a): a += 1"
+      fun-any: "while a(b): b += 1"
   vectorise: false
 
 - element: "∆‹"
@@ -3919,8 +3919,8 @@
   description: Decrement a until b(a) is false
   arity: 2
   overloads:
-    any-fun: "while b(a): a -= 1"
-    fun-any: "while a(b): b -= 1"
+      any-fun: "while b(a): a -= 1"
+      fun-any: "while a(b): b -= 1"
   vectorise: false
 
 - element: "øb"
@@ -3928,277 +3928,277 @@
   arity: 1
   description: Parenthesise a string
   overloads:
-    any: '"("" + a + ")"'
+      any: '"("" + a + ")"'
   vectorise: true
   tests:
-    - '["xyz"] : "(xyz)"'
-    - '[5] : "(5)"'
-    - '[[1,2,3]] : ["(1)","(2)","(3)"]'
+      - '["xyz"] : "(xyz)"'
+      - '[5] : "(5)"'
+      - '[[1,2,3]] : ["(1)","(2)","(3)"]'
 
 - element: "øB"
   name: Bracketify
   arity: 1
   description: Enclose a string in brackets
   overloads:
-    any: '"["" + a + "]"'
+      any: '"["" + a + "]"'
   vectorise: true
   tests:
-    - '["xyz"] : "[xyz]"'
-    - '[5] : "[5]"'
-    - '[[1,2,3]] : ["[1]","[2]","[3]"]'
+      - '["xyz"] : "[xyz]"'
+      - '[5] : "[5]"'
+      - '[[1,2,3]] : ["[1]","[2]","[3]"]'
 
 - element: "øḃ"
   name: Curly Bracketify
   arity: 1
   description: Enclose a string in curly brackets
   overloads:
-    any: '"{"" + a + "}"'
+      any: '"{"" + a + "}"'
   vectorise: true
   tests:
-    - '["xyz"] : "{xyz}"'
-    - '[5] : "{5}"'
-    - '[[1,2,3]] : ["{1}","{2}","{3}"]'
+      - '["xyz"] : "{xyz}"'
+      - '[5] : "{5}"'
+      - '[[1,2,3]] : ["{1}","{2}","{3}"]'
 
 - element: "øḂ"
   name: Angle Bracketify
   arity: 1
   description: Enclose a string in angle brackets
   overloads:
-    any: '"<"" + a + ">"'
+      any: '"<"" + a + ">"'
   vectorise: true
   tests:
-    - '["xyz"] : "<xyz>"'
-    - '[5] : "<5>"'
-    - '[[1,2,3]] : ["<1>","<2>","<3>"]'
+      - '["xyz"] : "<xyz>"'
+      - '[5] : "<5>"'
+      - '[[1,2,3]] : ["<1>","<2>","<3>"]'
 
 - element: "øβ"
   name: Balanced Brackets
   arity: 1
   description: Check if brackets in a string ("{}()[]<>") are balanced
   overloads:
-    any: "balanced_brackets(a)"
+      any: "balanced_brackets(a)"
   vectorise: true
   tests:
-    - '["xyz"] : 1'
-    - '["([)]"] : 0'
-    - '["({<[]>})"] : 1'
-    - '[")("] : 0'
+      - '["xyz"] : 1'
+      - '["([)]"] : 0'
+      - '["({<[]>})"] : 1'
+      - '[")("] : 0'
 
 - element: "ø↳"
   name: Custom Pad Left
   arity: 3
   description: Pad a string to the left with a certain character
   overloads:
-    any-str-num: "Pad a to the left with c so a has length b"
-    any-num-str: "Pad a to the left with b so a has length c"
+      any-str-num: "Pad a to the left with c so a has length b"
+      any-num-str: "Pad a to the left with b so a has length c"
   vectorise: true
   tests:
-    - '["xyz","x",4] : "xxyz"'
-    - '["123","&",8] : "&&&&&123"'
-    - '["324"," ",2] : "324"'
+      - '["xyz","x",4] : "xxyz"'
+      - '["123","&",8] : "&&&&&123"'
+      - '["324"," ",2] : "324"'
 
 - element: "ø↲"
   name: Custom Pad Right
   arity: 3
   description: Pad a string to the right with a certain character
   overloads:
-    any-str-num: "Pad a to the right with c so a has length b"
-    any-num-str: "Pad a to the right with b so a has length c"
+      any-str-num: "Pad a to the right with c so a has length b"
+      any-num-str: "Pad a to the right with b so a has length c"
   vectorise: true
   tests:
-    - '["xyz","x",4] : "xyzx"'
-    - '["123","&",8] : "123&&&&&"'
-    - '["324"," ",2] : "324"'
+      - '["xyz","x",4] : "xyzx"'
+      - '["123","&",8] : "123&&&&&"'
+      - '["324"," ",2] : "324"'
 
 - element: "øM"
   name: Flip Brackets Vertical Palindromise
   description: Vertically palindromise and reverse brackets and slashes, without duplicating center
   arity: 1
   overloads:
-    any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
+      any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
   vectorise: true
   tests:
-    - '["(x"] : "(x)"'
-    - '["{] "] : "{] [}"'
-    - '["/*>X"] : "/*>X<*\\"'
+      - '["(x"] : "(x)"'
+      - '["{] "] : "{] [}"'
+      - '["/*>X"] : "/*>X<*\\"'
 
 - element: "øo"
   name: Remove Until No change
   arity: 2
   description: Remove b from a until a does not change
   overloads:
-    str-str: Remove b from a until a does not change
-    str-lst: Remove everything in b (in order) from a until a does not change
+      str-str: Remove b from a until a does not change
+      str-lst: Remove everything in b (in order) from a until a does not change
   vectorise: false
   tests:
-    - '["((()))","()"] : ""'
-    - '["--+--+-",["--","+-"]] : "+"'
+      - '["((()))","()"] : ""'
+      - '["--+--+-",["--","+-"]] : "+"'
 
 - element: "øV"
   name: Replace Until No Change
   arity: 3
   description: Replace b with c in a until a does not change
   overloads:
-    str-str-str: a.replace_until_no_change(b,c)
+      str-str-str: a.replace_until_no_change(b,c)
   vectorise: false
   tests:
-    - '["xyzzzzz","yzz","yyyz"] : "xyyyyyyyyyz"'
-    - '["abb","ab","aa"] : "aaa"'
+      - '["xyzzzzz","yzz","yyyz"] : "xyyyyyyyyyz"'
+      - '["abb","ab","aa"] : "aaa"'
 
 - element: "øc"
   name: String Compress
   arity: 1
   description: Compress a string of lowercase letters and spaces in base 255
   overloads:
-    str: base_255_string_compress(a)
+      str: base_255_string_compress(a)
   vectorise: false
   tests:
-    - '["hello"] : "«D\n=«"'
-    - '["hello world"] : "«⟇%J^9vŀ«"'
+      - '["hello"] : "«D\n=«"'
+      - '["hello world"] : "«⟇%J^9vŀ«"'
 
 - element: "øC"
   name: Number Compress
   arity: 1
   description: Compress a positive integer in base 255
   overloads:
-    num: base_255_number_compress(a)
+      num: base_255_number_compress(a)
   vectorise: false
   tests:
-    - '[234] : "»⇧»"'
-    - '[27914632409837421] : "»fðǐ4''∞Ẏ»"'
+      - '[234] : "»⇧»"'
+      - '[27914632409837421] : "»fðǐ4''∞Ẏ»"'
 
 - element: "øĊ"
   name: Center
   description: Center a list of strings
   arity: 1
   overloads:
-    lst: Center(a) (Pad each item with spaces so all are centered)
+      lst: Center(a) (Pad each item with spaces so all are centered)
   vectorise: false
   tests:
-    - '[["ab","cdef"]] : [" ab ","cdef"]'
-    - '[["xyz","a","bcdef"]] : [" xyz ","  a  ","bcdef"]'
-    - '[[1, 333, 55555]] : ["  1  ", " 333 ", "55555"]'
+      - '[["ab","cdef"]] : [" ab ","cdef"]'
+      - '[["xyz","a","bcdef"]] : [" xyz ","  a  ","bcdef"]'
+      - '[[1, 333, 55555]] : ["  1  ", " 333 ", "55555"]'
 
 - element: "øe"
   name: Run Length Encoding
   arity: 1
   description: Run length encoding, convert from string to list of characters and amount repeated.
   overloads:
-    str: run_length_encoded(a)
+      str: run_length_encoded(a)
   vectorise: false
   tests:
-    - '["abc"] : [["a",1],["b",1],["c",1]]'
-    - '["aaa"] : [["a",3]]'
+      - '["abc"] : [["a",1],["b",1],["c",1]]'
+      - '["aaa"] : [["a",3]]'
 
 - element: "ød"
   name: Run Length Decoding
   arity: 1
   description: Run length decoding, convert from list of characters and lengths to a string
   overloads:
-    lst: run_length_decoded(a)
+      lst: run_length_decoded(a)
   vectorise: false
   tests:
-    - '[[["x",3]]] : "xxx"'
-    - '[[["z",2],["a",3]]] : "zzaaa"'
+      - '[[["x",3]]] : "xxx"'
+      - '[[["z",2],["a",3]]] : "zzaaa"'
 
 - element: "øD"
   name: Dictionary Compression
   description: Optimally compress a string of English using words from the Vyxal dictionary
   arity: 1
   overloads:
-    str: dictionary_compressed(a)
+      str: dictionary_compressed(a)
   vectorise: false
   tests:
-    - '["withree"] : "`wi∧ḭ`"'
-    - '["hello"] : "`ƈṙ`"'
-    - '["Vyxal"] : "`₴ŀ`"'
+      - '["withree"] : "`wi∧ḭ`"'
+      - '["hello"] : "`ƈṙ`"'
+      - '["Vyxal"] : "`₴ŀ`"'
 
 - element: "øW"
   name: Group on words
   description: Group a string on words
   arity: 1
   overloads:
-    str: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
+      str: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
   vectorise: false
   tests:
-    - '["abc*xyz"] : ["abc","*","xyz"]'
-    - '["$$$"] : ["$","$","$"]'
+      - '["abc*xyz"] : ["abc","*","xyz"]'
+      - '["$$$"] : ["$","$","$"]'
 
 - element: "øṙ"
   name: Regex replace
   description: Replace matches of a with c in b
   arity: 3
   overloads:
-    any-any-fun: Apply c to matches of a in b
-    any-any-any: Replace matches of a with c in b
+      any-any-fun: Apply c to matches of a in b
+      any-any-any: Replace matches of a with c in b
   vectorise: false
   tests:
-    - '[".{3}","hello","x"] : "xlo"'
-    - '["\\W","Hello, World!","E"] : "HelloEEWorldE"'
+      - '[".{3}","hello","x"] : "xlo"'
+      - '["\\W","Hello, World!","E"] : "HelloEEWorldE"'
 
 - element: "øp"
   name: Starts With
   arity: 2
   description: Check if one value starts with another
   overloads:
-    any-any: a.startswith(b) (Starts with b?)
+      any-any: a.startswith(b) (Starts with b?)
   vectorise: false
   tests:
-    - '["hello","h"] : 1'
-    - '["hello","hello"] : 1'
-    - '["hello","x"] : 0'
-    - '["hello",""] : 1'
+      - '["hello","h"] : 1'
+      - '["hello","hello"] : 1'
+      - '["hello","x"] : 0'
+      - '["hello",""] : 1'
 
 - element: "øP"
   name: Pluralise Count
   description: Create a sentence of the form 'a bs'
   arity: 2
   overloads:
-    num-str: a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
+      num-str: a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
   vectorise: false
   tests:
-    - '[4,"hello"] : "4 hellos"'
-    - '[1,"hello"] : "1 hello"'
-    - '[0,"hello"] : "0 hellos"'
+      - '[4,"hello"] : "4 hellos"'
+      - '[1,"hello"] : "1 hello"'
+      - '[0,"hello"] : "0 hellos"'
 
 - element: "øṁ"
   name: Vertical Mirror
   description: Vertical Mirror - Split by newlines, mirror each line, join by newlines
   arity: 1
   overloads:
-    str: vertical_mirror(a)
+      str: vertical_mirror(a)
   vectorise: true
   tests:
-    - '["abc"] : "abccba"'
+      - '["abc"] : "abccba"'
 
 - element: "øṀ"
   name: Flip Brackets Vertical Mirror
   description: Vertical mirror, and swap brackets and slashes in the second half.
   arity: 1
   overloads:
-    any: vertical_mirror(a, mapping = flip brackets and slashes)
+      any: vertical_mirror(a, mapping = flip brackets and slashes)
   vectorise: false
   tests:
-    - '["[}"] : "[}{]"'
-    - '[")X"] : ")XX("'
-    - '["</tag>"] : "</tag><gat\\>"'
+      - '["[}"] : "[}{]"'
+      - '[")X"] : ")XX("'
+      - '["</tag>"] : "</tag><gat\\>"'
 
 - element: "øṖ"
   name: String Partitions
   description: All partitions of a string/list
   arity: 1
   overloads:
-    any: all_partitions(a)
+      any: all_partitions(a)
   vectorise: false
   tests:
-    - '["ab"] : [["a", "b"], ["ab"]]'
+      - '["ab"] : [["a", "b"], ["ab"]]'
 
 - element: "øḋ"
   name: To Decimal
   description: Convert a rational to its decimal representation.
   arity: 1
   overloads:
-    num: to_decimal(a)
+      num: to_decimal(a)
   vectorise: false
 
 - element: "ø⟇"
@@ -4206,94 +4206,107 @@
   description: Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
   arity: 1
   overloads:
-    num: vyxal_codepage[a]
-    str: vyxal_codepage.index(a)
+      num: vyxal_codepage[a]
+      str: vyxal_codepage.index(a)
   vectorise: true
   tests:
-    - '[0] : "λ"'
-    - '["₁ƛ₍₃₅kF½*∑∴;⁋"] : [166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]'
-    - '[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]] : ["₁", "ƛ", "₍", "₃", "₅", "k", "F", "½", "*", "∑", "∴", ";", "⁋"]'
-    - '[["a", 244, "!", 90, "∑∑∑"]] : [97, "ǔ", 33, "Z", [179, 179, 179]]'
+      - '[0] : "λ"'
+      - '["₁ƛ₍₃₅kF½*∑∴;⁋"] : [166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]'
+      - '[[166, 1, 205, 168, 170, 107, 70, 17, 42, 179, 129, 59, 175]] : ["₁", "ƛ", "₍", "₃", "₅", "k", "F", "½", "*", "∑", "∴", ";", "⁋"]'
+      - '[["a", 244, "!", 90, "∑∑∑"]] : [97, "ǔ", 33, "Z", [179, 179, 179]]'
 
 - element: "øṘ"
   name: Roman Numeral
   description: Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
   arity: 1
   overloads:
-    num: to_roman_numeral(a)
-    str: from_roman_numeral(a)
+      num: to_roman_numeral(a)
+      str: from_roman_numeral(a)
   vectorise: true
   tests:
-    - '[1] : "I"'
-    - '[2] : "II"'
-    - '[3] : "III"'
-    - '[4] : "IV"'
-    - '[5] : "V"'
-    - '[6] : "VI"'
-    - '[10] : "X"'
-    - '[15] : "XV"'
-    - '[20] : "XX"'
-    - '[30] : "XXX"'
-    - '[40] : "XL"'
-    - '[50] : "L"'
-    - '[60] : "LX"'
-    - '[100] : "C"'
-    - '[400] : "CD"'
-    - '[500] : "D"'
-    - '[900] : "CM"'
-    - '[1000] : "M"'
-    - '[2000] : "MM"'
-    - '[3000] : "MMM"'
-    - '[["I", "II", "III"]] : [1, 2, 3]'
-    - '["IV"] : 4'
-    - '["V"] : 5'
-    - '["VI"] : 6'
-    - '["X"] : 10'
-    - '["XV"] : 15'
-    - '["XX"] : 20'
-    - '["XXX"] : 30'
-    - '["XL"] : 40'
-    - '["L"] : 50'
-    - '["LX"] : 60'
-    - '["C"] : 100'
-    - '["CD"] : 400'
-    - '["D"] : 500'
-    - '["CM"] : 900'
-    - '["M"] : 1000'
-    - '["MM"] : 2000'
-    - '["MMM"] : 3000'
+      - '[1] : "I"'
+      - '[2] : "II"'
+      - '[3] : "III"'
+      - '[4] : "IV"'
+      - '[5] : "V"'
+      - '[6] : "VI"'
+      - '[10] : "X"'
+      - '[15] : "XV"'
+      - '[20] : "XX"'
+      - '[30] : "XXX"'
+      - '[40] : "XL"'
+      - '[50] : "L"'
+      - '[60] : "LX"'
+      - '[100] : "C"'
+      - '[400] : "CD"'
+      - '[500] : "D"'
+      - '[900] : "CM"'
+      - '[1000] : "M"'
+      - '[2000] : "MM"'
+      - '[3000] : "MMM"'
+      - '[["I", "II", "III"]] : [1, 2, 3]'
+      - '["IV"] : 4'
+      - '["V"] : 5'
+      - '["VI"] : 6'
+      - '["X"] : 10'
+      - '["XV"] : 15'
+      - '["XX"] : 20'
+      - '["XXX"] : 30'
+      - '["XL"] : 40'
+      - '["L"] : 50'
+      - '["LX"] : 60'
+      - '["C"] : 100'
+      - '["CD"] : 400'
+      - '["D"] : 500'
+      - '["CM"] : 900'
+      - '["M"] : 1000'
+      - '["MM"] : 2000'
+      - '["MMM"] : 3000'
+
+- element: "øḞ"
+  name: Replace First Occurrence
+  description: Replace the first instance of an item with another item
+  arity: 3
+  overloads:
+      any-any-any: a.replace_first(b, c)
+  vectorise: false
+  tests:
+      - '["abcabc", "c", "H"] : "abHabc"'
+      - "[[1, 2, 3, 4, 1, 2, 3, 4], 3, 6] : [1, 2, 6, 4, 1, 2, 3, 4]"
+      - "[[1, 1, 1, 1], 1, 3] : [3, 1, 1, 1]"
+      - '["aaaa", "G", "abc"] : "aaaa"'
 
 - element: "Þ*"
   name: Cartesian product over list
   description: Cartesian product over a list of lists
   arity: 1
   overloads:
-    lst: itertools.product(*a)
+      lst: itertools.product(*a)
   vectorise: false
   tests:
-    - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
-    - "[[[1, 2], [3, 4], []]] : []"
+      - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
+      - "[[[1, 2], [3, 4], []]] : []"
 
 - element: "Þa"
   name: Adjacency matrix (Directed)
   description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
   arity: 1
   overloads:
-    lst: Adjacency matrix
+      lst: Adjacency matrix
   vectorise: false
   tests:
-    - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
+      - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
 
 - element: "ÞA"
   name: Adjacency matrix (Undirected)
   description: Adjacency matrix of undirected graph
   arity: 1
   overloads:
-    lst: Adjacency matrix
+      lst: Adjacency matrix
   vectorise: false
   tests:
-    - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,1,1,2,0],[1,0,0,0,0]]"
-    - "[[[1,3]]] : [[0,0,1],[0,0,0],[1,0,0]]"
+      - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,1,1,2,0],[1,0,0,0,0]]"
+      - "[[[1,3]]] : [[0,0,1],[0,0,0],[1,0,0]]"
 
 - element: "Þo"
   name: Ordinals
@@ -4318,47 +4331,47 @@
   description: Are all elements of a list/string unique?
   arity: 1
   overloads:
-    any: all_unique(a)
+      any: all_unique(a)
   vectorise: false
   tests:
-    - '["hello"] : 0'
-    - '["eeee"] : 0'
-    - '["Gaming"] : 1'
-    - "[[1,2,3]] : 1"
-    - "[[1,1,1]] : 0"
+      - '["hello"] : 0'
+      - '["eeee"] : 0'
+      - '["Gaming"] : 1'
+      - "[[1,2,3]] : 1"
+      - "[[1,1,1]] : 0"
 
 - element: "ÞẊ"
   name: Cartesian Power
   description: Cartesian power, cartesian product with self n times
   arity: 2
   overloads:
-    any-num: cartesian_power(a, b)
-    num-any: cartesian_power(b, a)
+      any-num: cartesian_power(a, b)
+      num-any: cartesian_power(b, a)
   vectorise: false
   tests:
-    - '["ab",2] : ["aa","ab","ba","bb"]'
-    - "[[1,2],3] : [[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]]"
-    - '["abc",3] : ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]'
+      - '["ab",2] : ["aa","ab","ba","bb"]'
+      - "[[1,2],3] : [[1,1,1],[1,1,2],[1,2,1],[1,2,2],[2,1,1],[2,1,2],[2,2,1],[2,2,2]]"
+      - '["abc",3] : ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]'
 
 - element: "Þf"
   name: Flatten By depth
   description: Flatten a list by a certain depth (default 1)
   arity: 2
   overloads:
-    lst-num: Flatten a by depth b
-    any-lst: Flatten b by depth 1, push a as well
+      lst-num: Flatten a by depth b
+      any-lst: Flatten b by depth 1, push a as well
   vectorise: false
   tests:
-    - "[[[[[[1]]]]],3] : [[1]]"
-    - '["xyz",[1,2,[3,4,[5,6]]]] : [1,2,3,4,[5,6]]'
+      - "[[[[[[1]]]]],3] : [[1]]"
+      - '["xyz",[1,2,[3,4,[5,6]]]] : [1,2,3,4,[5,6]]'
 
 - element: "ÞB"
   name: Random Bits
   description: Fill a list with random bits
   arity: 1
   overloads:
-    num: List of length a filled with random bits
-    any: List of length n(a) filled with random bits
+      num: List of length a filled with random bits
+      any: List of length n(a) filled with random bits
   vectorise: false
 
 - element: "Þ<"
@@ -4366,55 +4379,55 @@
   description: Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
   arity: 2
   overloads:
-    any-num: All values of a up to (not including) the first greater than or equal to b
+      any-num: All values of a up to (not including) the first greater than or equal to b
   vectorise: false
   tests:
-    - "[[1,2,2,3,2,1,4,3,2,1], 3] : [1,2,2]"
-    - "[[1,1,2,3,3,2,4,5,6,7], 4] : [1,1,2,3,3,2]"
+      - "[[1,2,2,3,2,1,4,3,2,1], 3] : [1,2,2]"
+      - "[[1,1,2,3,3,2,4,5,6,7], 4] : [1,1,2,3,3,2]"
 
 - element: "Þǔ"
   name: Untruth
   description: Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
   arity: 1
   overloads:
-    any: "[int(x in a) for x in range(len(a))]"
+      any: "[int(x in a) for x in range(len(a))]"
   vectorise: false
   tests:
-    - "[[1]] : [0,1]"
-    - "[[0,3,4,6]] : [1,0,0,1,1,0,1]"
+      - "[[1]] : [0,1]"
+      - "[[0,3,4,6]] : [1,0,0,1,1,0,1]"
 
 - element: "Þi"
   name: Multidimensional Indexing
   description: Index a list of coordinates into a value.
   arity: 2
   overloads:
-    lst-lst: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+      lst-lst: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
   vectorise: false
   tests:
-    - "[[1,[2,3]],[1,0]] : 2"
-    - '[["xyzabc"], [0,4]] : "b"'
+      - "[[1,[2,3]],[1,0]] : 2"
+      - '[["xyzabc"], [0,4]] : "b"'
 
 - element: "Þḟ"
   name: Multidimensional Search
   description: Find the first multidimensional index of a value in another
   arity: 2
   overloads:
-    lst-any: Find the first occurrence of a in b and return as a multidimensional index
+      lst-any: Find the first occurrence of a in b and return as a multidimensional index
   vectorise: false
   tests:
-    - "[[[1,2,3],[4,5,6]], 5] : [1, 1]"
-    - '[["abc","def",["hij","klm","nop"]], "m"] : [2,1,2]'
+      - "[[[1,2,3],[4,5,6]], 5] : [1, 1]"
+      - '[["abc","def",["hij","klm","nop"]], "m"] : [2,1,2]'
 
 - element: "Þm"
   name: Zero Matrix
   description: Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
   arity: 1
   overloads:
-    lst: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
+      lst: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
   vectorise: false
   tests:
-    - "[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]"
-    - "[[2,3,2]] : [[[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0]]]"
+      - "[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]"
+      - "[[2,3,2]] : [[[0,0],[0,0],[0,0]], [[0,0],[0,0],[0,0]]]"
 
 - element: "ÞṄ"
   name: Infinite Integer Partitions
@@ -4427,7 +4440,7 @@
   description: Fill a matrix by calling a function with the lists of coordinates in the matrix.
   arity: 2
   overloads:
-    any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+      any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
   vectorise: false
 
 - element: "Þ…"
@@ -4435,18 +4448,18 @@
   description: Evenly distribute a number over elements of a list
   arity: 2
   overloads:
-    list-num: Evenly distribute a over all elements of b, adding each part.
+      list-num: Evenly distribute a over all elements of b, adding each part.
   vectorise: false
   tests:
-    - "[[1,2,3],6] : [3,4,5]"
-    - "[[1,2,3],5] : [3,4,4]"
+      - "[[1,2,3],6] : [3,4,5]"
+      - "[[1,2,3],5] : [3,4,4]"
 
 - element: "Þ↓"
   name: Minimum By Function
   description: Find the minimum value of a list by applying a function to each element
   arity: 2
   overloads:
-    lst-fun: Minimum value of a by applying b to each element
+      lst-fun: Minimum value of a by applying b to each element
   vectorise: false
 
 - element: "Þ↑"
@@ -4454,7 +4467,7 @@
   description: Find the maximum value of a list by applying a function to each element
   arity: 2
   overloads:
-    lst-fun: Maximum value of a by applying b to each element
+      lst-fun: Maximum value of a by applying b to each element
   vectorise: false
 
 - element: "Þ×"
@@ -4462,22 +4475,22 @@
   description: All combinations of a list / string, of all lengths, with replacement
   arity: 1
   overloads:
-    any: All combinations of a list / string, of all lengths and all orders, with replacement
+      any: All combinations of a list / string, of all lengths and all orders, with replacement
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]"
-    - "['ab'] : ['a', 'b', 'aa', 'ab', 'bb']"
+      - "[[1,2,3]] : [[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]"
+      - "['ab'] : ['a', 'b', 'aa', 'ab', 'bb']"
 
 - element: "Þx"
   name: All Combinations Without Replacement
   description: All combinations of a list / string, of all lengths, without replacement
   arity: 1
   overloads:
-    any: All combinations of a list / string, of all lengths and all orders, without replacement
+      any: All combinations of a list / string, of all lengths and all orders, without replacement
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
-    - '["ab"] : ["a","b","ab","ba"]'
+      - "[[1,2,3]] : [[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
+      - '["ab"] : ["a","b","ab","ba"]'
 
 - element: "ÞF"
   name: All Fibbonacci
@@ -4496,49 +4509,49 @@
   description: A list of booleans describing which elements of a will remain after uniquifying.
   arity: 1
   overloads:
-    any: A list of booleans describing which elements of a will remain after uniquifying.
+      any: A list of booleans describing which elements of a will remain after uniquifying.
   vectorise: false
   tests:
-    - "[[1,2,3,1,2,3]] : [1,1,1,0,0,0]"
-    - "[[1,1,1,2,3,1,2,2,1,3]] : [1,0,0,1,1,0,0,0,0,0]"
+      - "[[1,2,3,1,2,3]] : [1,1,1,0,0,0]"
+      - "[[1,1,1,2,3,1,2,2,1,3]] : [1,0,0,1,1,0,0,0,0,0]"
 
 - element: "ÞD"
   name: Diagonals
   description: Diagonals of a matrix, starting with the main diagonal.
   arity: 1
   overloads:
-    lst: Diagonals of a matrix, starting with the main diagonal.
+      lst: Diagonals of a matrix, starting with the main diagonal.
   vectorise: false
   tests:
-    - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[1,5,9],[2,6],[3],[7],[4,8]]"
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[1,5,9],[2,6],[3],[7],[4,8]]"
 
 - element: "ÞS"
   name: Sublists
   description: Sublists of a list.
   arity: 1
   overloads:
-    lst: Sublists of a list.
+      lst: Sublists of a list.
   vectorise: false
   tests:
-    - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
+      - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
 
 - element: "ÞṪ"
   name: Transpose With Filler
   description: Transpose a matrix, with a filler value for empty cells.
   arity: 2
   overloads:
-    lst-any: Transpose a matrix, with a filler value for empty cells.
+      lst-any: Transpose a matrix, with a filler value for empty cells.
   vectorise: false
   tests:
-    - "[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]"
-    - '[[[1,2,3,4],[5,6],[7,8,9],[0]],"X"] : [[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]]'
+      - "[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]"
+      - '[[[1,2,3,4],[5,6],[7,8,9],[0]],"X"] : [[1,5,7,0],[2,6,8,"X"],[3,"X",9,"X"],[4,"X","X","X"]]'
 
 - element: "Þ℅"
   name: Random Permutation
   description: Random permutation of a list / string
   arity: 1
   overloads:
-    any: Random permutation of a list / string
+      any: Random permutation of a list / string
   vectorise: false
 
 - element: "ÞṀ"
@@ -4546,48 +4559,48 @@
   description: Multiply two matrices together.
   arity: 2
   overloads:
-    lst-lst: Matrix multiplication
+      lst-lst: Matrix multiplication
   vectorise: false
   tests:
-    - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[19, 22], [43, 50]]"
+      - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[19, 22], [43, 50]]"
 
 - element: "ÞḊ"
   name: Matrix Determinant
   description: Calculate the determinant of a matrix.
   arity: 1
   overloads:
-    lst: Calculate the determinant of a matrix.
+      lst: Calculate the determinant of a matrix.
   vectorise: false
   tests:
-    - "[[[1,2],[3,4]]] : -2"
-    - "[[[1,2,3],[4,5,6],[7,8,9]]] : 0"
+      - "[[[1,2],[3,4]]] : -2"
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : 0"
 
 - element: "Þ\\"
   name: Antidiagonal
   description: Antidiagonal of a matrix
   arity: 1
   overloads:
-    lst: Antidiagonal of a matrix
+      lst: Antidiagonal of a matrix
   vectorise: false
   tests:
-    - "[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]"
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]"
 
 - element: "Þ/"
   name: Main Diagonal
   description: Diagonal of a matrix
   arity: 1
   overloads:
-    lst: Diagonal of a matrix
+      lst: Diagonal of a matrix
   vectorise: false
   tests:
-    - "[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]"
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]"
 
 - element: "ÞR"
   name: Matrix Row Reduce
   description: Reduce rows of a matrix by a function.
   arity: 2
   overloads:
-    lst-fun: Reduce rows of a matrix by a function.
+      lst-fun: Reduce rows of a matrix by a function.
   vectorise: false
 
 - element: "ÞC"
@@ -4595,7 +4608,7 @@
   description: Reduce columns of a matrix by a function.
   arity: 2
   overloads:
-    lst-fun: Reduce columns of a matrix by a function.
+      lst-fun: Reduce columns of a matrix by a function.
   vectorise: false
 
 - element: "Þ•"
@@ -4603,64 +4616,64 @@
   description: Dot product of two lists.
   arity: 2
   overloads:
-    lst-lst: Dot product of two lists.
+      lst-lst: Dot product of two lists.
   vectorise: false
   tests:
-    - "[[1,2,3],[4,5,6]] : 32"
-    - "[[69, 420], [21, 42]] : 19089"
+      - "[[1,2,3],[4,5,6]] : 32"
+      - "[[69, 420], [21, 42]] : 19089"
 
 - element: "Þṁ"
   name: Mold without repeat
   description: Mold a list without repeating elements.
   arity: 2
   overloads:
-    lst-lst: Mold a list without repeating elements.
+      lst-lst: Mold a list without repeating elements.
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
+      - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
 
 - element: "ÞM"
   name: Maximal Indicies
   description: Indicies of the maximal elements of a list.
   arity: 1
   overloads:
-    lst: Indicies of the maximal elements of a list.
+      lst: Indicies of the maximal elements of a list.
   vectorise: false
   tests:
-    - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
+      - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
 
 - element: "Þ∴"
   name: Elementwise Vectorised Dyadic Maximum
   description: Elementwise vectorised dyadic maximum.
   arity: 2
   overloads:
-    lst-lst: Elementwise vectorised dyadic maximum.
+      lst-lst: Elementwise vectorised dyadic maximum.
   vectorise: true
   tests:
-    - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
+      - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
 
 - element: "Þ∵"
   name: Elementwise Vectorised Dyadic Minimum
   description: Elementwise vectorised dyadic minimum.
   arity: 2
   overloads:
-    lst-lst: Elementwise vectorised dyadic minimum.
+      lst-lst: Elementwise vectorised dyadic minimum.
   vectorise: true
   tests:
-    - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
+      - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
 
 - element: "Þs"
   name: All Slices of a List
   description: Get all slices of a list, skipping a certain number of items
   arity: 2
   overloads:
-    lst-int: Get all slices of a list, skipping a certain number of items
-    int-lst: Same as lst-int but with arguments swapped
+      lst-int: Get all slices of a list, skipping a certain number of items
+      int-lst: Same as lst-int but with arguments swapped
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 2] : [[1, 3, 5, 7, 9], [2, 4, 6, 8]]"
-    - "[[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], 4] : [[3, 5, 123], [1, 76, 543], [7, 14], [21, 4]]"
-    - "[[3, 1, 2, 4, 6, 4, 5, 2, 1, 9, 5, 3, 9, 3], -4] : []"
+      - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 2] : [[1, 3, 5, 7, 9], [2, 4, 6, 8]]"
+      - "[[3, 1, 7, 21, 5, 76, 14, 4, 123, 543], 4] : [[3, 5, 123], [1, 76, 543], [7, 14], [21, 4]]"
+      - "[[3, 1, 2, 4, 6, 4, 5, 2, 1, 9, 5, 3, 9, 3], -4] : []"
 
 - element: "Þ¾"
   name: Empty the Global Array
@@ -4672,11 +4685,11 @@
   description: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
   arity: 1
   overloads:
-    lst: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+      lst: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
   vectorise: false
   tests:
-    - "[[1,2,3,4,5,6,7,8,9]] : [0,1,2,3,4,5,6,7,8]"
-    - "['abcde'] : '0abcd'"
+      - "[[1,2,3,4,5,6,7,8,9]] : [0,1,2,3,4,5,6,7,8]"
+      - "['abcde'] : '0abcd'"
 
 - element: "Þ∞"
   name: Infinite List
@@ -4688,154 +4701,154 @@
   description: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
   arity: 1
   overloads:
-    lst: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+      lst: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
   vectorise: false
   tests:
-    - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
-    - "['abcde'] : [0, 'a', 'ab', 'abc', 'abcd']"
+      - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
+      - "['abcde'] : [0, 'a', 'ab', 'abc', 'abcd']"
 
 - element: "Þẇ"
   name: Unwrap
   description: Take a and push a[0]+a[-1] and a[1:-1]
   arity: 1
   overloads:
-    lst: Take a and push a[0]+a[-1] and a[1:-1]
+      lst: Take a and push a[0]+a[-1] and a[1:-1]
   vectorise: false
   tests:
-    - "['abcde'] : 'bcd'"
-    - "[[1,2,3,4,5,6,7,8,9]] : [2, 3, 4, 5, 6, 7, 8]"
-    - "[[1,2,3,4,5,6,7,8,9,10]] : [2, 3, 4, 5, 6, 7, 8, 9]"
-    - "['lsusp'] : 'sus'"
+      - "['abcde'] : 'bcd'"
+      - "[[1,2,3,4,5,6,7,8,9]] : [2, 3, 4, 5, 6, 7, 8]"
+      - "[[1,2,3,4,5,6,7,8,9,10]] : [2, 3, 4, 5, 6, 7, 8, 9]"
+      - "['lsusp'] : 'sus'"
 
 - element: "Þg"
   name: Shortest By Length
   description: Return the shortest item in a list.
   arity: 1
   overloads:
-    lst: Return the shortest item in a list.
+      lst: Return the shortest item in a list.
   vectorise: false
   tests:
-    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'ab'"
-    - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcd'"
-    - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcde'"
+      - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'ab'"
+      - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcd'"
+      - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcde'"
 
 - element: "ÞG"
   name: Longest By Length
   description: Return the longest item in a list.
   arity: 1
   overloads:
-    lst: Return the longest item in a list.
+      lst: Return the longest item in a list.
   vectorise: false
   tests:
-    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'abcde'"
-    - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcdef'"
-    - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcdefg'"
+      - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'abcde'"
+      - "[['abcde',  'abcd', 'abcde', 'abcdef']] : 'abcdef'"
+      - "[['abcde', 'abcde', 'abcdef', 'abcdefg']] : 'abcdefg'"
 
 - element: "Þṡ"
   name: Sort By Length
   description: Sort a list by length.
   arity: 1
   overloads:
-    lst: Sort a list by length.
+      lst: Sort a list by length.
   vectorise: false
   tests:
-    - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
-    - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
-    - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
+      - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
+      - "[['abcdef',  'abcd', 'abcde', 'abcdef']] : ['abcd', 'abcde', 'abcdef', 'abcdef']"
+      - "[['abcdefg', 'abcde', 'abcdef', 'abcdefg']] : ['abcde', 'abcdef', 'abcdefg', 'abcdefg']"
 
 - element: "ÞṠ"
   name: Is Sorted?
   description: Returns true if an item is sorted in ascending order using default sorting rules.
   arity: 1
   overloads:
-    lst: Returns true if an item is sorted in ascending order using default sorting rules.
+      lst: Returns true if an item is sorted in ascending order using default sorting rules.
   vectorise: false
   tests:
-    - '[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1'
-    - '["abcde"] : 1'
-    - '[4315] : 0'
-    - '[[3, 2, 1]] : 0'
-    - '[[4, 1, 4, 2]] : 0'
-    - '[[4, 6, 8, 10, 3432, 65543]] : 1'
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1"
+      - '["abcde"] : 1'
+      - "[4315] : 0"
+      - "[[3, 2, 1]] : 0"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 1"
 
 - element: "ÞṘ"
   name: Is Sorted in Reverse?
   description: Returns true if an item is sorted in descending order using default sorting rules.
   arity: 1
   overloads:
-    lst: Returns true if an item is sorted in descending order using default sorting rules.
+      lst: Returns true if an item is sorted in descending order using default sorting rules.
   vectorise: false
   tests:
-    - '[[6, 5, 4, 4, 4, 3, 3, 3, 2, 2, 1]] : 1'
-    - '["edcba"] : 1'
-    - '[4315] : 0'
-    - '[[3, 2, 1]] : 1'
-    - '[[4, 1, 4, 2]] : 0'
-    - '[[4, 6, 8, 10, 3432, 65543]] : 0'
+      - "[[6, 5, 4, 4, 4, 3, 3, 3, 2, 2, 1]] : 1"
+      - '["edcba"] : 1'
+      - "[4315] : 0"
+      - "[[3, 2, 1]] : 1"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 0"
 
 - element: "ÞȮ"
   name: Is Ordered?
   description: Returns true if the item is sorted in either descending or ascending order.
   arity: 1
   overloads:
-    lst: Returns true if the item is sorted in either descending or ascending order.
+      lst: Returns true if the item is sorted in either descending or ascending order.
   vectorise: false
   tests:
-    - '[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1'
-    - '["abcde"] : 1'
-    - '[4315] : 0'
-    - '[[3, 2, 1]] : 1'
-    - '[[4, 1, 4, 2]] : 0'
-    - '[[4, 6, 8, 10, 3432, 65543]] : 1'
-    - '[[8, 1, 5, 6, 6, 2]] : 0'
-    - '[[1, 2, 3, 4, 5, 5, 4]] : 0'
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1"
+      - '["abcde"] : 1'
+      - "[4315] : 0"
+      - "[[3, 2, 1]] : 1"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 1"
+      - "[[8, 1, 5, 6, 6, 2]] : 0"
+      - "[[1, 2, 3, 4, 5, 5, 4]] : 0"
 
 - element: "ÞĊ"
   name: Is Unordered?
   description: Returns true if the item is not sorted in either descending or ascending order.
   arity: 1
   overloads:
-    lst: Returns true if the item is not sorted in either descending or ascending order.
+      lst: Returns true if the item is not sorted in either descending or ascending order.
   vectorise: false
   tests:
-    - '[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0'
-    - '["abcde"] : 0'
-    - '[4315] : 1'
-    - '[[3, 2, 1]] : 0'
-    - '[[4, 1, 4, 2]] : 1'
-    - '[[4, 6, 8, 10, 3432, 65543]] : 0'
-    - '[[8, 1, 5, 6, 6, 2]] : 1'
-    - '[[1, 2, 3, 4, 5, 5, 4]] : 1'
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
+      - '["abcde"] : 0'
+      - "[4315] : 1"
+      - "[[3, 2, 1]] : 0"
+      - "[[4, 1, 4, 2]] : 1"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 0"
+      - "[[8, 1, 5, 6, 6, 2]] : 1"
+      - "[[1, 2, 3, 4, 5, 5, 4]] : 1"
 
 - element: "ÞK"
   name: Suffixes
   description: Suffixes of a list.
   arity: 1
   overloads:
-    lst: Suffixes of a list.
+      lst: Suffixes of a list.
   vectorise: false
   tests:
-    - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
-    - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
-    - "[[]] : []"
+      - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
+      - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
+      - "[[]] : []"
 
 - element: "Þİ"
   name: First n Items and Rest
   description: a[:b] and a[b:]
   arity: 2
   overloads:
-    lst-int: a[:b] and a[b:]
+      lst-int: a[:b] and a[b:]
   vectorise: false
   tests:
-    - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
-    - "['abcde', 2] : 'cde'"
+      - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
+      - "['abcde', 2] : 'cde'"
 
 - element: "ÞN"
   name: Alternating Negation
   description: An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
   arity: 1
   overloads:
-    any: "[a, -a, a, -a, ...]"
+      any: "[a, -a, a, -a, ...]"
   vectorise: false
 
 - element: "Þ□"
@@ -4843,24 +4856,24 @@
   description: A matrix with 1s on the main diagonal and zeroes elsewhere
   arity: 1
   overloads:
-    num: A matrix with 1s on the main diagonal and zeroes elsewhere
+      num: A matrix with 1s on the main diagonal and zeroes elsewhere
   vectorise: true
   tests:
-    - "[3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
-    - "[4] : [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]"
-    - "[[3, 4, 5]] : [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]]]"
+      - "[3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
+      - "[4] : [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]"
+      - "[[3, 4, 5]] : [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], [[1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1]]]"
 
 - element: "Þe"
   name: Matrix Exponentiation
   description: A matrix mutliplied by itself n times
   arity: 2
   overloads:
-    num-lst: Matrix a mutliplied by itself b times
-    lst-num: Matrix b mutliplied by itself a times
+      num-lst: Matrix a mutliplied by itself b times
+      lst-num: Matrix b mutliplied by itself a times
   vectorise: false
   tests:
-    - "[[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
-    - "[[1, 2, 3, 4, 5], 4] : [1, 32, 243, 1024, 3125]"
+      - "[[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
+      - "[[1, 2, 3, 4, 5], 4] : [1, 32, 243, 1024, 3125]"
 
 - element: "Þd"
   name: Distance matrix (Directed)
@@ -4887,33 +4900,33 @@
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
   arity: 1
   overloads:
-    str: Map characters in `>^<v` to integers
+      str: Map characters in `>^<v` to integers
   vectorise: true
   tests:
-    - '["v"] : 3'
-    - '["^<><>"] : [1, 2, 0, 2, 0]'
-    - '[["^"]] : [1]'
-    - '["1V_☭"] : [-1, -1, -1, -1]'
+      - '["v"] : 3'
+      - '["^<><>"] : [1, 2, 0, 2, 0]'
+      - '[["^"]] : [1]'
+      - '["1V_☭"] : [-1, -1, -1, -1]'
 
 - element: "¨^"
   name: Parse direction arrow to vector
   description: Map characters in `>^<v` to direction vectors
   arity: 1
   overloads:
-    str: Map characters in `>^<v` to direction vectors
+      str: Map characters in `>^<v` to direction vectors
   vectorise: true
   tests:
-    - '["v"] : [0, -1]'
-    - '["^<><>"] : [[0, 1], [-1, 0], [1, 0], [-1, 0], [1, 0]]'
-    - '[["^"]] : [[0, 1]]'
-    - '["1V_☭"] : [[0, 0], [0, 0], [0, 0], [0, 0]]'
+      - '["v"] : [0, -1]'
+      - '["^<><>"] : [[0, 1], [-1, 0], [1, 0], [-1, 0], [1, 0]]'
+      - '[["^"]] : [[0, 1]]'
+      - '["1V_☭"] : [[0, 0], [0, 0], [0, 0], [0, 0]]'
 
 - element: "¨U"
   name: Get Request
   description: Send a GET request to a URL
   arity: 1
   overloads:
-    str: Send a GET request to a URL
+      str: Send a GET request to a URL
   vectorise: false
 
 - modifier: "¨="
@@ -4927,8 +4940,8 @@
   description: Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
-    lst-lst-fun: Map a function to elements of a list whose indices are in another list
-    lst-num-fun: Apply a function to element b within list a
+      lst-lst-fun: Map a function to elements of a list whose indices are in another list
+      lst-num-fun: Apply a function to element b within list a
   vectorise: false
 
 - element: "¨,"
@@ -4936,7 +4949,7 @@
   description: Print a value with a space after it
   arity: 1
   overloads:
-    any: Print a value with a space after it
+      any: Print a value with a space after it
   vectorise: false
 
 - element: "¨…"
@@ -4944,7 +4957,7 @@
   description: Print a value with a space after it, without popping it
   arity: 1
   overloads:
-    any: Print a value with a space after it, without popping it
+      any: Print a value with a space after it, without popping it
   vectorise: false
 
 - element: "¨>"
@@ -4952,30 +4965,30 @@
   description: Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
   arity: 2
   overloads:
-    any-any: Non-vectorising greater than - useful for lists
+      any-any: Non-vectorising greater than - useful for lists
   vectorise: false
   tests:
-    - "[[1, 1, 1], [9, 9, 9]] : 0"
-    - "[[1, 2, '3'], [1, 2, '2']] : 1"
+      - "[[1, 1, 1], [9, 9, 9]] : 0"
+      - "[[1, 2, '3'], [1, 2, '2']] : 1"
 
 - element: "¨<"
   name: Strict Less Than
   description: Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
   arity: 2
   overloads:
-    any-any: Non-vectorising greater than - useful for lists
+      any-any: Non-vectorising greater than - useful for lists
   vectorise: false
   tests:
-    - "[[1, 1, 1], [9, 9, 9]] : 1"
-    - "[[1, 2, '3'], [1, 2, '2']] : 0"
+      - "[[1, 1, 1], [9, 9, 9]] : 1"
+      - "[[1, 2, '3'], [1, 2, '2']] : 0"
 
 - element: "¨*"
   name: All Multiples
   description: Return all multiples of a
   arity: 1
   overloads:
-    num: "[a*1, a*2, a*3, a*4, ...]"
-    str: "[a*1, a*2, a*3, a*4, ...]"
+      num: "[a*1, a*2, a*3, a*4, ...]"
+      str: "[a*1, a*2, a*3, a*4, ...]"
   vectorise: true
 
 - modifier: "¨£"
