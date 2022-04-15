@@ -805,7 +805,7 @@ any a, fun b -> Right reduce a by b (foldr)
 fun a, any b -> Right reduce b by a (foldr)
 `)
 
-codepage_descriptions.push(`Left Justify / Gridify / Infinite Replace / Collect until fale
+codepage_descriptions.push(`Left Justify / Gridify / Infinite Replace / Collect until false
 Find one value inside another, starting from a certain index.
 num a, num b, num c -> a <= c <= b
 num a, num b, str c -> a by b grid of c

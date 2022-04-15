@@ -984,7 +984,7 @@ z (Zip-self)
     any a, fun b: Right reduce a by b (foldr)
     fun a, any b: Right reduce b by a (foldr)
 -------------------------------
-ŀ (Left Justify / Gridify / Infinite Replace / Collect until fale)
+ŀ (Left Justify / Gridify / Infinite Replace / Collect until false)
 
 - Find one value inside another, starting from a certain index.
 
