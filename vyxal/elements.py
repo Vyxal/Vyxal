@@ -3453,6 +3453,30 @@ def replace(lhs, rhs, other, ctx):
         return [other if value == rhs else value for value in iterable(lhs)]
 
 
+def replace_first(lhs, rhs, other, ctx):
+    """Element øḞ
+    (any, any, any) -> a.replace_first(b, c)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        return str(lhs).replace(str(rhs), str(other), 1)
+    else:
+
+        @lazylist
+        def gen():
+            first_found = False
+            for item in iterable(lhs, ctx=ctx):
+                if first_found:
+                    yield item
+                elif non_vectorising_equals(rhs, item, ctx):
+                    yield other
+                    first_found = True
+                else:
+                    yield item
+
+        return gen()
+
+
 def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
@@ -5406,6 +5430,7 @@ elements: dict[str, tuple[str, int]] = {
     "øṙ": process_element(regex_sub, 3),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
+    "øḞ": process_element(replace_first, 3),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
