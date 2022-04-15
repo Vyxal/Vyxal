@@ -432,7 +432,7 @@ $ (Swap)
 -------------------------------
 A (All)
 
-- Chck if all items in a list are truthy / check if a character is a vowel
+- Check if all items in a list are truthy / check if a character is a vowel
 
     str a: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
     any a: all(a)
@@ -984,7 +984,7 @@ z (Zip-self)
     any a, fun b: Right reduce a by b (foldr)
     fun a, any b: Right reduce b by a (foldr)
 -------------------------------
-ŀ (Left Justify / Gridify / Infinite Replace / Collect until fale)
+ŀ (Left Justify / Gridify / Infinite Replace / Collect until false)
 
 - Find one value inside another, starting from a certain index.
 
@@ -1233,7 +1233,7 @@ z (Zip-self)
 -------------------------------
 Ḋ (Is Divisible / Arbitrary Duplicate)
 
-- Returns whether two items are divisble / numerious copies of the top of the stack
+- Returns whether two items are divisible / numerous copies of the top of the stack
 
     num a, num b: a % b == 0
     num a, str b: a copies of b
@@ -2604,6 +2604,12 @@ k• (Qwerty Keyboard)
     str a: from_roman_numeral(a)
     otherwise: vectorise
 -------------------------------
+øḞ (Replace First Occurrence)
+
+- Replace the first instance of an item with another item
+
+    any a, any b, any c: a.replace_first(b, c)
+-------------------------------
 Þ* (Cartesian product over list)
 
 - Cartesian product over a list of lists
@@ -2951,6 +2957,18 @@ k• (Qwerty Keyboard)
 
     num a, lst b: Matrix a mutliplied by itself b times
     lst a, num b: Matrix b mutliplied by itself a times
+-------------------------------
+Þd (Distance matrix (Directed))
+
+- Distance matrix of undirected graph
+
+    lst a: Distance matrix
+-------------------------------
+Þw (Distance matrix (Undirected))
+
+- Distance matrix of undirected graph
+
+    lst a: Distance matrix
 -------------------------------
 ¨□ (Parse direction arrow to integer)
 
