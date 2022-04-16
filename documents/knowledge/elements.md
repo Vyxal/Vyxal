@@ -2999,6 +2999,14 @@ Replace the first instance of an item with another item
 
 - any a, any b, any c: `a.replace_first(b, c)`
 -------------------------------
+## `` øṄ `` (Replace Nth Occurrence)
+
+Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
+
+### Overloads
+
+- any a, any b, any c: `a.replace_nth_occurrence(b, c, d)`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists
