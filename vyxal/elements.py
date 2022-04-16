@@ -4339,7 +4339,9 @@ def unwrap(lhs, ctx):
         return ([lhs[0], lhs[-1]], rest)
 
 
-def vectorise(function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx=None):
+def vectorise(
+    function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx=None
+):
     """
     Maps a function over arguments
     Probably cursed but whatever.
@@ -4350,23 +4352,35 @@ def vectorise(function, lhs, rhs=None, other=None, fourth=None, explicit=False, 
         # That is, four argument vectorisation
         # That is:
 
-        ts = primitive_type(lhs), primitive_type(rhs), primitive_type(other), primitive_type(fourth)
+        ts = (
+            primitive_type(lhs),
+            primitive_type(rhs),
+            primitive_type(other),
+            primitive_type(fourth),
+        )
 
         simple = {
-            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
-                function, lhs, rhs, other, fourth, ctx=ctx
-            ),
+            (
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+            ): lambda: safe_apply(function, lhs, rhs, other, fourth, ctx=ctx),
             (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, rhs, other, x, ctx=ctx) for x in fourth
+                safe_apply(function, lhs, rhs, other, x, ctx=ctx)
+                for x in fourth
             ),
             (SCALAR_TYPE, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx) for x in other
+                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx)
+                for x in other
             ),
             (SCALAR_TYPE, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, x, other, fourth, ctx=ctx) for x in rhs
+                safe_apply(function, lhs, x, other, fourth, ctx=ctx)
+                for x in rhs
             ),
             (list, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, other, fourth, ctx=ctx) for x in lhs
+                safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                for x in lhs
             ),
             (SCALAR_TYPE, SCALAR_TYPE, list, list): lambda: (
                 safe_apply(function, lhs, rhs, x, y, ctx=ctx)
