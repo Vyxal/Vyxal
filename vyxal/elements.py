@@ -4339,14 +4339,78 @@ def unwrap(lhs, ctx):
         return ([lhs[0], lhs[-1]], rest)
 
 
-def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
+def vectorise(function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx=None):
     """
     Maps a function over arguments
     Probably cursed but whatever.
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
     """
-    if other is not None:
+    if fourth is not None:
+        # That is, four argument vectorisation
+        # That is:
+
+        ts = primitive_type(lhs), primitive_type(rhs), primitive_type(other), primitive_type(fourth)
+
+        simple = {
+            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
+                function, lhs, rhs, other, fourth, ctx=ctx
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, rhs, other, x, ctx=ctx) for x in fourth
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx) for x in other
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, other, fourth, ctx=ctx) for x in rhs
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, other, fourth, ctx=ctx) for x in lhs
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, lhs, rhs, x, y, ctx=ctx)
+                for x, y in vy_zip(other, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, x, other, y, ctx=ctx)
+                for x, y in vy_zip(rhs, fourth, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, rhs, other, y, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, y, fourth, ctx=ctx)
+                for x, y in vy_zip(rhs, other, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, y, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, other, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
+            ),
+            # So... what to do for three lists, and also (list, list, list, list)?
+            # Would we do:
+            #   for x, y, z in vy_zip(lhs, rhs, other, ctx=ctx)
+            # Or:
+            #   for x, y in vy_zip(lhs, rhs, ctx=ctx)
+            #   for z in other
+            # Or something else?
+        }
+
+        if explicit:
+            return LazyList(
+                (
+                    safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                    for x in iterable(lhs, ctx=ctx)
+                )
+            )
+        else:
+            return LazyList(simple.get(ts)())
+    elif other is not None:
         # That is, three argument vectorisation
         # That is:
 
