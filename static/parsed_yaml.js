@@ -2098,7 +2098,7 @@ any a, any b, any c -> a.replace_first(b, c)
 codepage_descriptions[194] += `
 øṄ (Replace Nth Occurrence)
 Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
-any a, any b, any c -> a.replace_nth_occurrence(b, c, d)
+any a, any b, any c, any d -> a.replace_nth_occurrence(b, c, d)
 `
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)

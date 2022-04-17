@@ -23,7 +23,7 @@ with open(ELEMENTS_TXT, "w", encoding="utf-8") as output:
             if "overloads" in element:
                 for overload in element["overloads"]:
                     data_types = map(
-                        lambda x: " ".join(x), zip(overload.split("-"), "abc")
+                        lambda x: " ".join(x), zip(overload.split("-"), "abcde")
                     )
                     output.write(
                         "    "

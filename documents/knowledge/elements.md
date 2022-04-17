@@ -3005,7 +3005,7 @@ Replace the nth instance of an item with another item. If n is negative, then re
 
 ### Overloads
 
-- any a, any b, any c: `a.replace_nth_occurrence(b, c, d)`
+- any a, any b, any c, any d: `a.replace_nth_occurrence(b, c, d)`
 -------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
