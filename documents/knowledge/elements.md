@@ -481,7 +481,7 @@ Call / declare function (@name; / @name|code;)
 -------------------------------
 ## `` A `` (All)
 
-Chck if all items in a list are truthy / check if a character is a vowel
+Check if all items in a list are truthy / check if a character is a vowel
 
 ### Overloads
 
@@ -1147,7 +1147,7 @@ Floor divide a by b
 - any a, fun b: `Right reduce a by b (foldr)`
 - fun a, any b: `Right reduce b by a (foldr)`
 -------------------------------
-## `` ŀ `` (Left Justify / Gridify / Infinite Replace / Collect until fale)
+## `` ŀ `` (Left Justify / Gridify / Infinite Replace / Collect until false)
 
 Find one value inside another, starting from a certain index.
 
@@ -1444,7 +1444,7 @@ Returns a list of [item, count of item in the top of stack]
 -------------------------------
 ## `` Ḋ `` (Is Divisible / Arbitrary Duplicate)
 
-Returns whether two items are divisble / numerious copies of the top of the stack
+Returns whether two items are divisible / numerous copies of the top of the stack
 
 ### Overloads
 
@@ -2991,6 +2991,22 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 - num a: `to_roman_numeral(a)`
 - str a: `from_roman_numeral(a)`
 -------------------------------
+## `` øḞ `` (Replace First Occurrence)
+
+Replace the first instance of an item with another item
+
+### Overloads
+
+- any a, any b, any c: `a.replace_first(b, c)`
+-------------------------------
+## `` øṄ `` (Replace Nth Occurrence)
+
+Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
+
+### Overloads
+
+- any a, any b, any c: `a.replace_nth_occurrence(b, c, d)`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists
@@ -3435,6 +3451,22 @@ A matrix mutliplied by itself n times
 
 - num a, lst b: `Matrix a mutliplied by itself b times`
 - lst a, num b: `Matrix b mutliplied by itself a times`
+-------------------------------
+## `` Þd `` (Distance matrix (Directed))
+
+Distance matrix of undirected graph
+
+### Overloads
+
+- lst a: `Distance matrix`
+-------------------------------
+## `` Þw `` (Distance matrix (Undirected))
+
+Distance matrix of undirected graph
+
+### Overloads
+
+- lst a: `Distance matrix`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

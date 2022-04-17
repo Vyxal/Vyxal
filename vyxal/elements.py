@@ -46,7 +46,7 @@ def process_element(
     See documents/specs/Transpilation.md for information on what happens here.
     """
     if arity > 0:
-        arguments = ["third", "rhs", "lhs"][-arity:]
+        arguments = ["fourth", "third", "rhs", "lhs"][-arity:]
     else:
         arguments = ["_"]
     if isinstance(expr, types.FunctionType):
@@ -376,8 +376,9 @@ def assign_iterable(lhs, rhs, other, ctx):
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
     else:
-        lhs[rhs] = other
-        return lhs
+        yield from lhs[:rhs]
+        yield other
+        yield from lhs[rhs + 1 :]
 
 
 def base_255_string_compress(lhs, ctx):
@@ -411,7 +412,7 @@ def bitwise_and(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs & rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) & int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.center(lhs),
         (str, NUMBER_TYPE): lambda: lhs.center(rhs),
         (str, str): lambda: lhs.center(abs(len(rhs) - len(lhs))),
@@ -435,7 +436,7 @@ def bitwise_or(lhs, rhs, ctx):
         common = sorted(common, key=lambda x: len(x))[-1]
         return lhs[: -len(common)] + common + rhs[len(common) :]
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs | rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) | int(rhs),
         (NUMBER_TYPE, str): lambda: rhs[:lhs] + rhs[lhs + 1 :],
         (str, NUMBER_TYPE): lambda: lhs[:rhs] + lhs[rhs + 1 :],
     }.get(ts, lambda: vectorise(bitwise_or, lhs, rhs, ctx=ctx))()
@@ -448,7 +449,7 @@ def bitwise_not(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: ~lhs,
+        NUMBER_TYPE: lambda: ~int(lhs),
         str: lambda: int(any(char.isupper() for char in lhs)),
     }.get(ts, lambda: vectorise(bitwise_not, lhs, ctx=ctx))()
 
@@ -462,7 +463,7 @@ def bitwise_xor(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ^ rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) ^ int(rhs),
         (NUMBER_TYPE, str): lambda: " " * lhs + rhs,
         (str, NUMBER_TYPE): lambda: lhs + " " * rhs,
         (str, str): lambda: levenshtein_distance(lhs, rhs),
@@ -928,6 +929,28 @@ def diagonal(lhs, ctx):
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
     return [lhs[i][i] for i in range(len(lhs))]
+
+
+def dist_matrix_dir(lhs, ctx):
+    """Element Þd
+    (lst) -> distance matrix of directed graph"""
+    graph = edges_to_dir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    return [
+        [graph_distance(graph, elem1, elem2) for elem2 in vertices]
+        for elem1 in vertices
+    ]
+
+
+def dist_matrix_undir(lhs, ctx):
+    """Element Þw
+    (lst) -> distance matrix of undirected graph"""
+    graph = edges_to_undir_graph(lhs, ctx=ctx)
+    vertices = vy_sort(graph.keys(), ctx=ctx)
+    return [
+        [graph_distance(graph, elem1, elem2) for elem2 in vertices]
+        for elem1 in vertices
+    ]
 
 
 def divide(lhs, rhs, ctx):
@@ -1888,10 +1911,13 @@ def infinite_replace(lhs, rhs, other, ctx):
         values = safe_apply(
             function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
         )
-        for i in range(len(indicies)):
-            vector[indicies[i]] = values[i]
-
-        return vector
+        new_vector = []
+        for i, v in enumerate(vector):
+            if i in indicies:
+                new_vector.append(values[i])
+            else:
+                new_vector.append(v)
+        return new_vector
 
     orig_type = type(lhs)
 
@@ -3427,6 +3453,65 @@ def replace(lhs, rhs, other, ctx):
         return [other if value == rhs else value for value in iterable(lhs)]
 
 
+def replace_first(lhs, rhs, other, ctx):
+    """Element øḞ
+    (any, any, any) -> a.replace_first(b, c)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        return str(lhs).replace(str(rhs), str(other), 1)
+    else:
+
+        @lazylist
+        def gen():
+            first_found = False
+            for item in iterable(lhs, ctx=ctx):
+                if first_found:
+                    yield item
+                elif non_vectorising_equals(rhs, item, ctx):
+                    yield other
+                    first_found = True
+                else:
+                    yield item
+
+        return gen()
+
+
+def replace_nth_occurrence(lhs, rhs, other, n, ctx):
+    """Element øṄ
+    (any, any, any, num) -> a.replace_nth_occurrence(b, c, d)
+    """
+
+    if vy_type(lhs, simple=True) is not list:
+        try:
+            where = [m.start() for m in re.finditer(str(rhs), str(lhs))][
+                n if n < 0 else n - 1
+            ]
+        except IndexError:
+            return str(lhs)
+        before = str(lhs)[:where]
+        after = str(lhs)[where:].replace(str(rhs), str(other), 1)
+        return before + after
+    else:
+
+        @lazylist
+        def gen():
+            if n >= 0:
+                num = 1
+            else:
+                num = -list(lhs).count(rhs)
+            for item in iterable(lhs, ctx=ctx):
+                if item == rhs and num == n:
+                    yield other
+                    num += 1
+                else:
+                    if item == rhs:
+                        num += 1
+                    yield item
+
+        return gen()
+
+
 def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
@@ -4532,15 +4617,28 @@ def vy_exec(lhs, ctx):
                 lhs, ctx.dictionary_compression, ctx.variable_length_1
             )
         )
+
         return []
 
     def helper(lhs):
         if vy_type(lhs) == NUMBER_TYPE:
             return divide(1, lhs, ctx)
+        elif vy_type(lhs) is str:
+            import vyxal.transpile
+
+            stack = []
+            exec(
+                vyxal.transpile.transpile(
+                    lhs, ctx.dictionary_compression, ctx.variable_length_1
+                )
+            )
+
+            return pop(stack, 1, ctx)
         else:
             return vectorise(helper, lhs, ctx=ctx)
 
-    return [helper(lhs)]
+    temp = helper(lhs)
+    return [temp]
 
 
 def vy_filter(lhs: Any, rhs: Any, ctx):
@@ -4679,9 +4777,7 @@ def vy_str(lhs, ctx=None):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True))
-        if ctx is not None and not ctx.print_decimals
-        else str(float(lhs)),
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
         (str): lambda: lhs,  # wow so complex and hard to understand /s
         (types.FunctionType): lambda: vy_str(
             safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
@@ -4731,8 +4827,8 @@ def vy_print(lhs, end="\n", ctx=None):
         vy_print(res, ctx=ctx)
     else:
         if is_sympy(lhs):
-            if ctx.print_decimals:
-                lhs = str(float(lhs)).strip(".0")
+            if ctx.print_decimals and not lhs.is_Integer:
+                lhs = str(float(lhs))
             else:
                 lhs = sympy.nsimplify(lhs.round(20), rational=True)
         if ctx.online:
@@ -4937,10 +5033,7 @@ def wrap(lhs, rhs, ctx):
                         temp = []
 
                 if len(temp) < chunk_size and temp:
-                    if all(type(x) is str for x in temp):
-                        yield "".join(temp)
-                    else:
-                        yield temp[::]
+                    yield temp[::]
 
             return gen()
 
@@ -5383,8 +5476,10 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øṄ": process_element(replace_nth_occurrence, 4),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
+    "øḞ": process_element(replace_first, 3),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
@@ -5459,6 +5554,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞN": process_element(alternating_negations, 1),
     "Þ□": process_element(identity_matrix, 1),
     "Þe": process_element(matrix_exponentiation, 2),
+    "Þd": process_element(dist_matrix_dir, 1),
+    "Þw": process_element(dist_matrix_undir, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
