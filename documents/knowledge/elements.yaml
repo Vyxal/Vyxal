@@ -2121,7 +2121,7 @@
   description: Reverse a value
   arity: 1
   overloads:
-      any: a, reversed(a)
+      any: reversed(a)
   vectorise: false
   tests:
       - "[203] : 302"
