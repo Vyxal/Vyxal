@@ -48,7 +48,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                 for overload in element["overloads"]:
                     data_types = map(
                         lambda x: " ".join(x),
-                        zip(overload.split("-"), "abc"),
+                        zip(overload.split("-"), "abcde"),
                     )
                     out.write(
                         ", ".join(data_types)
@@ -67,7 +67,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                 for overload in element["overloads"]:
                     data_types = map(
                         lambda x: " ".join(x),
-                        zip(overload.split("-"), "abc"),
+                        zip(overload.split("-"), "abcde"),
                     )
                     out.write(
                         ", ".join(data_types)
