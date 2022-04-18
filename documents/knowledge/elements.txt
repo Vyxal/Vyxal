@@ -1320,7 +1320,7 @@ z (Zip-self)
 
 - Reverse a value
 
-    any a: a, reversed(a)
+    any a: reversed(a)
 -------------------------------
 Ṡ (Vectorised sums)
 

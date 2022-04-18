@@ -1085,7 +1085,7 @@ any a -> permutations(a) (Get all permutations)
 
 codepage_descriptions.push(`Reverse
 Reverse a value
-any a -> a, reversed(a)
+any a -> reversed(a)
 `)
 
 codepage_descriptions.push(`Vectorised sums
