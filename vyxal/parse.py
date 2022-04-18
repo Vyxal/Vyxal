@@ -244,7 +244,7 @@ def parse(
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens, structure.DyadicModifier)
+            remaining = parse(tokens)
 
             if isinstance(
                 remaining[0],
@@ -276,6 +276,7 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
+            remaining = parse(tokens)
             if isinstance(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
@@ -293,7 +294,6 @@ def parse(
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
                 remaining[2].parent_structure = parent
-            remaining = parse(tokens, structure.TriadicModifier)
             if head.value == "≬":
                 # 3-element lambda
                 structures.append(

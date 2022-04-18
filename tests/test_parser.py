@@ -1,3 +1,4 @@
+from ast import Break
 import os
 import sys
 
@@ -189,6 +190,52 @@ def test_branch_literals_in_structures():
                 [
                     GenericStatement([Token(TokenType.CHARACTER, "|")]),
                     GenericStatement([Token(TokenType.GENERAL, ",")]),
+                ],
+            )
+        ]
+    )
+
+
+def test_break_works_good_with_modifiers():
+    assert str(fully_parse("vX")) == str(
+        [MonadicModifier("v", BreakStatement(None))]
+    )
+
+    assert str(fully_parse("₌XX")) == str(
+        [DyadicModifier("₌", BreakStatement(None), BreakStatement(None))]
+    )
+
+    assert str(fully_parse("≬3dX")) == str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.NUMBER, "3")]),
+                    GenericStatement([Token(TokenType.GENERAL, "d")]),
+                    BreakStatement(None),
+                ],
+            )
+        ]
+    )
+
+
+def test_break_works_good_with_modifiers():
+    assert str(fully_parse("vx")) == str(
+        [MonadicModifier("v", RecurseStatement(None))]
+    )
+
+    assert str(fully_parse("₌xx")) == str(
+        [DyadicModifier("₌", RecurseStatement(None), RecurseStatement(None))]
+    )
+
+    assert str(fully_parse("≬3dx")) == str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.NUMBER, "3")]),
+                    GenericStatement([Token(TokenType.GENERAL, "d")]),
+                    RecurseStatement(None),
                 ],
             )
         ]
