@@ -1551,7 +1551,7 @@ Reverse a value
 
 ### Overloads
 
-- any a: `a, reversed(a)`
+- any a: `reversed(a)`
 -------------------------------
 ## `` Ṡ `` (Vectorised sums)
 
