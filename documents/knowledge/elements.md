@@ -2649,6 +2649,14 @@ Get the nth digit of pi
 - num a: `nth_digit_of_pi(a)`
 - str a: `antiderivative of a`
 -------------------------------
+## `` ∆I `` (First N Digits of Pi)
+
+Generate the first n digits of pi
+
+### Overloads
+
+- num a: `the first (a + 1)th digits of pi`
+-------------------------------
 ## `` ∆Ė `` (N Digits of Euler's Number (e) / Sympy Evaluate)
 
 Get the first n digits of Euler's number (e) / evaluate an expression as sympy
@@ -3559,4 +3567,12 @@ Usage:
 ¨£<element>
 ```
 
+-------------------------------
+## `` ¨ẇ `` (Wrap Last n Items)
+
+Wrap the last n items on the stack into a list
+
+### Overloads
+
+- num a: `last a items in a list`
 -------------------------------
