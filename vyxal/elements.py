@@ -1038,7 +1038,7 @@ def e_digits(lhs, ctx):
         return LazyList(map(int, estr))
     elif vy_type(lhs) is str:
         return lhs
-        #return sympy.nsimplify(lhs, rational=True)
+        # return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
 
@@ -2919,7 +2919,7 @@ def nth_pi(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
         (str): lambda: str(lhs)
-        #(str): lambda: str(sympy.integrate(make_expression(lhs))),
+        # (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
