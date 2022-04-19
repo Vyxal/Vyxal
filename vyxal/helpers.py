@@ -477,16 +477,17 @@ def make_equation(eqn: str) -> sympy:
     eqn = eqn.split("=")
     return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
 
-
+# Deleted until we can fix bugs
+"""
 def make_expression(expr: str) -> sympy:
-    """Turns a string into a nice sympy expression"""
+    """"""Turns a string into a nice sympy expression""""""
     transformations = standard_transformations + (
         implicit_multiplication_application,
         convert_xor,
     )
 
     return sympy.parse_expr(expr, transformations=transformations)
-
+"""
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
     """
