@@ -2706,6 +2706,12 @@
   arity: 0
   description: Rotate Stack Right
   vectorise: false
+  
+- element: "🍪"
+  name: Cookie
+  description: print "cookie" forever
+  vectorise: false
+  arity: 0
 
 # NOTE: CONSTANTS GO DOWN HERE!!!!!!
 
