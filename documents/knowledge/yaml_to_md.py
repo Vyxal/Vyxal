@@ -34,7 +34,7 @@ with open(ELEMENTS_MD, "w", encoding="utf-8") as output:
                 for overload in element["overloads"]:
                     data_types = map(
                         lambda x: " ".join(x),
-                        zip(overload.split("-"), "abc"),
+                        zip(overload.split("-"), "abcde"),
                     )
                     output.write(
                         "- "
