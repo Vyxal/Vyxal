@@ -5408,7 +5408,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
-    "🍪": process_element(cookie, 1)
+    "🍪": process_element(cookie, 1),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
