@@ -16171,7 +16171,7 @@ def test_FirstNDigitsofPi():
 def test_NDigitsofEulersNumbereSympyEvaluate():
 
     stack = [vyxalify(item) for item in [[0, 1, 2, '5 ** 2']]]
-    expected = vyxalify([[2], [2, 7], [2, 7, 1], 25])
+    expected = vyxalify([[2], [2, 7], [2, 7, 1], '5 ** 2'])
     ctx = Context()
 
     ctx.stacks.append(stack)

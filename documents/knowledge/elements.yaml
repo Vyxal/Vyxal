@@ -3769,7 +3769,7 @@
       str: evaluate(a)
   vectorise: true
   tests:
-      - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], 25]"
+      - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], '5 ** 2']"
 
 - element: "∆ė"
   name: Nth Digit of Euler's Number (e) / Differentiate
