@@ -741,6 +741,11 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
+def cookie(ctx):
+    while 1:
+        vy_print("cookie")
+
+
 def coords_deepmap(lhs, rhs, ctx):
     """Element ÞZ
     (any, fun) -> For each value of a (all the way down) call b with the
@@ -4376,14 +4381,123 @@ def unwrap(lhs, ctx):
         return ([lhs[0], lhs[-1]], rest)
 
 
-def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
+def vectorise(
+    function,
+    lhs,
+    rhs=None,
+    other=None,
+    fourth=None,
+    explicit=False,
+    ctx: Context = None,
+):
     """
     Maps a function over arguments
     Probably cursed but whatever.
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
     """
-    if other is not None:
+    if fourth is not None:
+        # That is, four argument vectorisation
+        # That is:
+
+        ts = (
+            primitive_type(lhs),
+            primitive_type(rhs),
+            primitive_type(other),
+            primitive_type(fourth),
+        )
+
+        simple = {
+            (
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+            ): lambda: safe_apply(function, lhs, rhs, other, fourth, ctx=ctx),
+            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, rhs, other, x, ctx=ctx)
+                for x in fourth
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx)
+                for x in other
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, other, fourth, ctx=ctx)
+                for x in rhs
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                for x in lhs
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, lhs, rhs, x, y, ctx=ctx)
+                for x, y in vy_zip(other, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, x, other, y, ctx=ctx)
+                for x, y in vy_zip(rhs, fourth, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, rhs, other, y, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, y, fourth, ctx=ctx)
+                for x, y in vy_zip(rhs, other, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, y, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, other, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
+            ),
+            (list, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, z, fourth, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, y, other, z, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, fourth], ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, x, rhs, y, z, ctx=ctx)
+                for x, y, z in transpose([lhs, other, fourth], ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, list): lambda: (
+                safe_apply(function, lhs, x, y, z, ctx=ctx)
+                for x, y, z in transpose([rhs, other, fourth], ctx=ctx)
+            ),
+            (list, list, list, list): lambda: (
+                (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for (w, x), (y, z) in vy_zip(
+                        vy_zip(lhs, rhs, ctx=ctx),
+                        vy_zip(other, fourth, ctx=ctx),
+                    )
+                )
+                if ctx.double_zip_vectorize
+                else (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for w, x, y, z in transpose(
+                        [lhs, rhs, other, fourth], ctx=ctx
+                    )
+                )
+            ),
+        }
+
+        if explicit:
+            return LazyList(
+                (
+                    safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                    for x in iterable(lhs, ctx=ctx)
+                )
+            )
+        else:
+            return LazyList(simple.get(ts)())
+    elif other is not None:
         # That is, three argument vectorisation
         # That is:
 
@@ -4416,8 +4530,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             ),
             (list, list, list): lambda: (
                 safe_apply(function, x, y, z, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-                for z in other
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
             ),
         }
 
@@ -5403,6 +5516,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
+    "🍪": process_element(cookie, 0),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
@@ -5678,6 +5792,12 @@ modifiers: dict[str, str] = {
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
+        "\n"
+    ),
+    "¨v": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "stack.append"
+        "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
     ),
     "~": (
