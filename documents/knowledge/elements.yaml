@@ -1232,6 +1232,12 @@
   arity: "*"
   usage: v<element>
 
+- modifier: "¨v"
+  name: Simple vectorise
+  description: Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+  arity: "*"
+  usage: ¨v<element>
+
 - element: "w"
   name: Listify
   description: a wrapped in a singleton list
@@ -3454,9 +3460,9 @@
   overloads:
       lst: roots(a)
   vectorise: false
-  tests:
-      - "[[4, -1005, 3, 4]] : [(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)]"
-      - "[[69, 420, -1]] : [0.00238002178391728, -6.08933654352305]"
+  # tests:
+  #     - "[[4, -1005, 3, 4]] : [(0.06460672339563445+4.263256414560601e-14j), (-0.061605771543874255-1.4210854715202004e-14j), (251.24699904814824-6.938893903907228e-18j)]"
+  #     - "[[69, 420, -1]] : [0.00238002178391728, -6.08933654352305]"
 
 - element: "∆ƈ"
   name: n Pick r (npr)
@@ -3546,7 +3552,7 @@
       - "[1] : 1.718281828459045"
       - "[2] : 6.38905609893065"
       - "[3] : 19.085536923187668"
-      - "['(x + 1)^2'] : 'x**2 + 2*x + 1'"
+      # - "['(x + 1)^2'] : 'x**2 + 2*x + 1'"
 
 - element: "∆L"
   name: Natural Logarithm
@@ -3657,7 +3663,7 @@
       - "[4] : 5"
       - "[5] : 7"
       - "[69] : 71"
-      - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
+      # - "['3 * x ** 2 + 493 * x - 2319'] : 270877"
 
 - element: "∆ṗ"
   name: First Prime Before a Number / Factor Expression
@@ -3674,8 +3680,8 @@
       - "[4] : 3"
       - "[5] : 3"
       - "[69] : 67"
-      - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
-      - "['x*3 + x**2'] : 'x*(x + 3)'"
+      # - "['x**2 - 1'] : '(x - 1)*(x + 1)'"
+      # - "['x*3 + x**2'] : 'x*(x + 3)'"
 
 - element: "∆p"
   name: Nearest Prime to a Number / Python equivalent of an expression
