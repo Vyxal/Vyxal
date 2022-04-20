@@ -4377,7 +4377,7 @@ def unwrap(lhs, ctx):
 
 
 def vectorise(
-    function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx=None
+    function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx: Context=None
 ):
     """
     Maps a function over arguments
@@ -4443,13 +4443,29 @@ def vectorise(
                 safe_apply(function, x, y, other, fourth, ctx=ctx)
                 for x, y in vy_zip(lhs, rhs, ctx=ctx)
             ),
-            # So... what to do for three lists, and also (list, list, list, list)?
-            # Would we do:
-            #   for x, y, z in vy_zip(lhs, rhs, other, ctx=ctx)
-            # Or:
-            #   for x, y in vy_zip(lhs, rhs, ctx=ctx)
-            #   for z in other
-            # Or something else?
+            (list, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, z, fourth, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, y, other, z, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, fourth], ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, x, rhs, y, z, ctx=ctx)
+                for x, y, z in transpose([lhs, other, fourth], ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, list): lambda: (
+                safe_apply(function, lhs, x, y, z, ctx=ctx)
+                for x, y, z in transpose([rhs, other, fourth], ctx=ctx)
+            ),
+            (list, list, list, list): lambda: ((
+                safe_apply(function, w, x, y, z, ctx=ctx)
+                for (w, x), (y, z) in vy_zip(vy_zip(lhs, rhs, ctx=ctx), vy_zip(other, fourth, ctx=ctx))
+            ) if ctx.double_zip_vectorize else (
+                safe_apply(function, w, x, y, z, ctx=ctx)
+                for w, x, y, z in transpose([lhs, rhs, other, fourth], ctx=ctx)
+            )),
         }
 
         if explicit:
@@ -4494,8 +4510,7 @@ def vectorise(
             ),
             (list, list, list): lambda: (
                 safe_apply(function, x, y, z, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-                for z in other
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
             ),
         }
 
@@ -5756,6 +5771,12 @@ modifiers: dict[str, str] = {
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
+        "\n"
+    ),
+    "¨v": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "stack.append"
+        "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
     ),
     "~": (

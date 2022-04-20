@@ -1232,6 +1232,12 @@
   arity: "*"
   usage: v<element>
 
+- modifier: "¨v"
+  name: Simple vectorise
+  description: Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+  arity: "*"
+  usage: ¨v<element>
+
 - element: "w"
   name: Listify
   description: a wrapped in a singleton list
