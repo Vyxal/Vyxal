@@ -4377,7 +4377,13 @@ def unwrap(lhs, ctx):
 
 
 def vectorise(
-    function, lhs, rhs=None, other=None, fourth=None, explicit=False, ctx: Context=None
+    function,
+    lhs,
+    rhs=None,
+    other=None,
+    fourth=None,
+    explicit=False,
+    ctx: Context = None,
 ):
     """
     Maps a function over arguments
@@ -4459,13 +4465,22 @@ def vectorise(
                 safe_apply(function, lhs, x, y, z, ctx=ctx)
                 for x, y, z in transpose([rhs, other, fourth], ctx=ctx)
             ),
-            (list, list, list, list): lambda: ((
-                safe_apply(function, w, x, y, z, ctx=ctx)
-                for (w, x), (y, z) in vy_zip(vy_zip(lhs, rhs, ctx=ctx), vy_zip(other, fourth, ctx=ctx))
-            ) if ctx.double_zip_vectorize else (
-                safe_apply(function, w, x, y, z, ctx=ctx)
-                for w, x, y, z in transpose([lhs, rhs, other, fourth], ctx=ctx)
-            )),
+            (list, list, list, list): lambda: (
+                (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for (w, x), (y, z) in vy_zip(
+                        vy_zip(lhs, rhs, ctx=ctx),
+                        vy_zip(other, fourth, ctx=ctx),
+                    )
+                )
+                if ctx.double_zip_vectorize
+                else (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for w, x, y, z in transpose(
+                        [lhs, rhs, other, fourth], ctx=ctx
+                    )
+                )
+            ),
         }
 
         if explicit:

@@ -647,6 +647,10 @@ codepage_descriptions.push(`Vectorise
 Vectorise an element
 `)
 
+codepage_descriptions.push(`Simple vectorise
+Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+`)
+
 codepage_descriptions.push(`Listify
 a wrapped in a singleton list
 any a -> [a] (Wrapped in singleton list)

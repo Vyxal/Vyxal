@@ -913,6 +913,15 @@ v<element>
 ```
 
 -------------------------------
+## `` ¨v `` (Simple vectorise)
+Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+
+Usage:
+```
+¨v<element>
+```
+
+-------------------------------
 ## `` w `` (Listify)
 
 a wrapped in a singleton list
