@@ -34,7 +34,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
     out.write("var codepage_descriptions = []\n\n")
     for element in data:
 
-        if "element" in element and len(element["element"]) == 2:
+        if "element" in element and len(element["element"]) == 2 and element["element"][1] in codepage:
             out.write(
                 "codepage_descriptions["
                 + str(codepage.index(element["element"][1]))
@@ -59,7 +59,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                         + "\n"
                     )
             out.write("`\n")
-        else:
+        elif element["element"] in codepage:
             out.write("codepage_descriptions.push(`")
             out.write(str(element["name"]) + "\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
