@@ -1085,7 +1085,7 @@ any a -> permutations(a) (Get all permutations)
 
 codepage_descriptions.push(`Reverse
 Reverse a value
-any a -> a, reversed(a)
+any a -> reversed(a)
 `)
 
 codepage_descriptions.push(`Vectorised sums
@@ -1871,6 +1871,11 @@ Get the nth digit of pi
 num a -> nth_digit_of_pi(a)
 str a -> antiderivative of a
 `
+codepage_descriptions[73] += `
+∆I (First N Digits of Pi)
+Generate the first n digits of pi
+num a -> the first (a + 1)th digits of pi
+`
 codepage_descriptions[187] += `
 ∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
 Get the first n digits of Euler's number (e) / evaluate an expression as sympy
@@ -2094,6 +2099,11 @@ codepage_descriptions[188] += `
 øḞ (Replace First Occurrence)
 Replace the first instance of an item with another item
 any a, any b, any c -> a.replace_first(b, c)
+`
+codepage_descriptions[194] += `
+øṄ (Replace Nth Occurrence)
+Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
+any a, any b, any c, any d -> a.replace_nth_occurrence(b, c, d)
 `
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
@@ -2447,3 +2457,8 @@ codepage_descriptions.push(`Star Map
 Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
 `)
 
+codepage_descriptions[157] += `
+¨ẇ (Wrap Last n Items)
+Wrap the last n items on the stack into a list
+num a -> last a items in a list
+`

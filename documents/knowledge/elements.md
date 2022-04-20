@@ -1551,7 +1551,7 @@ Reverse a value
 
 ### Overloads
 
-- any a: `a, reversed(a)`
+- any a: `reversed(a)`
 -------------------------------
 ## `` Ṡ `` (Vectorised sums)
 
@@ -2649,6 +2649,14 @@ Get the nth digit of pi
 - num a: `nth_digit_of_pi(a)`
 - str a: `antiderivative of a`
 -------------------------------
+## `` ∆I `` (First N Digits of Pi)
+
+Generate the first n digits of pi
+
+### Overloads
+
+- num a: `the first (a + 1)th digits of pi`
+-------------------------------
 ## `` ∆Ė `` (N Digits of Euler's Number (e) / Sympy Evaluate)
 
 Get the first n digits of Euler's number (e) / evaluate an expression as sympy
@@ -2998,6 +3006,14 @@ Replace the first instance of an item with another item
 ### Overloads
 
 - any a, any b, any c: `a.replace_first(b, c)`
+-------------------------------
+## `` øṄ `` (Replace Nth Occurrence)
+
+Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
+
+### Overloads
+
+- any a, any b, any c, any d: `a.replace_nth_occurrence(b, c, d)`
 -------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
@@ -3551,4 +3567,12 @@ Usage:
 ¨£<element>
 ```
 
+-------------------------------
+## `` ¨ẇ `` (Wrap Last n Items)
+
+Wrap the last n items on the stack into a list
+
+### Overloads
+
+- num a: `last a items in a list`
 -------------------------------
