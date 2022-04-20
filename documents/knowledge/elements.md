@@ -2022,6 +2022,11 @@ Rotate Stack Left
 Rotate Stack Right
 
 -------------------------------
+## `` 🍪 `` (Cookie)
+
+print "cookie" forever
+
+-------------------------------
 ## `` kA `` (Uppercase alphabet)
 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)

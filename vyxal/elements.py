@@ -741,6 +741,11 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
+def cookie(ctx):
+    while 1:
+        vy_print("cookie")
+
+
 def coords_deepmap(lhs, rhs, ctx):
     """Element ÞZ
     (any, fun) -> For each value of a (all the way down) call b with the
@@ -5511,6 +5516,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
+    "🍪": process_element(cookie, 0),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),

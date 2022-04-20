@@ -1726,6 +1726,11 @@ z (Zip-self)
 - Rotate Stack Right
 
 -------------------------------
+🍪 (Cookie)
+
+- print "cookie" forever
+
+-------------------------------
 kA (Uppercase alphabet)
 
 - "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
