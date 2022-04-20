@@ -913,6 +913,15 @@ v<element>
 ```
 
 -------------------------------
+## `` ¨v `` (Simple vectorise)
+Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+
+Usage:
+```
+¨v<element>
+```
+
+-------------------------------
 ## `` w `` (Listify)
 
 a wrapped in a singleton list
@@ -2011,6 +2020,11 @@ Rotate Stack Left
 ## `` ‟ `` (Rotate Stack Right)
 
 Rotate Stack Right
+
+-------------------------------
+## `` 🍪 `` (Cookie)
+
+print "cookie" forever
 
 -------------------------------
 ## `` kA `` (Uppercase alphabet)
