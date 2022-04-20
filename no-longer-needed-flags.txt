@@ -1,0 +1,32 @@
+    M    Make implicit range generation and while loop counter start at 0 instead of 1
+    m    Make implicit range generation end at n-1 instead of n
+    Ṁ    Equivalent to having both m and M flags
+    
+ No one uses those anyway
+ 
+     L    Print top of stack joined by newlines (Vertically) on end of execution
+
+That's just a cursed mess.
+
+
+    G    Print the maximum item of the top of stack on end of execution
+    g    Print the minimum item of the top of the stack on end of execution
+    
+I don't think these are used very often either.
+
+    t    Vectorise boolify on Lists
+
+The behaviour of boolify will probably change
+
+    D    Treat all strings as raw strings (don't decompress strings)
+
+Different string types go brrrr
+
+    H    Preset stack to 100
+
+That's only ever been useful once
+
+    c    Output compiled code
+
+How can is compile code when there is interpret?
+
