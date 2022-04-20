@@ -63,7 +63,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                         + "\n"
                     )
             out.write("`\n")
-        elif element["element"] in codepage:
+        elif "element" in element and element["element"] in codepage:
             out.write("codepage_descriptions.push(`")
             out.write(str(element["name"]) + "\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
