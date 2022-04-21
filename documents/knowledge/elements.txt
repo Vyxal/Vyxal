@@ -2634,6 +2634,42 @@ k• (Qwerty Keyboard)
 
     any a, any b, any c, any d: a.replace_nth_occurrence(b, c, d)
 -------------------------------
+øS (Strip whitespace from both sides)
+
+- Strip whitespace from both sides of a string / Remove trailing zeros from a number
+
+    str a: a.strip()
+    num a: remove trailing zeros
+    otherwise: vectorise
+-------------------------------
+øL (Strip whitespace from the left side)
+
+- Strip whitespace from the left side of a string
+
+    str a: a.lstrip()
+    otherwise: vectorise
+-------------------------------
+øR (Strip whitespace from the right side)
+
+- Strip whitespace from the right side of a string
+
+    str a: a.rstrip()
+    otherwise: vectorise
+-------------------------------
+øl (Strip from the left side)
+
+- Strip from the left side of a string
+
+    str a: a.lstrip(b)
+    otherwise: vectorise
+-------------------------------
+ør (Strip from the right side)
+
+- Strip from the right side of a string
+
+    str a: a.rstrip(b)
+    otherwise: vectorise
+-------------------------------
 Þ* (Cartesian product over list)
 
 - Cartesian product over a list of lists

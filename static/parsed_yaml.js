@@ -2069,6 +2069,32 @@ codepage_descriptions[194] += `
 Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
 any a, any b, any c, any d -> a.replace_nth_occurrence(b, c, d)
 `
+codepage_descriptions[83] += `
+øS (Strip whitespace from both sides)
+Strip whitespace from both sides of a string / Remove trailing zeros from a number
+str a -> a.strip()
+num a -> remove trailing zeros
+`
+codepage_descriptions[76] += `
+øL (Strip whitespace from the left side)
+Strip whitespace from the left side of a string
+str a -> a.lstrip()
+`
+codepage_descriptions[82] += `
+øR (Strip whitespace from the right side)
+Strip whitespace from the right side of a string
+str a -> a.rstrip()
+`
+codepage_descriptions[108] += `
+øl (Strip from the left side)
+Strip from the left side of a string
+str a -> a.lstrip(b)
+`
+codepage_descriptions[114] += `
+ør (Strip from the right side)
+Strip from the right side of a string
+str a -> a.rstrip(b)
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists

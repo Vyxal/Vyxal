@@ -4004,6 +4004,7 @@ def strip_list_helper(left, right, ctx, sign=0):
 
     return left
 
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
@@ -4066,7 +4067,9 @@ def strip_whitespace(lhs, ctx):
     ts = vy_type(lhs)
     return {
         str: lambda: vy_str(lhs, ctx=ctx).strip(),
-        NUMBER_TYPE: lambda: (strip_whitespace(lhs // 10, ctx) if lhs % 10 == 0 else lhs)
+        NUMBER_TYPE: lambda: (
+            strip_whitespace(lhs // 10, ctx) if lhs % 10 == 0 else lhs
+        ),
     }.get(ts, lambda: vectorise(strip_whitespace, lhs, ctx=ctx))()
 
 
@@ -4075,9 +4078,9 @@ def strip_whitespace_left(lhs, ctx):
     (str) -> a.lstrip()
     """
     ts = vy_type(lhs)
-    return {
-        str: lambda: vy_str(lhs, ctx=ctx).lstrip()
-    }.get(ts, lambda: vectorise(strip_whitespace_left, lhs, ctx=ctx))()
+    return {str: lambda: vy_str(lhs, ctx=ctx).lstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_left, lhs, ctx=ctx)
+    )()
 
 
 def strip_whitespace_right(lhs, ctx):
@@ -4085,9 +4088,9 @@ def strip_whitespace_right(lhs, ctx):
     (str) -> a.rstrip()
     """
     ts = vy_type(lhs)
-    return {
-        str: lambda: vy_str(lhs, ctx=ctx).rstrip()
-    }.get(ts, lambda: vectorise(strip_whitespace_right, lhs, ctx=ctx))()
+    return {str: lambda: vy_str(lhs, ctx=ctx).rstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_right, lhs, ctx=ctx)
+    )()
 
 
 def starts_with(lhs, rhs, ctx):
