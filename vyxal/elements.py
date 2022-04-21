@@ -3340,7 +3340,7 @@ def regex_sub(lhs, rhs, other, ctx):
             if switch % 2:
                 out += item
             else:
-                out += safe_apply(other, item, ctx=ctx)
+                out += vy_str(safe_apply(other, item, ctx=ctx), ctx=ctx)
             switch += 1
 
         return out
