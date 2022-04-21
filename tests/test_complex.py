@@ -456,4 +456,8 @@ def test_dyadic_map():
 
 def test_triadic_map():
     stack = run_vyxal("⟨4|5|6⟩ ¨3W;")
-    assert stack[-1] == [[4, 0, [4, 5, 6]], [5, 1, [4, 5, 6]], [6, 2, [4, 5, 6]]]
+    assert stack[-1] == [
+        [4, 0, [4, 5, 6]],
+        [5, 1, [4, 5, 6]],
+        [6, 2, [4, 5, 6]],
+    ]
