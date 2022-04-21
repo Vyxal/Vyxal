@@ -1035,6 +1035,8 @@ def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
     idx = 0
     for element in iterable(vector, range, ctx=ctx):
+        if not hasattr(function, 'arity'):
+            yield safe_apply(function, element, ctx=ctx)
         if function.arity == 2:
             yield safe_apply(function, element, idx, ctx=ctx)
         elif function.arity == 3:
