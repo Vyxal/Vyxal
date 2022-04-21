@@ -201,7 +201,9 @@ def parse(
 
             elif structure_cls == structure.LambdaMapTriadic:
                 structures.append(
-                    structure.LambdaMapTriadic(parse(branches[0], structure_cls))
+                    structure.LambdaMapTriadic(
+                        parse(branches[0], structure_cls)
+                    )
                 )
 
             elif structure_cls == structure.LambdaMapEager:
