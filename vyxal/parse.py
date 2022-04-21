@@ -24,6 +24,8 @@ STRUCTURE_INFORMATION = {
     "@": (structure.FunctionCall, ";"),
     "λ": (structure.Lambda, ";"),
     "ƛ": (structure.LambdaMap, ";"),
+    "¨2": (structure.LambdaMapDyadic, ";"),
+    "¨3": (structure.LambdaMapTriadic, ";"),
     "'": (structure.LambdaFilter, ";"),
     "µ": (structure.LambdaSort, ";"),
     "⟑": (structure.LambdaMapEager, ";"),
@@ -31,7 +33,7 @@ STRUCTURE_INFORMATION = {
 }
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
-OPENING_CHARACTERS = "".join(STRUCTURE_INFORMATION.keys())
+OPENING_CHARACTERS = list(STRUCTURE_INFORMATION.keys())
 MONADIC_MODIFIERS = list("v⁽&~ßƒɖ") + ["¨=", "¨v"]
 DYADIC_MODIFIERS = list("₌‡₍")
 TRIADIC_MODIFIERS = list("≬")
@@ -190,6 +192,16 @@ def parse(
             elif structure_cls == structure.LambdaMap:
                 structures.append(
                     structure.LambdaMap(parse(branches[0], structure_cls))
+                )
+
+            elif structure_cls == structure.LambdaMapDyadic:
+                structures.append(
+                    structure.LambdaMapDyadic(parse(branches[0], structure_cls))
+                )
+
+            elif structure_cls == structure.LambdaMapTriadic:
+                structures.append(
+                    structure.LambdaMapTriadic(parse(branches[0], structure_cls))
                 )
 
             elif structure_cls == structure.LambdaMapEager:
