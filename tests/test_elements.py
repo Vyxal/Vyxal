@@ -19524,7 +19524,7 @@ def test_Stripfromtheleftside():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[3, 3, 1, 2, 3, 3, 3], 3]]
+    stack = [vyxalify(item) for item in [[3, 3, 1, 2, 3, 3, 3], [3]]]
     expected = vyxalify([1, 2, 3, 3, 3])
     ctx = Context()
 
@@ -19589,7 +19589,7 @@ def test_Stripfromtherightside():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [[3, 3, 1, 2, 3, 3, 3], 3]]
+    stack = [vyxalify(item) for item in [[3, 3, 1, 2, 3, 3, 3], [3]]]
     expected = vyxalify([3, 3, 1, 2])
     ctx = Context()
 
