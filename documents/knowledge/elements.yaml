@@ -4365,7 +4365,7 @@
   tests:
       - '["dddabcddd", "d"] : "abcddd"'
       - '["dddd", "d"] : ""'
-      - '[[3, 3, 1, 2, 3, 3, 3], 3] : [1, 2, 3, 3, 3]'
+      - '[[3, 3, 1, 2, 3, 3, 3], [3]] : [1, 2, 3, 3, 3]'
 
 - element: "ør"
   name: Strip from the right side
@@ -4377,7 +4377,7 @@
   tests:
       - '["dddabcddd", "d"] : "dddabc"'
       - '["dddd", "d"] : ""'
-      - '[[3, 3, 1, 2, 3, 3, 3], 3] : [3, 3, 1, 2]'
+      - '[[3, 3, 1, 2, 3, 3, 3], [3]] : [3, 3, 1, 2]'
 
 - element: "Þ*"
   name: Cartesian product over list
