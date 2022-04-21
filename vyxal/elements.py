@@ -3980,13 +3980,8 @@ def strip_list_helper(left, right, ctx, sign=0):
     def strip_front(lst, unwanted):
         """Strip from only the front"""
         start_ind = 0
-        it = iter(unwanted)
         for item in lst:
-            try:
-                to_strip = next(it)
-                if not equals(item, to_strip, ctx=ctx):
-                    break
-            except StopIteration:
+            if item not in unwanted:
                 break
             start_ind += 1
 
