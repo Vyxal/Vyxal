@@ -89,10 +89,20 @@ class Lambda(Structure):
 class LambdaOp(Structure):
     """A lambda followed by a monad"""
 
-    def __init__(self, body: list[Structure], after: str):
+    def __init__(self, body: list[Structure], after: str, arity: int = 1):
         super().__init__(body, after)
-        self.lam = Lambda(1, body)
+        self.lam = Lambda(arity, body)
         self.after = after
+
+
+class LambdaMapDyadic(LambdaOp):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body, after="M", arity=2)
+
+
+class LambdaMapTriadic(LambdaOp):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body, after="M", arity=3)
 
 
 class LambdaMap(LambdaOp):
