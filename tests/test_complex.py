@@ -447,3 +447,20 @@ def test_empty_lists():
     assert stack[-1] == [1, 2, 3, 6]
     stack = run_vyxal("69 ⟨⟩")
     assert stack[-1] == []
+
+
+def test_multiline_comments():
+    stack = run_vyxal("""
+    1 #{
+        yeah
+        #{
+          yeah some nesting
+          #{blah
+           yeah some real nesting
+           #}
+           #}
+           yeah
+           #}
+           2
+    """)
+    assert stack == [1, 2]
