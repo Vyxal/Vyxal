@@ -270,6 +270,11 @@ Place the top two items into a single list
 The characters until the next newline are commented out
 
 -------------------------------
+## `` #{ `` (Multiline Comment)
+
+The characters until the `#}` are commented out. Nestable.
+
+-------------------------------
 ## `` $ `` (Swap)
 
 Swap the top two items
