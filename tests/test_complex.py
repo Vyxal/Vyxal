@@ -450,7 +450,8 @@ def test_empty_lists():
 
 
 def test_multiline_comments():
-    stack = run_vyxal("""
+    stack = run_vyxal(
+        """
     1 #{
         yeah
         #{
@@ -462,7 +463,8 @@ def test_multiline_comments():
            yeah
            }#
            2
-    """)
+    """
+    )
     assert stack == [1, 2]
 
 
