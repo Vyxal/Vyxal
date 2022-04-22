@@ -3029,6 +3029,47 @@ Replace the nth instance of an item with another item. If n is negative, then re
 
 - any a, any b, any c, any d: `a.replace_nth_occurrence(b, c, d)`
 -------------------------------
+## `` øS `` (Strip whitespace from both sides)
+
+Strip whitespace from both sides of a string / Remove trailing zeros from a number
+
+### Overloads
+
+- str a: `a.strip()`
+- num a: `remove trailing zeros`
+-------------------------------
+## `` øL `` (Strip whitespace from the left side)
+
+Strip whitespace from the left side of a string
+
+### Overloads
+
+- str a: `a.lstrip()`
+-------------------------------
+## `` øR `` (Strip whitespace from the right side)
+
+Strip whitespace from the right side of a string
+
+### Overloads
+
+- str a: `a.rstrip()`
+-------------------------------
+## `` øl `` (Strip from the left side)
+
+Strip from the left side of a string
+
+### Overloads
+
+- str a: `a.lstrip(b)`
+-------------------------------
+## `` ør `` (Strip from the right side)
+
+Strip from the right side of a string
+
+### Overloads
+
+- str a: `a.rstrip(b)`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists
