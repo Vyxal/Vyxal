@@ -1034,7 +1034,11 @@ def vy_eval(item: str, ctx: Context) -> Any:
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
     idx = 0
-    arity = function.stored_arity if hasattr(function, "stored_arity") else (function.arity if hasattr(function, "arity") else None)
+    arity = (
+        function.stored_arity
+        if hasattr(function, "stored_arity")
+        else (function.arity if hasattr(function, "arity") else None)
+    )
     for element in iterable(vector, range, ctx=ctx):
         if not arity or arity == 1:
             yield safe_apply(function, element, ctx=ctx)

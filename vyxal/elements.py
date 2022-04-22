@@ -4835,7 +4835,11 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     if ts[0] == types.FunctionType:
         return vy_filter(rhs, lhs, ctx)
     if ts[1] == types.FunctionType:
-        arity = rhs.stored_arity if hasattr(rhs, "stored_arity") else (rhs.arity if hasattr(rhs, "arity") else None)
+        arity = (
+            rhs.stored_arity
+            if hasattr(rhs, "stored_arity")
+            else (rhs.arity if hasattr(rhs, "arity") else None)
+        )
         if not arity or arity == 1:
             return LazyList(
                 filter(
@@ -4844,6 +4848,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
                 )
             )
         if arity == 2:
+
             @lazylist
             def gen():
                 idx = 0
@@ -4851,8 +4856,10 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
                     if safe_apply(rhs, x, idx, ctx=ctx):
                         yield x
                     idx += 1
+
             return gen()
         if arity == 3:
+
             @lazylist
             def gen():
                 idx = 0
@@ -4860,6 +4867,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
                     if safe_apply(rhs, x, idx, lhs, ctx=ctx):
                         yield x
                     idx += 1
+
             return gen()
     if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
