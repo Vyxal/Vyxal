@@ -480,3 +480,16 @@ def test_triadic_map():
         [5, 1, [4, 5, 6]],
         [6, 2, [4, 5, 6]],
     ]
+
+def test_dyadic_filter():
+    stack = run_vyxal("⟨4|5|6⟩ ¨₂ 0 > $ 6 < ∧ ;")
+    assert stack[-1] == [5]
+
+
+def test_triadic_filter():
+    stack = run_vyxal("⟨4|5|6⟩ ¨₃ 5c;")
+    assert stack[-1] == [4, 5, 6]
+    stack = run_vyxal("⟨4|7|6⟩ ¨₃ 5c;")
+    assert stack[-1] == []
+    stack = run_vyxal("⟨4|5|6⟩ ¨₃ 5c $ 0 > ∧ $ 6 < ∧;")
+    assert stack[-1] == [5]

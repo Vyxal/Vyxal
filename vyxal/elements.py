@@ -4833,20 +4833,35 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     """
     ts = vy_type(lhs, rhs)
     if ts[0] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
+        return vy_filter(rhs, lhs, ctx)
+    if ts[1] == types.FunctionType:
+        arity = rhs.stored_arity if hasattr(rhs, "stored_arity") else (rhs.arity if hasattr(rhs, "arity") else None)
+        if not arity or arity == 1:
+            return LazyList(
+                filter(
+                    lambda x: safe_apply(rhs, x, ctx=ctx),
+                    iterable(lhs, range, ctx=ctx),
+                )
             )
-        )
-    elif ts[1] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
-            )
-        )
-    elif ts == (str, str):
+        if arity == 2:
+            @lazylist
+            def gen():
+                idx = 0
+                for x in iterable(lhs, range, ctx=ctx):
+                    if safe_apply(rhs, x, idx, ctx=ctx):
+                        yield x
+                    idx += 1
+            return gen()
+        if arity == 3:
+            @lazylist
+            def gen():
+                idx = 0
+                for x in iterable(lhs, range, ctx=ctx):
+                    if safe_apply(rhs, x, idx, lhs, ctx=ctx):
+                        yield x
+                    idx += 1
+            return gen()
+    if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
     return LazyList(elem for elem in lhs if elem not in rhs)
 
