@@ -162,7 +162,8 @@ def tokenise(
                         depth += 1
                     if h == "#" and source[0] == "}":
                         depth -= 1
-                        if depth == 0: break
+                        if depth == 0:
+                            break
             else:
                 while source and source[0] != "\n":
                     source.popleft()
