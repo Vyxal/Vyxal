@@ -363,6 +363,11 @@
   description: The characters until the next newline are commented out
   arity: NA
 
+- element: "#{"
+  name: Multiline Comment
+  description: The characters until the next `}#` are commented out. Nestable.
+  arity: NA
+
 - element: "$"
   name: Swap
   arity: 2
@@ -830,6 +835,7 @@
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
+      - "[[1, 2, 3, 4, 5, 6, 7, 8, 2], [1, 2]] : [3, 4, 5, 6, 7, 8]"
       - '["    Hello, World!    ", " "] : "Hello, World!"'
 
 - element: "Q"
@@ -4318,6 +4324,66 @@
       - '["abcaabc", "a", "d", -2] : "abcdabc"'
       - "[[1, 2, 2, 3, 4, 2, 5, 3], 2, 8, -1] : [1, 2, 2, 3, 4, 8, 5, 3]"
 
+- element: "øS"
+  name: Strip whitespace from both sides
+  description: Strip whitespace from both sides of a string / Remove trailing zeros from a number
+  arity: 1
+  overloads:
+      str: a.strip()
+      num: remove trailing zeros
+  vectorise: true
+  tests:
+      - '["  abc  "] : "abc"'
+      - '["     "] : ""'
+      - '[1.23] : 1.23'
+      - '[25000] : 25'
+
+- element: "øL"
+  name: Strip whitespace from the left side
+  description: Strip whitespace from the left side of a string
+  arity: 1
+  overloads:
+      str: a.lstrip()
+  vectorise: true
+  tests:
+      - '["  abc     "] : "abc     "'
+      - '["   "] : ""'
+
+- element: "øR"
+  name: Strip whitespace from the right side
+  description: Strip whitespace from the right side of a string
+  arity: 1
+  overloads:
+      str: a.rstrip()
+  vectorise: true
+  tests:
+      - '["  abc     "] : "  abc"'
+      - '["   "] : ""'
+
+- element: "øl"
+  name: Strip from the left side
+  description: Strip from the left side of a string
+  arity: 2
+  overloads:
+      str: a.lstrip(b)
+  vectorise: true
+  tests:
+      - '["dddabcddd", "d"] : "abcddd"'
+      - '["dddd", "d"] : ""'
+      - '[[3, 3, 1, 2, 3, 3, 3], [3]] : [1, 2, 3, 3, 3]'
+
+- element: "ør"
+  name: Strip from the right side
+  description: Strip from the right side of a string
+  arity: 2
+  overloads:
+      str: a.rstrip(b)
+  vectorise: true
+  tests:
+      - '["dddabcddd", "d"] : "dddabc"'
+      - '["dddd", "d"] : ""'
+      - '[[3, 3, 1, 2, 3, 3, 3], [3]] : [3, 3, 1, 2]'
+
 - element: "Þ*"
   name: Cartesian product over list
   description: Cartesian product over a list of lists
@@ -5049,3 +5115,13 @@
       - "[1, 2, 3, 4, 4] : [1, 2, 3, 4]"
       - "[3, 3, 3, 3, 3, 3, 3, 3, 3, 3] : [3, 3, 3]"
       - "[[1, 2, 3, 4], 1] : [[1, 2, 3, 4]]"
+
+- element: "¨2"
+  name: Dyadic Map Lambda
+  description: Open a dyadic mapping lambda - ¨2...; Receives item and index.
+  arity: 2
+
+- element: "¨3"
+  name: Triadic Map Lambda
+  description: Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+  arity: 3
