@@ -5110,3 +5110,13 @@
       - "[1, 2, 3, 4, 4] : [1, 2, 3, 4]"
       - "[3, 3, 3, 3, 3, 3, 3, 3, 3, 3] : [3, 3, 3]"
       - "[[1, 2, 3, 4], 1] : [[1, 2, 3, 4]]"
+
+- element: "¨2"
+  name: Dyadic Map Lambda
+  description: Open a dyadic mapping lambda - ¨2...; Receives item and index.
+  arity: 2
+
+- element: "¨3"
+  name: Triadic Map Lambda
+  description: Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+  arity: 3

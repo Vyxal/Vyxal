@@ -2444,3 +2444,11 @@ codepage_descriptions[157] += `
 Wrap the last n items on the stack into a list
 num a -> last a items in a list
 `
+codepage_descriptions[50] += `
+¨2 (Dyadic Map Lambda)
+Open a dyadic mapping lambda - ¨2...; Receives item and index.
+`
+codepage_descriptions[51] += `
+¨3 (Triadic Map Lambda)
+Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+`
