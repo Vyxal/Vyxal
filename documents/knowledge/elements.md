@@ -3590,3 +3590,13 @@ Wrap the last n items on the stack into a list
 
 - num a: `last a items in a list`
 -------------------------------
+## `` ¨2 `` (Dyadic Map Lambda)
+
+Open a dyadic mapping lambda - ¨2...; Receives item and index.
+
+-------------------------------
+## `` ¨3 `` (Triadic Map Lambda)
+
+Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+
+-------------------------------
