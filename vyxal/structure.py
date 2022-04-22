@@ -3,7 +3,7 @@
 See https://github.com/Vyxal/Vyxal/blob/fresh-beginnings/documents/specs/Structures.md
 """
 
-from typing import Optional, Union
+from typing import Union
 
 from vyxal.lexer import Token
 
