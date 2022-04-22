@@ -4,7 +4,6 @@ offline.
 """
 
 import os
-from re import A
 import sys
 import traceback
 import types

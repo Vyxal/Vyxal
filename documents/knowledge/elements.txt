@@ -237,6 +237,11 @@
 - The characters until the next newline are commented out
 
 -------------------------------
+#{ (Multiline Comment)
+
+- The characters until the next `}#` are commented out. Nestable.
+
+-------------------------------
 $ (Swap)
 
 - Swap the top two items

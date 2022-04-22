@@ -449,6 +449,25 @@ def test_empty_lists():
     assert stack[-1] == []
 
 
+def test_multiline_comments():
+    stack = run_vyxal(
+        """
+    1 #{
+        yeah
+        #{
+          yeah some nesting
+          #{blah
+           yeah some real nesting
+           }#
+           }#
+           yeah
+           }#
+           2
+    """
+    )
+    assert stack == [1, 2]
+
+
 def test_dyadic_map():
     stack = run_vyxal("⟨4|5|6⟩ ¨2W;")
     assert stack[-1] == [[4, 0], [5, 1], [6, 2]]

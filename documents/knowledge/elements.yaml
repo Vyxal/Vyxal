@@ -363,6 +363,11 @@
   description: The characters until the next newline are commented out
   arity: NA
 
+- element: "#{"
+  name: Multiline Comment
+  description: The characters until the next `}#` are commented out. Nestable.
+  arity: NA
+
 - element: "$"
   name: Swap
   arity: 2
