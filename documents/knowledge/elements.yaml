@@ -365,7 +365,7 @@
 
 - element: "#{"
   name: Multiline Comment
-  description: The characters until the `#}` are commented out. Nestable.
+  description: The characters until the next `}#` are commented out. Nestable.
   arity: NA
 
 - element: "$"

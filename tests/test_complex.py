@@ -457,10 +457,10 @@ def test_multiline_comments():
           yeah some nesting
           #{blah
            yeah some real nesting
-           #}
-           #}
+           }#
+           }#
            yeah
-           #}
+           }#
            2
     """)
     assert stack == [1, 2]
