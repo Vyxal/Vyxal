@@ -3340,7 +3340,7 @@ def regex_sub(lhs, rhs, other, ctx):
             if switch % 2:
                 out += item
             else:
-                out += safe_apply(other, item, ctx=ctx)
+                out += vy_str(safe_apply(other, item, ctx=ctx), ctx=ctx)
             switch += 1
 
         return out
@@ -3956,54 +3956,54 @@ def strict_less_than(lhs, rhs, ctx):
     )()
 
 
+def strip_list_helper(left, right, ctx, sign=0):
+    """This doesn't make sense anywhere but here"""
+    inf_left, inf_right = False, False
+    if vy_type(left) is LazyList and left.infinite:
+        inf_left = True
+    if vy_type(right) is LazyList and right.infinite:
+        inf_right = True
+    if not left:
+        return []  # how you gonna strip from nothing
+    if not right:
+        return left
+
+    # Strip from the right side first
+    # check to make sure there's stuff to strip
+
+    if not inf_left and not inf_right and len(left) < len(right):
+        # left is smaller than right
+        # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
+        if left in (right[: len(left)], right[: len(left) : -1]):
+            return []
+
+    def strip_front(lst, unwanted):
+        """Strip from only the front"""
+        start_ind = 0
+        for item in lst:
+            if item not in unwanted:
+                break
+            start_ind += 1
+
+        return lst[start_ind:]
+
+    if sign == 0:
+        left = strip_front(left, right)
+
+        if not inf_left:
+            left = strip_front(left[::-1], right)[::-1]
+    elif sign == -1:
+        left = strip_front(left, right)
+    else:
+        left = strip_front(left[::-1], right)[::-1]
+
+    return left
+
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
     """
-
-    def list_helper(left, right):
-        """This doesn't make sense anywhere but here"""
-        inf_left, inf_right = False, False
-        if vy_type(left) is LazyList and left.infinite:
-            inf_left = True
-        if vy_type(right) is LazyList and right.infinite:
-            inf_right = True
-        if not left:
-            return []  # how you gonna strip from nothing
-        if not right:
-            return left
-
-        # Strip from the right side first
-        # check to make sure there's stuff to strip
-
-        if not inf_left and not inf_right and len(left) < len(right):
-            # left is smaller than right
-            # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
-            if left in (right[: len(left)], right[: len(left) : -1]):
-                return []
-
-        def strip_front(lst, unwanted):
-            """Strip from only the front"""
-            start_ind = 0
-            it = iter(unwanted)
-            for item in lst:
-                try:
-                    to_strip = next(it)
-                    if not equals(item, to_strip, ctx=ctx):
-                        break
-                except StopIteration:
-                    break
-                start_ind += 1
-
-            return lst[start_ind:]
-
-        left = strip_front(left, right)
-
-        if not inf_left:
-            left = strip_front(left[::-1], right)
-
-        return left
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
@@ -4015,7 +4015,77 @@ def strip(lhs, rhs, ctx):
         ),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
-    }.get(ts, lambda: list_helper(lhs, rhs))()
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx))()
+
+
+def strip_left(lhs, rhs, ctx):
+    """Element øl
+    (any, any) -> a.lstrip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.lstrip(str(rhs)),
+        (str, str): lambda: lhs.lstrip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, -1))()
+
+
+def strip_right(lhs, rhs, ctx):
+    """Element ør
+    (any, any) -> a.rstrip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).rstrip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).rstrip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.rstrip(str(rhs)),
+        (str, str): lambda: lhs.rstrip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, 1))()
+
+
+def strip_whitespace(lhs, ctx):
+    """Element øS
+    (str) -> a.strip()
+    (num) -> Remove trailing zeros
+    """
+    ts = vy_type(lhs)
+    return {
+        str: lambda: vy_str(lhs, ctx=ctx).strip(),
+        NUMBER_TYPE: lambda: (
+            strip_whitespace(lhs // 10, ctx) if lhs % 10 == 0 else lhs
+        ),
+    }.get(ts, lambda: vectorise(strip_whitespace, lhs, ctx=ctx))()
+
+
+def strip_whitespace_left(lhs, ctx):
+    """Element øL
+    (str) -> a.lstrip()
+    """
+    ts = vy_type(lhs)
+    return {str: lambda: vy_str(lhs, ctx=ctx).lstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_left, lhs, ctx=ctx)
+    )()
+
+
+def strip_whitespace_right(lhs, ctx):
+    """Element øR
+    (str) -> a.rstrip()
+    """
+    ts = vy_type(lhs)
+    return {str: lambda: vy_str(lhs, ctx=ctx).rstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_right, lhs, ctx=ctx)
+    )()
 
 
 def starts_with(lhs, rhs, ctx):
@@ -5596,6 +5666,11 @@ elements: dict[str, tuple[str, int]] = {
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
     "øḞ": process_element(replace_first, 3),
+    "øS": process_element(strip_whitespace, 1),
+    "øL": process_element(strip_whitespace_left, 1),
+    "øR": process_element(strip_whitespace_right, 1),
+    "øl": process_element(strip_left, 2),
+    "ør": process_element(strip_right, 2),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),

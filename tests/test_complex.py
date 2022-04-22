@@ -464,3 +464,17 @@ def test_multiline_comments():
            2
     """)
     assert stack == [1, 2]
+
+
+def test_dyadic_map():
+    stack = run_vyxal("⟨4|5|6⟩ ¨2W;")
+    assert stack[-1] == [[4, 0], [5, 1], [6, 2]]
+
+
+def test_triadic_map():
+    stack = run_vyxal("⟨4|5|6⟩ ¨3W;")
+    assert stack[-1] == [
+        [4, 0, [4, 5, 6]],
+        [5, 1, [4, 5, 6]],
+        [6, 2, [4, 5, 6]],
+    ]
