@@ -191,7 +191,7 @@ The characters until the next newline are commented out
 
 codepage_descriptions[123] += `
 #{ (Multiline Comment)
-The characters until the \`#}\` are commented out. Nestable.
+The characters until the next \`}#\` are commented out. Nestable.
 `
 codepage_descriptions.push(`Swap
 Swap the top two items

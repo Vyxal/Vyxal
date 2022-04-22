@@ -272,7 +272,7 @@ The characters until the next newline are commented out
 -------------------------------
 ## `` #{ `` (Multiline Comment)
 
-The characters until the `#}` are commented out. Nestable.
+The characters until the next `}#` are commented out. Nestable.
 
 -------------------------------
 ## `` $ `` (Swap)
