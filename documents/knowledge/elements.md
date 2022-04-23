@@ -1776,7 +1776,7 @@ Performs bitwise not on a number / check if any letters are uppercase
 
 - num a: `~a`
 - str a: `any_upper(a)`
-- lst a: `filter(lst, is_true)`
+- lst a: `keep truthy`
 -------------------------------
 ## `` ℅ `` (Random Choice)
 
