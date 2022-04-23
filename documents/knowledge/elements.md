@@ -1770,12 +1770,13 @@ Performs bitwise xor between two numbers / appends n spaces to a string / prepen
 -------------------------------
 ## `` ꜝ `` (Bitwise Not)
 
-Performs bitwise not on a number / check if any letters are uppercase
+Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list
 
 ### Overloads
 
 - num a: `~a`
 - str a: `any_upper(a)`
+- lst a: `keep truthy`
 -------------------------------
 ## `` ℅ `` (Random Choice)
 

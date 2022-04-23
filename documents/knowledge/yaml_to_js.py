@@ -33,23 +33,21 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
     out.write(f"var codepage = {codepage!r}\n")
     out.write("var codepage_descriptions = []\n\n")
     for element in data:
-
+        key = "element" if "element" in element else "modifier"
         if (
-            "element" in element
-            and len(element["element"]) == 2
-            and element["element"][1] in codepage
+            key in element
+            and len(element[key]) == 2
+            and element[key][1] in codepage
         ):
-            if element["element"] == "#{":
-                out.write("codepage_descriptions[33] += `\n")
+            if element[key] == "#{":
+                out.write("codepage_descriptions[35] += `\n")
             else:
                 out.write(
                     "codepage_descriptions["
-                    + str(codepage.index(element["element"][1]))
+                    + str(codepage.index(element[key][1]))
                     + "] += `\n"
                 )
-            out.write(
-                str(element["element"]) + " (" + str(element["name"]) + ")\n"
-            )
+            out.write(str(element[key]) + " (" + str(element["name"]) + ")\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
             if "overloads" in element:
                 for overload in element["overloads"]:
@@ -66,7 +64,9 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                         + "\n"
                     )
             out.write("`\n")
-        elif "element" in element and element["element"] in codepage:
+        elif (key in element and element[key] in codepage) or element[
+            key
+        ] == " ":
             out.write("codepage_descriptions.push(`")
             out.write(str(element["name"]) + "\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
