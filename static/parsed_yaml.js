@@ -189,7 +189,7 @@ codepage_descriptions.push(`Comment
 The characters until the next newline are commented out
 `)
 
-codepage_descriptions[123] += `
+codepage_descriptions[33] += `
 #{ (Multiline Comment)
 The characters until the next \`}#\` are commented out. Nestable.
 `
@@ -2455,4 +2455,12 @@ Open a dyadic mapping lambda - ¨2...; Receives item and index.
 codepage_descriptions[51] += `
 ¨3 (Triadic Map Lambda)
 Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+`
+codepage_descriptions[167] += `
+¨₂ (Dyadic Filter Lambda)
+Open a dyadic filter lambda - ¨₂...; Receives item and index.
+`
+codepage_descriptions[168] += `
+¨₃ (Triadic Filter Lambda)
+Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 `
