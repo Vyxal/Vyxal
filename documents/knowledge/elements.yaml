@@ -2394,7 +2394,7 @@
       num: ~a
       str: any_upper(a)
       lst: filter(lst, is_true)
-  vectorise: true
+  vectorise: false
   tests:
       - "[220] : -221"
       - '["Hello"] : 1'
