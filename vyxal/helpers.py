@@ -1033,8 +1033,22 @@ def vy_eval(item: str, ctx: Context) -> Any:
 @lazylist
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
+    idx = 0
+    arity = (
+        function.stored_arity
+        if hasattr(function, "stored_arity")
+        else (function.arity if hasattr(function, "arity") else None)
+    )
     for element in iterable(vector, range, ctx=ctx):
-        yield safe_apply(function, element, ctx=ctx)
+        if not arity or arity == 1:
+            yield safe_apply(function, element, ctx=ctx)
+        elif arity == 2:
+            yield safe_apply(function, element, idx, ctx=ctx)
+        elif arity == 3:
+            yield safe_apply(function, element, idx, vector, ctx=ctx)
+        else:
+            yield safe_apply(function, element, ctx=ctx)
+        idx += 1
 
 
 def vyxalify(value: Any) -> Any:

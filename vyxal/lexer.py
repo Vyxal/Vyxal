@@ -9,7 +9,6 @@ types, go to documents/specs/Lexer.md
 from __future__ import annotations
 
 import collections
-from multiprocessing import context
 import string
 from enum import Enum
 
@@ -155,10 +154,21 @@ def tokenise(
                     Token(TokenType.VARIABLE_GET, contextual_token_value)
                 )
         elif head == "#":
-            while source and source[0] != "\n":
-                source.popleft()
-            if source:
-                source.popleft()
+            if source and source[0] != "\n" and source.popleft() == "{":
+                depth = 1
+                while source:
+                    h = source.popleft()
+                    if h == "#" and source[0] == "{":
+                        depth += 1
+                    if h == "}" and source[0] == "#":
+                        depth -= 1
+                        if depth == 0:
+                            break
+            else:
+                while source and source[0] != "\n":
+                    source.popleft()
+                if source:
+                    source.popleft()
         elif head in "k∆øÞ¨":
             if source and source[0] != "|":
                 tokens.append(Token(TokenType.GENERAL, head + source.popleft()))

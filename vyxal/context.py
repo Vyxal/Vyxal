@@ -33,6 +33,7 @@ class Context:
         self.last_popped = []
         self.use_top_input = False
         self.variable_length_1 = False
+        self.double_zip_vectorize = False
         self.vyxal_lists = True
         self.global_array = []
 

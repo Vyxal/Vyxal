@@ -4,7 +4,6 @@ offline.
 """
 
 import os
-from re import A
 import sys
 import traceback
 import types
@@ -48,6 +47,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     D    Treat all strings as raw strings (don't decompress strings)
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
+    Z    With four argument vectorization where all arguments are lists, use zip(zip(a, b), zip(c, d)) instead of zip(a, b, c, d)
     J    Print the entire stack, separated by newlines
     t    Vectorise boolify on Lists
     P    Print lists as their python representation
@@ -124,6 +124,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.print_decimals = "ḋ" in flags
     ctx.empty_input_is_zero = "?" not in flags
     ctx.array_inputs = "a" in flags
+    ctx.double_zip_vectorize = "Z" in flags
 
     if "2" in flags:
         ctx.default_arity = 2

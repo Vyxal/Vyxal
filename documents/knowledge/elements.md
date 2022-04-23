@@ -270,6 +270,11 @@ Place the top two items into a single list
 The characters until the next newline are commented out
 
 -------------------------------
+## `` #{ `` (Multiline Comment)
+
+The characters until the next `}#` are commented out. Nestable.
+
+-------------------------------
 ## `` $ `` (Swap)
 
 Swap the top two items
@@ -910,6 +915,15 @@ Vectorise an element
 Usage:
 ```
 v<element>
+```
+
+-------------------------------
+## `` ¨v `` (Simple vectorise)
+Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+
+Usage:
+```
+¨v<element>
 ```
 
 -------------------------------
@@ -2013,6 +2027,11 @@ Rotate Stack Left
 Rotate Stack Right
 
 -------------------------------
+## `` 🍪 `` (Cookie)
+
+print "cookie" forever
+
+-------------------------------
 ## `` kA `` (Uppercase alphabet)
 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
@@ -3015,6 +3034,47 @@ Replace the nth instance of an item with another item. If n is negative, then re
 
 - any a, any b, any c, any d: `a.replace_nth_occurrence(b, c, d)`
 -------------------------------
+## `` øS `` (Strip whitespace from both sides)
+
+Strip whitespace from both sides of a string / Remove trailing zeros from a number
+
+### Overloads
+
+- str a: `a.strip()`
+- num a: `remove trailing zeros`
+-------------------------------
+## `` øL `` (Strip whitespace from the left side)
+
+Strip whitespace from the left side of a string
+
+### Overloads
+
+- str a: `a.lstrip()`
+-------------------------------
+## `` øR `` (Strip whitespace from the right side)
+
+Strip whitespace from the right side of a string
+
+### Overloads
+
+- str a: `a.rstrip()`
+-------------------------------
+## `` øl `` (Strip from the left side)
+
+Strip from the left side of a string
+
+### Overloads
+
+- str a: `a.lstrip(b)`
+-------------------------------
+## `` ør `` (Strip from the right side)
+
+Strip from the right side of a string
+
+### Overloads
+
+- str a: `a.rstrip(b)`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists
@@ -3575,4 +3635,24 @@ Wrap the last n items on the stack into a list
 ### Overloads
 
 - num a: `last a items in a list`
+-------------------------------
+## `` ¨2 `` (Dyadic Map Lambda)
+
+Open a dyadic mapping lambda - ¨2...; Receives item and index.
+
+-------------------------------
+## `` ¨3 `` (Triadic Map Lambda)
+
+Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
+
+-------------------------------
+## `` ¨₂ `` (Dyadic Filter Lambda)
+
+Open a dyadic filter lambda - ¨₂...; Receives item and index.
+
+-------------------------------
+## `` ¨₃ `` (Triadic Filter Lambda)
+
+Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
+
 -------------------------------
