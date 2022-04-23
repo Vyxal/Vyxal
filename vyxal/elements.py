@@ -741,9 +741,9 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
-def cookie(ctx):
+def cookie(_, ctx):
     while 1:
-        vy_print("cookie")
+        vy_print("cookie", ctx=ctx)
 
 
 def coords_deepmap(lhs, rhs, ctx):
