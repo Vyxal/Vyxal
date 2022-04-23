@@ -39,11 +39,14 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
             and len(element["element"]) == 2
             and element["element"][1] in codepage
         ):
-            out.write(
-                "codepage_descriptions["
-                + str(codepage.index(element["element"][1]))
-                + "] += `\n"
-            )
+            if element["element"] == "#{":
+                out.write("codepage_descriptions[33] += `\n")
+            else:
+                out.write(
+                    "codepage_descriptions["
+                    + str(codepage.index(element["element"][1]))
+                    + "] += `\n"
+                )
             out.write(
                 str(element["element"]) + " (" + str(element["name"]) + ")\n"
             )
