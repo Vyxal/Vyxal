@@ -2401,7 +2401,7 @@
 - element: "ꜝ"
   name: Bitwise Not
   arity: 1
-  description: Performs bitwise not on a number / check if any letters are uppercase
+  description: Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list
   overloads:
       num: ~a
       str: any_upper(a)
