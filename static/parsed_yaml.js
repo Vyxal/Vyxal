@@ -1205,6 +1205,7 @@ codepage_descriptions.push(`Bitwise Not
 Performs bitwise not on a number / check if any letters are uppercase
 num a -> ~a
 str a -> any_upper(a)
+lst a -> filter(lst, is_true)
 `)
 
 codepage_descriptions.push(`Random Choice

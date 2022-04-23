@@ -1517,6 +1517,7 @@ z (Zip-self)
 
     num a: ~a
     str a: any_upper(a)
+    lst a: filter(lst, is_true)
     otherwise: vectorise
 -------------------------------
 ℅ (Random Choice)

@@ -448,7 +448,7 @@ def bitwise_not(lhs, ctx):
     (str) -> any_upper(a)
     (list) -> filter(a, is_truthy)
     """
-    if vy_type(lhs) is NUMBER_TYPE: 
+    if vy_type(lhs) is NUMBER_TYPE:
         return ~int(lhs)
     elif vy_type(lhs, simple=True) is list:
         return vy_filter(lhs, boolify, ctx=ctx)
