@@ -40,7 +40,7 @@ def execute():
 
     print(sessions, request.form)
     flags = request.form["flags"] + "e"
-    code = request.form["code"].replace("\r", "")
+    code = request.form["code"].r("\r", "")
     input_list = request.form["inputs"].replace("\r", "")
     header = request.form["header"].replace("\r", "")
     footer = request.form["footer"].replace("\r", "")
@@ -158,5 +158,3 @@ def version():
     )
 
     return VERSION
-
-app.run()
