@@ -2393,10 +2393,12 @@
   overloads:
       num: ~a
       str: any_upper(a)
+      lst: filter(lst, is_true)
   vectorise: true
   tests:
       - "[220] : -221"
       - '["Hello"] : 1'
+      - '[["", 0, "w", 3]] : ["w", 3]'
 
 - element: "℅"
   name: Random Choice
