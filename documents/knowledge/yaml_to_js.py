@@ -47,9 +47,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                     + str(codepage.index(element[key][1]))
                     + "] += `\n"
                 )
-            out.write(
-                str(element[key]) + " (" + str(element["name"]) + ")\n"
-            )
+            out.write(str(element[key]) + " (" + str(element["name"]) + ")\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
             if "overloads" in element:
                 for overload in element["overloads"]:
@@ -66,7 +64,9 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
                         + "\n"
                     )
             out.write("`\n")
-        elif (key in element and element[key] in codepage) or element[key] == ' ':
+        elif (key in element and element[key] in codepage) or element[
+            key
+        ] == " ":
             out.write("codepage_descriptions.push(`")
             out.write(str(element["name"]) + "\n")
             out.write(str(element["description"]).replace("`", "\\`") + "\n")
