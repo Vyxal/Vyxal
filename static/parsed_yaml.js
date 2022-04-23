@@ -1234,7 +1234,7 @@ str a, str b -> levenshtein_distance(a,b)
 `)
 
 codepage_descriptions.push(`Bitwise Not
-Performs bitwise not on a number / check if any letters are uppercase
+Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list
 num a -> ~a
 str a -> any_upper(a)
 lst a -> keep truthy
