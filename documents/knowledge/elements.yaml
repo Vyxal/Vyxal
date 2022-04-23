@@ -2405,7 +2405,7 @@
   overloads:
       num: ~a
       str: any_upper(a)
-      lst: filter(lst, is_true)
+      lst: keep truthy
   vectorise: false
   tests:
       - "[220] : -221"
