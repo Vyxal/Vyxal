@@ -189,7 +189,7 @@ codepage_descriptions.push(`Comment
 The characters until the next newline are commented out
 `)
 
-codepage_descriptions[123] += `
+codepage_descriptions[33] += `
 #{ (Multiline Comment)
 The characters until the next \`}#\` are commented out. Nestable.
 `
