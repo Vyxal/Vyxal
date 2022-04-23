@@ -3646,3 +3646,13 @@ Open a dyadic mapping lambda - ¨2...; Receives item and index.
 Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
 
 -------------------------------
+## `` ¨₂ `` (Dyadic Filter Lambda)
+
+Open a dyadic filter lambda - ¨₂...; Receives item and index.
+
+-------------------------------
+## `` ¨₃ `` (Triadic Filter Lambda)
+
+Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
+
+-------------------------------

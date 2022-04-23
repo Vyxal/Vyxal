@@ -120,6 +120,16 @@ class LambdaFilter(LambdaOp):
         super().__init__(body, after="F")
 
 
+class LambdaFilterDyadic(LambdaOp):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body, after="F", arity=2)
+
+
+class LambdaFilterTriadic(LambdaOp):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body, after="F", arity=3)
+
+
 class LambdaSort(LambdaOp):
     def __init__(self, body: list[Structure]):
         super().__init__(body, after="ṡ")
