@@ -24,6 +24,10 @@ STRUCTURE_INFORMATION = {
     "@": (structure.FunctionCall, ";"),
     "λ": (structure.Lambda, ";"),
     "ƛ": (structure.LambdaMap, ";"),
+    "¨2": (structure.LambdaMapDyadic, ";"),
+    "¨3": (structure.LambdaMapTriadic, ";"),
+    "¨₂": (structure.LambdaFilterDyadic, ";"),
+    "¨₃": (structure.LambdaFilterTriadic, ";"),
     "'": (structure.LambdaFilter, ";"),
     "µ": (structure.LambdaSort, ";"),
     "⟑": (structure.LambdaMapEager, ";"),
@@ -31,8 +35,8 @@ STRUCTURE_INFORMATION = {
 }
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
-OPENING_CHARACTERS = "".join(STRUCTURE_INFORMATION.keys())
-MONADIC_MODIFIERS = list("v⁽&~ßƒɖ") + ["¨="]
+OPENING_CHARACTERS = list(STRUCTURE_INFORMATION.keys())
+MONADIC_MODIFIERS = list("v⁽&~ßƒɖ") + ["¨=", "¨v"]
 DYADIC_MODIFIERS = list("₌‡₍")
 TRIADIC_MODIFIERS = list("≬")
 # The modifiers are stored as lists to allow for potential digraph
@@ -192,6 +196,18 @@ def parse(
                     structure.LambdaMap(parse(branches[0], structure_cls))
                 )
 
+            elif structure_cls == structure.LambdaMapDyadic:
+                structures.append(
+                    structure.LambdaMapDyadic(parse(branches[0], structure_cls))
+                )
+
+            elif structure_cls == structure.LambdaMapTriadic:
+                structures.append(
+                    structure.LambdaMapTriadic(
+                        parse(branches[0], structure_cls)
+                    )
+                )
+
             elif structure_cls == structure.LambdaMapEager:
                 structures.append(
                     structure.LambdaMapEager(parse(branches[0], structure_cls))
@@ -221,7 +237,15 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens, structure.MonadicModifier)
+            remaining = parse(tokens)
+            relevant = remaining[0]
+
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
             if head.value == "⁽":
                 # 1-element lambda
                 structures.append(
@@ -236,7 +260,20 @@ def parse(
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens, structure.DyadicModifier)
+            remaining = parse(tokens)
+
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
+            if isinstance(
+                remaining[1],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[1].parent_structure = parent
+
             if head.value == "‡":
                 # 2-element lambda
                 structures.append(
@@ -255,7 +292,24 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens, structure.TriadicModifier)
+            remaining = parse(tokens)
+            if isinstance(
+                remaining[0],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[0].parent_structure = parent
+
+            if isinstance(
+                remaining[1],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[1].parent_structure = parent
+
+            if isinstance(
+                remaining[2],
+                (structure.RecurseStatement, structure.BreakStatement),
+            ):
+                remaining[2].parent_structure = parent
             if head.value == "≬":
                 # 3-element lambda
                 structures.append(

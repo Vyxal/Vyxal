@@ -447,3 +447,50 @@ def test_empty_lists():
     assert stack[-1] == [1, 2, 3, 6]
     stack = run_vyxal("69 ⟨⟩")
     assert stack[-1] == []
+
+
+def test_multiline_comments():
+    stack = run_vyxal(
+        """
+    1 #{
+        yeah
+        #{
+          yeah some nesting
+          #{blah
+           yeah some real nesting
+           }#
+           }#
+           yeah
+           }#
+           2
+    """
+    )
+    assert stack == [1, 2]
+
+
+def test_dyadic_map():
+    stack = run_vyxal("⟨4|5|6⟩ ¨2W;")
+    assert stack[-1] == [[4, 0], [5, 1], [6, 2]]
+
+
+def test_triadic_map():
+    stack = run_vyxal("⟨4|5|6⟩ ¨3W;")
+    assert stack[-1] == [
+        [4, 0, [4, 5, 6]],
+        [5, 1, [4, 5, 6]],
+        [6, 2, [4, 5, 6]],
+    ]
+
+
+def test_dyadic_filter():
+    stack = run_vyxal("⟨4|5|6⟩ ¨₂ 0 > $ 6 < ∧ ;")
+    assert stack[-1] == [5]
+
+
+def test_triadic_filter():
+    stack = run_vyxal("⟨4|5|6⟩ ¨₃ 5c;")
+    assert stack[-1] == [4, 5, 6]
+    stack = run_vyxal("⟨4|7|6⟩ ¨₃ 5c;")
+    assert stack[-1] == []
+    stack = run_vyxal("⟨4|5|6⟩ ¨₃ 5c $ 0 > ∧ $ 6 < ∧;")
+    assert stack[-1] == [5]
