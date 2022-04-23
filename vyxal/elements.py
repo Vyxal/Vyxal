@@ -743,6 +743,11 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
+def cookie(_, ctx):
+    while 1:
+        vy_print("cookie", ctx=ctx)
+
+
 def coords_deepmap(lhs, rhs, ctx):
     """Element ÞZ
     (any, fun) -> For each value of a (all the way down) call b with the
@@ -1039,7 +1044,8 @@ def e_digits(lhs, ctx):
         estr = estr[0] + estr[2:-1]
         return LazyList(map(int, estr))
     elif vy_type(lhs) is str:
-        return sympy.nsimplify(lhs, rational=True)
+        return lhs
+        # return sympy.nsimplify(lhs, rational=True)
     else:
         return vectorise(e_digits, lhs, ctx=ctx)
 
@@ -2919,7 +2925,8 @@ def nth_pi(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: pi_digits(int(lhs))[int(lhs)],
-        (str): lambda: str(sympy.integrate(make_expression(lhs))),
+        (str): lambda: str(lhs)
+        # (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
@@ -3335,7 +3342,7 @@ def regex_sub(lhs, rhs, other, ctx):
             if switch % 2:
                 out += item
             else:
-                out += safe_apply(other, item, ctx=ctx)
+                out += vy_str(safe_apply(other, item, ctx=ctx), ctx=ctx)
             switch += 1
 
         return out
@@ -3951,54 +3958,54 @@ def strict_less_than(lhs, rhs, ctx):
     )()
 
 
+def strip_list_helper(left, right, ctx, sign=0):
+    """This doesn't make sense anywhere but here"""
+    inf_left, inf_right = False, False
+    if vy_type(left) is LazyList and left.infinite:
+        inf_left = True
+    if vy_type(right) is LazyList and right.infinite:
+        inf_right = True
+    if not left:
+        return []  # how you gonna strip from nothing
+    if not right:
+        return left
+
+    # Strip from the right side first
+    # check to make sure there's stuff to strip
+
+    if not inf_left and not inf_right and len(left) < len(right):
+        # left is smaller than right
+        # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
+        if left in (right[: len(left)], right[: len(left) : -1]):
+            return []
+
+    def strip_front(lst, unwanted):
+        """Strip from only the front"""
+        start_ind = 0
+        for item in lst:
+            if item not in unwanted:
+                break
+            start_ind += 1
+
+        return lst[start_ind:]
+
+    if sign == 0:
+        left = strip_front(left, right)
+
+        if not inf_left:
+            left = strip_front(left[::-1], right)[::-1]
+    elif sign == -1:
+        left = strip_front(left, right)
+    else:
+        left = strip_front(left[::-1], right)[::-1]
+
+    return left
+
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
     """
-
-    def list_helper(left, right):
-        """This doesn't make sense anywhere but here"""
-        inf_left, inf_right = False, False
-        if vy_type(left) is LazyList and left.infinite:
-            inf_left = True
-        if vy_type(right) is LazyList and right.infinite:
-            inf_right = True
-        if not left:
-            return []  # how you gonna strip from nothing
-        if not right:
-            return left
-
-        # Strip from the right side first
-        # check to make sure there's stuff to strip
-
-        if not inf_left and not inf_right and len(left) < len(right):
-            # left is smaller than right
-            # e.g. [1, 2, 3].strip([2, 3, 4, 5, 6])
-            if left in (right[: len(left)], right[: len(left) : -1]):
-                return []
-
-        def strip_front(lst, unwanted):
-            """Strip from only the front"""
-            start_ind = 0
-            it = iter(unwanted)
-            for item in lst:
-                try:
-                    to_strip = next(it)
-                    if not equals(item, to_strip, ctx=ctx):
-                        break
-                except StopIteration:
-                    break
-                start_ind += 1
-
-            return lst[start_ind:]
-
-        left = strip_front(left, right)
-
-        if not inf_left:
-            left = strip_front(left[::-1], right)
-
-        return left
-
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
@@ -4010,7 +4017,77 @@ def strip(lhs, rhs, ctx):
         ),
         (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
         (str, str): lambda: lhs.strip(rhs),
-    }.get(ts, lambda: list_helper(lhs, rhs))()
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx))()
+
+
+def strip_left(lhs, rhs, ctx):
+    """Element øl
+    (any, any) -> a.lstrip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.lstrip(str(rhs)),
+        (str, str): lambda: lhs.lstrip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, -1))()
+
+
+def strip_right(lhs, rhs, ctx):
+    """Element ør
+    (any, any) -> a.rstrip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).rstrip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).rstrip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.rstrip(str(rhs)),
+        (str, str): lambda: lhs.rstrip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, 1))()
+
+
+def strip_whitespace(lhs, ctx):
+    """Element øS
+    (str) -> a.strip()
+    (num) -> Remove trailing zeros
+    """
+    ts = vy_type(lhs)
+    return {
+        str: lambda: vy_str(lhs, ctx=ctx).strip(),
+        NUMBER_TYPE: lambda: (
+            strip_whitespace(lhs // 10, ctx) if lhs % 10 == 0 else lhs
+        ),
+    }.get(ts, lambda: vectorise(strip_whitespace, lhs, ctx=ctx))()
+
+
+def strip_whitespace_left(lhs, ctx):
+    """Element øL
+    (str) -> a.lstrip()
+    """
+    ts = vy_type(lhs)
+    return {str: lambda: vy_str(lhs, ctx=ctx).lstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_left, lhs, ctx=ctx)
+    )()
+
+
+def strip_whitespace_right(lhs, ctx):
+    """Element øR
+    (str) -> a.rstrip()
+    """
+    ts = vy_type(lhs)
+    return {str: lambda: vy_str(lhs, ctx=ctx).rstrip()}.get(
+        ts, lambda: vectorise(strip_whitespace_right, lhs, ctx=ctx)
+    )()
 
 
 def starts_with(lhs, rhs, ctx):
@@ -4376,14 +4453,123 @@ def unwrap(lhs, ctx):
         return ([lhs[0], lhs[-1]], rest)
 
 
-def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
+def vectorise(
+    function,
+    lhs,
+    rhs=None,
+    other=None,
+    fourth=None,
+    explicit=False,
+    ctx: Context = None,
+):
     """
     Maps a function over arguments
     Probably cursed but whatever.
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
     """
-    if other is not None:
+    if fourth is not None:
+        # That is, four argument vectorisation
+        # That is:
+
+        ts = (
+            primitive_type(lhs),
+            primitive_type(rhs),
+            primitive_type(other),
+            primitive_type(fourth),
+        )
+
+        simple = {
+            (
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+                SCALAR_TYPE,
+            ): lambda: safe_apply(function, lhs, rhs, other, fourth, ctx=ctx),
+            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, rhs, other, x, ctx=ctx)
+                for x in fourth
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx)
+                for x in other
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, other, fourth, ctx=ctx)
+                for x in rhs
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                for x in lhs
+            ),
+            (SCALAR_TYPE, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, lhs, rhs, x, y, ctx=ctx)
+                for x, y in vy_zip(other, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, lhs, x, other, y, ctx=ctx)
+                for x, y in vy_zip(rhs, fourth, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, rhs, other, y, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, lhs, x, y, fourth, ctx=ctx)
+                for x, y in vy_zip(rhs, other, ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, rhs, y, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, fourth, ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, other, fourth, ctx=ctx)
+                for x, y in vy_zip(lhs, rhs, ctx=ctx)
+            ),
+            (list, list, list, SCALAR_TYPE): lambda: (
+                safe_apply(function, x, y, z, fourth, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
+            ),
+            (list, list, SCALAR_TYPE, list): lambda: (
+                safe_apply(function, x, y, other, z, ctx=ctx)
+                for x, y, z in transpose([lhs, rhs, fourth], ctx=ctx)
+            ),
+            (list, SCALAR_TYPE, list, list): lambda: (
+                safe_apply(function, x, rhs, y, z, ctx=ctx)
+                for x, y, z in transpose([lhs, other, fourth], ctx=ctx)
+            ),
+            (SCALAR_TYPE, list, list, list): lambda: (
+                safe_apply(function, lhs, x, y, z, ctx=ctx)
+                for x, y, z in transpose([rhs, other, fourth], ctx=ctx)
+            ),
+            (list, list, list, list): lambda: (
+                (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for (w, x), (y, z) in vy_zip(
+                        vy_zip(lhs, rhs, ctx=ctx),
+                        vy_zip(other, fourth, ctx=ctx),
+                    )
+                )
+                if ctx.double_zip_vectorize
+                else (
+                    safe_apply(function, w, x, y, z, ctx=ctx)
+                    for w, x, y, z in transpose(
+                        [lhs, rhs, other, fourth], ctx=ctx
+                    )
+                )
+            ),
+        }
+
+        if explicit:
+            return LazyList(
+                (
+                    safe_apply(function, x, rhs, other, fourth, ctx=ctx)
+                    for x in iterable(lhs, ctx=ctx)
+                )
+            )
+        else:
+            return LazyList(simple.get(ts)())
+    elif other is not None:
         # That is, three argument vectorisation
         # That is:
 
@@ -4416,8 +4602,7 @@ def vectorise(function, lhs, rhs=None, other=None, explicit=False, ctx=None):
             ),
             (list, list, list): lambda: (
                 safe_apply(function, x, y, z, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-                for z in other
+                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
             ),
         }
 
@@ -4650,20 +4835,43 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     """
     ts = vy_type(lhs, rhs)
     if ts[0] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(lhs, x, ctx=ctx),
-                iterable(rhs, range, ctx=ctx),
-            )
+        return vy_filter(rhs, lhs, ctx)
+    if ts[1] == types.FunctionType:
+        arity = (
+            rhs.stored_arity
+            if hasattr(rhs, "stored_arity")
+            else (rhs.arity if hasattr(rhs, "arity") else None)
         )
-    elif ts[1] == types.FunctionType:
-        return LazyList(
-            filter(
-                lambda x: safe_apply(rhs, x, ctx=ctx),
-                iterable(lhs, range, ctx=ctx),
+        if not arity or arity == 1:
+            return LazyList(
+                filter(
+                    lambda x: safe_apply(rhs, x, ctx=ctx),
+                    iterable(lhs, range, ctx=ctx),
+                )
             )
-        )
-    elif ts == (str, str):
+        if arity == 2:
+
+            @lazylist
+            def gen():
+                idx = 0
+                for x in iterable(lhs, range, ctx=ctx):
+                    if safe_apply(rhs, x, idx, ctx=ctx):
+                        yield x
+                    idx += 1
+
+            return gen()
+        if arity == 3:
+
+            @lazylist
+            def gen():
+                idx = 0
+                for x in iterable(lhs, range, ctx=ctx):
+                    if safe_apply(rhs, x, idx, lhs, ctx=ctx):
+                        yield x
+                    idx += 1
+
+            return gen()
+    if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
     return LazyList(elem for elem in lhs if elem not in rhs)
 
@@ -5403,6 +5611,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
+    "🍪": process_element(cookie, 0),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
     "∆C": process_element(arccos, 1),
@@ -5482,6 +5691,11 @@ elements: dict[str, tuple[str, int]] = {
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
     "øḞ": process_element(replace_first, 3),
+    "øS": process_element(strip_whitespace, 1),
+    "øL": process_element(strip_whitespace_left, 1),
+    "øR": process_element(strip_whitespace_right, 1),
+    "øl": process_element(strip_left, 2),
+    "ør": process_element(strip_right, 2),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
@@ -5678,6 +5892,12 @@ modifiers: dict[str, str] = {
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
+        "\n"
+    ),
+    "¨v": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "stack.append"
+        "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
     ),
     "~": (
