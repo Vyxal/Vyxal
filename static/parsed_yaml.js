@@ -76,6 +76,10 @@ str a, str b -> a.with_capitalisation_of(b)
 lst a, lst b -> a molded  to  the shape of b
 `)
 
+codepage_descriptions.push(`Conditional Execute
+Executes element A if the top of the stack is truthy
+`)
+
 codepage_descriptions.push(`Function Call
 Calls a function / executes as python / len(prime factors) / vectorised not
 fun a -> a()
@@ -176,6 +180,10 @@ codepage_descriptions.push(`Other Digraphs
 Used for various random digraphs
 `)
 
+codepage_descriptions.push(`Space
+NOP
+`)
+
 codepage_descriptions.push(`Stack Length
 Push the length of the stack
 `)
@@ -189,7 +197,7 @@ codepage_descriptions.push(`Comment
 The characters until the next newline are commented out
 `)
 
-codepage_descriptions[33] += `
+codepage_descriptions[35] += `
 #{ (Multiline Comment)
 The characters until the next \`}#\` are commented out. Nestable.
 `
@@ -205,6 +213,10 @@ num a, str b -> b.format(a) (replace % in b with a)
 str a, num b -> a.format(b) (replace % in a with b)
 str a, str b -> a.format(b) (replace % in a with b)
 str a, lst b -> a.format(b) (replace % in a with each item of b)
+`)
+
+codepage_descriptions.push(`Apply To Register
+Apply the next element to the register
 `)
 
 codepage_descriptions.push(`Lambda Filter
@@ -635,6 +647,14 @@ codepage_descriptions.push(`Minus One
 Push -1
 `)
 
+codepage_descriptions.push(`Vectorise
+Vectorise an element
+`)
+
+codepage_descriptions[118] += `
+¨v (Simple vectorise)
+Simple vectorise an element. Well, you'll have to look at the code to know what that means.
+`
 codepage_descriptions.push(`Listify
 a wrapped in a singleton list
 any a -> [a] (Wrapped in singleton list)
@@ -664,6 +684,10 @@ Branch the structure - means various things depending on context
 
 codepage_descriptions.push(`Close While Loop
 Close a while loop
+`)
+
+codepage_descriptions.push(`Filter / Execute Without Pop
+For monads, filter a list by that. For dyads, execute without popping from the stack.
 `)
 
 codepage_descriptions.push(`Max by Tail
@@ -1107,6 +1131,14 @@ num a, any b -> b[1:a] (Slice from 1 until a)
 str a, str b -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
 `)
 
+codepage_descriptions.push(`Parallel Apply
+Parallel apply two elements to the top of the stack
+`)
+
+codepage_descriptions.push(`Parallel Apply Wrap
+Parallel apply two elements and wrap the results in a list
+`)
+
 codepage_descriptions.push(`First Input
 Push the first input
 `)
@@ -1231,6 +1263,14 @@ any a, any b -> a != b
 codepage_descriptions.push(`Exactly Equal To
 a equal to b? (non-vectorizing)
 any a, any b -> a == b
+`)
+
+codepage_descriptions.push(`Reduce by
+Reduce by an element
+`)
+
+codepage_descriptions.push(`Scan by
+Cumulatively reduce by an element
 `)
 
 codepage_descriptions.push(`Set Union
@@ -2412,6 +2452,10 @@ codepage_descriptions[85] += `
 Send a GET request to a URL
 str a -> Send a GET request to a URL
 `
+codepage_descriptions[61] += `
+¨= (Invariant After Application)
+Push whether the result of applying an element to an item is the same as the original item
+`
 codepage_descriptions[77] += `
 ¨M (Map At Indices)
 Map a function at elements of a list whose indices are in another list
@@ -2443,6 +2487,10 @@ codepage_descriptions[42] += `
 Return all multiples of a
 num a -> [a*1, a*2, a*3, a*4, ...]
 str a -> [a*1, a*2, a*3, a*4, ...]
+`
+codepage_descriptions[233] += `
+¨£ (Star Map)
+Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
 `
 codepage_descriptions[157] += `
 ¨ẇ (Wrap Last n Items)
