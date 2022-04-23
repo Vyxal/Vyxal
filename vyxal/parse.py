@@ -26,6 +26,8 @@ STRUCTURE_INFORMATION = {
     "ƛ": (structure.LambdaMap, ";"),
     "¨2": (structure.LambdaMapDyadic, ";"),
     "¨3": (structure.LambdaMapTriadic, ";"),
+    "¨₂": (structure.LambdaFilterDyadic, ";"),
+    "¨₃": (structure.LambdaFilterTriadic, ";"),
     "'": (structure.LambdaFilter, ";"),
     "µ": (structure.LambdaSort, ";"),
     "⟑": (structure.LambdaMapEager, ";"),

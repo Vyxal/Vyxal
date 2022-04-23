@@ -5125,3 +5125,13 @@
   name: Triadic Map Lambda
   description: Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
   arity: 3
+
+- element: "¨₂"
+  name: Dyadic Filter Lambda
+  description: Open a dyadic filter lambda - ¨₂...; Receives item and index.
+  arity: 2
+
+- element: "¨₃"
+  name: Triadic Filter Lambda
+  description: Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
+  arity: 3
