@@ -40,9 +40,7 @@ with open(JS_FILE, mode="w", encoding="utf-8") as out:
             and element["element"][1] in codepage
         ):
             if element["element"] == "#{":
-                out.write(
-                    "codepage_descriptions[33] += `\n"
-                )
+                out.write("codepage_descriptions[33] += `\n")
             else:
                 out.write(
                     "codepage_descriptions["
