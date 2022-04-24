@@ -446,12 +446,14 @@ def bitwise_not(lhs, ctx):
     """Element ꜝ
     (num) -> ~a
     (str) -> any_upper(a)
+    (list) -> filter(a, is_truthy)
     """
-    ts = vy_type(lhs)
-    return {
-        NUMBER_TYPE: lambda: ~int(lhs),
-        str: lambda: int(any(char.isupper() for char in lhs)),
-    }.get(ts, lambda: vectorise(bitwise_not, lhs, ctx=ctx))()
+    if vy_type(lhs) is NUMBER_TYPE:
+        return ~int(lhs)
+    elif vy_type(lhs, simple=True) is list:
+        return vy_filter(lhs, boolify, ctx=ctx)
+    else:
+        return int(any(char.isupper() for char in str(lhs)))
 
 
 def bitwise_xor(lhs, rhs, ctx):
