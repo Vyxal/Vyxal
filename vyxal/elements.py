@@ -5207,7 +5207,10 @@ def wrap(lhs, rhs, ctx):
 
     else:
         if ts == (str, str):
-            return list(lhs.partition(rhs)[::2])
+            parts = lhs.partition(rhs)[::2]
+            if parts[1] == "":
+                return [parts[0]]
+            return list(parts)
 
         else:
             vector, chunk_size = (
