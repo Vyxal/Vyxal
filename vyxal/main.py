@@ -55,6 +55,15 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     V    Variables are one character long
     E    Evaluate stdout as JavaScript (online interpreter only)
     Ḣ    Render stdout as HTML (online interpreter only)
+    e    Use the file name as the program source (offline interpreter only)
+    ?    If there is empty input, treat it as 0 instead of empty string.
+    2    Make the default arity of lambdas 2
+    3    Make the default arity of lambdas 3
+    …    Limit list output to the first 100 items of that list
+    5    Make the interpreter timeout after 5 seconds (online interpreter only)
+    b    Make the interpreter timeout after 15 seconds (online interpreter only)
+    B    Make the interpreter timeout after 30 seconds (online interpreter only)
+    T    Make the interpreter timeout after 60 seconds (online interpreter only)
 """
 
 
