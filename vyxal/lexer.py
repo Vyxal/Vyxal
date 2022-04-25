@@ -137,6 +137,8 @@ def tokenise(
             contextual_token_value = ""
             while source and len(contextual_token_value) != 2:
                 contextual_token_value += source.popleft()
+            if contextual_token_value[-1] == "\\":
+                contextual_token_value += "\\"
             tokens.append(Token(TokenType.STRING, contextual_token_value))
         elif head in "→←":
             contextual_token_value = ""

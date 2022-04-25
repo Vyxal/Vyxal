@@ -97,6 +97,15 @@ def test_comments():
     )
 
 
+def test_two_byte_string_backslash():
+    assert token_equal(
+        "‛t\\",
+        [
+            Token(TokenType.STRING, "t\\\\"),
+        ],
+    )
+
+
 def test_numbers():
     assert token_equal("23", [Token(TokenType.NUMBER, "23")])
     assert token_equal("6.", [Token(TokenType.NUMBER, "6.5")])
