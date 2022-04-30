@@ -8,3 +8,5 @@ cumulative right reduce - Steffan
 a.center(b, filler=c) - Steffan
 deck shuffle (interleave both halves of list together) and deck unshuffle - Steffan
 minimum without popping and maximum without popping (o5AB1E's W and Z) - Steffan
+store into register without popping - Steffan
+have a counter variable - Steffan
