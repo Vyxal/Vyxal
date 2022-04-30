@@ -10,3 +10,4 @@ deck shuffle (interleave both halves of list together) and deck unshuffle - Stef
 minimum without popping and maximum without popping (o5AB1E's W and Z) - Steffan
 store into register without popping - Steffan
 have a counter variable - Steffan
+flip brackets (we already have this as a helper but not an element - invert_brackets) - Steffan
