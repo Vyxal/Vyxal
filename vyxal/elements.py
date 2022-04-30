@@ -4094,7 +4094,48 @@ def starts_with(lhs, rhs, ctx):
     """Element øp
     (str, str) -> True if a starts with b
     """
-    return int(lhs.startswith(rhs))
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return {
+        (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+        (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        (list, list): lambda: lhs[0] == rhs,
+    }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+
+
+def ends_with(lhs, rhs, ctx):
+    """Element øE
+    (str, str) -> True if a ends with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return {
+        (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+        (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+        (list, list): lambda: lhs[-1] == rhs,
+    }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return {
+        (list, list): lambda: lhs[:len(rhs)] == rhs,
+        (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+        (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+    }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+
+
+def ends_with_set(lhs, rhs, ctx):
+    """Element øF
+    (list, list) -> True if a ends with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return {
+        (list, list): lambda: lhs[-len(rhs):] == rhs,
+        (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+        (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+    }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
 
 
 def sublists(lhs, ctx):
@@ -5685,6 +5726,9 @@ elements: dict[str, tuple[str, int]] = {
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
+    "øE": process_element(ends_with, 2),
+    "øs": process_element(starts_with_set, 2),
+    "øF": process_element(ends_with_set, 2),
     "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
