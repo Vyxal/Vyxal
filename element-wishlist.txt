@@ -6,3 +6,4 @@ modifier: for each overlapping pair, execute X (aka 2lv) - Steffan
 modifier: for each overlapping pair, reduce over X (aka 2lvƒ) - Steffan
 cumulative right reduce - Steffan
 a.center(b, filler=c) - Steffan
+deck shuffle (interleave both halves of list together) and deck unshuffle - Steffan
