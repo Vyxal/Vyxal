@@ -2067,6 +2067,21 @@ codepage_descriptions[112] += `
 Check if one value starts with another
 any a, any b -> a.startswith(b) (Starts with b?)
 `
+codepage_descriptions[69] += `
+øE (Ends With)
+Check if one value ends with another
+any a, any b -> a.endswith(b) (ends with b?)
+`
+codepage_descriptions[70] += `
+øF (Ends With Set)
+Check if a value ends with others
+any a, any b -> does a end with all of b?
+`
+codepage_descriptions[115] += `
+øs (Starts With Set)
+Check if a value starts with others
+any a, any b -> does a start with all of b?
+`
 codepage_descriptions[80] += `
 øP (Pluralise Count)
 Create a sentence of the form 'a bs'

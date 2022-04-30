@@ -2961,6 +2961,30 @@ Check if one value starts with another
 
 - any a, any b: `a.startswith(b) (Starts with b?)`
 -------------------------------
+## `` øE `` (Ends With)
+
+Check if one value ends with another
+
+### Overloads
+
+- any a, any b: `a.endswith(b) (ends with b?)`
+-------------------------------
+## `` øF `` (Ends With Set)
+
+Check if a value ends with others
+
+### Overloads
+
+- any a, any b: `does a end with all of b?`
+-------------------------------
+## `` øs `` (Starts With Set)
+
+Check if a value starts with others
+
+### Overloads
+
+- any a, any b: `does a start with all of b?`
+-------------------------------
 ## `` øP `` (Pluralise Count)
 
 Create a sentence of the form 'a bs'
