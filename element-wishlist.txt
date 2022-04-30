@@ -1,3 +1,6 @@
 -- One thing per line --
 -- Modifier requests are also okay --
 base64 encode/decode - Seggan
+modifier: conditional execute with else case (aka [a|b]) - Steffan
+modifier: for each overlapping pair, execute X (aka 2lv) - Steffan
+modifier: for each overlapping pair, reduce over X (aka 2lvƒ) - Steffan
