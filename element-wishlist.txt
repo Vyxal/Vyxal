@@ -12,3 +12,4 @@ store into register without popping - Steffan
 have a counter variable - Steffan
 flip brackets (we already have this as a helper but not an element - invert_brackets) - Steffan
 modifier: apply with swapped arguments (short for $a$) - Steffan
+modifier: apply at indice(s) (Jelly's ¦, modifier version of ¢) - Steffan
