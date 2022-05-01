@@ -4137,11 +4137,13 @@ def ends_with_set(lhs, rhs, ctx):
     (list, list) -> True if a ends with all of b
     """
     ts = primitive_type(lhs), primitive_type(rhs)
-    return int({
-        (list, list): lambda: lhs[-len(rhs) :] == rhs if len(rhs) else 1,
-        (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
-        (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
-    }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))())
+    return int(
+        {
+            (list, list): lambda: lhs[-len(rhs) :] == rhs if len(rhs) else 1,
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
 
 
 def sublists(lhs, ctx):
