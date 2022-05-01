@@ -1388,10 +1388,14 @@ def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
     """
-    result = lhs.split("\n")
-    for i in range(len(result)):
-        result[i] += invert_brackets(result[i])[::-1]
-    return "\n".join(result)
+
+    if vy_type(lhs, simple=True) in (str, NUMBER_TYPE):
+        result = str(lhs).split("\n")
+        for i in range(len(result)):
+            result[i] += invert_brackets(result[i])[::-1]
+        return "\n".join(result)
+    else:
+        return vectorise(flip_brackets_vertical_mirror, lhs, ctx=ctx)()
 
 
 def flip_brackets_vertical_palindromise(lhs, ctx):
