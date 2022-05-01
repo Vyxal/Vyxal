@@ -2072,8 +2072,8 @@ codepage_descriptions[69] += `
 Check if one value ends with another
 any a, any b -> a.endswith(b) (ends with b?)
 `
-codepage_descriptions[70] += `
-øF (Ends With Set)
+codepage_descriptions[102] += `
+øf (Ends With Set)
 Check if a value ends with others
 any a, any b -> does a end with all of b?
 `

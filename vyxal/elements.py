@@ -4095,11 +4095,13 @@ def starts_with(lhs, rhs, ctx):
     (str, str) -> True if a starts with b
     """
     ts = primitive_type(lhs), primitive_type(rhs)
-    return int({
-        (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
-        (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
-        (list, list): lambda: lhs[0] == rhs,
-    }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))())
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+            (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
 
 
 def ends_with(lhs, rhs, ctx):
@@ -4107,11 +4109,13 @@ def ends_with(lhs, rhs, ctx):
     (str, str) -> True if a ends with b
     """
     ts = primitive_type(lhs), primitive_type(rhs)
-    return int({
-        (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
-        (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
-        (list, list): lambda: lhs[-1] == rhs,
-    }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))())
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+            (list, list): lambda: lhs[-1] == rhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
 
 
 def starts_with_set(lhs, rhs, ctx):
@@ -4119,11 +4123,13 @@ def starts_with_set(lhs, rhs, ctx):
     (list, list) -> True if a starts with all of b
     """
     ts = primitive_type(lhs), primitive_type(rhs)
-    return int({
-        (list, list): lambda: lhs[: len(rhs)] == rhs,
-        (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
-        (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
-    }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))())
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
 
 
 def ends_with_set(lhs, rhs, ctx):
@@ -4131,11 +4137,13 @@ def ends_with_set(lhs, rhs, ctx):
     (list, list) -> True if a ends with all of b
     """
     ts = primitive_type(lhs), primitive_type(rhs)
-    return int({
-        (list, list): lambda: lhs[-len(rhs) :] == rhs,
-        (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
-        (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
-    }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))())
+    return int(
+        {
+            (list, list): lambda: lhs[-len(rhs) :] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
 
 
 def sublists(lhs, ctx):

@@ -18250,8 +18250,8 @@ def test_EndsWithSet():
 
     ctx.stacks.append(stack)
 
-    code = transpile('øF')
-    # print('øF', code)
+    code = transpile('øf')
+    # print('øf', code)
     exec(code)
 
     ctx.stacks.pop()
@@ -18271,8 +18271,8 @@ def test_EndsWithSet():
 
     ctx.stacks.append(stack)
 
-    code = transpile('øF')
-    # print('øF', code)
+    code = transpile('øf')
+    # print('øf', code)
     exec(code)
 
     ctx.stacks.pop()
@@ -18292,8 +18292,8 @@ def test_EndsWithSet():
 
     ctx.stacks.append(stack)
 
-    code = transpile('øF')
-    # print('øF', code)
+    code = transpile('øf')
+    # print('øf', code)
     exec(code)
 
     ctx.stacks.pop()
