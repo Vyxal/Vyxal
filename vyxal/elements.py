@@ -3814,9 +3814,9 @@ def sort_by(lhs, rhs, ctx):
         )
     else:
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(range(lhs, rhs + 1))
             if lhs <= rhs
-            else range(lhs, rhs - 1, -1),
+            else LazyList(range(lhs, rhs - 1, -1)),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
