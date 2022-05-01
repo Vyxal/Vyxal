@@ -4202,7 +4202,7 @@
       - '[[8, 9, 3, 5, 2], 5] : 0'
       - '[4, [2, 3, 4]] : 1'
 
-- element: "øF"
+- element: "øf"
   name: Ends With Set
   arity: 2
   description: Check if a value ends with others
