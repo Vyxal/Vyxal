@@ -2969,7 +2969,7 @@ Check if one value ends with another
 
 - any a, any b: `a.endswith(b) (ends with b?)`
 -------------------------------
-## `` øF `` (Ends With Set)
+## `` øf `` (Ends With Set)
 
 Check if a value ends with others
 
