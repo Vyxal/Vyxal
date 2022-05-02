@@ -202,6 +202,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                             vy_print(acc, end="", ctx=ctx)
                             is_str = True
                     output = acc
+                    if is_str: break
             elif flag == "d":
                 output = vy_sum(deep_flatten(output, ctx), ctx)
             elif flag == "Ṫ":
