@@ -4254,7 +4254,7 @@
   arity: 1
   overloads:
       any: vertical_mirror(a, mapping = flip brackets and slashes)
-  vectorise: false
+  vectorise: true
   tests:
       - '["[}"] : "[}{]"'
       - '[")X"] : ")XX("'
