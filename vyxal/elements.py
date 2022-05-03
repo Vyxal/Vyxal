@@ -1388,10 +1388,14 @@ def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
     """
-    result = lhs.split("\n")
-    for i in range(len(result)):
-        result[i] += invert_brackets(result[i])[::-1]
-    return "\n".join(result)
+
+    if vy_type(lhs, simple=True) in (str, NUMBER_TYPE):
+        result = str(lhs).split("\n")
+        for i in range(len(result)):
+            result[i] += invert_brackets(result[i])[::-1]
+        return "\n".join(result)
+    else:
+        return vectorise(flip_brackets_vertical_mirror, lhs, ctx=ctx)()
 
 
 def flip_brackets_vertical_palindromise(lhs, ctx):
@@ -3810,9 +3814,9 @@ def sort_by(lhs, rhs, ctx):
         )
     else:
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: range(lhs, rhs + 1)
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: LazyList(range(lhs, rhs + 1))
             if lhs <= rhs
-            else range(lhs, rhs - 1, -1),
+            else LazyList(range(lhs, rhs - 1, -1)),
             (str, str): lambda: re.split(rhs, lhs),
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
@@ -4094,7 +4098,56 @@ def starts_with(lhs, rhs, ctx):
     """Element øp
     (str, str) -> True if a starts with b
     """
-    return int(lhs.startswith(rhs))
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+            (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def ends_with(lhs, rhs, ctx):
+    """Element øE
+    (str, str) -> True if a ends with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+            (list, list): lambda: lhs[-1] == rhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def ends_with_set(lhs, rhs, ctx):
+    """Element øf
+    (list, list) -> True if a ends with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[-len(rhs) :] == rhs if len(rhs) else 1,
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
 
 
 def sublists(lhs, ctx):
@@ -5685,6 +5738,9 @@ elements: dict[str, tuple[str, int]] = {
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
+    "øE": process_element(ends_with, 2),
+    "øs": process_element(starts_with_set, 2),
+    "øf": process_element(ends_with_set, 2),
     "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
     "øV": process_element(replace_until_no_change, 3),
