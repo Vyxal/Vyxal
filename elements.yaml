@@ -1512,7 +1512,20 @@
   tests:
       - program: '4 ["Truthy"|"Falsey"}'
         output: "Truthy"
-      - program: '69 0 ["Nothing"]'
+      - program: '69 0 ["Nothing"}'
         output: 69
-      - program: '69 1 ["Nothing"]'
+      - program: '69 1 ["Nothing"}'
         output: "Nothing"
+
+- modifier: "]"
+  name: Ternary If
+  description: >-
+      Pop the top of the stack as a condition, and if that value is considered
+      truthy, execute the first element. Otherwise, execute the second element.
+  arity: 1
+  elements: 2
+  tests:
+      - program: '4 "Truthy""Falsey"]'
+        output: "Truthy"
+      - program: "5 0 NI]"
+        output: -5
