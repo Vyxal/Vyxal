@@ -1594,9 +1594,10 @@
   description: Join a list by the empty string
   arity: 1
   overloads:
-      fun: First integer for which a(x) is truthy
-      any: Join by empty string
       num: abs(a) <= 1
+      str: pad with 0s to nearest multiple of 8
+      lst: "".join(a)
+      fun: first integer x where a(x) is truthy
   vectorise: false
   tests:
       - '[["a","b","c"]] : "abc"'
