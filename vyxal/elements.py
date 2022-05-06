@@ -4272,7 +4272,7 @@ def to_base(lhs, rhs, ctx):
         return vectorise(to_base, lhs, rhs, ctx=ctx)
 
     if vy_type(rhs) == NUMBER_TYPE:
-        rhs = list(range(0, int(rhs)))
+        return to_base_digits(lhs, rhs)
     else:
         rhs = iterable(rhs, ctx=ctx)
     if len(rhs) == 1:
