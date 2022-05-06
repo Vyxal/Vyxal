@@ -1596,7 +1596,7 @@
   overloads:
       num: abs(a) <= 1
       str: pad with 0s to nearest multiple of 8
-      lst: "".join(a)
+      lst: \"\".join(a)
       fun: first integer x where a(x) is truthy
   vectorise: false
   tests:
