@@ -376,9 +376,14 @@ def assign_iterable(lhs, rhs, other, ctx):
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
     else:
-        yield from lhs[:rhs]
-        yield other
-        yield from lhs[rhs + 1 :]
+
+        @lazylist
+        def gen():
+            yield from lhs[:rhs]
+            yield other
+            yield from lhs[rhs + 1 :]
+
+        return gen()
 
 
 def base_255_string_compress(lhs, ctx):
