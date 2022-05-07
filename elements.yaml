@@ -488,8 +488,8 @@
   arity: 2
   overloads:
       num-num: a + b
-      num-str: a + to_string(b)
-      str-num: to_string(a) + b
+      num-str: to_string(a) + b
+      str-num: a + to_string(b)
       str-str: a + b
   vectorise: true
   tests:
