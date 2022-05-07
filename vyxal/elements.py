@@ -5321,7 +5321,10 @@ def wrap(lhs, rhs, ctx):
                         temp = []
 
                 if len(temp) < chunk_size and temp:
-                    yield temp[::]
+                    if all(type(x) is str for x in temp):
+                        yield "".join(temp)
+                    else:
+                        yield temp[::]
 
             return gen()
 
