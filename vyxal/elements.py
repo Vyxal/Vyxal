@@ -25,6 +25,7 @@ from vyxal.encoding import (
     base_27_alphabet,
     codepage_number_compress,
     codepage_string_compress,
+    compression,
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
@@ -1181,7 +1182,7 @@ def exp2_or_eval(lhs, ctx):
     ts = vy_type(lhs)
 
     return {
-        NUMBER_TYPE: lambda: 2**lhs,
+        NUMBER_TYPE: lambda: 2 ** lhs,
         str: lambda: vy_eval(lhs, ctx),
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
@@ -1220,7 +1221,7 @@ def exponent(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs**rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs ** rhs,
         (NUMBER_TYPE, str): lambda: rhs
         + ((rhs[0] or " ") * (int(lhs) - len(rhs))),
         (str, NUMBER_TYPE): lambda: lhs
@@ -1523,7 +1524,7 @@ def general_quadratic_solver(lhs, rhs, ctx):
     x, y = sympy.symbols("x y")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq(x**2 + lhs * x + rhs, 0), x
+            sympy.Eq(x ** 2 + lhs * x + rhs, 0), x
         ),
         (NUMBER_TYPE, str): lambda: make_expression(rhs).subs(x, lhs),
         (str, NUMBER_TYPE): lambda: make_expression(lhs).subs(x, rhs),
@@ -2817,7 +2818,7 @@ def newline_split(lhs, ctx):
     (str) -> a.split("\\n")
     """
     return {
-        (NUMBER_TYPE): lambda: 10**lhs,
+        (NUMBER_TYPE): lambda: 10 ** lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
@@ -2962,16 +2963,32 @@ def optimal_compress(lhs, ctx):
     """Element øD
     (str) -> return the most optimal dictionary compressed string
     """
-    DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
-    DP[0] = ""
-    for ind in range(1, len(lhs) + 1):
-        for left in range(max(0, ind - dictionary.max_word_len), ind - 1):
-            i = dictionary.word_index(lhs[left:ind])
-            if i != -1:
-                DP[ind] = min([DP[ind], DP[left] + i], key=len)
+
+    dp = [""] + [" " * (len(lhs) + 1)] * len(lhs)
+    ds = dp[:]
+
+    for i in range(1, len(lhs) + 1):
+        for left in range(max(0, i - dictionary.max_word_len), i - 1):
+            j = dictionary.word_index(lhs[left:i])
+            if j != -1:
+                dp[i] = min([dp[i], dp[left] + j], key=len)
                 break
-        DP[ind] = min([DP[ind], DP[ind - 1] + lhs[ind - 1]], key=len)
-    return "`" + DP[-1] + "`"
+
+        sub = lhs[:i]
+        for index, word in enumerate(dictionary.small_dictionary):
+            if sub.endswith(word):
+                j = compression[index]
+                ds[i] = min(
+                    [ds[i], dp[i - len(word)] + compression[index]], key=len
+                )
+
+        replace = dp[i - 1] + lhs[i - 1]
+        if len(replace) < len(dp[i]):
+            dp[i] = replace
+        if len(replace) < len(ds[i]):
+            ds[i] = replace
+
+    return "`" + min([dp[-1], ds[-1]], key=len) + "`"
 
 
 def orderless_range(lhs, rhs, ctx):
@@ -3139,10 +3156,10 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     ts = vy_type(lhs)
     x = sympy.symbols("x")
     return {
-        NUMBER_TYPE: lambda: str(sum(x**arg for arg in range(0, lhs + 1))),
+        NUMBER_TYPE: lambda: str(sum(x ** arg for arg in range(0, lhs + 1))),
         str: lambda: lhs,
         list: lambda: str(
-            sum(c * x**i for i, c in enumerate(reverse(lhs, ctx)))
+            sum(c * x ** i for i, c in enumerate(reverse(lhs, ctx)))
         ),
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
@@ -3273,7 +3290,7 @@ def quadratic_solver(lhs, rhs, ctx):
     x = sympy.symbols("x")
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.solve(
-            sympy.Eq((lhs * x**2) + rhs * x, 0), x
+            sympy.Eq((lhs * x ** 2) + rhs * x, 0), x
         ),
         (NUMBER_TYPE, str): lambda: sympy.solve(
             sympy.Eq(make_expression(rhs), lhs), x
@@ -3394,7 +3411,7 @@ def remove_non_alphabets(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: 2**lhs,
+        NUMBER_TYPE: lambda: 2 ** lhs,
         str: lambda: "".join(filter(str.isalpha, lhs)),
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
