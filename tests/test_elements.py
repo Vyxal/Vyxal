@@ -17857,7 +17857,7 @@ def test_DictionaryCompression():
 
 
     stack = [vyxalify(item) for item in ["abcdef\`gh"]]
-    expected = vyxalify("`ėġḣ²\`gh`")
+    expected = vyxalify("`ėġḣ²\\`gh`")
     ctx = Context()
 
     ctx.stacks.append(stack)
