@@ -879,7 +879,7 @@ def to_base_digits(value: int, base: int) -> List[int]:
         if n > 0:
             return [1] + [0, 1] * (n - 1)
         else:
-            return [1, 0] * n
+            return [1, 0] * -n
     else:
         while True:
             n, remainder = divmod(n, base)
