@@ -4147,6 +4147,7 @@
       - '["withree"] : "`wi∧ḭ`"'
       - '["hello"] : "`ƈṙ`"'
       - '["Vyxal"] : "`₴ŀ`"'
+      - '["abcdef\`gh"] : "`ėġḣ²\`gh`"'
 
 - element: "øW"
   name: Group on words
