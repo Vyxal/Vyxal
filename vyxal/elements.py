@@ -4297,8 +4297,13 @@ def to_base(lhs, rhs, ctx):
         return to_base_digits(lhs, rhs)
     else:
         rhs = iterable(rhs, ctx=ctx)
-    if len(rhs) == 1:
+
+    if len(rhs) == 0:
+        return 0
+    elif len(rhs) == 1:
         maximal_exponent = lhs
+    elif lhs == 0:
+        return [index(rhs, 0, ctx)]
     else:
         maximal_exponent = int(log_mold_multi(lhs, len(rhs), ctx))
 
