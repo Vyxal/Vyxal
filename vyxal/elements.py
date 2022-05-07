@@ -2988,7 +2988,7 @@ def optimal_compress(lhs, ctx):
         if len(replace) < len(ds[i]):
             ds[i] = replace
 
-    return "`" + min([dp[-1], ds[-1]], key=len) + "`"
+    return quotify(min([dp[-1], ds[-1]], key=len), ctx)
 
 
 def orderless_range(lhs, rhs, ctx):
