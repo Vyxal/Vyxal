@@ -1527,5 +1527,5 @@
   tests:
       - program: '4 "Truthy""Falsey"]'
         output: "Truthy"
-      - program: "5 0 NI]"
+      - program: "5 0 IN]"
         output: -5
