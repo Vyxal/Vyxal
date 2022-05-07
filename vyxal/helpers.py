@@ -860,6 +860,12 @@ def takes_ctx(function: types.FunctionType) -> bool:
 
 def to_base_digits(value: int, base: int) -> List[int]:
     """Returns value in base 'base' from base 10 as a list of digits"""
+    if base == 0:
+        return 0
+
+    if value == 0:
+        return [0]
+
     ret = []
     n = value
 
@@ -869,6 +875,11 @@ def to_base_digits(value: int, base: int) -> List[int]:
             ret.append(digit)
         ret.append(n)
         return ret[::-1]
+    elif base == -1:
+        if n > 0:
+            return [1] + [0, 1] * (n - 1)
+        else:
+            return [1, 0] * n
     else:
         while True:
             n, remainder = divmod(n, base)
