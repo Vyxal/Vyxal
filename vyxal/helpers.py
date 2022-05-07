@@ -863,11 +863,23 @@ def to_base_digits(value: int, base: int) -> List[int]:
     ret = []
     n = value
 
-    while n >= base:
-        n, digit = divmod(n, base)
-        ret.append(digit)
-    ret.append(n)
-    return ret[::-1]
+    if base >= 0:
+        while n >= base:
+            n, digit = divmod(n, base)
+            ret.append(digit)
+        ret.append(n)
+        return ret[::-1]
+    else:
+        while True:
+            n, remainder = divmod(n, base)
+
+            if remainder < 0:
+                n, remainder = n + 1, remainder - base
+
+            ret = [remainder] + ret
+            if n == 0:
+                break
+        return ret
 
 
 def to_base_alphabet(value: int, alphabet: str) -> str:

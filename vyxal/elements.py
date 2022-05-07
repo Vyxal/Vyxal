@@ -2988,7 +2988,7 @@ def optimal_compress(lhs, ctx):
         if len(replace) < len(ds[i]):
             ds[i] = replace
 
-    return "`" + min([dp[-1], ds[-1]], key=len) + "`"
+    return quotify(min([dp[-1], ds[-1]], key=len), ctx)
 
 
 def orderless_range(lhs, rhs, ctx):
@@ -4294,7 +4294,7 @@ def to_base(lhs, rhs, ctx):
         return vectorise(to_base, lhs, rhs, ctx=ctx)
 
     if vy_type(rhs) == NUMBER_TYPE:
-        rhs = list(range(0, int(rhs)))
+        return to_base_digits(lhs, rhs)
     else:
         rhs = iterable(rhs, ctx=ctx)
     if len(rhs) == 1:
