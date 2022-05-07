@@ -17877,7 +17877,7 @@ def test_DictionaryCompression():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in ["abcdef\`gh"]]
+    stack = [vyxalify(item) for item in ["abcdef\\`gh"]]
     expected = vyxalify("`ėġḣ²\\`gh`")
     ctx = Context()
 
