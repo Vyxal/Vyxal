@@ -451,6 +451,8 @@ Basic comparison - less than
 - num a, str b: `str(a) < b`
 - str a, num b: `a < str(b)`
 - str a, str b: `a < b`
+- any a, fun b: `decrement a until b returns false`
+- fun a, any b: `decrement b until a returns false`
 -------------------------------
 ## `` = `` (Equals)
 
@@ -473,6 +475,8 @@ Basic comparison - greater than
 - num a, str b: `str(a) > b`
 - str a, num b: `a > str(b)`
 - str a, str b: `a > b`
+- any a, fun b: `increment a until b returns false`
+- fun a, any b: `increment b until a returns false`
 -------------------------------
 ## `` ? `` (Input)
 
@@ -2790,7 +2794,7 @@ Get the Carmichael function of a number / Local Maxima
 -------------------------------
 ## `` ∆› `` (Increment until false)
 
-Increment a until b(a) is false
+Increment a until b(a) is false (deprecated, use `>` instead)
 
 ### Overloads
 
@@ -2799,7 +2803,7 @@ Increment a until b(a) is false
 -------------------------------
 ## `` ∆‹ `` (Decrement until false)
 
-Decrement a until b(a) is false
+Decrement a until b(a) is false (deprecated, use `<` instead)
 
 ### Overloads
 

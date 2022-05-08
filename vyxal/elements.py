@@ -1573,13 +1573,17 @@ def grade_down(lhs, ctx):
 
 
 def greater_than(lhs, rhs, ctx):
-    """Element <
+    """Element >
     (num, num) -> a > b
     (num, str) -> str(a) > b
     (str, num) -> a > str(b)
     (str, str) -> a > b
+    (any, fun) -> increment a until b returns false
+    (fun, any) -> increment b until a returns false
     """
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return increment_until_false(lhs, rhs, ctx=ctx)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
@@ -2285,8 +2289,12 @@ def less_than(lhs, rhs, ctx):
     (num, str) -> str(a) < b
     (str, num) -> a < str(b)
     (str, str) -> a < b
+    (any, fun) -> decrement a until b returns false
+    (fun, any) -> decrement b until a returns false
     """
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return decrement_until_false(lhs, rhs, ctx=ctx)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
