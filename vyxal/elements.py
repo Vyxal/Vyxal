@@ -5914,12 +5914,12 @@ elements: dict[str, tuple[str, int]] = {
     "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
     "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
-        'LazyList(eval(datetime.now().strftime("[%H,%M,%S]")))', 0
+        "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
     ),
     "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
     "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
     "kð": process_element(
-        'LazyList(eval(datetime.now().strftime("[%d,%m,%Y]")))', 0
+        "LazyList([(d:=datetime.now()).day, d.month, d.year])", 0
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
