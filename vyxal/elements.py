@@ -25,6 +25,7 @@ from vyxal.encoding import (
     base_27_alphabet,
     codepage_number_compress,
     codepage_string_compress,
+    compression,
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
@@ -376,9 +377,14 @@ def assign_iterable(lhs, rhs, other, ctx):
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
     else:
-        yield from lhs[:rhs]
-        yield other
-        yield from lhs[rhs + 1 :]
+
+        @lazylist
+        def gen():
+            yield from lhs[:rhs]
+            yield other
+            yield from lhs[rhs + 1 :]
+
+        return gen()
 
 
 def base_255_string_compress(lhs, ctx):
@@ -2957,16 +2963,32 @@ def optimal_compress(lhs, ctx):
     """Element øD
     (str) -> return the most optimal dictionary compressed string
     """
-    DP = [" " * (len(lhs) + 1)] * (len(lhs) + 1)
-    DP[0] = ""
-    for ind in range(1, len(lhs) + 1):
-        for left in range(max(0, ind - dictionary.max_word_len), ind - 1):
-            i = dictionary.word_index(lhs[left:ind])
-            if i != -1:
-                DP[ind] = min([DP[ind], DP[left] + i], key=len)
+
+    dp = [""] + [" " * (len(lhs) + 1)] * len(lhs)
+    ds = dp[:]
+
+    for i in range(1, len(lhs) + 1):
+        for left in range(max(0, i - dictionary.max_word_len), i - 1):
+            j = dictionary.word_index(lhs[left:i])
+            if j != -1:
+                dp[i] = min([dp[i], dp[left] + j], key=len)
                 break
-        DP[ind] = min([DP[ind], DP[ind - 1] + lhs[ind - 1]], key=len)
-    return "`" + DP[-1] + "`"
+
+        sub = lhs[:i]
+        for index, word in enumerate(dictionary.small_dictionary):
+            if sub.endswith(word):
+                j = compression[index]
+                ds[i] = min(
+                    [ds[i], dp[i - len(word)] + compression[index]], key=len
+                )
+
+        replace = dp[i - 1] + lhs[i - 1]
+        if len(replace) < len(dp[i]):
+            dp[i] = replace
+        if len(replace) < len(ds[i]):
+            ds[i] = replace
+
+    return quotify(min([dp[-1], ds[-1]], key=len), ctx)
 
 
 def orderless_range(lhs, rhs, ctx):
@@ -4272,11 +4294,16 @@ def to_base(lhs, rhs, ctx):
         return vectorise(to_base, lhs, rhs, ctx=ctx)
 
     if vy_type(rhs) == NUMBER_TYPE:
-        rhs = list(range(0, int(rhs)))
+        return to_base_digits(lhs, rhs)
     else:
         rhs = iterable(rhs, ctx=ctx)
-    if len(rhs) == 1:
+
+    if len(rhs) == 0:
+        return 0
+    elif len(rhs) == 1:
         maximal_exponent = lhs
+    elif lhs == 0:
+        return [index(rhs, 0, ctx)]
     else:
         maximal_exponent = int(log_mold_multi(lhs, len(rhs), ctx))
 

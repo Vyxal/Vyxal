@@ -100,7 +100,13 @@ def parse(
 
     while tokens:
         head = tokens.popleft()
-        if head.name in (lexer.TokenType.STRING, lexer.TokenType.CHARACTER):
+        if head.name in (
+            lexer.TokenType.STRING,
+            lexer.TokenType.CHARACTER,
+            lexer.TokenType.COMPRESSED_NUMBER,
+            lexer.TokenType.NUMBER,
+            lexer.TokenType.COMPRESSED_STRING,
+        ):
             structures.append(structure.GenericStatement([head]))
         elif head.name in (
             lexer.TokenType.VARIABLE_GET,

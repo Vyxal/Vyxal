@@ -834,9 +834,10 @@ lst a -> mean(a)
 
 codepage_descriptions.push(`Join By Nothing
 Join a list by the empty string
-fun a -> First integer for which a(x) is truthy
-any a -> Join by empty string
 num a -> abs(a) <= 1
+str a -> pad with 0s to nearest multiple of 8
+lst a -> "".join(a)
+fun a -> first integer x where a(x) is truthy
 `)
 
 codepage_descriptions.push(`Slice
