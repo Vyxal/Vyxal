@@ -329,6 +329,8 @@ num a, num b -> a < b
 num a, str b -> str(a) < b
 str a, num b -> a < str(b)
 str a, str b -> a < b
+any a, fun b -> decrement a until b returns false
+fun a, any b -> decrement b until a returns false
 `)
 
 codepage_descriptions.push(`Equals
@@ -345,6 +347,8 @@ num a, num b -> a > b
 num a, str b -> str(a) > b
 str a, num b -> a > str(b)
 str a, str b -> a > b
+any a, fun b -> increment a until b returns false
+fun a, any b -> increment b until a returns false
 `)
 
 codepage_descriptions.push(`Input
@@ -1959,13 +1963,13 @@ str a -> local_maxima(a)
 `
 codepage_descriptions[131] += `
 ∆› (Increment until false)
-Increment a until b(a) is false
+Increment a until b(a) is false (deprecated, use \`>\` instead)
 any a, fun b -> while b(a): a += 1
 fun a, any b -> while a(b): b += 1
 `
 codepage_descriptions[132] += `
 ∆‹ (Decrement until false)
-Decrement a until b(a) is false
+Decrement a until b(a) is false (deprecated, use \`<\` instead)
 any a, fun b -> while b(a): a -= 1
 fun a, any b -> while a(b): b -= 1
 `
