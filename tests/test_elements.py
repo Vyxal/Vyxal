@@ -14053,27 +14053,6 @@ def test_SumofProperDivisorsStationaryPoints():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
-    expected = vyxalify([-1, 1])
-    ctx = Context()
-
-    ctx.stacks.append(stack)
-
-    code = transpile('∆K')
-    # print('∆K', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-
-
 def test_PerfectSquare():
 
     stack = [vyxalify(item) for item in [1]]
@@ -17049,27 +17028,6 @@ def test_CarmichaelFunction():
 
     stack = [vyxalify(item) for item in [[3, 8, 12, 78, 234, 786, 1234]]]
     expected = vyxalify([2, 2, 2, 12, 12, 130, 616])
-    ctx = Context()
-
-    ctx.stacks.append(stack)
-
-    code = transpile('∆¢')
-    # print('∆¢', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-
-
-    stack = [vyxalify(item) for item in ['(x**2 + x + 1) / x']]
-    expected = vyxalify([-1])
     ctx = Context()
 
     ctx.stacks.append(stack)
