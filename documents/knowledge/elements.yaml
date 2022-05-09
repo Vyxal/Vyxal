@@ -575,6 +575,8 @@
       num-str: str(a) < b
       str-num: a < str(b)
       str-str: a < b
+      any-fun: decrement a until b returns false
+      fun-any: decrement b until a returns false
   vectorise: true
   tests:
       - "[1, 2] : 1"
@@ -610,6 +612,8 @@
       num-str: str(a) > b
       str-num: a > str(b)
       str-str: a > b
+      any-fun: increment a until b returns false
+      fun-any: increment b until a returns false
   vectorise: true
   tests:
       - "[1, 2] : 0"
@@ -3950,7 +3954,7 @@
 
 - element: "∆›"
   name: Increment until false
-  description: Increment a until b(a) is false
+  description: Increment a until b(a) is false (deprecated, use `>` instead)
   arity: 2
   overloads:
       any-fun: "while b(a): a += 1"
@@ -3959,7 +3963,7 @@
 
 - element: "∆‹"
   name: Decrement until false
-  description: Decrement a until b(a) is false
+  description: Decrement a until b(a) is false (deprecated, use `<` instead)
   arity: 2
   overloads:
       any-fun: "while b(a): a -= 1"
