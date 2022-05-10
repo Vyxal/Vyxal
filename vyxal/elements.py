@@ -1573,13 +1573,17 @@ def grade_down(lhs, ctx):
 
 
 def greater_than(lhs, rhs, ctx):
-    """Element <
+    """Element >
     (num, num) -> a > b
     (num, str) -> str(a) > b
     (str, num) -> a > str(b)
     (str, str) -> a > b
+    (any, fun) -> increment a until b returns false
+    (fun, any) -> increment b until a returns false
     """
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return increment_until_false(lhs, rhs, ctx=ctx)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs > rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) > rhs),
@@ -2285,8 +2289,12 @@ def less_than(lhs, rhs, ctx):
     (num, str) -> str(a) < b
     (str, num) -> a < str(b)
     (str, str) -> a < b
+    (any, fun) -> decrement a until b returns false
+    (fun, any) -> decrement b until a returns false
     """
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return decrement_until_false(lhs, rhs, ctx=ctx)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: int(bool(lhs < rhs)),
         (NUMBER_TYPE, str): lambda: int(str(lhs) < rhs),
@@ -5914,12 +5922,12 @@ elements: dict[str, tuple[str, int]] = {
     "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
     "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
-        'LazyList(eval(datetime.now().strftime("[%H,%M,%S]")))', 0
+        "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
     ),
     "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
     "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
     "kð": process_element(
-        'LazyList(eval(datetime.now().strftime("[%d,%m,%Y]")))', 0
+        "LazyList([(d:=datetime.now()).day, d.month, d.year])", 0
     ),
     "kβ": process_element('"{}[]<>()"', 0),
     "kḂ": process_element('"()[]{}"', 0),
