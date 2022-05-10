@@ -494,3 +494,17 @@ def test_triadic_filter():
     assert stack[-1] == []
     stack = run_vyxal("⟨4|5|6⟩ ¨₃ 5c $ 0 > ∧ $ 6 < ∧;")
     assert stack[-1] == [5]
+
+
+def test_greater_than_increment_until_false():
+    stack = run_vyxal("20 λ9%; >")
+    assert stack[-1] == 27
+    stack = run_vyxal("20 λ50<; >")
+    assert stack[-1] == 50
+
+
+def test_less_than_decrement_until_false():
+    stack = run_vyxal("20 λ9%; <")
+    assert stack[-1] == 18
+    stack = run_vyxal("20 λ10≥; <")
+    assert stack[-1] == 9
