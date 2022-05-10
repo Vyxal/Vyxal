@@ -508,3 +508,8 @@ def test_less_than_decrement_until_false():
     assert stack[-1] == 18
     stack = run_vyxal("20 λ10≥; <")
     assert stack[-1] == 9
+
+
+def test_star_map():
+    stack = run_vyxal("⟨1|2|3⟩ ⟨4|6|8⟩ ¨£ε")
+    assert stack[-1] == [3, 4, 5]
