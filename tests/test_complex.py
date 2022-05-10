@@ -511,5 +511,5 @@ def test_less_than_decrement_until_false():
 
 
 def test_star_map():
-    stack = run_vyxal("⟨1|2|3⟩ ⟨4|6|8⟩ ¨£ε")
+    stack = run_vyxal("¨£ε", inputs=[[1, 2, 3], [4, 6, 8]], debug=True)
     assert stack[-1] == [3, 4, 5]
