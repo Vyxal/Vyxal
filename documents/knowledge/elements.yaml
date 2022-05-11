@@ -4464,6 +4464,18 @@
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
 
+- element: "Þż"
+  name: Lift
+  description: Multiply a numeric list by a range from 1 to its length
+  arity: 1
+  overloads:
+      lst: lift
+  vectorise: false
+  tests:
+      - "[[1,2,3]] : [1, 4, 9]"
+      - "[[1,2,3,4]] : [1, 4, 9, 16]"
+      - "[[4, 3, 2, 1]] : [4, 6, 6, 4]"
+
 - element: "ÞA"
   name: Adjacency matrix (Undirected)
   description: Adjacency matrix of undirected graph

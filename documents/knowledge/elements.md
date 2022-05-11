@@ -3121,6 +3121,14 @@ Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 
 - lst a: `Adjacency matrix`
 -------------------------------
+## `` Þż `` (Lift)
+
+Multiply a numeric list by a range from 1 to its length
+
+### Overloads
+
+- lst a: `lift`
+-------------------------------
 ## `` ÞA `` (Adjacency matrix (Undirected))
 
 Adjacency matrix of undirected graph
