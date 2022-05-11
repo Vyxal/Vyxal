@@ -26,6 +26,7 @@ from vyxal.encoding import (
     codepage_number_compress,
     codepage_string_compress,
     compression,
+    codepage
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
@@ -406,6 +407,75 @@ def base_255_number_compress(lhs, ctx):
     """Element øC
     (num) -> Compress a number in base 255
     """
+    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
+
+def optimal_number_compress(lhs, ctx):
+    """Element øċ
+    (num) -> Semi-optimally compress a number
+    """
+    if lhs < 0:
+        return optimal_number_compress(-lhs, ctx) + "N"
+    num_dict = {
+        10: "₀",
+        26: "₄",
+        64: "₆",
+        100: "₁",
+        128: "₇",
+        256: "₈",
+        512: "k¶",
+        1024: "k⁋",
+        2048: "k¦",
+        4096: "kṄ",
+        8192: "kṅ",
+        16384: "k¡",
+        32768: "kε",
+        65536: "k₴",
+        2 ** 20: "k₂",
+        2 ** 30: "k₃",
+        2 ** 32: "kḭ",
+        1: "1",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+        6: "6",
+        7: "7",
+        8: "8",
+        9: "9",
+        360: "kR"
+    }
+    if lhs in num_dict:
+        return num_dict.get(lhs)
+    if lhs < 100 or 356 < lhs < 1000: 
+        return str(lhs)
+    funs = [
+        (lambda x: x + 1, '›'),
+        (lambda x: x - 1, '‹'),
+        (lambda x: x * 2, 'd'),
+        (lambda x: x / 2, '½'),
+        (lambda x: x ** 2, '²'),
+        (lambda x: x * 3, 'T'),
+        (lambda x: 2 ** x, 'E'),
+        (lambda x: 10 ** x, '↵'),
+        (lambda x: x ** 0.5, '√'),
+        (lambda x: x + 2, "⇧"),
+        (lambda x: x - 2, "⇩"),
+    ]
+    # Brute force functions applied to constants
+    for (fun, name) in funs: 
+        for key in num_dict:
+            # safeguard to avoid calculating huge numbers
+            if (name not in "E↵" or key < 100) and fun(key) == lhs:
+                return num_dict.get(key) + name
+    if lhs <= 356:
+        return "⁺" + codepage[lhs - 101]
+    # Brute force functions applied to constants twice
+    for (fun, name) in funs:
+        for (fun2, name2) in funs: 
+            for key in num_dict:
+                # safeguard to avoid calculating huge numbers
+                if (name not in "E↵" or key < 100) and (name not in "E↵" or name2 not in "E↵") and (key < 100 or name2 not in "E↵") and fun2(fun(key)) == lhs:
+                    return num_dict.get(key) + name + name2
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
@@ -5761,6 +5831,7 @@ elements: dict[str, tuple[str, int]] = {
     "øc": process_element(base_255_string_compress, 1),
     "øC": process_element(base_255_number_compress, 1),
     "øĊ": process_element(center, 1),
+    "øċ": process_element(optimal_number_compress, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
     "øḋ": process_element("str(float(lhs))", 1),

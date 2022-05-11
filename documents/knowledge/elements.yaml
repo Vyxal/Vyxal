@@ -4172,6 +4172,23 @@
       - '["abc*xyz"] : ["abc","*","xyz"]'
       - '["$$$"] : ["$","$","$"]'
 
+- element: "øċ"
+  name: Semi Optimal number compress
+  description: Semi-optimally compress a number
+  arity: 1
+  overloads:
+      num: optimal_number_compress(a)
+  vectorise: false
+  tests:
+      - '[100] : "₁"'
+      - '[239] : "⁺β"'
+      - '[4294967296] : "kḭ"'
+      - '[4294967297] : "kḭ›"'
+      - '[4294967298] : "kḭ⇧"'
+      - '[1080] : "kRT"'
+      - '[324389523] : "»↔ė§Ṫ»"'
+      - '[-2] : "2N"'
+
 - element: "øṙ"
   name: Regex replace
   description: Replace matches of a with c in b
