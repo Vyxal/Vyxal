@@ -2949,6 +2949,14 @@ Group a string on words
 
 - str a: `Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character`
 -------------------------------
+## `` øċ `` (Semi Optimal number compress)
+
+Semi-optimally compress a number
+
+### Overloads
+
+- num a: `optimal_number_compress(a)`
+-------------------------------
 ## `` øṙ `` (Regex replace)
 
 Replace matches of a with c in b
@@ -3120,6 +3128,14 @@ Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 ### Overloads
 
 - lst a: `Adjacency matrix`
+-------------------------------
+## `` Þż `` (Lift)
+
+Multiply a numeric list by a range from 1 to its length
+
+### Overloads
+
+- lst a: `lift`
 -------------------------------
 ## `` ÞA `` (Adjacency matrix (Undirected))
 

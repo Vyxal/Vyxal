@@ -2572,6 +2572,12 @@ k• (Qwerty Keyboard)
 
     str a: Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
 -------------------------------
+øċ (Semi Optimal number compress)
+
+- Semi-optimally compress a number
+
+    num a: optimal_number_compress(a)
+-------------------------------
 øṙ (Regex replace)
 
 - Replace matches of a with c in b
@@ -2710,6 +2716,12 @@ k• (Qwerty Keyboard)
 - Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 
     lst a: Adjacency matrix
+-------------------------------
+Þż (Lift)
+
+- Multiply a numeric list by a range from 1 to its length
+
+    lst a: lift
 -------------------------------
 ÞA (Adjacency matrix (Undirected))
 

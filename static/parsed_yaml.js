@@ -2061,6 +2061,11 @@ codepage_descriptions[87] += `
 Group a string on words
 str a -> Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
 `
+codepage_descriptions[142] += `
+øċ (Semi Optimal number compress)
+Semi-optimally compress a number
+num a -> optimal_number_compress(a)
+`
 codepage_descriptions[154] += `
 øṙ (Regex replace)
 Replace matches of a with c in b
@@ -2169,6 +2174,11 @@ codepage_descriptions[97] += `
 Þa (Adjacency matrix (Directed))
 Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 lst a -> Adjacency matrix
+`
+codepage_descriptions[160] += `
+Þż (Lift)
+Multiply a numeric list by a range from 1 to its length
+lst a -> lift
 `
 codepage_descriptions[65] += `
 ÞA (Adjacency matrix (Undirected))
