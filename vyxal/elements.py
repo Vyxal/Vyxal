@@ -6127,7 +6127,7 @@ modifiers: dict[str, str] = {
     "¨£": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
         "zipped = vy_zip(lhs, rhs, ctx)\n"
-        "mapped = map(lambda item: vy_reduce(function_A, item, ctx), zipped)\n"
+        "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), zipped)\n"
         "stack.append(LazyList(mapped))\n"
     ),
 }
