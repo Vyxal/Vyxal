@@ -2453,9 +2453,9 @@ num a -> A matrix with 1s on the main diagonal and zeroes elsewhere
 `
 codepage_descriptions[101] += `
 Þe (Matrix Exponentiation)
-A matrix mutliplied by itself n times
-num a, lst b -> Matrix a mutliplied by itself b times
-lst a, num b -> Matrix b mutliplied by itself a times
+A matrix multiplied by itself n times
+num a, lst b -> Matrix a multiplied by itself b times
+lst a, num b -> Matrix b multiplied by itself a times
 `
 codepage_descriptions[100] += `
 Þd (Distance matrix (Directed))
