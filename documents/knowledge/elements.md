@@ -2949,6 +2949,14 @@ Group a string on words
 
 - str a: `Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character`
 -------------------------------
+## `` øċ `` (Semi Optimal number compress)
+
+Semi-optimally compress a number
+
+### Overloads
+
+- num a: `optimal_number_compress(a)`
+-------------------------------
 ## `` øṙ `` (Regex replace)
 
 Replace matches of a with c in b

@@ -26,7 +26,7 @@ from vyxal.encoding import (
     codepage_number_compress,
     codepage_string_compress,
     compression,
-    codepage
+    codepage,
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
@@ -409,6 +409,7 @@ def base_255_number_compress(lhs, ctx):
     """
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
+
 def optimal_number_compress(lhs, ctx):
     """Element øċ
     (num) -> Semi-optimally compress a number
@@ -430,9 +431,9 @@ def optimal_number_compress(lhs, ctx):
         16384: "k¡",
         32768: "kε",
         65536: "k₴",
-        2 ** 20: "k₂",
-        2 ** 30: "k₃",
-        2 ** 32: "kḭ",
+        2**20: "k₂",
+        2**30: "k₃",
+        2**32: "kḭ",
         1: "1",
         2: "2",
         3: "3",
@@ -442,27 +443,27 @@ def optimal_number_compress(lhs, ctx):
         7: "7",
         8: "8",
         9: "9",
-        360: "kR"
+        360: "kR",
     }
     if lhs in num_dict:
         return num_dict.get(lhs)
-    if lhs < 100 or 356 < lhs < 1000: 
+    if lhs < 100 or 356 < lhs < 1000:
         return str(lhs)
     funs = [
-        (lambda x: x + 1, '›'),
-        (lambda x: x - 1, '‹'),
-        (lambda x: x * 2, 'd'),
-        (lambda x: x / 2, '½'),
-        (lambda x: x ** 2, '²'),
-        (lambda x: x * 3, 'T'),
-        (lambda x: 2 ** x, 'E'),
-        (lambda x: 10 ** x, '↵'),
-        (lambda x: x ** 0.5, '√'),
+        (lambda x: x + 1, "›"),
+        (lambda x: x - 1, "‹"),
+        (lambda x: x * 2, "d"),
+        (lambda x: x / 2, "½"),
+        (lambda x: x**2, "²"),
+        (lambda x: x * 3, "T"),
+        (lambda x: 2**x, "E"),
+        (lambda x: 10**x, "↵"),
+        (lambda x: x**0.5, "√"),
         (lambda x: x + 2, "⇧"),
         (lambda x: x - 2, "⇩"),
     ]
     # Brute force functions applied to constants
-    for (fun, name) in funs: 
+    for (fun, name) in funs:
         for key in num_dict:
             # safeguard to avoid calculating huge numbers
             if (name not in "E↵" or key < 100) and fun(key) == lhs:
@@ -471,10 +472,15 @@ def optimal_number_compress(lhs, ctx):
         return "⁺" + codepage[lhs - 101]
     # Brute force functions applied to constants twice
     for (fun, name) in funs:
-        for (fun2, name2) in funs: 
+        for (fun2, name2) in funs:
             for key in num_dict:
                 # safeguard to avoid calculating huge numbers
-                if (name not in "E↵" or key < 100) and (name not in "E↵" or name2 not in "E↵") and (key < 100 or name2 not in "E↵") and fun2(fun(key)) == lhs:
+                if (
+                    (name not in "E↵" or key < 100)
+                    and (name not in "E↵" or name2 not in "E↵")
+                    and (key < 100 or name2 not in "E↵")
+                    and fun2(fun(key)) == lhs
+                ):
                     return num_dict.get(key) + name + name2
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
