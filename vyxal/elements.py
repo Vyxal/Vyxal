@@ -2252,14 +2252,6 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
-def longest(lhs, ctx):
-    """Element ÞG
-    (lst) -> Return the longest item in a list
-    """
-
-    return max_by_function(lhs, length, ctx)
-
-
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -2317,6 +2309,13 @@ def less_than_or_equal(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: int(lhs <= str(rhs)),
         (str, str): lambda: int(lhs <= rhs),
     }.get(ts, lambda: vectorise(less_than_or_equal, lhs, rhs, ctx=ctx))()
+
+
+def lift(lhs, ctx):
+    """Element Þż
+    (any) -> a * 1...a.length
+    """
+    return multiply(lhs, LazyList(range(1, len(lhs) + 1)), ctx=ctx)
 
 
 def ljust(lhs, rhs, other, ctx):
@@ -2404,6 +2403,14 @@ def log_mold_multi(lhs, rhs, ctx):
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
         (list, list): lambda: mold(lhs, rhs),
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
+
+
+def longest(lhs, ctx):
+    """Element ÞG
+    (lst) -> Return the longest item in a list
+    """
+
+    return max_by_function(lhs, length, ctx)
 
 
 def lowest_common_multiple(lhs, rhs=None, ctx=None):
@@ -5847,6 +5854,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack.append(res[0]); stack.append(res[1])",
         1,
     ),
+    "Þż": process_element(lift, 1),
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
     "Þṡ": process_element(sort_by_length, 1),
