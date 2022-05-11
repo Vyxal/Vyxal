@@ -2717,6 +2717,12 @@ k• (Qwerty Keyboard)
 
     lst a: Adjacency matrix
 -------------------------------
+Þż (Lift)
+
+- Multiply a numeric list by a range from 1 to its length
+
+    lst a: lift
+-------------------------------
 ÞA (Adjacency matrix (Undirected))
 
 - Adjacency matrix of undirected graph
