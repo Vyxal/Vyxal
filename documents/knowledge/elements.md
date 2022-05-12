@@ -3559,12 +3559,12 @@ A matrix with 1s on the main diagonal and zeroes elsewhere
 -------------------------------
 ## `` Þe `` (Matrix Exponentiation)
 
-A matrix mutliplied by itself n times
+A matrix multiplied by itself n times
 
 ### Overloads
 
-- num a, lst b: `Matrix a mutliplied by itself b times`
-- lst a, num b: `Matrix b mutliplied by itself a times`
+- num a, lst b: `Matrix a multiplied by itself b times`
+- lst a, num b: `Matrix b multiplied by itself a times`
 -------------------------------
 ## `` Þd `` (Distance matrix (Directed))
 
