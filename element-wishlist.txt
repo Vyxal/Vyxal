@@ -1,15 +1,13 @@
 -- One thing per line --
 -- Modifier requests are also okay --
 base64 encode/decode - Seggan
-modifier: conditional execute with else case (aka [a|b]) - Steffan
 modifier: for each overlapping pair, execute X (aka 2lv) - Steffan
 modifier: for each overlapping pair, reduce over X (aka 2lvƒ) - Steffan
 cumulative right reduce - Steffan
 a.center(b, filler=c) - Steffan
-deck shuffle (interleave both halves of list together) and deck unshuffle - Steffan
+deck shuffle (interleave both halves of list together) (we already have deck unshuffle, uninterleave, `y`) - Steffan
 minimum without popping and maximum without popping (o5AB1E's W and Z) - Steffan
 store into register without popping - Steffan
 have a counter variable - Steffan
 flip brackets (we already have this as a helper but not an element - invert_brackets) - Steffan
-modifier: apply with swapped arguments (short for $a$) - Steffan
 modifier: apply at indice(s) (Jelly's ¦, modifier version of ¢) - Steffan
