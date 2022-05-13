@@ -165,9 +165,6 @@ def foldl(
     ctx: Context,
 ) -> Any:
     """Reduce vector by function"""
-    if len(vector) == 0:
-        return 0
-
     working = initial
 
     for item in vector:
