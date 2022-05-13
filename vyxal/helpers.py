@@ -367,7 +367,7 @@ def group_by_function(
             ret[key].append(el)
         else:
             ret[key] = [el]
-    return ret.values()
+    return list(ret.values())
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
