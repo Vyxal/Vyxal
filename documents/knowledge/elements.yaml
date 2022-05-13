@@ -1530,13 +1530,15 @@
       - '["hello","l"] : 2'
 
 - element: "ġ"
-  name: Gcd
+  name: Gcd / Group by Function
   description: Greatest Common Denominator of a list or some numbers
   arity: "*"
   overloads:
       lst: GCD(a) (Gcd of whole list)
       num-num: gcd(a,b) (Dyadic gcd)
       str-str: Longest common suffix of a and b
+      fun-any: Group b by the results of function a
+      any-fun: Group a by the results of function b
   vectorise: false
   tests:
       - "[[1,3,2]] : 1"
