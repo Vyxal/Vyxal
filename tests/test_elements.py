@@ -6875,7 +6875,7 @@ def test_Find():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Gcd():
+def test_GcdGroupbyFunction():
 
     stack = [vyxalify(item) for item in [[1,3,2]]]
     expected = vyxalify(1)

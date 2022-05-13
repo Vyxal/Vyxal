@@ -513,3 +513,33 @@ def test_less_than_decrement_until_false():
 def test_star_map():
     stack = run_vyxal("¨£ε", inputs=[[1, 2, 3], [4, 6, 8]])
     assert stack[-1] == [3, 4, 5]
+
+
+def test_group_by_function():
+    stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ġ")
+    assert stack[-1] == [
+        [2, 2, 2, 6, 8, 4, 2, 8, 6, 2, 6, 54, 4],
+        [7, 45, 5, 3, 3, 9],
+    ]
+
+    stack = run_vyxal("`Vyxal Testing Initiative` ⁽Aġ")
+    assert stack[-1] == [
+        [
+            "V",
+            "y",
+            "x",
+            "l",
+            " ",
+            "T",
+            "s",
+            "t",
+            "n",
+            "g",
+            " ",
+            "n",
+            "t",
+            "t",
+            "v",
+        ],
+        ["a", "e", "i", "I", "i", "i", "a", "i", "e"],
+    ]
