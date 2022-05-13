@@ -490,7 +490,7 @@ Stack wrapped into a list
 `)
 
 codepage_descriptions.push(`Break
-Break out of the current loop or function
+Break out of the current loop or return early from a function.
 `)
 
 codepage_descriptions.push(`Interleave

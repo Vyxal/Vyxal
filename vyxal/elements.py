@@ -221,14 +221,25 @@ def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
     """
-    lhs = iterable(lhs, ctx=ctx)
+
+    if primitive_type(lhs) == SCALAR_TYPE:
+        temp = all_partitions(list(iterable(lhs, ctx=ctx)), ctx)
+        if isinstance(lhs, str):
+            return LazyList((map(lambda x: "".join(x), x)) for x in temp)
+
+    shapes = integer_parts_or_join_spaces(len(lhs), ctx=ctx)
 
     @lazylist
     def gen():
-        shapes = integer_parts_or_join_spaces(len(lhs), ctx)
-        yield from (wrap(lhs, shape, ctx) for shape in shapes)
+        for shape in shapes:
+            for i in range(len(shape)):
+                temp = rotate_left(shape, i, ctx)
+                temp = repeat(temp, temp, ctx)
+                yield [
+                    wrapify(x, ctx=ctx) for x in log_mold_multi(lhs, temp, ctx)
+                ]
 
-    return gen()
+    return uniquify(gen(), ctx=ctx)
 
 
 def all_slices(lhs, rhs, ctx):
