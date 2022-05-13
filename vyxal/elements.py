@@ -3337,6 +3337,17 @@ def prime_factors(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
 
 
+def prime_factors_and_exponents(lhs, ctx):
+    """Element ∆ǐ
+    (num) -> list of the prime factors of a and their exponents
+    """
+
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: list(sympy.ntheory.factorint(int(lhs)).items()),
+    }.get(ts, lambda: vectorise(prime_factors_and_exponents, lhs, ctx=ctx))()
+
+
 def prime_factorisation(lhs, ctx):
     """Element Ǐ
     (num) -> prime_factors(a) (no duplicates)
@@ -5836,6 +5847,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆¢": process_element(carmichael_function, 1),
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
+    "∆ǐ": process_element(prime_factors_and_exponents, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
