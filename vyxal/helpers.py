@@ -360,7 +360,6 @@ def group_by_function(
 ) -> LazyList:
     """Group a list of elements by a function"""
 
-    @lazylist
     def gen():
         ret = {}
         for el in lst:
