@@ -3376,7 +3376,7 @@ def product(lhs, ctx):
     """
 
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
-        return vy_reduce(multiply, lhs, ctx=ctx) or 1
+        return foldl(multiply, lhs, initial=1, ctx=ctx)
 
     return cartesian_over_list(lhs, ctx)
 
