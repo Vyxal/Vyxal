@@ -5193,7 +5193,7 @@ def vy_print(lhs, end="\n", ctx=None):
     if ts is LazyList:
         lhs.output(end=end, ctx=ctx)
     elif ts is list:
-        vy_print(vy_str(lhs, ctx=ctx), end, ctx)
+        vy_print(LazyList(lhs), end, ctx)
     elif ts is types.FunctionType:
         args = (
             wrapify(ctx.stacks[-1], lhs.arity, ctx=ctx)
@@ -5238,7 +5238,9 @@ def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     string_character = "`" if ctx.vyxal_lists else '"'
     return {
-        (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
+        (NUMBER_TYPE): lambda: str(float(lhs))
+        if ctx.print_decimals and not lhs.is_Integer
+        else str(sympy.nsimplify(lhs.round(20), rational=True)),
         (str): lambda: string_character
         + lhs.replace("\\", "\\\\").replace(
             string_character, "\\" + string_character
