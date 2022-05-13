@@ -518,3 +518,6 @@ def test_star_map():
 def test_shuffle():
     stack = run_vyxal("Þ℅", inputs=[[1, 2, 3, 4]])
     assert sorted(stack[-1]) == [1, 2, 3, 4]
+
+    stack = run_vyxal("Þ℅", inputs=[LazyList([1, 2, 3, 4])])
+    assert sorted(stack[-1]) == [1, 2, 3, 4]
