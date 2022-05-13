@@ -683,7 +683,7 @@ Stack wrapped into a list
 -------------------------------
 ## `` X `` (Break)
 
-Break out of the current loop or function
+Break out of the current loop or return early from a function.
 
 -------------------------------
 ## `` Y `` (Interleave)

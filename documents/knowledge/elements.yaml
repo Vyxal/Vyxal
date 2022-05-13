@@ -918,9 +918,9 @@
       - "[] : []"
       - '["hello",1,9] : ["hello",1,9]'
 
-- element: "X" # TODO: IMPLEMENT
+- element: "X"
   name: Break
-  description: Break out of the current loop or function
+  description: Break out of the current loop or return early from a function.
   arity: NA
 
 - element: "Y"
