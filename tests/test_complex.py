@@ -513,3 +513,8 @@ def test_less_than_decrement_until_false():
 def test_star_map():
     stack = run_vyxal("¨£ε", inputs=[[1, 2, 3], [4, 6, 8]])
     assert stack[-1] == [3, 4, 5]
+
+
+def test_shuffle():
+    stack = run_vyxal("Þ℅", inputs=[[1, 2, 3, 4]])
+    assert sorted(stack[-1]) == [1, 2, 3, 4]
