@@ -1973,6 +1973,11 @@ Decrement a until b(a) is false (deprecated, use \`<\` instead)
 any a, fun b -> while b(a): a -= 1
 fun a, any b -> while a(b): b -= 1
 `
+codepage_descriptions[240] += `
+∆ǐ (Prime Factorisation and Exponents)
+Get the prime factorisation of a number and the exponents of each prime. A shortcut for ǐĠv₍hL
+num a -> list of the prime factors of a and their exponents
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
