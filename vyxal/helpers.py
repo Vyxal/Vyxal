@@ -360,17 +360,14 @@ def group_by_function(
 ) -> LazyList:
     """Group a list of elements by a function"""
 
-    def gen():
-        ret = {}
-        for el in lst:
-            key = safe_apply(function, el, ctx=ctx)
-            if key in ret:
-                ret[key].append(el)
-            else:
-                ret[key] = [el]
-        yield from ret.values()
-
-    return gen()
+    ret = {}
+    for el in lst:
+        key = safe_apply(function, el, ctx=ctx)
+        if key in ret:
+            ret[key].append(el)
+        else:
+            ret[key] = [el]
+    return ret.values()
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
