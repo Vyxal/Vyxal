@@ -796,11 +796,13 @@ any a, any b -> a.find(b) (Indexing)
 any a, fun b -> truthy indices of mapping b over a
 `)
 
-codepage_descriptions.push(`Gcd
+codepage_descriptions.push(`Gcd / Group by Function
 Greatest Common Denominator of a list or some numbers
 lst a -> GCD(a) (Gcd of whole list)
 num a, num b -> gcd(a,b) (Dyadic gcd)
 str a, str b -> Longest common suffix of a and b
+fun a, any b -> Group b by the results of function a
+any a, fun b -> Group a by the results of function b
 `)
 
 codepage_descriptions.push(`Head Extract
