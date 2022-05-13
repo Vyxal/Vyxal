@@ -5086,6 +5086,12 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (str, str): lambda: max(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
         ),
+        (types.FunctionType, ts[1]): lambda: group_by_function(
+            iterable(rhs, ctx=ctx), lhs, ctx
+        ),
+        (ts[0], types.FunctionType): lambda: group_by_function(
+            iterable(lhs, ctx=ctx), rhs, ctx
+        ),
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
 

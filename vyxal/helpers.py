@@ -355,6 +355,21 @@ def graph_distance(
         )
 
 
+def group_by_function(
+    lst: VyList, function: types.FunctionType, ctx: Context
+) -> LazyList:
+    """Group a list of elements by a function"""
+
+    ret = {}
+    for el in lst:
+        key = safe_apply(function, el, ctx=ctx)
+        if key in ret:
+            ret[key].append(el)
+        else:
+            ret[key] = [el]
+    return list(ret.values())
+
+
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
     if isinstance(lst, LazyList):
