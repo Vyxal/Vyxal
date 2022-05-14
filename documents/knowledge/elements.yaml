@@ -4608,6 +4608,17 @@
       - "[[1,[2,3]],[1,0]] : 2"
       - '[["xyzabc"], [0,4]] : "b"'
 
+- element: "ÞI"
+  name: All Indices
+  description: All indices of element in list (multidimensional)
+  arity: 2
+  overloads:
+      lst-any: All indices of b in a
+      str-str: All occurrences of substring b in a
+  vectorise: false
+  tests:
+      - "['barbaz','ba'] : [0, 3]"
+
 - element: "Þḟ"
   name: Multidimensional Search
   description: Find the first multidimensional index of a value in another

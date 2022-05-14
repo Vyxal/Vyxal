@@ -190,6 +190,21 @@ def all_equal(lhs, ctx):
     return 1
 
 
+def all_indices(lhs, rhs, ctx):
+    """Element ÞI
+    (lst, any) -> All indices of rhs in lhs (multidimensional)
+    (num|str, lst) -> All indices of lhs in rhs (multidimensional)
+    (str, str) -> All indices of substring rhs in lhs (multidimensional)
+    """
+    ts = vy_type(lhs, rhs)
+
+    if ts == (str, str):
+        return [i for i in range(len(lhs)) if lhs.startswith(rhs, i)]
+
+    lst, elem = (lhs, rhs) if ts[0] == list else (rhs, lhs)
+
+
+
 def all_less_than_increasing(lhs, rhs, ctx):
     """Element Þ<
     (any, num): All values of a up to (not including) the first greater
@@ -5918,6 +5933,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
+    "ÞI": process_element(all_indices, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
