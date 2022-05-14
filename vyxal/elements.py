@@ -204,7 +204,6 @@ def all_indices(lhs, rhs, ctx):
     lst, elem = (lhs, rhs) if ts[0] == list else (rhs, lhs)
 
 
-
 def all_less_than_increasing(lhs, rhs, ctx):
     """Element Þ<
     (any, num): All values of a up to (not including) the first greater
