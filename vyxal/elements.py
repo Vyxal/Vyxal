@@ -1510,14 +1510,18 @@ def vertical_palindromise_center_join(lhs, ctx):
     """Element øṗ
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
     """
-    return join_newlines(center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx))
+    return join_newlines(
+        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx)
+    )
 
 
 def vertical_mirror_center_join(lhs, ctx):
     """Element øm
     (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
     """
-    return join_newlines(center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx))
+    return join_newlines(
+        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx)
+    )
 
 
 def foldl_columns(lhs, rhs, ctx):
