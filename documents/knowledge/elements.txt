@@ -1639,7 +1639,6 @@ z (Zip-self)
 
     num a: prime_factorization(a)
     str a: a + a[0]
-    otherwise: vectorise
 -------------------------------
 ǐ (Prime factors)
 
