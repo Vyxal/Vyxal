@@ -2348,7 +2348,7 @@ def left_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs << rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
         (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
         (str, str): lambda: lhs.ljust(len(rhs)),
@@ -5197,7 +5197,10 @@ def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
     """
-    return foldl(add, iterable(lhs, ctx=ctx), ctx=ctx)
+    lhs = iterable(lhs, ctx=ctx)
+    if not lhs:
+        return 0
+    return foldl(add, lhs, ctx=ctx)
 
 
 def vy_print(lhs, end="\n", ctx=None):
