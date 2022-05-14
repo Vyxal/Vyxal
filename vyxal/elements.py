@@ -3376,7 +3376,7 @@ def product(lhs, ctx):
     """
 
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
-        return vy_reduce(multiply, lhs, ctx=ctx)
+        return foldl(multiply, lhs, initial=1, ctx=ctx)
 
     return cartesian_over_list(lhs, ctx)
 
@@ -3859,9 +3859,9 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = deep_copy(lhs)
+    temp = list(deep_copy(lhs))
     random.shuffle(temp)
-    return temp
+    return LazyList(temp)
 
 
 def sign_of(lhs, ctx):
@@ -5085,6 +5085,12 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         ),
         (str, str): lambda: max(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
+        ),
+        (types.FunctionType, ts[1]): lambda: group_by_function(
+            iterable(rhs, ctx=ctx), lhs, ctx
+        ),
+        (ts[0], types.FunctionType): lambda: group_by_function(
+            iterable(lhs, ctx=ctx), rhs, ctx
         ),
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 

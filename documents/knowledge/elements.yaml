@@ -918,9 +918,9 @@
       - "[] : []"
       - '["hello",1,9] : ["hello",1,9]'
 
-- element: "X" # TODO: IMPLEMENT
+- element: "X"
   name: Break
-  description: Break out of the current loop or function
+  description: Break out of the current loop or return early from a function.
   arity: NA
 
 - element: "Y"
@@ -1530,13 +1530,15 @@
       - '["hello","l"] : 2'
 
 - element: "ġ"
-  name: Gcd
+  name: Gcd / Group by Function
   description: Greatest Common Denominator of a list or some numbers
   arity: "*"
   overloads:
       lst: GCD(a) (Gcd of whole list)
       num-num: gcd(a,b) (Dyadic gcd)
       str-str: Longest common suffix of a and b
+      fun-any: Group b by the results of function a
+      any-fun: Group a by the results of function b
   vectorise: false
   tests:
       - "[[1,3,2]] : 1"
@@ -2717,6 +2719,7 @@
   vectorise: false
   tests:
       - "[[3,4,5]] : 60"
+      - "[[]] : 1"
       - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
       - "[[[1, 2], [3, 4], []]] : []"
       - '[["ab","cd"]] : ["ac","ad","bc","bd"]'

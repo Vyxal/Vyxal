@@ -6875,7 +6875,7 @@ def test_Find():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Gcd():
+def test_GcdGroupbyFunction():
 
     stack = [vyxalify(item) for item in [[1,3,2]]]
     expected = vyxalify(1)
@@ -11667,6 +11667,27 @@ def test_ProductofArrayCartesianproductoverlist():
 
     stack = [vyxalify(item) for item in [[3,4,5]]]
     expected = vyxalify(60)
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Π')
+    # print('Π', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[]]]
+    expected = vyxalify(1)
     ctx = Context()
 
     ctx.stacks.append(stack)
