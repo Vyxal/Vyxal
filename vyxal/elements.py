@@ -221,14 +221,25 @@ def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
     """
-    lhs = iterable(lhs, ctx=ctx)
+
+    if primitive_type(lhs) == SCALAR_TYPE:
+        temp = all_partitions(list(iterable(lhs, ctx=ctx)), ctx)
+        if isinstance(lhs, str):
+            return LazyList((map(lambda x: "".join(x), x)) for x in temp)
+
+    shapes = integer_parts_or_join_spaces(len(lhs), ctx=ctx)
 
     @lazylist
     def gen():
-        shapes = integer_parts_or_join_spaces(len(lhs), ctx)
-        yield from (wrap(lhs, shape, ctx) for shape in shapes)
+        for shape in shapes:
+            for i in range(len(shape)):
+                temp = rotate_left(shape, i, ctx)
+                temp = repeat(temp, temp, ctx)
+                yield [
+                    wrapify(x, ctx=ctx) for x in log_mold_multi(lhs, temp, ctx)
+                ]
 
-    return gen()
+    return uniquify(gen(), ctx=ctx)
 
 
 def all_slices(lhs, rhs, ctx):
@@ -2337,7 +2348,7 @@ def left_bit_shift(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs << rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs) << int(rhs),
         (NUMBER_TYPE, str): lambda: rhs.ljust(lhs),
         (str, NUMBER_TYPE): lambda: lhs.ljust(rhs),
         (str, str): lambda: lhs.ljust(len(rhs)),
@@ -3365,7 +3376,7 @@ def product(lhs, ctx):
     """
 
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
-        return vy_reduce(multiply, lhs, ctx=ctx)
+        return foldl(multiply, lhs, initial=1, ctx=ctx)
 
     return cartesian_over_list(lhs, ctx)
 
@@ -3848,9 +3859,9 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = deep_copy(lhs)
+    temp = list(deep_copy(lhs))
     random.shuffle(temp)
-    return temp
+    return LazyList(temp)
 
 
 def sign_of(lhs, ctx):
@@ -5075,6 +5086,12 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (str, str): lambda: max(
             set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
         ),
+        (types.FunctionType, ts[1]): lambda: group_by_function(
+            iterable(rhs, ctx=ctx), lhs, ctx
+        ),
+        (ts[0], types.FunctionType): lambda: group_by_function(
+            iterable(lhs, ctx=ctx), rhs, ctx
+        ),
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
 
@@ -5180,7 +5197,10 @@ def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
     """
-    return foldl(add, iterable(lhs, ctx=ctx), ctx=ctx)
+    lhs = iterable(lhs, ctx=ctx)
+    if not lhs:
+        return 0
+    return foldl(add, lhs, ctx=ctx)
 
 
 def vy_print(lhs, end="\n", ctx=None):
@@ -5193,7 +5213,7 @@ def vy_print(lhs, end="\n", ctx=None):
     if ts is LazyList:
         lhs.output(end=end, ctx=ctx)
     elif ts is list:
-        vy_print(vy_str(lhs, ctx=ctx), end, ctx)
+        vy_print(LazyList(lhs), end, ctx)
     elif ts is types.FunctionType:
         args = (
             wrapify(ctx.stacks[-1], lhs.arity, ctx=ctx)
@@ -5238,7 +5258,9 @@ def vy_repr(lhs, ctx):
     ts = vy_type(lhs)
     string_character = "`" if ctx.vyxal_lists else '"'
     return {
-        (NUMBER_TYPE): lambda: vy_str(lhs, ctx),
+        (NUMBER_TYPE): lambda: str(float(lhs))
+        if ctx.print_decimals and not lhs.is_Integer
+        else str(sympy.nsimplify(lhs.round(20), rational=True)),
         (str): lambda: string_character
         + lhs.replace("\\", "\\\\").replace(
             string_character, "\\" + string_character

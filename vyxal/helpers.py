@@ -165,9 +165,6 @@ def foldl(
     ctx: Context,
 ) -> Any:
     """Reduce vector by function"""
-    if len(vector) == 0:
-        return 0
-
     working = initial
 
     for item in vector:
@@ -355,6 +352,21 @@ def graph_distance(
         )
 
 
+def group_by_function(
+    lst: VyList, function: types.FunctionType, ctx: Context
+) -> LazyList:
+    """Group a list of elements by a function"""
+
+    ret = {}
+    for el in lst:
+        key = safe_apply(function, el, ctx=ctx)
+        if key in ret:
+            ret[key].append(el)
+        else:
+            ret[key] = [el]
+    return list(ret.values())
+
+
 def has_ind(lst: VyList, ind: int) -> bool:
     """Whether or not the list is long enough for that index"""
     if isinstance(lst, LazyList):
@@ -511,6 +523,9 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
         def cmp(a, b, ctx=None):
             return a > b
 
+    if not vec:
+        return 0
+
     return foldl(
         lambda a, b, ctx=ctx: a
         if safe_apply(
@@ -544,6 +559,9 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
 
         def cmp(a, b, ctx=None):
             return a < b
+
+    if not vec:
+        return 0
 
     return foldl(
         lambda a, b, ctx=ctx: a

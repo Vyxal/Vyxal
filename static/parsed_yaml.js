@@ -490,7 +490,7 @@ Stack wrapped into a list
 `)
 
 codepage_descriptions.push(`Break
-Break out of the current loop or function
+Break out of the current loop or return early from a function.
 `)
 
 codepage_descriptions.push(`Interleave
@@ -796,11 +796,13 @@ any a, any b -> a.find(b) (Indexing)
 any a, fun b -> truthy indices of mapping b over a
 `)
 
-codepage_descriptions.push(`Gcd
+codepage_descriptions.push(`Gcd / Group by Function
 Greatest Common Denominator of a list or some numbers
 lst a -> GCD(a) (Gcd of whole list)
 num a, num b -> gcd(a,b) (Dyadic gcd)
 str a, str b -> Longest common suffix of a and b
+fun a, any b -> Group b by the results of function a
+any a, fun b -> Group a by the results of function b
 `)
 
 codepage_descriptions.push(`Head Extract
@@ -2453,9 +2455,9 @@ num a -> A matrix with 1s on the main diagonal and zeroes elsewhere
 `
 codepage_descriptions[101] += `
 Þe (Matrix Exponentiation)
-A matrix mutliplied by itself n times
-num a, lst b -> Matrix a mutliplied by itself b times
-lst a, num b -> Matrix b mutliplied by itself a times
+A matrix multiplied by itself n times
+num a, lst b -> Matrix a multiplied by itself b times
+lst a, num b -> Matrix b multiplied by itself a times
 `
 codepage_descriptions[100] += `
 Þd (Distance matrix (Directed))
