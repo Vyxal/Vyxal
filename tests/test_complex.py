@@ -522,6 +522,7 @@ def test_shuffle():
     stack = run_vyxal("Þ℅", inputs=[LazyList([1, 2, 3, 4])])
     assert sorted(stack[-1]) == [1, 2, 3, 4]
 
+
 def test_group_by_function():
     stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ġ")
     assert stack[-1] == [
