@@ -3859,9 +3859,9 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = deep_copy(lhs)
+    temp = list(deep_copy(lhs))
     random.shuffle(temp)
-    return temp
+    return LazyList(temp)
 
 
 def sign_of(lhs, ctx):
