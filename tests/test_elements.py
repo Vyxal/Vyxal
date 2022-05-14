@@ -17651,6 +17651,52 @@ def test_FlipBracketsVerticalPalindromise():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_FlipBracketsVerticalPalindromiseCenterJoinonNewlines():
+
+    stack = [vyxalify(item) for item in [["/[hello", "/[world"]]]
+    expected = vyxalify("/[hellolleh]\\\n/[worldlrow]\\")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('øṗ')
+    # print('øṗ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_FlipBracketsVerticalMirrorCenterJoinonNewlines():
+
+    stack = [vyxalify(item) for item in [["/[hello", "/[world"]]]
+    expected = vyxalify("/[helloolleh]\\\n/[worlddlrow]\\")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('øm')
+    # print('øm', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_RemoveUntilNochange():
 
     stack = [vyxalify(item) for item in ["((()))","()"]]

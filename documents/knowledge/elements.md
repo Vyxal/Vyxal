@@ -2878,6 +2878,22 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 
 - any a: `Palindromise, without duplicating center, and flip brackets and slashes in the second half`
 -------------------------------
+## `` øṗ `` (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
+
+Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
+
+### Overloads
+
+- any a: `Palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
+-------------------------------
+## `` øm `` (Flip Brackets Vertical Mirror, Center, Join on Newlines)
+
+Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to `øṀøĊ⁋`
+
+### Overloads
+
+- any a: `Mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
+-------------------------------
 ## `` øo `` (Remove Until No change)
 
 Remove b from a until a does not change
