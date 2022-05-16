@@ -1334,6 +1334,7 @@ codepage_descriptions.push(`Prime factorization
 prime factorization / append first element
 num a -> prime_factorization(a)
 str a -> a + a[0]
+lst a -> a + [a[0]]
 `)
 
 codepage_descriptions.push(`Prime factors
