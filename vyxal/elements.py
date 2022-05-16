@@ -3375,7 +3375,7 @@ def prime_factorisation(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
-    }.get(ts, lambda: vectorise(prime_factorisation, lhs, ctx=ctx))()
+    }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
 
 
 def prepend(lhs, rhs, ctx):

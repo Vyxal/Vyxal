@@ -2590,10 +2590,13 @@
   overloads:
       num: prime_factorization(a)
       str: a + a[0]
-  vectorise: true
+      lst: a + [a[0]]
+  vectorise: false
   tests:
       - "[45] : [3,5]"
       - '["abc"] : "abca"'
+      - "[[1, 2, 3]] : [1, 2, 3, 1]"
+      - "[[]] : []"
 
 - element: "ǐ"
   name: Prime factors
