@@ -2590,6 +2590,7 @@
   overloads:
       num: prime_factorization(a)
       str: a + a[0]
+      lst: a + [a[0]]
   vectorise: false
   tests:
       - "[45] : [3,5]"
