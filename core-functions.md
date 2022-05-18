@@ -70,15 +70,15 @@
 70. Interleave
 71. Uninterleave
 72. Zip
-73. 
-74. 
-75. 
-76. 
-77. 
-78. 
-79. 
-80. 
-81. 
+73. Monadic mimimum without popping
+74. Monadic maximum without popping
+75. Reduce each overlap of size 2 by an element
+76. Apply at indices
+77. scanl
+78. scanr
+79. foldr
+80. counter variable
+81. register
 82. 
 83. 
 84. 
