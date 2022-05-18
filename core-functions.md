@@ -48,28 +48,28 @@
 48. Dyadic maximum
 49. Monadic minimum
 50. Dyadic mimimum
-51. 
-52. 
-53. 
-54. 
-55. 
-56. 
-57. 
-58. 
-59. 
-60. 
-61. 
-62. 
-63. 
-64. 
-65. 
-66. 
-67. 
-68. 
-69. 
-70. 
-71. 
-72. 
+51. To hexadecimal
+52. From hexadecimal
+53. `abs(x) <= 1`
+54. Concatenate
+55. Negated filter
+56. Set difference
+57. Length
+58. Map function over list
+59. Negate
+60. `ord()`
+61. Prepend
+62. Reduce by function
+63. Transpose matrix/list
+64. Uniquify
+65. Replace b in a with c
+66. Wrap stack
+67. Wrap item in list
+68. Break / Return
+69. Recurse
+70. Interleave
+71. Uninterleave
+72. Zip
 73. 
 74. 
 75. 
