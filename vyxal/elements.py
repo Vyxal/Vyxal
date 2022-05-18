@@ -1506,6 +1506,25 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     return "\n".join(result)
 
 
+def vertical_palindromise_center_join(lhs, ctx):
+    """Element øṗ
+    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
+        ctx=ctx,
+    )
+
+
+def vertical_mirror_center_join(lhs, ctx):
+    """Element øm
+    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
+    )
+
+
 def foldl_columns(lhs, rhs, ctx):
     """Element ÞC
     (lst, fun) -> reduce the columns of a by function b
@@ -3356,7 +3375,7 @@ def prime_factorisation(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
-    }.get(ts, lambda: vectorise(prime_factorisation, lhs, ctx=ctx))()
+    }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
 
 
 def prepend(lhs, rhs, ctx):
@@ -5875,6 +5894,8 @@ elements: dict[str, tuple[str, int]] = {
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
     "øṁ": process_element(vertical_mirror, 1),
+    "øṗ": process_element(vertical_palindromise_center_join, 1),
+    "øm": process_element(vertical_mirror_center_join, 1),
     "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
