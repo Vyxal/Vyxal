@@ -16,38 +16,38 @@
 16. Range `[1, n]`
 17. Range `[0, n)`
 18. Range `[0, n]`
-19. 
-20. 
-21. 
-22. 
-23. 
-24. 
-25. 
-26. 
-27. 
-28. 
-29. 
-30. 
-31. 
-32. 
-33. 
-34. 
-35. 
-36. 
-37. 
-38. 
-39. 
-40. 
-41. 
-42. 
-43. 
-44. 
-45. 
-46. 
-47. 
-48. 
-49. 
-50. 
+19. Multiplication
+20. Division
+21. Factorial
+22. If statement
+23. For loop
+24. While loop
+25. Strings
+26. Numeric literals
+27. String compression
+28. Sort by element
+29. Lambda to start of line
+30. Exponentiation
+31. Addition
+32. Subtraction
+33. Print
+34. Foldl / Reduce left
+35. Duplicate
+36. Less than
+37. Equals
+38. Greater than
+39. Input
+40. `all()` in python
+41. From binary
+42. To binary
+43. `a.count(b)`
+44. Triplicate
+45. Filter by function
+46. Map function
+47. Monadic maximum
+48. Dyadic maximum
+49. Monadic minimum
+50. Dyadic mimimum
 51. 
 52. 
 53. 
@@ -255,3 +255,4 @@
 255. 
 256. 
 257. 
+258. 
