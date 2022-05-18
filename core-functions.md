@@ -57,7 +57,7 @@
 57. Length
 58. Map function over list
 59. Negate
-60. `ord()`
+60. `chr/ord`
 61. Prepend
 62. Reduce by function
 63. Transpose matrix/list
@@ -79,33 +79,32 @@
 79. foldr
 80. counter variable
 81. register
-82. 
-83. 
-84. 
-85. 
-86. 
-87. 
-88. 
-89. 
-90. 
-91. 
-92. 
-93. 
-94. 
-95. 
-96. 
-97. 
-98. 
-99. 
-100. 
-101. 
-102. 
-103. 
-104. 
-105. 
-106. 
-107. 
-108. 
+82. reverse
+83. sum
+84. vectorised sums
+86. powerset
+87. permutations
+88. mirror
+89. palindromise
+90. increment
+91. decrement
+92. double
+93. half
+94. Floor division
+95. Floor
+96. Ceiling
+97. Join on newlines
+98. Set register
+99. Get register
+100. Group consecutive
+101. Pop
+102. Swap
+103. Print without newline
+104. Print without popping
+105. Uppercase
+106. Lowercase
+107. Rotate left
+108. Rotate right
 109. 
 110. 
 111. 
@@ -256,3 +255,8 @@
 256. 
 257. 
 258. 
+259. 
+260. 
+261. 
+262. 
+263. 
