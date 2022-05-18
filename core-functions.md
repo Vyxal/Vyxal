@@ -1,21 +1,21 @@
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
-7. 
-8. 
-9. 
-10. 
-11. 
-12. 
-13. 
-14. 
-15. 
-16. 
-17. 
-18. 
+1. Map Over Prefixes
+2. Conditional Execution
+3. Filter by Element
+4. Last Element as Function
+5. Last Two Elements as Function
+6. Last Three Elements as Function
+7. Last Four Elements as Function
+8. Reject by Element
+9. Outer Product / Table
+10. Normal Lambda
+11. Mapping Lambda
+12. Filtering Lambda
+13. Reduction Lambda
+14. Sorting Lambda
+15. Halve
+16. Range `[1, n]`
+17. Range `[0, n)`
+18. Range `[0, n]`
 19. 
 20. 
 21. 
@@ -254,3 +254,4 @@
 254. 
 255. 
 256. 
+257. 
