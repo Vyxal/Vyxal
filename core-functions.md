@@ -105,8 +105,8 @@
 106. Lowercase
 107. Rotate left
 108. Rotate right
-109. 
-110. 
+109. Shallow flat
+110. Deep flat
 111. 
 112. 
 113. 
