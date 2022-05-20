@@ -1029,7 +1029,8 @@ def depth(lhs, ctx):
     """
     get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
     depth = get_depth(lhs)
-    if not depth: return 0
+    if not depth:
+        return 0
     return depth
 
 

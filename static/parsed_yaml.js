@@ -2215,6 +2215,11 @@ codepage_descriptions[117] += `
 Are all elements of a list/string unique?
 any a -> all_unique(a)
 `
+codepage_descriptions[106] += `
+Þj (Depth)
+Depth of ragged list
+lst a -> Depth
+`
 codepage_descriptions[201] += `
 ÞẊ (Cartesian Power)
 Cartesian power, cartesian product with self n times
