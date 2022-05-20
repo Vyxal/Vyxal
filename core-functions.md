@@ -107,12 +107,12 @@
 108. Rotate right
 109. Shallow flat
 110. Deep flat
-111. 
-112. 
-113. 
-114. 
-115. 
-116. 
+111. Head
+112. Tail
+113. Head extract
+114. Tail extract
+115. Overlapping chunks of length
+116. Generate infinite list from function
 117. 
 118. 
 119. 
