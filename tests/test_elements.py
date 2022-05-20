@@ -20726,7 +20726,7 @@ def test_AllUnique():
 
 def test_Depth():
 
-    stack = [vyxalify(item) for item in [1, 2, 7]]
+    stack = [vyxalify(item) for item in [[1, 2, 7]]]
     expected = vyxalify(1)
     ctx = Context()
 
@@ -20747,7 +20747,7 @@ def test_Depth():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in 3]
+    stack = [vyxalify(item) for item in [3]]
     expected = vyxalify(0)
     ctx = Context()
 
@@ -20768,7 +20768,7 @@ def test_Depth():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1, [2, 3, [4]], [69]]]
+    stack = [vyxalify(item) for item in [[1, [2, 3, [4]], [69]]]]
     expected = vyxalify(3)
     ctx = Context()
 
