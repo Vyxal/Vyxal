@@ -1028,10 +1028,7 @@ def depth(lhs, ctx):
     (lst) -> depth of a
     """
     get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
-    depth = get_depth(lhs)
-    if not depth:
-        return 0
-    return depth
+    return int(get_depth(lhs))
 
 
 def diagonal(lhs, ctx):
