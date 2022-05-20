@@ -3187,6 +3187,14 @@ Are all elements of a list/string unique?
 
 - any a: `all_unique(a)`
 -------------------------------
+## `` Þj `` (Depth)
+
+Depth of ragged list
+
+### Overloads
+
+- lst a: `Depth`
+-------------------------------
 ## `` ÞẊ `` (Cartesian Power)
 
 Cartesian power, cartesian product with self n times

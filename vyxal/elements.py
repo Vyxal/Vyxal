@@ -1023,6 +1023,14 @@ def deltas(lhs, ctx):
     return gen()
 
 
+def depth(lhs, ctx):
+    """Element Þj
+    (lst) -> depth of a
+    """
+    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    return int(get_depth(lhs))
+
+
 def diagonal(lhs, ctx):
     """Element Þ/
     (any) -> diagonal of a
@@ -5926,6 +5934,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þx": process_element(all_combos, 1),
     "Þ×": process_element(all_combos_with_replacement, 1),
     "Þu": process_element(all_unique, 1),
+    "Þj": process_element(depth, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
