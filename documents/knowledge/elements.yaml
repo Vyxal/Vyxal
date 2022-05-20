@@ -4564,6 +4564,18 @@
       - "[[1,2,3]] : 1"
       - "[[1,1,1]] : 0"
 
+- element: "Þj"
+  name: Depth
+  description: Depth of ragged list
+  arity: 1
+  overloads:
+      lst: Depth
+  vectorise: false
+  tests:
+      - "[1, 2, 7] : 3"
+      - "[1, [2, 3, [4]], [69]] : 3"
+
+
 - element: "ÞẊ"
   name: Cartesian Power
   description: Cartesian power, cartesian product with self n times
