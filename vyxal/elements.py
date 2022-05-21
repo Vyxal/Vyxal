@@ -2783,12 +2783,9 @@ def multi_dimensional_search(lhs, rhs, ctx):
                   multidimensional index
     """
     lhs = iterable(lhs, ctx=ctx)
-    indexes = enumerate_md(lhs)
 
-    for ind in indexes:
-        if non_vectorising_equals(
-            multi_dimensional_index(lhs, ind, ctx), rhs, ctx
-        ):
+    for ind, item in enumerate_md(lhs):
+        if non_vectorising_equals(item, rhs, ctx):
             return ind
 
     return []
