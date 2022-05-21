@@ -18004,7 +18004,7 @@ def test_DictionaryCompression():
 
 
     stack = [vyxalify(item) for item in ["abcdef`gh"]]
-    expected = vyxalify("`ėġḣ²\`gh`")
+    expected = vyxalify("`ėġḣ²\\`gh`")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -20877,10 +20877,10 @@ def test_MultidimensionalIndexing():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_AllIndices():
+def test_AllIndicesMultidimensional():
 
-    stack = [vyxalify(item) for item in ['barbaz','ba']]
-    expected = vyxalify([0, 3])
+    stack = [vyxalify(item) for item in [[[[3], [3,4], [[3]]], [3]], [3]]]
+    expected = vyxalify([[0,0], [0,2,0], [1]])
     ctx = Context()
 
     ctx.stacks.append(stack)
