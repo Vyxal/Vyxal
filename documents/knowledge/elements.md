@@ -3221,14 +3221,15 @@ Index a list of coordinates into a value.
 
 - lst a, lst b: `a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value`
 -------------------------------
-## `` ÞI `` (All Indices)
+## `` ÞI `` (All Indices (Multidimensional))
 
-All indices of element in list (multidimensional)
+All multidimensional indices of element in list
 
 ### Overloads
 
 - lst a, any b: `All indices of b in a`
-- str a, str b: `All occurrences of substring b in a`
+- any a, lst b: `All indices of a in b`
+- any a, any b: `All indices of b in a`
 -------------------------------
 ## `` Þḟ `` (Multidimensional Search)
 

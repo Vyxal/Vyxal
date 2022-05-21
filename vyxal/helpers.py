@@ -120,7 +120,9 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def enumerate_md(haystack: VyList, _index_stack: tuple = (), include_all = False) -> VyList:
+def enumerate_md(
+    haystack: VyList, _index_stack: tuple = (), include_all=False
+) -> VyList:
     """Enumerate multi-dimensional indices and items of a list.
 
     Parameters:
@@ -135,7 +137,9 @@ def enumerate_md(haystack: VyList, _index_stack: tuple = (), include_all = False
         elif type(item) is str and len(item) > 1:
             if include_all:
                 yield (list(_index_stack) + [i], item)
-            yield from enumerate_md(list(item), _index_stack + (i,), include_all)
+            yield from enumerate_md(
+                list(item), _index_stack + (i,), include_all
+            )
         else:
             yield (list(_index_stack) + [i], item)
 
