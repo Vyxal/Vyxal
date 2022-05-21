@@ -211,7 +211,7 @@ def all_indices_multidim(lhs, rhs, ctx):
         for ind, item in enumerate_md(lhs, include_all=True):
             if non_vectorising_equals(item, rhs, ctx):
                 yield ind
-    
+
     return gen()
 
 
