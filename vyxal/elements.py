@@ -1048,6 +1048,14 @@ def deltas(lhs, ctx):
     return gen()
 
 
+def depth(lhs, ctx):
+    """Element Þj
+    (lst) -> depth of a
+    """
+    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    return int(get_depth(lhs))
+
+
 def diagonal(lhs, ctx):
     """Element Þ/
     (any) -> diagonal of a
@@ -1529,6 +1537,25 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
     return "\n".join(result)
+
+
+def vertical_palindromise_center_join(lhs, ctx):
+    """Element øṗ
+    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
+        ctx=ctx,
+    )
+
+
+def vertical_mirror_center_join(lhs, ctx):
+    """Element øm
+    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
+    )
 
 
 def foldl_columns(lhs, rhs, ctx):
@@ -3378,7 +3405,7 @@ def prime_factorisation(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
         str: lambda: lhs + lhs[0],
-    }.get(ts, lambda: vectorise(prime_factorisation, lhs, ctx=ctx))()
+    }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
 
 
 def prepend(lhs, rhs, ctx):
@@ -5897,6 +5924,8 @@ elements: dict[str, tuple[str, int]] = {
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
     "øṁ": process_element(vertical_mirror, 1),
+    "øṗ": process_element(vertical_palindromise_center_join, 1),
+    "øm": process_element(vertical_mirror_center_join, 1),
     "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
     "øP": process_element(pluralise_count, 2),
@@ -5927,6 +5956,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þx": process_element(all_combos, 1),
     "Þ×": process_element(all_combos_with_replacement, 1),
     "Þu": process_element(all_unique, 1),
+    "Þj": process_element(depth, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),

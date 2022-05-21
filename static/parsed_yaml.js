@@ -1334,6 +1334,7 @@ codepage_descriptions.push(`Prime factorization
 prime factorization / append first element
 num a -> prime_factorization(a)
 str a -> a + a[0]
+lst a -> a + [a[0]]
 `)
 
 codepage_descriptions.push(`Prime factors
@@ -2017,6 +2018,16 @@ codepage_descriptions[77] += `
 Vertically palindromise and reverse brackets and slashes, without duplicating center
 any a -> Palindromise, without duplicating center, and flip brackets and slashes in the second half
 `
+codepage_descriptions[153] += `
+øṗ (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
+Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to \`øMøĊ⁋\`
+any a -> Palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+`
+codepage_descriptions[109] += `
+øm (Flip Brackets Vertical Mirror, Center, Join on Newlines)
+Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to \`øṀøĊ⁋\`
+any a -> Mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+`
 codepage_descriptions[111] += `
 øo (Remove Until No change)
 Remove b from a until a does not change
@@ -2203,6 +2214,11 @@ codepage_descriptions[117] += `
 Þu (All Unique)
 Are all elements of a list/string unique?
 any a -> all_unique(a)
+`
+codepage_descriptions[106] += `
+Þj (Depth)
+Depth of ragged list
+lst a -> Depth
 `
 codepage_descriptions[201] += `
 ÞẊ (Cartesian Power)

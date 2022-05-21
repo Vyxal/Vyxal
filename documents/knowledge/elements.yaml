@@ -2590,10 +2590,13 @@
   overloads:
       num: prime_factorization(a)
       str: a + a[0]
-  vectorise: true
+      lst: a + [a[0]]
+  vectorise: false
   tests:
       - "[45] : [3,5]"
       - '["abc"] : "abca"'
+      - "[[1, 2, 3]] : [1, 2, 3, 1]"
+      - "[[]] : []"
 
 - element: "ǐ"
   name: Prime factors
@@ -4072,6 +4075,26 @@
       - '["{] "] : "{] [}"'
       - '["/*>X"] : "/*>X<*\\"'
 
+- element: "øṗ"
+  name: Flip Brackets Vertical Palindromise, Center, Join on Newlines
+  description: Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
+  arity: 1
+  overloads:
+      any: Palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+  vectorise: true
+  tests:
+      - '[["/[hello", "/[world"]] : "/[hellolleh]\\\n/[worldlrow]\\"'
+
+- element: "øm"
+  name: Flip Brackets Vertical Mirror, Center, Join on Newlines
+  description: Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to `øṀøĊ⁋`
+  arity: 1
+  overloads:
+      any: Mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+  vectorise: true
+  tests:
+      - '[["/[hello", "/[world"]] : "/[helloolleh]\\\n/[worlddlrow]\\"'
+
 - element: "øo"
   name: Remove Until No change
   arity: 2
@@ -4540,6 +4563,19 @@
       - '["Gaming"] : 1'
       - "[[1,2,3]] : 1"
       - "[[1,1,1]] : 0"
+
+- element: "Þj"
+  name: Depth
+  description: Depth of ragged list
+  arity: 1
+  overloads:
+      lst: Depth
+  vectorise: false
+  tests:
+      - "[[1, 2, 7]] : 1"
+      - "[3] : 0"
+      - "[[1, [2, 3, [4]], [69]]] : 3"
+
 
 - element: "ÞẊ"
   name: Cartesian Power
