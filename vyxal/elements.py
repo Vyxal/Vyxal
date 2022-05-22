@@ -190,6 +190,31 @@ def all_equal(lhs, ctx):
     return 1
 
 
+def all_indices_multidim(lhs, rhs, ctx):
+    """Element ÞI
+    (lst, any) -> All indices of rhs in lhs (multidimensional)
+    (num|str, lst) -> All indices of lhs in rhs (multidimensional)
+    (num|str, num|str) -> All indices of rhs in lhs (multidimensional)
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+
+    if ts == (str, str):
+        return [i for i in range(len(lhs)) if lhs.startswith(rhs, i)]
+
+    if ts[0] != list and ts[1] == list:
+        temp = lhs
+        lhs = iterable(rhs, ctx=ctx)
+        rhs = temp
+
+    @lazylist
+    def gen():
+        for ind, item in enumerate_md(lhs, include_all=True):
+            if non_vectorising_equals(item, rhs, ctx):
+                yield ind
+
+    return gen()
+
+
 def all_less_than_increasing(lhs, rhs, ctx):
     """Element Þ<
     (any, num): All values of a up to (not including) the first greater
@@ -2785,12 +2810,9 @@ def multi_dimensional_search(lhs, rhs, ctx):
                   multidimensional index
     """
     lhs = iterable(lhs, ctx=ctx)
-    indexes = enumerate_md(lhs)
 
-    for ind in indexes:
-        if non_vectorising_equals(
-            multi_dimensional_index(lhs, ind, ctx), rhs, ctx
-        ):
+    for ind, item in enumerate_md(lhs):
+        if non_vectorising_equals(item, rhs, ctx):
             return ind
 
     return []
@@ -5948,6 +5970,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
+    "ÞI": process_element(all_indices_multidim, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),

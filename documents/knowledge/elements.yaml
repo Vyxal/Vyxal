@@ -4185,7 +4185,7 @@
       - '["withree"] : "`wi∧ḭ`"'
       - '["hello"] : "`ƈṙ`"'
       - '["Vyxal"] : "`₴ŀ`"'
-      - '["abcdef`gh"] : "`ėġḣ²\`gh`"'
+      - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
 
 - element: "øW"
   name: Group on words
@@ -4643,6 +4643,18 @@
   tests:
       - "[[1,[2,3]],[1,0]] : 2"
       - '[["xyzabc"], [0,4]] : "b"'
+
+- element: "ÞI"
+  name: All Indices (Multidimensional)
+  description: All multidimensional indices of element in list
+  arity: 2
+  overloads:
+      lst-any: All indices of b in a
+      any-lst: All indices of a in b
+      any-any: All indices of b in a
+  vectorise: false
+  tests:
+      - "[[[[3], [3,4], [[3]]], [3]], [3]] : [[0,0], [0,2,0], [1]]"
 
 - element: "Þḟ"
   name: Multidimensional Search
