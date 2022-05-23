@@ -551,3 +551,10 @@ def test_group_by_function():
         ],
         ["a", "e", "i", "I", "i", "i", "a", "i", "e"],
     ]
+
+def test_overlapping_groups_modifier():
+    stack = run_vyxal("¨p+", inputs=[[1, 2, 3, 4, 5]])
+    assert stack[-1] == [3, 5, 7, 9]
+
+    stack = run_vyxal("¨p+", inputs=[[]])
+    assert stack[-1] == []
