@@ -2787,7 +2787,6 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
-
     if len(lhs) == 0:
         return []
     else:
