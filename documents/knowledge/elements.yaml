@@ -4155,7 +4155,7 @@
 - element: "øe"
   name: Run Length Encoding
   arity: 1
-  description: Run length encoding, convert from string to list of characters and amount repeated.
+  description: Run length encoding, convert from string/list to list of items and amount repeated.
   overloads:
       str: run_length_encoded(a)
   vectorise: false
@@ -4163,16 +4163,35 @@
       - '["abc"] : [["a",1],["b",1],["c",1]]'
       - '["aaa"] : [["a",3]]'
 
+- element: "øĖ"
+  name: Separated Run Length Encoding
+  arity: 1
+  description: Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to `øe∩÷`
+  overloads:
+      str: run length encode a and push items and lengths
+  vectorise: false
+
 - element: "ød"
   name: Run Length Decoding
   arity: 1
-  description: Run length decoding, convert from list of characters and lengths to a string
+  description: Run length decoding, convert from list of characters and lengths to a string/list
   overloads:
       lst: run_length_decoded(a)
   vectorise: false
   tests:
       - '[[["x",3]]] : "xxx"'
       - '[[["z",2],["a",3]]] : "zzaaa"'
+
+- element: "øḊ"
+  name: Dyadic Run Length Decode
+  arity: 2
+  description: Run length decoding, convert list of characters and list of lengths to a string/list
+  overloads:
+      lst-lst: run length decode with items a and lengths b
+  vectorise: false
+  tests:
+      - '[["x"], [3]] : "xxx"'
+      - '[["z", "a"], [2, 3]] : "zzaaa"'
 
 - element: "øD"
   name: Dictionary Compression
