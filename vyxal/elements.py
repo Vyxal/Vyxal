@@ -6212,4 +6212,10 @@ modifiers: dict[str, str] = {
         "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), zipped)\n"
         "stack.append(LazyList(mapped))\n"
     ),
+    "¨p": (
+        "lhs = pop(stack, 1, ctx)\n"
+        "over = overlapping_groups(lhs, 2, ctx)\n"
+        "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), over)\n"
+        "stack.append(LazyList(mapped))\n"
+    ),
 }

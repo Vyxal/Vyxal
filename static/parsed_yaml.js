@@ -2568,3 +2568,7 @@ codepage_descriptions[168] += `
 ¨₃ (Triadic Filter Lambda)
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 `
+codepage_descriptions[112] += `
+¨p (For Each Overlapping Pair)
+Run element for each overlapping pair. Equivalent to \`2lvƒ\`
+`
