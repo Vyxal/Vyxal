@@ -2056,13 +2056,23 @@ lst a -> Center(a) (Pad each item with spaces so all are centered)
 `
 codepage_descriptions[101] += `
 øe (Run Length Encoding)
-Run length encoding, convert from string to list of characters and amount repeated.
+Run length encoding, convert from string/list to list of items and amount repeated.
 str a -> run_length_encoded(a)
+`
+codepage_descriptions[187] += `
+øĖ (Separated Run Length Encoding)
+Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to \`øe∩÷\`
+str a -> run length encode a and push items and lengths
 `
 codepage_descriptions[100] += `
 ød (Run Length Decoding)
-Run length decoding, convert from list of characters and lengths to a string
+Run length decoding, convert from list of characters and lengths to a string/list
 lst a -> run_length_decoded(a)
+`
+codepage_descriptions[186] += `
+øḊ (Dyadic Run Length Decode)
+Run length decoding, convert list of characters and list of lengths to a string/list
+lst a, lst b -> run length decode with items a and lengths b
 `
 codepage_descriptions[68] += `
 øD (Dictionary Compression)
