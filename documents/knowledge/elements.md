@@ -3755,3 +3755,12 @@ Open a dyadic filter lambda - ¨₂...; Receives item and index.
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 
 -------------------------------
+## `` ¨p `` (For Each Overlapping Pair)
+Run element for each overlapping pair. Equivalent to `2lvƒ`
+
+Usage:
+```
+¨p<element>
+```
+
+-------------------------------

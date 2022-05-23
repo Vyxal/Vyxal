@@ -1298,6 +1298,7 @@
 - element: "}"
   name: Close While Loop
   description: Close a while loop
+
 - modifier: "~"
   name: Filter / Execute Without Pop
   description: For monads, filter a list by that. For dyads, execute without popping from the stack.
@@ -5295,3 +5296,8 @@
   name: Triadic Filter Lambda
   description: Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
   arity: 3
+
+- modifier: "¨p"
+  name: For Each Overlapping Pair
+  description: Run element for each overlapping pair. Equivalent to `2lvƒ`
+  usage: "¨p<element>"

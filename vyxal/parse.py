@@ -36,7 +36,7 @@ STRUCTURE_INFORMATION = {
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
 OPENING_CHARACTERS = list(STRUCTURE_INFORMATION.keys())
-MONADIC_MODIFIERS = list("v⁽&~ßƒɖ") + ["¨=", "¨v", "¨£"]
+MONADIC_MODIFIERS = list("v⁽&~ßƒɖ") + ["¨=", "¨v", "¨£", "¨p"]
 DYADIC_MODIFIERS = list("₌‡₍")
 TRIADIC_MODIFIERS = list("≬")
 # The modifiers are stored as lists to allow for potential digraph

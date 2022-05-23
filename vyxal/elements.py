@@ -2787,7 +2787,6 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
-
     if len(lhs) == 0:
         return []
     else:
@@ -6230,6 +6229,12 @@ modifiers: dict[str, str] = {
         "rhs, lhs = pop(stack, 2, ctx)\n"
         "zipped = vy_zip(lhs, rhs, ctx)\n"
         "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), zipped)\n"
+        "stack.append(LazyList(mapped))\n"
+    ),
+    "¨p": (
+        "lhs = pop(stack, 1, ctx)\n"
+        "over = overlapping_groups(lhs, 2, ctx)\n"
+        "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), over)\n"
         "stack.append(LazyList(mapped))\n"
     ),
 }
