@@ -5572,6 +5572,16 @@ def separate_runl_encode(lhs, ctx: Context):
     return lengths
 
 
+def mod_pow(lhs, rhs, other, ctx: Context):
+    """Element ∆%
+    (any, any, any) -> a ** b mod c
+    """
+    ts = vy_type(lhs, rhs, other, simple=True)
+    if list in ts:
+        return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
+    return pow(int(lhs), int(rhs), int(other))
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -5903,6 +5913,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element(nth_fibonacci, 1),
     "∆±": process_element(copy_sign, 2),
+    "∆%": process_element(mod_pow, 3),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
     "∆E": process_element(expe_minus_1, 1),
