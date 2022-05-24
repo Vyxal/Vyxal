@@ -3876,8 +3876,21 @@ def run_length_decoding(lhs, ctx):
     """Element ød
     (lst) -> Run length decoding
     """
-    temp = list(map(lambda elem: elem[0] * elem[1], lhs))
-    if all(isinstance(x[0], str) for x in lhs):
+    temp = flatten_by(
+        list(
+            map(
+                lambda elem: (
+                    [elem[1]] * elem[0]
+                    if isinstance(elem[1], str)
+                    else [elem[0]] * elem[1]
+                ),
+                lhs,
+            )
+        ),
+        1,
+        ctx=ctx,
+    )
+    if all(isinstance(x, str) for x in temp):
         return "".join(temp)
     else:
         return LazyList(temp)
