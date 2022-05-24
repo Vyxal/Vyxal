@@ -5555,6 +5555,23 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
+def dyadic_runl_decode(lhs, rhs, ctx: Context):
+    """Element øḊ
+    (any, any) -> run length decode a with lengths b
+    """
+    return run_length_decoding(vy_zip(lhs, rhs, ctx=ctx), ctx=ctx)
+
+
+def separate_runl_encode(lhs, ctx: Context):
+    """Element øĖ
+    (any) -> run length encode a and push items and lengths both to the stack separately
+    """
+    enc = run_length_encoding(lhs, ctx)
+    items, lengths = transpose(enc)
+    ctx.stacks[-1].append(items)
+    return lengths
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -5931,7 +5948,9 @@ elements: dict[str, tuple[str, int]] = {
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
     "øḋ": process_element("str(float(lhs))", 1),
+    "øḊ": process_element(dyadic_runl_decode, 2),
     "øe": process_element(run_length_encoding, 1),
+    "øĖ": process_element(separate_runl_encode, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
