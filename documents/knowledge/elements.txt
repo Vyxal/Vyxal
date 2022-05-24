@@ -3200,3 +3200,10 @@ k• (Qwerty Keyboard)
 - Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 
 -------------------------------
+¨p (For Each Overlapping Pair)
+
+- Run element for each overlapping pair. Equivalent to `2lvƒ`
+
+    ¨p<element>
+
+-------------------------------

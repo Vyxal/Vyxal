@@ -536,7 +536,7 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
         def cmp(a, b, ctx=None):
             return a > b
 
-    if not vec:
+    if not len(vec):
         return 0
 
     return foldl(
@@ -573,7 +573,7 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
         def cmp(a, b, ctx=None):
             return a < b
 
-    if not vec:
+    if not len(vec):
         return 0
 
     return foldl(
