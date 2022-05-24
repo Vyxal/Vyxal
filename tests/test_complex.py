@@ -559,3 +559,11 @@ def test_overlapping_groups_modifier():
 
     stack = run_vyxal("¨p+", inputs=[[]])
     assert stack[-1] == []
+
+
+def test_infinite_length_range():
+    stack = run_vyxal("Þ∞ ż")
+    assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    stack = run_vyxal("Þ∞ ẏ")
+    assert stack[-1][:10] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
