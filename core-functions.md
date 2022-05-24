@@ -82,6 +82,7 @@
 82. reverse
 83. sum
 84. vectorised sums
+85. Oops we missed one - this line is extra long so people notice
 86. powerset
 87. permutations
 88. mirror
@@ -113,11 +114,11 @@
 114. Tail extract
 115. Overlapping chunks of length
 116. Generate infinite list from function
-117. 
-118. 
-119. 
-120. 
-121. 
+117. Cumulative sums
+118. Vectorising length
+119. Truthy indices
+120. Range between two numbers 
+121. Range of length of value
 122. 
 123. 
 124. 
