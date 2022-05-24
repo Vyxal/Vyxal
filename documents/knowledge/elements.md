@@ -2938,19 +2938,35 @@ Center a list of strings
 -------------------------------
 ## `` øe `` (Run Length Encoding)
 
-Run length encoding, convert from string to list of characters and amount repeated.
+Run length encoding, convert from string/list to list of items and amount repeated.
 
 ### Overloads
 
 - str a: `run_length_encoded(a)`
 -------------------------------
+## `` øĖ `` (Separated Run Length Encoding)
+
+Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to `øe∩÷`
+
+### Overloads
+
+- str a: `run length encode a and push items and lengths`
+-------------------------------
 ## `` ød `` (Run Length Decoding)
 
-Run length decoding, convert from list of characters and lengths to a string
+Run length decoding, convert from list of characters and lengths to a string/list
 
 ### Overloads
 
 - lst a: `run_length_decoded(a)`
+-------------------------------
+## `` øḊ `` (Dyadic Run Length Decode)
+
+Run length decoding, convert list of characters and list of lengths to a string/list
+
+### Overloads
+
+- lst a, lst b: `run length decode with items a and lengths b`
 -------------------------------
 ## `` øD `` (Dictionary Compression)
 
@@ -3187,6 +3203,14 @@ Are all elements of a list/string unique?
 
 - any a: `all_unique(a)`
 -------------------------------
+## `` Þj `` (Depth)
+
+Depth of ragged list
+
+### Overloads
+
+- lst a: `Depth`
+-------------------------------
 ## `` ÞẊ `` (Cartesian Power)
 
 Cartesian power, cartesian product with self n times
@@ -3237,6 +3261,16 @@ Index a list of coordinates into a value.
 ### Overloads
 
 - lst a, lst b: `a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value`
+-------------------------------
+## `` ÞI `` (All Indices (Multidimensional))
+
+All multidimensional indices of element in list
+
+### Overloads
+
+- lst a, any b: `All indices of b in a`
+- any a, lst b: `All indices of a in b`
+- any a, any b: `All indices of b in a`
 -------------------------------
 ## `` Þḟ `` (Multidimensional Search)
 
@@ -3719,5 +3753,14 @@ Open a dyadic filter lambda - ¨₂...; Receives item and index.
 ## `` ¨₃ `` (Triadic Filter Lambda)
 
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
+
+-------------------------------
+## `` ¨p `` (For Each Overlapping Pair)
+Run element for each overlapping pair. Equivalent to `2lvƒ`
+
+Usage:
+```
+¨p<element>
+```
 
 -------------------------------

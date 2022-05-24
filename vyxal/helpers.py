@@ -120,15 +120,28 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
-def enumerate_md(haystack: VyList, _index_stack: tuple = ()) -> VyList:
-    """Gets all the multi-dimensional indices of haystack"""
+def enumerate_md(
+    haystack: VyList, _index_stack: tuple = (), include_all=False
+) -> VyList:
+    """Enumerate multi-dimensional indices and items of a list.
+
+    Parameters:
+    include_str:
+    Whether nested lists should be included as items too
+    """
     for i, item in enumerate(haystack):
         if type(item) in (list, LazyList):
-            yield from enumerate_md(item, _index_stack + (i,))
+            if include_all:
+                yield (list(_index_stack) + [i], item)
+            yield from enumerate_md(item, _index_stack + (i,), include_all)
         elif type(item) is str and len(item) > 1:
-            yield from enumerate_md(list(item), _index_stack + (i,))
+            if include_all:
+                yield (list(_index_stack) + [i], item)
+            yield from enumerate_md(
+                list(item), _index_stack + (i,), include_all
+            )
         else:
-            yield list(_index_stack) + [i]
+            yield (list(_index_stack) + [i], item)
 
 
 def first_where(
@@ -523,7 +536,7 @@ def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
         def cmp(a, b, ctx=None):
             return a > b
 
-    if not vec:
+    if not len(vec):
         return 0
 
     return foldl(
@@ -560,7 +573,7 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
         def cmp(a, b, ctx=None):
             return a < b
 
-    if not vec:
+    if not len(vec):
         return 0
 
     return foldl(

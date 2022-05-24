@@ -190,6 +190,31 @@ def all_equal(lhs, ctx):
     return 1
 
 
+def all_indices_multidim(lhs, rhs, ctx):
+    """Element ÞI
+    (lst, any) -> All indices of rhs in lhs (multidimensional)
+    (num|str, lst) -> All indices of lhs in rhs (multidimensional)
+    (num|str, num|str) -> All indices of rhs in lhs (multidimensional)
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+
+    if ts == (str, str):
+        return [i for i in range(len(lhs)) if lhs.startswith(rhs, i)]
+
+    if ts[0] != list and ts[1] == list:
+        temp = lhs
+        lhs = iterable(rhs, ctx=ctx)
+        rhs = temp
+
+    @lazylist
+    def gen():
+        for ind, item in enumerate_md(lhs, include_all=True):
+            if non_vectorising_equals(item, rhs, ctx):
+                yield ind
+
+    return gen()
+
+
 def all_less_than_increasing(lhs, rhs, ctx):
     """Element Þ<
     (any, num): All values of a up to (not including) the first greater
@@ -1021,6 +1046,14 @@ def deltas(lhs, ctx):
             prev = item
 
     return gen()
+
+
+def depth(lhs, ctx):
+    """Element Þj
+    (lst) -> depth of a
+    """
+    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    return int(get_depth(lhs))
 
 
 def diagonal(lhs, ctx):
@@ -2754,7 +2787,6 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
-
     if len(lhs) == 0:
         return []
     else:
@@ -2777,12 +2809,9 @@ def multi_dimensional_search(lhs, rhs, ctx):
                   multidimensional index
     """
     lhs = iterable(lhs, ctx=ctx)
-    indexes = enumerate_md(lhs)
 
-    for ind in indexes:
-        if non_vectorising_equals(
-            multi_dimensional_index(lhs, ind, ctx), rhs, ctx
-        ):
+    for ind, item in enumerate_md(lhs):
+        if non_vectorising_equals(item, rhs, ctx):
             return ind
 
     return []
@@ -3847,8 +3876,21 @@ def run_length_decoding(lhs, ctx):
     """Element ød
     (lst) -> Run length decoding
     """
-    temp = list(map(lambda elem: elem[0] * elem[1], lhs))
-    if all(isinstance(x[0], str) for x in lhs):
+    temp = flatten_by(
+        list(
+            map(
+                lambda elem: (
+                    [elem[1]] * elem[0]
+                    if isinstance(elem[1], str)
+                    else [elem[0]] * elem[1]
+                ),
+                lhs,
+            )
+        ),
+        1,
+        ctx=ctx,
+    )
+    if all(isinstance(x, str) for x in temp):
         return "".join(temp)
     else:
         return LazyList(temp)
@@ -5513,6 +5555,23 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
+def dyadic_runl_decode(lhs, rhs, ctx: Context):
+    """Element øḊ
+    (any, any) -> run length decode a with lengths b
+    """
+    return run_length_decoding(vy_zip(lhs, rhs, ctx=ctx), ctx=ctx)
+
+
+def separate_runl_encode(lhs, ctx: Context):
+    """Element øĖ
+    (any) -> run length encode a and push items and lengths both to the stack separately
+    """
+    enc = run_length_encoding(lhs, ctx)
+    items, lengths = transpose(enc)
+    ctx.stacks[-1].append(items)
+    return lengths
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -5889,7 +5948,9 @@ elements: dict[str, tuple[str, int]] = {
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
     "øḋ": process_element("str(float(lhs))", 1),
+    "øḊ": process_element(dyadic_runl_decode, 2),
     "øe": process_element(run_length_encoding, 1),
+    "øĖ": process_element(separate_runl_encode, 1),
     "ø↲": process_element(custom_pad_left, 3),
     "ø↳": process_element(custom_pad_right, 3),
     "øM": process_element(flip_brackets_vertical_palindromise, 1),
@@ -5926,6 +5987,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þx": process_element(all_combos, 1),
     "Þ×": process_element(all_combos_with_replacement, 1),
     "Þu": process_element(all_unique, 1),
+    "Þj": process_element(depth, 1),
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
@@ -5939,6 +6001,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
+    "ÞI": process_element(all_indices_multidim, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
@@ -6179,6 +6242,12 @@ modifiers: dict[str, str] = {
         "rhs, lhs = pop(stack, 2, ctx)\n"
         "zipped = vy_zip(lhs, rhs, ctx)\n"
         "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), zipped)\n"
+        "stack.append(LazyList(mapped))\n"
+    ),
+    "¨p": (
+        "lhs = pop(stack, 1, ctx)\n"
+        "over = overlapping_groups(lhs, 2, ctx)\n"
+        "mapped = map(lambda item, function_A=function_A, ctx=ctx: vy_reduce(function_A, item, ctx), over)\n"
         "stack.append(LazyList(mapped))\n"
     ),
 }

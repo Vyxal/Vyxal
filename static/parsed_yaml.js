@@ -2056,13 +2056,23 @@ lst a -> Center(a) (Pad each item with spaces so all are centered)
 `
 codepage_descriptions[101] += `
 øe (Run Length Encoding)
-Run length encoding, convert from string to list of characters and amount repeated.
+Run length encoding, convert from string/list to list of items and amount repeated.
 str a -> run_length_encoded(a)
+`
+codepage_descriptions[187] += `
+øĖ (Separated Run Length Encoding)
+Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to \`øe∩÷\`
+str a -> run length encode a and push items and lengths
 `
 codepage_descriptions[100] += `
 ød (Run Length Decoding)
-Run length decoding, convert from list of characters and lengths to a string
+Run length decoding, convert from list of characters and lengths to a string/list
 lst a -> run_length_decoded(a)
+`
+codepage_descriptions[186] += `
+øḊ (Dyadic Run Length Decode)
+Run length decoding, convert list of characters and list of lengths to a string/list
+lst a, lst b -> run length decode with items a and lengths b
 `
 codepage_descriptions[68] += `
 øD (Dictionary Compression)
@@ -2215,6 +2225,11 @@ codepage_descriptions[117] += `
 Are all elements of a list/string unique?
 any a -> all_unique(a)
 `
+codepage_descriptions[106] += `
+Þj (Depth)
+Depth of ragged list
+lst a -> Depth
+`
 codepage_descriptions[201] += `
 ÞẊ (Cartesian Power)
 Cartesian power, cartesian product with self n times
@@ -2247,6 +2262,13 @@ codepage_descriptions[105] += `
 Þi (Multidimensional Indexing)
 Index a list of coordinates into a value.
 lst a, lst b -> a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+`
+codepage_descriptions[73] += `
+ÞI (All Indices (Multidimensional))
+All multidimensional indices of element in list
+lst a, any b -> All indices of b in a
+any a, lst b -> All indices of a in b
+any a, any b -> All indices of b in a
 `
 codepage_descriptions[145] += `
 Þḟ (Multidimensional Search)
@@ -2555,4 +2577,8 @@ Open a dyadic filter lambda - ¨₂...; Receives item and index.
 codepage_descriptions[168] += `
 ¨₃ (Triadic Filter Lambda)
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
+`
+codepage_descriptions[112] += `
+¨p (For Each Overlapping Pair)
+Run element for each overlapping pair. Equivalent to \`2lvƒ\`
 `

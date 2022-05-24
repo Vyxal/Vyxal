@@ -1298,6 +1298,7 @@
 - element: "}"
   name: Close While Loop
   description: Close a while loop
+
 - modifier: "~"
   name: Filter / Execute Without Pop
   description: For monads, filter a list by that. For dyads, execute without popping from the stack.
@@ -4155,7 +4156,7 @@
 - element: "øe"
   name: Run Length Encoding
   arity: 1
-  description: Run length encoding, convert from string to list of characters and amount repeated.
+  description: Run length encoding, convert from string/list to list of items and amount repeated.
   overloads:
       str: run_length_encoded(a)
   vectorise: false
@@ -4163,16 +4164,37 @@
       - '["abc"] : [["a",1],["b",1],["c",1]]'
       - '["aaa"] : [["a",3]]'
 
+- element: "øĖ"
+  name: Separated Run Length Encoding
+  arity: 1
+  description: Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to `øe∩÷`
+  overloads:
+      str: run length encode a and push items and lengths
+  vectorise: false
+
 - element: "ød"
   name: Run Length Decoding
   arity: 1
-  description: Run length decoding, convert from list of characters and lengths to a string
+  description: Run length decoding, convert from list of characters and lengths to a string/list
   overloads:
       lst: run_length_decoded(a)
   vectorise: false
   tests:
       - '[[["x",3]]] : "xxx"'
       - '[[["z",2],["a",3]]] : "zzaaa"'
+      - '[[[2,"z"],[3,"a"]]] : "zzaaa"'
+      - '[[[1,2],[2,3],[3,5]]] : [1,1,2,2,2,3,3,3,3,3]'
+
+- element: "øḊ"
+  name: Dyadic Run Length Decode
+  arity: 2
+  description: Run length decoding, convert list of characters and list of lengths to a string/list
+  overloads:
+      lst-lst: run length decode with items a and lengths b
+  vectorise: false
+  tests:
+      - '[["x"], [3]] : "xxx"'
+      - '[["z", "a"], [2, 3]] : "zzaaa"'
 
 - element: "øD"
   name: Dictionary Compression
@@ -4185,7 +4207,7 @@
       - '["withree"] : "`wi∧ḭ`"'
       - '["hello"] : "`ƈṙ`"'
       - '["Vyxal"] : "`₴ŀ`"'
-      - '["abcdef`gh"] : "`ėġḣ²\`gh`"'
+      - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
 
 - element: "øW"
   name: Group on words
@@ -4564,6 +4586,19 @@
       - "[[1,2,3]] : 1"
       - "[[1,1,1]] : 0"
 
+- element: "Þj"
+  name: Depth
+  description: Depth of ragged list
+  arity: 1
+  overloads:
+      lst: Depth
+  vectorise: false
+  tests:
+      - "[[1, 2, 7]] : 1"
+      - "[3] : 0"
+      - "[[1, [2, 3, [4]], [69]]] : 3"
+
+
 - element: "ÞẊ"
   name: Cartesian Power
   description: Cartesian power, cartesian product with self n times
@@ -4630,6 +4665,18 @@
   tests:
       - "[[1,[2,3]],[1,0]] : 2"
       - '[["xyzabc"], [0,4]] : "b"'
+
+- element: "ÞI"
+  name: All Indices (Multidimensional)
+  description: All multidimensional indices of element in list
+  arity: 2
+  overloads:
+      lst-any: All indices of b in a
+      any-lst: All indices of a in b
+      any-any: All indices of b in a
+  vectorise: false
+  tests:
+      - "[[[[3], [3,4], [[3]]], [3]], [3]] : [[0,0], [0,2,0], [1]]"
 
 - element: "Þḟ"
   name: Multidimensional Search
@@ -5251,3 +5298,8 @@
   name: Triadic Filter Lambda
   description: Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
   arity: 3
+
+- modifier: "¨p"
+  name: For Each Overlapping Pair
+  description: Run element for each overlapping pair. Equivalent to `2lvƒ`
+  usage: "¨p<element>"
