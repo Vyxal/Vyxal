@@ -3090,6 +3090,21 @@ def nth_pi(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
+def one_length_range(lhs, ctx):
+    """Element ż
+    (any) -> range(1, len(a) + 1) (Inclusive range from 1 to length of a)
+    """
+
+    @lazylist
+    def gen():
+        count = sympy.nsimplify(1)
+        for item in lhs:
+            yield count
+            count += 1
+
+    return gen()
+
+
 def one_slice(lhs, rhs, ctx):
     """Element Ż
     (any, num) -> a[1:b] (Slice from 1 until b)
@@ -5505,6 +5520,21 @@ def wrap(lhs, rhs, ctx):
             return gen()
 
 
+def zero_length_range(lhs, ctx):
+    """Element ẏ
+    (any) -> range(0, len(a)) (exlcusive range from 0 to length of a)
+    """
+
+    @lazylist
+    def gen():
+        count = sympy.nsimplify(0)
+        for _ in lhs:
+            yield count
+            count += 1
+
+    return gen()
+
+
 def zero_matrix(lhs, ctx):
     """Element Þm
     Return a matrix with dimensions each item of a, where the first is the
@@ -5742,8 +5772,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ẇ": process_element(wrap, 2),
     "ẋ": process_element(repeat, 2),
-    "ẏ": process_element("LazyList(range(0, len(iterable(lhs, ctx))))", 1),
-    "ż": process_element("LazyList(range(1, len(iterable(lhs, ctx)) + 1))", 1),
+    "ẏ": process_element(zero_length_range, 1),
+    "ż": process_element(one_length_range, 1),
     "√": process_element(square_root, 1),
     "₀": process_element("10", 0),
     "₁": process_element("100", 0),
