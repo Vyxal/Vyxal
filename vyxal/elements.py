@@ -5579,7 +5579,7 @@ def mod_pow(lhs, rhs, other, ctx: Context):
     ts = vy_type(lhs, rhs, other, simple=True)
     if list in ts:
         return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
-    return pow(int(lhs), int(rhs), int(other))
+    return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
 
 
 elements: dict[str, tuple[str, int]] = {
