@@ -1876,6 +1876,11 @@ codepage_descriptions[87] += `
 Round a number to n decimal places
 num a, num b -> round(a, no_dec_places=b)
 `
+codepage_descriptions[37] += `
+∆% (Modular Exponentiation)
+Get the modular exponentiation a**b mod c
+any a, any b, any c -> pow(a, b, c)
+`
 codepage_descriptions[192] += `
 ∆Ŀ (Least Common Multiple)
 Get the least common multiple of two numbers

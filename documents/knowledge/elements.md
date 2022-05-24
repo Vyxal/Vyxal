@@ -2659,6 +2659,14 @@ Round a number to n decimal places
 
 - num a, num b: `round(a, no_dec_places=b)`
 -------------------------------
+## `` ∆% `` (Modular Exponentiation)
+
+Get the modular exponentiation a**b mod c
+
+### Overloads
+
+- any a, any b, any c: `pow(a, b, c)`
+-------------------------------
 ## `` ∆Ŀ `` (Least Common Multiple)
 
 Get the least common multiple of two numbers
