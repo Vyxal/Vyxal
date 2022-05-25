@@ -1439,7 +1439,7 @@ def find(lhs, rhs, ctx):
         if vy_type(lhs) is LazyList and lhs.infinite:
             while strict_less_than(
                 lhs[pos], rhs, ctx
-            ) or not non_vectorising_equals(lhs[pos], rhs, ctx):
+            ) or non_vectorising_equals(lhs[pos], rhs, ctx):
                 if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                     return pos
                 pos += 1
