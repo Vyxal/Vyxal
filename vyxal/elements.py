@@ -351,6 +351,10 @@ def apply_at(lhs, rhs, other, ctx):
                        indices are in another list
     """
 
+    if vy_type(lhs) == types.FunctionType:
+        return apply_at(rhs, other, lhs, ctx)
+    if vy_type(rhs) == types.FunctionType:
+        return apply_at(lhs, other, rhs, ctx)
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
@@ -419,7 +423,8 @@ def assign_iterable(lhs, rhs, other, ctx):
         def gen():
             yield from lhs[:rhs]
             yield other
-            yield from lhs[rhs + 1 :]
+            if rhs != -1:
+                yield from lhs[rhs + 1 :]
 
         return gen()
 
@@ -5602,6 +5607,16 @@ def separate_runl_encode(lhs, ctx: Context):
     return lengths
 
 
+def mod_pow(lhs, rhs, other, ctx: Context):
+    """Element ∆%
+    (any, any, any) -> a ** b mod c
+    """
+    ts = vy_type(lhs, rhs, other, simple=True)
+    if list in ts:
+        return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
+    return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -5933,6 +5948,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element(nth_fibonacci, 1),
     "∆±": process_element(copy_sign, 2),
+    "∆%": process_element(mod_pow, 3),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
     "∆E": process_element(expe_minus_1, 1),
