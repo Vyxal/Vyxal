@@ -124,60 +124,60 @@
 124. truthy indices after applying
 125. apply to neighbours
 126. invariant
-127. outer product
-128. 
-129. 
-130. 
-131. 
-132. 
-133. 
-134. 
-135. 
-136. 
-137. 
-138. 
-139. 
-140. 
-141. 
-142. 
-143. 
-144. 
-145. 
-146. 
-147. 
-148. 
-149. 
-150. 
-151. 
-152. 
-153. 
-154. 
-155. 
-156. 
-157. 
-158. 
-159. 
-160. 
-161. 
-162. 
-163. 
-164. 
-165. 
-166. 
-167. 
-168. 
-169. 
-170. 
-171. 
-172. 
-173. 
-174. 
-175. 
-176. 
-177. 
-178. 
-179. 
-180. 
+127. all equal
+128. increments / deltas
+129. join on spaces
+130. vectorised reverse
+131. choose random item
+132. bitwise not
+133. bitwise and
+134. bitwise or
+135. bitwise xor
+136. logical not
+137. logical and 
+138. logical or
+139. sort ascending
+140. sort descending
+141. is prime?
+142. is even?
+143. parity
+144. to string
+145. split string on anything
+146. split string on newlines
+147. split string on spaces
+148. to number
+149. reciprocal
+150. sign of number
+151. sublists
+152. tighten
+153. pair
+154. base conversion
+155. n choose k
+156. n pick k
+157. GCD
+158. LCM
+159. logarithm
+160. integer partitions
+161. partition at truthy indices
+162. cartesian product
+163. cartesian power
+164. split into slices of length
+165. trim
+166. eval as vyxal
+167. find needle in haystack
+168. find all needles in haystack
+169. dyadic zip
+170. absolute value
+171. divides?
+172. index
+173. Order, multiplicity, valuation; how many times is x divisible by y?
+174. append
+175. dot product
+176. shift left
+177. shift right
+178. repeat x times
+179. square root
+180. sequence generation
 181. 
 182. 
 183. 
@@ -260,4 +260,3 @@
 260. 
 261. 
 262. 
-263. 
