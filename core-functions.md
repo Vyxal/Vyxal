@@ -199,33 +199,33 @@
 199. 10 ** n
 200. lift
 201. if 1, push context variable n
-202. 
-203. 
-204. 
-205. 
-206. 
-207. 
-208. 
-209. 
-210. 
-211. 
-212. 
-213. 
-214. 
-215. 
-216. 
-217. 
-218. 
-219. 
-220. 
-221. 
-222. 
-223. 
-224. 
-225. 
-226. 
-227. 
-228. 
+202. ath prime
+203. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...]
+204. vectorised reverse
+205. keep only alphabet
+206. keep only numbers
+207. cartesian product with self
+208. round
+209. sort by length
+210. join on anything
+211. n-dup
+212. uppercase
+213. lowercase
+214. title case
+215. first number where function is truthy
+216. split on function results
+217.  run func on the prev result until the result no longer changes returning all intermediate results
+218. find the index for the first element such that function evaluates as truthy
+219. apply func to the elements in a where the index in b is truthy
+220. zipwith
+221. Key. Map an element over the groups formed by identical items.
+222. Tie. Cycle through a number of (default 2) elements each time called.
+223. Keep items with minimal element value
+224. Keep items with maximal element value
+225. Loop an element. Repeat until the results are no longer unique.
+226. Loop an element. Repeat until the results are no longer unique. Record intermediate results.
+227. Return a Boolean array with 1s at the indices in a list.
+228. vectorised length
 229. 
 230. 
 231. 
