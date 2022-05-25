@@ -3346,7 +3346,9 @@ def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
     """
-    eqn = make_expression(" * ".join(map(lambda x: "(x - " + str(x) + ")", lhs)))
+    eqn = make_expression(
+        " * ".join(map(lambda x: "(x - " + str(x) + ")", lhs))
+    )
     x = sympy.symbols("x")
     return sympy.Poly(eqn, x).coeffs()
 
