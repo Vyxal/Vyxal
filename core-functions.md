@@ -178,27 +178,27 @@
 178. repeat x times
 179. square root
 180. sequence generation
-181. 
-182. 
-183. 
-184. 
-185. 
-186. 
-187. 
-188. 
-189. 
-190. 
-191. 
-192. 
-193. 
-194. 
-195. 
-196. 
-197. 
-198. 
-199. 
-200. 
-201. 
+181. does there exist an item in container such that predicate returns true
+182. rotate stack left
+183. rotate stack right
+184. rotate top three items
+185. 2dup
+186. 2nip
+187. 2drop
+188. dupd
+189. over
+190. pick ( x y z -- x y z x )
+191. swapd ( x y z -- y x z )
+192. is string?
+193. is number?
+194. is list?
+195. is positive?
+196. prime factors
+197. prime factorisation
+198. 2 ** n
+199. 10 ** n
+200. lift
+201. if 1, push context variable n
 202. 
 203. 
 204. 
