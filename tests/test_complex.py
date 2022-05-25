@@ -159,6 +159,7 @@ def test_a_flag_inputs():
     result = ctx.stacks.pop()
     assert result == [3, [3, 4, 5]]
 
+
 def test_lift_infinite_list():
     # I think the tests might hang if this breaks... But other tests do that too so who cares
     stack = run_vyxal("Þ∞ Þż")

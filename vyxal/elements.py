@@ -2459,13 +2459,14 @@ def lift(lhs, ctx):
     """Element Þż
     (any) -> a * 1...a.length
     """
+
     @lazylist
     def gen():
         i = 1
         for item in lhs:
             yield item * i
             i += 1
-    
+
     return gen()
 
 
