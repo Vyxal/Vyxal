@@ -2328,7 +2328,7 @@ def is_prime(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: int(sympy.ntheory.isprime(lhs)),
         str: lambda: case_of(lhs),
-    }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(is_prime, lhs, ctx=ctx))()
 
 
 def is_sorted_ascending(lhs, ctx):
@@ -2362,7 +2362,7 @@ def is_square(lhs, ctx):
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
         str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
-    }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(is_square, lhs, ctx=ctx))()
 
 
 def is_unordered(lhs, ctx):
@@ -5376,7 +5376,7 @@ def vy_round(lhs, ctx):
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
-    }.get(ts, vectorise(vy_round, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(vy_round, lhs, ctx=ctx))()
 
 
 def vy_type(item, rhs=None, other=None, simple=False):
