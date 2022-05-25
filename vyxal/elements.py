@@ -351,6 +351,10 @@ def apply_at(lhs, rhs, other, ctx):
                        indices are in another list
     """
 
+    if vy_type(lhs) == types.FunctionType:
+        return apply_at(rhs, other, lhs, ctx)
+    if vy_type(rhs) == types.FunctionType:
+        return apply_at(lhs, other, rhs, ctx)
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
@@ -419,7 +423,8 @@ def assign_iterable(lhs, rhs, other, ctx):
         def gen():
             yield from lhs[:rhs]
             yield other
-            yield from lhs[rhs + 1 :]
+            if rhs != -1:
+                yield from lhs[rhs + 1 :]
 
         return gen()
 
@@ -2323,7 +2328,7 @@ def is_prime(lhs, ctx):
     return {
         NUMBER_TYPE: lambda: int(sympy.ntheory.isprime(lhs)),
         str: lambda: case_of(lhs),
-    }.get(ts, vectorise(is_prime, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(is_prime, lhs, ctx=ctx))()
 
 
 def is_sorted_ascending(lhs, ctx):
@@ -2357,7 +2362,7 @@ def is_square(lhs, ctx):
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
         str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
-    }.get(ts, vectorise(is_square, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(is_square, lhs, ctx=ctx))()
 
 
 def is_unordered(lhs, ctx):
@@ -2454,7 +2459,15 @@ def lift(lhs, ctx):
     """Element Þż
     (any) -> a * 1...a.length
     """
-    return multiply(lhs, LazyList(range(1, len(lhs) + 1)), ctx=ctx)
+
+    @lazylist
+    def gen():
+        i = 1
+        for item in lhs:
+            yield item * i
+            i += 1
+
+    return gen()
 
 
 def ljust(lhs, rhs, other, ctx):
@@ -3088,6 +3101,21 @@ def nth_pi(lhs, ctx):
         (str): lambda: str(lhs)
         # (str): lambda: str(sympy.integrate(make_expression(lhs))),
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
+
+
+def one_length_range(lhs, ctx):
+    """Element ż
+    (any) -> range(1, len(a) + 1) (Inclusive range from 1 to length of a)
+    """
+
+    @lazylist
+    def gen():
+        count = sympy.nsimplify(1)
+        for item in lhs:
+            yield count
+            count += 1
+
+    return gen()
 
 
 def one_slice(lhs, rhs, ctx):
@@ -5356,7 +5384,7 @@ def vy_round(lhs, ctx):
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
-    }.get(ts, vectorise(vy_round, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(vy_round, lhs, ctx=ctx))()
 
 
 def vy_type(item, rhs=None, other=None, simple=False):
@@ -5505,6 +5533,21 @@ def wrap(lhs, rhs, ctx):
             return gen()
 
 
+def zero_length_range(lhs, ctx):
+    """Element ẏ
+    (any) -> range(0, len(a)) (exlcusive range from 0 to length of a)
+    """
+
+    @lazylist
+    def gen():
+        count = sympy.nsimplify(0)
+        for _ in lhs:
+            yield count
+            count += 1
+
+    return gen()
+
+
 def zero_matrix(lhs, ctx):
     """Element Þm
     Return a matrix with dimensions each item of a, where the first is the
@@ -5570,6 +5613,16 @@ def separate_runl_encode(lhs, ctx: Context):
     items, lengths = transpose(enc)
     ctx.stacks[-1].append(items)
     return lengths
+
+
+def mod_pow(lhs, rhs, other, ctx: Context):
+    """Element ∆%
+    (any, any, any) -> a ** b mod c
+    """
+    ts = vy_type(lhs, rhs, other, simple=True)
+    if list in ts:
+        return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
+    return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
 
 
 elements: dict[str, tuple[str, int]] = {
@@ -5742,8 +5795,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ẇ": process_element(wrap, 2),
     "ẋ": process_element(repeat, 2),
-    "ẏ": process_element("LazyList(range(0, len(iterable(lhs, ctx))))", 1),
-    "ż": process_element("LazyList(range(1, len(iterable(lhs, ctx)) + 1))", 1),
+    "ẏ": process_element(zero_length_range, 1),
+    "ż": process_element(one_length_range, 1),
     "√": process_element(square_root, 1),
     "₀": process_element("10", 0),
     "₁": process_element("100", 0),
@@ -5903,6 +5956,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element(nth_fibonacci, 1),
     "∆±": process_element(copy_sign, 2),
+    "∆%": process_element(mod_pow, 3),
     "∆K": process_element(divisor_sum, 1),
     "∆e": process_element(expe, 1),
     "∆E": process_element(expe_minus_1, 1),
