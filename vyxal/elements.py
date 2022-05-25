@@ -351,6 +351,10 @@ def apply_at(lhs, rhs, other, ctx):
                        indices are in another list
     """
 
+    if vy_type(lhs) == types.FunctionType:
+        return apply_at(rhs, other, lhs, ctx)
+    if vy_type(rhs) == types.FunctionType:
+        return apply_at(lhs, other, rhs, ctx)
     lhs = iterable(lhs, ctx=ctx)
     rhs = wrapify(rhs)
     for pos in rhs:
@@ -419,7 +423,8 @@ def assign_iterable(lhs, rhs, other, ctx):
         def gen():
             yield from lhs[:rhs]
             yield other
-            yield from lhs[rhs + 1 :]
+            if rhs != -1:
+                yield from lhs[rhs + 1 :]
 
         return gen()
 
