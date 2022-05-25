@@ -226,8 +226,8 @@
 226. Loop an element. Repeat until the results are no longer unique. Record intermediate results.
 227. Return a Boolean array with 1s at the indices in a list.
 228. vectorised length
-229. 
-230. 
+229. Shortcut for 2lvƒ (pairwise, vectorise reduce)
+230. Shortcut for ĠvL (group consecutive, vectorised lengths)
 231. 
 232. 
 233. 
