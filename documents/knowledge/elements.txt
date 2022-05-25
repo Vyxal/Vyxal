@@ -2332,6 +2332,13 @@ k• (Qwerty Keyboard)
     num a, num b: round(a, no_dec_places=b)
     otherwise: vectorise
 -------------------------------
+∆% (Modular Exponentiation)
+
+- Get the modular exponentiation a**b mod c
+
+    any a, any b, any c: pow(a, b, c)
+    otherwise: vectorise
+-------------------------------
 ∆Ŀ (Least Common Multiple)
 
 - Get the least common multiple of two numbers
