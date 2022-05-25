@@ -82,7 +82,7 @@
 82. reverse
 83. sum
 84. vectorised sums
-85. Oops we missed one - this line is extra long so people notice
+85. absolute difference
 86. powerset
 87. permutations
 88. mirror
@@ -119,12 +119,12 @@
 119. Truthy indices
 120. Range between two numbers 
 121. Range of length of value
-122. 
-123. 
-124. 
-125. 
-126. 
-127. 
+122. scan fixedpoint
+123. all neighbours
+124. truthy indices after applying
+125. apply to neighbours
+126. invariant
+127. outer product
 128. 
 129. 
 130. 
