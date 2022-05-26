@@ -5465,74 +5465,88 @@ def vy_zip(lhs, rhs, ctx):
 def wrap(lhs, rhs, ctx):
     """Element ẇ
     (any, num) -> a wrapped in chunks of length b
+    (num, any) -> b wrapped in chunks of length a
+    (any, lst) -> Wrap a into chunks with lengths given in b, repeating if necessary
+    (lst, str) -> Wrap b into chunks with lengths given in a, repeating if necessary
     (any, fun) -> Apply b to every second item of a
     (fun, any) -> Apply a to every second item of b
     (str, str) -> split a on first occurance of b
     """
-    # Because textwrap.wrap doesn't consistently play nice with spaces
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
-        function, vector = (
-            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
-        )
+        if ts[0] == types.FunctionType:
+            fun, elem = lhs, rhs
+        else:
+            fun, elem = rhs, lhs
+        @lazylist
+        def gen():
+            apply = False
+            for item in iterable(elem, ctx=ctx):
+                if apply:
+                    yield safe_apply(fun, item, ctx=ctx)
+                else:
+                    yield item
+                apply = not apply
+
+        return gen()
+    elif NUMBER_TYPE in ts:
+        if ts[0] == NUMBER_TYPE:
+            slice, elem = lhs, rhs
+        else:
+            slice, elem = rhs, lhs
 
         @lazylist
         def gen():
-            switch = False
-            for item in vector:
-                if switch:
-                    yield safe_apply(function, item, ctx=ctx)
+            working = []
+            for item in iterable(elem, ctx=ctx):
+                working.append(item)
+                if len(working) == slice:
+                    if vy_type(elem) == str:
+                        yield "".join(working)
+                    else:
+                        yield working
+                    working = []
+            if working:
+                if vy_type(elem) == str:
+                    yield "".join(working)
                 else:
-                    yield item
-                switch = not switch
-
+                    yield working
         return gen()
 
+    elif ts == (str, str):
+        parts = lhs.partition(rhs)[::2]
+        print(parts)
+        if parts[1] == "" and not lhs.endswith(rhs):
+            return [parts[0]]
+        return list(parts)
+
     else:
-        if ts == (str, str):
-            parts = lhs.partition(rhs)[::2]
-            if parts[1] == "":
-                return [parts[0]]
-            return list(parts)
-
+        if ts[1] == LazyList or ts[1] == list:
+            elem, wraps = lhs, rhs
         else:
-            vector, chunk_size = (
-                (iterable(lhs, ctx=ctx), rhs)
-                if ts[1] == NUMBER_TYPE or all(isinstance(x, int) for x in rhs)
-                else (iterable(rhs, ctx=ctx), lhs)
-            )
-            if vy_type(rhs, simple=True) is list:
+            elem, wraps = rhs, lhs
+        print(elem, wraps, ts)
+        @lazylist
+        def gen():
+            working = []
+            lengths = wraps
+            for item in iterable(elem, ctx=ctx):
+                working.append(item)
+                if len(working) == lengths[0]:
+                    if vy_type(elem) == str:
+                        yield "".join(working)
+                    else: 
+                        yield working
+                    working = []
+                    lengths = lengths[1:] + [lengths[0]]
+            if working:
+                if vy_type(elem) == str:
+                    yield "".join(working)
+                else:
+                    yield working
 
-                @LazyList
-                def gen():
-                    slice_start = 0
-                    for pos in rhs:
-                        yield index(
-                            iterable(lhs, ctx=ctx),
-                            [slice_start, slice_start + pos],
-                            ctx,
-                        )
-                        slice_start += pos
-
-                return gen()
-
-            @lazylist
-            def gen():
-                temp = []
-                for item in vector:
-                    temp.append(item)
-                    if len(temp) == chunk_size:
-                        if all(type(x) is str for x in temp):
-                            yield "".join(temp)
-                        else:
-                            yield temp[::]
-                        temp = []
-
-                if len(temp) < chunk_size and temp:
-                    yield temp[::]
-
-            return gen()
-
+        return gen()
+    
 
 def zero_length_range(lhs, ctx):
     """Element ẏ
