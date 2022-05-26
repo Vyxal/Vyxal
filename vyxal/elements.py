@@ -4420,6 +4420,24 @@ def suffixes_element(lhs, ctx):
     return suffixes(lhs, ctx)
 
 
+def surround(lhs, rhs, ctx):
+    """Element ø.
+    (str, str) -> Surround a with b
+    (list, any) -> Surround a with b
+    """
+    # Also works with lists!
+    ts = vy_type(lhs, rhs, simple=True)
+    print(ts)
+    return {
+        (str, str): lambda: rhs + lhs + rhs,
+        (list, list): lambda: rhs + lhs + rhs,
+        (list, NUMBER_TYPE): lambda: [rhs] + list(lhs) + [rhs],
+        (list, str): lambda: [rhs] + list(lhs) + [rhs],
+        (str, list): lambda: [lhs] + list(rhs) + [lhs],
+        (NUMBER_TYPE, list): lambda: [lhs] + list(rhs) + [lhs]
+    }.get(ts)()
+
+
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -6033,6 +6051,7 @@ elements: dict[str, tuple[str, int]] = {
     "øR": process_element(strip_whitespace_right, 1),
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
+    "ø.": process_element(surround, 2),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
