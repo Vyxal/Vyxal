@@ -3415,6 +3415,19 @@ def prev_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
 
 
+def prime_exponents(lhs, ctx):
+    """Element ∆ǐ
+    (num) -> prime exponents of a
+    (str) -> factorise expression
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            value for key, value in sympy.factorint(int(lhs)).items()
+        ],
+    }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
+
+
 def prime_factors(lhs, ctx):
     """Element ǐ
     (num) -> prime_factors(a) (with duplicates)
@@ -5999,6 +6012,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆¢": process_element(carmichael_function, 1),
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
+    "∆ǐ": process_element(prime_exponents, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

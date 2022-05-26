@@ -1981,6 +1981,11 @@ Decrement a until b(a) is false (deprecated, use \`<\` instead)
 any a, fun b -> while b(a): a -= 1
 fun a, any b -> while a(b): b -= 1
 `
+codepage_descriptions[240] += `
+∆ǐ (Prime Exponents)
+Get the exponents of prime factors of a number
+num a -> prime_exponents(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string

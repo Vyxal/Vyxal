@@ -3990,6 +3990,20 @@
       fun-any: "while a(b): b -= 1"
   vectorise: false
 
+- element: "∆ǐ"
+  name: Prime Exponents
+  arity: 1
+  description: Get the exponents of prime factors of a number
+  overloads:
+      num: prime_exponents(a)
+  vectorise: true
+  tests:
+      - "[20] : [2, 1]"
+      - "[12] : [2, 1]"
+      - "[8] : [3]"
+      - "[6] : [1, 1]"
+      - "[4] : [2]"
+
 - element: "øb"
   name: Parenthesise
   arity: 1
