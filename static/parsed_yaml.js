@@ -2162,6 +2162,11 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 num a -> to_roman_numeral(a)
 str a -> from_roman_numeral(a)
 `
+codepage_descriptions[74] += `
+øJ (Parse JSON)
+Parse a JSON string into a Vyxal object
+str a -> json.loads(a)
+`
 codepage_descriptions[188] += `
 øḞ (Replace First Occurrence)
 Replace the first instance of an item with another item

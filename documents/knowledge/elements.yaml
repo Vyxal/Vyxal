@@ -4448,6 +4448,17 @@
       - '["MM"] : 2000'
       - '["MMM"] : 3000'
 
+- element: "øJ"
+  name: Parse JSON
+  description: Parse a JSON string into a Vyxal object
+  arity: 1
+  overloads:
+      str: json.loads(a)
+  vectorise: false
+  tests:
+      - '["[1, 2, 3]"] : [1, 2, 3]'
+      - '["{\"a\": 1, \"b\": 2}"] : ["a", "b"]'
+
 - element: "øḞ"
   name: Replace First Occurrence
   description: Replace the first instance of an item with another item

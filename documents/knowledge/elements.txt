@@ -2699,6 +2699,12 @@ k• (Qwerty Keyboard)
     str a: from_roman_numeral(a)
     otherwise: vectorise
 -------------------------------
+øJ (Parse JSON)
+
+- Parse a JSON string into a Vyxal object
+
+    str a: json.loads(a)
+-------------------------------
 øḞ (Replace First Occurrence)
 
 - Replace the first instance of an item with another item
