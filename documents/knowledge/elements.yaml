@@ -1127,11 +1127,13 @@
   arity: 2
   overloads:
       any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
+      num-any: n-wise_group(b,a) ( Overlapping groups of b of length a)
       any-any: length(a) == length(b)
   vectorise: false
   tests:
       - '["hello",3] : ["hel","ell","llo"]'
       - '["cake",2] : ["ca","ak","ke"]'
+      - '[2, "cake"] : ["ca","ak","ke"]'
       - '["cheese","cake"] : 0'
       - '["cheese","salads"] : 1'
 

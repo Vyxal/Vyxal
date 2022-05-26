@@ -597,6 +597,7 @@ Used for constant digraphs.
 codepage_descriptions.push(`Cumulative Groups
 Cumulative grouping / equal length
 any a, num b -> n-wise_group(a,b) ( Overlapping groups of a of length b)
+num a, any b -> n-wise_group(b,a) ( Overlapping groups of b of length a)
 any a, any b -> length(a) == length(b)
 `)
 

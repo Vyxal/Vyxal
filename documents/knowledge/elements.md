@@ -837,6 +837,7 @@ Cumulative grouping / equal length
 ### Overloads
 
 - any a, num b: `n-wise_group(a,b) ( Overlapping groups of a of length b)`
+- num a, any b: `n-wise_group(b,a) ( Overlapping groups of b of length a)`
 - any a, any b: `length(a) == length(b)`
 -------------------------------
 ## `` m `` (Mirror)
