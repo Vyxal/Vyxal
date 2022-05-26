@@ -3099,6 +3099,14 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 - num a: `to_roman_numeral(a)`
 - str a: `from_roman_numeral(a)`
 -------------------------------
+## `` øJ `` (Parse JSON)
+
+Parse a JSON string into a Vyxal object
+
+### Overloads
+
+- str a: `json.loads(a)`
+-------------------------------
 ## `` øḞ `` (Replace First Occurrence)
 
 Replace the first instance of an item with another item
