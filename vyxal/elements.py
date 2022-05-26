@@ -78,7 +78,9 @@ def absolute_difference(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: abs(lhs - rhs),
         (NUMBER_TYPE, str): lambda: [rhs] * lhs,
         (str, NUMBER_TYPE): lambda: [lhs] * rhs,
-        (str, str): lambda: re.match(rhs, lhs) and re.match(rhs, lhs).group() or "",
+        (str, str): lambda: re.match(rhs, lhs)
+        and re.match(rhs, lhs).group()
+        or "",
     }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
 
 
