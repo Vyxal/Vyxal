@@ -1986,6 +1986,11 @@ Decrement a until b(a) is false (deprecated, use \`<\` instead)
 any a, fun b -> while b(a): a -= 1
 fun a, any b -> while a(b): b -= 1
 `
+codepage_descriptions[240] += `
+∆ǐ (Prime Exponents)
+Get the exponents of prime factors of a number
+num a -> prime_exponents(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
@@ -2161,6 +2166,11 @@ codepage_descriptions[197] += `
 Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
 num a -> to_roman_numeral(a)
 str a -> from_roman_numeral(a)
+`
+codepage_descriptions[74] += `
+øJ (Parse JSON)
+Parse a JSON string into a Vyxal object
+str a -> json.loads(a)
 `
 codepage_descriptions[188] += `
 øḞ (Replace First Occurrence)
