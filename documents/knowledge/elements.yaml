@@ -4569,6 +4569,20 @@
       - '["dddd", "d"] : ""'
       - "[[3, 3, 1, 2, 3, 3, 3], [3]] : [3, 3, 1, 2]"
 
+- element: "ø."
+  name: Surround
+  description: Surround a value with another
+  arity: 2
+  overloads:
+      str-str: a.surround(b)
+      lst-any: a.surround(b)
+      any-lst: b.surround(a)
+  vectorise: true
+  tests:
+    - '["abc", "*"] : "*abc*"'
+    - "[[1, 2, 3], 4] : [4, 1, 2, 3, 4]"
+    - "[4, [1, 2, 3]] : [4, 1, 2, 3, 4]"
+
 - element: "Þ*"
   name: Cartesian product over list
   description: Cartesian product over a list of lists
