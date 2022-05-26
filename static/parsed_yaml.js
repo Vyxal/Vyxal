@@ -982,10 +982,12 @@ Transpose (filling with spaces) and then join on newlines
 any a -> Transpose a, join on newlines
 `)
 
-codepage_descriptions.push(`Absolute Difference / Padded Vertical Join
-Returns the aboslute different (|a - b|) or vertically joins using padding
+codepage_descriptions.push(`Absolute Difference / Repeat / Regex match
+Returns the aboslute difference / Fills an array of a certain length / Does a regex match
 num a, num b -> abs(a - b)
-any a, str b -> Transpose a (filling with b), join on newlines
+num a, str b -> [b] * a
+str a, num b -> [a] * b
+str a, str b -> Do a regex match of b on a
 `)
 
 codepage_descriptions.push(`Factorial
