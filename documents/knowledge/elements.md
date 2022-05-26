@@ -3156,6 +3156,16 @@ Strip from the right side of a string
 
 - str a: `a.rstrip(b)`
 -------------------------------
+## `` ø. `` (Surround)
+
+Surround a value with another
+
+### Overloads
+
+- str a, str b: `a.surround(b)`
+- lst a, any b: `a.surround(b)`
+- any a, lst b: `b.surround(a)`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists

@@ -2193,6 +2193,13 @@ codepage_descriptions[114] += `
 Strip from the right side of a string
 str a -> a.rstrip(b)
 `
+codepage_descriptions[46] += `
+ø. (Surround)
+Surround a value with another
+str a, str b -> a.surround(b)
+lst a, any b -> a.surround(b)
+any a, lst b -> b.surround(a)
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists

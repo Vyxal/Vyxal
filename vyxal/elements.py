@@ -4434,7 +4434,7 @@ def surround(lhs, rhs, ctx):
         (list, NUMBER_TYPE): lambda: [rhs] + list(lhs) + [rhs],
         (list, str): lambda: [rhs] + list(lhs) + [rhs],
         (str, list): lambda: [lhs] + list(rhs) + [lhs],
-        (NUMBER_TYPE, list): lambda: [lhs] + list(rhs) + [lhs]
+        (NUMBER_TYPE, list): lambda: [lhs] + list(rhs) + [lhs],
     }.get(ts)()
 
 
