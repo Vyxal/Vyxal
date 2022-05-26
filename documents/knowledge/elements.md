@@ -837,6 +837,7 @@ Cumulative grouping / equal length
 ### Overloads
 
 - any a, num b: `n-wise_group(a,b) ( Overlapping groups of a of length b)`
+- num a, any b: `n-wise_group(b,a) ( Overlapping groups of b of length a)`
 - any a, any b: `length(a) == length(b)`
 -------------------------------
 ## `` m `` (Mirror)
@@ -2824,6 +2825,14 @@ Decrement a until b(a) is false (deprecated, use `<` instead)
 - any a, fun b: `while b(a): a -= 1`
 - fun a, any b: `while a(b): b -= 1`
 -------------------------------
+## `` ∆ǐ `` (Prime Exponents)
+
+Get the exponents of prime factors of a number
+
+### Overloads
+
+- num a: `prime_exponents(a)`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
@@ -3101,6 +3110,14 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 
 - num a: `to_roman_numeral(a)`
 - str a: `from_roman_numeral(a)`
+-------------------------------
+## `` øJ `` (Parse JSON)
+
+Parse a JSON string into a Vyxal object
+
+### Overloads
+
+- str a: `json.loads(a)`
 -------------------------------
 ## `` øḞ `` (Replace First Occurrence)
 

@@ -1127,11 +1127,13 @@
   arity: 2
   overloads:
       any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
+      num-any: n-wise_group(b,a) ( Overlapping groups of b of length a)
       any-any: length(a) == length(b)
   vectorise: false
   tests:
       - '["hello",3] : ["hel","ell","llo"]'
       - '["cake",2] : ["ca","ak","ke"]'
+      - '[2, "cake"] : ["ca","ak","ke"]'
       - '["cheese","cake"] : 0'
       - '["cheese","salads"] : 1'
 
@@ -4001,6 +4003,20 @@
       fun-any: "while a(b): b -= 1"
   vectorise: false
 
+- element: "∆ǐ"
+  name: Prime Exponents
+  arity: 1
+  description: Get the exponents of prime factors of a number
+  overloads:
+      num: prime_exponents(a)
+  vectorise: true
+  tests:
+      - "[20] : [2, 1]"
+      - "[12] : [2, 1]"
+      - "[8] : [3]"
+      - "[6] : [1, 1]"
+      - "[4] : [2]"
+
 - element: "øb"
   name: Parenthesise
   arity: 1
@@ -4444,6 +4460,17 @@
       - '["M"] : 1000'
       - '["MM"] : 2000'
       - '["MMM"] : 3000'
+
+- element: "øJ"
+  name: Parse JSON
+  description: Parse a JSON string into a Vyxal object
+  arity: 1
+  overloads:
+      str: json.loads(a)
+  vectorise: false
+  tests:
+      - '["[1, 2, 3]"] : [1, 2, 3]'
+      - '["{\"a\": 1, \"b\": 2}"] : ["a", "b"]'
 
 - element: "øḞ"
   name: Replace First Occurrence
