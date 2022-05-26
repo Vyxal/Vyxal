@@ -837,6 +837,7 @@ Cumulative grouping / equal length
 ### Overloads
 
 - any a, num b: `n-wise_group(a,b) ( Overlapping groups of a of length b)`
+- num a, any b: `n-wise_group(b,a) ( Overlapping groups of b of length a)`
 - any a, any b: `length(a) == length(b)`
 -------------------------------
 ## `` m `` (Mirror)
@@ -1255,6 +1256,9 @@ Wrap a list in chunks of a certain length / apply a function to every second ite
 ### Overloads
 
 - any a, num b: `a wrapped in chunks of length b`
+- num a, any b: `b wrapped in chunks of length a`
+- any a, lst b: `Wrap a into chunks with lengths given in b, repeating if necessary`
+- lst a, str b: `Wrap b into chunks with lengths given in a, repeating if necessary`
 - any a, fun b: `Apply b to every second item of a`
 - fun a, any b: `Apply a to every second item of b`
 - str a, str b: `split a on first occurance of b`
@@ -1390,14 +1394,16 @@ Transpose (filling with spaces) and then join on newlines
 
 - any a: `Transpose a, join on newlines`
 -------------------------------
-## `` ε `` (Absolute Difference / Padded Vertical Join)
+## `` ε `` (Absolute Difference / Repeat / Regex match)
 
-Returns the aboslute different (|a - b|) or vertically joins using padding
+Returns the aboslute difference / Fills an array of a certain length / Does a regex match
 
 ### Overloads
 
 - num a, num b: `abs(a - b)`
-- any a, str b: `Transpose a (filling with b), join on newlines`
+- num a, str b: `[b] * a`
+- str a, num b: `[a] * b`
+- str a, str b: `Do a regex match of b on a`
 -------------------------------
 ## `` ¡ `` (Factorial)
 
@@ -2821,6 +2827,14 @@ Decrement a until b(a) is false (deprecated, use `<` instead)
 - any a, fun b: `while b(a): a -= 1`
 - fun a, any b: `while a(b): b -= 1`
 -------------------------------
+## `` ∆ǐ `` (Prime Exponents)
+
+Get the exponents of prime factors of a number
+
+### Overloads
+
+- num a: `prime_exponents(a)`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
@@ -3099,6 +3113,14 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 - num a: `to_roman_numeral(a)`
 - str a: `from_roman_numeral(a)`
 -------------------------------
+## `` øJ `` (Parse JSON)
+
+Parse a JSON string into a Vyxal object
+
+### Overloads
+
+- str a: `json.loads(a)`
+-------------------------------
 ## `` øḞ `` (Replace First Occurrence)
 
 Replace the first instance of an item with another item
@@ -3155,6 +3177,16 @@ Strip from the right side of a string
 ### Overloads
 
 - str a: `a.rstrip(b)`
+-------------------------------
+## `` ø. `` (Surround)
+
+Surround a value with another
+
+### Overloads
+
+- str a, str b: `a.surround(b)`
+- lst a, any b: `a.surround(b)`
+- any a, lst b: `b.surround(a)`
 -------------------------------
 ## `` Þ* `` (Cartesian product over list)
 

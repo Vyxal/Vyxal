@@ -597,6 +597,7 @@ Used for constant digraphs.
 codepage_descriptions.push(`Cumulative Groups
 Cumulative grouping / equal length
 any a, num b -> n-wise_group(a,b) ( Overlapping groups of a of length b)
+num a, any b -> n-wise_group(b,a) ( Overlapping groups of b of length a)
 any a, any b -> length(a) == length(b)
 `)
 
@@ -879,6 +880,9 @@ any a -> a[:-1],a[-1]
 codepage_descriptions.push(`Chunk Wrap
 Wrap a list in chunks of a certain length / apply a function to every second item of a list
 any a, num b -> a wrapped in chunks of length b
+num a, any b -> b wrapped in chunks of length a
+any a, lst b -> Wrap a into chunks with lengths given in b, repeating if necessary
+lst a, str b -> Wrap b into chunks with lengths given in a, repeating if necessary
 any a, fun b -> Apply b to every second item of a
 fun a, any b -> Apply a to every second item of b
 str a, str b -> split a on first occurance of b
@@ -978,10 +982,12 @@ Transpose (filling with spaces) and then join on newlines
 any a -> Transpose a, join on newlines
 `)
 
-codepage_descriptions.push(`Absolute Difference / Padded Vertical Join
-Returns the aboslute different (|a - b|) or vertically joins using padding
+codepage_descriptions.push(`Absolute Difference / Repeat / Regex match
+Returns the aboslute difference / Fills an array of a certain length / Does a regex match
 num a, num b -> abs(a - b)
-any a, str b -> Transpose a (filling with b), join on newlines
+num a, str b -> [b] * a
+str a, num b -> [a] * b
+str a, str b -> Do a regex match of b on a
 `)
 
 codepage_descriptions.push(`Factorial
@@ -1981,6 +1987,11 @@ Decrement a until b(a) is false (deprecated, use \`<\` instead)
 any a, fun b -> while b(a): a -= 1
 fun a, any b -> while a(b): b -= 1
 `
+codepage_descriptions[240] += `
+∆ǐ (Prime Exponents)
+Get the exponents of prime factors of a number
+num a -> prime_exponents(a)
+`
 codepage_descriptions[98] += `
 øb (Parenthesise)
 Parenthesise a string
@@ -2157,6 +2168,11 @@ Convert a decimal to its roman numeral representation / Convert a roman numeral 
 num a -> to_roman_numeral(a)
 str a -> from_roman_numeral(a)
 `
+codepage_descriptions[74] += `
+øJ (Parse JSON)
+Parse a JSON string into a Vyxal object
+str a -> json.loads(a)
+`
 codepage_descriptions[188] += `
 øḞ (Replace First Occurrence)
 Replace the first instance of an item with another item
@@ -2192,6 +2208,13 @@ codepage_descriptions[114] += `
 ør (Strip from the right side)
 Strip from the right side of a string
 str a -> a.rstrip(b)
+`
+codepage_descriptions[46] += `
+ø. (Surround)
+Surround a value with another
+str a, str b -> a.surround(b)
+lst a, any b -> a.surround(b)
+any a, lst b -> b.surround(a)
 `
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)

@@ -13,6 +13,7 @@ import string
 import sys
 import types
 import urllib
+import json
 from datetime import datetime
 from typing import Callable, Union
 
@@ -69,13 +70,19 @@ def process_element(
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
     (num, num) -> abs(a - b)
-    (any, str) -> Transpose a (filling with b), join on newlines
+    (num, str) -> Array of length a filled with b
+    (str, num) -> Array of length b filled with a
+    (str, str) -> single regex match of b against a
     """
     ts = vy_type(lhs, rhs)
-    if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        return abs(lhs - rhs)
-    else:
-        return vertical_join(lhs, rhs, ctx)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: abs(lhs - rhs),
+        (NUMBER_TYPE, str): lambda: [rhs] * lhs,
+        (str, NUMBER_TYPE): lambda: [lhs] * rhs,
+        (str, str): lambda: re.match(rhs, lhs)
+        and re.match(rhs, lhs).group()
+        or "",
+    }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
 
 
 def add(lhs, rhs, ctx):
@@ -1439,7 +1446,7 @@ def find(lhs, rhs, ctx):
         if vy_type(lhs) is LazyList and lhs.infinite:
             while strict_less_than(
                 lhs[pos], rhs, ctx
-            ) or not non_vectorising_equals(lhs[pos], rhs, ctx):
+            ) or non_vectorising_equals(lhs[pos], rhs, ctx):
                 if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                     return pos
                 pos += 1
@@ -1542,25 +1549,6 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
     return "\n".join(result)
-
-
-def vertical_palindromise_center_join(lhs, ctx):
-    """Element øṗ
-    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
-    """
-    return join_newlines(
-        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
-        ctx=ctx,
-    )
-
-
-def vertical_mirror_center_join(lhs, ctx):
-    """Element øm
-    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
-    """
-    return join_newlines(
-        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
-    )
 
 
 def foldl_columns(lhs, rhs, ctx):
@@ -2396,6 +2384,13 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+def json_parse(lhs, ctx):
+    """Element øJ
+    (str) -> json.loads(a)
+    """
+    return vyxalify(json.loads(lhs))
+
+
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -3205,8 +3200,11 @@ def overlapping_groups(lhs, rhs, ctx):
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
     """
-    if vy_type(rhs) != NUMBER_TYPE:
+    if NUMBER_TYPE not in vy_type(lhs, rhs):
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
+
+    if vy_type(lhs) == NUMBER_TYPE:
+        lhs, rhs = rhs, lhs
 
     stringify = vy_type(lhs) is str
 
@@ -3346,6 +3344,7 @@ def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
     """
+    assert all(vy_type(x) == NUMBER_TYPE for x in lhs)
     eqn = " * ".join(map(lambda x: "(x - " + str(x) + ")", lhs))
     x = sympy.symbols("x")
     return sympy.Poly(eqn, x).coeffs()
@@ -3404,6 +3403,19 @@ def prev_prime(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.prevprime(int(lhs)) if lhs >= 3 else 1,
         str: lambda: str(sympy.factor(make_expression(lhs))),
     }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
+
+
+def prime_exponents(lhs, ctx):
+    """Element ∆ǐ
+    (num) -> prime exponents of a
+    (str) -> factorise expression
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            value for key, value in sympy.factorint(int(lhs)).items()
+        ],
+    }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
 def prime_factors(lhs, ctx):
@@ -4419,6 +4431,24 @@ def suffixes_element(lhs, ctx):
     return suffixes(lhs, ctx)
 
 
+def surround(lhs, rhs, ctx):
+    """Element ø.
+    (str, str) -> Surround a with b
+    (list, any) -> Surround a with b
+    """
+    # Also works with lists!
+    ts = vy_type(lhs, rhs, simple=True)
+    print(ts)
+    return {
+        (str, str): lambda: rhs + lhs + rhs,
+        (list, list): lambda: rhs + lhs + rhs,
+        (list, NUMBER_TYPE): lambda: [rhs] + list(lhs) + [rhs],
+        (list, str): lambda: [rhs] + list(lhs) + [rhs],
+        (str, list): lambda: [lhs] + list(rhs) + [lhs],
+        (NUMBER_TYPE, list): lambda: [lhs] + list(rhs) + [lhs],
+    }.get(ts)()
+
+
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -4516,7 +4546,7 @@ def to_degrees(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (180 / sympy.pi),
-        str: lambda: sympy.N(lhs) * (180 / sympy.pi),
+        str: lambda: int(lhs) * (180 / sympy.pi),
     }.get(ts, lambda: vectorise(to_degrees, lhs, ctx=ctx))()
 
 
@@ -4527,7 +4557,7 @@ def to_radians(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
-        str: lambda: sympy.N(lhs) * (sympy.pi / 180),
+        str: lambda: int(lhs) * (sympy.pi / 180),
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
 
 
@@ -4968,6 +4998,13 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     return join(temp, "\n", ctx)
 
 
+def vertical_join_with_filler(lhs, rhs, ctx):
+    """Element øε
+    (lst, any) -> Vertical join of lhs with rhs, with filler
+    """
+    return vertical_join(lhs, rhs, ctx)
+
+
 def vertical_mirror(lhs, rhs=None, ctx=None):
     """Element øṁ and øṀ"""
     if type(lhs) is str:
@@ -4983,6 +5020,25 @@ def vertical_mirror(lhs, rhs=None, ctx=None):
         return mirror(lhs, ctx=ctx)
     else:
         return vectorise(vertical_mirror, lhs, rhs, ctx=ctx)
+
+
+def vertical_mirror_center_join(lhs, ctx):
+    """Element øm
+    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
+    )
+
+
+def vertical_palindromise_center_join(lhs, ctx):
+    """Element øṗ
+    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
+        ctx=ctx,
+    )
 
 
 def vy_abs(lhs, ctx):
@@ -5464,73 +5520,90 @@ def vy_zip(lhs, rhs, ctx):
 def wrap(lhs, rhs, ctx):
     """Element ẇ
     (any, num) -> a wrapped in chunks of length b
+    (num, any) -> b wrapped in chunks of length a
+    (any, lst) -> Wrap a into chunks with lengths given in b, repeating if necessary
+    (lst, str) -> Wrap b into chunks with lengths given in a, repeating if necessary
     (any, fun) -> Apply b to every second item of a
     (fun, any) -> Apply a to every second item of b
     (str, str) -> split a on first occurance of b
     """
-    # Because textwrap.wrap doesn't consistently play nice with spaces
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
-        function, vector = (
-            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
-        )
+        if ts[0] == types.FunctionType:
+            fun, elem = lhs, rhs
+        else:
+            fun, elem = rhs, lhs
 
         @lazylist
         def gen():
-            switch = False
-            for item in vector:
-                if switch:
-                    yield safe_apply(function, item, ctx=ctx)
+            apply = False
+            for item in iterable(elem, ctx=ctx):
+                if apply:
+                    yield safe_apply(fun, item, ctx=ctx)
                 else:
                     yield item
-                switch = not switch
+                apply = not apply
+
+        return gen()
+    elif NUMBER_TYPE in ts:
+        if ts[0] == NUMBER_TYPE:
+            slice, elem = lhs, rhs
+        else:
+            slice, elem = rhs, lhs
+
+        @lazylist
+        def gen():
+            working = []
+            for item in iterable(elem, ctx=ctx):
+                working.append(item)
+                if len(working) == slice:
+                    if vy_type(elem) == str:
+                        yield "".join(working)
+                    else:
+                        yield working
+                    working = []
+            if working:
+                if vy_type(elem) == str:
+                    yield "".join(working)
+                else:
+                    yield working
 
         return gen()
 
+    elif ts == (str, str):
+        parts = lhs.partition(rhs)[::2]
+        print(parts)
+        if parts[1] == "" and not lhs.endswith(rhs):
+            return [parts[0]]
+        return list(parts)
+
     else:
-        if ts == (str, str):
-            parts = lhs.partition(rhs)[::2]
-            if parts[1] == "":
-                return [parts[0]]
-            return list(parts)
-
+        if ts[1] == LazyList or ts[1] == list:
+            elem, wraps = lhs, rhs
         else:
-            vector, chunk_size = (
-                (iterable(lhs, ctx=ctx), rhs)
-                if ts[1] == NUMBER_TYPE or all(isinstance(x, int) for x in rhs)
-                else (iterable(rhs, ctx=ctx), lhs)
-            )
-            if vy_type(rhs, simple=True) is list:
+            elem, wraps = rhs, lhs
+        print(elem, wraps, ts)
 
-                @LazyList
-                def gen():
-                    slice_start = 0
-                    for pos in rhs:
-                        yield index(
-                            iterable(lhs, ctx=ctx),
-                            [slice_start, slice_start + pos],
-                            ctx,
-                        )
-                        slice_start += pos
+        @lazylist
+        def gen():
+            working = []
+            lengths = wraps
+            for item in iterable(elem, ctx=ctx):
+                working.append(item)
+                if len(working) == lengths[0]:
+                    if vy_type(elem) == str:
+                        yield "".join(working)
+                    else:
+                        yield working
+                    working = []
+                    lengths = lengths[1:] + [lengths[0]]
+            if working:
+                if vy_type(elem) == str:
+                    yield "".join(working)
+                else:
+                    yield working
 
-                return gen()
-
-            @lazylist
-            def gen():
-                temp = []
-                for item in vector:
-                    temp.append(item)
-                    if len(temp) == chunk_size:
-                        if all(type(x) is str for x in temp):
-                            yield "".join(temp)
-                        else:
-                            yield temp[::]
-                        temp = []
-
-                if len(temp) < chunk_size and temp:
-                    yield temp[::]
-
-            return gen()
+        return gen()
 
 
 def zero_length_range(lhs, ctx):
@@ -5990,6 +6063,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆¢": process_element(carmichael_function, 1),
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
+    "∆ǐ": process_element(prime_exponents, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -6023,6 +6097,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øJ": process_element(json_parse, 1),
     "øṄ": process_element(replace_nth_occurrence, 4),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
@@ -6032,6 +6107,8 @@ elements: dict[str, tuple[str, int]] = {
     "øR": process_element(strip_whitespace_right, 1),
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
+    "øε": process_element(vertical_join_with_filler, 2),
+    "ø.": process_element(surround, 2),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),

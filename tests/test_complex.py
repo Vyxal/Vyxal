@@ -574,3 +574,8 @@ def test_infinite_length_range():
 
     stack = run_vyxal("Þ∞ ẏ")
     assert stack[-1][:10] == [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+
+def test_find_infinite_list():
+    stack = run_vyxal("ÞF 34 ḟ")
+    assert stack[-1] == 8

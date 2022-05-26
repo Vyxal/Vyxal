@@ -472,7 +472,7 @@ def levenshtein_distance(s1: str, s2: str) -> int:
 def local_minima(lhs: str) -> List[Union[int, float]]:
     """Find the local minima of a mathematical function using Sympy"""
     x = sympy.symbols("x")
-    d_dx = sympy.diff(lhs, x)
+    d_dx = sympy.diff(make_expression(lhs), x)
     second_dx = sympy.diff(d_dx, x)
     zeros = sympy.solve(d_dx, x)
 
