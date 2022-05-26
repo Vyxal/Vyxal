@@ -3213,8 +3213,11 @@ def overlapping_groups(lhs, rhs, ctx):
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
     """
-    if vy_type(rhs) != NUMBER_TYPE:
+    if NUMBER_TYPE not in vy_type(lhs, rhs):
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
+
+    if vy_type(lhs) == NUMBER_TYPE:
+        lhs, rhs = rhs, lhs
 
     stringify = vy_type(lhs) is str
 
@@ -3413,6 +3416,19 @@ def prev_prime(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.prevprime(int(lhs)) if lhs >= 3 else 1,
         str: lambda: str(sympy.factor(make_expression(lhs))),
     }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
+
+
+def prime_exponents(lhs, ctx):
+    """Element ∆ǐ
+    (num) -> prime exponents of a
+    (str) -> factorise expression
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: [
+            value for key, value in sympy.factorint(int(lhs)).items()
+        ],
+    }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
 def prime_factors(lhs, ctx):
@@ -6017,6 +6033,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆¢": process_element(carmichael_function, 1),
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
+    "∆ǐ": process_element(prime_exponents, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
