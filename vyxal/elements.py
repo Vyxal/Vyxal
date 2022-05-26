@@ -13,6 +13,7 @@ import string
 import sys
 import types
 import urllib
+import json
 from datetime import datetime
 from typing import Callable, Union
 
@@ -2394,6 +2395,13 @@ def join_newlines(lhs, ctx):
         else:
             ret.append(str(n))
     return "\n".join(ret)
+
+
+def json_parse(lhs, ctx):
+    """Element øJ
+    (str) -> json.loads(a)
+    """
+    return vyxalify(json.loads(lhs))
 
 
 def left_bit_shift(lhs, rhs, ctx):
@@ -6042,6 +6050,7 @@ elements: dict[str, tuple[str, int]] = {
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
+    "øJ": process_element(json_parse, 1),
     "øṄ": process_element(replace_nth_occurrence, 4),
     "øṘ": process_element(roman_numeral, 1),
     "ø⟇": process_element(codepage_digraph, 1),
