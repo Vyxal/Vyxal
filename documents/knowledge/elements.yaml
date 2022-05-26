@@ -1693,6 +1693,9 @@
   arity: 2
   overloads:
       any-num: a wrapped in chunks of length b
+      num-any: b wrapped in chunks of length a
+      any-lst: Wrap a into chunks with lengths given in b, repeating if necessary
+      lst-str: Wrap b into chunks with lengths given in a, repeating if necessary
       any-fun: Apply b to every second item of a
       fun-any: Apply a to every second item of b
       str-str: split a on first occurance of b
@@ -1702,6 +1705,14 @@
       - "[[1,2,3,4,5,6],3] : [[1,2,3],[4,5,6]]"
       - '["abcdefghi",[2,3,4]] : ["ab","cde","fghi"]'
       - "[[1,2,3,4,5], [2,3] ] : [[1,2],[3,4,5]]"
+      - "[[1,2,3,4,5], [2,3,4] ] : [[1,2],[3,4,5]]"
+      - "[[1,2,3,4,5, 6, 7, 8, 9, 10], [2,3] ] : [[1,2],[3,4,5],[6,7],[8,9,10]]"
+      - '[["abc","def","ghi", "jkl"], 2] : [["abc","def"],["ghi","jkl"]]'
+      - '[["abc","def","ghi", "jkl"], [2,3]] : [["abc","def"],["ghi","jkl"]]'
+      - '["abcdefg",2] : ["ab","cd","ef","g"]'
+      - '["abca", "a"] : ["","bca"]'
+      - '["defg", "g"] : ["def",""]'
+      - '["defg", "x"] : ["defg"]'
 
 - element: "ẋ"
   name: Repeat
