@@ -3415,8 +3415,7 @@ def prime_exponents(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: [
-            value
-            for key, value in sympy.factorint(int(lhs)).items()
+            value for key, value in sympy.factorint(int(lhs)).items()
         ],
     }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 

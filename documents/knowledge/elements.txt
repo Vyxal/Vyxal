@@ -2468,6 +2468,13 @@ k• (Qwerty Keyboard)
     any a, fun b: while b(a): a -= 1
     fun a, any b: while a(b): b -= 1
 -------------------------------
+∆ǐ (Prime Exponents)
+
+- Get the exponents of prime factors of a number
+
+    num a: prime_exponents(a)
+    otherwise: vectorise
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string
