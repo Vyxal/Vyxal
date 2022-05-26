@@ -3346,6 +3346,7 @@ def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
     """
+    assert all(vy_type(x) == NUMBER_TYPE for x in lhs)
     eqn = " * ".join(map(lambda x: "(x - " + str(x) + ")", lhs))
     x = sympy.symbols("x")
     return sympy.Poly(eqn, x).coeffs()
@@ -4516,7 +4517,7 @@ def to_degrees(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (180 / sympy.pi),
-        str: lambda: sympy.N(lhs) * (180 / sympy.pi),
+        str: lambda: int(lhs) * (180 / sympy.pi),
     }.get(ts, lambda: vectorise(to_degrees, lhs, ctx=ctx))()
 
 
@@ -4527,7 +4528,7 @@ def to_radians(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: lhs * (sympy.pi / 180),
-        str: lambda: sympy.N(lhs) * (sympy.pi / 180),
+        str: lambda: int(lhs) * (sympy.pi / 180),
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
 
 
