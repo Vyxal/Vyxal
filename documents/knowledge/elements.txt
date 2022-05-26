@@ -2469,6 +2469,13 @@ k• (Qwerty Keyboard)
     any a, fun b: while b(a): a -= 1
     fun a, any b: while a(b): b -= 1
 -------------------------------
+∆ǐ (Prime Exponents)
+
+- Get the exponents of prime factors of a number
+
+    num a: prime_exponents(a)
+    otherwise: vectorise
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string
@@ -2692,6 +2699,12 @@ k• (Qwerty Keyboard)
     num a: to_roman_numeral(a)
     str a: from_roman_numeral(a)
     otherwise: vectorise
+-------------------------------
+øJ (Parse JSON)
+
+- Parse a JSON string into a Vyxal object
+
+    str a: json.loads(a)
 -------------------------------
 øḞ (Replace First Occurrence)
 
