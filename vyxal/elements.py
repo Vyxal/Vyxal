@@ -69,13 +69,17 @@ def process_element(
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
     (num, num) -> abs(a - b)
-    (any, str) -> Transpose a (filling with b), join on newlines
+    (num, str) -> Array of length a filled with b
+    (str, num) -> Array of length b filled with a
+    (str, str) -> single regex match of b against a
     """
     ts = vy_type(lhs, rhs)
-    if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        return abs(lhs - rhs)
-    else:
-        return vertical_join(lhs, rhs, ctx)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: abs(lhs - rhs),
+        (NUMBER_TYPE, str): lambda: [rhs] * lhs,
+        (str, NUMBER_TYPE): lambda: [lhs] * rhs,
+        (str, str): lambda: re.match(rhs, lhs) and re.match(rhs, lhs).group() or "",
+    }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
 
 
 def add(lhs, rhs, ctx):
@@ -1542,25 +1546,6 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     for i in range(len(result)):
         result[i] += invert_brackets(result[i][:-1][::-1])
     return "\n".join(result)
-
-
-def vertical_palindromise_center_join(lhs, ctx):
-    """Element øṗ
-    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
-    """
-    return join_newlines(
-        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
-        ctx=ctx,
-    )
-
-
-def vertical_mirror_center_join(lhs, ctx):
-    """Element øm
-    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
-    """
-    return join_newlines(
-        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
-    )
 
 
 def foldl_columns(lhs, rhs, ctx):
@@ -4969,6 +4954,13 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     return join(temp, "\n", ctx)
 
 
+def vertical_join_with_filler(lhs, rhs, ctx):
+    """Element øε
+    (lst, any) -> Vertical join of lhs with rhs, with filler
+    """
+    return vertical_join(lhs, rhs, ctx)
+
+
 def vertical_mirror(lhs, rhs=None, ctx=None):
     """Element øṁ and øṀ"""
     if type(lhs) is str:
@@ -4984,6 +4976,25 @@ def vertical_mirror(lhs, rhs=None, ctx=None):
         return mirror(lhs, ctx=ctx)
     else:
         return vectorise(vertical_mirror, lhs, rhs, ctx=ctx)
+
+
+def vertical_mirror_center_join(lhs, ctx):
+    """Element øm
+    (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_mirror(lhs, ctx=ctx), ctx=ctx), ctx=ctx
+    )
+
+
+def vertical_palindromise_center_join(lhs, ctx):
+    """Element øṗ
+    (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
+    """
+    return join_newlines(
+        center(flip_brackets_vertical_palindromise(lhs, ctx=ctx), ctx=ctx),
+        ctx=ctx,
+    )
 
 
 def vy_abs(lhs, ctx):
@@ -6050,6 +6061,7 @@ elements: dict[str, tuple[str, int]] = {
     "øR": process_element(strip_whitespace_right, 1),
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
+    "øε": process_element(vertical_join_with_filler, 2),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
