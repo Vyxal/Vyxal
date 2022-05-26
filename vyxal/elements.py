@@ -3200,8 +3200,11 @@ def overlapping_groups(lhs, rhs, ctx):
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
     """
-    if vy_type(rhs) != NUMBER_TYPE:
+    if NUMBER_TYPE not in vy_type(lhs, rhs):
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
+
+    if vy_type(lhs) == NUMBER_TYPE:
+        lhs, rhs = rhs, lhs
 
     stringify = vy_type(lhs) is str
 
