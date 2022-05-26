@@ -5478,6 +5478,7 @@ def wrap(lhs, rhs, ctx):
             fun, elem = lhs, rhs
         else:
             fun, elem = rhs, lhs
+
         @lazylist
         def gen():
             apply = False
@@ -5511,6 +5512,7 @@ def wrap(lhs, rhs, ctx):
                     yield "".join(working)
                 else:
                     yield working
+
         return gen()
 
     elif ts == (str, str):
@@ -5526,6 +5528,7 @@ def wrap(lhs, rhs, ctx):
         else:
             elem, wraps = rhs, lhs
         print(elem, wraps, ts)
+
         @lazylist
         def gen():
             working = []
@@ -5535,7 +5538,7 @@ def wrap(lhs, rhs, ctx):
                 if len(working) == lengths[0]:
                     if vy_type(elem) == str:
                         yield "".join(working)
-                    else: 
+                    else:
                         yield working
                     working = []
                     lengths = lengths[1:] + [lengths[0]]
@@ -5546,7 +5549,7 @@ def wrap(lhs, rhs, ctx):
                     yield working
 
         return gen()
-    
+
 
 def zero_length_range(lhs, ctx):
     """Element ẏ

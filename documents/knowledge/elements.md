@@ -1255,6 +1255,9 @@ Wrap a list in chunks of a certain length / apply a function to every second ite
 ### Overloads
 
 - any a, num b: `a wrapped in chunks of length b`
+- num a, any b: `b wrapped in chunks of length a`
+- any a, lst b: `Wrap a into chunks with lengths given in b, repeating if necessary`
+- lst a, str b: `Wrap b into chunks with lengths given in a, repeating if necessary`
 - any a, fun b: `Apply b to every second item of a`
 - fun a, any b: `Apply a to every second item of b`
 - str a, str b: `split a on first occurance of b`
