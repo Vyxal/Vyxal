@@ -3224,6 +3224,75 @@ def overlapping_groups(lhs, rhs, ctx):
 
     return gen()
 
+# This is a helper function used to draw on a canvas with overloads
+# It can't be in Canvas.py because it needs to be able to access type overloads
+# And it can't be in helpers because it needs to be able to access vy_type
+def overloaded_canvas_draw(lhs, rhs, other, ctx):
+    ts = vy_type(lhs, rhs, other, simple=True, ctx=ctx)
+
+    def is_valid_dirs(lst):
+        return all([
+            item in range(9) or item in '+x[]^v<>'
+            for item in lst
+        ])
+
+    def is_valid_lengths(lst):
+        return all([
+            isinstance(item, int) and item > 0
+            for item in lst
+        ])
+
+    def make_dirs(lst):
+        return [
+            int(item) if isnumeric(item) else item
+            for item in lst
+        ]
+
+    if NUMBER_TYPE in ts:
+        if ts[0] == NUMBER_TYPE:
+            length = lhs
+            rest = (rhs, other)
+        elif ts[1] == NUMBER_TYPE:
+            length = rhs
+            rest = (lhs, other)
+        else:
+            length = other
+            rest = (lhs, rhs)
+        
+        ts2 = vy_type(rest[0], rest[1], ctx=ctx)
+
+        if ts2[0] == str:
+            text, dirs = rest
+        else:
+            dirs, text = rest
+
+        dirs = make_dirs(iterable(dirs, ctx=ctx))
+
+        return (dirs, [length], text)
+    else:
+        if ts[0] == str:
+            text = lhs
+            rest = (rhs, other)
+        elif ts[1] == str:
+            text = rhs
+            rest = (lhs, other)
+        else:
+            text = other
+            rest = (lhs, rhs)
+
+        # At this point, both rest values are lists or strings
+        if is_valid_dirs(make_dirs(rest[0])):
+            dirs, length = rest
+        else:
+            length, dirs = rest
+
+        dirs = make_dirs(dirs)
+
+        if vy_type(length) == str:
+            length = int(length)
+
+        return (dirs, length, text)
+        
 
 def palindromise(lhs, ctx):
     """Element ∞
