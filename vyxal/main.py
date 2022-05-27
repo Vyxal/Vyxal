@@ -169,8 +169,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         else:
             raise
 
+
+    if not ctx.printed and ctx.canvas.canvas != [[" "]]:
+        vy_print(str(ctx.canvas), ctx=ctx)
+        return
+    
     originally_empty = not stack
     output = pop(stack, 1, ctx)
+
     if not (ctx.printed or "O" in flags) or "o" in flags:
         for flag in flags:
             if flag == "j":

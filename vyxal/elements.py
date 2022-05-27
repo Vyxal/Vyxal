@@ -652,6 +652,19 @@ def canvas_draw(lhs, rhs, other, ctx):
     return str(new_canvas)
 
 
+def canvas_global_draw(lhs, rhs, other, ctx):
+    """Element ø∧
+    Draws on the global canvas, returning nothing. Does some complex type overloading.
+        (num, lst, str) -> Draw with a = length, b = dirs, c = text
+        (num, str, str) -> Draw with a = length, b/c dependent on dir validity
+        (any, num, any) -> Draw with b = length ^
+        (any, any, num) -> Draw with c = length ^
+        (str, any, any) -> Draw with a = text, b/c dependent on dir validity
+        (lst, str, any) -> Draw with b = text, ^
+        (lst, lst, str) -> Draw with c = text, ^
+    """
+    ctx.canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
+
 def carmichael_function(lhs, ctx):
     """Element ∆¢
     (num) -> is lhs a Carmichael number?
@@ -6121,6 +6134,10 @@ elements: dict[str, tuple[str, int]] = {
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
     "ø^": process_element(canvas_draw, 3),
+    "ø∧": (
+        "other, rhs, lhs = pop(stack, 3, ctx)\n"
+        "canvas_global_draw(lhs, rhs, other, ctx)\n",
+    ),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
