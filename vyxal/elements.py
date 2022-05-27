@@ -672,6 +672,7 @@ def canvas_global_draw(lhs, rhs, other, ctx):
     """
     ctx.canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
 
+
 def carmichael_function(lhs, ctx):
     """Element ∆¢
     (num) -> is lhs a Carmichael number?
@@ -3253,6 +3254,7 @@ def overlapping_groups(lhs, rhs, ctx):
 
     return gen()
 
+
 # This is a helper function used to draw on a canvas with overloads
 # It can't be in Canvas.py because it needs to be able to access type overloads
 # And it can't be in helpers because it needs to be able to access vy_type
@@ -3260,16 +3262,10 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other, simple=True)
 
     def is_valid_dirs(lst):
-        return all([
-            item in range(9) or item in '+x[]^v<>'
-            for item in lst
-        ])
+        return all([item in range(9) or item in "+x[]^v<>" for item in lst])
 
     def is_valid_lengths(lst):
-        return all([
-            isinstance(item, int) and item > 0
-            for item in lst
-        ])
+        return all([isinstance(item, int) and item > 0 for item in lst])
 
     def make_dirs(lst):
         return [
@@ -3287,7 +3283,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
         else:
             length = other
             rest = (lhs, rhs)
-        
+
         ts2 = vy_type(rest[0], rest[1])
 
         if ts2[0] == str:
@@ -3321,7 +3317,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
             length = [int(length)]
 
         return (dirs, length, text)
-        
+
 
 def palindromise(lhs, ctx):
     """Element ∞

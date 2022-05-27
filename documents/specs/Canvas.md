@@ -2,7 +2,7 @@
 
 The canvas is a global ASCII-art canvas based off [05AB1E's canvas](https://codegolf.stackexchange.com/questions/96361/tips-for-golfing-in-05ab1e/175520#175520). This file will serve as both a specification and a guide for how to use the canvas element.
 
-The `Canvas` class is located in the `Canvas.py` file. It exposes several methods and values, but only one should be used: `draw`, which takes a list of directions, a list of lengths and a piece of text to draw. 
+The `Canvas` class is located in the `Canvas.py` file. It exposes several methods and values, but only one should be used: `draw`, which takes a list of directions, a list of lengths and a piece of text to draw.
 
 The directions can contain:
 

@@ -2,6 +2,7 @@
 
 from enum import Enum
 
+
 class Direction(Enum):
     # Enum class for directions
     UP = 0
@@ -19,8 +20,9 @@ class Direction(Enum):
     def to_y(dir):
         return [-1, -1, 0, 1, 1, 1, 0, -1][dir.value]
 
+
 class Canvas:
-    def __init__(self, filler = " "):
+    def __init__(self, filler=" "):
         # Canvas is a list of rows
         self.filler = filler
         self.canvas = [[filler]]
@@ -43,7 +45,9 @@ class Canvas:
             self.start_x += length
         elif dir == Direction.UP:
             for _ in range(length):
-                self.canvas = [[self.filler] * len(self.canvas[0])] + self.canvas
+                self.canvas = [
+                    [self.filler] * len(self.canvas[0])
+                ] + self.canvas
             self.y += length
             self.start_y += length
 
@@ -65,8 +69,10 @@ class Canvas:
             final_x = len(self.canvas[0]) - 1
 
         for i in range(length):
-            self.canvas[self.y + Direction.to_y(dir) * i][self.x + Direction.to_x(dir) * i] = text[i % len(text)]
-        
+            self.canvas[self.y + Direction.to_y(dir) * i][
+                self.x + Direction.to_x(dir) * i
+            ] = text[i % len(text)]
+
         self.x = final_x
         self.y = final_y
 
@@ -88,24 +94,24 @@ class Canvas:
                 self.x += Direction.to_x(Direction(dirs[i % len(dirs)]))
                 self.y += Direction.to_y(Direction(dirs[i % len(dirs)]))
 
-                t = text[lsum % len(text):] + text[:lsum % len(text)]
+                t = text[lsum % len(text) :] + text[: lsum % len(text)]
                 self.draw_line(Direction(dirs[i % len(dirs)]), l - 1, t)
             lsum += l - 1
 
     def __str__(self):
-        return '\n'.join([''.join(row) for row in self.canvas])
+        return "\n".join(["".join(row) for row in self.canvas])
 
     def replace_patterns(dirs):
         res = []
         for dir in dirs:
             res += {
-                '+': [0, 4, 2, 6, 4, 0, 6, 2],
-                'x': [1, 5, 3, 7, 5, 1, 7, 3],
-                ']': [2, 4, 6],
-                '[': [6, 4, 2],
-                '<': [5, 3],
-                '>': [3, 5],
-                'v': [7, 1],
-                '^': [1, 7],
+                "+": [0, 4, 2, 6, 4, 0, 6, 2],
+                "x": [1, 5, 3, 7, 5, 1, 7, 3],
+                "]": [2, 4, 6],
+                "[": [6, 4, 2],
+                "<": [5, 3],
+                ">": [3, 5],
+                "v": [7, 1],
+                "^": [1, 7],
             }.get(dir, [dir])
         return res

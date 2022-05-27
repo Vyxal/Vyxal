@@ -169,11 +169,10 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         else:
             raise
 
-
     if not ctx.printed and ctx.canvas.canvas != [[" "]]:
         vy_print(str(ctx.canvas), ctx=ctx)
         return
-    
+
     originally_empty = not stack
     output = pop(stack, 1, ctx)
 

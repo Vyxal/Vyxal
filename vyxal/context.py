@@ -2,6 +2,7 @@
 
 from vyxal.Canvas import Canvas
 
+
 class Context:
     """Context objects hold flags and semi-global variables to pass around."""
 
