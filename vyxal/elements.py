@@ -3320,7 +3320,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
         dirs = make_dirs(dirs)
 
         if vy_type(length) == str:
-            length = int(length)
+            length = [int(length)]
 
         return (dirs, length, text)
         

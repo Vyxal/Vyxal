@@ -579,3 +579,17 @@ def test_infinite_length_range():
 def test_find_infinite_list():
     stack = run_vyxal("ÞF 34 ḟ")
     assert stack[-1] == 8
+
+def test_canvas():
+    stack = run_vyxal("ka 1357f 555443322f ø^")
+    assert stack[-1] == (
+        "    e    \n"
+        "   d f   \n"
+        "  c s g  \n"
+        " b r t h \n"
+        "a q y u i\n"
+        " p x v j \n"
+        "  o w k  \n"
+        "   n l   \n"
+        "    m    "
+    )
