@@ -30,6 +30,7 @@ from vyxal.encoding import (
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
+from vyxal.Canvas import Canvas
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -632,6 +633,23 @@ def brackets_balanced(lhs, ctx):
             else:
                 temp.pop()
     return int(len(temp) == 0)
+
+
+def canvas_draw(lhs, rhs, other, ctx):
+    """Element ø^
+    Creates an empty canvas and draws on it, returning the result. Does some complex type overloading.
+        (num, lst, str) -> Draw with a = length, b = dirs, c = text
+        (num, str, str) -> Draw with a = length, b/c dependent on dir validity
+        (any, num, any) -> Draw with b = length ^
+        (any, any, num) -> Draw with c = length ^
+        (str, any, any) -> Draw with a = text, b/c dependent on dir validity
+        (lst, str, any) -> Draw with b = text, ^
+        (lst, lst, str) -> Draw with c = text, ^
+    """
+    new_canvas = Canvas()
+    new_canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
+
+    return str(new_canvas)
 
 
 def carmichael_function(lhs, ctx):
@@ -3228,7 +3246,7 @@ def overlapping_groups(lhs, rhs, ctx):
 # It can't be in Canvas.py because it needs to be able to access type overloads
 # And it can't be in helpers because it needs to be able to access vy_type
 def overloaded_canvas_draw(lhs, rhs, other, ctx):
-    ts = vy_type(lhs, rhs, other, simple=True, ctx=ctx)
+    ts = vy_type(lhs, rhs, other, simple=True)
 
     def is_valid_dirs(lst):
         return all([
@@ -3244,7 +3262,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
 
     def make_dirs(lst):
         return [
-            int(item) if isnumeric(item) else item
+            int(item) if (type(item) is str and item.isnumeric()) else item
             for item in lst
         ]
 
@@ -3259,7 +3277,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
             length = other
             rest = (lhs, rhs)
         
-        ts2 = vy_type(rest[0], rest[1], ctx=ctx)
+        ts2 = vy_type(rest[0], rest[1])
 
         if ts2[0] == str:
             text, dirs = rest
@@ -6102,6 +6120,7 @@ elements: dict[str, tuple[str, int]] = {
     "øR": process_element(strip_whitespace_right, 1),
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
+    "ø^": process_element(canvas_draw, 3),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
