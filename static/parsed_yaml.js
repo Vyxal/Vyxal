@@ -2209,6 +2209,28 @@ codepage_descriptions[114] += `
 Strip from the right side of a string
 str a -> a.rstrip(b)
 `
+codepage_descriptions[95] += `
+ø^ (Canvas Draw)
+Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string
+num a, lst b, str c -> Draw with a = length, b = dirs, c = text
+num a, str b, str c -> Draw with a = length, b/c dependent on dir validity
+any a, num b, any c -> Draw with b = length ^
+any a, any b, num c -> Draw with c = length ^
+str a, any b, any c -> Draw with a = text, b/c dependent on dir validity
+lst a, str b, any c -> Draw with b = text, ^
+lst a, lst b, str c -> Draw with c = text, ^
+`
+codepage_descriptions[3] += `
+ø∧ (Global Canvas Draw)
+Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.
+num a, lst b, str c -> Draw with a = length, b = dirs, c = text
+num a, str b, str c -> Draw with a = length, b/c dependent on dir validity
+any a, num b, any c -> Draw with b = length ^
+any a, any b, num c -> Draw with c = length ^
+str a, any b, any c -> Draw with a = text, b/c dependent on dir validity
+lst a, str b, any c -> Draw with b = text, ^
+lst a, lst b, str c -> Draw with c = text, ^
+`
 codepage_descriptions[46] += `
 ø. (Surround)
 Surround a value with another

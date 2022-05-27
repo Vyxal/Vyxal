@@ -31,6 +31,7 @@ from vyxal.encoding import (
 )
 from vyxal.helpers import *
 from vyxal.LazyList import LazyList, lazylist
+from vyxal.Canvas import Canvas
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -639,6 +640,37 @@ def brackets_balanced(lhs, ctx):
             else:
                 temp.pop()
     return int(len(temp) == 0)
+
+
+def canvas_draw(lhs, rhs, other, ctx):
+    """Element ø^
+    Creates an empty canvas and draws on it, returning the result. Does some complex type overloading.
+        (num, lst, str) -> Draw with a = length, b = dirs, c = text
+        (num, str, str) -> Draw with a = length, b/c dependent on dir validity
+        (any, num, any) -> Draw with b = length ^
+        (any, any, num) -> Draw with c = length ^
+        (str, any, any) -> Draw with a = text, b/c dependent on dir validity
+        (lst, str, any) -> Draw with b = text, ^
+        (lst, lst, str) -> Draw with c = text, ^
+    """
+    new_canvas = Canvas()
+    new_canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
+
+    return str(new_canvas)
+
+
+def canvas_global_draw(lhs, rhs, other, ctx):
+    """Element ø∧
+    Draws on the global canvas, returning nothing. Does some complex type overloading.
+        (num, lst, str) -> Draw with a = length, b = dirs, c = text
+        (num, str, str) -> Draw with a = length, b/c dependent on dir validity
+        (any, num, any) -> Draw with b = length ^
+        (any, any, num) -> Draw with c = length ^
+        (str, any, any) -> Draw with a = text, b/c dependent on dir validity
+        (lst, str, any) -> Draw with b = text, ^
+        (lst, lst, str) -> Draw with c = text, ^
+    """
+    ctx.canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
 
 
 def carmichael_function(lhs, ctx):
@@ -3221,6 +3253,70 @@ def overlapping_groups(lhs, rhs, ctx):
                 window = window[1:]
 
     return gen()
+
+
+# This is a helper function used to draw on a canvas with overloads
+# It can't be in Canvas.py because it needs to be able to access type overloads
+# And it can't be in helpers because it needs to be able to access vy_type
+def overloaded_canvas_draw(lhs, rhs, other, ctx):
+    ts = vy_type(lhs, rhs, other, simple=True)
+
+    def is_valid_dirs(lst):
+        return all([item in range(9) or item in "+x[]^v<>" for item in lst])
+
+    def is_valid_lengths(lst):
+        return all([isinstance(item, int) and item > 0 for item in lst])
+
+    def make_dirs(lst):
+        return [
+            int(item) if (type(item) is str and item.isnumeric()) else item
+            for item in lst
+        ]
+
+    if NUMBER_TYPE in ts:
+        if ts[0] == NUMBER_TYPE:
+            length = lhs
+            rest = (rhs, other)
+        elif ts[1] == NUMBER_TYPE:
+            length = rhs
+            rest = (lhs, other)
+        else:
+            length = other
+            rest = (lhs, rhs)
+
+        ts2 = vy_type(rest[0], rest[1])
+
+        if ts2[0] == str:
+            text, dirs = rest
+        else:
+            dirs, text = rest
+
+        dirs = make_dirs(iterable(dirs, ctx=ctx))
+
+        return (dirs, [length], text)
+    else:
+        if ts[0] == str:
+            text = lhs
+            rest = (rhs, other)
+        elif ts[1] == str:
+            text = rhs
+            rest = (lhs, other)
+        else:
+            text = other
+            rest = (lhs, rhs)
+
+        # At this point, both rest values are lists or strings
+        if is_valid_dirs(make_dirs(rest[0])):
+            dirs, length = rest
+        else:
+            length, dirs = rest
+
+        dirs = make_dirs(dirs)
+
+        if vy_type(length) == str:
+            length = [int(length)]
+
+        return (dirs, length, text)
 
 
 def palindromise(lhs, ctx):
@@ -6107,6 +6203,11 @@ elements: dict[str, tuple[str, int]] = {
     "øR": process_element(strip_whitespace_right, 1),
     "øl": process_element(strip_left, 2),
     "ør": process_element(strip_right, 2),
+    "ø^": process_element(canvas_draw, 3),
+    "ø∧": (
+        "other, rhs, lhs = pop(stack, 3, ctx)\n"
+        "canvas_global_draw(lhs, rhs, other, ctx)\n",
+    ),
     "øε": process_element(vertical_join_with_filler, 2),
     "ø.": process_element(surround, 2),
     "Þ*": process_element(cartesian_over_list, 1),

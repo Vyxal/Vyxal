@@ -1,5 +1,7 @@
 """This is for context-related stuff."""
 
+from vyxal.Canvas import Canvas
+
 
 class Context:
     """Context objects hold flags and semi-global variables to pass around."""
@@ -36,6 +38,7 @@ class Context:
         self.double_zip_vectorize = False
         self.vyxal_lists = True
         self.global_array = []
+        self.canvas = Canvas()
 
     def copy(self):
         """Copy itself so a modified version can be passed elsewhere."""
