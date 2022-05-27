@@ -4569,6 +4569,35 @@
       - '["dddd", "d"] : ""'
       - "[[3, 3, 1, 2, 3, 3, 3], [3]] : [3, 3, 1, 2]"
 
+- element: "ø^"
+  name: Canvas Draw
+  description: Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string
+  arity: 3
+  overloads:
+      num-lst-str: Draw with a = length, b = dirs, c = text
+      num-str-str: Draw with a = length, b/c dependent on dir validity
+      any-num-any: Draw with b = length ^
+      any-any-num: Draw with c = length ^
+      str-any-any: Draw with a = text, b/c dependent on dir validity
+      lst-str-any: Draw with b = text, ^
+      lst-lst-str: Draw with c = text, ^
+  vectorise: false
+  # Tests go in test_complex.py
+
+- element: "ø∧"
+  name: Global Canvas Draw
+  description: Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.
+  arity: 3
+  overloads:
+      num-lst-str: Draw with a = length, b = dirs, c = text
+      num-str-str: Draw with a = length, b/c dependent on dir validity
+      any-num-any: Draw with b = length ^
+      any-any-num: Draw with c = length ^
+      str-any-any: Draw with a = text, b/c dependent on dir validity
+      lst-str-any: Draw with b = text, ^
+      lst-lst-str: Draw with c = text, ^
+  vectorise: false
+
 - element: "ø."
   name: Surround
   description: Surround a value with another
