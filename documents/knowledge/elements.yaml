@@ -4942,6 +4942,18 @@
       - "[[[1,2,3,4],[5,6,7,8],[9,10,11,12]]] : [[1,6,11],[2,7,12],[3,8],[4],[9],[5,10]]"
       - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[1,5,9],[2,6],[3],[10],[7,11],[4,8,12]]"
 
+- element: "Þḋ"
+  name: Anti-diagonals
+  description: Anti-diagonals of a matrix, starting with the main anti-diagonal.
+  arity: 1
+  overloads:
+      lst: Anti-diagonals of a matrix, starting with the main anti-diagonal.
+  vectorise: false
+  tests:
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[3,5,7],[2,4],[1],[9],[6,8]]"
+      - "[[[1,2,3,4],[5,6,7,8],[9,10,11,12]]] : [[3,6,9],[2,5],[1],[12],[8,11],[4,7,10]]"
+      - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[6,8,10],[3,5,7],[2,4],[1],[12],[9,11]]"
+
 - element: "ÞS"
   name: Sublists
   description: Sublists of a list.

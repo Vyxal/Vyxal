@@ -224,6 +224,20 @@ def all_diagonals(lhs, ctx):
     return all_diags
 
 
+def all_antidiagonals(lhs, ctx):
+    """Element Þḋ
+    Anti-diagonals of a matrix, starting with the main anti-diagonal.
+    """
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
+    start = 0
+    for row in vector:
+        for i in range(len(vector[0])):
+            all_diags[(start - i + len(vector) - 1) % len(all_diags)].append(row[i])
+        start -= 1
+    return all_diags
+
+
 def all_equal(lhs, ctx):
     """Element ≈
     (any) -> are all items in a the same?
@@ -6300,6 +6314,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
     "ÞD": process_element(all_diagonals, 1),
+    "Þḋ": process_element(all_antidiagonals, 1),
     "ÞS": process_element(sublists, 1),
     "ÞṪ": process_element(transpose, 2),
     "ÞṀ": process_element(matrix_multiply, 2),
