@@ -215,10 +215,10 @@ def all_diagonals(lhs, ctx):
     Diagonals of a matrix, starting with the main diagonal.
     """
     vector = [iterable(x, ctx=ctx) for x in lhs]
-    all_diags = [[] for _ in range(len(vector) * 2 - 1)]
+    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
     start = 0
     for row in vector:
-        for i in range(len(vector)):
+        for i in range(len(vector[0])):
             all_diags[(start + i) % len(all_diags)].append(row[i])
         start -= 1
     return all_diags
