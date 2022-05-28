@@ -138,14 +138,14 @@ def align_left(lhs, ctx):
     ts = vy_type(lhs)
 
     if ts == str:
-        lhs = lhs.split('\n')
+        lhs = lhs.split("\n")
 
     maxlen = max(len(line) for line in lhs)
 
     result = [line.ljust(maxlen) for line in lhs]
 
     if ts == str:
-        return '\n'.join(result)
+        return "\n".join(result)
 
     return result
 
@@ -158,14 +158,14 @@ def align_right(lhs, ctx):
     ts = vy_type(lhs)
 
     if ts == str:
-        lhs = lhs.split('\n')
+        lhs = lhs.split("\n")
 
     maxlen = max(len(line) for line in lhs)
 
     result = [line.rjust(maxlen) for line in lhs]
 
     if ts == str:
-        return '\n'.join(result)
+        return "\n".join(result)
 
     return result
 
