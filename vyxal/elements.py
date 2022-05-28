@@ -1264,20 +1264,21 @@ def element_wise_dyadic_maximum(lhs, rhs, ctx):
     """Element Þ∴
     (lst, lst) -> max(a, b)
     """
-    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
-    return LazyList(
-        dyadic_maximum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
-    )
+    ts = vy_type(lhs, rhs, simple=True)
+    if list in ts:
+        # In theory this gets TCO'd lol
+        return vectorise(element_wise_dyadic_maximum, lhs, rhs, ctx=ctx)
+    return max(lhs, rhs)
 
 
 def element_wise_dyadic_minimum(lhs, rhs, ctx):
     """Element Þ∵
     (lst, lst) -> min(a, b)
     """
-    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
-    return LazyList(
-        dyadic_minimum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
-    )
+    ts = vy_type(lhs, rhs, simple=True)
+    if list in ts:
+        return vectorise(element_wise_dyadic_minimum, lhs, rhs, ctx=ctx)
+    return min(lhs, rhs)
 
 
 def equals(lhs, rhs, ctx):
