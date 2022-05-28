@@ -215,6 +215,8 @@ def all_diagonals(lhs, ctx):
     Diagonals of a matrix, starting with the main diagonal.
     """
     vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
     all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
     start = 0
     for row in vector:
