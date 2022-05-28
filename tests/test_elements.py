@@ -21081,6 +21081,52 @@ def test_Surround():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_LeftAlign():
+
+    stack = [vyxalify(item) for item in [["a", "bc", "def"]]]
+    expected = vyxalify(["a  ", "bc ", "def"])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('øŀ')
+    # print('øŀ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_RightAlign():
+
+    stack = [vyxalify(item) for item in [["a", "bc", "def"]]]
+    expected = vyxalify(["  a", " bc", "def"])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('øɽ')
+    # print('øɽ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Cartesianproductoverlist():
 
     stack = [vyxalify(item) for item in [[[1, 2], [3], [4, 5]]]]

@@ -130,6 +130,46 @@ def adjacency_matrix_undir(lhs, ctx):
     return adj
 
 
+def align_left(lhs, ctx):
+    """Element øŀ
+    (str) -> left-aligned string
+    (lst) -> left-align lines
+    """
+    ts = vy_type(lhs)
+
+    if ts == str:
+        lhs = lhs.split('\n')
+
+    maxlen = max(len(line) for line in lhs)
+
+    result = [line.ljust(maxlen) for line in lhs]
+
+    if ts == str:
+        return '\n'.join(result)
+
+    return result
+
+
+def align_right(lhs, ctx):
+    """element øɽ
+    (str) -> right-aligned string
+    (lst) -> right-align lines
+    """
+    ts = vy_type(lhs)
+
+    if ts == str:
+        lhs = lhs.split('\n')
+
+    maxlen = max(len(line) for line in lhs)
+
+    result = [line.rjust(maxlen) for line in lhs]
+
+    if ts == str:
+        return '\n'.join(result)
+
+    return result
+
+
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -6210,6 +6250,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "øε": process_element(vertical_join_with_filler, 2),
     "ø.": process_element(surround, 2),
+    "øŀ": process_element(align_left, 1),
+    "øɽ": process_element(align_right, 1),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
