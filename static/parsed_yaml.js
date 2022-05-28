@@ -2399,6 +2399,11 @@ codepage_descriptions[68] += `
 Diagonals of a matrix, starting with the main diagonal.
 lst a -> Diagonals of a matrix, starting with the main diagonal.
 `
+codepage_descriptions[143] += `
+Þḋ (Anti-diagonals)
+Anti-diagonals of a matrix, starting with the main anti-diagonal.
+lst a -> Anti-diagonals of a matrix, starting with the main anti-diagonal.
+`
 codepage_descriptions[83] += `
 ÞS (Sublists)
 Sublists of a list.
