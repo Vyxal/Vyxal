@@ -2725,6 +2725,14 @@ Get the nth fibonacci number
 
 - num a: `nth_fibonacci(a)`
 -------------------------------
+## `` ∆F `` (nth Fibonacci Number, 0-indexed)
+
+Get the nth fibonacci number, 0-indexed
+
+### Overloads
+
+- num a: `nth_fibonacci(a)`
+-------------------------------
 ## `` ∆B `` (Random Bits)
 
 Get a list of random bits to length n
