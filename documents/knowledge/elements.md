@@ -3461,6 +3461,14 @@ Diagonals of a matrix, starting with the main diagonal.
 
 - lst a: `Diagonals of a matrix, starting with the main diagonal.`
 -------------------------------
+## `` Þḋ `` (Anti-diagonals)
+
+Anti-diagonals of a matrix, starting with the main anti-diagonal.
+
+### Overloads
+
+- lst a: `Anti-diagonals of a matrix, starting with the main anti-diagonal.`
+-------------------------------
 ## `` ÞS `` (Sublists)
 
 Sublists of a list.
