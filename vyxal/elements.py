@@ -5685,6 +5685,10 @@ def wrap(lhs, rhs, ctx):
             working = []
             lengths = wraps
             for item in iterable(elem, ctx=ctx):
+                # Handle multiple zeroes in sequence
+                while lengths[0] == 0:
+                    yield []
+                    lengths = lengths[1:] + [lengths[0]]
                 working.append(item)
                 if len(working) == lengths[0]:
                     if vy_type(elem) == str:
