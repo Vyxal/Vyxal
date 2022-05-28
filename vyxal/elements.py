@@ -391,7 +391,8 @@ def anti_diagonal(lhs, ctx):
     (lst) -> Antidiagonal of matrix
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return [lhs[i][len(lhs) - i - 1] for i in range(len(lhs))]
+    m = min(len(lhs), len(lhs[0]))
+    return [lhs[i][m - i - 1] for i in range(m)]
 
 
 def any_true(lhs, ctx):
@@ -1159,7 +1160,7 @@ def diagonal(lhs, ctx):
     (any) -> diagonal of a
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return [lhs[i][i] for i in range(len(lhs))]
+    return [lhs[i][i] for i in range(min(len(lhs), len(lhs[0])))]
 
 
 def dist_matrix_dir(lhs, ctx):
