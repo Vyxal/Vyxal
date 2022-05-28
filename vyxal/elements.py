@@ -3144,6 +3144,17 @@ def nth_fibonacci(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
 
 
+def nth_fibonacci_0(lhs, ctx):
+    """Element ∆F
+    (num) -> nth fibonacci number, 0 indexed
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.fibonacci(lhs),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+
+
 def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
@@ -5725,6 +5736,10 @@ def wrap(lhs, rhs, ctx):
             working = []
             lengths = wraps
             for item in iterable(elem, ctx=ctx):
+                # Handle multiple zeroes in sequence
+                while lengths[0] == 0:
+                    yield []
+                    lengths = lengths[1:] + [lengths[0]]
                 working.append(item)
                 if len(working) == lengths[0]:
                     if vy_type(elem) == str:
@@ -6164,6 +6179,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element(nth_fibonacci, 1),
+    "∆F": process_element(nth_fibonacci_0, 1),
     "∆±": process_element(copy_sign, 2),
     "∆%": process_element(mod_pow, 3),
     "∆K": process_element(divisor_sum, 1),

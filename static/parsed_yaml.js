@@ -1921,6 +1921,11 @@ codepage_descriptions[102] += `
 Get the nth fibonacci number
 num a -> nth_fibonacci(a)
 `
+codepage_descriptions[70] += `
+∆F (nth Fibonacci Number, 0-indexed)
+Get the nth fibonacci number, 0-indexed
+num a -> nth_fibonacci(a)
+`
 codepage_descriptions[66] += `
 ∆B (Random Bits)
 Get a list of random bits to length n
