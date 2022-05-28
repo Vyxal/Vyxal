@@ -1167,6 +1167,8 @@ def diagonal(lhs, ctx):
     (any) -> diagonal of a
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
+    if not lhs:
+        return []
     return [lhs[i][i] for i in range(min(len(lhs), len(lhs[0])))]
 
 
