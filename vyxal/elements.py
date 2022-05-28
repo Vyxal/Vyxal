@@ -4174,17 +4174,19 @@ def split_on(lhs, rhs, ctx):
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 
-    else:
+    @lazylist
+    def gen():
         ret, temp = [], []
         for item in iterable(lhs, ctx=ctx):
             if item == rhs:
-                ret.append(temp[::])
+                yield temp[::]
                 temp = []
             else:
                 temp.append(item)
         if temp:
-            ret.append(temp)
-        return ret
+            yield temp
+
+    return gen()
 
 
 def split_keep(lhs, rhs, ctx):
