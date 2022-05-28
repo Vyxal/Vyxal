@@ -584,10 +584,7 @@ def test_find_infinite_list():
 def test_spliton_infinite_list():
     stack = run_vyxal("Þ∞ 6 % 5 €")
 
-    assert stack[-1][:2] == [
-        [1, 2, 3, 4],
-        [0, 1, 2, 3, 4]
-    ]
+    assert stack[-1][:2] == [[1, 2, 3, 4], [0, 1, 2, 3, 4]]
 
 
 def test_canvas():

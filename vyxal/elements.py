@@ -4173,7 +4173,7 @@ def split_on(lhs, rhs, ctx):
                 temp.append(item)
         if temp:
             yield temp
-        
+
     return gen()
 
 
