@@ -231,6 +231,8 @@ def all_antidiagonals(lhs, ctx):
     Anti-diagonals of a matrix, starting with the main anti-diagonal.
     """
     vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
     all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
     start = 0
     for row in vector:
