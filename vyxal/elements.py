@@ -3431,7 +3431,7 @@ def parity(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: int(lhs % 2),
+        (NUMBER_TYPE): lambda: lhs % 2,
         (str): lambda: halve(lhs, ctx)[-1],
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
