@@ -22346,7 +22346,7 @@ def test_Anti_diagonals():
 
 
     stack = [vyxalify(item) for item in [[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]]]
-    expected = vyxalify([[6,8,10],[3,5,7],[2,4],[1],[12],[9,11]])
+    expected = vyxalify([[3,5,7],[2,4],[1],[12],[9,11],[6,8,10]])
     ctx = Context()
 
     ctx.stacks.append(stack)
