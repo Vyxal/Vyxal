@@ -4632,6 +4632,28 @@
     - "[[1, 2, 3], 4] : [4, 1, 2, 3, 4]"
     - "[4, [1, 2, 3]] : [4, 1, 2, 3, 4]"
 
+- element: "øŀ"
+  name: Left Align
+  description: Left align a string/string list
+  arity: 1
+  overloads:
+      str: Justify to left
+      lst: Justify each to left
+  vectorise: false
+  tests:
+    - '[["a", "bc", "def"]] : ["a  ", "bc ", "def"]'
+
+- element: "øɽ"
+  name: Right Align
+  description: Right align a string/string list
+  arity: 1
+  overloads:
+      str: Justify to right
+      lst: Justify each to right
+  vectorise: false
+  tests:
+    - '[["a", "bc", "def"]] : ["  a", " bc", "def"]'
+
 - element: "Þ*"
   name: Cartesian product over list
   description: Cartesian product over a list of lists

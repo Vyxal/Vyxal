@@ -2243,6 +2243,18 @@ str a, str b -> a.surround(b)
 lst a, any b -> a.surround(b)
 any a, lst b -> b.surround(a)
 `
+codepage_descriptions[149] += `
+øŀ (Left Align)
+Left align a string/string list
+str a -> Justify to left
+lst a -> Justify each to left
+`
+codepage_descriptions[27] += `
+øɽ (Right Align)
+Right align a string/string list
+str a -> Justify to right
+lst a -> Justify each to right
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists

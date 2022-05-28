@@ -2799,6 +2799,20 @@ k• (Qwerty Keyboard)
     any a, lst b: b.surround(a)
     otherwise: vectorise
 -------------------------------
+øŀ (Left Align)
+
+- Left align a string/string list
+
+    str a: Justify to left
+    lst a: Justify each to left
+-------------------------------
+øɽ (Right Align)
+
+- Right align a string/string list
+
+    str a: Justify to right
+    lst a: Justify each to right
+-------------------------------
 Þ* (Cartesian product over list)
 
 - Cartesian product over a list of lists
