@@ -233,7 +233,10 @@ def all_antidiagonals(lhs, ctx):
     start = 0
     for row in vector:
         for i in range(len(vector[0])):
-            all_diags[(start - i + min(len(vector), len(vector[0])) - 1) % len(all_diags)].append(row[i])
+            all_diags[
+                (start - i + min(len(vector), len(vector[0])) - 1)
+                % len(all_diags)
+            ].append(row[i])
         start -= 1
     return all_diags
 
