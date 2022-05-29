@@ -1921,6 +1921,11 @@ codepage_descriptions[102] += `
 Get the nth fibonacci number
 num a -> nth_fibonacci(a)
 `
+codepage_descriptions[70] += `
+∆F (nth Fibonacci Number, 0-indexed)
+Get the nth fibonacci number, 0-indexed
+num a -> nth_fibonacci(a)
+`
 codepage_descriptions[66] += `
 ∆B (Random Bits)
 Get a list of random bits to length n
@@ -2238,6 +2243,18 @@ str a, str b -> a.surround(b)
 lst a, any b -> a.surround(b)
 any a, lst b -> b.surround(a)
 `
+codepage_descriptions[149] += `
+øŀ (Left Align)
+Left align a string/string list
+str a -> Justify to left
+lst a -> Justify each to left
+`
+codepage_descriptions[27] += `
+øɽ (Right Align)
+Right align a string/string list
+str a -> Justify to right
+lst a -> Justify each to right
+`
 codepage_descriptions[42] += `
 Þ* (Cartesian product over list)
 Cartesian product over a list of lists
@@ -2381,6 +2398,11 @@ codepage_descriptions[68] += `
 ÞD (Diagonals)
 Diagonals of a matrix, starting with the main diagonal.
 lst a -> Diagonals of a matrix, starting with the main diagonal.
+`
+codepage_descriptions[143] += `
+Þḋ (Anti-diagonals)
+Anti-diagonals of a matrix, starting with the main anti-diagonal.
+lst a -> Anti-diagonals of a matrix, starting with the main anti-diagonal.
 `
 codepage_descriptions[83] += `
 ÞS (Sublists)

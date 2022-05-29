@@ -2390,6 +2390,13 @@ k• (Qwerty Keyboard)
     num a: nth_fibonacci(a)
     otherwise: vectorise
 -------------------------------
+∆F (nth Fibonacci Number, 0-indexed)
+
+- Get the nth fibonacci number, 0-indexed
+
+    num a: nth_fibonacci(a)
+    otherwise: vectorise
+-------------------------------
 ∆B (Random Bits)
 
 - Get a list of random bits to length n
@@ -2792,6 +2799,20 @@ k• (Qwerty Keyboard)
     any a, lst b: b.surround(a)
     otherwise: vectorise
 -------------------------------
+øŀ (Left Align)
+
+- Left align a string/string list
+
+    str a: Justify to left
+    lst a: Justify each to left
+-------------------------------
+øɽ (Right Align)
+
+- Right align a string/string list
+
+    str a: Justify to right
+    lst a: Justify each to right
+-------------------------------
 Þ* (Cartesian product over list)
 
 - Cartesian product over a list of lists
@@ -2964,6 +2985,12 @@ k• (Qwerty Keyboard)
 - Diagonals of a matrix, starting with the main diagonal.
 
     lst a: Diagonals of a matrix, starting with the main diagonal.
+-------------------------------
+Þḋ (Anti-diagonals)
+
+- Anti-diagonals of a matrix, starting with the main anti-diagonal.
+
+    lst a: Anti-diagonals of a matrix, starting with the main anti-diagonal.
 -------------------------------
 ÞS (Sublists)
 

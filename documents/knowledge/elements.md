@@ -2725,6 +2725,14 @@ Get the nth fibonacci number
 
 - num a: `nth_fibonacci(a)`
 -------------------------------
+## `` ∆F `` (nth Fibonacci Number, 0-indexed)
+
+Get the nth fibonacci number, 0-indexed
+
+### Overloads
+
+- num a: `nth_fibonacci(a)`
+-------------------------------
 ## `` ∆B `` (Random Bits)
 
 Get a list of random bits to length n
@@ -3216,6 +3224,24 @@ Surround a value with another
 - lst a, any b: `a.surround(b)`
 - any a, lst b: `b.surround(a)`
 -------------------------------
+## `` øŀ `` (Left Align)
+
+Left align a string/string list
+
+### Overloads
+
+- str a: `Justify to left`
+- lst a: `Justify each to left`
+-------------------------------
+## `` øɽ `` (Right Align)
+
+Right align a string/string list
+
+### Overloads
+
+- str a: `Justify to right`
+- lst a: `Justify each to right`
+-------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
 Cartesian product over a list of lists
@@ -3434,6 +3460,14 @@ Diagonals of a matrix, starting with the main diagonal.
 ### Overloads
 
 - lst a: `Diagonals of a matrix, starting with the main diagonal.`
+-------------------------------
+## `` Þḋ `` (Anti-diagonals)
+
+Anti-diagonals of a matrix, starting with the main anti-diagonal.
+
+### Overloads
+
+- lst a: `Anti-diagonals of a matrix, starting with the main anti-diagonal.`
 -------------------------------
 ## `` ÞS `` (Sublists)
 

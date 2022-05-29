@@ -130,6 +130,46 @@ def adjacency_matrix_undir(lhs, ctx):
     return adj
 
 
+def align_left(lhs, ctx):
+    """Element øŀ
+    (str) -> left-aligned string
+    (lst) -> left-align lines
+    """
+    ts = vy_type(lhs)
+
+    if ts == str:
+        lhs = lhs.split("\n")
+
+    maxlen = max(len(line) for line in lhs)
+
+    result = [line.ljust(maxlen) for line in lhs]
+
+    if ts == str:
+        return "\n".join(result)
+
+    return result
+
+
+def align_right(lhs, ctx):
+    """element øɽ
+    (str) -> right-aligned string
+    (lst) -> right-align lines
+    """
+    ts = vy_type(lhs)
+
+    if ts == str:
+        lhs = lhs.split("\n")
+
+    maxlen = max(len(line) for line in lhs)
+
+    result = [line.rjust(maxlen) for line in lhs]
+
+    if ts == str:
+        return "\n".join(result)
+
+    return result
+
+
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -175,11 +215,32 @@ def all_diagonals(lhs, ctx):
     Diagonals of a matrix, starting with the main diagonal.
     """
     vector = [iterable(x, ctx=ctx) for x in lhs]
-    all_diags = [[] for _ in range(len(vector) * 2 - 1)]
+    if not vector:
+        return []
+    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
     start = 0
     for row in vector:
-        for i in range(len(vector)):
+        for i in range(len(vector[0])):
             all_diags[(start + i) % len(all_diags)].append(row[i])
+        start -= 1
+    return all_diags
+
+
+def all_antidiagonals(lhs, ctx):
+    """Element Þḋ
+    Anti-diagonals of a matrix, starting with the main anti-diagonal.
+    """
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
+    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
+    start = 0
+    for row in vector:
+        for i in range(len(vector[0])):
+            all_diags[
+                (start - i + min(len(vector), len(vector[0])) - 1)
+                % len(all_diags)
+            ].append(row[i])
         start -= 1
     return all_diags
 
@@ -337,7 +398,8 @@ def anti_diagonal(lhs, ctx):
     (lst) -> Antidiagonal of matrix
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return [lhs[i][len(lhs) - i - 1] for i in range(len(lhs))]
+    m = min(len(lhs), len(lhs[0]))
+    return [lhs[i][m - i - 1] for i in range(m)]
 
 
 def any_true(lhs, ctx):
@@ -1105,7 +1167,9 @@ def diagonal(lhs, ctx):
     (any) -> diagonal of a
     """
     lhs = [iterable(elem, ctx=ctx) for elem in iterable(lhs, ctx=ctx)]
-    return [lhs[i][i] for i in range(len(lhs))]
+    if not lhs:
+        return []
+    return [lhs[i][i] for i in range(min(len(lhs), len(lhs[0])))]
 
 
 def dist_matrix_dir(lhs, ctx):
@@ -1224,20 +1288,21 @@ def element_wise_dyadic_maximum(lhs, rhs, ctx):
     """Element Þ∴
     (lst, lst) -> max(a, b)
     """
-    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
-    return LazyList(
-        dyadic_maximum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
-    )
+    ts = vy_type(lhs, rhs, simple=True)
+    if list in ts:
+        # In theory this gets TCO'd lol
+        return vectorise(element_wise_dyadic_maximum, lhs, rhs, ctx=ctx)
+    return max(lhs, rhs)
 
 
 def element_wise_dyadic_minimum(lhs, rhs, ctx):
     """Element Þ∵
     (lst, lst) -> min(a, b)
     """
-    lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
-    return LazyList(
-        dyadic_minimum(lhs[i], rhs[i], ctx) for i in range(len(lhs))
-    )
+    ts = vy_type(lhs, rhs, simple=True)
+    if list in ts:
+        return vectorise(element_wise_dyadic_minimum, lhs, rhs, ctx=ctx)
+    return min(lhs, rhs)
 
 
 def equals(lhs, rhs, ctx):
@@ -3104,6 +3169,17 @@ def nth_fibonacci(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
 
 
+def nth_fibonacci_0(lhs, ctx):
+    """Element ∆F
+    (num) -> nth fibonacci number, 0 indexed
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.fibonacci(lhs),
+        (str): lambda: lhs,
+    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+
+
 def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
@@ -3355,7 +3431,7 @@ def parity(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: int(lhs % 2),
+        (NUMBER_TYPE): lambda: lhs % 2,
         (str): lambda: halve(lhs, ctx)[-1],
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
@@ -4162,17 +4238,19 @@ def split_on(lhs, rhs, ctx):
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 
-    else:
+    @lazylist
+    def gen():
         ret, temp = [], []
         for item in iterable(lhs, ctx=ctx):
             if item == rhs:
-                ret.append(temp[::])
+                yield temp[::]
                 temp = []
             else:
                 temp.append(item)
         if temp:
-            ret.append(temp)
-        return ret
+            yield temp
+
+    return gen()
 
 
 def split_keep(lhs, rhs, ctx):
@@ -5685,6 +5763,10 @@ def wrap(lhs, rhs, ctx):
             working = []
             lengths = wraps
             for item in iterable(elem, ctx=ctx):
+                # Handle multiple zeroes in sequence
+                while lengths[0] == 0:
+                    yield []
+                    lengths = lengths[1:] + [lengths[0]]
                 working.append(item)
                 if len(working) == lengths[0]:
                     if vy_type(elem) == str:
@@ -6124,6 +6206,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
     "∆f": process_element(nth_fibonacci, 1),
+    "∆F": process_element(nth_fibonacci_0, 1),
     "∆±": process_element(copy_sign, 2),
     "∆%": process_element(mod_pow, 3),
     "∆K": process_element(divisor_sum, 1),
@@ -6210,6 +6293,8 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "øε": process_element(vertical_join_with_filler, 2),
     "ø.": process_element(surround, 2),
+    "øŀ": process_element(align_left, 1),
+    "øɽ": process_element(align_right, 1),
     "Þ*": process_element(cartesian_over_list, 1),
     "Þa": process_element(adjacency_matrix_dir, 1),
     "ÞA": process_element(adjacency_matrix_undir, 1),
@@ -6239,6 +6324,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
     "ÞD": process_element(all_diagonals, 1),
+    "Þḋ": process_element(all_antidiagonals, 1),
     "ÞS": process_element(sublists, 1),
     "ÞṪ": process_element(transpose, 2),
     "ÞṀ": process_element(matrix_multiply, 2),
