@@ -214,7 +214,7 @@
 214. title case
 215. first number where function is truthy
 216. split on function results
-217.  run func on the prev result until the result no longer changes returning all intermediate results
+217. run func on the prev result until the result no longer changes returning all intermediate results
 218. find the index for the first element such that function evaluates as truthy
 219. apply func to the elements in a where the index in b is truthy
 220. zipwith
@@ -226,37 +226,32 @@
 226. Loop an element. Repeat until the results are no longer unique. Record intermediate results.
 227. Return a Boolean array with 1s at the indices in a list.
 228. vectorised length
-229. Shortcut for 2lvƒ (pairwise, vectorise reduce)
-230. Shortcut for ĠvL (group consecutive, vectorised lengths)
-231. Shape of list
-232. Matrix inverse
-233. Grade up
-234. Grade down
-235. Contains - shallow
-236. Contains - deep
-237. Reshape array
-238. Mold one list to the shape of another
-239. take (↑ in APL)
-240. drop (↓ in APL)
-241. Insert zeros (or blanks) in B corresponding to zeros in A
-242. Conjugate a complex number
-243. Solo (≍ in BQN)
-244. Couple (≍ in BQN)
-245. Window (↕ in BQN)
-246. Vectorise but to the rows (˘ in BQN - cells)
-247. Vertical fold (˝ in BQN)
-248. Depth of list
-249. Vertical scan
-250. Deshape (⥊ in BQN)
-251. 
-252. 
-253. 
-254. 
-255. 
-256. 
-257. 
-258. 
-259. 
-260. 
-261. 
-262. 
+229. atop
+230. over
+231. Shortcut for ĠvL (group consecutive, vectorised lengths)
+232. Shape of list
+233. Matrix inverse
+234. Grade up
+235. Grade down
+236. Contains - shallow
+237. Contains - deep
+238. Reshape array
+239. Mold one list to the shape of another
+240. take (↑ in APL)
+241. drop (↓ in APL)
+242. Insert zeros (or blanks) in B corresponding to zeros in A
+243. Conjugate a complex number
+244. Solo (≍ in BQN)
+245. Couple (≍ in BQN)
+246. Window (↕ in BQN)
+247. Vectorise but to the rows (˘ in BQN - cells)
+248. Vertical fold (˝ in BQN)
+249. Depth of list
+250. Vertical scan
+251. Deshape (⥊ in BQN)
+252. apply last element to each item, treating the item as a stack: ƛ~<element>}
+253. maximum by element
+254. mimimun by element
+255. first truthy item by element
+256. remove duplicates by element
+257. number of truthy items by element
