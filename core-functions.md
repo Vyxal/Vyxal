@@ -255,3 +255,4 @@
 255. first truthy item by element
 256. remove duplicates by element
 257. number of truthy items by element
+258. Equal under elementt
