@@ -238,16 +238,16 @@
 238. Mold one list to the shape of another
 239. take (↑ in APL)
 240. drop (↓ in APL)
-241. 
-242.
-243. 
-244. 
-245. 
-246. 
-247. 
-248. 
-249. 
-250. 
+241. Insert zeros (or blanks) in B corresponding to zeros in A
+242. Conjugate a complex number
+243. Solo (≍ in BQN)
+244. Couple (≍ in BQN)
+245. Window (↕ in BQN)
+246. Vectorise but to the rows (˘ in BQN - cells)
+247. Vertical fold (˝ in BQN)
+248. Depth of list
+249. Vertical scan
+250. Deshape (⥊ in BQN)
 251. 
 252. 
 253. 
