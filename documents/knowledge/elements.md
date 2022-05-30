@@ -2047,6 +2047,11 @@ Rotate Stack Right
 print "cookie" forever
 
 -------------------------------
+## `` ඞ `` (sus)
+
+print "sus"
+
+-------------------------------
 ## `` kA `` (Uppercase alphabet)
 
 "ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
