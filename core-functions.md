@@ -200,8 +200,8 @@
 200. lift
 201. if 1, push context variable n
 202. ath prime
-203. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...]
-204. vectorised reverse
+203. e ** n
+204. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...]
 205. keep only alphabet
 206. keep only numbers
 207. cartesian product with self
@@ -238,9 +238,9 @@
 238. Mold one list to the shape of another
 239. take (↑ in APL)
 240. drop (↓ in APL)
-241. Reverse
-242. Vectorised reverse
-243. Reverse 
+241. 
+242.
+243. 
 244. 
 245. 
 246. 
