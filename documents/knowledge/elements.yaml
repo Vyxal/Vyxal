@@ -2772,6 +2772,14 @@
   vectorise: false
   arity: 0
 
+- element: "ඞ"
+  name: sus
+  description: print "sus"
+  vectorise: false
+  arity: 0
+  tests:
+    - '[] : "sus"'
+
 # NOTE: CONSTANTS GO DOWN HERE!!!!!!
 
 - element: "kA"
