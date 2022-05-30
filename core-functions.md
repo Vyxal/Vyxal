@@ -228,19 +228,19 @@
 228. vectorised length
 229. Shortcut for 2lvƒ (pairwise, vectorise reduce)
 230. Shortcut for ĠvL (group consecutive, vectorised lengths)
-231. 
-232. 
-233. 
-234. 
-235. 
-236. 
-237. 
-238. 
-239. 
-240. 
-241. 
-242. 
-243. 
+231. Shape of list
+232. Matrix inverse
+233. Grade up
+234. Grade down
+235. Contains - shallow
+236. Contains - deep
+237. Reshape array
+238. Mold one list to the shape of another
+239. take (↑ in APL)
+240. drop (↓ in APL)
+241. Reverse
+242. Vectorised reverse
+243. Reverse 
 244. 
 245. 
 246. 
