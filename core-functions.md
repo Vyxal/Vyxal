@@ -251,7 +251,7 @@
 251. Deshape (⥊ in BQN)
 252. apply last element to each item, treating the item as a stack: ƛ~<element>}
 253. maximum by element
-254. mimimun by element
+254. mimimum by element
 255. first truthy item by element
 256. remove duplicates by element
 257. number of truthy items by element
