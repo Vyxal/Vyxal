@@ -6189,6 +6189,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
+    "ඞ": process_element('"sus"', 0),
     "🍪": process_element(cookie, 0),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),
