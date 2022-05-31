@@ -370,6 +370,21 @@ def group_by_function(
 ) -> LazyList:
     """Group a list of elements by a function"""
 
+    ret = {}
+    for el in lst:
+        key = safe_apply(function, el, ctx=ctx)
+        if key in ret:
+            ret[key].append(el)
+        else:
+            ret[key] = [el]
+    return list(ret.values())
+
+
+def group_by_function_ordered(
+    lst: VyList, function: types.FunctionType, ctx: Context
+) -> LazyList:
+    """Group a list of elements by a function, but order is preserved"""
+
     ret = []
     is_lst = isinstance(lst, LazyList) or isinstance(lst, list)
     for el in lst:
