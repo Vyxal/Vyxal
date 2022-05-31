@@ -123,7 +123,7 @@
 123. all neighbours
 124. truthy indices after applying
 125. apply to neighbours
-126. invariant
+126. invariant / Equal under element
 127. all equal
 128. increments / deltas
 129. join on spaces
@@ -255,4 +255,3 @@
 255. first truthy item by element
 256. remove duplicates by element
 257. number of truthy items by element
-258. Equal under elementt
