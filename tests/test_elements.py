@@ -9299,7 +9299,7 @@ def test_Counts():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_IsDivisibleArbitraryDuplicate():
+def test_IsDivisibleArbitraryDuplicateOrderedGroupBy():
 
     stack = [vyxalify(item) for item in [15, 5]]
     expected = vyxalify(1)
