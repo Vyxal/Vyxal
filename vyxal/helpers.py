@@ -371,12 +371,16 @@ def group_by_function(
     """Group a list of elements by a function"""
 
     ret = {}
+    is_lst = isinstance(lst, LazyList) or isinstance(lst, list)
     for el in lst:
         key = safe_apply(function, el, ctx=ctx)
         if key in ret:
-            ret[key].append(el)
+            if is_lst:
+                ret[key].append(el)
+            else:
+                ret[key] += el
         else:
-            ret[key] = [el]
+            ret[key] = [el] if is_lst else el
     return list(ret.values())
 
 
