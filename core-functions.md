@@ -314,3 +314,4 @@
 314. two things have same length?
 315. non-vectorising non-equals
 316. exactly equals
+317. all and any
