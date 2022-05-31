@@ -562,10 +562,39 @@ def test_group_by_function():
 
 def test_group_by_function_ordered():
     stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ Ḋ")
-    assert stack[-1] == [[2], [7], [2, 2], [45], [6, 8, 4, 2], [5], [8], [3, 3], [6, 2, 6], [9], [54, 4]]
+    assert stack[-1] == [
+        [2],
+        [7],
+        [2, 2],
+        [45],
+        [6, 8, 4, 2],
+        [5],
+        [8],
+        [3, 3],
+        [6, 2, 6],
+        [9],
+        [54, 4],
+    ]
 
     stack = run_vyxal("`Vyxal Testing Initiative` ⁽A Ḋ")
-    assert stack[-1] == ["Vyx", "a", "l T", "e", "st", "i", "ng ", "I", "n", "i", "t", "ia", "t", "i", "v", "e"]
+    assert stack[-1] == [
+        "Vyx",
+        "a",
+        "l T",
+        "e",
+        "st",
+        "i",
+        "ng ",
+        "I",
+        "n",
+        "i",
+        "t",
+        "ia",
+        "t",
+        "i",
+        "v",
+        "e",
+    ]
 
 
 def test_overlapping_groups_modifier():
