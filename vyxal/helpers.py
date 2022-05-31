@@ -370,14 +370,20 @@ def group_by_function(
 ) -> LazyList:
     """Group a list of elements by a function"""
 
-    ret = {}
+    ret = []
+    is_lst = isinstance(lst, LazyList) or isinstance(lst, list)
     for el in lst:
-        key = safe_apply(function, el, ctx=ctx)
-        if key in ret:
-            ret[key].append(el)
+        k = safe_apply(function, el, ctx=ctx)
+        if ret == []:
+            ret.append([k, [el] if is_lst else el])
+        elif ret[-1][0] == k:
+            if is_lst:
+                ret[-1][1].append(el)
+            else:
+                ret[-1][1] += el
         else:
-            ret[key] = [el]
-    return list(ret.values())
+            ret.append([k, [el] if is_lst else el])
+    return [x[1] for x in ret]
 
 
 def has_ind(lst: VyList, ind: int) -> bool:
