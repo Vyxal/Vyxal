@@ -480,9 +480,11 @@ Remove duplicates
 any a -> uniquify(a) (Remove duplicates)
 `)
 
-codepage_descriptions.push(`Replace
-Replace b with c in a
+codepage_descriptions.push(`Replace / Map to Indices
+Replace b with c in a / Map a function at elements of a list whose indices are in another list
 any a, any b, any c -> a.replace(b,c) (replace)
+lst a, lst b, fun c -> Map a function to elements of a list whose indices are in another list
+lst a, num b, fun c -> Apply a function to element b within list a
 `)
 
 codepage_descriptions.push(`Wrap
@@ -706,13 +708,15 @@ any a -> min(a, key=lambda x: x[-1]) (Minimum by last item)
 `)
 
 codepage_descriptions.push(`Dyadic Maximum
-Maximum of two values
+Maximum of two values / Maximum of a list by a function
 any a, any b -> max(a,b)
+any a, fun b -> max(a,key=b)
 `)
 
 codepage_descriptions.push(`Dyadic Minimum
-Minimum of two values
+Minimum of two values / Minimum of a list by a function
 any a, any b -> min(a,b)
+any a, fun b -> min(a,key=b)
 `)
 
 codepage_descriptions.push(`Increment / Space Replace With 0
