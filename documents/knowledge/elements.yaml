@@ -898,11 +898,13 @@
       - '["abdbcdbch"] : "abdch"'
 
 - element: "V"
-  name: Replace
-  description: Replace b with c in a
+  name: Replace / Map to Indices
+  description: Replace b with c in a / Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
       any-any-any: a.replace(b,c) (replace)
+      lst-lst-fun: Map a function to elements of a list whose indices are in another list
+      lst-num-fun: Apply a function to element b within list a
   vectorise: false
   tests:
       - '["hela","a","lo"] : "hello"'
@@ -1330,10 +1332,11 @@
 
 - element: "∴"
   name: Dyadic Maximum
-  description: Maximum of two values
+  description: Maximum of two values / Maximum of a list by a function
   arity: 2
   overloads:
       any-any: max(a,b)
+      any-fun: max(a,key=b)
   vectorise: false
   tests:
       - "[5,3] : 5"
@@ -1342,10 +1345,11 @@
 
 - element: "∵"
   name: Dyadic Minimum
-  description: Minimum of two values
+  description: Minimum of two values / Minimum of a list by a function
   arity: 2
   overloads:
       any-any: min(a,b)
+      any-fun: min(a,key=b)
   vectorise: false
   tests:
       - "[5,3] : 3"
@@ -1714,7 +1718,7 @@
       - '["abca", "a"] : ["","bca"]'
       - '["defg", "g"] : ["def",""]'
       - '["defg", "x"] : ["defg"]'
-      - '[[1, 2, 3, 4, 5, 6], [0, 0, 1, 2, 3]] : [[], [], [1], [2, 3], [4, 5, 6]]'
+      - "[[1, 2, 3, 4, 5, 6], [0, 0, 1, 2, 3]] : [[], [], [1], [2, 3], [4, 5, 6]]"
 
 - element: "ẋ"
   name: Repeat
@@ -1916,7 +1920,6 @@
       - '["abcd", ".*"] : "abcd"'
       - '["abcd", "a.."] : "abc"'
       - '["abcd", "efg"] : ""'
-
 
 - element: "¡"
   name: Factorial
@@ -4252,7 +4255,7 @@
       - '[[["x",3]]] : "xxx"'
       - '[[["z",2],["a",3]]] : "zzaaa"'
       - '[[[2,"z"],[3,"a"]]] : "zzaaa"'
-      - '[[[1,2],[2,3],[3,5]]] : [1,1,2,2,2,3,3,3,3,3]'
+      - "[[[1,2],[2,3],[3,5]]] : [1,1,2,2,2,3,3,3,3,3]"
 
 - element: "øḊ"
   name: Dyadic Run Length Decode
@@ -4629,9 +4632,9 @@
       any-lst: b.surround(a)
   vectorise: true
   tests:
-    - '["abc", "*"] : "*abc*"'
-    - "[[1, 2, 3], 4] : [4, 1, 2, 3, 4]"
-    - "[4, [1, 2, 3]] : [4, 1, 2, 3, 4]"
+      - '["abc", "*"] : "*abc*"'
+      - "[[1, 2, 3], 4] : [4, 1, 2, 3, 4]"
+      - "[4, [1, 2, 3]] : [4, 1, 2, 3, 4]"
 
 - element: "øŀ"
   name: Left Align
@@ -4642,7 +4645,7 @@
       lst: Justify each to left
   vectorise: false
   tests:
-    - '[["a", "bc", "def"]] : ["a  ", "bc ", "def"]'
+      - '[["a", "bc", "def"]] : ["a  ", "bc ", "def"]'
 
 - element: "øɽ"
   name: Right Align
@@ -4653,7 +4656,7 @@
       lst: Justify each to right
   vectorise: false
   tests:
-    - '[["a", "bc", "def"]] : ["  a", " bc", "def"]'
+      - '[["a", "bc", "def"]] : ["  a", " bc", "def"]'
 
 - element: "Þ*"
   name: Cartesian product over list
@@ -4742,7 +4745,6 @@
       - "[[1, 2, 7]] : 1"
       - "[3] : 0"
       - "[[1, [2, 3, [4]], [69]]] : 3"
-
 
 - element: "ÞẊ"
   name: Cartesian Power
