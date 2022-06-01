@@ -90,7 +90,7 @@
 90. palindromise
 91. increment
 92. decrement
-93. double
+93. double / dyadify
 94. half
 95. Floor division
 96. Floor
@@ -317,3 +317,4 @@
 317. all and any
 318. fold fixedpoint
 319. connected uniquify (`Ġvh`)
+320. triple / triadify
