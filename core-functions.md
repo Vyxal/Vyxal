@@ -318,3 +318,5 @@
 318. fold fixedpoint
 319. connected uniquify (`Ġvh`)
 320. triple / triadify
+321. number compression
+322. next two bytes number compression
