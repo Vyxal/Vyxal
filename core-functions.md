@@ -321,3 +321,6 @@
 321. number compression
 322. next two bytes number compression
 323. powerset
+324. empty string
+325. empty space
+326. move element to beginning of list
