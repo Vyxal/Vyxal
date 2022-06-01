@@ -531,13 +531,13 @@ def test_shuffle():
 
 
 def test_group_by_function():
-    stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ġ")
+    stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ ġ")
     assert stack[-1] == [
         [2, 2, 2, 6, 8, 4, 2, 8, 6, 2, 6, 54, 4],
         [7, 45, 5, 3, 3, 9],
     ]
 
-    stack = run_vyxal("`Vyxal Testing Initiative` ⁽Aġ")
+    stack = run_vyxal("`Vyxal Testing Initiative` ⁽A ġ")
     assert stack[-1] == [
         [
             "V",
@@ -557,6 +557,43 @@ def test_group_by_function():
             "v",
         ],
         ["a", "e", "i", "I", "i", "i", "a", "i", "e"],
+    ]
+
+
+def test_group_by_function_ordered():
+    stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ Ḋ")
+    assert stack[-1] == [
+        [2],
+        [7],
+        [2, 2],
+        [45],
+        [6, 8, 4, 2],
+        [5],
+        [8],
+        [3, 3],
+        [6, 2, 6],
+        [9],
+        [54, 4],
+    ]
+
+    stack = run_vyxal("`Vyxal Testing Initiative` ⁽A Ḋ")
+    assert stack[-1] == [
+        "Vyx",
+        "a",
+        "l T",
+        "e",
+        "st",
+        "i",
+        "ng ",
+        "I",
+        "n",
+        "i",
+        "t",
+        "ia",
+        "t",
+        "i",
+        "v",
+        "e",
     ]
 
 

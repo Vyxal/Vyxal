@@ -1032,12 +1032,14 @@ Returns a list of [item, count of item in the top of stack]
 any a -> [[x, a.count(x)] for x in a]
 `)
 
-codepage_descriptions.push(`Is Divisible / Arbitrary Duplicate
-Returns whether two items are divisible / numerous copies of the top of the stack
+codepage_descriptions.push(`Is Divisible / Arbitrary Duplicate / Ordered Group By
+Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
 num a, num b -> a % b == 0
 num a, str b -> a copies of b
 str a, num b -> b copies of a
 str a, str b -> b + " " + a
+any a, fun b -> Group a by the results of b. Order is preserved
+fun a, any b -> Group b by the results of a. Order is preserved
 `)
 
 codepage_descriptions.push(`Vyxal Exec / Reciprocal
