@@ -316,3 +316,4 @@
 316. exactly equals
 317. all and any
 318. fold fixedpoint
+319. connected uniquify (`Ġvh`)
