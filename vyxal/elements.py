@@ -2350,6 +2350,12 @@ def is_divisible(lhs, rhs, ctx):
             (NUMBER_TYPE, str): lambda: [rhs] * lhs,
             (str, NUMBER_TYPE): lambda: [lhs] * rhs,
             (str, str): lambda: rhs + " " + lhs,
+            (types.FunctionType, ts[1]): lambda: group_by_function_ordered(
+                iterable(rhs, ctx=ctx), lhs, ctx=ctx
+            ),
+            (ts[0], types.FunctionType): lambda: group_by_function_ordered(
+                iterable(lhs, ctx=ctx), rhs, ctx=ctx
+            ),
         }.get(ts, lambda: vectorise(helper, lhs, rhs, ctx=ctx))()
 
     return {
@@ -6199,6 +6205,7 @@ elements: dict[str, tuple[str, int]] = {
         "stack += [temp[-1]] + temp[:-1]",
         -1,
     ),
+    "ඞ": process_element('"sus"', 0),
     "🍪": process_element(cookie, 0),
     "∆²": process_element(is_square, 1),
     "∆c": process_element(cosine, 1),

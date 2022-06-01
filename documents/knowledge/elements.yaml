@@ -2016,14 +2016,16 @@
       - '["Hello, World!"] : [["H", 1], ["e", 1], ["l", 3], ["o", 2], [",", 1], [" ", 1], ["W", 1], ["r", 1], ["d", 1], ["!", 1]]'
 
 - element: "Ḋ"
-  name: Is Divisible / Arbitrary Duplicate
+  name: Is Divisible / Arbitrary Duplicate / Ordered Group By
   arity: 2
-  description: Returns whether two items are divisible / numerous copies of the top of the stack
+  description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
   overloads:
       num-num: a % b == 0
       num-str: a copies of b
       str-num: b copies of a
       str-str: b + " " + a
+      any-fun: Group a by the results of b. Order is preserved
+      fun-any: Group b by the results of a. Order is preserved
   vectorise: true
   tests:
       - "[15, 5] : 1"
@@ -2774,6 +2776,14 @@
   description: print "cookie" forever
   vectorise: false
   arity: 0
+
+- element: "ඞ"
+  name: sus
+  description: print "sus"
+  vectorise: false
+  arity: 0
+  tests:
+    - '[] : "sus"'
 
 # NOTE: CONSTANTS GO DOWN HERE!!!!!!
 
