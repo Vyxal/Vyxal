@@ -1258,6 +1258,10 @@ def dyadic_maximum(lhs, rhs, ctx):
     """Element ∴
     (any, any) -> max(a, b)
     """
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return max_by_function(lhs, rhs, ctx)
+
     return lhs if strict_greater_than(lhs, rhs, ctx) else rhs
 
 
@@ -1265,6 +1269,9 @@ def dyadic_minimum(lhs, rhs, ctx):
     """Element ∵
     (any, any) -> min(a, b)
     """
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        return min_by_function(lhs, rhs, ctx)
     return lhs if strict_less_than(lhs, rhs, ctx) else rhs
 
 
@@ -3844,6 +3851,9 @@ def replace(lhs, rhs, other, ctx):
     """Element V
     (any, any, any) -> a.replace(b, c)
     """
+    ts = vy_type(lhs, rhs, other)
+    if types.FunctionType in ts:
+        return apply_at(lhs, rhs, other, ctx=ctx)
     if vy_type(lhs, simple=True) is not list:
         return str(lhs).replace(str(rhs), str(other))
     else:
