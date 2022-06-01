@@ -260,7 +260,7 @@ window.addEventListener("DOMContentLoaded", e => {
 })
 
 document.addEventListener('keydown', (event) => {
-    if (event.ctrlKey && event.key == 'Enter') {
+    if (event.metaKey && event.key == 'Enter') {
         $("#run_button").click()
     }
 })
