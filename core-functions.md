@@ -315,3 +315,4 @@
 315. non-vectorising non-equals
 316. exactly equals
 317. all and any
+318. fold fixedpoint
