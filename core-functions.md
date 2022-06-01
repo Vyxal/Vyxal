@@ -320,3 +320,4 @@
 320. triple / triadify
 321. number compression
 322. next two bytes number compression
+323. powerset
