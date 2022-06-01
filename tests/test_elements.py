@@ -3954,7 +3954,7 @@ def test_Uniquify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Replace():
+def test_ReplaceMaptoIndices():
 
     stack = [vyxalify(item) for item in ["hela","a","lo"]]
     expected = vyxalify("hello")
