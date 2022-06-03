@@ -668,13 +668,15 @@ Remove duplicates
 
 - any a: `uniquify(a) (Remove duplicates)`
 -------------------------------
-## `` V `` (Replace)
+## `` V `` (Replace / Map to Indices)
 
-Replace b with c in a
+Replace b with c in a / Map a function at elements of a list whose indices are in another list
 
 ### Overloads
 
 - any a, any b, any c: `a.replace(b,c) (replace)`
+- lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
+- lst a, num b, fun c: `Apply a function to element b within list a`
 -------------------------------
 ## `` W `` (Wrap)
 
@@ -1003,19 +1005,21 @@ Minimum by last item
 -------------------------------
 ## `` ∴ `` (Dyadic Maximum)
 
-Maximum of two values
+Maximum of two values / Maximum of a list by a function
 
 ### Overloads
 
 - any a, any b: `max(a,b)`
+- any a, fun b: `max(a,key=b)`
 -------------------------------
 ## `` ∵ `` (Dyadic Minimum)
 
-Minimum of two values
+Minimum of two values / Minimum of a list by a function
 
 ### Overloads
 
 - any a, any b: `min(a,b)`
+- any a, fun b: `min(a,key=b)`
 -------------------------------
 ## `` › `` (Increment / Space Replace With 0)
 
