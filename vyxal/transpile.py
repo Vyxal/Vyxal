@@ -493,7 +493,7 @@ def transpile_lambda(
             "this = self;",
             indent + 1,
         )
-        + indent_str("ctx.function_stack.append(this)", indent + 1)
+        + indent_str("ctx.function_stack.append(this);", indent + 1)
         + indent_str(
             "ctx.context_values.append(list(deep_copy(stack)) "
             "if len(stack) != 1 else deep_copy(stack[0]))",
