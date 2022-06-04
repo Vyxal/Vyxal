@@ -150,7 +150,6 @@
 150. reciprocal
 151. sign of number
 152. sublists
-153. tighten
 154. pair
 155. triplet (x, y, z -> [x, y, z])
 156. base conversion
