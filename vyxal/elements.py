@@ -5,7 +5,6 @@ the python equivalent of command is stored
 """
 
 import collections
-import copy
 import itertools
 import math
 import random
