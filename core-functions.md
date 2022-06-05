@@ -335,3 +335,5 @@
 335. ring translate
 336. Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
 337. All permutations of z. May contain duplicates.
+338. Apply element only to the head of list
+339. Apply element only to the first n elements of list
