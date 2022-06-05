@@ -1,0 +1,2815 @@
+- element: "¡"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¿"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¤"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¢"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "€"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₪"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "©"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "®"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¶"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "æ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ð"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "▲"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "▼"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ƒ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⟨"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⟩"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "λ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ƛ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ω"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Λ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "µ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "∆"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ø"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Þ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "½"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ʑ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ʒ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ʓ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "×"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "÷"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "£"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¥"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: " "
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "!"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: """
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "#"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "$"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "%"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "&"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "'"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "("
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: ")"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "*"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "+"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: ","
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "-"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "."
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "/"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "0"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "1"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "2"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "3"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "4"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "5"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "6"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "7"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "8"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "9"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: ":"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: ";"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "<"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "="
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: ">"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "?"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "@"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "A"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "B"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "C"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "D"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "E"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "F"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "G"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "H"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "I"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "J"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "K"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "L"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "M"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "N"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "O"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "P"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Q"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "R"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "S"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "T"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "U"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "V"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "W"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "X"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Y"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Z"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "["
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "\"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "]"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "^"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "_"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "`"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "a"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "b"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "c"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "d"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "e"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "f"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "g"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "h"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "i"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "j"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "k"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "l"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "m"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "n"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "o"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "p"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "q"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "r"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "s"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "t"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "u"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "v"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "w"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "x"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "y"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "z"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "{"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "|"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "}"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "~"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¦"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ȧ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḃ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ċ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḋ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ė"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḟ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ġ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḣ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "İ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ŀ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṁ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṅ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ȯ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṗ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṙ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṡ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṫ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ẇ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ẋ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ẏ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ż"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ȧ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḃ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ċ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḋ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ė"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḟ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ġ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḣ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ŀ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṁ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṅ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ȯ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṗ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṙ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṡ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṫ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ẇ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ẋ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ẏ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ż"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "≤"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "≥"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "≠"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⁼"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "→"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "←"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¬"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₀"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₁"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₂"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₃"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₄"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₅"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₆"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₇"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₈"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₉"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "«"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "»"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⌐"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₩"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "₳"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⊻"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⁰"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¹"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "²"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "³"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⁺"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⁻"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "⁾"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "√"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "∑"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Π"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ạ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḅ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḍ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ẹ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḥ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ị"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḳ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ḷ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṃ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṇ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ọ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṛ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṣ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "Ṭ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ạ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḅ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḍ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ẹ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ị"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ḷ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṃ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ọ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṛ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṣ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ṭ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "в"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "н"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "м"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "т"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "х"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "∞"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "±"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "□"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "‛"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "℅"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "¯"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "≈"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ı"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "‹"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "›"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "β"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ε"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "δ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ζ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "ξ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "σ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "τ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "χ"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "§"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "↑"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "↓"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "∥"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "∦"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
+
+- element: "≡"
+  name: ""
+  description: ""
+  arity: "01234?"
+  overloads:
+    <overload>:
+  vectorise: true|false
+  tests:
+    - inputs:
+      output:
