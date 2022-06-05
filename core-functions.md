@@ -232,47 +232,45 @@
 232. Loop an element. Repeat until the results are no longer unique. Record intermediate results.
 233. Return a Boolean array with 1s at the indices in a list.
 234. vectorised length
-235. atop
-236. over
-237. Shortcut for ĠvL (group consecutive, vectorised lengths)
-238. Shape of list
-239. Matrix inverse
-240. Grade up
-241. Grade down
-242. Contains - shallow
-243. Contains - deep
-244. Reshape array
-245. Mold one list to the shape of another
-246. take (↑ in APL)
-247. drop (↓ in APL)
-248. Insert zeros (or blanks) in B corresponding to zeros in A
-249. Conjugate a complex number
-250. Solo (≍ in BQN)
-251. Couple (≍ in BQN)
-252. Window (↕ in BQN)
-253. Vectorise but to the rows (˘ in BQN - cells)
-254. Vertical fold (˝ in BQN)
-255. Depth of list
-256. Vertical scan
-257. Deshape (⥊ in BQN)
-258. apply last element to each item, treating the item as a stack: ƛ~<element>}
-259. maximum by element
-260. mimimum by element
-261. first truthy item by element
-262. remove duplicates by element
-263. number of truthy items by element
-264. diagonals of list
-265. anti-diagonals
-266. slice index
-267. get function arity
-268. remove an item from a list
-269. remove a string from another string
-270. remove whitespace
-271. remove non-numbers
-272. remove non-alphabet
-273. remove non-alphanumeric
-274. remove alphanumeri
-275. remove alphabet
+235. Shortcut for ĠvL (group consecutive, vectorised lengths)
+236. Shape of list
+237. Matrix inverse
+238. Grade up
+239. Grade down
+240. Contains - shallow
+241. Contains - deep
+242. Reshape array
+243. Mold one list to the shape of another
+244. take (↑ in APL)
+245. drop (↓ in APL)
+246. Insert zeros (or blanks) in B corresponding to zeros in A
+247. Conjugate a complex number
+248. Solo (≍ in BQN)
+249. Couple (≍ in BQN)
+250. Window (↕ in BQN)
+251. Vectorise but to the rows (˘ in BQN - cells)
+252. Vertical fold (˝ in BQN)
+253. Depth of list
+254. Vertical scan
+255. Deshape (⥊ in BQN)
+256. apply last element to each item, treating the item as a stack: ƛ~<element>}
+257. maximum by element
+258. mimimum by element
+259. first truthy item by element
+260. remove duplicates by element
+261. number of truthy items by element
+262. diagonals of list
+263. anti-diagonals
+264. slice index
+265. get function arity
+266. remove an item from a list
+267. remove a string from another string
+268. remove whitespace
+269. remove non-numbers
+270. remove non-alphabet
+271. remove non-alphanumeric
+272. remove alphanumeri
+273. remove alphabet
 276. remove numbers
 277. Prepend a default value of the appropriate type to a list. Default values are either falsy values (0,[],...) or functions returning those values.
 278. length is 1?
@@ -337,3 +335,15 @@
 337. All permutations of z. May contain duplicates.
 338. Apply element only to the head of list
 339. Apply element only to the first n elements of list
+340. Cartesian product over a list of lists
+341. Uniquify Mask
+342. is sorted?
+343. Pipe ("|") constant
+344. Backslash ("\") constant
+345. if-equal structure (`=[`)
+346. split into lengths of 2 (`2ẇ`)
+347. Apply element without popping
+348. Parallel apply
+349. Parallel apply into list
+350. Inner-product by element
+351. Apply last element to register
