@@ -5,7 +5,6 @@ the python equivalent of command is stored
 """
 
 import collections
-import copy
 import itertools
 import math
 import random
@@ -1740,8 +1739,7 @@ def gen_from_fn(lhs, rhs, ctx):
     def gen():
         yield from lhs
 
-        made = []
-        made += lhs
+        made = lhs[:]
 
         func_arity = (
             rhs.stored_arity if "stored_arity" in dir(rhs) else rhs.arity
