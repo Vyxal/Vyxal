@@ -1739,12 +1739,15 @@ def gen_from_fn(lhs, rhs, ctx):
     def gen():
         yield from lhs
 
-        made = lhs
+        made = lhs[:]
 
+        func_arity = (
+            rhs.stored_arity if "stored_arity" in dir(rhs) else rhs.arity
+        )
         while True:
-            next_item = safe_apply(rhs, *made, ctx=ctx)
-            made.append(next_item)
-            yield next_item
+            ret = safe_apply(rhs, *made[-func_arity:], ctx=ctx)
+            made.append(ret)
+            yield ret
 
     return LazyList(gen(), isinf=True)
 
