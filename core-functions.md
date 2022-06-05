@@ -347,3 +347,5 @@
 349. Parallel apply into list
 350. Inner-product by element
 351. Apply last element to register
+352. Head remove
+353. Tail remove
