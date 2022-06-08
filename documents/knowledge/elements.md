@@ -3398,6 +3398,15 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 
 -------------------------------
+## `` Þ÷ `` (Divide list into n parts)
+
+Divide a list into n parts
+
+### Overloads
+
+- any a, num b: `Divide a into b parts`
+- num a, any b: `Divide b into a parts`
+-------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
