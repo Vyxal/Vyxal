@@ -3385,6 +3385,15 @@ Find the first multidimensional index of a value in another
 
 - lst a, any b: `Find the first occurrence of a in b and return as a multidimensional index`
 -------------------------------
+## `` ÞḞ `` (Fill to make rectangular)
+
+Fill a 2-D list to make it rectangular
+
+### Overloads
+
+- lst a, any b: `Fill a with b to make it rectangular`
+- any a, lst b: `Fill b with a to make it rectangular`
+-------------------------------
 ## `` Þm `` (Zero Matrix)
 
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
