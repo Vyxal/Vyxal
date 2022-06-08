@@ -610,7 +610,7 @@ def test_cycle():
     assert stack[-1][:6] == [1, 2, 3, 4, 1, 2]
 
     stack = run_vyxal("`abc`Þċ")
-    assert stack[-1][:4] == ["a","b","c","a"]
+    assert stack[-1][:4] == ["a", "b", "c", "a"]
 
     stack = run_vyxal("543fÞċ")
     assert stack[-1][:6] == [5, 4, 3, 5, 4, 3]

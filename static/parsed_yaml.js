@@ -2544,6 +2544,11 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> Returns true if the item is not sorted in either descending or ascending order.
 `
+codepage_descriptions[142] += `
+Þċ (Cycle)
+Form an infinite list from a vector.
+lst a -> Form an infinite list from a vector.
+`
 codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
