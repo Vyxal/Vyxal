@@ -4846,6 +4846,17 @@
       - "[[[1,2,3],[4,5,6]], 5] : [1, 1]"
       - '[["abc","def",["hij","klm","nop"]], "m"] : [2,1,2]'
 
+- element: "ÞḞ"
+  name: Fill to make rectangular
+  description: Fill a 2-D list to make it rectangular
+  arity: 2
+  overloads:
+      lst-any: Fill a with b to make it rectangular
+      any-lst: Fill b with a to make it rectangular
+  vectorise: false
+  tests:
+      - "[[[1,2,3],[4,5],[6]], 0] : [[1, 2, 3], [4, 5, 0], [6, 0, 0]]"
+
 - element: "Þm"
   name: Zero Matrix
   description: Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
