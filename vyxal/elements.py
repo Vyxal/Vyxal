@@ -5936,6 +5936,16 @@ def mod_pow(lhs, rhs, other, ctx: Context):
     return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
 
 
+def fill(lhs, rhs, ctx: Context):
+    """Element ÞḞ
+    (any, any) -> fill a with b to make a rectangular
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list and ts[0] != list:
+        return fill(rhs, lhs, ctx)
+    return transpose(transpose(lhs, filler=rhs, ctx=ctx))
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6383,6 +6393,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þi": process_element(multi_dimensional_index, 2),
     "ÞI": process_element(all_indices_multidim, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
+    "ÞḞ": process_element(fill, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
