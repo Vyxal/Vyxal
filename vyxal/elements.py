@@ -5269,7 +5269,7 @@ def vy_ceil(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: math.ceil(lhs),
+        (NUMBER_TYPE): lambda: lhs.imag if type(lhs) == complex else (sympy.im(lhs) if is_sympy(lhs) and not lhs.is_real else math.ceil(lhs)),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
@@ -5399,8 +5399,10 @@ def vy_floor(lhs, ctx):
     (str) -> integer part of a
     """
     ts = vy_type(lhs)
+    print(ts)
+    print(type(lhs))
     return {
-        (NUMBER_TYPE): lambda: math.floor(lhs),
+        (NUMBER_TYPE): lambda: lhs.real if type(lhs) == complex else (sympy.re(lhs) if is_sympy(lhs) and not lhs.is_real else math.floor(lhs)),
         (str): lambda: int(
             "".join([char for char in lhs if char in "0123456789"] or "0")
         ),

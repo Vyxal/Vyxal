@@ -2301,10 +2301,11 @@
 
 - element: "⌈"
   name: Ceiling
-  description: Take the ceiling of a number / split a string on spaces
+  description: Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
   arity: 1
   overloads:
       num: ceil(a) (Ceiling)
+      complex: imaginary part of a
       str: Split on spaces
   vectorise: true
   tests:
@@ -2312,19 +2313,22 @@
       - "[4.5] : 5"
       - "[[1.52,2.9,3.3]] : [2,3,4]"
       - '["hello world"] : ["hello","world"]'
+      - '[2j+3] : 2'
 
 - element: "⌊"
   name: "Floor"
-  description: Floor a number / extract the integer part of a string
+  description: Floor a number / real part of complex number / extract the integer part of a string
   arity: 1
   overloads:
       num: floor(a) (Floor)
+      complex: real part of a
       str: Integer part of a
   vectorise: true
   tests:
       - "[5.3] : 5"
       - "[[5.3,4.7]] : [5, 4]"
       - '["123abc"] : 123'
+      - '[2j+3] : 3'
 
 - element: "¯"
   name: Deltas
