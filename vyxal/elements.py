@@ -6420,6 +6420,10 @@ elements: dict[str, tuple[str, int]] = {
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
     "¨*": process_element(all_multiples, 1),
+    "¨?": (
+        'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
+        0,
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
