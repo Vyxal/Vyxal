@@ -664,3 +664,8 @@ def test_generators():
 
     stack = run_vyxal('1 1" ⁽d Ḟ')
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
+
+
+def test_coords_deepmap():
+    stack = run_vyxal("λh; ÞZ", inputs=[[1, 2, [3, [4, [3]]]]])
+    assert stack[-1] == [0, 1, [2, [2, [2]]]]

@@ -115,13 +115,14 @@ Calls a function / executes as python / len(prime factors) / vectorised not
 - str a: `exec as python`
 - lst a: `vectorised not`
 -------------------------------
-## `` € `` (Split On)
+## `` € `` (Split On / Fill By Coordinates)
 
-Split a on b (works on lists and numbers as well)
+Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
 
 ### Overloads
 
 - any a, any b: `a split on b`
+- any a, fun b: `For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.`
 -------------------------------
 ## `` ½ `` (Halve)
 
@@ -1228,11 +1229,12 @@ All possible combinations of a
 -------------------------------
 ## `` ṙ `` (Round)
 
-Round a number to the nearest integer
+Round a number to the nearest integer / real and imaginary part of complex number
 
 ### Overloads
 
 - num a: `round(a)`
+- complex a: `[real(a), imag(a)]`
 - str a: `quad palindromize with overlap`
 -------------------------------
 ## `` ṡ `` (Sort by Function)
@@ -1684,20 +1686,22 @@ Shift the top of stack two values down
 -------------------------------
 ## `` ⌈ `` (Ceiling)
 
-Take the ceiling of a number / split a string on spaces
+Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
 
 ### Overloads
 
 - num a: `ceil(a) (Ceiling)`
+- complex a: `imaginary part of a`
 - str a: `Split on spaces`
 -------------------------------
 ## `` ⌊ `` (Floor)
 
-Floor a number / extract the integer part of a string
+Floor a number / real part of complex number / extract the integer part of a string
 
 ### Overloads
 
 - num a: `floor(a) (Floor)`
+- complex a: `real part of a`
 - str a: `Integer part of a`
 -------------------------------
 ## `` ¯ `` (Deltas)
@@ -3385,6 +3389,15 @@ Find the first multidimensional index of a value in another
 
 - lst a, any b: `Find the first occurrence of a in b and return as a multidimensional index`
 -------------------------------
+## `` ÞḞ `` (Fill to make rectangular)
+
+Fill a 2-D list to make it rectangular
+
+### Overloads
+
+- lst a, any b: `Fill a with b to make it rectangular`
+- any a, lst b: `Fill b with a to make it rectangular`
+-------------------------------
 ## `` Þm `` (Zero Matrix)
 
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
@@ -3397,6 +3410,15 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 
+-------------------------------
+## `` Þ÷ `` (Divide list into n parts)
+
+Divide a list into n parts
+
+### Overloads
+
+- any a, num b: `Divide a into b parts`
+- num a, any b: `Divide b into a parts`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
