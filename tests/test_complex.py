@@ -657,7 +657,7 @@ def test_string_interop():
 
 def test_yen_dictionary_compression():
     stack = run_vyxal("`¥£` `¥¥` `£¥` W")
-    assert stack[-1] == ['hyl', 'hyc', 'gpu']
+    assert stack[-1] == ["hyl", "hyc", "gpu"]
 
 
 def test_generators():
