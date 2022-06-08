@@ -5269,7 +5269,13 @@ def vy_ceil(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: lhs.imag if type(lhs) == complex else (sympy.im(lhs) if is_sympy(lhs) and not lhs.is_real else math.ceil(lhs)),
+        (NUMBER_TYPE): lambda: lhs.imag
+        if type(lhs) == complex
+        else (
+            sympy.im(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.ceil(lhs)
+        ),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
@@ -5402,7 +5408,13 @@ def vy_floor(lhs, ctx):
     print(ts)
     print(type(lhs))
     return {
-        (NUMBER_TYPE): lambda: lhs.real if type(lhs) == complex else (sympy.re(lhs) if is_sympy(lhs) and not lhs.is_real else math.floor(lhs)),
+        (NUMBER_TYPE): lambda: lhs.real
+        if type(lhs) == complex
+        else (
+            sympy.re(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.floor(lhs)
+        ),
         (str): lambda: int(
             "".join([char for char in lhs if char in "0123456789"] or "0")
         ),
@@ -5628,7 +5640,13 @@ def vy_round(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: [lhs.real, lhs.imag] if type(lhs) == complex else (list(lhs.as_real_imag()) if is_sympy(lhs) and not lhs.is_real else round(lhs)),
+        NUMBER_TYPE: lambda: [lhs.real, lhs.imag]
+        if type(lhs) == complex
+        else (
+            list(lhs.as_real_imag())
+            if is_sympy(lhs) and not lhs.is_real
+            else round(lhs)
+        ),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
