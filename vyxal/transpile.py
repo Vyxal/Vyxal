@@ -112,15 +112,15 @@ def transpile_token(
                 after_char = next(iterator, "")
                 if after_char == "`":
                     temp += "`"
-                elif after_char == "¥":
-                    temp += "¥"
+                elif after_char == "Π":
+                    temp += "Π"
                 else:
                     temp += "\\" + after_char
             elif char == '"':
                 temp += '\\"'
             elif char == "\n":
                 temp += "\\n"
-            elif char == "¥":
+            elif char == "Π":
                 temp += '" + vy_str(pop(stack, 1, ctx), ctx=ctx) + "'
             else:
                 temp += char

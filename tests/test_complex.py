@@ -651,13 +651,8 @@ def test_canvas():
 
 
 def test_string_interop():
-    stack = run_vyxal("1 2 `hello ¥ world ¥`")
+    stack = run_vyxal("1 2 `hello Π world Π`")
     assert stack[-1] == "hello 2 world 1"
-
-
-def test_yen_dictionary_compression():
-    stack = run_vyxal("`¥£` `¥¥` `£¥` W")
-    assert stack[-1] == ["hyl", "hyc", "gpu"]
 
 
 def test_generators():
