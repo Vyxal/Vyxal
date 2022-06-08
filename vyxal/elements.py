@@ -1096,6 +1096,16 @@ def custom_pad_right(lhs, rhs, other, ctx):
         return lhs.rjust(int(other), rhs)
 
 
+@lazylist
+def cycle(lhs, ctx):
+    """Element Þċ
+    (any) -> infinite list of elements of a
+    """
+    lhs = iterable(lhs, range, ctx=ctx)
+    while True:
+        yield from lhs
+
+
 def decrement(lhs, ctx):
     """Element ‹
     (num) -> a - 1
@@ -6336,6 +6346,7 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
         2,
     ),
+    "Þċ": process_element(cycle, 1),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
     "ÞI": process_element(all_indices_multidim, 2),
