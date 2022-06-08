@@ -2547,6 +2547,11 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> Returns true if the item is not sorted in either descending or ascending order.
 `
+codepage_descriptions[142] += `
+Þċ (Cycle)
+Form an infinite list from a vector.
+lst a -> Form an infinite list from a vector.
+`
 codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
@@ -2662,4 +2667,8 @@ Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 codepage_descriptions[112] += `
 ¨p (For Each Overlapping Pair)
 Run element for each overlapping pair. Equivalent to \`2lvƒ\`
+`
+codepage_descriptions[63] += `
+¨? (Explicit STDIN)
+Read from STDIN, even if there are arguments
 `
