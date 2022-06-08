@@ -1229,11 +1229,12 @@ All possible combinations of a
 -------------------------------
 ## `` ṙ `` (Round)
 
-Round a number to the nearest integer
+Round a number to the nearest integer / real and imaginary part of complex number
 
 ### Overloads
 
 - num a: `round(a)`
+- complex a: `[real(a), imag(a)]`
 - str a: `quad palindromize with overlap`
 -------------------------------
 ## `` ṡ `` (Sort by Function)
@@ -1685,20 +1686,22 @@ Shift the top of stack two values down
 -------------------------------
 ## `` ⌈ `` (Ceiling)
 
-Take the ceiling of a number / split a string on spaces
+Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
 
 ### Overloads
 
 - num a: `ceil(a) (Ceiling)`
+- complex a: `imaginary part of a`
 - str a: `Split on spaces`
 -------------------------------
 ## `` ⌊ `` (Floor)
 
-Floor a number / extract the integer part of a string
+Floor a number / real part of complex number / extract the integer part of a string
 
 ### Overloads
 
 - num a: `floor(a) (Floor)`
+- complex a: `real part of a`
 - str a: `Integer part of a`
 -------------------------------
 ## `` ¯ `` (Deltas)
@@ -3398,6 +3401,15 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 
+-------------------------------
+## `` Þ÷ `` (Divide list into n parts)
+
+Divide a list into n parts
+
+### Overloads
+
+- any a, num b: `Divide a into b parts`
+- num a, any b: `Divide b into a parts`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 

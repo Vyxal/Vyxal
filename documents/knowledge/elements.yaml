@@ -1655,10 +1655,11 @@
 
 - element: "ṙ"
   name: Round
-  description: Round a number to the nearest integer
+  description: Round a number to the nearest integer / real and imaginary part of complex number
   arity: 1
   overloads:
       num: round(a)
+      complex: '[real(a), imag(a)]'
       str: quad palindromize with overlap
   vectorise: true
   tests:
@@ -1667,6 +1668,7 @@
       - "[[5.5,3.2]] : [6,3]"
       - "[-4.7] : -5"
       - "[-4.5] : -4"
+      - "[5j+3] : [3,5]"
 
 - element: "ṡ"
   name: Sort by Function
@@ -2302,10 +2304,11 @@
 
 - element: "⌈"
   name: Ceiling
-  description: Take the ceiling of a number / split a string on spaces
+  description: Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
   arity: 1
   overloads:
       num: ceil(a) (Ceiling)
+      complex: imaginary part of a
       str: Split on spaces
   vectorise: true
   tests:
@@ -2313,19 +2316,22 @@
       - "[4.5] : 5"
       - "[[1.52,2.9,3.3]] : [2,3,4]"
       - '["hello world"] : ["hello","world"]'
+      - '[2j+3] : 2'
 
 - element: "⌊"
   name: "Floor"
-  description: Floor a number / extract the integer part of a string
+  description: Floor a number / real part of complex number / extract the integer part of a string
   arity: 1
   overloads:
       num: floor(a) (Floor)
+      complex: real part of a
       str: Integer part of a
   vectorise: true
   tests:
       - "[5.3] : 5"
       - "[[5.3,4.7]] : [5, 4]"
       - '["123abc"] : 123'
+      - '[2j+3] : 3'
 
 - element: "¯"
   name: Deltas
@@ -4863,6 +4869,17 @@
   description: Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
   arity: 0
   vectorise: false
+
+- element: "Þ÷"
+  name: Divide list into n parts
+  description: Divide a list into n parts
+  arity: 2
+  overloads:
+      any-num: Divide a into b parts
+      num-any: Divide b into a parts
+  vectorise: false
+  tests:
+      - "[[1,2,3,4,5,6,7,8,9], 3] : [[1,2,3],[4,5,6],[7,8,9]]"
 
 - element: "ÞZ"
   name: Fill By Coordinates

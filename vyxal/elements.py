@@ -1222,6 +1222,17 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
+def divide_lists(lhs, rhs, ctx):
+    """Element Þ÷
+    (any, num) -> a split into b even length pieces, possibly with an extra part
+    (num, any) -> b split into a even length pieces, possibly with an extra part
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list:
+        return divide_lists(rhs, lhs, ctx)
+    return wrap(lhs, len(lhs) // rhs, ctx)
+
+
 def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
@@ -5285,7 +5296,13 @@ def vy_ceil(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: math.ceil(lhs),
+        (NUMBER_TYPE): lambda: lhs.imag
+        if type(lhs) == complex
+        else (
+            sympy.im(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.ceil(lhs)
+        ),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
@@ -5415,8 +5432,16 @@ def vy_floor(lhs, ctx):
     (str) -> integer part of a
     """
     ts = vy_type(lhs)
+    print(ts)
+    print(type(lhs))
     return {
-        (NUMBER_TYPE): lambda: math.floor(lhs),
+        (NUMBER_TYPE): lambda: lhs.real
+        if type(lhs) == complex
+        else (
+            sympy.re(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.floor(lhs)
+        ),
         (str): lambda: int(
             "".join([char for char in lhs if char in "0123456789"] or "0")
         ),
@@ -5642,7 +5667,13 @@ def vy_round(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: round(lhs),
+        NUMBER_TYPE: lambda: [lhs.real, lhs.imag]
+        if type(lhs) == complex
+        else (
+            list(lhs.as_real_imag())
+            if is_sympy(lhs) and not lhs.is_real
+            else round(lhs)
+        ),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
@@ -6341,6 +6372,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
+    "Þ÷": process_element(divide_lists, 2),
     "Þf": (
         "rhs = pop(stack, 1, ctx)\n"
         "if vy_type(rhs) != NUMBER_TYPE:\n"
@@ -6413,7 +6445,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
-        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
+        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx); "
         "stack.append(top)",
         1,
     ),
