@@ -2357,6 +2357,12 @@ codepage_descriptions[194] += `
 ÞṄ (Infinite Integer Partitions)
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 `
+codepage_descriptions[7] += `
+Þ÷ (Divide list into n parts)
+Divide a list into n parts
+any a, num b -> Divide a into b parts
+num a, any b -> Divide b into a parts
+`
 codepage_descriptions[90] += `
 ÞZ (Fill By Coordinates)
 Fill a matrix by calling a function with the lists of coordinates in the matrix.
