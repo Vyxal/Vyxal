@@ -121,7 +121,7 @@ def transpile_token(
             elif char == "\n":
                 temp += "\\n"
             elif char == "¥":
-                temp += '" + vy_str(pop(stack, 1, ctx)) + "'
+                temp += '" + vy_str(pop(stack, 1, ctx), ctx=ctx) + "'
             else:
                 temp += char
         return indent_str(f'stack.append("{temp}")', indent)
