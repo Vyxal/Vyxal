@@ -6422,7 +6422,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
-        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
+        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx); "
         "stack.append(top)",
         1,
     ),
