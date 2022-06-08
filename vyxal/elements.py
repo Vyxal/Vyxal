@@ -4275,6 +4275,9 @@ def split_on(lhs, rhs, ctx):
     (str, str) -> lhs.split(rhs)
 
     """
+    if types.FunctionType in vy_type(lhs, rhs):
+        return coords_deepmap(lhs, rhs)
+
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 

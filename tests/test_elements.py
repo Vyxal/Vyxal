@@ -615,7 +615,7 @@ def test_FunctionCall():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_SplitOn():
+def test_SplitOnFillByCoordinates():
 
     stack = [vyxalify(item) for item in [1231234, 3]]
     expected = vyxalify(["12", "12", "4"])
