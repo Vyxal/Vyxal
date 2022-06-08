@@ -88,9 +88,10 @@ str a -> exec as python
 lst a -> vectorised not
 `)
 
-codepage_descriptions.push(`Split On
-Split a on b (works on lists and numbers as well)
+codepage_descriptions.push(`Split On / Fill By Coordinates
+Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
 any a, any b -> a split on b
+any a, fun b -> For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
 `)
 
 codepage_descriptions.push(`Halve
@@ -864,8 +865,9 @@ any a -> All possible combinations of a
 `)
 
 codepage_descriptions.push(`Round
-Round a number to the nearest integer
+Round a number to the nearest integer / real and imaginary part of complex number
 num a -> round(a)
+complex a -> [real(a), imag(a)]
 str a -> quad palindromize with overlap
 `)
 
@@ -1178,14 +1180,16 @@ any a, any b, any c -> c,a,b (Shift)
 `)
 
 codepage_descriptions.push(`Ceiling
-Take the ceiling of a number / split a string on spaces
+Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
 num a -> ceil(a) (Ceiling)
+complex a -> imaginary part of a
 str a -> Split on spaces
 `)
 
 codepage_descriptions.push(`Floor
-Floor a number / extract the integer part of a string
+Floor a number / real part of complex number / extract the integer part of a string
 num a -> floor(a) (Floor)
+complex a -> real part of a
 str a -> Integer part of a
 `)
 
@@ -2348,6 +2352,12 @@ codepage_descriptions[145] += `
 Find the first multidimensional index of a value in another
 lst a, any b -> Find the first occurrence of a in b and return as a multidimensional index
 `
+codepage_descriptions[188] += `
+ÞḞ (Fill to make rectangular)
+Fill a 2-D list to make it rectangular
+lst a, any b -> Fill a with b to make it rectangular
+any a, lst b -> Fill b with a to make it rectangular
+`
 codepage_descriptions[109] += `
 Þm (Zero Matrix)
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
@@ -2356,6 +2366,12 @@ lst a -> Matrix with dimensions each item of a, where the first is the innermost
 codepage_descriptions[194] += `
 ÞṄ (Infinite Integer Partitions)
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
+`
+codepage_descriptions[7] += `
+Þ÷ (Divide list into n parts)
+Divide a list into n parts
+any a, num b -> Divide a into b parts
+num a, any b -> Divide b into a parts
 `
 codepage_descriptions[90] += `
 ÞZ (Fill By Coordinates)
@@ -2544,6 +2560,11 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> Returns true if the item is not sorted in either descending or ascending order.
 `
+codepage_descriptions[142] += `
+Þċ (Cycle)
+Form an infinite list from a vector.
+lst a -> Form an infinite list from a vector.
+`
 codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
@@ -2659,4 +2680,8 @@ Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 codepage_descriptions[112] += `
 ¨p (For Each Overlapping Pair)
 Run element for each overlapping pair. Equivalent to \`2lvƒ\`
+`
+codepage_descriptions[63] += `
+¨? (Explicit STDIN)
+Read from STDIN, even if there are arguments
 `

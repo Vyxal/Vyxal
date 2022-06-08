@@ -1096,6 +1096,16 @@ def custom_pad_right(lhs, rhs, other, ctx):
         return lhs.rjust(int(other), rhs)
 
 
+@lazylist
+def cycle(lhs, ctx):
+    """Element Þċ
+    (any) -> infinite list of elements of a
+    """
+    lhs = iterable(lhs, range, ctx=ctx)
+    while True:
+        yield from lhs
+
+
 def decrement(lhs, ctx):
     """Element ‹
     (num) -> a - 1
@@ -1210,6 +1220,17 @@ def divide(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
         (str, str): lambda: lhs.split(rhs),
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
+
+
+def divide_lists(lhs, rhs, ctx):
+    """Element Þ÷
+    (any, num) -> a split into b even length pieces, possibly with an extra part
+    (num, any) -> b split into a even length pieces, possibly with an extra part
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list:
+        return divide_lists(rhs, lhs, ctx)
+    return wrap(lhs, len(lhs) // rhs, ctx)
 
 
 def divisors_or_prefixes(lhs, ctx):
@@ -1739,12 +1760,15 @@ def gen_from_fn(lhs, rhs, ctx):
     def gen():
         yield from lhs
 
-        made = lhs
+        made = lhs[:]
 
+        func_arity = (
+            rhs.stored_arity if "stored_arity" in dir(rhs) else rhs.arity
+        )
         while True:
-            next_item = safe_apply(rhs, *made, ctx=ctx)
-            made.append(next_item)
-            yield next_item
+            ret = safe_apply(rhs, *made[-func_arity:], ctx=ctx)
+            made.append(ret)
+            yield ret
 
     return LazyList(gen(), isinf=True)
 
@@ -4251,6 +4275,9 @@ def split_on(lhs, rhs, ctx):
     (str, str) -> lhs.split(rhs)
 
     """
+    if types.FunctionType in vy_type(lhs, rhs):
+        return coords_deepmap(lhs, rhs)
+
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 
@@ -5269,7 +5296,13 @@ def vy_ceil(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: math.ceil(lhs),
+        (NUMBER_TYPE): lambda: lhs.imag
+        if type(lhs) == complex
+        else (
+            sympy.im(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.ceil(lhs)
+        ),
         (str): lambda: lhs.split(" "),
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
@@ -5399,8 +5432,16 @@ def vy_floor(lhs, ctx):
     (str) -> integer part of a
     """
     ts = vy_type(lhs)
+    print(ts)
+    print(type(lhs))
     return {
-        (NUMBER_TYPE): lambda: math.floor(lhs),
+        (NUMBER_TYPE): lambda: lhs.real
+        if type(lhs) == complex
+        else (
+            sympy.re(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.floor(lhs)
+        ),
         (str): lambda: int(
             "".join([char for char in lhs if char in "0123456789"] or "0")
         ),
@@ -5626,7 +5667,13 @@ def vy_round(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: round(lhs),
+        NUMBER_TYPE: lambda: [lhs.real, lhs.imag]
+        if type(lhs) == complex
+        else (
+            list(lhs.as_real_imag())
+            if is_sympy(lhs) and not lhs.is_real
+            else round(lhs)
+        ),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
@@ -5890,6 +5937,16 @@ def mod_pow(lhs, rhs, other, ctx: Context):
     if list in ts:
         return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
     return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
+
+
+def fill(lhs, rhs, ctx: Context):
+    """Element ÞḞ
+    (any, any) -> fill a with b to make a rectangular
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list and ts[0] != list:
+        return fill(rhs, lhs, ctx)
+    return transpose(transpose(lhs, filler=rhs, ctx=ctx))
 
 
 elements: dict[str, tuple[str, int]] = {
@@ -6325,6 +6382,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
+    "Þ÷": process_element(divide_lists, 2),
     "Þf": (
         "rhs = pop(stack, 1, ctx)\n"
         "if vy_type(rhs) != NUMBER_TYPE:\n"
@@ -6333,10 +6391,12 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
         2,
     ),
+    "Þċ": process_element(cycle, 1),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
     "ÞI": process_element(all_indices_multidim, 2),
     "Þḟ": process_element(multi_dimensional_search, 2),
+    "ÞḞ": process_element(fill, 2),
     "Þm": process_element(zero_matrix, 1),
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
@@ -6396,7 +6456,7 @@ elements: dict[str, tuple[str, int]] = {
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
     "¨…": (
-        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx); "
+        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx); "
         "stack.append(top)",
         1,
     ),
@@ -6406,6 +6466,10 @@ elements: dict[str, tuple[str, int]] = {
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
     "¨*": process_element(all_multiples, 1),
+    "¨?": (
+        'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
+        0,
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
