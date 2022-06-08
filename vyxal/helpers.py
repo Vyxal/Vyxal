@@ -1040,6 +1040,8 @@ def uncompress_dict(source: str) -> str:
                 index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
                 if index < len(vyxal.dictionary.contents):
                     ret += vyxal.dictionary.contents[index]
+                elif temp_scc == "ΠΠ":
+                    ret += "ΠΠ"
                 temp_scc = ""
         else:
             if temp_scc:
