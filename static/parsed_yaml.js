@@ -864,8 +864,9 @@ any a -> All possible combinations of a
 `)
 
 codepage_descriptions.push(`Round
-Round a number to the nearest integer
+Round a number to the nearest integer / real and imaginary part of complex number
 num a -> round(a)
+complex a -> [real(a), imag(a)]
 str a -> quad palindromize with overlap
 `)
 
@@ -1178,14 +1179,16 @@ any a, any b, any c -> c,a,b (Shift)
 `)
 
 codepage_descriptions.push(`Ceiling
-Take the ceiling of a number / split a string on spaces
+Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
 num a -> ceil(a) (Ceiling)
+complex a -> imaginary part of a
 str a -> Split on spaces
 `)
 
 codepage_descriptions.push(`Floor
-Floor a number / extract the integer part of a string
+Floor a number / real part of complex number / extract the integer part of a string
 num a -> floor(a) (Floor)
+complex a -> real part of a
 str a -> Integer part of a
 `)
 
