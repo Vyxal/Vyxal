@@ -1222,6 +1222,17 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
+def divide_lists(lhs, rhs, ctx):
+    """Element Þ÷
+    (any, num) -> a split into b even length pieces, possibly with an extra part
+    (num, any) -> b split into a even length pieces, possibly with an extra part
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list:
+        return divide_lists(rhs, lhs, ctx)
+    return wrap(lhs, len(lhs) // rhs, ctx)
+
+
 def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
@@ -6338,6 +6349,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞẊ": process_element(cartesian_power, 2),
     "ÞB": process_element(rand_bits, 1),
     "ÞU": process_element(uniquify_mask, 1),
+    "Þ÷": process_element(divide_lists, 2),
     "Þf": (
         "rhs = pop(stack, 1, ctx)\n"
         "if vy_type(rhs) != NUMBER_TYPE:\n"
