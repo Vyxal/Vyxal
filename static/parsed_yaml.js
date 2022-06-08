@@ -88,9 +88,10 @@ str a -> exec as python
 lst a -> vectorised not
 `)
 
-codepage_descriptions.push(`Split On
-Split a on b (works on lists and numbers as well)
+codepage_descriptions.push(`Split On / Fill By Coordinates
+Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
 any a, any b -> a split on b
+any a, fun b -> For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
 `)
 
 codepage_descriptions.push(`Halve
