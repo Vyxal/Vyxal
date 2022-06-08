@@ -2352,6 +2352,12 @@ codepage_descriptions[145] += `
 Find the first multidimensional index of a value in another
 lst a, any b -> Find the first occurrence of a in b and return as a multidimensional index
 `
+codepage_descriptions[188] += `
+ÞḞ (Fill to make rectangular)
+Fill a 2-D list to make it rectangular
+lst a, any b -> Fill a with b to make it rectangular
+any a, lst b -> Fill b with a to make it rectangular
+`
 codepage_descriptions[109] += `
 Þm (Zero Matrix)
 Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
