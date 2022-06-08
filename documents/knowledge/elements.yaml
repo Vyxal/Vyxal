@@ -2783,7 +2783,7 @@
   vectorise: false
   arity: 0
   tests:
-    - '[] : "sus"'
+      - '[] : "sus"'
 
 # NOTE: CONSTANTS GO DOWN HERE!!!!!!
 
@@ -5490,3 +5490,8 @@
   name: For Each Overlapping Pair
   description: Run element for each overlapping pair. Equivalent to `2lvƒ`
   usage: "¨p<element>"
+
+- element: "¨?"
+  name: Explicit STDIN
+  description: Read from STDIN, even if there are arguments
+  arity: 0
