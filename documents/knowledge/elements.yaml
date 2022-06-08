@@ -5270,6 +5270,14 @@
       - "[[8, 1, 5, 6, 6, 2]] : 1"
       - "[[1, 2, 3, 4, 5, 5, 4]] : 1"
 
+- element: "Þċ"
+  name: Cycle
+  description: Form an infinite list from a vector.
+  arity: 1
+  overloads:
+      lst: Form an infinite list from a vector.
+  vectorise: false
+
 - element: "ÞK"
   name: Suffixes
   description: Suffixes of a list.
