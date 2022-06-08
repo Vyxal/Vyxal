@@ -3691,6 +3691,14 @@ Returns true if the item is not sorted in either descending or ascending order.
 
 - lst a: `Returns true if the item is not sorted in either descending or ascending order.`
 -------------------------------
+## `` Þċ `` (Cycle)
+
+Form an infinite list from a vector.
+
+### Overloads
+
+- lst a: `Form an infinite list from a vector.`
+-------------------------------
 ## `` ÞK `` (Suffixes)
 
 Suffixes of a list.
@@ -3875,5 +3883,10 @@ Usage:
 ```
 ¨p<element>
 ```
+
+-------------------------------
+## `` ¨? `` (Explicit STDIN)
+
+Read from STDIN, even if there are arguments
 
 -------------------------------

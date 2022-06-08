@@ -1096,6 +1096,16 @@ def custom_pad_right(lhs, rhs, other, ctx):
         return lhs.rjust(int(other), rhs)
 
 
+@lazylist
+def cycle(lhs, ctx):
+    """Element Þċ
+    (any) -> infinite list of elements of a
+    """
+    lhs = iterable(lhs, range, ctx=ctx)
+    while True:
+        yield from lhs
+
+
 def decrement(lhs, ctx):
     """Element ‹
     (num) -> a - 1
@@ -1739,12 +1749,15 @@ def gen_from_fn(lhs, rhs, ctx):
     def gen():
         yield from lhs
 
-        made = lhs
+        made = lhs[:]
 
+        func_arity = (
+            rhs.stored_arity if "stored_arity" in dir(rhs) else rhs.arity
+        )
         while True:
-            next_item = safe_apply(rhs, *made, ctx=ctx)
-            made.append(next_item)
-            yield next_item
+            ret = safe_apply(rhs, *made[-func_arity:], ctx=ctx)
+            made.append(ret)
+            yield ret
 
     return LazyList(gen(), isinf=True)
 
@@ -6333,6 +6346,7 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
         2,
     ),
+    "Þċ": process_element(cycle, 1),
     "Þǔ": process_element(untruth, 1),
     "Þi": process_element(multi_dimensional_index, 2),
     "ÞI": process_element(all_indices_multidim, 2),
@@ -6406,6 +6420,10 @@ elements: dict[str, tuple[str, int]] = {
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
     "¨*": process_element(all_multiples, 1),
+    "¨?": (
+        'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
+        0,
+    ),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

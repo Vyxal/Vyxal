@@ -605,6 +605,17 @@ def test_overlapping_groups_modifier():
     assert stack[-1] == []
 
 
+def test_cycle():
+    stack = run_vyxal("4Þċ")
+    assert stack[-1][:6] == [1, 2, 3, 4, 1, 2]
+
+    stack = run_vyxal("`abc`Þċ")
+    assert stack[-1][:4] == ["a", "b", "c", "a"]
+
+    stack = run_vyxal("543fÞċ")
+    assert stack[-1][:6] == [5, 4, 3, 5, 4, 3]
+
+
 def test_infinite_length_range():
     stack = run_vyxal("Þ∞ ż")
     assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -642,3 +653,14 @@ def test_canvas():
 def test_string_interop():
     stack = run_vyxal("1 2 `hello ¥ world ¥`")
     assert stack[-1] == "hello 2 world 1"
+
+
+def test_generators():
+    stack = run_vyxal('1 1" ⁽+ d Ḟ')
+    assert stack[-1][:7] == [1, 1, 2, 3, 5, 8, 13]
+
+    stack = run_vyxal('1 1" ⁽+ Ḟ')
+    assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
+
+    stack = run_vyxal('1 1" ⁽d Ḟ')
+    assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
