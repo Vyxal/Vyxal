@@ -5628,7 +5628,7 @@ def vy_round(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: round(lhs),
+        NUMBER_TYPE: lambda: [lhs.real, lhs.imag] if type(lhs) == complex else (list(lhs.as_real_imag()) if is_sympy(lhs) and not lhs.is_real else round(lhs)),
         str: lambda: vertical_mirror(lhs, ctx=ctx)
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],

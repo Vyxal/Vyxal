@@ -1654,10 +1654,11 @@
 
 - element: "ṙ"
   name: Round
-  description: Round a number to the nearest integer
+  description: Round a number to the nearest integer / real and imaginary part of complex number
   arity: 1
   overloads:
       num: round(a)
+      complex: '[real(a), imag(a)]'
       str: quad palindromize with overlap
   vectorise: true
   tests:
@@ -1666,6 +1667,7 @@
       - "[[5.5,3.2]] : [6,3]"
       - "[-4.7] : -5"
       - "[-4.5] : -4"
+      - "[5j+3] : [3,5]"
 
 - element: "ṡ"
   name: Sort by Function
