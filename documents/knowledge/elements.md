@@ -3885,3 +3885,8 @@ Usage:
 ```
 
 -------------------------------
+## `` ¨? `` (Explicit STDIN)
+
+Read from STDIN, even if there are arguments
+
+-------------------------------

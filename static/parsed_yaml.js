@@ -2665,3 +2665,7 @@ codepage_descriptions[112] += `
 ¨p (For Each Overlapping Pair)
 Run element for each overlapping pair. Equivalent to \`2lvƒ\`
 `
+codepage_descriptions[63] += `
+¨? (Explicit STDIN)
+Read from STDIN, even if there are arguments
+`

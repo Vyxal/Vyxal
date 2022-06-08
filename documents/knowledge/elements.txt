@@ -3322,3 +3322,8 @@ k• (Qwerty Keyboard)
     ¨p<element>
 
 -------------------------------
+¨? (Explicit STDIN)
+
+- Read from STDIN, even if there are arguments
+
+-------------------------------
