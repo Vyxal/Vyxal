@@ -150,11 +150,12 @@
       - "[[1, 0, 1]] : [0, 1, 0]"
 
 - element: "€"
-  name: Split On
+  name: Split On / Fill By Coordinates
   arity: 2
-  description: Split a on b (works on lists and numbers as well)
+  description: Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
   overloads:
       any-any: a split on b
+      any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
   vectorise: false
   tests:
       - '[1231234, 3] : ["12", "12", "4"]'
