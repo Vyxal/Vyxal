@@ -859,8 +859,8 @@ def cartesian_product(lhs, rhs, ctx):
                 return
 
             diag_num = 0
-            lhs_max = len(lhs) - 1 if isinstance(lhs, list) else None
-            rhs_max = len(rhs) - 1 if isinstance(rhs, list) else None
+            lhs_max = len(lhs) - 1 if vy_type(lhs, simple=True) == list else None
+            rhs_max = len(rhs) - 1 if vy_type(rhs, simple=True) == list else None
             while True:
                 lhs_start = max(0, diag_num - rhs_max) if rhs_max else 0
                 lhs_end = min(diag_num, lhs_max) if lhs_max else diag_num
@@ -992,7 +992,7 @@ def coords_deepmap(lhs, rhs, ctx):
     def f(a, g, pos=()):
         return [
             f(b, g, (*pos, i))
-            if isinstance(b, list)
+            if vy_type(b, simple=True) == list
             else safe_apply(g, [*pos, i], ctx=ctx)
             for i, b in enumerate(a)
         ]
@@ -1168,7 +1168,7 @@ def depth(lhs, ctx):
     """Element Þj
     (lst) -> depth of a
     """
-    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    get_depth = lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
     return int(get_depth(lhs))
 
 
@@ -1388,7 +1388,7 @@ def evenly_distribute(lhs, rhs, ctx):
     each = rhs // len(lhs)
     extra = rhs - each * len(lhs)
 
-    if isinstance(lhs, list):
+    if vy_type(lhs, simple=True) == list:
         return [
             lhs[i] + each + 1 if i < extra else lhs[i] + each
             for i in range(len(lhs))
@@ -4276,7 +4276,7 @@ def split_on(lhs, rhs, ctx):
 
     """
     if types.FunctionType in vy_type(lhs, rhs):
-        return coords_deepmap(lhs, rhs)
+        return coords_deepmap(lhs, rhs, ctx=ctx)
 
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
@@ -4926,7 +4926,7 @@ def uniquify_mask(lhs, ctx):
     """
     lhs = iterable(lhs, ctx=ctx)
     # TODO (user/cgccuser): Reduce code duplication here?
-    if isinstance(lhs, list):
+    if vy_type(lhs, simple=True) == list:
         seen = set()
         mask = []
         for elem in lhs:
