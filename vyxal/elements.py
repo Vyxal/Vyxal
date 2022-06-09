@@ -4959,7 +4959,11 @@ def untruth(lhs, ctx):
         lhs = [iterable(x, ctx=ctx) for x in lhs]
         dimensions = len(lhs[0])
         maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
-        deep_listify = lambda a: [deep_listify(x) for x in a] if vy_type(a, simple=True) is list else a
+        deep_listify = (
+            lambda a: [deep_listify(x) for x in a]
+            if vy_type(a, simple=True) is list
+            else a
+        )
         matrix = deep_listify(zero_matrix(maxCoords[::-1], ctx=ctx))
         for x in lhs:
             ref = matrix
