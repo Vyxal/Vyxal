@@ -2677,6 +2677,10 @@ codepage_descriptions[168] += `
 ¨₃ (Triadic Filter Lambda)
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 `
+codepage_descriptions[90] += `
+¨Z (Zip lambda)
+Open a zip lambda - ¨Z...; Pops top two items off stack, zips them, and loops over them, pushing each item to the stack. Equivalent to \`Zƛ÷...;\`.
+`
 codepage_descriptions[112] += `
 ¨p (For Each Overlapping Pair)
 Run element for each overlapping pair. Equivalent to \`2lvƒ\`
