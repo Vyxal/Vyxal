@@ -3898,6 +3898,11 @@ Open a dyadic filter lambda - ¨₂...; Receives item and index.
 Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
 
 -------------------------------
+## `` ¨Z `` (Zip lambda)
+
+Open a zip lambda - ¨Z...; Pops top two items off stack, zips them, and loops over them, pushing each item to the stack. Equivalent to `Zƛ÷...;`.
+
+-------------------------------
 ## `` ¨p `` (For Each Overlapping Pair)
 Run element for each overlapping pair. Equivalent to `2lvƒ`
 

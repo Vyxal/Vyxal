@@ -217,9 +217,7 @@ def parse(
 
             elif structure_cls == structure.LambdaZip:
                 structures.append(
-                    structure.LambdaZip(
-                        parse(branches[0], structure_cls)
-                    )
+                    structure.LambdaZip(parse(branches[0], structure_cls))
                 )
 
             elif structure_cls == structure.LambdaMapEager:
