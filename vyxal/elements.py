@@ -859,8 +859,8 @@ def cartesian_product(lhs, rhs, ctx):
                 return
 
             diag_num = 0
-            lhs_max = len(lhs) - 1 if vy_type(lhs, simple=True) == list else None
-            rhs_max = len(rhs) - 1 if vy_type(rhs, simple=True) == list else None
+            lhs_max = len(lhs) - 1 if isinstance(lhs, list) else None
+            rhs_max = len(rhs) - 1 if isinstance(rhs, list) else None
             while True:
                 lhs_start = max(0, diag_num - rhs_max) if rhs_max else 0
                 lhs_end = min(diag_num, lhs_max) if lhs_max else diag_num
@@ -1168,7 +1168,9 @@ def depth(lhs, ctx):
     """Element Þj
     (lst) -> depth of a
     """
-    get_depth = lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
+    get_depth = (
+        lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
+    )
     return int(get_depth(lhs))
 
 
@@ -4955,6 +4957,22 @@ def untruth(lhs, ctx):
     (any) -> [int(x in a) for x in range(max(a))]
     """
     lhs = iterable(lhs, ctx=ctx)
+    if any(type(x) != int for x in lhs):
+        lhs = [iterable(x, ctx=ctx) for x in lhs]
+        dimensions = len(lhs[0])
+        maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
+        deep_listify = (
+            lambda a: [deep_listify(x) for x in a]
+            if vy_type(a, simple=True) is list
+            else a
+        )
+        matrix = deep_listify(zero_matrix(maxCoords[::-1], ctx=ctx))
+        for x in lhs:
+            ref = matrix
+            for i in range(dimensions - 1):
+                ref = ref[x[i]]
+            ref[x[dimensions - 1]] = 1
+        return matrix
     return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
 
 
