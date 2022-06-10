@@ -859,12 +859,8 @@ def cartesian_product(lhs, rhs, ctx):
                 return
 
             diag_num = 0
-            lhs_max = (
-                len(lhs) - 1 if vy_type(lhs, simple=True) == list else None
-            )
-            rhs_max = (
-                len(rhs) - 1 if vy_type(rhs, simple=True) == list else None
-            )
+            lhs_max = len(lhs) - 1 if isinstance(lhs, list) else None
+            rhs_max = len(rhs) - 1 if isinstance(rhs, list) else None
             while True:
                 lhs_start = max(0, diag_num - rhs_max) if rhs_max else 0
                 lhs_end = min(diag_num, lhs_max) if lhs_max else diag_num
