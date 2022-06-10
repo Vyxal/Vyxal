@@ -1388,7 +1388,7 @@ def evenly_distribute(lhs, rhs, ctx):
     each = rhs // len(lhs)
     extra = rhs - each * len(lhs)
 
-    if vy_type(lhs, simple=True) == list:
+    if isinstance(lhs, list):
         return [
             lhs[i] + each + 1 if i < extra else lhs[i] + each
             for i in range(len(lhs))
@@ -4926,7 +4926,7 @@ def uniquify_mask(lhs, ctx):
     """
     lhs = iterable(lhs, ctx=ctx)
     # TODO (user/cgccuser): Reduce code duplication here?
-    if vy_type(lhs, simple=True) == list:
+    if isinstance(lhs, list):
         seen = set()
         mask = []
         for elem in lhs:
