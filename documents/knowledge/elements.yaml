@@ -5516,6 +5516,11 @@
   description: Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
   arity: 3
 
+- element: "¨Z"
+  name: Zip lambda
+  description: Open a zip lambda - ¨Z...; Pops top two items off stack, zips them, and loops over them, pushing each item to the stack. Equivalent to `Zƛ÷...;`.
+  arity: 3
+
 - modifier: "¨p"
   name: For Each Overlapping Pair
   description: Run element for each overlapping pair. Equivalent to `2lvƒ`
