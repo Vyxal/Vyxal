@@ -3297,9 +3297,7 @@ def optimal_compress(lhs, ctx):
         for index, word in enumerate(dictionary.small_dictionary):
             if sub.endswith(word):
                 j = compression[index]
-                dp[i] = min(
-                    [dp[i], dp[i - len(word)] + j], key=len
-                )
+                dp[i] = min([dp[i], dp[i - len(word)] + j], key=len)
 
         replace = dp[i - 1] + lhs[i - 1]
         if len(replace) < len(dp[i]):
