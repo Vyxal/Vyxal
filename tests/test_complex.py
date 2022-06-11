@@ -669,3 +669,11 @@ def test_generators():
 def test_coords_deepmap():
     stack = run_vyxal("λh; ÞZ", inputs=[[1, 2, [3, [4, [3]]]]])
     assert stack[-1] == [0, 1, [2, [2, [2]]]]
+
+    stack = run_vyxal("λh; €", inputs=[[1, 2, [3, [4, [3]]]]])
+    assert stack[-1] == [0, 1, [2, [2, [2]]]]
+
+
+def test_zip_lambda():
+    stack = run_vyxal("¨Z+;", inputs=[[1, 2, 3], [7, 8, 9]])
+    assert stack[-1] == [8, 10, 12]

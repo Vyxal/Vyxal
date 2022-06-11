@@ -1,6 +1,7 @@
 """This is for context-related stuff."""
 
 from vyxal.Canvas import Canvas
+import sympy
 
 
 class Context:
@@ -11,7 +12,7 @@ class Context:
         self.empty_input_is_zero = True
         self.default_arity = 1
         self.dictionary_compression = True
-        self.ghost_variable = 0
+        self.ghost_variable = sympy.nsimplify(0)
         self.function_stack = []
         self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
         # inputs[0] = [[inputs], index]
@@ -25,7 +26,7 @@ class Context:
         self.printed = False
         self.range_start = 1  # Where do auto ranges start?
         self.range_end = 1  # How much to add to the end
-        self.register = 0
+        self.register = sympy.nsimplify(0)
         self.repl_mode = False
         self.retain_popped = False
         self.reverse_flag = False

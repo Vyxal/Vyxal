@@ -992,7 +992,7 @@ def coords_deepmap(lhs, rhs, ctx):
     def f(a, g, pos=()):
         return [
             f(b, g, (*pos, i))
-            if isinstance(b, list)
+            if vy_type(b, simple=True) == list
             else safe_apply(g, [*pos, i], ctx=ctx)
             for i, b in enumerate(a)
         ]
@@ -1168,7 +1168,9 @@ def depth(lhs, ctx):
     """Element Þj
     (lst) -> depth of a
     """
-    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    get_depth = (
+        lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
+    )
     return int(get_depth(lhs))
 
 
@@ -4276,7 +4278,7 @@ def split_on(lhs, rhs, ctx):
 
     """
     if types.FunctionType in vy_type(lhs, rhs):
-        return coords_deepmap(lhs, rhs)
+        return coords_deepmap(lhs, rhs, ctx=ctx)
 
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
