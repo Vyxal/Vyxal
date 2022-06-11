@@ -32,6 +32,7 @@ STRUCTURE_INFORMATION = {
     "µ": (structure.LambdaSort, ";"),
     "⟑": (structure.LambdaMapEager, ";"),
     "⟨": (structure.ListLiteral, "⟩"),
+    "¨Z": (structure.LambdaZip, ";"),
 }
 
 CLOSING_CHARACTERS = "".join([v[1] for v in STRUCTURE_INFORMATION.values()])
@@ -212,6 +213,11 @@ def parse(
                     structure.LambdaMapTriadic(
                         parse(branches[0], structure_cls)
                     )
+                )
+
+            elif structure_cls == structure.LambdaZip:
+                structures.append(
+                    structure.LambdaZip(parse(branches[0], structure_cls))
                 )
 
             elif structure_cls == structure.LambdaMapEager:
