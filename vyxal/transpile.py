@@ -306,8 +306,16 @@ def transpile_structure(
         )
     if isinstance(struct, vyxal.structure.LambdaZip):
         return (
-            indent_str("rhs, lhs = pop(stack, 2, ctx); stack.append(vy_zip(lhs, rhs, ctx=ctx))", indent)
-            + transpile_lambda(struct.lam, indent, dict_compress=dict_compress, extra="lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)")
+            indent_str(
+                "rhs, lhs = pop(stack, 2, ctx); stack.append(vy_zip(lhs, rhs, ctx=ctx))",
+                indent,
+            )
+            + transpile_lambda(
+                struct.lam,
+                indent,
+                dict_compress=dict_compress,
+                extra="lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
+            )
             + transpile_token(
                 Token(TokenType.GENERAL, struct.after),
                 indent,
@@ -463,7 +471,10 @@ def transpile_structure(
 
 
 def transpile_lambda(
-    lam: vyxal.structure.Lambda, indent: int, dict_compress: bool = True, extra: str = ""
+    lam: vyxal.structure.Lambda,
+    indent: int,
+    dict_compress: bool = True,
+    extra: str = "",
 ):
     id_ = secrets.token_hex(16)
     # The lambda id used to be based on time.time() until
