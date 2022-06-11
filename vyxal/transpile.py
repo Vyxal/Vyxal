@@ -314,6 +314,8 @@ def transpile_structure(
                 dict_compress=dict_compress,
             )
         )
+    if isinstance(struct, vyxal.structure.Lambda):
+        return transpile_lambda(struct, indent, dict_compress=dict_compress)
     if isinstance(struct, vyxal.structure.LambdaOp):
         return transpile_lambda(
             struct.lam, indent, dict_compress=dict_compress
