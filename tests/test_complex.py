@@ -650,6 +650,11 @@ def test_canvas():
     )
 
 
+def test_string_interop():
+    stack = run_vyxal("1 2 `hello Π world Π`")
+    assert stack[-1] == "hello 2 world 1"
+
+
 def test_generators():
     stack = run_vyxal('1 1" ⁽+ d Ḟ')
     assert stack[-1][:7] == [1, 1, 2, 3, 5, 8, 13]
