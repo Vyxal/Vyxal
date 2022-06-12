@@ -1027,7 +1027,7 @@ def uncompress_dict(source: str) -> str:
                 if pos < len(vyxal.dictionary.small_dictionary):
                     ret += vyxal.dictionary.small_dictionary[pos]
                 temp_scc = ""
-            if char not in vyxal.encoding.compression:
+            if char not in vyxal.encoding.compression or char == "Π":
                 ret += "\\"
             ret += char
             escaped = False
@@ -1040,14 +1040,20 @@ def uncompress_dict(source: str) -> str:
                 index = from_base_alphabet(temp_scc, vyxal.encoding.compression)
                 if index < len(vyxal.dictionary.contents):
                     ret += vyxal.dictionary.contents[index]
+                elif temp_scc == "ΠΠ":
+                    ret += "ΠΠ"
                 temp_scc = ""
         else:
             if temp_scc:
                 pos = vyxal.encoding.compression.find(temp_scc)
+                interop = False
                 if pos < len(vyxal.dictionary.small_dictionary):
                     ret += vyxal.dictionary.small_dictionary[pos]
+                elif temp_scc == "Π":
+                    ret += "Π"
+                    interop = True
                 temp_scc = ""
-                if char == " ":
+                if char == " " and not interop:
                     continue
             ret += char
 
@@ -1055,6 +1061,8 @@ def uncompress_dict(source: str) -> str:
         pos = vyxal.encoding.compression.find(temp_scc)
         if pos < len(vyxal.dictionary.small_dictionary):
             ret += vyxal.dictionary.small_dictionary[pos]
+        elif temp_scc == "Π":
+            ret += "Π"
 
     return ret
 
