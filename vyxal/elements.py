@@ -992,7 +992,7 @@ def coords_deepmap(lhs, rhs, ctx):
     def f(a, g, pos=()):
         return [
             f(b, g, (*pos, i))
-            if isinstance(b, list)
+            if vy_type(b, simple=True) == list
             else safe_apply(g, [*pos, i], ctx=ctx)
             for i, b in enumerate(a)
         ]
@@ -1168,7 +1168,9 @@ def depth(lhs, ctx):
     """Element Þj
     (lst) -> depth of a
     """
-    get_depth = lambda d: isinstance(d, list) and max(map(get_depth, d)) + 1
+    get_depth = (
+        lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
+    )
     return int(get_depth(lhs))
 
 
@@ -4276,7 +4278,7 @@ def split_on(lhs, rhs, ctx):
 
     """
     if types.FunctionType in vy_type(lhs, rhs):
-        return coords_deepmap(lhs, rhs)
+        return coords_deepmap(lhs, rhs, ctx=ctx)
 
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
@@ -4955,6 +4957,22 @@ def untruth(lhs, ctx):
     (any) -> [int(x in a) for x in range(max(a))]
     """
     lhs = iterable(lhs, ctx=ctx)
+    if any(type(x) != int for x in lhs):
+        lhs = [iterable(x, ctx=ctx) for x in lhs]
+        dimensions = len(lhs[0])
+        maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
+        deep_listify = (
+            lambda a: [deep_listify(x) for x in a]
+            if vy_type(a, simple=True) is list
+            else a
+        )
+        matrix = deep_listify(zero_matrix(maxCoords[::-1], ctx=ctx))
+        for x in lhs:
+            ref = matrix
+            for i in range(dimensions - 1):
+                ref = ref[x[i]]
+            ref[x[dimensions - 1]] = 1
+        return matrix
     return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
 
 

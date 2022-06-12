@@ -110,6 +110,11 @@ class LambdaMap(LambdaOp):
         super().__init__(body, after="M")
 
 
+class LambdaZip(LambdaMap):
+    def __init__(self, body: list[Structure]):
+        super().__init__(body)
+
+
 class LambdaMapEager(LambdaOp):
     def __init__(self, body: list[Structure]):
         super().__init__(body, after="e")
