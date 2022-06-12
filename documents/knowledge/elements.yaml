@@ -4297,6 +4297,7 @@
       - '["hello"] : "`ƈṙ`"'
       - '["Vyxal"] : "`₴ŀ`"'
       - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
+      - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
 
 - element: "øW"
   name: Group on words
