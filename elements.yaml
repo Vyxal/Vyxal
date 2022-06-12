@@ -659,7 +659,7 @@
 
 - modifier: ";"
   name: Key
-  description: Map a link over the groups formed by identical items
+  description: Map an element over the groups formed by identical items
   arity: 1
   elements: 1
   tests:
