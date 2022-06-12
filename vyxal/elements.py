@@ -904,7 +904,7 @@ def chr_ord(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: chr(int(lhs)),
-        (str): lambda: list(map(ord, lhs)) if len(lhs) > 1 else ord(lhs),
+        (str): lambda: list(map(ord, lhs)) if len(lhs) > 1 else ord(lhs) if lhs else [],
     }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
