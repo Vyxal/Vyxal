@@ -267,3 +267,16 @@ class LazyList:
         self.generated += list(itertools.tee(self.raw_object)[-1])
         for item in self.generated[::-1]:
             yield item
+
+    def remove(self, value):
+        """Remove first occurance of value from the list"""
+        if value in self.generated:
+            self.generated.remove(value)
+        else:
+            try:
+                while True:
+                    if next(self) == value:
+                        self.generated.pop()
+                        return
+            except StopIteration:
+                pass

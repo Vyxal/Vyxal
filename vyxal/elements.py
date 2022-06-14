@@ -3023,6 +3023,60 @@ def multiply(lhs, rhs, ctx):
         }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
 
 
+def multiset_difference(lhs, rhs, ctx):
+    """Element Þ∨
+    (lst, lst) -> Return the mutli-set difference of two lists
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    lhs_copy = deep_copy(lhs)
+    rhs = iterable(rhs, ctx=ctx)
+
+    for item in rhs:
+        if item in lhs_copy:
+            lhs_copy.remove(item)
+
+    return lhs_copy
+
+
+def multiset_intersection(lhs, rhs, ctx):
+    """Element Þ∩
+    (lst, lst) -> Return the multi-set intersection of two lists
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = iterable(rhs, ctx=ctx)
+    res = []
+
+    for item in rhs:
+        if item in lhs:
+            res.append(item)
+
+    return res
+
+
+def multiset_union(lhs, rhs, ctx):
+    """Element Þ∪
+    (lst, lst) -> Return the multi-set union of two lists
+    """
+
+    return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
+        multiset_difference(rhs, lhs, ctx)
+    )
+
+
+def multiset_symmetric_difference(lhs, rhs, ctx):
+    """Element Þ⊍
+    (lst, lst) -> Return the multi-set symmetric difference of two lists
+    """
+
+    return multiset_union(
+        multiset_difference(lhs, rhs, ctx),
+        multiset_difference(rhs, lhs, ctx),
+        ctx,
+    )
+
+
 def natural_log(lhs, ctx):
     """Element ∆L
     (num) -> ln(a)
@@ -6474,6 +6528,10 @@ elements: dict[str, tuple[str, int]] = {
     "Þe": process_element(matrix_exponentiation, 2),
     "Þd": process_element(dist_matrix_dir, 1),
     "Þw": process_element(dist_matrix_undir, 1),
+    "Þ∨": process_element(multiset_difference, 2),
+    "Þ∩": process_element(multiset_intersection, 2),
+    "Þ∪": process_element(multiset_union, 2),
+    "Þ⊍": process_element(multiset_symmetric_difference, 2),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
