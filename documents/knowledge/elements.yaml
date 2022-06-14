@@ -1660,7 +1660,7 @@
   arity: 1
   overloads:
       num: round(a)
-      complex: '[real(a), imag(a)]'
+      complex: "[real(a), imag(a)]"
       str: quad palindromize with overlap
   vectorise: true
   tests:
@@ -2317,7 +2317,7 @@
       - "[4.5] : 5"
       - "[[1.52,2.9,3.3]] : [2,3,4]"
       - '["hello world"] : ["hello","world"]'
-      - '[2j+3] : 2'
+      - "[2j+3] : 2"
 
 - element: "⌊"
   name: "Floor"
@@ -2332,7 +2332,7 @@
       - "[5.3] : 5"
       - "[[5.3,4.7]] : [5, 4]"
       - '["123abc"] : 123'
-      - '[2j+3] : 3'
+      - "[2j+3] : 3"
 
 - element: "¯"
   name: Deltas
@@ -5361,8 +5361,8 @@
       lst-num: Matrix b multiplied by itself a times
   vectorise: false
   tests:
-      - "[[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
-      - "[[1, 2, 3, 4, 5], 4] : [1, 32, 243, 1024, 3125]"
+      - "[[[0, 0, 1, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]], 2] : [[0, 1, 0, 1], [0, 1, 1, 1], [1, 0, 2, 0], [0, 1, 0, 1]]"
+      - "[[1, 2, 3, 4, 5], 4] : [[3375], [6750], [10125], [13500], [16875]]"
 
 - element: "Þd"
   name: Distance matrix (Directed)

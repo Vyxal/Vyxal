@@ -2735,10 +2735,10 @@ def matrix_exponentiation(lhs, rhs, ctx):
     if set(ts) != {list, NUMBER_TYPE}:
         raise TypeError("Matrix exponentiation requires a matrix and a number")
 
-    matrix, times = lhs, rhs if ts[0] == NUMBER_TYPE else rhs
+    matrix, times = (rhs, lhs) if ts[0] == NUMBER_TYPE else (lhs, rhs)
     original_matrix = matrix
-    for _ in range(times):
-        matrix = multiply(matrix, original_matrix, ctx=ctx)
+    for _ in range(times - 1):
+        matrix = matrix_multiply(original_matrix, matrix, ctx=ctx)
 
     return matrix
 
