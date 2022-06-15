@@ -270,13 +270,11 @@ class LazyList:
 
     def remove(self, value):
         """Remove first occurance of value from the list"""
-        if value in self.generated:
-            self.generated.remove(value)
-        else:
-            try:
-                while True:
-                    if next(self) == value:
-                        self.generated.pop()
-                        return
-            except StopIteration:
-                pass
+        temp = vyxal.helpers.deep_copy(self)
+        try:
+            while True:
+                if next(temp) == value:
+                    del temp.generated[-1]
+                    return temp
+        except StopIteration:
+            return temp

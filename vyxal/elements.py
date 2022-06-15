@@ -3045,12 +3045,13 @@ def multiset_intersection(lhs, rhs, ctx):
     """
 
     lhs = iterable(lhs, ctx=ctx)
-    rhs = iterable(rhs, ctx=ctx)
+    rhs = deep_copy(iterable(rhs, ctx=ctx))
     res = []
 
     for item in rhs:
         if item in lhs:
             res.append(item)
+            rhs = rhs.remove(item)
 
     return res
 
