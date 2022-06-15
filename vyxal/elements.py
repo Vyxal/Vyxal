@@ -3034,7 +3034,7 @@ def multiset_difference(lhs, rhs, ctx):
 
     for item in rhs:
         if item in lhs_copy:
-            lhs_copy.remove(item)
+            lhs_copy = lhs_copy.remove(item)
 
     return lhs_copy
 
