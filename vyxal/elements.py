@@ -6710,8 +6710,7 @@ modifiers: dict[str, str] = {
     ),
     "ß": (
         "if boolify(pop(stack, 1, ctx), ctx):\n"
-        "    stack.append(function_A)\n"
-        "    function_call(stack, ctx)"
+        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
     ),
     "¨=": (
         "original = pop(stack, 1, ctx)\n"
