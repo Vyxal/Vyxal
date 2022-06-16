@@ -271,81 +271,81 @@
 271. remove non-alphanumeric
 272. remove alphanumeri
 273. remove alphabet
-276. remove numbers
-277. Prepend a default value of the appropriate type to a list. Default values are either falsy values (0,[],...) or functions returning those values.
-278. length is 1?
-279. apply twice
-280. every nth item of a list
-281. factors of a number
-282. prefixes
-283. suffixes
-284. Replicate each item a list by a given number
-285. Symmetric range
-286. are all function results equal?
-287. Remove duplicates by function result
-288. empty list
-289. regex search (`re.search`)
-290. regex match (`re.match`)
-291. regex fullmatch (`re.fullmatch`)
-292. regex split (`re.split`)
-293. regex findall (`re.findall`)
-294. regex substitute (`re.sub`)
-295. regex escape (`re.escape`)
-296. overwrite the start of a with b
-297. transliteration
-298. set equality
-299. a.split_before(b) (https://chat.stackexchange.com/transcript/message/58361993#58361993)
-300. range from a to b with step c
-301. shape a as an a * c rectangle
-302. pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
-303. canvas
-304. a formatted into rectangle with smallest perimeter
-305. a and b joined on longest common prefix and suffix
-306. remove nth item of a list
-307. remove nth letter of a string
-308. set union
-309. set xor
-310. multiset union
-311. multiset intersection
-312. multiset xor
-313. [[a, item] for item in b]
-314. reverse stack
-315. two things have same length?
-316. non-vectorising non-equals
-317. exactly equals
-318. all and any
-319. fold fixedpoint
-320. connected uniquify (`Ġvh`)
-321. triple / triadify
-322. number compression
-323. next two bytes number compression
-324. powerset
-325. empty string
-326. empty space
-327. move element to beginning of list
-328. degrees to radians
-329. radians to degrees
-330. Complement; compute 1 − z.
-331. Return all indices of z that correspond to maximal elements.
-332. Return a Boolean array with 1s at the indices in z.
-333. enumerate a list
-334. Modular; return every y th element of x. If y is zero, mirror: prepend x to its reverse.
-335. ring translate
-336. Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
-337. All permutations of z. May contain duplicates.
-338. Apply element only to the head of list
-339. Apply element only to the first n elements of list
-340. Cartesian product over a list of lists
-341. Uniquify Mask
-342. is sorted?
-343. Pipe ("|") constant
-344. Backslash ("\") constant
-345. if-equal structure (`=[`)
-346. split into lengths of 2 (`2ẇ`)
-347. Apply element without popping
-348. Parallel apply
-349. Parallel apply into list
-350. Inner-product by element
-351. Apply last element to register
-352. Head remove
-353. Tail remove
+274. remove numbers
+275. Prepend a default value of the appropriate type to a list. Default values are either falsy values (0,[],...) or functions returning those values.
+276. length is 1?
+277. apply twice
+278. every nth item of a list
+279. factors of a number
+280. prefixes
+281. suffixes
+282. Replicate each item a list by a given number
+283. Symmetric range
+284. are all function results equal?
+285. Remove duplicates by function result
+286. empty list
+287. regex search (`re.search`)
+288. regex match (`re.match`)
+289. regex fullmatch (`re.fullmatch`)
+290. regex split (`re.split`)
+291. regex findall (`re.findall`)
+292. regex substitute (`re.sub`)
+293. regex escape (`re.escape`)
+294. overwrite the start of a with b
+295. transliteration
+296. set equality
+297. a.split_before(b) (https://chat.stackexchange.com/transcript/message/58361993#58361993)
+298. range from a to b with step c
+299. shape a as an a * c rectangle
+300. pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
+301. canvas
+302. a formatted into rectangle with smallest perimeter
+303. a and b joined on longest common prefix and suffix
+304. remove nth item of a list
+305. remove nth letter of a string
+306. set union
+307. set xor
+308. multiset union
+309. multiset intersection
+310. multiset xor
+311. [[a, item] for item in b]
+312. reverse stack
+313. two things have same length?
+314. non-vectorising non-equals
+315. exactly equals
+316. all and any
+317. fold fixedpoint
+318. connected uniquify (`Ġvh`)
+319. triple / triadify
+320. number compression
+321. next two bytes number compression
+322. powerset
+323. empty string
+324. empty space
+325. move element to beginning of list
+326. degrees to radians
+327. radians to degrees
+328. Complement; compute 1 − z.
+329. Return all indices of z that correspond to maximal elements.
+330. Return a Boolean array with 1s at the indices in z.
+331. enumerate a list
+332. Modular; return every y th element of x. If y is zero, mirror: prepend x to its reverse.
+333. ring translate
+334. Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
+335. All permutations of z. May contain duplicates.
+336. Apply element only to the head of list
+337. Apply element only to the first n elements of list
+338. Cartesian product over a list of lists
+339. Uniquify Mask
+340. is sorted?
+341. Pipe ("|") constant
+342. Backslash ("\") constant
+343. if-equal structure (`=[`)
+344. split into lengths of 2 (`2ẇ`)
+345. Apply element without popping
+346. Parallel apply
+347. Parallel apply into list
+348. Inner-product by element
+349. Apply last element to register
+350. Head remove
+351. Tail remove
