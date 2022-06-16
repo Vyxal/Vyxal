@@ -655,6 +655,20 @@ def test_string_interop():
     assert stack[-1] == "hello 2 world 1"
 
 
+def test_conditional_execute_modifier():
+    stack = run_vyxal("12 19 1 ß%")
+    assert stack[-1] == 12
+
+    stack = run_vyxal("12 19 0 ß%")
+    assert stack[-1] == 19
+
+    stack = run_vyxal("12 19 1 ßd")
+    assert stack[-1] == 38
+
+    stack = run_vyxal("12 19 0 ßd")
+    assert stack[-1] == 19
+
+
 def test_generators():
     stack = run_vyxal('1 1" ⁽+ d Ḟ')
     assert stack[-1][:7] == [1, 1, 2, 3, 5, 8, 13]

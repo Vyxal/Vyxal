@@ -680,6 +680,7 @@
       - '["Z"] : 90'
       - '["ABC"] : [65,66,67]'
       - '[[123,124,125]] : ["{","|","}"]'
+      - '[""] : []'
 
 - element: "D"
   name: Triplicate
@@ -1659,7 +1660,7 @@
   arity: 1
   overloads:
       num: round(a)
-      complex: '[real(a), imag(a)]'
+      complex: "[real(a), imag(a)]"
       str: quad palindromize with overlap
   vectorise: true
   tests:
@@ -2316,7 +2317,7 @@
       - "[4.5] : 5"
       - "[[1.52,2.9,3.3]] : [2,3,4]"
       - '["hello world"] : ["hello","world"]'
-      - '[2j+3] : 2'
+      - "[2j+3] : 2"
 
 - element: "⌊"
   name: "Floor"
@@ -2331,7 +2332,7 @@
       - "[5.3] : 5"
       - "[[5.3,4.7]] : [5, 4]"
       - '["123abc"] : 123'
-      - '[2j+3] : 3'
+      - "[2j+3] : 3"
 
 - element: "¯"
   name: Deltas
@@ -4297,6 +4298,7 @@
       - '["hello"] : "`ƈṙ`"'
       - '["Vyxal"] : "`₴ŀ`"'
       - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
+      - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
 
 - element: "øW"
   name: Group on words
@@ -5087,6 +5089,67 @@
       lst-fun: Reduce columns of a matrix by a function.
   vectorise: false
 
+- element: "Þ∨"
+  name: Multiset Difference
+  description: Similar to set difference, but with duplicates allowed.
+  arity: 2
+  overloads:
+      lst-lst: Multiset difference
+  vectorise: false
+  tests:
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : []"
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10,11]] : []"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3]] : [1, 2, 3, 3]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3,4]] : [1, 2, 3, 3]"
+      - "[[], []] : []"
+      - "[[1, 2, 3], []] : [1,2,3]"
+
+- element: "Þ∩"
+  name: Multiset Intersection
+  description: Similar to set intersection, but with duplicates allowed.
+  arity: 2
+  overloads:
+      lst-lst: Multiset intersection
+  vectorise: false
+  tests:
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10,11]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3]] : [1, 2, 2, 3]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3,4]] : [1, 2, 2, 3]"
+      - "[[], []] : []"
+      - "[[1, 2, 3], []] : []"
+      - "[[1, 1, 1], [1]] : [1]"
+
+- element: "Þ∪"
+  name: Multiset Union
+  description: Similar to set union, but with duplicates allowed.
+  arity: 2
+  overloads:
+      lst-lst: Multiset union
+  vectorise: false
+  tests:
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10,11]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3]] : [1, 1, 2, 2, 2, 3, 3, 3]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3,4]] : [1, 1, 2, 2, 2, 3, 3, 3, 4]"
+      - "[[], []] : []"
+      - "[[1, 2, 3], []] : [1, 2, 3]"
+
+- element: "Þ⊍"
+  name: Multiset Symmetric Difference
+  description: Similar to set symmetric difference, but with duplicates allowed.
+  arity: 2
+  overloads:
+      lst-lst: Multiset symmetric difference
+  vectorise: false
+  tests:
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : []"
+      - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10,11]] : [11]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3]] : [1, 2, 3, 3]"
+      - "[[1,1,2,2,2,3,3,3],[1,2,2,3,4]] : [1, 2, 3, 3, 4]"
+      - "[[], []] : []"
+      - "[[1, 2, 3], []] : [1, 2, 3]"
+
 - element: "Þ•"
   name: Dot Product
   description: Dot product of two lists.
@@ -5360,8 +5423,8 @@
       lst-num: Matrix b multiplied by itself a times
   vectorise: false
   tests:
-      - "[[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
-      - "[[1, 2, 3, 4, 5], 4] : [1, 32, 243, 1024, 3125]"
+      - "[[[0, 0, 1, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]], 2] : [[0, 1, 0, 1], [0, 1, 1, 1], [1, 0, 2, 0], [0, 1, 0, 1]]"
+      - "[[1, 2, 3, 4, 5], 4] : [[3375], [6750], [10125], [13500], [16875]]"
 
 - element: "Þd"
   name: Distance matrix (Directed)
