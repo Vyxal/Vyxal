@@ -2471,6 +2471,26 @@ codepage_descriptions[67] += `
 Reduce columns of a matrix by a function.
 lst a, fun b -> Reduce columns of a matrix by a function.
 `
+codepage_descriptions[5] += `
+Þ∨ (Multiset Difference)
+Similar to set difference, but with duplicates allowed.
+lst a, lst b -> Multiset difference
+`
+codepage_descriptions[231] += `
+Þ∩ (Multiset Intersection)
+Similar to set intersection, but with duplicates allowed.
+lst a, lst b -> Multiset intersection
+`
+codepage_descriptions[230] += `
+Þ∪ (Multiset Union)
+Similar to set union, but with duplicates allowed.
+lst a, lst b -> Multiset union
+`
+codepage_descriptions[232] += `
+Þ⊍ (Multiset Symmetric Difference)
+Similar to set symmetric difference, but with duplicates allowed.
+lst a, lst b -> Multiset symmetric difference
+`
 codepage_descriptions[13] += `
 Þ• (Dot Product)
 Dot product of two lists.

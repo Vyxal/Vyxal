@@ -3574,6 +3574,38 @@ Reduce columns of a matrix by a function.
 
 - lst a, fun b: `Reduce columns of a matrix by a function.`
 -------------------------------
+## `` Þ∨ `` (Multiset Difference)
+
+Similar to set difference, but with duplicates allowed.
+
+### Overloads
+
+- lst a, lst b: `Multiset difference`
+-------------------------------
+## `` Þ∩ `` (Multiset Intersection)
+
+Similar to set intersection, but with duplicates allowed.
+
+### Overloads
+
+- lst a, lst b: `Multiset intersection`
+-------------------------------
+## `` Þ∪ `` (Multiset Union)
+
+Similar to set union, but with duplicates allowed.
+
+### Overloads
+
+- lst a, lst b: `Multiset union`
+-------------------------------
+## `` Þ⊍ `` (Multiset Symmetric Difference)
+
+Similar to set symmetric difference, but with duplicates allowed.
+
+### Overloads
+
+- lst a, lst b: `Multiset symmetric difference`
+-------------------------------
 ## `` Þ• `` (Dot Product)
 
 Dot product of two lists.
