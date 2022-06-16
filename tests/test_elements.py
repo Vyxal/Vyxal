@@ -24805,8 +24805,8 @@ def test_IdentityMatrixofSizen():
 
 def test_MatrixExponentiation():
 
-    stack = [vyxalify(item) for item in [[[1, 0, 0], [0, 1, 0], [0, 0, 1]], 3]]
-    expected = vyxalify([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    stack = [vyxalify(item) for item in [[[0, 0, 1, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]], 2]]
+    expected = vyxalify([[0, 1, 0, 1], [0, 1, 1, 1], [1, 0, 2, 0], [0, 1, 0, 1]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -24827,7 +24827,7 @@ def test_MatrixExponentiation():
 
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5], 4]]
-    expected = vyxalify([1, 32, 243, 1024, 3125])
+    expected = vyxalify([[3375], [6750], [10125], [13500], [16875]])
     ctx = Context()
 
     ctx.stacks.append(stack)
