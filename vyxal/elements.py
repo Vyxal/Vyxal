@@ -3344,7 +3344,6 @@ def optimal_compress(lhs, ctx):
     """
 
     dp = [""] + [" " * (len(lhs) + 1)] * len(lhs)
-    ds = dp[:]
 
     for i in range(1, len(lhs) + 1):
         for left in range(max(0, i - dictionary.max_word_len), i - 1):
@@ -3357,17 +3356,13 @@ def optimal_compress(lhs, ctx):
         for index, word in enumerate(dictionary.small_dictionary):
             if sub.endswith(word):
                 j = compression[index]
-                ds[i] = min(
-                    [ds[i], dp[i - len(word)] + compression[index]], key=len
-                )
+                dp[i] = min([dp[i], dp[i - len(word)] + j], key=len)
 
         replace = dp[i - 1] + lhs[i - 1]
         if len(replace) < len(dp[i]):
             dp[i] = replace
-        if len(replace) < len(ds[i]):
-            ds[i] = replace
 
-    return quotify(min([dp[-1], ds[-1]], key=len), ctx)
+    return quotify(dp[i], ctx)
 
 
 def orderless_range(lhs, rhs, ctx):
