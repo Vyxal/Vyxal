@@ -1,46 +1,46 @@
-1. Map Over Prefixes
-2. Conditional Execution
-3. Filter by Element
-4. Last Element as Function
-5. Last Two Elements as Function
-6. Last Three Elements as Function
-7. Last Four Elements as Function
-8. Reject by Element
-9. Outer Product / Table
-10. Normal Lambda
-11. Mapping Lambda
-12. Filtering Lambda
-13. Reduction Lambda
-14. Sorting Lambda
-15. Halve
-16. Range `[1, n]`
-17. Range `[0, n)`
-18. Range `[0, n]`
-19. Multiplication
-20. Division
-21. Factorial
-22. If statement
-23. For loop
-24. While loop
-25. Strings
-26. Numeric literals
-27. String compression
-28. Sort by element
-29. Lambda to start of line
-30. Vectorise element
-31. Exponentiation
-32. Addition
-33. Subtraction
-34. Print
-35. Foldl / Reduce left
-36. Duplicate
-37. Less than
-38. Equals
-39. Greater than
-40. Input
-41. `all()` in python
-42. From binary
-43. To binary
+1. Map Over Prefixes - ¡ - Modifier
+2. Conditional Execution - ¿ - Modifier
+3. Filter by Element - © - Modifier
+4. Last Element as Function - ¤ - Modifier
+5. Last Two Elements as Function - ¢ - Modifier
+6. Last Three Elements as Function - € - Modifier
+7. Last Four Elements as Function - § - Modifier
+8. Reject by Element - ® - Modifier
+9. Outer Product / Table - ┬ - Modifier
+10. Normal Lambda - λ - Syntax
+11. Mapping Lambda - ƛ - Syntax
+12. Filtering Lambda - Ω - Syntax
+13. Reduction Lambda - Λ - Syntax
+14. Sorting Lambda - µ - Syntax
+15. Halve - ½ - Element
+16. Range `[1, n]` - ʒ - Element
+17. Range `[0, n)` - ʑ - Element
+18. Range `[0, n]` - z - Element
+19. Multiplication - × - Element
+20. Division - ÷ - Element
+21. Factorial - ! - Element
+22. If statement - [...} - Syntax
+23. For loop - (...} - Syntax
+24. While loop - {...} - Syntax
+25. Strings - "..." - Syntax
+26. Numeric literals - [0-9]+ - Syntax
+27. String compression - ▲ - Syntax
+28. Sort by element - $ - Modifier
+29. Lambda to start of line - ) - Modifier
+30. Vectorise element - v - Modifier
+31. Exponentiation - * - Element
+32. Addition - + - Element
+33. Subtraction - - - Element
+34. Print - , - Element
+35. Foldl / Reduce left - / - Modifier
+36. Duplicate - : - Element
+37. Less than - < - Element
+38. Equals - = - Element
+39. Greater than - > - Element
+40. Input - ? - Element
+41. `all()` in python - A (lst) - Element
+42. From binary - B (lst, str) - Element
+43. To binary - b (num) - Element
 44. `a.count(b)`
 45. Triplicate
 46. Filter by function

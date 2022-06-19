@@ -75,7 +75,7 @@
   description: NOP
   arity: Not Applicable
 
-- modifier: "æ"
+- modifier: "ð"
   name: Apply to Each Stack Item
   description: Apply an element to every item on the stack
   arity: varies
@@ -86,7 +86,7 @@
       - program: "5 1 7 2 4 2+¢æ W"
         output: [7, 3, 9, 4, 6]
 
-- modifier: "ð"
+- modifier: "┬"
   name: Outer Product / Table
   description: Take the cartesian product of an item with itself and reduce each pair by an element
   arity: 1
@@ -762,12 +762,12 @@
   # Tests required elsewhere
 
 - element: "A"
-  name: All Truthy / Is Vowel?
-  description: Are all items in a list truthy? / Is a character a vowel?
+  name: All Truthy / Uppercase / Absolute Value
+  description: Are all items in a list truthy? / Convert a string to uppercase / Absolute value
   arity: 1
   overloads:
-      num: are all digits in lhs truthy?
-      str: "[char in 'aeiou' for char in lhs]"
+      num: abs(lhs)
+      str: lowercase
       lst: are all items in lhs truthy?
   vectorise: false
   tests:
@@ -776,11 +776,15 @@
       - inputs: [[1, 2, 3, 0]]
         output: 0
       - inputs: ["abc"]
-        output: [1, 0, 0]
+        output: ["ABC"]
       - inputs: [""]
-        output: []
+        output: [""]
       - inputs: [[]]
         output: 1
+      - inputs: [-7]
+        output: 7
+      - inputs: [7.8]
+        output: 7.8
 
 - element: "B"
   name: From Binary
@@ -913,29 +917,40 @@
         output: "a"
 
 - element: "G"
-  name: Monadic Maximum (Greatest)
-  description: Return the maximal value within a list.
-  arity: 1
+  name: Maximum (Greatest) / Generator
+  description: >-
+      Return the maximal value of either a list or two scalar values / Make a 
+      generator from function lhs with initial vector rhs
+  arity: 2
   overloads:
-      num: max(digits(lhs))
-      str: max(lhs)
-      lst: max(lhs)
+      any-lst: lhs, max(rhs)
+      num-num: max(lhs, rhs)
+      num-str: max(str(lhs), rhs)
+      str-num: max(lhs, str(rhs))
+      str-str: max(lhs, rhs)
+      lst-scl: "[max(rhs, x) for x in lhs]"
+      fun-lst: Generator from function lhs with initial vector rhs
+      lst-fun: Generator from function rhs with initial vector lhs
   vectorise: false
   tests:
-      - inputs: [1]
-        output: 1
-      - inputs: [9534]
-        output: 9
-      - inputs: [1111122]
+      - inputs: [2, 1]
         output: 2
-      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+      - inputs: [454, 2343]
+        output: 2343
+      - inputs: ["abc", "def"]
+        output: "def"
+      - inputs: [0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
         output: 10
       - inputs: [[]]
         output: []
-      - inputs: [""]
+      - inputs: ["", ""]
         output: ""
-      - inputs: ["Vyxal"]
-        output: "y"
+      - inputs: [[1, 2, 3], "Vyxal"]
+        output: ["Vyxal", "Vyxal", "Vyxal"]
+      - inputs: [[5, 6, 8, 9], 7]
+        output: [7, 7, 8, 9]
+      - program: "λ2|+; ⟨ 1 | 1 ⟩ G 10 Ẏ" # TODO: Replace with list[:item]
+        output: [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
 
 - element: "H"
   name: To Hexadecimal / From Hexadecimal
@@ -1483,3 +1498,28 @@
         output: "Truthy"
       - program: "5 0 IN]"
         output: -5
+
+- element: "g"
+  name: Monadic Minimum (Smallest)
+  description: Return the minimal value within a list.
+  arity: 1
+  overloads:
+      num: min(digits(lhs))
+      str: min(lhs)
+      lst: min(lhs)
+  vectorise: false
+  tests:
+      - inputs: [1]
+        output: 1
+      - inputs: [9534]
+        output: 3
+      - inputs: [1111122]
+        output: 1
+      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+        output: 1
+      - inputs: [[]]
+        output: []
+      - inputs: [""]
+        output: ""
+      - inputs: ["Vyxal"]
+        output: "V"
