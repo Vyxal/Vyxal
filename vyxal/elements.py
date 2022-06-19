@@ -5495,7 +5495,11 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             return gen()
     if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList(elem for elem in lhs if elem not in rhs)
+    return LazyList(
+        elem
+        for elem in iterable(lhs, ctx=ctx)
+        if elem not in wrapify(rhs, ctx=ctx)
+    )
 
 
 def vy_floor(lhs, ctx):
