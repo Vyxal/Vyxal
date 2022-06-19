@@ -920,7 +920,8 @@
   name: Maximum (Greatest) / Generator
   description: >-
       Return the maximal value of either a list or two scalar values / Make a 
-      generator from function lhs with initial vector rhs
+      generator from function lhs with initial vector rhs, only using the first
+      n previously generated values depending on the arity of the function used.
   arity: 2
   overloads:
       any-lst: lhs, max(rhs)
@@ -1500,26 +1501,39 @@
         output: -5
 
 - element: "g"
-  name: Monadic Minimum (Smallest)
-  description: Return the minimal value within a list.
-  arity: 1
+  name: Minimum (Smallest) / Generator With Previous Values
+  description: >- 
+    Return the minimal value within a list / Make a 
+    generator from function lhs with initial vector rhs, passing it the entire
+    stack each time
+  arity: 2
   overloads:
-      num: min(digits(lhs))
-      str: min(lhs)
-      lst: min(lhs)
+      any-lst: lhs, min(rhs)
+      num-num: min(lhs, rhs)
+      num-str: min(str(lhs), rhs)
+      str-num: min(lhs, str(rhs))
+      str-str: min(lhs, rhs)
+      lst-scl: "[min(rhs, x) for x in lhs]"
+      fun-lst: Generator from function lhs with initial vector rhs
+      lst-fun: Generator from function rhs with initial vector lhs
   vectorise: false
   tests:
-      - inputs: [1]
+  tests:
+      - inputs: [2, 1]
         output: 1
-      - inputs: [9534]
-        output: 3
-      - inputs: [1111122]
-        output: 1
-      - inputs: [[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
+      - inputs: [454, 2343]
+        output: 454
+      - inputs: ["abc", "def"]
+        output: "abc"
+      - inputs: [0, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]]
         output: 1
       - inputs: [[]]
         output: []
-      - inputs: [""]
+      - inputs: ["", ""]
         output: ""
-      - inputs: ["Vyxal"]
-        output: "V"
+      - inputs: [[1, 2, 3], "Vyxal"]
+        output: [1, 2, 3]
+      - inputs: [[5, 6, 8, 9], 7]
+        output: [5, 6, 7, 7]
+      - program: "+¤ ⟨ 1 | 1 ⟩ g 10 Ẏ" # TODO: Replace with list[:item]
+        output: [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]
