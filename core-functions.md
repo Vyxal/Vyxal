@@ -39,22 +39,22 @@
 39. Greater than - > - Element
 40. Input - ? - Element
 41. `all()` in python - A (lst) - Element
-42. From binary - B (lst, str) - Element
+42. From binary - B (lst | str) - Element
 43. To binary - b (num) - Element
-44. `a.count(b)`
-45. Triplicate
-46. Filter by function
-47. Map function
-48. Monadic maximum
-49. Dyadic maximum
-50. Monadic minimum
-51. Dyadic mimimum
-52. To hexadecimal
-53. From hexadecimal
-54. `abs(x) <= 1`
-55. Concatenate
-56. Negated filter
-57. Set difference
+44. `a.count(b)` - C - Element
+45. Triplicate - D - Element
+46. Filter by function - F (any, fun) - Element
+47. Map function - M (any, fun) - Element
+48. Monadic maximum - G - Element
+49. Dyadic maximum - G - Element
+50. Monadic minimum - g - Element
+51. Dyadic mimimum - g - Element
+52. To hexadecimal - H (num) - Element
+53. From hexadecimal - H (str) - Element
+54. `abs(x) <= 1` - I (num) - Element
+55. Concatenate - J (scl, scl) + (str, [num, str]) - Element
+56. Negated filter - K (any, fun) - Element
+57. Set difference 
 58. Length
 59. Map function over list
 60. Negate
