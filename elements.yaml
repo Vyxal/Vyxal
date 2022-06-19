@@ -657,16 +657,21 @@
   vectorise: false
   # Requires testing elsewhere
 
-- modifier: ";"
-  name: Key
-  description: Map an element over the groups formed by identical items
-  arity: 1
-  elements: 1
+- element: ";"
+  name: Pair
+  description: Pair the top two elements of the stack into a single list
+  arity: 2
+  overloads:
+      any-any: "[lhs, rhs]"
+  vectorise: false
   tests:
-      - program: "⟨1|1|2|2|3|3|4|4|5|5⟩ L;"
-        output: [2, 2, 2, 2, 2]
-      - program: '"abcaabbbcc" h;'
-        output: "abcabc"
+      - inputs: [1, 2]
+        output: [1, 2]
+      - inputs: [1, 2, 3]
+        output: [2, 3]
+      - inputs: [1, 2, 3, 4]
+        output: [3, 4]
+  
 
 - element: "<"
   name: Less Than
@@ -1316,14 +1321,21 @@
         output: "[[1, 2, 3], [4, 5, 6]]"
 
 - element: "T"
-  name: Transpose
+  name: Transpose / Reciprocal
   description: >-
-      Transpose a matrix / Transpose a list of lists
+      Transpose a matrix or list of lists / Reciprocal of a number
   arity: 1
   overloads:
+      num: 1 / lhs
       any: transpose(lhs)
   vectorise: false
   tests:
+      - inputs: [1]
+        output: 1
+      - inputs: [0]
+        output: 0
+      - inputs: [5]
+        output: 0.2
       - inputs: [[[1, 2], [2, 3, 4]]]
         output: [[1, 2], [2, 3], [4]]
       - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9, 10]]]
