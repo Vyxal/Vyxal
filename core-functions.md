@@ -138,7 +138,7 @@
 138. is prime? - ᴾ - Element
 139. is even? - ₂ - Element
 140. parity - ḃ - Element
-141. to string - s - Element
+141. to string - S - Element
 142. split string on anything - ÷ (str, str) Ṣ (any, any) - Element
 143. split string on newlines - Ṇ - Element
 144. split string on spaces - ṇ - Element
