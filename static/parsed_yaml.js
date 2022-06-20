@@ -2709,3 +2709,7 @@ codepage_descriptions[63] += `
 ¨? (Explicit STDIN)
 Read from STDIN, even if there are arguments
 `
+codepage_descriptions[105] += `
+¨i (If/Else)
+If the top of the stack is truthy, run the first element, otherwise the second.
+`
