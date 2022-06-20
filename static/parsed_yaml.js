@@ -2335,6 +2335,11 @@ codepage_descriptions[244] += `
 Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 any a -> [int(x in a) for x in range(len(a))]
 `
+codepage_descriptions[243] += `
+ÞǓ (Connected Uniquify)
+Remove occurences of adjacent duplicates in a list
+any a -> Connected uniquify a (\`Ġvh\`)
+`
 codepage_descriptions[105] += `
 Þi (Multidimensional Indexing)
 Index a list of coordinates into a value.

@@ -2912,6 +2912,12 @@ k• (Qwerty Keyboard)
 
     any a: [int(x in a) for x in range(len(a))]
 -------------------------------
+ÞǓ (Connected Uniquify)
+
+- Remove occurences of adjacent duplicates in a list
+
+    any a: Connected uniquify a (`Ġvh`)
+-------------------------------
 Þi (Multidimensional Indexing)
 
 - Index a list of coordinates into a value.

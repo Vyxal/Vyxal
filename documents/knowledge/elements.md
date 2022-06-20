@@ -3363,6 +3363,14 @@ Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 
 - any a: `[int(x in a) for x in range(len(a))]`
 -------------------------------
+## `` ÞǓ `` (Connected Uniquify)
+
+Remove occurences of adjacent duplicates in a list
+
+### Overloads
+
+- any a: `Connected uniquify a (`Ġvh`)`
+-------------------------------
 ## `` Þi `` (Multidimensional Indexing)
 
 Index a list of coordinates into a value.
