@@ -5596,3 +5596,8 @@
   name: Explicit STDIN
   description: Read from STDIN, even if there are arguments
   arity: 0
+
+- modifier: "¨i"
+  name: If/Else
+  description: If the top of the stack is truthy, run the first element, otherwise the second.
+  usage: "¨i<element><element>"
