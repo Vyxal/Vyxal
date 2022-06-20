@@ -95,7 +95,7 @@
 95. Floor division - İ (int, int) - element
 96. Floor - Ḟ - element
 97. Ceiling - Ċ - element
-98.  Join on newlines - Ṅ - Element
+98.  Join on newlines - Ṅ (lst) - Element
 99.  Group consecutive - Ġ - Element
 100. Pop - _ - Element
 101. Swap - s - Element
@@ -123,7 +123,7 @@
 123. invariant / Equal under element - ≡ - Modifier
 124. all equal - ≈ - Element
 125. increments / deltas - ¯ - Element
-126. join on spaces - ṅ - Element
+126. join on spaces - ṅ (lst) - Element
 127. vectorised reverse - R (non-function) - Element
 128. choose random item - ℅ - Element
 129. bitwise not - ⌐ - Element
@@ -140,8 +140,8 @@
 140. parity - ḃ - Element
 141. to string - S - Element
 142. split string on anything - ÷ (str, str) Ṣ (any, any) - Element
-143. split string on newlines - Ṇ - Element
-144. split string on spaces - ṇ - Element
+143. split string on newlines - Ṇ (str) - Element
+144. split string on spaces - ṇ (str) - Element
 145. to number - Ị - Element
 146. reciprocal - T (num) - Element
 147. sign of number - a (num) - Element
@@ -154,8 +154,8 @@
 154. GCD - ġ (num, num) - Element
 155. LCM - ŀ (num, num) - Element
 156. logarithm - ḷ - Element
-157. integer partitions - ị - Element
-158. list partitions - ᴸ - element
+157. integer partitions - ị (num) - Element
+158. list partitions - ị (str | lst) - element
 159. partition at truthy indices - Ṭ - Element
 160. cartesian product - Ẋ - element
 161. cartesian power - ẋ - element
@@ -187,156 +187,152 @@
 189. is string? - ø? - Element
 190. is number? - ∆? - Element
 191. is list? - Þ? - Element
-192. is positive? - ᵀ - Element
-193. is alphabet? - ᴬ - Element
-194. is numeric? - ᴺ - Element
+192. is positive? - ᵀ (num) - Element
+193. is alphabet? - ᴬ (str) - Element
+194. is numeric? - ᴺ (str) - Element
 195. prime factors - Ḳ - Element
 196. prime factorisation - ḳ - Element
 197. 2 ** n - E - Element
-198. 10 ** n
-199. lift
-200. if 1, push context variable n
-201. ath prime
-202. e ** n
-203. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...]
-204. keep only alphabet
-205. keep only numbers
-206. cartesian product with self
-207. round
-208. sort by length
-209. join on anything
-210. n-dup
-211. uppercase
-212. lowercase
-213. title case
-214. first number where function is truthy
-215. split on function results
-216. run func on the prev result until the result no longer changes returning all intermediate results
-217. find the index for the first element such that function evaluates as truthy
-218. apply func to the elements in a where the index in b is truthy
-219. zipwith
-220. Key. Map an element over the groups formed by identical items.
-221. Tie. Cycle through a number of (default 2) elements each time called.
-222. Keep items with minimal element value
-223. Keep items with maximal element value
-224. Loop an element. Repeat until the results are no longer unique.
-225. Loop an element. Repeat until the results are no longer unique. Record intermediate results.
-226. Return a Boolean array with 1s at the indices in a list.
-227. vectorised length
-228. Shortcut for ĠvL (group consecutive, vectorised lengths)
-229. Shape of list
-230. Matrix inverse
-231. Grade up
-232. Grade down
-233. Contains - shallow
-234. Contains - deep
-235. Reshape array
-236. Mold one list to the shape of another
-237. take (↑ in APL)
-238. drop (↓ in APL)
-239. Insert zeros (or blanks) in B corresponding to zeros in A
-240. Conjugate a complex number
-241. Solo (≍ in BQN)
-242. Couple (≍ in BQN)
-243. Window (↕ in BQN)
-244. Vectorise but to the rows (˘ in BQN - cells)
-245. Vertical fold (˝ in BQN)
-246. Depth of list
-247. Vertical scan
-248. Deshape (⥊ in BQN)
-249. apply last element to each item, treating the item as a stack: ƛ~<element>}
-250. maximum by element
-251. mimimum by element
-252. first truthy item by element
-253. remove duplicates by element
-254. number of truthy items by element
-255. diagonals of list
-256. anti-diagonals
-257. slice index
-258. get function arity
-259. remove an item from a list
-260. remove a string from another string
-261. remove whitespace
-262. remove non-numbers
-263. remove non-alphabet
-264. remove non-alphanumeric
-265. remove alphanumeri
-266. remove alphabet
-267. remove numbers
-268. Prepend a default value of the appropriate type to a list. Default values are either falsy values (0,[],...) or functions returning those values.
-269. length is 1?
-270. apply twice
-271. every nth item of a list
-272. factors of a number
-273. prefixes
-274. suffixes
-275. Replicate each item a list by a given number
-276. Symmetric range
-277. are all function results equal?
-278. Remove duplicates by function result
-279. empty list
-280. regex search (`re.search`)
-281. regex match (`re.match`)
-282. regex fullmatch (`re.fullmatch`)
-283. regex split (`re.split`)
-284. regex findall (`re.findall`)
-285. regex substitute (`re.sub`)
-286. regex escape (`re.escape`)
-287. overwrite the start of a with b
-288. transliteration
-289. set equality
-290. a.split_before(b) (https://chat.stackexchange.com/transcript/message/58361993#58361993)
-291. range from a to b with step c
-292. shape a as an a * c rectangle
-293. pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
-294. canvas
-295. a formatted into rectangle with smallest perimeter
-296. a and b joined on longest common prefix and suffix
-297. remove nth item of a list
-298. remove nth letter of a string
-299. set union
-300. set xor
-301. multiset union
-302. multiset intersection
-303. multiset xor
-304. [[a, item] for item in b]
-305. reverse stack
-306. two things have same length?
-307. non-vectorising non-equals
-308. exactly equals
-309. all and any
-310. fold fixedpoint
-311. connected uniquify (`Ġvh`)
-312. triple / triadify
-313. number compression
-314. next two bytes number compression
-315. powerset
-316. empty string
-317. empty space
-318. move element to beginning of list
-319. degrees to radians
-320. radians to degrees
-321. Complement; compute 1 − z.
-322. Return all indices of z that correspond to maximal elements.
-323. Return a Boolean array with 1s at the indices in z.
-324. enumerate a list
-325. Modular; return every y th element of x. If y is zero, mirror: prepend x to its reverse.
-326. ring translate
-327. Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
-328. All permutations of z. May contain duplicates.
-329. Apply element only to the head of list
-330. Apply element only to the first n elements of list
-331. Cartesian product over a list of lists
-332. Uniquify Mask
-333. is sorted?
-334. Pipe ("|") constant
-335. Backslash ("\") constant
-336. if-equal structure (`=[`)
-337. split into lengths of 2 (`2ẇ`)
-338. Apply element without popping
-339. Parallel apply
-340. Parallel apply into list
-341. Inner-product by element
-342. Apply last element to register
-343. Head remove
-344. Tail remove
+198. 10 ** n - ᴺ (num) - Element
+199. lift - Ḷ - Element
+200. if 1, push context variable n - ᴱ - Element
+201. ath prime - Ṅ (num) - Element
+202. e ** n - ṅ (num) - Element
+203. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...] - Ạ - Element
+204. keep only alphabet - Ṅ (str) - Element
+205. keep only numbers - ṅ (str) - Element
+206. round - ṛ (num) - Element
+207. sort by length - ᴸ (lst) - Element
+208. join on anything - j - Element
+209. n-dup - Þ: - Element
+210. title case - T (str) - Element
+211. first number where function is truthy - ṅ (fun) - Element
+212. split on function results - Ṣ (fun, any) - Element
+213. run func on the prev result until the result no longer changes returning all intermediate results - i (fun, any) - Element
+214. find the index for the first element such that function evaluates as truthy - c (fun, any) - Element
+215. apply func to the elements in a where the index in b is truthy - ṁ (fun, lst) - Element
+216. zipwith - Z (fun, any) - Element
+217. Key. Map an element over the groups formed by identical items. - § - Modifier
+218. Tie. Cycle through a number of (default 2) elements each time called. - τ - Modifier
+219. Keep items with minimal element value - #↓ - Modifier
+220. Keep items with maximal element value - #↑ - Modifier
+221. Loop an element. Repeat until the results are no longer unique. - ↑ - Modifier
+222. Loop an element. Repeat until the results are no longer unique. Record intermediate results. - ↓ - Modifier
+223. Return a Boolean array with 1s at the indices in a list. - ṭ - Element
+224. Shortcut for ĠvL (group consecutive, vectorised lengths) - ĠĿ - Regular combo
+225. Shape of list - Ṛ - Element
+226. Matrix inverse - ṁ - Element
+227. Grade up - ẏ
+228. Grade down - ż
+229. Contains - shallow - c - Element
+230. Contains - deep - Þc - Element
+231. Reshape array - r (lst, num) - Element
+232. Mold one list to the shape of another - e - Element
+233. take (↑ in APL)
+234. drop (↓ in APL)
+235. Insert zeros (or blanks) in B corresponding to zeros in A
+236. Conjugate a complex number
+237. Solo (≍ in BQN)
+238. Couple (≍ in BQN)
+239. Window (↕ in BQN)
+240. Vectorise but to the rows (˘ in BQN - cells)
+241. Vertical fold (˝ in BQN)
+242. Depth of list
+243. Vertical scan
+244. Deshape (⥊ in BQN)
+245. apply last element to each item, treating the item as a stack: ƛ~<element>}
+246. maximum by element
+247. mimimum by element
+248. first truthy item by element
+249. remove duplicates by element
+250. number of truthy items by element
+251. diagonals of list
+252. anti-diagonals
+253. slice index
+254. get function arity
+255. remove an item from a list
+256. remove a string from another string
+257. remove whitespace
+258. remove non-numbers
+259. remove non-alphabet
+260. remove non-alphanumeric
+261. remove alphanumeri
+262. remove alphabet
+263. remove numbers
+264. Prepend a default value of the appropriate type to a list. Default values are either falsy values (0,[],...) or functions returning those values.
+265. length is 1?
+266. apply twice
+267. every nth item of a list
+268. factors of a number
+269. prefixes
+270. suffixes
+271. Replicate each item a list by a given number
+272. Symmetric range
+273. are all function results equal?
+274. Remove duplicates by function result
+275. empty list
+276. regex search (`re.search`)
+277. regex match (`re.match`)
+278. regex fullmatch (`re.fullmatch`)
+279. regex split (`re.split`)
+280. regex findall (`re.findall`)
+281. regex substitute (`re.sub`)
+282. regex escape (`re.escape`)
+283. overwrite the start of a with b
+284. transliteration
+285. set equality
+286. a.split_before(b) (https://chat.stackexchange.com/transcript/message/58361993#58361993)
+287. range from a to b with step c
+288. shape a as an a * c rectangle
+289. pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
+290. canvas
+291. a formatted into rectangle with smallest perimeter
+292. a and b joined on longest common prefix and suffix
+293. remove nth item of a list
+294. remove nth letter of a string
+295. set union
+296. set xor
+297. multiset union
+298. multiset intersection
+299. multiset xor
+300. [[a, item] for item in b]
+301. reverse stack
+302. two things have same length?
+303. non-vectorising non-equals
+304. exactly equals
+305. all and any
+306. fold fixedpoint
+307. connected uniquify (`Ġvh`)
+308. triple / triadify
+309. number compression
+310. next two bytes number compression
+311. powerset
+312. empty string
+313. empty space
+314. move element to beginning of list
+315. degrees to radians
+316. radians to degrees
+317. Complement; compute 1 − z.
+318. Return all indices of z that correspond to maximal elements.
+319. Return a Boolean array with 1s at the indices in z.
+320. enumerate a list
+321. Modular; return every y th element of x. If y is zero, mirror: prepend x to its reverse.
+322. ring translate
+323. Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
+324. All permutations of z. May contain duplicates.
+325. Apply element only to the head of list
+326. Apply element only to the first n elements of list
+327. Cartesian product over a list of lists
+328. Uniquify Mask
+329. is sorted?
+330. Pipe ("|") constant
+331. Backslash ("\") constant
+332. if-equal structure (`=[`)
+333. split into lengths of 2 (`2ẇ`)
+334. Apply element without popping
+335. Parallel apply
+336. Parallel apply into list
+337. Inner-product by element
+338. Apply last element to register
+339. Head remove
+340. Tail remove

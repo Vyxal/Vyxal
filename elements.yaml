@@ -1321,12 +1321,13 @@
         output: "[[1, 2, 3], [4, 5, 6]]"
 
 - element: "T"
-  name: Transpose / Reciprocal
+  name: Transpose / Reciprocal / Title Case
   description: >-
       Transpose a matrix or list of lists / Reciprocal of a number
   arity: 1
   overloads:
       num: 1 / lhs
+      str: Title-case a string
       any: transpose(lhs)
   vectorise: false
   tests:
@@ -1342,6 +1343,12 @@
         output: [[1, 6], [2, 7], [3, 8], [4, 9], [5, 10]]
       - inputs: [[[1, 2, 3, 4, 5], [6, 7, 8, 9]]]
         output: [[1, 6], [2, 7], [3, 8], [4, 9], [5]]
+      - inputs: ["abc def"]
+        output: "Abc Def"
+      - inputs: ["hEllo.vYxaL"]
+        output: "Hello.Vyxal"
+      - inputs: ["a!b c.d#e"]
+        output: "A!B C.D#E"
 
 - element: "U"
   name: Uniquify
