@@ -6031,8 +6031,10 @@ def connected_uniquify(lhs, ctx: Context):
     """
     ts = vy_type(lhs, simple=True)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(connected_uniquify(str(lhs), ctx=ctx)),
-        str: lambda: ''.join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+        NUMBER_TYPE: lambda: sympy.nsimplify(
+            connected_uniquify(str(lhs), ctx=ctx)
+        ),
+        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
         list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
     }.get(ts)()
 
