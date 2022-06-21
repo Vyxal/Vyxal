@@ -1936,11 +1936,6 @@ codepage_descriptions[70] += `
 Get the nth fibonacci number, 0-indexed
 num a -> nth_fibonacci(a)
 `
-codepage_descriptions[66] += `
-∆B (Random Bits)
-Get a list of random bits to length n
-num a -> random_bits(a)
-`
 codepage_descriptions[197] += `
 ∆Ṙ (Random Float)
 Get a random float in the range [0, 1), pseudo random number

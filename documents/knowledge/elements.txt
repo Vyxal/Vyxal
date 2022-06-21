@@ -2412,13 +2412,6 @@ k• (Qwerty Keyboard)
     num a: nth_fibonacci(a)
     otherwise: vectorise
 -------------------------------
-∆B (Random Bits)
-
-- Get a list of random bits to length n
-
-    num a: random_bits(a)
-    otherwise: vectorise
--------------------------------
 ∆Ṙ (Random Float)
 
 - Get a random float in the range [0, 1), pseudo random number

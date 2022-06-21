@@ -2748,14 +2748,6 @@ Get the nth fibonacci number, 0-indexed
 
 - num a: `nth_fibonacci(a)`
 -------------------------------
-## `` ∆B `` (Random Bits)
-
-Get a list of random bits to length n
-
-### Overloads
-
-- num a: `random_bits(a)`
--------------------------------
 ## `` ∆Ṙ `` (Random Float)
 
 Get a random float in the range [0, 1), pseudo random number
