@@ -162,7 +162,7 @@
       any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
   vectorise: false
   tests:
-      - '[-1231234.5, 3] : [-12, 12, 4.5]'
+      - "[-1231234.5, 6] : [24, 24, 9/2]"
       - '["abc3def", 3] : ["abc", "def"]'
       - "[[1, 2, 3, 4, 3, 2, 1], 4] : [[1, 2, 3], [3, 2, 1]]"
       - "[[1, 2, 3, 4], 4] : [[1, 2, 3], []]"
@@ -840,8 +840,8 @@
       - '["abc"] : 3'
       - "[[1,2,3]] : 3"
       - '[[1,2,"wrfwerfgbr",6]] : 4'
-      - '[0] : 1'
-      - '[-0.25] : 4'
+      - "[0] : 1"
+      - "[-0.25] : 4"
 
 - element: "M"
   name: Map
@@ -1670,7 +1670,7 @@
       - '["123",2] : 1'
       - "[123,0] : -1"
       - '["hello","l"] : 2'
-      - '[[[1],[2],[3,4]],[3,4]] : 2'
+      - "[[[1],[2],[3,4]],[3,4]] : 2"
 
 - element: "ġ"
   name: Gcd / Group by Function
@@ -1766,7 +1766,7 @@
   vectorise: false
   tests:
       - '["asdf"] : "asdfdsa"'
-      - '[[]] : 0'
+      - "[[]] : 0"
       - "[[1,2,3]] : 2"
       - "[[4,71,-63]] : 4"
 
@@ -2152,7 +2152,7 @@
       - '["abcdef"] : ["a", "ab", "abc", "abcd", "abcde", "abcdef"]'
       - '[""] : []'
       - "[[1, 2, 3, 4, 5]] : [1, 3, 6, 10, 15]"
-      - '[[]] : []'
+      - "[[]] : []"
 
 - element: "≈"
   name: All Equal
@@ -2244,7 +2244,7 @@
   tests:
       - "[[2, 3, -1]] : [0.5, 1/3, -1]"
       - '["kH"] : "Hello, World!"'
-      - '[0] : 0'
+      - "[0] : 0"
 
 - element: "Ḟ"
   name: Generator / Modulo Index / Format
@@ -2436,7 +2436,7 @@
   tests:
       - '["a b c"," "] : ["a"," ","b"," ","c"]'
       - '["xyzabc123abc","b"] : ["xyza","b","c123a","b","c"]'
-      - '[-1231234.5, 3] : [12, 3, 12, 3, 4.5]'
+      - "[-1231234.5, 3] : [12, 3, 12, 3, 4.5]"
       - "[[1, 2, 3, 4, 3, 2, 1, 4], 4] : [[1, 2, 3], [4], [3, 2, 1], [4], []]"
       - "[[], 4] : [[]]"
 
@@ -4227,8 +4227,8 @@
       str, num: zfill(a, b)
   vectorise: false
   tests:
-    - '["2", 3] : "002"'
-    - '["23", 1] : "23"'
+      - '["2", 3] : "002"'
+      - '["23", 1] : "23"'
 
 - element: "∆ċ"
   name: Nth Cardinal
@@ -4727,7 +4727,7 @@
       num: to_decimal(a)
   vectorise: false
   tests:
-      - '[-5/2] : -2.5'
+      - "[-5/2] : -2.5"
 
 - element: "ø⟇"
   name: Get Codepage Character / Get Codepage Index
@@ -5082,7 +5082,7 @@
       - '["abc",3] : ["aaa","aab","aac","aba","abb","abc","aca","acb","acc","baa","bab","bac","bba","bbb","bbc","bca","bcb","bcc","caa","cab","cac","cba","cbb","cbc","cca","ccb","ccc"]'
       - '["ab",0] : []'
       - '["ab",1] : ["a","b"]'
-      - '[[], 2] : []'
+      - "[[], 2] : []"
       - "[12,2] : [11,12,21,22]"
 
 - element: "Þf"
