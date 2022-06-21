@@ -2945,8 +2945,6 @@
       - '[3, "abcd"] : "bcda"'
       - '[3, "abcd", 4] : "abcd"'
       - '[3, "abcd", -1] : "dabc"'
-      - "[3, 1234] : 2341"
-      - "[3, -1234] : -2341"
 
 - element: "ǔ"
   name: Rotate Right
@@ -2962,8 +2960,6 @@
       - '[3, "abcd"] : "dabc"'
       - '[3, "abcd", 4] : "abcd"'
       - '[3, "abcd", -1] : "bcda"'
-      - "[3, 1234] : 4123"
-      - "[3, -1234] : -4123"
 
 - element: "⁽"
   name: One Element Lambda
