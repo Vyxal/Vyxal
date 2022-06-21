@@ -35,7 +35,7 @@
 
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += (`<span class="key" style="text-align:center;">${codepage[i]}</span><div class="tooltip">${repr(codepage_descriptions[i])}<div class="arrow" data-popper-arrow></div></div>`);
+                kb.innerHTML += (`<span class="key" style="text-align:center;" data-title="${repr(codepage_descriptions[i])}">${codepage[i]}</span><div class="tooltip">${repr(codepage_descriptions[i])}<div class="arrow" data-popper-arrow></div></div>`);
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
@@ -92,7 +92,7 @@
                 var pattern = new RegExp(raw);
 
                 for (var element of document.getElementsByClassName("key")) {
-                    if (element.title.toLowerCase().match(pattern)) {
+                    if (element.dataset.title.toLowerCase().match(pattern)) {
                         element.style.display = "inline-block";
                     } else {
                         element.style.display = "none";
