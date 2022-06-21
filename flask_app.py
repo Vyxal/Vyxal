@@ -158,5 +158,3 @@ def version():
     )
 
     return VERSION
-
-app.run()
