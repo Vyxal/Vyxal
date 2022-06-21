@@ -691,3 +691,11 @@ def test_coords_deepmap():
 def test_zip_lambda():
     stack = run_vyxal("¨Z+;", inputs=[[1, 2, 3], [7, 8, 9]])
     assert stack[-1] == [8, 10, 12]
+
+
+def test_if_modifier():
+    stack = run_vyxal("6 2 0 ¨i/-")
+    assert stack[-1] == 4
+
+    stack = run_vyxal("6 2 2 ¨i/-")
+    assert stack[-1] == 3

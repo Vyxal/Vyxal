@@ -6025,6 +6025,20 @@ def fill(lhs, rhs, ctx: Context):
     return transpose(transpose(lhs, filler=rhs, ctx=ctx))
 
 
+def connected_uniquify(lhs, ctx: Context):
+    """Element ÞǓ
+    (any) -> connected uniquify a (Ġvh)
+    """
+    ts = vy_type(lhs, simple=True)
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(
+            connected_uniquify(str(lhs), ctx=ctx)
+        ),
+        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+        list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+    }.get(ts)()
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6500,6 +6514,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
+    "ÞǓ": process_element(connected_uniquify, 1),
     "Þ¾": ("ctx.global_array = []", 0),
     "Þr": process_element(sans_last_prepend_zero, 1),
     "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
@@ -6710,6 +6725,12 @@ modifiers: dict[str, str] = {
     "ß": (
         "if boolify(pop(stack, 1, ctx), ctx):\n"
         "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+    ),
+    "¨i": (
+        "if boolify(pop(stack, 1, ctx), ctx):\n"
+        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(safe_apply(function_B, *stack, ctx=ctx))\n"
     ),
     "¨=": (
         "original = pop(stack, 1, ctx)\n"
