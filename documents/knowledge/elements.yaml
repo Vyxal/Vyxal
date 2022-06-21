@@ -1009,7 +1009,7 @@
 
 - element: "Z"
   name: Zip
-  description: Zip two lists or Zip a with b mapped over a
+  description: Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
   arity: 2
   overloads:
       any-any: zip(a,b)
