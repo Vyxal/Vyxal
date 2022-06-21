@@ -2711,7 +2711,7 @@
       - "[[]] : 0"
       - "[[1]] : 1"
       - "[1] : 1"
-      - '["a"] : ""'
+      - '["a"] : "a"'
 
 - element: "≤"
   name: Lesser Than or Equal To
