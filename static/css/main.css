@@ -127,7 +127,7 @@ i {
 .tooltip {
   opacity: 0;
   pointer-events: none;
-  max-width: 500px;
+  max-width: calc(min(500px, 90vw));
   background: #000;
   padding: 10px;
   color: white;
@@ -136,6 +136,8 @@ i {
   border-radius: 5px;
   transition: opacity .15s;
   word-wrap: break-word;
+  font-family: "DejaVu Sans Mono";
+  font-size: 1.2rem;
 }
 
 .tooltip[data-show] {
