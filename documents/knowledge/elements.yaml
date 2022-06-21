@@ -4136,7 +4136,7 @@
   vectorise: true
   tests:
       - "[[0, 1, 2, '5 ** 2']] : [[2], [2, 7], [2, 7, 1], '5 ** 2']"
-      - "[-1] : []"
+      - "[-1] : [3]"
 
 - element: "∆ė"
   name: Nth Digit of Euler's Number (e) / Differentiate
@@ -4723,7 +4723,7 @@
       num: to_decimal(a)
   vectorise: false
   tests:
-      - "[-5/2] : -2.5"
+      - '[-5/2] : "-2.5"'
 
 - element: "ø⟇"
   name: Get Codepage Character / Get Codepage Index
@@ -4966,7 +4966,6 @@
   vectorise: false
   tests:
       - '[["a", "bc", "def"]] : ["  a", " bc", "def"]'
-      - '[["a", "bc", "def"]] : ["  a\n bc\ndef"]'
       - '[[1, 333, 55555]] : ["    1", "  333", "55555"]'
 
 - element: "Þ*"
