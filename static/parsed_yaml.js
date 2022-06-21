@@ -502,7 +502,7 @@ any a, any b -> interleave(a,b)
 `)
 
 codepage_descriptions.push(`Zip
-Zip two lists or Zip a with b mapped over a
+Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
 any a, any b -> zip(a,b)
 any a, fun b -> zip(a,map(b,a)) (Zipmap, map and zip)
 `)
@@ -847,7 +847,7 @@ lst a -> mean(a)
 codepage_descriptions.push(`Join By Nothing
 Join a list by the empty string
 num a -> abs(a) <= 1
-str a -> pad with 0s to nearest multiple of 8
+str a -> pad with 0s to nearest positive multiple of 8
 lst a -> "".join(a)
 fun a -> first integer x where a(x) is truthy
 `)

@@ -701,8 +701,8 @@ def test_FunctionCall():
 
 def test_SplitOnFillByCoordinates():
 
-    stack = [vyxalify(item) for item in [-1231234.5, 3]]
-    expected = vyxalify([-12, 12, 4.5])
+    stack = [vyxalify(item) for item in [-1231234.5, 6]]
+    expected = vyxalify([24, 24, 9/2])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -4464,7 +4464,7 @@ def test_Length():
 
 
     stack = [vyxalify(item) for item in [-0.25]]
-    expected = vyxalify(4)
+    expected = vyxalify(5)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -5601,7 +5601,7 @@ def test_Zip():
 
 
     stack = [vyxalify(item) for item in ["abc","d"]]
-    expected = vyxalify([["a","d"]])
+    expected = vyxalify([["a","d"], ["b", 0], ["c", 0]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -5622,7 +5622,7 @@ def test_Zip():
 
 
     stack = [vyxalify(item) for item in ["d","abc"]]
-    expected = vyxalify([["d","a"]])
+    expected = vyxalify([["d", "a"], [0, "b"], [0, "c"]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7093,7 +7093,7 @@ def test_CumulativeGroups():
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 4]]
-    expected = vyxalify([[1,2],[2,3]])
+    expected = vyxalify([[1, 2, 3]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7477,7 +7477,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in [12,23]]
-    expected = vyxalify(1223)
+    expected = vyxalify(2312)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7498,7 +7498,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in [0,23]]
-    expected = vyxalify("023")
+    expected = vyxalify("230")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7519,7 +7519,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in [12,"23"]]
-    expected = vyxalify("1223")
+    expected = vyxalify("2312")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7540,7 +7540,7 @@ def test_Prepend():
 
 
     stack = [vyxalify(item) for item in ["12",23]]
-    expected = vyxalify("1223")
+    expected = vyxalify("2312")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10542,7 +10542,7 @@ def test_JoinByNothing():
 
 
     stack = [vyxalify(item) for item in [""]]
-    expected = vyxalify("")
+    expected = vyxalify("00000000")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -11543,7 +11543,7 @@ def test_Repeat():
 
 
     stack = [vyxalify(item) for item in ["x",-2.3]]
-    expected = vyxalify("xxxxx")
+    expected = vyxalify("xx")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -12839,7 +12839,7 @@ def test_Summate():
 
 
     stack = [vyxalify(item) for item in [-12345]]
-    expected = vyxalify(-15)
+    expected = vyxalify("-12345")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -16334,7 +16334,7 @@ def test_RandomChoice():
 
 
     stack = [vyxalify(item) for item in ["a"]]
-    expected = vyxalify("")
+    expected = vyxalify("a")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -17222,7 +17222,7 @@ def test_Multiplicity():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [9/8, 2]]
+    stack = [vyxalify(item) for item in [1.125, 2]]
     expected = vyxalify(-3)
     ctx = Context()
 
@@ -17243,7 +17243,7 @@ def test_Multiplicity():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [9/8, 3]]
+    stack = [vyxalify(item) for item in [1.125, 3]]
     expected = vyxalify(2)
     ctx = Context()
 
