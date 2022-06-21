@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.css">
 
     <script src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
     <script src="{{url_for('static', filename='main.js')}}"></script>
@@ -34,9 +35,7 @@
 
             var kb = document.getElementById("keyboard");
             for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += (`<span class=\"key\" style="text-align:center;" title='`
-                    + repr(codepage_descriptions[i])
-                    + `'>${codepage[i]}</span>`);
+                kb.innerHTML += (`<span class="key" style="text-align:center;">${codepage[i]}</span><div class="tooltip">${repr(codepage_descriptions[i])}<div class="arrow" data-popper-arrow></div></div>`);
             }
             document.querySelectorAll('.key').forEach(item => {
                 item.addEventListener('click', event => {
@@ -46,7 +45,32 @@
                     cm.save()
                     cm.focus()
                     updateCount()
-                })
+                });
+                const tooltip = item.nextSibling;
+                const pop = Popper.createPopper(item, tooltip, {
+                    modifiers: [
+                        {
+                            name: 'offset',
+                            options: {
+                                offset: [0, 8],
+                            },
+                        },
+                        {
+                            name: 'preventOverflow',
+                            options: {
+                                padding: 10,
+                            },
+                        },
+                    ],
+                });
+                item.addEventListener('mouseenter', () => {
+                    console.log(item);
+                    tooltip.setAttribute('data-show', '');
+                    pop.update();
+                });
+                item.addEventListener('mouseleave', () => {
+                    tooltip.removeAttribute('data-show');
+                });
             })
             og_keyboard_html = document.getElementById("keyboard").innerHTML;
         });
