@@ -3949,3 +3949,12 @@ Usage:
 Read from STDIN, even if there are arguments
 
 -------------------------------
+## `` ¨i `` (If/Else)
+If the top of the stack is truthy, run the first element, otherwise the second.
+
+Usage:
+```
+¨i<element><element>
+```
+
+-------------------------------
