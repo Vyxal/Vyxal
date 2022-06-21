@@ -4825,6 +4825,17 @@
       - "[[0,3,4,6]] : [1,0,0,1,1,0,1]"
       - "[[[0,1,0],[2,0,3],[1,0,1]]] : [[[0, 0, 0, 0], [1, 0, 0, 0]], [[0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 1], [0, 0, 0, 0]]]"
 
+- element: "ÞǓ"
+  name: Connected Uniquify
+  description: Remove occurences of adjacent duplicates in a list
+  arity: 1
+  overloads:
+      any: Connected uniquify a (`Ġvh`)
+  vectorise: false
+  tests:
+      - "[[1,2,2,2,3,4,3,3,4]] : [1,2,3,4,3,4]"
+      - '["aabccdbb"] : "abcdb"'
+
 - element: "Þi"
   name: Multidimensional Indexing
   description: Index a list of coordinates into a value.
