@@ -1776,7 +1776,7 @@
   arity: 1
   overloads:
       num: abs(a) <= 1
-      str: pad with 0s to nearest multiple of 8
+      str: pad with 0s to nearest positive multiple of 8
       lst: '"".join(a)'
       fun: first integer x where a(x) is truthy
   vectorise: false
@@ -1785,7 +1785,7 @@
       - "[[1,2,3]] : '123'"
       - "[5] : 0"
       - "[0.54] : 1"
-      - '[""] : ""'
+      - '[""] : "00000000"'
       - '["asdf"] : "0000asdf"'
       - '["asdfghjk"] : "asdfghjk"'
       - '[[],[]] : "⟨  ⟩⟨  ⟩"'
