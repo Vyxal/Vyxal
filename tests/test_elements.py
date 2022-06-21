@@ -28677,6 +28677,50 @@ def test_Untruth():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_ConnectedUniquify():
+
+    stack = [vyxalify(item) for item in [[1,2,2,2,3,4,3,3,4]]]
+    expected = vyxalify([1,2,3,4,3,4])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ÞǓ')
+    # print('ÞǓ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["aabccdbb"]]
+    expected = vyxalify("abcdb")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ÞǓ')
+    # print('ÞǓ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_MultidimensionalIndexing():
 
     stack = [vyxalify(item) for item in [[1,[2,3]],[1,0]]]
