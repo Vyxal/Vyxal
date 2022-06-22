@@ -20,7 +20,7 @@ Return the inverse (negation) of the truthiness of an item.
 -------------------------------
 ## `` ∧ `` (Logical And)
 
-Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
+Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.
 
 ### Overloads
 
@@ -33,7 +33,7 @@ Like a mapping lambda, but the results are evaluated immediately, instead of bei
 -------------------------------
 ## `` ∨ `` (Logical Or)
 
-Returns the first truthy argument, otherwise the first falsey argument.
+Returns the first truthy argument, otherwise the first falsy argument.
 
 ### Overloads
 
@@ -106,7 +106,7 @@ Usage:
 -------------------------------
 ## `` † `` (Function Call)
 
-Calls a function / executes as python / len(prime factors) / vectorised not
+Calls a function / executes as python / number of distinct prime factors / vectorised not
 
 ### Overloads
 
@@ -122,7 +122,7 @@ Split a on b (works on lists and numbers as well) / Fill a matrix by calling a f
 ### Overloads
 
 - any a, any b: `a split on b`
-- any a, fun b: `For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.`
+- any a, fun b: `for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a`
 -------------------------------
 ## `` ½ `` (Halve)
 
@@ -133,7 +133,7 @@ Halves an item
 - num a: `a / 2`
 - str a: `a split into two strings of equal lengths (as close as possible)`
 -------------------------------
-## `` ∆ `` (Mathematic Digraph)
+## `` ∆ `` (Mathematical Digraph)
 
 Used for mathematical digraphs
 
@@ -150,9 +150,9 @@ Does either combinations_with_replacement, removes items from a not in b, or app
 ### Overloads
 
 - any a, num b: `combinations_with_replacement(a, length=b)`
-- fun a, any b: `Apply a on b until the result does not change, yielding intermediate values`
-- any a, str b: `Remove elements from a that are not in b`
-- any a, lst b: `Remove elements from a that are not in b.`
+- fun a, any b: `apply a on b until the result does not change, yielding intermediate values`
+- any a, str b: `remove elements from a that are not in b`
+- any a, lst b: `remove elements from a that are not in b`
 -------------------------------
 ## `` ¢ `` (Infinite Replacement / Apply at Indices)
 
@@ -161,7 +161,7 @@ Replace b in a with c until a does not change / Call a function on all elements 
 ### Overloads
 
 - any a, any b, any c: `replace b in a with c until a does not change`
-- lst a, fun b, lst c: `apply function b to items at indices in a`
+- lst a, fun b, lst c: `apply function b to items in c at indices in a`
 - lst a, lst b, fun c: `apply function c to items in a at indices in b`
 - fun a, lst b, lst c: `apply function a to items in b at indices in c`
 -------------------------------
@@ -181,7 +181,7 @@ Replace b in a with c until a does not change / Call a function on all elements 
 ### Overloads
 
 - num a: `is a prime?`
-- str a: `caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case`
+- str a: `caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)`
 -------------------------------
 ## `` ʀ `` (Inclusive Zero Range)
 
@@ -194,12 +194,12 @@ Inclusive range or whether each character is alphabetical
 -------------------------------
 ## `` ʁ `` (Exclusive Zero Range)
 
-Exclusive range or palindromised
+Exclusive range or palindromise
 
 ### Overloads
 
 - num a: `range(0,a) (exclusive range from 0)`
-- str a: `palindromised a`
+- str a: `palindromise(a) (a + a[:-1:-1])`
 -------------------------------
 ## `` ɾ `` (Inclusive One Range)
 
@@ -231,9 +231,9 @@ Binomial coefficient / choose a random items from b / same except duplicates
 ### Overloads
 
 - num a, num b: `a choose b (binomial coefficient)`
-- num a, str b: `Choose a random items from b`
-- str a, num b: `Choose b random items from a`
-- str a, str b: `Check if lists are the same except for duplicates`
+- num a, str b: `choose a random items from b`
+- str a, num b: `choose b random items from a`
+- str a, str b: `are the set of characters in the strings the same?`
 -------------------------------
 ## `` ∞ `` (Palindromise)
 
@@ -241,7 +241,7 @@ Palindromise a
 
 ### Overloads
 
-- any a: `palindromised a`
+- any a: `palindromise a (a + a[:-1:-1])`
 -------------------------------
 ## `` ¨ `` (Other Digraphs)
 
@@ -329,7 +329,7 @@ Multiply two numbers or strings / Change the arity of a function
 - num a, num b: `a * b`
 - num a, str b: `b repeated a times`
 - str a, num b: `a repeated b times`
-- str a, str b: `ring translate b according to a`
+- str a, str b: `ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])`
 - fun a, num b: `change the arity of function a to b`
 - num a, fun b: `change the arity of function b to a`
 -------------------------------
@@ -495,7 +495,7 @@ Check if all items in a list are truthy / check if a character is a vowel
 
 ### Overloads
 
-- str a: `is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters`
+- str a: `is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]`
 - any a: `all(a)`
 -------------------------------
 ## `` B `` (Binary To Decimal)
@@ -561,7 +561,7 @@ Push n spaces / quine cheese / into two pieces
 ### Overloads
 
 - num a: `push a spaces`
-- str a: `equivlaent to `qp``
+- str a: `equivalent to `qp``
 - lst a: `split a list into two halves`
 -------------------------------
 ## `` J `` (Merge)
@@ -570,12 +570,12 @@ Join two lists or items
 
 ### Overloads
 
-- lst a, str b: `a.append(b) (Append)`
-- lst a, num b: `a.append(b) (Append)`
-- str a, lst b: `b.prepend(a) (Prepend)`
-- num a, lst b: `b.prepend(a) (Prepend)`
-- lst a, lst b: `merged(a,b) (Merge)`
-- any a, any b: `a + b (Concatenate)`
+- lst a, str b: `a.append(b) (append)`
+- lst a, num b: `a.append(b) (append)`
+- str a, lst b: `b.prepend(a) (prepend)`
+- num a, lst b: `b.prepend(a) (prepend)`
+- lst a, lst b: `merged(a,b) (merge)`
+- any a, any b: `a + b (concatenate)`
 -------------------------------
 ## `` K `` (Factors / Substrings / Prefixes)
 
@@ -583,8 +583,8 @@ Get either the factors of a, substrings that occur more than once, or prefixes
 
 ### Overloads
 
-- num a: `divisors(a) (factors)`
-- str a: `All substrings of a that occur more than once in a`
+- num a: `divisors(a) (positive integer factors)`
+- str a: `all non-empty substrings of a that occur more than once in a`
 - lst a: `prefixes(a) (prefixes)`
 -------------------------------
 ## `` L `` (Length)
@@ -602,7 +602,7 @@ Map b over a
 ### Overloads
 
 - any a, fun b: `map(b,a) (apply b to each of a)`
-- any a, any b: `pair each item of b with a`
+- any a, any b: `pair each item of b with a ([[a, i] for i in b])`
 -------------------------------
 ## `` N `` (Negate / Swap Case)
 
@@ -623,7 +623,7 @@ Count number of times b occurs in a
 -------------------------------
 ## `` P `` (Strip)
 
-a.strip(b) - trim b from both ends of a
+Remove the set of elements in b from both ends of a
 
 ### Overloads
 
@@ -667,7 +667,7 @@ Remove duplicates
 
 ### Overloads
 
-- any a: `uniquify(a) (Remove duplicates)`
+- any a: `uniquify(a) (remove duplicates)`
 -------------------------------
 ## `` V `` (Replace / Map to Indices)
 
@@ -676,8 +676,8 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 ### Overloads
 
 - any a, any b, any c: `a.replace(b,c) (replace)`
-- lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
-- lst a, num b, fun c: `Apply a function to element b within list a`
+- lst a, lst b, fun c: `for each i in b, change the ith element in a by applying the function, then return the new list`
+- lst a, num b, fun c: `replace the bth element in a by applying the function, then return the new list`
 -------------------------------
 ## `` W `` (Wrap)
 
@@ -695,7 +695,7 @@ Interleave two lists
 
 ### Overloads
 
-- any a, any b: `interleave(a,b)`
+- any a, any b: `interleave(a,b) (a[0], b[0], a[1], b[1], ...)`
 -------------------------------
 ## `` Z `` (Zip)
 
@@ -704,7 +704,7 @@ Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
 ### Overloads
 
 - any a, any b: `zip(a,b)`
-- any a, fun b: `zip(a,map(b,a)) (Zipmap, map and zip)`
+- any a, fun b: `zip(a,map(b,a)) (zipmap, map and zip)`
 -------------------------------
 ## `` [ `` (Open If Statement)
 
@@ -742,8 +742,8 @@ Check if any items of a list are truthy / Check if a character is an uppercase l
 
 ### Overloads
 
-- str a: `is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters`
-- lst a: `any(a) (Are any items truthy?)`
+- str a: `is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]`
+- lst a: `any(a) (are any items truthy?)`
 -------------------------------
 ## `` b `` (Binary)
 
@@ -751,8 +751,8 @@ Convert a number or string to binary
 
 ### Overloads
 
-- num a: `bin(a) - list of binary digits of A`
-- str a: `[bin(ord(char)) for char in a] - binary of each codepoint`
+- num a: `bin(a) (list of binary digits of a)`
+- str a: `[bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)`
 -------------------------------
 ## `` c `` (Contains)
 
@@ -760,7 +760,7 @@ Check if one thing contains another.
 
 ### Overloads
 
-- any a, any b: `b in a (Does a contain b, membership, contains)`
+- any a, any b: `b in a (does a contain b, membership, contains)`
 -------------------------------
 ## `` d `` (Double / Dyadify)
 
@@ -781,17 +781,17 @@ Exponentiate two numbers / extend string / get length of a regex match
 - num a, num b: `a ** b (exponentiation)`
 - str a, num b: `append a[0] until a is length b (spaces are used if a is empty)`
 - num a, str b: `append b[0] until b is length a (spaces are used if b is empty)`
-- str a, str b: `regex.search(pattern=a, string=b).span() (Length of regex match)`
+- str a, str b: `regex.search(pattern=a, string=b).span() (length of regex match)`
 -------------------------------
 ## `` f `` (Flatten)
 
-Turn a number into a list of digits, a string into a list of characters, and flatten a list.
+Turn a number into a list of digits, split a string into a list of characters, or flatten a list.
 
 ### Overloads
 
 - num a: `digits of a`
-- str a: `a split into list of characters`
-- lst a: `flatten(a) (Deep flatten)`
+- str a: `list of characters of a`
+- lst a: `flatten(a) (deep flatten)`
 -------------------------------
 ## `` g `` (Minimum)
 
@@ -807,7 +807,7 @@ First item of something
 
 ### Overloads
 
-- any a: `a[0] (First item)`
+- any a: `a[0] (first item)`
 -------------------------------
 ## `` i `` (Index)
 
@@ -815,7 +815,7 @@ Index into a list
 
 ### Overloads
 
-- any a, num b: `a[b] (Index)`
+- any a, num b: `a[b] (index)`
 - any a, [x] b: `a[:b] (0 to bth item of a)`
 - any a, [x,y] b: `a[x:y] (x to yth item of a)`
 - any a, [x,y,m] b: `a[x:y:m] (x to yth item of a, taking every mth)`
@@ -835,12 +835,12 @@ Used for constant digraphs.
 -------------------------------
 ## `` l `` (Cumulative Groups)
 
-Cumulative grouping / equal length
+Cumulative groups (overlapping groups, aperture) / Equal length
 
 ### Overloads
 
-- any a, num b: `n-wise_group(a,b) ( Overlapping groups of a of length b)`
-- num a, any b: `n-wise_group(b,a) ( Overlapping groups of b of length a)`
+- any a, num b: `[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]`
+- num a, any b: `[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]`
 - any a, any b: `length(a) == length(b)`
 -------------------------------
 ## `` m `` (Mirror)
@@ -851,7 +851,7 @@ Append input reversed to itself.
 
 - num a: `a + reversed(a) (as number)`
 - str a: `a + reversed(a)`
-- lst a: `Append reversed(a) to a`
+- lst a: `append reversed(a) to a`
 -------------------------------
 ## `` n `` (Context)
 
@@ -874,7 +874,7 @@ Prepend b to a
 
 ### Overloads
 
-- any a, any b: `a.prepend(b) ( Prepend b to a)`
+- any a, any b: `a.prepend(b) (prepend b to a)`
 -------------------------------
 ## `` q `` (Uneval)
 
@@ -882,19 +882,19 @@ Enclose in backticks, escape backslashes and backticks.
 
 ### Overloads
 
-- any a: `uneval(a) (Enclose in bacticks + escape)`
+- any a: `uneval(a) (enclose in backticks + escape)`
 -------------------------------
 ## `` r `` (Range)
 
-Range betweeen two numbers, or cumulative reduce, or regex match
+Range between two numbers, or cumulative reduce, or regex match
 
 ### Overloads
 
-- num a, num b: `range(a,b) (Range form a to b)`
+- num a, num b: `range(a,b) (range from a to b)`
 - num a, str b: `append spaces to b to make it length a`
-- str a, num b: `preprend spaces to a to make it length b`
-- any a, fun b: `cumulative_reduce(a,function=b) (Prefixes of a reduced by b)`
-- str a, str b: `regex.has_match(pattern=a,string= b) ( Does b match a)`
+- str a, num b: `prepend spaces to a to make it length b`
+- any a, fun b: `cumulative_reduce(a,function=b) (prefixes of a reduced by b)`
+- str a, str b: `regex.has_match(pattern=a,string= b) (does b match a)`
 -------------------------------
 ## `` s `` (sort)
 
@@ -902,7 +902,7 @@ Sort a list or string
 
 ### Overloads
 
-- any a: `sorted(a) (Sort)`
+- any a: `sorted(a) (sort)`
 -------------------------------
 ## `` t `` (Tail)
 
@@ -910,7 +910,7 @@ Last item
 
 ### Overloads
 
-- any a: `a[-1] (Last item)`
+- any a: `a[-1] (last item)`
 -------------------------------
 ## `` u `` (Minus One)
 
@@ -941,7 +941,7 @@ a wrapped in a singleton list
 
 ### Overloads
 
-- any a: `[a] (Wrapped in singleton list)`
+- any a: `[a] (wrap in singleton list)`
 -------------------------------
 ## `` x `` (Recurse / Continue / Print Stack)
 
@@ -954,7 +954,7 @@ Push every other item of a, and the rest.
 
 ### Overloads
 
-- any a: `a[::2], a[1::2] (Every second item, the rest)`
+- any a: `a[::2], a[1::2] (every second item, the rest)`
 -------------------------------
 ## `` z `` (Zip-self)
 
@@ -994,7 +994,7 @@ Maximum by last item
 
 ### Overloads
 
-- any a: `max(a, key=lambda x: x[-1]) (Maximum by last item)`
+- any a: `max(a, key=lambda x: x[-1]) (maximum by last item)`
 -------------------------------
 ## `` ↓ `` (Min by Tail)
 
@@ -1002,7 +1002,7 @@ Minimum by last item
 
 ### Overloads
 
-- any a: `min(a, key=lambda x: x[-1]) (Minimum by last item)`
+- any a: `min(a, key=lambda x: x[-1]) (minimum by last item)`
 -------------------------------
 ## `` ∴ `` (Dyadic Maximum)
 
@@ -1046,8 +1046,8 @@ A number modulo 2
 
 ### Overloads
 
-- num a: `a % 2 (Odd?)`
-- str a: `Second half of A`
+- num a: `a % 2 (odd?)`
+- str a: `second half of A`
 -------------------------------
 ## `` ¤ `` (Empty String)
 
@@ -1084,7 +1084,7 @@ Convert a number to a different base from base 10.
 
 ### Overloads
 
-- num a, num b: `List of digits of a in base b`
+- num a, num b: `list of digits of a in base b`
 - num a, str b: `a converted into a string of characters of b`
 - num a, lst b: `a converted into a list of arbitrary values from b`
 -------------------------------
@@ -1094,8 +1094,8 @@ Take the absolute value of a number, or remove whitespace from a string
 
 ### Overloads
 
-- num a: `abs(a) (Absolute value)`
-- str a: `Remove whitespace from a`
+- num a: `abs(a) (absolute value)`
+- str a: `remove whitespace from a`
 -------------------------------
 ## `` ḃ `` (Boolify)
 
@@ -1103,7 +1103,7 @@ Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
 
 ### Overloads
 
-- any a: `bool(a) (Booliify)`
+- any a: `bool(a) (booliify)`
 -------------------------------
 ## `` ċ `` (Not One)
 
@@ -1119,10 +1119,10 @@ Divmod / combinations / trim
 
 ### Overloads
 
-- num a, num b: `[a // b, a % b] (Divmod - division and modulo)`
-- str a, num b: `Combinations of a with length b`
-- lst a, num b: `Combinations of a with length b`
-- str a, str b: `overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef``
+- num a, num b: `[a // b, a % b] (divmod - division and modulo)`
+- str a, num b: `combinations of a with length b`
+- lst a, num b: `combinations of a with length b`
+- str a, str b: `overwrite the start of a with b (b + a[len(b):])`
 -------------------------------
 ## `` ė `` (Enumerate)
 
@@ -1130,7 +1130,7 @@ Zip with a range of the same length
 
 ### Overloads
 
-- any a: `enumerate(a) (Zip with 1...len(a))`
+- any a: `enumerate(a) (zip with 1...len(a))`
 -------------------------------
 ## `` ḟ `` (Find)
 
@@ -1138,7 +1138,7 @@ Find a value in another
 
 ### Overloads
 
-- any a, any b: `a.find(b) (Indexing)`
+- any a, any b: `a.find(b) (indexing, -1 if not found)`
 - any a, fun b: `truthy indices of mapping b over a`
 -------------------------------
 ## `` ġ `` (Gcd / Group by Function)
@@ -1147,11 +1147,11 @@ Greatest Common Denominator of a list or some numbers
 
 ### Overloads
 
-- lst a: `GCD(a) (Gcd of whole list)`
-- num a, num b: `gcd(a,b) (Dyadic gcd)`
-- str a, str b: `Longest common suffix of a and b`
-- fun a, any b: `Group b by the results of function a`
-- any a, fun b: `Group a by the results of function b`
+- lst a: `GCD(a) (gcd of whole list)`
+- num a, num b: `gcd(a,b) (dyadic gcd)`
+- str a, str b: `longest common suffix of a and b`
+- fun a, any b: `group b by the results of function a`
+- any a, fun b: `group a by the results of function b`
 -------------------------------
 ## `` ḣ `` (Head Extract)
 
@@ -1159,7 +1159,7 @@ Separate the first item of something and push both to stack
 
 ### Overloads
 
-- any a: `a[0], a[1:] (Head extract)`
+- any a: `a[0], a[1:] (head extract)`
 -------------------------------
 ## `` ḭ `` (Floor Division)
 
@@ -1167,11 +1167,11 @@ Floor divide a by b
 
 ### Overloads
 
-- num a, num b: `a // b (Floor division, floor(a / b))`
+- num a, num b: `a // b (floor division, floor(a / b))`
 - str a, num b: `(a divided into b pieces)[0]`
 - num a, str b: `(b divided into a pieces)[0]`
-- any a, fun b: `Right reduce a by b (foldr)`
-- fun a, any b: `Right reduce b by a (foldr)`
+- any a, fun b: `right reduce a by b (foldr)`
+- fun a, any b: `right reduce b by a (foldr)`
 -------------------------------
 ## `` ŀ `` (Left Justify / Gridify / Infinite Replace / Collect until false)
 
@@ -1187,7 +1187,7 @@ Find one value inside another, starting from a certain index.
 - str a, num b, str c: `a.ljust(c,filler=b)`
 - str a, str b, num c: `a.ljust(b,filler=c)`
 - str a, str b, str c: `a.infinite_replace(b, c)`
-- fun a, fun b, any c: `collect_until_false(predicate=a, modifying_function=b, inital=c)`
+- fun a, fun b, any c: `[c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy`
 -------------------------------
 ## `` ṁ `` (Mean)
 
@@ -1195,7 +1195,7 @@ Average of a list - sum / length
 
 ### Overloads
 
-- str a: `palindromise(a)`
+- str a: `palindromise(a) (a + a[:-1:-1])`
 - lst a: `mean(a)`
 -------------------------------
 ## `` ṅ `` (Join By Nothing)
@@ -1215,8 +1215,8 @@ Slice from an index to the end
 
 ### Overloads
 
-- fun a, num b: `First b integers for which a(x) is truthy`
-- any a, num b: `a[b:] (Slice from b to the end)`
+- fun a, num b: `first b integers for which a(x) is truthy`
+- any a, num b: `a[b:] (slice from b to the end)`
 - str a, str b: `vertically merge a and b`
 -------------------------------
 ## `` ṗ `` (Powerset)
@@ -1225,7 +1225,7 @@ All possible combinations of a
 
 ### Overloads
 
-- any a: `All possible combinations of a`
+- any a: `all subsets of a (including the empty subset)`
 -------------------------------
 ## `` ṙ `` (Round)
 
@@ -1235,7 +1235,7 @@ Round a number to the nearest integer / real and imaginary part of complex numbe
 
 - num a: `round(a)`
 - complex a: `[real(a), imag(a)]`
-- str a: `quad palindromize with overlap`
+- str a: `quad palindromise with overlap`
 -------------------------------
 ## `` ṡ `` (Sort by Function)
 
@@ -1243,8 +1243,8 @@ Sort a list by a function / create a range / split on a regex
 
 ### Overloads
 
-- any a, fun b: `sorted(a, key=b) (Sort by b)`
-- num a, num b: `range(a, b + 1) (Inclusive range from a to b)`
+- any a, fun b: `sorted(a, key=b) (sort by b)`
+- num a, num b: `range(a, b + 1) (inclusive range from a to b)`
 - str a, str b: `regex.split(pattern=b, string=a)`
 -------------------------------
 ## `` ṫ `` (Tail Extract)
@@ -1263,11 +1263,11 @@ Wrap a list in chunks of a certain length / apply a function to every second ite
 
 - any a, num b: `a wrapped in chunks of length b`
 - num a, any b: `b wrapped in chunks of length a`
-- any a, lst b: `Wrap a into chunks with lengths given in b, repeating if necessary`
-- lst a, str b: `Wrap b into chunks with lengths given in a, repeating if necessary`
-- any a, fun b: `Apply b to every second item of a`
-- fun a, any b: `Apply a to every second item of b`
-- str a, str b: `split a on first occurance of b`
+- any a, lst b: `wrap a into chunks with lengths given in b, repeating if necessary`
+- lst a, any b: `wrap b into chunks with lengths given in a, repeating if necessary`
+- any a, fun b: `apply b to every second item of a ([a[0], b(a[1]), a[2], ...])`
+- fun a, any b: `apply a to every second item of b ([b[0], a(b[1]), b[2], ...])`
+- str a, str b: `split a on first occurrence of b`
 -------------------------------
 ## `` ẋ `` (Repeat)
 
@@ -1277,10 +1277,10 @@ Repeat a value several times
 
 - str a, num b: `a * b`
 - num a, str b: `b * a`
-- any a, num b: `Repeat a b times`
+- any a, num b: `repeat a b times ([a, a, ...])`
 - str a, str b: `a + " " + b`
-- fun a, any b: `repeat function a on b while the function results are not-unique`
-- any a, fun b: `repeat function b on a while the function results are not-unique`
+- fun a, any b: `repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))`
+- any a, fun b: `repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))`
 -------------------------------
 ## `` ẏ `` (Exclusive Range Length)
 
@@ -1288,7 +1288,7 @@ Range from 0 to length of a
 
 ### Overloads
 
-- any a: `range(0, len(a)) (Exclusive range from 0 to length of a)`
+- any a: `range(0, len(a)) (exclusive range from 0 to length of a)`
 -------------------------------
 ## `` ż `` (Inclusive Range Length)
 
@@ -1296,7 +1296,7 @@ Range from 1 to length of a inclusive
 
 ### Overloads
 
-- any a: `range(1, len(a)+1) (Inclusive range from 1 to length of a)`
+- any a: `range(1, len(a)+1) (inclusive range from 1 to length of a)`
 -------------------------------
 ## `` √ `` (Square Root)
 
@@ -1304,8 +1304,8 @@ Square root a number / every second character of a
 
 ### Overloads
 
-- num a: `sqrt(a) (Square root)`
-- str a: `every second character of a`
+- num a: `sqrt(a) (square root)`
+- str a: `every second character of a (a[0] + a[2] + ...)`
 -------------------------------
 ## `` ⟨ `` (Open List)
 
@@ -1338,17 +1338,17 @@ Check if a value is even
 
 ### Overloads
 
-- num a: `a % 2 == 0 (Even?)`
-- any a: `len(a) % 2 == 0 (Length even?)`
+- num a: `a % 2 == 0 (even?)`
+- any a: `len(a) % 2 == 0 (length even?)`
 -------------------------------
-## `` ₃ `` (Divisible By three)
+## `` ₃ `` (Divisible By Three)
 
 Check if a is divisible by 3
 
 ### Overloads
 
 - num a: `a % 3 == 0 (divisible by 3?)`
-- any a: `len(a) == 1 (Length is 1?)`
+- any a: `len(a) == 1 (length is 1?)`
 -------------------------------
 ## `` ₄ `` (Twenty Six)
 
@@ -1398,18 +1398,18 @@ Transpose (filling with spaces) and then join on newlines
 
 ### Overloads
 
-- any a: `Transpose a, join on newlines`
+- any a: `transpose a, join on newlines`
 -------------------------------
 ## `` ε `` (Absolute Difference / Repeat / Regex match)
 
-Returns the aboslute difference / Fills an array of a certain length / Does a regex match
+Returns the absolute difference / Fills an array of a certain length / Does a regex match
 
 ### Overloads
 
 - num a, num b: `abs(a - b)`
 - num a, str b: `[b] * a`
 - str a, num b: `[a] * b`
-- str a, str b: `Do a regex match of b on a`
+- str a, str b: `regex.match(b, a) (first match of regex b on a)`
 -------------------------------
 ## `` ¡ `` (Factorial)
 
@@ -1436,7 +1436,7 @@ Returns the sums of the prefixes of the top of the stack (cumulatively reduce by
 
 ### Overloads
 
-- any a: `cumulative_sum(a)`
+- any a: `cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])`
 -------------------------------
 ## `` ≈ `` (All Equal)
 
@@ -1485,8 +1485,8 @@ Returns whether two items are divisible / numerous copies of the top of the stac
 - num a, str b: `a copies of b`
 - str a, num b: `b copies of a`
 - str a, str b: `b + " " + a`
-- any a, fun b: `Group a by the results of b. Order is preserved`
-- fun a, any b: `Group b by the results of a. Order is preserved`
+- any a, fun b: `group a by the results of b, order is preserved`
+- fun a, any b: `group b by the results of a, order is preserved`
 -------------------------------
 ## `` Ė `` (Vyxal Exec / Reciprocal)
 
@@ -1504,12 +1504,12 @@ Make a generator from function a with initial vector b, or get every nth item or
 ### Overloads
 
 - num a, num b: `sympy.N(a, b) (evaluate a to b decimal places)`
-- num a, str b: `every ath letter of b`
-- str a, num b: `every bth letter of a`
+- str a, num b: `every bth letter of a (a[::b])`
+- num a, str b: `every ath letter of b (b[::a])`
 - str a, str b: `replace spaces in a with b`
-- lst a, num b: `every bth item of a`
-- num a, lst b: `every ath item of b`
-- fun a, lst b: `Generator from function a with initial vector b`
+- lst a, num b: `every bth item of a (a[::b])`
+- num a, lst b: `every ath item of b (b[::a])`
+- fun a, lst b: `generator from function a with initial vector b`
 -------------------------------
 ## `` Ġ `` (Group consecutive)
 
@@ -1517,9 +1517,9 @@ Group consecutive identical items
 
 ### Overloads
 
-- lst a: `Group consecutive identical items`
-- str a: `Group consecutive identical characters`
-- num a: `Group consecutive identical digits`
+- lst a: `group consecutive identical items`
+- str a: `group consecutive identical characters`
+- num a: `group consecutive identical digits`
 -------------------------------
 ## `` Ḣ `` (Head Remove / Behead)
 
@@ -1529,7 +1529,7 @@ All but the first item of a list / Drop 1
 
 - lst a: `a[1:] or [] if empty`
 - str a: `a[1:] or '' if empty`
-- num a: `Remove first digit or do nothing if <1`
+- num a: `remove first digit or do nothing if <1`
 -------------------------------
 ## `` İ `` (Index into or collect while unique)
 
@@ -1546,8 +1546,8 @@ Replace each item of one value in another value with the corresponding element f
 
 ### Overloads
 
-- any a, any b, any c: `transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)`
-- fun a, fun b, any c: `Call b on c until a(c) is falsey.`
+- any a, any b, any c: `transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)`
+- fun a, fun b, any c: `call b on c until a(c) is falsy`
 -------------------------------
 ## `` Ṁ `` (Insert)
 
@@ -1555,8 +1555,8 @@ Insert a value at a specified index / Map a function over every nth item of a li
 
 ### Overloads
 
-- any a, num b, any c: `a.insert(b,c) (Insert c at position b in a)`
-- any a, num b, fun c: `c mapped over every bth item of a`
+- any a, num b, any c: `a.insert(b,c) (insert c at position b in a)`
+- any a, num b, fun c: `c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])`
 -------------------------------
 ## `` Ṅ `` (Integer partitions)
 
@@ -1564,8 +1564,8 @@ Integer partitions / join by space
 
 ### Overloads
 
-- num a: `integer_partitions(a) (Integer partitions)`
-- any a: `" ".join(a) (Join by space)`
+- num a: `integer_partitions(a) (integer partitions)`
+- any a: `" ".join(a) (join by space)`
 -------------------------------
 ## `` Ȯ `` (Over)
 
@@ -1578,7 +1578,7 @@ Get all permutations of a value
 
 ### Overloads
 
-- any a: `permutations(a) (Get all permutations)`
+- any a: `permutations(a) (get all permutations)`
 -------------------------------
 ## `` Ṙ `` (Reverse)
 
@@ -1599,7 +1599,7 @@ Cut off the last item of a list
 
 ### Overloads
 
-- any a: `a[:-1] (All but the last item)`
+- any a: `a[:-1] (all but the last item)`
 -------------------------------
 ## `` Ẇ `` (Split And Keep Delimiter)
 
@@ -1607,7 +1607,7 @@ Split a value and keep the delimiter
 
 ### Overloads
 
-- any a, any b: `a.split_and_keep_delimiter(b) (Split and keep the delimiter)`
+- any a, any b: `a.split_and_keep_delimiter(b) (split and keep the delimiter)`
 - fun a, any b: `apply a to every second item of b starting on the first item`
 -------------------------------
 ## `` Ẋ `` (Cartesian Product / Fixpoint)
@@ -1617,7 +1617,7 @@ Take the Cartesian Product of two values, or apply a function until there is no 
 ### Overloads
 
 - any a, any b: `cartesian-product(a,b)`
-- fun a, any b: `Apply a on b until b does not change`
+- fun a, any b: `apply a on b until b does not change`
 -------------------------------
 ## `` Ẏ `` (Slice Until)
 
@@ -1625,18 +1625,18 @@ Slice a list until a certain index / find all results for a regex match
 
 ### Overloads
 
-- any a, num b: `a[0:b] (Slice until b)`
-- num a, any b: `b[0:a] (Slice until a)`
-- str a, str b: `regex.findall(pattern=a,string=b) (Find all matches for a regex)`
+- any a, num b: `a[0:b] (slice until b)`
+- num a, any b: `b[0:a] (slice until a)`
+- str a, str b: `regex.findall(pattern=a,string=b) (find all matches for a regex)`
 -------------------------------
 ## `` Ż `` (Slice From One Until)
 
-Slice from index 1 until a number / get groups of a gregex match
+Slice from index 1 until a number / get groups of a regex match
 
 ### Overloads
 
-- any a, num b: `a[1:b] (Slice from 1 until b)`
-- num a, any b: `b[1:a] (Slice from 1 until a)`
+- any a, num b: `a[1:b] (slice from 1 until b)`
+- num a, any b: `b[1:a] (slice from 1 until a)`
 - str a, str b: `regex.match(pattern=a,string=b).groups() (Get groups for a regex match)`
 -------------------------------
 ## `` ₌ `` (Parallel Apply)
@@ -1673,8 +1673,8 @@ Square a number / Format a string into a square
 
 ### Overloads
 
-- num a: `a ** 2 (Squared)`
-- str a: `a formatted as a square`
+- num a: `a ** 2 (squared)`
+- str a: `a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)`
 -------------------------------
 ## `` ∇ `` (Shift)
 
@@ -1682,7 +1682,7 @@ Shift the top of stack two values down
 
 ### Overloads
 
-- any a, any b, any c: `c,a,b (Shift)`
+- any a, any b, any c: `c,a,b (shift)`
 -------------------------------
 ## `` ⌈ `` (Ceiling)
 
@@ -1690,9 +1690,9 @@ Take the ceiling of a number / Imaginary part of complex number / split a string
 
 ### Overloads
 
-- num a: `ceil(a) (Ceiling)`
+- num a: `ceil(a) (ceiling)`
 - complex a: `imaginary part of a`
-- str a: `Split on spaces`
+- str a: `split on spaces`
 -------------------------------
 ## `` ⌊ `` (Floor)
 
@@ -1700,9 +1700,9 @@ Floor a number / real part of complex number / extract the integer part of a str
 
 ### Overloads
 
-- num a: `floor(a) (Floor)`
+- num a: `floor(a) (floor)`
 - complex a: `real part of a`
-- str a: `Integer part of a`
+- str a: `integer part of a`
 -------------------------------
 ## `` ¯ `` (Deltas)
 
@@ -1710,7 +1710,7 @@ Deltas (consecutive differences)
 
 ### Overloads
 
-- any a: `deltas(a) (consecutive differences)`
+- any a: `deltas(a) ([a[1] - a[0], a[2] - a[1], ...])`
 -------------------------------
 ## `` ± `` (Sign)
 
@@ -1867,13 +1867,13 @@ Merge two arrays without duplicates
 
 - any a, any b: `list(set(a).union(set(b)))`
 -------------------------------
-## `` ∩ `` (Tranpose)
+## `` ∩ `` (Transpose)
 
 Transpose an array
 
 ### Overloads
 
-- any a: `Transposed array`
+- any a: `transposed array`
 -------------------------------
 ## `` ⊍ `` (Symmetric Set difference)
 
@@ -1885,7 +1885,7 @@ Uncommon elements of two arrays
 -------------------------------
 ## `` £ `` (Set Register)
 
-set the register to argument value
+Set the register to argument value
 
 ### Overloads
 
@@ -1940,7 +1940,7 @@ prime factorization / append first element
 
 ### Overloads
 
-- num a: `prime_factorization(a)`
+- num a: `prime_factorization(a) (distinct prime factors)`
 - str a: `a + a[0]`
 - lst a: `a + [a[0]]`
 -------------------------------
@@ -1950,7 +1950,7 @@ all prime factors / Title Case string
 
 ### Overloads
 
-- num a: `prime_factors(a)`
+- num a: `prime_factors(a) (prime factors possibly with repetition)`
 - str a: `title_case(a)`
 -------------------------------
 ## `` Ǒ `` (Multiplicity)
@@ -2040,7 +2040,7 @@ Product of Array / Cartesian product over a list of lists
 ### Overloads
 
 - lst[num] a: `reduce list by multiplication`
-- lst[str|lst] a: `reduce list by cartesian product`
+- lst[str|lst] a: `reduce list by Cartesian product`
 -------------------------------
 ## `` „ `` (Rotate Stack Left)
 
@@ -2480,9 +2480,9 @@ Solve a quadratic equation of the form ax^2 + bx = 0
 ### Overloads
 
 - num a, num b: `x such that ax^2 + bx = 0`
-- num a, str b: `solve a such that a = b`
-- str a, num b: `solve b such that b = a`
-- str a, str b: `solve equation a = b for x`
+- num a, str b: `solve for x such that a = b(x)`
+- str a, num b: `solve for x such that a(x) = b`
+- str a, str b: `solve for x such that a(x) = b(x)`
 -------------------------------
 ## `` ∆Q `` (General Quadratic Solver)
 
@@ -2493,7 +2493,7 @@ Solve a quadratic equation of the form x^2 + ax + b = 0
 - num a, num b: `roots(a, b) / x^2 + ax + b = 0`
 - num a, str b: `evaluate single variable expression b with x=a`
 - str a, num b: `evaluate single variable expression a with x=b`
-- str a, str b: `solve equations a and b simultaneously`
+- str a, str b: `solve equations a and b simultaneously for x and y`
 -------------------------------
 ## `` ∆s `` (Sine)
 
@@ -2615,11 +2615,11 @@ Get the common logarithm of a number
 -------------------------------
 ## `` ∆d `` (Straight Line Distance)
 
-Get the straight line distance between two points (x1, y1) and (x2, y2)
+Get the straight line distance between two points (x1, x2, ..., xn) and (y1, y2, ..., yn)
 
 ### Overloads
 
-- lst a, lst b: `euclidian_distance(a, b)`
+- lst a, lst b: `euclidean_distance(a, b)`
 -------------------------------
 ## `` ∆D `` (To Degrees)
 
@@ -2678,7 +2678,7 @@ Round a number to n decimal places
 
 ### Overloads
 
-- num a, num b: `round(a, no_dec_places=b)`
+- num a, num b: `round(a, no_dec_places=b) (b significant digits)`
 -------------------------------
 ## `` ∆% `` (Modular Exponentiation)
 
@@ -2720,7 +2720,7 @@ Get the first n digits of Euler's number (e) / evaluate an expression as sympy
 
 ### Overloads
 
-- num a: `First n digits of e`
+- num a: `first n digits of e`
 - str a: `evaluate(a)`
 -------------------------------
 ## `` ∆ė `` (Nth Digit of Euler's Number (e) / Differentiate)
@@ -2734,11 +2734,11 @@ Get the nth digit of Euler's number (e)
 -------------------------------
 ## `` ∆f `` (nth Fibonacci Number)
 
-Get the nth fibonacci number
+Get the nth fibonacci number, 1-indexed
 
 ### Overloads
 
-- num a: `nth_fibonacci(a)`
+- num a: `nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)`
 -------------------------------
 ## `` ∆F `` (nth Fibonacci Number, 0-indexed)
 
@@ -2746,7 +2746,7 @@ Get the nth fibonacci number, 0-indexed
 
 ### Overloads
 
-- num a: `nth_fibonacci(a)`
+- num a: `nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)`
 -------------------------------
 ## `` ∆Ṙ `` (Random Float)
 
@@ -2848,7 +2848,7 @@ Get the exponents of prime factors of a number
 
 ### Overloads
 
-- num a: `prime_exponents(a)`
+- num a: `prime_exponents(a) (in the order of prime_factors(a))`
 -------------------------------
 ## `` øb `` (Parenthesise)
 
@@ -2896,8 +2896,8 @@ Pad a string to the left with a certain character
 
 ### Overloads
 
-- any a, str b, num c: `Pad a to the left with c so a has length b`
-- any a, num b, str c: `Pad a to the left with b so a has length c`
+- any a, str b, num c: `pad a to the left with c so a has length b`
+- any a, num b, str c: `pad a to the left with b so a has length c`
 -------------------------------
 ## `` ø↲ `` (Custom Pad Right)
 
@@ -2905,8 +2905,8 @@ Pad a string to the right with a certain character
 
 ### Overloads
 
-- any a, str b, num c: `Pad a to the right with c so a has length b`
-- any a, num b, str c: `Pad a to the right with b so a has length c`
+- any a, str b, num c: `pad a to the right with c so a has length b`
+- any a, num b, str c: `pad a to the right with b so a has length c`
 -------------------------------
 ## `` øM `` (Flip Brackets Vertical Palindromise)
 
@@ -2914,7 +2914,7 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 
 ### Overloads
 
-- any a: `Palindromise, without duplicating center, and flip brackets and slashes in the second half`
+- any a: `palindromise, without duplicating center, and flip brackets and slashes in the second half`
 -------------------------------
 ## `` øṗ `` (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
 
@@ -2922,7 +2922,7 @@ Vertically palindromise each and reverse brackets and slashes, without duplicati
 
 ### Overloads
 
-- any a: `Palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
+- any a: `palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
 -------------------------------
 ## `` øm `` (Flip Brackets Vertical Mirror, Center, Join on Newlines)
 
@@ -2930,7 +2930,7 @@ Vertically mirror each and reverse brackets and slashes, then center and join by
 
 ### Overloads
 
-- any a: `Mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
+- any a: `mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines`
 -------------------------------
 ## `` øo `` (Remove Until No change)
 
@@ -2938,8 +2938,8 @@ Remove b from a until a does not change
 
 ### Overloads
 
-- str a, str b: `Remove b from a until a does not change`
-- str a, lst b: `Remove everything in b (in order) from a until a does not change`
+- str a, str b: `remove b from a until a does not change`
+- str a, lst b: `remove everything in b (in order) from a until a does not change`
 -------------------------------
 ## `` øV `` (Replace Until No Change)
 
@@ -2971,7 +2971,7 @@ Center a list of strings
 
 ### Overloads
 
-- lst a: `Center(a) (Pad each item with spaces so all are centered)`
+- lst a: `center(a) (pad each item with spaces so all are the same length and centered)`
 -------------------------------
 ## `` øe `` (Run Length Encoding)
 
@@ -3035,8 +3035,8 @@ Replace matches of a with c in b
 
 ### Overloads
 
-- any a, any b, fun c: `Apply c to matches of a in b`
-- any a, any b, any c: `Replace matches of a with c in b`
+- any a, any b, fun c: `apply c to matches of a in b`
+- any a, any b, any c: `replace matches of a with c in b`
 -------------------------------
 ## `` øp `` (Starts With)
 
@@ -3076,7 +3076,7 @@ Create a sentence of the form 'a bs'
 
 ### Overloads
 
-- num a, str b: `a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)`
+- num a, str b: `a + " " + b + (s if a != 1 else "") (concatenate with space, append a s if not 1)`
 -------------------------------
 ## `` øṁ `` (Vertical Mirror)
 
@@ -3183,7 +3183,7 @@ Strip from the left side of a string
 
 ### Overloads
 
-- str a: `a.lstrip(b)`
+- str a, num b: `a.lstrip(b)`
 -------------------------------
 ## `` ør `` (Strip from the right side)
 
@@ -3191,7 +3191,7 @@ Strip from the right side of a string
 
 ### Overloads
 
-- str a: `a.rstrip(b)`
+- str a, num b: `a.rstrip(b)`
 -------------------------------
 ## `` ø^ `` (Canvas Draw)
 
@@ -3199,13 +3199,13 @@ Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it a
 
 ### Overloads
 
-- num a, lst b, str c: `Draw with a = length, b = dirs, c = text`
-- num a, str b, str c: `Draw with a = length, b/c dependent on dir validity`
-- any a, num b, any c: `Draw with b = length ^`
-- any a, any b, num c: `Draw with c = length ^`
-- str a, any b, any c: `Draw with a = text, b/c dependent on dir validity`
-- lst a, str b, any c: `Draw with b = text, ^`
-- lst a, lst b, str c: `Draw with c = text, ^`
+- num a, lst b, str c: `draw with a = length, b = dirs, c = text`
+- num a, str b, str c: `draw with a = length, b/c dependent on dir validity`
+- any a, num b, any c: `draw with b = length ^`
+- any a, any b, num c: `draw with c = length ^`
+- str a, any b, any c: `draw with a = text, b/c dependent on dir validity`
+- lst a, str b, any c: `draw with b = text, ^`
+- lst a, lst b, str c: `draw with c = text, ^`
 -------------------------------
 ## `` ø∧ `` (Global Canvas Draw)
 
@@ -3213,13 +3213,13 @@ Draw on the global canvas (see knowledge/spec/canvas.md for more details), which
 
 ### Overloads
 
-- num a, lst b, str c: `Draw with a = length, b = dirs, c = text`
-- num a, str b, str c: `Draw with a = length, b/c dependent on dir validity`
-- any a, num b, any c: `Draw with b = length ^`
-- any a, any b, num c: `Draw with c = length ^`
-- str a, any b, any c: `Draw with a = text, b/c dependent on dir validity`
-- lst a, str b, any c: `Draw with b = text, ^`
-- lst a, lst b, str c: `Draw with c = text, ^`
+- num a, lst b, str c: `draw with a = length, b = dirs, c = text`
+- num a, str b, str c: `draw with a = length, b/c dependent on dir validity`
+- any a, num b, any c: `draw with b = length ^`
+- any a, any b, num c: `draw with c = length ^`
+- str a, any b, any c: `draw with a = text, b/c dependent on dir validity`
+- lst a, str b, any c: `draw with b = text, ^`
+- lst a, lst b, str c: `draw with c = text, ^`
 -------------------------------
 ## `` ø. `` (Surround)
 
@@ -3237,8 +3237,8 @@ Left align a string/string list
 
 ### Overloads
 
-- str a: `Justify to left`
-- lst a: `Justify each to left`
+- str a: `justify to left`
+- lst a: `justify each to left`
 -------------------------------
 ## `` øɽ `` (Right Align)
 
@@ -3246,8 +3246,8 @@ Right align a string/string list
 
 ### Overloads
 
-- str a: `Justify to right`
-- lst a: `Justify each to right`
+- str a: `justify to right`
+- lst a: `justify each to right`
 -------------------------------
 ## `` Þ* `` (Cartesian product over list)
 
@@ -3263,7 +3263,7 @@ Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 
 ### Overloads
 
-- lst a: `Adjacency matrix`
+- lst a: `adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])`
 -------------------------------
 ## `` Þż `` (Lift)
 
@@ -3279,7 +3279,7 @@ Adjacency matrix of undirected graph
 
 ### Overloads
 
-- lst a: `Adjacency matrix`
+- lst a: `adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])`
 -------------------------------
 ## `` Þo `` (Ordinals)
 
@@ -3327,8 +3327,8 @@ Flatten a list by a certain depth (default 1)
 
 ### Overloads
 
-- lst a, num b: `Flatten a by depth b`
-- any a, lst b: `Flatten b by depth 1, push a as well`
+- lst a, num b: `flatten a by depth b`
+- any a, lst b: `a, flatten b by depth 1`
 -------------------------------
 ## `` ÞB `` (Random Bits)
 
@@ -3336,8 +3336,8 @@ Fill a list with random bits
 
 ### Overloads
 
-- num a: `List of length a filled with random bits`
-- any a: `List of length n(a) filled with random bits`
+- num a: `list of length a filled with random bits`
+- any a: `list of length n(a) filled with random bits`
 -------------------------------
 ## `` Þ< `` (All Less Than Increasing)
 
@@ -3345,7 +3345,7 @@ Find all numbers less than a certain value in a (potentially infinite) list assu
 
 ### Overloads
 
-- any a, num b: `All values of a up to (not including) the first greater than or equal to b`
+- any a, num b: `all values of a up to (not including) the first greater than or equal to b`
 -------------------------------
 ## `` Þǔ `` (Untruth)
 
@@ -3353,7 +3353,7 @@ Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
 
 ### Overloads
 
-- any a: `[int(x in a) for x in range(len(a))]`
+- any a: `[int(x in a) for x in range(max(a))]`
 -------------------------------
 ## `` ÞǓ `` (Connected Uniquify)
 
@@ -3361,7 +3361,7 @@ Remove occurences of adjacent duplicates in a list
 
 ### Overloads
 
-- any a: `Connected uniquify a (`Ġvh`)`
+- any a: `connected uniquify a (`Ġvh`)`
 -------------------------------
 ## `` Þi `` (Multidimensional Indexing)
 
@@ -3369,7 +3369,7 @@ Index a list of coordinates into a value.
 
 ### Overloads
 
-- lst a, lst b: `a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value`
+- lst a, lst b: `reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)`
 -------------------------------
 ## `` ÞI `` (All Indices (Multidimensional))
 
@@ -3377,9 +3377,9 @@ All multidimensional indices of element in list
 
 ### Overloads
 
-- lst a, any b: `All indices of b in a`
-- any a, lst b: `All indices of a in b`
-- any a, any b: `All indices of b in a`
+- lst a, any b: `all indices of b in a`
+- any a, lst b: `all indices of a in b`
+- any a, any b: `all indices of b in a`
 -------------------------------
 ## `` Þḟ `` (Multidimensional Search)
 
@@ -3387,7 +3387,7 @@ Find the first multidimensional index of a value in another
 
 ### Overloads
 
-- lst a, any b: `Find the first occurrence of a in b and return as a multidimensional index`
+- lst a, any b: `find the first occurrence of a in b and return as a multidimensional index`
 -------------------------------
 ## `` ÞḞ `` (Fill to make rectangular)
 
@@ -3395,8 +3395,8 @@ Fill a 2-D list to make it rectangular
 
 ### Overloads
 
-- lst a, any b: `Fill a with b to make it rectangular`
-- any a, lst b: `Fill b with a to make it rectangular`
+- lst a, any b: `fill a with b to make it rectangular`
+- any a, lst b: `fill b with a to make it rectangular`
 -------------------------------
 ## `` Þm `` (Zero Matrix)
 
@@ -3404,7 +3404,7 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 
 ### Overloads
 
-- lst a: `Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost`
+- lst a: `matrix with dimensions each item of a, where the first is the innermost and the last is the outermost`
 -------------------------------
 ## `` ÞṄ `` (Infinite Integer Partitions)
 
@@ -3417,8 +3417,8 @@ Divide a list into n parts
 
 ### Overloads
 
-- any a, num b: `Divide a into b parts`
-- num a, any b: `Divide b into a parts`
+- any a, num b: `divide a into b parts, possibly with an extra part`
+- num a, any b: `divide b into a parts, possibly with an extra part`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
@@ -3426,7 +3426,7 @@ Fill a matrix by calling a function with the lists of coordinates in the matrix.
 
 ### Overloads
 
-- any a, fun b: `For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.`
+- any a, fun b: `for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a`
 -------------------------------
 ## `` Þ… `` (Evenly Distribute)
 
@@ -3434,7 +3434,7 @@ Evenly distribute a number over elements of a list
 
 ### Overloads
 
-- list a, num b: `Evenly distribute a over all elements of b, adding each part.`
+- list a, num b: `[i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b`
 -------------------------------
 ## `` Þ↓ `` (Minimum By Function)
 
@@ -3442,7 +3442,7 @@ Find the minimum value of a list by applying a function to each element
 
 ### Overloads
 
-- lst a, fun b: `Minimum value of a by applying b to each element`
+- lst a, fun b: `minimum value of a by applying b to each element`
 -------------------------------
 ## `` Þ↑ `` (Maximum By Function)
 
@@ -3450,7 +3450,7 @@ Find the maximum value of a list by applying a function to each element
 
 ### Overloads
 
-- lst a, fun b: `Maximum value of a by applying b to each element`
+- lst a, fun b: `maximum value of a by applying b to each element`
 -------------------------------
 ## `` Þ× `` (All Combinations)
 
@@ -3458,7 +3458,7 @@ All combinations of a list / string, of all lengths, with replacement
 
 ### Overloads
 
-- any a: `All combinations of a list / string, of all lengths and all orders, with replacement`
+- any a: `all (non-empty) combinations of a, of all lengths and all orders, with replacement`
 -------------------------------
 ## `` Þx `` (All Combinations Without Replacement)
 
@@ -3466,11 +3466,11 @@ All combinations of a list / string, of all lengths, without replacement
 
 ### Overloads
 
-- any a: `All combinations of a list / string, of all lengths and all orders, without replacement`
+- any a: `all (non-empty) combinations of a, of all lengths and all orders, without replacement`
 -------------------------------
-## `` ÞF `` (All Fibbonacci)
+## `` ÞF `` (All Fibonacci)
 
-All Fibbonacci numbers as a LazyList.
+All Fibonacci numbers as a LazyList.
 
 -------------------------------
 ## `` Þ! `` (All Factorials)
@@ -3484,7 +3484,7 @@ A list of booleans describing which elements of a will remain after uniquifying.
 
 ### Overloads
 
-- any a: `A list of booleans describing which elements of a will remain after uniquifying.`
+- any a: `a list of booleans describing which elements of a will remain after uniquifying`
 -------------------------------
 ## `` ÞD `` (Diagonals)
 
@@ -3492,7 +3492,7 @@ Diagonals of a matrix, starting with the main diagonal.
 
 ### Overloads
 
-- lst a: `Diagonals of a matrix, starting with the main diagonal.`
+- lst a: `diagonals of a, starting with the main diagonal`
 -------------------------------
 ## `` Þḋ `` (Anti-diagonals)
 
@@ -3500,7 +3500,7 @@ Anti-diagonals of a matrix, starting with the main anti-diagonal.
 
 ### Overloads
 
-- lst a: `Anti-diagonals of a matrix, starting with the main anti-diagonal.`
+- lst a: `anti-diagonals of a, starting with the main anti-diagonal`
 -------------------------------
 ## `` ÞS `` (Sublists)
 
@@ -3508,7 +3508,7 @@ Sublists of a list.
 
 ### Overloads
 
-- lst a: `Sublists of a list.`
+- lst a: `non-empty sublists of a`
 -------------------------------
 ## `` ÞṪ `` (Transpose With Filler)
 
@@ -3516,7 +3516,7 @@ Transpose a matrix, with a filler value for empty cells.
 
 ### Overloads
 
-- lst a, any b: `Transpose a matrix, with a filler value for empty cells.`
+- lst a, any b: `transpose a, with filler value b`
 -------------------------------
 ## `` Þ℅ `` (Random Permutation)
 
@@ -3524,7 +3524,7 @@ Random permutation of a list / string
 
 ### Overloads
 
-- any a: `Random permutation of a list / string`
+- any a: `random permutation of a`
 -------------------------------
 ## `` ÞṀ `` (Matrix Multiplication)
 
@@ -3532,7 +3532,7 @@ Multiply two matrices together.
 
 ### Overloads
 
-- lst a, lst b: `Matrix multiplication`
+- lst a, lst b: `matrix multiply a and b`
 -------------------------------
 ## `` ÞḊ `` (Matrix Determinant)
 
@@ -3540,7 +3540,7 @@ Calculate the determinant of a matrix.
 
 ### Overloads
 
-- lst a: `Calculate the determinant of a matrix.`
+- lst a: `determinant(a)`
 -------------------------------
 ## `` Þ\ `` (Antidiagonal)
 
@@ -3548,7 +3548,7 @@ Antidiagonal of a matrix
 
 ### Overloads
 
-- lst a: `Antidiagonal of a matrix`
+- lst a: `antidiagonal(a)`
 -------------------------------
 ## `` Þ/ `` (Main Diagonal)
 
@@ -3556,7 +3556,7 @@ Diagonal of a matrix
 
 ### Overloads
 
-- lst a: `Diagonal of a matrix`
+- lst a: `diagonal(a)`
 -------------------------------
 ## `` ÞR `` (Matrix Row Reduce)
 
@@ -3564,7 +3564,7 @@ Reduce rows of a matrix by a function.
 
 ### Overloads
 
-- lst a, fun b: `Reduce rows of a matrix by a function.`
+- lst a, fun b: `reduce rows of a with b`
 -------------------------------
 ## `` ÞC `` (Matrix Column Reduce)
 
@@ -3572,7 +3572,7 @@ Reduce columns of a matrix by a function.
 
 ### Overloads
 
-- lst a, fun b: `Reduce columns of a matrix by a function.`
+- lst a, fun b: `reduce columns of a with b`
 -------------------------------
 ## `` Þ∨ `` (Multiset Difference)
 
@@ -3580,7 +3580,7 @@ Similar to set difference, but with duplicates allowed.
 
 ### Overloads
 
-- lst a, lst b: `Multiset difference`
+- lst a, lst b: `multiset difference of a and b`
 -------------------------------
 ## `` Þ∩ `` (Multiset Intersection)
 
@@ -3588,7 +3588,7 @@ Similar to set intersection, but with duplicates allowed.
 
 ### Overloads
 
-- lst a, lst b: `Multiset intersection`
+- lst a, lst b: `multiset intersection of a and b`
 -------------------------------
 ## `` Þ∪ `` (Multiset Union)
 
@@ -3596,7 +3596,7 @@ Similar to set union, but with duplicates allowed.
 
 ### Overloads
 
-- lst a, lst b: `Multiset union`
+- lst a, lst b: `multiset union of a and b`
 -------------------------------
 ## `` Þ⊍ `` (Multiset Symmetric Difference)
 
@@ -3604,7 +3604,7 @@ Similar to set symmetric difference, but with duplicates allowed.
 
 ### Overloads
 
-- lst a, lst b: `Multiset symmetric difference`
+- lst a, lst b: `multiset symmetric difference of a and b`
 -------------------------------
 ## `` Þ• `` (Dot Product)
 
@@ -3612,7 +3612,7 @@ Dot product of two lists.
 
 ### Overloads
 
-- lst a, lst b: `Dot product of two lists.`
+- lst a, lst b: `dot product of a and b`
 -------------------------------
 ## `` Þṁ `` (Mold without repeat)
 
@@ -3620,15 +3620,15 @@ Mold a list without repeating elements.
 
 ### Overloads
 
-- lst a, lst b: `Mold a list without repeating elements.`
+- lst a, lst b: `mold a list without repeating elements`
 -------------------------------
-## `` ÞM `` (Maximal Indicies)
+## `` ÞM `` (Maximal Indices)
 
-Indicies of the maximal elements of a list.
+Indices of the maximal elements of a list.
 
 ### Overloads
 
-- lst a: `Indicies of the maximal elements of a list.`
+- lst a: `indices of the maximal elements of a`
 -------------------------------
 ## `` Þ∴ `` (Elementwise Vectorised Dyadic Maximum)
 
@@ -3636,7 +3636,7 @@ Elementwise vectorised dyadic maximum.
 
 ### Overloads
 
-- lst a, lst b: `Elementwise vectorised dyadic maximum.`
+- lst a, lst b: `[max(a[0], b[0]), max(a[1], b[1]), ...]`
 -------------------------------
 ## `` Þ∵ `` (Elementwise Vectorised Dyadic Minimum)
 
@@ -3644,7 +3644,7 @@ Elementwise vectorised dyadic minimum.
 
 ### Overloads
 
-- lst a, lst b: `Elementwise vectorised dyadic minimum.`
+- lst a, lst b: `[min(a[0], b[0]), min(a[1], b[1]), ...]`
 -------------------------------
 ## `` Þs `` (All Slices of a List)
 
@@ -3652,8 +3652,8 @@ Get all slices of a list, skipping a certain number of items
 
 ### Overloads
 
-- lst a, int b: `Get all slices of a list, skipping a certain number of items`
-- int a, lst b: `Same as lst-int but with arguments swapped`
+- lst a, int b: `[a[::b], a[1::b], a[2::b], ...]`
+- int a, lst b: `[b[::a], b[1::a], b[2::a], ...]`
 -------------------------------
 ## `` Þ¾ `` (Empty the Global Array)
 
@@ -3666,7 +3666,7 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 ### Overloads
 
-- lst a: `Remove the last item of a list and prepend 0. A shortcut for Ṫ0p`
+- lst a: `[0] + a[:-1]`
 -------------------------------
 ## `` Þ∞ `` (Infinite List)
 
@@ -3679,7 +3679,7 @@ Remove the last item of the cumulative sums of a list and prepend 0. A shortcut 
 
 ### Overloads
 
-- lst a: `Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p`
+- lst a: `[0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]`
 -------------------------------
 ## `` Þẇ `` (Unwrap)
 
@@ -3687,7 +3687,7 @@ Take a and push a[0]+a[-1] and a[1:-1]
 
 ### Overloads
 
-- lst a: `Take a and push a[0]+a[-1] and a[1:-1]`
+- lst a: `a[0]+a[-1], a[1:-1]`
 -------------------------------
 ## `` Þg `` (Shortest By Length)
 
@@ -3695,7 +3695,7 @@ Return the shortest item in a list.
 
 ### Overloads
 
-- lst a: `Return the shortest item in a list.`
+- lst a: `the shortest item of a`
 -------------------------------
 ## `` ÞG `` (Longest By Length)
 
@@ -3703,7 +3703,7 @@ Return the longest item in a list.
 
 ### Overloads
 
-- lst a: `Return the longest item in a list.`
+- lst a: `the longest item of a`
 -------------------------------
 ## `` Þṡ `` (Sort By Length)
 
@@ -3711,7 +3711,7 @@ Sort a list by length.
 
 ### Overloads
 
-- lst a: `Sort a list by length.`
+- lst a: `sort a from shortest to longest`
 -------------------------------
 ## `` ÞṠ `` (Is Sorted?)
 
@@ -3719,7 +3719,7 @@ Returns true if an item is sorted in ascending order using default sorting rules
 
 ### Overloads
 
-- lst a: `Returns true if an item is sorted in ascending order using default sorting rules.`
+- lst a: `is a sorted in increasing order?`
 -------------------------------
 ## `` ÞṘ `` (Is Sorted in Reverse?)
 
@@ -3727,7 +3727,7 @@ Returns true if an item is sorted in descending order using default sorting rule
 
 ### Overloads
 
-- lst a: `Returns true if an item is sorted in descending order using default sorting rules.`
+- lst a: `is a sorted in decreasing order?`
 -------------------------------
 ## `` ÞȮ `` (Is Ordered?)
 
@@ -3735,7 +3735,7 @@ Returns true if the item is sorted in either descending or ascending order.
 
 ### Overloads
 
-- lst a: `Returns true if the item is sorted in either descending or ascending order.`
+- lst a: `is a sorted in increasing or decreasing order?`
 -------------------------------
 ## `` ÞĊ `` (Is Unordered?)
 
@@ -3743,7 +3743,7 @@ Returns true if the item is not sorted in either descending or ascending order.
 
 ### Overloads
 
-- lst a: `Returns true if the item is not sorted in either descending or ascending order.`
+- lst a: `is a not sorted, in either increasing or decreasing order?`
 -------------------------------
 ## `` Þċ `` (Cycle)
 
@@ -3751,7 +3751,7 @@ Form an infinite list from a vector.
 
 ### Overloads
 
-- lst a: `Form an infinite list from a vector.`
+- lst a: `[a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]`
 -------------------------------
 ## `` ÞK `` (Suffixes)
 
@@ -3759,19 +3759,19 @@ Suffixes of a list.
 
 ### Overloads
 
-- lst a: `Suffixes of a list.`
+- lst a: `[a, a[:-1], a[:-2], ..., a[:1]]`
 -------------------------------
 ## `` Þİ `` (First n Items and Rest)
 
-a[:b] and a[b:]
+Push the first n items of a, then the rest of a
 
 ### Overloads
 
-- lst a, int b: `a[:b] and a[b:]`
+- lst a, int b: `a[:b], a[b:]`
 -------------------------------
 ## `` ÞN `` (Alternating Negation)
 
-An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+An infinite list of an item, then that item negated, then that item, and so on. Uses the negation element for negation.
 
 ### Overloads
 
@@ -3783,7 +3783,7 @@ A matrix with 1s on the main diagonal and zeroes elsewhere
 
 ### Overloads
 
-- num a: `A matrix with 1s on the main diagonal and zeroes elsewhere`
+- num a: `the a x a identity matrix`
 -------------------------------
 ## `` Þe `` (Matrix Exponentiation)
 
@@ -3791,16 +3791,16 @@ A matrix multiplied by itself n times
 
 ### Overloads
 
-- num a, lst b: `Matrix a multiplied by itself b times`
-- lst a, num b: `Matrix b multiplied by itself a times`
+- lst a, num b: `a ** b (matrix exponentiation)`
+- num a, lst b: `b ** a (matrix exponentiation)`
 -------------------------------
 ## `` Þd `` (Distance matrix (Directed))
 
-Distance matrix of undirected graph
+Distance matrix of directed graph
 
 ### Overloads
 
-- lst a: `Distance matrix`
+- lst a: `distance matrix of a directed graph (where a = [[i, j] for each edge i to j])`
 -------------------------------
 ## `` Þw `` (Distance matrix (Undirected))
 
@@ -3808,7 +3808,7 @@ Distance matrix of undirected graph
 
 ### Overloads
 
-- lst a: `Distance matrix`
+- lst a: `distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
@@ -3816,7 +3816,7 @@ Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
 
 ### Overloads
 
-- str a: `Map characters in `>^<v` to integers`
+- str a: `map on a, replacing `>^<v` with integers, and others with -1 ([`>^<v`.find(a[0]), `>^<v`.find(a[1]), ...])`
 -------------------------------
 ## `` ¨^ `` (Parse direction arrow to vector)
 
@@ -3824,7 +3824,7 @@ Map characters in `>^<v` to direction vectors
 
 ### Overloads
 
-- str a: `Map characters in `>^<v` to direction vectors`
+- str a: `map on a, replacing `>^<v` with [1, 0], [0, 1], etc., and others with [0, 0]`
 -------------------------------
 ## `` ¨U `` (Get Request)
 
@@ -3832,7 +3832,7 @@ Send a GET request to a URL
 
 ### Overloads
 
-- str a: `Send a GET request to a URL`
+- str a: `send a GET request to a`
 -------------------------------
 ## `` ¨= `` (Invariant After Application)
 Push whether the result of applying an element to an item is the same as the original item
@@ -3849,8 +3849,8 @@ Map a function at elements of a list whose indices are in another list
 
 ### Overloads
 
-- lst a, lst b, fun c: `Map a function to elements of a list whose indices are in another list`
-- lst a, num b, fun c: `Apply a function to element b within list a`
+- lst a, lst b, fun c: `change the items in a with indices in by applying function c`
+- lst a, num b, fun c: `change the bth item in a by applying function c`
 -------------------------------
 ## `` ¨, `` (Print With Space)
 
@@ -3858,7 +3858,7 @@ Print a value with a space after it
 
 ### Overloads
 
-- any a: `Print a value with a space after it`
+- any a: `print a followed by a space`
 -------------------------------
 ## `` ¨… `` (Print With Space Without Popping)
 
@@ -3866,7 +3866,7 @@ Print a value with a space after it, without popping it
 
 ### Overloads
 
-- any a: `Print a value with a space after it, without popping it`
+- any a: `print a followed by a space, then push a`
 -------------------------------
 ## `` ¨> `` (Strict Greater Than)
 
@@ -3882,7 +3882,7 @@ Non-vectorising greater than - useful for lists. Note that all corresponding ele
 
 ### Overloads
 
-- any a, any b: `Non-vectorising greater than - useful for lists`
+- any a, any b: `a > b (non-vectorising)`
 -------------------------------
 ## `` ¨* `` (All Multiples)
 
@@ -3908,7 +3908,7 @@ Wrap the last n items on the stack into a list
 
 ### Overloads
 
-- num a: `last a items in a list`
+- num a: `last a items of the stack, as a list; does not pop anything other than a`
 -------------------------------
 ## `` ¨2 `` (Dyadic Map Lambda)
 

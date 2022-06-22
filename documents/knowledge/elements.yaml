@@ -28,7 +28,7 @@
 - element: "∧"
   name: Logical And
   arity: 2
-  description: Returns the first truthy argument if both are truthy, otherwise returns the first falsey argument.
+  description: Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.
   overloads:
       any-any: a and b
   vectorise: false
@@ -46,7 +46,7 @@
 - element: "∨"
   name: Logical Or
   arity: 2
-  description: Returns the first truthy argument, otherwise the first falsey argument.
+  description: Returns the first truthy argument, otherwise the first falsy argument.
   overloads:
       any-any: a or b
   vectorise: false
@@ -142,7 +142,7 @@
 - element: "†"
   name: Function Call
   arity: 1
-  description: Calls a function / executes as python / len(prime factors) / vectorised not
+  description: Calls a function / executes as python / number of distinct prime factors / vectorised not
   overloads:
       fun: a()
       num: len(prime_factors(a))
@@ -159,7 +159,7 @@
   description: Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
   overloads:
       any-any: a split on b
-      any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+      any-fun: for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
   vectorise: false
   tests:
       - "[-1231234.5, 6] : [24, 24, 9/2]"
@@ -184,7 +184,7 @@
       - "[[2, 4, 6, 8]] : [1, 2, 3, 4]"
 
 - element: "∆"
-  name: Mathematic Digraph
+  name: Mathematical Digraph
   arity: NA
   description: Used for mathematical digraphs
 
@@ -199,9 +199,9 @@
   description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
   overloads:
       any-num: combinations_with_replacement(a, length=b)
-      fun-any: Apply a on b until the result does not change, yielding intermediate values
-      any-str: Remove elements from a that are not in b
-      any-lst: Remove elements from a that are not in b.
+      fun-any: apply a on b until the result does not change, yielding intermediate values
+      any-str: remove elements from a that are not in b
+      any-lst: remove elements from a that are not in b
   vectorise: false
   tests:
       - '["cabbage", "abcde"] : "cabbae"'
@@ -214,7 +214,7 @@
   description: Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
   overloads:
       any-any-any: replace b in a with c until a does not change
-      lst-fun-lst: apply function b to items at indices in a
+      lst-fun-lst: apply function b to items in c at indices in a
       lst-lst-fun: apply function c to items in a at indices in b
       fun-lst-lst: apply function a to items in b at indices in c
   vectorise: false
@@ -242,7 +242,7 @@
   arity: 1
   overloads:
       num: is a prime?
-      str: caseof(a) - 1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case
+      str: caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)
   vectorise: true
   tests:
       - "[2] : 1"
@@ -266,11 +266,11 @@
 
 - element: "ʁ"
   name: Exclusive Zero Range
-  description: Exclusive range or palindromised
+  description: Exclusive range or palindromise
   arity: 1
   overloads:
       num: range(0,a) (exclusive range from 0)
-      str: palindromised a
+      str: palindromise(a) (a + a[:-1:-1])
   vectorise: true
   tests:
       - '["1234"] : "1234321"'
@@ -314,9 +314,9 @@
   arity: 2
   overloads:
       num-num: a choose b (binomial coefficient)
-      num-str: Choose a random items from b
-      str-num: Choose b random items from a
-      str-str: Check if lists are the same except for duplicates
+      num-str: choose a random items from b
+      str-num: choose b random items from a
+      str-str: are the set of characters in the strings the same?
   vectorise: true
   tests:
       - "[5,3] : 10"
@@ -330,7 +330,7 @@
   description: Palindromise a
   arity: 1
   overloads:
-      any: palindromised a
+      any: palindromise a (a + a[:-1:-1])
   vectorise: false
   tests:
       - "[[1,2,3]] : [1,2,3,2,1]"
@@ -440,7 +440,7 @@
       num-num: a * b
       num-str: b repeated a times
       str-num: a repeated b times
-      str-str: ring translate b according to a
+      str-str: ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])
       fun-num: change the arity of function a to b
       num-fun: change the arity of function b to a
   vectorise: true
@@ -667,7 +667,7 @@
   description: Check if all items in a list are truthy / check if a character is a vowel
   arity: 1
   overloads:
-      str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
+      str: is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]
       any: all(a)
   vectorise: false
   tests:
@@ -781,7 +781,7 @@
   arity: 1
   overloads:
       num: push a spaces
-      str: equivlaent to `qp`
+      str: equivalent to `qp`
       lst: split a list into two halves
   vectorise: false
   tests:
@@ -796,12 +796,12 @@
   description: Join two lists or items
   arity: 2
   overloads:
-      lst-str: a.append(b) (Append)
-      lst-num: a.append(b) (Append)
-      str-lst: b.prepend(a) (Prepend)
-      num-lst: b.prepend(a) (Prepend)
-      lst-lst: merged(a,b) (Merge)
-      any-any: a + b (Concatenate)
+      lst-str: a.append(b) (append)
+      lst-num: a.append(b) (append)
+      str-lst: b.prepend(a) (prepend)
+      num-lst: b.prepend(a) (prepend)
+      lst-lst: merged(a,b) (merge)
+      any-any: a + b (concatenate)
   vectorise: false
   tests:
       - "[[1,2,3],4] : [1,2,3,4]"
@@ -817,8 +817,8 @@
   description: Get either the factors of a, substrings that occur more than once, or prefixes
   arity: 1
   overloads:
-      num: divisors(a) (factors)
-      str: All substrings of a that occur more than once in a
+      num: divisors(a) (positive integer factors)
+      str: all non-empty substrings of a that occur more than once in a
       lst: prefixes(a) (prefixes)
   vectorise: false
   tests:
@@ -850,7 +850,7 @@
   vectorise: false
   overloads:
       any-fun: map(b,a) (apply b to each of a)
-      any-any: pair each item of b with a
+      any-any: pair each item of b with a ([[a, i] for i in b])
   tests:
       - "[5,[1,2,3]] : [[5,1],[5,2],[5,3]]"
       - '["z","hi"] : [["z","h"],["z","i"]]'
@@ -887,7 +887,7 @@
 
 - element: "P"
   name: Strip
-  description: a.strip(b) - trim b from both ends of a
+  description: Remove the set of elements in b from both ends of a
   arity: 2
   overloads:
       any-any: a.strip(b)
@@ -950,7 +950,7 @@
   description: Remove duplicates
   arity: 1
   overloads:
-      any: uniquify(a) (Remove duplicates)
+      any: uniquify(a) (remove duplicates)
   vectorise: false
   tests:
       - "[[1,3,5,5]] : [1,3,5]"
@@ -965,8 +965,8 @@
   arity: 3
   overloads:
       any-any-any: a.replace(b,c) (replace)
-      lst-lst-fun: Map a function to elements of a list whose indices are in another list
-      lst-num-fun: Apply a function to element b within list a
+      lst-lst-fun: for each i in b, change the ith element in a by applying the function, then return the new list
+      lst-num-fun: replace the bth element in a by applying the function, then return the new list
   vectorise: false
   tests:
       - '["hela","a","lo"] : "hello"'
@@ -998,7 +998,7 @@
   description: Interleave two lists
   arity: 2
   overloads:
-      any-any: interleave(a,b)
+      any-any: interleave(a,b) (a[0], b[0], a[1], b[1], ...)
   vectorise: false
   tests:
       - "[[1,3,5],[2,4]] : [1,2,3,4,5]"
@@ -1013,7 +1013,7 @@
   arity: 2
   overloads:
       any-any: zip(a,b)
-      any-fun: zip(a,map(b,a)) (Zipmap, map and zip)
+      any-fun: zip(a,map(b,a)) (zipmap, map and zip)
   vectorise: false
   tests:
       - "[[1,2],[3,4]] : [[1,3],[2,4]]"
@@ -1058,8 +1058,8 @@
   description: Check if any items of a list are truthy / Check if a character is an uppercase letter
   arity: 1
   overloads:
-      str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z "[char * b for char in a] - Map over each char if the string is multiple characters
-      lst: any(a) (Are any items truthy?)
+      str: is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]
+      lst: any(a) (are any items truthy?)
   vectorise: false
   tests:
       - "[[1,2,3]] : 1"
@@ -1074,8 +1074,8 @@
   description: Convert a number or string to binary
   arity: 1
   overloads:
-      num: "bin(a) - list of binary digits of A"
-      str: "[bin(ord(char)) for char in a] - binary of each codepoint"
+      num: bin(a) (list of binary digits of a)
+      str: "[bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)"
   vectorise: true
   tests:
       - "[5] : [1,0,1]"
@@ -1088,7 +1088,7 @@
   description: Check if one thing contains another.
   arity: 2
   overloads:
-      any-any: b in a (Does a contain b, membership, contains)
+      any-any: b in a (does a contain b, membership, contains)
   vectorise: false
   tests:
       - '["abcdef","a"] : 1'
@@ -1125,7 +1125,7 @@
       num-num: a ** b (exponentiation)
       str-num: append a[0] until a is length b (spaces are used if a is empty)
       num-str: append b[0] until b is length a (spaces are used if b is empty)
-      str-str: regex.search(pattern=a, string=b).span() (Length of regex match)
+      str-str: regex.search(pattern=a, string=b).span() (length of regex match)
   vectorise: true
   tests:
       - "[5,3] : 125"
@@ -1138,12 +1138,12 @@
 
 - element: "f"
   name: Flatten
-  description: Turn a number into a list of digits, a string into a list of characters, and flatten a list.
+  description: Turn a number into a list of digits, split a string into a list of characters, or flatten a list.
   arity: 1
   overloads:
       num: digits of a
-      str: a split into list of characters
-      lst: flatten(a) (Deep flatten)
+      str: list of characters of a
+      lst: flatten(a) (deep flatten)
   vectorise: false
   tests:
       - "[135] : [1,3,5]"
@@ -1171,7 +1171,7 @@
   description: First item of something
   arity: 1
   overloads:
-      any: a[0] (First item)
+      any: a[0] (first item)
   tests:
       - '["hello"] : "h"'
       - "[[1,2,3]] : 1"
@@ -1183,7 +1183,7 @@
   description: Index into a list
   arity: 2
   overloads:
-      any-num: a[b] (Index)
+      any-num: a[b] (index)
       any-[x]: a[:b] (0 to bth item of a)
       any-[x,y]: a[x:y] (x to yth item of a)
       any-[x,y,m]: a[x:y:m] (x to yth item of a, taking every mth)
@@ -1221,11 +1221,11 @@
 
 - element: "l"
   name: Cumulative Groups
-  description: Cumulative grouping / equal length
+  description: Cumulative groups (overlapping groups, aperture) / Equal length
   arity: 2
   overloads:
-      any-num: n-wise_group(a,b) ( Overlapping groups of a of length b)
-      num-any: n-wise_group(b,a) ( Overlapping groups of b of length a)
+      any-num: "[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]"
+      num-any: "[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]"
       any-any: length(a) == length(b)
   vectorise: false
   tests:
@@ -1248,7 +1248,7 @@
   overloads:
       num: a + reversed(a) (as number)
       str: a + reversed(a)
-      lst: Append reversed(a) to a
+      lst: append reversed(a) to a
   vectorise: false
   tests:
       - "[123] : 444"
@@ -1283,7 +1283,7 @@
   name: Prepend
   description: Prepend b to a
   overloads:
-      any-any: a.prepend(b) ( Prepend b to a)
+      any-any: a.prepend(b) (prepend b to a)
   arity: 2
   vectorise: false
   tests:
@@ -1301,7 +1301,7 @@
   description: Enclose in backticks, escape backslashes and backticks.
   arity: 1
   overloads:
-      any: uneval(a) (Enclose in bacticks + escape)
+      any: uneval(a) (enclose in backticks + escape)
   vectorise: false
   tests:
       - '["\\"] : "`\\\\`"'
@@ -1310,14 +1310,14 @@
 
 - element: "r"
   name: Range
-  description: Range betweeen two numbers, or cumulative reduce, or regex match
+  description: Range between two numbers, or cumulative reduce, or regex match
   arity: 2
   overloads:
-      num-num: range(a,b) (Range form a to b)
+      num-num: range(a,b) (range from a to b)
       num-str: append spaces to b to make it length a
-      str-num: preprend spaces to a to make it length b
-      any-fun: cumulative_reduce(a,function=b) (Prefixes of a reduced by b)
-      str-str: regex.has_match(pattern=a,string= b) ( Does b match a)
+      str-num: prepend spaces to a to make it length b
+      any-fun: cumulative_reduce(a,function=b) (prefixes of a reduced by b)
+      str-str: regex.has_match(pattern=a,string= b) (does b match a)
   vectorise: true
   tests:
       - "[3,6] : [3,4,5]"
@@ -1333,7 +1333,7 @@
   description: Sort a list or string
   arity: 1
   overloads:
-      any: sorted(a) (Sort)
+      any: sorted(a) (sort)
   vectorise: false
   tests:
       - "[[3,1,2]] : [1,2,3]"
@@ -1345,7 +1345,7 @@
   description: Last item
   arity: 1
   overloads:
-      any: a[-1] (Last item)
+      any: a[-1] (last item)
   vectorise: false
   tests:
       - '["hello"] : "o"'
@@ -1377,7 +1377,7 @@
   description: a wrapped in a singleton list
   arity: 1
   overloads:
-      any: "[a] (Wrapped in singleton list)"
+      any: "[a] (wrap in singleton list)"
   vectorise: false
   tests:
       - "[1] : [1]"
@@ -1393,7 +1393,7 @@
   description: Push every other item of a, and the rest.
   arity: 1
   overloads:
-      any: a[::2], a[1::2] (Every second item, the rest)
+      any: a[::2], a[1::2] (every second item, the rest)
   vectorise: false
   tests:
       - '["abcde"] : "bd"'
@@ -1438,7 +1438,7 @@
   description: Maximum by last item
   arity: 1
   overloads:
-      any: "max(a, key=lambda x: x[-1]) (Maximum by last item)"
+      any: "max(a, key=lambda x: x[-1]) (maximum by last item)"
   vectorise: false
   tests:
       - "[[[3,4],[9,2]]] : [3,4]"
@@ -1449,7 +1449,7 @@
   description: Minimum by last item
   arity: 1
   overloads:
-      any: "min(a, key=lambda x: x[-1]) (Minimum by last item)"
+      any: "min(a, key=lambda x: x[-1]) (minimum by last item)"
   vectorise: false
   tests:
       - "[[[3,4],[9,2]]] : [9,2]"
@@ -1512,8 +1512,8 @@
   description: A number modulo 2
   arity: 1
   overloads:
-      num: a % 2 (Odd?)
-      str: Second half of A
+      num: a % 2 (odd?)
+      str: second half of A
   vectorise: true
   tests:
       - "[2] : 0"
@@ -1566,7 +1566,7 @@
   description: Convert a number to a different base from base 10.
   arity: 2
   overloads:
-      num-num: List of digits of a in base b
+      num-num: list of digits of a in base b
       num-str: a converted into a string of characters of b
       num-lst: a converted into a list of arbitrary values from b
   vectorise: false
@@ -1589,8 +1589,8 @@
   description: Take the absolute value of a number, or remove whitespace from a string
   arity: 1
   overloads:
-      num: abs(a) (Absolute value)
-      str: Remove whitespace from a
+      num: abs(a) (absolute value)
+      str: remove whitespace from a
   vectorise: true
   tests:
       - "[1] : 1"
@@ -1603,7 +1603,7 @@
   description: Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
   arity: 1
   overloads:
-      any: bool(a) (Booliify)
+      any: bool(a) (booliify)
   vectorise: false
   tests:
       - "[0] : 0"
@@ -1631,10 +1631,10 @@
   description: Divmod / combinations / trim
   arity: 2
   overloads:
-      num-num: "[a // b, a % b] (Divmod - division and modulo)"
-      str-num: Combinations of a with length b
-      lst-num: Combinations of a with length b
-      str-str: overwrite the start of a with b -> `abcdef` `Joe`Ḋ -> `Joedef`
+      num-num: "[a // b, a % b] (divmod - division and modulo)"
+      str-num: combinations of a with length b
+      lst-num: combinations of a with length b
+      str-str: overwrite the start of a with b (b + a[len(b):])
   vectorise: false
   tests:
       - "[5,3] : [1,2]"
@@ -1648,7 +1648,7 @@
   description: Zip with a range of the same length
   arity: 1
   overloads:
-      any: enumerate(a) (Zip with 1...len(a))
+      any: enumerate(a) (zip with 1...len(a))
   vectorise: false
   tests:
       - '["abc"] : [[0,"a"],[1,"b"],[2,"c"]]'
@@ -1660,7 +1660,7 @@
   description: Find a value in another
   arity: 2
   overloads:
-      any-any: a.find(b) (Indexing)
+      any-any: a.find(b) (indexing, -1 if not found)
       any-fun: truthy indices of mapping b over a
   vectorise: false
   tests:
@@ -1677,11 +1677,11 @@
   description: Greatest Common Denominator of a list or some numbers
   arity: "*"
   overloads:
-      lst: GCD(a) (Gcd of whole list)
-      num-num: gcd(a,b) (Dyadic gcd)
-      str-str: Longest common suffix of a and b
-      fun-any: Group b by the results of function a
-      any-fun: Group a by the results of function b
+      lst: GCD(a) (gcd of whole list)
+      num-num: gcd(a,b) (dyadic gcd)
+      str-str: longest common suffix of a and b
+      fun-any: group b by the results of function a
+      any-fun: group a by the results of function b
   vectorise: false
   tests:
       - "[[1,3,2]] : 1"
@@ -1697,7 +1697,7 @@
   description: Separate the first item of something and push both to stack
   arity: 1
   overloads:
-      any: a[0], a[1:] (Head extract)
+      any: a[0], a[1:] (head extract)
   vectorise: false
   tests:
       - '["hello"] : "ello"'
@@ -1710,11 +1710,11 @@
   description: Floor divide a by b
   arity: 2
   overloads:
-      num-num: a // b (Floor division, floor(a / b))
+      num-num: a // b (floor division, floor(a / b))
       str-num: (a divided into b pieces)[0]
       num-str: (b divided into a pieces)[0]
-      any-fun: Right reduce a by b (foldr)
-      fun-any: Right reduce b by a (foldr)
+      any-fun: right reduce a by b (foldr)
+      fun-any: right reduce b by a (foldr)
   vectorise: false
   tests:
       - "[5,3] : 1"
@@ -1742,7 +1742,7 @@
       str-num-str: a.ljust(c,filler=b)
       str-str-num: a.ljust(b,filler=c)
       str-str-str: a.infinite_replace(b, c)
-      fun-fun-any: collect_until_false(predicate=a, modifying_function=b, inital=c) # Collect the results of apply a on c while b(c) is truthy
+      fun-fun-any: "[c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy"
   vectorise: true
   tests:
       - "[1, 3, 2] : 1"
@@ -1761,7 +1761,7 @@
   description: Average of a list - sum / length
   arity: 1
   overloads:
-      str: palindromise(a)
+      str: palindromise(a) (a + a[:-1:-1])
       lst: mean(a)
   vectorise: false
   tests:
@@ -1795,8 +1795,8 @@
   description: Slice from an index to the end
   arity: 2
   overloads:
-      fun-num: First b integers for which a(x) is truthy
-      any-num: a[b:] (Slice from b to the end)
+      fun-num: first b integers for which a(x) is truthy
+      any-num: a[b:] (slice from b to the end)
       str-str: vertically merge a and b
   vectorise: false
   tests:
@@ -1814,7 +1814,7 @@
   description: All possible combinations of a
   arity: 1
   overloads:
-      any: All possible combinations of a
+      any: all subsets of a (including the empty subset)
   vectorise: false
   tests:
       - '["ab"] : [[],["a"],["b"],["a","b"]]'
@@ -1829,7 +1829,7 @@
   overloads:
       num: round(a)
       complex: "[real(a), imag(a)]"
-      str: quad palindromize with overlap
+      str: quad palindromise with overlap
   vectorise: true
   tests:
       - "[5.5] : 6"
@@ -1845,8 +1845,8 @@
   description: Sort a list by a function / create a range / split on a regex
   arity: 2
   overloads:
-      any-fun: sorted(a, key=b) (Sort by b)
-      num-num: range(a, b + 1) (Inclusive range from a to b)
+      any-fun: sorted(a, key=b) (sort by b)
+      num-num: range(a, b + 1) (inclusive range from a to b)
       str-str: regex.split(pattern=b, string=a)
   vectorise: false
   tests:
@@ -1875,11 +1875,11 @@
   overloads:
       any-num: a wrapped in chunks of length b
       num-any: b wrapped in chunks of length a
-      any-lst: Wrap a into chunks with lengths given in b, repeating if necessary
-      lst-str: Wrap b into chunks with lengths given in a, repeating if necessary
-      any-fun: Apply b to every second item of a
-      fun-any: Apply a to every second item of b
-      str-str: split a on first occurance of b
+      any-lst: wrap a into chunks with lengths given in b, repeating if necessary
+      lst-any: wrap b into chunks with lengths given in a, repeating if necessary
+      any-fun: apply b to every second item of a ([a[0], b(a[1]), a[2], ...])
+      fun-any: apply a to every second item of b ([b[0], a(b[1]), b[2], ...])
+      str-str: split a on first occurrence of b
   vectorise: false
   tests:
       - '["abcdef",2] : ["ab","cd","ef"]'
@@ -1903,10 +1903,10 @@
   overloads:
       str-num: a * b
       num-str: b * a
-      any-num: Repeat a b times
+      any-num: repeat a b times ([a, a, ...])
       str-str: a + " " + b
-      fun-any: repeat function a on b while the function results are not-unique
-      any-fun: repeat function b on a while the function results are not-unique
+      fun-any: repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))
+      any-fun: repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))
   vectorise: false
   tests:
       - "[[1,2,3],3] : [[1,2,3],[1,2,3],[1,2,3]]"
@@ -1923,7 +1923,7 @@
   description: Range from 0 to length of a
   arity: 1
   overloads:
-      any: range(0, len(a)) (Exclusive range from 0 to length of a)
+      any: range(0, len(a)) (exclusive range from 0 to length of a)
   vectorise: false
   tests:
       - '["abc"] : [0,1,2]'
@@ -1936,7 +1936,7 @@
   description: Range from 1 to length of a inclusive
   arity: 1
   overloads:
-      any: range(1, len(a)+1) (Inclusive range from 1 to length of a)
+      any: range(1, len(a)+1) (inclusive range from 1 to length of a)
   vectorise: false
   tests:
       - '["abc"] : [1,2,3]'
@@ -1949,8 +1949,8 @@
   description: Square root a number / every second character of a
   arity: 1
   overloads:
-      num: sqrt(a) (Square root)
-      str: every second character of a
+      num: sqrt(a) (square root)
+      str: every second character of a (a[0] + a[2] + ...)
   vectorise: true
   tests:
       - "[4] : 2"
@@ -1991,8 +1991,8 @@
   description: Check if a value is even
   arity: 1
   overloads:
-      num: a % 2 == 0 (Even?)
-      any: len(a) % 2 == 0 (Length even?)
+      num: a % 2 == 0 (even?)
+      any: len(a) % 2 == 0 (length even?)
   vectorise: false
   tests:
       - "[5] : 0"
@@ -2001,12 +2001,12 @@
       - "[[1,2]] : 1"
 
 - element: "₃"
-  name: Divisible By three
+  name: Divisible By Three
   description: Check if a is divisible by 3
   arity: 1
   overloads:
       num: a % 3 == 0 (divisible by 3?)
-      any: len(a) == 1 (Length is 1?)
+      any: len(a) == 1 (length is 1?)
   vectorise: false
   tests:
       - "[5] : 0"
@@ -2080,7 +2080,7 @@
   arity: 1
   description: Transpose (filling with spaces) and then join on newlines
   overloads:
-      any: Transpose a, join on newlines
+      any: transpose a, join on newlines
   vectorise: false
   tests:
       - '[["abc", "def", "ghi"]] : "adg\nbeh\ncfi"'
@@ -2092,12 +2092,12 @@
 - element: "ε"
   name: Absolute Difference / Repeat / Regex match
   arity: 2
-  description: Returns the aboslute difference / Fills an array of a certain length / Does a regex match
+  description: Returns the absolute difference / Fills an array of a certain length / Does a regex match
   overloads:
       num-num: abs(a - b)
       num-str: "[b] * a"
       str-num: "[a] * b"
-      str-str: Do a regex match of b on a
+      str-str: regex.match(b, a) (first match of regex b on a)
   vectorise: false
   tests:
       - "[5, 1] : 4"
@@ -2145,7 +2145,7 @@
   arity: 1
   description: Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
   overloads:
-      any: cumulative_sum(a)
+      any: cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])
   vectorise: false
   tests:
       - "[12345] : [1, 3, 6, 10, 15]"
@@ -2224,8 +2224,8 @@
       num-str: a copies of b
       str-num: b copies of a
       str-str: b + " " + a
-      any-fun: Group a by the results of b. Order is preserved
-      fun-any: Group b by the results of a. Order is preserved
+      any-fun: group a by the results of b, order is preserved
+      fun-any: group b by the results of a, order is preserved
   vectorise: true
   tests:
       - "[15, 5] : 1"
@@ -2252,12 +2252,12 @@
   description: Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
   overloads:
       num-num: sympy.N(a, b) (evaluate a to b decimal places)
-      num-str: every ath letter of b
-      str-num: every bth letter of a
+      str-num: every bth letter of a (a[::b])
+      num-str: every ath letter of b (b[::a])
       str-str: replace spaces in a with b
-      lst-num: every bth item of a
-      num-lst: every ath item of b
-      fun-lst: Generator from function a with initial vector b
+      lst-num: every bth item of a (a[::b])
+      num-lst: every ath item of b (b[::a])
+      fun-lst: generator from function a with initial vector b
   vectorise: false
   tests:
       - '[4.51, 3] : "4.51"'
@@ -2276,9 +2276,9 @@
   arity: 1
   description: Group consecutive identical items
   overloads:
-      lst: Group consecutive identical items
-      str: Group consecutive identical characters
-      num: Group consecutive identical digits
+      lst: group consecutive identical items
+      str: group consecutive identical characters
+      num: group consecutive identical digits
   vectorise: false
   tests:
       - "[[1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 5, 5]] : [[1, 1, 1], [2, 2, 2, 2, 2, 2], [3, 3, 3, 3, 3], [4, 4], [5, 5]]"
@@ -2293,7 +2293,7 @@
   overloads:
       lst: a[1:] or [] if empty
       str: a[1:] or '' if empty
-      num: Remove first digit or do nothing if <1
+      num: remove first digit or do nothing if <1
   vectorise: false
   tests:
       - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
@@ -2328,8 +2328,8 @@
   description: Replace each item of one value in another value with the corresponding element from a third value
   arity: 3
   overloads:
-      any-any-any: transliterate(a,b,c) (Replace each item of b in c with the corresponding value from a)
-      fun-fun-any: Call b on c until a(c) is falsey.
+      any-any-any: transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
+      fun-fun-any: call b on c until a(c) is falsy
   vectorise: false
   tests:
       - '["abcdefcba","abc","123"] : "123def321"'
@@ -2345,8 +2345,8 @@
       Map a function over every nth item of a list
   arity: 3
   overloads:
-      any-num-any: a.insert(b,c) (Insert c at position b in a)
-      any-num-fun: c mapped over every bth item of a
+      any-num-any: a.insert(b,c) (insert c at position b in a)
+      any-num-fun: c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])
   vectorise: false
   tests:
       - "[[1,3,4],1,2] : [1,2,3,4]"
@@ -2361,8 +2361,8 @@
   description: Integer partitions / join by space
   arity: 1
   overloads:
-      num: integer_partitions(a) (Integer partitions)
-      any: '" ".join(a) (Join by space)'
+      num: integer_partitions(a) (integer partitions)
+      any: '" ".join(a) (join by space)'
   vectorise: false
   tests:
       - "[5] : [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]"
@@ -2383,7 +2383,7 @@
   description: Get all permutations of a value
   arity: 1
   overloads:
-      any: permutations(a) (Get all permutations)
+      any: permutations(a) (get all permutations)
   tests:
       - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
       - "[[1,2]] : [[1,2],[2,1]]"
@@ -2416,7 +2416,7 @@
   description: Cut off the last item of a list
   arity: 1
   overloads:
-      any: a[:-1] (All but the last item)
+      any: a[:-1] (all but the last item)
   vectorise: false
   tests:
       - '["1234"] : "123"'
@@ -2430,7 +2430,7 @@
   description: Split a value and keep the delimiter
   arity: 2
   overloads:
-      any-any: a.split_and_keep_delimiter(b) (Split and keep the delimiter)
+      any-any: a.split_and_keep_delimiter(b) (split and keep the delimiter)
       fun-any: apply a to every second item of b starting on the first item
   vectorise: false
   tests:
@@ -2446,7 +2446,7 @@
   arity: 2
   overloads:
       any-any: cartesian-product(a,b)
-      fun-any: Apply a on b until b does not change
+      fun-any: apply a on b until b does not change
   vectorise: false
   tests:
       - '["ab","cd"] : ["ac","ad","bc","bd"]'
@@ -2459,9 +2459,9 @@
   description: Slice a list until a certain index / find all results for a regex match
   arity: 2
   overloads:
-      any-num: a[0:b] (Slice until b)
-      num-any: b[0:a] (Slice until a)
-      str-str: regex.findall(pattern=a,string=b) (Find all matches for a regex)
+      any-num: a[0:b] (slice until b)
+      num-any: b[0:a] (slice until a)
+      str-str: regex.findall(pattern=a,string=b) (find all matches for a regex)
   vectorise: true
   tests:
       - '["abc",1] : "a"'
@@ -2472,11 +2472,11 @@
 
 - element: "Ż"
   name: Slice From One Until
-  description: Slice from index 1 until a number / get groups of a gregex match
+  description: Slice from index 1 until a number / get groups of a regex match
   arity: 2
   overloads:
-      any-num: a[1:b] (Slice from 1 until b)
-      num-any: b[1:a] (Slice from 1 until a)
+      any-num: a[1:b] (slice from 1 until b)
+      num-any: b[1:a] (slice from 1 until a)
       str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
   vectorise: true
   tests:
@@ -2510,8 +2510,8 @@
   description: Square a number / Format a string into a square
   arity: 1
   overloads:
-      num: a ** 2 (Squared)
-      str: a formatted as a square
+      num: a ** 2 (squared)
+      str: a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)
   vectorise: true
   tests:
       - "[5] : 25"
@@ -2525,7 +2525,7 @@
   description: Shift the top of stack two values down
   arity: 3
   overloads:
-      any-any-any: c,a,b (Shift)
+      any-any-any: c,a,b (shift)
   vectorise: false
   tests:
       - "[1,4,5] : 4"
@@ -2536,9 +2536,9 @@
   description: Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
   arity: 1
   overloads:
-      num: ceil(a) (Ceiling)
+      num: ceil(a) (ceiling)
       complex: imaginary part of a
-      str: Split on spaces
+      str: split on spaces
   vectorise: true
   tests:
       - "[5] : 5"
@@ -2552,9 +2552,9 @@
   description: Floor a number / real part of complex number / extract the integer part of a string
   arity: 1
   overloads:
-      num: floor(a) (Floor)
+      num: floor(a) (floor)
       complex: real part of a
-      str: Integer part of a
+      str: integer part of a
   vectorise: true
   tests:
       - "[5.3] : 5"
@@ -2569,7 +2569,7 @@
   description: Deltas (consecutive differences)
   arity: 1
   overloads:
-      any: deltas(a) (consecutive differences)
+      any: deltas(a) ([a[1] - a[0], a[2] - a[1], ...])
   vectorise: true
   tests:
       - "[[1,2,3]] : [1,1]"
@@ -2783,11 +2783,11 @@
       - '["12",12] : ["1","2"]'
 
 - element: "∩"
-  name: Tranpose
+  name: Transpose
   arity: 1
   description: Transpose an array
   overloads:
-      any: Transposed array
+      any: transposed array
   vectorise: false
   tests:
       - "[[[1,2],[2,3,4]]] : [[1, 2], [2, 3], [4]]"
@@ -2811,7 +2811,7 @@
 - element: "£"
   name: Set Register
   arity: 1
-  description: set the register to argument value
+  description: Set the register to argument value
   overloads:
       any: set_register(a)
   vectorise: false
@@ -2882,7 +2882,7 @@
   arity: 1
   description: prime factorization / append first element
   overloads:
-      num: prime_factorization(a)
+      num: prime_factorization(a) (distinct prime factors)
       str: a + a[0]
       lst: a + [a[0]]
   vectorise: false
@@ -2897,7 +2897,7 @@
   arity: 1
   description: all prime factors / Title Case string
   overloads:
-      num: prime_factors(a)
+      num: prime_factors(a) (prime factors possibly with repetition)
       str: title_case(a)
   vectorise: true
   tests:
@@ -2911,7 +2911,7 @@
   overloads:
       num-num: multiplicity(a,b)
       str-str: remove_till_fixpoint(a,b)
-  vectorise: false
+  vectorise: true
   tests:
       - "[45, 3] : 2"
       - "[1.125, 2] : -3"
@@ -3021,7 +3021,7 @@
   description: Product of Array / Cartesian product over a list of lists
   overloads:
       lst[num]: reduce list by multiplication
-      lst[str|lst]: reduce list by cartesian product
+      lst[str|lst]: reduce list by Cartesian product
   vectorise: false
   tests:
       - "[[3,4,5]] : 60"
@@ -3721,9 +3721,9 @@
   description: Solve a quadratic equation of the form ax^2 + bx = 0
   overloads:
       num-num: x such that ax^2 + bx = 0
-      num-str: solve a such that a = b
-      str-num: solve b such that b = a
-      str-str: solve equation a = b for x
+      num-str: solve for x such that a = b(x)
+      str-num: solve for x such that a(x) = b
+      str-str: solve for x such that a(x) = b(x)
   vectorise: true
   tests:
       - "[1, 2] : [-2, 0]"
@@ -3738,7 +3738,7 @@
       num-num: roots(a, b) / x^2 + ax + b = 0
       num-str: evaluate single variable expression b with x=a
       str-num: evaluate single variable expression a with x=b
-      str-str: solve equations a and b simultaneously
+      str-str: solve equations a and b simultaneously for x and y
   vectorise: true
   tests:
       - "[1, -2] : [-2, 1]"
@@ -3946,9 +3946,9 @@
 - element: "∆d"
   name: Straight Line Distance
   arity: 2
-  description: Get the straight line distance between two points (x1, y1) and (x2, y2)
+  description: Get the straight line distance between two points (x1, x2, ..., xn) and (y1, y2, ..., yn)
   overloads:
-      lst-lst: euclidian_distance(a, b)
+      lst-lst: euclidean_distance(a, b)
   vectorise: false
   tests:
       - "[[69, 420], [21, 42]] : 381.03543142337827"
@@ -4050,7 +4050,7 @@
   arity: 2
   description: Round a number to n decimal places
   overloads:
-      num-num: round(a, no_dec_places=b)
+      num-num: round(a, no_dec_places=b) (b significant digits)
   vectorise: true
   tests:
       - "[1.2345, 2] : 1.23"
@@ -4124,7 +4124,7 @@
   arity: 1
   description: Get the first n digits of Euler's number (e) / evaluate an expression as sympy
   overloads:
-      num: First n digits of e
+      num: first n digits of e
       str: evaluate(a)
   vectorise: true
   tests:
@@ -4150,9 +4150,9 @@
 - element: "∆f"
   name: nth Fibonacci Number
   arity: 1
-  description: Get the nth fibonacci number
+  description: Get the nth fibonacci number, 1-indexed
   overloads:
-      num: nth_fibonacci(a)
+      num: nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)
   vectorise: true
   tests:
       - "[0] : 1"
@@ -4172,7 +4172,7 @@
   arity: 1
   description: Get the nth fibonacci number, 0-indexed
   overloads:
-      num: nth_fibonacci(a)
+      num: nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)
   vectorise: true
   tests:
       - "[0] : 0"
@@ -4318,7 +4318,7 @@
   arity: 1
   description: Get the exponents of prime factors of a number
   overloads:
-      num: prime_exponents(a)
+      num: prime_exponents(a) (in the order of prime_factors(a))
   vectorise: true
   tests:
       - "[20] : [2, 1]"
@@ -4393,8 +4393,8 @@
   arity: 3
   description: Pad a string to the left with a certain character
   overloads:
-      any-str-num: "Pad a to the left with c so a has length b"
-      any-num-str: "Pad a to the left with b so a has length c"
+      any-str-num: "pad a to the left with c so a has length b"
+      any-num-str: "pad a to the left with b so a has length c"
   vectorise: true
   tests:
       - '["xyz","x",4] : "xxyz"'
@@ -4407,8 +4407,8 @@
   arity: 3
   description: Pad a string to the right with a certain character
   overloads:
-      any-str-num: "Pad a to the right with c so a has length b"
-      any-num-str: "Pad a to the right with b so a has length c"
+      any-str-num: "pad a to the right with c so a has length b"
+      any-num-str: "pad a to the right with b so a has length c"
   vectorise: true
   tests:
       - '["xyz","x",4] : "xyzx"'
@@ -4421,7 +4421,7 @@
   description: Vertically palindromise and reverse brackets and slashes, without duplicating center
   arity: 1
   overloads:
-      any: Palindromise, without duplicating center, and flip brackets and slashes in the second half
+      any: palindromise, without duplicating center, and flip brackets and slashes in the second half
   vectorise: true
   tests:
       - '["(x"] : "(x)"'
@@ -4433,7 +4433,7 @@
   description: Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
   arity: 1
   overloads:
-      any: Palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+      any: palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
   vectorise: true
   tests:
       - '[["/[hello", "/[world"]] : "/[hellolleh]\\\n/[worldlrow]\\"'
@@ -4443,7 +4443,7 @@
   description: Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to `øṀøĊ⁋`
   arity: 1
   overloads:
-      any: Mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
+      any: mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
   vectorise: true
   tests:
       - '[["/[hello", "/[world"]] : "/[helloolleh]\\\n/[worlddlrow]\\"'
@@ -4453,8 +4453,8 @@
   arity: 2
   description: Remove b from a until a does not change
   overloads:
-      str-str: Remove b from a until a does not change
-      str-lst: Remove everything in b (in order) from a until a does not change
+      str-str: remove b from a until a does not change
+      str-lst: remove everything in b (in order) from a until a does not change
   vectorise: false
   tests:
       - '["((()))","()"] : ""'
@@ -4498,7 +4498,7 @@
   description: Center a list of strings
   arity: 1
   overloads:
-      lst: Center(a) (Pad each item with spaces so all are centered)
+      lst: center(a) (pad each item with spaces so all are the same length and centered)
   vectorise: false
   tests:
       - '[["ab","cdef"]] : [" ab ","cdef"]'
@@ -4597,8 +4597,8 @@
   description: Replace matches of a with c in b
   arity: 3
   overloads:
-      any-any-fun: Apply c to matches of a in b
-      any-any-any: Replace matches of a with c in b
+      any-any-fun: apply c to matches of a in b
+      any-any-any: replace matches of a with c in b
   vectorise: false
   tests:
       - '[".{3}","hello","x"] : "xlo"'
@@ -4666,7 +4666,7 @@
   description: Create a sentence of the form 'a bs'
   arity: 2
   overloads:
-      num-str: a + " " + b + (s if a != 1 else "") (Concatenate with space, append a s if not 1)
+      num-str: a + " " + b + (s if a != 1 else "") (concatenate with space, append a s if not 1)
   vectorise: false
   tests:
       - '[4,"hello"] : "4 hellos"'
@@ -4873,7 +4873,7 @@
   description: Strip from the left side of a string
   arity: 2
   overloads:
-      str: a.lstrip(b)
+      str-num: a.lstrip(b)
   vectorise: true
   tests:
       - '["dddabcddd", "d"] : "abcddd"'
@@ -4885,7 +4885,7 @@
   description: Strip from the right side of a string
   arity: 2
   overloads:
-      str: a.rstrip(b)
+      str-num: a.rstrip(b)
   vectorise: true
   tests:
       - '["dddabcddd", "d"] : "dddabc"'
@@ -4897,13 +4897,13 @@
   description: Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string
   arity: 3
   overloads:
-      num-lst-str: Draw with a = length, b = dirs, c = text
-      num-str-str: Draw with a = length, b/c dependent on dir validity
-      any-num-any: Draw with b = length ^
-      any-any-num: Draw with c = length ^
-      str-any-any: Draw with a = text, b/c dependent on dir validity
-      lst-str-any: Draw with b = text, ^
-      lst-lst-str: Draw with c = text, ^
+      num-lst-str: draw with a = length, b = dirs, c = text
+      num-str-str: draw with a = length, b/c dependent on dir validity
+      any-num-any: draw with b = length ^
+      any-any-num: draw with c = length ^
+      str-any-any: draw with a = text, b/c dependent on dir validity
+      lst-str-any: draw with b = text, ^
+      lst-lst-str: draw with c = text, ^
   vectorise: false
   # Tests go in test_complex.py
 
@@ -4912,13 +4912,13 @@
   description: Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.
   arity: 3
   overloads:
-      num-lst-str: Draw with a = length, b = dirs, c = text
-      num-str-str: Draw with a = length, b/c dependent on dir validity
-      any-num-any: Draw with b = length ^
-      any-any-num: Draw with c = length ^
-      str-any-any: Draw with a = text, b/c dependent on dir validity
-      lst-str-any: Draw with b = text, ^
-      lst-lst-str: Draw with c = text, ^
+      num-lst-str: draw with a = length, b = dirs, c = text
+      num-str-str: draw with a = length, b/c dependent on dir validity
+      any-num-any: draw with b = length ^
+      any-any-num: draw with c = length ^
+      str-any-any: draw with a = text, b/c dependent on dir validity
+      lst-str-any: draw with b = text, ^
+      lst-lst-str: draw with c = text, ^
   vectorise: false
 
 - element: "ø."
@@ -4941,8 +4941,8 @@
   description: Left align a string/string list
   arity: 1
   overloads:
-      str: Justify to left
-      lst: Justify each to left
+      str: justify to left
+      lst: justify each to left
   vectorise: false
   tests:
       - '[["a", "bc", "def"]] : ["a  ", "bc ", "def"]'
@@ -4954,8 +4954,8 @@
   description: Right align a string/string list
   arity: 1
   overloads:
-      str: Justify to right
-      lst: Justify each to right
+      str: justify to right
+      lst: justify each to right
   vectorise: false
   tests:
       - '[["a", "bc", "def"]] : ["  a", " bc", "def"]'
@@ -4977,7 +4977,7 @@
   description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
   arity: 1
   overloads:
-      lst: Adjacency matrix
+    lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
@@ -5001,7 +5001,7 @@
   description: Adjacency matrix of undirected graph
   arity: 1
   overloads:
-      lst: Adjacency matrix
+      lst: adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,1,1,2,0],[1,0,0,0,0]]"
@@ -5078,8 +5078,8 @@
   description: Flatten a list by a certain depth (default 1)
   arity: 2
   overloads:
-      lst-num: Flatten a by depth b
-      any-lst: Flatten b by depth 1, push a as well
+      lst-num: flatten a by depth b
+      any-lst: a, flatten b by depth 1
   vectorise: false
   tests:
       - "[[[[[[1]]]]],3] : [[1]]"
@@ -5092,8 +5092,8 @@
   description: Fill a list with random bits
   arity: 1
   overloads:
-      num: List of length a filled with random bits
-      any: List of length n(a) filled with random bits
+      num: list of length a filled with random bits
+      any: list of length n(a) filled with random bits
   vectorise: false
   tests:
       - "[0] : []"
@@ -5104,7 +5104,7 @@
   description: Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
   arity: 2
   overloads:
-      any-num: All values of a up to (not including) the first greater than or equal to b
+      any-num: all values of a up to (not including) the first greater than or equal to b
   vectorise: false
   tests:
       - "[[1,2,2,3,2,1,4,3,2,1], 3] : [1,2,2]"
@@ -5116,7 +5116,7 @@
   description: Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
   arity: 1
   overloads:
-      any: "[int(x in a) for x in range(len(a))]"
+      any: "[int(x in a) for x in range(max(a))]"
   vectorise: false
   tests:
       - "[[1]] : [0,1]"
@@ -5129,7 +5129,7 @@
   description: Remove occurences of adjacent duplicates in a list
   arity: 1
   overloads:
-      any: Connected uniquify a (`Ġvh`)
+      any: connected uniquify a (`Ġvh`)
   vectorise: false
   tests:
       - "[[1,2,2,2,3,4,3,3,4]] : [1,2,3,4,3,4]"
@@ -5140,7 +5140,7 @@
   description: Index a list of coordinates into a value.
   arity: 2
   overloads:
-      lst-lst: a[b[0]][b[1]][b[2]]... Reduce by indexing with a as initial value
+      lst-lst: reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)
   vectorise: false
   tests:
       - "[[1,[2,3]],[1,0]] : 2"
@@ -5151,9 +5151,9 @@
   description: All multidimensional indices of element in list
   arity: 2
   overloads:
-      lst-any: All indices of b in a
-      any-lst: All indices of a in b
-      any-any: All indices of b in a
+      lst-any: all indices of b in a
+      any-lst: all indices of a in b
+      any-any: all indices of b in a
   vectorise: false
   tests:
       - "[[[[3], [3,4], [[3]]], [3]], [3]] : [[0,0], [0,2,0], [1]]"
@@ -5163,7 +5163,7 @@
   description: Find the first multidimensional index of a value in another
   arity: 2
   overloads:
-      lst-any: Find the first occurrence of a in b and return as a multidimensional index
+      lst-any: find the first occurrence of a in b and return as a multidimensional index
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5,6]], 5] : [1, 1]"
@@ -5174,8 +5174,8 @@
   description: Fill a 2-D list to make it rectangular
   arity: 2
   overloads:
-      lst-any: Fill a with b to make it rectangular
-      any-lst: Fill b with a to make it rectangular
+      lst-any: fill a with b to make it rectangular
+      any-lst: fill b with a to make it rectangular
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5],[6]], 0] : [[1, 2, 3], [4, 5, 0], [6, 0, 0]]"
@@ -5186,7 +5186,7 @@
   description: Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
   arity: 1
   overloads:
-      lst: Matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
+      lst: matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
   vectorise: false
   tests:
       - "[[3,4]] : [[0,0,0],[0,0,0],[0,0,0],[0,0,0]]"
@@ -5204,8 +5204,8 @@
   description: Divide a list into n parts
   arity: 2
   overloads:
-      any-num: Divide a into b parts
-      num-any: Divide b into a parts
+      any-num: divide a into b parts, possibly with an extra part
+      num-any: divide b into a parts, possibly with an extra part
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9], 3] : [[1,2,3],[4,5,6],[7,8,9]]"
@@ -5215,7 +5215,7 @@
   description: Fill a matrix by calling a function with the lists of coordinates in the matrix.
   arity: 2
   overloads:
-      any-fun: For each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a.
+      any-fun: for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
   vectorise: false
 
 - element: "Þ…"
@@ -5223,7 +5223,7 @@
   description: Evenly distribute a number over elements of a list
   arity: 2
   overloads:
-      list-num: Evenly distribute a over all elements of b, adding each part.
+      list-num: "[i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b"
   vectorise: false
   tests:
       - "[[1,2,3],6] : [3,4,5]"
@@ -5235,7 +5235,7 @@
   description: Find the minimum value of a list by applying a function to each element
   arity: 2
   overloads:
-      lst-fun: Minimum value of a by applying b to each element
+      lst-fun: minimum value of a by applying b to each element
   vectorise: false
 
 - element: "Þ↑"
@@ -5243,7 +5243,7 @@
   description: Find the maximum value of a list by applying a function to each element
   arity: 2
   overloads:
-      lst-fun: Maximum value of a by applying b to each element
+      lst-fun: maximum value of a by applying b to each element
   vectorise: false
 
 - element: "Þ×"
@@ -5251,7 +5251,7 @@
   description: All combinations of a list / string, of all lengths, with replacement
   arity: 1
   overloads:
-      any: All combinations of a list / string, of all lengths and all orders, with replacement
+      any: all (non-empty) combinations of a, of all lengths and all orders, with replacement
   vectorise: false
   tests:
       - "[[1,2,3]] : [[1], [2], [3], [1, 1], [1, 2], [1, 3], [2, 2], [2, 3], [3, 3], [1, 1, 1], [1, 1, 2], [1, 1, 3], [1, 2, 2], [1, 2, 3], [1, 3, 3], [2, 2, 2], [2, 2, 3], [2, 3, 3], [3, 3, 3]]"
@@ -5264,7 +5264,7 @@
   description: All combinations of a list / string, of all lengths, without replacement
   arity: 1
   overloads:
-      any: All combinations of a list / string, of all lengths and all orders, without replacement
+      any: all (non-empty) combinations of a, of all lengths and all orders, without replacement
   vectorise: false
   tests:
       - "[[1,2,3]] : [[1], [2], [3], [1, 2], [2, 1], [1, 3], [3, 1], [2, 3], [3, 2], [1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]"
@@ -5273,8 +5273,8 @@
       - '[""] : []'
 
 - element: "ÞF"
-  name: All Fibbonacci
-  description: All Fibbonacci numbers as a LazyList.
+  name: All Fibonacci
+  description: All Fibonacci numbers as a LazyList.
   arity: 0
   vectorise: false
 
@@ -5289,7 +5289,7 @@
   description: A list of booleans describing which elements of a will remain after uniquifying.
   arity: 1
   overloads:
-      any: A list of booleans describing which elements of a will remain after uniquifying.
+      any: a list of booleans describing which elements of a will remain after uniquifying
   vectorise: false
   tests:
       - "[[1,2,3,1,2,3]] : [1,1,1,0,0,0]"
@@ -5302,7 +5302,7 @@
   description: Diagonals of a matrix, starting with the main diagonal.
   arity: 1
   overloads:
-      lst: Diagonals of a matrix, starting with the main diagonal.
+      lst: diagonals of a, starting with the main diagonal
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[1,5,9],[2,6],[3],[7],[4,8]]"
@@ -5315,7 +5315,7 @@
   description: Anti-diagonals of a matrix, starting with the main anti-diagonal.
   arity: 1
   overloads:
-      lst: Anti-diagonals of a matrix, starting with the main anti-diagonal.
+      lst: anti-diagonals of a, starting with the main anti-diagonal
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[3,5,7],[2,4],[1],[9],[6,8]]"
@@ -5328,7 +5328,7 @@
   description: Sublists of a list.
   arity: 1
   overloads:
-      lst: Sublists of a list.
+      lst: non-empty sublists of a
   vectorise: false
   tests:
       - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
@@ -5342,7 +5342,7 @@
   description: Transpose a matrix, with a filler value for empty cells.
   arity: 2
   overloads:
-      lst-any: Transpose a matrix, with a filler value for empty cells.
+      lst-any: transpose a, with filler value b
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5]],0] : [[1,4],[2,5],[3,0]]"
@@ -5353,7 +5353,7 @@
   description: Random permutation of a list / string
   arity: 1
   overloads:
-      any: Random permutation of a list / string
+      any: random permutation of a
   vectorise: false
   tests:
       - "[[]] : []"
@@ -5367,7 +5367,7 @@
   description: Multiply two matrices together.
   arity: 2
   overloads:
-      lst-lst: Matrix multiplication
+      lst-lst: matrix multiply a and b
   vectorise: false
   tests:
       - "[[[1,2],[3,4]],[[5,6],[7,8]]] : [[19, 22], [43, 50]]"
@@ -5377,7 +5377,7 @@
   description: Calculate the determinant of a matrix.
   arity: 1
   overloads:
-      lst: Calculate the determinant of a matrix.
+      lst: determinant(a)
   vectorise: false
   tests:
       - "[[[1,2],[3,4]]] : -2"
@@ -5389,7 +5389,7 @@
   description: Antidiagonal of a matrix
   arity: 1
   overloads:
-      lst: Antidiagonal of a matrix
+      lst: antidiagonal(a)
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5,6],[7,8,9]]] : [3,5,7]"
@@ -5402,7 +5402,7 @@
   description: Diagonal of a matrix
   arity: 1
   overloads:
-      lst: Diagonal of a matrix
+      lst: diagonal(a)
   vectorise: false
   tests:
       - "[[[1,2,3],[4,5,6],[7,8,9]]] : [1,5,9]"
@@ -5415,7 +5415,7 @@
   description: Reduce rows of a matrix by a function.
   arity: 2
   overloads:
-      lst-fun: Reduce rows of a matrix by a function.
+      lst-fun: reduce rows of a with b
   vectorise: false
 
 - element: "ÞC"
@@ -5423,7 +5423,7 @@
   description: Reduce columns of a matrix by a function.
   arity: 2
   overloads:
-      lst-fun: Reduce columns of a matrix by a function.
+      lst-fun: reduce columns of a with b
   vectorise: false
 
 - element: "Þ∨"
@@ -5431,7 +5431,7 @@
   description: Similar to set difference, but with duplicates allowed.
   arity: 2
   overloads:
-      lst-lst: Multiset difference
+      lst-lst: multiset difference of a and b
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : []"
@@ -5449,7 +5449,7 @@
   description: Similar to set intersection, but with duplicates allowed.
   arity: 2
   overloads:
-      lst-lst: Multiset intersection
+      lst-lst: multiset intersection of a and b
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -5468,7 +5468,7 @@
   description: Similar to set union, but with duplicates allowed.
   arity: 2
   overloads:
-      lst-lst: Multiset union
+      lst-lst: multiset union of a and b
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
@@ -5486,7 +5486,7 @@
   description: Similar to set symmetric difference, but with duplicates allowed.
   arity: 2
   overloads:
-      lst-lst: Multiset symmetric difference
+      lst-lst: multiset symmetric difference of a and b
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10]] : []"
@@ -5504,7 +5504,7 @@
   description: Dot product of two lists.
   arity: 2
   overloads:
-      lst-lst: Dot product of two lists.
+      lst-lst: dot product of a and b
   vectorise: false
   tests:
       - "[[1,2,3],[4,5,6]] : 32"
@@ -5516,7 +5516,7 @@
   description: Mold a list without repeating elements.
   arity: 2
   overloads:
-      lst-lst: Mold a list without repeating elements.
+      lst-lst: mold a list without repeating elements
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], [[1], [1, 2], [1, 2, 3], [1], [1, 2], [1, 2, 3]]] : [[1], [2, 3], [4, 5, 6], [7], [8, 9]]"
@@ -5524,11 +5524,11 @@
       - "[[1,2,3], [[4], [], [6]]] : [[1], [], [2]]"
 
 - element: "ÞM"
-  name: Maximal Indicies
-  description: Indicies of the maximal elements of a list.
+  name: Maximal Indices
+  description: Indices of the maximal elements of a list.
   arity: 1
   overloads:
-      lst: Indicies of the maximal elements of a list.
+      lst: indices of the maximal elements of a
   vectorise: false
   tests:
       - "[[9,2,3,4,5,6,7,8,9]] : [0,8]"
@@ -5539,7 +5539,7 @@
   description: Elementwise vectorised dyadic maximum.
   arity: 2
   overloads:
-      lst-lst: Elementwise vectorised dyadic maximum.
+      lst-lst: "[max(a[0], b[0]), max(a[1], b[1]), ...]"
   vectorise: true
   tests:
       - "[[1,5,3],[4,2,6]] : [4, 5, 6]"
@@ -5552,7 +5552,7 @@
   description: Elementwise vectorised dyadic minimum.
   arity: 2
   overloads:
-      lst-lst: Elementwise vectorised dyadic minimum.
+      lst-lst: "[min(a[0], b[0]), min(a[1], b[1]), ...]"
   vectorise: true
   tests:
       - "[[1,5,3],[4,2,6]] : [1, 2, 3]"
@@ -5565,8 +5565,8 @@
   description: Get all slices of a list, skipping a certain number of items
   arity: 2
   overloads:
-      lst-int: Get all slices of a list, skipping a certain number of items
-      int-lst: Same as lst-int but with arguments swapped
+      lst-int: "[a[::b], a[1::b], a[2::b], ...]"
+      int-lst: "[b[::a], b[1::a], b[2::a], ...]"
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 2] : [[1, 3, 5, 7, 9], [2, 4, 6, 8]]"
@@ -5583,7 +5583,7 @@
   description: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
   arity: 1
   overloads:
-      lst: Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
+      lst: "[0] + a[:-1]"
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8,9]] : [0,1,2,3,4,5,6,7,8]"
@@ -5601,7 +5601,7 @@
   description: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
   arity: 1
   overloads:
-      lst: Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
+      lst: "[0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]"
   vectorise: false
   tests:
       - "[[5, 2, 7, 98, 34, 6, 21, 45]] : [0, 5, 7, 14, 112, 146, 152, 173]"
@@ -5614,7 +5614,7 @@
   description: Take a and push a[0]+a[-1] and a[1:-1]
   arity: 1
   overloads:
-      lst: Take a and push a[0]+a[-1] and a[1:-1]
+      lst: a[0]+a[-1], a[1:-1]
   vectorise: false
   tests:
       - "['abcde'] : 'bcd'"
@@ -5629,7 +5629,7 @@
   description: Return the shortest item in a list.
   arity: 1
   overloads:
-      lst: Return the shortest item in a list.
+      lst: the shortest item of a
   vectorise: false
   tests:
       - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'ab'"
@@ -5643,7 +5643,7 @@
   description: Return the longest item in a list.
   arity: 1
   overloads:
-      lst: Return the longest item in a list.
+      lst: the longest item of a
   vectorise: false
   tests:
       - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : 'abcde'"
@@ -5657,7 +5657,7 @@
   description: Sort a list by length.
   arity: 1
   overloads:
-      lst: Sort a list by length.
+      lst: sort a from shortest to longest
   vectorise: false
   tests:
       - "[['abcde', 'ab', 'abc', 'abcd', 'abcde']] : ['ab', 'abc', 'abcd', 'abcde', 'abcde']"
@@ -5671,7 +5671,7 @@
   description: Returns true if an item is sorted in ascending order using default sorting rules.
   arity: 1
   overloads:
-      lst: Returns true if an item is sorted in ascending order using default sorting rules.
+      lst: is a sorted in increasing order?
   vectorise: false
   tests:
       - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1"
@@ -5688,7 +5688,7 @@
   description: Returns true if an item is sorted in descending order using default sorting rules.
   arity: 1
   overloads:
-      lst: Returns true if an item is sorted in descending order using default sorting rules.
+      lst: is a sorted in decreasing order?
   vectorise: false
   tests:
       - "[[6, 5, 4, 4, 4, 3, 3, 3, 2, 2, 1]] : 1"
@@ -5705,7 +5705,7 @@
   description: Returns true if the item is sorted in either descending or ascending order.
   arity: 1
   overloads:
-      lst: Returns true if the item is sorted in either descending or ascending order.
+      lst: is a sorted in increasing or decreasing order?
   vectorise: false
   tests:
       - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 1"
@@ -5724,7 +5724,7 @@
   description: Returns true if the item is not sorted in either descending or ascending order.
   arity: 1
   overloads:
-      lst: Returns true if the item is not sorted in either descending or ascending order.
+      lst: is a not sorted, in either increasing or decreasing order?
   vectorise: false
   tests:
       - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
@@ -5743,7 +5743,7 @@
   description: Form an infinite list from a vector.
   arity: 1
   overloads:
-      lst: Form an infinite list from a vector.
+      lst: "[a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]"
   vectorise: false
 
 - element: "ÞK"
@@ -5751,7 +5751,7 @@
   description: Suffixes of a list.
   arity: 1
   overloads:
-      lst: Suffixes of a list.
+    lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
   vectorise: false
   tests:
       - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
@@ -5761,10 +5761,10 @@
 
 - element: "Þİ"
   name: First n Items and Rest
-  description: a[:b] and a[b:]
+  description: Push the first n items of a, then the rest of a
   arity: 2
   overloads:
-      lst-int: a[:b] and a[b:]
+      lst-int: a[:b], a[b:]
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 6, 7, 8, 9], 4] : [5, 6, 7, 8, 9]"
@@ -5772,7 +5772,7 @@
 
 - element: "ÞN"
   name: Alternating Negation
-  description: An infinite list of an item. then that item negated, then that item, and so on. Uses the negation element for negation.
+  description: An infinite list of an item, then that item negated, then that item, and so on. Uses the negation element for negation.
   arity: 1
   overloads:
       any: "[a, -a, a, -a, ...]"
@@ -5783,7 +5783,7 @@
   description: A matrix with 1s on the main diagonal and zeroes elsewhere
   arity: 1
   overloads:
-      num: A matrix with 1s on the main diagonal and zeroes elsewhere
+      num: the a x a identity matrix
   vectorise: true
   tests:
       - "[3] : [[1, 0, 0], [0, 1, 0], [0, 0, 1]]"
@@ -5796,8 +5796,8 @@
   description: A matrix multiplied by itself n times
   arity: 2
   overloads:
-      num-lst: Matrix a multiplied by itself b times
-      lst-num: Matrix b multiplied by itself a times
+      lst-num: a ** b (matrix exponentiation)
+      num-lst: b ** a (matrix exponentiation)
   vectorise: false
   tests:
       - "[[[0, 0, 1, 0], [1, 0, 1, 0], [0, 1, 0, 1], [0, 0, 1, 0]], 2] : [[0, 1, 0, 1], [0, 1, 1, 1], [1, 0, 2, 0], [0, 1, 0, 1]]"
@@ -5806,10 +5806,10 @@
 
 - element: "Þd"
   name: Distance matrix (Directed)
-  description: Distance matrix of undirected graph
+  description: Distance matrix of directed graph
   arity: 1
   overloads:
-      lst: Distance matrix
+      lst: distance matrix of a directed graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,2],[2,3],[3,4],[4,1],[1,4],[3,6],[5,6]]] : [[0,1,2,1,float('inf'),3],[3,0,1,2,float('inf'),2],[2,3,0,1,float('inf'),1],[1,2,3,0,float('inf'),4],[float('inf'),float('inf'),float('inf'),float('inf'),0,1],[float('inf'),float('inf'),float('inf'),float('inf'),float('inf'),0]]"
@@ -5819,7 +5819,7 @@
   description: Distance matrix of undirected graph
   arity: 1
   overloads:
-      lst: Distance matrix
+      lst: distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,3],[2,4],[3,4]]] : [[0,3,1,2],[3,0,2,1],[1,2,0,1],[2,1,1,0]]"
@@ -5829,7 +5829,7 @@
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
   arity: 1
   overloads:
-      str: Map characters in `>^<v` to integers
+      str: map on a, replacing `>^<v` with integers, and others with -1 ([`>^<v`.find(a[0]), `>^<v`.find(a[1]), ...])
   vectorise: true
   tests:
       - '["v"] : 3'
@@ -5842,7 +5842,7 @@
   description: Map characters in `>^<v` to direction vectors
   arity: 1
   overloads:
-      str: Map characters in `>^<v` to direction vectors
+      str: map on a, replacing `>^<v` with [1, 0], [0, 1], etc., and others with [0, 0]
   vectorise: true
   tests:
       - '["v"] : [0, -1]'
@@ -5855,7 +5855,7 @@
   description: Send a GET request to a URL
   arity: 1
   overloads:
-      str: Send a GET request to a URL
+      str: send a GET request to a
   vectorise: false
 
 - modifier: "¨="
@@ -5869,8 +5869,8 @@
   description: Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
-      lst-lst-fun: Map a function to elements of a list whose indices are in another list
-      lst-num-fun: Apply a function to element b within list a
+      lst-lst-fun: change the items in a with indices in by applying function c
+      lst-num-fun: change the bth item in a by applying function c
   vectorise: false
 
 - element: "¨,"
@@ -5878,7 +5878,7 @@
   description: Print a value with a space after it
   arity: 1
   overloads:
-      any: Print a value with a space after it
+      any: print a followed by a space
   vectorise: false
 
 - element: "¨…"
@@ -5886,7 +5886,7 @@
   description: Print a value with a space after it, without popping it
   arity: 1
   overloads:
-      any: Print a value with a space after it, without popping it
+      any: print a followed by a space, then push a
   vectorise: false
 
 - element: "¨>"
@@ -5906,7 +5906,7 @@
   description: Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
   arity: 2
   overloads:
-      any-any: Non-vectorising greater than - useful for lists
+      any-any: a > b (non-vectorising)
   vectorise: false
   tests:
       - "[[1, 1, 1], [9, 9, 9]] : 1"
@@ -5932,7 +5932,7 @@
   description: Wrap the last n items on the stack into a list
   arity: 1
   overloads:
-      num: last a items in a list
+      num: last a items of the stack, as a list; does not pop anything other than a
   vectorise: false
   tests:
       - "[1, 2, 3, 4, 4] : [1, 2, 3, 4]"
