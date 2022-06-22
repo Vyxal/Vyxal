@@ -4301,11 +4301,13 @@ def slice_from(lhs, rhs, ctx):
     else:
         return {
             (str, str): lambda: lhs + "\n" + rhs,
-            (str, NUMBER_TYPE): lambda: lhs[int(rhs):],
-            (NUMBER_TYPE, str): lambda: rhs[int(lhs):],
-            (list, NUMBER_TYPE): lambda: lhs[int(rhs):],
-            (NUMBER_TYPE, list): lambda: rhs[int(lhs):],
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(str(lhs)[int(rhs):]),
+            (str, NUMBER_TYPE): lambda: lhs[int(rhs) :],
+            (NUMBER_TYPE, str): lambda: rhs[int(lhs) :],
+            (list, NUMBER_TYPE): lambda: lhs[int(rhs) :],
+            (NUMBER_TYPE, list): lambda: rhs[int(lhs) :],
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+                str(lhs)[int(rhs) :]
+            ),
         }.get(ts)()
 
 
