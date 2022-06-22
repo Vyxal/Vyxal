@@ -502,7 +502,7 @@ any a, any b -> interleave(a,b) (a[0], b[0], a[1], b[1], ...)
 `)
 
 codepage_descriptions.push(`Zip
-Zip two lists or Zip a with b mapped over a
+Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
 any a, any b -> zip(a,b)
 any a, fun b -> zip(a,map(b,a)) (zipmap, map and zip)
 `)
@@ -847,7 +847,7 @@ lst a -> mean(a)
 codepage_descriptions.push(`Join By Nothing
 Join a list by the empty string
 num a -> abs(a) <= 1
-str a -> pad with 0s to nearest multiple of 8
+str a -> pad with 0s to nearest positive multiple of 8
 lst a -> "".join(a)
 fun a -> first integer x where a(x) is truthy
 `)
@@ -1935,11 +1935,6 @@ codepage_descriptions[70] += `
 ∆F (nth Fibonacci Number, 0-indexed)
 Get the nth fibonacci number, 0-indexed
 num a -> nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)
-`
-codepage_descriptions[66] += `
-∆B (Random Bits)
-Get a list of random bits to length n
-num a -> random_bits(a)
 `
 codepage_descriptions[197] += `
 ∆Ṙ (Random Float)

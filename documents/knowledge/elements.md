@@ -699,7 +699,7 @@ Interleave two lists
 -------------------------------
 ## `` Z `` (Zip)
 
-Zip two lists or Zip a with b mapped over a
+Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
 
 ### Overloads
 
@@ -1205,7 +1205,7 @@ Join a list by the empty string
 ### Overloads
 
 - num a: `abs(a) <= 1`
-- str a: `pad with 0s to nearest multiple of 8`
+- str a: `pad with 0s to nearest positive multiple of 8`
 - lst a: `"".join(a)`
 - fun a: `first integer x where a(x) is truthy`
 -------------------------------
@@ -2747,14 +2747,6 @@ Get the nth fibonacci number, 0-indexed
 ### Overloads
 
 - num a: `nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)`
--------------------------------
-## `` ∆B `` (Random Bits)
-
-Get a list of random bits to length n
-
-### Overloads
-
-- num a: `random_bits(a)`
 -------------------------------
 ## `` ∆Ṙ `` (Random Float)
 
