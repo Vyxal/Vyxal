@@ -2905,7 +2905,7 @@ def modulo(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs,
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs % rhs if rhs != 0 else 0,
         (NUMBER_TYPE, str): lambda: format_string(rhs, [lhs]),
         (str, NUMBER_TYPE): lambda: format_string(lhs, [rhs]),
         (str, str): lambda: format_string(lhs, [rhs]),
