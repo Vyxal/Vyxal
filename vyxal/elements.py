@@ -4277,7 +4277,7 @@ def slice_from(lhs, rhs, ctx):
     (any, num) -> a[b:] (Slice from b to the end)
     (str, str) -> vertically merge a and b
     """
-    ts = vy_type(lhs, rhs)
+    ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType in ts:
         function, count = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
@@ -4301,7 +4301,12 @@ def slice_from(lhs, rhs, ctx):
     else:
         return {
             (str, str): lambda: lhs + "\n" + rhs,
-        }.get(ts, lambda: index(lhs, [rhs, None, None], ctx))()
+            (str, NUMBER_TYPE): lambda: lhs[int(rhs):],
+            (NUMBER_TYPE, str): lambda: rhs[int(lhs):],
+            (list, NUMBER_TYPE): lambda: lhs[int(rhs):],
+            (NUMBER_TYPE, list): lambda: rhs[int(lhs):],
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(str(lhs)[int(rhs):]),
+        }.get(ts)()
 
 
 def sort_by(lhs, rhs, ctx):
