@@ -5,7 +5,7 @@ import yaml
 CURR_DIR = os.path.dirname(os.path.realpath(__file__))
 ELEMENTS_YAML = os.path.join(CURR_DIR, "elements.yaml")
 TEST_ELEMENTS_PY = os.path.join(
-    CURR_DIR, "..", "..", "tests", "test_elements.py"
+    CURR_DIR, "..", "..", "tests", "test_all_elements.py"
 )
 
 
