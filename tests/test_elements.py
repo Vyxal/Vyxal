@@ -8299,7 +8299,7 @@ def test_IsEven():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_DivisibleBythree():
+def test_DivisibleByThree():
 
     stack = [vyxalify(item) for item in [5]]
     expected = vyxalify(0)
@@ -11616,7 +11616,7 @@ def test_SetUnion():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Tranpose():
+def test_Transpose():
 
     stack = [vyxalify(item) for item in [[[1,2],[2,3,4]]]]
     expected = vyxalify([[1, 2], [2, 3], [4]])
@@ -23553,7 +23553,7 @@ def test_Moldwithoutrepeat():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_MaximalIndicies():
+def test_MaximalIndices():
 
     stack = [vyxalify(item) for item in [[9,2,3,4,5,6,7,8,9]]]
     expected = vyxalify([0,8])
