@@ -275,7 +275,11 @@ def parse(
             remaining = parse(tokens)
 
             if len(remaining) < 2:
-                remaining.append(structure.GenericStatement([lexer.Token(lexer.TokenType.GENERAL, '\n')]))
+                remaining.append(
+                    structure.GenericStatement(
+                        [lexer.Token(lexer.TokenType.GENERAL, "\n")]
+                    )
+                )
 
             if isinstance(
                 remaining[0],
