@@ -1812,6 +1812,7 @@ Random choice of single item from array
 ### Overloads
 
 - lst a: `random.choice(a)`
+- num a: `Random integer from 0 to a`
 -------------------------------
 ## `` ≤ `` (Lesser Than or Equal To)
 
