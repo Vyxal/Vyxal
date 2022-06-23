@@ -1247,7 +1247,9 @@ def divisors_or_prefixes(lhs, ctx):
     """
     ts = vy_type(lhs)
     if ts == NUMBER_TYPE:
-        return sympy.divisors(lhs)
+        return multiply(
+            vy_abs(sympy.divisors(lhs), ctx), sign_of(lhs, ctx), ctx
+        )
     elif ts == str:
         return uniquify(
             LazyList(
@@ -2032,11 +2034,11 @@ def increment_until_false(lhs, rhs, ctx):
 def index(lhs, rhs, ctx):
     """Element i
     (any, num) -> a[b] (Index)
+    (num, any) -> b[a] (Index)
     (str, str) -> enclose b in a # b[0:len(b)//2] + a + b[len(b)//2:]
     (any, [x]) -> a[:b] (0 to bth item of a)
     (any, [x,y]) -> a[x:y] (x to yth item of a)
     (any, [x,y,m]) -> a[x:y:m] (x to yth item of a, taking every mth)
-    (num, any) -> b[a] (Index)
     """
     ts = vy_type(lhs, rhs)
     lhs = deep_copy(lhs)
@@ -2047,29 +2049,24 @@ def index(lhs, rhs, ctx):
     elif ts == (LazyList, NUMBER_TYPE):
         return lhs[int(rhs)]
 
-    elif ts[-1] == NUMBER_TYPE:
-        if len(iterable(lhs)):
-            return iterable(lhs, ctx=ctx)[int(rhs) % len(iterable(lhs, ctx))]
+    elif ts[1] == NUMBER_TYPE:
+        lhs = iterable(lhs, ctx=ctx)
+        if lhs:
+            return lhs[int(rhs) % len(lhs)]
         else:
             return "" if ts[0] is str else 0
 
     elif ts[0] == NUMBER_TYPE:
         return index(rhs, lhs, ctx)
 
-    elif ts[-1] == str:
+    elif ts[1] == str:
         return vectorise(index, lhs, rhs, ctx=ctx)
 
     else:
-        originally_string = False
-        if isinstance(lhs, str):
-            lhs = LazyList(list(lhs))
-            originally_string = True
-        temp = iterable(lhs, ctx=ctx)[
+        assert len(rhs) <= 3
+        return lhs[
             slice(*[None if vy_type(v) != NUMBER_TYPE else int(v) for v in rhs])
         ]
-        if originally_string:
-            return "".join(temp)
-        return temp
 
 
 def index_indices_or_cycle(lhs, rhs, ctx):
@@ -4901,7 +4898,7 @@ def transliterate(lhs, rhs, other, ctx):
 
     ret = []
 
-    for item in lhs:
+    for item in iterable(lhs, ctx):
         for x in mapping:
             if non_vectorising_equals(item, x, ctx):
                 ret.append(mapping[x])
@@ -4915,6 +4912,13 @@ def transliterate(lhs, rhs, other, ctx):
         and all(len(x) == 1 for x in ret)
     ):
         return "".join(ret)
+    elif vy_type(lhs) == NUMBER_TYPE and all(
+        vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
+    ):
+        try:
+            return sympy.nsimplify(int("".join(map(str, ret))))
+        except:
+            return "".join(map(str, ret))
     else:
         return ret
 
@@ -5560,9 +5564,7 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (NUMBER_TYPE, str): lambda: vy_gcd(
             lhs, wrapify(chr_ord(rhs, ctx), None, ctx), ctx=ctx
         ),
-        (str, str): lambda: max(
-            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
-        ),
+        (str, str): lambda: longest_suffix(lhs, rhs),
         (types.FunctionType, ts[1]): lambda: group_by_function(
             iterable(rhs, ctx=ctx), lhs, ctx
         ),
