@@ -695,6 +695,14 @@ def test_generators():
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
 
+def test_first_index_where_item_truthy():
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊⁼n4¨>*;Ǒ")
+    assert stack[-1] == 3
+
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;Ǒ")
+    assert stack[-1] == 1
+
+
 def test_coords_deepmap():
     stack = run_vyxal("λh; ÞZ", inputs=[[1, 2, [3, [4, [3]]]]])
     assert stack[-1] == [0, 1, [2, [2, [2]]]]

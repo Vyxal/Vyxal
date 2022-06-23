@@ -2997,7 +2997,9 @@ def multiplicity(lhs, rhs, ctx):
     """Element Ǒ
     (num, num) -> number of times a divides b
     (str, str) -> Remove a from b until b does not change
+    (any, fun) -> Index of the first truthy item in a under b(x)
     """
+
     ts = vy_type(lhs, rhs, simple=True)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
         times = 0
@@ -3007,6 +3009,8 @@ def multiplicity(lhs, rhs, ctx):
         return times
     elif ts == (str, str):
         return remove_until_no_change(lhs, rhs, ctx)
+    elif types.FunctionType in ts:
+        return find(lhs, rhs, ctx)[0]
     else:
         return vectorise(multiplicity, lhs, rhs, ctx=ctx)
 

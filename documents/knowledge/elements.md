@@ -1957,14 +1957,15 @@ all prime factors / Title Case string
 - num a: `prime_factors(a) (prime factors possibly with repetition)`
 - str a: `title_case(a)`
 -------------------------------
-## `` Ǒ `` (Multiplicity)
+## `` Ǒ `` (Multiplicity / Remove Fixpoint / First Truthy Index Under Function)
 
-Order, Multiplicity, Valuation / remove till fixpoint
+Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
 
 ### Overloads
 
 - num a, num b: `multiplicity(a,b)`
 - str a, str b: `remove_till_fixpoint(a,b)`
+- fun a, any b: `first index in a where b(x) is truthy (shortcut for ḟh)`
 -------------------------------
 ## `` ǒ `` (Modulo 3)
 

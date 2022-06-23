@@ -1669,12 +1669,13 @@ z (Zip-self)
     str a: title_case(a)
     otherwise: vectorise
 -------------------------------
-Ǒ (Multiplicity)
+Ǒ (Multiplicity / Remove Fixpoint / First Truthy Index Under Function)
 
-- Order, Multiplicity, Valuation / remove till fixpoint
+- Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
 
     num a, num b: multiplicity(a,b)
     str a, str b: remove_till_fixpoint(a,b)
+    fun a, any b: first index in a where b(x) is truthy (shortcut for ḟh)
     otherwise: vectorise
 -------------------------------
 ǒ (Modulo 3)

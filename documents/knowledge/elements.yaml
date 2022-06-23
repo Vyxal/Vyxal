@@ -2914,12 +2914,13 @@
       - '["abc def"] : "Abc Def"'
 
 - element: "Ǒ"
-  name: Multiplicity
+  name: Multiplicity / Remove Fixpoint / First Truthy Index Under Function
   arity: 2
-  description: Order, Multiplicity, Valuation / remove till fixpoint
+  description: Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
   overloads:
       num-num: multiplicity(a,b)
       str-str: remove_till_fixpoint(a,b)
+      fun-any: first index in a where b(x) is truthy (shortcut for ḟh)
   vectorise: true
   tests:
       - "[45, 3] : 2"

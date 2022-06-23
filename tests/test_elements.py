@@ -17304,7 +17304,7 @@ def test_Primefactors():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Multiplicity():
+def test_MultiplicityRemoveFixpointFirstTruthyIndexUnderFunction():
 
     stack = [vyxalify(item) for item in [45, 3]]
     expected = vyxalify(2)
