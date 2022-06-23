@@ -2644,9 +2644,9 @@ def ljust(lhs, rhs, other, ctx):
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
         (NUMBER_TYPE, str, str): lambda: vy_str(rhs, ctx=ctx).ljust(lhs, other),
-        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
+        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * rhs] * other),
         (str, NUMBER_TYPE, str): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
-        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(other, rhs),
         (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
         (
             types.FunctionType,
