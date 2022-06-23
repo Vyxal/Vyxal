@@ -29508,7 +29508,7 @@ def test_RandomPermutation():
 
 
     stack = [vyxalify(item) for item in [[1]]]
-    expected = vyxalify(1)
+    expected = vyxalify([1])
     ctx = Context()
 
     ctx.stacks.append(stack)
