@@ -4876,7 +4876,7 @@ def transliterate(lhs, rhs, other, ctx):
 
     ret = []
 
-    for item in lhs:
+    for item in iterable(lhs, ctx):
         for x in mapping:
             if non_vectorising_equals(item, x, ctx):
                 ret.append(mapping[x])
@@ -4890,6 +4890,13 @@ def transliterate(lhs, rhs, other, ctx):
         and all(len(x) == 1 for x in ret)
     ):
         return "".join(ret)
+    elif vy_type(lhs) == NUMBER_TYPE and all(
+        vy_type(lhs) == NUMBER_TYPE or lhs in ".-" for x in ret
+    ):
+        try:
+            return sympy.nsimplify(int("".join(map(str, ret))))
+        except:
+            return "".join(map(str, ret))
     else:
         return ret
 
