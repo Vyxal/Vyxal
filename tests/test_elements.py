@@ -6626,7 +6626,7 @@ def test_Head():
 
 def test_Index():
 
-    stack = [vyxalify(item) for item in ["abc",1]]
+    stack = [vyxalify(item) for item in ["abc",[1,2]]]
     expected = vyxalify("b")
     ctx = Context()
 
@@ -6773,8 +6773,8 @@ def test_Index():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1357,[1,3]]]
-    expected = vyxalify(35)
+    stack = [vyxalify(item) for item in [4,[1,3,4]]]
+    expected = vyxalify(3)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -6796,27 +6796,6 @@ def test_Index():
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8,9,10],[1,8,2]]]
     expected = vyxalify([2,4,6,8])
-    ctx = Context()
-
-    ctx.stacks.append(stack)
-
-    code = transpile('i')
-    # print('i', code)
-    exec(code)
-
-    ctx.stacks.pop()
-    actual = vyxalify(stack[-1])
-
-    print(simplify(expected), simplify(actual))
-
-    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
-        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-    else:
-        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
-
-
-    stack = [vyxalify(item) for item in [12345678910,[1,8,2]]]
-    expected = vyxalify(2468)
     ctx = Context()
 
     ctx.stacks.append(stack)
