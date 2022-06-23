@@ -438,10 +438,11 @@ any a, fun b -> map(b,a) (apply b to each of a)
 any a, any b -> pair each item of b with a ([[a, i] for i in b])
 `)
 
-codepage_descriptions.push(`Negate / Swap Case
-Negate a or swap its case
+codepage_descriptions.push(`Negate / Swap Case / First Integer Where Truthy
+Negate a number / swap case of a string / first integer where a function truthy
 num a -> -a  (negate)
 str a -> swap_case(a) (toggle case)
+fun a -> first integer where a(n) is true
 `)
 
 codepage_descriptions.push(`Count

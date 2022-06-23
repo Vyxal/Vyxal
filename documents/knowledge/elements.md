@@ -604,14 +604,15 @@ Map b over a
 - any a, fun b: `map(b,a) (apply b to each of a)`
 - any a, any b: `pair each item of b with a ([[a, i] for i in b])`
 -------------------------------
-## `` N `` (Negate / Swap Case)
+## `` N `` (Negate / Swap Case / First Integer Where Truthy)
 
-Negate a or swap its case
+Negate a number / swap case of a string / first integer where a function truthy
 
 ### Overloads
 
 - num a: `-a  (negate)`
 - str a: `swap_case(a) (toggle case)`
+- fun a: `first integer where a(n) is true`
 -------------------------------
 ## `` O `` (Count)
 
