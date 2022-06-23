@@ -1270,6 +1270,7 @@ lst a -> keep truthy
 codepage_descriptions.push(`Random Choice
 Random choice of single item from array
 lst a -> random.choice(a)
+num a -> Random integer from 0 to a
 `)
 
 codepage_descriptions.push(`Lesser Than or Equal To
