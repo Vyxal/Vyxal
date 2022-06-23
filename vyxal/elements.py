@@ -3326,7 +3326,7 @@ def one_length_range(lhs, ctx):
     @lazylist
     def gen():
         count = sympy.nsimplify(1)
-        for item in lhs:
+        for item in iterable(lhs, ctx=ctx):
             yield count
             count += 1
 
@@ -5952,7 +5952,7 @@ def zero_length_range(lhs, ctx):
     @lazylist
     def gen():
         count = sympy.nsimplify(0)
-        for _ in lhs:
+        for _ in iterable(lhs, ctx=ctx):
             yield count
             count += 1
 
