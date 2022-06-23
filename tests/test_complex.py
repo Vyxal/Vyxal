@@ -530,6 +530,13 @@ def test_shuffle():
     assert sorted(stack[-1]) == [1, 2, 3, 4]
 
 
+def test_first_integer_where_condition():
+    stack = run_vyxal("λ*16=n0<*;N")
+    assert stack[-1] == -4
+    stack = run_vyxal("λ*16=;N")
+    assert stack[-1] == 4
+
+
 def test_group_by_function():
     stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ ġ")
     assert stack[-1] == [

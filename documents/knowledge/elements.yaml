@@ -858,12 +858,13 @@
       - '["hi",3] : [["hi",1],["hi",2],["hi",3]]'
 
 - element: "N"
-  name: Negate / Swap Case
-  description: Negate a or swap its case
+  name: Negate / Swap Case / First Integer Where Truthy
+  description: Negate a number / swap case of a string / first integer where a function truthy
   arity: 1
   overloads:
       num: -a  (negate)
       str: swap_case(a) (toggle case)
+      fun: first integer where a(n) is true
   vectorise: true
   tests:
       - "[5] : -5"
@@ -4977,7 +4978,7 @@
   description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
   arity: 1
   overloads:
-    lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
+      lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
@@ -5757,7 +5758,7 @@
   description: Suffixes of a list.
   arity: 1
   overloads:
-    lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
+      lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
   vectorise: false
   tests:
       - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
