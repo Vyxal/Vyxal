@@ -966,7 +966,7 @@ def contains(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType in ts:
         fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
-        return LazyList(vy_filter(fn, arg, ctx=ctx))[0]
+        return vy_filter(fn, arg, ctx=ctx)[0]
     if list in ts:
         lhs, rhs = (
             (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
