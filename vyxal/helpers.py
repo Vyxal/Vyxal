@@ -510,6 +510,24 @@ def local_maxima(lhs: str) -> List[Union[int, float]]:
     return LazyList(z for z in zeros if second_dx.subs(x, z) < 0)
 
 
+def longest_suffix(
+    a: Union[str, VyList], b: Union[str, VyList]
+) -> Union[str, VyList]:
+    """Find the longest suffix of a pair of strings or lists.
+    If bothare strings, the result is a string."""
+    i = 1
+    while i <= len(a) and i <= len(b):
+        if a[-i] == b[-i]:
+            i += 1
+        else:
+            break
+    i -= 1
+    if i == 0:
+        return "" if isinstance(a, str) and isinstance(b, str) else []
+    else:
+        return b[-i:] if isinstance(a, str) else a[-i:]
+
+
 def keep(haystack: Any, needle: Any) -> Any:
     """Used for keeping only needle in haystack"""
     if isinstance(haystack, str):
@@ -992,7 +1010,12 @@ def transpose(
     r = 0
     while True:
         if any(has_ind(row, r) for row in matrix):
-            yield gen_row(r)
+            this_row = gen_row(r)
+            if type(matrix[r]) is str:
+                yield "".join(this_row)
+            else:
+                yield this_row
+
         else:
             break
         r += 1
