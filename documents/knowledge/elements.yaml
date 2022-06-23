@@ -825,6 +825,7 @@
       - "[20] : [1,2,4,5,10,20]"
       - "[1] : [1]"
       - "[-1] : [-1]"
+      - "[-12] : [-1, -2, -3, -4, -6, -12]"
       - "[0] : []"
       - '["adbcdbcd"] : ["d", "db", "dbc", "b", "bc", "bcd", "c", "cd"]'
       - "[[1,2,3]] : [[1],[1,2],[1,2,3]]"
@@ -2339,6 +2340,8 @@
       - '["120", [2], "5"] : "150"'
       - "[-120, [2], [5]] : [-150]"
       - '["abc","ab",["bb","cc"]] : ["bb","cc","c"]'
+      - "[431, 1234, 4321] : 124"
+      - "[-234, 1234, 4321] : -321"
 
 - element: "Ṁ"
   name: Insert
@@ -2794,8 +2797,10 @@
   tests:
       - "[[[1,2],[2,3,4]]] : [[1, 2], [2, 3], [4]]"
       - "[[[1,2,3,4]]] : [[1], [2], [3], [4]]"
-      - "[[1,2,3,4]] : [[1], [2], [3], [4]]"
-      - "[1234] : [[1], [2], [3], [4]]"
+      - "[[1,2,3,4]] : [[1, 2, 3, 4]]"
+      - "[1234] : [[1, 2, 3, 4]]"
+      - '[["abc", "def", "ghi"]] : ["adg", "beh", "cfi"]'
+      - '[["abcde", "fgh"]] : ["af", "bg", "ch", "d", "e"]'
 
 - element: "⊍"
   name: Symmetric Set difference
@@ -4979,7 +4984,7 @@
   description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
   arity: 1
   overloads:
-    lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
+      lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
@@ -5759,7 +5764,7 @@
   description: Suffixes of a list.
   arity: 1
   overloads:
-    lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
+      lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
   vectorise: false
   tests:
       - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
