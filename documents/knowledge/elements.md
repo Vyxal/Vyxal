@@ -754,12 +754,13 @@ Convert a number or string to binary
 - num a: `bin(a) (list of binary digits of a)`
 - str a: `[bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)`
 -------------------------------
-## `` c `` (Contains)
+## `` c `` (Contains / First Truthy Item Under Function Application)
 
-Check if one thing contains another.
+Check if one thing contains another / returns the first truthy item in a list after applying a function
 
 ### Overloads
 
+- any a, fun b: `first item of a where b(x) is truthy (shortcut for Fh)`
 - any a, any b: `b in a (does a contain b, membership, contains)`
 -------------------------------
 ## `` d `` (Double / Dyadify)
