@@ -1038,6 +1038,7 @@ def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
+
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if type(lhs) is str:
@@ -3174,11 +3175,16 @@ def negate(lhs, ctx):
     """Element N
     (num) -> -a
     (str) -> swapcase of a
+    (fun) -> first integer where function is truthy
     """
     ts = vy_type(lhs)
-    return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
-        ts, lambda: vectorise(negate, lhs, ctx=ctx)
-    )()
+    return {
+        (NUMBER_TYPE): lambda: -lhs,
+        (str): lambda: lhs.swapcase(),
+        (types.FunctionType): lambda: LazyList(
+            vy_filter(lhs, infinite_all_integers(None, ctx), ctx)
+        )[0],
+    }.get(ts, lambda: vectorise(negate, lhs, ctx=ctx))()
 
 
 def newline_split(lhs, ctx):
