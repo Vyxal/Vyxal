@@ -2270,6 +2270,10 @@ codepage_descriptions[97] += `
 Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
 lst a -> adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
 `
+codepage_descriptions[110] += `
+Þn (Infinite list of all integers)
+All integers in an infinite list (0, 1, -1, 2, -2, ...)
+`
 codepage_descriptions[160] += `
 Þż (Lift)
 Multiply a numeric list by a range from 1 to its length
