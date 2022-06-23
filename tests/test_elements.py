@@ -4591,7 +4591,7 @@ def test_Map():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_NegateSwapCase():
+def test_NegateSwapCaseFirstIntegerWhereTruthy():
 
     stack = [vyxalify(item) for item in [5]]
     expected = vyxalify(-5)
@@ -5898,7 +5898,7 @@ def test_Binary():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Contains():
+def test_ContainsFirstTruthyItemUnderFunctionApplication():
 
     stack = [vyxalify(item) for item in ["abcdef","a"]]
     expected = vyxalify(1)

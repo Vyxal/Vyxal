@@ -960,9 +960,14 @@ def complement(lhs, ctx):
 
 def contains(lhs, rhs, ctx):
     """Element c
-    (any, any) -> count of a in b
+    (any, fun) -> first item in a where b is truthy
+    (any, any) -> does a contain b
     """
-    if list in vy_type(lhs, rhs, simple=True):
+    ts = vy_type(lhs, rhs, simple=True)
+    if types.FunctionType in ts:
+        fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        return vy_filter(fn, arg, ctx=ctx)[0]
+    if list in ts:
         lhs, rhs = (
             (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
         )
@@ -1033,6 +1038,7 @@ def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
+
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if type(lhs) is str:
@@ -2639,9 +2645,9 @@ def ljust(lhs, rhs, other, ctx):
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
         (NUMBER_TYPE, str, str): lambda: vy_str(rhs, ctx=ctx).ljust(lhs, other),
-        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
+        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * rhs] * other),
         (str, NUMBER_TYPE, str): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
-        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(other, rhs),
         (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
         (
             types.FunctionType,
@@ -3173,11 +3179,16 @@ def negate(lhs, ctx):
     """Element N
     (num) -> -a
     (str) -> swapcase of a
+    (fun) -> first integer where function is truthy
     """
     ts = vy_type(lhs)
-    return {(NUMBER_TYPE): lambda: -lhs, (str): lambda: lhs.swapcase()}.get(
-        ts, lambda: vectorise(negate, lhs, ctx=ctx)
-    )()
+    return {
+        (NUMBER_TYPE): lambda: -lhs,
+        (str): lambda: lhs.swapcase(),
+        (types.FunctionType): lambda: LazyList(
+            vy_filter(lhs, infinite_all_integers(None, ctx), ctx)
+        )[0],
+    }.get(ts, lambda: vectorise(negate, lhs, ctx=ctx))()
 
 
 def newline_split(lhs, ctx):
@@ -3327,7 +3338,7 @@ def one_length_range(lhs, ctx):
     @lazylist
     def gen():
         count = sympy.nsimplify(1)
-        for item in lhs:
+        for item in iterable(lhs, ctx=ctx):
             yield count
             count += 1
 
@@ -5958,7 +5969,7 @@ def zero_length_range(lhs, ctx):
     @lazylist
     def gen():
         count = sympy.nsimplify(0)
-        for _ in lhs:
+        for _ in iterable(lhs, ctx=ctx):
             yield count
             count += 1
 

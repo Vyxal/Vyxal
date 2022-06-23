@@ -859,12 +859,13 @@
       - '["hi",3] : [["hi",1],["hi",2],["hi",3]]'
 
 - element: "N"
-  name: Negate / Swap Case
-  description: Negate a or swap its case
+  name: Negate / Swap Case / First Integer Where Truthy
+  description: Negate a number / swap case of a string / first integer where a function truthy
   arity: 1
   overloads:
       num: -a  (negate)
       str: swap_case(a) (toggle case)
+      fun: first integer where a(n) is true
   vectorise: true
   tests:
       - "[5] : -5"
@@ -1085,10 +1086,11 @@
       - "[-10] : [-1, 0, -1, 0]"
 
 - element: "c"
-  name: Contains
-  description: Check if one thing contains another.
+  name: Contains / First Truthy Item Under Function Application
+  description: Check if one thing contains another / returns the first truthy item in a list after applying a function
   arity: 2
   overloads:
+      any-fun: first item of a where b(x) is truthy (shortcut for Fh)
       any-any: b in a (does a contain b, membership, contains)
   vectorise: false
   tests:
