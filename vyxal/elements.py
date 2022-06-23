@@ -772,7 +772,11 @@ def cartesian_power(lhs, rhs, ctx):
         vector, n = rhs, lhs
     else:
         vector, n = lhs, rhs
-    vector = list(vector) if isinstance(vector, str) else iterable(vector, ctx=ctx.copy(number_as_range=True))
+    vector = (
+        list(vector)
+        if isinstance(vector, str)
+        else iterable(vector, ctx=ctx.copy(number_as_range=True))
+    )
     n = int(n)
     print(f"vec={vector}, n={n}")
     if n < 1 or not vector:

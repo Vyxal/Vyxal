@@ -1137,7 +1137,8 @@ fun a, any b -> apply a to every second item of b starting on the first item
 `)
 
 codepage_descriptions.push(`Cartesian Product / Fixpoint
-Take the Cartesian Product of two values, or apply a function until there is no change.
+Take the Cartesian Product of two values, or apply a function until there is no change. If arguments are numbers, turns them into ranges.
+
 any a, any b -> cartesian-product(a,b)
 fun a, any b -> apply a on b until b does not change
 `)
@@ -2314,7 +2315,8 @@ lst a -> Depth
 `
 codepage_descriptions[201] += `
 ÞẊ (Cartesian Power)
-Cartesian power, cartesian product with self n times
+Cartesian power, cartesian product with self n times. If both arguments are numbers, turns the left into a range.
+
 any a, num b -> cartesian_power(a, b)
 num a, any b -> cartesian_power(b, a)
 `
