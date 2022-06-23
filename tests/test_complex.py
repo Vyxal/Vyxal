@@ -748,3 +748,8 @@ def test_infinite_all_integers():
         -9,
         10,
     ]
+
+
+def test_dyadic_modifier_monadically():
+    stack = run_vyxal("3 ₍d")
+    assert stack[-1] == [6, 3]
