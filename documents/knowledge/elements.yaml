@@ -4977,7 +4977,7 @@
   description: Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
   arity: 1
   overloads:
-    lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
+      lst: adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
   vectorise: false
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
@@ -5364,7 +5364,7 @@
   tests:
       - "[[]] : []"
       - '[""] : ""'
-      - "[[1]] : 1"
+      - "[[1]] : [1]"
       - '["a"] : "a"'
       - "[1] : 1"
 
@@ -5757,7 +5757,7 @@
   description: Suffixes of a list.
   arity: 1
   overloads:
-    lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
+      lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
   vectorise: false
   tests:
       - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
