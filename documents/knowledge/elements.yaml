@@ -5752,7 +5752,7 @@
   description: Suffixes of a list.
   arity: 1
   overloads:
-      lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
+    lst: "[a, a[:-1], a[:-2], ..., a[:1]]"
   vectorise: false
   tests:
       - "['abcde'] : ['abcde', 'bcde', 'cde', 'de', 'e']"
