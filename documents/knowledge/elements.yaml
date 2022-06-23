@@ -2337,6 +2337,8 @@
       - '["120", [2], "5"] : "150"'
       - "[-120, [2], [5]] : [-150]"
       - '["abc","ab",["bb","cc"]] : ["bb","cc","c"]'
+      - "[431, 1234, 4321] : 124"
+      - "[-234, 1234, 4321] : -321"
 
 - element: "Ṁ"
   name: Insert
@@ -4984,6 +4986,12 @@
   tests:
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
       - "[[]] : [[0]]"
+
+- element: "Þn"
+  name: Infinite list of all integers
+  description: All integers in an infinite list (0, 1, -1, 2, -2, ...)
+  arity: 0
+  vectorise: false
 
 - element: "Þż"
   name: Lift
