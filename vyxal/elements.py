@@ -1058,7 +1058,7 @@ def cumulative_sum(lhs, ctx):
     (any) -> cumulative sum of a
     """
     if lhs == "":
-        return ""
+        return []
     elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
         return []
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
