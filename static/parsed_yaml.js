@@ -1359,10 +1359,11 @@ num a -> prime_factors(a) (prime factors possibly with repetition)
 str a -> title_case(a)
 `)
 
-codepage_descriptions.push(`Multiplicity
-Order, Multiplicity, Valuation / remove till fixpoint
+codepage_descriptions.push(`Multiplicity / Remove Fixpoint / First Truthy Index Under Function
+Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
 num a, num b -> multiplicity(a,b)
 str a, str b -> remove_till_fixpoint(a,b)
+fun a, any b -> first index in a where b(x) is truthy (shortcut for ḟh)
 `)
 
 codepage_descriptions.push(`Modulo 3
