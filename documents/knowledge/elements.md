@@ -816,6 +816,8 @@ Index into a list
 ### Overloads
 
 - any a, num b: `a[b] (index)`
+- num a, any b: `b[a] (index)`
+- str a, str b: `enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])`
 - any a, [x] b: `a[:b] (0 to bth item of a)`
 - any a, [x,y] b: `a[x:y] (x to yth item of a)`
 - any a, [x,y,m] b: `a[x:y:m] (x to yth item of a, taking every mth)`
