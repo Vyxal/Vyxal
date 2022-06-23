@@ -2397,7 +2397,9 @@ def is_divisible(lhs, rhs, ctx):
     def helper(lhs, rhs):
         ts = vy_type(lhs, rhs)
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs % rhs == 0),
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: int(lhs % rhs == 0)
+            if rhs != 0
+            else 0,
             (NUMBER_TYPE, str): lambda: [rhs] * lhs,
             (str, NUMBER_TYPE): lambda: [lhs] * rhs,
             (str, str): lambda: rhs + " " + lhs,
