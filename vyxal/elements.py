@@ -960,9 +960,14 @@ def complement(lhs, ctx):
 
 def contains(lhs, rhs, ctx):
     """Element c
-    (any, any) -> count of a in b
+    (any, fun) -> first item in a where b is truthy
+    (any, any) -> does a contain b
     """
-    if list in vy_type(lhs, rhs, simple=True):
+    ts = vy_type(lhs, rhs, simple=True)
+    if types.FunctionType in ts:
+        fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        return vy_filter(fn, arg, ctx=ctx)[0]
+    if list in ts:
         lhs, rhs = (
             (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
         )
@@ -2640,9 +2645,9 @@ def ljust(lhs, rhs, other, ctx):
         (NUMBER_TYPE, NUMBER_TYPE, str): lambda: "\n".join([other * lhs] * rhs),
         (NUMBER_TYPE, str, NUMBER_TYPE): lambda: "\n".join([rhs * lhs] * other),
         (NUMBER_TYPE, str, str): lambda: vy_str(rhs, ctx=ctx).ljust(lhs, other),
-        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * other] * rhs),
+        (str, NUMBER_TYPE, NUMBER_TYPE): lambda: "\n".join([lhs * rhs] * other),
         (str, NUMBER_TYPE, str): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
-        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(rhs, other),
+        (str, str, NUMBER_TYPE): lambda: vy_str(lhs, ctx=ctx).ljust(other, rhs),
         (str, str, str): lambda: infinite_replace(lhs, rhs, other, ctx),
         (
             types.FunctionType,

@@ -642,6 +642,14 @@ def test_spliton_infinite_list():
     assert stack[-1][:2] == [[1, 2, 3, 4], [0, 1, 2, 3, 4]]
 
 
+def test_first_item_where_function_truthy():
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊⁼n4¨>*;c")
+    assert stack[-1] == 232
+
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;c")
+    assert stack[-1] == "beans"
+
+
 def test_canvas():
     stack = run_vyxal("ka 1357f 555443322f ø^")
     assert stack[-1] == (

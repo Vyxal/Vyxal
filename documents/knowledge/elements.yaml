@@ -1086,10 +1086,11 @@
       - "[-10] : [-1, 0, -1, 0]"
 
 - element: "c"
-  name: Contains
-  description: Check if one thing contains another.
+  name: Contains / First Truthy Item Under Function Application
+  description: Check if one thing contains another / returns the first truthy item in a list after applying a function
   arity: 2
   overloads:
+      any-fun: first item of a where b(x) is truthy (shortcut for Fh)
       any-any: b in a (does a contain b, membership, contains)
   vectorise: false
   tests:
