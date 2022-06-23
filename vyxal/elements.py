@@ -5556,9 +5556,7 @@ def vy_gcd(lhs, rhs=None, ctx=None):
         (NUMBER_TYPE, str): lambda: vy_gcd(
             lhs, wrapify(chr_ord(rhs, ctx), None, ctx), ctx=ctx
         ),
-        (str, str): lambda: max(
-            set(suffixes(lhs, ctx)) & set(suffixes(rhs, ctx)), key=len
-        ),
+        (str, str): lambda: longest_suffix(lhs, rhs),
         (types.FunctionType, ts[1]): lambda: group_by_function(
             iterable(rhs, ctx=ctx), lhs, ctx
         ),
