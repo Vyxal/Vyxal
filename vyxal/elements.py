@@ -1248,7 +1248,9 @@ def divisors_or_prefixes(lhs, ctx):
     """
     ts = vy_type(lhs)
     if ts == NUMBER_TYPE:
-        return sympy.divisors(lhs)
+        return multiply(
+            vy_abs(sympy.divisors(lhs), ctx), sign_of(lhs, ctx), ctx
+        )
     elif ts == str:
         return uniquify(
             LazyList(
@@ -4903,7 +4905,7 @@ def transliterate(lhs, rhs, other, ctx):
 
     ret = []
 
-    for item in lhs:
+    for item in iterable(lhs, ctx):
         for x in mapping:
             if non_vectorising_equals(item, x, ctx):
                 ret.append(mapping[x])
@@ -4917,6 +4919,13 @@ def transliterate(lhs, rhs, other, ctx):
         and all(len(x) == 1 for x in ret)
     ):
         return "".join(ret)
+    elif vy_type(lhs) == NUMBER_TYPE and all(
+        vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
+    ):
+        try:
+            return sympy.nsimplify(int("".join(map(str, ret))))
+        except:
+            return "".join(map(str, ret))
     else:
         return ret
 
