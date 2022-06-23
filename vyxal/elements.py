@@ -4891,7 +4891,7 @@ def transliterate(lhs, rhs, other, ctx):
     ):
         return "".join(ret)
     elif vy_type(lhs) == NUMBER_TYPE and all(
-        vy_type(lhs) == NUMBER_TYPE or lhs in ".-" for x in ret
+        vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
     ):
         try:
             return sympy.nsimplify(int("".join(map(str, ret))))
