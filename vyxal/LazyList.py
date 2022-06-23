@@ -21,6 +21,17 @@ def lazylist(fn):
     return wrapped
 
 
+def infinite_lazylist(fn):
+    """A decorator to wrap function return values in `LazyList`"""
+
+    def wrapped(*args, **kwargs):
+        return LazyList(fn(*args, **kwargs), isinf=True)
+
+    wrapped.__name__ = fn.__name__
+
+    return wrapped
+
+
 class LazyList:
     def __add__(self, rhs):
         @lazylist
