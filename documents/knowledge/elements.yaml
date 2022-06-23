@@ -4985,6 +4985,12 @@
       - "[[[1,5],[2,4],[3,4],[4,4]]] : [[0,0,0,0,1],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,1,0],[0,0,0,0,0]]"
       - "[[]] : [[0]]"
 
+- element: "Þn"
+  name: Infinite list of all integers
+  description: All integers in an infinite list (0, 1, -1, 2, -2, ...)
+  arity: 0
+  vectorise: false
+
 - element: "Þż"
   name: Lift
   description: Multiply a numeric list by a range from 1 to its length

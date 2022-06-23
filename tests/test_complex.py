@@ -699,3 +699,29 @@ def test_if_modifier():
 
     stack = run_vyxal("6 2 2 ¨i/-")
     assert stack[-1] == 3
+
+
+def test_infinite_all_integers():
+    stack = run_vyxal("Þn 20 Ẏ")
+    assert stack[-1] == [
+        0,
+        1,
+        -1,
+        2,
+        -2,
+        3,
+        -3,
+        4,
+        -4,
+        5,
+        -5,
+        6,
+        -6,
+        7,
+        -7,
+        8,
+        -8,
+        9,
+        -9,
+        10,
+    ]

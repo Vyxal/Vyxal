@@ -2151,7 +2151,7 @@ def infinite_positives(_, ctx=None):
     An infinite list of positive numbers
     """
 
-    @lazylist
+    @infinite_lazylist
     def gen():
         i = 1
         while True:
@@ -2159,6 +2159,20 @@ def infinite_positives(_, ctx=None):
             i += 1
 
     return gen()
+
+
+@infinite_lazylist
+def infinite_all_integers(_, ctx=None):
+    """Element Þn
+    An infinite list of all integers (0, 1, -1, 2, -2, ...)
+    """
+
+    yield 0
+    i = 1
+    while 1:
+        yield i
+        yield -i
+        i += 1
 
 
 def infinite_primes(_, ctx=None):
@@ -4263,7 +4277,7 @@ def slice_from(lhs, rhs, ctx):
     (any, num) -> a[b:] (Slice from b to the end)
     (str, str) -> vertically merge a and b
     """
-    ts = vy_type(lhs, rhs)
+    ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType in ts:
         function, count = (
             (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
@@ -4287,7 +4301,14 @@ def slice_from(lhs, rhs, ctx):
     else:
         return {
             (str, str): lambda: lhs + "\n" + rhs,
-        }.get(ts, lambda: index(lhs, [rhs, None, None], ctx))()
+            (str, NUMBER_TYPE): lambda: lhs[int(rhs) :],
+            (NUMBER_TYPE, str): lambda: rhs[int(lhs) :],
+            (list, NUMBER_TYPE): lambda: lhs[int(rhs) :],
+            (NUMBER_TYPE, list): lambda: rhs[int(lhs) :],
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+                str(lhs)[int(rhs) :]
+            ),
+        }.get(ts)()
 
 
 def sort_by(lhs, rhs, ctx):
@@ -6518,6 +6539,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
     "Þ∞": process_element(infinite_positives, 0),
+    "Þn": process_element(infinite_all_integers, 0),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
