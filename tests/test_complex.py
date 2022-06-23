@@ -530,6 +530,13 @@ def test_shuffle():
     assert sorted(stack[-1]) == [1, 2, 3, 4]
 
 
+def test_first_integer_where_condition():
+    stack = run_vyxal("λ*16=n0<*;N")
+    assert stack[-1] == -4
+    stack = run_vyxal("λ*16=;N")
+    assert stack[-1] == 4
+
+
 def test_group_by_function():
     stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ ġ")
     assert stack[-1] == [
@@ -633,6 +640,14 @@ def test_spliton_infinite_list():
     stack = run_vyxal("Þ∞ 6 % 5 €")
 
     assert stack[-1][:2] == [[1, 2, 3, 4], [0, 1, 2, 3, 4]]
+
+
+def test_first_item_where_function_truthy():
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊⁼n4¨>*;c")
+    assert stack[-1] == 232
+
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;c")
+    assert stack[-1] == "beans"
 
 
 def test_canvas():

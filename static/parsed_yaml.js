@@ -438,10 +438,11 @@ any a, fun b -> map(b,a) (apply b to each of a)
 any a, any b -> pair each item of b with a ([[a, i] for i in b])
 `)
 
-codepage_descriptions.push(`Negate / Swap Case
-Negate a or swap its case
+codepage_descriptions.push(`Negate / Swap Case / First Integer Where Truthy
+Negate a number / swap case of a string / first integer where a function truthy
 num a -> -a  (negate)
 str a -> swap_case(a) (toggle case)
+fun a -> first integer where a(n) is true
 `)
 
 codepage_descriptions.push(`Count
@@ -543,8 +544,9 @@ num a -> bin(a) (list of binary digits of a)
 str a -> [bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)
 `)
 
-codepage_descriptions.push(`Contains
-Check if one thing contains another.
+codepage_descriptions.push(`Contains / First Truthy Item Under Function Application
+Check if one thing contains another / returns the first truthy item in a list after applying a function
+any a, fun b -> first item of a where b(x) is truthy (shortcut for Fh)
 any a, any b -> b in a (does a contain b, membership, contains)
 `)
 
@@ -583,6 +585,8 @@ any a -> a[0] (first item)
 codepage_descriptions.push(`Index
 Index into a list
 any a, num b -> a[b] (index)
+num a, any b -> b[a] (index)
+str a, str b -> enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])
 any a, [x] b -> a[:b] (0 to bth item of a)
 any a, [x,y] b -> a[x:y] (x to yth item of a)
 any a, [x,y,m] b -> a[x:y:m] (x to yth item of a, taking every mth)
