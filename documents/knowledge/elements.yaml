@@ -2449,7 +2449,9 @@
 
 - element: "Ẋ"
   name: Cartesian Product / Fixpoint
-  description: Take the Cartesian Product of two values, or apply a function until there is no change.
+  description: >
+      Take the Cartesian Product of two values, or apply a function until there is no change.
+      If arguments are numbers, turns them into ranges.
   arity: 2
   overloads:
       any-any: cartesian-product(a,b)
@@ -2459,7 +2461,7 @@
       - '["ab","cd"] : ["ac","ad","bc","bd"]'
       - '["ab",["c","d"]] : [["a","c"],["a","d"],["b","c"],["b","d"]]'
       - "[[1,2],[3,4]] : [[1,3],[1,4],[2,3],[2,4]]"
-      - "[12,34] : [13,14,23,24]"
+      - "[2,3] : [[1,1],[1,2],[2,1],[1,3],[2,2],[2,3]]"
 
 - element: "Ẏ"
   name: Slice Until
@@ -5075,7 +5077,9 @@
 
 - element: "ÞẊ"
   name: Cartesian Power
-  description: Cartesian power, cartesian product with self n times
+  description: >
+    Cartesian power, cartesian product with self n times.
+    If both arguments are numbers, turns the left into a range.
   arity: 2
   overloads:
       any-num: cartesian_power(a, b)
@@ -5088,7 +5092,7 @@
       - '["ab",0] : []'
       - '["ab",1] : ["a","b"]'
       - "[[], 2] : []"
-      - "[12,2] : [11,12,21,22]"
+      - "[2,2] : [[1,1],[2,1],[1,2],[2,2]]"
 
 - element: "Þf"
   name: Flatten By depth

@@ -768,9 +768,13 @@ def cartesian_power(lhs, rhs, ctx):
     if NUMBER_TYPE not in ts:
         return rhs
 
-    vector, n = (lhs, rhs) if ts[-1] == NUMBER_TYPE else (rhs, lhs)
-    vector = iterable(vector, ctx=ctx)
+    if ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE:
+        vector, n = rhs, lhs
+    else:
+        vector, n = lhs, rhs
+    vector = list(vector) if isinstance(vector, str) else iterable(vector, ctx=ctx.copy(number_as_range=True))
     n = int(n)
+    print(f"vec={vector}, n={n}")
     if n < 1 or not vector:
         return []
     elif n == 1:
@@ -850,8 +854,8 @@ def cartesian_product(lhs, rhs, ctx):
     elif ts == (str, str):
         return [left + right for left in lhs for right in rhs]
     else:
-        lhs = iterable(lhs, range, ctx=ctx)
-        rhs = iterable(rhs, range, ctx=ctx)
+        lhs = iterable(lhs, ctx=ctx.copy(number_as_range=True))
+        rhs = iterable(rhs, ctx=ctx.copy(number_as_range=True))
 
         @lazylist
         def gen():
