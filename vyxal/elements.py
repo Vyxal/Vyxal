@@ -960,9 +960,14 @@ def complement(lhs, ctx):
 
 def contains(lhs, rhs, ctx):
     """Element c
-    (any, any) -> count of a in b
+    (any, fun) -> first item in a where b is truthy
+    (any, any) -> does a contain b
     """
-    if list in vy_type(lhs, rhs, simple=True):
+    ts = vy_type(lhs, rhs, simple=True)
+    if types.FunctionType in ts:
+        fn, arg = (lhs, rhs) if ts[0] == types.FunctionType else (rhs, lhs)
+        return LazyList(vy_filter(fn, arg, ctx=ctx))[0]
+    if list in ts:
         lhs, rhs = (
             (rhs, lhs) if primitive_type(lhs) == SCALAR_TYPE else (lhs, rhs)
         )
