@@ -3821,6 +3821,8 @@ def random_choice(lhs, ctx):
     (lst) -> random element of a
     (num) -> Random integer from 0 to a
     """
+    if lhs == "": return ""
+    elif vy_type(lhs, simple=True) is list and len(lhs) == 0: return 0
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
