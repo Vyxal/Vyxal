@@ -1186,21 +1186,23 @@
   arity: 2
   overloads:
       any-num: a[b] (index)
+      num-any: b[a] (index)
+      str-str: enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])
       any-[x]: a[:b] (0 to bth item of a)
       any-[x,y]: a[x:y] (x to yth item of a)
       any-[x,y,m]: a[x:y:m] (x to yth item of a, taking every mth)
   vectorise: false
   tests:
-      - '["abc",1] : "b"'
+      - '["abc",[1,2]] : "b"'
+      - '["joemama","biden''s"] : "joebiden''smama"'
       - "[[1,2,3], 0] : 1"
       - "[[1,2,3], -1] : 3"
       - "[[1,2,3], -0.1] : 1"
       - "[[1,2,3], 1.9] : 2"
       - "[[2,3,4,5], [2]] : [2,3]"
       - "[[1,3,5,7],[1,3]] : [3,5]"
-      - "[1357,[1,3]] : 35"
+      - "[4,[1,3,4]] : 3"
       - "[[1,2,3,4,5,6,7,8,9,10],[1,8,2]] : [2,4,6,8]"
-      - "[12345678910,[1,8,2]] : 2468"
 
 - element: "j"
   name: Join
