@@ -1247,7 +1247,9 @@ def divisors_or_prefixes(lhs, ctx):
     """
     ts = vy_type(lhs)
     if ts == NUMBER_TYPE:
-        return sympy.divisors(lhs)
+        return multiply(
+            vy_abs(sympy.divisors(lhs), ctx), sign_of(lhs, ctx), ctx
+        )
     elif ts == str:
         return uniquify(
             LazyList(
