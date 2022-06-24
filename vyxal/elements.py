@@ -2757,10 +2757,11 @@ def lowest_common_multiple(lhs, rhs=None, ctx=None):
 
 
 def matrix_determinant(lhs, ctx):
-    """Element ∆∆
+    """Element ÞḊ
     (mat) -> determinant(a)
     """
-    lhs = pad_to_square(iterable(lhs, ctx=ctx))
+    if lhs and (len(lhs) > 1 or len(lhs[0])):
+        lhs = pad_to_square(iterable(lhs, ctx=ctx))
     return sympy.det(sympy.Matrix(lhs))
 
 
