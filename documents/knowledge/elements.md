@@ -1616,7 +1616,8 @@ Split a value and keep the delimiter
 -------------------------------
 ## `` Ẋ `` (Cartesian Product / Fixpoint)
 
-Take the Cartesian Product of two values, or apply a function until there is no change.
+Take the Cartesian Product of two values, or apply a function until there is no change. If arguments are numbers, turns them into ranges.
+
 
 ### Overloads
 
@@ -3325,7 +3326,8 @@ Depth of ragged list
 -------------------------------
 ## `` ÞẊ `` (Cartesian Power)
 
-Cartesian power, cartesian product with self n times
+Cartesian power, cartesian product with self n times. If both arguments are numbers, turns the left into a range.
+
 
 ### Overloads
 

@@ -15043,8 +15043,8 @@ def test_CartesianProductFixpoint():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [12,34]]
-    expected = vyxalify([13,14,23,24])
+    stack = [vyxalify(item) for item in [2,3]]
+    expected = vyxalify([[1,1],[1,2],[2,1],[1,3],[2,2],[2,3]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -28228,8 +28228,8 @@ def test_CartesianPower():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [12,2]]
-    expected = vyxalify([11,12,21,22])
+    stack = [vyxalify(item) for item in [2,2]]
+    expected = vyxalify([[1,1],[2,1],[1,2],[2,2]])
     ctx = Context()
 
     ctx.stacks.append(stack)

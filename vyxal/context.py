@@ -41,17 +41,21 @@ class Context:
         self.global_array = []
         self.canvas = Canvas()
 
-    def copy(self):
+    def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
         ctx = Context()
 
         ctx.context_values = self.context_values
         ctx.inputs = self.inputs
-        ctx.number_as_range = self.number_as_range
+        ctx.number_as_range = (
+            self.number_as_range if number_as_range is None else number_as_range
+        )
         ctx.online = self.online
         ctx.online_output = self.online_output
         ctx.printed = self.printed
-        ctx.range_start = self.range_start
+        ctx.range_start = (
+            self.range_start if range_start is None else range_start
+        )
         ctx.range_end = self.range_end
         ctx.repl_mode = self.repl_mode
         ctx.retain_popped = self.retain_popped
