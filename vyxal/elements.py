@@ -1762,7 +1762,7 @@ def from_base(lhs, rhs, ctx):
             return from_base(
                 lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
             )
-        return from_base_digits(iterable(lhs), rhs)
+        return from_base_digits(iterable(lhs, ctx=ctx), rhs)
     else:
         raise ValueError("from_base: invalid types")
 
