@@ -4765,7 +4765,9 @@ def surround(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     print(ts)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(str(rhs) + str(lhs) + str(rhs)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            str(rhs) + str(lhs) + str(rhs)
+        ),
         (str, NUMBER_TYPE): lambda: str(rhs) + lhs + str(rhs),
         (NUMBER_TYPE, str): lambda: rhs + str(lhs) + rhs,
         (str, str): lambda: rhs + lhs + rhs,
