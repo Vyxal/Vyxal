@@ -1976,7 +1976,7 @@ def head_remove(lhs, ctx):
     (num) -> Remove first digit or do nothing if <1"""
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
-    if lhs < 1:
+    if lhs == 0:
         return lhs
     if isinstance(lhs, int):
         return int(str(lhs)[1:])
