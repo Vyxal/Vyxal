@@ -5096,8 +5096,12 @@ def unwrap(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
 
     if vy_type(lhs) is str:
+        if not lhs:
+            return ("", "")
         return (lhs[0] + lhs[-1], lhs[1:-1])
     else:
+        if vy_type(lhs, simple=True) == list and not len(lhs):
+            return ([], [])
         rest = head_remove(tail_remove(lhs, ctx), ctx)
         return ([lhs[0], lhs[-1]], rest)
 
