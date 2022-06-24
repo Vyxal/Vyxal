@@ -4452,14 +4452,13 @@ def split_keep(lhs, rhs, ctx):
             if temp:
                 yield temp
 
-        return LazyList(
-            (
+        if is_num:
+            return LazyList(
                 sympy.nsimplify("".join(map(str, x)), rational=True)
                 for x in gen()
             )
-            if is_num
-            else gen()
-        )
+        else:
+            return LazyList(gen())
 
 
 def square(lhs, ctx):
