@@ -1241,8 +1241,8 @@ def divide(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
         if rhs == 0
         else vyxalify(sympy.nsimplify(lhs / rhs)),
-        (NUMBER_TYPE, str): lambda: wrap(rhs, len(rhs) // lhs, ctx),
-        (str, NUMBER_TYPE): lambda: wrap(lhs, len(lhs) // rhs, ctx),
+        (NUMBER_TYPE, str): lambda: chop(rhs, lhs),
+        (str, NUMBER_TYPE): lambda: chop(lhs, rhs),
         (str, str): lambda: lhs.split(rhs),
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
@@ -1255,7 +1255,7 @@ def divide_lists(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     if ts[1] == list:
         return divide_lists(rhs, lhs, ctx)
-    return wrap(lhs, len(lhs) // rhs, ctx)
+    return chop(lhs, rhs)
 
 
 def divisors_or_prefixes(lhs, ctx):
