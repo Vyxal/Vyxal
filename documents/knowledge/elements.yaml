@@ -958,7 +958,7 @@
       - "[[1,3,5,5]] : [1,3,5]"
       - '["abdbcdbch"] : "abdch"'
       - "[] : []"
-      - '["1",1] : ["1",1]'
+      - '[["1",1]] : ["1",1]'
       - "[1213121] : [1,2,3]"
 
 - element: "V"
@@ -5080,8 +5080,8 @@
 - element: "ÞẊ"
   name: Cartesian Power
   description: >
-    Cartesian power, cartesian product with self n times.
-    If both arguments are numbers, turns the left into a range.
+      Cartesian power, cartesian product with self n times.
+      If both arguments are numbers, turns the left into a range.
   arity: 2
   overloads:
       any-num: cartesian_power(a, b)
