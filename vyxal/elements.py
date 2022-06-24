@@ -5095,7 +5095,7 @@ def untruth(lhs, ctx):
                 ref = ref[x[i]]
             ref[x[dimensions - 1]] = 1
         return matrix
-    return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
+    return [int(x in lhs) for x in range((monadic_maximum(lhs, ctx) or -1) + 1)]
 
 
 def unwrap(lhs, ctx):
