@@ -4437,20 +4437,22 @@ def split_keep(lhs, rhs, ctx):
     if isinstance(lhs, str):
         return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:
-        lhs = iterable(lhs, ctx)
+        is_num = vy_type(lhs) == NUMBER_TYPE
+        lhs = iterable(abs(lhs) if is_num else lhs, ctx)
 
         def gen():
             temp = []
             for item in lhs:
                 if item == rhs:
                     yield temp[::]
-                    temp = [item]
+                    yield [item]
+                    temp = []
                 else:
                     temp.append(item)
             if temp:
                 yield temp
 
-        return LazyList(gen())
+        return LazyList((sympy.nsimplify(''.join(map(str, x)), rational=True) for x in gen()) if is_num else gen())
 
 
 def square(lhs, ctx):
