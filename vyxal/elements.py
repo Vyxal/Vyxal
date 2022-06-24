@@ -1751,13 +1751,17 @@ def from_base(lhs, rhs, ctx):
     Convert lhs from base rhs to base 10
     """
     ts = vy_type(lhs, rhs, simple=True)
-    if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (ts[1] == list and ts[0] != list):
+    if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
+        ts[1] == list and ts[0] != list
+    ):
         return from_base(rhs, lhs, ctx)
     if ts == (str, str):
         return from_base_alphabet(lhs, rhs)
     elif ts[-1] == NUMBER_TYPE:
         if ts[0] == str:
-            return from_base(lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx)
+            return from_base(
+                lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
+            )
         return from_base_digits(iterable(lhs), rhs)
     else:
         raise ValueError("from_base: invalid types")
