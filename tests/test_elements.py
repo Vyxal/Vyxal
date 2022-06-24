@@ -5193,7 +5193,7 @@ def test_Uniquify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in ["1",1]]
+    stack = [vyxalify(item) for item in [["1",1]]]
     expected = vyxalify(["1",1])
     ctx = Context()
 
