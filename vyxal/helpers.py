@@ -653,23 +653,29 @@ def mold(
     The content, molded into the shape.
     """
     final = []
-    original, content = itertools.tee(content)
+    original, content = map(LazyList, itertools.tee(content))
     for item in shape:
         temp = []
         if isinstance(item, str) or is_sympy(item):
             item = [item]
         for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                content = itertools.tee(original)[1]
-                obj = next(content)
-            temp.append(obj)
+            if type(_) in [list, LazyList]:
+                temp = mold(content[: len(_)], _)
+                content = content[len(_) :]
+            else:
+                obj = next(content, None)
+                if obj is None:
+                    content = itertools.tee(original)[1]
+                    obj = next(content)
+                temp.append(obj)
         if temp:
             if len(temp) == 1:
                 temp = deep_copy(temp[0])
             else:
                 temp = deep_copy(temp)
             final.append(temp)
+        else:
+            final.append([])
 
     return final
 
@@ -696,15 +702,25 @@ def mold_without_repeat(
     _, content = itertools.tee(content)
     for item in shape:
         temp = []
-        if isinstance(item, (int, str)):
+        if isinstance(item, str) or is_sympy(item):
             item = [item]
         for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                break
-            temp.append(obj)
+            if type(_) in [list, LazyList]:
+                temp = mold(content[: len(_)], _)
+                content = content[len(_) :]
+            else:
+                obj = next(content, None)
+                if obj is None:
+                    break
+                temp.append(obj)
         if temp:
-            final.append(temp[::])
+            if len(temp) == 1:
+                temp = deep_copy(temp[0])
+            else:
+                temp = deep_copy(temp)
+            final.append(temp)
+        else:
+            final.append([])
 
     return final
 
