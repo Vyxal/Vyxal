@@ -2760,11 +2760,8 @@ def matrix_determinant(lhs, ctx):
     """Element ÞḊ
     (mat) -> determinant(a)
     """
-    lhs = (
-        lhs
-        if not lhs or len(lhs) == 1 and not len(lhs[0])
-        else pad_to_square(iterable(lhs, ctx=ctx))
-    )
+    if lhs and (len(lhs) > 1 or len(lhs[0])):
+        lhs = pad_to_square(iterable(lhs, ctx=ctx))
     return sympy.det(sympy.Matrix(lhs))
 
 
