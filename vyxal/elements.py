@@ -4778,6 +4778,10 @@ def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
     """
+    if type(lhs) == str and vy_type(rhs) == NUMBER_TYPE:
+        return symmetric_difference(lhs, str(rhs), ctx)
+    if type(rhs) == str and vy_type(lhs) == NUMBER_TYPE:
+        return symmetric_difference(str(lhs), rhs, ctx)
     lhs = uniquify(iterable(lhs, ctx=ctx), ctx)
     rhs = uniquify(iterable(rhs, ctx=ctx), ctx)
 
