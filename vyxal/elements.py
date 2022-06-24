@@ -1186,14 +1186,15 @@ def deltas(lhs, ctx):
     return gen()
 
 
-def depth(lhs, ctx):
+def depth(lhs, ctx=None):
     """Element Þj
     (lst) -> depth of a
+    (any) -> 0
     """
-    get_depth = (
-        lambda d: vy_type(d, simple=True) == list and max(map(get_depth, d)) + 1
-    )
-    return int(get_depth(lhs))
+    if vy_type(lhs, simple=True) == list:
+        return max(map(depth, lhs)) + 1 if lhs else 1
+    else:
+        return 0
 
 
 def diagonal(lhs, ctx):
