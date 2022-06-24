@@ -3820,7 +3820,7 @@ def rand_bits(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): [random.randint(0, 1) for i in range(lhs)],
+        (NUMBER_TYPE): lambda: [random.randint(0, 1) for i in range(lhs)],
         (str): lambda: [int(random.choice(bin(ord(c))[2:])) for c in lhs],
     }.get(ts, lambda: vectorise(rand_bits, lhs, ctx=ctx))()
 
