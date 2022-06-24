@@ -1983,7 +1983,7 @@ def head_remove(lhs, ctx):
     (num) -> Remove first digit or do nothing if <1"""
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
-    if lhs < 1:
+    if lhs == 0:
         return lhs
     if isinstance(lhs, int):
         return int(str(lhs)[1:])
@@ -3827,7 +3827,7 @@ def rand_bits(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): [random.randint(0, 1) for i in range(lhs)],
+        (NUMBER_TYPE): lambda: [random.randint(0, 1) for i in range(lhs)],
         (str): lambda: [int(random.choice(bin(ord(c))[2:])) for c in lhs],
     }.get(ts, lambda: vectorise(rand_bits, lhs, ctx=ctx))()
 
@@ -4772,6 +4772,11 @@ def surround(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
     print(ts)
     return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            str(rhs) + str(lhs) + str(rhs)
+        ),
+        (str, NUMBER_TYPE): lambda: str(rhs) + lhs + str(rhs),
+        (NUMBER_TYPE, str): lambda: rhs + str(lhs) + rhs,
         (str, str): lambda: rhs + lhs + rhs,
         (list, list): lambda: rhs + lhs + rhs,
         (list, NUMBER_TYPE): lambda: [rhs] + list(lhs) + [rhs],
@@ -4785,6 +4790,10 @@ def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
     """
+    if type(lhs) == str and vy_type(rhs) == NUMBER_TYPE:
+        return symmetric_difference(lhs, str(rhs), ctx)
+    if type(rhs) == str and vy_type(lhs) == NUMBER_TYPE:
+        return symmetric_difference(str(lhs), rhs, ctx)
     lhs = uniquify(iterable(lhs, ctx=ctx), ctx)
     rhs = uniquify(iterable(rhs, ctx=ctx), ctx)
 
@@ -5093,7 +5102,7 @@ def untruth(lhs, ctx):
                 ref = ref[x[i]]
             ref[x[dimensions - 1]] = 1
         return matrix
-    return [int(x in lhs) for x in range(monadic_maximum(lhs, ctx) + 1)]
+    return [int(x in lhs) for x in range((monadic_maximum(lhs, ctx) or -1) + 1)]
 
 
 def unwrap(lhs, ctx):
@@ -5103,8 +5112,12 @@ def unwrap(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
 
     if vy_type(lhs) is str:
+        if not lhs:
+            return ("", "")
         return (lhs[0] + lhs[-1], lhs[1:-1])
     else:
+        if vy_type(lhs, simple=True) == list and not len(lhs):
+            return ([], [])
         rest = head_remove(tail_remove(lhs, ctx), ctx)
         return ([lhs[0], lhs[-1]], rest)
 

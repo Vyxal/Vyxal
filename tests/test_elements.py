@@ -5193,7 +5193,7 @@ def test_Uniquify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in ["1",1]]
+    stack = [vyxalify(item) for item in [["1",1]]]
     expected = vyxalify(["1",1])
     ctx = Context()
 
@@ -27540,6 +27540,48 @@ def test_Surround():
 
     stack = [vyxalify(item) for item in [123, 4]]
     expected = vyxalify(41234)
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø.')
+    # print('ø.', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [123, "a"]]
+    expected = vyxalify("a123a")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('ø.')
+    # print('ø.', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["a23", 4]]
+    expected = vyxalify("4a234")
     ctx = Context()
 
     ctx.stacks.append(stack)
