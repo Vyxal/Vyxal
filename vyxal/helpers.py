@@ -29,6 +29,7 @@ from vyxal.LazyList import *
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 VyList = Union[list, LazyList]
+VyIterable = Union[str, VyList]
 
 
 def case_of(value: str) -> int:
@@ -39,6 +40,17 @@ def case_of(value: str) -> int:
     elif all(map(lambda x: x.islower(), value)):
         return 0
     return -1
+
+
+@lazylist
+def chop(it: VyIterable, n: int) -> LazyList:
+    """Chop `it` into `n` equal chunks, plus an optional extra piece for leftovers."""
+    chunk_len = len(it) // n
+
+    for i in range(n):
+        yield it[i * chunk_len : (i + 1) * chunk_len]
+    if n * chunk_len < len(it):
+        yield it[n * chunk_len :]
 
 
 @lazylist
@@ -189,7 +201,7 @@ def foldl(
     return working if working is not None else 0
 
 
-def format_string(pattern: str, data: Union[str, VyList]) -> str:
+def format_string(pattern: str, data: VyIterable) -> str:
     """Returns the pattern formatted with the given data. If the data is
     a string, then the string is reused if there is more than one % to
     be formatted. Otherwise (the data is a list), % are cyclically
@@ -508,6 +520,22 @@ def local_maxima(lhs: str) -> List[Union[int, float]]:
     zeros = sympy.solve(d_dx, x)
 
     return LazyList(z for z in zeros if second_dx.subs(x, z) < 0)
+
+
+def longest_suffix(a: VyIterable, b: VyIterable) -> VyIterable:
+    """Find the longest suffix of a pair of strings or lists.
+    If bothare strings, the result is a string."""
+    i = 1
+    while i <= len(a) and i <= len(b):
+        if a[-i] == b[-i]:
+            i += 1
+        else:
+            break
+    i -= 1
+    if i == 0:
+        return "" if isinstance(a, str) and isinstance(b, str) else []
+    else:
+        return b[-i:] if isinstance(a, str) else a[-i:]
 
 
 def keep(haystack: Any, needle: Any) -> Any:
@@ -887,7 +915,7 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
     return LazyList(zeros)
 
 
-def suffixes(lhs: Union[str, VyList], ctx: Context) -> VyList:
+def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
     """Returns a list of suffixes, including the original list"""
     if isinstance(lhs, str):
         return [lhs[-i:] for i in range(len(lhs), 0, -1)]
@@ -992,7 +1020,12 @@ def transpose(
     r = 0
     while True:
         if any(has_ind(row, r) for row in matrix):
-            yield gen_row(r)
+            this_row = gen_row(r)
+            if type(matrix[r]) is str:
+                yield "".join(this_row)
+            else:
+                yield this_row
+
         else:
             break
         r += 1

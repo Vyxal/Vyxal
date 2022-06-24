@@ -530,6 +530,13 @@ def test_shuffle():
     assert sorted(stack[-1]) == [1, 2, 3, 4]
 
 
+def test_first_integer_where_condition():
+    stack = run_vyxal("λ*16=n0<*;N")
+    assert stack[-1] == -4
+    stack = run_vyxal("λ*16=;N")
+    assert stack[-1] == 4
+
+
 def test_group_by_function():
     stack = run_vyxal("2 7 2 2 45 6 8 4 2 5 8 3 3 6 2 6 9 54 4 W ⁽∷ ġ")
     assert stack[-1] == [
@@ -635,6 +642,14 @@ def test_spliton_infinite_list():
     assert stack[-1][:2] == [[1, 2, 3, 4], [0, 1, 2, 3, 4]]
 
 
+def test_first_item_where_function_truthy():
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊⁼n4¨>*;c")
+    assert stack[-1] == 232
+
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;c")
+    assert stack[-1] == "beans"
+
+
 def test_canvas():
     stack = run_vyxal("ka 1357f 555443322f ø^")
     assert stack[-1] == (
@@ -680,6 +695,14 @@ def test_generators():
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
 
+def test_first_index_where_item_truthy():
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊⁼n4¨>*;Ǒ")
+    assert stack[-1] == 3
+
+    stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;Ǒ")
+    assert stack[-1] == 1
+
+
 def test_coords_deepmap():
     stack = run_vyxal("λh; ÞZ", inputs=[[1, 2, [3, [4, [3]]]]])
     assert stack[-1] == [0, 1, [2, [2, [2]]]]
@@ -699,3 +722,34 @@ def test_if_modifier():
 
     stack = run_vyxal("6 2 2 ¨i/-")
     assert stack[-1] == 3
+
+
+def test_infinite_all_integers():
+    stack = run_vyxal("Þn 20 Ẏ")
+    assert stack[-1] == [
+        0,
+        1,
+        -1,
+        2,
+        -2,
+        3,
+        -3,
+        4,
+        -4,
+        5,
+        -5,
+        6,
+        -6,
+        7,
+        -7,
+        8,
+        -8,
+        9,
+        -9,
+        10,
+    ]
+
+
+def test_dyadic_modifier_monadically():
+    stack = run_vyxal("3 ₍d")
+    assert stack[-1] == [6, 3]
