@@ -1056,7 +1056,7 @@ def count_item(lhs, rhs, ctx):
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if vy_type(lhs) in (NUMBER_TYPE, str):
-        lhs, rhs = map(str, (lhs, rhs))
+        lhs, rhs = str(lhs), str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
