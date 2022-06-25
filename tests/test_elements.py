@@ -28899,7 +28899,7 @@ def test_ZeroMatrix():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Dividelistintonparts():
+def test_DivideListIntoNEqualLengthParts():
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8], 3]]
     expected = vyxalify([[1,2],[3,4],[5,6],[7,8]])

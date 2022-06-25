@@ -3424,14 +3424,14 @@ Given a list of dimensions, create a matrix with those dimensions, filled with z
 Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 
 -------------------------------
-## `` Þ÷ `` (Divide list into n parts)
+## `` Þ÷ `` (Divide List Into N Equal Length Parts)
 
-Divide a list into n parts
+Divide a list into n equal length parts, possibly with an extra part
 
 ### Overloads
 
-- any a, num b: `divide a into b parts, possibly with an extra part`
-- num a, any b: `divide b into a parts, possibly with an extra part`
+- any a, num b: `divide a into b equal length parts, possibly with an extra part`
+- num a, any b: `divide b into a equal length parts, possibly with an extra part`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
