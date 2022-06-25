@@ -1712,15 +1712,6 @@ def foldl_columns(lhs, rhs, ctx):
     return [foldl(rhs, col, ctx=ctx) for col in lhs]
 
 
-def foldl_rows(lhs, rhs, ctx):
-    """Element ÞR
-    (lst, fun) -> reduce the rows of a by function b
-    """
-    lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
-
-    return [foldl(rhs, row, ctx=ctx) for row in iterable(lhs, ctx=ctx)]
-
-
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -6604,7 +6595,6 @@ elements: dict[str, tuple[str, int]] = {
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),
-    "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
     "Þ∞": process_element(infinite_positives, 0),
