@@ -1959,7 +1959,9 @@ def halve(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
-        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx),
+        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
+        if len(lhs) > 1
+        else [lhs, ""],
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
