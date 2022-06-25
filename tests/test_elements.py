@@ -5343,7 +5343,7 @@ def test_ReplaceMaptoIndices():
 
 
     stack = [vyxalify(item) for item in [234,"2",4]]
-    expected = vyxalify(234)
+    expected = vyxalify(434)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -5364,7 +5364,7 @@ def test_ReplaceMaptoIndices():
 
 
     stack = [vyxalify(item) for item in ["234",2,4]]
-    expected = vyxalify("234")
+    expected = vyxalify("434")
     ctx = Context()
 
     ctx.stacks.append(stack)

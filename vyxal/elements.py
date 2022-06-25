@@ -3994,7 +3994,10 @@ def replace(lhs, rhs, other, ctx):
     if types.FunctionType in ts:
         return apply_at(lhs, rhs, other, ctx=ctx)
     if vy_type(lhs, simple=True) is not list:
-        return str(lhs).replace(str(rhs), str(other))
+        res = str(lhs).replace(str(rhs), str(other))
+        if vy_type(lhs) == NUMBER_TYPE:
+            return vy_eval(res, ctx)
+        return res
     else:
         return [other if value == rhs else value for value in iterable(lhs)]
 
