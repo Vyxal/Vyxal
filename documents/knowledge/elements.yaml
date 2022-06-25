@@ -5225,12 +5225,12 @@
   vectorise: false
 
 - element: "Þ÷"
-  name: Divide list into n parts
-  description: Divide a list into n parts
+  name: Divide List Into N Equal Length Parts
+  description: Divide a list into n equal length parts, possibly with an extra part
   arity: 2
   overloads:
-      any-num: divide a into b parts, possibly with an extra part
-      num-any: divide b into a parts, possibly with an extra part
+      any-num: divide a into b equal length parts, possibly with an extra part
+      num-any: divide b into a equal length parts, possibly with an extra part
   vectorise: false
   tests:
       - "[[1,2,3,4,5,6,7,8], 3] : [[1,2],[3,4],[5,6],[7,8]]"
