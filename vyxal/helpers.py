@@ -652,26 +652,19 @@ def mold(
     VyList
     The content, molded into the shape.
     """
-    final = []
-    original, content = itertools.tee(content)
-    for item in shape:
-        temp = []
-        if isinstance(item, str) or is_sympy(item):
-            item = [item]
-        for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                content = itertools.tee(original)[1]
-                obj = next(content)
-            temp.append(obj)
-        if temp:
-            if len(temp) == 1:
-                temp = deep_copy(temp[0])
+    # Because something needs to be mutated.
+    index = 0
+    @lazylist
+    def _mold(content, shape):
+        nonlocal index
+        for item in shape:
+            if type(item) is list or type(item) is LazyList:
+                yield _mold(content, item)
             else:
-                temp = deep_copy(temp)
-            final.append(temp)
+                yield content[index]
+                index += 1
 
-    return final
+    return _mold(content, shape)
 
 
 def mold_without_repeat(
