@@ -5436,14 +5436,6 @@
       - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [1,5,9]"
       - "[[[]]] : []"
 
-- element: "ÞR"
-  name: Matrix Row Reduce
-  description: Reduce rows of a matrix by a function.
-  arity: 2
-  overloads:
-      lst-fun: reduce rows of a with b
-  vectorise: false
-
 - element: "ÞC"
   name: Matrix Column Reduce
   description: Reduce columns of a matrix by a function.
