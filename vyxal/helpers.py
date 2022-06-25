@@ -704,10 +704,9 @@ def mold_without_repeat(
                     yield content[index]
                     index += 1
                 except IndexError:
-                    break # We've reached the end of content, stop looping
+                    break  # We've reached the end of content, stop looping
 
     return _mold(content, shape)
-    
 
 
 def pad_to_square(array: VyList) -> VyList:
