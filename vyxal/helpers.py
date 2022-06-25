@@ -652,26 +652,25 @@ def mold(
     VyList
     The content, molded into the shape.
     """
-    final = []
-    original, content = itertools.tee(content)
-    for item in shape:
-        temp = []
-        if isinstance(item, str) or is_sympy(item):
-            item = [item]
-        for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                content = itertools.tee(original)[1]
-                obj = next(content)
-            temp.append(obj)
-        if temp:
-            if len(temp) == 1:
-                temp = deep_copy(temp[0])
-            else:
-                temp = deep_copy(temp)
-            final.append(temp)
+    # Because something needs to be mutated.
+    index = 0
 
-    return final
+    @lazylist
+    def _mold(content, shape):
+        nonlocal index
+        for item in shape:
+            if type(item) is list or type(item) is LazyList:
+                yield _mold(content, item)
+            else:
+                # This should work for infinite lists
+                # Because taking the length of one will hang
+                try:
+                    yield content[index]
+                except IndexError:
+                    yield content[index % len(content)]
+                index += 1
+
+    return _mold(content, shape)
 
 
 def mold_without_repeat(
@@ -692,21 +691,22 @@ def mold_without_repeat(
     VyList
     The content, molded into the shape.
     """
-    final = []
-    _, content = itertools.tee(content)
-    for item in shape:
-        temp = []
-        if isinstance(item, (int, str)):
-            item = [item]
-        for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                break
-            temp.append(obj)
-        if temp:
-            final.append(temp[::])
+    index = 0
 
-    return final
+    @lazylist
+    def _mold(content, shape):
+        nonlocal index
+        for item in shape:
+            if type(item) is list or type(item) is LazyList:
+                yield _mold(content, item)
+            else:
+                try:
+                    yield content[index]
+                    index += 1
+                except IndexError:
+                    break  # We've reached the end of content, stop looping
+
+    return _mold(content, shape)
 
 
 def pad_to_square(array: VyList) -> VyList:

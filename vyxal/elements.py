@@ -483,7 +483,10 @@ def assign_iterable(lhs, rhs, other, ctx):
         for item in rhs:
             lhs = assign_iterable(lhs, item, other, ctx)
         return lhs
+
     if type(lhs) is str:
+        if len(lhs) <= rhs:
+            lhs += " " * (rhs - len(lhs) + 1)
         lhs = list(lhs)
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
@@ -491,7 +494,10 @@ def assign_iterable(lhs, rhs, other, ctx):
 
         @lazylist
         def gen():
-            yield from lhs[:rhs]
+            temp = lhs[:rhs]
+            if len(temp) != rhs and rhs > -1:
+                temp += [0] * abs(rhs - len(temp))
+            yield from temp
             yield other
             if rhs != -1:
                 yield from lhs[rhs + 1 :]
@@ -1049,8 +1055,8 @@ def count_item(lhs, rhs, ctx):
 
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
-    if type(lhs) is str:
-        rhs = str(rhs)
+    if vy_type(lhs) in (NUMBER_TYPE, str):
+        lhs, rhs = str(lhs), str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
@@ -1710,15 +1716,6 @@ def foldl_columns(lhs, rhs, ctx):
     lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
     lhs = transpose(iterable(lhs, ctx=ctx), ctx=ctx)
     return [foldl(rhs, col, ctx=ctx) for col in lhs]
-
-
-def foldl_rows(lhs, rhs, ctx):
-    """Element ÞR
-    (lst, fun) -> reduce the rows of a by function b
-    """
-    lhs, rhs = (lhs, rhs) if vy_type(lhs, simple=True) is list else (rhs, lhs)
-
-    return [foldl(rhs, row, ctx=ctx) for row in iterable(lhs, ctx=ctx)]
 
 
 def function_call(lhs, ctx):
@@ -2757,10 +2754,11 @@ def lowest_common_multiple(lhs, rhs=None, ctx=None):
 
 
 def matrix_determinant(lhs, ctx):
-    """Element ∆∆
+    """Element ÞḊ
     (mat) -> determinant(a)
     """
-    lhs = pad_to_square(iterable(lhs, ctx=ctx))
+    if lhs and (len(lhs) > 1 or len(lhs[0])):
+        lhs = pad_to_square(iterable(lhs, ctx=ctx))
     return sympy.det(sympy.Matrix(lhs))
 
 
@@ -3993,7 +3991,10 @@ def replace(lhs, rhs, other, ctx):
     if types.FunctionType in ts:
         return apply_at(lhs, rhs, other, ctx=ctx)
     if vy_type(lhs, simple=True) is not list:
-        return str(lhs).replace(str(rhs), str(other))
+        res = str(lhs).replace(str(rhs), str(other))
+        if vy_type(lhs) == NUMBER_TYPE:
+            return vy_eval(res, ctx)
+        return res
     else:
         return [other if value == rhs else value for value in iterable(lhs)]
 
@@ -4436,20 +4437,28 @@ def split_keep(lhs, rhs, ctx):
     if isinstance(lhs, str):
         return re.split(f"({re.escape(vy_str(rhs, ctx=ctx))})", lhs)
     else:
-        lhs = iterable(lhs, ctx)
+        is_num = vy_type(lhs) == NUMBER_TYPE
+        lhs = iterable(abs(lhs) if is_num else lhs, ctx)
 
         def gen():
             temp = []
             for item in lhs:
                 if item == rhs:
                     yield temp[::]
-                    temp = [item]
+                    yield [item]
+                    temp = []
                 else:
                     temp.append(item)
             if temp:
                 yield temp
 
-        return LazyList(gen())
+        if is_num:
+            return LazyList(
+                sympy.nsimplify("".join(map(str, x)), rational=True)
+                for x in gen()
+            )
+        else:
+            return LazyList(gen())
 
 
 def square(lhs, ctx):
@@ -5574,11 +5583,19 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             return gen()
     if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList(
+
+    res = LazyList(
         elem
         for elem in iterable(lhs, ctx=ctx)
-        if elem not in wrapify(rhs, ctx=ctx)
+        if elem not in iterable(rhs, ctx=ctx)
     )
+
+    if ts[0] in (NUMBER_TYPE, str):
+        res = "".join(map(str, res))
+        if ts[0] == NUMBER_TYPE:
+            return vy_eval(res, ctx)
+        return res
+    return res
 
 
 def vy_floor(lhs, ctx):
@@ -6584,7 +6601,6 @@ elements: dict[str, tuple[str, int]] = {
     "Þ!": process_element(factorials, 0),
     "Þ℅": process_element(shuffle, 1),
     "ÞC": process_element(foldl_columns, 2),
-    "ÞR": process_element(foldl_rows, 2),
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
     "Þ∞": process_element(infinite_positives, 0),
