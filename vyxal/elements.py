@@ -483,7 +483,10 @@ def assign_iterable(lhs, rhs, other, ctx):
         for item in rhs:
             lhs = assign_iterable(lhs, item, other, ctx)
         return lhs
+
     if type(lhs) is str:
+        if len(lhs) <= rhs:
+            lhs += " " * (rhs - len(lhs) + 1)
         lhs = list(lhs)
         lhs[rhs] = other
         return vy_sum(lhs, ctx=ctx)
@@ -491,7 +494,10 @@ def assign_iterable(lhs, rhs, other, ctx):
 
         @lazylist
         def gen():
-            yield from lhs[:rhs]
+            temp = lhs[:rhs]
+            if len(temp) != rhs and rhs > -1:
+                temp += [0] * abs(rhs - len(temp))
+            yield from temp
             yield other
             if rhs != -1:
                 yield from lhs[rhs + 1 :]
