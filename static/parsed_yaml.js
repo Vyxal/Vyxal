@@ -2473,11 +2473,6 @@ codepage_descriptions[47] += `
 Diagonal of a matrix
 lst a -> diagonal(a)
 `
-codepage_descriptions[82] += `
-ÞR (Matrix Row Reduce)
-Reduce rows of a matrix by a function.
-lst a, fun b -> reduce rows of a with b
-`
 codepage_descriptions[67] += `
 ÞC (Matrix Column Reduce)
 Reduce columns of a matrix by a function.

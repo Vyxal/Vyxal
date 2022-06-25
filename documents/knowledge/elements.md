@@ -3571,14 +3571,6 @@ Diagonal of a matrix
 
 - lst a: `diagonal(a)`
 -------------------------------
-## `` ÞR `` (Matrix Row Reduce)
-
-Reduce rows of a matrix by a function.
-
-### Overloads
-
-- lst a, fun b: `reduce rows of a with b`
--------------------------------
 ## `` ÞC `` (Matrix Column Reduce)
 
 Reduce columns of a matrix by a function.
