@@ -691,21 +691,23 @@ def mold_without_repeat(
     VyList
     The content, molded into the shape.
     """
-    final = []
-    _, content = itertools.tee(content)
-    for item in shape:
-        temp = []
-        if isinstance(item, (int, str)):
-            item = [item]
-        for _ in item:
-            obj = next(content, None)
-            if obj is None:
-                break
-            temp.append(obj)
-        if temp:
-            final.append(temp[::])
+    index = 0
 
-    return final
+    @lazylist
+    def _mold(content, shape):
+        nonlocal index
+        for item in shape:
+            if type(item) is list or type(item) is LazyList:
+                yield _mold(content, item)
+            else:
+                try:
+                    yield content[index]
+                    index += 1
+                except IndexError:
+                    break # We've reached the end of content, stop looping
+
+    return _mold(content, shape)
+    
 
 
 def pad_to_square(array: VyList) -> VyList:
