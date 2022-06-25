@@ -13328,7 +13328,7 @@ def test_Assign():
 
 
     stack = [vyxalify(item) for item in [[], [1, 2], 2]]
-    expected = vyxalify([2, 2])
+    expected = vyxalify([0, 2, 2])
     ctx = Context()
 
     ctx.stacks.append(stack)
