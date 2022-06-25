@@ -662,7 +662,12 @@ def mold(
             if type(item) is list or type(item) is LazyList:
                 yield _mold(content, item)
             else:
-                yield content[index]
+                # This should work for infinite lists
+                # Because taking the length of one will hang
+                try:
+                    yield content[index]
+                except IndexError:
+                    yield content[index % len(content)]
                 index += 1
 
     return _mold(content, shape)
