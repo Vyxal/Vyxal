@@ -10221,7 +10221,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["a",3]]
-    expected = vyxalify("")
+    expected = vyxalify("a")
     ctx = Context()
 
     ctx.stacks.append(stack)
