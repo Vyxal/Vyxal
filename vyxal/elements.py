@@ -5586,11 +5586,19 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             return gen()
     if ts == (str, str):
         return "".join(elem for elem in lhs if elem not in rhs)
-    return LazyList(
+
+    res = LazyList(
         elem
         for elem in iterable(lhs, ctx=ctx)
-        if elem not in wrapify(rhs, ctx=ctx)
+        if elem not in iterable(rhs, ctx=ctx)
     )
+
+    if ts[0] in (NUMBER_TYPE, str):
+        res = "".join(map(str, res))
+        if ts[0] == NUMBER_TYPE:
+            return vy_eval(res, ctx)
+        return res
+    return res
 
 
 def vy_floor(lhs, ctx):
