@@ -654,6 +654,7 @@ def mold(
     """
     # Because something needs to be mutated.
     index = 0
+
     @lazylist
     def _mold(content, shape):
         nonlocal index
