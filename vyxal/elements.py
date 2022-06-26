@@ -5659,8 +5659,6 @@ def vy_floor(lhs, ctx):
     (str) -> integer part of a
     """
     ts = vy_type(lhs)
-    print(ts)
-    print(type(lhs))
     return {
         (NUMBER_TYPE): lambda: lhs.real
         if type(lhs) == complex
