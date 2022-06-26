@@ -78,6 +78,7 @@ function generateURL() {
     return location.origin + "/#" + encode(url)
 }
 
+// onclick event listener for sharing buttons
 function shareOptions(shareType) {
     var code = e_code.doc.getValue()
     var url = generateURL()
@@ -175,6 +176,7 @@ function replaceHTMLChar(char) {
                     char === "&amp;" ? "&" : char
 }
 
+// event listener for copy button
 function copyToClipboard(arg) {
     var el = document.getElementById(arg)
     // navigator.clipboard.writeText(el)
@@ -182,6 +184,7 @@ function copyToClipboard(arg) {
     document.execCommand("copy")
 }
 
+// set up event listeners for execution
 window.addEventListener("DOMContentLoaded", e => {
     const run = document.getElementById("run_button")
     const session = $("session-code")[0].innerHTML
