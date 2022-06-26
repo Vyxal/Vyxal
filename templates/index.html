@@ -10,23 +10,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
         integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
         crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
+    <script defer src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" type="image/jpg"
         href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
 
-    <script src='https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.js'></script>
+    <script defer src='https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.js'></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.css">
 
-    <script src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
+    <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
-    <script src="{{url_for('static', filename='main.js')}}"></script>
-    <script src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
-    <script src="{{url_for('static', filename='tooltip.js')}}"></script>
-    <script src="{{url_for('static', filename='search.js')}}"></script>
+    <script defer src="{{url_for('static', filename='main.js')}}"></script>
+    <script defer src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
+    <script defer src="{{url_for('static', filename='tooltip.js')}}"></script>
+    <script defer src="{{url_for('static', filename='search.js')}}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
