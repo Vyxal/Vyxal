@@ -4135,10 +4135,62 @@ def roman_numeral(lhs, ctx):
         "IV",
         "I",
     )
-    if vy_type(lhs) is NUMBER_TYPE:
-        if not 0 < lhs < 4000:
-            raise ValueError("Number must be between 1 and 3999")
 
+    big_ints = (
+        1000,
+        999,
+        995,
+        990,
+        950,
+        900,
+        500,
+        499,
+        495,
+        490,
+        450,
+        400,
+        100,
+        99,
+        95,
+        90,
+        50,
+        49,
+        45,
+        40,
+        10,
+        9,
+        5,
+        4,
+        1,
+    )
+    big_nums = (
+        "M",
+        "IM",
+        "VM",
+        "XM",
+        "LM",
+        "CM",
+        "D",
+        "ID",
+        "VD",
+        "XD",
+        "LD",
+        "CD",
+        "C",
+        "IC",
+        "VC",
+        "XC",
+        "L",
+        "IL",
+        "VL",
+        "XL",
+        "X",
+        "IX",
+        "V",
+        "IV",
+        "I",
+    )
+    if vy_type(lhs) is NUMBER_TYPE:
         result = ""
         for i, n in enumerate(ints):
             count = int(lhs / n)
@@ -4146,13 +4198,14 @@ def roman_numeral(lhs, ctx):
             lhs -= n * count
         return result
     elif vy_type(lhs) is str:
+        lhs = lhs.upper()
         result = 0
-        for i, n in enumerate(nums):
+        for i, n in enumerate(big_nums):
             while lhs.startswith(n):
-                result += ints[i]
+                result += big_ints[i]
                 lhs = lhs[len(n) :]
         return result
-    elif vy_type(lhs) is list:
+    elif vy_type(lhs, simple=True) is list:
         return vectorise(roman_numeral, lhs, ctx=ctx)
 
 

@@ -78,6 +78,7 @@ function generateURL() {
     return location.origin + "/#" + encode(url)
 }
 
+// onclick event listener for sharing buttons
 function shareOptions(shareType) {
     var code = e_code.doc.getValue()
     var url = generateURL()
@@ -175,6 +176,7 @@ function replaceHTMLChar(char) {
                     char === "&amp;" ? "&" : char
 }
 
+// event listener for copy button
 function copyToClipboard(arg) {
     var el = document.getElementById(arg)
     // navigator.clipboard.writeText(el)
@@ -182,9 +184,11 @@ function copyToClipboard(arg) {
     document.execCommand("copy")
 }
 
+// set up event listeners for execution
 window.addEventListener("DOMContentLoaded", e => {
     const run = document.getElementById("run_button")
-    const session = $("session-code")[0].innerHTML
+    const session = document.getElementsByTagName("session-code")[0].innerHTML
+    const clear = document.getElementById("clear")
 
     const stdin = document.getElementById("inputs")
     const flags = document.getElementById("flag")
@@ -198,14 +202,20 @@ window.addEventListener("DOMContentLoaded", e => {
                 `<svg class="fa-spin" style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/>
                 </svg>`;
-            $.post("/execute", {
-                code: e_code.doc.getValue(),
-                inputs: stdin.value,
-                flags: flags.value,
-                session: session,
-                footer: e_footer.doc.getValue(),
-                header: e_header.doc.getValue()
-            }, res => {
+            fetch("/execute", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    code: e_code.doc.getValue(),
+                    inputs: stdin.value,
+                    flags: flags.value,
+                    session: session,
+                    footer: e_footer.doc.getValue(),
+                    header: e_header.doc.getValue()
+                })
+            })
+            .then(res => res.json())
+            .then(res => {
                 if (flags.value.includes('E') && !flags.value.includes("h")) {
                     alert('Please read and ensure you 100% trust the JavaScript code which is about to be evaluated. The code is (see next alert):')
                     alert(res.stdout)
@@ -237,13 +247,19 @@ window.addEventListener("DOMContentLoaded", e => {
                 expandBoxes()
             })
         } else {
-            $.post("/kill", { session: session }, res => 0)
+            fetch("/kill", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    session: session,
+                })
+            })
         }
     }
 
-    $("#run_button").on("click", do_run)
+    run.addEventListener('click', do_run)
 
-    $("#clear").on("click", e => {
+    clear.addEventListener('click', e => {
         e_code.doc.setValue('')
         stdin.value = ""
         output.value = ""
@@ -261,7 +277,7 @@ window.addEventListener("DOMContentLoaded", e => {
 
 document.addEventListener('keydown', (event) => {
     if ((event.ctrlKey || event.metaKey) && event.key == 'Enter') {
-        $("#run_button").click()
+        document.getElementById("run_button").click()
     }
 })
 
@@ -271,7 +287,7 @@ function initCodeMirror() {
 
     //Get the corresponding codemirror textarea for any of 'code', 'header', and 'footer'
     function getCodeMirrorTextArea(boxId) {
-        return $('#' + boxId).parent().children('div').children().not('[class]').children()[0]
+        return $$$(`#${boxId} + div > div > textarea`);
     }
 
     function resize(elem) {

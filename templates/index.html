@@ -10,106 +10,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css"
         integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ=="
         crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
-        integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
-        crossorigin="anonymous"></script>
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
+    <script defer src="https://kit.fontawesome.com/646af2e33b.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" type="image/jpg"
         href="https://raw.githubusercontent.com/Lyxal/Vyxal/master/templates/favicon.ico">
 
-    <script src='https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.js'></script>
+    <script defer src='https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.js'></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.css">
 
-    <script src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
+    <script defer src="https://unpkg.com/@popperjs/core@2"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
-    <script src="{{url_for('static', filename='main.js')}}"></script>
-    <script src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
+    <script defer src="{{url_for('static', filename='main.js')}}"></script>
+    <script defer src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
+    <script defer src="{{url_for('static', filename='tooltip.js')}}"></script>
+    <script defer src="{{url_for('static', filename='search.js')}}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-    <script>
-        let pops = [];
-        function setupKeys() {
-            document.querySelectorAll('.key').forEach(item => {
-                item.addEventListener('click', event => {
-                    var char = replaceHTMLChar(event.target.innerHTML);
-                    var cm = globalThis[`e_${selectedBox}`];
-                    cm.replaceSelection(char);
-                    cm.save();
-                    cm.focus();
-                    updateCount();
-                });
-                const tooltip = item.nextSibling;
-                const pop = Popper.createPopper(item, tooltip, {
-                    modifiers: [
-                        {
-                            name: 'offset',
-                            options: {
-                                offset: [0, 8],
-                            },
-                        },
-                        {
-                            name: 'preventOverflow',
-                            options: {
-                                padding: 10,
-                            },
-                        },
-                    ],
-                });
-                pops.push(pop);
-                item.addEventListener('mouseenter', () => {
-                    tooltip.setAttribute('data-show', '');
-                    pop.update();
-                });
-                item.addEventListener('mouseleave', () => {
-                    tooltip.removeAttribute('data-show');
-                });
-            });
-        }
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var kb = document.getElementById("keyboard");
-            for (var i = 0; i < codepage.length; i++) {
-                kb.innerHTML += (`<span class="key" style="text-align:center;" data-title="${repr(codepage_descriptions[i])}">${codepage[i]}</span><div class="tooltip">${repr(codepage_descriptions[i])}<div class="arrow" data-popper-arrow></div></div>`);
-            }
-            og_keyboard_html = document.getElementById("keyboard").innerHTML;
-            setupKeys();
-        });
-
-        function glyphSearch() {
-            var query = document.getElementById("filterBox").value.toLowerCase();
-
-            console.log('in glyphsearch, selectedBox=' + selectedBox)
-
-            if (query) {
-                if (query == glyphQuery) {
-                    document.getElementById("filterBox").value = "";
-                    search.open(secret, "_blank");
-                }
-
-                console.log("starting filter")
-
-                var raw = query.split().map(char => `[^${char}]*${char}`).join("");
-                var pattern = new RegExp(raw);
-
-                for (var element of document.getElementsByClassName("key")) {
-                    if (element.dataset.title.toLowerCase().match(pattern)) {
-                        element.style.display = "inline-block";
-                    } else {
-                        element.style.display = "none";
-                    }
-                }
-            } else {
-                document.getElementById("keyboard").innerHTML = og_keyboard_html;
-                pops.forEach(p => p.destroy());
-                pops = [];
-                setupKeys();
-            }
-        }
-
-    </script>
 </head>
 
 <body onload="initCodeMirror(); decodeURL();  updateCount();">

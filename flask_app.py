@@ -38,13 +38,19 @@ def index():
 @app.route("/execute", methods=("POST",))
 def execute():
 
-    print(sessions, request.form)
-    flags = request.form["flags"] + "e"
-    code = request.form["code"].replace("\r", "")
-    input_list = request.form["inputs"].replace("\r", "")
-    header = request.form["header"].replace("\r", "")
-    footer = request.form["footer"].replace("\r", "")
-    session = request.form["session"]
+    print(sessions, request.json)
+    if request.json is None:
+        return {
+            "stdout": "",
+            "stderr": "",
+        }
+
+    flags = request.json["flags"] + "e"
+    code = request.json["code"].replace("\r", "")
+    input_list = request.json["inputs"].replace("\r", "")
+    header = request.json["header"].replace("\r", "")
+    footer = request.json["footer"].replace("\r", "")
+    session = request.json["session"]
 
     print(code)
 
@@ -112,7 +118,9 @@ def execute():
 
 @app.route("/kill", methods=("POST",))
 def kill():
-    session = request.form["session"]
+    if request.json is None:
+        return ""
+    session = request.json["session"]
     if sessions.get(session) is None:
         return ""
     sessions[session].kill()
