@@ -4196,7 +4196,7 @@ def roman_numeral(lhs, ctx):
             lhs -= n * count
         return result
     elif vy_type(lhs) is str:
-        lhs = lhs.lower()
+        lhs = lhs.upper()
         result = 0
         for i, n in enumerate(big_nums):
             while lhs.startswith(n):
