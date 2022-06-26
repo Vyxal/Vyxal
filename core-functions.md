@@ -336,3 +336,4 @@
 338. Apply last element to register
 339. Head remove
 340. Tail remove
+341. a.split_after(b) (like `split_before`, but splits after the delimiter instead of before)
