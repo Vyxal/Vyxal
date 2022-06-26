@@ -4798,6 +4798,9 @@
       - '["ID"] : 499'
       - '[499] : "CDXCIX"'
       - '["CDXCIX"] : 499'
+      - '["v"] : 5'
+      - '["x"] : 10'
+      - '["mmxxiii"] : 2023'
 
 - element: "øJ"
   name: Parse JSON
