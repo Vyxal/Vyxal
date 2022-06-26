@@ -174,9 +174,9 @@ def fixed_point(
     """Repeat function until the result is no longer unique.
     Uses initial as the initial value"""
     previous = None
-    current = simplify(initial)
+    current = initial
 
-    while previous != current:
+    while simplify(previous) != simplify(current):
         yield current
         previous = deep_copy(current)
         current = safe_apply(function, current, ctx=ctx)
@@ -893,7 +893,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     Simplify values.
     Turns sympy values into floats, including sympy values in lists
     """
-    if isinstance(value, (int, float, str)):
+    if isinstance(value, (int, float, str, types.NoneType)):
         return value
     elif is_sympy(value):
         if value.is_real:
