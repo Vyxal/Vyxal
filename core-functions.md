@@ -337,3 +337,4 @@
 339. Head remove
 340. Tail remove
 341. a.split_after(b) (like `split_before`, but splits after the delimiter instead of before)
+342. split and keep delimiter
