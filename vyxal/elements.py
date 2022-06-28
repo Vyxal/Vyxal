@@ -5658,6 +5658,20 @@ def vy_floor(lhs, ctx):
     (num) -> floor(a)
     (str) -> integer part of a
     """
+
+    def vy_floor_str_helper(item):
+        temp = ""
+        for char in item:
+            if char == "-" and temp == "":
+                temp += char
+            elif char.isdigit():
+                temp += char
+            elif char == "." and temp.count(".") == 0:
+                temp += char
+            else:
+                continue
+        return sympy.nsimplify(temp)
+
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: lhs.real
@@ -5667,9 +5681,7 @@ def vy_floor(lhs, ctx):
             if is_sympy(lhs) and not lhs.is_real
             else math.floor(lhs)
         ),
-        (str): lambda: int(
-            "".join([char for char in lhs if char in "0123456789"] or "0")
-        ),
+        (str): lambda: vy_floor_str_helper(lhs),
     }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
 
 
