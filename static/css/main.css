@@ -147,7 +147,7 @@ i {
   border-radius: 5px;
   transition: opacity .15s;
   word-wrap: break-word;
-  font-family: "DejaVu Sans Mono";
+  font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
   text-align: left;
 }
