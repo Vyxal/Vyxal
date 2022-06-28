@@ -893,7 +893,7 @@ def simplify(value: Any) -> Union[int, float, str, list]:
     Simplify values.
     Turns sympy values into floats, including sympy values in lists
     """
-    if isinstance(value, (int, float, str)) or value is None:
+    if value is None or isinstance(value, (int, float, str)):
         return value
     elif is_sympy(value):
         if value.is_real:
