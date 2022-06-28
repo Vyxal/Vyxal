@@ -2268,6 +2268,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     If `ind` is negative, the absolute value is used. If `ind` is greater than
     or equal to the LazyList's length, `other` is appended to the end.
     """
+    is_number = vy_type(lhs) == NUMBER_TYPE
     lhs = iterable(lhs, ctx)
 
     if vy_type(other) != types.FunctionType:
@@ -2291,6 +2292,8 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
             if vy_type(places) == NUMBER_TYPE and i < places:
                 yield other
 
+        if is_number:
+            return vy_eval("".join(map(str, gen())))
         return gen()
 
     @lazylist
