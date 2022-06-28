@@ -168,14 +168,6 @@ function expandBoxes() {
 }
 
 
-function replaceHTMLChar(char) {
-    return char === "␤" ? "\n" :
-        char === "␠" ? " " :
-            char === "&lt;" ? "<" :
-                char === "&gt;" ? ">" :
-                    char === "&amp;" ? "&" : char
-}
-
 // event listener for copy button
 function copyToClipboard(arg) {
     var el = document.getElementById(arg)
@@ -330,8 +322,4 @@ function initCodeMirror() {
             box.addEventListener('focusin', event => selectedBox = capturedId)
         }
     }
-}
-
-function repr(str) {
-    return str.replace(/'/g, "&apos;").replace(/"/g, "&quot;")
 }
