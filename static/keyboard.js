@@ -5,6 +5,17 @@ import {
   useRef,
 } from "https://unpkg.com/preact/hooks/dist/hooks.mjs?module";
 
+function throttle(func, timeFrame) {
+  let lastTime = 0;
+  return (...args) => {
+    const now = Date.now();
+    if (now - lastTime >= timeFrame) {
+      func(...args);
+      lastTime = now;
+    }
+  };
+}
+
 const onMobile = window.matchMedia("(any-hover: none)").matches;
 
 const typeKey = (chr) => {
@@ -12,12 +23,14 @@ const typeKey = (chr) => {
   if (!cm || !chr) return;
   cm.replaceSelection(chr);
   cm.save();
-  cm.focus();
+  if (!onMobile) {
+    cm.focus();
+  }
   updateCount();
 };
 
 /** Component for rendering the key proper. */
-function Key({ chr, desc, addRef }) {
+function Key({ chr, desc, isFocused, addRef }) {
   const key = useRef(null);
 
   useEffect(() => {
@@ -31,8 +44,7 @@ function Key({ chr, desc, addRef }) {
 
   return html`<span
     ref=${key}
-    class="key"
-    style="text-align: center; display: inline-block"
+    class=${isFocused ? "key touched" : "key"}
     data-title=${desc}
     onPointerUp=${pointerUp}
   >
@@ -41,7 +53,7 @@ function Key({ chr, desc, addRef }) {
 }
 
 /** Component for rendering the key and its tooltip. */
-function Tooltip({ chr, desc, showTooltip, setLastTouchedKey, addRef }) {
+function Tooltip({ chr, desc, setLastTouchedKey, showTooltip, addRef }) {
   const parent = useRef(null);
   const tooltip = useRef(null);
   const popper = useRef(null);
@@ -78,7 +90,12 @@ function Tooltip({ chr, desc, showTooltip, setLastTouchedKey, addRef }) {
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
-        <${Key} chr=${chr} desc=${desc} addRef=${addRef} />
+        <${Key}
+          chr=${chr}
+          desc=${desc}
+          isFocused=${showTooltip}
+          addRef=${addRef}
+        />
       </span>
       <div class="tooltip" ref=${tooltip} data-show=${showTooltip}>
         ${desc}
@@ -131,7 +148,8 @@ function Keyboard() {
   }, []);
 
   // e is a TouchEvent
-  const updateLastTouchedKey = (e) => {
+  const updateLastTouchedKey = throttle((e) => {
+    if (!e) return;
     const { clientX, clientY } = e.touches[0];
 
     const someTouching = keyElts.current.some(({ chr, elt }) => {
@@ -146,7 +164,7 @@ function Keyboard() {
     });
 
     if (!someTouching) setLastTouchedKey(null);
-  };
+  }, 100);
 
   const touchStart = (e) => {
     // this also triggers pointerDown
