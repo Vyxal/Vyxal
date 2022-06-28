@@ -3385,6 +3385,9 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [1, lhs], ctx
         ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
+            index(str(lhs), [1, rhs], ctx=ctx), ctx
+        ),
         (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
@@ -6117,6 +6120,9 @@ def zero_slice(lhs, rhs, ctx):
         ),
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [0, lhs], ctx=ctx
+        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
+            index(str(lhs), [0, rhs], ctx=ctx), ctx
         ),
         (str, str): lambda: re.findall(rhs, lhs),
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
