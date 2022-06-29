@@ -1633,6 +1633,8 @@ Slice a list until a certain index / find all results for a regex match
 - any a, num b: `a[0:b] (slice until b)`
 - num a, any b: `b[0:a] (slice until a)`
 - str a, str b: `regex.findall(pattern=a,string=b) (find all matches for a regex)`
+- any a, fun b: `take results from a while b(x) is truthy`
+- fun a, any b: `take results from b while a(x) is truthy`
 -------------------------------
 ## `` Ż `` (Slice From One Until)
 

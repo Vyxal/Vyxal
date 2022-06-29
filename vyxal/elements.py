@@ -6119,12 +6119,14 @@ def zero_slice(lhs, rhs, ctx):
         return zero_slice(rhs, lhs, ctx)
     if type(rhs) == types.FunctionType:
         i = iterable(lhs, ctx=ctx)
+
         @lazylist
         def f(l, fun):
             for item in l:
                 if not safe_apply(fun, item, ctx=ctx):
                     return
                 yield item
+
         return f(i, rhs)
     ts = vy_type(lhs, rhs)
     return {
