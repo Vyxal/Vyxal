@@ -1503,7 +1503,7 @@ def factorials(_, ctx):
     return LazyList(gen(), isinf=True)
 
 
-def factorial_of_range(lhs, ctx): # WHY does this still exist lmao
+def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
     """Element øF
     (num, num) -> factorial of range
     (num, str) -> vectorised
@@ -1537,7 +1537,7 @@ def fill(lhs, rhs, ctx: Context):
     if ts[1] == list and ts[0] != list:
         return fill(rhs, lhs, ctx)
     return transpose(transpose(lhs, filler=rhs, ctx=ctx))
-    
+
 
 def find(lhs, rhs, ctx):
     """Element ḟ
@@ -3018,8 +3018,8 @@ def multi_dimensional_index(lhs, rhs, ctx):
         lhs = index(lhs, item, ctx)
 
     return lhs
-    
-    
+
+
 def multidimensional_truthy_indices(lhs, ctx: Context):
     """Element ÞT
     (any) -> multi-dimensional truthy indices
@@ -4423,8 +4423,8 @@ def sans_last_prepend_zero(lhs, ctx):
         # a number just makes it the same number
         str: lambda: "0" + lhs[:-1],  # leave as string
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
-    
-    
+
+
 def separate_runl_encode(lhs, ctx: Context):
     """Element øĖ
     (any) -> run length encode a and push items and lengths both to the stack separately
