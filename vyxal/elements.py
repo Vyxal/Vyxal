@@ -6118,8 +6118,6 @@ def zero_slice(lhs, rhs, ctx):
     if type(lhs) == types.FunctionType:
         return zero_slice(rhs, lhs, ctx)
     if type(rhs) == types.FunctionType:
-        i = iterable(lhs, ctx=ctx)
-
         @lazylist
         def f(l, fun):
             for item in l:
@@ -6127,7 +6125,7 @@ def zero_slice(lhs, rhs, ctx):
                     return
                 yield item
 
-        return f(i, rhs)
+        return f(iterable(lhs, ctx=ctx), rhs)
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], NUMBER_TYPE): lambda: index(
