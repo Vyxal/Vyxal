@@ -10,7 +10,7 @@ on:
     branches-ignore: [ production ]
 
 jobs:
-  test:
+  sort-elements:
 
     runs-on: ubuntu-latest
     strategy:
