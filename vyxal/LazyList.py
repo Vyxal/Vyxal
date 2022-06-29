@@ -278,7 +278,6 @@ class LazyList:
         yield from self
         yield value
 
-
     @lazylist
     def reversed(self):
         self.generated += list(itertools.tee(self.raw_object)[-1])
