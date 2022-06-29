@@ -6267,12 +6267,7 @@ def zfiller(lhs, rhs, ctx):
         + lhs,
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
-<<<<<<< HEAD
-=======
 
-
-
->>>>>>> f7a82514d16333855e338ad908f32486a30de1d0
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
