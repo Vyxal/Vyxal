@@ -6199,6 +6199,7 @@ def multidimensional_truthy_indices(lhs, ctx: Context):
     """Element ÞT
     (any) -> multi-dimensional truthy indices
     """
+
     @lazylist
     def f(a, i=[]):
         if vy_type(a, simple=True) != list:
@@ -6207,6 +6208,7 @@ def multidimensional_truthy_indices(lhs, ctx: Context):
         else:
             for j, x in enumerate(a):
                 yield from f(x, i + [j])
+
     return f(lhs)
 
 
