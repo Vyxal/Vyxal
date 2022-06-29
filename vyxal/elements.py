@@ -5594,24 +5594,6 @@ def vertical_mirror_center_join(lhs, ctx):
     )
 
 
-def vy_ceil(lhs, ctx):
-    """Element ⌈
-    (num) -> ceil(a)
-    (str) -> a.split(' ') # split a on spaces
-    """
-    ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: lhs.imag
-        if type(lhs) == complex
-        else (
-            sympy.im(lhs)
-            if is_sympy(lhs) and not lhs.is_real
-            else math.ceil(lhs)
-        ),
-        (str): lambda: lhs.split(" "),
-    }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
-
-
 def vertical_palindromise_center_join(lhs, ctx):
     """Element øṗ
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
@@ -5651,6 +5633,24 @@ def vy_bin(lhs, ctx):
         )
     else:
         return vectorise(vy_bin, lhs, ctx=ctx)
+
+
+def vy_ceil(lhs, ctx):
+    """Element ⌈
+    (num) -> ceil(a)
+    (str) -> a.split(' ') # split a on spaces
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: lhs.imag
+        if type(lhs) == complex
+        else (
+            sympy.im(lhs)
+            if is_sympy(lhs) and not lhs.is_real
+            else math.ceil(lhs)
+        ),
+        (str): lambda: lhs.split(" "),
+    }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
 
 def vy_divmod(lhs, rhs, ctx):
