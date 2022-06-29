@@ -19,13 +19,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Sort elements
       run: |
         python sort_element_functions.py
+
     - name: Commit and push
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
