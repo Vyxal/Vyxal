@@ -6115,6 +6115,17 @@ def zero_slice(lhs, rhs, ctx):
     (num, any) -> b[0:a]
     (str, str) -> regex.findall(pattern=a,string=b) (Find all matches for a regex)
     """
+    if type(lhs) == types.FunctionType:
+        return zero_slice(rhs, lhs, ctx)
+    if type(rhs) == types.FunctionType:
+        i = iterable(lhs, ctx=ctx)
+        @lazylist
+        def f(l, fun):
+            for item in l:
+                if not safe_apply(fun, item, ctx=ctx):
+                    return
+                yield item
+        return f(i, rhs)
     ts = vy_type(lhs, rhs)
     return {
         (ts[0], NUMBER_TYPE): lambda: index(

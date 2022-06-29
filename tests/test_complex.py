@@ -774,3 +774,8 @@ def test_dyadic_modifier_monadically():
 def test_vectorized_recursion():
     stack = run_vyxal("λ⅛-[vx];†¾", inputs=[[[1, 2], 3, [2, 3]]])
     assert stack[-1] == [[[1, 2], 3, [2, 3]], [1, 2], 1, 2, 3, [2, 3], 2, 3]
+
+
+def test_take_while():
+    stack = run_vyxal("λ2%0=;Ẏ", inputs=[[2, 4, 8, 0, 6, 3, 4, 8, 5, 7]])
+    assert stack[-1] == [2, 4, 8, 0, 6]
