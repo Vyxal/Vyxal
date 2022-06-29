@@ -1605,22 +1605,18 @@ def find(lhs, rhs, ctx):
             pos += 1
         return -1
     else:
-        return {
-            (ts[0], types.FunctionType): lambda: LazyList(
-                (
-                    i
-                    for i in range(len(iterable(lhs, ctx=ctx)))
-                    if safe_apply(rhs, iterable(lhs, ctx=ctx)[i], ctx=ctx)
-                )
-            ),
-            (types.FunctionType, ts[1]): lambda: LazyList(
-                (
-                    i
-                    for i in range(len(iterable(rhs, ctx=ctx)))
-                    if safe_apply(lhs, iterable(rhs, ctx=ctx)[i], ctx=ctx)
-                )
-            ),
-        }.get(ts)()
+        if ts[0] == types.FunctionType:
+            return find(rhs, lhs, ctx)
+
+        @lazylist
+        def f(it, fun):
+            idx = 0
+            for x in it:
+                if safe_apply(fun, x, ctx=ctx):
+                    yield idx
+                idx += 1
+
+        return f(lhs, rhs)
 
 
 def first_integer(lhs, ctx):
@@ -4710,6 +4706,34 @@ def starts_with_set(lhs, rhs, ctx):
     )
 
 
+def starts_with(lhs, rhs, ctx):
+    """Element øp
+    (str, str) -> True if a starts with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+            (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
 def strict_greater_than(lhs, rhs, ctx):
     """Element ¨>
     Non-vectorising greater than
@@ -6243,6 +6267,12 @@ def zfiller(lhs, rhs, ctx):
         + lhs,
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> f7a82514d16333855e338ad908f32486a30de1d0
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
