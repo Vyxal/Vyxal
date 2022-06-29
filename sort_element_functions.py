@@ -24,6 +24,6 @@ f.write(
     + "\n"
     + "\n\n\n".join(sorted(fns, key=lambda x: x[x.index("def ") :])).strip()
     + "\n\n"
-    + "\n".join(file[last_line + 1 :])
+    + "\n".join(file[last_line + 1 :]).strip()
 )
 f.close()
