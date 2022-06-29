@@ -2464,6 +2464,14 @@ IVXLCDM
 The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
 
 -------------------------------
+## `` ∆b `` (Binary String)
+
+Get a binary string of a number
+
+### Overloads
+
+- num a: `bin(a).replace("0b", "")`
+-------------------------------
 ## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians

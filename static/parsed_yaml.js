@@ -1754,6 +1754,11 @@ codepage_descriptions[13] += `
 k• (Qwerty Keyboard)
 The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
 `
+codepage_descriptions[98] += `
+∆b (Binary String)
+Get a binary string of a number
+num a -> bin(a).replace("0b", "")
+`
 codepage_descriptions[99] += `
 ∆c (Cosine)
 Get the cosine of an angle in radians

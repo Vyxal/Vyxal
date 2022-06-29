@@ -6198,7 +6198,7 @@ def connected_uniquify(lhs, ctx: Context):
 def binary_string(lhs, ctx: Context):
     if vy_type(lhs, simple=True) == list:
         return vectorise(binary_string, lhs, ctx=ctx)
-    return bin(lhs).replace('0b', '')
+    return bin(lhs).replace("0b", "")
 
 
 elements: dict[str, tuple[str, int]] = {
