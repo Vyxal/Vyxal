@@ -45,6 +45,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     Ṡ    Treat all inputs as strings
     R    Treat numbers as ranges if ever used as an iterable
     D    Treat all strings as raw strings (don't decompress strings)
+    U    Treat all strings as UTF-8 byte sequences (also don't decompress strings)
     Ṫ    Print the sum of the entire stack
     ṡ    Print the entire stack, joined on spaces
     Z    With four argument vectorization where all arguments are lists, use zip(zip(a, b), zip(c, d)) instead of zip(a, b, c, d)
@@ -134,6 +135,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.empty_input_is_zero = "?" not in flags
     ctx.array_inputs = "a" in flags
     ctx.double_zip_vectorize = "Z" in flags
+    ctx.utf8strings = "U" in flags
 
     if "2" in flags:
         ctx.default_arity = 2
@@ -146,6 +148,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         options = TranspilationOptions()
         options.dict_compress = ctx.dictionary_compression
         options.variables_as_digraphs = ctx.variable_length_1
+        options.utf8strings = ctx.utf8strings
         code = transpile(
             code, options
         )
