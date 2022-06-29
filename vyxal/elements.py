@@ -5668,8 +5668,6 @@ def vy_floor(lhs, ctx):
                 temp += char
             elif char == "." and temp.count(".") == 0:
                 temp += char
-            else:
-                continue
         return sympy.nsimplify(temp)
 
     ts = vy_type(lhs)
