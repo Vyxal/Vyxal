@@ -8,6 +8,7 @@ from vyxal import encoding, helpers, lexer, parse, structure
 from vyxal.elements import *
 from vyxal.helpers import indent_str, uncompress
 from vyxal.lexer import Token, TokenType
+from vyxal.encoding import utf8_to_vyxal
 
 NILADIC_TYPES = (
     TokenType.STRING,
@@ -103,7 +104,7 @@ def transpile_token(
     """Transpile a single token"""
     if token.name == TokenType.STRING:
         # Make sure we avoid any ACE exploits
-        if options.dict_compress:
+        if options.dict_compress and not options.utf8strings:
             string = uncompress(token)
         else:
             string = token.value
@@ -126,10 +127,13 @@ def transpile_token(
                 temp += '\\"'
             elif char == "\n":
                 temp += "\\n"
-            elif char == "Π":
+            elif char == "Π" and not options.utf8strings:
                 temp += '" + vy_str(pop(stack, 1, ctx), ctx=ctx) + "'
             else:
                 temp += char
+        if options.utf8strings:
+            # Since all string-related stuff is ASCII this shouldn't ACE
+            temp = bytes(map(ord,utf8_to_vyxal(temp))).decode('utf-8')
         return indent_str(f'stack.append("{temp}")', indent)
     elif token.name == TokenType.NUMBER:
         parts = [
