@@ -6118,6 +6118,7 @@ def zero_slice(lhs, rhs, ctx):
     if type(lhs) == types.FunctionType:
         return zero_slice(rhs, lhs, ctx)
     if type(rhs) == types.FunctionType:
+
         @lazylist
         def f(l, fun):
             for item in l:
