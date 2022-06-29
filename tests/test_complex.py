@@ -707,7 +707,7 @@ def test_generators():
     stack = run_vyxal('1 1" ⁽+ Ḟ')
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
-    stack = run_vyxal('1 1" ⁽d Ḟ')
+    stack = run_vyxal("⁽d Ḟ", inputs=[LazyList([1, 1])])
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
 

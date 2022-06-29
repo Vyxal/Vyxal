@@ -1779,14 +1779,20 @@ def gen_from_fn(lhs, rhs, ctx):
     def gen():
         yield from lhs
 
-        made = lhs[:]
+        if isinstance(lhs, LazyList):
+            made = lhs
+        else:
+            made = lhs[:]
 
         func_arity = (
             rhs.stored_arity if "stored_arity" in dir(rhs) else rhs.arity
         )
         while True:
             ret = safe_apply(rhs, *made[-func_arity:], ctx=ctx)
-            made.append(ret)
+            if isinstance(made, LazyList):
+                made = made.appended(ret)
+            else:
+                made.append(ret)
             yield ret
 
     return LazyList(gen(), isinf=True)
