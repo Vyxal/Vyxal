@@ -3215,6 +3215,18 @@ k• (Qwerty Keyboard)
 
     lst a: is a not sorted, in either increasing or decreasing order?
 -------------------------------
+Þ⇧ (Is Strictly Ascending?)
+
+- Returns true if the list is in strictly ascending order.
+
+    lst a: is a in strictly ascending order?
+-------------------------------
+Þ⇩ (Is Strictly Descending?)
+
+- Returns true if the list is in strictly descending order.
+
+    lst a: is a in strictly descending order?
+-------------------------------
 Þċ (Cycle)
 
 - Form an infinite list from a vector.

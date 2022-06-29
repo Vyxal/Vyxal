@@ -3750,6 +3750,22 @@ Returns true if the item is not sorted in either descending or ascending order.
 
 - lst a: `is a not sorted, in either increasing or decreasing order?`
 -------------------------------
+## `` Þ⇧ `` (Is Strictly Ascending?)
+
+Returns true if the list is in strictly ascending order.
+
+### Overloads
+
+- lst a: `is a in strictly ascending order?`
+-------------------------------
+## `` Þ⇩ `` (Is Strictly Descending?)
+
+Returns true if the list is in strictly descending order.
+
+### Overloads
+
+- lst a: `is a in strictly descending order?`
+-------------------------------
 ## `` Þċ `` (Cycle)
 
 Form an infinite list from a vector.

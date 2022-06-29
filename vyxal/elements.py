@@ -2522,6 +2522,34 @@ def is_sorted_descending(lhs, ctx):
     )
 
 
+def is_sorted_strictly_ascending(lhs, ctx):
+    """Element Þ⇧
+    (lst) -> Returns true if an item is sorted in strictly
+             ascending order using default sorting rules.
+    """
+
+    return int(
+        all(
+            lambda x: strict_less_than(x[0], x[1], ctx)
+            for x in overlapping_groups(lhs, 2, ctx)
+        )
+    )
+
+
+def is_sorted_strictly_descending(lhs, ctx):
+    """Element Þ⇩
+    (lst) -> Returns true if an item is sorted in strictly
+             descending order using default sorting rules.
+    """
+
+    return int(
+        all(
+            lambda x: strict_greater_than(x[0], x[1], ctx)
+            for x in overlapping_groups(lhs, 2, ctx)
+        )
+    )
+
+
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -6688,6 +6716,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þṡ": process_element(sort_by_length, 1),
     "ÞṠ": process_element(is_sorted_ascending, 1),
     "ÞṘ": process_element(is_sorted_descending, 1),
+    "Þ⇧": process_element(is_sorted_strictly_ascending, 1),
+    "Þ⇩": process_element(is_sorted_strictly_descending, 1),
     "ÞȮ": process_element(is_ordered, 1),
     "ÞĊ": process_element(is_unordered, 1),
     "ÞK": process_element(suffixes_element, 1),

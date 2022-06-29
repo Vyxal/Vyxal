@@ -5766,6 +5766,46 @@
       - '[""] : 0'
       - "[[]] : 0"
 
+- element: "Þ⇧"
+  name: Is Strictly Ascending?
+  description: Returns true if the list is in strictly ascending order.
+  arity: 1
+  overloads:
+      lst: is a in strictly ascending order?
+  vectorise: false
+  tests:
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
+      - '["abcde"] : 1'
+      - "[4321] : 0"
+      - "[[3, 2, 1]] : 0"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 1"
+      - "[[8, 6, 5, 4, 2]] : 0"
+      - '["edcba"] : 0'
+      - '[""] : 1'
+      - "[[]] : 1"
+      - "[[1, 1, 1, 1]] : 0"
+
+- element: "Þ⇩"
+  name: Is Strictly Descending?
+  description: Returns true if the list is in strictly descending order.
+  arity: 1
+  overloads:
+      lst: is a in strictly descending order?
+  vectorise: false
+  tests:
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
+      - '["abcde"] : 0'
+      - "[4321] : 1"
+      - "[[3, 2, 1]] : 1"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 0"
+      - "[[8, 6, 5, 4, 2]] : 1"
+      - '["edcba"] : 1'
+      - '[""] : 1'
+      - "[[]] : 1"
+      - "[[1, 1, 1, 1]] : 0"
+
 - element: "Þċ"
   name: Cycle
   description: Form an infinite list from a vector.
