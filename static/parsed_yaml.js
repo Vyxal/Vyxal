@@ -2587,6 +2587,16 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> is a not sorted, in either increasing or decreasing order?
 `
+codepage_descriptions[235] += `
+Þ⇧ (Is Strictly Ascending?)
+Returns true if the list is in strictly ascending order.
+lst a -> is a in strictly ascending order?
+`
+codepage_descriptions[236] += `
+Þ⇩ (Is Strictly Descending?)
+Returns true if the list is in strictly descending order.
+lst a -> is a in strictly descending order?
+`
 codepage_descriptions[142] += `
 Þċ (Cycle)
 Form an infinite list from a vector.
