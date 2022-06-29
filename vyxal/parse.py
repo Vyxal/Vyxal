@@ -256,7 +256,7 @@ def parse(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[0].parent_structure = parent
+                remaining[0].parent_structure = structure.MonadicModifier
 
             if head.value == "⁽":
                 # 1-element lambda
@@ -285,13 +285,13 @@ def parse(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[0].parent_structure = parent
+                remaining[0].parent_structure = structure.DyadicModifier
 
             if isinstance(
                 remaining[1],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[1].parent_structure = parent
+                remaining[1].parent_structure = structure.DyadicModifier
 
             if head.value == "‡":
                 # 2-element lambda
@@ -316,19 +316,19 @@ def parse(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[0].parent_structure = parent
+                remaining[0].parent_structure = structure.TriadicModifier
 
             if isinstance(
                 remaining[1],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[1].parent_structure = parent
+                remaining[1].parent_structure = structure.TriadicModifier
 
             if isinstance(
                 remaining[2],
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[2].parent_structure = parent
+                remaining[2].parent_structure = structure.TriadicModifier
             if head.value == "≬":
                 # 3-element lambda
                 structures.append(

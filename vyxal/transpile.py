@@ -361,9 +361,15 @@ def transpile_structure(
             indent,
             options=options,
         )
+
+        eager = isinstance(
+            struct.function_A,
+            (vyxal.structure.RecurseStatement, vyxal.structure.BreakStatement),
+        )
         return (
             element_A
             + "\n"
+            + indent_str("eager = " + str(eager), indent)
             + indent_str("function_A = pop(stack, 1, ctx)", indent)
             + indent_str(modifiers.get(struct.modifier, "pass"), indent)
         )

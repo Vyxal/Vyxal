@@ -6825,9 +6825,9 @@ modifiers: dict[str, str] = {
     ),
     "v": (
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
-        "stack.append"
-        "(vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx))"
-        "\n"
+        "res = vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx)\n"
+        "if eager: res = list(res)\n"
+        "stack.append(res)"
     ),
     "¨v": (
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
