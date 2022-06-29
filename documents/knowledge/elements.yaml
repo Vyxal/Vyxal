@@ -5827,6 +5827,16 @@
       - "[123456] : [123456, 23456, 3456, 456, 56, 6]"
       - "[[]] : []"
 
+- element: "ÞT"
+  name: Multi-dimensional truthy indices
+  description: Multi-dimensional indices of truthy elements
+  arity: 1
+  overloads:
+      lst: Multi-dimensional indices of truthy elements in a
+  vectorise: false
+  tests:
+      - "[[[[1,0,1],0,1,[1]],1,[[0]],[1]]] : [[0, 0, 0], [0, 0, 2], [0, 2], [0, 3, 0], [1], [3, 0]]"
+
 - element: "Þİ"
   name: First n Items and Rest
   description: Push the first n items of a, then the rest of a
