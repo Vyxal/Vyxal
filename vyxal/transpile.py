@@ -56,18 +56,18 @@ def lambda_wrap(
 
 def transpile(
     program: str,
-    options: TranspilationOptions,
+    options: TranspilationOptions = TranspilationOptions(),
 ) -> str:
     return transpile_ast(
         vyxal.parse.parse(vyxal.lexer.tokenise(program, options.variables_as_digraphs)),
-        options,
+        options=options,
     )
 
 
 def transpile_ast(
     program: list[vyxal.structure.Structure],
-    options: TranspilationOptions,
     indent: int = 0,
+    options: TranspilationOptions = TranspilationOptions(),
 ) -> str:
     """Transpile a given program (as a parsed list of structures) into Python"""
     if not program:
