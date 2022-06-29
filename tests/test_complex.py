@@ -240,6 +240,22 @@ def test_shallow_flatten():
     assert stack[-1][:9] == [1, 2, 3, 4, 2, 3, 4, 5, 3]
 
 
+def test_unicode_strings():
+    stack = []
+    ctx = Context()
+    ctx.stacks.append(stack)
+    ctx.utf8strings = True
+
+    options = TranspilationOptions()
+    options.utf8strings = True
+
+    py_code = transpile("`≠→ḟ`", options)
+    exec(py_code)
+
+    result = ctx.stacks.pop()
+    assert result == ["∑"]
+
+
 def test_slice_to_end_infinite_lists():
     stack = run_vyxal("⁽›1Ḟ 20 ȯ")
     assert stack[-1][:5] == [21, 22, 23, 24, 25]

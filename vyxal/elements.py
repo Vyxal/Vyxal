@@ -1959,7 +1959,9 @@ def halve(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
-        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx),
+        str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
+        if len(lhs) > 1
+        else [lhs, ""],
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
@@ -2266,6 +2268,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     If `ind` is negative, the absolute value is used. If `ind` is greater than
     or equal to the LazyList's length, `other` is appended to the end.
     """
+    is_number = vy_type(lhs) == NUMBER_TYPE
     lhs = iterable(lhs, ctx)
 
     if vy_type(other) != types.FunctionType:
@@ -2289,6 +2292,8 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
             if vy_type(places) == NUMBER_TYPE and i < places:
                 yield other
 
+        if is_number:
+            return vy_eval("".join(map(str, gen())))
         return gen()
 
     @lazylist
@@ -3379,6 +3384,9 @@ def one_slice(lhs, rhs, ctx):
         ),
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [1, lhs], ctx
+        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
+            index(str(lhs), [1, rhs], ctx=ctx), ctx
         ),
         (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
@@ -5657,8 +5665,6 @@ def vy_floor(lhs, ctx):
     (str) -> integer part of a
     """
     ts = vy_type(lhs)
-    print(ts)
-    print(type(lhs))
     return {
         (NUMBER_TYPE): lambda: lhs.real
         if type(lhs) == complex
@@ -6114,6 +6120,9 @@ def zero_slice(lhs, rhs, ctx):
         ),
         (NUMBER_TYPE, ts[1]): lambda: index(
             iterable(rhs, ctx=ctx), [0, lhs], ctx=ctx
+        ),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
+            index(str(lhs), [0, rhs], ctx=ctx), ctx
         ),
         (str, str): lambda: re.findall(rhs, lhs),
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()

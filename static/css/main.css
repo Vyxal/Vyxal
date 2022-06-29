@@ -71,16 +71,27 @@ summary {
 }
 
 .key {
+  display: inline-block;
   padding: 2px;
   cursor: crosshair;
   font-family: "DejaVu Sans Mono", monospace;
   color: white;
   width: 1em;
+  text-align: center;
 }
 
-.key:hover {
-  background-color: rgba(255, 255, 255, 0.596);
-  color: #000;
+@media (any-hover: hover) {
+  .key:hover {
+    background-color: rgba(255, 255, 255, 0.596);
+    color: #000;
+  }
+}
+
+@media (any-hover: none) {
+  .key.touched {
+    background-color: rgba(255, 255, 255, 0.596);
+    color: #000;
+  }
 }
 
 h2 {
@@ -136,8 +147,9 @@ i {
   border-radius: 5px;
   transition: opacity .15s;
   word-wrap: break-word;
-  font-family: "DejaVu Sans Mono";
+  font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
+  text-align: left;
 }
 
 .tooltip[data-show] {

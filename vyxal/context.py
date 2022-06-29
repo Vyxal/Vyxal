@@ -40,6 +40,7 @@ class Context:
         self.vyxal_lists = True
         self.global_array = []
         self.canvas = Canvas()
+        self.utf8strings = False
 
     def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -64,6 +65,7 @@ class Context:
         ctx.last_popped = self.last_popped
         ctx.use_top_input = self.use_top_input
         ctx.global_array = self.global_array
+        ctx.utf8strings = self.utf8strings
 
         return ctx
 
