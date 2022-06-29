@@ -60,6 +60,7 @@ FLAG_STRING = """ALL flags should be used as is (no '-' prefix)
     ?    If there is empty input, treat it as 0 instead of empty string.
     2    Make the default arity of lambdas 2
     3    Make the default arity of lambdas 3
+    A    Run test cases on all inputs
     …    Limit list output to the first 100 items of that list
     5    Make the interpreter timeout after 5 seconds (online interpreter only)
     b    Make the interpreter timeout after 15 seconds (online interpreter only)
@@ -83,6 +84,23 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     if "h" in flags:  # Help flag
         vy_print(FLAG_STRING, ctx=ctx)
         sys.exit(0)
+
+    if "A" in flags:
+        for inp in inputs:
+            inps = ast.literal_eval(inp)
+            if isinstance(inps, tuple):
+                inps = list(inps)
+            else:
+                inps = [inps]
+            print(inp, end=" => ")
+            execute_vyxal(
+                file_name,
+                flags.replace("A", ""),
+                inps,
+                output_var,
+                online_mode,
+            )
+        return
 
     if "e" in flags:  # Program is file name
         code = file_name

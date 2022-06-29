@@ -707,7 +707,7 @@ def test_generators():
     stack = run_vyxal('1 1" ⁽+ Ḟ')
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
-    stack = run_vyxal('1 1" ⁽d Ḟ')
+    stack = run_vyxal("⁽d Ḟ", inputs=[LazyList([1, 1])])
     assert stack[-1][:7] == [1, 1, 2, 4, 8, 16, 32]
 
 
@@ -716,6 +716,9 @@ def test_first_index_where_item_truthy():
     assert stack[-1] == 3
 
     stack = run_vyxal("⟨1|`beans`|⟨1|2|3|4|5⟩|232⟩ λ⌊≠;Ǒ")
+    assert stack[-1] == 1
+
+    stack = run_vyxal("Þ∞ λ1+3%0=; Ǒ")
     assert stack[-1] == 1
 
 
@@ -769,3 +772,55 @@ def test_infinite_all_integers():
 def test_dyadic_modifier_monadically():
     stack = run_vyxal("3 ₍d")
     assert stack[-1] == [6, 3]
+
+
+def test_vectorized_recursion():
+    stack = run_vyxal("λ⅛-[vx];†¾", inputs=[[[1, 2], 3, [2, 3]]])
+    assert stack[-1] == [[[1, 2], 3, [2, 3]], [1, 2], 1, 2, 3, [2, 3], 2, 3]
+
+
+def test_take_while():
+    stack = run_vyxal("λ2%0=;Ẏ", inputs=[[2, 4, 8, 0, 6, 3, 4, 8, 5, 7]])
+    assert stack[-1] == [2, 4, 8, 0, 6]
+
+    stack = run_vyxal("Þ∞λ7<;Ẏ")
+    assert stack[-1] == [1, 2, 3, 4, 5, 6]
+
+
+def test_multidimensional_truthy_indices_infinite():
+    stack = run_vyxal("⟨⟨1|0|1|1|0⟩|1|⟨0|1|0⟩⟩ Þċ ÞT 20Ẏ")
+    assert stack[-1] == [
+        [0, 0],
+        [0, 2],
+        [0, 3],
+        [1],
+        [2, 1],
+        [3, 0],
+        [3, 2],
+        [3, 3],
+        [4],
+        [5, 1],
+        [6, 0],
+        [6, 2],
+        [6, 3],
+        [7],
+        [8, 1],
+        [9, 0],
+        [9, 2],
+        [9, 3],
+        [10],
+        [11, 1],
+    ]
+
+
+def test_take_while():
+    stack = run_vyxal("λ2%0=;Ẏ", inputs=[[2, 4, 8, 0, 6, 3, 4, 8, 5, 7]])
+    assert stack[-1] == [2, 4, 8, 0, 6]
+
+    stack = run_vyxal("Þ∞λ7<;Ẏ")
+    assert stack[-1] == [1, 2, 3, 4, 5, 6]
+
+
+def test_find_indices_infinite():
+    stack = run_vyxal("Þ∞ λ2%0=; ḟ")
+    assert stack[-1][:10] == [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]

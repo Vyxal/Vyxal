@@ -849,7 +849,7 @@ lst a -> mean(a)
 `)
 
 codepage_descriptions.push(`Join By Nothing
-Join a list by the empty string
+Join a list by the empty string. Vectorises if the list contains lists.
 num a -> abs(a) <= 1
 str a -> pad with 0s to nearest positive multiple of 8
 lst a -> "".join(a)
@@ -1148,6 +1148,8 @@ Slice a list until a certain index / find all results for a regex match
 any a, num b -> a[0:b] (slice until b)
 num a, any b -> b[0:a] (slice until a)
 str a, str b -> regex.findall(pattern=a,string=b) (find all matches for a regex)
+any a, fun b -> take results from a while b(x) is truthy
+fun a, any b -> take results from b while a(x) is truthy
 `)
 
 codepage_descriptions.push(`Slice From One Until
@@ -1753,6 +1755,11 @@ IVXLCDM
 codepage_descriptions[13] += `
 k• (Qwerty Keyboard)
 The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
+`
+codepage_descriptions[98] += `
+∆b (Binary String)
+Get a binary string of a number
+num a -> bin(a).replace("0b", "")
 `
 codepage_descriptions[99] += `
 ∆c (Cosine)
@@ -2587,6 +2594,16 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> is a not sorted, in either increasing or decreasing order?
 `
+codepage_descriptions[235] += `
+Þ⇧ (Is Strictly Ascending?)
+Returns true if the list is in strictly ascending order.
+lst a -> is a in strictly ascending order?
+`
+codepage_descriptions[236] += `
+Þ⇩ (Is Strictly Descending?)
+Returns true if the list is in strictly descending order.
+lst a -> is a in strictly descending order?
+`
 codepage_descriptions[142] += `
 Þċ (Cycle)
 Form an infinite list from a vector.
@@ -2596,6 +2613,11 @@ codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
 lst a -> [a, a[:-1], a[:-2], ..., a[:1]]
+`
+codepage_descriptions[84] += `
+ÞT (Multi-dimensional truthy indices)
+Multi-dimensional indices of truthy elements
+lst a -> Multi-dimensional indices of truthy elements in a
 `
 codepage_descriptions[191] += `
 Þİ (First n Items and Rest)

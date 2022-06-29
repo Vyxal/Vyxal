@@ -43,3 +43,12 @@ repos:
         additional_dependencies: [pyyaml]
         files: documents/knowledge/elements.yaml
         pass_filenames: false
+        pass_filenames: false
+
+      - id: sort-elements
+        name: Sort elements in elements.py
+        entry: python sort_element_functions.py
+        language: python
+        additional_dependencies: []
+        files: vyxal/elements.py
+        pass_filenames: false

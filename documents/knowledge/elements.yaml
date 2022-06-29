@@ -1782,7 +1782,7 @@
 
 - element: "ṅ"
   name: Join By Nothing
-  description: Join a list by the empty string
+  description: Join a list by the empty string. Vectorises if the list contains lists.
   arity: 1
   overloads:
       num: abs(a) <= 1
@@ -1798,7 +1798,8 @@
       - '[""] : "00000000"'
       - '["asdf"] : "0000asdf"'
       - '["asdfghjk"] : "asdfghjk"'
-      - '[[],[]] : "⟨  ⟩⟨  ⟩"'
+      - '[[],[]] : ["", ""]'
+      - '[[1, ["abc", "def", "ghi"], [1, 2, 3], [0.5, 1.1, [1, 2, 3]]]] : [1, "abcdefghi", 123, [1, 0, 123]]'
 
 - element: "ȯ"
   name: Slice
@@ -2474,6 +2475,8 @@
       any-num: a[0:b] (slice until b)
       num-any: b[0:a] (slice until a)
       str-str: regex.findall(pattern=a,string=b) (find all matches for a regex)
+      any-fun: take results from a while b(x) is truthy
+      fun-any: take results from b while a(x) is truthy
   vectorise: true
   tests:
       - '["abc",1] : "a"'
@@ -3707,6 +3710,18 @@
 #    - '[] : '
 
 # DIGRAPHS
+
+- element: "∆b"
+  name: Binary String
+  arity: 1
+  description: Get a binary string of a number
+  overloads:
+      num: bin(a).replace("0b", "")
+  vectorise: true
+  tests:
+      - '[-23] : "-10111"'
+      - '[45] : "101101"'
+      - '[[-2, 4]] : ["-10", "100"]'
 
 - element: "∆c"
   name: Cosine
@@ -5488,6 +5503,7 @@
       - "[12,234] : [2]"
       - '[12,"12"] : [1,2]'
       - '["12",12] : ["1","2"]'
+      - "[[3, 3, 3, 2, 2, 2, 2], [3, 3, 3, 3, 3, 2]] : [3, 3, 3, 2]"
 
 - element: "Þ∪"
   name: Multiset Union
@@ -5764,6 +5780,46 @@
       - '[""] : 0'
       - "[[]] : 0"
 
+- element: "Þ⇧"
+  name: Is Strictly Ascending?
+  description: Returns true if the list is in strictly ascending order.
+  arity: 1
+  overloads:
+      lst: is a in strictly ascending order?
+  vectorise: false
+  tests:
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
+      - '["abcde"] : 1'
+      - "[4321] : 0"
+      - "[[3, 2, 1]] : 0"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 1"
+      - "[[8, 6, 5, 4, 2]] : 0"
+      - '["edcba"] : 0'
+      - '[""] : 1'
+      - "[[]] : 1"
+      - "[[1, 1, 1, 1]] : 0"
+
+- element: "Þ⇩"
+  name: Is Strictly Descending?
+  description: Returns true if the list is in strictly descending order.
+  arity: 1
+  overloads:
+      lst: is a in strictly descending order?
+  vectorise: false
+  tests:
+      - "[[1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 6]] : 0"
+      - '["abcde"] : 0'
+      - "[4321] : 1"
+      - "[[3, 2, 1]] : 1"
+      - "[[4, 1, 4, 2]] : 0"
+      - "[[4, 6, 8, 10, 3432, 65543]] : 0"
+      - "[[8, 6, 5, 4, 2]] : 1"
+      - '["edcba"] : 1'
+      - '[""] : 1'
+      - "[[]] : 1"
+      - "[[1, 1, 1, 1]] : 0"
+
 - element: "Þċ"
   name: Cycle
   description: Form an infinite list from a vector.
@@ -5784,6 +5840,16 @@
       - "[[1, 2, 3, 4, 5, 6]] : [[1, 2, 3, 4, 5, 6], [2, 3, 4, 5, 6], [3, 4, 5, 6], [4, 5, 6], [5, 6], [6]]"
       - "[123456] : [123456, 23456, 3456, 456, 56, 6]"
       - "[[]] : []"
+
+- element: "ÞT"
+  name: Multi-dimensional truthy indices
+  description: Multi-dimensional indices of truthy elements
+  arity: 1
+  overloads:
+      lst: Multi-dimensional indices of truthy elements in a
+  vectorise: false
+  tests:
+      - "[[[[1,0,1],0,1,[1]],1,[[0]],[1]]] : [[0, 0, 0], [0, 0, 2], [0, 2], [0, 3, 0], [1], [3, 0]]"
 
 - element: "Þİ"
   name: First n Items and Rest
