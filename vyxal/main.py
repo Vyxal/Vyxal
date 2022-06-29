@@ -95,7 +95,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             print(inp, end=" => ")
             execute_vyxal(
                 file_name,
-                "".join(x for x in flags if x != "A"),
+                flags.replace("A", ""),
                 inps,
                 output_var,
                 online_mode,
