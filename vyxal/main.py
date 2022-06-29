@@ -101,7 +101,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(vy_str(x, temp_ctx) for x in inps) if online_mode else inps,
+                "\n".join(vy_str(x, temp_ctx) for x in inps)
+                if online_mode
+                else inps,
                 output_var,
                 online_mode,
             )
