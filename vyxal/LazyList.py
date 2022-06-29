@@ -274,6 +274,12 @@ class LazyList:
             vy_print(close, end, ctx=ctx)
 
     @lazylist
+    def appended(self, value):
+        yield from self
+        yield value
+
+
+    @lazylist
     def reversed(self):
         self.generated += list(itertools.tee(self.raw_object)[-1])
         for item in self.generated[::-1]:
