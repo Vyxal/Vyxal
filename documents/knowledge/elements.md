@@ -1204,7 +1204,7 @@ Average of a list - sum / length
 -------------------------------
 ## `` ṅ `` (Join By Nothing)
 
-Join a list by the empty string
+Join a list by the empty string. Vectorises if the list contains lists.
 
 ### Overloads
 
