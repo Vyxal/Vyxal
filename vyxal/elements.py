@@ -3085,6 +3085,7 @@ def multiset_difference(lhs, rhs, ctx):
     return lhs_copy
 
 
+@lazylist
 def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
@@ -3092,14 +3093,14 @@ def multiset_intersection(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)
     rhs = deep_copy(iterable(rhs, ctx=ctx))
-    res = []
 
-    for item in rhs:
-        if item in lhs:
-            res.append(item)
-            rhs = rhs.remove(item)
-
-    return res
+    for item in lhs:
+        if item in rhs:
+            yield item
+            if vy_type(rhs) == LazyList:
+                rhs = rhs.remove(item)
+            else:
+                rhs.remove(item)
 
 
 def multiset_union(lhs, rhs, ctx):
