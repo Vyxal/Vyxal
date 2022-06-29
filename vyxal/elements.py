@@ -1577,22 +1577,16 @@ def find(lhs, rhs, ctx):
             pos += 1
         return -1
     else:
-        return {
-            (ts[0], types.FunctionType): lambda: LazyList(
-                (
-                    i
-                    for i in range(len(iterable(lhs, ctx=ctx)))
-                    if safe_apply(rhs, iterable(lhs, ctx=ctx)[i], ctx=ctx)
-                )
-            ),
-            (types.FunctionType, ts[1]): lambda: LazyList(
-                (
-                    i
-                    for i in range(len(iterable(rhs, ctx=ctx)))
-                    if safe_apply(lhs, iterable(rhs, ctx=ctx)[i], ctx=ctx)
-                )
-            ),
-        }.get(ts)()
+        if ts[0] == types.FunctionType:
+            return find(rhs, lhs, ctx)
+        @lazylist
+        def f(it, fun):
+            idx = 0
+            for x in it:
+                if safe_apply(fun, x, ctx=ctx):
+                    yield idx
+                idx += 1
+        return f(lhs, rhs)
 
 
 def first_integer(lhs, ctx):
