@@ -779,6 +779,14 @@ def test_vectorized_recursion():
     assert stack[-1] == [[[1, 2], 3, [2, 3]], [1, 2], 1, 2, 3, [2, 3], 2, 3]
 
 
+def test_take_while():
+    stack = run_vyxal("λ2%0=;Ẏ", inputs=[[2, 4, 8, 0, 6, 3, 4, 8, 5, 7]])
+    assert stack[-1] == [2, 4, 8, 0, 6]
+
+    stack = run_vyxal("Þ∞λ7<;Ẏ")
+    assert stack[-1] == [1, 2, 3, 4, 5, 6]
+
+
 def test_multidimensional_truthy_indices_infinite():
     stack = run_vyxal("⟨⟨1|0|1|1|0⟩|1|⟨0|1|0⟩⟩ Þċ ÞT 20Ẏ")
     assert stack[-1] == [
