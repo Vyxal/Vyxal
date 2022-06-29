@@ -3709,6 +3709,18 @@
 
 # DIGRAPHS
 
+- element: "∆b"
+  name: Binary String
+  arity: 1
+  description: Get a binary string of a number
+  overloads:
+      num: bin(a).replace("0b", "")
+  vectorise: true
+  tests:
+      - '[-23] : "-10111"'
+      - '[45] : "101101"'
+      - '[[-2, 4]] : ["-10", "100"]'
+
 - element: "∆c"
   name: Cosine
   arity: 1

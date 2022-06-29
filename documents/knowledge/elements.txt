@@ -2167,6 +2167,13 @@ k• (Qwerty Keyboard)
 - The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
 
 -------------------------------
+∆b (Binary String)
+
+- Get a binary string of a number
+
+    num a: bin(a).replace("0b", "")
+    otherwise: vectorise
+-------------------------------
 ∆c (Cosine)
 
 - Get the cosine of an angle in radians
