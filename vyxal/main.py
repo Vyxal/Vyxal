@@ -96,10 +96,12 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 ctx.online_output[1] += inp + " => "
             else:
                 print(inp, end=" => ")
+            temp_ctx = Context()
+            temp_ctx.vyxal_lists = False
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(inps) if online_mode else inps,
+                "\n".join(vy_str(x, temp_ctx) for x in inps) if online_mode else inps,
                 output_var,
                 online_mode,
             )
