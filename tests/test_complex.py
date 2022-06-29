@@ -239,6 +239,7 @@ def test_shallow_flatten():
     stack = run_vyxal("⁽› 1 5rw Ḟ Þf", debug=True)
     assert stack[-1][:9] == [1, 2, 3, 4, 2, 3, 4, 5, 3]
 
+
 def test_unicode_strings():
     stack = []
     ctx = Context()
@@ -253,7 +254,6 @@ def test_unicode_strings():
 
     result = ctx.stacks.pop()
     assert result == ["∑"]
-
 
 
 def test_slice_to_end_infinite_lists():
