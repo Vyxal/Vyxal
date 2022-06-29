@@ -1579,6 +1579,7 @@ def find(lhs, rhs, ctx):
     else:
         if ts[0] == types.FunctionType:
             return find(rhs, lhs, ctx)
+
         @lazylist
         def f(it, fun):
             idx = 0
@@ -1586,6 +1587,7 @@ def find(lhs, rhs, ctx):
                 if safe_apply(fun, x, ctx=ctx):
                     yield idx
                 idx += 1
+
         return f(lhs, rhs)
 
 
