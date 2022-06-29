@@ -2475,6 +2475,8 @@
       any-num: a[0:b] (slice until b)
       num-any: b[0:a] (slice until a)
       str-str: regex.findall(pattern=a,string=b) (find all matches for a regex)
+      any-fun: take results from a while b(x) is truthy
+      fun-any: take results from b while a(x) is truthy
   vectorise: true
   tests:
       - '["abc",1] : "a"'
