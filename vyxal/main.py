@@ -94,7 +94,13 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             else:
                 inps = [inps]
             print(inp, end=" => ")
-            execute_vyxal(file_name, ''.join(x for x in flags if x != 'A'), inps, output_var, online_mode)
+            execute_vyxal(
+                file_name,
+                "".join(x for x in flags if x != "A"),
+                inps,
+                output_var,
+                online_mode,
+            )
         return
 
     if "e" in flags:  # Program is file name
