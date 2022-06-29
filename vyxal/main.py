@@ -92,15 +92,18 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 inps = list(inps)
             else:
                 inps = [inps]
-            print(inp, end=" => ")
+            if online_mode:
+                ctx.online_output[1] += inp + " => "
+            else:
+                print(inp, end=" => ")
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                inps,
+                "\n".join(inps) if online_mode else inps,
                 output_var,
                 online_mode,
             )
-        return
+        sys.exit(0)
 
     if "e" in flags:  # Program is file name
         code = file_name
