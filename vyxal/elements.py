@@ -6195,6 +6195,12 @@ def connected_uniquify(lhs, ctx: Context):
     }.get(ts)()
 
 
+def binary_string(lhs, ctx: Context):
+    if vy_type(lhs, simple=True) == list:
+        return vectorise(binary_string, lhs, ctx=ctx)
+    return bin(lhs).replace('0b', '')
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6522,6 +6528,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆P": process_element(polynomial_roots, 1),
     "∆ƈ": process_element(n_pick_r, 2),
     "∆i": process_element(nth_pi, 1),
+    "∆b": process_element(binary_string, 1),
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
