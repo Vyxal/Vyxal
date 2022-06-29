@@ -59,7 +59,9 @@ def transpile(
     options: TranspilationOptions = TranspilationOptions(),
 ) -> str:
     return transpile_ast(
-        vyxal.parse.parse(vyxal.lexer.tokenise(program, options.variables_as_digraphs)),
+        vyxal.parse.parse(
+            vyxal.lexer.tokenise(program, options.variables_as_digraphs)
+        ),
         options=options,
     )
 
@@ -81,17 +83,13 @@ def transpile_ast(
 def transpile_single(
     token_or_struct: Union[Token, vyxal.structure.Structure],
     indent: int,
-    options: TranspilationOptions
+    options: TranspilationOptions,
 ) -> str:
     """Transpile a single token or structure"""
     if isinstance(token_or_struct, Token):
-        return transpile_token(
-            token_or_struct, indent, options=options
-        )
+        return transpile_token(token_or_struct, indent, options=options)
     elif isinstance(token_or_struct, vyxal.structure.Structure):
-        return transpile_structure(
-            token_or_struct, indent, options=options
-        )
+        return transpile_structure(token_or_struct, indent, options=options)
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"
@@ -133,7 +131,7 @@ def transpile_token(
                 temp += char
         if options.utf8strings:
             # Since all string-related stuff is ASCII this shouldn't ACE
-            temp = bytes(map(ord,utf8_to_vyxal(temp))).decode('utf-8')
+            temp = bytes(map(ord, utf8_to_vyxal(temp))).decode("utf-8")
         return indent_str(f'stack.append("{temp}")', indent)
     elif token.name == TokenType.NUMBER:
         parts = [
@@ -186,13 +184,13 @@ def transpile_token(
 
 
 def transpile_structure(
-    struct: vyxal.structure.Structure, indent: int, options: TranspilationOptions
+    struct: vyxal.structure.Structure,
+    indent: int,
+    options: TranspilationOptions,
 ) -> str:
     """Transpile a single vyxal.structure."""
     if isinstance(struct, vyxal.structure.GenericStatement):
-        return transpile_single(
-            struct.branches[0][0], indent, options=options
-        )
+        return transpile_single(struct.branches[0][0], indent, options=options)
     if isinstance(struct, vyxal.structure.IfStatement):
         # Holds indentation level as elifs will be nested inside the else part
         new_indent = indent
@@ -207,23 +205,17 @@ def transpile_structure(
                 cond = struct.branches[i]
                 res += indent_str("else:", new_indent)
                 new_indent += 1
-                res += transpile_ast(
-                    cond, new_indent, options=options
-                )
+                res += transpile_ast(cond, new_indent, options=options)
 
             res += indent_str("condition = pop(stack, 1, ctx=ctx)", new_indent)
             res += indent_str("if boolify(condition, ctx):", new_indent)
-            res += transpile_ast(
-                body, new_indent + 1, options=options
-            )
+            res += transpile_ast(body, new_indent + 1, options=options)
 
         # There's an extra else body at the end
         if len(struct.branches) % 2 == 0:
             body = struct.branches[-1]
             res += indent_str("else:", new_indent)
-            res += transpile_ast(
-                body, new_indent + 1, options=options
-            )
+            res += transpile_ast(body, new_indent + 1, options=options)
 
         return res
     if isinstance(struct, vyxal.structure.ForLoop):
@@ -241,9 +233,7 @@ def transpile_structure(
                 indent,
             )
             + indent_str(f"    ctx.context_values.append({var})", indent)
-            + transpile_ast(
-                struct.body, indent + 1, options=options
-            )
+            + transpile_ast(struct.body, indent + 1, options=options)
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, vyxal.structure.WhileLoop):
@@ -254,13 +244,9 @@ def transpile_structure(
             + indent_str("while boolify(condition, ctx):", indent)
             + indent_str("    ctx.context_values.append(condition)", indent)
             + indent_str("    ctx.context_values.append(counter)", indent)
-            + transpile_ast(
-                struct.body, indent + 1, options=options
-            )
+            + transpile_ast(struct.body, indent + 1, options=options)
             + indent_str("    ctx.context_values.pop()", indent)
-            + transpile_ast(
-                struct.condition, indent + 1, options=options
-            )
+            + transpile_ast(struct.condition, indent + 1, options=options)
             + indent_str("    condition = pop(stack, 1, ctx=ctx)", indent)
             + indent_str("    counter += 1", indent)
         )
