@@ -9,7 +9,6 @@ import traceback
 import types
 
 import vyxal.encoding
-import itertools
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.helpers import *
