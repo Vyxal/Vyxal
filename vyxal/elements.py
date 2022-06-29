@@ -6196,6 +6196,9 @@ def connected_uniquify(lhs, ctx: Context):
 
 
 def multidimensional_truthy_indices(lhs, ctx: Context):
+    """Element ÞT
+    (any) -> multi-dimensional truthy indices
+    """
     @lazylist
     def f(a, i=[]):
         if vy_type(a, simple=True) != list:
