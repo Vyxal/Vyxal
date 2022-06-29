@@ -849,7 +849,7 @@ lst a -> mean(a)
 `)
 
 codepage_descriptions.push(`Join By Nothing
-Join a list by the empty string
+Join a list by the empty string. Vectorises if the list contains lists.
 num a -> abs(a) <= 1
 str a -> pad with 0s to nearest positive multiple of 8
 lst a -> "".join(a)
@@ -2592,6 +2592,16 @@ codepage_descriptions[185] += `
 Returns true if the item is not sorted in either descending or ascending order.
 lst a -> is a not sorted, in either increasing or decreasing order?
 `
+codepage_descriptions[235] += `
+Þ⇧ (Is Strictly Ascending?)
+Returns true if the list is in strictly ascending order.
+lst a -> is a in strictly ascending order?
+`
+codepage_descriptions[236] += `
+Þ⇩ (Is Strictly Descending?)
+Returns true if the list is in strictly descending order.
+lst a -> is a in strictly descending order?
+`
 codepage_descriptions[142] += `
 Þċ (Cycle)
 Form an infinite list from a vector.
@@ -2601,6 +2611,11 @@ codepage_descriptions[75] += `
 ÞK (Suffixes)
 Suffixes of a list.
 lst a -> [a, a[:-1], a[:-2], ..., a[:1]]
+`
+codepage_descriptions[84] += `
+ÞT (Multi-dimensional truthy indices)
+Multi-dimensional indices of truthy elements
+lst a -> Multi-dimensional indices of truthy elements in a
 `
 codepage_descriptions[191] += `
 Þİ (First n Items and Rest)
