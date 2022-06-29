@@ -774,3 +774,8 @@ def test_dyadic_modifier_monadically():
 def test_vectorized_recursion():
     stack = run_vyxal("λ⅛-[vx];†¾", inputs=[[[1, 2], 3, [2, 3]]])
     assert stack[-1] == [[[1, 2], 3, [2, 3]], [1, 2], 1, 2, 3, [2, 3], 2, 3]
+
+
+def test_multidimensional_truthy_indices_infinite():
+    stack = run_vyxal("⟨⟨1|0|1|1|0⟩|1|⟨0|1|0⟩⟩ Þċ ÞT 20Ẏ")
+    assert stack[-1] == [[0, 0], [0, 2], [0, 3], [1], [2, 1], [3, 0], [3, 2], [3, 3], [4], [5, 1], [6, 0], [6, 2], [6, 3], [7], [8, 1], [9, 0], [9, 2], [9, 3], [10], [11, 1]]

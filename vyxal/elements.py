@@ -6195,6 +6195,18 @@ def connected_uniquify(lhs, ctx: Context):
     }.get(ts)()
 
 
+def multidimensional_truthy_indices(lhs, ctx: Context):
+    @lazylist
+    def f(a, i=[]):
+        if vy_type(a, simple=True) != list:
+            if a:
+                yield i
+        else:
+            for j, x in enumerate(a):
+                yield from f(x, i + [j])
+    return f(lhs)
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6688,6 +6700,7 @@ elements: dict[str, tuple[str, int]] = {
     "ÞȮ": process_element(is_ordered, 1),
     "ÞĊ": process_element(is_unordered, 1),
     "ÞK": process_element(suffixes_element, 1),
+    "ÞT": process_element(multidimensional_truthy_indices, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
         "stack.append(index(lhs, [0, rhs], ctx))\n"
