@@ -68,22 +68,6 @@ def process_element(
     return py_code, arity
 
 
-def add(lhs, rhs, ctx):
-    """Element +
-    (num, num) -> lhs + rhs
-    (num, str) -> str(lhs) + rhs
-    (str, num) -> lhs + str(rhs)
-    (str, str) -> lhs + rhs
-    """
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
-        (str, NUMBER_TYPE): lambda: lhs + str(rhs),
-        (str, str): lambda: lhs + rhs,
-    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
-
-
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
     (num, num) -> abs(a - b)
@@ -100,6 +84,22 @@ def absolute_difference(lhs, rhs, ctx):
         and re.match(rhs, lhs).group()
         or "",
     }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
+
+
+def add(lhs, rhs, ctx):
+    """Element +
+    (num, num) -> lhs + rhs
+    (num, str) -> str(lhs) + rhs
+    (str, num) -> lhs + str(rhs)
+    (str, str) -> lhs + rhs
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
+        (str, NUMBER_TYPE): lambda: lhs + str(rhs),
+        (str, str): lambda: lhs + rhs,
+    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
 def adjacency_matrix_dir(lhs, ctx):
@@ -6239,6 +6239,7 @@ def zfiller(lhs, rhs, ctx):
         + lhs,
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
