@@ -527,79 +527,10 @@ def base_255_number_compress(lhs, ctx):
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
-def optimal_number_compress(lhs, ctx):
-    """Element øċ
-    (num) -> Semi-optimally compress a number
-    """
-    if lhs < 0:
-        return optimal_number_compress(-lhs, ctx) + "N"
-    num_dict = {
-        10: "₀",
-        26: "₄",
-        64: "₆",
-        100: "₁",
-        128: "₇",
-        256: "₈",
-        512: "k¶",
-        1024: "k⁋",
-        2048: "k¦",
-        4096: "kṄ",
-        8192: "kṅ",
-        16384: "k¡",
-        32768: "kε",
-        65536: "k₴",
-        2**20: "k₂",
-        2**30: "k₃",
-        2**32: "kḭ",
-        1: "1",
-        2: "2",
-        3: "3",
-        4: "4",
-        5: "5",
-        6: "6",
-        7: "7",
-        8: "8",
-        9: "9",
-        360: "kR",
-    }
-    if lhs in num_dict:
-        return num_dict.get(lhs)
-    if lhs < 100 or 356 < lhs < 1000:
-        return str(lhs)
-    funs = [
-        (lambda x: x + 1, "›"),
-        (lambda x: x - 1, "‹"),
-        (lambda x: x * 2, "d"),
-        (lambda x: x / 2, "½"),
-        (lambda x: x**2, "²"),
-        (lambda x: x * 3, "T"),
-        (lambda x: 2**x, "E"),
-        (lambda x: 10**x, "↵"),
-        (lambda x: x**0.5, "√"),
-        (lambda x: x + 2, "⇧"),
-        (lambda x: x - 2, "⇩"),
-    ]
-    # Brute force functions applied to constants
-    for (fun, name) in funs:
-        for key in num_dict:
-            # safeguard to avoid calculating huge numbers
-            if (name not in "E↵" or key < 100) and fun(key) == lhs:
-                return num_dict.get(key) + name
-    if lhs <= 356:
-        return "⁺" + codepage[lhs - 101]
-    # Brute force functions applied to constants twice
-    for (fun, name) in funs:
-        for (fun2, name2) in funs:
-            for key in num_dict:
-                # safeguard to avoid calculating huge numbers
-                if (
-                    (name not in "E↵" or key < 100)
-                    and (name not in "E↵" or name2 not in "E↵")
-                    and (key < 100 or name2 not in "E↵")
-                    and fun2(fun(key)) == lhs
-                ):
-                    return num_dict.get(key) + name + name2
-    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
+def binary_string(lhs, ctx: Context):
+    if vy_type(lhs, simple=True) == list:
+        return vectorise(binary_string, lhs, ctx=ctx)
+    return bin(lhs).replace("0b", "")
 
 
 def bitwise_and(lhs, rhs, ctx):
@@ -990,6 +921,20 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
+def connected_uniquify(lhs, ctx: Context):
+    """Element ÞǓ
+    (any) -> connected uniquify a (Ġvh)
+    """
+    ts = vy_type(lhs, simple=True)
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(
+            connected_uniquify(str(lhs), ctx=ctx)
+        ),
+        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+        list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+    }.get(ts)()
+
+
 def cookie(_, ctx):
     while 1:
         vy_print("cookie", ctx=ctx)
@@ -1329,6 +1274,13 @@ def dyadic_minimum(lhs, rhs, ctx):
     return lhs if strict_less_than(lhs, rhs, ctx) else rhs
 
 
+def dyadic_runl_decode(lhs, rhs, ctx: Context):
+    """Element øḊ
+    (any, any) -> run length decode a with lengths b
+    """
+    return run_length_decoding(vy_zip(lhs, rhs, ctx=ctx), ctx=ctx)
+
+
 def e_digits(lhs, ctx):
     """Element ∆Ė
     (int) -> e_digits(a)
@@ -1551,7 +1503,7 @@ def factorials(_, ctx):
     return LazyList(gen(), isinf=True)
 
 
-def factorial_of_range(lhs, ctx):
+def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
     """Element øF
     (num, num) -> factorial of range
     (num, str) -> vectorised
@@ -1575,6 +1527,16 @@ def fibonaacis(_, ctx):
             i += 1
 
     return LazyList(gen(), isinf=True)
+
+
+def fill(lhs, rhs, ctx: Context):
+    """Element ÞḞ
+    (any, any) -> fill a with b to make a rectangular
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts[1] == list and ts[0] != list:
+        return fill(rhs, lhs, ctx)
+    return transpose(transpose(lhs, filler=rhs, ctx=ctx))
 
 
 def find(lhs, rhs, ctx):
@@ -2522,6 +2484,34 @@ def is_sorted_descending(lhs, ctx):
     )
 
 
+def is_sorted_strictly_ascending(lhs, ctx):
+    """Element Þ⇧
+    (lst) -> Returns true if an item is sorted in strictly
+             ascending order using default sorting rules.
+    """
+
+    return int(
+        all(
+            lambda x: strict_less_than(x[0], x[1], ctx)
+            for x in overlapping_groups(lhs, 2, ctx)
+        )
+    )
+
+
+def is_sorted_strictly_descending(lhs, ctx):
+    """Element Þ⇩
+    (lst) -> Returns true if an item is sorted in strictly
+             descending order using default sorting rules.
+    """
+
+    return int(
+        all(
+            lambda x: strict_greater_than(x[0], x[1], ctx)
+            for x in overlapping_groups(lhs, 2, ctx)
+        )
+    )
+
+
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -2931,6 +2921,16 @@ def mirror(lhs, ctx):
         return concat(lhs, reverse(lhs, ctx), ctx)
 
 
+def mod_pow(lhs, rhs, other, ctx: Context):
+    """Element ∆%
+    (any, any, any) -> a ** b mod c
+    """
+    ts = vy_type(lhs, rhs, other, simple=True)
+    if list in ts:
+        return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
+    return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
+
+
 def mode(lhs, ctx):
     """Element ∆M
     Most common item in a list.
@@ -3020,6 +3020,23 @@ def multi_dimensional_index(lhs, rhs, ctx):
     return lhs
 
 
+def multidimensional_truthy_indices(lhs, ctx: Context):
+    """Element ÞT
+    (any) -> multi-dimensional truthy indices
+    """
+
+    @lazylist
+    def f(a, i=[]):
+        if vy_type(a, simple=True) != list:
+            if a:
+                yield i
+        else:
+            for j, x in enumerate(a):
+                yield from f(x, i + [j])
+
+    return f(lhs)
+
+
 def multiplicity(lhs, rhs, ctx):
     """Element Ǒ
     (num, num) -> number of times a divides b
@@ -3087,6 +3104,7 @@ def multiset_difference(lhs, rhs, ctx):
     return lhs_copy
 
 
+@lazylist
 def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
@@ -3094,14 +3112,14 @@ def multiset_intersection(lhs, rhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)
     rhs = deep_copy(iterable(rhs, ctx=ctx))
-    res = []
 
-    for item in rhs:
-        if item in lhs:
-            res.append(item)
-            rhs = rhs.remove(item)
-
-    return res
+    for item in lhs:
+        if item in rhs:
+            yield item
+            if vy_type(rhs) == LazyList:
+                rhs = rhs.remove(item)
+            else:
+                rhs.remove(item)
 
 
 def multiset_union(lhs, rhs, ctx):
@@ -3419,6 +3437,81 @@ def optimal_compress(lhs, ctx):
             dp[i] = replace
 
     return quotify(dp[i], ctx)
+
+
+def optimal_number_compress(lhs, ctx):
+    """Element øċ
+    (num) -> Semi-optimally compress a number
+    """
+    if lhs < 0:
+        return optimal_number_compress(-lhs, ctx) + "N"
+    num_dict = {
+        10: "₀",
+        26: "₄",
+        64: "₆",
+        100: "₁",
+        128: "₇",
+        256: "₈",
+        512: "k¶",
+        1024: "k⁋",
+        2048: "k¦",
+        4096: "kṄ",
+        8192: "kṅ",
+        16384: "k¡",
+        32768: "kε",
+        65536: "k₴",
+        2**20: "k₂",
+        2**30: "k₃",
+        2**32: "kḭ",
+        1: "1",
+        2: "2",
+        3: "3",
+        4: "4",
+        5: "5",
+        6: "6",
+        7: "7",
+        8: "8",
+        9: "9",
+        360: "kR",
+    }
+    if lhs in num_dict:
+        return num_dict.get(lhs)
+    if lhs < 100 or 356 < lhs < 1000:
+        return str(lhs)
+    funs = [
+        (lambda x: x + 1, "›"),
+        (lambda x: x - 1, "‹"),
+        (lambda x: x * 2, "d"),
+        (lambda x: x / 2, "½"),
+        (lambda x: x**2, "²"),
+        (lambda x: x * 3, "T"),
+        (lambda x: 2**x, "E"),
+        (lambda x: 10**x, "↵"),
+        (lambda x: x**0.5, "√"),
+        (lambda x: x + 2, "⇧"),
+        (lambda x: x - 2, "⇩"),
+    ]
+    # Brute force functions applied to constants
+    for (fun, name) in funs:
+        for key in num_dict:
+            # safeguard to avoid calculating huge numbers
+            if (name not in "E↵" or key < 100) and fun(key) == lhs:
+                return num_dict.get(key) + name
+    if lhs <= 356:
+        return "⁺" + codepage[lhs - 101]
+    # Brute force functions applied to constants twice
+    for (fun, name) in funs:
+        for (fun2, name2) in funs:
+            for key in num_dict:
+                # safeguard to avoid calculating huge numbers
+                if (
+                    (name not in "E↵" or key < 100)
+                    and (name not in "E↵" or name2 not in "E↵")
+                    and (key < 100 or name2 not in "E↵")
+                    and fun2(fun(key)) == lhs
+                ):
+                    return num_dict.get(key) + name + name2
+    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
 def orderless_range(lhs, rhs, ctx):
@@ -4330,6 +4423,16 @@ def sans_last_prepend_zero(lhs, ctx):
         # a number just makes it the same number
         str: lambda: "0" + lhs[:-1],  # leave as string
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
+
+
+def separate_runl_encode(lhs, ctx: Context):
+    """Element øĖ
+    (any) -> run length encode a and push items and lengths both to the stack separately
+    """
+    enc = run_length_encoding(lhs, ctx)
+    items, lengths = transpose(enc)
+    ctx.stacks[-1].append(items)
+    return lengths
 
 
 def shortest(lhs, ctx):
@@ -6158,57 +6261,6 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
-def dyadic_runl_decode(lhs, rhs, ctx: Context):
-    """Element øḊ
-    (any, any) -> run length decode a with lengths b
-    """
-    return run_length_decoding(vy_zip(lhs, rhs, ctx=ctx), ctx=ctx)
-
-
-def separate_runl_encode(lhs, ctx: Context):
-    """Element øĖ
-    (any) -> run length encode a and push items and lengths both to the stack separately
-    """
-    enc = run_length_encoding(lhs, ctx)
-    items, lengths = transpose(enc)
-    ctx.stacks[-1].append(items)
-    return lengths
-
-
-def mod_pow(lhs, rhs, other, ctx: Context):
-    """Element ∆%
-    (any, any, any) -> a ** b mod c
-    """
-    ts = vy_type(lhs, rhs, other, simple=True)
-    if list in ts:
-        return vectorise(mod_pow, lhs, rhs, other, ctx=ctx)
-    return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
-
-
-def fill(lhs, rhs, ctx: Context):
-    """Element ÞḞ
-    (any, any) -> fill a with b to make a rectangular
-    """
-    ts = vy_type(lhs, rhs, simple=True)
-    if ts[1] == list and ts[0] != list:
-        return fill(rhs, lhs, ctx)
-    return transpose(transpose(lhs, filler=rhs, ctx=ctx))
-
-
-def connected_uniquify(lhs, ctx: Context):
-    """Element ÞǓ
-    (any) -> connected uniquify a (Ġvh)
-    """
-    ts = vy_type(lhs, simple=True)
-    return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(
-            connected_uniquify(str(lhs), ctx=ctx)
-        ),
-        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
-        list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
-    }.get(ts)()
-
-
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6536,6 +6588,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆P": process_element(polynomial_roots, 1),
     "∆ƈ": process_element(n_pick_r, 2),
     "∆i": process_element(nth_pi, 1),
+    "∆b": process_element(binary_string, 1),
     "∆ė": process_element(nth_e, 1),
     "∆I": process_element("pi_digits(lhs)", 1),
     "∆Ė": process_element(e_digits, 1),
@@ -6699,9 +6752,12 @@ elements: dict[str, tuple[str, int]] = {
     "Þṡ": process_element(sort_by_length, 1),
     "ÞṠ": process_element(is_sorted_ascending, 1),
     "ÞṘ": process_element(is_sorted_descending, 1),
+    "Þ⇧": process_element(is_sorted_strictly_ascending, 1),
+    "Þ⇩": process_element(is_sorted_strictly_descending, 1),
     "ÞȮ": process_element(is_ordered, 1),
     "ÞĊ": process_element(is_unordered, 1),
     "ÞK": process_element(suffixes_element, 1),
+    "ÞT": process_element(multidimensional_truthy_indices, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
         "stack.append(index(lhs, [0, rhs], ctx))\n"

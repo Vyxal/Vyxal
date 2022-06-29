@@ -2466,6 +2466,14 @@ IVXLCDM
 The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
 
 -------------------------------
+## `` ∆b `` (Binary String)
+
+Get a binary string of a number
+
+### Overloads
+
+- num a: `bin(a).replace("0b", "")`
+-------------------------------
 ## `` ∆c `` (Cosine)
 
 Get the cosine of an angle in radians
@@ -3752,6 +3760,22 @@ Returns true if the item is not sorted in either descending or ascending order.
 
 - lst a: `is a not sorted, in either increasing or decreasing order?`
 -------------------------------
+## `` Þ⇧ `` (Is Strictly Ascending?)
+
+Returns true if the list is in strictly ascending order.
+
+### Overloads
+
+- lst a: `is a in strictly ascending order?`
+-------------------------------
+## `` Þ⇩ `` (Is Strictly Descending?)
+
+Returns true if the list is in strictly descending order.
+
+### Overloads
+
+- lst a: `is a in strictly descending order?`
+-------------------------------
 ## `` Þċ `` (Cycle)
 
 Form an infinite list from a vector.
@@ -3767,6 +3791,14 @@ Suffixes of a list.
 ### Overloads
 
 - lst a: `[a, a[:-1], a[:-2], ..., a[:1]]`
+-------------------------------
+## `` ÞT `` (Multi-dimensional truthy indices)
+
+Multi-dimensional indices of truthy elements
+
+### Overloads
+
+- lst a: `Multi-dimensional indices of truthy elements in a`
 -------------------------------
 ## `` Þİ `` (First n Items and Rest)
 
