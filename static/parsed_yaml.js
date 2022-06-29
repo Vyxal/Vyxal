@@ -849,7 +849,7 @@ lst a -> mean(a)
 `)
 
 codepage_descriptions.push(`Join By Nothing
-Join a list by the empty string
+Join a list by the empty string. Vectorises if the list contains lists.
 num a -> abs(a) <= 1
 str a -> pad with 0s to nearest positive multiple of 8
 lst a -> "".join(a)

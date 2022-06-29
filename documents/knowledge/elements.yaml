@@ -1782,7 +1782,7 @@
 
 - element: "ṅ"
   name: Join By Nothing
-  description: Join a list by the empty string
+  description: Join a list by the empty string. Vectorises if the list contains lists.
   arity: 1
   overloads:
       num: abs(a) <= 1
@@ -1798,7 +1798,8 @@
       - '[""] : "00000000"'
       - '["asdf"] : "0000asdf"'
       - '["asdfghjk"] : "asdfghjk"'
-      - '[[],[]] : "⟨  ⟩⟨  ⟩"'
+      - '[[],[]] : ["", ""]'
+      - '[[1, ["abc", "def", "ghi"], [1, 2, 3], [0.5, 1.1, [1, 2, 3]]]] : [1, "abcdefghi", 123, [1, 0, 123]]'
 
 - element: "ȯ"
   name: Slice
