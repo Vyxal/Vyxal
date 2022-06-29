@@ -2597,6 +2597,11 @@ codepage_descriptions[75] += `
 Suffixes of a list.
 lst a -> [a, a[:-1], a[:-2], ..., a[:1]]
 `
+codepage_descriptions[84] += `
+ÞT (Multi-dimensional truthy indices)
+Multi-dimensional indices of truthy elements
+lst a -> Multi-dimensional indices of truthy elements in a
+`
 codepage_descriptions[191] += `
 Þİ (First n Items and Rest)
 Push the first n items of a, then the rest of a

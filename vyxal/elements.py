@@ -6204,6 +6204,7 @@ def multidimensional_truthy_indices(lhs, ctx: Context):
         else:
             for j, x in enumerate(a):
                 yield from f(x, i + [j])
+
     return f(lhs)
 
 
