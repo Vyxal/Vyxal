@@ -12,7 +12,7 @@ import vyxal.encoding
 from vyxal.context import Context
 from vyxal.elements import *
 from vyxal.helpers import *
-from vyxal.transpile import transpile
+from vyxal.transpile import transpile, TranspilationOptions
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -143,8 +143,11 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 1
 
     try:
+        options = TranspilationOptions()
+        options.dict_compress = ctx.dictionary_compression
+        options.variables_as_digraphs = ctx.variable_length_1
         code = transpile(
-            code, ctx.dictionary_compression, ctx.variable_length_1
+            code, options
         )
     except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
@@ -270,7 +273,8 @@ def repl():
     ctx.repl_mode = True
     while True:
         # Vyxal REPL ftw
-        line = transpile(input(">>> "))
+        # Empty options is still required
+        line = transpile(input(">>> "), TranspilationOptions())
         stack = []
         ctx.stacks.append(stack)  # Finally, a use case for assignment by
         # reference. Never thought I'd fine a time
