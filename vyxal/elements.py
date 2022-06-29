@@ -170,6 +170,25 @@ def align_right(lhs, ctx):
     return result
 
 
+def all_antidiagonals(lhs, ctx):
+    """Element Þḋ
+    Anti-diagonals of a matrix, starting with the main anti-diagonal.
+    """
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
+    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
+    start = 0
+    for row in vector:
+        for i in range(len(vector[0])):
+            all_diags[
+                (start - i + min(len(vector), len(vector[0])) - 1)
+                % len(all_diags)
+            ].append(row[i])
+        start -= 1
+    return all_diags
+
+
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -222,25 +241,6 @@ def all_diagonals(lhs, ctx):
     for row in vector:
         for i in range(len(vector[0])):
             all_diags[(start + i) % len(all_diags)].append(row[i])
-        start -= 1
-    return all_diags
-
-
-def all_antidiagonals(lhs, ctx):
-    """Element Þḋ
-    Anti-diagonals of a matrix, starting with the main anti-diagonal.
-    """
-    vector = [iterable(x, ctx=ctx) for x in lhs]
-    if not vector:
-        return []
-    all_diags = [[] for _ in range(len(vector) + len(vector[0]) - 1)]
-    start = 0
-    for row in vector:
-        for i in range(len(vector[0])):
-            all_diags[
-                (start - i + min(len(vector), len(vector[0])) - 1)
-                % len(all_diags)
-            ].append(row[i])
         start -= 1
     return all_diags
 
@@ -505,6 +505,13 @@ def assign_iterable(lhs, rhs, other, ctx):
         return gen()
 
 
+def base_255_number_compress(lhs, ctx):
+    """Element øC
+    (num) -> Compress a number in base 255
+    """
+    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
+
+
 def base_255_string_compress(lhs, ctx):
     """Element øc
     (str) -> Compress a string of lowercase letters and spaces in base 255
@@ -518,13 +525,6 @@ def base_255_string_compress(lhs, ctx):
         )
         + "«"
     )
-
-
-def base_255_number_compress(lhs, ctx):
-    """Element øC
-    (num) -> Compress a number in base 255
-    """
-    return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
 def binary_string(lhs, ctx: Context):
@@ -549,6 +549,20 @@ def bitwise_and(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_and, lhs, rhs, ctx=ctx))()
 
 
+def bitwise_not(lhs, ctx):
+    """Element ꜝ
+    (num) -> ~a
+    (str) -> any_upper(a)
+    (list) -> filter(a, is_truthy)
+    """
+    if vy_type(lhs) is NUMBER_TYPE:
+        return ~int(lhs)
+    elif vy_type(lhs, simple=True) is list:
+        return vy_filter(lhs, boolify, ctx=ctx)
+    else:
+        return int(any(char.isupper() for char in str(lhs)))
+
+
 def bitwise_or(lhs, rhs, ctx):
     """Element ⋎
     (num, num) -> a | b
@@ -570,20 +584,6 @@ def bitwise_or(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: rhs[:lhs] + rhs[lhs + 1 :],
         (str, NUMBER_TYPE): lambda: lhs[:rhs] + lhs[rhs + 1 :],
     }.get(ts, lambda: vectorise(bitwise_or, lhs, rhs, ctx=ctx))()
-
-
-def bitwise_not(lhs, ctx):
-    """Element ꜝ
-    (num) -> ~a
-    (str) -> any_upper(a)
-    (list) -> filter(a, is_truthy)
-    """
-    if vy_type(lhs) is NUMBER_TYPE:
-        return ~int(lhs)
-    elif vy_type(lhs, simple=True) is list:
-        return vy_filter(lhs, boolify, ctx=ctx)
-    else:
-        return int(any(char.isupper() for char in str(lhs)))
 
 
 def bitwise_xor(lhs, rhs, ctx):
@@ -903,6 +903,20 @@ def complement(lhs, ctx):
     )()
 
 
+def connected_uniquify(lhs, ctx: Context):
+    """Element ÞǓ
+    (any) -> connected uniquify a (Ġvh)
+    """
+    ts = vy_type(lhs, simple=True)
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(
+            connected_uniquify(str(lhs), ctx=ctx)
+        ),
+        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+        list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
+    }.get(ts)()
+
+
 def contains(lhs, rhs, ctx):
     """Element c
     (any, fun) -> first item in a where b is truthy
@@ -919,20 +933,6 @@ def contains(lhs, rhs, ctx):
         lhs = iterable(lhs, ctx=ctx)
         return int(rhs in lhs)
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
-
-
-def connected_uniquify(lhs, ctx: Context):
-    """Element ÞǓ
-    (any) -> connected uniquify a (Ġvh)
-    """
-    ts = vy_type(lhs, simple=True)
-    return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(
-            connected_uniquify(str(lhs), ctx=ctx)
-        ),
-        str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
-        list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
-    }.get(ts)()
 
 
 def cookie(_, ctx):
@@ -1012,6 +1012,14 @@ def counts(lhs, ctx):
     return [[x, count_item(lhs, x, ctx)] for x in temp]
 
 
+def cumul_sum_sans_last_prepend_zero(lhs, ctx):
+    """Element ÞR
+    Remove the last item of the cumulative sums of a list and prepend 0.
+    """
+
+    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
+
+
 def cumulative_sum(lhs, ctx):
     """Element ¦
     (any) -> cumulative sum of a
@@ -1021,14 +1029,6 @@ def cumulative_sum(lhs, ctx):
     elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
         return []
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
-
-
-def cumul_sum_sans_last_prepend_zero(lhs, ctx):
-    """Element ÞR
-    Remove the last item of the cumulative sums of a list and prepend 0.
-    """
-
-    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
 
 
 def curly_bracketify(lhs, ctx):
@@ -1209,6 +1209,18 @@ def divide_lists(lhs, rhs, ctx):
     return chop(lhs, rhs)
 
 
+def divisor_sum(lhs, ctx):
+    """Element ∆K
+    (num) -> sum of proper divisors of a
+    (str) -> stationary points of a
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: vy_sum(divisors_or_prefixes(lhs, ctx)[:-1], ctx),
+        str: lambda: stationary_points(lhs),
+    }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
+
+
 def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
@@ -1232,18 +1244,6 @@ def divisors_or_prefixes(lhs, ctx):
         )
     else:
         return prefixes(lhs, ctx=ctx)
-
-
-def divisor_sum(lhs, ctx):
-    """Element ∆K
-    (num) -> sum of proper divisors of a
-    (str) -> stationary points of a
-    """
-    ts = vy_type(lhs)
-    return {
-        NUMBER_TYPE: lambda: vy_sum(divisors_or_prefixes(lhs, ctx)[:-1], ctx),
-        str: lambda: stationary_points(lhs),
-    }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
 
 def dot_product(lhs, rhs, ctx):
@@ -1316,6 +1316,34 @@ def element_wise_dyadic_minimum(lhs, rhs, ctx):
     if list in ts:
         return vectorise(element_wise_dyadic_minimum, lhs, rhs, ctx=ctx)
     return min(lhs, rhs)
+
+
+def ends_with(lhs, rhs, ctx):
+    """Element øE
+    (str, str) -> True if a ends with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+            (list, list): lambda: lhs[-1] == rhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
+
+
+def ends_with_set(lhs, rhs, ctx):
+    """Element øf
+    (list, list) -> True if a ends with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[-len(rhs) :] == rhs if len(rhs) else 1,
+            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
+        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
+    )
 
 
 def equals(lhs, rhs, ctx):
@@ -1489,20 +1517,6 @@ def factorial(lhs, ctx):
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
 
 
-def factorials(_, ctx):
-    """Element Þ!
-    An infinite lazylist of factorials
-    """
-
-    def gen():
-        i = 0
-        while True:
-            yield factorial(i, ctx)
-            i += 1
-
-    return LazyList(gen(), isinf=True)
-
-
 def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
     """Element øF
     (num, num) -> factorial of range
@@ -1524,6 +1538,20 @@ def fibonaacis(_, ctx):
         i = 0
         while True:
             yield sympy.fibonacci(i + 1)
+            i += 1
+
+    return LazyList(gen(), isinf=True)
+
+
+def factorials(_, ctx):
+    """Element Þ!
+    An infinite lazylist of factorials
+    """
+
+    def gen():
+        i = 0
+        while True:
+            yield factorial(i, ctx)
             i += 1
 
     return LazyList(gen(), isinf=True)
@@ -1678,6 +1706,27 @@ def foldl_columns(lhs, rhs, ctx):
     return [foldl(rhs, col, ctx=ctx) for col in lhs]
 
 
+def from_base(lhs, rhs, ctx):
+    """Element β
+    Convert lhs from base rhs to base 10
+    """
+    ts = vy_type(lhs, rhs, simple=True)
+    if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
+        ts[1] == list and ts[0] != list
+    ):
+        return from_base(rhs, lhs, ctx)
+    if ts == (str, str):
+        return from_base_alphabet(lhs, rhs)
+    elif ts[-1] == NUMBER_TYPE:
+        if ts[0] == str:
+            return from_base(
+                lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
+            )
+        return from_base_digits(iterable(lhs, ctx=ctx), rhs)
+    else:
+        raise ValueError("from_base: invalid types")
+
+
 def function_call(lhs, ctx):
     """Element †
     (fun) -> lhs()
@@ -1701,27 +1750,6 @@ def function_call(lhs, ctx):
         str: lambda: exec(top) or [] if not ctx.online else [],
         list: lambda: vectorised_not(top, ctx=ctx),
     }.get(ts)()
-
-
-def from_base(lhs, rhs, ctx):
-    """Element β
-    Convert lhs from base rhs to base 10
-    """
-    ts = vy_type(lhs, rhs, simple=True)
-    if (ts[0] == NUMBER_TYPE and ts[1] != NUMBER_TYPE) or (
-        ts[1] == list and ts[0] != list
-    ):
-        return from_base(rhs, lhs, ctx)
-    if ts == (str, str):
-        return from_base_alphabet(lhs, rhs)
-    elif ts[-1] == NUMBER_TYPE:
-        if ts[0] == str:
-            return from_base(
-                lhs, (string.digits + string.ascii_lowercase)[:rhs], ctx
-            )
-        return from_base_digits(iterable(lhs, ctx=ctx), rhs)
-    else:
-        raise ValueError("from_base: invalid types")
 
 
 def gen_from_fn(lhs, rhs, ctx):
@@ -1785,24 +1813,6 @@ def general_quadratic_solver(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(general_quadratic_solver, lhs, rhs, ctx=ctx))()
 
 
-def grade_up(lhs, ctx):
-    """Element ⇧
-    (lst) -> graded_up(a)
-    (str) -> a.upper()
-    (num) -> a + 2
-    """
-    ts = vy_type(lhs)
-    return {(NUMBER_TYPE): lambda: lhs + 2, (str): lambda: lhs.upper()}.get(
-        ts,
-        lambda: LazyList(
-            map(
-                lambda x: x[0],
-                sorted(enumerate(deep_copy(lhs)), key=lambda x: x[-1]),
-            ),
-        ),
-    )()
-
-
 def grade_down(lhs, ctx):
     """Element ⇩
     (lst) -> graded_down(a)
@@ -1818,6 +1828,24 @@ def grade_down(lhs, ctx):
                 sorted(
                     enumerate(deep_copy(lhs)), key=lambda x: x[-1], reverse=True
                 ),
+            ),
+        ),
+    )()
+
+
+def grade_up(lhs, ctx):
+    """Element ⇧
+    (lst) -> graded_up(a)
+    (str) -> a.upper()
+    (num) -> a + 2
+    """
+    ts = vy_type(lhs)
+    return {(NUMBER_TYPE): lambda: lhs + 2, (str): lambda: lhs.upper()}.get(
+        ts,
+        lambda: LazyList(
+            map(
+                lambda x: x[0],
+                sorted(enumerate(deep_copy(lhs)), key=lambda x: x[-1]),
             ),
         ),
     )()
@@ -2093,6 +2121,20 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return recursive_helper(rhs)
 
 
+@infinite_lazylist
+def infinite_all_integers(_, ctx=None):
+    """Element Þn
+    An infinite list of all integers (0, 1, -1, 2, -2, ...)
+    """
+
+    yield 0
+    i = 1
+    while 1:
+        yield i
+        yield -i
+        i += 1
+
+
 def infinite_cardinals(_, ctx=None):
     """Element Þc
     infinite sequence of cardinals
@@ -2141,20 +2183,6 @@ def infinite_positives(_, ctx=None):
             i += 1
 
     return gen()
-
-
-@infinite_lazylist
-def infinite_all_integers(_, ctx=None):
-    """Element Þn
-    An infinite list of all integers (0, 1, -1, 2, -2, ...)
-    """
-
-    yield 0
-    i = 1
-    while 1:
-        yield i
-        yield -i
-        i += 1
 
 
 def infinite_primes(_, ctx=None):
@@ -2395,17 +2423,6 @@ def is_divisible(lhs, rhs, ctx):
     }.get(ts, lambda: [helper(lhs, rhs)])()
 
 
-def is_divisible_by_three(lhs, ctx):
-    """Element ₃
-    (num) -> a % 3 == 0
-    (str) -> len(a) == 1
-    """
-    if vy_type(lhs) == NUMBER_TYPE:
-        return int(lhs % 3 == 0)
-    else:
-        return int(len(lhs) == 1)
-
-
 def is_divisible_by_five(lhs, ctx):
     """
     Element ₅
@@ -2417,6 +2434,17 @@ def is_divisible_by_five(lhs, ctx):
         return [int(lhs % 5 == 0)]
     else:
         return [lhs, len(lhs)]
+
+
+def is_divisible_by_three(lhs, ctx):
+    """Element ₃
+    (num) -> a % 3 == 0
+    (str) -> len(a) == 1
+    """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return int(lhs % 3 == 0)
+    else:
+        return int(len(lhs) == 1)
 
 
 def is_even(lhs, ctx):
@@ -2991,6 +3019,17 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
+def multi_dimensional_index(lhs, rhs, ctx):
+    """Element Þi
+    (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
+                  a as initial value
+    """
+    for item in iterable(rhs, ctx=ctx):
+        lhs = index(lhs, item, ctx)
+
+    return lhs
+
+
 def multi_dimensional_search(lhs, rhs, ctx):
     """Element Þḟ
     (lst, any) -> Find the first occurrence of a in b and return as a
@@ -3003,17 +3042,6 @@ def multi_dimensional_search(lhs, rhs, ctx):
             return ind
 
     return []
-
-
-def multi_dimensional_index(lhs, rhs, ctx):
-    """Element Þi
-    (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
-                  a as initial value
-    """
-    for item in iterable(rhs, ctx=ctx):
-        lhs = index(lhs, item, ctx)
-
-    return lhs
 
 
 def multidimensional_truthy_indices(lhs, ctx: Context):
@@ -3118,16 +3146,6 @@ def multiset_intersection(lhs, rhs, ctx):
                 rhs.remove(item)
 
 
-def multiset_union(lhs, rhs, ctx):
-    """Element Þ∪
-    (lst, lst) -> Return the multi-set union of two lists
-    """
-
-    return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
-        multiset_difference(rhs, lhs, ctx)
-    )
-
-
 def multiset_symmetric_difference(lhs, rhs, ctx):
     """Element Þ⊍
     (lst, lst) -> Return the multi-set symmetric difference of two lists
@@ -3140,20 +3158,14 @@ def multiset_symmetric_difference(lhs, rhs, ctx):
     )
 
 
-def natural_log(lhs, ctx):
-    """Element ∆L
-    (num) -> ln(a)
-    (str) -> inverse of expression a
+def multiset_union(lhs, rhs, ctx):
+    """Element Þ∪
+    (lst, lst) -> Return the multi-set union of two lists
     """
-    x, y = sympy.symbols("x, y")
-    ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: sympy.ln(lhs),
-        (str): lambda: map(
-            lambda ex: str(ex.subs(y, x)),
-            wrapify(sympy.solve(y - make_expression(lhs), x)),
-        ),
-    }.get(ts, lambda: vectorise(natural_log, lhs, ctx=ctx))()
+
+    return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
+        multiset_difference(rhs, lhs, ctx)
+    )
 
 
 def n_choose_r(lhs, rhs, ctx):
@@ -3192,6 +3204,22 @@ def n_pick_r(lhs, rhs, ctx):
         (str, NUMBER_TYPE): lambda: n_pick_r(len(lhs), rhs, ctx),
         (str, str): lambda: n_pick_r(len(lhs), len(rhs), ctx),
     }.get(ts, lambda: vectorise(n_pick_r, lhs, rhs, ctx=ctx))()
+
+
+def natural_log(lhs, ctx):
+    """Element ∆L
+    (num) -> ln(a)
+    (str) -> inverse of expression a
+    """
+    x, y = sympy.symbols("x, y")
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: sympy.ln(lhs),
+        (str): lambda: map(
+            lambda ex: str(ex.subs(y, x)),
+            wrapify(sympy.solve(y - make_expression(lhs), x)),
+        ),
+    }.get(ts, lambda: vectorise(natural_log, lhs, ctx=ctx))()
 
 
 def nearest_prime(lhs, ctx):
@@ -3569,9 +3597,6 @@ def overlapping_groups(lhs, rhs, ctx):
     return gen()
 
 
-# This is a helper function used to draw on a canvas with overloads
-# It can't be in Canvas.py because it needs to be able to access type overloads
-# And it can't be in helpers because it needs to be able to access vy_type
 def overloaded_canvas_draw(lhs, rhs, other, ctx):
     ts = vy_type(lhs, rhs, other, simple=True)
 
@@ -3803,6 +3828,16 @@ def powerset(lhs, ctx):
         yield from new_sets
 
 
+def prepend(lhs, rhs, ctx):
+    """Element p
+    (any, any) -> a.prepend(b) (Prepend b to a)
+    """
+    ts = vy_type(lhs, rhs)
+    return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
+        ts, lambda: [rhs] + lhs
+    )()
+
+
 def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
@@ -3828,6 +3863,17 @@ def prime_exponents(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
+def prime_factorisation(lhs, ctx):
+    """Element Ǐ
+    (num) -> prime_factors(a) (no duplicates)
+    (str) -> lhs + lhs[0]"""
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
+        str: lambda: lhs + lhs[0],
+    }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
+
+
 def prime_factors(lhs, ctx):
     """Element ǐ
     (num) -> prime_factors(a) (with duplicates)
@@ -3844,27 +3890,6 @@ def prime_factors(lhs, ctx):
         ),
         (str): lambda: lhs.title(),
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
-
-
-def prime_factorisation(lhs, ctx):
-    """Element Ǐ
-    (num) -> prime_factors(a) (no duplicates)
-    (str) -> lhs + lhs[0]"""
-    ts = vy_type(lhs)
-    return {
-        NUMBER_TYPE: lambda: sympy.ntheory.primefactors(int(lhs)),
-        str: lambda: lhs + lhs[0],
-    }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
-
-
-def prepend(lhs, rhs, ctx):
-    """Element p
-    (any, any) -> a.prepend(b) (Prepend b to a)
-    """
-    ts = vy_type(lhs, rhs)
-    return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
-        ts, lambda: [rhs] + lhs
-    )()
 
 
 def product(lhs, ctx):
@@ -3941,17 +3966,6 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
-def remove_at_index(lhs, rhs, ctx):
-    """Element ⟇
-    (any, num) -> remove item b of a
-    """
-
-    lhs, rhs = (rhs, lhs) if vy_type(rhs) != NUMBER_TYPE else (lhs, rhs)
-    lhs = iterable(lhs, ctx=ctx)
-
-    return LazyList(item for i, item in enumerate(lhs) if i != rhs)
-
-
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -4006,6 +4020,17 @@ def remove(lhs, rhs, ctx):
         return lhs.filter(lambda elem: elem != rhs)
     else:
         return [elem for elem in lhs if elem != rhs]
+
+
+def remove_at_index(lhs, rhs, ctx):
+    """Element ⟇
+    (any, num) -> remove item b of a
+    """
+
+    lhs, rhs = (rhs, lhs) if vy_type(rhs) != NUMBER_TYPE else (lhs, rhs)
+    lhs = iterable(lhs, ctx=ctx)
+
+    return LazyList(item for i, item in enumerate(lhs) if i != rhs)
 
 
 def remove_non_alphabets(lhs, ctx):
@@ -4371,20 +4396,6 @@ def round_to(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(round_to, lhs, rhs, ctx=ctx))()
 
 
-# Written by copilot. Did NOT work.
-def run_length_encoding(lhs, ctx):
-    """Element øe
-    (str) -> List of the form [[character, count], ...]
-    """
-    lhs = iterable(lhs, ctx=ctx)
-    return LazyList(
-        map(
-            lambda elem: [elem[0], len(list(elem[1]))],
-            itertools.groupby(lhs),
-        )
-    )
-
-
 def run_length_decoding(lhs, ctx):
     """Element ød
     (lst) -> Run length decoding
@@ -4407,6 +4418,19 @@ def run_length_decoding(lhs, ctx):
         return "".join(temp)
     else:
         return LazyList(temp)
+
+
+def run_length_encoding(lhs, ctx):
+    """Element øe
+    (str) -> List of the form [[character, count], ...]
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    return LazyList(
+        map(
+            lambda elem: [elem[0], len(list(elem[1]))],
+            itertools.groupby(lhs),
+        )
+    )
 
 
 def sans_last_prepend_zero(lhs, ctx):
@@ -4544,36 +4568,6 @@ def sort_by_length(lhs, ctx):
     return sort_by(lhs, length, ctx)
 
 
-def split_on(lhs, rhs, ctx):
-    """
-    Element €
-    (num, num) -> str(lhs).split(rhs)
-    (num, str) -> str(lhs).split(rhs)
-    (str, num) -> lhs.split(str(rhs))
-    (str, str) -> lhs.split(rhs)
-
-    """
-    if types.FunctionType in vy_type(lhs, rhs):
-        return coords_deepmap(lhs, rhs, ctx=ctx)
-
-    if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
-        return str(lhs).split(str(rhs))
-
-    @lazylist
-    def gen():
-        ret, temp = [], []
-        for item in iterable(lhs, ctx=ctx):
-            if item == rhs:
-                yield temp[::]
-                temp = []
-            else:
-                temp.append(item)
-        if temp:
-            yield temp
-
-    return gen()
-
-
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
@@ -4623,6 +4617,36 @@ def split_keep(lhs, rhs, ctx):
             return LazyList(gen())
 
 
+def split_on(lhs, rhs, ctx):
+    """
+    Element €
+    (num, num) -> str(lhs).split(rhs)
+    (num, str) -> str(lhs).split(rhs)
+    (str, num) -> lhs.split(str(rhs))
+    (str, str) -> lhs.split(rhs)
+
+    """
+    if types.FunctionType in vy_type(lhs, rhs):
+        return coords_deepmap(lhs, rhs, ctx=ctx)
+
+    if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
+        return str(lhs).split(str(rhs))
+
+    @lazylist
+    def gen():
+        ret, temp = [], []
+        for item in iterable(lhs, ctx=ctx):
+            if item == rhs:
+                yield temp[::]
+                temp = []
+            else:
+                temp.append(item)
+        if temp:
+            yield temp
+
+    return gen()
+
+
 def square(lhs, ctx):
     """Element ²
     (num) -> a ** 2 (Squared)
@@ -4652,6 +4676,62 @@ def square_root(lhs, ctx):
         NUMBER_TYPE: lambda: sympy.sqrt(lhs),
         str: lambda: "".join(lhs[::2]),
     }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
+
+
+def starts_with(lhs, rhs, ctx):
+    """Element øp
+    (str, str) -> True if a starts with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+            (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def starts_with(lhs, rhs, ctx):
+    """Element øp
+    (str, str) -> True if a starts with b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+            (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
 
 
 def strict_greater_than(lhs, rhs, ctx):
@@ -4688,6 +4768,42 @@ def strict_less_than(lhs, rhs, ctx):
             bool(list(iterable(lhs, ctx=ctx)) < list(iterable(rhs, ctx=ctx)))
         ),
     )()
+
+
+def strip(lhs, rhs, ctx):
+    """Element P
+    (any, any) -> a.strip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).strip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).strip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
+        (str, str): lambda: lhs.strip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx))()
+
+
+def strip_left(lhs, rhs, ctx):
+    """Element øl
+    (any, any) -> a.lstrip(b)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(vy_str(rhs, ctx=ctx)),
+            ctx,
+        ),
+        (NUMBER_TYPE, str): lambda: vy_eval(
+            vy_str(lhs, ctx=ctx).lstrip(rhs), ctx
+        ),
+        (str, NUMBER_TYPE): lambda: lhs.lstrip(str(rhs)),
+        (str, str): lambda: lhs.lstrip(rhs),
+    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, -1))()
 
 
 def strip_list_helper(left, right, ctx, sign=0):
@@ -4732,42 +4848,6 @@ def strip_list_helper(left, right, ctx, sign=0):
         left = strip_front(left[::-1], right)[::-1]
 
     return left
-
-
-def strip(lhs, rhs, ctx):
-    """Element P
-    (any, any) -> a.strip(b)
-    """
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs, ctx=ctx).strip(vy_str(rhs, ctx=ctx)),
-            ctx,
-        ),
-        (NUMBER_TYPE, str): lambda: vy_eval(
-            vy_str(lhs, ctx=ctx).strip(rhs), ctx
-        ),
-        (str, NUMBER_TYPE): lambda: lhs.strip(str(rhs)),
-        (str, str): lambda: lhs.strip(rhs),
-    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx))()
-
-
-def strip_left(lhs, rhs, ctx):
-    """Element øl
-    (any, any) -> a.lstrip(b)
-    """
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
-            vy_str(lhs, ctx=ctx).lstrip(vy_str(rhs, ctx=ctx)),
-            ctx,
-        ),
-        (NUMBER_TYPE, str): lambda: vy_eval(
-            vy_str(lhs, ctx=ctx).lstrip(rhs), ctx
-        ),
-        (str, NUMBER_TYPE): lambda: lhs.lstrip(str(rhs)),
-        (str, str): lambda: lhs.lstrip(rhs),
-    }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, -1))()
 
 
 def strip_right(lhs, rhs, ctx):
@@ -4820,62 +4900,6 @@ def strip_whitespace_right(lhs, ctx):
     return {str: lambda: vy_str(lhs, ctx=ctx).rstrip()}.get(
         ts, lambda: vectorise(strip_whitespace_right, lhs, ctx=ctx)
     )()
-
-
-def starts_with(lhs, rhs, ctx):
-    """Element øp
-    (str, str) -> True if a starts with b
-    """
-    ts = primitive_type(lhs), primitive_type(rhs)
-    return int(
-        {
-            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
-            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
-            (list, list): lambda: lhs[0] == rhs,
-        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
-    )
-
-
-def ends_with(lhs, rhs, ctx):
-    """Element øE
-    (str, str) -> True if a ends with b
-    """
-    ts = primitive_type(lhs), primitive_type(rhs)
-    return int(
-        {
-            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
-            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
-            (list, list): lambda: lhs[-1] == rhs,
-        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
-    )
-
-
-def starts_with_set(lhs, rhs, ctx):
-    """Element øs
-    (list, list) -> True if a starts with all of b
-    """
-    ts = primitive_type(lhs), primitive_type(rhs)
-    return int(
-        {
-            (list, list): lambda: lhs[: len(rhs)] == rhs,
-            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
-            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
-        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
-    )
-
-
-def ends_with_set(lhs, rhs, ctx):
-    """Element øf
-    (list, list) -> True if a ends with all of b
-    """
-    ts = primitive_type(lhs), primitive_type(rhs)
-    return int(
-        {
-            (list, list): lambda: lhs[-len(rhs) :] == rhs if len(rhs) else 1,
-            (list, SCALAR_TYPE): lambda: lhs[-1] == rhs,
-            (SCALAR_TYPE, list): lambda: rhs[-1] == lhs,
-        }.get(ts, lambda: vy_str(lhs).endswith(vy_str(rhs)))()
-    )
 
 
 def sublists(lhs, ctx):
@@ -5852,63 +5876,6 @@ def vy_map_or_pair_each(lhs, rhs, ctx):
     return vy_map(function, iterable(itr, range, ctx=ctx), ctx=ctx)
 
 
-def vy_sort(lhs, ctx):
-    """
-    (any) -> sorted(a)
-    """
-    # This one deviates from the usual type dictionary, because lambas
-    # just don't cut it.
-    if isinstance(lhs, int):
-        if lhs >= 0:
-            return int("".join(sorted(str(lhs))))
-        else:
-            return int("".join(sorted(str(-lhs)))) * -1
-    if vy_type(lhs) == NUMBER_TYPE:
-        sign = 1 if lhs >= 0 else -1
-        number = str(sympy.N(abs(lhs), 15))
-        parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
-        return sympy.nsimplify(".".join(parts), rational=True) * sign
-
-    elif isinstance(lhs, str):
-        return "".join(sorted(lhs))
-    else:
-        return LazyList(sorted(lhs))
-
-
-def vy_str(lhs, ctx=None):
-    """Element S
-    (any) -> str(s)
-    """
-    ts = vy_type(lhs)
-    return {
-        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
-        (str): lambda: lhs,  # wow so complex and hard to understand /s
-        (types.FunctionType): lambda: vy_str(
-            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
-        ),
-    }.get(
-        ts,
-        lambda: ("⟨ " if ctx.vyxal_lists else "[")
-        + (" | " if ctx.vyxal_lists else ", ").join(
-            map(
-                lambda x: vy_repr(x, ctx),
-                list(lhs) or [],
-            )
-        )
-        + (" ⟩" if ctx.vyxal_lists else "]"),
-    )()
-
-
-def vy_sum(lhs, ctx=None):
-    """Element ∑
-    (any) -> reduce a by addition
-    """
-    lhs = iterable(lhs, ctx=ctx)
-    if not lhs:
-        return 0
-    return foldl(add, lhs, ctx=ctx)
-
-
 def vy_print(lhs, end="\n", ctx=None):
     """Element ,
     (any) -> send to stdout
@@ -6008,6 +5975,63 @@ def vy_round(lhs, ctx):
         + "\n"
         + vertical_mirror(lhs, ctx=ctx)[::-1],
     }.get(ts, lambda: vectorise(vy_round, lhs, ctx=ctx))()
+
+
+def vy_sort(lhs, ctx):
+    """
+    (any) -> sorted(a)
+    """
+    # This one deviates from the usual type dictionary, because lambas
+    # just don't cut it.
+    if isinstance(lhs, int):
+        if lhs >= 0:
+            return int("".join(sorted(str(lhs))))
+        else:
+            return int("".join(sorted(str(-lhs)))) * -1
+    if vy_type(lhs) == NUMBER_TYPE:
+        sign = 1 if lhs >= 0 else -1
+        number = str(sympy.N(abs(lhs), 15))
+        parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
+        return sympy.nsimplify(".".join(parts), rational=True) * sign
+
+    elif isinstance(lhs, str):
+        return "".join(sorted(lhs))
+    else:
+        return LazyList(sorted(lhs))
+
+
+def vy_str(lhs, ctx=None):
+    """Element S
+    (any) -> str(s)
+    """
+    ts = vy_type(lhs)
+    return {
+        (NUMBER_TYPE): lambda: str(sympy.nsimplify(lhs, rational=True)),
+        (str): lambda: lhs,  # wow so complex and hard to understand /s
+        (types.FunctionType): lambda: vy_str(
+            safe_apply(lhs, *ctx.stacks[-1], ctx=ctx), ctx
+        ),
+    }.get(
+        ts,
+        lambda: ("⟨ " if ctx.vyxal_lists else "[")
+        + (" | " if ctx.vyxal_lists else ", ").join(
+            map(
+                lambda x: vy_repr(x, ctx),
+                list(lhs) or [],
+            )
+        )
+        + (" ⟩" if ctx.vyxal_lists else "]"),
+    )()
+
+
+def vy_sum(lhs, ctx=None):
+    """Element ∑
+    (any) -> reduce a by addition
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    if not lhs:
+        return 0
+    return foldl(add, lhs, ctx=ctx)
 
 
 def vy_type(item, rhs=None, other=None, simple=False):
