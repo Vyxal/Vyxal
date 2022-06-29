@@ -68,22 +68,6 @@ def process_element(
     return py_code, arity
 
 
-def add(lhs, rhs, ctx):
-    """Element +
-    (num, num) -> lhs + rhs
-    (num, str) -> str(lhs) + rhs
-    (str, num) -> lhs + str(rhs)
-    (str, str) -> lhs + rhs
-    """
-    ts = vy_type(lhs, rhs)
-    return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
-        (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
-        (str, NUMBER_TYPE): lambda: lhs + str(rhs),
-        (str, str): lambda: lhs + rhs,
-    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
-
-
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
     (num, num) -> abs(a - b)
@@ -100,6 +84,22 @@ def absolute_difference(lhs, rhs, ctx):
         and re.match(rhs, lhs).group()
         or "",
     }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
+
+
+def add(lhs, rhs, ctx):
+    """Element +
+    (num, num) -> lhs + rhs
+    (num, str) -> str(lhs) + rhs
+    (str, num) -> lhs + str(rhs)
+    (str, str) -> lhs + rhs
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs,
+        (NUMBER_TYPE, str): lambda: str(lhs) + rhs,
+        (str, NUMBER_TYPE): lambda: lhs + str(rhs),
+        (str, str): lambda: lhs + rhs,
+    }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
 def adjacency_matrix_dir(lhs, ctx):
@@ -4692,20 +4692,6 @@ def starts_with(lhs, rhs, ctx):
     )
 
 
-def starts_with_set(lhs, rhs, ctx):
-    """Element øs
-    (list, list) -> True if a starts with all of b
-    """
-    ts = primitive_type(lhs), primitive_type(rhs)
-    return int(
-        {
-            (list, list): lambda: lhs[: len(rhs)] == rhs,
-            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
-            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
-        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
-    )
-
-
 def starts_with(lhs, rhs, ctx):
     """Element øp
     (str, str) -> True if a starts with b
@@ -4716,6 +4702,20 @@ def starts_with(lhs, rhs, ctx):
             (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
             (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
             (list, list): lambda: lhs[0] == rhs,
+        }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
+    )
+
+
+def starts_with_set(lhs, rhs, ctx):
+    """Element øs
+    (list, list) -> True if a starts with all of b
+    """
+    ts = primitive_type(lhs), primitive_type(rhs)
+    return int(
+        {
+            (list, list): lambda: lhs[: len(rhs)] == rhs,
+            (list, SCALAR_TYPE): lambda: lhs[0] == rhs,
+            (SCALAR_TYPE, list): lambda: rhs[0] == lhs,
         }.get(ts, lambda: vy_str(lhs).startswith(vy_str(rhs)))()
     )
 
@@ -6267,6 +6267,7 @@ def zfiller(lhs, rhs, ctx):
         + lhs,
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
+
 
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
