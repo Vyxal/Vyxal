@@ -5718,7 +5718,7 @@ def vy_exec(lhs, ctx):
             stack = []
             exec(
                 vyxal.transpile.transpile(
-                    lhs, ctx.dictionary_compression, ctx.variable_length_1
+                    lhs, options=ctx.transpilation_options
                 )
             )
 

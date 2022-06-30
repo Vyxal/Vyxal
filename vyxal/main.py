@@ -152,8 +152,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.reverse_flag = "r" in flags
     ctx.number_as_range = "R" in flags
-    ctx.dictionary_compression = "D" not in flags
-    ctx.variable_length_1 = "V" in flags
     ctx.vectorise_boolify = "t" in flags  # see boolify in elements.py
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
@@ -163,8 +161,8 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.utf8strings = "U" in flags
 
     options = TranspilationOptions()
-    options.dict_compress = ctx.dictionary_compression
-    options.variables_as_digraphs = ctx.variable_length_1
+    options.dict_compress = "D" not in flags
+    options.variables_as_digraphs = "V" in flags
     options.utf8strings = ctx.utf8strings
     ctx.transpilation_options = options
 

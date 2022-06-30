@@ -19,7 +19,6 @@ class Context:
         self.context_values = [0]
         self.empty_input_is_zero = True
         self.default_arity = 1
-        self.dictionary_compression = True
         self.ghost_variable = sympy.nsimplify(0)
         self.function_stack = []
         self.inputs = [[[], 0]]  # [[[inputs], index], [[inputs], index]]
@@ -43,7 +42,6 @@ class Context:
         self.vectorise_boolify = False
         self.last_popped = []
         self.use_top_input = False
-        self.variable_length_1 = False
         self.double_zip_vectorize = False
         self.vyxal_lists = True
         self.global_array = []
