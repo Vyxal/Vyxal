@@ -87,11 +87,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "A" in flags:
         for inp in inputs:
-            inps = ast.literal_eval(inp)
-            if isinstance(inps, tuple):
-                inps = list(inps)
-            else:
-                inps = [inps]
+            try:
+                inps = ast.literal_eval(inp)
+                if isinstance(inps, tuple):
+                    inps = list(inps)
+                else:
+                    inps = [inps]
+            except:
+                inps = inp.split(', ')
             if online_mode:
                 ctx.online_output[1] += inp + " => "
             else:
@@ -101,7 +104,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(vy_str(x, temp_ctx) for x in inps)
+                "\n".join(vy_repr(x, temp_ctx) for x in inps)
                 if online_mode
                 else inps,
                 output_var,
