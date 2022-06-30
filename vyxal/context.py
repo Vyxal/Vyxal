@@ -3,6 +3,14 @@
 from vyxal.Canvas import Canvas
 import sympy
 
+# Like a ctx but for transpilation
+# This has to be here because *fricking circular inputs*
+class TranspilationOptions:
+    def __init__(self):
+        self.dict_compress = True
+        self.utf8strings = False
+        self.variables_as_digraphs = False
+
 
 class Context:
     """Context objects hold flags and semi-global variables to pass around."""
@@ -41,6 +49,7 @@ class Context:
         self.global_array = []
         self.canvas = Canvas()
         self.utf8strings = False
+        self.transpilation_options = TranspilationOptions()
 
     def copy(self, number_as_range=None, range_start=None):
         """Copy itself so a modified version can be passed elsewhere."""
@@ -66,6 +75,7 @@ class Context:
         ctx.use_top_input = self.use_top_input
         ctx.global_array = self.global_array
         ctx.utf8strings = self.utf8strings
+        ctx.transpilation_options = self.transpilation_options
 
         return ctx
 
