@@ -5348,7 +5348,9 @@ def vectorise(
         else:
             index = ts.index(list)
             return LazyList(
-                safe_apply(function, *args[:index], x, *args[index + 1 :], ctx=ctx)
+                safe_apply(
+                    function, *args[:index], x, *args[index + 1 :], ctx=ctx
+                )
                 for x in iterable(args[index], ctx=ctx)
             )
     else:
@@ -5366,7 +5368,10 @@ def vectorise(
 
             r = 0
             while True:
-                if any(primitive_type(arg) is list and has_ind(arg, r) for arg in args):
+                if any(
+                    primitive_type(arg) is list and has_ind(arg, r)
+                    for arg in args
+                ):
                     row = row_helper(r)
                     yield safe_apply(function, *row, ctx=ctx)
                 else:
@@ -5374,6 +5379,7 @@ def vectorise(
                 r += 1
 
         return vectorise_helper()
+
 
 def vectorised_not(lhs, ctx):
     """List overload for element †"""
