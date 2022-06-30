@@ -5701,11 +5701,7 @@ def vy_exec(lhs, ctx):
         import vyxal.transpile
 
         stack = ctx.stacks[-1]
-        exec(
-            vyxal.transpile.transpile(
-                lhs, options=ctx.transpilation_options
-            )
-        )
+        exec(vyxal.transpile.transpile(lhs, options=ctx.transpilation_options))
 
         return []
 

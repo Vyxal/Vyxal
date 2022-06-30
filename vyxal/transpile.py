@@ -22,6 +22,7 @@ NILADIC_TYPES = (
 # TranspilationOptions has been moved to context.py
 from vyxal.context import TranspilationOptions
 
+
 def lambda_wrap(
     branch: list[vyxal.structure.Structure],
 ) -> vyxal.structure.Lambda:
