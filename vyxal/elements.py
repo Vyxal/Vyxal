@@ -5343,7 +5343,7 @@ def vectorise(
         if list not in ts:
             return LazyList(
                 safe_apply(function, x, *args[1:], ctx=ctx)
-                for x in iterable(args[0], ctx=ctx)
+                for x in iterable(args[0], range, ctx=ctx)
             )
         else:
             index = ts.index(list)
@@ -5362,7 +5362,10 @@ def vectorise(
             def row_helper(index):
                 for item in args:
                     if primitive_type(item) is list:
-                        yield item[index]
+                        if has_ind(item, index):
+                            yield item[index]
+                        else:
+                            yield 0
                     else:
                         yield item
 
