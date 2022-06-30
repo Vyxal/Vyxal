@@ -94,7 +94,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 else:
                     inps = [inps]
             except:
-                inps = inp.split(', ')
+                inps = inp.split(", ")
             if online_mode:
                 ctx.online_output[1] += inp + " => "
             else:
