@@ -6821,10 +6821,13 @@ modifiers: dict[str, str] = {
         "function_A.stored_arity = 2\n"
         "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
     ),
-    "ß": (
-        "if boolify(pop(stack, 1, ctx), ctx):\n"
-        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
-    ),
+    # This currently doesn't work, and for now has been replaced with a
+    # hacky workaround in the parser - see line 271.
+    # Uncomment this when (if ever) we can make it work
+    #"ß": (
+    #    "if boolify(pop(stack, 1, ctx), ctx):\n"
+    #    "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+    #),
     "¨i": (
         "if boolify(pop(stack, 1, ctx), ctx):\n"
         "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
