@@ -2623,6 +2623,7 @@ codepage_descriptions[191] += `
 Þİ (First n Items and Rest)
 Push the first n items of a, then the rest of a
 lst a, int b -> a[:b], a[b:]
+int a, lst b -> b[:a], b[a:]
 `
 codepage_descriptions[78] += `
 ÞN (Alternating Negation)
