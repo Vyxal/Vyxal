@@ -1020,8 +1020,7 @@ def cumul_sum_sans_last_prepend_zero(lhs, ctx):
     """Element ÞR
     Remove the last item of the cumulative sums of a list and prepend 0.
     """
-
-    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
+    return prepend(cumulative_sum(lhs[:-1], ctx=ctx), 0, ctx)
 
 
 def cumulative_sum(lhs, ctx):
