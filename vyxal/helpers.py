@@ -43,6 +43,17 @@ def case_of(value: str) -> int:
 
 
 @lazylist
+def chop(it: VyIterable, n: int) -> LazyList:
+    """Chop `it` into `n` chunks."""
+    chunk_len = len(it) // n
+    left_over = len(it) % n
+    for i in range(n):
+        length = chunk_len + (1 if left_over > i else 0)
+        yield it[:length]
+        it = it[length:]
+
+
+@lazylist
 def collect_until_false(
     predicate: types.FunctionType,
     function: types.FunctionType,
