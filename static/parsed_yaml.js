@@ -270,8 +270,8 @@ Decimal separator
 codepage_descriptions.push(`Divide / Split
 Divide two numbers or split strings
 num a, num b -> a / b
-num a, str b -> b split into a even length pieces, possibly with an extra part
-str a, num b -> a split into b even length pieces, possibly with an extra part
+num a, str b -> b split into a pieces
+str a, num b -> a split into b pieces
 str a, str b -> a.split(b)
 `)
 
