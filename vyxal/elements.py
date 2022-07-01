@@ -2290,7 +2290,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
                 yield other
 
         if is_number:
-            return vy_eval("".join(map(str, gen())))
+            return vy_eval("".join(map(str, gen())), ctx=ctx)
         return gen()
 
     @lazylist
