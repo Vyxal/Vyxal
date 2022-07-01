@@ -140,6 +140,8 @@ def align_left(lhs, ctx):
     if ts == str:
         lhs = lhs.split("\n")
 
+    lhs = [str(line) for line in lhs]
+
     maxlen = max(len(line) for line in lhs)
 
     result = [line.ljust(maxlen) for line in lhs]
@@ -159,6 +161,8 @@ def align_right(lhs, ctx):
 
     if ts == str:
         lhs = lhs.split("\n")
+
+    lhs = [str(line) for line in lhs]
 
     maxlen = max(len(line) for line in lhs)
 
@@ -1016,8 +1020,7 @@ def cumul_sum_sans_last_prepend_zero(lhs, ctx):
     """Element ÞR
     Remove the last item of the cumulative sums of a list and prepend 0.
     """
-
-    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
+    return prepend(cumulative_sum(lhs[:-1], ctx=ctx), 0, ctx)
 
 
 def cumulative_sum(lhs, ctx):
@@ -2287,7 +2290,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
                 yield other
 
         if is_number:
-            return vy_eval("".join(map(str, gen())))
+            return vy_eval("".join(map(str, gen())), ctx=ctx)
         return gen()
 
     @lazylist
@@ -2522,8 +2525,8 @@ def is_sorted_strictly_ascending(lhs, ctx):
 
     return int(
         all(
-            lambda x: strict_less_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_less_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
@@ -2533,11 +2536,10 @@ def is_sorted_strictly_descending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in strictly
              descending order using default sorting rules.
     """
-
     return int(
         all(
-            lambda x: strict_greater_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_greater_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
@@ -3438,7 +3440,9 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
             index(str(lhs), [1, rhs], ctx=ctx), ctx
         ),
-        (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
+        (str, str): lambda: vyxalify(
+            (a := re.match(rhs, lhs)) and a.groups() or 0
+        ),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -4104,7 +4108,7 @@ def repeat(lhs, rhs, ctx):
     elif ts == (NUMBER_TYPE, str):
         return rhs * int(abs(lhs))
     elif ts == (str, str):
-        return lhs + rhs
+        return lhs + " " + rhs
     elif ts[0] == NUMBER_TYPE:
         return LazyList(rhs for _ in range(int(abs(lhs))))
     elif ts[1] == NUMBER_TYPE:
@@ -4473,7 +4477,7 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(lhs))
+    temp = list(deep_copy(iterable(lhs, ctx=ctx)))
     random.shuffle(temp)
     return LazyList(temp)
 
@@ -5404,6 +5408,8 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
     """
+    if not lhs:
+        return ""
     # Make every list in lhs the same length, padding left with b
     lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
