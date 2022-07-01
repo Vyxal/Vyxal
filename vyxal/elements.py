@@ -140,6 +140,8 @@ def align_left(lhs, ctx):
     if ts == str:
         lhs = lhs.split("\n")
 
+    lhs = [str(line) for line in lhs]
+
     maxlen = max(len(line) for line in lhs)
 
     result = [line.ljust(maxlen) for line in lhs]
@@ -159,6 +161,8 @@ def align_right(lhs, ctx):
 
     if ts == str:
         lhs = lhs.split("\n")
+
+    lhs = [str(line) for line in lhs]
 
     maxlen = max(len(line) for line in lhs)
 
@@ -4473,7 +4477,7 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(lhs))
+    temp = list(deep_copy(iterable(lhs)))
     random.shuffle(temp)
     return LazyList(temp)
 
