@@ -2525,8 +2525,8 @@ def is_sorted_strictly_ascending(lhs, ctx):
 
     return int(
         all(
-            lambda x: strict_less_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_less_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
@@ -2536,11 +2536,10 @@ def is_sorted_strictly_descending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in strictly
              descending order using default sorting rules.
     """
-
     return int(
         all(
-            lambda x: strict_greater_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_greater_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
