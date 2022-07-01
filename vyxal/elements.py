@@ -4477,7 +4477,7 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(iterable(lhs)))
+    temp = list(deep_copy(iterable(lhs, ctx=ctx)))
     random.shuffle(temp)
     return LazyList(temp)
 
