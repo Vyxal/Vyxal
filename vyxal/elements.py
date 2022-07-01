@@ -6639,6 +6639,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞT": process_element(multidimensional_truthy_indices, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "    lhs, rhs = rhs, lhs\n"
         "stack.append(index(lhs, [0, rhs], ctx))\n"
         "stack.append(index(lhs, [rhs, None], ctx))\n",
         2,

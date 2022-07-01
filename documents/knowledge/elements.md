@@ -3807,6 +3807,7 @@ Push the first n items of a, then the rest of a
 ### Overloads
 
 - lst a, int b: `a[:b], a[b:]`
+- int a, lst b: `b[:a], b[a:]`
 -------------------------------
 ## `` ÞN `` (Alternating Negation)
 
