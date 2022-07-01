@@ -3440,7 +3440,9 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
             index(str(lhs), [1, rhs], ctx=ctx), ctx
         ),
-        (str, str): lambda: vyxalify((a := re.match(rhs, lhs)) and a.groups() or 0),
+        (str, str): lambda: vyxalify(
+            (a := re.match(rhs, lhs)) and a.groups() or 0
+        ),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -4106,7 +4108,7 @@ def repeat(lhs, rhs, ctx):
     elif ts == (NUMBER_TYPE, str):
         return rhs * int(abs(lhs))
     elif ts == (str, str):
-        return lhs + ' ' + rhs
+        return lhs + " " + rhs
     elif ts[0] == NUMBER_TYPE:
         return LazyList(rhs for _ in range(int(abs(lhs))))
     elif ts[1] == NUMBER_TYPE:
