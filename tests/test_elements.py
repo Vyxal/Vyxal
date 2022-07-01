@@ -5706,7 +5706,7 @@ def test_Zip():
 
 
     stack = [vyxalify(item) for item in [123,"45"]]
-    expected = vyxalify([[1,"4"],[2,"5"]])
+    expected = vyxalify([[1,"4"],[2,"5"],[3,0]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7156,7 +7156,7 @@ def test_CumulativeGroups():
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 4]]
-    expected = vyxalify([[1, 2, 3]])
+    expected = vyxalify([[]])
     ctx = Context()
 
     ctx.stacks.append(stack)
