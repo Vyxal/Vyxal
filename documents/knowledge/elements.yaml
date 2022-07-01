@@ -511,8 +511,8 @@
   arity: 2
   overloads:
       num-num: a / b
-      num-str: b split into a even length pieces, possibly with an extra part
-      str-num: a split into b even length pieces, possibly with an extra part
+      num-str: b split into a pieces
+      str-num: a split into b pieces
       str-str: a.split(b)
   vectorise: true
   tests:
