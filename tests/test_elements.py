@@ -27878,7 +27878,7 @@ def test_LeftAlign():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [["a\nbc\ndef"]]]
+    stack = [vyxalify(item) for item in ["a\nbc\ndef"]]
     expected = vyxalify(["a  \nbc \ndef"])
     ctx = Context()
 
