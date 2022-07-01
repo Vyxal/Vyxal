@@ -31579,7 +31579,7 @@ def test_RemoveLastItemFromCumulativeSumsandPrepend0():
 
 
     stack = [vyxalify(item) for item in [""]]
-    expected = vyxalify("0")
+    expected = vyxalify([0])
     ctx = Context()
 
     ctx.stacks.append(stack)

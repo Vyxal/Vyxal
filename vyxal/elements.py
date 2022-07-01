@@ -3441,7 +3441,7 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
             index(str(lhs), [1, rhs], ctx=ctx), ctx
         ),
-        (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
+        (str, str): lambda: vyxalify((a := re.match(rhs, lhs)) and a.groups() or 0),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
