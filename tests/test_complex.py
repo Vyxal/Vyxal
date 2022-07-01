@@ -706,6 +706,15 @@ def test_conditional_execute_modifier():
     stack = run_vyxal("12 19 0 ßd")
     assert stack[-1] == 19
 
+    stack = run_vyxal("`abc` 1 ßy")
+    assert stack[-1] == "b"
+
+    stack = run_vyxal("2 3 4 ß_")
+    assert stack[-1] == 2
+
+    stack = run_vyxal("2 3 4 ß$")
+    assert stack[-1] == 2
+
 
 def test_generators():
     stack = run_vyxal('1 1" ⁽+ d Ḟ')
