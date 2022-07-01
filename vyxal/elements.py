@@ -841,6 +841,17 @@ def center(lhs, ctx):
     return [line.center(focal) for line in lhs]
 
 
+@lazylist
+def chop(it: VyIterable, n: int) -> LazyList:
+    """Chop `it` into `n` chunks."""
+    chunk_len = len(it) // n
+    left_over = len(it) % n
+    for i in range(n):
+        length = chunk_len + (1 if left_over > i else 0)
+        yield it[:length]
+        it = it[length:]
+
+
 def chr_ord(lhs, ctx):
     """Element C
     (num) -> chr(a)

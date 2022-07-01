@@ -2567,7 +2567,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["abcde",3]]
-    expected = vyxalify(["a","b","c","de"])
+    expected = vyxalify(["ab", "cd", "e"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -2588,7 +2588,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["abcd",3]]
-    expected = vyxalify(["a","b","c","d"])
+    expected = vyxalify(["ab","c","d"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -2609,7 +2609,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["a",3]]
-    expected = vyxalify(["","","","a"])
+    expected = vyxalify(["a","",""])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10221,7 +10221,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["abcde",3]]
-    expected = vyxalify("a")
+    expected = vyxalify("ab")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10242,7 +10242,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["abcd",3]]
-    expected = vyxalify("a")
+    expected = vyxalify("ab")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10263,7 +10263,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["a",3]]
-    expected = vyxalify("")
+    expected = vyxalify("a")
     ctx = Context()
 
     ctx.stacks.append(stack)
