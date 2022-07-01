@@ -267,9 +267,7 @@ def parse(
                 # Conditional execute
                 # This is a bit of a hacky fix, as modifiers are not
                 # powerful enough to deal with this.
-                structures.append(
-                    structure.IfStatement([remaining[0]])
-                )
+                structures.append(structure.IfStatement([remaining[0]]))
             else:
                 structures.append(
                     structure.MonadicModifier(head.value, remaining[0])

@@ -707,7 +707,7 @@ def test_conditional_execute_modifier():
     assert stack[-1] == 19
 
     stack = run_vyxal("`abc` 1 ßy")
-    assert stack[-1] == 'b'
+    assert stack[-1] == "b"
 
     stack = run_vyxal("2 3 4 ß_")
     assert stack[-1] == 2
