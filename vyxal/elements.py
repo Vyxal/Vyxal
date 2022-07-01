@@ -4107,7 +4107,7 @@ def repeat(lhs, rhs, ctx):
     elif ts == (NUMBER_TYPE, str):
         return rhs * int(abs(lhs))
     elif ts == (str, str):
-        return lhs + rhs
+        return lhs + ' ' + rhs
     elif ts[0] == NUMBER_TYPE:
         return LazyList(rhs for _ in range(int(abs(lhs))))
     elif ts[1] == NUMBER_TYPE:
