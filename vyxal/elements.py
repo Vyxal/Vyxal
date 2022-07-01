@@ -5407,6 +5407,8 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
     """
+    if not lhs:
+        return ""
     # Make every list in lhs the same length, padding left with b
     lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
