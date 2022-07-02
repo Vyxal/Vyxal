@@ -3185,16 +3185,6 @@ def n_choose_r(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs)
 
-    @lazylist
-    def drop_while(vec, fun, ctx):
-        vec = iterable(vec, ctx=ctx)
-        t = True
-        for item in vec:
-            if not safe_apply(fun, item, ctx=ctx):
-                t = False
-            if not t:
-                yield item
-
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.binomial(lhs, rhs),
         (NUMBER_TYPE, str): lambda: [
