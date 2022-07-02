@@ -305,6 +305,8 @@ def parse(
                         DEFAULT_ARITY, [remaining[0], remaining[1]]
                     )
                 )
+            elif head.value == "¨i":
+                structures.append(structure.IfStatement([remaining[0]], [remaining[1]]))
             else:
                 structures.append(
                     structure.DyadicModifier(

@@ -6836,12 +6836,12 @@ modifiers: dict[str, str] = {
     #    "if boolify(pop(stack, 1, ctx), ctx):\n"
     #    "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
     # ),
-    "¨i": (
-        "if boolify(pop(stack, 1, ctx), ctx):\n"
-        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
-        "else:\n"
-        "    stack.append(safe_apply(function_B, *stack, ctx=ctx))\n"
-    ),
+    # "¨i": (
+    #     "if boolify(pop(stack, 1, ctx), ctx):\n"
+    #     "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+    #     "else:\n"
+    #     "    stack.append(safe_apply(function_B, *stack, ctx=ctx))\n"
+    # ),
     "¨=": (
         "original = pop(stack, 1, ctx)\n"
         "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
