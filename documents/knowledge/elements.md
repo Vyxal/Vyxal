@@ -234,8 +234,8 @@ Binomial coefficient / choose a random items from b / same except duplicates / d
 - num a, str b: `choose a random items from b`
 - str a, num b: `choose b random items from a`
 - str a, str b: `are the set of characters in the strings the same?`
-- any a, fun b: `remove items from the beginning of a until b(x) returns false`
-- fun a, any b: `remove items from the beginning of b until a(x) returns false`
+- any a, fun b: `remove each item x from the beginning of a until b(x) returns false`
+- fun a, any b: `remove each item x from the beginning of b until a(x) returns false`
 -------------------------------
 ## `` ∞ `` (Palindromise)
 
