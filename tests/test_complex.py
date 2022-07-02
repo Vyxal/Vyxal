@@ -11,7 +11,7 @@ sys.path.insert(1, THIS_FOLDER)
 
 from vyxal.transpile import *
 from vyxal.elements import *
-from vyxal.context import Context
+from vyxal.context import Context, TranspilationOptions
 from vyxal.helpers import *
 from vyxal.LazyList import *
 
@@ -120,6 +120,13 @@ def test_deep_flatten_inf_list():
 def test_overdot_X_function_overload():
     stack = run_vyxal("4λ2ḭ;Ẋ")
     assert stack[-1] == 0
+
+
+def test_exec():
+    stack = run_vyxal("`1 2 +`Ė")
+    assert stack[-1] == 3
+    stack = run_vyxal("4£\¥Ė")
+    assert stack[-1] == 4
 
 
 def test_beheading_infinite_lists():
@@ -698,6 +705,15 @@ def test_conditional_execute_modifier():
 
     stack = run_vyxal("12 19 0 ßd")
     assert stack[-1] == 19
+
+    stack = run_vyxal("`abc` 1 ßy")
+    assert stack[-1] == "b"
+
+    stack = run_vyxal("2 3 4 ß_")
+    assert stack[-1] == 2
+
+    stack = run_vyxal("2 3 4 ß$")
+    assert stack[-1] == 2
 
 
 def test_generators():

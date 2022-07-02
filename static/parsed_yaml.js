@@ -270,8 +270,8 @@ Decimal separator
 codepage_descriptions.push(`Divide / Split
 Divide two numbers or split strings
 num a, num b -> a / b
-num a, str b -> b split into a even length pieces, possibly with an extra part
-str a, num b -> a split into b even length pieces, possibly with an extra part
+num a, str b -> b split into a pieces
+str a, num b -> a split into b pieces
 str a, str b -> a.split(b)
 `)
 
@@ -2623,6 +2623,7 @@ codepage_descriptions[191] += `
 Þİ (First n Items and Rest)
 Push the first n items of a, then the rest of a
 lst a, int b -> a[:b], a[b:]
+int a, lst b -> b[:a], b[a:]
 `
 codepage_descriptions[78] += `
 ÞN (Alternating Negation)

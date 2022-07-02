@@ -2567,7 +2567,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["abcde",3]]
-    expected = vyxalify(["a","b","c","de"])
+    expected = vyxalify(["ab", "cd", "e"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -2588,7 +2588,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["abcd",3]]
-    expected = vyxalify(["a","b","c","d"])
+    expected = vyxalify(["ab","c","d"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -2609,7 +2609,7 @@ def test_DivideSplit():
 
 
     stack = [vyxalify(item) for item in ["a",3]]
-    expected = vyxalify(["","","","a"])
+    expected = vyxalify(["a","",""])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -5706,7 +5706,7 @@ def test_Zip():
 
 
     stack = [vyxalify(item) for item in [123,"45"]]
-    expected = vyxalify([[1,"4"],[2,"5"]])
+    expected = vyxalify([[1,"4"],[2,"5"],[3,0]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -7156,7 +7156,7 @@ def test_CumulativeGroups():
 
 
     stack = [vyxalify(item) for item in [[1,2,3], 4]]
-    expected = vyxalify([[1, 2, 3]])
+    expected = vyxalify([[]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10221,7 +10221,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["abcde",3]]
-    expected = vyxalify("a")
+    expected = vyxalify("ab")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10242,7 +10242,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["abcd",3]]
-    expected = vyxalify("a")
+    expected = vyxalify("ab")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -10263,7 +10263,7 @@ def test_FloorDivision():
 
 
     stack = [vyxalify(item) for item in ["a",3]]
-    expected = vyxalify("")
+    expected = vyxalify("a")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27878,7 +27878,7 @@ def test_LeftAlign():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [["a\nbc\ndef"]]]
+    stack = [vyxalify(item) for item in ["a\nbc\ndef"]]
     expected = vyxalify(["a  \nbc \ndef"])
     ctx = Context()
 
@@ -31579,7 +31579,7 @@ def test_RemoveLastItemFromCumulativeSumsandPrepend0():
 
 
     stack = [vyxalify(item) for item in [""]]
-    expected = vyxalify("0")
+    expected = vyxalify([0])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -33412,6 +33412,27 @@ def test_FirstnItemsandRest():
 
     stack = [vyxalify(item) for item in ['abcde', 2]]
     expected = vyxalify('cde')
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þİ')
+    # print('Þİ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [1, 'xyz']]
+    expected = vyxalify('yz')
     ctx = Context()
 
     ctx.stacks.append(stack)

@@ -375,8 +375,8 @@ Divide two numbers or split strings
 ### Overloads
 
 - num a, num b: `a / b`
-- num a, str b: `b split into a even length pieces, possibly with an extra part`
-- str a, num b: `a split into b even length pieces, possibly with an extra part`
+- num a, str b: `b split into a pieces`
+- str a, num b: `a split into b pieces`
 - str a, str b: `a.split(b)`
 -------------------------------
 ## `` 0 `` (Literal digit 0)
@@ -3807,6 +3807,7 @@ Push the first n items of a, then the rest of a
 ### Overloads
 
 - lst a, int b: `a[:b], a[b:]`
+- int a, lst b: `b[:a], b[a:]`
 -------------------------------
 ## `` ÞN `` (Alternating Negation)
 

@@ -9,10 +9,10 @@ import traceback
 import types
 
 import vyxal.encoding
-from vyxal.context import Context
+from vyxal.context import Context, TranspilationOptions
 from vyxal.elements import *
 from vyxal.helpers import *
-from vyxal.transpile import transpile, TranspilationOptions
+from vyxal.transpile import transpile
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -87,11 +87,14 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "A" in flags:
         for inp in inputs:
-            inps = ast.literal_eval(inp)
-            if isinstance(inps, tuple):
-                inps = list(inps)
-            else:
-                inps = [inps]
+            try:
+                inps = ast.literal_eval(inp)
+                if isinstance(inps, tuple):
+                    inps = list(inps)
+                else:
+                    inps = [inps]
+            except:
+                inps = inp.split(", ")
             if online_mode:
                 ctx.online_output[1] += inp + " => "
             else:
@@ -101,7 +104,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(vy_str(x, temp_ctx) for x in inps)
+                "\n".join(vy_repr(x, temp_ctx) for x in inps)
                 if online_mode
                 else inps,
                 output_var,
@@ -152,8 +155,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.reverse_flag = "r" in flags
     ctx.number_as_range = "R" in flags
-    ctx.dictionary_compression = "D" not in flags
-    ctx.variable_length_1 = "V" in flags
     ctx.vectorise_boolify = "t" in flags  # see boolify in elements.py
     ctx.vyxal_lists = "P" not in flags
     ctx.print_decimals = "ḋ" in flags
@@ -161,6 +162,12 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
     ctx.array_inputs = "a" in flags
     ctx.double_zip_vectorize = "Z" in flags
     ctx.utf8strings = "U" in flags
+
+    options = TranspilationOptions()
+    options.dict_compress = "D" not in flags
+    options.variables_as_digraphs = "V" in flags
+    options.utf8strings = ctx.utf8strings
+    ctx.transpilation_options = options
 
     if "2" in flags:
         ctx.default_arity = 2
@@ -170,10 +177,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 1
 
     try:
-        options = TranspilationOptions()
-        options.dict_compress = ctx.dictionary_compression
-        options.variables_as_digraphs = ctx.variable_length_1
-        options.utf8strings = ctx.utf8strings
         code = transpile(code, options)
     except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:

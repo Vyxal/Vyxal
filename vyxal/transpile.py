@@ -19,12 +19,8 @@ NILADIC_TYPES = (
     TokenType.CODEPAGE_NUMBER,
 )
 
-# Like a ctx but for transpilation
-class TranspilationOptions:
-    def __init__(self):
-        self.dict_compress = True
-        self.utf8strings = False
-        self.variables_as_digraphs = False
+# TranspilationOptions has been moved to context.py
+from vyxal.context import TranspilationOptions
 
 
 def lambda_wrap(

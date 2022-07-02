@@ -140,6 +140,8 @@ def align_left(lhs, ctx):
     if ts == str:
         lhs = lhs.split("\n")
 
+    lhs = [str(line) for line in lhs]
+
     maxlen = max(len(line) for line in lhs)
 
     result = [line.ljust(maxlen) for line in lhs]
@@ -159,6 +161,8 @@ def align_right(lhs, ctx):
 
     if ts == str:
         lhs = lhs.split("\n")
+
+    lhs = [str(line) for line in lhs]
 
     maxlen = max(len(line) for line in lhs)
 
@@ -1016,8 +1020,7 @@ def cumul_sum_sans_last_prepend_zero(lhs, ctx):
     """Element ÞR
     Remove the last item of the cumulative sums of a list and prepend 0.
     """
-
-    return prepend(scanl(add, iterable(lhs, ctx=ctx), ctx)[:-1], 0, ctx)
+    return prepend(cumulative_sum(lhs[:-1], ctx=ctx), 0, ctx)
 
 
 def cumulative_sum(lhs, ctx):
@@ -2287,7 +2290,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
                 yield other
 
         if is_number:
-            return vy_eval("".join(map(str, gen())))
+            return vy_eval("".join(map(str, gen())), ctx=ctx)
         return gen()
 
     @lazylist
@@ -2522,8 +2525,8 @@ def is_sorted_strictly_ascending(lhs, ctx):
 
     return int(
         all(
-            lambda x: strict_less_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_less_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
@@ -2533,11 +2536,10 @@ def is_sorted_strictly_descending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in strictly
              descending order using default sorting rules.
     """
-
     return int(
         all(
-            lambda x: strict_greater_than(x[0], x[1], ctx)
-            for x in overlapping_groups(lhs, 2, ctx)
+            strict_greater_than(x[0], x[1], ctx)
+            for x in overlapping_groups(iterable(lhs, ctx=ctx), 2, ctx)
         )
     )
 
@@ -3438,7 +3440,9 @@ def one_slice(lhs, rhs, ctx):
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_floor(
             index(str(lhs), [1, rhs], ctx=ctx), ctx
         ),
-        (str, str): lambda: vyxalify(re.match(rhs, lhs).groups()),
+        (str, str): lambda: vyxalify(
+            (a := re.match(rhs, lhs)) and a.groups() or 0
+        ),
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
@@ -4104,7 +4108,7 @@ def repeat(lhs, rhs, ctx):
     elif ts == (NUMBER_TYPE, str):
         return rhs * int(abs(lhs))
     elif ts == (str, str):
-        return lhs + rhs
+        return lhs + " " + rhs
     elif ts[0] == NUMBER_TYPE:
         return LazyList(rhs for _ in range(int(abs(lhs))))
     elif ts[1] == NUMBER_TYPE:
@@ -4473,7 +4477,7 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(lhs))
+    temp = list(deep_copy(iterable(lhs, ctx=ctx)))
     random.shuffle(temp)
     return LazyList(temp)
 
@@ -5325,10 +5329,7 @@ def unwrap(lhs, ctx):
 
 def vectorise(
     function,
-    lhs,
-    rhs=None,
-    other=None,
-    fourth=None,
+    *args,
     explicit=False,
     ctx: Context = None,
 ):
@@ -5338,199 +5339,53 @@ def vectorise(
     The explicit argument is mainly for stopping element-wise
     vectorisation happening.
     """
-    if fourth is not None:
-        # That is, four argument vectorisation
-        # That is:
-
-        ts = (
-            primitive_type(lhs),
-            primitive_type(rhs),
-            primitive_type(other),
-            primitive_type(fourth),
-        )
-
-        simple = {
-            (
-                SCALAR_TYPE,
-                SCALAR_TYPE,
-                SCALAR_TYPE,
-                SCALAR_TYPE,
-            ): lambda: safe_apply(function, lhs, rhs, other, fourth, ctx=ctx),
-            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, rhs, other, x, ctx=ctx)
-                for x in fourth
-            ),
-            (SCALAR_TYPE, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, rhs, x, fourth, ctx=ctx)
-                for x in other
-            ),
-            (SCALAR_TYPE, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, x, other, fourth, ctx=ctx)
-                for x in rhs
-            ),
-            (list, SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, other, fourth, ctx=ctx)
-                for x in lhs
-            ),
-            (SCALAR_TYPE, SCALAR_TYPE, list, list): lambda: (
-                safe_apply(function, lhs, rhs, x, y, ctx=ctx)
-                for x, y in vy_zip(other, fourth, ctx=ctx)
-            ),
-            (SCALAR_TYPE, list, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, x, other, y, ctx=ctx)
-                for x, y in vy_zip(rhs, fourth, ctx=ctx)
-            ),
-            (list, SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, x, rhs, other, y, ctx=ctx)
-                for x, y in vy_zip(lhs, fourth, ctx=ctx)
-            ),
-            (SCALAR_TYPE, list, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, x, y, fourth, ctx=ctx)
-                for x, y in vy_zip(rhs, other, ctx=ctx)
-            ),
-            (list, SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, y, fourth, ctx=ctx)
-                for x, y in vy_zip(lhs, fourth, ctx=ctx)
-            ),
-            (list, list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, y, other, fourth, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-            ),
-            (list, list, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, y, z, fourth, ctx=ctx)
-                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
-            ),
-            (list, list, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, x, y, other, z, ctx=ctx)
-                for x, y, z in transpose([lhs, rhs, fourth], ctx=ctx)
-            ),
-            (list, SCALAR_TYPE, list, list): lambda: (
-                safe_apply(function, x, rhs, y, z, ctx=ctx)
-                for x, y, z in transpose([lhs, other, fourth], ctx=ctx)
-            ),
-            (SCALAR_TYPE, list, list, list): lambda: (
-                safe_apply(function, lhs, x, y, z, ctx=ctx)
-                for x, y, z in transpose([rhs, other, fourth], ctx=ctx)
-            ),
-            (list, list, list, list): lambda: (
-                (
-                    safe_apply(function, w, x, y, z, ctx=ctx)
-                    for (w, x), (y, z) in vy_zip(
-                        vy_zip(lhs, rhs, ctx=ctx),
-                        vy_zip(other, fourth, ctx=ctx),
-                    )
-                )
-                if ctx.double_zip_vectorize
-                else (
-                    safe_apply(function, w, x, y, z, ctx=ctx)
-                    for w, x, y, z in transpose(
-                        [lhs, rhs, other, fourth], ctx=ctx
-                    )
-                )
-            ),
-        }
-
-        if explicit:
+    if explicit:
+        # explicit vectorisation
+        # Algorithm: If there are no lists, vectorise over lhs.
+        # Else, vectorise over the first list.
+        ts = [primitive_type(x) for x in args]
+        if list not in ts:
             return LazyList(
-                (
-                    safe_apply(function, x, rhs, other, fourth, ctx=ctx)
-                    for x in iterable(lhs, ctx=ctx)
-                )
+                safe_apply(function, x, *args[1:], ctx=ctx)
+                for x in iterable(args[0], range, ctx=ctx)
             )
         else:
-            return LazyList(simple.get(ts)())
-    elif other is not None:
-        # That is, three argument vectorisation
-        # That is:
-
-        ts = primitive_type(lhs), primitive_type(rhs), primitive_type(other)
-
-        simple = {
-            (SCALAR_TYPE, SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
-                function, lhs, rhs, other, ctx=ctx
-            ),
-            (SCALAR_TYPE, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, rhs, x, ctx=ctx) for x in other
-            ),
-            (SCALAR_TYPE, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, lhs, x, other, ctx=ctx) for x in rhs
-            ),
-            (SCALAR_TYPE, list, list): lambda: (
-                safe_apply(function, lhs, x, y, ctx=ctx)
-                for x, y in vy_zip(rhs, other, ctx=ctx)
-            ),
-            (list, SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, other, ctx=ctx) for x in lhs
-            ),
-            (list, SCALAR_TYPE, list): lambda: (
-                safe_apply(function, x, rhs, y, ctx=ctx)
-                for x, y in vy_zip(lhs, other, ctx=ctx)
-            ),
-            (list, list, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, y, other, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-            ),
-            (list, list, list): lambda: (
-                safe_apply(function, x, y, z, ctx=ctx)
-                for x, y, z in transpose([lhs, rhs, other], ctx=ctx)
-            ),
-        }
-
-        if explicit:
+            index = ts.index(list)
             return LazyList(
-                (
-                    safe_apply(function, x, rhs, other, ctx=ctx)
-                    for x in iterable(lhs, ctx=ctx)
+                safe_apply(
+                    function, *args[:index], x, *args[index + 1 :], ctx=ctx
                 )
+                for x in iterable(args[index], ctx=ctx)
             )
-        else:
-            return LazyList(simple.get(ts)())
-    elif rhs is not None:
-        # That is, two argument vectorisation
-        ts = primitive_type(lhs), primitive_type(rhs)
-        simple = {
-            (SCALAR_TYPE, SCALAR_TYPE): lambda: safe_apply(
-                function, lhs, rhs, ctx=ctx
-            ),
-            (SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, x, ctx=ctx) for x in rhs
-            ),
-            (list, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
-            ),
-            (list, list): lambda: (
-                safe_apply(function, x, y, ctx=ctx)
-                for x, y in vy_zip(lhs, rhs, ctx=ctx)
-            ),
-        }
-
-        explicit_dict = {
-            (SCALAR_TYPE, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, ctx=ctx) for x in iterable(lhs)
-            ),
-            (SCALAR_TYPE, list): lambda: (
-                safe_apply(function, lhs, x, ctx=ctx) for x in rhs
-            ),
-            (list, SCALAR_TYPE): lambda: (
-                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
-            ),
-            (list, list): lambda: (
-                safe_apply(function, x, rhs, ctx=ctx) for x in lhs
-            ),
-        }
-
-        if explicit:
-            return LazyList(explicit_dict.get(ts)())
-        else:
-            return LazyList(simple.get(ts)())
     else:
-        # That is, single argument vectorisation
-        if explicit:
-            lhs = iterable(lhs, range, ctx=ctx)
-        else:
-            lhs = iterable(lhs, ctx=ctx)
+        # regular vectorisation
+        @lazylist
+        def vectorise_helper():
+            # Like zip, but repeats scalars
+            @lazylist
+            def row_helper(index):
+                for item in args:
+                    if primitive_type(item) is list:
+                        if has_ind(item, index):
+                            yield item[index]
+                        else:
+                            yield 0
+                    else:
+                        yield item
 
-        return LazyList((safe_apply(function, x, ctx=ctx) for x in lhs))
+            r = 0
+            while True:
+                if any(
+                    primitive_type(arg) is list and has_ind(arg, r)
+                    for arg in args
+                ):
+                    row = row_helper(r)
+                    yield safe_apply(function, *row, ctx=ctx)
+                else:
+                    break
+                r += 1
+
+        return vectorise_helper()
 
 
 def vectorised_not(lhs, ctx):
@@ -5553,6 +5408,8 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
     """
+    if not lhs:
+        return ""
     # Make every list in lhs the same length, padding left with b
     lhs = vectorise(vy_str, lhs, ctx=ctx)
     lhs, rhs = iterable(lhs, ctx=ctx), iterable(rhs, ctx=ctx)
@@ -5701,11 +5558,7 @@ def vy_exec(lhs, ctx):
         import vyxal.transpile
 
         stack = ctx.stacks[-1]
-        exec(
-            vyxal.transpile.transpile(
-                lhs, ctx.dictionary_compression, ctx.variable_length_1
-            )
-        )
+        exec(vyxal.transpile.transpile(lhs, options=ctx.transpilation_options))
 
         return []
 
@@ -5718,7 +5571,7 @@ def vy_exec(lhs, ctx):
             stack = []
             exec(
                 vyxal.transpile.transpile(
-                    lhs, ctx.dictionary_compression, ctx.variable_length_1
+                    lhs, options=ctx.transpilation_options
                 )
             )
 
@@ -6786,6 +6639,8 @@ elements: dict[str, tuple[str, int]] = {
     "ÞT": process_element(multidimensional_truthy_indices, 1),
     "Þİ": (
         "rhs, lhs = pop(stack, 2, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "    lhs, rhs = rhs, lhs\n"
         "stack.append(index(lhs, [0, rhs], ctx))\n"
         "stack.append(index(lhs, [rhs, None], ctx))\n",
         2,
@@ -6974,10 +6829,13 @@ modifiers: dict[str, str] = {
         "function_A.stored_arity = 2\n"
         "stack.append(scanl(function_A, pop(stack, 1, ctx), ctx))"
     ),
-    "ß": (
-        "if boolify(pop(stack, 1, ctx), ctx):\n"
-        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
-    ),
+    # This currently doesn't work, and for now has been replaced with a
+    # hacky workaround in the parser - see line 271.
+    # Uncomment this when (if ever) we can make it work
+    # "ß": (
+    #    "if boolify(pop(stack, 1, ctx), ctx):\n"
+    #    "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+    # ),
     "¨i": (
         "if boolify(pop(stack, 1, ctx), ctx):\n"
         "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
