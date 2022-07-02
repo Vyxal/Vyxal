@@ -319,7 +319,7 @@
       str-num: choose b random items from a
       str-str: are the set of characters in the strings the same?
       any-fun: remove each item x from the beginning of a until b(x) returns false
-      fun-any: remove items from the beginning of b until a(x) returns false
+      fun-any: remove each item x from the beginning of b until a(x) returns false
   vectorise: true
   tests:
       - "[5,3] : 10"
