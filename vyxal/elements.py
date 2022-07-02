@@ -3194,7 +3194,7 @@ def n_choose_r(lhs, rhs, ctx):
             random.choice(lhs) for _ in range(abs(int(rhs)))
         ],
         (str, str): lambda: int(set(lhs) == set(rhs)),
-        (types.FunctionType, ts[1]): lambda: n_choose_r(rhs, lhs, ctx),
+        (types.FunctionType, ts[1]): lambda: drop_while(rhs, lhs, ctx),
         (ts[0], types.FunctionType): lambda: drop_while(lhs, rhs, ctx),
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
