@@ -164,12 +164,14 @@ codepage_descriptions.push(`List Digraph
 Used for list-related digraphs
 `)
 
-codepage_descriptions.push(`Choose / random choice / set same
-Binomial coefficient / choose a random items from b / same except duplicates
+codepage_descriptions.push(`Choose / random choice / set same / drop while
+Binomial coefficient / choose a random items from b / same except duplicates / drop while
 num a, num b -> a choose b (binomial coefficient)
 num a, str b -> choose a random items from b
 str a, num b -> choose b random items from a
 str a, str b -> are the set of characters in the strings the same?
+any a, fun b -> remove each item x from the beginning of a until b(x) returns false
+fun a, any b -> remove each item x from the beginning of b until a(x) returns false
 `)
 
 codepage_descriptions.push(`Palindromise

@@ -310,14 +310,16 @@
   description: Used for list-related digraphs
 
 - element: "ƈ"
-  name: Choose / random choice / set same
-  description: Binomial coefficient / choose a random items from b / same except duplicates
+  name: Choose / random choice / set same / drop while
+  description: Binomial coefficient / choose a random items from b / same except duplicates / drop while
   arity: 2
   overloads:
       num-num: a choose b (binomial coefficient)
       num-str: choose a random items from b
       str-num: choose b random items from a
       str-str: are the set of characters in the strings the same?
+      any-fun: remove each item x from the beginning of a until b(x) returns false
+      fun-any: remove each item x from the beginning of b until a(x) returns false
   vectorise: true
   tests:
       - "[5,3] : 10"
@@ -899,6 +901,7 @@
   tests:
       - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
       - "[[1, 2, 3, 4, 5, 6, 7, 8, 2], [1, 2]] : [3, 4, 5, 6, 7, 8]"
+      - "[[0, 0, 0, 0, 0, 2, 3, 0, 9, 0, 0, 0, 0, 0], 0] : [2, 3, 0, 9]"
       - '["    Hello, World!    ", " "] : "Hello, World!"'
       - "[1213121, 1] : 21312"
       - '[1213121, "1"] : 21312'

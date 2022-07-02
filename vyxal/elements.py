@@ -3184,6 +3184,7 @@ def n_choose_r(lhs, rhs, ctx):
     (str, str) -> does a have the same characters as b
     """
     ts = vy_type(lhs, rhs)
+
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.binomial(lhs, rhs),
         (NUMBER_TYPE, str): lambda: [
@@ -3193,6 +3194,8 @@ def n_choose_r(lhs, rhs, ctx):
             random.choice(lhs) for _ in range(abs(int(rhs)))
         ],
         (str, str): lambda: int(set(lhs) == set(rhs)),
+        (types.FunctionType, ts[1]): lambda: drop_while(rhs, lhs, ctx),
+        (ts[0], types.FunctionType): lambda: drop_while(lhs, rhs, ctx),
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
@@ -4823,6 +4826,13 @@ def strip_list_helper(left, right, ctx, sign=0):
         inf_left = True
     if vy_type(right) is LazyList and right.infinite:
         inf_right = True
+    if (
+        vy_type(left, simple=True) != list
+        and vy_type(right, simple=True) == list
+    ):
+        return strip_list_helper(right, left, ctx, sign)
+    if vy_type(right, simple=True) != list:
+        right = [right]
     if not left:
         return []  # how you gonna strip from nothing
     if not right:
@@ -6836,12 +6846,12 @@ modifiers: dict[str, str] = {
     #    "if boolify(pop(stack, 1, ctx), ctx):\n"
     #    "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
     # ),
-    "¨i": (
-        "if boolify(pop(stack, 1, ctx), ctx):\n"
-        "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
-        "else:\n"
-        "    stack.append(safe_apply(function_B, *stack, ctx=ctx))\n"
-    ),
+    # "¨i": (
+    #     "if boolify(pop(stack, 1, ctx), ctx):\n"
+    #     "    stack.append(safe_apply(function_A, *stack, ctx=ctx))\n"
+    #     "else:\n"
+    #     "    stack.append(safe_apply(function_B, *stack, ctx=ctx))\n"
+    # ),
     "¨=": (
         "original = pop(stack, 1, ctx)\n"
         "res = safe_apply(function_A, deep_copy(original), ctx=ctx)\n"
