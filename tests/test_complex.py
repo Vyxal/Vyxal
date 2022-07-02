@@ -842,6 +842,11 @@ def test_find_indices_infinite():
     assert stack[-1][:10] == [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]
 
 
+def test_drop_while():
+    stack = run_vyxal("λ0=; ƈ", inputs=[[0, 0, 0, 0, 1, 2, 0, 3]])
+    assert stack[-1] == [1, 2, 0, 3]
+
+
 def test_if_modifier():
     stack = run_vyxal("1 5 1 ¨i$_ W")
     assert stack[-1] == [5, 1]

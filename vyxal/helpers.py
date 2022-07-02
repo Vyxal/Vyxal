@@ -132,6 +132,17 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 @lazylist
+def drop_while(vec, fun, ctx):
+    vec = iterable(vec, ctx=ctx)
+    t = True
+    for item in vec:
+        if not safe_apply(fun, item, ctx=ctx):
+            t = False
+        if not t:
+            yield item
+
+
+@lazylist
 def enumerate_md(
     haystack: VyList, _index_stack: tuple = (), include_all=False
 ) -> VyList:
