@@ -93,20 +93,20 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                     inps = list(inps)
                 else:
                     inps = [inps]
+                inps = [vyxalify(x) for x in inps]
             except:
                 inps = inp.split(", ")
-            if online_mode:
-                ctx.online_output[1] += inp + " => "
-            else:
-                print(inp, end=" => ")
             temp_ctx = Context()
             temp_ctx.vyxal_lists = False
+            repred_inps = [vy_repr(x, temp_ctx) for x in inps]
+            if online_mode:
+                ctx.online_output[1] += ", ".join(repred_inps) + " => "
+            else:
+                print(", ".join(repred_inps), end=" => ")
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(vy_repr(x, temp_ctx) for x in inps)
-                if online_mode
-                else inps,
+                "\n".join(repred_inps) if online_mode else inps,
                 output_var,
                 online_mode,
             )
