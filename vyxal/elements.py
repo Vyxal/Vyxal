@@ -5666,7 +5666,7 @@ def vy_floor(lhs, ctx):
                 temp += char
             elif char.isdigit():
                 temp += char
-            elif char == "." and temp.count(".") == 0:
+            elif char == "." and "." not in temp:
                 temp += char
         return sympy.nsimplify(temp)
 
