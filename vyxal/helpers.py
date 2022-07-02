@@ -1157,6 +1157,18 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return item
 
 
+def vy_floor_str_helper(item):
+    temp = ""
+    for char in item:
+        if char == "-" and temp == "":
+            temp += char
+        elif char.isdigit():
+            temp += char
+        elif char == "." and "." not in temp:
+            temp += char
+    return sympy.nsimplify(temp)
+
+
 @lazylist
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
