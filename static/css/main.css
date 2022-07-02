@@ -78,6 +78,10 @@ summary {
   color: white;
   width: 1em;
   text-align: center;
+  user-select: none; /* Frick compatibility */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 @media (any-hover: hover) {
@@ -150,6 +154,10 @@ i {
   font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
   text-align: left;
+  user-select: none; /* Frick compatibility */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .tooltip[data-show] {
