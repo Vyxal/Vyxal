@@ -3184,6 +3184,15 @@ def n_choose_r(lhs, rhs, ctx):
     (str, str) -> does a have the same characters as b
     """
     ts = vy_type(lhs, rhs)
+    @lazylist
+    def drop_while(vec, fun, ctx):
+        vec = iterable(vec, ctx=ctx)
+        t = True
+        for item in vec:
+            if not safe_apply(fun, item, ctx=ctx):
+                t = False
+            if not t:
+                yield item
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.binomial(lhs, rhs),
         (NUMBER_TYPE, str): lambda: [
@@ -3193,6 +3202,8 @@ def n_choose_r(lhs, rhs, ctx):
             random.choice(lhs) for _ in range(abs(int(rhs)))
         ],
         (str, str): lambda: int(set(lhs) == set(rhs)),
+        (types.FunctionType, ts[1]): lambda: n_choose_r(rhs, lhs, ctx),
+        (ts[0], types.FunctionType): lambda: drop_while(lhs, rhs, ctx)
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
