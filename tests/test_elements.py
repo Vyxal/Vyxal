@@ -1475,7 +1475,7 @@ def test_ExclusiveOneRangeLowercase():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Chooserandomchoicesetsame():
+def test_Chooserandomchoicesetsamedropwhile():
 
     stack = [vyxalify(item) for item in [5,3]]
     expected = vyxalify(10)
