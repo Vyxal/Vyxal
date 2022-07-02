@@ -100,15 +100,13 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             temp_ctx.vyxal_lists = False
             repred_inps = [vy_repr(x, temp_ctx) for x in inps]
             if online_mode:
-                ctx.online_output[1] += ', '.join(repred_inps) + " => "
+                ctx.online_output[1] += ", ".join(repred_inps) + " => "
             else:
-                print(', '.join(repred_inps), end=" => ")
+                print(", ".join(repred_inps), end=" => ")
             execute_vyxal(
                 file_name,
                 flags.replace("A", ""),
-                "\n".join(repred_inps)
-                if online_mode
-                else inps,
+                "\n".join(repred_inps) if online_mode else inps,
                 output_var,
                 online_mode,
             )
