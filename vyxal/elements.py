@@ -4823,7 +4823,10 @@ def strip_list_helper(left, right, ctx, sign=0):
         inf_left = True
     if vy_type(right) is LazyList and right.infinite:
         inf_right = True
-    if vy_type(left, simple=True) != list and vy_type(right, simple=True) == list:
+    if (
+        vy_type(left, simple=True) != list
+        and vy_type(right, simple=True) == list
+    ):
         return strip_list_helper(right, left, ctx, sign)
     if vy_type(right, simple=True) != list:
         right = [right]
