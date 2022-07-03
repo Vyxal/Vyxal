@@ -3076,8 +3076,14 @@ def multiplicity(lhs, rhs, ctx):
     (any, fun) -> Index of the first truthy item in a under b(x)
     """
 
-    ts = vy_type(lhs, rhs, simple=True)
+    ts = vy_type(lhs, rhs)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        if lhs == 0:
+            return 0
+        if rhs == 0:
+            return math.inf
+        if abs(rhs) == 1:
+            return abs(lhs)
         times = 0
         while lhs % rhs == 0:
             lhs /= rhs
