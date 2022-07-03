@@ -3078,10 +3078,8 @@ def multiplicity(lhs, rhs, ctx):
 
     ts = vy_type(lhs, rhs)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
-        if lhs == 0:
+        if lhs == 0 or rhs == 0:
             return 0
-        if rhs == 0:
-            return math.inf
         if abs(rhs) == 1:
             return abs(lhs)
         times = 0
