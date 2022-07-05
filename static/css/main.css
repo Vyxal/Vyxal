@@ -183,6 +183,10 @@ i {
   opacity: 1;
 }
 
+.description:not(:first-child) {
+  margin-top: 1em;
+}
+
 .arrow,
 .arrow::before {
   position: absolute;

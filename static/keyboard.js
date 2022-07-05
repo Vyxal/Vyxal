@@ -51,7 +51,7 @@ function Key({ chr, isFocused, addRef }) {
 
 /** Component for rendering a single token of a tooltip */
 function Description({ token, name, description, overloads }) {
-  return html`<div>
+  return html`<div className="description">
     ${token} (${name})${"\n"}${description}${"\n"}${overloads}
   </div>`;
 }
