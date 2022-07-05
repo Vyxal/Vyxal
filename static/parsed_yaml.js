@@ -3,2745 +3,4494 @@
 // See yaml_to_js.py
 
 var codepage = 'λƛ¬∧⟑∨⟇÷×«␤»°•ß†€½∆ø↔¢⌐æʀʁɾɽÞƈ∞¨␠!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]`^_abcdefghijklmnopqrstuvwxyz{|}~↑↓∴∵›‹∷¤ð→←βτȧḃċḋėḟġḣḭŀṁṅȯṗṙṡṫẇẋẏż√⟨⟩‛₀₁₂₃₄₅₆₇₈¶⁋§ε¡∑¦≈µȦḂĊḊĖḞĠḢİĿṀṄȮṖṘṠṪẆẊẎŻ₌₍⁰¹²∇⌈⌊¯±₴…□↳↲⋏⋎꘍ꜝ℅≤≥≠⁼ƒɖ∪∩⊍£¥⇧⇩ǍǎǏǐǑǒǓǔ⁽‡≬⁺↵⅛¼¾Π„‟'
-var codepage_descriptions = []
-
-codepage_descriptions.push(`Lambda
-Open a lambda - λ...;
-`)
-
-codepage_descriptions.push(`Lambda Map
-Open a mapping lambda - ƛ
-`)
-
-codepage_descriptions.push(`Logical Not
-Return the inverse (negation) of the truthiness of an item.
-num a -> not a
-str a -> a != "" | len(a) > 0
-lst a -> a != [] | len(a) > 0
-`)
-
-codepage_descriptions.push(`Logical And
-Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.
-any a, any b -> a and b
-`)
-
-codepage_descriptions.push(`Apply Lambda
-Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated
-`)
-
-codepage_descriptions.push(`Logical Or
-Returns the first truthy argument, otherwise the first falsy argument.
-any a, any b -> a or b
-`)
-
-codepage_descriptions.push(`Remove at Index
-Returns every item in a list except the item at the given index.
-any a, num b -> Remove item b of a
-num a, any b -> Remove item a of b
-`)
-
-codepage_descriptions.push(`Item Split
-Pushes each item of the top of the stack onto the stack.
-num a -> Push each digit of a
-str a -> Push each character of a
-lst a -> Push each item of a
-`)
-
-codepage_descriptions.push(`Asterisk Literal
-the string "*" (asterisk)
-`)
-
-codepage_descriptions.push(`Base Compressed String
-Open/close a bijective base-255 compressed string - «...«
-`)
-
-codepage_descriptions.push(`Newline
-NOP
-`)
-
-codepage_descriptions.push(`Base Compressed Number
-Open/close a bijective base-255 compressed number - »...»
-`)
-
-codepage_descriptions.push(`Complex Number Separator
-Separates the real and imaginary parts of a complex number
-`)
-
-codepage_descriptions.push(`MultiCommand
-Logarithm / Repeat Character / Capitalisation transfer
-num a, num b -> log_a(b)
-num a, str b -> [char * a for char in b]
-str a, num b -> [char * b for char in a]
-str a, str b -> a.with_capitalisation_of(b)
-lst a, lst b -> a molded  to  the shape of b
-`)
-
-codepage_descriptions.push(`Conditional Execute
-Executes element A if the top of the stack is truthy
-`)
-
-codepage_descriptions.push(`Function Call
-Calls a function / executes as python / number of distinct prime factors / vectorised not
-fun a -> a()
-num a -> len(prime_factors(a))
-str a -> exec as python
-lst a -> vectorised not
-`)
-
-codepage_descriptions.push(`Split On / Fill By Coordinates
-Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.
-any a, any b -> a split on b
-any a, fun b -> for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
-`)
-
-codepage_descriptions.push(`Halve
-Halves an item
-num a -> a / 2
-str a -> a split into two strings of equal lengths (as close as possible)
-`)
-
-codepage_descriptions.push(`Mathematical Digraph
-Used for mathematical digraphs
-`)
-
-codepage_descriptions.push(`String Digraph
-Used for string-based digraphs
-`)
-
-codepage_descriptions.push(`Combinations/Remove/Fixed Point Collection
-Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
-any a, num b -> combinations_with_replacement(a, length=b)
-fun a, any b -> apply a on b until the result does not change, yielding intermediate values
-any a, str b -> remove elements from a that are not in b
-any a, lst b -> remove elements from a that are not in b
-`)
-
-codepage_descriptions.push(`Infinite Replacement / Apply at Indices
-Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list
-any a, any b, any c -> replace b in a with c until a does not change
-lst a, fun b, lst c -> apply function b to items in c at indices in a
-lst a, lst b, fun c -> apply function c to items in a at indices in b
-fun a, lst b, lst c -> apply function a to items in b at indices in c
-`)
-
-codepage_descriptions.push(`Complement / Comma Split
-1 - a if number, split by commas if string.
-num a -> 1 - a
-str a -> a.split(",")
-`)
-
-codepage_descriptions.push(`Is Prime / Case Check
-(a is prime) if a is a number, else check which case a is
-num a -> is a prime?
-str a -> caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)
-`)
-
-codepage_descriptions.push(`Inclusive Zero Range
-Inclusive range or whether each character is alphabetical
-num a -> range(0,a + 1) (inclusive range from 0)
-str a -> [is v alphabetical? for v in a]
-`)
-
-codepage_descriptions.push(`Exclusive Zero Range
-Exclusive range or palindromise
-num a -> range(0,a) (exclusive range from 0)
-str a -> palindromise(a) (a + a[:-1:-1])
-`)
-
-codepage_descriptions.push(`Inclusive One Range
-Inclusive range or uppercase
-num a -> range(1,a+1) (inclusive range from 1)
-str a -> a.uppercase()
-`)
-
-codepage_descriptions.push(`Exclusive One Range / Lowercase
-Exclusive range or lowercase
-num a -> range(1,a) (exclusive range from 0)
-str a -> a.lowercase()
-`)
-
-codepage_descriptions.push(`List Digraph
-Used for list-related digraphs
-`)
-
-codepage_descriptions.push(`Choose / random choice / set same / drop while
-Binomial coefficient / choose a random items from b / same except duplicates / drop while
-num a, num b -> a choose b (binomial coefficient)
-num a, str b -> choose a random items from b
-str a, num b -> choose b random items from a
-str a, str b -> are the set of characters in the strings the same?
-any a, fun b -> remove each item x from the beginning of a until b(x) returns false
-fun a, any b -> remove each item x from the beginning of b until a(x) returns false
-`)
-
-codepage_descriptions.push(`Palindromise
-Palindromise a
-any a -> palindromise a (a + a[:-1:-1])
-`)
-
-codepage_descriptions.push(`Other Digraphs
-Used for various random digraphs
-`)
-
-codepage_descriptions.push(`Space
-NOP
-`)
-
-codepage_descriptions.push(`Stack Length
-Push the length of the stack
-`)
-
-codepage_descriptions.push(`Pair
-Place the top two items into a single list
-any a, any b -> [a, b]
-`)
-
-codepage_descriptions.push(`Comment
-The characters until the next newline are commented out
-`)
-
-codepage_descriptions[35] += `
-#{ (Multiline Comment)
-The characters until the next \`}#\` are commented out. Nestable.
-`
-codepage_descriptions.push(`Swap
-Swap the top two items
-any a, any b -> b, a
-`)
-
-codepage_descriptions.push(`Modulo / Format
-Modulo two numbers / format two strings
-num a, num b -> a % b
-num a, str b -> b.format(a) (replace % in b with a)
-str a, num b -> a.format(b) (replace % in a with b)
-str a, str b -> a.format(b) (replace % in a with b)
-str a, lst b -> a.format(b) (replace % in a with each item of b)
-`)
-
-codepage_descriptions.push(`Apply To Register
-Apply the next element to the register
-`)
-
-codepage_descriptions.push(`Lambda Filter
-Open a filter lambda - '...;
-`)
-
-codepage_descriptions.push(`Open For Loop
-Start a for loop, iterating over the popped top of stack.
-`)
-
-codepage_descriptions.push(`Close For loop
-Close a for loop
-`)
-
-codepage_descriptions.push(`Multiplication / Arity Change
-Multiply two numbers or strings / Change the arity of a function
-num a, num b -> a * b
-num a, str b -> b repeated a times
-str a, num b -> a repeated b times
-str a, str b -> ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])
-fun a, num b -> change the arity of function a to b
-num a, fun b -> change the arity of function b to a
-`)
-
-codepage_descriptions.push(`Addition
-Adds the top two items on the stack
-num a, num b -> a + b
-num a, str b -> str(a) + b
-str a, num b -> a + str(b)
-str a, str b -> a + b
-`)
-
-codepage_descriptions.push(`Print
-Print a with trailing newline
-any a -> print(a)
-`)
-
-codepage_descriptions.push(`Subtract
-Subtracts the top two items on the stack
-num a, num b -> a - b
-num a, str b -> ("-" * a) + b
-str a, num b -> a + ("-" * b)
-str a, str b -> a.replace(b, '')
-`)
-
-codepage_descriptions.push(`Decimal Separator
-Decimal separator
-`)
-
-codepage_descriptions.push(`Divide / Split
-Divide two numbers or split strings
-num a, num b -> a / b
-num a, str b -> b split into a pieces
-str a, num b -> a split into b pieces
-str a, str b -> a.split(b)
-`)
-
-codepage_descriptions.push(`Literal digit 0
-Literal digit 0
-`)
-
-codepage_descriptions.push(`Literal digit 1
-Literal digit 1
-`)
-
-codepage_descriptions.push(`Literal digit 2
-Literal digit 2
-`)
-
-codepage_descriptions.push(`Literal digit 3
-Literal digit 3
-`)
-
-codepage_descriptions.push(`Literal digit 4
-Literal digit 4
-`)
-
-codepage_descriptions.push(`Literal digit 5
-Literal digit 5
-`)
-
-codepage_descriptions.push(`Literal digit 6
-Literal digit 6
-`)
-
-codepage_descriptions.push(`Literal digit 7
-Literal digit 7
-`)
-
-codepage_descriptions.push(`Literal digit 8
-Literal digit 8
-`)
-
-codepage_descriptions.push(`Literal digit 9
-Literal digit 9
-`)
-
-codepage_descriptions.push(`Duplicate
-Push a twice
-any a -> a,a
-`)
-
-codepage_descriptions.push(`Close Structure
-Close a lambda / map lambda / sort lambda / function
-`)
-
-codepage_descriptions.push(`Less Than
-Basic comparison - less than
-num a, num b -> a < b
-num a, str b -> str(a) < b
-str a, num b -> a < str(b)
-str a, str b -> a < b
-any a, fun b -> decrement a until b returns false
-fun a, any b -> decrement b until a returns false
-`)
-
-codepage_descriptions.push(`Equals
-Basic comparison - equals
-num a, num b -> a == b
-num a, str b -> str(a) == b
-str a, num b -> a == str(b)
-str a, str b -> a == b
-`)
-
-codepage_descriptions.push(`Greater Than
-Basic comparison - greater than
-num a, num b -> a > b
-num a, str b -> str(a) > b
-str a, num b -> a > str(b)
-str a, str b -> a > b
-any a, fun b -> increment a until b returns false
-fun a, any b -> increment b until a returns false
-`)
-
-codepage_descriptions.push(`Input
-Get the next input from the input source
-`)
-
-codepage_descriptions.push(`Function Call / Declaration
-Call / declare function (@name; / @name|code;)
-`)
-
-codepage_descriptions.push(`All
-Check if all items in a list are truthy / check if a character is a vowel
-str a -> is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]
-any a -> all(a)
-`)
-
-codepage_descriptions.push(`Binary To Decimal
-Convert a binary string or list to base 10
-any a -> int(a,2) (convert from base 2 to base 10)
-`)
-
-codepage_descriptions.push(`Chr / Ord
-Convert between characters and ordinals
-num a -> chr(a)
-str a -> ord(a) if length 1 else list of ordinals
-`)
-
-codepage_descriptions.push(`Triplicate
-Push three copies of a to stack
-`)
-
-codepage_descriptions.push(`Two Power / Python Eval
-2 ** a, or eval(a)
-num a -> 2 ** a
-str a -> eval(a) (safe-eval as python)
-`)
-
-codepage_descriptions.push(`Filter
-Filter a list by another list or function.
-any a, fun b -> filter(b,a) (filter a by the ones that b returns a truthy result for)
-any a, any b -> remove elements of a that are in b
-`)
-
-codepage_descriptions.push(`Max
-Maximum value or a
-any a -> max(a)
-`)
-
-codepage_descriptions.push(`Hex To Decimal
-Convert hexadecimal to decimal
-any a -> int(a,16) (from hexadecimal)
-`)
-
-codepage_descriptions.push(`Into Two Pieces
-Push n spaces / quine cheese / into two pieces
-num a -> push a spaces
-str a -> equivalent to \`qp\`
-lst a -> split a list into two halves
-`)
-
-codepage_descriptions.push(`Merge
-Join two lists or items
-lst a, str b -> a.append(b) (append)
-lst a, num b -> a.append(b) (append)
-str a, lst b -> b.prepend(a) (prepend)
-num a, lst b -> b.prepend(a) (prepend)
-lst a, lst b -> merged(a,b) (merge)
-any a, any b -> a + b (concatenate)
-`)
-
-codepage_descriptions.push(`Factors / Substrings / Prefixes
-Get either the factors of a, substrings that occur more than once, or prefixes
-num a -> divisors(a) (positive integer factors)
-str a -> all non-empty substrings of a that occur more than once in a
-lst a -> prefixes(a) (prefixes)
-`)
-
-codepage_descriptions.push(`Length
-Get length of a
-any a -> len(a)
-`)
-
-codepage_descriptions.push(`Map
-Map b over a
-any a, fun b -> map(b,a) (apply b to each of a)
-any a, any b -> pair each item of b with a ([[a, i] for i in b])
-`)
-
-codepage_descriptions.push(`Negate / Swap Case / First Integer Where Truthy
-Negate a number / swap case of a string / first integer where a function truthy
-num a -> -a  (negate)
-str a -> swap_case(a) (toggle case)
-fun a -> first integer where a(n) is true
-`)
-
-codepage_descriptions.push(`Count
-Count number of times b occurs in a
-any a, any b -> a.count(b)
-`)
-
-codepage_descriptions.push(`Strip
-Remove the set of elements in b from both ends of a
-any a, any b -> a.strip(b)
-`)
-
-codepage_descriptions.push(`Quit
-Quit the program
-`)
-
-codepage_descriptions.push(`Reduce
-Reduce a by b, or reverse each item of b
-any a, fun b -> reduce(b,a) (Reduce a by b)
-any a, any b -> a, vectorised_reverse(b)
-`)
-
-codepage_descriptions.push(`Stringify
-Stringify a list or number
-any a -> str(a) (Stringify)
-`)
-
-codepage_descriptions.push(`Truthy Indices / Triple / Triadify
-Get indices of truthy elements, triple, or make the arity of a function 3
-num a -> a * 3
-any a -> truthy_indices(a)
-fun a -> set the arity of function a to 3
-`)
-
-codepage_descriptions.push(`Uniquify
-Remove duplicates
-any a -> uniquify(a) (remove duplicates)
-`)
-
-codepage_descriptions.push(`Replace / Map to Indices
-Replace b with c in a / Map a function at elements of a list whose indices are in another list
-any a, any b, any c -> a.replace(b,c) (replace)
-lst a, lst b, fun c -> for each i in b, change the ith element in a by applying the function, then return the new list
-lst a, num b, fun c -> replace the bth element in a by applying the function, then return the new list
-`)
-
-codepage_descriptions.push(`Wrap
-Stack wrapped into a list
-`)
-
-codepage_descriptions.push(`Break
-Break out of the current loop or return early from a function.
-`)
-
-codepage_descriptions.push(`Interleave
-Interleave two lists
-any a, any b -> interleave(a,b) (a[0], b[0], a[1], b[1], ...)
-`)
-
-codepage_descriptions.push(`Zip
-Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.
-any a, any b -> zip(a,b)
-any a, fun b -> zip(a,map(b,a)) (zipmap, map and zip)
-`)
-
-codepage_descriptions.push(`Open If Statement
-Open an if Statement
-`)
-
-codepage_descriptions.push(`Single char Literal
-Pushes a single character
-`)
-
-codepage_descriptions.push(`Close If Statement
-Close an if Statement
-`)
-
-codepage_descriptions.push(`String Literal
-A string literal - \`...\`
-`)
-
-codepage_descriptions.push(`Reverse Stack
-Reverse the stack.
-`)
-
-codepage_descriptions.push(`Pop
-Pop the top item of the stack
-`)
-
-codepage_descriptions.push(`Any
-Check if any items of a list are truthy / Check if a character is an uppercase letter
-str a -> is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]
-lst a -> any(a) (are any items truthy?)
-`)
-
-codepage_descriptions.push(`Binary
-Convert a number or string to binary
-num a -> bin(a) (list of binary digits of a)
-str a -> [bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)
-`)
-
-codepage_descriptions.push(`Contains / First Truthy Item Under Function Application
-Check if one thing contains another / returns the first truthy item in a list after applying a function
-any a, fun b -> first item of a where b(x) is truthy (shortcut for Fh)
-any a, any b -> b in a (does a contain b, membership, contains)
-`)
-
-codepage_descriptions.push(`Double / Dyadify
-Double a number or repeat a string twice / make a function dyadic
-num a -> a * 2 (double)
-str a -> a * 2 (repeated twice)
-fun a -> change the arity of the function to 2
-`)
-
-codepage_descriptions.push(`Exponentiation
-Exponentiate two numbers / extend string / get length of a regex match
-num a, num b -> a ** b (exponentiation)
-str a, num b -> append a[0] until a is length b (spaces are used if a is empty)
-num a, str b -> append b[0] until b is length a (spaces are used if b is empty)
-str a, str b -> regex.search(pattern=a, string=b).span() (length of regex match)
-`)
-
-codepage_descriptions.push(`Flatten
-Turn a number into a list of digits, split a string into a list of characters, or flatten a list.
-num a -> digits of a
-str a -> list of characters of a
-lst a -> flatten(a) (deep flatten)
-`)
-
-codepage_descriptions.push(`Minimum
-Take the minimum of a list
-any a -> min(a)
-`)
-
-codepage_descriptions.push(`Head
-First item of something
-any a -> a[0] (first item)
-`)
-
-codepage_descriptions.push(`Index
-Index into a list
-any a, num b -> a[b] (index)
-num a, any b -> b[a] (index)
-str a, str b -> enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])
-any a, [x] b -> a[:b] (0 to bth item of a)
-any a, [x,y] b -> a[x:y] (x to yth item of a)
-any a, [x,y,m] b -> a[x:y:m] (x to yth item of a, taking every mth)
-`)
-
-codepage_descriptions.push(`Join
-Join a list by a string
-any a, any b -> a.join(b)
-`)
-
-codepage_descriptions.push(`Constant Digraph
-Used for constant digraphs.
-`)
-
-codepage_descriptions.push(`Cumulative Groups
-Cumulative groups (overlapping groups, aperture) / Equal length
-any a, num b -> [a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]
-num a, any b -> [b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]
-any a, any b -> length(a) == length(b)
-`)
-
-codepage_descriptions.push(`Mirror
-Append input reversed to itself.
-num a -> a + reversed(a) (as number)
-str a -> a + reversed(a)
-lst a -> append reversed(a) to a
-`)
-
-codepage_descriptions.push(`Context
-Context variable, value of the current loop or function.
-`)
-
-codepage_descriptions.push(`Remove
-Remove instances of b in a
-num a, fun b -> first a positive integers where b is truthy
-fun a, num b -> first b positive integers where a is truthy
-any a, any b -> a.replace(b,"")
-`)
-
-codepage_descriptions.push(`Prepend
-Prepend b to a
-any a, any b -> a.prepend(b) (prepend b to a)
-`)
-
-codepage_descriptions.push(`Uneval
-Enclose in backticks, escape backslashes and backticks.
-any a -> uneval(a) (enclose in backticks + escape)
-`)
-
-codepage_descriptions.push(`Range
-Range between two numbers, or cumulative reduce, or regex match
-num a, num b -> range(a,b) (range from a to b)
-num a, str b -> append spaces to b to make it length a
-str a, num b -> prepend spaces to a to make it length b
-any a, fun b -> cumulative_reduce(a,function=b) (prefixes of a reduced by b)
-str a, str b -> regex.has_match(pattern=a,string= b) (does b match a)
-`)
-
-codepage_descriptions.push(`sort
-Sort a list or string
-any a -> sorted(a) (sort)
-`)
-
-codepage_descriptions.push(`Tail
-Last item
-any a -> a[-1] (last item)
-`)
-
-codepage_descriptions.push(`Minus One
-Push -1
-`)
-
-codepage_descriptions.push(`Vectorise
-Vectorise an element
-`)
-
-codepage_descriptions[118] += `
-¨v (Simple vectorise)
-Simple vectorise an element. Well, you'll have to look at the code to know what that means.
-`
-codepage_descriptions.push(`Listify
-a wrapped in a singleton list
-any a -> [a] (wrap in singleton list)
-`)
-
-codepage_descriptions.push(`Recurse / Continue / Print Stack
-Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)
-`)
-
-codepage_descriptions.push(`Uninterleave
-Push every other item of a, and the rest.
-any a -> a[::2], a[1::2] (every second item, the rest)
-`)
-
-codepage_descriptions.push(`Zip-self
-Zip a with itself
-any a -> zip(a,a)
-`)
-
-codepage_descriptions.push(`Open While Loop
-Open a while loop - \`{...}\`
-`)
-
-codepage_descriptions.push(`Branch In Structure
-Branch the structure - means various things depending on context
-`)
-
-codepage_descriptions.push(`Close While Loop
-Close a while loop
-`)
-
-codepage_descriptions.push(`Filter / Execute Without Pop
-For monads, filter a list by that. For dyads, execute without popping from the stack.
-`)
-
-codepage_descriptions.push(`Max by Tail
-Maximum by last item
-any a -> max(a, key=lambda x: x[-1]) (maximum by last item)
-`)
-
-codepage_descriptions.push(`Min by Tail
-Minimum by last item
-any a -> min(a, key=lambda x: x[-1]) (minimum by last item)
-`)
-
-codepage_descriptions.push(`Dyadic Maximum
-Maximum of two values / Maximum of a list by a function
-any a, any b -> max(a,b)
-any a, fun b -> max(a,key=b)
-`)
-
-codepage_descriptions.push(`Dyadic Minimum
-Minimum of two values / Minimum of a list by a function
-any a, any b -> min(a,b)
-any a, fun b -> min(a,key=b)
-`)
-
-codepage_descriptions.push(`Increment / Space Replace With 0
-Add 1 to a number / replace all spaces in a string with "0"
-num a -> a + 1
-string a -> a.replace(" ","0")
-`)
-
-codepage_descriptions.push(`Decrement
-Subtract 1 from a number
-num a -> a - 1
-str a -> a + "-"
-`)
-
-codepage_descriptions.push(`Parity
-A number modulo 2
-num a -> a % 2 (odd?)
-str a -> second half of A
-`)
-
-codepage_descriptions.push(`Empty String
-The empty string
-`)
-
-codepage_descriptions.push(`Space
-A Space
-`)
-
-codepage_descriptions.push(`Variable Set
-Set variable (→name)
-`)
-
-codepage_descriptions.push(`Variable Get
-Get the value of a variable (←name)
-`)
-
-codepage_descriptions.push(`To Base Ten / From Custom Base
-Convert a number from a custom base to base 10
-any a, num b -> a to base 10 from number base b, treating list items / string items as digits
-str a, str b -> a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10
-`)
-
-codepage_descriptions.push(`From Base Ten / To Custom Base
-Convert a number to a different base from base 10.
-num a, num b -> list of digits of a in base b
-num a, str b -> a converted into a string of characters of b
-num a, lst b -> a converted into a list of arbitrary values from b
-`)
-
-codepage_descriptions.push(`Absolute value
-Take the absolute value of a number, or remove whitespace from a string
-num a -> abs(a) (absolute value)
-str a -> remove whitespace from a
-`)
-
-codepage_descriptions.push(`Boolify
-Convert an arbitrary value into a truthy or falsy value, vectorises with flag t
-any a -> bool(a) (booliify)
-`)
-
-codepage_descriptions.push(`Not One
-Check if something is not equal to 1
-any a -> a != 1
-`)
-
-codepage_descriptions.push(`Divmod
-Divmod / combinations / trim
-num a, num b -> [a // b, a % b] (divmod - division and modulo)
-str a, num b -> combinations of a with length b
-lst a, num b -> combinations of a with length b
-str a, str b -> overwrite the start of a with b (b + a[len(b):])
-`)
-
-codepage_descriptions.push(`Enumerate
-Zip with a range of the same length
-any a -> enumerate(a) (zip with 1...len(a))
-`)
-
-codepage_descriptions.push(`Find
-Find a value in another
-any a, any b -> a.find(b) (indexing, -1 if not found)
-any a, fun b -> truthy indices of mapping b over a
-`)
-
-codepage_descriptions.push(`Gcd / Group by Function
-Greatest Common Denominator of a list or some numbers
-lst a -> GCD(a) (gcd of whole list)
-num a, num b -> gcd(a,b) (dyadic gcd)
-str a, str b -> longest common suffix of a and b
-fun a, any b -> group b by the results of function a
-any a, fun b -> group a by the results of function b
-`)
-
-codepage_descriptions.push(`Head Extract
-Separate the first item of something and push both to stack
-any a -> a[0], a[1:] (head extract)
-`)
-
-codepage_descriptions.push(`Floor Division
-Floor divide a by b
-num a, num b -> a // b (floor division, floor(a / b))
-str a, num b -> (a divided into b pieces)[0]
-num a, str b -> (b divided into a pieces)[0]
-any a, fun b -> right reduce a by b (foldr)
-fun a, any b -> right reduce b by a (foldr)
-`)
-
-codepage_descriptions.push(`Left Justify / Gridify / Infinite Replace / Collect until false
-Find one value inside another, starting from a certain index.
-num a, num b, num c -> a <= c <= b
-num a, num b, str c -> a by b grid of c
-num a, str b, num c -> a by c grid of b
-num a, str b, str c -> b.ljust(a,filler=c)
-str a, num b, num c -> b by c grid of a
-str a, num b, str c -> a.ljust(c,filler=b)
-str a, str b, num c -> a.ljust(b,filler=c)
-str a, str b, str c -> a.infinite_replace(b, c)
-fun a, fun b, any c -> [c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy
-`)
-
-codepage_descriptions.push(`Mean
-Average of a list - sum / length
-str a -> palindromise(a) (a + a[:-1:-1])
-lst a -> mean(a)
-`)
-
-codepage_descriptions.push(`Join By Nothing
-Join a list by the empty string. Vectorises if the list contains lists.
-num a -> abs(a) <= 1
-str a -> pad with 0s to nearest positive multiple of 8
-lst a -> "".join(a)
-fun a -> first integer x where a(x) is truthy
-`)
-
-codepage_descriptions.push(`Slice
-Slice from an index to the end
-fun a, num b -> first b integers for which a(x) is truthy
-any a, num b -> a[b:] (slice from b to the end)
-str a, str b -> vertically merge a and b
-`)
-
-codepage_descriptions.push(`Powerset
-All possible combinations of a
-any a -> all subsets of a (including the empty subset)
-`)
-
-codepage_descriptions.push(`Round
-Round a number to the nearest integer / real and imaginary part of complex number
-num a -> round(a)
-complex a -> [real(a), imag(a)]
-str a -> quad palindromise with overlap
-`)
-
-codepage_descriptions.push(`Sort by Function
-Sort a list by a function / create a range / split on a regex
-any a, fun b -> sorted(a, key=b) (sort by b)
-num a, num b -> range(a, b + 1) (inclusive range from a to b)
-str a, str b -> regex.split(pattern=b, string=a)
-`)
-
-codepage_descriptions.push(`Tail Extract
-Remove the last item and push both onto the stack
-any a -> a[:-1],a[-1]
-`)
-
-codepage_descriptions.push(`Chunk Wrap
-Wrap a list in chunks of a certain length / apply a function to every second item of a list
-any a, num b -> a wrapped in chunks of length b
-num a, any b -> b wrapped in chunks of length a
-any a, lst b -> wrap a into chunks with lengths given in b, repeating if necessary
-lst a, any b -> wrap b into chunks with lengths given in a, repeating if necessary
-any a, fun b -> apply b to every second item of a ([a[0], b(a[1]), a[2], ...])
-fun a, any b -> apply a to every second item of b ([b[0], a(b[1]), b[2], ...])
-str a, str b -> split a on first occurrence of b
-`)
-
-codepage_descriptions.push(`Repeat
-Repeat a value several times
-str a, num b -> a * b
-num a, str b -> b * a
-any a, num b -> repeat a b times ([a, a, ...])
-str a, str b -> a + " " + b
-fun a, any b -> repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))
-any a, fun b -> repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))
-`)
-
-codepage_descriptions.push(`Exclusive Range Length
-Range from 0 to length of a
-any a -> range(0, len(a)) (exclusive range from 0 to length of a)
-`)
-
-codepage_descriptions.push(`Inclusive Range Length
-Range from 1 to length of a inclusive
-any a -> range(1, len(a)+1) (inclusive range from 1 to length of a)
-`)
-
-codepage_descriptions.push(`Square Root
-Square root a number / every second character of a
-num a -> sqrt(a) (square root)
-str a -> every second character of a (a[0] + a[2] + ...)
-`)
-
-codepage_descriptions.push(`Open List
-Open a list - ⟨...⟩
-`)
-
-codepage_descriptions.push(`Close list
-Close a list - ⟨...⟩
-`)
-
-codepage_descriptions.push(`Two Character String
-Collect the next two characters as a string - ‛..
-`)
-
-codepage_descriptions.push(`Ten
-Push 10 to the stack
-`)
-
-codepage_descriptions.push(`Hundred
-Push 100 to the stack
-`)
-
-codepage_descriptions.push(`Is Even
-Check if a value is even
-num a -> a % 2 == 0 (even?)
-any a -> len(a) % 2 == 0 (length even?)
-`)
-
-codepage_descriptions.push(`Divisible By Three
-Check if a is divisible by 3
-num a -> a % 3 == 0 (divisible by 3?)
-any a -> len(a) == 1 (length is 1?)
-`)
-
-codepage_descriptions.push(`Twenty Six
-Push 26 to the stack
-`)
-
-codepage_descriptions.push(`Divisible By Five
-Check if a is divisible by 5
-num a -> a % 5 == 0
-any a -> a, len(a)
-`)
-
-codepage_descriptions.push(`Sixty Four
-Push 64 to the stack
-`)
-
-codepage_descriptions.push(`One Twenty Eight
-Push 128 to the stack
-`)
-
-codepage_descriptions.push(`Two Fifty Six
-Push 256 to the stack
-`)
-
-codepage_descriptions.push(`Newline
-Push a newline to the stack
-`)
-
-codepage_descriptions.push(`Join On Newlines
-Join the top of the stack on newlines (insert "\n" between items)
-any a -> "\\n".join(a)
-`)
-
-codepage_descriptions.push(`Vertical Join
-Transpose (filling with spaces) and then join on newlines
-any a -> transpose a, join on newlines
-`)
-
-codepage_descriptions.push(`Absolute Difference / Repeat / Regex match
-Returns the absolute difference / Fills an array of a certain length / Does a regex match
-num a, num b -> abs(a - b)
-num a, str b -> [b] * a
-str a, num b -> [a] * b
-str a, str b -> regex.match(b, a) (first match of regex b on a)
-`)
-
-codepage_descriptions.push(`Factorial
-Returns the factorial of the top of the stack
-num a -> factorial(a) (math.gamma(a + 1))
-str a -> a.sentence_case()
-`)
-
-codepage_descriptions.push(`Summate
-Returns the sum of the top of the stack (reduce by addition)
-num a -> sum(digits of a)
-str a -> a
-lst a -> sum(a)
-`)
-
-codepage_descriptions.push(`Cumulative Sum
-Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)
-any a -> cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])
-`)
-
-codepage_descriptions.push(`All Equal
-Returns whether all items are equal
-any a -> are all items in a equal?
-`)
-
-codepage_descriptions.push(`Sorting Lambda
-Sort the top of the stack by the function µ...;
-`)
-
-codepage_descriptions.push(`Assign
-The equivalent of a[b] = c
-any a, num b, any c -> a but item b (0-indexed) is set to c
-`)
-
-codepage_descriptions.push(`Bifurcate
-Pushes the top of the stack then its reverse. Literally duplicate and reverse
-any a -> a, reversed(a)
-`)
-
-codepage_descriptions.push(`Counts
-Returns a list of [item, count of item in the top of stack]
-any a -> [[x, a.count(x)] for x in a]
-`)
-
-codepage_descriptions.push(`Is Divisible / Arbitrary Duplicate / Ordered Group By
-Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
-num a, num b -> a % b == 0
-num a, str b -> a copies of b
-str a, num b -> b copies of a
-str a, str b -> b + " " + a
-any a, fun b -> group a by the results of b, order is preserved
-fun a, any b -> group b by the results of a, order is preserved
-`)
-
-codepage_descriptions.push(`Vyxal Exec / Reciprocal
-Executes as Vyxal / Reciprocal of number
-str a -> vy_exec(a)
-num a -> 1 / a
-`)
-
-codepage_descriptions.push(`Generator / Modulo Index / Format
-Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.
-num a, num b -> sympy.N(a, b) (evaluate a to b decimal places)
-str a, num b -> every bth letter of a (a[::b])
-num a, str b -> every ath letter of b (b[::a])
-str a, str b -> replace spaces in a with b
-lst a, num b -> every bth item of a (a[::b])
-num a, lst b -> every ath item of b (b[::a])
-fun a, lst b -> generator from function a with initial vector b
-`)
-
-codepage_descriptions.push(`Group consecutive
-Group consecutive identical items
-lst a -> group consecutive identical items
-str a -> group consecutive identical characters
-num a -> group consecutive identical digits
-`)
-
-codepage_descriptions.push(`Head Remove / Behead
-All but the first item of a list / Drop 1
-lst a -> a[1:] or [] if empty
-str a -> a[1:] or '' if empty
-num a -> remove first digit or do nothing if <1
-`)
-
-codepage_descriptions.push(`Index into or collect while unique
-Index into list at indices / Collect values while values are unique
-any a, lst b -> [a[item] for item in b]
-any a, fun b -> apply b on a and collect unique values
-`)
-
-codepage_descriptions.push(`Transliterate
-Replace each item of one value in another value with the corresponding element from a third value
-any a, any b, any c -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)
-fun a, fun b, any c -> call b on c until a(c) is falsy
-`)
-
-codepage_descriptions.push(`Insert
-Insert a value at a specified index / Map a function over every nth item of a list
-any a, num b, any c -> a.insert(b,c) (insert c at position b in a)
-any a, num b, fun c -> c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])
-`)
-
-codepage_descriptions.push(`Integer partitions
-Integer partitions / join by space
-num a -> integer_partitions(a) (integer partitions)
-any a -> " ".join(a) (join by space)
-`)
-
-codepage_descriptions.push(`Over
-Push the second-last item of stack to the top
-`)
-
-codepage_descriptions.push(`Permutations
-Get all permutations of a value
-any a -> permutations(a) (get all permutations)
-`)
-
-codepage_descriptions.push(`Reverse
-Reverse a value
-any a -> reversed(a)
-`)
-
-codepage_descriptions.push(`Vectorised sums
-Sum of each item in a list
-`)
-
-codepage_descriptions.push(`Tail Remove
-Cut off the last item of a list
-any a -> a[:-1] (all but the last item)
-`)
-
-codepage_descriptions.push(`Split And Keep Delimiter
-Split a value and keep the delimiter
-any a, any b -> a.split_and_keep_delimiter(b) (split and keep the delimiter)
-fun a, any b -> apply a to every second item of b starting on the first item
-`)
-
-codepage_descriptions.push(`Cartesian Product / Fixpoint
-Take the Cartesian Product of two values, or apply a function until there is no change. If arguments are numbers, turns them into ranges.
-
-any a, any b -> cartesian-product(a,b)
-fun a, any b -> apply a on b until b does not change
-`)
-
-codepage_descriptions.push(`Slice Until
-Slice a list until a certain index / find all results for a regex match
-any a, num b -> a[0:b] (slice until b)
-num a, any b -> b[0:a] (slice until a)
-str a, str b -> regex.findall(pattern=a,string=b) (find all matches for a regex)
-any a, fun b -> take results from a while b(x) is truthy
-fun a, any b -> take results from b while a(x) is truthy
-`)
-
-codepage_descriptions.push(`Slice From One Until
-Slice from index 1 until a number / get groups of a regex match
-any a, num b -> a[1:b] (slice from 1 until b)
-num a, any b -> b[1:a] (slice from 1 until a)
-str a, str b -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
-`)
-
-codepage_descriptions.push(`Parallel Apply
-Parallel apply two elements to the top of the stack
-`)
-
-codepage_descriptions.push(`Parallel Apply Wrap
-Parallel apply two elements and wrap the results in a list
-`)
-
-codepage_descriptions.push(`First Input
-Push the first input
-`)
-
-codepage_descriptions.push(`Second Input
-Push the second input
-`)
-
-codepage_descriptions.push(`Square
-Square a number / Format a string into a square
-num a -> a ** 2 (squared)
-str a -> a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)
-`)
-
-codepage_descriptions.push(`Shift
-Shift the top of stack two values down
-any a, any b, any c -> c,a,b (shift)
-`)
-
-codepage_descriptions.push(`Ceiling
-Take the ceiling of a number / Imaginary part of complex number / split a string on spaces
-num a -> ceil(a) (ceiling)
-complex a -> imaginary part of a
-str a -> split on spaces
-`)
-
-codepage_descriptions.push(`Floor
-Floor a number / real part of complex number / extract the integer part of a string
-num a -> floor(a) (floor)
-complex a -> real part of a
-str a -> integer part of a
-`)
-
-codepage_descriptions.push(`Deltas
-Deltas (consecutive differences)
-any a -> deltas(a) ([a[1] - a[0], a[2] - a[1], ...])
-`)
-
-codepage_descriptions.push(`Sign
-Get the sign of a number
-num a -> sign_of(a) (positive = 1, 0 = 0; negative = -1)
-str a -> is a numeric
-`)
-
-codepage_descriptions.push(`Print Without Newline
-Print a value without a trailing newline
-`)
-
-codepage_descriptions.push(`Print Without Popping
-Print a value without popping the stack
-`)
-
-codepage_descriptions.push(`Input List
-All inputs wrapped in a list
-`)
-
-codepage_descriptions.push(`Right Bit Shift
-Right-bitshift a value / right-justify a string
-num a, num b -> a << b
-num a, str b -> a.rjust(b)
-str a, num b -> b.rjust(a)
-str a, str b -> a.rjust(len(b)-len(a))
-`)
-
-codepage_descriptions.push(`Left Bit Shift
-Left-bitshift a value / left-justify a string
-num a, num b -> a >> b
-num a, str b -> a.ljust(b)
-str a, num b -> b.ljust(a)
-str a, str b -> a.ljust(len(b)-len(a))
-`)
-
-codepage_descriptions.push(`Bitwise And
-Performs bitwise and between two numbers / centre a string
-num a, num b -> a & b
-num a, str b -> b.center(a)
-str a, num b -> a.center(b)
-str a, str b -> a.center(len(b) - len(a))
-`)
-
-codepage_descriptions.push(`Bitwise Or
-Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix
-num a, num b -> a | b
-num a, str b -> b[:a]+b[a+1:]
-str a, num b -> a[:b]+a[b+1:]
-str a, str b -> merge_join(a,b)
-`)
-
-codepage_descriptions.push(`Bitwise Xor
-Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance
-num a, num b -> a ^ b
-num a, str b -> \" \" * a + b
-str a, num b -> a + \" \" * b
-str a, str b -> levenshtein_distance(a,b)
-`)
-
-codepage_descriptions.push(`Bitwise Not
-Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list
-num a -> ~a
-str a -> any_upper(a)
-lst a -> keep truthy
-`)
-
-codepage_descriptions.push(`Random Choice
-Random choice of single item from array
-lst a -> random.choice(a)
-num a -> Random integer from 0 to a
-`)
-
-codepage_descriptions.push(`Lesser Than or Equal To
-a is lesser than or equal to b?
-any a, any b -> a <= b
-`)
-
-codepage_descriptions.push(`Greater Than or Equal To
-a is greater than or equal to b?
-any a, any b -> a >= b
-`)
-
-codepage_descriptions.push(`Not Equal To
-a is not equal to b?
-any a, any b -> a != b
-`)
-
-codepage_descriptions.push(`Exactly Equal To
-a equal to b? (non-vectorizing)
-any a, any b -> a == b
-`)
-
-codepage_descriptions.push(`Reduce by
-Reduce by an element
-`)
-
-codepage_descriptions.push(`Scan by
-Cumulatively reduce by an element
-`)
-
-codepage_descriptions.push(`Set Union
-Merge two arrays without duplicates
-any a, any b -> list(set(a).union(set(b)))
-`)
-
-codepage_descriptions.push(`Transpose
-Transpose an array
-any a -> transposed array
-`)
-
-codepage_descriptions.push(`Symmetric Set difference
-Uncommon elements of two arrays
-any a, any b -> list(set(a) ^ set(b))
-`)
-
-codepage_descriptions.push(`Set Register
-Set the register to argument value
-any a -> set_register(a)
-`)
-
-codepage_descriptions.push(`Push Register
-Push the current register value
-`)
-
-codepage_descriptions.push(`Grade Up
-Indices of elements to sort in ascending order / uppercase / increment number twice
-lst a -> graded_up(a)
-str a -> a.upper()
-num a -> a + 2
-`)
-
-codepage_descriptions.push(`Grade Down
-Indices of elements to sort in descending order / lowercase / decrement number twice
-lst a -> graded_down(a)
-str a -> a.lower()
-num a -> a - 2
-`)
-
-codepage_descriptions.push(`Remove non-alphabets
-Remove non-alphabetical characters / power with base 2
-str a -> filter(isalpha, a)
-num a -> 2 ** a
-`)
-
-codepage_descriptions.push(`Nth prime
-nth prime / all substrings
-str a -> substrings(a)
-num a -> nth_prime(a)
-`)
-
-codepage_descriptions.push(`Prime factorization
-prime factorization / append first element
-num a -> prime_factorization(a) (distinct prime factors)
-str a -> a + a[0]
-lst a -> a + [a[0]]
-`)
-
-codepage_descriptions.push(`Prime factors
-all prime factors / Title Case string
-num a -> prime_factors(a) (prime factors possibly with repetition)
-str a -> title_case(a)
-`)
-
-codepage_descriptions.push(`Multiplicity / Remove Fixpoint / First Truthy Index Under Function
-Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application
-num a, num b -> multiplicity(a,b)
-str a, str b -> remove_till_fixpoint(a,b)
-fun a, any b -> first index in a where b(x) is truthy (shortcut for ḟh)
-`)
-
-codepage_descriptions.push(`Modulo 3
-Modulo 3 / Split into Length 2
-num a -> a % 3
-str a -> a split into chunks of length 2
-`)
-
-codepage_descriptions.push(`Rotate Left
-Rotate Left / Rotate Left Once
-any a, num b -> rotate_left(a,b)
-any a, any b -> a,(b[1:]+b[:1])
-`)
-
-codepage_descriptions.push(`Rotate Right
-Rotate Right / Rotate Right Once
-any a, num b -> rotate_right(a,b)
-any a, any b -> a,(b[-1:]+b[:-1])
-`)
-
-codepage_descriptions.push(`One Element Lambda
-One Element lambda function (prefix)
-`)
-
-codepage_descriptions.push(`Two Element Lambda
-Two Element lambda function (prefix)
-`)
-
-codepage_descriptions.push(`Three Element Lambda
-Three Element lambda function (prefix)
-`)
-
-codepage_descriptions.push(`Index of next character in codepage
-Compressed number in 1-128 (prefix)
-`)
-
-codepage_descriptions.push(`Split On newlines
-Split on newlines / Power with base 10
-str a -> a.split("\n")
-num a -> 10 ** a
-`)
-
-codepage_descriptions.push(`Push To Global Array
-Push to global array (no popping)
-`)
-
-codepage_descriptions.push(`Pop From Global Array
-Pop from global array, push to stack
-`)
-
-codepage_descriptions.push(`Push Global Array
-Push global array, no modification of global array
-`)
-
-codepage_descriptions.push(`Product of Array / Cartesian product over list
-Product of Array / Cartesian product over a list of lists
-lst[num] a -> reduce list by multiplication
-lst[str|lst] a -> reduce list by Cartesian product
-`)
-
-codepage_descriptions.push(`Rotate Stack Left
-Rotate Stack Left
-`)
-
-codepage_descriptions.push(`Rotate Stack Right
-Rotate Stack Right
-`)
-
-codepage_descriptions[65] += `
-kA (Uppercase alphabet)
-"ABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase alphabet)
-`
-codepage_descriptions[101] += `
-ke (e, Euler's number)
-2.718281828459045 (math.e, Euler's number)
-`
-codepage_descriptions[102] += `
-kf (Fizz)
-Fizz
-`
-codepage_descriptions[98] += `
-kb (Buzz)
-Buzz
-`
-codepage_descriptions[70] += `
-kF (FizzBuzz)
-FizzBuzz
-`
-codepage_descriptions[72] += `
-kH (Hello, World!)
-Hello, World!
-`
-codepage_descriptions[104] += `
-kh (Hello World (No Punctuation))
-Hello World
-`
-codepage_descriptions[49] += `
-k1 (1000)
-10^3 / 1000
-`
-codepage_descriptions[50] += `
-k2 (10000)
-10^4 / 10000
-`
-codepage_descriptions[51] += `
-k3 (100000)
-10^5 / 100000
-`
-codepage_descriptions[52] += `
-k4 (1000000)
-10^6 / 1000000
-`
-codepage_descriptions[97] += `
-ka (Lowercase alphabet)
-"abcdefghijklmnopqrstuvwxyz" (lowercase alphabet)
-`
-codepage_descriptions[76] += `
-kL (Lowercase and uppercase alphabet)
-"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (uppercase+lowercase alphabet)
-`
-codepage_descriptions[100] += `
-kd (Digits)
-"0123456789" (Digits 0-9)
-`
-codepage_descriptions[54] += `
-k6 (Hex digits (lowercase))
-"0123456789abcdef" (Hex digits)
-`
-codepage_descriptions[95] += `
-k^ (Hex digits (uppercase))
-"0123456789ABCDEF" (Hex digits uppercase)
-`
-codepage_descriptions[111] += `
-ko (Octal digits)
-"01234567" (Octal digits)
-`
-codepage_descriptions[112] += `
-kp (Punctuation)
-string.punctuation (Punctuations)
-`
-codepage_descriptions[80] += `
-kP (Printable ASCII)
-printable ascii
-`
-codepage_descriptions[119] += `
-kw (ASCII Whitespace)
-All ASCII whitespace
-`
-codepage_descriptions[114] += `
-kr (Digits, lowercase alphabet, and uppercase alphabet)
-"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" (0-9A-Za-z)
-`
-codepage_descriptions[66] += `
-kB (Uppercase and lowercase alphabet)
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" (A-Za-z)
-`
-codepage_descriptions[90] += `
-kZ (Uppercase alphabet reversed)
-"ZYXWVUTSRQPONMLKJIHGFEDCBA" (uppercase alphabet reversed)
-`
-codepage_descriptions[122] += `
-kz (Lowercase alphabet reversed)
-"zyxwvutsrqponmlkjihgfedcba" (lowercase alphabet reversed)
-`
-codepage_descriptions[108] += `
-kl (Uppercase and lowercase alphabet, reversed)
-"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba" (Z-Az-a)
-`
-codepage_descriptions[105] += `
-ki (Pi)
-3.141592653589793 (Pi)
-`
-codepage_descriptions[110] += `
-kn (NaN)
-math.nan
-`
-codepage_descriptions[103] += `
-kg (Golden ratio/phi)
-1.618033988749895 (golden ratio/phi)
-`
-codepage_descriptions[68] += `
-kD (Current day in the format YYYY-MM-DD)
-Current day in the format YYYY-MM-DD
-`
-codepage_descriptions[78] += `
-kN (Current time as a list of ⟨hh|mm|ss⟩)
-Current time as a list of ⟨hh|mm|ss⟩
-`
-codepage_descriptions[143] += `
-kḋ (Current day in the format DD/MM/YYYY)
-Current day in the format DD/MM/YYYY
-`
-codepage_descriptions[186] += `
-kḊ (Current day in the format MM/DD/YYYY)
-Current day in the format MM/DD/YYYY
-`
-codepage_descriptions[135] += `
-kð (Current day in the format ⟨DD|MM|YYYY⟩)
-Current day in the format ⟨DD|MM|YYYY⟩
-`
-codepage_descriptions[138] += `
-kβ (Braces, square brackets, angle brackets, and parentheses)
-{}[]<>()
-`
-codepage_descriptions[184] += `
-kḂ (Parentheses, square brackets, and braces)
-"()[]{}" (Brackets)
-`
-codepage_descriptions[14] += `
-kß (Parentheses and square brackets)
-()[]
-`
-codepage_descriptions[141] += `
-kḃ (Opening brackets)
-"([{" (Open brackets)
-`
-codepage_descriptions[225] += `
-k≥ (Closing brackets)
-")]}" (Close brackets)
-`
-codepage_descriptions[224] += `
-k≤ (Opening brackets (with <))
-"([{<" (Fish bones :P)
-`
-codepage_descriptions[253] += `
-kΠ (Closing brackets (with >))
-")]}>" (Closing brackets)
-`
-codepage_descriptions[118] += `
-kv (Lowercase vowels)
-"aeiou" (Vowels lowercase)
-`
-codepage_descriptions[86] += `
-kV (Upercase vowels)
-"AEIOU" (Vowels uppercase)
-`
-codepage_descriptions[5] += `
-k∨ (Lowercase and uppercase vowels)
-"aeiouAEIOU" (vowelsVOWELS)
-`
-codepage_descriptions[6] += `
-k⟇ (Vyxal codepage)
-Yields the Vyxal codepage
-`
-codepage_descriptions[17] += `
-k½ ([1, 2])
-[1, 2]
-`
-codepage_descriptions[148] += `
-kḭ (4294967296)
-2 ** 32, 2^32, 4294967296
-`
-codepage_descriptions[43] += `
-k+ ([1, -1])
-[1, -1]
-`
-codepage_descriptions[45] += `
-k- ([-1, 1])
-[-1, 1]
-`
-codepage_descriptions[181] += `
-k≈ ([0, 1])
-[0, 1]
-`
-codepage_descriptions[47] += `
-k/ (Slashes)
-"/\\" (Forwardslash, backslash)
-`
-codepage_descriptions[82] += `
-kR (360)
-360
-`
-codepage_descriptions[87] += `
-kW (https://)
-https://
-`
-codepage_descriptions[223] += `
-k℅ (http://)
-http://
-`
-codepage_descriptions[217] += `
-k↳ (https://www.)
-https://www.
-`
-codepage_descriptions[208] += `
-k² (http://www.)
-http://www.
-`
-codepage_descriptions[174] += `
-k¶ (512)
-512
-`
-codepage_descriptions[175] += `
-k⁋ (1024)
-1024
-`
-codepage_descriptions[180] += `
-k¦ (2048)
-2048
-`
-codepage_descriptions[194] += `
-kṄ (4096)
-4096
-`
-codepage_descriptions[151] += `
-kṅ (8192)
-8192
-`
-codepage_descriptions[178] += `
-k¡ (16384)
-16384
-`
-codepage_descriptions[177] += `
-kε (32768)
-32768
-`
-codepage_descriptions[214] += `
-k₴ (65536)
-65536
-`
-codepage_descriptions[8] += `
-k× (2147483648)
-2147483648
-`
-codepage_descriptions[206] += `
-k⁰ (Lowercase consonants with y)
-bcdfghjklmnpqrstvwxyz
-`
-codepage_descriptions[207] += `
-k¹ (Lowercase consonants without y)
-bcdfghjklmnpqrstvwxz
-`
-codepage_descriptions[84] += `
-kT (BF command set)
-BF command set ("[]<>-+.,")
-`
-codepage_descriptions[153] += `
-kṗ (Bracket pair list)
-List of bracket pairs ("[(),[],{},<>]")
-`
-codepage_descriptions[196] += `
-kṖ (Nested brackets)
-String of all brackets nested ("([{<>}])")
-`
-codepage_descriptions[83] += `
-kS (Amogus)
-Amogus ("ඞ")
-`
-codepage_descriptions[166] += `
-k₁ ([1, 1])
-The list [1, 1]
-`
-codepage_descriptions[167] += `
-k₂ (2 ** 20)
-2 to the power of 20, 1048576
-`
-codepage_descriptions[168] += `
-k₃ (2 ** 30)
-2 to the power of 30, 1073741824
-`
-codepage_descriptions[230] += `
-k∪ (Lowercase Vowels With Y)
-Lowercase vowels with y, "aeiouy"
-`
-codepage_descriptions[232] += `
-k⊍ (Uppercase Vowels With Y)
-Uppercase vowels with y, "AEIOUY"
-`
-codepage_descriptions[231] += `
-k∩ (Vowels With Y)
-Vowels with y, "aeiouyAEIOUY"
-`
-codepage_descriptions[216] += `
-k□ (Directions)
-Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]
-`
-codepage_descriptions[197] += `
-kṘ (Roman Numerals)
-IVXLCDM
-`
-codepage_descriptions[13] += `
-k• (Qwerty Keyboard)
-The list ["qwertyuiop","asdfghjkl","zxcvbnm"]
-`
-codepage_descriptions[98] += `
-∆b (Binary String)
-Get a binary string of a number
-num a -> bin(a).replace("0b", "")
-`
-codepage_descriptions[99] += `
-∆c (Cosine)
-Get the cosine of an angle in radians
-num a -> math.cos(a)
-`
-codepage_descriptions[67] += `
-∆C (Arc Cosine)
-Get the arccosine of an angle in radians
-num a -> math.arrcos(a)
-`
-codepage_descriptions[113] += `
-∆q (Quadratic Solver)
-Solve a quadratic equation of the form ax^2 + bx = 0
-num a, num b -> x such that ax^2 + bx = 0
-num a, str b -> solve for x such that a = b(x)
-str a, num b -> solve for x such that a(x) = b
-str a, str b -> solve for x such that a(x) = b(x)
-`
-codepage_descriptions[81] += `
-∆Q (General Quadratic Solver)
-Solve a quadratic equation of the form x^2 + ax + b = 0
-num a, num b -> roots(a, b) / x^2 + ax + b = 0
-num a, str b -> evaluate single variable expression b with x=a
-str a, num b -> evaluate single variable expression a with x=b
-str a, str b -> solve equations a and b simultaneously for x and y
-`
-codepage_descriptions[115] += `
-∆s (Sine)
-Get the sine of an angle in radians
-num a -> math.sin(a)
-`
-codepage_descriptions[83] += `
-∆S (Arc Sine)
-Get the arcsine of an angle in radians
-num a -> math.arcsin(a)
-`
-codepage_descriptions[116] += `
-∆t (Tangent)
-Get the tangent of an angle in radians
-num a -> math.tan(a)
-`
-codepage_descriptions[84] += `
-∆T (Arc Tangent)
-Get the arctangent of an angle in radians
-num a -> math.arctan(a)
-`
-codepage_descriptions[80] += `
-∆P (Polynomial Solver)
-Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
-lst a -> roots(a)
-`
-codepage_descriptions[29] += `
-∆ƈ (n Pick r (npr))
-Get the number of combinations of r items from a set of n items
-num a, num b -> n_pick_r(a, b)
-num a, str b -> n_pick_r(a, len(b))
-str a, num b -> n_pick_r(len(a), b)
-str a, str b -> n_pick_r(len(a), len(b))
-`
-codepage_descriptions[213] += `
-∆± (Copy Sign)
-Copy the sign of one number to the other
-num a, num b -> math.copysign(a, b)
-`
-codepage_descriptions[75] += `
-∆K (Sum of Proper Divisors / Stationary Points)
-Get the sum of all proper divisors of a number /  get the stationary points of a function
-num a -> sum_of_proper_divisors(a)
-str a -> stationary_points(a)
-`
-codepage_descriptions[208] += `
-∆² (Perfect Square?)
-Is the number a perfect square? (1, 4, 9, 16, 25, 36)
-num a -> is_perfect_square(a)
-`
-codepage_descriptions[101] += `
-∆e (Euler's Number (e) raised to power a)
-Get the value of Euler's number (e) raised to the power of a
-num a -> e ** a
-str a -> simplify expression a
-`
-codepage_descriptions[69] += `
-∆E ((Euler's Number (e) Raised to Power a) - 1)
-Get the value of Euler's number (e) raised to the power of a minus 1
-num a -> (e ** a) - 1
-str a -> expand expression a
-`
-codepage_descriptions[76] += `
-∆L (Natural Logarithm)
-Get the natural logarithm of a number
-num a -> math.log(a)
-`
-codepage_descriptions[108] += `
-∆l (Logarithm (log_2))
-Get the logarithm of a number to base 2
-num a -> math.log2(a)
-`
-codepage_descriptions[139] += `
-∆τ (Common Logarithm)
-Get the common logarithm of a number
-num a -> math.log10(a)
-`
-codepage_descriptions[100] += `
-∆d (Straight Line Distance)
-Get the straight line distance between two points (x1, x2, ..., xn) and (y1, y2, ..., yn)
-lst a, lst b -> euclidean_distance(a, b)
-`
-codepage_descriptions[68] += `
-∆D (To Degrees)
-Convert an angle from radians to degrees
-num a -> math.degrees(a)
-`
-codepage_descriptions[82] += `
-∆R (To Radians)
-Convert an angle from degrees to radians
-num a -> math.radians(a)
-`
-codepage_descriptions[196] += `
-∆Ṗ (Next Prime After a Number / Discriminant of Polynomial)
-Get the next prime number after a given number / the discriminant of a polynomial
-num a -> next_prime(a)
-str a -> discriminant(a)
-`
-codepage_descriptions[153] += `
-∆ṗ (First Prime Before a Number / Factor Expression)
-Get the first prime number before a given number / factor a mathematical expression
-num a -> prev_prime(a)
-str a -> factorise(a)
-`
-codepage_descriptions[112] += `
-∆p (Nearest Prime to a Number / Python equivalent of an expression)
-Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function
-num a -> nearest_prime(a)
-str a -> sympy.nsimplify(a).pycode()
-`
-codepage_descriptions[154] += `
-∆ṙ (Polynomial from Roots)
-Get the polynomial with coefficients from the roots of a polynomial
-list a -> polynomial(a)
-`
-codepage_descriptions[87] += `
-∆W (Round to n Decimal Places)
-Round a number to n decimal places
-num a, num b -> round(a, no_dec_places=b) (b significant digits)
-`
-codepage_descriptions[37] += `
-∆% (Modular Exponentiation)
-Get the modular exponentiation a**b mod c
-any a, any b, any c -> pow(a, b, c)
-`
-codepage_descriptions[192] += `
-∆Ŀ (Least Common Multiple)
-Get the least common multiple of two numbers
-lst a -> lcm(a)
-num a, num b -> lcm(a, b)
-`
-codepage_descriptions[105] += `
-∆i (nth Digit of Pi / Integrate)
-Get the nth digit of pi
-num a -> nth_digit_of_pi(a)
-str a -> antiderivative of a
-`
-codepage_descriptions[73] += `
-∆I (First N Digits of Pi)
-Generate the first n digits of pi
-num a -> the first (a + 1)th digits of pi
-`
-codepage_descriptions[187] += `
-∆Ė (N Digits of Euler's Number (e) / Sympy Evaluate)
-Get the first n digits of Euler's number (e) / evaluate an expression as sympy
-num a -> first n digits of e
-str a -> evaluate(a)
-`
-codepage_descriptions[144] += `
-∆ė (Nth Digit of Euler's Number (e) / Differentiate)
-Get the nth digit of Euler's number (e)
-num a -> nth_digit_of_e(a)
-str a -> derivative(a)
-`
-codepage_descriptions[102] += `
-∆f (nth Fibonacci Number)
-Get the nth fibonacci number, 1-indexed
-num a -> nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)
-`
-codepage_descriptions[70] += `
-∆F (nth Fibonacci Number, 0-indexed)
-Get the nth fibonacci number, 0-indexed
-num a -> nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)
-`
-codepage_descriptions[197] += `
-∆Ṙ (Random Float)
-Get a random float in the range [0, 1), pseudo random number
-num a -> random.random()
-`
-codepage_descriptions[156] += `
-∆ṫ (Totient Function / Local Minima)
-Get the totient function of a number / local minima of a function
-num a -> totient(a)
-str a -> local_minima(a)
-`
-codepage_descriptions[90] += `
-∆Z (ZFill)
-Pad a string with zeros to a given length
-str, num a -> zfill(a, b)
-`
-codepage_descriptions[142] += `
-∆ċ (Nth Cardinal)
-Get the nth cardinal / convert number to words
-num a -> num_to_words(a)
-`
-codepage_descriptions[111] += `
-∆o (Nth Ordinal)
-Get the nth ordinal / convert number to wordth ordinal
-num a -> num_to_ordinal(a)
-`
-codepage_descriptions[77] += `
-∆M (Mode)
-Get the mode of a list
-lst a -> mode(a)
-`
-codepage_descriptions[150] += `
-∆ṁ (Median)
-Get the median of a list - returns a list of the two middle items if even length list (use ṁ to average them)
-lst a -> median(a)
-`
-codepage_descriptions[185] += `
-∆Ċ (Polynomial Expression From Coefficients)
-Get the polynomial expression from a list of coefficients
-num a -> polynomial of degree n
-str a -> a
-lst a -> polynomial_expression(a)
-`
-codepage_descriptions[21] += `
-∆¢ (Carmichael Function)
-Get the Carmichael function of a number / Local Maxima
-num a -> carmichael(a)
-str a -> local_maxima(a)
-`
-codepage_descriptions[131] += `
-∆› (Increment until false)
-Increment a until b(a) is false (deprecated, use \`>\` instead)
-any a, fun b -> while b(a): a += 1
-fun a, any b -> while a(b): b += 1
-`
-codepage_descriptions[132] += `
-∆‹ (Decrement until false)
-Decrement a until b(a) is false (deprecated, use \`<\` instead)
-any a, fun b -> while b(a): a -= 1
-fun a, any b -> while a(b): b -= 1
-`
-codepage_descriptions[240] += `
-∆ǐ (Prime Exponents)
-Get the exponents of prime factors of a number
-num a -> prime_exponents(a) (in the order of prime_factors(a))
-`
-codepage_descriptions[98] += `
-øb (Parenthesise)
-Parenthesise a string
-any a -> "("" + a + ")"
-`
-codepage_descriptions[66] += `
-øB (Bracketify)
-Enclose a string in brackets
-any a -> "["" + a + "]"
-`
-codepage_descriptions[141] += `
-øḃ (Curly Bracketify)
-Enclose a string in curly brackets
-any a -> "{"" + a + "}"
-`
-codepage_descriptions[184] += `
-øḂ (Angle Bracketify)
-Enclose a string in angle brackets
-any a -> "<"" + a + ">"
-`
-codepage_descriptions[138] += `
-øβ (Balanced Brackets)
-Check if brackets in a string ("{}()[]<>") are balanced
-any a -> balanced_brackets(a)
-`
-codepage_descriptions[217] += `
-ø↳ (Custom Pad Left)
-Pad a string to the left with a certain character
-any a, str b, num c -> pad a to the left with c so a has length b
-any a, num b, str c -> pad a to the left with b so a has length c
-`
-codepage_descriptions[218] += `
-ø↲ (Custom Pad Right)
-Pad a string to the right with a certain character
-any a, str b, num c -> pad a to the right with c so a has length b
-any a, num b, str c -> pad a to the right with b so a has length c
-`
-codepage_descriptions[77] += `
-øM (Flip Brackets Vertical Palindromise)
-Vertically palindromise and reverse brackets and slashes, without duplicating center
-any a -> palindromise, without duplicating center, and flip brackets and slashes in the second half
-`
-codepage_descriptions[153] += `
-øṗ (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
-Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to \`øMøĊ⁋\`
-any a -> palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
-`
-codepage_descriptions[109] += `
-øm (Flip Brackets Vertical Mirror, Center, Join on Newlines)
-Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to \`øṀøĊ⁋\`
-any a -> mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines
-`
-codepage_descriptions[111] += `
-øo (Remove Until No change)
-Remove b from a until a does not change
-str a, str b -> remove b from a until a does not change
-str a, lst b -> remove everything in b (in order) from a until a does not change
-`
-codepage_descriptions[86] += `
-øV (Replace Until No Change)
-Replace b with c in a until a does not change
-str a, str b, str c -> a.replace_until_no_change(b,c)
-`
-codepage_descriptions[99] += `
-øc (String Compress)
-Compress a string of lowercase letters and spaces in base 255
-str a -> base_255_string_compress(a)
-`
-codepage_descriptions[67] += `
-øC (Number Compress)
-Compress a positive integer in base 255
-num a -> base_255_number_compress(a)
-`
-codepage_descriptions[185] += `
-øĊ (Center)
-Center a list of strings
-lst a -> center(a) (pad each item with spaces so all are the same length and centered)
-`
-codepage_descriptions[101] += `
-øe (Run Length Encoding)
-Run length encoding, convert from string/list to list of items and amount repeated.
-str a -> run_length_encoded(a)
-`
-codepage_descriptions[187] += `
-øĖ (Separated Run Length Encoding)
-Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to \`øe∩÷\`
-str a -> run length encode a and push items and lengths
-`
-codepage_descriptions[100] += `
-ød (Run Length Decoding)
-Run length decoding, convert from list of characters and lengths to a string/list
-lst a -> run_length_decoded(a)
-`
-codepage_descriptions[186] += `
-øḊ (Dyadic Run Length Decode)
-Run length decoding, convert list of characters and list of lengths to a string/list
-lst a, lst b -> run length decode with items a and lengths b
-`
-codepage_descriptions[68] += `
-øD (Dictionary Compression)
-Optimally compress a string of English using words from the Vyxal dictionary
-str a -> dictionary_compressed(a)
-`
-codepage_descriptions[87] += `
-øW (Group on words)
-Group a string on words
-str a -> Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character
-`
-codepage_descriptions[142] += `
-øċ (Semi Optimal number compress)
-Semi-optimally compress a number
-num a -> optimal_number_compress(a)
-`
-codepage_descriptions[154] += `
-øṙ (Regex replace)
-Replace matches of a with c in b
-any a, any b, fun c -> apply c to matches of a in b
-any a, any b, any c -> replace matches of a with c in b
-`
-codepage_descriptions[112] += `
-øp (Starts With)
-Check if one value starts with another
-any a, any b -> a.startswith(b) (Starts with b?)
-`
-codepage_descriptions[69] += `
-øE (Ends With)
-Check if one value ends with another
-any a, any b -> a.endswith(b) (ends with b?)
-`
-codepage_descriptions[102] += `
-øf (Ends With Set)
-Check if a value ends with others
-any a, any b -> does a end with all of b?
-`
-codepage_descriptions[115] += `
-øs (Starts With Set)
-Check if a value starts with others
-any a, any b -> does a start with all of b?
-`
-codepage_descriptions[80] += `
-øP (Pluralise Count)
-Create a sentence of the form 'a bs'
-num a, str b -> a + " " + b + (s if a != 1 else "") (concatenate with space, append a s if not 1)
-`
-codepage_descriptions[150] += `
-øṁ (Vertical Mirror)
-Vertical Mirror - Split by newlines, mirror each line, join by newlines
-str a -> vertical_mirror(a)
-`
-codepage_descriptions[193] += `
-øṀ (Flip Brackets Vertical Mirror)
-Vertical mirror, and swap brackets and slashes in the second half.
-any a -> vertical_mirror(a, mapping = flip brackets and slashes)
-`
-codepage_descriptions[196] += `
-øṖ (String Partitions)
-All partitions of a string/list
-any a -> all_partitions(a)
-`
-codepage_descriptions[143] += `
-øḋ (To Decimal)
-Convert a rational to its decimal representation.
-num a -> to_decimal(a)
-`
-codepage_descriptions[6] += `
-ø⟇ (Get Codepage Character / Get Codepage Index)
-Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage
-num a -> vyxal_codepage[a]
-str a -> vyxal_codepage.index(a)
-`
-codepage_descriptions[197] += `
-øṘ (Roman Numeral)
-Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.
-num a -> to_roman_numeral(a)
-str a -> from_roman_numeral(a)
-`
-codepage_descriptions[74] += `
-øJ (Parse JSON)
-Parse a JSON string into a Vyxal object
-str a -> json.loads(a)
-`
-codepage_descriptions[188] += `
-øḞ (Replace First Occurrence)
-Replace the first instance of an item with another item
-any a, any b, any c -> a.replace_first(b, c)
-`
-codepage_descriptions[194] += `
-øṄ (Replace Nth Occurrence)
-Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.
-any a, any b, any c, any d -> a.replace_nth_occurrence(b, c, d)
-`
-codepage_descriptions[83] += `
-øS (Strip whitespace from both sides)
-Strip whitespace from both sides of a string / Remove trailing zeros from a number
-str a -> a.strip()
-num a -> remove trailing zeros
-`
-codepage_descriptions[76] += `
-øL (Strip whitespace from the left side)
-Strip whitespace from the left side of a string
-str a -> a.lstrip()
-`
-codepage_descriptions[82] += `
-øR (Strip whitespace from the right side)
-Strip whitespace from the right side of a string
-str a -> a.rstrip()
-`
-codepage_descriptions[108] += `
-øl (Strip from the left side)
-Strip from the left side of a string
-str a, num b -> a.lstrip(b)
-`
-codepage_descriptions[114] += `
-ør (Strip from the right side)
-Strip from the right side of a string
-str a, num b -> a.rstrip(b)
-`
-codepage_descriptions[95] += `
-ø^ (Canvas Draw)
-Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string
-num a, lst b, str c -> draw with a = length, b = dirs, c = text
-num a, str b, str c -> draw with a = length, b/c dependent on dir validity
-any a, num b, any c -> draw with b = length ^
-any a, any b, num c -> draw with c = length ^
-str a, any b, any c -> draw with a = text, b/c dependent on dir validity
-lst a, str b, any c -> draw with b = text, ^
-lst a, lst b, str c -> draw with c = text, ^
-`
-codepage_descriptions[3] += `
-ø∧ (Global Canvas Draw)
-Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.
-num a, lst b, str c -> draw with a = length, b = dirs, c = text
-num a, str b, str c -> draw with a = length, b/c dependent on dir validity
-any a, num b, any c -> draw with b = length ^
-any a, any b, num c -> draw with c = length ^
-str a, any b, any c -> draw with a = text, b/c dependent on dir validity
-lst a, str b, any c -> draw with b = text, ^
-lst a, lst b, str c -> draw with c = text, ^
-`
-codepage_descriptions[46] += `
-ø. (Surround)
-Surround a value with another
-str a, str b -> a.surround(b)
-lst a, any b -> a.surround(b)
-any a, lst b -> b.surround(a)
-`
-codepage_descriptions[149] += `
-øŀ (Left Align)
-Left align a string/string list
-str a -> justify to left
-lst a -> justify each to left
-`
-codepage_descriptions[27] += `
-øɽ (Right Align)
-Right align a string/string list
-str a -> justify to right
-lst a -> justify each to right
-`
-codepage_descriptions[42] += `
-Þ* (Cartesian product over list)
-Cartesian product over a list of lists
-lst a -> itertools.product(*a)
-`
-codepage_descriptions[97] += `
-Þa (Adjacency matrix (Directed))
-Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)
-lst a -> adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])
-`
-codepage_descriptions[110] += `
-Þn (Infinite list of all integers)
-All integers in an infinite list (0, 1, -1, 2, -2, ...)
-`
-codepage_descriptions[160] += `
-Þż (Lift)
-Multiply a numeric list by a range from 1 to its length
-lst a -> lift
-`
-codepage_descriptions[65] += `
-ÞA (Adjacency matrix (Undirected))
-Adjacency matrix of undirected graph
-lst a -> adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])
-`
-codepage_descriptions[111] += `
-Þo (Ordinals)
-An infinite list of first, second, third, fourth etc
-`
-codepage_descriptions[99] += `
-Þc (Cardinals)
-An infinite list of one, two, three, four etc
-`
-codepage_descriptions[112] += `
-Þp (Primes)
-An infinite list of primes
-`
-codepage_descriptions[117] += `
-Þu (All Unique)
-Are all elements of a list/string unique?
-any a -> all_unique(a)
-`
-codepage_descriptions[106] += `
-Þj (Depth)
-Depth of ragged list
-lst a -> Depth
-`
-codepage_descriptions[201] += `
-ÞẊ (Cartesian Power)
-Cartesian power, cartesian product with self n times. If both arguments are numbers, turns the left into a range.
-
-any a, num b -> cartesian_power(a, b)
-num a, any b -> cartesian_power(b, a)
-`
-codepage_descriptions[102] += `
-Þf (Flatten By depth)
-Flatten a list by a certain depth (default 1)
-lst a, num b -> flatten a by depth b
-any a, lst b -> a, flatten b by depth 1
-`
-codepage_descriptions[66] += `
-ÞB (Random Bits)
-Fill a list with random bits
-num a -> list of length a filled with random bits
-any a -> list of length n(a) filled with random bits
-`
-codepage_descriptions[60] += `
-Þ< (All Less Than Increasing)
-Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing
-any a, num b -> all values of a up to (not including) the first greater than or equal to b
-`
-codepage_descriptions[244] += `
-Þǔ (Untruth)
-Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere
-any a -> [int(x in a) for x in range(max(a))]
-`
-codepage_descriptions[243] += `
-ÞǓ (Connected Uniquify)
-Remove occurences of adjacent duplicates in a list
-any a -> connected uniquify a (\`Ġvh\`)
-`
-codepage_descriptions[105] += `
-Þi (Multidimensional Indexing)
-Index a list of coordinates into a value.
-lst a, lst b -> reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)
-`
-codepage_descriptions[73] += `
-ÞI (All Indices (Multidimensional))
-All multidimensional indices of element in list
-lst a, any b -> all indices of b in a
-any a, lst b -> all indices of a in b
-any a, any b -> all indices of b in a
-`
-codepage_descriptions[145] += `
-Þḟ (Multidimensional Search)
-Find the first multidimensional index of a value in another
-lst a, any b -> find the first occurrence of a in b and return as a multidimensional index
-`
-codepage_descriptions[188] += `
-ÞḞ (Fill to make rectangular)
-Fill a 2-D list to make it rectangular
-lst a, any b -> fill a with b to make it rectangular
-any a, lst b -> fill b with a to make it rectangular
-`
-codepage_descriptions[109] += `
-Þm (Zero Matrix)
-Given a list of dimensions, create a matrix with those dimensions, filled with zeroes
-lst a -> matrix with dimensions each item of a, where the first is the innermost and the last is the outermost
-`
-codepage_descriptions[194] += `
-ÞṄ (Infinite Integer Partitions)
-Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
-`
-codepage_descriptions[7] += `
-Þ÷ (Divide List Into N Equal Length Parts)
-Divide a list into n equal length parts, possibly with an extra part
-any a, num b -> divide a into b equal length parts, possibly with an extra part
-num a, any b -> divide b into a equal length parts, possibly with an extra part
-`
-codepage_descriptions[90] += `
-ÞZ (Fill By Coordinates)
-Fill a matrix by calling a function with the lists of coordinates in the matrix.
-any a, fun b -> for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
-`
-codepage_descriptions[215] += `
-Þ… (Evenly Distribute)
-Evenly distribute a number over elements of a list
-list a, num b -> [i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b
-`
-codepage_descriptions[128] += `
-Þ↓ (Minimum By Function)
-Find the minimum value of a list by applying a function to each element
-lst a, fun b -> minimum value of a by applying b to each element
-`
-codepage_descriptions[127] += `
-Þ↑ (Maximum By Function)
-Find the maximum value of a list by applying a function to each element
-lst a, fun b -> maximum value of a by applying b to each element
-`
-codepage_descriptions[8] += `
-Þ× (All Combinations)
-All combinations of a list / string, of all lengths, with replacement
-any a -> all (non-empty) combinations of a, of all lengths and all orders, with replacement
-`
-codepage_descriptions[120] += `
-Þx (All Combinations Without Replacement)
-All combinations of a list / string, of all lengths, without replacement
-any a -> all (non-empty) combinations of a, of all lengths and all orders, without replacement
-`
-codepage_descriptions[70] += `
-ÞF (All Fibonacci)
-All Fibonacci numbers as a LazyList.
-`
-codepage_descriptions[33] += `
-Þ! (All Factorials)
-All factorials as a LazyList.
-`
-codepage_descriptions[85] += `
-ÞU (Uniquify Mask)
-A list of booleans describing which elements of a will remain after uniquifying.
-any a -> a list of booleans describing which elements of a will remain after uniquifying
-`
-codepage_descriptions[68] += `
-ÞD (Diagonals)
-Diagonals of a matrix, starting with the main diagonal.
-lst a -> diagonals of a, starting with the main diagonal
-`
-codepage_descriptions[143] += `
-Þḋ (Anti-diagonals)
-Anti-diagonals of a matrix, starting with the main anti-diagonal.
-lst a -> anti-diagonals of a, starting with the main anti-diagonal
-`
-codepage_descriptions[83] += `
-ÞS (Sublists)
-Sublists of a list.
-lst a -> non-empty sublists of a
-`
-codepage_descriptions[199] += `
-ÞṪ (Transpose With Filler)
-Transpose a matrix, with a filler value for empty cells.
-lst a, any b -> transpose a, with filler value b
-`
-codepage_descriptions[223] += `
-Þ℅ (Random Permutation)
-Random permutation of a list / string
-any a -> random permutation of a
-`
-codepage_descriptions[193] += `
-ÞṀ (Matrix Multiplication)
-Multiply two matrices together.
-lst a, lst b -> matrix multiply a and b
-`
-codepage_descriptions[186] += `
-ÞḊ (Matrix Determinant)
-Calculate the determinant of a matrix.
-lst a -> determinant(a)
-`
-codepage_descriptions[92] += `
-Þ\ (Antidiagonal)
-Antidiagonal of a matrix
-lst a -> antidiagonal(a)
-`
-codepage_descriptions[47] += `
-Þ/ (Main Diagonal)
-Diagonal of a matrix
-lst a -> diagonal(a)
-`
-codepage_descriptions[67] += `
-ÞC (Matrix Column Reduce)
-Reduce columns of a matrix by a function.
-lst a, fun b -> reduce columns of a with b
-`
-codepage_descriptions[5] += `
-Þ∨ (Multiset Difference)
-Similar to set difference, but with duplicates allowed.
-lst a, lst b -> multiset difference of a and b
-`
-codepage_descriptions[231] += `
-Þ∩ (Multiset Intersection)
-Similar to set intersection, but with duplicates allowed.
-lst a, lst b -> multiset intersection of a and b
-`
-codepage_descriptions[230] += `
-Þ∪ (Multiset Union)
-Similar to set union, but with duplicates allowed.
-lst a, lst b -> multiset union of a and b
-`
-codepage_descriptions[232] += `
-Þ⊍ (Multiset Symmetric Difference)
-Similar to set symmetric difference, but with duplicates allowed.
-lst a, lst b -> multiset symmetric difference of a and b
-`
-codepage_descriptions[13] += `
-Þ• (Dot Product)
-Dot product of two lists.
-lst a, lst b -> dot product of a and b
-`
-codepage_descriptions[150] += `
-Þṁ (Mold without repeat)
-Mold a list without repeating elements.
-lst a, lst b -> mold a list without repeating elements
-`
-codepage_descriptions[77] += `
-ÞM (Maximal Indices)
-Indices of the maximal elements of a list.
-lst a -> indices of the maximal elements of a
-`
-codepage_descriptions[129] += `
-Þ∴ (Elementwise Vectorised Dyadic Maximum)
-Elementwise vectorised dyadic maximum.
-lst a, lst b -> [max(a[0], b[0]), max(a[1], b[1]), ...]
-`
-codepage_descriptions[130] += `
-Þ∵ (Elementwise Vectorised Dyadic Minimum)
-Elementwise vectorised dyadic minimum.
-lst a, lst b -> [min(a[0], b[0]), min(a[1], b[1]), ...]
-`
-codepage_descriptions[115] += `
-Þs (All Slices of a List)
-Get all slices of a list, skipping a certain number of items
-lst a, int b -> [a[::b], a[1::b], a[2::b], ...]
-int a, lst b -> [b[::a], b[1::a], b[2::a], ...]
-`
-codepage_descriptions[252] += `
-Þ¾ (Empty the Global Array)
-Empty the global array.
-`
-codepage_descriptions[114] += `
-Þr (Remove Last Item and Prepend 0)
-Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
-lst a -> [0] + a[:-1]
-`
-codepage_descriptions[30] += `
-Þ∞ (Infinite List)
-An infinite list of positive integers
-`
-codepage_descriptions[82] += `
-ÞR (Remove Last Item From Cumulative Sums and Prepend 0)
-Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for ¦Ṫ0p
-lst a -> [0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]
-`
-codepage_descriptions[157] += `
-Þẇ (Unwrap)
-Take a and push a[0]+a[-1] and a[1:-1]
-lst a -> a[0]+a[-1], a[1:-1]
-`
-codepage_descriptions[103] += `
-Þg (Shortest By Length)
-Return the shortest item in a list.
-lst a -> the shortest item of a
-`
-codepage_descriptions[71] += `
-ÞG (Longest By Length)
-Return the longest item in a list.
-lst a -> the longest item of a
-`
-codepage_descriptions[155] += `
-Þṡ (Sort By Length)
-Sort a list by length.
-lst a -> sort a from shortest to longest
-`
-codepage_descriptions[198] += `
-ÞṠ (Is Sorted?)
-Returns true if an item is sorted in ascending order using default sorting rules.
-lst a -> is a sorted in increasing order?
-`
-codepage_descriptions[197] += `
-ÞṘ (Is Sorted in Reverse?)
-Returns true if an item is sorted in descending order using default sorting rules.
-lst a -> is a sorted in decreasing order?
-`
-codepage_descriptions[195] += `
-ÞȮ (Is Ordered?)
-Returns true if the item is sorted in either descending or ascending order.
-lst a -> is a sorted in increasing or decreasing order?
-`
-codepage_descriptions[185] += `
-ÞĊ (Is Unordered?)
-Returns true if the item is not sorted in either descending or ascending order.
-lst a -> is a not sorted, in either increasing or decreasing order?
-`
-codepage_descriptions[235] += `
-Þ⇧ (Is Strictly Ascending?)
-Returns true if the list is in strictly ascending order.
-lst a -> is a in strictly ascending order?
-`
-codepage_descriptions[236] += `
-Þ⇩ (Is Strictly Descending?)
-Returns true if the list is in strictly descending order.
-lst a -> is a in strictly descending order?
-`
-codepage_descriptions[142] += `
-Þċ (Cycle)
-Form an infinite list from a vector.
-lst a -> [a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]
-`
-codepage_descriptions[75] += `
-ÞK (Suffixes)
-Suffixes of a list.
-lst a -> [a, a[:-1], a[:-2], ..., a[:1]]
-`
-codepage_descriptions[84] += `
-ÞT (Multi-dimensional truthy indices)
-Multi-dimensional indices of truthy elements
-lst a -> Multi-dimensional indices of truthy elements in a
-`
-codepage_descriptions[191] += `
-Þİ (First n Items and Rest)
-Push the first n items of a, then the rest of a
-lst a, int b -> a[:b], a[b:]
-int a, lst b -> b[:a], b[a:]
-`
-codepage_descriptions[78] += `
-ÞN (Alternating Negation)
-An infinite list of an item, then that item negated, then that item, and so on. Uses the negation element for negation.
-any a -> [a, -a, a, -a, ...]
-`
-codepage_descriptions[216] += `
-Þ□ (Identity Matrix of Size n)
-A matrix with 1s on the main diagonal and zeroes elsewhere
-num a -> the a x a identity matrix
-`
-codepage_descriptions[101] += `
-Þe (Matrix Exponentiation)
-A matrix multiplied by itself n times
-lst a, num b -> a ** b (matrix exponentiation)
-num a, lst b -> b ** a (matrix exponentiation)
-`
-codepage_descriptions[100] += `
-Þd (Distance matrix (Directed))
-Distance matrix of directed graph
-lst a -> distance matrix of a directed graph (where a = [[i, j] for each edge i to j])
-`
-codepage_descriptions[119] += `
-Þw (Distance matrix (Undirected))
-Distance matrix of undirected graph
-lst a -> distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])
-`
-codepage_descriptions[216] += `
-¨□ (Parse direction arrow to integer)
-Map characters in \`>^<v\` to integers (0, 1, 2, 3 respectively)
-str a -> map on a, replacing \`>^<v\` with integers, and others with -1 ([\`>^<v\`.find(a[0]), \`>^<v\`.find(a[1]), ...])
-`
-codepage_descriptions[95] += `
-¨^ (Parse direction arrow to vector)
-Map characters in \`>^<v\` to direction vectors
-str a -> map on a, replacing \`>^<v\` with [1, 0], [0, 1], etc., and others with [0, 0]
-`
-codepage_descriptions[85] += `
-¨U (Get Request)
-Send a GET request to a URL
-str a -> send a GET request to a
-`
-codepage_descriptions[61] += `
-¨= (Invariant After Application)
-Push whether the result of applying an element to an item is the same as the original item
-`
-codepage_descriptions[77] += `
-¨M (Map At Indices)
-Map a function at elements of a list whose indices are in another list
-lst a, lst b, fun c -> change the items in a with indices in by applying function c
-lst a, num b, fun c -> change the bth item in a by applying function c
-`
-codepage_descriptions[44] += `
-¨, (Print With Space)
-Print a value with a space after it
-any a -> print a followed by a space
-`
-codepage_descriptions[215] += `
-¨… (Print With Space Without Popping)
-Print a value with a space after it, without popping it
-any a -> print a followed by a space, then push a
-`
-codepage_descriptions[62] += `
-¨> (Strict Greater Than)
-Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
-any a, any b -> Non-vectorising greater than - useful for lists
-`
-codepage_descriptions[60] += `
-¨< (Strict Less Than)
-Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.
-any a, any b -> a > b (non-vectorising)
-`
-codepage_descriptions[42] += `
-¨* (All Multiples)
-Return all multiples of a
-num a -> [a*1, a*2, a*3, a*4, ...]
-str a -> [a*1, a*2, a*3, a*4, ...]
-`
-codepage_descriptions[233] += `
-¨£ (Star Map)
-Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
-`
-codepage_descriptions[157] += `
-¨ẇ (Wrap Last n Items)
-Wrap the last n items on the stack into a list
-num a -> last a items of the stack, as a list; does not pop anything other than a
-`
-codepage_descriptions[50] += `
-¨2 (Dyadic Map Lambda)
-Open a dyadic mapping lambda - ¨2...; Receives item and index.
-`
-codepage_descriptions[51] += `
-¨3 (Triadic Map Lambda)
-Open a triadic mapping lambda - ¨3...; Receives item, index, and vector.
-`
-codepage_descriptions[167] += `
-¨₂ (Dyadic Filter Lambda)
-Open a dyadic filter lambda - ¨₂...; Receives item and index.
-`
-codepage_descriptions[168] += `
-¨₃ (Triadic Filter Lambda)
-Open a triadic filter lambda - ¨₃...; Receives item, index, and vector.
-`
-codepage_descriptions[90] += `
-¨Z (Zip lambda)
-Open a zip lambda - ¨Z...; Pops top two items off stack, zips them, and loops over them, pushing each item to the stack. Equivalent to \`Zƛ÷...;\`.
-`
-codepage_descriptions[112] += `
-¨p (For Each Overlapping Pair)
-Run element for each overlapping pair. Equivalent to \`2lvƒ\`
-`
-codepage_descriptions[63] += `
-¨? (Explicit STDIN)
-Read from STDIN, even if there are arguments
-`
-codepage_descriptions[105] += `
-¨i (If/Else)
-If the top of the stack is truthy, run the first element, otherwise the second.
-`
+var codepage_descriptions =
+{
+  "0": [
+    {
+      "name": "Lambda",
+      "description": "Open a lambda - \u03bb...;",
+      "token": "\u03bb"
+    }
+  ],
+  "1": [
+    {
+      "name": "Lambda Map",
+      "description": "Open a mapping lambda - \u019b",
+      "token": "\u019b"
+    }
+  ],
+  "2": [
+    {
+      "name": "Logical Not",
+      "description": "Return the inverse (negation) of the truthiness of an item.",
+      "overloads": {
+        "num": "not a",
+        "str": "a != \"\" | len(a) > 0",
+        "lst": "a != [] | len(a) > 0"
+      },
+      "token": "\u00ac"
+    }
+  ],
+  "3": [
+    {
+      "name": "Logical And",
+      "description": "Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.",
+      "overloads": {
+        "any-any": "a and b"
+      },
+      "token": "\u2227"
+    },
+    {
+      "name": "Global Canvas Draw",
+      "description": "Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.",
+      "overloads": {
+        "num-lst-str": "draw with a = length, b = dirs, c = text",
+        "num-str-str": "draw with a = length, b/c dependent on dir validity",
+        "any-num-any": "draw with b = length ^",
+        "any-any-num": "draw with c = length ^",
+        "str-any-any": "draw with a = text, b/c dependent on dir validity",
+        "lst-str-any": "draw with b = text, ^",
+        "lst-lst-str": "draw with c = text, ^"
+      },
+      "token": "\u00f8\u2227"
+    }
+  ],
+  "4": [
+    {
+      "name": "Apply Lambda",
+      "description": "Like a mapping lambda, but the results are evaluated immediately, instead of being lazily evaluated",
+      "token": "\u27d1"
+    }
+  ],
+  "5": [
+    {
+      "name": "Logical Or",
+      "description": "Returns the first truthy argument, otherwise the first falsy argument.",
+      "overloads": {
+        "any-any": "a or b"
+      },
+      "token": "\u2228"
+    },
+    {
+      "name": "Lowercase and uppercase vowels",
+      "description": "\"aeiouAEIOU\" (vowelsVOWELS)",
+      "token": "k\u2228"
+    },
+    {
+      "name": "Multiset Difference",
+      "description": "Similar to set difference, but with duplicates allowed.",
+      "overloads": {
+        "lst-lst": "multiset difference of a and b"
+      },
+      "token": "\u00de\u2228"
+    }
+  ],
+  "6": [
+    {
+      "name": "Remove at Index",
+      "description": "Returns every item in a list except the item at the given index.",
+      "overloads": {
+        "any-num": "Remove item b of a",
+        "num-any": "Remove item a of b"
+      },
+      "token": "\u27c7"
+    },
+    {
+      "name": "Vyxal codepage",
+      "description": "Yields the Vyxal codepage",
+      "token": "k\u27c7"
+    },
+    {
+      "name": "Get Codepage Character / Get Codepage Index",
+      "description": "Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage",
+      "overloads": {
+        "num": "vyxal_codepage[a]",
+        "str": "vyxal_codepage.index(a)"
+      },
+      "token": "\u00f8\u27c7"
+    }
+  ],
+  "7": [
+    {
+      "name": "Item Split",
+      "description": "Pushes each item of the top of the stack onto the stack.",
+      "overloads": {
+        "num": "Push each digit of a",
+        "str": "Push each character of a",
+        "lst": "Push each item of a"
+      },
+      "token": "\u00f7"
+    },
+    {
+      "name": "Divide List Into N Equal Length Parts",
+      "description": "Divide a list into n equal length parts, possibly with an extra part",
+      "overloads": {
+        "any-num": "divide a into b equal length parts, possibly with an extra part",
+        "num-any": "divide b into a equal length parts, possibly with an extra part"
+      },
+      "token": "\u00de\u00f7"
+    }
+  ],
+  "8": [
+    {
+      "name": "Asterisk Literal",
+      "description": "the string \"*\" (asterisk)",
+      "token": "\u00d7"
+    },
+    {
+      "name": 2147483648,
+      "description": 2147483648,
+      "token": "k\u00d7"
+    },
+    {
+      "name": "All Combinations",
+      "description": "All combinations of a list / string, of all lengths, with replacement",
+      "overloads": {
+        "any": "all (non-empty) combinations of a, of all lengths and all orders, with replacement"
+      },
+      "token": "\u00de\u00d7"
+    }
+  ],
+  "9": [
+    {
+      "name": "Base Compressed String",
+      "description": "Open/close a bijective base-255 compressed string - \u00ab...\u00ab",
+      "token": "\u00ab"
+    }
+  ],
+  "10": [
+    {
+      "name": "Newline",
+      "description": "NOP",
+      "token": "\u2424"
+    }
+  ],
+  "11": [
+    {
+      "name": "Base Compressed Number",
+      "description": "Open/close a bijective base-255 compressed number - \u00bb...\u00bb",
+      "token": "\u00bb"
+    }
+  ],
+  "12": [
+    {
+      "name": "Complex Number Separator",
+      "description": "Separates the real and imaginary parts of a complex number",
+      "token": "\u00b0"
+    }
+  ],
+  "13": [
+    {
+      "name": "MultiCommand",
+      "description": "Logarithm / Repeat Character / Capitalisation transfer",
+      "overloads": {
+        "num-num": "log_a(b)",
+        "num-str": "[char * a for char in b]",
+        "str-num": "[char * b for char in a]",
+        "str-str": "a.with_capitalisation_of(b)",
+        "lst-lst": "a molded  to  the shape of b"
+      },
+      "token": "\u2022"
+    },
+    {
+      "name": "Qwerty Keyboard",
+      "description": "The list [\"qwertyuiop\",\"asdfghjkl\",\"zxcvbnm\"]",
+      "token": "k\u2022"
+    },
+    {
+      "name": "Dot Product",
+      "description": "Dot product of two lists.",
+      "overloads": {
+        "lst-lst": "dot product of a and b"
+      },
+      "token": "\u00de\u2022"
+    }
+  ],
+  "14": [
+    {
+      "name": "Conditional Execute",
+      "usage": "\u00df<element>",
+      "description": "Executes element A if the top of the stack is truthy",
+      "token": "\u00df"
+    },
+    {
+      "name": "Parentheses and square brackets",
+      "description": "()[]",
+      "token": "k\u00df"
+    }
+  ],
+  "15": [
+    {
+      "name": "Function Call",
+      "description": "Calls a function / executes as python / number of distinct prime factors / vectorised not",
+      "overloads": {
+        "fun": "a()",
+        "num": "len(prime_factors(a))",
+        "str": "exec as python",
+        "lst": "vectorised not"
+      },
+      "token": "\u2020"
+    }
+  ],
+  "16": [
+    {
+      "name": "Split On / Fill By Coordinates",
+      "description": "Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.",
+      "overloads": {
+        "any-any": "a split on b",
+        "any-fun": "for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a"
+      },
+      "token": "\u20ac"
+    }
+  ],
+  "17": [
+    {
+      "name": "Halve",
+      "description": "Halves an item",
+      "overloads": {
+        "num": "a / 2",
+        "str": "a split into two strings of equal lengths (as close as possible)"
+      },
+      "token": "\u00bd"
+    },
+    {
+      "name": [
+        1,
+        2
+      ],
+      "description": [
+        1,
+        2
+      ],
+      "token": "k\u00bd"
+    }
+  ],
+  "18": [
+    {
+      "name": "Mathematical Digraph",
+      "description": "Used for mathematical digraphs",
+      "token": "\u2206"
+    }
+  ],
+  "19": [
+    {
+      "name": "String Digraph",
+      "description": "Used for string-based digraphs",
+      "token": "\u00f8"
+    }
+  ],
+  "20": [
+    {
+      "name": "Combinations/Remove/Fixed Point Collection",
+      "description": "Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.",
+      "overloads": {
+        "any-num": "combinations_with_replacement(a, length=b)",
+        "fun-any": "apply a on b until the result does not change, yielding intermediate values",
+        "any-str": "remove elements from a that are not in b",
+        "any-lst": "remove elements from a that are not in b"
+      },
+      "token": "\u2194"
+    },
+    {
+      "name": "Space",
+      "description": "NOP",
+      "token": " "
+    }
+  ],
+  "21": [
+    {
+      "name": "Infinite Replacement / Apply at Indices",
+      "description": "Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list",
+      "overloads": {
+        "any-any-any": "replace b in a with c until a does not change",
+        "lst-fun-lst": "apply function b to items in c at indices in a",
+        "lst-lst-fun": "apply function c to items in a at indices in b",
+        "fun-lst-lst": "apply function a to items in b at indices in c"
+      },
+      "token": "\u00a2"
+    },
+    {
+      "name": "Carmichael Function",
+      "description": "Get the Carmichael function of a number / Local Maxima",
+      "overloads": {
+        "num": "carmichael(a)",
+        "str": "local_maxima(a)"
+      },
+      "token": "\u2206\u00a2"
+    }
+  ],
+  "22": [
+    {
+      "name": "Complement / Comma Split",
+      "description": "1 - a if number, split by commas if string.",
+      "overloads": {
+        "num": "1 - a",
+        "str": "a.split(\",\")"
+      },
+      "token": "\u2310"
+    }
+  ],
+  "23": [
+    {
+      "name": "Is Prime / Case Check",
+      "description": "(a is prime) if a is a number, else check which case a is",
+      "overloads": {
+        "num": "is a prime?",
+        "str": "caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)"
+      },
+      "token": "\u00e6"
+    }
+  ],
+  "24": [
+    {
+      "name": "Inclusive Zero Range",
+      "description": "Inclusive range or whether each character is alphabetical",
+      "overloads": {
+        "num": "range(0,a + 1) (inclusive range from 0)",
+        "str": "[is v alphabetical? for v in a]"
+      },
+      "token": "\u0280"
+    }
+  ],
+  "25": [
+    {
+      "name": "Exclusive Zero Range",
+      "description": "Exclusive range or palindromise",
+      "overloads": {
+        "num": "range(0,a) (exclusive range from 0)",
+        "str": "palindromise(a) (a + a[:-1:-1])"
+      },
+      "token": "\u0281"
+    }
+  ],
+  "26": [
+    {
+      "name": "Inclusive One Range",
+      "description": "Inclusive range or uppercase",
+      "overloads": {
+        "num": "range(1,a+1) (inclusive range from 1)",
+        "str": "a.uppercase()"
+      },
+      "token": "\u027e"
+    }
+  ],
+  "27": [
+    {
+      "name": "Exclusive One Range / Lowercase",
+      "description": "Exclusive range or lowercase",
+      "overloads": {
+        "num": "range(1,a) (exclusive range from 0)",
+        "str": "a.lowercase()"
+      },
+      "token": "\u027d"
+    },
+    {
+      "name": "Right Align",
+      "description": "Right align a string/string list",
+      "overloads": {
+        "str": "justify to right",
+        "lst": "justify each to right"
+      },
+      "token": "\u00f8\u027d"
+    }
+  ],
+  "28": [
+    {
+      "name": "List Digraph",
+      "description": "Used for list-related digraphs",
+      "token": "\u00de"
+    }
+  ],
+  "29": [
+    {
+      "name": "Choose / random choice / set same / drop while",
+      "description": "Binomial coefficient / choose a random items from b / same except duplicates / drop while",
+      "overloads": {
+        "num-num": "a choose b (binomial coefficient)",
+        "num-str": "choose a random items from b",
+        "str-num": "choose b random items from a",
+        "str-str": "are the set of characters in the strings the same?",
+        "any-fun": "remove each item x from the beginning of a until b(x) returns false",
+        "fun-any": "remove each item x from the beginning of b until a(x) returns false"
+      },
+      "token": "\u0188"
+    },
+    {
+      "name": "n Pick r (npr)",
+      "description": "Get the number of combinations of r items from a set of n items",
+      "overloads": {
+        "num-num": "n_pick_r(a, b)",
+        "num-str": "n_pick_r(a, len(b))",
+        "str-num": "n_pick_r(len(a), b)",
+        "str-str": "n_pick_r(len(a), len(b))"
+      },
+      "token": "\u2206\u0188"
+    }
+  ],
+  "30": [
+    {
+      "name": "Palindromise",
+      "description": "Palindromise a",
+      "overloads": {
+        "any": "palindromise a (a + a[:-1:-1])"
+      },
+      "token": "\u221e"
+    },
+    {
+      "name": "Infinite List",
+      "description": "An infinite list of positive integers",
+      "token": "\u00de\u221e"
+    }
+  ],
+  "31": [
+    {
+      "name": "Other Digraphs",
+      "description": "Used for various random digraphs",
+      "token": "\u00a8"
+    }
+  ],
+  "33": [
+    {
+      "name": "Stack Length",
+      "description": "Push the length of the stack",
+      "token": "!"
+    },
+    {
+      "name": "All Factorials",
+      "description": "All factorials as a LazyList.",
+      "token": "\u00de!"
+    }
+  ],
+  "34": [
+    {
+      "name": "Pair",
+      "description": "Place the top two items into a single list",
+      "overloads": {
+        "any-any": "[a, b]"
+      },
+      "token": "\""
+    }
+  ],
+  "35": [
+    {
+      "name": "Comment",
+      "description": "The characters until the next newline are commented out",
+      "token": "#"
+    },
+    {
+      "name": "Multiline Comment",
+      "description": "The characters until the next `}#` are commented out. Nestable.",
+      "token": "#{"
+    }
+  ],
+  "36": [
+    {
+      "name": "Swap",
+      "description": "Swap the top two items",
+      "overloads": {
+        "any-any": "b, a"
+      },
+      "token": "$"
+    }
+  ],
+  "37": [
+    {
+      "name": "Modulo / Format",
+      "description": "Modulo two numbers / format two strings",
+      "overloads": {
+        "num-num": "a % b",
+        "num-str": "b.format(a) (replace % in b with a)",
+        "str-num": "a.format(b) (replace % in a with b)",
+        "str-str": "a.format(b) (replace % in a with b)",
+        "str-lst": "a.format(b) (replace % in a with each item of b)"
+      },
+      "token": "%"
+    },
+    {
+      "name": "Modular Exponentiation",
+      "description": "Get the modular exponentiation a**b mod c",
+      "overloads": {
+        "any-any-any": "pow(a, b, c)"
+      },
+      "token": "\u2206%"
+    }
+  ],
+  "38": [
+    {
+      "name": "Apply To Register",
+      "description": "Apply the next element to the register",
+      "usage": "&<element>",
+      "token": "&"
+    }
+  ],
+  "39": [
+    {
+      "name": "Lambda Filter",
+      "description": "Open a filter lambda - '...;",
+      "token": "'"
+    }
+  ],
+  "40": [
+    {
+      "name": "Open For Loop",
+      "description": "Start a for loop, iterating over the popped top of stack.",
+      "token": "("
+    }
+  ],
+  "41": [
+    {
+      "name": "Close For loop",
+      "description": "Close a for loop",
+      "token": ")"
+    }
+  ],
+  "42": [
+    {
+      "name": "Multiplication / Arity Change",
+      "description": "Multiply two numbers or strings / Change the arity of a function",
+      "overloads": {
+        "num-num": "a * b",
+        "num-str": "b repeated a times",
+        "str-num": "a repeated b times",
+        "str-str": "ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])",
+        "fun-num": "change the arity of function a to b",
+        "num-fun": "change the arity of function b to a"
+      },
+      "token": "*"
+    },
+    {
+      "name": "Cartesian product over list",
+      "description": "Cartesian product over a list of lists",
+      "overloads": {
+        "lst": "itertools.product(*a)"
+      },
+      "token": "\u00de*"
+    },
+    {
+      "name": "All Multiples",
+      "description": "Return all multiples of a",
+      "overloads": {
+        "num": "[a*1, a*2, a*3, a*4, ...]",
+        "str": "[a*1, a*2, a*3, a*4, ...]"
+      },
+      "token": "\u00a8*"
+    }
+  ],
+  "43": [
+    {
+      "name": "Addition",
+      "description": "Adds the top two items on the stack",
+      "overloads": {
+        "num-num": "a + b",
+        "num-str": "str(a) + b",
+        "str-num": "a + str(b)",
+        "str-str": "a + b"
+      },
+      "token": "+"
+    },
+    {
+      "name": [
+        1,
+        -1
+      ],
+      "description": [
+        1,
+        -1
+      ],
+      "token": "k+"
+    }
+  ],
+  "44": [
+    {
+      "name": "Print",
+      "description": "Print a with trailing newline",
+      "overloads": {
+        "any": "print(a)"
+      },
+      "token": ","
+    },
+    {
+      "name": "Print With Space",
+      "description": "Print a value with a space after it",
+      "overloads": {
+        "any": "print a followed by a space"
+      },
+      "token": "\u00a8,"
+    }
+  ],
+  "45": [
+    {
+      "name": "Subtract",
+      "description": "Subtracts the top two items on the stack",
+      "overloads": {
+        "num-num": "a - b",
+        "num-str": "(\"-\" * a) + b",
+        "str-num": "a + (\"-\" * b)",
+        "str-str": "a.replace(b, '')"
+      },
+      "token": "-"
+    },
+    {
+      "name": [
+        -1,
+        1
+      ],
+      "description": [
+        -1,
+        1
+      ],
+      "token": "k-"
+    }
+  ],
+  "46": [
+    {
+      "name": "Decimal Separator",
+      "description": "Decimal separator",
+      "token": "."
+    },
+    {
+      "name": "Surround",
+      "description": "Surround a value with another",
+      "overloads": {
+        "str-str": "a.surround(b)",
+        "lst-any": "a.surround(b)",
+        "any-lst": "b.surround(a)"
+      },
+      "token": "\u00f8."
+    }
+  ],
+  "47": [
+    {
+      "name": "Divide / Split",
+      "description": "Divide two numbers or split strings",
+      "overloads": {
+        "num-num": "a / b",
+        "num-str": "b split into a pieces",
+        "str-num": "a split into b pieces",
+        "str-str": "a.split(b)"
+      },
+      "token": "/"
+    },
+    {
+      "name": "Slashes",
+      "description": "\"/\\\\\" (Forwardslash, backslash)",
+      "token": "k/"
+    },
+    {
+      "name": "Main Diagonal",
+      "description": "Diagonal of a matrix",
+      "overloads": {
+        "lst": "diagonal(a)"
+      },
+      "token": "\u00de/"
+    }
+  ],
+  "48": [
+    {
+      "name": "Literal digit 0",
+      "description": "Literal digit 0",
+      "token": "0"
+    }
+  ],
+  "49": [
+    {
+      "name": "Literal digit 1",
+      "description": "Literal digit 1",
+      "token": "1"
+    },
+    {
+      "name": 1000,
+      "description": "10^3 / 1000",
+      "token": "k1"
+    }
+  ],
+  "50": [
+    {
+      "name": "Literal digit 2",
+      "description": "Literal digit 2",
+      "token": "2"
+    },
+    {
+      "name": 10000,
+      "description": "10^4 / 10000",
+      "token": "k2"
+    },
+    {
+      "name": "Dyadic Map Lambda",
+      "description": "Open a dyadic mapping lambda - \u00a82...; Receives item and index.",
+      "token": "\u00a82"
+    }
+  ],
+  "51": [
+    {
+      "name": "Literal digit 3",
+      "description": "Literal digit 3",
+      "token": "3"
+    },
+    {
+      "name": 100000,
+      "description": "10^5 / 100000",
+      "token": "k3"
+    },
+    {
+      "name": "Triadic Map Lambda",
+      "description": "Open a triadic mapping lambda - \u00a83...; Receives item, index, and vector.",
+      "token": "\u00a83"
+    }
+  ],
+  "52": [
+    {
+      "name": "Literal digit 4",
+      "description": "Literal digit 4",
+      "token": "4"
+    },
+    {
+      "name": 1000000,
+      "description": "10^6 / 1000000",
+      "token": "k4"
+    }
+  ],
+  "53": [
+    {
+      "name": "Literal digit 5",
+      "description": "Literal digit 5",
+      "token": "5"
+    }
+  ],
+  "54": [
+    {
+      "name": "Literal digit 6",
+      "description": "Literal digit 6",
+      "token": "6"
+    },
+    {
+      "name": "Hex digits (lowercase)",
+      "description": "\"0123456789abcdef\" (Hex digits)",
+      "token": "k6"
+    }
+  ],
+  "55": [
+    {
+      "name": "Literal digit 7",
+      "description": "Literal digit 7",
+      "token": "7"
+    }
+  ],
+  "56": [
+    {
+      "name": "Literal digit 8",
+      "description": "Literal digit 8",
+      "token": "8"
+    }
+  ],
+  "57": [
+    {
+      "name": "Literal digit 9",
+      "description": "Literal digit 9",
+      "token": "9"
+    }
+  ],
+  "58": [
+    {
+      "name": "Duplicate",
+      "description": "Push a twice",
+      "overloads": {
+        "any": "a,a"
+      },
+      "token": ":"
+    }
+  ],
+  "59": [
+    {
+      "name": "Close Structure",
+      "description": "Close a lambda / map lambda / sort lambda / function",
+      "token": ";"
+    }
+  ],
+  "60": [
+    {
+      "name": "Less Than",
+      "description": "Basic comparison - less than",
+      "overloads": {
+        "num-num": "a < b",
+        "num-str": "str(a) < b",
+        "str-num": "a < str(b)",
+        "str-str": "a < b",
+        "any-fun": "decrement a until b returns false",
+        "fun-any": "decrement b until a returns false"
+      },
+      "token": "<"
+    },
+    {
+      "name": "All Less Than Increasing",
+      "description": "Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing",
+      "overloads": {
+        "any-num": "all values of a up to (not including) the first greater than or equal to b"
+      },
+      "token": "\u00de<"
+    },
+    {
+      "name": "Strict Less Than",
+      "description": "Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.",
+      "overloads": {
+        "any-any": "a > b (non-vectorising)"
+      },
+      "token": "\u00a8<"
+    }
+  ],
+  "61": [
+    {
+      "name": "Equals",
+      "description": "Basic comparison - equals",
+      "overloads": {
+        "num-num": "a == b",
+        "num-str": "str(a) == b",
+        "str-num": "a == str(b)",
+        "str-str": "a == b"
+      },
+      "token": "="
+    },
+    {
+      "name": "Invariant After Application",
+      "usage": "\u00a8=<element>",
+      "description": "Push whether the result of applying an element to an item is the same as the original item",
+      "token": "\u00a8="
+    }
+  ],
+  "62": [
+    {
+      "name": "Greater Than",
+      "description": "Basic comparison - greater than",
+      "overloads": {
+        "num-num": "a > b",
+        "num-str": "str(a) > b",
+        "str-num": "a > str(b)",
+        "str-str": "a > b",
+        "any-fun": "increment a until b returns false",
+        "fun-any": "increment b until a returns false"
+      },
+      "token": ">"
+    },
+    {
+      "name": "Strict Greater Than",
+      "description": "Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.",
+      "overloads": {
+        "any-any": "Non-vectorising greater than - useful for lists"
+      },
+      "token": "\u00a8>"
+    }
+  ],
+  "63": [
+    {
+      "name": "Input",
+      "description": "Get the next input from the input source",
+      "token": "?"
+    },
+    {
+      "name": "Explicit STDIN",
+      "description": "Read from STDIN, even if there are arguments",
+      "token": "\u00a8?"
+    }
+  ],
+  "64": [
+    {
+      "name": "Function Call / Declaration",
+      "description": "Call / declare function (@name; / @name|code;)",
+      "token": "@"
+    }
+  ],
+  "65": [
+    {
+      "name": "All",
+      "description": "Check if all items in a list are truthy / check if a character is a vowel",
+      "overloads": {
+        "str": "is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]",
+        "any": "all(a)"
+      },
+      "token": "A"
+    },
+    {
+      "name": "Uppercase alphabet",
+      "description": "\"ABCDEFGHIJKLMNOPQRSTUVWXYZ\" (uppercase alphabet)",
+      "token": "kA"
+    },
+    {
+      "name": "Adjacency matrix (Undirected)",
+      "description": "Adjacency matrix of undirected graph",
+      "overloads": {
+        "lst": "adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])"
+      },
+      "token": "\u00deA"
+    }
+  ],
+  "66": [
+    {
+      "name": "Binary To Decimal",
+      "description": "Convert a binary string or list to base 10",
+      "overloads": {
+        "any": "int(a,2) (convert from base 2 to base 10)"
+      },
+      "token": "B"
+    },
+    {
+      "name": "Uppercase and lowercase alphabet",
+      "description": "\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\" (A-Za-z)",
+      "token": "kB"
+    },
+    {
+      "name": "Bracketify",
+      "description": "Enclose a string in brackets",
+      "overloads": {
+        "any": "\"[\"\" + a + \"]\""
+      },
+      "token": "\u00f8B"
+    },
+    {
+      "name": "Random Bits",
+      "description": "Fill a list with random bits",
+      "overloads": {
+        "num": "list of length a filled with random bits",
+        "any": "list of length n(a) filled with random bits"
+      },
+      "token": "\u00deB"
+    }
+  ],
+  "67": [
+    {
+      "name": "Chr / Ord",
+      "description": "Convert between characters and ordinals",
+      "overloads": {
+        "num": "chr(a)",
+        "str": "ord(a) if length 1 else list of ordinals"
+      },
+      "token": "C"
+    },
+    {
+      "name": "Arc Cosine",
+      "description": "Get the arccosine of an angle in radians",
+      "overloads": {
+        "num": "math.arrcos(a)"
+      },
+      "token": "\u2206C"
+    },
+    {
+      "name": "Number Compress",
+      "description": "Compress a positive integer in base 255",
+      "overloads": {
+        "num": "base_255_number_compress(a)"
+      },
+      "token": "\u00f8C"
+    },
+    {
+      "name": "Matrix Column Reduce",
+      "description": "Reduce columns of a matrix by a function.",
+      "overloads": {
+        "lst-fun": "reduce columns of a with b"
+      },
+      "token": "\u00deC"
+    }
+  ],
+  "68": [
+    {
+      "name": "Triplicate",
+      "description": "Push three copies of a to stack",
+      "token": "D"
+    },
+    {
+      "name": "Current day in the format YYYY-MM-DD",
+      "description": "Current day in the format YYYY-MM-DD",
+      "token": "kD"
+    },
+    {
+      "name": "To Degrees",
+      "description": "Convert an angle from radians to degrees",
+      "overloads": {
+        "num": "math.degrees(a)"
+      },
+      "token": "\u2206D"
+    },
+    {
+      "name": "Dictionary Compression",
+      "description": "Optimally compress a string of English using words from the Vyxal dictionary",
+      "overloads": {
+        "str": "dictionary_compressed(a)"
+      },
+      "token": "\u00f8D"
+    },
+    {
+      "name": "Diagonals",
+      "description": "Diagonals of a matrix, starting with the main diagonal.",
+      "overloads": {
+        "lst": "diagonals of a, starting with the main diagonal"
+      },
+      "token": "\u00deD"
+    }
+  ],
+  "69": [
+    {
+      "name": "Two Power / Python Eval",
+      "description": "2 ** a, or eval(a)",
+      "overloads": {
+        "num": "2 ** a",
+        "str": "eval(a) (safe-eval as python)"
+      },
+      "token": "E"
+    },
+    {
+      "name": "(Euler's Number (e) Raised to Power a) - 1",
+      "description": "Get the value of Euler's number (e) raised to the power of a minus 1",
+      "overloads": {
+        "num": "(e ** a) - 1",
+        "str": "expand expression a"
+      },
+      "token": "\u2206E"
+    },
+    {
+      "name": "Ends With",
+      "description": "Check if one value ends with another",
+      "overloads": {
+        "any-any": "a.endswith(b) (ends with b?)"
+      },
+      "token": "\u00f8E"
+    }
+  ],
+  "70": [
+    {
+      "name": "Filter",
+      "description": "Filter a list by another list or function.",
+      "overloads": {
+        "any-fun": "filter(b,a) (filter a by the ones that b returns a truthy result for)",
+        "any-any": "remove elements of a that are in b"
+      },
+      "token": "F"
+    },
+    {
+      "name": "FizzBuzz",
+      "description": "FizzBuzz",
+      "token": "kF"
+    },
+    {
+      "name": "nth Fibonacci Number, 0-indexed",
+      "description": "Get the nth fibonacci number, 0-indexed",
+      "overloads": {
+        "num": "nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)"
+      },
+      "token": "\u2206F"
+    },
+    {
+      "name": "All Fibonacci",
+      "description": "All Fibonacci numbers as a LazyList.",
+      "token": "\u00deF"
+    }
+  ],
+  "71": [
+    {
+      "name": "Max",
+      "description": "Maximum value or a",
+      "overloads": {
+        "any": "max(a)"
+      },
+      "token": "G"
+    },
+    {
+      "name": "Longest By Length",
+      "description": "Return the longest item in a list.",
+      "overloads": {
+        "lst": "the longest item of a"
+      },
+      "token": "\u00deG"
+    }
+  ],
+  "72": [
+    {
+      "name": "Hex To Decimal",
+      "description": "Convert hexadecimal to decimal",
+      "overloads": {
+        "any": "int(a,16) (from hexadecimal)"
+      },
+      "token": "H"
+    },
+    {
+      "name": "Hello, World!",
+      "description": "Hello, World!",
+      "token": "kH"
+    }
+  ],
+  "73": [
+    {
+      "name": "Into Two Pieces",
+      "description": "Push n spaces / quine cheese / into two pieces",
+      "overloads": {
+        "num": "push a spaces",
+        "str": "equivalent to `qp`",
+        "lst": "split a list into two halves"
+      },
+      "token": "I"
+    },
+    {
+      "name": "First N Digits of Pi",
+      "description": "Generate the first n digits of pi",
+      "overloads": {
+        "num": "the first (a + 1)th digits of pi"
+      },
+      "token": "\u2206I"
+    },
+    {
+      "name": "All Indices (Multidimensional)",
+      "description": "All multidimensional indices of element in list",
+      "overloads": {
+        "lst-any": "all indices of b in a",
+        "any-lst": "all indices of a in b",
+        "any-any": "all indices of b in a"
+      },
+      "token": "\u00deI"
+    }
+  ],
+  "74": [
+    {
+      "name": "Merge",
+      "description": "Join two lists or items",
+      "overloads": {
+        "lst-str": "a.append(b) (append)",
+        "lst-num": "a.append(b) (append)",
+        "str-lst": "b.prepend(a) (prepend)",
+        "num-lst": "b.prepend(a) (prepend)",
+        "lst-lst": "merged(a,b) (merge)",
+        "any-any": "a + b (concatenate)"
+      },
+      "token": "J"
+    },
+    {
+      "name": "Parse JSON",
+      "description": "Parse a JSON string into a Vyxal object",
+      "overloads": {
+        "str": "json.loads(a)"
+      },
+      "token": "\u00f8J"
+    }
+  ],
+  "75": [
+    {
+      "name": "Factors / Substrings / Prefixes",
+      "description": "Get either the factors of a, substrings that occur more than once, or prefixes",
+      "overloads": {
+        "num": "divisors(a) (positive integer factors)",
+        "str": "all non-empty substrings of a that occur more than once in a",
+        "lst": "prefixes(a) (prefixes)"
+      },
+      "token": "K"
+    },
+    {
+      "name": "Sum of Proper Divisors / Stationary Points",
+      "description": "Get the sum of all proper divisors of a number /  get the stationary points of a function",
+      "overloads": {
+        "num": "sum_of_proper_divisors(a)",
+        "str": "stationary_points(a)"
+      },
+      "token": "\u2206K"
+    },
+    {
+      "name": "Suffixes",
+      "description": "Suffixes of a list.",
+      "overloads": {
+        "lst": "[a, a[:-1], a[:-2], ..., a[:1]]"
+      },
+      "token": "\u00deK"
+    }
+  ],
+  "76": [
+    {
+      "name": "Length",
+      "description": "Get length of a",
+      "overloads": {
+        "any": "len(a)"
+      },
+      "token": "L"
+    },
+    {
+      "name": "Lowercase and uppercase alphabet",
+      "description": "\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" (uppercase+lowercase alphabet)",
+      "token": "kL"
+    },
+    {
+      "name": "Natural Logarithm",
+      "description": "Get the natural logarithm of a number",
+      "overloads": {
+        "num": "math.log(a)"
+      },
+      "token": "\u2206L"
+    },
+    {
+      "name": "Strip whitespace from the left side",
+      "description": "Strip whitespace from the left side of a string",
+      "overloads": {
+        "str": "a.lstrip()"
+      },
+      "token": "\u00f8L"
+    }
+  ],
+  "77": [
+    {
+      "name": "Map",
+      "description": "Map b over a",
+      "overloads": {
+        "any-fun": "map(b,a) (apply b to each of a)",
+        "any-any": "pair each item of b with a ([[a, i] for i in b])"
+      },
+      "token": "M"
+    },
+    {
+      "name": "Mode",
+      "description": "Get the mode of a list",
+      "overloads": {
+        "lst": "mode(a)"
+      },
+      "token": "\u2206M"
+    },
+    {
+      "name": "Flip Brackets Vertical Palindromise",
+      "description": "Vertically palindromise and reverse brackets and slashes, without duplicating center",
+      "overloads": {
+        "any": "palindromise, without duplicating center, and flip brackets and slashes in the second half"
+      },
+      "token": "\u00f8M"
+    },
+    {
+      "name": "Maximal Indices",
+      "description": "Indices of the maximal elements of a list.",
+      "overloads": {
+        "lst": "indices of the maximal elements of a"
+      },
+      "token": "\u00deM"
+    },
+    {
+      "name": "Map At Indices",
+      "description": "Map a function at elements of a list whose indices are in another list",
+      "overloads": {
+        "lst-lst-fun": "change the items in a with indices in by applying function c",
+        "lst-num-fun": "change the bth item in a by applying function c"
+      },
+      "token": "\u00a8M"
+    }
+  ],
+  "78": [
+    {
+      "name": "Negate / Swap Case / First Integer Where Truthy",
+      "description": "Negate a number / swap case of a string / first integer where a function truthy",
+      "overloads": {
+        "num": "-a  (negate)",
+        "str": "swap_case(a) (toggle case)",
+        "fun": "first integer where a(n) is true"
+      },
+      "token": "N"
+    },
+    {
+      "name": "Current time as a list of \u27e8hh|mm|ss\u27e9",
+      "description": "Current time as a list of \u27e8hh|mm|ss\u27e9",
+      "token": "kN"
+    },
+    {
+      "name": "Alternating Negation",
+      "description": "An infinite list of an item, then that item negated, then that item, and so on. Uses the negation element for negation.",
+      "overloads": {
+        "any": "[a, -a, a, -a, ...]"
+      },
+      "token": "\u00deN"
+    }
+  ],
+  "79": [
+    {
+      "name": "Count",
+      "description": "Count number of times b occurs in a",
+      "overloads": {
+        "any-any": "a.count(b)"
+      },
+      "token": "O"
+    }
+  ],
+  "80": [
+    {
+      "name": "Strip",
+      "description": "Remove the set of elements in b from both ends of a",
+      "overloads": {
+        "any-any": "a.strip(b)"
+      },
+      "token": "P"
+    },
+    {
+      "name": "Printable ASCII",
+      "description": "printable ascii",
+      "token": "kP"
+    },
+    {
+      "name": "Polynomial Solver",
+      "description": "Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0",
+      "overloads": {
+        "lst": "roots(a)"
+      },
+      "token": "\u2206P"
+    },
+    {
+      "name": "Pluralise Count",
+      "description": "Create a sentence of the form 'a bs'",
+      "overloads": {
+        "num-str": "a + \" \" + b + (s if a != 1 else \"\") (concatenate with space, append a s if not 1)"
+      },
+      "token": "\u00f8P"
+    }
+  ],
+  "81": [
+    {
+      "name": "Quit",
+      "description": "Quit the program",
+      "token": "Q"
+    },
+    {
+      "name": "General Quadratic Solver",
+      "description": "Solve a quadratic equation of the form x^2 + ax + b = 0",
+      "overloads": {
+        "num-num": "roots(a, b) / x^2 + ax + b = 0",
+        "num-str": "evaluate single variable expression b with x=a",
+        "str-num": "evaluate single variable expression a with x=b",
+        "str-str": "solve equations a and b simultaneously for x and y"
+      },
+      "token": "\u2206Q"
+    }
+  ],
+  "82": [
+    {
+      "name": "Reduce",
+      "description": "Reduce a by b, or reverse each item of b",
+      "overloads": {
+        "any-fun": "reduce(b,a) (Reduce a by b)",
+        "any-any": "a, vectorised_reverse(b)"
+      },
+      "token": "R"
+    },
+    {
+      "name": 360,
+      "description": 360,
+      "token": "kR"
+    },
+    {
+      "name": "To Radians",
+      "description": "Convert an angle from degrees to radians",
+      "overloads": {
+        "num": "math.radians(a)"
+      },
+      "token": "\u2206R"
+    },
+    {
+      "name": "Strip whitespace from the right side",
+      "description": "Strip whitespace from the right side of a string",
+      "overloads": {
+        "str": "a.rstrip()"
+      },
+      "token": "\u00f8R"
+    },
+    {
+      "name": "Remove Last Item From Cumulative Sums and Prepend 0",
+      "description": "Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for \u00a6\u1e6a0p",
+      "overloads": {
+        "lst": "[0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]"
+      },
+      "token": "\u00deR"
+    }
+  ],
+  "83": [
+    {
+      "name": "Stringify",
+      "description": "Stringify a list or number",
+      "overloads": {
+        "any": "str(a) (Stringify)"
+      },
+      "token": "S"
+    },
+    {
+      "name": "Amogus",
+      "description": "Amogus (\"\u0d9e\")",
+      "token": "kS"
+    },
+    {
+      "name": "Arc Sine",
+      "description": "Get the arcsine of an angle in radians",
+      "overloads": {
+        "num": "math.arcsin(a)"
+      },
+      "token": "\u2206S"
+    },
+    {
+      "name": "Strip whitespace from both sides",
+      "description": "Strip whitespace from both sides of a string / Remove trailing zeros from a number",
+      "overloads": {
+        "str": "a.strip()",
+        "num": "remove trailing zeros"
+      },
+      "token": "\u00f8S"
+    },
+    {
+      "name": "Sublists",
+      "description": "Sublists of a list.",
+      "overloads": {
+        "lst": "non-empty sublists of a"
+      },
+      "token": "\u00deS"
+    }
+  ],
+  "84": [
+    {
+      "name": "Truthy Indices / Triple / Triadify",
+      "description": "Get indices of truthy elements, triple, or make the arity of a function 3",
+      "overloads": {
+        "num": "a * 3",
+        "any": "truthy_indices(a)",
+        "fun": "set the arity of function a to 3"
+      },
+      "token": "T"
+    },
+    {
+      "name": "BF command set",
+      "description": "BF command set (\"[]<>-+.,\")",
+      "token": "kT"
+    },
+    {
+      "name": "Arc Tangent",
+      "description": "Get the arctangent of an angle in radians",
+      "overloads": {
+        "num": "math.arctan(a)"
+      },
+      "token": "\u2206T"
+    },
+    {
+      "name": "Multi-dimensional truthy indices",
+      "description": "Multi-dimensional indices of truthy elements",
+      "overloads": {
+        "lst": "Multi-dimensional indices of truthy elements in a"
+      },
+      "token": "\u00deT"
+    }
+  ],
+  "85": [
+    {
+      "name": "Uniquify",
+      "description": "Remove duplicates",
+      "overloads": {
+        "any": "uniquify(a) (remove duplicates)"
+      },
+      "token": "U"
+    },
+    {
+      "name": "Uniquify Mask",
+      "description": "A list of booleans describing which elements of a will remain after uniquifying.",
+      "overloads": {
+        "any": "a list of booleans describing which elements of a will remain after uniquifying"
+      },
+      "token": "\u00deU"
+    },
+    {
+      "name": "Get Request",
+      "description": "Send a GET request to a URL",
+      "overloads": {
+        "str": "send a GET request to a"
+      },
+      "token": "\u00a8U"
+    }
+  ],
+  "86": [
+    {
+      "name": "Replace / Map to Indices",
+      "description": "Replace b with c in a / Map a function at elements of a list whose indices are in another list",
+      "overloads": {
+        "any-any-any": "a.replace(b,c) (replace)",
+        "lst-lst-fun": "for each i in b, change the ith element in a by applying the function, then return the new list",
+        "lst-num-fun": "replace the bth element in a by applying the function, then return the new list"
+      },
+      "token": "V"
+    },
+    {
+      "name": "Upercase vowels",
+      "description": "\"AEIOU\" (Vowels uppercase)",
+      "token": "kV"
+    },
+    {
+      "name": "Replace Until No Change",
+      "description": "Replace b with c in a until a does not change",
+      "overloads": {
+        "str-str-str": "a.replace_until_no_change(b,c)"
+      },
+      "token": "\u00f8V"
+    }
+  ],
+  "87": [
+    {
+      "name": "Wrap",
+      "description": "Stack wrapped into a list",
+      "token": "W"
+    },
+    {
+      "name": "https://",
+      "description": "https://",
+      "token": "kW"
+    },
+    {
+      "name": "Round to n Decimal Places",
+      "description": "Round a number to n decimal places",
+      "overloads": {
+        "num-num": "round(a, no_dec_places=b) (b significant digits)"
+      },
+      "token": "\u2206W"
+    },
+    {
+      "name": "Group on words",
+      "description": "Group a string on words",
+      "overloads": {
+        "str": "Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character"
+      },
+      "token": "\u00f8W"
+    }
+  ],
+  "88": [
+    {
+      "name": "Break",
+      "description": "Break out of the current loop or return early from a function.",
+      "token": "X"
+    }
+  ],
+  "89": [
+    {
+      "name": "Interleave",
+      "description": "Interleave two lists",
+      "overloads": {
+        "any-any": "interleave(a,b) (a[0], b[0], a[1], b[1], ...)"
+      },
+      "token": "Y"
+    }
+  ],
+  "90": [
+    {
+      "name": "Zip",
+      "description": "Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.",
+      "overloads": {
+        "any-any": "zip(a,b)",
+        "any-fun": "zip(a,map(b,a)) (zipmap, map and zip)"
+      },
+      "token": "Z"
+    },
+    {
+      "name": "Uppercase alphabet reversed",
+      "description": "\"ZYXWVUTSRQPONMLKJIHGFEDCBA\" (uppercase alphabet reversed)",
+      "token": "kZ"
+    },
+    {
+      "name": "ZFill",
+      "description": "Pad a string with zeros to a given length",
+      "overloads": {
+        "str, num": "zfill(a, b)"
+      },
+      "token": "\u2206Z"
+    },
+    {
+      "name": "Fill By Coordinates",
+      "description": "Fill a matrix by calling a function with the lists of coordinates in the matrix.",
+      "overloads": {
+        "any-fun": "for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a"
+      },
+      "token": "\u00deZ"
+    },
+    {
+      "name": "Zip lambda",
+      "description": "Open a zip lambda - \u00a8Z...; Pops top two items off stack, zips them, and loops over them, pushing each item to the stack. Equivalent to `Z\u019b\u00f7...;`.",
+      "token": "\u00a8Z"
+    }
+  ],
+  "91": [
+    {
+      "name": "Open If Statement",
+      "description": "Open an if Statement",
+      "token": "["
+    }
+  ],
+  "92": [
+    {
+      "name": "Single char Literal",
+      "description": "Pushes a single character",
+      "token": "\\"
+    },
+    {
+      "name": "Antidiagonal",
+      "description": "Antidiagonal of a matrix",
+      "overloads": {
+        "lst": "antidiagonal(a)"
+      },
+      "token": "\u00de\\"
+    }
+  ],
+  "93": [
+    {
+      "name": "Close If Statement",
+      "description": "Close an if Statement",
+      "token": "]"
+    }
+  ],
+  "94": [
+    {
+      "name": "String Literal",
+      "description": "A string literal - `...`",
+      "token": "`"
+    }
+  ],
+  "95": [
+    {
+      "name": "Reverse Stack",
+      "description": "Reverse the stack.",
+      "token": "^"
+    },
+    {
+      "name": "Hex digits (uppercase)",
+      "description": "\"0123456789ABCDEF\" (Hex digits uppercase)",
+      "token": "k^"
+    },
+    {
+      "name": "Canvas Draw",
+      "description": "Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string",
+      "overloads": {
+        "num-lst-str": "draw with a = length, b = dirs, c = text",
+        "num-str-str": "draw with a = length, b/c dependent on dir validity",
+        "any-num-any": "draw with b = length ^",
+        "any-any-num": "draw with c = length ^",
+        "str-any-any": "draw with a = text, b/c dependent on dir validity",
+        "lst-str-any": "draw with b = text, ^",
+        "lst-lst-str": "draw with c = text, ^"
+      },
+      "token": "\u00f8^"
+    },
+    {
+      "name": "Parse direction arrow to vector",
+      "description": "Map characters in `>^<v` to direction vectors",
+      "overloads": {
+        "str": "map on a, replacing `>^<v` with [1, 0], [0, 1], etc., and others with [0, 0]"
+      },
+      "token": "\u00a8^"
+    }
+  ],
+  "96": [
+    {
+      "name": "Pop",
+      "description": "Pop the top item of the stack",
+      "token": "_"
+    }
+  ],
+  "97": [
+    {
+      "name": "Any",
+      "description": "Check if any items of a list are truthy / Check if a character is an uppercase letter",
+      "overloads": {
+        "str": "is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]",
+        "lst": "any(a) (are any items truthy?)"
+      },
+      "token": "a"
+    },
+    {
+      "name": "Lowercase alphabet",
+      "description": "\"abcdefghijklmnopqrstuvwxyz\" (lowercase alphabet)",
+      "token": "ka"
+    },
+    {
+      "name": "Adjacency matrix (Directed)",
+      "description": "Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)",
+      "overloads": {
+        "lst": "adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])"
+      },
+      "token": "\u00dea"
+    }
+  ],
+  "98": [
+    {
+      "name": "Binary",
+      "description": "Convert a number or string to binary",
+      "overloads": {
+        "num": "bin(a) (list of binary digits of a)",
+        "str": "[bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)"
+      },
+      "token": "b"
+    },
+    {
+      "name": "Buzz",
+      "description": "Buzz",
+      "token": "kb"
+    },
+    {
+      "name": "Binary String",
+      "description": "Get a binary string of a number",
+      "overloads": {
+        "num": "bin(a).replace(\"0b\", \"\")"
+      },
+      "token": "\u2206b"
+    },
+    {
+      "name": "Parenthesise",
+      "description": "Parenthesise a string",
+      "overloads": {
+        "any": "\"(\"\" + a + \")\""
+      },
+      "token": "\u00f8b"
+    }
+  ],
+  "99": [
+    {
+      "name": "Contains / First Truthy Item Under Function Application",
+      "description": "Check if one thing contains another / returns the first truthy item in a list after applying a function",
+      "overloads": {
+        "any-fun": "first item of a where b(x) is truthy (shortcut for Fh)",
+        "any-any": "b in a (does a contain b, membership, contains)"
+      },
+      "token": "c"
+    },
+    {
+      "name": "Cosine",
+      "description": "Get the cosine of an angle in radians",
+      "overloads": {
+        "num": "math.cos(a)"
+      },
+      "token": "\u2206c"
+    },
+    {
+      "name": "String Compress",
+      "description": "Compress a string of lowercase letters and spaces in base 255",
+      "overloads": {
+        "str": "base_255_string_compress(a)"
+      },
+      "token": "\u00f8c"
+    },
+    {
+      "name": "Cardinals",
+      "description": "An infinite list of one, two, three, four etc",
+      "token": "\u00dec"
+    }
+  ],
+  "100": [
+    {
+      "name": "Double / Dyadify",
+      "description": "Double a number or repeat a string twice / make a function dyadic",
+      "overloads": {
+        "num": "a * 2 (double)",
+        "str": "a * 2 (repeated twice)",
+        "fun": "change the arity of the function to 2"
+      },
+      "token": "d"
+    },
+    {
+      "name": "Digits",
+      "description": "\"0123456789\" (Digits 0-9)",
+      "token": "kd"
+    },
+    {
+      "name": "Straight Line Distance",
+      "description": "Get the straight line distance between two points (x1, x2, ..., xn) and (y1, y2, ..., yn)",
+      "overloads": {
+        "lst-lst": "euclidean_distance(a, b)"
+      },
+      "token": "\u2206d"
+    },
+    {
+      "name": "Run Length Decoding",
+      "description": "Run length decoding, convert from list of characters and lengths to a string/list",
+      "overloads": {
+        "lst": "run_length_decoded(a)"
+      },
+      "token": "\u00f8d"
+    },
+    {
+      "name": "Distance matrix (Directed)",
+      "description": "Distance matrix of directed graph",
+      "overloads": {
+        "lst": "distance matrix of a directed graph (where a = [[i, j] for each edge i to j])"
+      },
+      "token": "\u00ded"
+    }
+  ],
+  "101": [
+    {
+      "name": "Exponentiation",
+      "description": "Exponentiate two numbers / extend string / get length of a regex match",
+      "overloads": {
+        "num-num": "a ** b (exponentiation)",
+        "str-num": "append a[0] until a is length b (spaces are used if a is empty)",
+        "num-str": "append b[0] until b is length a (spaces are used if b is empty)",
+        "str-str": "regex.search(pattern=a, string=b).span() (length of regex match)"
+      },
+      "token": "e"
+    },
+    {
+      "name": "e, Euler's number",
+      "description": "2.718281828459045 (math.e, Euler's number)",
+      "token": "ke"
+    },
+    {
+      "name": "Euler's Number (e) raised to power a",
+      "description": "Get the value of Euler's number (e) raised to the power of a",
+      "overloads": {
+        "num": "e ** a",
+        "str": "simplify expression a"
+      },
+      "token": "\u2206e"
+    },
+    {
+      "name": "Run Length Encoding",
+      "description": "Run length encoding, convert from string/list to list of items and amount repeated.",
+      "overloads": {
+        "str": "run_length_encoded(a)"
+      },
+      "token": "\u00f8e"
+    },
+    {
+      "name": "Matrix Exponentiation",
+      "description": "A matrix multiplied by itself n times",
+      "overloads": {
+        "lst-num": "a ** b (matrix exponentiation)",
+        "num-lst": "b ** a (matrix exponentiation)"
+      },
+      "token": "\u00dee"
+    }
+  ],
+  "102": [
+    {
+      "name": "Flatten",
+      "description": "Turn a number into a list of digits, split a string into a list of characters, or flatten a list.",
+      "overloads": {
+        "num": "digits of a",
+        "str": "list of characters of a",
+        "lst": "flatten(a) (deep flatten)"
+      },
+      "token": "f"
+    },
+    {
+      "name": "Fizz",
+      "description": "Fizz",
+      "token": "kf"
+    },
+    {
+      "name": "nth Fibonacci Number",
+      "description": "Get the nth fibonacci number, 1-indexed",
+      "overloads": {
+        "num": "nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)"
+      },
+      "token": "\u2206f"
+    },
+    {
+      "name": "Ends With Set",
+      "description": "Check if a value ends with others",
+      "overloads": {
+        "any-any": "does a end with all of b?"
+      },
+      "token": "\u00f8f"
+    },
+    {
+      "name": "Flatten By depth",
+      "description": "Flatten a list by a certain depth (default 1)",
+      "overloads": {
+        "lst-num": "flatten a by depth b",
+        "any-lst": "a, flatten b by depth 1"
+      },
+      "token": "\u00def"
+    }
+  ],
+  "103": [
+    {
+      "name": "Minimum",
+      "description": "Take the minimum of a list",
+      "overloads": {
+        "any": "min(a)"
+      },
+      "token": "g"
+    },
+    {
+      "name": "Golden ratio/phi",
+      "description": "1.618033988749895 (golden ratio/phi)",
+      "token": "kg"
+    },
+    {
+      "name": "Shortest By Length",
+      "description": "Return the shortest item in a list.",
+      "overloads": {
+        "lst": "the shortest item of a"
+      },
+      "token": "\u00deg"
+    }
+  ],
+  "104": [
+    {
+      "name": "Head",
+      "description": "First item of something",
+      "overloads": {
+        "any": "a[0] (first item)"
+      },
+      "token": "h"
+    },
+    {
+      "name": "Hello World (No Punctuation)",
+      "description": "Hello World",
+      "token": "kh"
+    }
+  ],
+  "105": [
+    {
+      "name": "Index",
+      "description": "Index into a list",
+      "overloads": {
+        "any-num": "a[b] (index)",
+        "num-any": "b[a] (index)",
+        "str-str": "enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])",
+        "any-[x]": "a[:b] (0 to bth item of a)",
+        "any-[x,y]": "a[x:y] (x to yth item of a)",
+        "any-[x,y,m]": "a[x:y:m] (x to yth item of a, taking every mth)"
+      },
+      "token": "i"
+    },
+    {
+      "name": "Pi",
+      "description": "3.141592653589793 (Pi)",
+      "token": "ki"
+    },
+    {
+      "name": "nth Digit of Pi / Integrate",
+      "description": "Get the nth digit of pi",
+      "overloads": {
+        "num": "nth_digit_of_pi(a)",
+        "str": "antiderivative of a"
+      },
+      "token": "\u2206i"
+    },
+    {
+      "name": "Multidimensional Indexing",
+      "description": "Index a list of coordinates into a value.",
+      "overloads": {
+        "lst-lst": "reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)"
+      },
+      "token": "\u00dei"
+    },
+    {
+      "name": "If/Else",
+      "description": "If the top of the stack is truthy, run the first element, otherwise the second.",
+      "usage": "\u00a8i<element><element>",
+      "token": "\u00a8i"
+    }
+  ],
+  "106": [
+    {
+      "name": "Join",
+      "description": "Join a list by a string",
+      "overloads": {
+        "any-any": "a.join(b)"
+      },
+      "token": "j"
+    },
+    {
+      "name": "Depth",
+      "description": "Depth of ragged list",
+      "overloads": {
+        "lst": "Depth"
+      },
+      "token": "\u00dej"
+    }
+  ],
+  "107": [
+    {
+      "name": "Constant Digraph",
+      "description": "Used for constant digraphs.",
+      "token": "k"
+    }
+  ],
+  "108": [
+    {
+      "name": "Cumulative Groups",
+      "description": "Cumulative groups (overlapping groups, aperture) / Equal length",
+      "overloads": {
+        "any-num": "[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]",
+        "num-any": "[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]",
+        "any-any": "length(a) == length(b)"
+      },
+      "token": "l"
+    },
+    {
+      "name": "Uppercase and lowercase alphabet, reversed",
+      "description": "\"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba\" (Z-Az-a)",
+      "token": "kl"
+    },
+    {
+      "name": "Logarithm (log_2)",
+      "description": "Get the logarithm of a number to base 2",
+      "overloads": {
+        "num": "math.log2(a)"
+      },
+      "token": "\u2206l"
+    },
+    {
+      "name": "Strip from the left side",
+      "description": "Strip from the left side of a string",
+      "overloads": {
+        "str-num": "a.lstrip(b)"
+      },
+      "token": "\u00f8l"
+    }
+  ],
+  "109": [
+    {
+      "name": "Mirror",
+      "description": "Append input reversed to itself.",
+      "overloads": {
+        "num": "a + reversed(a) (as number)",
+        "str": "a + reversed(a)",
+        "lst": "append reversed(a) to a"
+      },
+      "token": "m"
+    },
+    {
+      "name": "Flip Brackets Vertical Mirror, Center, Join on Newlines",
+      "description": "Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to `\u00f8\u1e40\u00f8\u010a\u204b`",
+      "overloads": {
+        "any": "mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines"
+      },
+      "token": "\u00f8m"
+    },
+    {
+      "name": "Zero Matrix",
+      "description": "Given a list of dimensions, create a matrix with those dimensions, filled with zeroes",
+      "overloads": {
+        "lst": "matrix with dimensions each item of a, where the first is the innermost and the last is the outermost"
+      },
+      "token": "\u00dem"
+    }
+  ],
+  "110": [
+    {
+      "name": "Context",
+      "description": "Context variable, value of the current loop or function.",
+      "token": "n"
+    },
+    {
+      "name": "NaN",
+      "description": "math.nan",
+      "token": "kn"
+    },
+    {
+      "name": "Infinite list of all integers",
+      "description": "All integers in an infinite list (0, 1, -1, 2, -2, ...)",
+      "token": "\u00den"
+    }
+  ],
+  "111": [
+    {
+      "name": "Remove",
+      "description": "Remove instances of b in a",
+      "overloads": {
+        "num-fun": "first a positive integers where b is truthy",
+        "fun-num": "first b positive integers where a is truthy",
+        "any-any": "a.replace(b,\"\")"
+      },
+      "token": "o"
+    },
+    {
+      "name": "Octal digits",
+      "description": "\"01234567\" (Octal digits)",
+      "token": "ko"
+    },
+    {
+      "name": "Nth Ordinal",
+      "description": "Get the nth ordinal / convert number to wordth ordinal",
+      "overloads": {
+        "num": "num_to_ordinal(a)"
+      },
+      "token": "\u2206o"
+    },
+    {
+      "name": "Remove Until No change",
+      "description": "Remove b from a until a does not change",
+      "overloads": {
+        "str-str": "remove b from a until a does not change",
+        "str-lst": "remove everything in b (in order) from a until a does not change"
+      },
+      "token": "\u00f8o"
+    },
+    {
+      "name": "Ordinals",
+      "description": "An infinite list of first, second, third, fourth etc",
+      "token": "\u00deo"
+    }
+  ],
+  "112": [
+    {
+      "name": "Prepend",
+      "description": "Prepend b to a",
+      "overloads": {
+        "any-any": "a.prepend(b) (prepend b to a)"
+      },
+      "token": "p"
+    },
+    {
+      "name": "Punctuation",
+      "description": "string.punctuation (Punctuations)",
+      "token": "kp"
+    },
+    {
+      "name": "Nearest Prime to a Number / Python equivalent of an expression",
+      "description": "Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function",
+      "overloads": {
+        "num": "nearest_prime(a)",
+        "str": "sympy.nsimplify(a).pycode()"
+      },
+      "token": "\u2206p"
+    },
+    {
+      "name": "Starts With",
+      "description": "Check if one value starts with another",
+      "overloads": {
+        "any-any": "a.startswith(b) (Starts with b?)"
+      },
+      "token": "\u00f8p"
+    },
+    {
+      "name": "Primes",
+      "description": "An infinite list of primes",
+      "token": "\u00dep"
+    },
+    {
+      "name": "For Each Overlapping Pair",
+      "description": "Run element for each overlapping pair. Equivalent to `2lv\u0192`",
+      "usage": "\u00a8p<element>",
+      "token": "\u00a8p"
+    }
+  ],
+  "113": [
+    {
+      "name": "Uneval",
+      "description": "Enclose in backticks, escape backslashes and backticks.",
+      "overloads": {
+        "any": "uneval(a) (enclose in backticks + escape)"
+      },
+      "token": "q"
+    },
+    {
+      "name": "Quadratic Solver",
+      "description": "Solve a quadratic equation of the form ax^2 + bx = 0",
+      "overloads": {
+        "num-num": "x such that ax^2 + bx = 0",
+        "num-str": "solve for x such that a = b(x)",
+        "str-num": "solve for x such that a(x) = b",
+        "str-str": "solve for x such that a(x) = b(x)"
+      },
+      "token": "\u2206q"
+    }
+  ],
+  "114": [
+    {
+      "name": "Range",
+      "description": "Range between two numbers, or cumulative reduce, or regex match",
+      "overloads": {
+        "num-num": "range(a,b) (range from a to b)",
+        "num-str": "append spaces to b to make it length a",
+        "str-num": "prepend spaces to a to make it length b",
+        "any-fun": "cumulative_reduce(a,function=b) (prefixes of a reduced by b)",
+        "str-str": "regex.has_match(pattern=a,string= b) (does b match a)"
+      },
+      "token": "r"
+    },
+    {
+      "name": "Digits, lowercase alphabet, and uppercase alphabet",
+      "description": "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" (0-9A-Za-z)",
+      "token": "kr"
+    },
+    {
+      "name": "Strip from the right side",
+      "description": "Strip from the right side of a string",
+      "overloads": {
+        "str-num": "a.rstrip(b)"
+      },
+      "token": "\u00f8r"
+    },
+    {
+      "name": "Remove Last Item and Prepend 0",
+      "description": "Remove the last item of a list and prepend 0. A shortcut for \u1e6a0p",
+      "overloads": {
+        "lst": "[0] + a[:-1]"
+      },
+      "token": "\u00der"
+    }
+  ],
+  "115": [
+    {
+      "name": "sort",
+      "description": "Sort a list or string",
+      "overloads": {
+        "any": "sorted(a) (sort)"
+      },
+      "token": "s"
+    },
+    {
+      "name": "Sine",
+      "description": "Get the sine of an angle in radians",
+      "overloads": {
+        "num": "math.sin(a)"
+      },
+      "token": "\u2206s"
+    },
+    {
+      "name": "Starts With Set",
+      "description": "Check if a value starts with others",
+      "overloads": {
+        "any-any": "does a start with all of b?"
+      },
+      "token": "\u00f8s"
+    },
+    {
+      "name": "All Slices of a List",
+      "description": "Get all slices of a list, skipping a certain number of items",
+      "overloads": {
+        "lst-int": "[a[::b], a[1::b], a[2::b], ...]",
+        "int-lst": "[b[::a], b[1::a], b[2::a], ...]"
+      },
+      "token": "\u00des"
+    }
+  ],
+  "116": [
+    {
+      "name": "Tail",
+      "description": "Last item",
+      "overloads": {
+        "any": "a[-1] (last item)"
+      },
+      "token": "t"
+    },
+    {
+      "name": "Tangent",
+      "description": "Get the tangent of an angle in radians",
+      "overloads": {
+        "num": "math.tan(a)"
+      },
+      "token": "\u2206t"
+    }
+  ],
+  "117": [
+    {
+      "name": "Minus One",
+      "description": "Push -1",
+      "token": "u"
+    },
+    {
+      "name": "All Unique",
+      "description": "Are all elements of a list/string unique?",
+      "overloads": {
+        "any": "all_unique(a)"
+      },
+      "token": "\u00deu"
+    }
+  ],
+  "118": [
+    {
+      "name": "Vectorise",
+      "description": "Vectorise an element",
+      "usage": "v<element>",
+      "token": "v"
+    },
+    {
+      "name": "Simple vectorise",
+      "description": "Simple vectorise an element. Well, you'll have to look at the code to know what that means.",
+      "usage": "\u00a8v<element>",
+      "token": "\u00a8v"
+    },
+    {
+      "name": "Lowercase vowels",
+      "description": "\"aeiou\" (Vowels lowercase)",
+      "token": "kv"
+    }
+  ],
+  "119": [
+    {
+      "name": "Listify",
+      "description": "a wrapped in a singleton list",
+      "overloads": {
+        "any": "[a] (wrap in singleton list)"
+      },
+      "token": "w"
+    },
+    {
+      "name": "ASCII Whitespace",
+      "description": "All ASCII whitespace",
+      "token": "kw"
+    },
+    {
+      "name": "Distance matrix (Undirected)",
+      "description": "Distance matrix of undirected graph",
+      "overloads": {
+        "lst": "distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])"
+      },
+      "token": "\u00dew"
+    }
+  ],
+  "120": [
+    {
+      "name": "Recurse / Continue / Print Stack",
+      "description": "Call current function (Functions/Lambdas) / Continue (For Loops) / Print the entire stack (otherwise)",
+      "token": "x"
+    },
+    {
+      "name": "All Combinations Without Replacement",
+      "description": "All combinations of a list / string, of all lengths, without replacement",
+      "overloads": {
+        "any": "all (non-empty) combinations of a, of all lengths and all orders, without replacement"
+      },
+      "token": "\u00dex"
+    }
+  ],
+  "121": [
+    {
+      "name": "Uninterleave",
+      "description": "Push every other item of a, and the rest.",
+      "overloads": {
+        "any": "a[::2], a[1::2] (every second item, the rest)"
+      },
+      "token": "y"
+    }
+  ],
+  "122": [
+    {
+      "name": "Zip-self",
+      "description": "Zip a with itself",
+      "overloads": {
+        "any": "zip(a,a)"
+      },
+      "token": "z"
+    },
+    {
+      "name": "Lowercase alphabet reversed",
+      "description": "\"zyxwvutsrqponmlkjihgfedcba\" (lowercase alphabet reversed)",
+      "token": "kz"
+    }
+  ],
+  "123": [
+    {
+      "name": "Open While Loop",
+      "description": "Open a while loop - `{...}`",
+      "token": "{"
+    }
+  ],
+  "124": [
+    {
+      "name": "Branch In Structure",
+      "description": "Branch the structure - means various things depending on context",
+      "token": "|"
+    }
+  ],
+  "125": [
+    {
+      "name": "Close While Loop",
+      "description": "Close a while loop",
+      "token": "}"
+    }
+  ],
+  "126": [
+    {
+      "name": "Filter / Execute Without Pop",
+      "description": "For monads, filter a list by that. For dyads, execute without popping from the stack.",
+      "usage": "~<element>",
+      "token": "~"
+    }
+  ],
+  "127": [
+    {
+      "name": "Max by Tail",
+      "description": "Maximum by last item",
+      "overloads": {
+        "any": "max(a, key=lambda x: x[-1]) (maximum by last item)"
+      },
+      "token": "\u2191"
+    },
+    {
+      "name": "Maximum By Function",
+      "description": "Find the maximum value of a list by applying a function to each element",
+      "overloads": {
+        "lst-fun": "maximum value of a by applying b to each element"
+      },
+      "token": "\u00de\u2191"
+    }
+  ],
+  "128": [
+    {
+      "name": "Min by Tail",
+      "description": "Minimum by last item",
+      "overloads": {
+        "any": "min(a, key=lambda x: x[-1]) (minimum by last item)"
+      },
+      "token": "\u2193"
+    },
+    {
+      "name": "Minimum By Function",
+      "description": "Find the minimum value of a list by applying a function to each element",
+      "overloads": {
+        "lst-fun": "minimum value of a by applying b to each element"
+      },
+      "token": "\u00de\u2193"
+    }
+  ],
+  "129": [
+    {
+      "name": "Dyadic Maximum",
+      "description": "Maximum of two values / Maximum of a list by a function",
+      "overloads": {
+        "any-any": "max(a,b)",
+        "any-fun": "max(a,key=b)"
+      },
+      "token": "\u2234"
+    },
+    {
+      "name": "Elementwise Vectorised Dyadic Maximum",
+      "description": "Elementwise vectorised dyadic maximum.",
+      "overloads": {
+        "lst-lst": "[max(a[0], b[0]), max(a[1], b[1]), ...]"
+      },
+      "token": "\u00de\u2234"
+    }
+  ],
+  "130": [
+    {
+      "name": "Dyadic Minimum",
+      "description": "Minimum of two values / Minimum of a list by a function",
+      "overloads": {
+        "any-any": "min(a,b)",
+        "any-fun": "min(a,key=b)"
+      },
+      "token": "\u2235"
+    },
+    {
+      "name": "Elementwise Vectorised Dyadic Minimum",
+      "description": "Elementwise vectorised dyadic minimum.",
+      "overloads": {
+        "lst-lst": "[min(a[0], b[0]), min(a[1], b[1]), ...]"
+      },
+      "token": "\u00de\u2235"
+    }
+  ],
+  "131": [
+    {
+      "name": "Increment / Space Replace With 0",
+      "description": "Add 1 to a number / replace all spaces in a string with \"0\"",
+      "overloads": {
+        "num": "a + 1",
+        "string": "a.replace(\" \",\"0\")"
+      },
+      "token": "\u203a"
+    },
+    {
+      "name": "Increment until false",
+      "description": "Increment a until b(a) is false (deprecated, use `>` instead)",
+      "overloads": {
+        "any-fun": "while b(a): a += 1",
+        "fun-any": "while a(b): b += 1"
+      },
+      "token": "\u2206\u203a"
+    }
+  ],
+  "132": [
+    {
+      "name": "Decrement",
+      "description": "Subtract 1 from a number",
+      "overloads": {
+        "num": "a - 1",
+        "str": "a + \"-\""
+      },
+      "token": "\u2039"
+    },
+    {
+      "name": "Decrement until false",
+      "description": "Decrement a until b(a) is false (deprecated, use `<` instead)",
+      "overloads": {
+        "any-fun": "while b(a): a -= 1",
+        "fun-any": "while a(b): b -= 1"
+      },
+      "token": "\u2206\u2039"
+    }
+  ],
+  "133": [
+    {
+      "name": "Parity",
+      "description": "A number modulo 2",
+      "overloads": {
+        "num": "a % 2 (odd?)",
+        "str": "second half of A"
+      },
+      "token": "\u2237"
+    }
+  ],
+  "134": [
+    {
+      "name": "Empty String",
+      "description": "The empty string",
+      "token": "\u00a4"
+    }
+  ],
+  "135": [
+    {
+      "name": "Space",
+      "description": "A Space",
+      "token": "\u00f0"
+    },
+    {
+      "name": "Current day in the format \u27e8DD|MM|YYYY\u27e9",
+      "description": "Current day in the format \u27e8DD|MM|YYYY\u27e9",
+      "token": "k\u00f0"
+    }
+  ],
+  "136": [
+    {
+      "name": "Variable Set",
+      "description": "Set variable (\u2192name)",
+      "token": "\u2192"
+    }
+  ],
+  "137": [
+    {
+      "name": "Variable Get",
+      "description": "Get the value of a variable (\u2190name)",
+      "token": "\u2190"
+    }
+  ],
+  "138": [
+    {
+      "name": "To Base Ten / From Custom Base",
+      "description": "Convert a number from a custom base to base 10",
+      "overloads": {
+        "any-num": "a to base 10 from number base b, treating list items / string items as digits",
+        "str-str": "a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10"
+      },
+      "token": "\u03b2"
+    },
+    {
+      "name": "Braces, square brackets, angle brackets, and parentheses",
+      "description": "{}[]<>()",
+      "token": "k\u03b2"
+    },
+    {
+      "name": "Balanced Brackets",
+      "description": "Check if brackets in a string (\"{}()[]<>\") are balanced",
+      "overloads": {
+        "any": "balanced_brackets(a)"
+      },
+      "token": "\u00f8\u03b2"
+    }
+  ],
+  "139": [
+    {
+      "name": "From Base Ten / To Custom Base",
+      "description": "Convert a number to a different base from base 10.",
+      "overloads": {
+        "num-num": "list of digits of a in base b",
+        "num-str": "a converted into a string of characters of b",
+        "num-lst": "a converted into a list of arbitrary values from b"
+      },
+      "token": "\u03c4"
+    },
+    {
+      "name": "Common Logarithm",
+      "description": "Get the common logarithm of a number",
+      "overloads": {
+        "num": "math.log10(a)"
+      },
+      "token": "\u2206\u03c4"
+    }
+  ],
+  "140": [
+    {
+      "name": "Absolute value",
+      "description": "Take the absolute value of a number, or remove whitespace from a string",
+      "overloads": {
+        "num": "abs(a) (absolute value)",
+        "str": "remove whitespace from a"
+      },
+      "token": "\u0227"
+    }
+  ],
+  "141": [
+    {
+      "name": "Boolify",
+      "description": "Convert an arbitrary value into a truthy or falsy value, vectorises with flag t",
+      "overloads": {
+        "any": "bool(a) (booliify)"
+      },
+      "token": "\u1e03"
+    },
+    {
+      "name": "Opening brackets",
+      "description": "\"([{\" (Open brackets)",
+      "token": "k\u1e03"
+    },
+    {
+      "name": "Curly Bracketify",
+      "description": "Enclose a string in curly brackets",
+      "overloads": {
+        "any": "\"{\"\" + a + \"}\""
+      },
+      "token": "\u00f8\u1e03"
+    }
+  ],
+  "142": [
+    {
+      "name": "Not One",
+      "description": "Check if something is not equal to 1",
+      "overloads": {
+        "any": "a != 1"
+      },
+      "token": "\u010b"
+    },
+    {
+      "name": "Nth Cardinal",
+      "description": "Get the nth cardinal / convert number to words",
+      "overloads": {
+        "num": "num_to_words(a)"
+      },
+      "token": "\u2206\u010b"
+    },
+    {
+      "name": "Semi Optimal number compress",
+      "description": "Semi-optimally compress a number",
+      "overloads": {
+        "num": "optimal_number_compress(a)"
+      },
+      "token": "\u00f8\u010b"
+    },
+    {
+      "name": "Cycle",
+      "description": "Form an infinite list from a vector.",
+      "overloads": {
+        "lst": "[a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]"
+      },
+      "token": "\u00de\u010b"
+    }
+  ],
+  "143": [
+    {
+      "name": "Divmod",
+      "description": "Divmod / combinations / trim",
+      "overloads": {
+        "num-num": "[a // b, a % b] (divmod - division and modulo)",
+        "str-num": "combinations of a with length b",
+        "lst-num": "combinations of a with length b",
+        "str-str": "overwrite the start of a with b (b + a[len(b):])"
+      },
+      "token": "\u1e0b"
+    },
+    {
+      "name": "Current day in the format DD/MM/YYYY",
+      "description": "Current day in the format DD/MM/YYYY",
+      "token": "k\u1e0b"
+    },
+    {
+      "name": "To Decimal",
+      "description": "Convert a rational to its decimal representation.",
+      "overloads": {
+        "num": "to_decimal(a)"
+      },
+      "token": "\u00f8\u1e0b"
+    },
+    {
+      "name": "Anti-diagonals",
+      "description": "Anti-diagonals of a matrix, starting with the main anti-diagonal.",
+      "overloads": {
+        "lst": "anti-diagonals of a, starting with the main anti-diagonal"
+      },
+      "token": "\u00de\u1e0b"
+    }
+  ],
+  "144": [
+    {
+      "name": "Enumerate",
+      "description": "Zip with a range of the same length",
+      "overloads": {
+        "any": "enumerate(a) (zip with 1...len(a))"
+      },
+      "token": "\u0117"
+    },
+    {
+      "name": "Nth Digit of Euler's Number (e) / Differentiate",
+      "description": "Get the nth digit of Euler's number (e)",
+      "overloads": {
+        "num": "nth_digit_of_e(a)",
+        "str": "derivative(a)"
+      },
+      "token": "\u2206\u0117"
+    }
+  ],
+  "145": [
+    {
+      "name": "Find",
+      "description": "Find a value in another",
+      "overloads": {
+        "any-any": "a.find(b) (indexing, -1 if not found)",
+        "any-fun": "truthy indices of mapping b over a"
+      },
+      "token": "\u1e1f"
+    },
+    {
+      "name": "Multidimensional Search",
+      "description": "Find the first multidimensional index of a value in another",
+      "overloads": {
+        "lst-any": "find the first occurrence of a in b and return as a multidimensional index"
+      },
+      "token": "\u00de\u1e1f"
+    }
+  ],
+  "146": [
+    {
+      "name": "Gcd / Group by Function",
+      "description": "Greatest Common Denominator of a list or some numbers",
+      "overloads": {
+        "lst": "GCD(a) (gcd of whole list)",
+        "num-num": "gcd(a,b) (dyadic gcd)",
+        "str-str": "longest common suffix of a and b",
+        "fun-any": "group b by the results of function a",
+        "any-fun": "group a by the results of function b"
+      },
+      "token": "\u0121"
+    }
+  ],
+  "147": [
+    {
+      "name": "Head Extract",
+      "description": "Separate the first item of something and push both to stack",
+      "overloads": {
+        "any": "a[0], a[1:] (head extract)"
+      },
+      "token": "\u1e23"
+    }
+  ],
+  "148": [
+    {
+      "name": "Floor Division",
+      "description": "Floor divide a by b",
+      "overloads": {
+        "num-num": "a // b (floor division, floor(a / b))",
+        "str-num": "(a divided into b pieces)[0]",
+        "num-str": "(b divided into a pieces)[0]",
+        "any-fun": "right reduce a by b (foldr)",
+        "fun-any": "right reduce b by a (foldr)"
+      },
+      "token": "\u1e2d"
+    },
+    {
+      "name": 4294967296,
+      "description": "2 ** 32, 2^32, 4294967296",
+      "token": "k\u1e2d"
+    }
+  ],
+  "149": [
+    {
+      "name": "Left Justify / Gridify / Infinite Replace / Collect until false",
+      "description": "Find one value inside another, starting from a certain index.",
+      "overloads": {
+        "num-num-num": "a <= c <= b",
+        "num-num-str": "a by b grid of c",
+        "num-str-num": "a by c grid of b",
+        "num-str-str": "b.ljust(a,filler=c)",
+        "str-num-num": "b by c grid of a",
+        "str-num-str": "a.ljust(c,filler=b)",
+        "str-str-num": "a.ljust(b,filler=c)",
+        "str-str-str": "a.infinite_replace(b, c)",
+        "fun-fun-any": "[c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy"
+      },
+      "token": "\u0140"
+    },
+    {
+      "name": "Left Align",
+      "description": "Left align a string/string list",
+      "overloads": {
+        "str": "justify to left",
+        "lst": "justify each to left"
+      },
+      "token": "\u00f8\u0140"
+    }
+  ],
+  "150": [
+    {
+      "name": "Mean",
+      "description": "Average of a list - sum / length",
+      "overloads": {
+        "str": "palindromise(a) (a + a[:-1:-1])",
+        "lst": "mean(a)"
+      },
+      "token": "\u1e41"
+    },
+    {
+      "name": "Median",
+      "description": "Get the median of a list - returns a list of the two middle items if even length list (use \u1e41 to average them)",
+      "overloads": {
+        "lst": "median(a)"
+      },
+      "token": "\u2206\u1e41"
+    },
+    {
+      "name": "Vertical Mirror",
+      "description": "Vertical Mirror - Split by newlines, mirror each line, join by newlines",
+      "overloads": {
+        "str": "vertical_mirror(a)"
+      },
+      "token": "\u00f8\u1e41"
+    },
+    {
+      "name": "Mold without repeat",
+      "description": "Mold a list without repeating elements.",
+      "overloads": {
+        "lst-lst": "mold a list without repeating elements"
+      },
+      "token": "\u00de\u1e41"
+    }
+  ],
+  "151": [
+    {
+      "name": "Join By Nothing",
+      "description": "Join a list by the empty string. Vectorises if the list contains lists.",
+      "overloads": {
+        "num": "abs(a) <= 1",
+        "str": "pad with 0s to nearest positive multiple of 8",
+        "lst": "\"\".join(a)",
+        "fun": "first integer x where a(x) is truthy"
+      },
+      "token": "\u1e45"
+    },
+    {
+      "name": 8192,
+      "description": 8192,
+      "token": "k\u1e45"
+    }
+  ],
+  "152": [
+    {
+      "name": "Slice",
+      "description": "Slice from an index to the end",
+      "overloads": {
+        "fun-num": "first b integers for which a(x) is truthy",
+        "any-num": "a[b:] (slice from b to the end)",
+        "str-str": "vertically merge a and b"
+      },
+      "token": "\u022f"
+    }
+  ],
+  "153": [
+    {
+      "name": "Powerset",
+      "description": "All possible combinations of a",
+      "overloads": {
+        "any": "all subsets of a (including the empty subset)"
+      },
+      "token": "\u1e57"
+    },
+    {
+      "name": "Bracket pair list",
+      "description": "List of bracket pairs (\"[(),[],{},<>]\")",
+      "token": "k\u1e57"
+    },
+    {
+      "name": "First Prime Before a Number / Factor Expression",
+      "description": "Get the first prime number before a given number / factor a mathematical expression",
+      "overloads": {
+        "num": "prev_prime(a)",
+        "str": "factorise(a)"
+      },
+      "token": "\u2206\u1e57"
+    },
+    {
+      "name": "Flip Brackets Vertical Palindromise, Center, Join on Newlines",
+      "description": "Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `\u00f8M\u00f8\u010a\u204b`",
+      "overloads": {
+        "any": "palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines"
+      },
+      "token": "\u00f8\u1e57"
+    }
+  ],
+  "154": [
+    {
+      "name": "Round",
+      "description": "Round a number to the nearest integer / real and imaginary part of complex number",
+      "overloads": {
+        "num": "round(a)",
+        "complex": "[real(a), imag(a)]",
+        "str": "quad palindromise with overlap"
+      },
+      "token": "\u1e59"
+    },
+    {
+      "name": "Polynomial from Roots",
+      "description": "Get the polynomial with coefficients from the roots of a polynomial",
+      "overloads": {
+        "list": "polynomial(a)"
+      },
+      "token": "\u2206\u1e59"
+    },
+    {
+      "name": "Regex replace",
+      "description": "Replace matches of a with c in b",
+      "overloads": {
+        "any-any-fun": "apply c to matches of a in b",
+        "any-any-any": "replace matches of a with c in b"
+      },
+      "token": "\u00f8\u1e59"
+    }
+  ],
+  "155": [
+    {
+      "name": "Sort by Function",
+      "description": "Sort a list by a function / create a range / split on a regex",
+      "overloads": {
+        "any-fun": "sorted(a, key=b) (sort by b)",
+        "num-num": "range(a, b + 1) (inclusive range from a to b)",
+        "str-str": "regex.split(pattern=b, string=a)"
+      },
+      "token": "\u1e61"
+    },
+    {
+      "name": "Sort By Length",
+      "description": "Sort a list by length.",
+      "overloads": {
+        "lst": "sort a from shortest to longest"
+      },
+      "token": "\u00de\u1e61"
+    }
+  ],
+  "156": [
+    {
+      "name": "Tail Extract",
+      "description": "Remove the last item and push both onto the stack",
+      "overloads": {
+        "any": "a[:-1],a[-1]"
+      },
+      "token": "\u1e6b"
+    },
+    {
+      "name": "Totient Function / Local Minima",
+      "description": "Get the totient function of a number / local minima of a function",
+      "overloads": {
+        "num": "totient(a)",
+        "str": "local_minima(a)"
+      },
+      "token": "\u2206\u1e6b"
+    }
+  ],
+  "157": [
+    {
+      "name": "Chunk Wrap",
+      "description": "Wrap a list in chunks of a certain length / apply a function to every second item of a list",
+      "overloads": {
+        "any-num": "a wrapped in chunks of length b",
+        "num-any": "b wrapped in chunks of length a",
+        "any-lst": "wrap a into chunks with lengths given in b, repeating if necessary",
+        "lst-any": "wrap b into chunks with lengths given in a, repeating if necessary",
+        "any-fun": "apply b to every second item of a ([a[0], b(a[1]), a[2], ...])",
+        "fun-any": "apply a to every second item of b ([b[0], a(b[1]), b[2], ...])",
+        "str-str": "split a on first occurrence of b"
+      },
+      "token": "\u1e87"
+    },
+    {
+      "name": "Unwrap",
+      "description": "Take a and push a[0]+a[-1] and a[1:-1]",
+      "overloads": {
+        "lst": "a[0]+a[-1], a[1:-1]"
+      },
+      "token": "\u00de\u1e87"
+    },
+    {
+      "name": "Wrap Last n Items",
+      "description": "Wrap the last n items on the stack into a list",
+      "overloads": {
+        "num": "last a items of the stack, as a list; does not pop anything other than a"
+      },
+      "token": "\u00a8\u1e87"
+    }
+  ],
+  "158": [
+    {
+      "name": "Repeat",
+      "description": "Repeat a value several times",
+      "overloads": {
+        "str-num": "a * b",
+        "num-str": "b * a",
+        "any-num": "repeat a b times ([a, a, ...])",
+        "str-str": "a + \" \" + b",
+        "fun-any": "repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))",
+        "any-fun": "repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))"
+      },
+      "token": "\u1e8b"
+    }
+  ],
+  "159": [
+    {
+      "name": "Exclusive Range Length",
+      "description": "Range from 0 to length of a",
+      "overloads": {
+        "any": "range(0, len(a)) (exclusive range from 0 to length of a)"
+      },
+      "token": "\u1e8f"
+    }
+  ],
+  "160": [
+    {
+      "name": "Inclusive Range Length",
+      "description": "Range from 1 to length of a inclusive",
+      "overloads": {
+        "any": "range(1, len(a)+1) (inclusive range from 1 to length of a)"
+      },
+      "token": "\u017c"
+    },
+    {
+      "name": "Lift",
+      "description": "Multiply a numeric list by a range from 1 to its length",
+      "overloads": {
+        "lst": "lift"
+      },
+      "token": "\u00de\u017c"
+    }
+  ],
+  "161": [
+    {
+      "name": "Square Root",
+      "description": "Square root a number / every second character of a",
+      "overloads": {
+        "num": "sqrt(a) (square root)",
+        "str": "every second character of a (a[0] + a[2] + ...)"
+      },
+      "token": "\u221a"
+    }
+  ],
+  "162": [
+    {
+      "name": "Open List",
+      "description": "Open a list - \u27e8...\u27e9",
+      "token": "\u27e8"
+    }
+  ],
+  "163": [
+    {
+      "name": "Close list",
+      "description": "Close a list - \u27e8...\u27e9",
+      "token": "\u27e9"
+    }
+  ],
+  "164": [
+    {
+      "name": "Two Character String",
+      "description": "Collect the next two characters as a string - \u201b..",
+      "token": "\u201b"
+    }
+  ],
+  "165": [
+    {
+      "name": "Ten",
+      "description": "Push 10 to the stack",
+      "token": "\u2080"
+    }
+  ],
+  "166": [
+    {
+      "name": "Hundred",
+      "description": "Push 100 to the stack",
+      "token": "\u2081"
+    },
+    {
+      "name": [
+        1,
+        1
+      ],
+      "description": "The list [1, 1]",
+      "token": "k\u2081"
+    }
+  ],
+  "167": [
+    {
+      "name": "Is Even",
+      "description": "Check if a value is even",
+      "overloads": {
+        "num": "a % 2 == 0 (even?)",
+        "any": "len(a) % 2 == 0 (length even?)"
+      },
+      "token": "\u2082"
+    },
+    {
+      "name": "2 ** 20",
+      "description": "2 to the power of 20, 1048576",
+      "token": "k\u2082"
+    },
+    {
+      "name": "Dyadic Filter Lambda",
+      "description": "Open a dyadic filter lambda - \u00a8\u2082...; Receives item and index.",
+      "token": "\u00a8\u2082"
+    }
+  ],
+  "168": [
+    {
+      "name": "Divisible By Three",
+      "description": "Check if a is divisible by 3",
+      "overloads": {
+        "num": "a % 3 == 0 (divisible by 3?)",
+        "any": "len(a) == 1 (length is 1?)"
+      },
+      "token": "\u2083"
+    },
+    {
+      "name": "2 ** 30",
+      "description": "2 to the power of 30, 1073741824",
+      "token": "k\u2083"
+    },
+    {
+      "name": "Triadic Filter Lambda",
+      "description": "Open a triadic filter lambda - \u00a8\u2083...; Receives item, index, and vector.",
+      "token": "\u00a8\u2083"
+    }
+  ],
+  "169": [
+    {
+      "name": "Twenty Six",
+      "description": "Push 26 to the stack",
+      "token": "\u2084"
+    }
+  ],
+  "170": [
+    {
+      "name": "Divisible By Five",
+      "description": "Check if a is divisible by 5",
+      "overloads": {
+        "num": "a % 5 == 0",
+        "any": "a, len(a)"
+      },
+      "token": "\u2085"
+    }
+  ],
+  "171": [
+    {
+      "name": "Sixty Four",
+      "description": "Push 64 to the stack",
+      "token": "\u2086"
+    }
+  ],
+  "172": [
+    {
+      "name": "One Twenty Eight",
+      "description": "Push 128 to the stack",
+      "token": "\u2087"
+    }
+  ],
+  "173": [
+    {
+      "name": "Two Fifty Six",
+      "description": "Push 256 to the stack",
+      "token": "\u2088"
+    }
+  ],
+  "174": [
+    {
+      "name": "Newline",
+      "description": "Push a newline to the stack",
+      "token": "\u00b6"
+    },
+    {
+      "name": 512,
+      "description": 512,
+      "token": "k\u00b6"
+    }
+  ],
+  "175": [
+    {
+      "name": "Join On Newlines",
+      "description": "Join the top of the stack on newlines (insert \"\\n\" between items)",
+      "overloads": {
+        "any": "\"\\\\n\".join(a)"
+      },
+      "token": "\u204b"
+    },
+    {
+      "name": 1024,
+      "description": 1024,
+      "token": "k\u204b"
+    }
+  ],
+  "176": [
+    {
+      "name": "Vertical Join",
+      "description": "Transpose (filling with spaces) and then join on newlines",
+      "overloads": {
+        "any": "transpose a, join on newlines"
+      },
+      "token": "\u00a7"
+    }
+  ],
+  "177": [
+    {
+      "name": "Absolute Difference / Repeat / Regex match",
+      "description": "Returns the absolute difference / Fills an array of a certain length / Does a regex match",
+      "overloads": {
+        "num-num": "abs(a - b)",
+        "num-str": "[b] * a",
+        "str-num": "[a] * b",
+        "str-str": "regex.match(b, a) (first match of regex b on a)"
+      },
+      "token": "\u03b5"
+    },
+    {
+      "name": 32768,
+      "description": 32768,
+      "token": "k\u03b5"
+    }
+  ],
+  "178": [
+    {
+      "name": "Factorial",
+      "description": "Returns the factorial of the top of the stack",
+      "overloads": {
+        "num": "factorial(a) (math.gamma(a + 1))",
+        "str": "a.sentence_case()"
+      },
+      "token": "\u00a1"
+    },
+    {
+      "name": 16384,
+      "description": 16384,
+      "token": "k\u00a1"
+    }
+  ],
+  "179": [
+    {
+      "name": "Summate",
+      "description": "Returns the sum of the top of the stack (reduce by addition)",
+      "overloads": {
+        "num": "sum(digits of a)",
+        "str": "a",
+        "lst": "sum(a)"
+      },
+      "token": "\u2211"
+    }
+  ],
+  "180": [
+    {
+      "name": "Cumulative Sum",
+      "description": "Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)",
+      "overloads": {
+        "any": "cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])"
+      },
+      "token": "\u00a6"
+    },
+    {
+      "name": 2048,
+      "description": 2048,
+      "token": "k\u00a6"
+    }
+  ],
+  "181": [
+    {
+      "name": "All Equal",
+      "description": "Returns whether all items are equal",
+      "overloads": {
+        "any": "are all items in a equal?"
+      },
+      "token": "\u2248"
+    },
+    {
+      "name": [
+        0,
+        1
+      ],
+      "description": [
+        0,
+        1
+      ],
+      "token": "k\u2248"
+    }
+  ],
+  "182": [
+    {
+      "name": "Sorting Lambda",
+      "description": "Sort the top of the stack by the function \u00b5...;",
+      "token": "\u00b5"
+    }
+  ],
+  "183": [
+    {
+      "name": "Assign",
+      "description": "The equivalent of a[b] = c",
+      "overloads": {
+        "any-num-any": "a but item b (0-indexed) is set to c"
+      },
+      "token": "\u0226"
+    }
+  ],
+  "184": [
+    {
+      "name": "Bifurcate",
+      "description": "Pushes the top of the stack then its reverse. Literally duplicate and reverse",
+      "overloads": {
+        "any": "a, reversed(a)"
+      },
+      "token": "\u1e02"
+    },
+    {
+      "name": "Parentheses, square brackets, and braces",
+      "description": "\"()[]{}\" (Brackets)",
+      "token": "k\u1e02"
+    },
+    {
+      "name": "Angle Bracketify",
+      "description": "Enclose a string in angle brackets",
+      "overloads": {
+        "any": "\"<\"\" + a + \">\""
+      },
+      "token": "\u00f8\u1e02"
+    }
+  ],
+  "185": [
+    {
+      "name": "Counts",
+      "description": "Returns a list of [item, count of item in the top of stack]",
+      "overloads": {
+        "any": "[[x, a.count(x)] for x in a]"
+      },
+      "token": "\u010a"
+    },
+    {
+      "name": "Polynomial Expression From Coefficients",
+      "description": "Get the polynomial expression from a list of coefficients",
+      "overloads": {
+        "num": "polynomial of degree n",
+        "str": "a",
+        "lst": "polynomial_expression(a)"
+      },
+      "token": "\u2206\u010a"
+    },
+    {
+      "name": "Center",
+      "description": "Center a list of strings",
+      "overloads": {
+        "lst": "center(a) (pad each item with spaces so all are the same length and centered)"
+      },
+      "token": "\u00f8\u010a"
+    },
+    {
+      "name": "Is Unordered?",
+      "description": "Returns true if the item is not sorted in either descending or ascending order.",
+      "overloads": {
+        "lst": "is a not sorted, in either increasing or decreasing order?"
+      },
+      "token": "\u00de\u010a"
+    }
+  ],
+  "186": [
+    {
+      "name": "Is Divisible / Arbitrary Duplicate / Ordered Group By",
+      "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order",
+      "overloads": {
+        "num-num": "a % b == 0",
+        "num-str": "a copies of b",
+        "str-num": "b copies of a",
+        "str-str": "b + \" \" + a",
+        "any-fun": "group a by the results of b, order is preserved",
+        "fun-any": "group b by the results of a, order is preserved"
+      },
+      "token": "\u1e0a"
+    },
+    {
+      "name": "Current day in the format MM/DD/YYYY",
+      "description": "Current day in the format MM/DD/YYYY",
+      "token": "k\u1e0a"
+    },
+    {
+      "name": "Dyadic Run Length Decode",
+      "description": "Run length decoding, convert list of characters and list of lengths to a string/list",
+      "overloads": {
+        "lst-lst": "run length decode with items a and lengths b"
+      },
+      "token": "\u00f8\u1e0a"
+    },
+    {
+      "name": "Matrix Determinant",
+      "description": "Calculate the determinant of a matrix.",
+      "overloads": {
+        "lst": "determinant(a)"
+      },
+      "token": "\u00de\u1e0a"
+    }
+  ],
+  "187": [
+    {
+      "name": "Vyxal Exec / Reciprocal",
+      "description": "Executes as Vyxal / Reciprocal of number",
+      "overloads": {
+        "str": "vy_exec(a)",
+        "num": "1 / a"
+      },
+      "token": "\u0116"
+    },
+    {
+      "name": "N Digits of Euler's Number (e) / Sympy Evaluate",
+      "description": "Get the first n digits of Euler's number (e) / evaluate an expression as sympy",
+      "overloads": {
+        "num": "first n digits of e",
+        "str": "evaluate(a)"
+      },
+      "token": "\u2206\u0116"
+    },
+    {
+      "name": "Separated Run Length Encoding",
+      "description": "Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to `\u00f8e\u2229\u00f7`",
+      "overloads": {
+        "str": "run length encode a and push items and lengths"
+      },
+      "token": "\u00f8\u0116"
+    }
+  ],
+  "188": [
+    {
+      "name": "Generator / Modulo Index / Format",
+      "description": "Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.",
+      "overloads": {
+        "num-num": "sympy.N(a, b) (evaluate a to b decimal places)",
+        "str-num": "every bth letter of a (a[::b])",
+        "num-str": "every ath letter of b (b[::a])",
+        "str-str": "replace spaces in a with b",
+        "lst-num": "every bth item of a (a[::b])",
+        "num-lst": "every ath item of b (b[::a])",
+        "fun-lst": "generator from function a with initial vector b"
+      },
+      "token": "\u1e1e"
+    },
+    {
+      "name": "Replace First Occurrence",
+      "description": "Replace the first instance of an item with another item",
+      "overloads": {
+        "any-any-any": "a.replace_first(b, c)"
+      },
+      "token": "\u00f8\u1e1e"
+    },
+    {
+      "name": "Fill to make rectangular",
+      "description": "Fill a 2-D list to make it rectangular",
+      "overloads": {
+        "lst-any": "fill a with b to make it rectangular",
+        "any-lst": "fill b with a to make it rectangular"
+      },
+      "token": "\u00de\u1e1e"
+    }
+  ],
+  "189": [
+    {
+      "name": "Group consecutive",
+      "description": "Group consecutive identical items",
+      "overloads": {
+        "lst": "group consecutive identical items",
+        "str": "group consecutive identical characters",
+        "num": "group consecutive identical digits"
+      },
+      "token": "\u0120"
+    }
+  ],
+  "190": [
+    {
+      "name": "Head Remove / Behead",
+      "description": "All but the first item of a list / Drop 1",
+      "overloads": {
+        "lst": "a[1:] or [] if empty",
+        "str": "a[1:] or '' if empty",
+        "num": "remove first digit or do nothing if <1"
+      },
+      "token": "\u1e22"
+    }
+  ],
+  "191": [
+    {
+      "name": "Index into or collect while unique",
+      "description": "Index into list at indices / Collect values while values are unique",
+      "overloads": {
+        "any-lst": "[a[item] for item in b]",
+        "any-fun": "apply b on a and collect unique values"
+      },
+      "token": "\u0130"
+    },
+    {
+      "name": "First n Items and Rest",
+      "description": "Push the first n items of a, then the rest of a",
+      "overloads": {
+        "lst-int": "a[:b], a[b:]",
+        "int-lst": "b[:a], b[a:]"
+      },
+      "token": "\u00de\u0130"
+    }
+  ],
+  "192": [
+    {
+      "name": "Transliterate",
+      "description": "Replace each item of one value in another value with the corresponding element from a third value",
+      "overloads": {
+        "any-any-any": "transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
+        "fun-fun-any": "call b on c until a(c) is falsy"
+      },
+      "token": "\u013f"
+    },
+    {
+      "name": "Least Common Multiple",
+      "description": "Get the least common multiple of two numbers",
+      "overloads": {
+        "lst": "lcm(a)",
+        "num-num": "lcm(a, b)"
+      },
+      "token": "\u2206\u013f"
+    }
+  ],
+  "193": [
+    {
+      "name": "Insert",
+      "description": "Insert a value at a specified index / Map a function over every nth item of a list",
+      "overloads": {
+        "any-num-any": "a.insert(b,c) (insert c at position b in a)",
+        "any-num-fun": "c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])"
+      },
+      "token": "\u1e40"
+    },
+    {
+      "name": "Flip Brackets Vertical Mirror",
+      "description": "Vertical mirror, and swap brackets and slashes in the second half.",
+      "overloads": {
+        "any": "vertical_mirror(a, mapping = flip brackets and slashes)"
+      },
+      "token": "\u00f8\u1e40"
+    },
+    {
+      "name": "Matrix Multiplication",
+      "description": "Multiply two matrices together.",
+      "overloads": {
+        "lst-lst": "matrix multiply a and b"
+      },
+      "token": "\u00de\u1e40"
+    }
+  ],
+  "194": [
+    {
+      "name": "Integer partitions",
+      "description": "Integer partitions / join by space",
+      "overloads": {
+        "num": "integer_partitions(a) (integer partitions)",
+        "any": "\" \".join(a) (join by space)"
+      },
+      "token": "\u1e44"
+    },
+    {
+      "name": 4096,
+      "description": 4096,
+      "token": "k\u1e44"
+    },
+    {
+      "name": "Replace Nth Occurrence",
+      "description": "Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.",
+      "overloads": {
+        "any-any-any-any": "a.replace_nth_occurrence(b, c, d)"
+      },
+      "token": "\u00f8\u1e44"
+    },
+    {
+      "name": "Infinite Integer Partitions",
+      "description": "Infinite list of sets of positive integers (equivalent to \u00de\u221ev\u1e44\u00def)",
+      "token": "\u00de\u1e44"
+    }
+  ],
+  "195": [
+    {
+      "name": "Over",
+      "description": "Push the second-last item of stack to the top",
+      "token": "\u022e"
+    },
+    {
+      "name": "Is Ordered?",
+      "description": "Returns true if the item is sorted in either descending or ascending order.",
+      "overloads": {
+        "lst": "is a sorted in increasing or decreasing order?"
+      },
+      "token": "\u00de\u022e"
+    }
+  ],
+  "196": [
+    {
+      "name": "Permutations",
+      "description": "Get all permutations of a value",
+      "overloads": {
+        "any": "permutations(a) (get all permutations)"
+      },
+      "token": "\u1e56"
+    },
+    {
+      "name": "Nested brackets",
+      "description": "String of all brackets nested (\"([{<>}])\")",
+      "token": "k\u1e56"
+    },
+    {
+      "name": "Next Prime After a Number / Discriminant of Polynomial",
+      "description": "Get the next prime number after a given number / the discriminant of a polynomial",
+      "overloads": {
+        "num": "next_prime(a)",
+        "str": "discriminant(a)"
+      },
+      "token": "\u2206\u1e56"
+    },
+    {
+      "name": "String Partitions",
+      "description": "All partitions of a string/list",
+      "overloads": {
+        "any": "all_partitions(a)"
+      },
+      "token": "\u00f8\u1e56"
+    }
+  ],
+  "197": [
+    {
+      "name": "Reverse",
+      "description": "Reverse a value",
+      "overloads": {
+        "any": "reversed(a)"
+      },
+      "token": "\u1e58"
+    },
+    {
+      "name": "Roman Numerals",
+      "description": "IVXLCDM",
+      "token": "k\u1e58"
+    },
+    {
+      "name": "Random Float",
+      "description": "Get a random float in the range [0, 1), pseudo random number",
+      "overloads": {
+        "num": "random.random()"
+      },
+      "token": "\u2206\u1e58"
+    },
+    {
+      "name": "Roman Numeral",
+      "description": "Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.",
+      "overloads": {
+        "num": "to_roman_numeral(a)",
+        "str": "from_roman_numeral(a)"
+      },
+      "token": "\u00f8\u1e58"
+    },
+    {
+      "name": "Is Sorted in Reverse?",
+      "description": "Returns true if an item is sorted in descending order using default sorting rules.",
+      "overloads": {
+        "lst": "is a sorted in decreasing order?"
+      },
+      "token": "\u00de\u1e58"
+    }
+  ],
+  "198": [
+    {
+      "name": "Vectorised sums",
+      "description": "Sum of each item in a list",
+      "token": "\u1e60"
+    },
+    {
+      "name": "Is Sorted?",
+      "description": "Returns true if an item is sorted in ascending order using default sorting rules.",
+      "overloads": {
+        "lst": "is a sorted in increasing order?"
+      },
+      "token": "\u00de\u1e60"
+    }
+  ],
+  "199": [
+    {
+      "name": "Tail Remove",
+      "description": "Cut off the last item of a list",
+      "overloads": {
+        "any": "a[:-1] (all but the last item)"
+      },
+      "token": "\u1e6a"
+    },
+    {
+      "name": "Transpose With Filler",
+      "description": "Transpose a matrix, with a filler value for empty cells.",
+      "overloads": {
+        "lst-any": "transpose a, with filler value b"
+      },
+      "token": "\u00de\u1e6a"
+    }
+  ],
+  "200": [
+    {
+      "name": "Split And Keep Delimiter",
+      "description": "Split a value and keep the delimiter",
+      "overloads": {
+        "any-any": "a.split_and_keep_delimiter(b) (split and keep the delimiter)",
+        "fun-any": "apply a to every second item of b starting on the first item"
+      },
+      "token": "\u1e86"
+    }
+  ],
+  "201": [
+    {
+      "name": "Cartesian Product / Fixpoint",
+      "description": "Take the Cartesian Product of two values, or apply a function until there is no change. If arguments are numbers, turns them into ranges.\n",
+      "overloads": {
+        "any-any": "cartesian-product(a,b)",
+        "fun-any": "apply a on b until b does not change"
+      },
+      "token": "\u1e8a"
+    },
+    {
+      "name": "Cartesian Power",
+      "description": "Cartesian power, cartesian product with self n times. If both arguments are numbers, turns the left into a range.\n",
+      "overloads": {
+        "any-num": "cartesian_power(a, b)",
+        "num-any": "cartesian_power(b, a)"
+      },
+      "token": "\u00de\u1e8a"
+    }
+  ],
+  "202": [
+    {
+      "name": "Slice Until",
+      "description": "Slice a list until a certain index / find all results for a regex match",
+      "overloads": {
+        "any-num": "a[0:b] (slice until b)",
+        "num-any": "b[0:a] (slice until a)",
+        "str-str": "regex.findall(pattern=a,string=b) (find all matches for a regex)",
+        "any-fun": "take results from a while b(x) is truthy",
+        "fun-any": "take results from b while a(x) is truthy"
+      },
+      "token": "\u1e8e"
+    }
+  ],
+  "203": [
+    {
+      "name": "Slice From One Until",
+      "description": "Slice from index 1 until a number / get groups of a regex match",
+      "overloads": {
+        "any-num": "a[1:b] (slice from 1 until b)",
+        "num-any": "b[1:a] (slice from 1 until a)",
+        "str-str": "regex.match(pattern=a,string=b).groups() (Get groups for a regex match)"
+      },
+      "token": "\u017b"
+    }
+  ],
+  "204": [
+    {
+      "name": "Parallel Apply",
+      "description": "Parallel apply two elements to the top of the stack",
+      "usage": "\u208c<element><element>",
+      "token": "\u208c"
+    }
+  ],
+  "205": [
+    {
+      "name": "Parallel Apply Wrap",
+      "description": "Parallel apply two elements and wrap the results in a list",
+      "usage": "\u208d<element><element>",
+      "token": "\u208d"
+    }
+  ],
+  "206": [
+    {
+      "name": "First Input",
+      "description": "Push the first input",
+      "token": "\u2070"
+    },
+    {
+      "name": "Lowercase consonants with y",
+      "description": "bcdfghjklmnpqrstvwxyz",
+      "token": "k\u2070"
+    }
+  ],
+  "207": [
+    {
+      "name": "Second Input",
+      "description": "Push the second input",
+      "token": "\u00b9"
+    },
+    {
+      "name": "Lowercase consonants without y",
+      "description": "bcdfghjklmnpqrstvwxz",
+      "token": "k\u00b9"
+    }
+  ],
+  "208": [
+    {
+      "name": "Square",
+      "description": "Square a number / Format a string into a square",
+      "overloads": {
+        "num": "a ** 2 (squared)",
+        "str": "a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)"
+      },
+      "token": "\u00b2"
+    },
+    {
+      "name": "http://www.",
+      "description": "http://www.",
+      "token": "k\u00b2"
+    },
+    {
+      "name": "Perfect Square?",
+      "description": "Is the number a perfect square? (1, 4, 9, 16, 25, 36)",
+      "overloads": {
+        "num": "is_perfect_square(a)"
+      },
+      "token": "\u2206\u00b2"
+    }
+  ],
+  "209": [
+    {
+      "name": "Shift",
+      "description": "Shift the top of stack two values down",
+      "overloads": {
+        "any-any-any": "c,a,b (shift)"
+      },
+      "token": "\u2207"
+    }
+  ],
+  "210": [
+    {
+      "name": "Ceiling",
+      "description": "Take the ceiling of a number / Imaginary part of complex number / split a string on spaces",
+      "overloads": {
+        "num": "ceil(a) (ceiling)",
+        "complex": "imaginary part of a",
+        "str": "split on spaces"
+      },
+      "token": "\u2308"
+    }
+  ],
+  "211": [
+    {
+      "name": "Floor",
+      "description": "Floor a number / real part of complex number / extract the integer part of a string",
+      "overloads": {
+        "num": "floor(a) (floor)",
+        "complex": "real part of a",
+        "str": "integer part of a"
+      },
+      "token": "\u230a"
+    }
+  ],
+  "212": [
+    {
+      "name": "Deltas",
+      "description": "Deltas (consecutive differences)",
+      "overloads": {
+        "any": "deltas(a) ([a[1] - a[0], a[2] - a[1], ...])"
+      },
+      "token": "\u00af"
+    }
+  ],
+  "213": [
+    {
+      "name": "Sign",
+      "description": "Get the sign of a number",
+      "overloads": {
+        "num": "sign_of(a) (positive = 1, 0 = 0; negative = -1)",
+        "str": "is a numeric"
+      },
+      "token": "\u00b1"
+    },
+    {
+      "name": "Copy Sign",
+      "description": "Copy the sign of one number to the other",
+      "overloads": {
+        "num-num": "math.copysign(a, b)"
+      },
+      "token": "\u2206\u00b1"
+    }
+  ],
+  "214": [
+    {
+      "name": "Print Without Newline",
+      "description": "Print a value without a trailing newline",
+      "token": "\u20b4"
+    },
+    {
+      "name": 65536,
+      "description": 65536,
+      "token": "k\u20b4"
+    }
+  ],
+  "215": [
+    {
+      "name": "Print Without Popping",
+      "description": "Print a value without popping the stack",
+      "token": "\u2026"
+    },
+    {
+      "name": "Evenly Distribute",
+      "description": "Evenly distribute a number over elements of a list",
+      "overloads": {
+        "list-num": "[i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b"
+      },
+      "token": "\u00de\u2026"
+    },
+    {
+      "name": "Print With Space Without Popping",
+      "description": "Print a value with a space after it, without popping it",
+      "overloads": {
+        "any": "print a followed by a space, then push a"
+      },
+      "token": "\u00a8\u2026"
+    }
+  ],
+  "216": [
+    {
+      "name": "Input List",
+      "description": "All inputs wrapped in a list",
+      "token": "\u25a1"
+    },
+    {
+      "name": "Directions",
+      "description": "Cardinal directions, [[0,1],[1,0],[0,-1],[-1,0]]",
+      "token": "k\u25a1"
+    },
+    {
+      "name": "Identity Matrix of Size n",
+      "description": "A matrix with 1s on the main diagonal and zeroes elsewhere",
+      "overloads": {
+        "num": "the a x a identity matrix"
+      },
+      "token": "\u00de\u25a1"
+    },
+    {
+      "name": "Parse direction arrow to integer",
+      "description": "Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)",
+      "overloads": {
+        "str": "map on a, replacing `>^<v` with integers, and others with -1 ([`>^<v`.find(a[0]), `>^<v`.find(a[1]), ...])"
+      },
+      "token": "\u00a8\u25a1"
+    }
+  ],
+  "217": [
+    {
+      "name": "Right Bit Shift",
+      "description": "Right-bitshift a value / right-justify a string",
+      "overloads": {
+        "num-num": "a << b",
+        "num-str": "a.rjust(b)",
+        "str-num": "b.rjust(a)",
+        "str-str": "a.rjust(len(b)-len(a))"
+      },
+      "token": "\u21b3"
+    },
+    {
+      "name": "https://www.",
+      "description": "https://www.",
+      "token": "k\u21b3"
+    },
+    {
+      "name": "Custom Pad Left",
+      "description": "Pad a string to the left with a certain character",
+      "overloads": {
+        "any-str-num": "pad a to the left with c so a has length b",
+        "any-num-str": "pad a to the left with b so a has length c"
+      },
+      "token": "\u00f8\u21b3"
+    }
+  ],
+  "218": [
+    {
+      "name": "Left Bit Shift",
+      "description": "Left-bitshift a value / left-justify a string",
+      "overloads": {
+        "num-num": "a >> b",
+        "num-str": "a.ljust(b)",
+        "str-num": "b.ljust(a)",
+        "str-str": "a.ljust(len(b)-len(a))"
+      },
+      "token": "\u21b2"
+    },
+    {
+      "name": "Custom Pad Right",
+      "description": "Pad a string to the right with a certain character",
+      "overloads": {
+        "any-str-num": "pad a to the right with c so a has length b",
+        "any-num-str": "pad a to the right with b so a has length c"
+      },
+      "token": "\u00f8\u21b2"
+    }
+  ],
+  "219": [
+    {
+      "name": "Bitwise And",
+      "description": "Performs bitwise and between two numbers / centre a string",
+      "overloads": {
+        "num-num": "a & b",
+        "num-str": "b.center(a)",
+        "str-num": "a.center(b)",
+        "str-str": "a.center(len(b) - len(a))"
+      },
+      "token": "\u22cf"
+    }
+  ],
+  "220": [
+    {
+      "name": "Bitwise Or",
+      "description": "Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix",
+      "overloads": {
+        "num-num": "a | b",
+        "num-str": "b[:a]+b[a+1:]",
+        "str-num": "a[:b]+a[b+1:]",
+        "str-str": "merge_join(a,b)"
+      },
+      "token": "\u22ce"
+    }
+  ],
+  "221": [
+    {
+      "name": "Bitwise Xor",
+      "description": "Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance",
+      "overloads": {
+        "num-num": "a ^ b",
+        "num-str": "\\\" \\\" * a + b",
+        "str-num": "a + \\\" \\\" * b",
+        "str-str": "levenshtein_distance(a,b)"
+      },
+      "token": "\ua60d"
+    }
+  ],
+  "222": [
+    {
+      "name": "Bitwise Not",
+      "description": "Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list",
+      "overloads": {
+        "num": "~a",
+        "str": "any_upper(a)",
+        "lst": "keep truthy"
+      },
+      "token": "\ua71d"
+    }
+  ],
+  "223": [
+    {
+      "name": "Random Choice",
+      "description": "Random choice of single item from array",
+      "overloads": {
+        "lst": "random.choice(a)",
+        "num": "Random integer from 0 to a"
+      },
+      "token": "\u2105"
+    },
+    {
+      "name": "http://",
+      "description": "http://",
+      "token": "k\u2105"
+    },
+    {
+      "name": "Random Permutation",
+      "description": "Random permutation of a list / string",
+      "overloads": {
+        "any": "random permutation of a"
+      },
+      "token": "\u00de\u2105"
+    }
+  ],
+  "224": [
+    {
+      "name": "Lesser Than or Equal To",
+      "description": "a is lesser than or equal to b?",
+      "overloads": {
+        "any-any": "a <= b"
+      },
+      "token": "\u2264"
+    },
+    {
+      "name": "Opening brackets (with <)",
+      "description": "\"([{<\" (Fish bones :P)",
+      "token": "k\u2264"
+    }
+  ],
+  "225": [
+    {
+      "name": "Greater Than or Equal To",
+      "description": "a is greater than or equal to b?",
+      "overloads": {
+        "any-any": "a >= b"
+      },
+      "token": "\u2265"
+    },
+    {
+      "name": "Closing brackets",
+      "description": "\")]}\" (Close brackets)",
+      "token": "k\u2265"
+    }
+  ],
+  "226": [
+    {
+      "name": "Not Equal To",
+      "description": "a is not equal to b?",
+      "overloads": {
+        "any-any": "a != b"
+      },
+      "token": "\u2260"
+    }
+  ],
+  "227": [
+    {
+      "name": "Exactly Equal To",
+      "description": "a equal to b? (non-vectorizing)",
+      "overloads": {
+        "any-any": "a == b"
+      },
+      "token": "\u207c"
+    }
+  ],
+  "228": [
+    {
+      "name": "Reduce by",
+      "description": "Reduce by an element",
+      "usage": "\u0192<element>",
+      "token": "\u0192"
+    }
+  ],
+  "229": [
+    {
+      "name": "Scan by",
+      "description": "Cumulatively reduce by an element",
+      "usage": "\u0256<element>",
+      "token": "\u0256"
+    }
+  ],
+  "230": [
+    {
+      "name": "Set Union",
+      "description": "Merge two arrays without duplicates",
+      "overloads": {
+        "any-any": "list(set(a).union(set(b)))"
+      },
+      "token": "\u222a"
+    },
+    {
+      "name": "Lowercase Vowels With Y",
+      "description": "Lowercase vowels with y, \"aeiouy\"",
+      "token": "k\u222a"
+    },
+    {
+      "name": "Multiset Union",
+      "description": "Similar to set union, but with duplicates allowed.",
+      "overloads": {
+        "lst-lst": "multiset union of a and b"
+      },
+      "token": "\u00de\u222a"
+    }
+  ],
+  "231": [
+    {
+      "name": "Transpose",
+      "description": "Transpose an array",
+      "overloads": {
+        "any": "transposed array"
+      },
+      "token": "\u2229"
+    },
+    {
+      "name": "Vowels With Y",
+      "description": "Vowels with y, \"aeiouyAEIOUY\"",
+      "token": "k\u2229"
+    },
+    {
+      "name": "Multiset Intersection",
+      "description": "Similar to set intersection, but with duplicates allowed.",
+      "overloads": {
+        "lst-lst": "multiset intersection of a and b"
+      },
+      "token": "\u00de\u2229"
+    }
+  ],
+  "232": [
+    {
+      "name": "Symmetric Set difference",
+      "description": "Uncommon elements of two arrays",
+      "overloads": {
+        "any-any": "list(set(a) ^ set(b))"
+      },
+      "token": "\u228d"
+    },
+    {
+      "name": "Uppercase Vowels With Y",
+      "description": "Uppercase vowels with y, \"AEIOUY\"",
+      "token": "k\u228d"
+    },
+    {
+      "name": "Multiset Symmetric Difference",
+      "description": "Similar to set symmetric difference, but with duplicates allowed.",
+      "overloads": {
+        "lst-lst": "multiset symmetric difference of a and b"
+      },
+      "token": "\u00de\u228d"
+    }
+  ],
+  "233": [
+    {
+      "name": "Set Register",
+      "description": "Set the register to argument value",
+      "overloads": {
+        "any": "set_register(a)"
+      },
+      "token": "\u00a3"
+    },
+    {
+      "name": "Star Map",
+      "description": "Reduce each pair of two lists zipped together by a function. Equivalent to Zv\u0192",
+      "usage": "\u00a8\u00a3<element>",
+      "token": "\u00a8\u00a3"
+    }
+  ],
+  "234": [
+    {
+      "name": "Push Register",
+      "description": "Push the current register value",
+      "token": "\u00a5"
+    }
+  ],
+  "235": [
+    {
+      "name": "Grade Up",
+      "description": "Indices of elements to sort in ascending order / uppercase / increment number twice",
+      "overloads": {
+        "lst": "graded_up(a)",
+        "str": "a.upper()",
+        "num": "a + 2"
+      },
+      "token": "\u21e7"
+    },
+    {
+      "name": "Is Strictly Ascending?",
+      "description": "Returns true if the list is in strictly ascending order.",
+      "overloads": {
+        "lst": "is a in strictly ascending order?"
+      },
+      "token": "\u00de\u21e7"
+    }
+  ],
+  "236": [
+    {
+      "name": "Grade Down",
+      "description": "Indices of elements to sort in descending order / lowercase / decrement number twice",
+      "overloads": {
+        "lst": "graded_down(a)",
+        "str": "a.lower()",
+        "num": "a - 2"
+      },
+      "token": "\u21e9"
+    },
+    {
+      "name": "Is Strictly Descending?",
+      "description": "Returns true if the list is in strictly descending order.",
+      "overloads": {
+        "lst": "is a in strictly descending order?"
+      },
+      "token": "\u00de\u21e9"
+    }
+  ],
+  "237": [
+    {
+      "name": "Remove non-alphabets",
+      "description": "Remove non-alphabetical characters / power with base 2",
+      "overloads": {
+        "str": "filter(isalpha, a)",
+        "num": "2 ** a"
+      },
+      "token": "\u01cd"
+    }
+  ],
+  "238": [
+    {
+      "name": "Nth prime",
+      "description": "nth prime / all substrings",
+      "overloads": {
+        "str": "substrings(a)",
+        "num": "nth_prime(a)"
+      },
+      "token": "\u01ce"
+    }
+  ],
+  "239": [
+    {
+      "name": "Prime factorization",
+      "description": "prime factorization / append first element",
+      "overloads": {
+        "num": "prime_factorization(a) (distinct prime factors)",
+        "str": "a + a[0]",
+        "lst": "a + [a[0]]"
+      },
+      "token": "\u01cf"
+    }
+  ],
+  "240": [
+    {
+      "name": "Prime factors",
+      "description": "all prime factors / Title Case string",
+      "overloads": {
+        "num": "prime_factors(a) (prime factors possibly with repetition)",
+        "str": "title_case(a)"
+      },
+      "token": "\u01d0"
+    },
+    {
+      "name": "Prime Exponents",
+      "description": "Get the exponents of prime factors of a number",
+      "overloads": {
+        "num": "prime_exponents(a) (in the order of prime_factors(a))"
+      },
+      "token": "\u2206\u01d0"
+    }
+  ],
+  "241": [
+    {
+      "name": "Multiplicity / Remove Fixpoint / First Truthy Index Under Function",
+      "description": "Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application",
+      "overloads": {
+        "num-num": "multiplicity(a,b)",
+        "str-str": "remove_till_fixpoint(a,b)",
+        "fun-any": "first index in a where b(x) is truthy (shortcut for \u1e1fh)"
+      },
+      "token": "\u01d1"
+    }
+  ],
+  "242": [
+    {
+      "name": "Modulo 3",
+      "description": "Modulo 3 / Split into Length 2",
+      "overloads": {
+        "num": "a % 3",
+        "str": "a split into chunks of length 2"
+      },
+      "token": "\u01d2"
+    }
+  ],
+  "243": [
+    {
+      "name": "Rotate Left",
+      "description": "Rotate Left / Rotate Left Once",
+      "overloads": {
+        "any-num": "rotate_left(a,b)",
+        "any-any": "a,(b[1:]+b[:1])"
+      },
+      "token": "\u01d3"
+    },
+    {
+      "name": "Connected Uniquify",
+      "description": "Remove occurences of adjacent duplicates in a list",
+      "overloads": {
+        "any": "connected uniquify a (`\u0120vh`)"
+      },
+      "token": "\u00de\u01d3"
+    }
+  ],
+  "244": [
+    {
+      "name": "Rotate Right",
+      "description": "Rotate Right / Rotate Right Once",
+      "overloads": {
+        "any-num": "rotate_right(a,b)",
+        "any-any": "a,(b[-1:]+b[:-1])"
+      },
+      "token": "\u01d4"
+    },
+    {
+      "name": "Untruth",
+      "description": "Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere",
+      "overloads": {
+        "any": "[int(x in a) for x in range(max(a))]"
+      },
+      "token": "\u00de\u01d4"
+    }
+  ],
+  "245": [
+    {
+      "name": "One Element Lambda",
+      "description": "One Element lambda function (prefix)",
+      "token": "\u207d"
+    }
+  ],
+  "246": [
+    {
+      "name": "Two Element Lambda",
+      "description": "Two Element lambda function (prefix)",
+      "token": "\u2021"
+    }
+  ],
+  "247": [
+    {
+      "name": "Three Element Lambda",
+      "description": "Three Element lambda function (prefix)",
+      "token": "\u226c"
+    }
+  ],
+  "248": [
+    {
+      "name": "Index of next character in codepage",
+      "description": "Compressed number in 1-128 (prefix)",
+      "token": "\u207a"
+    }
+  ],
+  "249": [
+    {
+      "name": "Split On newlines",
+      "description": "Split on newlines / Power with base 10",
+      "overloads": {
+        "str": "a.split(\"\\n\")",
+        "num": "10 ** a"
+      },
+      "token": "\u21b5"
+    }
+  ],
+  "250": [
+    {
+      "name": "Push To Global Array",
+      "description": "Push to global array (no popping)",
+      "token": "\u215b"
+    }
+  ],
+  "251": [
+    {
+      "name": "Pop From Global Array",
+      "description": "Pop from global array, push to stack",
+      "token": "\u00bc"
+    }
+  ],
+  "252": [
+    {
+      "name": "Push Global Array",
+      "description": "Push global array, no modification of global array",
+      "token": "\u00be"
+    },
+    {
+      "name": "Empty the Global Array",
+      "description": "Empty the global array.",
+      "token": "\u00de\u00be"
+    }
+  ],
+  "253": [
+    {
+      "name": "Product of Array / Cartesian product over list",
+      "description": "Product of Array / Cartesian product over a list of lists",
+      "overloads": {
+        "lst[num]": "reduce list by multiplication",
+        "lst[str|lst]": "reduce list by Cartesian product"
+      },
+      "token": "\u03a0"
+    },
+    {
+      "name": "Closing brackets (with >)",
+      "description": "\")]}>\" (Closing brackets)",
+      "token": "k\u03a0"
+    }
+  ],
+  "254": [
+    {
+      "name": "Rotate Stack Left",
+      "description": "Rotate Stack Left",
+      "token": "\u201e"
+    }
+  ],
+  "255": [
+    {
+      "name": "Rotate Stack Right",
+      "description": "Rotate Stack Right",
+      "token": "\u201f"
+    }
+  ]
+}

@@ -30,7 +30,7 @@ const typeKey = (chr) => {
 };
 
 /** Component for rendering the key proper. */
-function Key({ chr, desc, isFocused, addRef }) {
+function Key({ chr, isFocused, addRef }) {
   const key = useRef(null);
 
   useEffect(() => {
@@ -45,15 +45,25 @@ function Key({ chr, desc, isFocused, addRef }) {
   return html`<span
     ref=${key}
     class=${isFocused ? "key touched" : "key"}
-    data-title=${desc}
     onPointerUp=${pointerUp}
   >
     ${chr}
   </span>`;
 }
 
+/** Component for rendering a single token of a tooltip */
+function Description({ token, name, description, overloads }) {
+  const renderOverloads = () =>
+    Object.entries(overloads ?? {})
+      .map(([types, desc]) => {
+        return `${types.replace("-", ", ")} -> ${desc}`;
+      })
+      .join("\n");
+  return `${token} (${name})\n${description}\n${renderOverloads()}\n\n`;
+}
+
 /** Component for rendering the key and its tooltip. */
-function Tooltip({ chr, desc, setLastTouchedKey, showTooltip, addRef }) {
+function Tooltip({ chr, descs, setLastTouchedKey, showTooltip, addRef }) {
   const parent = useRef(null);
   const tooltip = useRef(null);
   const popper = useRef(null);
@@ -81,6 +91,10 @@ function Tooltip({ chr, desc, setLastTouchedKey, showTooltip, addRef }) {
     popper.current.update();
   }, [showTooltip]);
 
+  const descriptions = descs?.map(
+    (desc, i) => html`<${Description} key=${i} ...${desc} />`
+  );
+
   // the "onMouseEnter" and "onMouseLeave" events really mean mouse; they are
   // not triggered by touch screens
 
@@ -90,15 +104,10 @@ function Tooltip({ chr, desc, setLastTouchedKey, showTooltip, addRef }) {
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
-        <${Key}
-          chr=${chr}
-          desc=${desc}
-          isFocused=${showTooltip}
-          addRef=${addRef}
-        />
+        <${Key} chr=${chr} isFocused=${showTooltip} addRef=${addRef} />
       </span>
       <div class="tooltip" ref=${tooltip} data-show=${showTooltip}>
-        ${desc}
+        ${descriptions}
         <div class="arrow" data-popper-arrow />
       </div>
     </span>
@@ -189,7 +198,7 @@ function Keyboard() {
         html`<${Tooltip}
           key=${i}
           chr=${chr}
-          desc=${codepage_descriptions[i]}
+          descs=${codepage_descriptions[i]}
           setLastTouchedKey=${setLastTouchedKey}
           showTooltip=${showTooltips && chr === lastTouchedKey}
           addRef=${(elt) => keyElts.current.push({ chr, elt })}
