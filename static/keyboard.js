@@ -208,41 +208,52 @@ function Keyboard() {
   const [shownIndexes, setShownIndexes] = useState([]);
   const [query, setQuery] = useState("");
   const targets = useRef(null);
-  const keys = ["name", "description", "overloads"];
+  const allIndexes = useRef([]);
+    const keys = ["name", "description", "overloads"];
 
   useEffect(() => {
     targets.current = Object.entries(codepage_descriptions).flatMap(
-      ([index, elts]) =>
-        elts.map((elt) => {
+      ([index, elts]) => {
+        allIndexes.current.push(index.toString());
+        return elts.map((elt) => {
           const result = { index };
           keys.forEach((key) => (result[key] = fuzzysort.prepare(elt[key])));
           return result;
         })
+      }
     );
   }, []);
 
   useEffect(() => {
-    const results = fuzzysort.go(query, targets.current, {
-      all: true,
-      keys: ["name", "description", "overloads"],
-    });
-    setShownIndexes([...new Set(results.map((result) => result.obj.index))]);
+    if (query) {
+      const results = fuzzysort.go(query, targets.current, {
+        keys: ["name", "description", "overloads"],
+      });
+      setShownIndexes([...new Set(results.map((result) => result.obj.index))]);
+    } else {
+      setShownIndexes(allIndexes.current);
+    }
   }, [query]);
 
-  const children = codepage
-    .split("")
-    .map(
-      (chr, i) =>
-        html`<${Tooltip}
-          key=${i}
-          shown=${shownIndexes.includes(i.toString())}
-          chr=${chr}
-          descs=${codepage_descriptions[i]}
-          setLastTouchedKey=${setLastTouchedKey}
-          showTooltip=${showTooltips && chr === lastTouchedKey}
-          addRef=${(elt) => keyElts.current.push({ chr, elt })}
-        />`
-    );
+  const renderChildren = () => {
+    const chars = codepage.split("");
+    const hiddenIndexes = chars
+      .map((i) => i.toString())
+      .filter((i) => shownIndexes.includes(i.toString()));
+
+    return [...shownIndexes, ...hiddenIndexes].map((i) => {
+      const chr = chars[i];
+      return html`<${Tooltip}
+        key=${i}
+        shown=${shownIndexes.includes(i)}
+        chr=${chr}
+        descs=${codepage_descriptions[i]}
+        setLastTouchedKey=${setLastTouchedKey}
+        showTooltip=${showTooltips && chr === lastTouchedKey}
+        addRef=${(elt) => keyElts.current.push({ chr, elt })}
+      />`;
+    });
+  };
 
   const ELEMENTS_LINK =
     "https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md";
@@ -270,7 +281,7 @@ function Keyboard() {
           onTouchEnd=${touchEnd}
           onTouchCancel=${touchEnd}
         >
-          ${children}
+          ${renderChildren()}
         </div>
       </div>
     </div>
