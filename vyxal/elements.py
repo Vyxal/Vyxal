@@ -3076,8 +3076,12 @@ def multiplicity(lhs, rhs, ctx):
     (any, fun) -> Index of the first truthy item in a under b(x)
     """
 
-    ts = vy_type(lhs, rhs, simple=True)
+    ts = vy_type(lhs, rhs)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
+        if lhs == 0 or rhs == 0:
+            return 0
+        if abs(rhs) == 1:
+            return abs(lhs)
         times = 0
         while lhs % rhs == 0:
             lhs /= rhs
@@ -5658,6 +5662,7 @@ def vy_floor(lhs, ctx):
     (num) -> floor(a)
     (str) -> integer part of a
     """
+
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: lhs.real
@@ -5667,9 +5672,7 @@ def vy_floor(lhs, ctx):
             if is_sympy(lhs) and not lhs.is_real
             else math.floor(lhs)
         ),
-        (str): lambda: int(
-            "".join([char for char in lhs if char in "0123456789"] or "0")
-        ),
+        (str): lambda: vy_floor_str_helper(lhs),
     }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
 
 

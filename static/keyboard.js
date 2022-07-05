@@ -1,9 +1,7 @@
-import { html, render } from "https://unpkg.com/htm/preact/index.mjs?module";
-import {
-  useState,
-  useEffect,
-  useRef,
-} from "https://unpkg.com/preact/hooks/dist/hooks.mjs?module";
+const html = htm.bind(React.createElement);
+const { createRoot } = ReactDOM;
+const { useState, useEffect, useRef } = React;
+const { usePopper } = ReactPopper;
 
 function throttle(func, timeFrame) {
   let lastTime = 0;
@@ -30,7 +28,7 @@ const typeKey = (chr) => {
 };
 
 /** Component for rendering the key proper. */
-function Key({ chr, desc, isFocused, addRef }) {
+function Key({ chr, isFocused, addRef }) {
   const key = useRef(null);
 
   useEffect(() => {
@@ -44,68 +42,95 @@ function Key({ chr, desc, isFocused, addRef }) {
 
   return html`<span
     ref=${key}
-    class=${isFocused ? "key touched" : "key"}
-    data-title=${desc}
+    className=${isFocused ? "key touched" : "key"}
     onPointerUp=${pointerUp}
   >
     ${chr}
   </span>`;
 }
 
+/** Component for rendering a single token of a tooltip */
+function Description({ token, name, description, overloads }) {
+  return html`<div className="description">
+    ${token} (${name})${"\n"}${description}${"\n"}${overloads}
+  </div>`;
+}
+
 /** Component for rendering the key and its tooltip. */
-function Tooltip({ chr, desc, setLastTouchedKey, showTooltip, addRef }) {
-  const parent = useRef(null);
-  const tooltip = useRef(null);
-  const popper = useRef(null);
+function Tooltip({
+  shown,
+  chr,
+  descs,
+  setLastTouchedKey,
+  showTooltip,
+  addRef,
+}) {
+  const [parent, setParent] = useState(null);
+  const [popper, setPopper] = useState(null);
+  const [arrow, setArrow] = useState(null);
 
-  useEffect(() => {
-    popper.current = Popper.createPopper(parent.current, tooltip.current, {
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [0, 8],
-          },
+  const { styles, attributes } = usePopper(parent, popper, {
+    modifiers: [
+      {
+        name: "arrow",
+        options: { element: arrow },
+      },
+      {
+        name: "offset",
+        options: {
+          offset: [0, 8],
         },
-        {
-          name: "preventOverflow",
-          options: {
-            padding: 10,
-          },
+      },
+      {
+        name: "preventOverflow",
+        options: {
+          padding: 10,
         },
-      ],
-    });
-  }, []);
+      },
+    ],
+  });
 
-  useEffect(() => {
-    popper.current.update();
-  }, [showTooltip]);
+  const descriptions = descs?.map(
+    (desc, i) => html`<${Description} key=${i} ...${desc} />`
+  );
+
+  const renderTooltip = () => html`
+    <div
+      className="tooltip"
+      ref=${setPopper}
+      data-show=${showTooltip}
+      style=${styles.popper}
+      ...${attributes.popper}
+    >
+      ${descriptions}
+      <div className="arrow" ref=${setArrow} style=${styles.arrow} />
+    </div>
+  `;
+
+  // render the element no matter what, just change its display, as rerendering
+  // is expensive / leads to weird repainting for tooltips.
 
   // the "onMouseEnter" and "onMouseLeave" events really mean mouse; they are
-  // not triggered by touch screens
+  // not triggered by touch screens.
 
   return html`
-    <span ref=${parent}>
+    <span ref=${setParent} style=${{ display: shown ? "inline" : "none" }}>
       <span
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
-        <${Key}
-          chr=${chr}
-          desc=${desc}
-          isFocused=${showTooltip}
-          addRef=${addRef}
-        />
+        <${Key} chr=${chr} isFocused=${showTooltip} addRef=${addRef} />
       </span>
-      <div class="tooltip" ref=${tooltip} data-show=${showTooltip}>
-        ${desc}
-        <div class="arrow" data-popper-arrow />
-      </div>
+      ${showTooltip && renderTooltip()}
     </span>
   `;
 }
 
 function Keyboard() {
+  //////////////
+  // tooltips //
+  //////////////
+
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [showTooltips, setShowTooltips] = useState(!onMobile);
   const [lastTouchedKey, setLastTouchedKey] = useState(null);
@@ -182,37 +207,92 @@ function Keyboard() {
     setLastTouchedKey(null);
   };
 
-  const children = codepage
-    .split("")
-    .map(
-      (chr, i) =>
-        html`<${Tooltip}
-          key=${i}
-          chr=${chr}
-          desc=${codepage_descriptions[i]}
-          setLastTouchedKey=${setLastTouchedKey}
-          showTooltip=${showTooltips && chr === lastTouchedKey}
-          addRef=${(elt) => keyElts.current.push({ chr, elt })}
-        />`
-    );
+  ////////////
+  // search //
+  ////////////
 
-  return html`<div
-    style=${{
-      touchAction: showTooltips ? "pinch-zoom" : "auto",
-      userSelect: isPointerDown ? "none" : "auto",
-    }}
-    onPointerDown=${pointerDown}
-    onPointerUp=${pointerUp}
-    onTouchStart=${touchStart}
-    onTouchMove=${touchMove}
-    onTouchEnd=${touchEnd}
-    onTouchCancel=${touchEnd}
-  >
-    ${children}
-  </div>`;
+  const [shownIndexes, setShownIndexes] = useState([]);
+  const [query, setQuery] = useState("");
+  const targets = useRef(null);
+  const allIndexes = useRef([]);
+  const keys = ["name", "description", "overloads"];
+
+  useEffect(() => {
+    const indexes = [];
+    targets.current = Object.entries(codepage_descriptions).flatMap(
+      ([index, elts]) => {
+        indexes.push(index.toString());
+        return elts.map((elt) => {
+          const result = { index };
+          keys.forEach((key) => (result[key] = fuzzysort.prepare(elt[key])));
+          return result;
+        });
+      }
+    );
+    allIndexes.current = [...new Set(indexes)];
+  }, []);
+
+  useEffect(() => {
+    if (query) {
+      const results = fuzzysort.go(query, targets.current, {
+        keys: ["name", "description", "overloads"],
+      });
+      setShownIndexes([...new Set(results.map((result) => result.obj.index))]);
+    } else {
+      setShownIndexes(allIndexes.current);
+    }
+  }, [query]);
+
+  const renderChildren = () => {
+    return [...shownIndexes].map((i) => {
+      const chr = codepage[i];
+      return html`<${Tooltip}
+        key=${i}
+        shown=${shownIndexes.includes(i)}
+        chr=${chr}
+        descs=${codepage_descriptions[i]}
+        setLastTouchedKey=${setLastTouchedKey}
+        showTooltip=${showTooltips && chr === lastTouchedKey}
+        addRef=${(elt) => keyElts.current.push({ chr, elt })}
+      />`;
+    });
+  };
+
+  const ELEMENTS_LINK =
+    "https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md";
+
+  return html`
+    <div className="row">
+      <label htmlFor="filterBox"
+        >Search <a href=${ELEMENTS_LINK}>elements</a>:
+      </label>
+      <input
+        label="Search elements:"
+        onInput=${(e) => setQuery(e.target.value)}
+      />
+      <div className="twelve columns">
+        <div
+          id="keyboard"
+          style=${{
+            touchAction: showTooltips ? "pinch-zoom" : "auto",
+            userSelect: isPointerDown ? "none" : "auto",
+          }}
+          onPointerDown=${pointerDown}
+          onPointerUp=${pointerUp}
+          onTouchStart=${touchStart}
+          onTouchMove=${touchMove}
+          onTouchEnd=${touchEnd}
+          onTouchCancel=${touchEnd}
+        >
+          ${renderChildren()}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const kb = document.getElementById("keyboard");
-  render(html`<${Keyboard} />`, kb);
+  const kb = document.getElementById("keyboard-root");
+  const root = createRoot(kb);
+  root.render(html`<${Keyboard} />`);
 });
