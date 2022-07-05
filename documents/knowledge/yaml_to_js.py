@@ -43,9 +43,8 @@ for element in data:
         continue
 
     # make the dictionary to add
-    data_to_add = element | {
-        "token": token if token != " " else codepage[index]
-    }
+    data_to_add = element.copy()
+    data_to_add["token"] = token if token != " " else codepage[index]
     for key in keys_to_remove:
         data_to_add.pop(key, None)
     if "overloads" in data_to_add:
