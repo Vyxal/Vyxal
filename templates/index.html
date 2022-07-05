@@ -21,13 +21,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.min.css">
 
     <script defer src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
+
+    <script defer src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script defer src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script defer src="https://unpkg.com/htm@3.1.1/dist/htm.umd.js"></script>
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer src="https://unpkg.com/react-popper/dist/index.umd.js"></script>
     <script defer src="https://unpkg.com/fuzzysort@2.0.1"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
     <script defer src="{{url_for('static', filename='main.js')}}"></script>
     <script defer src="{{url_for('static', filename='parsed_yaml.js')}}"></script>
-    <script defer src="{{url_for('static', filename='search.js')}}"></script>
     <script type="module" src="{{url_for('static', filename='keyboard.js')}}"></script>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">

@@ -178,8 +178,7 @@ i {
   -ms-user-select: none;
 }
 
-.tooltip[data-show] {
-  display: block;
+.tooltip[data-show="true"] {
   pointer-events: all;
   opacity: 1;
 }

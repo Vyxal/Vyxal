@@ -1,9 +1,7 @@
-import { html, render } from "https://unpkg.com/htm/preact/index.mjs?module";
-import {
-  useState,
-  useEffect,
-  useRef,
-} from "https://unpkg.com/preact/hooks/dist/hooks.mjs?module";
+const html = htm.bind(React.createElement);
+const { createRoot } = ReactDOM;
+const { useState, useEffect, useRef } = React;
+const { usePopper } = ReactPopper;
 
 function throttle(func, timeFrame) {
   let lastTime = 0;
@@ -44,7 +42,7 @@ function Key({ chr, isFocused, addRef }) {
 
   return html`<span
     ref=${key}
-    class=${isFocused ? "key touched" : "key"}
+    className=${isFocused ? "key touched" : "key"}
     onPointerUp=${pointerUp}
   >
     ${chr}
@@ -67,36 +65,47 @@ function Tooltip({
   showTooltip,
   addRef,
 }) {
-  const parent = useRef(null);
-  const tooltip = useRef(null);
-  const popper = useRef(null);
+  const [parent, setParent] = useState(null);
+  const [popper, setPopper] = useState(null);
+  const [arrow, setArrow] = useState(null);
 
-  useEffect(() => {
-    popper.current = Popper.createPopper(parent.current, tooltip.current, {
-      modifiers: [
-        {
-          name: "offset",
-          options: {
-            offset: [0, 8],
-          },
+  const { styles, attributes } = usePopper(parent, popper, {
+    modifiers: [
+      {
+        name: "arrow",
+        options: { element: arrow },
+      },
+      {
+        name: "offset",
+        options: {
+          offset: [0, 8],
         },
-        {
-          name: "preventOverflow",
-          options: {
-            padding: 10,
-          },
+      },
+      {
+        name: "preventOverflow",
+        options: {
+          padding: 10,
         },
-      ],
-    });
-  }, []);
-
-  useEffect(() => {
-    popper.current.update();
-  }, [showTooltip]);
+      },
+    ],
+  });
 
   const descriptions = descs?.map(
     (desc, i) => html`<${Description} key=${i} ...${desc} />`
   );
+
+  const renderTooltip = () => html`
+    <div
+      className="tooltip"
+      ref=${setPopper}
+      data-show=${showTooltip}
+      style=${styles.popper}
+      ...${attributes.popper}
+    >
+      ${descriptions}
+      <div className="arrow" ref=${setArrow} style=${styles.arrow} />
+    </div>
+  `;
 
   // render the element no matter what, just change its display, as rerendering
   // is expensive / leads to weird repainting for tooltips.
@@ -105,17 +114,14 @@ function Tooltip({
   // not triggered by touch screens.
 
   return html`
-    <span ref=${parent} style=${{ display: shown ? "inline" : "none" }}>
+    <span ref=${setParent} style=${{ display: shown ? "inline" : "none" }}>
       <span
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
         <${Key} chr=${chr} isFocused=${showTooltip} addRef=${addRef} />
       </span>
-      <div class="tooltip" ref=${tooltip} data-show=${showTooltip}>
-        ${descriptions}
-        <div class="arrow" data-popper-arrow />
-      </div>
+      ${showTooltip && renderTooltip()}
     </span>
   `;
 }
@@ -209,19 +215,21 @@ function Keyboard() {
   const [query, setQuery] = useState("");
   const targets = useRef(null);
   const allIndexes = useRef([]);
-    const keys = ["name", "description", "overloads"];
+  const keys = ["name", "description", "overloads"];
 
   useEffect(() => {
+    const indexes = [];
     targets.current = Object.entries(codepage_descriptions).flatMap(
       ([index, elts]) => {
-        allIndexes.current.push(index.toString());
+        indexes.push(index.toString());
         return elts.map((elt) => {
           const result = { index };
           keys.forEach((key) => (result[key] = fuzzysort.prepare(elt[key])));
           return result;
-        })
+        });
       }
     );
+    allIndexes.current = [...new Set(indexes)];
   }, []);
 
   useEffect(() => {
@@ -236,13 +244,8 @@ function Keyboard() {
   }, [query]);
 
   const renderChildren = () => {
-    const chars = codepage.split("");
-    const hiddenIndexes = chars
-      .map((i) => i.toString())
-      .filter((i) => shownIndexes.includes(i.toString()));
-
-    return [...shownIndexes, ...hiddenIndexes].map((i) => {
-      const chr = chars[i];
+    return [...shownIndexes].map((i) => {
+      const chr = codepage[i];
       return html`<${Tooltip}
         key=${i}
         shown=${shownIndexes.includes(i)}
@@ -259,15 +262,15 @@ function Keyboard() {
     "https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md";
 
   return html`
-    <div class="row" style="width:100%; padding-bottom: 1em;">
-      <label for="filterBox"
+    <div className="row">
+      <label htmlFor="filterBox"
         >Search <a href=${ELEMENTS_LINK}>elements</a>:
       </label>
       <input
         label="Search elements:"
-        oninput=${(e) => setQuery(e.target.value)}
+        onInput=${(e) => setQuery(e.target.value)}
       />
-      <div class="twelve columns">
+      <div className="twelve columns">
         <div
           id="keyboard"
           style=${{
@@ -290,5 +293,6 @@ function Keyboard() {
 
 window.addEventListener("DOMContentLoaded", () => {
   const kb = document.getElementById("keyboard-root");
-  render(html`<${Keyboard} />`, kb);
+  const root = createRoot(kb);
+  root.render(html`<${Keyboard} />`);
 });
