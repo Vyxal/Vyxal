@@ -124,19 +124,37 @@ i {
 }
 
 #html-rendered-output {
-    resize: both;
-    overflow: hidden;
-    background: white;
-    margin-bottom: .5em;
-    width: fit-content;  /* initial width before being resized */
-    max-width: 100%;
+  resize: both;
+  overflow: hidden;
+  background: white;
+  margin-bottom: 0.5em;
+  width: fit-content; /* initial width before being resized */
+  max-width: 100%;
 }
 
 #html-rendered-output > iframe {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    border: none;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: none;
+}
+
+/* keyboard styles */
+
+#keyboard-root .row {
+  padding-bottom: 1em;
+  width: 100%;
+}
+
+#keyboard-root label {
+  display: inline-block;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  padding-right: 1%;
+}
+
+#keyboard-root input {
+  display: inline-block;
 }
 
 .tooltip {
@@ -149,7 +167,7 @@ i {
   white-space: pre-wrap;
   z-index: 100;
   border-radius: 5px;
-  transition: opacity .15s;
+  transition: opacity 0.15s;
   word-wrap: break-word;
   font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
@@ -180,22 +198,22 @@ i {
 
 .arrow::before {
   visibility: visible;
-  content: '';
+  content: "";
   transform: rotate(45deg);
 }
 
-.tooltip[data-popper-placement^='top'] > .arrow {
+.tooltip[data-popper-placement^="top"] > .arrow {
   bottom: -4px;
 }
 
-.tooltip[data-popper-placement^='bottom'] > .arrow {
+.tooltip[data-popper-placement^="bottom"] > .arrow {
   top: -4px;
 }
 
-.tooltip[data-popper-placement^='left'] > .arrow {
+.tooltip[data-popper-placement^="left"] > .arrow {
   right: -4px;
 }
 
-.tooltip[data-popper-placement^='right'] > .arrow {
+.tooltip[data-popper-placement^="right"] > .arrow {
   left: -4px;
 }

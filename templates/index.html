@@ -22,6 +22,7 @@
 
     <script defer src="https://vyxal.github.io/Vylight/mode-vyxal.js"></script>
     <script defer src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer src="https://unpkg.com/fuzzysort@2.0.1"></script>
     <link rel="stylesheet" href="https://vyxal.github.io/Vylight/mode-vyxal.css">
 
     <script defer src="{{url_for('static', filename='main.js')}}"></script>
@@ -61,17 +62,7 @@
 
     <details>
         <summary>Keyboard</summary>
-        <div class="row" style="width:100%; padding-bottom: 1em;">
-            <label for="filterBox"
-                style="display:inline-block; color: white; font-family: 'Montserrat', sans-serif; padding-right: 1%;">Search
-                <a
-                    href="https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md">elements</a>:&nbsp;</label><input
-                style="display:inline-block" id="filterBox" oninput="glyphSearch()" label="Search for command:"></input>
-            <div class="twelve columns">
-                <div id="keyboard">
-                </div>
-            </div>
-        </div>
+        <div id="keyboard-root"></div>
     </details>
 
     <details id="flag-detail">

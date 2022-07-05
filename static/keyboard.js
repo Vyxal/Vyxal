@@ -53,17 +53,20 @@ function Key({ chr, isFocused, addRef }) {
 
 /** Component for rendering a single token of a tooltip */
 function Description({ token, name, description, overloads }) {
-  const renderOverloads = () =>
-    Object.entries(overloads ?? {})
-      .map(([types, desc]) => {
-        return `${types.replace("-", ", ")} -> ${desc}`;
-      })
-      .join("\n");
-  return `${token} (${name})\n${description}\n${renderOverloads()}\n\n`;
+  return html`<div>
+    ${token} (${name})${"\n"}${description}${"\n"}${overloads}
+  </div>`;
 }
 
 /** Component for rendering the key and its tooltip. */
-function Tooltip({ chr, descs, setLastTouchedKey, showTooltip, addRef }) {
+function Tooltip({
+  shown,
+  chr,
+  descs,
+  setLastTouchedKey,
+  showTooltip,
+  addRef,
+}) {
   const parent = useRef(null);
   const tooltip = useRef(null);
   const popper = useRef(null);
@@ -95,11 +98,14 @@ function Tooltip({ chr, descs, setLastTouchedKey, showTooltip, addRef }) {
     (desc, i) => html`<${Description} key=${i} ...${desc} />`
   );
 
+  // render the element no matter what, just change its display, as rerendering
+  // is expensive / leads to weird repainting for tooltips.
+
   // the "onMouseEnter" and "onMouseLeave" events really mean mouse; they are
-  // not triggered by touch screens
+  // not triggered by touch screens.
 
   return html`
-    <span ref=${parent}>
+    <span ref=${parent} style=${{ display: shown ? "inline" : "none" }}>
       <span
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
@@ -115,6 +121,10 @@ function Tooltip({ chr, descs, setLastTouchedKey, showTooltip, addRef }) {
 }
 
 function Keyboard() {
+  //////////////
+  // tooltips //
+  //////////////
+
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [showTooltips, setShowTooltips] = useState(!onMobile);
   const [lastTouchedKey, setLastTouchedKey] = useState(null);
@@ -191,12 +201,41 @@ function Keyboard() {
     setLastTouchedKey(null);
   };
 
+  ////////////
+  // search //
+  ////////////
+
+  const [shownIndexes, setShownIndexes] = useState([]);
+  const [query, setQuery] = useState("");
+  const targets = useRef(null);
+  const keys = ["name", "description", "overloads"];
+
+  useEffect(() => {
+    targets.current = Object.entries(codepage_descriptions).flatMap(
+      ([index, elts]) =>
+        elts.map((elt) => {
+          const result = { index };
+          keys.forEach((key) => (result[key] = fuzzysort.prepare(elt[key])));
+          return result;
+        })
+    );
+  }, []);
+
+  useEffect(() => {
+    const results = fuzzysort.go(query, targets.current, {
+      all: true,
+      keys: ["name", "description", "overloads"],
+    });
+    setShownIndexes([...new Set(results.map((result) => result.obj.index))]);
+  }, [query]);
+
   const children = codepage
     .split("")
     .map(
       (chr, i) =>
         html`<${Tooltip}
           key=${i}
+          shown=${shownIndexes.includes(i.toString())}
           chr=${chr}
           descs=${codepage_descriptions[i]}
           setLastTouchedKey=${setLastTouchedKey}
@@ -205,23 +244,40 @@ function Keyboard() {
         />`
     );
 
-  return html`<div
-    style=${{
-      touchAction: showTooltips ? "pinch-zoom" : "auto",
-      userSelect: isPointerDown ? "none" : "auto",
-    }}
-    onPointerDown=${pointerDown}
-    onPointerUp=${pointerUp}
-    onTouchStart=${touchStart}
-    onTouchMove=${touchMove}
-    onTouchEnd=${touchEnd}
-    onTouchCancel=${touchEnd}
-  >
-    ${children}
-  </div>`;
+  const ELEMENTS_LINK =
+    "https://github.com/Vyxal/Vyxal/blob/main/documents/knowledge/elements.md";
+
+  return html`
+    <div class="row" style="width:100%; padding-bottom: 1em;">
+      <label for="filterBox"
+        >Search <a href=${ELEMENTS_LINK}>elements</a>:
+      </label>
+      <input
+        label="Search elements:"
+        oninput=${(e) => setQuery(e.target.value)}
+      />
+      <div class="twelve columns">
+        <div
+          id="keyboard"
+          style=${{
+            touchAction: showTooltips ? "pinch-zoom" : "auto",
+            userSelect: isPointerDown ? "none" : "auto",
+          }}
+          onPointerDown=${pointerDown}
+          onPointerUp=${pointerUp}
+          onTouchStart=${touchStart}
+          onTouchMove=${touchMove}
+          onTouchEnd=${touchEnd}
+          onTouchCancel=${touchEnd}
+        >
+          ${children}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  const kb = document.getElementById("keyboard");
+  const kb = document.getElementById("keyboard-root");
   render(html`<${Keyboard} />`, kb);
 });

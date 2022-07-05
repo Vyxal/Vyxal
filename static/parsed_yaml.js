@@ -23,11 +23,7 @@ var codepage_descriptions =
     {
       "name": "Logical Not",
       "description": "Return the inverse (negation) of the truthiness of an item.",
-      "overloads": {
-        "num": "not a",
-        "str": "a != \"\" | len(a) > 0",
-        "lst": "a != [] | len(a) > 0"
-      },
+      "overloads": "num -> not a\nstr -> a != \"\" | len(a) > 0\nlst -> a != [] | len(a) > 0",
       "token": "\u00ac"
     }
   ],
@@ -35,23 +31,13 @@ var codepage_descriptions =
     {
       "name": "Logical And",
       "description": "Returns the first truthy argument if both are truthy, otherwise returns the first falsy argument.",
-      "overloads": {
-        "any-any": "a and b"
-      },
+      "overloads": "any, any -> a and b",
       "token": "\u2227"
     },
     {
       "name": "Global Canvas Draw",
       "description": "Draw on the global canvas (see knowledge/spec/canvas.md for more details), which is implicitly printed.",
-      "overloads": {
-        "num-lst-str": "draw with a = length, b = dirs, c = text",
-        "num-str-str": "draw with a = length, b/c dependent on dir validity",
-        "any-num-any": "draw with b = length ^",
-        "any-any-num": "draw with c = length ^",
-        "str-any-any": "draw with a = text, b/c dependent on dir validity",
-        "lst-str-any": "draw with b = text, ^",
-        "lst-lst-str": "draw with c = text, ^"
-      },
+      "overloads": "num, lst, str -> draw with a = length, b = dirs, c = text\nnum, str, str -> draw with a = length, b/c dependent on dir validity\nany, num, any -> draw with b = length ^\nany, any, num -> draw with c = length ^\nstr, any, any -> draw with a = text, b/c dependent on dir validity\nlst, str, any -> draw with b = text, ^\nlst, lst, str -> draw with c = text, ^",
       "token": "\u00f8\u2227"
     }
   ],
@@ -66,9 +52,7 @@ var codepage_descriptions =
     {
       "name": "Logical Or",
       "description": "Returns the first truthy argument, otherwise the first falsy argument.",
-      "overloads": {
-        "any-any": "a or b"
-      },
+      "overloads": "any, any -> a or b",
       "token": "\u2228"
     },
     {
@@ -79,9 +63,7 @@ var codepage_descriptions =
     {
       "name": "Multiset Difference",
       "description": "Similar to set difference, but with duplicates allowed.",
-      "overloads": {
-        "lst-lst": "multiset difference of a and b"
-      },
+      "overloads": "lst, lst -> multiset difference of a and b",
       "token": "\u00de\u2228"
     }
   ],
@@ -89,10 +71,7 @@ var codepage_descriptions =
     {
       "name": "Remove at Index",
       "description": "Returns every item in a list except the item at the given index.",
-      "overloads": {
-        "any-num": "Remove item b of a",
-        "num-any": "Remove item a of b"
-      },
+      "overloads": "any, num -> Remove item b of a\nnum, any -> Remove item a of b",
       "token": "\u27c7"
     },
     {
@@ -103,10 +82,7 @@ var codepage_descriptions =
     {
       "name": "Get Codepage Character / Get Codepage Index",
       "description": "Get the character at a certain index in the vyxal codepage / Get the index of a character in the vyxal codepage",
-      "overloads": {
-        "num": "vyxal_codepage[a]",
-        "str": "vyxal_codepage.index(a)"
-      },
+      "overloads": "num -> vyxal_codepage[a]\nstr -> vyxal_codepage.index(a)",
       "token": "\u00f8\u27c7"
     }
   ],
@@ -114,20 +90,13 @@ var codepage_descriptions =
     {
       "name": "Item Split",
       "description": "Pushes each item of the top of the stack onto the stack.",
-      "overloads": {
-        "num": "Push each digit of a",
-        "str": "Push each character of a",
-        "lst": "Push each item of a"
-      },
+      "overloads": "num -> Push each digit of a\nstr -> Push each character of a\nlst -> Push each item of a",
       "token": "\u00f7"
     },
     {
       "name": "Divide List Into N Equal Length Parts",
       "description": "Divide a list into n equal length parts, possibly with an extra part",
-      "overloads": {
-        "any-num": "divide a into b equal length parts, possibly with an extra part",
-        "num-any": "divide b into a equal length parts, possibly with an extra part"
-      },
+      "overloads": "any, num -> divide a into b equal length parts, possibly with an extra part\nnum, any -> divide b into a equal length parts, possibly with an extra part",
       "token": "\u00de\u00f7"
     }
   ],
@@ -138,16 +107,14 @@ var codepage_descriptions =
       "token": "\u00d7"
     },
     {
-      "name": 2147483648,
-      "description": 2147483648,
+      "name": "2147483648",
+      "description": "2147483648",
       "token": "k\u00d7"
     },
     {
       "name": "All Combinations",
       "description": "All combinations of a list / string, of all lengths, with replacement",
-      "overloads": {
-        "any": "all (non-empty) combinations of a, of all lengths and all orders, with replacement"
-      },
+      "overloads": "any -> all (non-empty) combinations of a, of all lengths and all orders, with replacement",
       "token": "\u00de\u00d7"
     }
   ],
@@ -183,13 +150,7 @@ var codepage_descriptions =
     {
       "name": "MultiCommand",
       "description": "Logarithm / Repeat Character / Capitalisation transfer",
-      "overloads": {
-        "num-num": "log_a(b)",
-        "num-str": "[char * a for char in b]",
-        "str-num": "[char * b for char in a]",
-        "str-str": "a.with_capitalisation_of(b)",
-        "lst-lst": "a molded  to  the shape of b"
-      },
+      "overloads": "num, num -> log_a(b)\nnum, str -> [char * a for char in b]\nstr, num -> [char * b for char in a]\nstr, str -> a.with_capitalisation_of(b)\nlst, lst -> a molded  to  the shape of b",
       "token": "\u2022"
     },
     {
@@ -200,9 +161,7 @@ var codepage_descriptions =
     {
       "name": "Dot Product",
       "description": "Dot product of two lists.",
-      "overloads": {
-        "lst-lst": "dot product of a and b"
-      },
+      "overloads": "lst, lst -> dot product of a and b",
       "token": "\u00de\u2022"
     }
   ],
@@ -223,12 +182,7 @@ var codepage_descriptions =
     {
       "name": "Function Call",
       "description": "Calls a function / executes as python / number of distinct prime factors / vectorised not",
-      "overloads": {
-        "fun": "a()",
-        "num": "len(prime_factors(a))",
-        "str": "exec as python",
-        "lst": "vectorised not"
-      },
+      "overloads": "fun -> a()\nnum -> len(prime_factors(a))\nstr -> exec as python\nlst -> vectorised not",
       "token": "\u2020"
     }
   ],
@@ -236,10 +190,7 @@ var codepage_descriptions =
     {
       "name": "Split On / Fill By Coordinates",
       "description": "Split a on b (works on lists and numbers as well) / Fill a matrix by calling a function with the lists of coordinates in the matrix.",
-      "overloads": {
-        "any-any": "a split on b",
-        "any-fun": "for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a"
-      },
+      "overloads": "any, any -> a split on b\nany, fun -> for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a",
       "token": "\u20ac"
     }
   ],
@@ -247,21 +198,12 @@ var codepage_descriptions =
     {
       "name": "Halve",
       "description": "Halves an item",
-      "overloads": {
-        "num": "a / 2",
-        "str": "a split into two strings of equal lengths (as close as possible)"
-      },
+      "overloads": "num -> a / 2\nstr -> a split into two strings of equal lengths (as close as possible)",
       "token": "\u00bd"
     },
     {
-      "name": [
-        1,
-        2
-      ],
-      "description": [
-        1,
-        2
-      ],
+      "name": "[1, 2]",
+      "description": "[1, 2]",
       "token": "k\u00bd"
     }
   ],
@@ -283,12 +225,7 @@ var codepage_descriptions =
     {
       "name": "Combinations/Remove/Fixed Point Collection",
       "description": "Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.",
-      "overloads": {
-        "any-num": "combinations_with_replacement(a, length=b)",
-        "fun-any": "apply a on b until the result does not change, yielding intermediate values",
-        "any-str": "remove elements from a that are not in b",
-        "any-lst": "remove elements from a that are not in b"
-      },
+      "overloads": "any, num -> combinations_with_replacement(a, length=b)\nfun, any -> apply a on b until the result does not change, yielding intermediate values\nany, str -> remove elements from a that are not in b\nany, lst -> remove elements from a that are not in b",
       "token": "\u2194"
     },
     {
@@ -301,21 +238,13 @@ var codepage_descriptions =
     {
       "name": "Infinite Replacement / Apply at Indices",
       "description": "Replace b in a with c until a does not change / Call a function on all elements at specified indices together and put that back in the list",
-      "overloads": {
-        "any-any-any": "replace b in a with c until a does not change",
-        "lst-fun-lst": "apply function b to items in c at indices in a",
-        "lst-lst-fun": "apply function c to items in a at indices in b",
-        "fun-lst-lst": "apply function a to items in b at indices in c"
-      },
+      "overloads": "any, any, any -> replace b in a with c until a does not change\nlst, fun, lst -> apply function b to items in c at indices in a\nlst, lst, fun -> apply function c to items in a at indices in b\nfun, lst, lst -> apply function a to items in b at indices in c",
       "token": "\u00a2"
     },
     {
       "name": "Carmichael Function",
       "description": "Get the Carmichael function of a number / Local Maxima",
-      "overloads": {
-        "num": "carmichael(a)",
-        "str": "local_maxima(a)"
-      },
+      "overloads": "num -> carmichael(a)\nstr -> local_maxima(a)",
       "token": "\u2206\u00a2"
     }
   ],
@@ -323,10 +252,7 @@ var codepage_descriptions =
     {
       "name": "Complement / Comma Split",
       "description": "1 - a if number, split by commas if string.",
-      "overloads": {
-        "num": "1 - a",
-        "str": "a.split(\",\")"
-      },
+      "overloads": "num -> 1 - a\nstr -> a.split(\",\")",
       "token": "\u2310"
     }
   ],
@@ -334,10 +260,7 @@ var codepage_descriptions =
     {
       "name": "Is Prime / Case Check",
       "description": "(a is prime) if a is a number, else check which case a is",
-      "overloads": {
-        "num": "is a prime?",
-        "str": "caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)"
-      },
+      "overloads": "num -> is a prime?\nstr -> caseof(a) (1 if all letters in a are uppercase, 0 if all letters in a are lowercase, -1 if mixed case)",
       "token": "\u00e6"
     }
   ],
@@ -345,10 +268,7 @@ var codepage_descriptions =
     {
       "name": "Inclusive Zero Range",
       "description": "Inclusive range or whether each character is alphabetical",
-      "overloads": {
-        "num": "range(0,a + 1) (inclusive range from 0)",
-        "str": "[is v alphabetical? for v in a]"
-      },
+      "overloads": "num -> range(0,a + 1) (inclusive range from 0)\nstr -> [is v alphabetical? for v in a]",
       "token": "\u0280"
     }
   ],
@@ -356,10 +276,7 @@ var codepage_descriptions =
     {
       "name": "Exclusive Zero Range",
       "description": "Exclusive range or palindromise",
-      "overloads": {
-        "num": "range(0,a) (exclusive range from 0)",
-        "str": "palindromise(a) (a + a[:-1:-1])"
-      },
+      "overloads": "num -> range(0,a) (exclusive range from 0)\nstr -> palindromise(a) (a + a[:-1:-1])",
       "token": "\u0281"
     }
   ],
@@ -367,10 +284,7 @@ var codepage_descriptions =
     {
       "name": "Inclusive One Range",
       "description": "Inclusive range or uppercase",
-      "overloads": {
-        "num": "range(1,a+1) (inclusive range from 1)",
-        "str": "a.uppercase()"
-      },
+      "overloads": "num -> range(1,a+1) (inclusive range from 1)\nstr -> a.uppercase()",
       "token": "\u027e"
     }
   ],
@@ -378,19 +292,13 @@ var codepage_descriptions =
     {
       "name": "Exclusive One Range / Lowercase",
       "description": "Exclusive range or lowercase",
-      "overloads": {
-        "num": "range(1,a) (exclusive range from 0)",
-        "str": "a.lowercase()"
-      },
+      "overloads": "num -> range(1,a) (exclusive range from 0)\nstr -> a.lowercase()",
       "token": "\u027d"
     },
     {
       "name": "Right Align",
       "description": "Right align a string/string list",
-      "overloads": {
-        "str": "justify to right",
-        "lst": "justify each to right"
-      },
+      "overloads": "str -> justify to right\nlst -> justify each to right",
       "token": "\u00f8\u027d"
     }
   ],
@@ -405,25 +313,13 @@ var codepage_descriptions =
     {
       "name": "Choose / random choice / set same / drop while",
       "description": "Binomial coefficient / choose a random items from b / same except duplicates / drop while",
-      "overloads": {
-        "num-num": "a choose b (binomial coefficient)",
-        "num-str": "choose a random items from b",
-        "str-num": "choose b random items from a",
-        "str-str": "are the set of characters in the strings the same?",
-        "any-fun": "remove each item x from the beginning of a until b(x) returns false",
-        "fun-any": "remove each item x from the beginning of b until a(x) returns false"
-      },
+      "overloads": "num, num -> a choose b (binomial coefficient)\nnum, str -> choose a random items from b\nstr, num -> choose b random items from a\nstr, str -> are the set of characters in the strings the same?\nany, fun -> remove each item x from the beginning of a until b(x) returns false\nfun, any -> remove each item x from the beginning of b until a(x) returns false",
       "token": "\u0188"
     },
     {
       "name": "n Pick r (npr)",
       "description": "Get the number of combinations of r items from a set of n items",
-      "overloads": {
-        "num-num": "n_pick_r(a, b)",
-        "num-str": "n_pick_r(a, len(b))",
-        "str-num": "n_pick_r(len(a), b)",
-        "str-str": "n_pick_r(len(a), len(b))"
-      },
+      "overloads": "num, num -> n_pick_r(a, b)\nnum, str -> n_pick_r(a, len(b))\nstr, num -> n_pick_r(len(a), b)\nstr, str -> n_pick_r(len(a), len(b))",
       "token": "\u2206\u0188"
     }
   ],
@@ -431,9 +327,7 @@ var codepage_descriptions =
     {
       "name": "Palindromise",
       "description": "Palindromise a",
-      "overloads": {
-        "any": "palindromise a (a + a[:-1:-1])"
-      },
+      "overloads": "any -> palindromise a (a + a[:-1:-1])",
       "token": "\u221e"
     },
     {
@@ -465,9 +359,7 @@ var codepage_descriptions =
     {
       "name": "Pair",
       "description": "Place the top two items into a single list",
-      "overloads": {
-        "any-any": "[a, b]"
-      },
+      "overloads": "any, any -> [a, b]",
       "token": "\""
     }
   ],
@@ -487,9 +379,7 @@ var codepage_descriptions =
     {
       "name": "Swap",
       "description": "Swap the top two items",
-      "overloads": {
-        "any-any": "b, a"
-      },
+      "overloads": "any, any -> b, a",
       "token": "$"
     }
   ],
@@ -497,21 +387,13 @@ var codepage_descriptions =
     {
       "name": "Modulo / Format",
       "description": "Modulo two numbers / format two strings",
-      "overloads": {
-        "num-num": "a % b",
-        "num-str": "b.format(a) (replace % in b with a)",
-        "str-num": "a.format(b) (replace % in a with b)",
-        "str-str": "a.format(b) (replace % in a with b)",
-        "str-lst": "a.format(b) (replace % in a with each item of b)"
-      },
+      "overloads": "num, num -> a % b\nnum, str -> b.format(a) (replace % in b with a)\nstr, num -> a.format(b) (replace % in a with b)\nstr, str -> a.format(b) (replace % in a with b)\nstr, lst -> a.format(b) (replace % in a with each item of b)",
       "token": "%"
     },
     {
       "name": "Modular Exponentiation",
       "description": "Get the modular exponentiation a**b mod c",
-      "overloads": {
-        "any-any-any": "pow(a, b, c)"
-      },
+      "overloads": "any, any, any -> pow(a, b, c)",
       "token": "\u2206%"
     }
   ],
@@ -548,31 +430,19 @@ var codepage_descriptions =
     {
       "name": "Multiplication / Arity Change",
       "description": "Multiply two numbers or strings / Change the arity of a function",
-      "overloads": {
-        "num-num": "a * b",
-        "num-str": "b repeated a times",
-        "str-num": "a repeated b times",
-        "str-str": "ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])",
-        "fun-num": "change the arity of function a to b",
-        "num-fun": "change the arity of function b to a"
-      },
+      "overloads": "num, num -> a * b\nnum, str -> b repeated a times\nstr, num -> a repeated b times\nstr, str -> ring translate a according to b (in a, replace b[0] with b[1], b[1] with b[2], ..., and b[-1] with b[0])\nfun, num -> change the arity of function a to b\nnum, fun -> change the arity of function b to a",
       "token": "*"
     },
     {
       "name": "Cartesian product over list",
       "description": "Cartesian product over a list of lists",
-      "overloads": {
-        "lst": "itertools.product(*a)"
-      },
+      "overloads": "lst -> itertools.product(*a)",
       "token": "\u00de*"
     },
     {
       "name": "All Multiples",
       "description": "Return all multiples of a",
-      "overloads": {
-        "num": "[a*1, a*2, a*3, a*4, ...]",
-        "str": "[a*1, a*2, a*3, a*4, ...]"
-      },
+      "overloads": "num -> [a*1, a*2, a*3, a*4, ...]\nstr -> [a*1, a*2, a*3, a*4, ...]",
       "token": "\u00a8*"
     }
   ],
@@ -580,23 +450,12 @@ var codepage_descriptions =
     {
       "name": "Addition",
       "description": "Adds the top two items on the stack",
-      "overloads": {
-        "num-num": "a + b",
-        "num-str": "str(a) + b",
-        "str-num": "a + str(b)",
-        "str-str": "a + b"
-      },
+      "overloads": "num, num -> a + b\nnum, str -> str(a) + b\nstr, num -> a + str(b)\nstr, str -> a + b",
       "token": "+"
     },
     {
-      "name": [
-        1,
-        -1
-      ],
-      "description": [
-        1,
-        -1
-      ],
+      "name": "[1, -1]",
+      "description": "[1, -1]",
       "token": "k+"
     }
   ],
@@ -604,17 +463,13 @@ var codepage_descriptions =
     {
       "name": "Print",
       "description": "Print a with trailing newline",
-      "overloads": {
-        "any": "print(a)"
-      },
+      "overloads": "any -> print(a)",
       "token": ","
     },
     {
       "name": "Print With Space",
       "description": "Print a value with a space after it",
-      "overloads": {
-        "any": "print a followed by a space"
-      },
+      "overloads": "any -> print a followed by a space",
       "token": "\u00a8,"
     }
   ],
@@ -622,23 +477,12 @@ var codepage_descriptions =
     {
       "name": "Subtract",
       "description": "Subtracts the top two items on the stack",
-      "overloads": {
-        "num-num": "a - b",
-        "num-str": "(\"-\" * a) + b",
-        "str-num": "a + (\"-\" * b)",
-        "str-str": "a.replace(b, '')"
-      },
+      "overloads": "num, num -> a - b\nnum, str -> (\"-\" * a) + b\nstr, num -> a + (\"-\" * b)\nstr, str -> a.replace(b, '')",
       "token": "-"
     },
     {
-      "name": [
-        -1,
-        1
-      ],
-      "description": [
-        -1,
-        1
-      ],
+      "name": "[-1, 1]",
+      "description": "[-1, 1]",
       "token": "k-"
     }
   ],
@@ -651,11 +495,7 @@ var codepage_descriptions =
     {
       "name": "Surround",
       "description": "Surround a value with another",
-      "overloads": {
-        "str-str": "a.surround(b)",
-        "lst-any": "a.surround(b)",
-        "any-lst": "b.surround(a)"
-      },
+      "overloads": "str, str -> a.surround(b)\nlst, any -> a.surround(b)\nany, lst -> b.surround(a)",
       "token": "\u00f8."
     }
   ],
@@ -663,12 +503,7 @@ var codepage_descriptions =
     {
       "name": "Divide / Split",
       "description": "Divide two numbers or split strings",
-      "overloads": {
-        "num-num": "a / b",
-        "num-str": "b split into a pieces",
-        "str-num": "a split into b pieces",
-        "str-str": "a.split(b)"
-      },
+      "overloads": "num, num -> a / b\nnum, str -> b split into a pieces\nstr, num -> a split into b pieces\nstr, str -> a.split(b)",
       "token": "/"
     },
     {
@@ -679,9 +514,7 @@ var codepage_descriptions =
     {
       "name": "Main Diagonal",
       "description": "Diagonal of a matrix",
-      "overloads": {
-        "lst": "diagonal(a)"
-      },
+      "overloads": "lst -> diagonal(a)",
       "token": "\u00de/"
     }
   ],
@@ -794,9 +627,7 @@ var codepage_descriptions =
     {
       "name": "Duplicate",
       "description": "Push a twice",
-      "overloads": {
-        "any": "a,a"
-      },
+      "overloads": "any -> a,a",
       "token": ":"
     }
   ],
@@ -811,30 +642,19 @@ var codepage_descriptions =
     {
       "name": "Less Than",
       "description": "Basic comparison - less than",
-      "overloads": {
-        "num-num": "a < b",
-        "num-str": "str(a) < b",
-        "str-num": "a < str(b)",
-        "str-str": "a < b",
-        "any-fun": "decrement a until b returns false",
-        "fun-any": "decrement b until a returns false"
-      },
+      "overloads": "num, num -> a < b\nnum, str -> str(a) < b\nstr, num -> a < str(b)\nstr, str -> a < b\nany, fun -> decrement a until b returns false\nfun, any -> decrement b until a returns false",
       "token": "<"
     },
     {
       "name": "All Less Than Increasing",
       "description": "Find all numbers less than a certain value in a (potentially infinite) list assumed to be (non-strictly) increasing",
-      "overloads": {
-        "any-num": "all values of a up to (not including) the first greater than or equal to b"
-      },
+      "overloads": "any, num -> all values of a up to (not including) the first greater than or equal to b",
       "token": "\u00de<"
     },
     {
       "name": "Strict Less Than",
       "description": "Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.",
-      "overloads": {
-        "any-any": "a > b (non-vectorising)"
-      },
+      "overloads": "any, any -> a > b (non-vectorising)",
       "token": "\u00a8<"
     }
   ],
@@ -842,12 +662,7 @@ var codepage_descriptions =
     {
       "name": "Equals",
       "description": "Basic comparison - equals",
-      "overloads": {
-        "num-num": "a == b",
-        "num-str": "str(a) == b",
-        "str-num": "a == str(b)",
-        "str-str": "a == b"
-      },
+      "overloads": "num, num -> a == b\nnum, str -> str(a) == b\nstr, num -> a == str(b)\nstr, str -> a == b",
       "token": "="
     },
     {
@@ -861,22 +676,13 @@ var codepage_descriptions =
     {
       "name": "Greater Than",
       "description": "Basic comparison - greater than",
-      "overloads": {
-        "num-num": "a > b",
-        "num-str": "str(a) > b",
-        "str-num": "a > str(b)",
-        "str-str": "a > b",
-        "any-fun": "increment a until b returns false",
-        "fun-any": "increment b until a returns false"
-      },
+      "overloads": "num, num -> a > b\nnum, str -> str(a) > b\nstr, num -> a > str(b)\nstr, str -> a > b\nany, fun -> increment a until b returns false\nfun, any -> increment b until a returns false",
       "token": ">"
     },
     {
       "name": "Strict Greater Than",
       "description": "Non-vectorising greater than - useful for lists. Note that all corresponding elements should be of the same type.",
-      "overloads": {
-        "any-any": "Non-vectorising greater than - useful for lists"
-      },
+      "overloads": "any, any -> Non-vectorising greater than - useful for lists",
       "token": "\u00a8>"
     }
   ],
@@ -903,10 +709,7 @@ var codepage_descriptions =
     {
       "name": "All",
       "description": "Check if all items in a list are truthy / check if a character is a vowel",
-      "overloads": {
-        "str": "is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]",
-        "any": "all(a)"
-      },
+      "overloads": "str -> is_vowel(a) if a.length == 1 else [is_vowel(z) for z in a]\nany -> all(a)",
       "token": "A"
     },
     {
@@ -917,9 +720,7 @@ var codepage_descriptions =
     {
       "name": "Adjacency matrix (Undirected)",
       "description": "Adjacency matrix of undirected graph",
-      "overloads": {
-        "lst": "adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])"
-      },
+      "overloads": "lst -> adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])",
       "token": "\u00deA"
     }
   ],
@@ -927,9 +728,7 @@ var codepage_descriptions =
     {
       "name": "Binary To Decimal",
       "description": "Convert a binary string or list to base 10",
-      "overloads": {
-        "any": "int(a,2) (convert from base 2 to base 10)"
-      },
+      "overloads": "any -> int(a,2) (convert from base 2 to base 10)",
       "token": "B"
     },
     {
@@ -940,18 +739,13 @@ var codepage_descriptions =
     {
       "name": "Bracketify",
       "description": "Enclose a string in brackets",
-      "overloads": {
-        "any": "\"[\"\" + a + \"]\""
-      },
+      "overloads": "any -> \"[\"\" + a + \"]\"",
       "token": "\u00f8B"
     },
     {
       "name": "Random Bits",
       "description": "Fill a list with random bits",
-      "overloads": {
-        "num": "list of length a filled with random bits",
-        "any": "list of length n(a) filled with random bits"
-      },
+      "overloads": "num -> list of length a filled with random bits\nany -> list of length n(a) filled with random bits",
       "token": "\u00deB"
     }
   ],
@@ -959,34 +753,25 @@ var codepage_descriptions =
     {
       "name": "Chr / Ord",
       "description": "Convert between characters and ordinals",
-      "overloads": {
-        "num": "chr(a)",
-        "str": "ord(a) if length 1 else list of ordinals"
-      },
+      "overloads": "num -> chr(a)\nstr -> ord(a) if length 1 else list of ordinals",
       "token": "C"
     },
     {
       "name": "Arc Cosine",
       "description": "Get the arccosine of an angle in radians",
-      "overloads": {
-        "num": "math.arrcos(a)"
-      },
+      "overloads": "num -> math.arrcos(a)",
       "token": "\u2206C"
     },
     {
       "name": "Number Compress",
       "description": "Compress a positive integer in base 255",
-      "overloads": {
-        "num": "base_255_number_compress(a)"
-      },
+      "overloads": "num -> base_255_number_compress(a)",
       "token": "\u00f8C"
     },
     {
       "name": "Matrix Column Reduce",
       "description": "Reduce columns of a matrix by a function.",
-      "overloads": {
-        "lst-fun": "reduce columns of a with b"
-      },
+      "overloads": "lst, fun -> reduce columns of a with b",
       "token": "\u00deC"
     }
   ],
@@ -1004,25 +789,19 @@ var codepage_descriptions =
     {
       "name": "To Degrees",
       "description": "Convert an angle from radians to degrees",
-      "overloads": {
-        "num": "math.degrees(a)"
-      },
+      "overloads": "num -> math.degrees(a)",
       "token": "\u2206D"
     },
     {
       "name": "Dictionary Compression",
       "description": "Optimally compress a string of English using words from the Vyxal dictionary",
-      "overloads": {
-        "str": "dictionary_compressed(a)"
-      },
+      "overloads": "str -> dictionary_compressed(a)",
       "token": "\u00f8D"
     },
     {
       "name": "Diagonals",
       "description": "Diagonals of a matrix, starting with the main diagonal.",
-      "overloads": {
-        "lst": "diagonals of a, starting with the main diagonal"
-      },
+      "overloads": "lst -> diagonals of a, starting with the main diagonal",
       "token": "\u00deD"
     }
   ],
@@ -1030,27 +809,19 @@ var codepage_descriptions =
     {
       "name": "Two Power / Python Eval",
       "description": "2 ** a, or eval(a)",
-      "overloads": {
-        "num": "2 ** a",
-        "str": "eval(a) (safe-eval as python)"
-      },
+      "overloads": "num -> 2 ** a\nstr -> eval(a) (safe-eval as python)",
       "token": "E"
     },
     {
       "name": "(Euler's Number (e) Raised to Power a) - 1",
       "description": "Get the value of Euler's number (e) raised to the power of a minus 1",
-      "overloads": {
-        "num": "(e ** a) - 1",
-        "str": "expand expression a"
-      },
+      "overloads": "num -> (e ** a) - 1\nstr -> expand expression a",
       "token": "\u2206E"
     },
     {
       "name": "Ends With",
       "description": "Check if one value ends with another",
-      "overloads": {
-        "any-any": "a.endswith(b) (ends with b?)"
-      },
+      "overloads": "any, any -> a.endswith(b) (ends with b?)",
       "token": "\u00f8E"
     }
   ],
@@ -1058,10 +829,7 @@ var codepage_descriptions =
     {
       "name": "Filter",
       "description": "Filter a list by another list or function.",
-      "overloads": {
-        "any-fun": "filter(b,a) (filter a by the ones that b returns a truthy result for)",
-        "any-any": "remove elements of a that are in b"
-      },
+      "overloads": "any, fun -> filter(b,a) (filter a by the ones that b returns a truthy result for)\nany, any -> remove elements of a that are in b",
       "token": "F"
     },
     {
@@ -1072,9 +840,7 @@ var codepage_descriptions =
     {
       "name": "nth Fibonacci Number, 0-indexed",
       "description": "Get the nth fibonacci number, 0-indexed",
-      "overloads": {
-        "num": "nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)"
-      },
+      "overloads": "num -> nth_fibonacci(a) (0 -> 0, 1 -> 1, 2 -> 1, ...)",
       "token": "\u2206F"
     },
     {
@@ -1087,17 +853,13 @@ var codepage_descriptions =
     {
       "name": "Max",
       "description": "Maximum value or a",
-      "overloads": {
-        "any": "max(a)"
-      },
+      "overloads": "any -> max(a)",
       "token": "G"
     },
     {
       "name": "Longest By Length",
       "description": "Return the longest item in a list.",
-      "overloads": {
-        "lst": "the longest item of a"
-      },
+      "overloads": "lst -> the longest item of a",
       "token": "\u00deG"
     }
   ],
@@ -1105,9 +867,7 @@ var codepage_descriptions =
     {
       "name": "Hex To Decimal",
       "description": "Convert hexadecimal to decimal",
-      "overloads": {
-        "any": "int(a,16) (from hexadecimal)"
-      },
+      "overloads": "any -> int(a,16) (from hexadecimal)",
       "token": "H"
     },
     {
@@ -1120,29 +880,19 @@ var codepage_descriptions =
     {
       "name": "Into Two Pieces",
       "description": "Push n spaces / quine cheese / into two pieces",
-      "overloads": {
-        "num": "push a spaces",
-        "str": "equivalent to `qp`",
-        "lst": "split a list into two halves"
-      },
+      "overloads": "num -> push a spaces\nstr -> equivalent to `qp`\nlst -> split a list into two halves",
       "token": "I"
     },
     {
       "name": "First N Digits of Pi",
       "description": "Generate the first n digits of pi",
-      "overloads": {
-        "num": "the first (a + 1)th digits of pi"
-      },
+      "overloads": "num -> the first (a + 1)th digits of pi",
       "token": "\u2206I"
     },
     {
       "name": "All Indices (Multidimensional)",
       "description": "All multidimensional indices of element in list",
-      "overloads": {
-        "lst-any": "all indices of b in a",
-        "any-lst": "all indices of a in b",
-        "any-any": "all indices of b in a"
-      },
+      "overloads": "lst, any -> all indices of b in a\nany, lst -> all indices of a in b\nany, any -> all indices of b in a",
       "token": "\u00deI"
     }
   ],
@@ -1150,22 +900,13 @@ var codepage_descriptions =
     {
       "name": "Merge",
       "description": "Join two lists or items",
-      "overloads": {
-        "lst-str": "a.append(b) (append)",
-        "lst-num": "a.append(b) (append)",
-        "str-lst": "b.prepend(a) (prepend)",
-        "num-lst": "b.prepend(a) (prepend)",
-        "lst-lst": "merged(a,b) (merge)",
-        "any-any": "a + b (concatenate)"
-      },
+      "overloads": "lst, str -> a.append(b) (append)\nlst, num -> a.append(b) (append)\nstr, lst -> b.prepend(a) (prepend)\nnum, lst -> b.prepend(a) (prepend)\nlst, lst -> merged(a,b) (merge)\nany, any -> a + b (concatenate)",
       "token": "J"
     },
     {
       "name": "Parse JSON",
       "description": "Parse a JSON string into a Vyxal object",
-      "overloads": {
-        "str": "json.loads(a)"
-      },
+      "overloads": "str -> json.loads(a)",
       "token": "\u00f8J"
     }
   ],
@@ -1173,28 +914,19 @@ var codepage_descriptions =
     {
       "name": "Factors / Substrings / Prefixes",
       "description": "Get either the factors of a, substrings that occur more than once, or prefixes",
-      "overloads": {
-        "num": "divisors(a) (positive integer factors)",
-        "str": "all non-empty substrings of a that occur more than once in a",
-        "lst": "prefixes(a) (prefixes)"
-      },
+      "overloads": "num -> divisors(a) (positive integer factors)\nstr -> all non-empty substrings of a that occur more than once in a\nlst -> prefixes(a) (prefixes)",
       "token": "K"
     },
     {
       "name": "Sum of Proper Divisors / Stationary Points",
       "description": "Get the sum of all proper divisors of a number /  get the stationary points of a function",
-      "overloads": {
-        "num": "sum_of_proper_divisors(a)",
-        "str": "stationary_points(a)"
-      },
+      "overloads": "num -> sum_of_proper_divisors(a)\nstr -> stationary_points(a)",
       "token": "\u2206K"
     },
     {
       "name": "Suffixes",
       "description": "Suffixes of a list.",
-      "overloads": {
-        "lst": "[a, a[:-1], a[:-2], ..., a[:1]]"
-      },
+      "overloads": "lst -> [a, a[:-1], a[:-2], ..., a[:1]]",
       "token": "\u00deK"
     }
   ],
@@ -1202,9 +934,7 @@ var codepage_descriptions =
     {
       "name": "Length",
       "description": "Get length of a",
-      "overloads": {
-        "any": "len(a)"
-      },
+      "overloads": "any -> len(a)",
       "token": "L"
     },
     {
@@ -1215,17 +945,13 @@ var codepage_descriptions =
     {
       "name": "Natural Logarithm",
       "description": "Get the natural logarithm of a number",
-      "overloads": {
-        "num": "math.log(a)"
-      },
+      "overloads": "num -> math.log(a)",
       "token": "\u2206L"
     },
     {
       "name": "Strip whitespace from the left side",
       "description": "Strip whitespace from the left side of a string",
-      "overloads": {
-        "str": "a.lstrip()"
-      },
+      "overloads": "str -> a.lstrip()",
       "token": "\u00f8L"
     }
   ],
@@ -1233,43 +959,31 @@ var codepage_descriptions =
     {
       "name": "Map",
       "description": "Map b over a",
-      "overloads": {
-        "any-fun": "map(b,a) (apply b to each of a)",
-        "any-any": "pair each item of b with a ([[a, i] for i in b])"
-      },
+      "overloads": "any, fun -> map(b,a) (apply b to each of a)\nany, any -> pair each item of b with a ([[a, i] for i in b])",
       "token": "M"
     },
     {
       "name": "Mode",
       "description": "Get the mode of a list",
-      "overloads": {
-        "lst": "mode(a)"
-      },
+      "overloads": "lst -> mode(a)",
       "token": "\u2206M"
     },
     {
       "name": "Flip Brackets Vertical Palindromise",
       "description": "Vertically palindromise and reverse brackets and slashes, without duplicating center",
-      "overloads": {
-        "any": "palindromise, without duplicating center, and flip brackets and slashes in the second half"
-      },
+      "overloads": "any -> palindromise, without duplicating center, and flip brackets and slashes in the second half",
       "token": "\u00f8M"
     },
     {
       "name": "Maximal Indices",
       "description": "Indices of the maximal elements of a list.",
-      "overloads": {
-        "lst": "indices of the maximal elements of a"
-      },
+      "overloads": "lst -> indices of the maximal elements of a",
       "token": "\u00deM"
     },
     {
       "name": "Map At Indices",
       "description": "Map a function at elements of a list whose indices are in another list",
-      "overloads": {
-        "lst-lst-fun": "change the items in a with indices in by applying function c",
-        "lst-num-fun": "change the bth item in a by applying function c"
-      },
+      "overloads": "lst, lst, fun -> change the items in a with indices in by applying function c\nlst, num, fun -> change the bth item in a by applying function c",
       "token": "\u00a8M"
     }
   ],
@@ -1277,11 +991,7 @@ var codepage_descriptions =
     {
       "name": "Negate / Swap Case / First Integer Where Truthy",
       "description": "Negate a number / swap case of a string / first integer where a function truthy",
-      "overloads": {
-        "num": "-a  (negate)",
-        "str": "swap_case(a) (toggle case)",
-        "fun": "first integer where a(n) is true"
-      },
+      "overloads": "num -> -a  (negate)\nstr -> swap_case(a) (toggle case)\nfun -> first integer where a(n) is true",
       "token": "N"
     },
     {
@@ -1292,9 +1002,7 @@ var codepage_descriptions =
     {
       "name": "Alternating Negation",
       "description": "An infinite list of an item, then that item negated, then that item, and so on. Uses the negation element for negation.",
-      "overloads": {
-        "any": "[a, -a, a, -a, ...]"
-      },
+      "overloads": "any -> [a, -a, a, -a, ...]",
       "token": "\u00deN"
     }
   ],
@@ -1302,9 +1010,7 @@ var codepage_descriptions =
     {
       "name": "Count",
       "description": "Count number of times b occurs in a",
-      "overloads": {
-        "any-any": "a.count(b)"
-      },
+      "overloads": "any, any -> a.count(b)",
       "token": "O"
     }
   ],
@@ -1312,9 +1018,7 @@ var codepage_descriptions =
     {
       "name": "Strip",
       "description": "Remove the set of elements in b from both ends of a",
-      "overloads": {
-        "any-any": "a.strip(b)"
-      },
+      "overloads": "any, any -> a.strip(b)",
       "token": "P"
     },
     {
@@ -1325,17 +1029,13 @@ var codepage_descriptions =
     {
       "name": "Polynomial Solver",
       "description": "Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0",
-      "overloads": {
-        "lst": "roots(a)"
-      },
+      "overloads": "lst -> roots(a)",
       "token": "\u2206P"
     },
     {
       "name": "Pluralise Count",
       "description": "Create a sentence of the form 'a bs'",
-      "overloads": {
-        "num-str": "a + \" \" + b + (s if a != 1 else \"\") (concatenate with space, append a s if not 1)"
-      },
+      "overloads": "num, str -> a + \" \" + b + (s if a != 1 else \"\") (concatenate with space, append a s if not 1)",
       "token": "\u00f8P"
     }
   ],
@@ -1348,12 +1048,7 @@ var codepage_descriptions =
     {
       "name": "General Quadratic Solver",
       "description": "Solve a quadratic equation of the form x^2 + ax + b = 0",
-      "overloads": {
-        "num-num": "roots(a, b) / x^2 + ax + b = 0",
-        "num-str": "evaluate single variable expression b with x=a",
-        "str-num": "evaluate single variable expression a with x=b",
-        "str-str": "solve equations a and b simultaneously for x and y"
-      },
+      "overloads": "num, num -> roots(a, b) / x^2 + ax + b = 0\nnum, str -> evaluate single variable expression b with x=a\nstr, num -> evaluate single variable expression a with x=b\nstr, str -> solve equations a and b simultaneously for x and y",
       "token": "\u2206Q"
     }
   ],
@@ -1361,39 +1056,30 @@ var codepage_descriptions =
     {
       "name": "Reduce",
       "description": "Reduce a by b, or reverse each item of b",
-      "overloads": {
-        "any-fun": "reduce(b,a) (Reduce a by b)",
-        "any-any": "a, vectorised_reverse(b)"
-      },
+      "overloads": "any, fun -> reduce(b,a) (Reduce a by b)\nany, any -> a, vectorised_reverse(b)",
       "token": "R"
     },
     {
-      "name": 360,
-      "description": 360,
+      "name": "360",
+      "description": "360",
       "token": "kR"
     },
     {
       "name": "To Radians",
       "description": "Convert an angle from degrees to radians",
-      "overloads": {
-        "num": "math.radians(a)"
-      },
+      "overloads": "num -> math.radians(a)",
       "token": "\u2206R"
     },
     {
       "name": "Strip whitespace from the right side",
       "description": "Strip whitespace from the right side of a string",
-      "overloads": {
-        "str": "a.rstrip()"
-      },
+      "overloads": "str -> a.rstrip()",
       "token": "\u00f8R"
     },
     {
       "name": "Remove Last Item From Cumulative Sums and Prepend 0",
       "description": "Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for \u00a6\u1e6a0p",
-      "overloads": {
-        "lst": "[0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]"
-      },
+      "overloads": "lst -> [0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]",
       "token": "\u00deR"
     }
   ],
@@ -1401,9 +1087,7 @@ var codepage_descriptions =
     {
       "name": "Stringify",
       "description": "Stringify a list or number",
-      "overloads": {
-        "any": "str(a) (Stringify)"
-      },
+      "overloads": "any -> str(a) (Stringify)",
       "token": "S"
     },
     {
@@ -1414,26 +1098,19 @@ var codepage_descriptions =
     {
       "name": "Arc Sine",
       "description": "Get the arcsine of an angle in radians",
-      "overloads": {
-        "num": "math.arcsin(a)"
-      },
+      "overloads": "num -> math.arcsin(a)",
       "token": "\u2206S"
     },
     {
       "name": "Strip whitespace from both sides",
       "description": "Strip whitespace from both sides of a string / Remove trailing zeros from a number",
-      "overloads": {
-        "str": "a.strip()",
-        "num": "remove trailing zeros"
-      },
+      "overloads": "str -> a.strip()\nnum -> remove trailing zeros",
       "token": "\u00f8S"
     },
     {
       "name": "Sublists",
       "description": "Sublists of a list.",
-      "overloads": {
-        "lst": "non-empty sublists of a"
-      },
+      "overloads": "lst -> non-empty sublists of a",
       "token": "\u00deS"
     }
   ],
@@ -1441,11 +1118,7 @@ var codepage_descriptions =
     {
       "name": "Truthy Indices / Triple / Triadify",
       "description": "Get indices of truthy elements, triple, or make the arity of a function 3",
-      "overloads": {
-        "num": "a * 3",
-        "any": "truthy_indices(a)",
-        "fun": "set the arity of function a to 3"
-      },
+      "overloads": "num -> a * 3\nany -> truthy_indices(a)\nfun -> set the arity of function a to 3",
       "token": "T"
     },
     {
@@ -1456,17 +1129,13 @@ var codepage_descriptions =
     {
       "name": "Arc Tangent",
       "description": "Get the arctangent of an angle in radians",
-      "overloads": {
-        "num": "math.arctan(a)"
-      },
+      "overloads": "num -> math.arctan(a)",
       "token": "\u2206T"
     },
     {
       "name": "Multi-dimensional truthy indices",
       "description": "Multi-dimensional indices of truthy elements",
-      "overloads": {
-        "lst": "Multi-dimensional indices of truthy elements in a"
-      },
+      "overloads": "lst -> Multi-dimensional indices of truthy elements in a",
       "token": "\u00deT"
     }
   ],
@@ -1474,25 +1143,19 @@ var codepage_descriptions =
     {
       "name": "Uniquify",
       "description": "Remove duplicates",
-      "overloads": {
-        "any": "uniquify(a) (remove duplicates)"
-      },
+      "overloads": "any -> uniquify(a) (remove duplicates)",
       "token": "U"
     },
     {
       "name": "Uniquify Mask",
       "description": "A list of booleans describing which elements of a will remain after uniquifying.",
-      "overloads": {
-        "any": "a list of booleans describing which elements of a will remain after uniquifying"
-      },
+      "overloads": "any -> a list of booleans describing which elements of a will remain after uniquifying",
       "token": "\u00deU"
     },
     {
       "name": "Get Request",
       "description": "Send a GET request to a URL",
-      "overloads": {
-        "str": "send a GET request to a"
-      },
+      "overloads": "str -> send a GET request to a",
       "token": "\u00a8U"
     }
   ],
@@ -1500,11 +1163,7 @@ var codepage_descriptions =
     {
       "name": "Replace / Map to Indices",
       "description": "Replace b with c in a / Map a function at elements of a list whose indices are in another list",
-      "overloads": {
-        "any-any-any": "a.replace(b,c) (replace)",
-        "lst-lst-fun": "for each i in b, change the ith element in a by applying the function, then return the new list",
-        "lst-num-fun": "replace the bth element in a by applying the function, then return the new list"
-      },
+      "overloads": "any, any, any -> a.replace(b,c) (replace)\nlst, lst, fun -> for each i in b, change the ith element in a by applying the function, then return the new list\nlst, num, fun -> replace the bth element in a by applying the function, then return the new list",
       "token": "V"
     },
     {
@@ -1515,9 +1174,7 @@ var codepage_descriptions =
     {
       "name": "Replace Until No Change",
       "description": "Replace b with c in a until a does not change",
-      "overloads": {
-        "str-str-str": "a.replace_until_no_change(b,c)"
-      },
+      "overloads": "str, str, str -> a.replace_until_no_change(b,c)",
       "token": "\u00f8V"
     }
   ],
@@ -1535,17 +1192,13 @@ var codepage_descriptions =
     {
       "name": "Round to n Decimal Places",
       "description": "Round a number to n decimal places",
-      "overloads": {
-        "num-num": "round(a, no_dec_places=b) (b significant digits)"
-      },
+      "overloads": "num, num -> round(a, no_dec_places=b) (b significant digits)",
       "token": "\u2206W"
     },
     {
       "name": "Group on words",
       "description": "Group a string on words",
-      "overloads": {
-        "str": "Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character"
-      },
+      "overloads": "str -> Group a on words, leaving chunks of [a-zA-Z] together and having everything else as a single character",
       "token": "\u00f8W"
     }
   ],
@@ -1560,9 +1213,7 @@ var codepage_descriptions =
     {
       "name": "Interleave",
       "description": "Interleave two lists",
-      "overloads": {
-        "any-any": "interleave(a,b) (a[0], b[0], a[1], b[1], ...)"
-      },
+      "overloads": "any, any -> interleave(a,b) (a[0], b[0], a[1], b[1], ...)",
       "token": "Y"
     }
   ],
@@ -1570,10 +1221,7 @@ var codepage_descriptions =
     {
       "name": "Zip",
       "description": "Zip two lists or Zip a with b mapped over a. Fills with 0s if needed.",
-      "overloads": {
-        "any-any": "zip(a,b)",
-        "any-fun": "zip(a,map(b,a)) (zipmap, map and zip)"
-      },
+      "overloads": "any, any -> zip(a,b)\nany, fun -> zip(a,map(b,a)) (zipmap, map and zip)",
       "token": "Z"
     },
     {
@@ -1584,17 +1232,13 @@ var codepage_descriptions =
     {
       "name": "ZFill",
       "description": "Pad a string with zeros to a given length",
-      "overloads": {
-        "str, num": "zfill(a, b)"
-      },
+      "overloads": "str, num -> zfill(a, b)",
       "token": "\u2206Z"
     },
     {
       "name": "Fill By Coordinates",
       "description": "Fill a matrix by calling a function with the lists of coordinates in the matrix.",
-      "overloads": {
-        "any-fun": "for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a"
-      },
+      "overloads": "any, fun -> for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a",
       "token": "\u00deZ"
     },
     {
@@ -1619,9 +1263,7 @@ var codepage_descriptions =
     {
       "name": "Antidiagonal",
       "description": "Antidiagonal of a matrix",
-      "overloads": {
-        "lst": "antidiagonal(a)"
-      },
+      "overloads": "lst -> antidiagonal(a)",
       "token": "\u00de\\"
     }
   ],
@@ -1653,23 +1295,13 @@ var codepage_descriptions =
     {
       "name": "Canvas Draw",
       "description": "Draw on a canvas (see knowledge/spec/canvas.md for more details) and return it as a string",
-      "overloads": {
-        "num-lst-str": "draw with a = length, b = dirs, c = text",
-        "num-str-str": "draw with a = length, b/c dependent on dir validity",
-        "any-num-any": "draw with b = length ^",
-        "any-any-num": "draw with c = length ^",
-        "str-any-any": "draw with a = text, b/c dependent on dir validity",
-        "lst-str-any": "draw with b = text, ^",
-        "lst-lst-str": "draw with c = text, ^"
-      },
+      "overloads": "num, lst, str -> draw with a = length, b = dirs, c = text\nnum, str, str -> draw with a = length, b/c dependent on dir validity\nany, num, any -> draw with b = length ^\nany, any, num -> draw with c = length ^\nstr, any, any -> draw with a = text, b/c dependent on dir validity\nlst, str, any -> draw with b = text, ^\nlst, lst, str -> draw with c = text, ^",
       "token": "\u00f8^"
     },
     {
       "name": "Parse direction arrow to vector",
       "description": "Map characters in `>^<v` to direction vectors",
-      "overloads": {
-        "str": "map on a, replacing `>^<v` with [1, 0], [0, 1], etc., and others with [0, 0]"
-      },
+      "overloads": "str -> map on a, replacing `>^<v` with [1, 0], [0, 1], etc., and others with [0, 0]",
       "token": "\u00a8^"
     }
   ],
@@ -1684,10 +1316,7 @@ var codepage_descriptions =
     {
       "name": "Any",
       "description": "Check if any items of a list are truthy / Check if a character is an uppercase letter",
-      "overloads": {
-        "str": "is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]",
-        "lst": "any(a) (are any items truthy?)"
-      },
+      "overloads": "str -> is_uppercase(a) if a.length == 1 else [is_uppercase(z) for z in a]\nlst -> any(a) (are any items truthy?)",
       "token": "a"
     },
     {
@@ -1698,9 +1327,7 @@ var codepage_descriptions =
     {
       "name": "Adjacency matrix (Directed)",
       "description": "Adjacency matrix of directed graph (nonzero A_ij denotes edge from i to j)",
-      "overloads": {
-        "lst": "adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])"
-      },
+      "overloads": "lst -> adjacency matrix of directed graph (where a = [[i, j] for each edge i to j])",
       "token": "\u00dea"
     }
   ],
@@ -1708,10 +1335,7 @@ var codepage_descriptions =
     {
       "name": "Binary",
       "description": "Convert a number or string to binary",
-      "overloads": {
-        "num": "bin(a) (list of binary digits of a)",
-        "str": "[bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)"
-      },
+      "overloads": "num -> bin(a) (list of binary digits of a)\nstr -> [bin(ord(char)) for char in a] (list of binary digits for each codepoint in a)",
       "token": "b"
     },
     {
@@ -1722,17 +1346,13 @@ var codepage_descriptions =
     {
       "name": "Binary String",
       "description": "Get a binary string of a number",
-      "overloads": {
-        "num": "bin(a).replace(\"0b\", \"\")"
-      },
+      "overloads": "num -> bin(a).replace(\"0b\", \"\")",
       "token": "\u2206b"
     },
     {
       "name": "Parenthesise",
       "description": "Parenthesise a string",
-      "overloads": {
-        "any": "\"(\"\" + a + \")\""
-      },
+      "overloads": "any -> \"(\"\" + a + \")\"",
       "token": "\u00f8b"
     }
   ],
@@ -1740,26 +1360,19 @@ var codepage_descriptions =
     {
       "name": "Contains / First Truthy Item Under Function Application",
       "description": "Check if one thing contains another / returns the first truthy item in a list after applying a function",
-      "overloads": {
-        "any-fun": "first item of a where b(x) is truthy (shortcut for Fh)",
-        "any-any": "b in a (does a contain b, membership, contains)"
-      },
+      "overloads": "any, fun -> first item of a where b(x) is truthy (shortcut for Fh)\nany, any -> b in a (does a contain b, membership, contains)",
       "token": "c"
     },
     {
       "name": "Cosine",
       "description": "Get the cosine of an angle in radians",
-      "overloads": {
-        "num": "math.cos(a)"
-      },
+      "overloads": "num -> math.cos(a)",
       "token": "\u2206c"
     },
     {
       "name": "String Compress",
       "description": "Compress a string of lowercase letters and spaces in base 255",
-      "overloads": {
-        "str": "base_255_string_compress(a)"
-      },
+      "overloads": "str -> base_255_string_compress(a)",
       "token": "\u00f8c"
     },
     {
@@ -1772,11 +1385,7 @@ var codepage_descriptions =
     {
       "name": "Double / Dyadify",
       "description": "Double a number or repeat a string twice / make a function dyadic",
-      "overloads": {
-        "num": "a * 2 (double)",
-        "str": "a * 2 (repeated twice)",
-        "fun": "change the arity of the function to 2"
-      },
+      "overloads": "num -> a * 2 (double)\nstr -> a * 2 (repeated twice)\nfun -> change the arity of the function to 2",
       "token": "d"
     },
     {
@@ -1787,25 +1396,19 @@ var codepage_descriptions =
     {
       "name": "Straight Line Distance",
       "description": "Get the straight line distance between two points (x1, x2, ..., xn) and (y1, y2, ..., yn)",
-      "overloads": {
-        "lst-lst": "euclidean_distance(a, b)"
-      },
+      "overloads": "lst, lst -> euclidean_distance(a, b)",
       "token": "\u2206d"
     },
     {
       "name": "Run Length Decoding",
       "description": "Run length decoding, convert from list of characters and lengths to a string/list",
-      "overloads": {
-        "lst": "run_length_decoded(a)"
-      },
+      "overloads": "lst -> run_length_decoded(a)",
       "token": "\u00f8d"
     },
     {
       "name": "Distance matrix (Directed)",
       "description": "Distance matrix of directed graph",
-      "overloads": {
-        "lst": "distance matrix of a directed graph (where a = [[i, j] for each edge i to j])"
-      },
+      "overloads": "lst -> distance matrix of a directed graph (where a = [[i, j] for each edge i to j])",
       "token": "\u00ded"
     }
   ],
@@ -1813,12 +1416,7 @@ var codepage_descriptions =
     {
       "name": "Exponentiation",
       "description": "Exponentiate two numbers / extend string / get length of a regex match",
-      "overloads": {
-        "num-num": "a ** b (exponentiation)",
-        "str-num": "append a[0] until a is length b (spaces are used if a is empty)",
-        "num-str": "append b[0] until b is length a (spaces are used if b is empty)",
-        "str-str": "regex.search(pattern=a, string=b).span() (length of regex match)"
-      },
+      "overloads": "num, num -> a ** b (exponentiation)\nstr, num -> append a[0] until a is length b (spaces are used if a is empty)\nnum, str -> append b[0] until b is length a (spaces are used if b is empty)\nstr, str -> regex.search(pattern=a, string=b).span() (length of regex match)",
       "token": "e"
     },
     {
@@ -1829,27 +1427,19 @@ var codepage_descriptions =
     {
       "name": "Euler's Number (e) raised to power a",
       "description": "Get the value of Euler's number (e) raised to the power of a",
-      "overloads": {
-        "num": "e ** a",
-        "str": "simplify expression a"
-      },
+      "overloads": "num -> e ** a\nstr -> simplify expression a",
       "token": "\u2206e"
     },
     {
       "name": "Run Length Encoding",
       "description": "Run length encoding, convert from string/list to list of items and amount repeated.",
-      "overloads": {
-        "str": "run_length_encoded(a)"
-      },
+      "overloads": "str -> run_length_encoded(a)",
       "token": "\u00f8e"
     },
     {
       "name": "Matrix Exponentiation",
       "description": "A matrix multiplied by itself n times",
-      "overloads": {
-        "lst-num": "a ** b (matrix exponentiation)",
-        "num-lst": "b ** a (matrix exponentiation)"
-      },
+      "overloads": "lst, num -> a ** b (matrix exponentiation)\nnum, lst -> b ** a (matrix exponentiation)",
       "token": "\u00dee"
     }
   ],
@@ -1857,11 +1447,7 @@ var codepage_descriptions =
     {
       "name": "Flatten",
       "description": "Turn a number into a list of digits, split a string into a list of characters, or flatten a list.",
-      "overloads": {
-        "num": "digits of a",
-        "str": "list of characters of a",
-        "lst": "flatten(a) (deep flatten)"
-      },
+      "overloads": "num -> digits of a\nstr -> list of characters of a\nlst -> flatten(a) (deep flatten)",
       "token": "f"
     },
     {
@@ -1872,26 +1458,19 @@ var codepage_descriptions =
     {
       "name": "nth Fibonacci Number",
       "description": "Get the nth fibonacci number, 1-indexed",
-      "overloads": {
-        "num": "nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)"
-      },
+      "overloads": "num -> nth_fibonacci(a) (0 -> 1, 1 -> 1, 2 -> 2, ...)",
       "token": "\u2206f"
     },
     {
       "name": "Ends With Set",
       "description": "Check if a value ends with others",
-      "overloads": {
-        "any-any": "does a end with all of b?"
-      },
+      "overloads": "any, any -> does a end with all of b?",
       "token": "\u00f8f"
     },
     {
       "name": "Flatten By depth",
       "description": "Flatten a list by a certain depth (default 1)",
-      "overloads": {
-        "lst-num": "flatten a by depth b",
-        "any-lst": "a, flatten b by depth 1"
-      },
+      "overloads": "lst, num -> flatten a by depth b\nany, lst -> a, flatten b by depth 1",
       "token": "\u00def"
     }
   ],
@@ -1899,9 +1478,7 @@ var codepage_descriptions =
     {
       "name": "Minimum",
       "description": "Take the minimum of a list",
-      "overloads": {
-        "any": "min(a)"
-      },
+      "overloads": "any -> min(a)",
       "token": "g"
     },
     {
@@ -1912,9 +1489,7 @@ var codepage_descriptions =
     {
       "name": "Shortest By Length",
       "description": "Return the shortest item in a list.",
-      "overloads": {
-        "lst": "the shortest item of a"
-      },
+      "overloads": "lst -> the shortest item of a",
       "token": "\u00deg"
     }
   ],
@@ -1922,9 +1497,7 @@ var codepage_descriptions =
     {
       "name": "Head",
       "description": "First item of something",
-      "overloads": {
-        "any": "a[0] (first item)"
-      },
+      "overloads": "any -> a[0] (first item)",
       "token": "h"
     },
     {
@@ -1937,14 +1510,7 @@ var codepage_descriptions =
     {
       "name": "Index",
       "description": "Index into a list",
-      "overloads": {
-        "any-num": "a[b] (index)",
-        "num-any": "b[a] (index)",
-        "str-str": "enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])",
-        "any-[x]": "a[:b] (0 to bth item of a)",
-        "any-[x,y]": "a[x:y] (x to yth item of a)",
-        "any-[x,y,m]": "a[x:y:m] (x to yth item of a, taking every mth)"
-      },
+      "overloads": "any, num -> a[b] (index)\nnum, any -> b[a] (index)\nstr, str -> enclose b in a (b[0:len(b)//2] + a + b[len(b)//2:])\nany, [x] -> a[:b] (0 to bth item of a)\nany, [x,y] -> a[x:y] (x to yth item of a)\nany, [x,y,m] -> a[x:y:m] (x to yth item of a, taking every mth)",
       "token": "i"
     },
     {
@@ -1955,18 +1521,13 @@ var codepage_descriptions =
     {
       "name": "nth Digit of Pi / Integrate",
       "description": "Get the nth digit of pi",
-      "overloads": {
-        "num": "nth_digit_of_pi(a)",
-        "str": "antiderivative of a"
-      },
+      "overloads": "num -> nth_digit_of_pi(a)\nstr -> antiderivative of a",
       "token": "\u2206i"
     },
     {
       "name": "Multidimensional Indexing",
       "description": "Index a list of coordinates into a value.",
-      "overloads": {
-        "lst-lst": "reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)"
-      },
+      "overloads": "lst, lst -> reduce by indexing with a as initial value (a[b[0]][b[1]][b[2]]...)",
       "token": "\u00dei"
     },
     {
@@ -1980,17 +1541,13 @@ var codepage_descriptions =
     {
       "name": "Join",
       "description": "Join a list by a string",
-      "overloads": {
-        "any-any": "a.join(b)"
-      },
+      "overloads": "any, any -> a.join(b)",
       "token": "j"
     },
     {
       "name": "Depth",
       "description": "Depth of ragged list",
-      "overloads": {
-        "lst": "Depth"
-      },
+      "overloads": "lst -> Depth",
       "token": "\u00dej"
     }
   ],
@@ -2005,11 +1562,7 @@ var codepage_descriptions =
     {
       "name": "Cumulative Groups",
       "description": "Cumulative groups (overlapping groups, aperture) / Equal length",
-      "overloads": {
-        "any-num": "[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]",
-        "num-any": "[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]",
-        "any-any": "length(a) == length(b)"
-      },
+      "overloads": "any, num -> [a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]\nnum, any -> [b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]\nany, any -> length(a) == length(b)",
       "token": "l"
     },
     {
@@ -2020,17 +1573,13 @@ var codepage_descriptions =
     {
       "name": "Logarithm (log_2)",
       "description": "Get the logarithm of a number to base 2",
-      "overloads": {
-        "num": "math.log2(a)"
-      },
+      "overloads": "num -> math.log2(a)",
       "token": "\u2206l"
     },
     {
       "name": "Strip from the left side",
       "description": "Strip from the left side of a string",
-      "overloads": {
-        "str-num": "a.lstrip(b)"
-      },
+      "overloads": "str, num -> a.lstrip(b)",
       "token": "\u00f8l"
     }
   ],
@@ -2038,27 +1587,19 @@ var codepage_descriptions =
     {
       "name": "Mirror",
       "description": "Append input reversed to itself.",
-      "overloads": {
-        "num": "a + reversed(a) (as number)",
-        "str": "a + reversed(a)",
-        "lst": "append reversed(a) to a"
-      },
+      "overloads": "num -> a + reversed(a) (as number)\nstr -> a + reversed(a)\nlst -> append reversed(a) to a",
       "token": "m"
     },
     {
       "name": "Flip Brackets Vertical Mirror, Center, Join on Newlines",
       "description": "Vertically mirror each and reverse brackets and slashes, then center and join by newlines. Equivalent to `\u00f8\u1e40\u00f8\u010a\u204b`",
-      "overloads": {
-        "any": "mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines"
-      },
+      "overloads": "any -> mirror each, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines",
       "token": "\u00f8m"
     },
     {
       "name": "Zero Matrix",
       "description": "Given a list of dimensions, create a matrix with those dimensions, filled with zeroes",
-      "overloads": {
-        "lst": "matrix with dimensions each item of a, where the first is the innermost and the last is the outermost"
-      },
+      "overloads": "lst -> matrix with dimensions each item of a, where the first is the innermost and the last is the outermost",
       "token": "\u00dem"
     }
   ],
@@ -2083,11 +1624,7 @@ var codepage_descriptions =
     {
       "name": "Remove",
       "description": "Remove instances of b in a",
-      "overloads": {
-        "num-fun": "first a positive integers where b is truthy",
-        "fun-num": "first b positive integers where a is truthy",
-        "any-any": "a.replace(b,\"\")"
-      },
+      "overloads": "num, fun -> first a positive integers where b is truthy\nfun, num -> first b positive integers where a is truthy\nany, any -> a.replace(b,\"\")",
       "token": "o"
     },
     {
@@ -2098,18 +1635,13 @@ var codepage_descriptions =
     {
       "name": "Nth Ordinal",
       "description": "Get the nth ordinal / convert number to wordth ordinal",
-      "overloads": {
-        "num": "num_to_ordinal(a)"
-      },
+      "overloads": "num -> num_to_ordinal(a)",
       "token": "\u2206o"
     },
     {
       "name": "Remove Until No change",
       "description": "Remove b from a until a does not change",
-      "overloads": {
-        "str-str": "remove b from a until a does not change",
-        "str-lst": "remove everything in b (in order) from a until a does not change"
-      },
+      "overloads": "str, str -> remove b from a until a does not change\nstr, lst -> remove everything in b (in order) from a until a does not change",
       "token": "\u00f8o"
     },
     {
@@ -2122,9 +1654,7 @@ var codepage_descriptions =
     {
       "name": "Prepend",
       "description": "Prepend b to a",
-      "overloads": {
-        "any-any": "a.prepend(b) (prepend b to a)"
-      },
+      "overloads": "any, any -> a.prepend(b) (prepend b to a)",
       "token": "p"
     },
     {
@@ -2135,18 +1665,13 @@ var codepage_descriptions =
     {
       "name": "Nearest Prime to a Number / Python equivalent of an expression",
       "description": "Get the prime number closest to a given number, get the greater to break ties / return the python equivalent of a mathematical expression - sympy's .pycode() function",
-      "overloads": {
-        "num": "nearest_prime(a)",
-        "str": "sympy.nsimplify(a).pycode()"
-      },
+      "overloads": "num -> nearest_prime(a)\nstr -> sympy.nsimplify(a).pycode()",
       "token": "\u2206p"
     },
     {
       "name": "Starts With",
       "description": "Check if one value starts with another",
-      "overloads": {
-        "any-any": "a.startswith(b) (Starts with b?)"
-      },
+      "overloads": "any, any -> a.startswith(b) (Starts with b?)",
       "token": "\u00f8p"
     },
     {
@@ -2165,20 +1690,13 @@ var codepage_descriptions =
     {
       "name": "Uneval",
       "description": "Enclose in backticks, escape backslashes and backticks.",
-      "overloads": {
-        "any": "uneval(a) (enclose in backticks + escape)"
-      },
+      "overloads": "any -> uneval(a) (enclose in backticks + escape)",
       "token": "q"
     },
     {
       "name": "Quadratic Solver",
       "description": "Solve a quadratic equation of the form ax^2 + bx = 0",
-      "overloads": {
-        "num-num": "x such that ax^2 + bx = 0",
-        "num-str": "solve for x such that a = b(x)",
-        "str-num": "solve for x such that a(x) = b",
-        "str-str": "solve for x such that a(x) = b(x)"
-      },
+      "overloads": "num, num -> x such that ax^2 + bx = 0\nnum, str -> solve for x such that a = b(x)\nstr, num -> solve for x such that a(x) = b\nstr, str -> solve for x such that a(x) = b(x)",
       "token": "\u2206q"
     }
   ],
@@ -2186,13 +1704,7 @@ var codepage_descriptions =
     {
       "name": "Range",
       "description": "Range between two numbers, or cumulative reduce, or regex match",
-      "overloads": {
-        "num-num": "range(a,b) (range from a to b)",
-        "num-str": "append spaces to b to make it length a",
-        "str-num": "prepend spaces to a to make it length b",
-        "any-fun": "cumulative_reduce(a,function=b) (prefixes of a reduced by b)",
-        "str-str": "regex.has_match(pattern=a,string= b) (does b match a)"
-      },
+      "overloads": "num, num -> range(a,b) (range from a to b)\nnum, str -> append spaces to b to make it length a\nstr, num -> prepend spaces to a to make it length b\nany, fun -> cumulative_reduce(a,function=b) (prefixes of a reduced by b)\nstr, str -> regex.has_match(pattern=a,string= b) (does b match a)",
       "token": "r"
     },
     {
@@ -2203,17 +1715,13 @@ var codepage_descriptions =
     {
       "name": "Strip from the right side",
       "description": "Strip from the right side of a string",
-      "overloads": {
-        "str-num": "a.rstrip(b)"
-      },
+      "overloads": "str, num -> a.rstrip(b)",
       "token": "\u00f8r"
     },
     {
       "name": "Remove Last Item and Prepend 0",
       "description": "Remove the last item of a list and prepend 0. A shortcut for \u1e6a0p",
-      "overloads": {
-        "lst": "[0] + a[:-1]"
-      },
+      "overloads": "lst -> [0] + a[:-1]",
       "token": "\u00der"
     }
   ],
@@ -2221,34 +1729,25 @@ var codepage_descriptions =
     {
       "name": "sort",
       "description": "Sort a list or string",
-      "overloads": {
-        "any": "sorted(a) (sort)"
-      },
+      "overloads": "any -> sorted(a) (sort)",
       "token": "s"
     },
     {
       "name": "Sine",
       "description": "Get the sine of an angle in radians",
-      "overloads": {
-        "num": "math.sin(a)"
-      },
+      "overloads": "num -> math.sin(a)",
       "token": "\u2206s"
     },
     {
       "name": "Starts With Set",
       "description": "Check if a value starts with others",
-      "overloads": {
-        "any-any": "does a start with all of b?"
-      },
+      "overloads": "any, any -> does a start with all of b?",
       "token": "\u00f8s"
     },
     {
       "name": "All Slices of a List",
       "description": "Get all slices of a list, skipping a certain number of items",
-      "overloads": {
-        "lst-int": "[a[::b], a[1::b], a[2::b], ...]",
-        "int-lst": "[b[::a], b[1::a], b[2::a], ...]"
-      },
+      "overloads": "lst, int -> [a[::b], a[1::b], a[2::b], ...]\nint, lst -> [b[::a], b[1::a], b[2::a], ...]",
       "token": "\u00des"
     }
   ],
@@ -2256,17 +1755,13 @@ var codepage_descriptions =
     {
       "name": "Tail",
       "description": "Last item",
-      "overloads": {
-        "any": "a[-1] (last item)"
-      },
+      "overloads": "any -> a[-1] (last item)",
       "token": "t"
     },
     {
       "name": "Tangent",
       "description": "Get the tangent of an angle in radians",
-      "overloads": {
-        "num": "math.tan(a)"
-      },
+      "overloads": "num -> math.tan(a)",
       "token": "\u2206t"
     }
   ],
@@ -2279,9 +1774,7 @@ var codepage_descriptions =
     {
       "name": "All Unique",
       "description": "Are all elements of a list/string unique?",
-      "overloads": {
-        "any": "all_unique(a)"
-      },
+      "overloads": "any -> all_unique(a)",
       "token": "\u00deu"
     }
   ],
@@ -2308,9 +1801,7 @@ var codepage_descriptions =
     {
       "name": "Listify",
       "description": "a wrapped in a singleton list",
-      "overloads": {
-        "any": "[a] (wrap in singleton list)"
-      },
+      "overloads": "any -> [a] (wrap in singleton list)",
       "token": "w"
     },
     {
@@ -2321,9 +1812,7 @@ var codepage_descriptions =
     {
       "name": "Distance matrix (Undirected)",
       "description": "Distance matrix of undirected graph",
-      "overloads": {
-        "lst": "distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])"
-      },
+      "overloads": "lst -> distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])",
       "token": "\u00dew"
     }
   ],
@@ -2336,9 +1825,7 @@ var codepage_descriptions =
     {
       "name": "All Combinations Without Replacement",
       "description": "All combinations of a list / string, of all lengths, without replacement",
-      "overloads": {
-        "any": "all (non-empty) combinations of a, of all lengths and all orders, without replacement"
-      },
+      "overloads": "any -> all (non-empty) combinations of a, of all lengths and all orders, without replacement",
       "token": "\u00dex"
     }
   ],
@@ -2346,9 +1833,7 @@ var codepage_descriptions =
     {
       "name": "Uninterleave",
       "description": "Push every other item of a, and the rest.",
-      "overloads": {
-        "any": "a[::2], a[1::2] (every second item, the rest)"
-      },
+      "overloads": "any -> a[::2], a[1::2] (every second item, the rest)",
       "token": "y"
     }
   ],
@@ -2356,9 +1841,7 @@ var codepage_descriptions =
     {
       "name": "Zip-self",
       "description": "Zip a with itself",
-      "overloads": {
-        "any": "zip(a,a)"
-      },
+      "overloads": "any -> zip(a,a)",
       "token": "z"
     },
     {
@@ -2400,17 +1883,13 @@ var codepage_descriptions =
     {
       "name": "Max by Tail",
       "description": "Maximum by last item",
-      "overloads": {
-        "any": "max(a, key=lambda x: x[-1]) (maximum by last item)"
-      },
+      "overloads": "any -> max(a, key=lambda x: x[-1]) (maximum by last item)",
       "token": "\u2191"
     },
     {
       "name": "Maximum By Function",
       "description": "Find the maximum value of a list by applying a function to each element",
-      "overloads": {
-        "lst-fun": "maximum value of a by applying b to each element"
-      },
+      "overloads": "lst, fun -> maximum value of a by applying b to each element",
       "token": "\u00de\u2191"
     }
   ],
@@ -2418,17 +1897,13 @@ var codepage_descriptions =
     {
       "name": "Min by Tail",
       "description": "Minimum by last item",
-      "overloads": {
-        "any": "min(a, key=lambda x: x[-1]) (minimum by last item)"
-      },
+      "overloads": "any -> min(a, key=lambda x: x[-1]) (minimum by last item)",
       "token": "\u2193"
     },
     {
       "name": "Minimum By Function",
       "description": "Find the minimum value of a list by applying a function to each element",
-      "overloads": {
-        "lst-fun": "minimum value of a by applying b to each element"
-      },
+      "overloads": "lst, fun -> minimum value of a by applying b to each element",
       "token": "\u00de\u2193"
     }
   ],
@@ -2436,18 +1911,13 @@ var codepage_descriptions =
     {
       "name": "Dyadic Maximum",
       "description": "Maximum of two values / Maximum of a list by a function",
-      "overloads": {
-        "any-any": "max(a,b)",
-        "any-fun": "max(a,key=b)"
-      },
+      "overloads": "any, any -> max(a,b)\nany, fun -> max(a,key=b)",
       "token": "\u2234"
     },
     {
       "name": "Elementwise Vectorised Dyadic Maximum",
       "description": "Elementwise vectorised dyadic maximum.",
-      "overloads": {
-        "lst-lst": "[max(a[0], b[0]), max(a[1], b[1]), ...]"
-      },
+      "overloads": "lst, lst -> [max(a[0], b[0]), max(a[1], b[1]), ...]",
       "token": "\u00de\u2234"
     }
   ],
@@ -2455,18 +1925,13 @@ var codepage_descriptions =
     {
       "name": "Dyadic Minimum",
       "description": "Minimum of two values / Minimum of a list by a function",
-      "overloads": {
-        "any-any": "min(a,b)",
-        "any-fun": "min(a,key=b)"
-      },
+      "overloads": "any, any -> min(a,b)\nany, fun -> min(a,key=b)",
       "token": "\u2235"
     },
     {
       "name": "Elementwise Vectorised Dyadic Minimum",
       "description": "Elementwise vectorised dyadic minimum.",
-      "overloads": {
-        "lst-lst": "[min(a[0], b[0]), min(a[1], b[1]), ...]"
-      },
+      "overloads": "lst, lst -> [min(a[0], b[0]), min(a[1], b[1]), ...]",
       "token": "\u00de\u2235"
     }
   ],
@@ -2474,19 +1939,13 @@ var codepage_descriptions =
     {
       "name": "Increment / Space Replace With 0",
       "description": "Add 1 to a number / replace all spaces in a string with \"0\"",
-      "overloads": {
-        "num": "a + 1",
-        "string": "a.replace(\" \",\"0\")"
-      },
+      "overloads": "num -> a + 1\nstring -> a.replace(\" \",\"0\")",
       "token": "\u203a"
     },
     {
       "name": "Increment until false",
       "description": "Increment a until b(a) is false (deprecated, use `>` instead)",
-      "overloads": {
-        "any-fun": "while b(a): a += 1",
-        "fun-any": "while a(b): b += 1"
-      },
+      "overloads": "any, fun -> while b(a): a += 1\nfun, any -> while a(b): b += 1",
       "token": "\u2206\u203a"
     }
   ],
@@ -2494,19 +1953,13 @@ var codepage_descriptions =
     {
       "name": "Decrement",
       "description": "Subtract 1 from a number",
-      "overloads": {
-        "num": "a - 1",
-        "str": "a + \"-\""
-      },
+      "overloads": "num -> a - 1\nstr -> a + \"-\"",
       "token": "\u2039"
     },
     {
       "name": "Decrement until false",
       "description": "Decrement a until b(a) is false (deprecated, use `<` instead)",
-      "overloads": {
-        "any-fun": "while b(a): a -= 1",
-        "fun-any": "while a(b): b -= 1"
-      },
+      "overloads": "any, fun -> while b(a): a -= 1\nfun, any -> while a(b): b -= 1",
       "token": "\u2206\u2039"
     }
   ],
@@ -2514,10 +1967,7 @@ var codepage_descriptions =
     {
       "name": "Parity",
       "description": "A number modulo 2",
-      "overloads": {
-        "num": "a % 2 (odd?)",
-        "str": "second half of A"
-      },
+      "overloads": "num -> a % 2 (odd?)\nstr -> second half of A",
       "token": "\u2237"
     }
   ],
@@ -2558,10 +2008,7 @@ var codepage_descriptions =
     {
       "name": "To Base Ten / From Custom Base",
       "description": "Convert a number from a custom base to base 10",
-      "overloads": {
-        "any-num": "a to base 10 from number base b, treating list items / string items as digits",
-        "str-str": "a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10"
-      },
+      "overloads": "any, num -> a to base 10 from number base b, treating list items / string items as digits\nstr, str -> a to base 10 from custom string base b, replacing values in a with their index in b and converting to base 10",
       "token": "\u03b2"
     },
     {
@@ -2572,9 +2019,7 @@ var codepage_descriptions =
     {
       "name": "Balanced Brackets",
       "description": "Check if brackets in a string (\"{}()[]<>\") are balanced",
-      "overloads": {
-        "any": "balanced_brackets(a)"
-      },
+      "overloads": "any -> balanced_brackets(a)",
       "token": "\u00f8\u03b2"
     }
   ],
@@ -2582,19 +2027,13 @@ var codepage_descriptions =
     {
       "name": "From Base Ten / To Custom Base",
       "description": "Convert a number to a different base from base 10.",
-      "overloads": {
-        "num-num": "list of digits of a in base b",
-        "num-str": "a converted into a string of characters of b",
-        "num-lst": "a converted into a list of arbitrary values from b"
-      },
+      "overloads": "num, num -> list of digits of a in base b\nnum, str -> a converted into a string of characters of b\nnum, lst -> a converted into a list of arbitrary values from b",
       "token": "\u03c4"
     },
     {
       "name": "Common Logarithm",
       "description": "Get the common logarithm of a number",
-      "overloads": {
-        "num": "math.log10(a)"
-      },
+      "overloads": "num -> math.log10(a)",
       "token": "\u2206\u03c4"
     }
   ],
@@ -2602,10 +2041,7 @@ var codepage_descriptions =
     {
       "name": "Absolute value",
       "description": "Take the absolute value of a number, or remove whitespace from a string",
-      "overloads": {
-        "num": "abs(a) (absolute value)",
-        "str": "remove whitespace from a"
-      },
+      "overloads": "num -> abs(a) (absolute value)\nstr -> remove whitespace from a",
       "token": "\u0227"
     }
   ],
@@ -2613,9 +2049,7 @@ var codepage_descriptions =
     {
       "name": "Boolify",
       "description": "Convert an arbitrary value into a truthy or falsy value, vectorises with flag t",
-      "overloads": {
-        "any": "bool(a) (booliify)"
-      },
+      "overloads": "any -> bool(a) (booliify)",
       "token": "\u1e03"
     },
     {
@@ -2626,9 +2060,7 @@ var codepage_descriptions =
     {
       "name": "Curly Bracketify",
       "description": "Enclose a string in curly brackets",
-      "overloads": {
-        "any": "\"{\"\" + a + \"}\""
-      },
+      "overloads": "any -> \"{\"\" + a + \"}\"",
       "token": "\u00f8\u1e03"
     }
   ],
@@ -2636,33 +2068,25 @@ var codepage_descriptions =
     {
       "name": "Not One",
       "description": "Check if something is not equal to 1",
-      "overloads": {
-        "any": "a != 1"
-      },
+      "overloads": "any -> a != 1",
       "token": "\u010b"
     },
     {
       "name": "Nth Cardinal",
       "description": "Get the nth cardinal / convert number to words",
-      "overloads": {
-        "num": "num_to_words(a)"
-      },
+      "overloads": "num -> num_to_words(a)",
       "token": "\u2206\u010b"
     },
     {
       "name": "Semi Optimal number compress",
       "description": "Semi-optimally compress a number",
-      "overloads": {
-        "num": "optimal_number_compress(a)"
-      },
+      "overloads": "num -> optimal_number_compress(a)",
       "token": "\u00f8\u010b"
     },
     {
       "name": "Cycle",
       "description": "Form an infinite list from a vector.",
-      "overloads": {
-        "lst": "[a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]"
-      },
+      "overloads": "lst -> [a[0], a[1], ..., a[-1], a[0], a[1], ..., a[-1], a[0], ...]",
       "token": "\u00de\u010b"
     }
   ],
@@ -2670,12 +2094,7 @@ var codepage_descriptions =
     {
       "name": "Divmod",
       "description": "Divmod / combinations / trim",
-      "overloads": {
-        "num-num": "[a // b, a % b] (divmod - division and modulo)",
-        "str-num": "combinations of a with length b",
-        "lst-num": "combinations of a with length b",
-        "str-str": "overwrite the start of a with b (b + a[len(b):])"
-      },
+      "overloads": "num, num -> [a // b, a % b] (divmod - division and modulo)\nstr, num -> combinations of a with length b\nlst, num -> combinations of a with length b\nstr, str -> overwrite the start of a with b (b + a[len(b):])",
       "token": "\u1e0b"
     },
     {
@@ -2686,17 +2105,13 @@ var codepage_descriptions =
     {
       "name": "To Decimal",
       "description": "Convert a rational to its decimal representation.",
-      "overloads": {
-        "num": "to_decimal(a)"
-      },
+      "overloads": "num -> to_decimal(a)",
       "token": "\u00f8\u1e0b"
     },
     {
       "name": "Anti-diagonals",
       "description": "Anti-diagonals of a matrix, starting with the main anti-diagonal.",
-      "overloads": {
-        "lst": "anti-diagonals of a, starting with the main anti-diagonal"
-      },
+      "overloads": "lst -> anti-diagonals of a, starting with the main anti-diagonal",
       "token": "\u00de\u1e0b"
     }
   ],
@@ -2704,18 +2119,13 @@ var codepage_descriptions =
     {
       "name": "Enumerate",
       "description": "Zip with a range of the same length",
-      "overloads": {
-        "any": "enumerate(a) (zip with 1...len(a))"
-      },
+      "overloads": "any -> enumerate(a) (zip with 1...len(a))",
       "token": "\u0117"
     },
     {
       "name": "Nth Digit of Euler's Number (e) / Differentiate",
       "description": "Get the nth digit of Euler's number (e)",
-      "overloads": {
-        "num": "nth_digit_of_e(a)",
-        "str": "derivative(a)"
-      },
+      "overloads": "num -> nth_digit_of_e(a)\nstr -> derivative(a)",
       "token": "\u2206\u0117"
     }
   ],
@@ -2723,18 +2133,13 @@ var codepage_descriptions =
     {
       "name": "Find",
       "description": "Find a value in another",
-      "overloads": {
-        "any-any": "a.find(b) (indexing, -1 if not found)",
-        "any-fun": "truthy indices of mapping b over a"
-      },
+      "overloads": "any, any -> a.find(b) (indexing, -1 if not found)\nany, fun -> truthy indices of mapping b over a",
       "token": "\u1e1f"
     },
     {
       "name": "Multidimensional Search",
       "description": "Find the first multidimensional index of a value in another",
-      "overloads": {
-        "lst-any": "find the first occurrence of a in b and return as a multidimensional index"
-      },
+      "overloads": "lst, any -> find the first occurrence of a in b and return as a multidimensional index",
       "token": "\u00de\u1e1f"
     }
   ],
@@ -2742,13 +2147,7 @@ var codepage_descriptions =
     {
       "name": "Gcd / Group by Function",
       "description": "Greatest Common Denominator of a list or some numbers",
-      "overloads": {
-        "lst": "GCD(a) (gcd of whole list)",
-        "num-num": "gcd(a,b) (dyadic gcd)",
-        "str-str": "longest common suffix of a and b",
-        "fun-any": "group b by the results of function a",
-        "any-fun": "group a by the results of function b"
-      },
+      "overloads": "lst -> GCD(a) (gcd of whole list)\nnum, num -> gcd(a,b) (dyadic gcd)\nstr, str -> longest common suffix of a and b\nfun, any -> group b by the results of function a\nany, fun -> group a by the results of function b",
       "token": "\u0121"
     }
   ],
@@ -2756,9 +2155,7 @@ var codepage_descriptions =
     {
       "name": "Head Extract",
       "description": "Separate the first item of something and push both to stack",
-      "overloads": {
-        "any": "a[0], a[1:] (head extract)"
-      },
+      "overloads": "any -> a[0], a[1:] (head extract)",
       "token": "\u1e23"
     }
   ],
@@ -2766,17 +2163,11 @@ var codepage_descriptions =
     {
       "name": "Floor Division",
       "description": "Floor divide a by b",
-      "overloads": {
-        "num-num": "a // b (floor division, floor(a / b))",
-        "str-num": "(a divided into b pieces)[0]",
-        "num-str": "(b divided into a pieces)[0]",
-        "any-fun": "right reduce a by b (foldr)",
-        "fun-any": "right reduce b by a (foldr)"
-      },
+      "overloads": "num, num -> a // b (floor division, floor(a / b))\nstr, num -> (a divided into b pieces)[0]\nnum, str -> (b divided into a pieces)[0]\nany, fun -> right reduce a by b (foldr)\nfun, any -> right reduce b by a (foldr)",
       "token": "\u1e2d"
     },
     {
-      "name": 4294967296,
+      "name": "4294967296",
       "description": "2 ** 32, 2^32, 4294967296",
       "token": "k\u1e2d"
     }
@@ -2785,26 +2176,13 @@ var codepage_descriptions =
     {
       "name": "Left Justify / Gridify / Infinite Replace / Collect until false",
       "description": "Find one value inside another, starting from a certain index.",
-      "overloads": {
-        "num-num-num": "a <= c <= b",
-        "num-num-str": "a by b grid of c",
-        "num-str-num": "a by c grid of b",
-        "num-str-str": "b.ljust(a,filler=c)",
-        "str-num-num": "b by c grid of a",
-        "str-num-str": "a.ljust(c,filler=b)",
-        "str-str-num": "a.ljust(b,filler=c)",
-        "str-str-str": "a.infinite_replace(b, c)",
-        "fun-fun-any": "[c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy"
-      },
+      "overloads": "num, num, num -> a <= c <= b\nnum, num, str -> a by b grid of c\nnum, str, num -> a by c grid of b\nnum, str, str -> b.ljust(a,filler=c)\nstr, num, num -> b by c grid of a\nstr, num, str -> a.ljust(c,filler=b)\nstr, str, num -> a.ljust(b,filler=c)\nstr, str, str -> a.infinite_replace(b, c)\nfun, fun, any -> [c, a(c), a(a(c)), ...], stopping at the first element x such that b(x) is falsy",
       "token": "\u0140"
     },
     {
       "name": "Left Align",
       "description": "Left align a string/string list",
-      "overloads": {
-        "str": "justify to left",
-        "lst": "justify each to left"
-      },
+      "overloads": "str -> justify to left\nlst -> justify each to left",
       "token": "\u00f8\u0140"
     }
   ],
@@ -2812,34 +2190,25 @@ var codepage_descriptions =
     {
       "name": "Mean",
       "description": "Average of a list - sum / length",
-      "overloads": {
-        "str": "palindromise(a) (a + a[:-1:-1])",
-        "lst": "mean(a)"
-      },
+      "overloads": "str -> palindromise(a) (a + a[:-1:-1])\nlst -> mean(a)",
       "token": "\u1e41"
     },
     {
       "name": "Median",
       "description": "Get the median of a list - returns a list of the two middle items if even length list (use \u1e41 to average them)",
-      "overloads": {
-        "lst": "median(a)"
-      },
+      "overloads": "lst -> median(a)",
       "token": "\u2206\u1e41"
     },
     {
       "name": "Vertical Mirror",
       "description": "Vertical Mirror - Split by newlines, mirror each line, join by newlines",
-      "overloads": {
-        "str": "vertical_mirror(a)"
-      },
+      "overloads": "str -> vertical_mirror(a)",
       "token": "\u00f8\u1e41"
     },
     {
       "name": "Mold without repeat",
       "description": "Mold a list without repeating elements.",
-      "overloads": {
-        "lst-lst": "mold a list without repeating elements"
-      },
+      "overloads": "lst, lst -> mold a list without repeating elements",
       "token": "\u00de\u1e41"
     }
   ],
@@ -2847,17 +2216,12 @@ var codepage_descriptions =
     {
       "name": "Join By Nothing",
       "description": "Join a list by the empty string. Vectorises if the list contains lists.",
-      "overloads": {
-        "num": "abs(a) <= 1",
-        "str": "pad with 0s to nearest positive multiple of 8",
-        "lst": "\"\".join(a)",
-        "fun": "first integer x where a(x) is truthy"
-      },
+      "overloads": "num -> abs(a) <= 1\nstr -> pad with 0s to nearest positive multiple of 8\nlst -> \"\".join(a)\nfun -> first integer x where a(x) is truthy",
       "token": "\u1e45"
     },
     {
-      "name": 8192,
-      "description": 8192,
+      "name": "8192",
+      "description": "8192",
       "token": "k\u1e45"
     }
   ],
@@ -2865,11 +2229,7 @@ var codepage_descriptions =
     {
       "name": "Slice",
       "description": "Slice from an index to the end",
-      "overloads": {
-        "fun-num": "first b integers for which a(x) is truthy",
-        "any-num": "a[b:] (slice from b to the end)",
-        "str-str": "vertically merge a and b"
-      },
+      "overloads": "fun, num -> first b integers for which a(x) is truthy\nany, num -> a[b:] (slice from b to the end)\nstr, str -> vertically merge a and b",
       "token": "\u022f"
     }
   ],
@@ -2877,9 +2237,7 @@ var codepage_descriptions =
     {
       "name": "Powerset",
       "description": "All possible combinations of a",
-      "overloads": {
-        "any": "all subsets of a (including the empty subset)"
-      },
+      "overloads": "any -> all subsets of a (including the empty subset)",
       "token": "\u1e57"
     },
     {
@@ -2890,18 +2248,13 @@ var codepage_descriptions =
     {
       "name": "First Prime Before a Number / Factor Expression",
       "description": "Get the first prime number before a given number / factor a mathematical expression",
-      "overloads": {
-        "num": "prev_prime(a)",
-        "str": "factorise(a)"
-      },
+      "overloads": "num -> prev_prime(a)\nstr -> factorise(a)",
       "token": "\u2206\u1e57"
     },
     {
       "name": "Flip Brackets Vertical Palindromise, Center, Join on Newlines",
       "description": "Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `\u00f8M\u00f8\u010a\u204b`",
-      "overloads": {
-        "any": "palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines"
-      },
+      "overloads": "any -> palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines",
       "token": "\u00f8\u1e57"
     }
   ],
@@ -2909,28 +2262,19 @@ var codepage_descriptions =
     {
       "name": "Round",
       "description": "Round a number to the nearest integer / real and imaginary part of complex number",
-      "overloads": {
-        "num": "round(a)",
-        "complex": "[real(a), imag(a)]",
-        "str": "quad palindromise with overlap"
-      },
+      "overloads": "num -> round(a)\ncomplex -> [real(a), imag(a)]\nstr -> quad palindromise with overlap",
       "token": "\u1e59"
     },
     {
       "name": "Polynomial from Roots",
       "description": "Get the polynomial with coefficients from the roots of a polynomial",
-      "overloads": {
-        "list": "polynomial(a)"
-      },
+      "overloads": "list -> polynomial(a)",
       "token": "\u2206\u1e59"
     },
     {
       "name": "Regex replace",
       "description": "Replace matches of a with c in b",
-      "overloads": {
-        "any-any-fun": "apply c to matches of a in b",
-        "any-any-any": "replace matches of a with c in b"
-      },
+      "overloads": "any, any, fun -> apply c to matches of a in b\nany, any, any -> replace matches of a with c in b",
       "token": "\u00f8\u1e59"
     }
   ],
@@ -2938,19 +2282,13 @@ var codepage_descriptions =
     {
       "name": "Sort by Function",
       "description": "Sort a list by a function / create a range / split on a regex",
-      "overloads": {
-        "any-fun": "sorted(a, key=b) (sort by b)",
-        "num-num": "range(a, b + 1) (inclusive range from a to b)",
-        "str-str": "regex.split(pattern=b, string=a)"
-      },
+      "overloads": "any, fun -> sorted(a, key=b) (sort by b)\nnum, num -> range(a, b + 1) (inclusive range from a to b)\nstr, str -> regex.split(pattern=b, string=a)",
       "token": "\u1e61"
     },
     {
       "name": "Sort By Length",
       "description": "Sort a list by length.",
-      "overloads": {
-        "lst": "sort a from shortest to longest"
-      },
+      "overloads": "lst -> sort a from shortest to longest",
       "token": "\u00de\u1e61"
     }
   ],
@@ -2958,18 +2296,13 @@ var codepage_descriptions =
     {
       "name": "Tail Extract",
       "description": "Remove the last item and push both onto the stack",
-      "overloads": {
-        "any": "a[:-1],a[-1]"
-      },
+      "overloads": "any -> a[:-1],a[-1]",
       "token": "\u1e6b"
     },
     {
       "name": "Totient Function / Local Minima",
       "description": "Get the totient function of a number / local minima of a function",
-      "overloads": {
-        "num": "totient(a)",
-        "str": "local_minima(a)"
-      },
+      "overloads": "num -> totient(a)\nstr -> local_minima(a)",
       "token": "\u2206\u1e6b"
     }
   ],
@@ -2977,31 +2310,19 @@ var codepage_descriptions =
     {
       "name": "Chunk Wrap",
       "description": "Wrap a list in chunks of a certain length / apply a function to every second item of a list",
-      "overloads": {
-        "any-num": "a wrapped in chunks of length b",
-        "num-any": "b wrapped in chunks of length a",
-        "any-lst": "wrap a into chunks with lengths given in b, repeating if necessary",
-        "lst-any": "wrap b into chunks with lengths given in a, repeating if necessary",
-        "any-fun": "apply b to every second item of a ([a[0], b(a[1]), a[2], ...])",
-        "fun-any": "apply a to every second item of b ([b[0], a(b[1]), b[2], ...])",
-        "str-str": "split a on first occurrence of b"
-      },
+      "overloads": "any, num -> a wrapped in chunks of length b\nnum, any -> b wrapped in chunks of length a\nany, lst -> wrap a into chunks with lengths given in b, repeating if necessary\nlst, any -> wrap b into chunks with lengths given in a, repeating if necessary\nany, fun -> apply b to every second item of a ([a[0], b(a[1]), a[2], ...])\nfun, any -> apply a to every second item of b ([b[0], a(b[1]), b[2], ...])\nstr, str -> split a on first occurrence of b",
       "token": "\u1e87"
     },
     {
       "name": "Unwrap",
       "description": "Take a and push a[0]+a[-1] and a[1:-1]",
-      "overloads": {
-        "lst": "a[0]+a[-1], a[1:-1]"
-      },
+      "overloads": "lst -> a[0]+a[-1], a[1:-1]",
       "token": "\u00de\u1e87"
     },
     {
       "name": "Wrap Last n Items",
       "description": "Wrap the last n items on the stack into a list",
-      "overloads": {
-        "num": "last a items of the stack, as a list; does not pop anything other than a"
-      },
+      "overloads": "num -> last a items of the stack, as a list; does not pop anything other than a",
       "token": "\u00a8\u1e87"
     }
   ],
@@ -3009,14 +2330,7 @@ var codepage_descriptions =
     {
       "name": "Repeat",
       "description": "Repeat a value several times",
-      "overloads": {
-        "str-num": "a * b",
-        "num-str": "b * a",
-        "any-num": "repeat a b times ([a, a, ...])",
-        "str-str": "a + \" \" + b",
-        "fun-any": "repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))",
-        "any-fun": "repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))"
-      },
+      "overloads": "str, num -> a * b\nnum, str -> b * a\nany, num -> repeat a b times ([a, a, ...])\nstr, str -> a + \" \" + b\nfun, any -> repeat function a on b while results are not unique ([a(b), a(a(b)), a(a(a(b))), ...] stopping at the first element i such that i == a(i))\nany, fun -> repeat function a on b while results are not unique ([b(a), b(b(a)), b(b(b(a))), ...] stopping at the first element i such that i == b(i))",
       "token": "\u1e8b"
     }
   ],
@@ -3024,9 +2338,7 @@ var codepage_descriptions =
     {
       "name": "Exclusive Range Length",
       "description": "Range from 0 to length of a",
-      "overloads": {
-        "any": "range(0, len(a)) (exclusive range from 0 to length of a)"
-      },
+      "overloads": "any -> range(0, len(a)) (exclusive range from 0 to length of a)",
       "token": "\u1e8f"
     }
   ],
@@ -3034,17 +2346,13 @@ var codepage_descriptions =
     {
       "name": "Inclusive Range Length",
       "description": "Range from 1 to length of a inclusive",
-      "overloads": {
-        "any": "range(1, len(a)+1) (inclusive range from 1 to length of a)"
-      },
+      "overloads": "any -> range(1, len(a)+1) (inclusive range from 1 to length of a)",
       "token": "\u017c"
     },
     {
       "name": "Lift",
       "description": "Multiply a numeric list by a range from 1 to its length",
-      "overloads": {
-        "lst": "lift"
-      },
+      "overloads": "lst -> lift",
       "token": "\u00de\u017c"
     }
   ],
@@ -3052,10 +2360,7 @@ var codepage_descriptions =
     {
       "name": "Square Root",
       "description": "Square root a number / every second character of a",
-      "overloads": {
-        "num": "sqrt(a) (square root)",
-        "str": "every second character of a (a[0] + a[2] + ...)"
-      },
+      "overloads": "num -> sqrt(a) (square root)\nstr -> every second character of a (a[0] + a[2] + ...)",
       "token": "\u221a"
     }
   ],
@@ -3094,10 +2399,7 @@ var codepage_descriptions =
       "token": "\u2081"
     },
     {
-      "name": [
-        1,
-        1
-      ],
+      "name": "[1, 1]",
       "description": "The list [1, 1]",
       "token": "k\u2081"
     }
@@ -3106,10 +2408,7 @@ var codepage_descriptions =
     {
       "name": "Is Even",
       "description": "Check if a value is even",
-      "overloads": {
-        "num": "a % 2 == 0 (even?)",
-        "any": "len(a) % 2 == 0 (length even?)"
-      },
+      "overloads": "num -> a % 2 == 0 (even?)\nany -> len(a) % 2 == 0 (length even?)",
       "token": "\u2082"
     },
     {
@@ -3127,10 +2426,7 @@ var codepage_descriptions =
     {
       "name": "Divisible By Three",
       "description": "Check if a is divisible by 3",
-      "overloads": {
-        "num": "a % 3 == 0 (divisible by 3?)",
-        "any": "len(a) == 1 (length is 1?)"
-      },
+      "overloads": "num -> a % 3 == 0 (divisible by 3?)\nany -> len(a) == 1 (length is 1?)",
       "token": "\u2083"
     },
     {
@@ -3155,10 +2451,7 @@ var codepage_descriptions =
     {
       "name": "Divisible By Five",
       "description": "Check if a is divisible by 5",
-      "overloads": {
-        "num": "a % 5 == 0",
-        "any": "a, len(a)"
-      },
+      "overloads": "num -> a % 5 == 0\nany -> a, len(a)",
       "token": "\u2085"
     }
   ],
@@ -3190,8 +2483,8 @@ var codepage_descriptions =
       "token": "\u00b6"
     },
     {
-      "name": 512,
-      "description": 512,
+      "name": "512",
+      "description": "512",
       "token": "k\u00b6"
     }
   ],
@@ -3199,14 +2492,12 @@ var codepage_descriptions =
     {
       "name": "Join On Newlines",
       "description": "Join the top of the stack on newlines (insert \"\\n\" between items)",
-      "overloads": {
-        "any": "\"\\\\n\".join(a)"
-      },
+      "overloads": "any -> \"\\\\n\".join(a)",
       "token": "\u204b"
     },
     {
-      "name": 1024,
-      "description": 1024,
+      "name": "1024",
+      "description": "1024",
       "token": "k\u204b"
     }
   ],
@@ -3214,9 +2505,7 @@ var codepage_descriptions =
     {
       "name": "Vertical Join",
       "description": "Transpose (filling with spaces) and then join on newlines",
-      "overloads": {
-        "any": "transpose a, join on newlines"
-      },
+      "overloads": "any -> transpose a, join on newlines",
       "token": "\u00a7"
     }
   ],
@@ -3224,17 +2513,12 @@ var codepage_descriptions =
     {
       "name": "Absolute Difference / Repeat / Regex match",
       "description": "Returns the absolute difference / Fills an array of a certain length / Does a regex match",
-      "overloads": {
-        "num-num": "abs(a - b)",
-        "num-str": "[b] * a",
-        "str-num": "[a] * b",
-        "str-str": "regex.match(b, a) (first match of regex b on a)"
-      },
+      "overloads": "num, num -> abs(a - b)\nnum, str -> [b] * a\nstr, num -> [a] * b\nstr, str -> regex.match(b, a) (first match of regex b on a)",
       "token": "\u03b5"
     },
     {
-      "name": 32768,
-      "description": 32768,
+      "name": "32768",
+      "description": "32768",
       "token": "k\u03b5"
     }
   ],
@@ -3242,15 +2526,12 @@ var codepage_descriptions =
     {
       "name": "Factorial",
       "description": "Returns the factorial of the top of the stack",
-      "overloads": {
-        "num": "factorial(a) (math.gamma(a + 1))",
-        "str": "a.sentence_case()"
-      },
+      "overloads": "num -> factorial(a) (math.gamma(a + 1))\nstr -> a.sentence_case()",
       "token": "\u00a1"
     },
     {
-      "name": 16384,
-      "description": 16384,
+      "name": "16384",
+      "description": "16384",
       "token": "k\u00a1"
     }
   ],
@@ -3258,11 +2539,7 @@ var codepage_descriptions =
     {
       "name": "Summate",
       "description": "Returns the sum of the top of the stack (reduce by addition)",
-      "overloads": {
-        "num": "sum(digits of a)",
-        "str": "a",
-        "lst": "sum(a)"
-      },
+      "overloads": "num -> sum(digits of a)\nstr -> a\nlst -> sum(a)",
       "token": "\u2211"
     }
   ],
@@ -3270,14 +2547,12 @@ var codepage_descriptions =
     {
       "name": "Cumulative Sum",
       "description": "Returns the sums of the prefixes of the top of the stack (cumulatively reduce by addition)",
-      "overloads": {
-        "any": "cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])"
-      },
+      "overloads": "any -> cumulative_sum(a) ([a[0], a[0]+a[1], a[0]+a[1]+a[2], ...])",
       "token": "\u00a6"
     },
     {
-      "name": 2048,
-      "description": 2048,
+      "name": "2048",
+      "description": "2048",
       "token": "k\u00a6"
     }
   ],
@@ -3285,20 +2560,12 @@ var codepage_descriptions =
     {
       "name": "All Equal",
       "description": "Returns whether all items are equal",
-      "overloads": {
-        "any": "are all items in a equal?"
-      },
+      "overloads": "any -> are all items in a equal?",
       "token": "\u2248"
     },
     {
-      "name": [
-        0,
-        1
-      ],
-      "description": [
-        0,
-        1
-      ],
+      "name": "[0, 1]",
+      "description": "[0, 1]",
       "token": "k\u2248"
     }
   ],
@@ -3313,9 +2580,7 @@ var codepage_descriptions =
     {
       "name": "Assign",
       "description": "The equivalent of a[b] = c",
-      "overloads": {
-        "any-num-any": "a but item b (0-indexed) is set to c"
-      },
+      "overloads": "any, num, any -> a but item b (0-indexed) is set to c",
       "token": "\u0226"
     }
   ],
@@ -3323,9 +2588,7 @@ var codepage_descriptions =
     {
       "name": "Bifurcate",
       "description": "Pushes the top of the stack then its reverse. Literally duplicate and reverse",
-      "overloads": {
-        "any": "a, reversed(a)"
-      },
+      "overloads": "any -> a, reversed(a)",
       "token": "\u1e02"
     },
     {
@@ -3336,9 +2599,7 @@ var codepage_descriptions =
     {
       "name": "Angle Bracketify",
       "description": "Enclose a string in angle brackets",
-      "overloads": {
-        "any": "\"<\"\" + a + \">\""
-      },
+      "overloads": "any -> \"<\"\" + a + \">\"",
       "token": "\u00f8\u1e02"
     }
   ],
@@ -3346,35 +2607,25 @@ var codepage_descriptions =
     {
       "name": "Counts",
       "description": "Returns a list of [item, count of item in the top of stack]",
-      "overloads": {
-        "any": "[[x, a.count(x)] for x in a]"
-      },
+      "overloads": "any -> [[x, a.count(x)] for x in a]",
       "token": "\u010a"
     },
     {
       "name": "Polynomial Expression From Coefficients",
       "description": "Get the polynomial expression from a list of coefficients",
-      "overloads": {
-        "num": "polynomial of degree n",
-        "str": "a",
-        "lst": "polynomial_expression(a)"
-      },
+      "overloads": "num -> polynomial of degree n\nstr -> a\nlst -> polynomial_expression(a)",
       "token": "\u2206\u010a"
     },
     {
       "name": "Center",
       "description": "Center a list of strings",
-      "overloads": {
-        "lst": "center(a) (pad each item with spaces so all are the same length and centered)"
-      },
+      "overloads": "lst -> center(a) (pad each item with spaces so all are the same length and centered)",
       "token": "\u00f8\u010a"
     },
     {
       "name": "Is Unordered?",
       "description": "Returns true if the item is not sorted in either descending or ascending order.",
-      "overloads": {
-        "lst": "is a not sorted, in either increasing or decreasing order?"
-      },
+      "overloads": "lst -> is a not sorted, in either increasing or decreasing order?",
       "token": "\u00de\u010a"
     }
   ],
@@ -3382,14 +2633,7 @@ var codepage_descriptions =
     {
       "name": "Is Divisible / Arbitrary Duplicate / Ordered Group By",
       "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order",
-      "overloads": {
-        "num-num": "a % b == 0",
-        "num-str": "a copies of b",
-        "str-num": "b copies of a",
-        "str-str": "b + \" \" + a",
-        "any-fun": "group a by the results of b, order is preserved",
-        "fun-any": "group b by the results of a, order is preserved"
-      },
+      "overloads": "num, num -> a % b == 0\nnum, str -> a copies of b\nstr, num -> b copies of a\nstr, str -> b + \" \" + a\nany, fun -> group a by the results of b, order is preserved\nfun, any -> group b by the results of a, order is preserved",
       "token": "\u1e0a"
     },
     {
@@ -3400,17 +2644,13 @@ var codepage_descriptions =
     {
       "name": "Dyadic Run Length Decode",
       "description": "Run length decoding, convert list of characters and list of lengths to a string/list",
-      "overloads": {
-        "lst-lst": "run length decode with items a and lengths b"
-      },
+      "overloads": "lst, lst -> run length decode with items a and lengths b",
       "token": "\u00f8\u1e0a"
     },
     {
       "name": "Matrix Determinant",
       "description": "Calculate the determinant of a matrix.",
-      "overloads": {
-        "lst": "determinant(a)"
-      },
+      "overloads": "lst -> determinant(a)",
       "token": "\u00de\u1e0a"
     }
   ],
@@ -3418,27 +2658,19 @@ var codepage_descriptions =
     {
       "name": "Vyxal Exec / Reciprocal",
       "description": "Executes as Vyxal / Reciprocal of number",
-      "overloads": {
-        "str": "vy_exec(a)",
-        "num": "1 / a"
-      },
+      "overloads": "str -> vy_exec(a)\nnum -> 1 / a",
       "token": "\u0116"
     },
     {
       "name": "N Digits of Euler's Number (e) / Sympy Evaluate",
       "description": "Get the first n digits of Euler's number (e) / evaluate an expression as sympy",
-      "overloads": {
-        "num": "first n digits of e",
-        "str": "evaluate(a)"
-      },
+      "overloads": "num -> first n digits of e\nstr -> evaluate(a)",
       "token": "\u2206\u0116"
     },
     {
       "name": "Separated Run Length Encoding",
       "description": "Run length encoding, convert from string/list to list of items and list of amounts. Equivalent to `\u00f8e\u2229\u00f7`",
-      "overloads": {
-        "str": "run length encode a and push items and lengths"
-      },
+      "overloads": "str -> run length encode a and push items and lengths",
       "token": "\u00f8\u0116"
     }
   ],
@@ -3446,32 +2678,19 @@ var codepage_descriptions =
     {
       "name": "Generator / Modulo Index / Format",
       "description": "Make a generator from function a with initial vector b, or get every nth item or format numbers as decimals.",
-      "overloads": {
-        "num-num": "sympy.N(a, b) (evaluate a to b decimal places)",
-        "str-num": "every bth letter of a (a[::b])",
-        "num-str": "every ath letter of b (b[::a])",
-        "str-str": "replace spaces in a with b",
-        "lst-num": "every bth item of a (a[::b])",
-        "num-lst": "every ath item of b (b[::a])",
-        "fun-lst": "generator from function a with initial vector b"
-      },
+      "overloads": "num, num -> sympy.N(a, b) (evaluate a to b decimal places)\nstr, num -> every bth letter of a (a[::b])\nnum, str -> every ath letter of b (b[::a])\nstr, str -> replace spaces in a with b\nlst, num -> every bth item of a (a[::b])\nnum, lst -> every ath item of b (b[::a])\nfun, lst -> generator from function a with initial vector b",
       "token": "\u1e1e"
     },
     {
       "name": "Replace First Occurrence",
       "description": "Replace the first instance of an item with another item",
-      "overloads": {
-        "any-any-any": "a.replace_first(b, c)"
-      },
+      "overloads": "any, any, any -> a.replace_first(b, c)",
       "token": "\u00f8\u1e1e"
     },
     {
       "name": "Fill to make rectangular",
       "description": "Fill a 2-D list to make it rectangular",
-      "overloads": {
-        "lst-any": "fill a with b to make it rectangular",
-        "any-lst": "fill b with a to make it rectangular"
-      },
+      "overloads": "lst, any -> fill a with b to make it rectangular\nany, lst -> fill b with a to make it rectangular",
       "token": "\u00de\u1e1e"
     }
   ],
@@ -3479,11 +2698,7 @@ var codepage_descriptions =
     {
       "name": "Group consecutive",
       "description": "Group consecutive identical items",
-      "overloads": {
-        "lst": "group consecutive identical items",
-        "str": "group consecutive identical characters",
-        "num": "group consecutive identical digits"
-      },
+      "overloads": "lst -> group consecutive identical items\nstr -> group consecutive identical characters\nnum -> group consecutive identical digits",
       "token": "\u0120"
     }
   ],
@@ -3491,11 +2706,7 @@ var codepage_descriptions =
     {
       "name": "Head Remove / Behead",
       "description": "All but the first item of a list / Drop 1",
-      "overloads": {
-        "lst": "a[1:] or [] if empty",
-        "str": "a[1:] or '' if empty",
-        "num": "remove first digit or do nothing if <1"
-      },
+      "overloads": "lst -> a[1:] or [] if empty\nstr -> a[1:] or '' if empty\nnum -> remove first digit or do nothing if <1",
       "token": "\u1e22"
     }
   ],
@@ -3503,19 +2714,13 @@ var codepage_descriptions =
     {
       "name": "Index into or collect while unique",
       "description": "Index into list at indices / Collect values while values are unique",
-      "overloads": {
-        "any-lst": "[a[item] for item in b]",
-        "any-fun": "apply b on a and collect unique values"
-      },
+      "overloads": "any, lst -> [a[item] for item in b]\nany, fun -> apply b on a and collect unique values",
       "token": "\u0130"
     },
     {
       "name": "First n Items and Rest",
       "description": "Push the first n items of a, then the rest of a",
-      "overloads": {
-        "lst-int": "a[:b], a[b:]",
-        "int-lst": "b[:a], b[a:]"
-      },
+      "overloads": "lst, int -> a[:b], a[b:]\nint, lst -> b[:a], b[a:]",
       "token": "\u00de\u0130"
     }
   ],
@@ -3523,19 +2728,13 @@ var codepage_descriptions =
     {
       "name": "Transliterate",
       "description": "Replace each item of one value in another value with the corresponding element from a third value",
-      "overloads": {
-        "any-any-any": "transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)",
-        "fun-fun-any": "call b on c until a(c) is falsy"
-      },
+      "overloads": "any, any, any -> transliterate(a,b,c) (in a, replace b[0] with c[0], b[1] with c[1], b[2] with c[2], ...)\nfun, fun, any -> call b on c until a(c) is falsy",
       "token": "\u013f"
     },
     {
       "name": "Least Common Multiple",
       "description": "Get the least common multiple of two numbers",
-      "overloads": {
-        "lst": "lcm(a)",
-        "num-num": "lcm(a, b)"
-      },
+      "overloads": "lst -> lcm(a)\nnum, num -> lcm(a, b)",
       "token": "\u2206\u013f"
     }
   ],
@@ -3543,26 +2742,19 @@ var codepage_descriptions =
     {
       "name": "Insert",
       "description": "Insert a value at a specified index / Map a function over every nth item of a list",
-      "overloads": {
-        "any-num-any": "a.insert(b,c) (insert c at position b in a)",
-        "any-num-fun": "c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])"
-      },
+      "overloads": "any, num, any -> a.insert(b,c) (insert c at position b in a)\nany, num, fun -> c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])",
       "token": "\u1e40"
     },
     {
       "name": "Flip Brackets Vertical Mirror",
       "description": "Vertical mirror, and swap brackets and slashes in the second half.",
-      "overloads": {
-        "any": "vertical_mirror(a, mapping = flip brackets and slashes)"
-      },
+      "overloads": "any -> vertical_mirror(a, mapping = flip brackets and slashes)",
       "token": "\u00f8\u1e40"
     },
     {
       "name": "Matrix Multiplication",
       "description": "Multiply two matrices together.",
-      "overloads": {
-        "lst-lst": "matrix multiply a and b"
-      },
+      "overloads": "lst, lst -> matrix multiply a and b",
       "token": "\u00de\u1e40"
     }
   ],
@@ -3570,23 +2762,18 @@ var codepage_descriptions =
     {
       "name": "Integer partitions",
       "description": "Integer partitions / join by space",
-      "overloads": {
-        "num": "integer_partitions(a) (integer partitions)",
-        "any": "\" \".join(a) (join by space)"
-      },
+      "overloads": "num -> integer_partitions(a) (integer partitions)\nany -> \" \".join(a) (join by space)",
       "token": "\u1e44"
     },
     {
-      "name": 4096,
-      "description": 4096,
+      "name": "4096",
+      "description": "4096",
       "token": "k\u1e44"
     },
     {
       "name": "Replace Nth Occurrence",
       "description": "Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.",
-      "overloads": {
-        "any-any-any-any": "a.replace_nth_occurrence(b, c, d)"
-      },
+      "overloads": "any, any, any, any -> a.replace_nth_occurrence(b, c, d)",
       "token": "\u00f8\u1e44"
     },
     {
@@ -3604,9 +2791,7 @@ var codepage_descriptions =
     {
       "name": "Is Ordered?",
       "description": "Returns true if the item is sorted in either descending or ascending order.",
-      "overloads": {
-        "lst": "is a sorted in increasing or decreasing order?"
-      },
+      "overloads": "lst -> is a sorted in increasing or decreasing order?",
       "token": "\u00de\u022e"
     }
   ],
@@ -3614,9 +2799,7 @@ var codepage_descriptions =
     {
       "name": "Permutations",
       "description": "Get all permutations of a value",
-      "overloads": {
-        "any": "permutations(a) (get all permutations)"
-      },
+      "overloads": "any -> permutations(a) (get all permutations)",
       "token": "\u1e56"
     },
     {
@@ -3627,18 +2810,13 @@ var codepage_descriptions =
     {
       "name": "Next Prime After a Number / Discriminant of Polynomial",
       "description": "Get the next prime number after a given number / the discriminant of a polynomial",
-      "overloads": {
-        "num": "next_prime(a)",
-        "str": "discriminant(a)"
-      },
+      "overloads": "num -> next_prime(a)\nstr -> discriminant(a)",
       "token": "\u2206\u1e56"
     },
     {
       "name": "String Partitions",
       "description": "All partitions of a string/list",
-      "overloads": {
-        "any": "all_partitions(a)"
-      },
+      "overloads": "any -> all_partitions(a)",
       "token": "\u00f8\u1e56"
     }
   ],
@@ -3646,9 +2824,7 @@ var codepage_descriptions =
     {
       "name": "Reverse",
       "description": "Reverse a value",
-      "overloads": {
-        "any": "reversed(a)"
-      },
+      "overloads": "any -> reversed(a)",
       "token": "\u1e58"
     },
     {
@@ -3659,26 +2835,19 @@ var codepage_descriptions =
     {
       "name": "Random Float",
       "description": "Get a random float in the range [0, 1), pseudo random number",
-      "overloads": {
-        "num": "random.random()"
-      },
+      "overloads": "num -> random.random()",
       "token": "\u2206\u1e58"
     },
     {
       "name": "Roman Numeral",
       "description": "Convert a decimal to its roman numeral representation / Convert a roman numeral to its decimal representation.",
-      "overloads": {
-        "num": "to_roman_numeral(a)",
-        "str": "from_roman_numeral(a)"
-      },
+      "overloads": "num -> to_roman_numeral(a)\nstr -> from_roman_numeral(a)",
       "token": "\u00f8\u1e58"
     },
     {
       "name": "Is Sorted in Reverse?",
       "description": "Returns true if an item is sorted in descending order using default sorting rules.",
-      "overloads": {
-        "lst": "is a sorted in decreasing order?"
-      },
+      "overloads": "lst -> is a sorted in decreasing order?",
       "token": "\u00de\u1e58"
     }
   ],
@@ -3691,9 +2860,7 @@ var codepage_descriptions =
     {
       "name": "Is Sorted?",
       "description": "Returns true if an item is sorted in ascending order using default sorting rules.",
-      "overloads": {
-        "lst": "is a sorted in increasing order?"
-      },
+      "overloads": "lst -> is a sorted in increasing order?",
       "token": "\u00de\u1e60"
     }
   ],
@@ -3701,17 +2868,13 @@ var codepage_descriptions =
     {
       "name": "Tail Remove",
       "description": "Cut off the last item of a list",
-      "overloads": {
-        "any": "a[:-1] (all but the last item)"
-      },
+      "overloads": "any -> a[:-1] (all but the last item)",
       "token": "\u1e6a"
     },
     {
       "name": "Transpose With Filler",
       "description": "Transpose a matrix, with a filler value for empty cells.",
-      "overloads": {
-        "lst-any": "transpose a, with filler value b"
-      },
+      "overloads": "lst, any -> transpose a, with filler value b",
       "token": "\u00de\u1e6a"
     }
   ],
@@ -3719,10 +2882,7 @@ var codepage_descriptions =
     {
       "name": "Split And Keep Delimiter",
       "description": "Split a value and keep the delimiter",
-      "overloads": {
-        "any-any": "a.split_and_keep_delimiter(b) (split and keep the delimiter)",
-        "fun-any": "apply a to every second item of b starting on the first item"
-      },
+      "overloads": "any, any -> a.split_and_keep_delimiter(b) (split and keep the delimiter)\nfun, any -> apply a to every second item of b starting on the first item",
       "token": "\u1e86"
     }
   ],
@@ -3730,19 +2890,13 @@ var codepage_descriptions =
     {
       "name": "Cartesian Product / Fixpoint",
       "description": "Take the Cartesian Product of two values, or apply a function until there is no change. If arguments are numbers, turns them into ranges.\n",
-      "overloads": {
-        "any-any": "cartesian-product(a,b)",
-        "fun-any": "apply a on b until b does not change"
-      },
+      "overloads": "any, any -> cartesian-product(a,b)\nfun, any -> apply a on b until b does not change",
       "token": "\u1e8a"
     },
     {
       "name": "Cartesian Power",
       "description": "Cartesian power, cartesian product with self n times. If both arguments are numbers, turns the left into a range.\n",
-      "overloads": {
-        "any-num": "cartesian_power(a, b)",
-        "num-any": "cartesian_power(b, a)"
-      },
+      "overloads": "any, num -> cartesian_power(a, b)\nnum, any -> cartesian_power(b, a)",
       "token": "\u00de\u1e8a"
     }
   ],
@@ -3750,13 +2904,7 @@ var codepage_descriptions =
     {
       "name": "Slice Until",
       "description": "Slice a list until a certain index / find all results for a regex match",
-      "overloads": {
-        "any-num": "a[0:b] (slice until b)",
-        "num-any": "b[0:a] (slice until a)",
-        "str-str": "regex.findall(pattern=a,string=b) (find all matches for a regex)",
-        "any-fun": "take results from a while b(x) is truthy",
-        "fun-any": "take results from b while a(x) is truthy"
-      },
+      "overloads": "any, num -> a[0:b] (slice until b)\nnum, any -> b[0:a] (slice until a)\nstr, str -> regex.findall(pattern=a,string=b) (find all matches for a regex)\nany, fun -> take results from a while b(x) is truthy\nfun, any -> take results from b while a(x) is truthy",
       "token": "\u1e8e"
     }
   ],
@@ -3764,11 +2912,7 @@ var codepage_descriptions =
     {
       "name": "Slice From One Until",
       "description": "Slice from index 1 until a number / get groups of a regex match",
-      "overloads": {
-        "any-num": "a[1:b] (slice from 1 until b)",
-        "num-any": "b[1:a] (slice from 1 until a)",
-        "str-str": "regex.match(pattern=a,string=b).groups() (Get groups for a regex match)"
-      },
+      "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
       "token": "\u017b"
     }
   ],
@@ -3816,10 +2960,7 @@ var codepage_descriptions =
     {
       "name": "Square",
       "description": "Square a number / Format a string into a square",
-      "overloads": {
-        "num": "a ** 2 (squared)",
-        "str": "a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)"
-      },
+      "overloads": "num -> a ** 2 (squared)\nstr -> a formatted as a square (list of sqrt(len(a)) strings, each sqrt(len(a)) long, such that joining the strings and removing spaces in the end gives a)",
       "token": "\u00b2"
     },
     {
@@ -3830,9 +2971,7 @@ var codepage_descriptions =
     {
       "name": "Perfect Square?",
       "description": "Is the number a perfect square? (1, 4, 9, 16, 25, 36)",
-      "overloads": {
-        "num": "is_perfect_square(a)"
-      },
+      "overloads": "num -> is_perfect_square(a)",
       "token": "\u2206\u00b2"
     }
   ],
@@ -3840,9 +2979,7 @@ var codepage_descriptions =
     {
       "name": "Shift",
       "description": "Shift the top of stack two values down",
-      "overloads": {
-        "any-any-any": "c,a,b (shift)"
-      },
+      "overloads": "any, any, any -> c,a,b (shift)",
       "token": "\u2207"
     }
   ],
@@ -3850,11 +2987,7 @@ var codepage_descriptions =
     {
       "name": "Ceiling",
       "description": "Take the ceiling of a number / Imaginary part of complex number / split a string on spaces",
-      "overloads": {
-        "num": "ceil(a) (ceiling)",
-        "complex": "imaginary part of a",
-        "str": "split on spaces"
-      },
+      "overloads": "num -> ceil(a) (ceiling)\ncomplex -> imaginary part of a\nstr -> split on spaces",
       "token": "\u2308"
     }
   ],
@@ -3862,11 +2995,7 @@ var codepage_descriptions =
     {
       "name": "Floor",
       "description": "Floor a number / real part of complex number / extract the integer part of a string",
-      "overloads": {
-        "num": "floor(a) (floor)",
-        "complex": "real part of a",
-        "str": "integer part of a"
-      },
+      "overloads": "num -> floor(a) (floor)\ncomplex -> real part of a\nstr -> integer part of a",
       "token": "\u230a"
     }
   ],
@@ -3874,9 +3003,7 @@ var codepage_descriptions =
     {
       "name": "Deltas",
       "description": "Deltas (consecutive differences)",
-      "overloads": {
-        "any": "deltas(a) ([a[1] - a[0], a[2] - a[1], ...])"
-      },
+      "overloads": "any -> deltas(a) ([a[1] - a[0], a[2] - a[1], ...])",
       "token": "\u00af"
     }
   ],
@@ -3884,18 +3011,13 @@ var codepage_descriptions =
     {
       "name": "Sign",
       "description": "Get the sign of a number",
-      "overloads": {
-        "num": "sign_of(a) (positive = 1, 0 = 0; negative = -1)",
-        "str": "is a numeric"
-      },
+      "overloads": "num -> sign_of(a) (positive = 1, 0 = 0; negative = -1)\nstr -> is a numeric",
       "token": "\u00b1"
     },
     {
       "name": "Copy Sign",
       "description": "Copy the sign of one number to the other",
-      "overloads": {
-        "num-num": "math.copysign(a, b)"
-      },
+      "overloads": "num, num -> math.copysign(a, b)",
       "token": "\u2206\u00b1"
     }
   ],
@@ -3906,8 +3028,8 @@ var codepage_descriptions =
       "token": "\u20b4"
     },
     {
-      "name": 65536,
-      "description": 65536,
+      "name": "65536",
+      "description": "65536",
       "token": "k\u20b4"
     }
   ],
@@ -3920,17 +3042,13 @@ var codepage_descriptions =
     {
       "name": "Evenly Distribute",
       "description": "Evenly distribute a number over elements of a list",
-      "overloads": {
-        "list-num": "[i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b"
-      },
+      "overloads": "list, num -> [i + b // len(a) for i in a], with any excess added to the last element, such that the sum of the list increases by b",
       "token": "\u00de\u2026"
     },
     {
       "name": "Print With Space Without Popping",
       "description": "Print a value with a space after it, without popping it",
-      "overloads": {
-        "any": "print a followed by a space, then push a"
-      },
+      "overloads": "any -> print a followed by a space, then push a",
       "token": "\u00a8\u2026"
     }
   ],
@@ -3948,17 +3066,13 @@ var codepage_descriptions =
     {
       "name": "Identity Matrix of Size n",
       "description": "A matrix with 1s on the main diagonal and zeroes elsewhere",
-      "overloads": {
-        "num": "the a x a identity matrix"
-      },
+      "overloads": "num -> the a x a identity matrix",
       "token": "\u00de\u25a1"
     },
     {
       "name": "Parse direction arrow to integer",
       "description": "Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)",
-      "overloads": {
-        "str": "map on a, replacing `>^<v` with integers, and others with -1 ([`>^<v`.find(a[0]), `>^<v`.find(a[1]), ...])"
-      },
+      "overloads": "str -> map on a, replacing `>^<v` with integers, and others with -1 ([`>^<v`.find(a[0]), `>^<v`.find(a[1]), ...])",
       "token": "\u00a8\u25a1"
     }
   ],
@@ -3966,12 +3080,7 @@ var codepage_descriptions =
     {
       "name": "Right Bit Shift",
       "description": "Right-bitshift a value / right-justify a string",
-      "overloads": {
-        "num-num": "a << b",
-        "num-str": "a.rjust(b)",
-        "str-num": "b.rjust(a)",
-        "str-str": "a.rjust(len(b)-len(a))"
-      },
+      "overloads": "num, num -> a << b\nnum, str -> a.rjust(b)\nstr, num -> b.rjust(a)\nstr, str -> a.rjust(len(b)-len(a))",
       "token": "\u21b3"
     },
     {
@@ -3982,10 +3091,7 @@ var codepage_descriptions =
     {
       "name": "Custom Pad Left",
       "description": "Pad a string to the left with a certain character",
-      "overloads": {
-        "any-str-num": "pad a to the left with c so a has length b",
-        "any-num-str": "pad a to the left with b so a has length c"
-      },
+      "overloads": "any, str, num -> pad a to the left with c so a has length b\nany, num, str -> pad a to the left with b so a has length c",
       "token": "\u00f8\u21b3"
     }
   ],
@@ -3993,21 +3099,13 @@ var codepage_descriptions =
     {
       "name": "Left Bit Shift",
       "description": "Left-bitshift a value / left-justify a string",
-      "overloads": {
-        "num-num": "a >> b",
-        "num-str": "a.ljust(b)",
-        "str-num": "b.ljust(a)",
-        "str-str": "a.ljust(len(b)-len(a))"
-      },
+      "overloads": "num, num -> a >> b\nnum, str -> a.ljust(b)\nstr, num -> b.ljust(a)\nstr, str -> a.ljust(len(b)-len(a))",
       "token": "\u21b2"
     },
     {
       "name": "Custom Pad Right",
       "description": "Pad a string to the right with a certain character",
-      "overloads": {
-        "any-str-num": "pad a to the right with c so a has length b",
-        "any-num-str": "pad a to the right with b so a has length c"
-      },
+      "overloads": "any, str, num -> pad a to the right with c so a has length b\nany, num, str -> pad a to the right with b so a has length c",
       "token": "\u00f8\u21b2"
     }
   ],
@@ -4015,12 +3113,7 @@ var codepage_descriptions =
     {
       "name": "Bitwise And",
       "description": "Performs bitwise and between two numbers / centre a string",
-      "overloads": {
-        "num-num": "a & b",
-        "num-str": "b.center(a)",
-        "str-num": "a.center(b)",
-        "str-str": "a.center(len(b) - len(a))"
-      },
+      "overloads": "num, num -> a & b\nnum, str -> b.center(a)\nstr, num -> a.center(b)\nstr, str -> a.center(len(b) - len(a))",
       "token": "\u22cf"
     }
   ],
@@ -4028,12 +3121,7 @@ var codepage_descriptions =
     {
       "name": "Bitwise Or",
       "description": "Performs bitwise or between two numbers / Removes a character at nth index / Merges strings on longest common prefix and suffix",
-      "overloads": {
-        "num-num": "a | b",
-        "num-str": "b[:a]+b[a+1:]",
-        "str-num": "a[:b]+a[b+1:]",
-        "str-str": "merge_join(a,b)"
-      },
+      "overloads": "num, num -> a | b\nnum, str -> b[:a]+b[a+1:]\nstr, num -> a[:b]+a[b+1:]\nstr, str -> merge_join(a,b)",
       "token": "\u22ce"
     }
   ],
@@ -4041,12 +3129,7 @@ var codepage_descriptions =
     {
       "name": "Bitwise Xor",
       "description": "Performs bitwise xor between two numbers / appends n spaces to a string / prepends n characters to a string / Levenshtein Distance",
-      "overloads": {
-        "num-num": "a ^ b",
-        "num-str": "\\\" \\\" * a + b",
-        "str-num": "a + \\\" \\\" * b",
-        "str-str": "levenshtein_distance(a,b)"
-      },
+      "overloads": "num, num -> a ^ b\nnum, str -> \\\" \\\" * a + b\nstr, num -> a + \\\" \\\" * b\nstr, str -> levenshtein_distance(a,b)",
       "token": "\ua60d"
     }
   ],
@@ -4054,11 +3137,7 @@ var codepage_descriptions =
     {
       "name": "Bitwise Not",
       "description": "Performs bitwise not on a number / check if any letters are uppercase / keep only truthy elements of a list",
-      "overloads": {
-        "num": "~a",
-        "str": "any_upper(a)",
-        "lst": "keep truthy"
-      },
+      "overloads": "num -> ~a\nstr -> any_upper(a)\nlst -> keep truthy",
       "token": "\ua71d"
     }
   ],
@@ -4066,10 +3145,7 @@ var codepage_descriptions =
     {
       "name": "Random Choice",
       "description": "Random choice of single item from array",
-      "overloads": {
-        "lst": "random.choice(a)",
-        "num": "Random integer from 0 to a"
-      },
+      "overloads": "lst -> random.choice(a)\nnum -> Random integer from 0 to a",
       "token": "\u2105"
     },
     {
@@ -4080,9 +3156,7 @@ var codepage_descriptions =
     {
       "name": "Random Permutation",
       "description": "Random permutation of a list / string",
-      "overloads": {
-        "any": "random permutation of a"
-      },
+      "overloads": "any -> random permutation of a",
       "token": "\u00de\u2105"
     }
   ],
@@ -4090,9 +3164,7 @@ var codepage_descriptions =
     {
       "name": "Lesser Than or Equal To",
       "description": "a is lesser than or equal to b?",
-      "overloads": {
-        "any-any": "a <= b"
-      },
+      "overloads": "any, any -> a <= b",
       "token": "\u2264"
     },
     {
@@ -4105,9 +3177,7 @@ var codepage_descriptions =
     {
       "name": "Greater Than or Equal To",
       "description": "a is greater than or equal to b?",
-      "overloads": {
-        "any-any": "a >= b"
-      },
+      "overloads": "any, any -> a >= b",
       "token": "\u2265"
     },
     {
@@ -4120,9 +3190,7 @@ var codepage_descriptions =
     {
       "name": "Not Equal To",
       "description": "a is not equal to b?",
-      "overloads": {
-        "any-any": "a != b"
-      },
+      "overloads": "any, any -> a != b",
       "token": "\u2260"
     }
   ],
@@ -4130,9 +3198,7 @@ var codepage_descriptions =
     {
       "name": "Exactly Equal To",
       "description": "a equal to b? (non-vectorizing)",
-      "overloads": {
-        "any-any": "a == b"
-      },
+      "overloads": "any, any -> a == b",
       "token": "\u207c"
     }
   ],
@@ -4156,9 +3222,7 @@ var codepage_descriptions =
     {
       "name": "Set Union",
       "description": "Merge two arrays without duplicates",
-      "overloads": {
-        "any-any": "list(set(a).union(set(b)))"
-      },
+      "overloads": "any, any -> list(set(a).union(set(b)))",
       "token": "\u222a"
     },
     {
@@ -4169,9 +3233,7 @@ var codepage_descriptions =
     {
       "name": "Multiset Union",
       "description": "Similar to set union, but with duplicates allowed.",
-      "overloads": {
-        "lst-lst": "multiset union of a and b"
-      },
+      "overloads": "lst, lst -> multiset union of a and b",
       "token": "\u00de\u222a"
     }
   ],
@@ -4179,9 +3241,7 @@ var codepage_descriptions =
     {
       "name": "Transpose",
       "description": "Transpose an array",
-      "overloads": {
-        "any": "transposed array"
-      },
+      "overloads": "any -> transposed array",
       "token": "\u2229"
     },
     {
@@ -4192,9 +3252,7 @@ var codepage_descriptions =
     {
       "name": "Multiset Intersection",
       "description": "Similar to set intersection, but with duplicates allowed.",
-      "overloads": {
-        "lst-lst": "multiset intersection of a and b"
-      },
+      "overloads": "lst, lst -> multiset intersection of a and b",
       "token": "\u00de\u2229"
     }
   ],
@@ -4202,9 +3260,7 @@ var codepage_descriptions =
     {
       "name": "Symmetric Set difference",
       "description": "Uncommon elements of two arrays",
-      "overloads": {
-        "any-any": "list(set(a) ^ set(b))"
-      },
+      "overloads": "any, any -> list(set(a) ^ set(b))",
       "token": "\u228d"
     },
     {
@@ -4215,9 +3271,7 @@ var codepage_descriptions =
     {
       "name": "Multiset Symmetric Difference",
       "description": "Similar to set symmetric difference, but with duplicates allowed.",
-      "overloads": {
-        "lst-lst": "multiset symmetric difference of a and b"
-      },
+      "overloads": "lst, lst -> multiset symmetric difference of a and b",
       "token": "\u00de\u228d"
     }
   ],
@@ -4225,9 +3279,7 @@ var codepage_descriptions =
     {
       "name": "Set Register",
       "description": "Set the register to argument value",
-      "overloads": {
-        "any": "set_register(a)"
-      },
+      "overloads": "any -> set_register(a)",
       "token": "\u00a3"
     },
     {
@@ -4248,19 +3300,13 @@ var codepage_descriptions =
     {
       "name": "Grade Up",
       "description": "Indices of elements to sort in ascending order / uppercase / increment number twice",
-      "overloads": {
-        "lst": "graded_up(a)",
-        "str": "a.upper()",
-        "num": "a + 2"
-      },
+      "overloads": "lst -> graded_up(a)\nstr -> a.upper()\nnum -> a + 2",
       "token": "\u21e7"
     },
     {
       "name": "Is Strictly Ascending?",
       "description": "Returns true if the list is in strictly ascending order.",
-      "overloads": {
-        "lst": "is a in strictly ascending order?"
-      },
+      "overloads": "lst -> is a in strictly ascending order?",
       "token": "\u00de\u21e7"
     }
   ],
@@ -4268,19 +3314,13 @@ var codepage_descriptions =
     {
       "name": "Grade Down",
       "description": "Indices of elements to sort in descending order / lowercase / decrement number twice",
-      "overloads": {
-        "lst": "graded_down(a)",
-        "str": "a.lower()",
-        "num": "a - 2"
-      },
+      "overloads": "lst -> graded_down(a)\nstr -> a.lower()\nnum -> a - 2",
       "token": "\u21e9"
     },
     {
       "name": "Is Strictly Descending?",
       "description": "Returns true if the list is in strictly descending order.",
-      "overloads": {
-        "lst": "is a in strictly descending order?"
-      },
+      "overloads": "lst -> is a in strictly descending order?",
       "token": "\u00de\u21e9"
     }
   ],
@@ -4288,10 +3328,7 @@ var codepage_descriptions =
     {
       "name": "Remove non-alphabets",
       "description": "Remove non-alphabetical characters / power with base 2",
-      "overloads": {
-        "str": "filter(isalpha, a)",
-        "num": "2 ** a"
-      },
+      "overloads": "str -> filter(isalpha, a)\nnum -> 2 ** a",
       "token": "\u01cd"
     }
   ],
@@ -4299,10 +3336,7 @@ var codepage_descriptions =
     {
       "name": "Nth prime",
       "description": "nth prime / all substrings",
-      "overloads": {
-        "str": "substrings(a)",
-        "num": "nth_prime(a)"
-      },
+      "overloads": "str -> substrings(a)\nnum -> nth_prime(a)",
       "token": "\u01ce"
     }
   ],
@@ -4310,11 +3344,7 @@ var codepage_descriptions =
     {
       "name": "Prime factorization",
       "description": "prime factorization / append first element",
-      "overloads": {
-        "num": "prime_factorization(a) (distinct prime factors)",
-        "str": "a + a[0]",
-        "lst": "a + [a[0]]"
-      },
+      "overloads": "num -> prime_factorization(a) (distinct prime factors)\nstr -> a + a[0]\nlst -> a + [a[0]]",
       "token": "\u01cf"
     }
   ],
@@ -4322,18 +3352,13 @@ var codepage_descriptions =
     {
       "name": "Prime factors",
       "description": "all prime factors / Title Case string",
-      "overloads": {
-        "num": "prime_factors(a) (prime factors possibly with repetition)",
-        "str": "title_case(a)"
-      },
+      "overloads": "num -> prime_factors(a) (prime factors possibly with repetition)\nstr -> title_case(a)",
       "token": "\u01d0"
     },
     {
       "name": "Prime Exponents",
       "description": "Get the exponents of prime factors of a number",
-      "overloads": {
-        "num": "prime_exponents(a) (in the order of prime_factors(a))"
-      },
+      "overloads": "num -> prime_exponents(a) (in the order of prime_factors(a))",
       "token": "\u2206\u01d0"
     }
   ],
@@ -4341,11 +3366,7 @@ var codepage_descriptions =
     {
       "name": "Multiplicity / Remove Fixpoint / First Truthy Index Under Function",
       "description": "Order, Multiplicity, Valuation / remove till fixpoint / First truthy index under function application",
-      "overloads": {
-        "num-num": "multiplicity(a,b)",
-        "str-str": "remove_till_fixpoint(a,b)",
-        "fun-any": "first index in a where b(x) is truthy (shortcut for \u1e1fh)"
-      },
+      "overloads": "num, num -> multiplicity(a,b)\nstr, str -> remove_till_fixpoint(a,b)\nfun, any -> first index in a where b(x) is truthy (shortcut for \u1e1fh)",
       "token": "\u01d1"
     }
   ],
@@ -4353,10 +3374,7 @@ var codepage_descriptions =
     {
       "name": "Modulo 3",
       "description": "Modulo 3 / Split into Length 2",
-      "overloads": {
-        "num": "a % 3",
-        "str": "a split into chunks of length 2"
-      },
+      "overloads": "num -> a % 3\nstr -> a split into chunks of length 2",
       "token": "\u01d2"
     }
   ],
@@ -4364,18 +3382,13 @@ var codepage_descriptions =
     {
       "name": "Rotate Left",
       "description": "Rotate Left / Rotate Left Once",
-      "overloads": {
-        "any-num": "rotate_left(a,b)",
-        "any-any": "a,(b[1:]+b[:1])"
-      },
+      "overloads": "any, num -> rotate_left(a,b)\nany, any -> a,(b[1:]+b[:1])",
       "token": "\u01d3"
     },
     {
       "name": "Connected Uniquify",
       "description": "Remove occurences of adjacent duplicates in a list",
-      "overloads": {
-        "any": "connected uniquify a (`\u0120vh`)"
-      },
+      "overloads": "any -> connected uniquify a (`\u0120vh`)",
       "token": "\u00de\u01d3"
     }
   ],
@@ -4383,18 +3396,13 @@ var codepage_descriptions =
     {
       "name": "Rotate Right",
       "description": "Rotate Right / Rotate Right Once",
-      "overloads": {
-        "any-num": "rotate_right(a,b)",
-        "any-any": "a,(b[-1:]+b[:-1])"
-      },
+      "overloads": "any, num -> rotate_right(a,b)\nany, any -> a,(b[-1:]+b[:-1])",
       "token": "\u01d4"
     },
     {
       "name": "Untruth",
       "description": "Return a list with 1s at the (0-indexed) indices in a, and 0s elsewhere",
-      "overloads": {
-        "any": "[int(x in a) for x in range(max(a))]"
-      },
+      "overloads": "any -> [int(x in a) for x in range(max(a))]",
       "token": "\u00de\u01d4"
     }
   ],
@@ -4430,10 +3438,7 @@ var codepage_descriptions =
     {
       "name": "Split On newlines",
       "description": "Split on newlines / Power with base 10",
-      "overloads": {
-        "str": "a.split(\"\\n\")",
-        "num": "10 ** a"
-      },
+      "overloads": "str -> a.split(\"\\n\")\nnum -> 10 ** a",
       "token": "\u21b5"
     }
   ],
@@ -4467,10 +3472,7 @@ var codepage_descriptions =
     {
       "name": "Product of Array / Cartesian product over list",
       "description": "Product of Array / Cartesian product over a list of lists",
-      "overloads": {
-        "lst[num]": "reduce list by multiplication",
-        "lst[str|lst]": "reduce list by Cartesian product"
-      },
+      "overloads": "lst[num] -> reduce list by multiplication\nlst[str|lst] -> reduce list by Cartesian product",
       "token": "\u03a0"
     },
     {

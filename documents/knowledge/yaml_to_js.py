@@ -43,9 +43,18 @@ for element in data:
     else:
         # token not in codepage, continue
         continue
+
+    # make the dictionary to add
     data_to_add = element | { "token" : token }
     for key in keys_to_remove:
         data_to_add.pop(key, None)
+    if "overloads" in data_to_add:
+        overloads = []
+        for types, desc in data_to_add["overloads"].items():
+            overloads.append(f'{types.replace("-", ", ")} -> {desc}')
+        data_to_add["overloads"] = "\n".join(overloads)
+
+    # add it
     if index not in data_json:
         data_json[index] = []
     data_json[index].append(data_to_add)
