@@ -227,11 +227,6 @@ var codepage_descriptions =
       "description": "Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.",
       "overloads": "any, num -> combinations_with_replacement(a, length=b)\nfun, any -> apply a on b until the result does not change, yielding intermediate values\nany, str -> remove elements from a that are not in b\nany, lst -> remove elements from a that are not in b",
       "token": "\u2194"
-    },
-    {
-      "name": "Space",
-      "description": "NOP",
-      "token": " "
     }
   ],
   "21": [
@@ -341,6 +336,13 @@ var codepage_descriptions =
       "name": "Other Digraphs",
       "description": "Used for various random digraphs",
       "token": "\u00a8"
+    }
+  ],
+  "32": [
+    {
+      "name": "Space",
+      "description": "NOP",
+      "token": "\u2420"
     }
   ],
   "33": [

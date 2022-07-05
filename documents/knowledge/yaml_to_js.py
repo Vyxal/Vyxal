@@ -29,15 +29,13 @@ with open(ELEMENTS_YAML, "r", encoding="utf-8") as elements:
 
 # keyed by the first character of the element/modified
 data_json = {}
-keys_to_remove = [
-    "element", "modifier", "vectorise", "tests", "arity"
-]
+keys_to_remove = ["element", "modifier", "vectorise", "tests", "arity"]
 for element in data:
     token = element["element" if "element" in element else "modifier"]
     if token == "#{":
         index = 35
     elif token == " ":
-        index = 20
+        index = 32
     elif token[-1] in codepage:
         index = codepage.index(token[-1])
     else:
@@ -45,7 +43,9 @@ for element in data:
         continue
 
     # make the dictionary to add
-    data_to_add = element | { "token" : token }
+    data_to_add = element | {
+        "token": token if token != " " else codepage[index]
+    }
     for key in keys_to_remove:
         data_to_add.pop(key, None)
     if "overloads" in data_to_add:
