@@ -18446,16 +18446,39 @@ def test_Punctuation():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_PrintableASCII():
+def test_PrintableASCIIWithoutSpace():
 
     stack = [vyxalify(item) for item in []]
-    expected = vyxalify('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~')
+    expected = vyxalify('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~')
     ctx = Context()
 
     ctx.stacks.append(stack)
 
     code = transpile('kP')
     # print('kP', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+def test_PrintableASCIIWithSpace():
+
+    stack = [vyxalify(item) for item in []]
+    expected = vyxalify(' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~')
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('kQ')
+    # print('kQ', code)
     exec(code)
 
     ctx.stacks.pop()
