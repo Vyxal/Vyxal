@@ -52,7 +52,7 @@ function Key({ chr, isFocused, addRef }) {
 /** Component for rendering a single token of a tooltip */
 function Description({ token, name, description, overloads }) {
   return html`<div className="description">
-    ${token} (${name})${"\n"}${description}${"\n"}${overloads}
+    <button class="insertToken" onClick=${() => typeKey(token)}>${token}</button> (${name})${"\n"}${description}${"\n"}${overloads}
   </div>`;
 }
 
@@ -78,7 +78,7 @@ function Tooltip({
       {
         name: "offset",
         options: {
-          offset: [0, 8],
+          offset: [0, 0],
         },
       },
       {
@@ -120,8 +120,8 @@ function Tooltip({
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
         <${Key} chr=${chr} isFocused=${showTooltip} addRef=${addRef} />
+        ${showTooltip && renderTooltip()}
       </span>
-      ${showTooltip && renderTooltip()}
     </span>
   `;
 }
