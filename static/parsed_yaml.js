@@ -1024,8 +1024,8 @@ var codepage_descriptions =
       "token": "P"
     },
     {
-      "name": "Printable ASCII",
-      "description": "printable ascii",
+      "name": "Printable ASCII Without Space",
+      "description": "printable ascii exluding space",
       "token": "kP"
     },
     {
@@ -1046,6 +1046,11 @@ var codepage_descriptions =
       "name": "Quit",
       "description": "Quit the program",
       "token": "Q"
+    },
+    {
+      "name": "Printable ASCII With Space",
+      "description": "printable ascii with space",
+      "token": "kQ"
     },
     {
       "name": "General Quadratic Solver",

@@ -2163,9 +2163,14 @@ Hello World
 string.punctuation (Punctuations)
 
 -------------------------------
-## `` kP `` (Printable ASCII)
+## `` kP `` (Printable ASCII Without Space)
 
-printable ascii
+printable ascii exluding space
+
+-------------------------------
+## `` kQ `` (Printable ASCII With Space)
+
+printable ascii with space
 
 -------------------------------
 ## `` kw `` (ASCII Whitespace)
