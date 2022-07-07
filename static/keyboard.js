@@ -50,9 +50,22 @@ function Key({ chr, isFocused, addRef }) {
 }
 
 /** Component for rendering a single token of a tooltip */
-function Description({ token, name, description, overloads }) {
+function Description({ result, token, name, description, overloads }) {
+  const highlightResult = (defaultItem, resultItem) => {
+    const highlight =
+      resultItem &&
+      fuzzysort.highlight(
+        resultItem,
+        (match, i) => html`<b key=${i}>${match}</b>`
+      );
+    return highlight?.length > 0 ? highlight : defaultItem;
+  };
   return html`<div className="description">
-    ${token} (${name})${"\n"}${description}${"\n"}${overloads}
+    ${token}${" "}
+    (${highlightResult(name, result?.[0])})${"\n"}${highlightResult(
+      description,
+      result?.[1]
+    )}${"\n"}${highlightResult(overloads, result?.[2])}
   </div>`;
 }
 
@@ -61,6 +74,7 @@ function Tooltip({
   shown,
   chr,
   descs,
+  results,
   setLastTouchedKey,
   showTooltip,
   addRef,
@@ -90,15 +104,15 @@ function Tooltip({
     ],
   });
 
-  const descriptions = descs?.map(
-    (desc, i) => html`<${Description} key=${i} ...${desc} />`
-  );
+  const descriptions = descs?.map((desc, i) => {
+    const result = results.find((result) => result.obj.token === desc.token);
+    return html`<${Description} key=${i} result=${result} ...${desc} />`;
+  });
 
   const renderTooltip = () => html`
     <div
       className="tooltip"
       ref=${setPopper}
-      data-show=${showTooltip}
       style=${styles.popper}
       ...${attributes.popper}
     >
@@ -106,9 +120,6 @@ function Tooltip({
       <div className="arrow" ref=${setArrow} style=${styles.arrow} />
     </div>
   `;
-
-  // render the element no matter what, just change its display, as rerendering
-  // is expensive / leads to weird repainting for tooltips.
 
   // the "onMouseEnter" and "onMouseLeave" events really mean mouse; they are
   // not triggered by touch screens.
@@ -206,13 +217,13 @@ function Keyboard() {
   // this can't be a normal react event because we want to set passive: false
   useEffect(() => {
     keyboardRef.current.addEventListener("touchmove", touchMove, {
-      passive: false
+      passive: false,
     });
     return () => {
       keyboardRef.current.removeEventListener("touchmove", touchMove, {
-        passive: false
+        passive: false,
       });
-    }
+    };
   }, [touchMove]);
 
   const touchEnd = () => {
@@ -225,46 +236,52 @@ function Keyboard() {
   // search //
   ////////////
 
-  const [shownIndexes, setShownIndexes] = useState([]);
+  /** list of search results, blank if none */
+  const [searchResults, setSearchResults] = useState([]);
   const [query, setQuery] = useState("");
+  /** list of targets to search on */
   const targets = useRef(null);
-  const allIndexes = useRef([]);
   const keys = ["name", "description", "overloads"];
 
   useEffect(() => {
-    const indexes = [];
     targets.current = Object.entries(codepage_descriptions).flatMap(
       ([index, elts]) => {
-        indexes.push(index.toString());
         return elts.map((elt) => {
-          const result = { index };
+          const result = { index, token: elt.token };
           keys.forEach((key) => (result[key] = fuzzysort.prepare(elt[key])));
           return result;
         });
       }
     );
-    allIndexes.current = [...new Set(indexes)];
   }, []);
 
   useEffect(() => {
-    if (query) {
-      const results = fuzzysort.go(query, targets.current, {
+    setSearchResults(
+      fuzzysort.go(query, targets.current, {
+        all: true,
         keys: ["name", "description", "overloads"],
-      });
-      setShownIndexes([...new Set(results.map((result) => result.obj.index))]);
-    } else {
-      setShownIndexes(allIndexes.current);
-    }
+      })
+    );
   }, [query]);
 
   const renderChildren = () => {
-    return [...shownIndexes].map((i) => {
+    const keys = [
+      ...searchResults
+        .reduce((map, result) => {
+          if (!map.has(result.obj.index)) map.set(result.obj.index, []);
+          map.get(result.obj.index).push(result);
+          return map;
+        }, new Map())
+        .entries(),
+    ];
+    return keys.map(([i, results]) => {
       const chr = codepage[i];
       return html`<${Tooltip}
         key=${i}
-        shown=${shownIndexes.includes(i)}
+        shown=${true}
         chr=${chr}
         descs=${codepage_descriptions[i]}
+        results=${results}
         setLastTouchedKey=${setLastTouchedKey}
         showTooltip=${showTooltips && chr === lastTouchedKey}
         addRef=${(elt) => keyElts.current.push({ chr, elt })}

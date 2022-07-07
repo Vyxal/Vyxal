@@ -158,8 +158,6 @@ i {
 }
 
 .tooltip {
-  opacity: 0;
-  pointer-events: none;
   max-width: calc(min(500px, 90vw));
   background: #000;
   padding: 10px;
@@ -176,11 +174,6 @@ i {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-}
-
-.tooltip[data-show="true"] {
-  pointer-events: all;
-  opacity: 1;
 }
 
 .description:not(:first-child) {
