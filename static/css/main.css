@@ -180,6 +180,11 @@ i {
   margin-top: 1em;
 }
 
+.description .highlight {
+  color: #dc2a29;
+  font-weight: bold;
+}
+
 .arrow,
 .arrow::before {
   position: absolute;

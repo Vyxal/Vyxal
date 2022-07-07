@@ -56,7 +56,7 @@ function Description({ result, token, name, description, overloads }) {
       resultItem &&
       fuzzysort.highlight(
         resultItem,
-        (match, i) => html`<b key=${i}>${match}</b>`
+        (match, i) => html`<span key=${i} className="highlight">${match}</span>`
       );
     return highlight?.length > 0 ? highlight : defaultItem;
   };
@@ -260,6 +260,7 @@ function Keyboard() {
       fuzzysort.go(query, targets.current, {
         all: true,
         keys: ["name", "description", "overloads"],
+        threshold: -10000,
       })
     );
   }, [query]);
