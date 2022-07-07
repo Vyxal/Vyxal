@@ -138,6 +138,8 @@ function Keyboard() {
   const keyElts = useRef([]);
   /** timeout for controlling press and hold delay */
   const timeout = useRef(null);
+  /** keyboard ref to attach events manually to */
+  const keyboardRef = useRef(null);
 
   const suppressContext = (e) => e.preventDefault();
 
@@ -200,6 +202,18 @@ function Keyboard() {
     updateLastTouchedKey(e);
     if (showTooltips) e.preventDefault();
   };
+
+  // this can't be a normal react event because we want to set passive: false
+  useEffect(() => {
+    keyboardRef.current.addEventListener("touchmove", touchMove, {
+      passive: false
+    });
+    return () => {
+      keyboardRef.current.removeEventListener("touchmove", touchMove, {
+        passive: false
+      });
+    }
+  }, [touchMove]);
 
   const touchEnd = () => {
     // this also triggers pointerUp
@@ -273,6 +287,7 @@ function Keyboard() {
       <div className="twelve columns">
         <div
           id="keyboard"
+          ref=${keyboardRef}
           style=${{
             touchAction: showTooltips ? "pinch-zoom" : "auto",
             userSelect: isPointerDown ? "none" : "auto",
@@ -280,7 +295,6 @@ function Keyboard() {
           onPointerDown=${pointerDown}
           onPointerUp=${pointerUp}
           onTouchStart=${touchStart}
-          onTouchMove=${touchMove}
           onTouchEnd=${touchEnd}
           onTouchCancel=${touchEnd}
         >
