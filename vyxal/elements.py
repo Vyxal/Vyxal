@@ -5305,7 +5305,7 @@ def untruth(lhs, ctx):
     (any) -> [int(x in a) for x in range(max(a))]
     """
     lhs = iterable(lhs, ctx=ctx)
-    if any(type(x) != int for x in lhs):
+    if any(vy_type(x) != NUMBER_TYPE for x in lhs):
         lhs = [iterable(x, ctx=ctx) for x in lhs]
         dimensions = len(lhs[0])
         maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
