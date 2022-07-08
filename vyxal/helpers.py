@@ -9,6 +9,7 @@ import collections
 import inspect
 import itertools
 import math  # lgtm [py/unused-import]
+import re
 import textwrap
 import types
 from typing import Any, Iterable, List, Optional, Union
@@ -434,7 +435,10 @@ def has_ind(lst: VyList, ind: int) -> bool:
 
 def indent_str(string: str, indent: int, end="\n") -> str:
     """Indent a multiline string with 4 spaces, with a newline or `end` afterwards."""
-    return textwrap.indent(string, "    " * indent) + end
+    should_indent = lambda s: s and not (
+        s.isspace() or re.match(r"## \d+ ##", s)
+    )
+    return textwrap.indent(string, "    " * indent, should_indent) + end
 
 
 def indent_code(*code, indent: int = 1) -> str:

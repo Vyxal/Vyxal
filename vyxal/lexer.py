@@ -40,6 +40,7 @@ class Token:
     def __init__(self, token_name: TokenType, token_value: str):
         self.name = token_name
         self.value = token_value
+        self.column = None
 
     def __str__(self) -> str:
         """Give a nicely formatted representation of the token"""
@@ -66,6 +67,7 @@ def tokenise(
     """
     tokens = []
     source: collections.deque[str] = collections.deque(source_str)
+    source_len = len(source)
 
     contextual_token_value = ""
 
@@ -184,4 +186,11 @@ def tokenise(
 
         else:
             tokens.append(Token(TokenType.GENERAL, head))
+
+        # For the debugger, we attach column info to the token, so we can e.g.
+        # add breakpoints here later. Tokens have column value equal to their
+        # last column, so a two-character token at the beginning of the program
+        # would be in column 2.
+        tokens[-1].column = source_len - len(source)
+
     return tokens

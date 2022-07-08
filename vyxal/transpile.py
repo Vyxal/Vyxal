@@ -85,7 +85,12 @@ def transpile_single(
     if isinstance(token_or_struct, Token):
         return transpile_token(token_or_struct, indent, options=options)
     elif isinstance(token_or_struct, vyxal.structure.Structure):
-        return transpile_structure(token_or_struct, indent, options=options)
+        # For the debugger, we add comments marking which column corresponds to
+        # which part of the transpiled code, so we can pause when reaching it.
+        column = getattr(token_or_struct, "column", None)
+        res = [f"## {column} ##"] if column else []
+        res.append(transpile_structure(token_or_struct, indent, options=options))
+        return "\n".join(res)
     raise ValueError(
         "Input must be a Token or Structure,"
         f" was {type(token_or_struct).__name__}: {token_or_struct}"

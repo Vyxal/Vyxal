@@ -366,6 +366,10 @@ def parse(
         else:
             structures.append(structure.GenericStatement([head]))
 
+        # For the debugger, we attach column info to the structure. Its column
+        # is the column of its head.
+        structures[-1].column = head.column
+
     return structures
 
 
