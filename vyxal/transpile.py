@@ -22,6 +22,10 @@ NILADIC_TYPES = (
 # TranspilationOptions has been moved to context.py
 from vyxal.context import TranspilationOptions
 
+# Debugger column source markers
+COLUMN_REGEX = r"## (\d+) ##"
+COLUMN_FORMAT = "## {} ##"
+
 
 def lambda_wrap(
     branch: list[vyxal.structure.Structure],
@@ -88,7 +92,7 @@ def transpile_single(
         # For the debugger, we add comments marking which column corresponds to
         # which part of the transpiled code, so we can pause when reaching it.
         column = getattr(token_or_struct, "column", None)
-        res = [f"## {column} ##"] if column else []
+        res = [COLUMN_FORMAT.format(column)] if column else []
         res.append(transpile_structure(token_or_struct, indent, options=options))
         return "\n".join(res)
     raise ValueError(

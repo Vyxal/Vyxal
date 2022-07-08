@@ -13,6 +13,7 @@ from vyxal.context import Context, TranspilationOptions
 from vyxal.elements import *
 from vyxal.helpers import *
 from vyxal.transpile import transpile
+from vyxal.vdb import Vdb
 
 THIS_FOLDER = os.path.dirname(os.path.abspath(__file__)) + "/.."
 sys.path.insert(1, THIS_FOLDER)
@@ -177,6 +178,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
         ctx.default_arity = 1
 
     try:
+        source = code
         code = transpile(code, options)
     except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
@@ -193,7 +195,9 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     ctx.stacks.append(stack)
     try:
-        exec(code, locals() | globals())
+        # exec(code, locals() | globals())
+        db = Vdb(code, source, locals() | globals())
+        db.run()
     except Exception as e:  # skipcq: PYL-W0703
         if ctx.online:
             ctx.online_output[2] += "\n" + traceback.format_exc()
