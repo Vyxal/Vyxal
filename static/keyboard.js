@@ -71,7 +71,6 @@ function Description({ result, token, name, description, overloads }) {
 
 /** Component for rendering the key and its tooltip. */
 function Tooltip({
-  shown,
   chr,
   descs,
   results,
@@ -125,7 +124,7 @@ function Tooltip({
   // not triggered by touch screens.
 
   return html`
-    <span ref=${setParent} style=${{ display: shown ? "inline" : "none" }}>
+    <span ref=${setParent}>
       <span
         onMouseEnter=${() => setLastTouchedKey(chr)}
         onMouseLeave=${() => setLastTouchedKey(null)}
@@ -279,7 +278,6 @@ function Keyboard() {
       const chr = codepage[i];
       return html`<${Tooltip}
         key=${i}
-        shown=${true}
         chr=${chr}
         descs=${codepage_descriptions[i]}
         results=${results}
