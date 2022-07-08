@@ -120,7 +120,11 @@ class LazyList:
                 return ret
         else:
             if position < 0:
-                self.generated += list(self)
+                while True:
+                    try:
+                        next(self)
+                    except StopIteration:
+                        break
                 return self.generated[position]
             elif position < len(self.generated):
                 return self.generated[position]
