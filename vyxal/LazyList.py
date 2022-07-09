@@ -8,7 +8,6 @@ and other stuff that needs to be lazily evaluated.
 import itertools
 import types
 import vyxal.helpers
-import vyxal.elements
 
 
 def lazylist(fn):
