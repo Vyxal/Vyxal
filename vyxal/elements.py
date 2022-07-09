@@ -5305,7 +5305,7 @@ def untruth(lhs, ctx):
     (any) -> [int(x in a) for x in range(max(a))]
     """
     lhs = iterable(lhs, ctx=ctx)
-    if any(type(x) != int for x in lhs):
+    if any(vy_type(x) != NUMBER_TYPE for x in lhs):
         lhs = [iterable(x, ctx=ctx) for x in lhs]
         dimensions = len(lhs[0])
         maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
@@ -6706,8 +6706,11 @@ elements: dict[str, tuple[str, int]] = {
     "ko": process_element('"01234567"', 0),
     "kp": process_element("string.punctuation", 0),
     "kP": process_element(
-        '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        '!\\"#$%&\\\'()*+,-./:;<=>?@[\\\\]^_`{|}~"',
+        '"!\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
+        0,
+    ),
+    "kQ": process_element(
+        '" !\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
         0,
     ),
     "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),

@@ -2581,6 +2581,7 @@
       - "[2j+3] : 3"
       - '[""] : 0'
       - '["-123"] : -123'
+      - '["-00609"] : -609'
 
 - element: "¯"
   name: Deltas
@@ -3228,12 +3229,20 @@
       - "[] : string.punctuation"
 
 - element: "kP"
-  name: Printable ASCII
+  name: Printable ASCII Without Space
   arity: 0
-  description: printable ascii
+  description: printable ascii exluding space
   vectorise: false
   tests:
-      - "[] : '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&\\'()*+,-./:;<=>?@[\\\\]^_`{|}~'"
+      - "[] : '!\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'"
+
+- element: "kQ"
+  name: Printable ASCII With Space
+  arity: 0
+  description: printable ascii with space
+  vectorise: false
+  tests:
+      - "[] : ' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'"
 
 - element: "kw"
   name: ASCII Whitespace

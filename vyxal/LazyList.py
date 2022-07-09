@@ -255,9 +255,15 @@ class LazyList:
 
         vy_print(open, "", ctx=ctx)
         for lhs in self.generated[:-1]:
-            vy_print(lhs, sep, ctx=ctx)
+            if isinstance(lhs, (types.FunctionType, LazyList)):
+                vy_print(lhs, sep, ctx=ctx)
+            else:
+                vy_print(vy_repr(lhs, ctx), sep, ctx=ctx)
         if self.generated:
-            vy_print(self.generated[-1], "", ctx=ctx)
+            if isinstance(self.generated[-1], (types.FunctionType, LazyList)):
+                vy_print(self.generated[-1], "", ctx=ctx)
+            else:
+                vy_print(vy_repr(self.generated[-1], ctx), "", ctx=ctx)
 
         try:
             lhs = next(self)

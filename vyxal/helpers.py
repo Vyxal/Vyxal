@@ -1162,10 +1162,14 @@ def vy_floor_str_helper(item):
     for char in item:
         if char == "-" and temp == "":
             temp += char
+        elif char == "0" and (temp == "" or temp == "-"):
+            continue
         elif char.isdigit():
             temp += char
         elif char == "." and "." not in temp:
             temp += char
+    if not temp:
+        return sympy.nsimplify(0)
     return sympy.nsimplify(temp)
 
 
