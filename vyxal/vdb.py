@@ -16,6 +16,7 @@ class Vdb(pdb.Pdb):
         self.env = env
         self.col_to_line = self._parse_file()
         self.line_to_col = {v: k for k, v in self.col_to_line.items()}
+        self.enabled_bps = [False] * (len(self.col_to_line) + 1)
 
     def _parse_file(self):
         result = {}
@@ -25,6 +26,14 @@ class Vdb(pdb.Pdb):
                 result[column] = i + 2
                 self.set_break(self.fp.name, i + 2)
         return result
+
+    def _disable_all_bps(self):
+        for i in range(len(self.col_to_line)):
+            self.get_bpbynumber(i + 1).disable()
+
+    def _enable_all_bps(self):
+        for i in range(len(self.col_to_line)):
+            self.get_bpbynumber(i + 1).enable()
 
     def run(self):
         self._wait_for_mainpyfile = True
@@ -36,12 +45,39 @@ class Vdb(pdb.Pdb):
 
     def print_stack_entry(self, frame_lineno):
         _, lineno = frame_lineno
-        col = self.line_to_col[lineno]
-        self.message("\n---")
-        self.do_p("stack")
-        self.message(f"> {self.source.strip()}\n> {' '*(col - 1) + '^'}")
-        # super().print_stack_entry(frame_lineno)
-        # > /var/folders/f2/rcsqc7nx0fb2m4h63v5kyx0w0000gq/T/tmp4d4lc77j(5)<module>()
+        try:
+            col = self.line_to_col[lineno]
+            self.message("\n---")
+            self.do_p("stack")
+            self.message(f"> {self.source.strip()}\n> {' '*(col - 1) + '^'}")
+        except:
+            # this should never happen
+            super().print_stack_entry(frame_lineno)
+
+    def do_enable(self, arg):
+        args = arg.split()
+        for i in args:
+            self.enabled_bps[i] = True
+
+    def do_disable(self, arg):
+        args = arg.split()
+        for i in args:
+            self.enabled_bps[i] = False
+
+    def do_step(self, arg):
+        self._enable_all_bps()
+        return super().do_continue(arg)
+
+    do_s = do_step
+
+    def do_continue(self, arg):
+        self._disable_all_bps()
+        for i, enabled in enumerate(self.enabled_bps):
+            if enabled:
+                self.get_bpbynumber(i).enable()
+        return super().do_continue(arg)
+
+    do_c = do_continue
 
 """
 the idea is to write a temporary file of the transpiled code, which has been
