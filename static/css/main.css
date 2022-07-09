@@ -158,7 +158,6 @@ i {
 }
 
 .tooltip {
-  opacity: 0;
   max-width: calc(min(500px, 90vw));
   background: #000;
   padding: 10px;
@@ -173,13 +172,13 @@ i {
   text-align: left;
 }
 
-.tooltip[data-show="true"] {
-  pointer-events: all;
-  opacity: 1;
-}
-
 .description:not(:first-child) {
   margin-top: 1em;
+}
+
+.description .highlight {
+  color: #dc2a29;
+  font-weight: bold;
 }
 
 .arrow,
