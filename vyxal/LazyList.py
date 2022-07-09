@@ -33,7 +33,7 @@ def infinite_lazylist(fn):
 
 
 def lazylist_from(iterable):
-    def fn():
+    def dec(fn):
         def wrapped(*args, **kwargs):
             return LazyList(
                 fn(*args, **kwargs),
@@ -43,7 +43,7 @@ def lazylist_from(iterable):
         wrapped.__name__ = fn.__name__
 
         return wrapped
-    return fn
+    return dec
 
 
 class LazyList:
