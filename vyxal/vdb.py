@@ -55,12 +55,12 @@ class Vdb(pdb.Pdb):
             super().print_stack_entry(frame_lineno)
 
     def do_enable(self, arg):
-        args = arg.split()
+        args = map(int, arg.split())
         for i in args:
             self.enabled_bps[i] = True
 
     def do_disable(self, arg):
-        args = arg.split()
+        args = map(int, arg.split())
         for i in args:
             self.enabled_bps[i] = False
 
