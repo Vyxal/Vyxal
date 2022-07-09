@@ -35,7 +35,12 @@ class Vdb(pdb.Pdb):
         exec(self.code, self.env)
 
     def print_stack_entry(self, frame_lineno):
-        super().print_stack_entry(frame_lineno)
+        _, lineno = frame_lineno
+        col = self.line_to_col[lineno]
+        self.message("\n---")
+        self.do_p("stack")
+        self.message(f"> {self.source.strip()}\n> {' '*(col - 1) + '^'}")
+        # super().print_stack_entry(frame_lineno)
         # > /var/folders/f2/rcsqc7nx0fb2m4h63v5kyx0w0000gq/T/tmp4d4lc77j(5)<module>()
 
 """
