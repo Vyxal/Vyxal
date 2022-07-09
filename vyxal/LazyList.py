@@ -36,7 +36,10 @@ def infinite_lazylist(fn):
 def lazylist_from(iterable):
     def fn():
         def wrapped(*args, **kwargs):
-            return LazyList(fn(*args, **kwargs), isinf=(type(iterable) is LazyList and iterable.infinite))
+            return LazyList(
+                fn(*args, **kwargs),
+                isinf=(type(iterable) is LazyList and iterable.infinite),
+            )
 
         wrapped.__name__ = fn.__name__
 
@@ -49,7 +52,10 @@ class LazyList:
             yield from self
             yield from rhs
 
-        return LazyList(gen(), isinf=(self.infinite or (type(rhs) is LazyList and rhs.infinite)))
+        return LazyList(
+            gen(),
+            isinf=(self.infinite or (type(rhs) is LazyList and rhs.infinite)),
+        )
 
     def __bool__(self):
         try:
@@ -235,6 +241,7 @@ class LazyList:
             for item in self:
                 if fn(item):
                     yield item
+
         return f()
 
     def has_ind(self, ind: int):
@@ -300,6 +307,7 @@ class LazyList:
         def gen():
             yield from self
             yield value
+
         return gen()
 
     @lazylist

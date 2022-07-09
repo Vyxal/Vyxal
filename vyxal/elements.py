@@ -830,7 +830,13 @@ def cartesian_product(lhs, rhs, ctx):
                     break
                 diag_num += 1
 
-        return LazyList(gen(), isinf=((type(lhs) is LazyList and lhs.infinite) or (type(rhs) is LazyList and rhs.infinite)))
+        return LazyList(
+            gen(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def center(lhs, ctx):
@@ -2372,7 +2378,13 @@ def interleave(lhs, rhs, ctx):
     if type(lhs) is type(rhs) is str:
         return "".join(gen())
     else:
-        return LazyList(gen(), isinf=((type(lhs) is LazyList and lhs.infinite) or (type(rhs) is LazyList and rhs.infinite)))
+        return LazyList(
+            gen(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def into_two(lhs, ctx):
@@ -3140,6 +3152,7 @@ def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
     """
+
     @lazylist_from(lhs)
     def gen():
         nonlocal rhs
@@ -3153,6 +3166,7 @@ def multiset_intersection(lhs, rhs, ctx):
                     rhs = rhs.remove(item)
                 else:
                     rhs.remove(item)
+
     return gen()
 
 
@@ -3843,6 +3857,7 @@ def powerset(lhs, ctx):
             new_sets = [prev + [elem] for prev in prev_sets]
             prev_sets += [subset[:] for subset in new_sets]
             yield from new_sets
+
     return gen()
 
 
@@ -4632,7 +4647,9 @@ def split_keep(lhs, rhs, ctx):
                 for x in gen()
             )
         else:
-            return LazyList(gen(), isinf=(type(lhs) is LazyList and lhs.infinite))
+            return LazyList(
+                gen(), isinf=(type(lhs) is LazyList and lhs.infinite)
+            )
 
 
 def split_on(lhs, rhs, ctx):
@@ -5245,7 +5262,13 @@ def union(lhs, rhs, ctx):
                 yield item
                 seen.append(item)
 
-    return LazyList(gen(), isinf=((type(lhs) is LazyList and lhs.isinf) or (type(rhs) is LazyList and rhs.isinf)))
+    return LazyList(
+        gen(),
+        isinf=(
+            (type(lhs) is LazyList and lhs.isinf)
+            or (type(rhs) is LazyList and rhs.isinf)
+        ),
+    )
 
 
 def uniquify(lhs, ctx):
@@ -5400,7 +5423,10 @@ def vectorise(
                     break
                 r += 1
 
-        return LazyList(vectorise_helper(), isinf=any(type(x) is LazyList and x.infinite for x in args))
+        return LazyList(
+            vectorise_helper(),
+            isinf=any(type(x) is LazyList and x.infinite for x in args),
+        )
 
 
 def vectorised_not(lhs, ctx):
@@ -5613,11 +5639,13 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             else (rhs.arity if hasattr(rhs, "arity") else None)
         )
         if not arity or arity == 1:
+
             @lazylist_from(lhs)
             def gen():
                 for x in iterable(lhs, range, ctx=ctx):
                     if safe_apply(rhs, x, ctx=ctx):
                         yield x
+
             return gen()
         if arity == 2:
 
@@ -5977,7 +6005,13 @@ def vy_zip(lhs, rhs, ctx):
                 else:
                     yield [left_item, right_item]
 
-        return LazyList(f(), isinf=((type(lhs) is LazyList and lhs.infinite) or (type(rhs) is LazyList and rhs.infinite)))
+        return LazyList(
+            f(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def wrap(lhs, rhs, ctx):

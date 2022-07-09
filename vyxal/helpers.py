@@ -44,6 +44,7 @@ def case_of(value: str) -> int:
 
 def chop(it: VyIterable, n: int) -> LazyList:
     """Chop `it` into `n` chunks."""
+
     @lazylist_from(it)
     def gen():
         chunk_len = len(it) // n
@@ -52,6 +53,7 @@ def chop(it: VyIterable, n: int) -> LazyList:
             length = chunk_len + (1 if left_over > i else 0)
             yield it[:length]
             it = it[length:]
+
     return gen()
 
 
@@ -104,7 +106,13 @@ def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
         for item in vec2:
             yield item
 
-    return LazyList(gen(), isinf=((type(vec1) is LazyList and vec1.infinite) or (type(vec2) is LazyList and vec2.infinite)))
+    return LazyList(
+        gen(),
+        isinf=(
+            (type(vec1) is LazyList and vec1.infinite)
+            or (type(vec2) is LazyList and vec2.infinite)
+        ),
+    )
 
 
 def deep_copy(value: Any) -> Any:
@@ -142,8 +150,8 @@ def drop_while(vec, fun, ctx):
                 t = False
             if not t:
                 yield item
-    return gen()
 
+    return gen()
 
 
 def enumerate_md(
@@ -155,6 +163,7 @@ def enumerate_md(
     include_str:
     Whether nested lists should be included as items too
     """
+
     @lazylist_from(haystack)
     def gen():
         for i, item in enumerate(haystack):
@@ -170,6 +179,7 @@ def enumerate_md(
                 )
             else:
                 yield (list(_index_stack) + [i], item)
+
     return gen()
 
 
@@ -878,6 +888,7 @@ def scanl(
     function: types.FunctionType, vector: List[Any], ctx: Context
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
+
     @lazylist_from(vector)
     def gen():
         working = None
@@ -889,6 +900,7 @@ def scanl(
                 yield working
                 working = safe_apply(function, working, item, ctx=ctx)
         yield working
+
     return gen()
 
 
@@ -1183,6 +1195,7 @@ def vy_floor_str_helper(item):
 
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
+
     @lazylist_from(vector)
     def gen():
         idx = 0
@@ -1201,6 +1214,7 @@ def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
             else:
                 yield safe_apply(function, element, ctx=ctx)
             idx += 1
+
     return gen()
 
 
