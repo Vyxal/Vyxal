@@ -170,10 +170,6 @@ i {
   font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
   text-align: left;
-  user-select: none; /* Frick compatibility */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 .description:not(:first-child) {
@@ -217,4 +213,20 @@ i {
 
 .tooltip[data-popper-placement^="right"] > .arrow {
   left: -4px;
+}
+
+button.insertToken {
+  background-color: #1e1e1e;
+  padding: 5px;
+  line-height: normal;
+  font-family: "DejaVu Sans Mono", monospace;
+  text-transform: none;
+  font-size: inherit;
+  letter-spacing: normal;
+  font-weight: 400;
+  height: auto;
+}
+
+button.insertToken:hover {
+  background-color: #161616;
 }

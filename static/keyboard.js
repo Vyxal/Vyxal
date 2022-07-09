@@ -61,7 +61,7 @@ function Description({ result, token, name, description, overloads }) {
     return highlight?.length > 0 ? highlight : defaultItem;
   };
   return html`<div className="description">
-    ${token}${" "}
+    <button class="insertToken" onClick=${() => typeKey(token)}>${token}</button>${" "}
     (${highlightResult(name, result?.[0])})${"\n"}${highlightResult(
       description,
       result?.[1]
@@ -91,7 +91,7 @@ function Tooltip({
       {
         name: "offset",
         options: {
-          offset: [0, 8],
+          offset: [0, 0],
         },
       },
       {
@@ -130,8 +130,8 @@ function Tooltip({
         onMouseLeave=${() => setLastTouchedKey(null)}
       >
         <${Key} chr=${chr} isFocused=${showTooltip} addRef=${addRef} />
+        ${showTooltip && renderTooltip()}
       </span>
-      ${showTooltip && renderTooltip()}
     </span>
   `;
 }

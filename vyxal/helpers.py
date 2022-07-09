@@ -1168,6 +1168,8 @@ def vy_floor_str_helper(item):
             temp += char
         elif char == "." and "." not in temp:
             temp += char
+    if not temp:
+        return sympy.nsimplify(0)
     return sympy.nsimplify(temp)
 
 
