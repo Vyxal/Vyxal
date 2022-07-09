@@ -3385,7 +3385,7 @@ def nth_fibonacci_0(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: sympy.fibonacci(lhs),
         (str): lambda: lhs,
-    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(nth_fibonacci_0, lhs, ctx=ctx))()
 
 
 def nth_ordinal(lhs, ctx):
