@@ -158,8 +158,6 @@ i {
 }
 
 .tooltip {
-  opacity: 0;
-  pointer-events: none;
   max-width: calc(min(500px, 90vw));
   background: #000;
   padding: 10px;
@@ -172,19 +170,15 @@ i {
   font-family: "DejaVu Sans Mono", monospace;
   font-size: 1.2rem;
   text-align: left;
-  user-select: none; /* Frick compatibility */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-}
-
-.tooltip[data-show="true"] {
-  pointer-events: all;
-  opacity: 1;
 }
 
 .description:not(:first-child) {
   margin-top: 1em;
+}
+
+.description .highlight {
+  color: #dc2a29;
+  font-weight: bold;
 }
 
 .arrow,
@@ -219,4 +213,20 @@ i {
 
 .tooltip[data-popper-placement^="right"] > .arrow {
   left: -4px;
+}
+
+button.insertToken {
+  background-color: #1e1e1e;
+  padding: 5px;
+  line-height: normal;
+  font-family: "DejaVu Sans Mono", monospace;
+  text-transform: none;
+  font-size: inherit;
+  letter-spacing: normal;
+  font-weight: 400;
+  height: auto;
+}
+
+button.insertToken:hover {
+  background-color: #161616;
 }
