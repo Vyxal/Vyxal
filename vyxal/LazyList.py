@@ -43,6 +43,7 @@ def lazylist_from(iterable):
         wrapped.__name__ = fn.__name__
 
         return wrapped
+
     return dec
 
 
