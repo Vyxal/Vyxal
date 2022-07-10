@@ -195,7 +195,7 @@ const aliases = {
 };
 
 // While the two byte aliases attempt to identify what characters look like,
-// these identify what characters / builtins *do*. 
+// these identify what characters / builtins *do*.
 // This is gonna take a while to fill in, and this + above should probably be
 // moved to a separate file at some point.
 const other_aliases = {
