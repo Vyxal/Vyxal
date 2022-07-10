@@ -47,6 +47,7 @@ def chop(it: VyIterable, n: int) -> LazyList:
 
     @lazylist_from(it)
     def gen():
+        nonlocal it
         chunk_len = len(it) // n
         left_over = len(it) % n
         for i in range(n):
@@ -143,6 +144,7 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 def drop_while(vec, fun, ctx):
     @lazylist_from(vec)
     def gen():
+        nonlocal vec
         vec = iterable(vec, ctx=ctx)
         t = True
         for item in vec:
@@ -891,6 +893,7 @@ def scanl(
 
     @lazylist_from(vector)
     def gen():
+        nonlocal vector
         working = None
         vector = iterable(vector, ctx=ctx)
         for item in vector:
