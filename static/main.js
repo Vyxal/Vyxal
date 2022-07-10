@@ -227,7 +227,7 @@ const other_aliases = {
     // ∆ø and other digraphs skipped
     "↔": [/fix(ed_?point)?/,/inter(sect(ion)?)?/,/comb(ination|o)s?/],
     "¢": [/inf(inite)?_?repl(ace(ment)?)?/,/apply_?(at_?)ind(ice)?s/],
-    "∆¢": ["carmicheal"],
+    "∆¢": ["carmichael"],
     "⌐": [/compl([ei]ment)?/,/comma(_?split)?/],
     "æ": [/(is_?)?prime/,/case(_?of)?/],
     "ʀ": [/inc(lusive)?_?(z(ero)?|0)_?r(ange)?/,/is_?alpha/],
