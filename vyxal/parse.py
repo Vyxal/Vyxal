@@ -107,6 +107,7 @@ def parse(
             lexer.TokenType.COMPRESSED_NUMBER,
             lexer.TokenType.NUMBER,
             lexer.TokenType.COMPRESSED_STRING,
+            lexer.TokenType.CODEPAGE_NUMBER,
         ):
             structures.append(structure.GenericStatement([head]))
         elif head.name in (
