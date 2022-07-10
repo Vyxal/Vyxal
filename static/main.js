@@ -194,6 +194,63 @@ const aliases = {
     "‟": ["''"]
 };
 
+// While the two byte aliases attempt to identify what characters look like,
+// these identify what characters / builtins *do*. 
+// This is gonna take a while to fill in, and this + above should probably be
+// moved to a separate file at some point.
+const other_aliases = {
+    "λ": ["lam","lambda","func"],
+    "ƛ": ["map","each"],
+    "¬": [/(logic_?)?not/],
+    "∧": [/(logic_?)?and/],
+    "ø∧": [/g?canvas/],
+    "⟑": [/apply(_?map)?/,/force_?eval/],
+    "∨": [/(logic_?)?or/],
+    "k∨": [/a(ll)?_?vowels?/],
+    "Þ∨": [/m(ulti(set)?)?_?diff/],
+    "⟇": [/remove_?index/,/rm_?index/,"rmi"],
+    "k⟇": ["codepage"],
+    "ø⟇": [/(codepage|cp)_?(get|find|help|util)/],
+    "÷": [/(i(tem)?_?)split/],
+    "Þ÷": [/div(ide)?_?eq(ual)?(_?parts)?/],
+    "×": ["asterisk","star"],
+    // Constants mostly skipped
+    "Þ×": [/(all_?)?comb(inations?|os?)(_?with)r(epl(acement)?)?/],
+    "«": [/c(ompressed)?_?str(ing)?/],
+    "»": [/c(ompressed)?_?(int|num)/],
+    "°": ["deg","complex"],
+    "•": ["log",/r(epeat)?_?cha?r/,"mold",/c(aps)?_?tr(ans(fer)?)?/],
+    "ß": [/cond(ition(al)?)?(_?execute)?/],
+    "†": [/call(_?func(tion)?)?/,/len_?p(rime)?_?f(actors)?/,/py(thon)?_?exec|python/,/vec(torised)?_?not/],
+    "€": [/split_?on/,/fill_?(by_?)?coord(inate)?s/],
+    "½": ["half","halve"],
+    // ∆ø and other digraphs skipped
+    "↔": [/fix(ed_?point)?/,/inter(sect(ion)?)?/,/comb(ination|o)s?/],
+    "¢": [/inf(inite)?_?repl(ace(ment)?)?/,/apply_?(at_?)ind(ice)?s/],
+    "∆¢": ["carmicheal"],
+    "⌐": [/compl([ei]ment)?/,/comma(_?split)?/],
+    "æ": [/(is_?)?prime/,/case(_?of)?/],
+    "ʀ": [/inc(lusive)?_?(z(ero)?|0)_?r(ange)?/,/is_?alpha/],
+    "ʁ": [/exc(lusive)?_?(z(ero)?|0)_?r(ange)?/],
+    "ɾ": [/inc(lusive)?_?(o(ne)?|1)_?r(ange)?/,/vec_?upper/],
+    "ɽ": [/exc(lusive)?_?(o(ne)?|1)_?r(ange)?/,/vec_?lower/],
+    "øɽ": [/(just(ify)?|align)_?r(ight)?|r(ight)?_?(just(ify)?|align)/],
+    "ƈ": [/cho(ice|ose)|bin(omial)?_?coeff(icient)?/,/rand(om)?_?cho(ice|ose)/,/set_?(eq(ual)?|same)/,/drop_?w(hile)?/],
+    "∆ƈ": ["npr",/n_?p(ick)?_?r/],
+    "∞": [/pal(indrom(e|ise))?/],
+    "Þ∞": ["inf","infinity"],
+    // TODO: add more completions
+
+    "₁": ["100","hundred"],
+    "₃": [/(3|three)_?div|(is_?)?div_?(3|three)/,/len_?(1|one)/],
+    "₅": [/(5|five)_?div|(is_?)?div_?(5|five)/,/dup_?len/],
+    "₍": [/p(ara(llel)?)?_?a(pply)?wrap/],
+    "∴": [/d(yad(ic)?)?_?max/],
+    "kF": ["fizzbuzz"],
+    "∑": ["sum"],
+
+}
+
 
 var og_keyboard_html
 var selectedBox = 'code' //whether 'header', 'code', or 'footer' are selected
@@ -476,14 +533,21 @@ function initCodeMirror() {
             Tab: (cm) => {
                 const cur = cm.getCursor();
                 const lines = cm.getValue().split("\n");
+                const line = lines[cur.line].slice(0, cur.ch);
+                let alpha = line.match(/[a-z_0-9]+$/)?.[0];
+                while (alpha?.length >= 3) { // Greedily match as many characters as possible
+                    const t = Object.entries(other_aliases).find(x => x[1].some(y => alpha.match(y)?.[0] == alpha));
+                    if (t) {
+                        cm.replaceRange(t[0], { line: cur.line, ch: cur.ch - alpha.length }, { line: cur.line, ch: cur.ch }); // Suggested by copilot. **works**???
+                        return;
+                    }
+                    alpha = alpha.slice(1); // Lop off the head, if not found
+                }
                 const k = lines[cur.line].slice(cur.ch - 2, cur.ch);
                 const t = Object.entries(aliases).find(x => x[1].includes(k));
                 if (t) {
-                    const l = [...lines[cur.line]];
-                    l.splice(cur.ch - 2, 2, t[0]);
-                    lines[cur.line] = l.join('');
-                    cm.setValue(lines.join("\n"));
-                    cm.setCursor({ ...cur, ch: cur.ch - 1 });
+                    // Sorry Steffan, you've been usurped by the robots.
+                    cm.replaceRange(t[0], { line: cur.line, ch: cur.ch - 2 }, { line: cur.line, ch: cur.ch });
                 }
             }
         }
