@@ -237,7 +237,7 @@ const other_aliases = {
     "øɽ": [/(just(ify)?|align)_?r(ight)?|r(ight)?_?(just(ify)?|align)/],
     "ƈ": [/cho(ice|ose)|bin(omial)?_?coeff(icient)?/,/rand(om)?_?cho(ice|ose)/,/set_?(eq(ual)?|same)/,/drop_?w(hile)?/],
     "∆ƈ": ["npr",/n_?p(ick)?_?r/],
-    "∞": [/pal(indrom(e|ise))?/],
+    "∞": [/pal(indrom(e|i[sz]e))?/],
     "Þ∞": ["inf","infinity"],
     // TODO: add more completions
 
