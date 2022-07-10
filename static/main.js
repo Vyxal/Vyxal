@@ -211,7 +211,7 @@ const other_aliases = {
     "⟇": [/remove_?index/,/rm_?index/,"rmi"],
     "k⟇": ["codepage"],
     "ø⟇": [/(codepage|cp)_?(get|find|help|util)/],
-    "÷": [/(i(tem)?_?)split/],
+    "÷": [/(i(tem)?_?)split/, /p(ush)?_?ea(ch)?/],
     "Þ÷": [/div(ide)?_?eq(ual)?(_?parts)?/],
     "×": ["asterisk","star"],
     // Constants mostly skipped
