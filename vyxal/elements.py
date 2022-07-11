@@ -3187,13 +3187,11 @@ def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
     """
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = deep_copy(iterable(rhs, ctx=ctx))
 
     @lazylist_from(lhs)
     def gen():
-        nonlocal rhs
-        lhs = iterable(lhs, ctx=ctx)
-        rhs = deep_copy(iterable(rhs, ctx=ctx))
-
         for item in lhs:
             if item in rhs:
                 yield item
