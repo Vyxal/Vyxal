@@ -59,6 +59,8 @@ class LazyList:
         )
 
     def __bool__(self):
+        if self.generated:
+            return True
         try:
             next(self)
             return True
