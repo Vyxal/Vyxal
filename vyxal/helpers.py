@@ -42,15 +42,20 @@ def case_of(value: str) -> int:
     return -1
 
 
-@lazylist
 def chop(it: VyIterable, n: int) -> LazyList:
     """Chop `it` into `n` chunks."""
-    chunk_len = len(it) // n
-    left_over = len(it) % n
-    for i in range(n):
-        length = chunk_len + (1 if left_over > i else 0)
-        yield it[:length]
-        it = it[length:]
+
+    @lazylist_from(it)
+    def gen():
+        nonlocal it
+        chunk_len = len(it) // n
+        left_over = len(it) % n
+        for i in range(n):
+            length = chunk_len + (1 if left_over > i else 0)
+            yield it[:length]
+            it = it[length:]
+
+    return gen()
 
 
 @lazylist
@@ -76,7 +81,7 @@ def combinations(lst: VyList, size: int) -> VyList:
         return vyxalify(itertools.combinations(lst, size))
 
     # Infinite LazyLists won't work with itertools.combinations
-    @lazylist
+    @lazylist_from(lst)
     def gen():
         prev_combs = [[]]
         for elem in lst:
@@ -96,14 +101,19 @@ def concat(vec1: VyList, vec2: VyList, ctx: Context = DEFAULT_CTX) -> VyList:
     if LazyList not in (type(vec1), type(vec2)):
         return vec1 + vec2
 
-    @lazylist
     def gen():
         for item in vec1:
             yield item
         for item in vec2:
             yield item
 
-    return gen()
+    return LazyList(
+        gen(),
+        isinf=(
+            (type(vec1) is LazyList and vec1.infinite)
+            or (type(vec2) is LazyList and vec2.infinite)
+        ),
+    )
 
 
 def deep_copy(value: Any) -> Any:
@@ -131,18 +141,21 @@ def digits(num: NUMBER_TYPE) -> List[int]:
     return [int(let) if let not in "-." else let for let in str(num)]
 
 
-@lazylist
 def drop_while(vec, fun, ctx):
-    vec = iterable(vec, ctx=ctx)
-    t = True
-    for item in vec:
-        if not safe_apply(fun, item, ctx=ctx):
-            t = False
-        if not t:
-            yield item
+    @lazylist_from(vec)
+    def gen():
+        nonlocal vec
+        vec = iterable(vec, ctx=ctx)
+        t = True
+        for item in vec:
+            if not safe_apply(fun, item, ctx=ctx):
+                t = False
+            if not t:
+                yield item
+
+    return gen()
 
 
-@lazylist
 def enumerate_md(
     haystack: VyList, _index_stack: tuple = (), include_all=False
 ) -> VyList:
@@ -152,19 +165,24 @@ def enumerate_md(
     include_str:
     Whether nested lists should be included as items too
     """
-    for i, item in enumerate(haystack):
-        if type(item) in (list, LazyList):
-            if include_all:
+
+    @lazylist_from(haystack)
+    def gen():
+        for i, item in enumerate(haystack):
+            if type(item) in (list, LazyList):
+                if include_all:
+                    yield (list(_index_stack) + [i], item)
+                yield from enumerate_md(item, _index_stack + (i,), include_all)
+            elif type(item) is str and len(item) > 1:
+                if include_all:
+                    yield (list(_index_stack) + [i], item)
+                yield from enumerate_md(
+                    list(item), _index_stack + (i,), include_all
+                )
+            else:
                 yield (list(_index_stack) + [i], item)
-            yield from enumerate_md(item, _index_stack + (i,), include_all)
-        elif type(item) is str and len(item) > 1:
-            if include_all:
-                yield (list(_index_stack) + [i], item)
-            yield from enumerate_md(
-                list(item), _index_stack + (i,), include_all
-            )
-        else:
-            yield (list(_index_stack) + [i], item)
+
+    return gen()
 
 
 def first_where(
@@ -666,7 +684,7 @@ def mold(
     # Because something needs to be mutated.
     index = 0
 
-    @lazylist
+    @lazylist_from(content)
     def _mold(content, shape):
         nonlocal index
         for item in shape:
@@ -704,7 +722,7 @@ def mold_without_repeat(
     """
     index = 0
 
-    @lazylist
+    @lazylist_from(content)
     def _mold(content, shape):
         nonlocal index
         for item in shape:
@@ -784,7 +802,7 @@ def prefixes(lhs: Union[VyList, str], ctx: Context) -> VyList:
         return [lhs[: i + 1] for i in range(len(lhs))]
     else:
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             temp = []
             for item in iterable(lhs, ctx=ctx):
@@ -868,20 +886,25 @@ def scalarify(value: Any) -> Union[Any, List[Any]]:
         return value
 
 
-@lazylist
 def scanl(
     function: types.FunctionType, vector: List[Any], ctx: Context
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
-    working = None
-    vector = iterable(vector, ctx=ctx)
-    for item in vector:
-        if working is None:
-            working = item
-        else:
-            yield working
-            working = safe_apply(function, working, item, ctx=ctx)
-    yield working
+
+    @lazylist_from(vector)
+    def gen():
+        nonlocal vector
+        working = None
+        vector = iterable(vector, ctx=ctx)
+        for item in vector:
+            if working is None:
+                working = item
+            else:
+                yield working
+                working = safe_apply(function, working, item, ctx=ctx)
+        yield working
+
+    return gen()
 
 
 def sentence_case(item: str) -> str:
@@ -933,7 +956,7 @@ def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
 
     lst = iterable(lhs, ctx=ctx)
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         nonlocal lst
         while lst:
@@ -1018,7 +1041,7 @@ def transpose(
     matrix = iterable(matrix, ctx=ctx)
     matrix = vy_map(iterable, matrix, ctx=ctx)
 
-    @lazylist
+    @lazylist_from(matrix)
     def gen_row(r: int):
         c = 0
         while has_ind(matrix, c):
@@ -1173,25 +1196,29 @@ def vy_floor_str_helper(item):
     return sympy.nsimplify(temp)
 
 
-@lazylist
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
     """Apply function to every element of vector"""
-    idx = 0
-    arity = (
-        function.stored_arity
-        if hasattr(function, "stored_arity")
-        else (function.arity if hasattr(function, "arity") else None)
-    )
-    for element in iterable(vector, range, ctx=ctx):
-        if not arity or arity == 1:
-            yield safe_apply(function, element, ctx=ctx)
-        elif arity == 2:
-            yield safe_apply(function, element, idx, ctx=ctx)
-        elif arity == 3:
-            yield safe_apply(function, element, idx, vector, ctx=ctx)
-        else:
-            yield safe_apply(function, element, ctx=ctx)
-        idx += 1
+
+    @lazylist_from(vector)
+    def gen():
+        idx = 0
+        arity = (
+            function.stored_arity
+            if hasattr(function, "stored_arity")
+            else (function.arity if hasattr(function, "arity") else None)
+        )
+        for element in iterable(vector, range, ctx=ctx):
+            if not arity or arity == 1:
+                yield safe_apply(function, element, ctx=ctx)
+            elif arity == 2:
+                yield safe_apply(function, element, idx, ctx=ctx)
+            elif arity == 3:
+                yield safe_apply(function, element, idx, vector, ctx=ctx)
+            else:
+                yield safe_apply(function, element, ctx=ctx)
+            idx += 1
+
+    return gen()
 
 
 def vyxalify(value: Any) -> Any:

@@ -32,16 +32,35 @@ def infinite_lazylist(fn):
     return wrapped
 
 
+def lazylist_from(iterable):
+    def dec(fn):
+        def wrapped(*args, **kwargs):
+            return LazyList(
+                fn(*args, **kwargs),
+                isinf=(type(iterable) is LazyList and iterable.infinite),
+            )
+
+        wrapped.__name__ = fn.__name__
+
+        return wrapped
+
+    return dec
+
+
 class LazyList:
     def __add__(self, rhs):
-        @lazylist
         def gen():
             yield from self
             yield from rhs
 
-        return gen()
+        return LazyList(
+            gen(),
+            isinf=(self.infinite or (type(rhs) is LazyList and rhs.infinite)),
+        )
 
     def __bool__(self):
+        if self.generated:
+            return True
         try:
             next(self)
             return True
@@ -94,7 +113,7 @@ class LazyList:
             )
             if stop is None:
 
-                @lazylist
+                @lazylist_from(self)
                 def infinite_index():
                     i = start or 0
                     if i >= 0:
@@ -120,7 +139,11 @@ class LazyList:
                 return ret
         else:
             if position < 0:
-                self.generated += list(self)
+                while True:
+                    try:
+                        next(self)
+                    except StopIteration:
+                        break
                 return self.generated[position]
             elif position < len(self.generated):
                 return self.generated[position]
@@ -214,12 +237,15 @@ class LazyList:
         temp = self.listify()
         return temp.count(other)
 
-    @lazylist
     def filter(self, fn):
-        """A `LazyList` containing only elements for whom `fn` is true"""
-        for item in self:
-            if fn(item):
-                yield item
+        @lazylist_from(self)
+        def f():
+            """A `LazyList` containing only elements for whom `fn` is true"""
+            for item in self:
+                if fn(item):
+                    yield item
+
+        return f()
 
     def has_ind(self, ind: int):
         """Whether or not this list is long enough for index `ind`"""
@@ -279,10 +305,13 @@ class LazyList:
         except StopIteration:
             vy_print(close, end, ctx=ctx)
 
-    @lazylist
     def appended(self, value):
-        yield from self
-        yield value
+        @lazylist_from(self)
+        def gen():
+            yield from self
+            yield value
+
+        return gen()
 
     @lazylist
     def reversed(self):

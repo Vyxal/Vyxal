@@ -197,18 +197,18 @@ def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
     """
-    all_without_replacement = map(
-        lambda x: itertools.combinations(lhs, x), range(1, len(lhs) + 1)
-    )
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
-        for combo in all_without_replacement:
+        i = 1
+        for _ in lhs:
+            combo = itertools.combinations(lhs, i)
             for item in combo:
                 for x in itertools.permutations(item):
                     if all(isinstance(y, str) for y in x):
                         x = "".join(x)
                     yield vyxalify(x)
+            i += 1
 
     return gen()
 
@@ -217,18 +217,17 @@ def all_combos_with_replacement(lhs, ctx):
     """Element Þ×
     (any) -> all combinations with replacement of lhs (all lengths)
     """
-    all_with_replacement = map(
-        lambda x: itertools.combinations_with_replacement(lhs, x),
-        range(1, len(lhs) + 1),
-    )
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
-        for combo in all_with_replacement:
+        i = 1
+        for _ in lhs:
+            combo = itertools.combinations_with_replacement(lhs, i)
             for x in combo:
                 if all(isinstance(y, str) for y in x):
                     x = "".join(x)
                 yield vyxalify(x)
+            i += 1
 
     return gen()
 
@@ -279,7 +278,7 @@ def all_indices_multidim(lhs, rhs, ctx):
         lhs = iterable(rhs, ctx=ctx)
         rhs = temp
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         for ind, item in enumerate_md(lhs, include_all=True):
             if non_vectorising_equals(item, rhs, ctx):
@@ -295,7 +294,7 @@ def all_less_than_increasing(lhs, rhs, ctx):
     """
     lhs = iterable(lhs, ctx)
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         for elem in lhs:
             if elem < rhs:
@@ -377,7 +376,7 @@ def alternating_negations(lhs, ctx):
     (any) -> alternating negations of lhs
     """
 
-    @lazylist
+    @infinite_lazylist
     def gen():
         flag = False
         while True:
@@ -496,7 +495,7 @@ def assign_iterable(lhs, rhs, other, ctx):
         return vy_sum(lhs, ctx=ctx)
     else:
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             temp = lhs[:rhs]
             if len(temp) != rhs and rhs > -1:
@@ -719,7 +718,6 @@ def cartesian_power(lhs, rhs, ctx):
         else iterable(vector, ctx=ctx.copy(number_as_range=True))
     )
     n = int(n)
-    print(f"vec={vector}, n={n}")
     if n < 1 or not vector:
         return []
     elif n == 1:
@@ -764,7 +762,7 @@ def cartesian_power(lhs, rhs, ctx):
                             new_prevss[i + j].append(prev + [curr])
             return gen_diag(diag_num, dim + 1, new_prevss)
 
-        @lazylist
+        @lazylist_from(vector)
         def gen():
             diag_num = 1
             while True:
@@ -802,7 +800,6 @@ def cartesian_product(lhs, rhs, ctx):
         lhs = iterable(lhs, ctx=ctx.copy(number_as_range=True))
         rhs = iterable(rhs, ctx=ctx.copy(number_as_range=True))
 
-        @lazylist
         def gen():
             if not (lhs and rhs):
                 return
@@ -833,7 +830,13 @@ def cartesian_product(lhs, rhs, ctx):
                     break
                 diag_num += 1
 
-        return gen()
+        return LazyList(
+            gen(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def center(lhs, ctx):
@@ -1072,7 +1075,7 @@ def custom_pad_right(lhs, rhs, other, ctx):
         return lhs.rjust(int(other), rhs)
 
 
-@lazylist
+@infinite_lazylist
 def cycle(lhs, ctx):
     """Element Þċ
     (any) -> infinite list of elements of a
@@ -1112,7 +1115,7 @@ def deep_flatten(lhs, ctx):
     (any) -> flatten list completely
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         for item in iterable(lhs, ctx=ctx):
             if type(item) in (LazyList, list):
@@ -1129,7 +1132,7 @@ def deltas(lhs, ctx):
     """
     lhs = iterable(lhs, ctx=ctx)
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         prev = None
         for item in lhs:
@@ -1658,7 +1661,7 @@ def flatten_by(lhs, rhs, ctx):
         return lhs
     elif vy_type(lhs, simple=True) is list:
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             for item in lhs:
                 if vy_type(item, simple=True) is list:
@@ -1923,7 +1926,7 @@ def group_consecutive(lhs, ctx):
         yield [prev] * no_found
 
     if typ is LazyList:
-        return LazyList(gen())
+        return LazyList(gen(), isinf=lhs.infinite)
 
     res = list(gen())
 
@@ -2125,7 +2128,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
             if primitive_type(value) is SCALAR_TYPE:
                 return lhs[value]
             else:
-                return [recursive_helper(v) for v in value]
+                return LazyList(recursive_helper(v) for v in value)
 
         return recursive_helper(rhs)
 
@@ -2274,7 +2277,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
                 rhs, other = other, rhs
             return lhs[: int(rhs)] + str(other) + lhs[int(rhs) :]
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             i = 0
             places = chr_ord(rhs) if isinstance(rhs, str) else rhs
@@ -2293,7 +2296,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
             return vy_eval("".join(map(str, gen())), ctx=ctx)
         return gen()
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         i = 0
         assert vy_type(rhs) == NUMBER_TYPE
@@ -2357,7 +2360,6 @@ def interleave(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     rhs = iterable(rhs, ctx=ctx)
 
-    @lazylist
     def gen():
         lhs_iter = iter(lhs)
         rhs_iter = iter(rhs)
@@ -2376,7 +2378,13 @@ def interleave(lhs, rhs, ctx):
     if type(lhs) is type(rhs) is str:
         return "".join(gen())
     else:
-        return gen()
+        return LazyList(
+            gen(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def into_two(lhs, ctx):
@@ -2660,7 +2668,7 @@ def lift(lhs, ctx):
     (any) -> a * 1...a.length
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         i = 1
         for item in lhs:
@@ -3057,7 +3065,7 @@ def multidimensional_truthy_indices(lhs, ctx: Context):
     (any) -> multi-dimensional truthy indices
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def f(a, i=[]):
         if vy_type(a, simple=True) != list:
             if a:
@@ -3140,22 +3148,26 @@ def multiset_difference(lhs, rhs, ctx):
     return lhs_copy
 
 
-@lazylist
 def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
     """
 
-    lhs = iterable(lhs, ctx=ctx)
-    rhs = deep_copy(iterable(rhs, ctx=ctx))
+    @lazylist_from(lhs)
+    def gen():
+        nonlocal rhs
+        lhs = iterable(lhs, ctx=ctx)
+        rhs = deep_copy(iterable(rhs, ctx=ctx))
 
-    for item in lhs:
-        if item in rhs:
-            yield item
-            if vy_type(rhs) == LazyList:
-                rhs = rhs.remove(item)
-            else:
-                rhs.remove(item)
+        for item in lhs:
+            if item in rhs:
+                yield item
+                if vy_type(rhs) == LazyList:
+                    rhs = rhs.remove(item)
+                else:
+                    rhs.remove(item)
+
+    return gen()
 
 
 def multiset_symmetric_difference(lhs, rhs, ctx):
@@ -3385,7 +3397,7 @@ def nth_fibonacci_0(lhs, ctx):
     return {
         (NUMBER_TYPE): lambda: sympy.fibonacci(lhs),
         (str): lambda: lhs,
-    }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
+    }.get(ts, lambda: vectorise(nth_fibonacci_0, lhs, ctx=ctx))()
 
 
 def nth_ordinal(lhs, ctx):
@@ -3419,7 +3431,7 @@ def one_length_range(lhs, ctx):
     (any) -> range(1, len(a) + 1) (Inclusive range from 1 to length of a)
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         count = sympy.nsimplify(1)
         for item in iterable(lhs, ctx=ctx):
@@ -3599,7 +3611,7 @@ def overlapping_groups(lhs, rhs, ctx):
 
     stringify = vy_type(lhs) is str
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         window = "" if stringify else []
         for item in iterable(lhs, ctx=ctx):
@@ -3824,25 +3836,29 @@ def polynomial_roots(lhs, ctx):
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
-@lazylist
 def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
 
-    lhs = iterable(lhs, ctx=ctx)
-    it = iter(lhs)
+    @lazylist_from(lhs)
+    def gen():
+        nonlocal lhs
+        lhs = iterable(lhs, ctx=ctx)
+        it = iter(lhs)
 
-    prev_sets = [[]]
-    yield []
-    while True:
-        try:
-            elem = next(it)
-        except StopIteration:
-            break
-        new_sets = [prev + [elem] for prev in prev_sets]
-        prev_sets += [subset[:] for subset in new_sets]
-        yield from new_sets
+        prev_sets = [[]]
+        yield []
+        while True:
+            try:
+                elem = next(it)
+            except StopIteration:
+                break
+            new_sets = [prev + [elem] for prev in prev_sets]
+            prev_sets += [subset[:] for subset in new_sets]
+            yield from new_sets
+
+    return gen()
 
 
 def prepend(lhs, rhs, ctx):
@@ -4149,7 +4165,7 @@ def replace_first(lhs, rhs, other, ctx):
         return str(lhs).replace(str(rhs), str(other), 1)
     else:
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             first_found = False
             for item in iterable(lhs, ctx=ctx):
@@ -4181,7 +4197,7 @@ def replace_nth_occurrence(lhs, rhs, other, n, ctx):
         return before + after
     else:
 
-        @lazylist
+        @lazylist_from(lhs)
         def gen():
             if n >= 0:
                 num = 1
@@ -4595,7 +4611,7 @@ def split_keep(lhs, rhs, ctx):
     if types.FunctionType in ts:
         lhs, rhs = (rhs, lhs) if ts[1] is types.FunctionType else (lhs, rhs)
 
-        @lazylist
+        @lazylist_from(rhs)
         def gen():
             switch = True
             for item in rhs:
@@ -4631,7 +4647,9 @@ def split_keep(lhs, rhs, ctx):
                 for x in gen()
             )
         else:
-            return LazyList(gen())
+            return LazyList(
+                gen(), isinf=(type(lhs) is LazyList and lhs.infinite)
+            )
 
 
 def split_on(lhs, rhs, ctx):
@@ -4649,7 +4667,7 @@ def split_on(lhs, rhs, ctx):
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
         return str(lhs).split(str(rhs))
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         ret, temp = [], []
         for item in iterable(lhs, ctx=ctx):
@@ -4931,7 +4949,7 @@ def sublists(lhs, ctx):
     Sublists of a list.
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         for prefix in prefixes(lhs, ctx=ctx):
             yield from suffixes(prefix, ctx=ctx)
@@ -5198,11 +5216,13 @@ def truthy_indices(lhs, ctx):
 
     lhs = iterable(lhs, ctx=ctx)
 
-    @lazylist
+    @lazylist_from(lhs)
     def helper():
-        for i, _ in enumerate(lhs):
-            if lhs[i]:
+        i = 0
+        for x in lhs:
+            if x:
                 yield i
+            i += 1
 
     return helper()
 
@@ -5231,7 +5251,6 @@ def union(lhs, rhs, ctx):
     (any, any) -> union of lhs and rhs
     """
 
-    @lazylist
     def gen():
         seen = []
         for item in iterable(lhs, ctx=ctx):
@@ -5243,7 +5262,13 @@ def union(lhs, rhs, ctx):
                 yield item
                 seen.append(item)
 
-    return gen()
+    return LazyList(
+        gen(),
+        isinf=(
+            (type(lhs) is LazyList and lhs.isinf)
+            or (type(rhs) is LazyList and rhs.isinf)
+        ),
+    )
 
 
 def uniquify(lhs, ctx):
@@ -5257,7 +5282,7 @@ def uniquify(lhs, ctx):
                 seen += item
         return seen
 
-    @lazylist
+    @lazylist_from(lhs)
     def f():
         seen = []
         t = iterable(lhs, ctx=ctx)
@@ -5287,7 +5312,7 @@ def uniquify_mask(lhs, ctx):
                 mask.append(0)
         return mask
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         seen = set()
         for elem in lhs:
@@ -5373,7 +5398,6 @@ def vectorise(
             )
     else:
         # regular vectorisation
-        @lazylist
         def vectorise_helper():
             # Like zip, but repeats scalars
             @lazylist
@@ -5399,7 +5423,10 @@ def vectorise(
                     break
                 r += 1
 
-        return vectorise_helper()
+        return LazyList(
+            vectorise_helper(),
+            isinf=any(type(x) is LazyList and x.infinite for x in args),
+        )
 
 
 def vectorised_not(lhs, ctx):
@@ -5612,15 +5639,17 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             else (rhs.arity if hasattr(rhs, "arity") else None)
         )
         if not arity or arity == 1:
-            return LazyList(
-                filter(
-                    lambda x: safe_apply(rhs, x, ctx=ctx),
-                    iterable(lhs, range, ctx=ctx),
-                )
-            )
+
+            @lazylist_from(lhs)
+            def gen():
+                for x in iterable(lhs, range, ctx=ctx):
+                    if safe_apply(rhs, x, ctx=ctx):
+                        yield x
+
+            return gen()
         if arity == 2:
 
-            @lazylist
+            @lazylist_from(lhs)
             def gen():
                 idx = 0
                 for x in iterable(lhs, range, ctx=ctx):
@@ -5631,7 +5660,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
             return gen()
         if arity == 3:
 
-            @lazylist
+            @lazylist_from(lhs)
             def gen():
                 idx = 0
                 for x in iterable(lhs, range, ctx=ctx):
@@ -5955,7 +5984,6 @@ def vy_zip(lhs, rhs, ctx):
         )
     else:
 
-        @lazylist
         def f():
             left = iter(iterable(lhs))
             right = iter(iterable(rhs))
@@ -5977,7 +6005,13 @@ def vy_zip(lhs, rhs, ctx):
                 else:
                     yield [left_item, right_item]
 
-        return f()
+        return LazyList(
+            f(),
+            isinf=(
+                (type(lhs) is LazyList and lhs.infinite)
+                or (type(rhs) is LazyList and rhs.infinite)
+            ),
+        )
 
 
 def wrap(lhs, rhs, ctx):
@@ -5997,7 +6031,7 @@ def wrap(lhs, rhs, ctx):
         else:
             fun, elem = rhs, lhs
 
-        @lazylist
+        @lazylist_from(elem)
         def gen():
             apply = False
             for item in iterable(elem, ctx=ctx):
@@ -6014,7 +6048,7 @@ def wrap(lhs, rhs, ctx):
         else:
             slice, elem = rhs, lhs
 
-        @lazylist
+        @lazylist_from(elem)
         def gen():
             working = []
             for item in iterable(elem, ctx=ctx):
@@ -6045,9 +6079,8 @@ def wrap(lhs, rhs, ctx):
             elem, wraps = lhs, rhs
         else:
             elem, wraps = rhs, lhs
-        print(elem, wraps, ts)
 
-        @lazylist
+        @lazylist_from(elem)
         def gen():
             working = []
             lengths = wraps
@@ -6078,7 +6111,7 @@ def zero_length_range(lhs, ctx):
     (any) -> range(0, len(a)) (exlcusive range from 0 to length of a)
     """
 
-    @lazylist
+    @lazylist_from(lhs)
     def gen():
         count = sympy.nsimplify(0)
         for _ in iterable(lhs, ctx=ctx):
