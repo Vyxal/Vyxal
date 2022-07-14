@@ -135,10 +135,8 @@ def digits(num: NUMBER_TYPE) -> List[int]:
     """Get the digits of a (possibly Rational) number.
     This differs from to_base_digits because it works with floats.
     This does NOT include signs and decimal points"""
-    if type(num) is sympy.Rational:
-        num = float(num)
 
-    return [int(let) if let not in "-." else let for let in str(num)]
+    return [int(let) if let not in "-./" else let for let in str(num)]
 
 
 def drop_while(vec, fun, ctx):
