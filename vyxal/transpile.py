@@ -48,7 +48,9 @@ def lambda_wrap(
             return branch[0]
         elif isinstance(branch[0], structure.MonadicModifier):
             arity = vyxal.parse.DEFAULT_ARITY
-            if isinstance(branch[0].function_A, vyxal.structure.GenericStatement):
+            if isinstance(
+                branch[0].function_A, vyxal.structure.GenericStatement
+            ):
                 if branch[0].function_A.branches[0][0].name in NILADIC_TYPES:
                     arity = 0
                 else:
@@ -69,7 +71,13 @@ def lambda_wrap(
             return vyxal.structure.Lambda(max(arities), branch)
         elif isinstance(branch[0], structure.TriadicModifier):
             arities = [vyxal.parse.DEFAULT_ARITY] * 3
-            for i, f in enumerate([branch[0].function_A, branch[0].function_B, branch[0].function_C]):
+            for i, f in enumerate(
+                [
+                    branch[0].function_A,
+                    branch[0].function_B,
+                    branch[0].function_C,
+                ]
+            ):
                 if isinstance(f, vyxal.structure.GenericStatement):
                     if f.branches[0][0].name in NILADIC_TYPES:
                         arities[i] = 0
