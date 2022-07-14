@@ -858,3 +858,6 @@ def test_if_modifier():
 def test_nested_modifier_arity():
     stack = run_vyxal("vv+", inputs=[[1, 2, 3, 4], [1, 2, 3, 4]])
     assert stack[-1] == [[2, 3, 4, 5], [3, 4, 5, 6], [4, 5, 6, 7], [5, 6, 7, 8]]
+
+    stack = run_vyxal("3 2 ₍+₍-*")
+    assert stack[-1] == [5, [1, 6]]
