@@ -875,7 +875,7 @@ def codepage_digraph(lhs, ctx):
         (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
         (str): lambda: vyxal.encoding.codepage.find(lhs)
         if len(lhs) <= 1
-        else vectorise(codepage_digraph, lhs, ctx=ctx),
+        else vectorise(codepage_digraph, list(lhs), ctx=ctx),
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
 
 
