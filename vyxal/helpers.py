@@ -815,7 +815,6 @@ def prefixes(lhs: Union[VyList, str], ctx: Context) -> VyList:
 def primitive_type(item: Any) -> Union[str, type]:
     """Turns int/Rational/str into 'Scalar' and everything else
     into list"""
-    print(item, is_sympy(item))
     if type(item) in [int, sympy.Rational, str, types.FunctionType] or is_sympy(
         item
     ):
