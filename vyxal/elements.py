@@ -4665,7 +4665,12 @@ def split_on(lhs, rhs, ctx):
         return coords_deepmap(lhs, rhs, ctx=ctx)
 
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
-        return str(lhs).split(str(rhs))
+        temp = str(lhs).split(str(rhs))
+        return (
+            LazyList(map(lambda x: vy_eval(x, ctx), temp))
+            if vy_type(lhs) == NUMBER_TYPE
+            else temp
+        )
 
     @lazylist_from(lhs)
     def gen():

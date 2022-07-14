@@ -162,8 +162,9 @@
       any-fun: for each value of a (all the way down) call b with the coordinates of that value and put that at the appropriate position in a
   vectorise: false
   tests:
-      - "[-1231234.5, 6] : [24, 24, 9/2]"
+      - "[-1231234.5, 6] : [-24, 24, 4.5]"
       - '["abc3def", 3] : ["abc", "def"]'
+      - '["abcd333", "d"] : ["abc", "333"]'
       - "[[1, 2, 3, 4, 3, 2, 1], 4] : [[1, 2, 3], [3, 2, 1]]"
       - "[[1, 2, 3, 4], 4] : [[1, 2, 3], []]"
       - "[[], 4] : [[]]"
