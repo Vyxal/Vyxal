@@ -4527,7 +4527,7 @@ def test_Length():
 
 
     stack = [vyxalify(item) for item in [-0.25]]
-    expected = vyxalify(5)
+    expected = vyxalify(4)
     ctx = Context()
 
     ctx.stacks.append(stack)
