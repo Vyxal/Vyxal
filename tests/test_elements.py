@@ -16869,7 +16869,7 @@ def test_SetUnion():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([1,2])
+    expected = vyxalify([1,2,"1","2"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -16890,7 +16890,7 @@ def test_SetUnion():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify(["1","2"])
+    expected = vyxalify(["1","2",1,2])
     ctx = Context()
 
     ctx.stacks.append(stack)
