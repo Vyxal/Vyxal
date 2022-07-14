@@ -3747,7 +3747,7 @@ def parse_direction_arrow_to_integer(lhs, ctx):
             "v": 3,
         }.get(lhs, -1)
     else:
-        return vectorise(parse_direction_arrow_to_integer, lhs, ctx=ctx)()
+        return vectorise(parse_direction_arrow_to_integer, list(lhs), ctx=ctx)()
 
 
 def parse_direction_arrow_to_vector(lhs, ctx):
@@ -3757,13 +3757,13 @@ def parse_direction_arrow_to_vector(lhs, ctx):
     ts = vy_type(lhs)
     if ts is str and len(lhs) == 1:
         return {
-            ">": [+1, 0],
-            "^": [0, +1],
-            "<": [-1, 0],
-            "v": [0, -1],
-        }.get(lhs, [0, 0])
+            ">": [sympy.nsimplify(+1), sympy.nsimplify(0)],
+            "^": [sympy.nsimplify(0), sympy.nsimplify(+1)],
+            "<": [sympy.nsimplify(-1), sympy.nsimplify(0)],
+            "v": [sympy.nsimplify(0), sympy.nsimplify(-1)],
+        }.get(lhs, [sympy.nsimplify(0), sympy.nsimplify(0)])
     else:
-        return vectorise(parse_direction_arrow_to_vector, lhs, ctx=ctx)()
+        return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
 
 
 def permutations(lhs, ctx):
