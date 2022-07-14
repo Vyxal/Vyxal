@@ -4489,6 +4489,8 @@
     - '[[3, 4]] : ["c", "d"]'
     - '["xyz"] : [24, 25, 26]'
     - '[""] : []'
+    - '["A"] : 1'
+    - '["Z"] : 26'
 
 - element: "øṗ"
   name: Flip Brackets Vertical Palindromise, Center, Join on Newlines
