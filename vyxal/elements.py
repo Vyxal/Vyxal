@@ -2132,7 +2132,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         # I tried.
         def recursive_helper(value):
             if primitive_type(value) is SCALAR_TYPE:
-                return lhs[value]
+                return lhs[vy_int(value, ctx=ctx)]
             else:
                 return LazyList(recursive_helper(v) for v in value)
 
@@ -5765,7 +5765,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
-    if t_item not in [str, float, int, complex]:
+    if primitive_type(item) != SCALAR_TYPE:
         ret = 0
         for element in item:
             ret = multiply(ret, base, ctx)
@@ -5778,7 +5778,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
             return 0
     elif t_item is complex:
         return item.real
-    elif t_item is float:
+    elif t_item is float or is_sympy(item):
         return int(item)
     elif t_item:
         return vy_int(iterable(item, ctx=ctx), base)
