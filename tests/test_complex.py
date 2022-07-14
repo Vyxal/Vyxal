@@ -853,3 +853,8 @@ def test_if_modifier():
 
     stack = run_vyxal("1 5 0 ¨i$_ W")
     assert stack[-1] == [1]
+
+
+def test_override_inputs():
+    stack = run_vyxal("23f¨S??□¨R?W")
+    assert stack[-1] == [2, 3, [2, 3], 0]
