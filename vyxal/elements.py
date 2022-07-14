@@ -875,7 +875,7 @@ def codepage_digraph(lhs, ctx):
         (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
         (str): lambda: vyxal.encoding.codepage.find(lhs)
         if len(lhs) <= 1
-        else vectorise(codepage_digraph, lhs, ctx=ctx),
+        else vectorise(codepage_digraph, list(lhs), ctx=ctx),
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
 
 
@@ -1645,7 +1645,7 @@ def first_integer(lhs, ctx):
         (NUMBER_TYPE): lambda: int(bool(abs(lhs) <= 1)),
         (str): lambda: lhs.zfill((len(lhs) + ((8 - len(lhs)) % 8)) or 8),
         (list): lambda: join(lhs, "", ctx)
-        if all(vy_type(x) is not list for x in lhs)
+        if all(vy_type(x, simple=True) is not list for x in lhs)
         else vectorise(first_integer, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
@@ -1958,7 +1958,7 @@ def halve(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
+        NUMBER_TYPE: lambda: sympy.nsimplify(lhs / 2, rational=True),
         str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
         if len(lhs) > 1
         else [lhs, ""],
@@ -2089,9 +2089,15 @@ def index(lhs, rhs, ctx):
 
     else:
         assert len(rhs) <= 3
-        return lhs[
+        originally_string = type(lhs) is str
+        if originally_string:
+            lhs = LazyList(list(lhs))
+
+        temp = lhs[
             slice(*[None if vy_type(v) != NUMBER_TYPE else int(v) for v in rhs])
         ]
+
+        return "".join(temp) if originally_string else temp
 
 
 def index_indices_or_cycle(lhs, rhs, ctx):
@@ -2126,7 +2132,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         # I tried.
         def recursive_helper(value):
             if primitive_type(value) is SCALAR_TYPE:
-                return lhs[value]
+                return lhs[vy_int(value, ctx=ctx)]
             else:
                 return LazyList(recursive_helper(v) for v in value)
 
@@ -2265,8 +2271,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     (any, num, any) -> a.insert(b, c) (Insert c at position b in a)
     (any, num, fun) -> c mapped over every bth item of a
 
-    If `ind` is negative, the absolute value is used. If `ind` is greater than
-    or equal to the LazyList's length, `other` is appended to the end.
+    If `ind` is greater than or equal to the LazyList's length, `other` is appended to the end.
     """
     is_number = vy_type(lhs) == NUMBER_TYPE
     lhs = iterable(lhs, ctx)
@@ -2280,16 +2285,26 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
         @lazylist_from(lhs)
         def gen():
             i = 0
-            places = chr_ord(rhs) if isinstance(rhs, str) else rhs
+            places = chr_ord(rhs) if isinstance(rhs, str) else int(rhs)
+            position_is_number = vy_type(places) == NUMBER_TYPE
+            if position_is_number and places < 0:
+                if places == -1:
+                    yield from lhs
+                    yield other
+                else:
+                    temp = list(lhs)
+                    temp.insert(places + 1, other)
+                    yield from temp
+                return
             for elem in lhs:
-                if vy_type(places) == NUMBER_TYPE:
+                if position_is_number:
                     if i == places:
                         yield other
                 elif i in places:
                     yield other
                 yield elem
                 i += 1
-            if vy_type(places) == NUMBER_TYPE and i < places:
+            if position_is_number and i < places:
                 yield other
 
         if is_number:
@@ -3741,7 +3756,7 @@ def parse_direction_arrow_to_integer(lhs, ctx):
             "v": 3,
         }.get(lhs, -1)
     else:
-        return vectorise(parse_direction_arrow_to_integer, lhs, ctx=ctx)()
+        return vectorise(parse_direction_arrow_to_integer, list(lhs), ctx=ctx)()
 
 
 def parse_direction_arrow_to_vector(lhs, ctx):
@@ -3751,13 +3766,13 @@ def parse_direction_arrow_to_vector(lhs, ctx):
     ts = vy_type(lhs)
     if ts is str and len(lhs) == 1:
         return {
-            ">": [+1, 0],
-            "^": [0, +1],
-            "<": [-1, 0],
-            "v": [0, -1],
-        }.get(lhs, [0, 0])
+            ">": [sympy.nsimplify(+1), sympy.nsimplify(0)],
+            "^": [sympy.nsimplify(0), sympy.nsimplify(+1)],
+            "<": [sympy.nsimplify(-1), sympy.nsimplify(0)],
+            "v": [sympy.nsimplify(0), sympy.nsimplify(-1)],
+        }.get(lhs, [sympy.nsimplify(0), sympy.nsimplify(0)])
     else:
-        return vectorise(parse_direction_arrow_to_vector, lhs, ctx=ctx)()
+        return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
 
 
 def permutations(lhs, ctx):
@@ -3865,10 +3880,12 @@ def prepend(lhs, rhs, ctx):
     """Element p
     (any, any) -> a.prepend(b) (Prepend b to a)
     """
-    ts = vy_type(lhs, rhs)
-    return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
-        ts, lambda: [rhs] + lhs
-    )()
+
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts != (list, list):
+        return merge(rhs, lhs, ctx)
+    else:
+        return [rhs] + lhs
 
 
 def prev_prime(lhs, ctx):
@@ -4601,6 +4618,15 @@ def sort_by_length(lhs, ctx):
     return sort_by(lhs, length, ctx)
 
 
+def sort_every_level(lhs, ctx):
+    """Element ÞŻ
+    (lst) -> Sort every level of a multidimensional list
+    """
+    if vy_type(lhs, simple=True) is not list:
+        return lhs
+    return vy_sort((sort_every_level(item, ctx) for item in lhs), ctx=ctx)
+
+
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
@@ -4665,7 +4691,12 @@ def split_on(lhs, rhs, ctx):
         return coords_deepmap(lhs, rhs, ctx=ctx)
 
     if [primitive_type(lhs), primitive_type(rhs)] == [SCALAR_TYPE, SCALAR_TYPE]:
-        return str(lhs).split(str(rhs))
+        temp = str(lhs).split(str(rhs))
+        return (
+            LazyList(map(lambda x: vy_eval(x, ctx), temp))
+            if vy_type(lhs) == NUMBER_TYPE
+            else temp
+        )
 
     @lazylist_from(lhs)
     def gen():
@@ -4949,10 +4980,18 @@ def sublists(lhs, ctx):
     Sublists of a list.
     """
 
+    is_number = vy_type(lhs) == NUMBER_TYPE
+
     @lazylist_from(lhs)
     def gen():
         for prefix in prefixes(lhs, ctx=ctx):
-            yield from suffixes(prefix, ctx=ctx)
+            if is_number:
+                yield from map(
+                    lambda x: vy_eval("".join(map(str, x)), ctx=ctx),
+                    suffixes(prefix, ctx=ctx),
+                )
+            else:
+                yield from suffixes(prefix, ctx=ctx)
 
     return gen()
 
@@ -4996,8 +5035,13 @@ def suffixes_element(lhs, ctx):
     """Element ÞK
     (lst) -> Suffixes of a
     """
-
-    return suffixes(lhs, ctx)
+    temp = suffixes(lhs, ctx)
+    if vy_type(lhs) == NUMBER_TYPE:
+        return LazyList(
+            map(lambda x: vy_eval(first_integer(x, ctx), ctx), temp)
+        )
+    else:
+        return temp
 
 
 def surround(lhs, rhs, ctx):
@@ -5745,7 +5789,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
     Used for multiple elements, and has to be here because it uses
     functions defined only here."""
     t_item = type(item)
-    if t_item not in [str, float, int, complex]:
+    if primitive_type(item) != SCALAR_TYPE:
         ret = 0
         for element in item:
             ret = multiply(ret, base, ctx)
@@ -5758,7 +5802,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
             return 0
     elif t_item is complex:
         return item.real
-    elif t_item is float:
+    elif t_item is float or is_sympy(item):
         return int(item)
     elif t_item:
         return vy_int(iterable(item, ctx=ctx), base)
@@ -6409,7 +6453,15 @@ elements: dict[str, tuple[str, int]] = {
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
-    "Ṫ": process_element(tail_remove, 1),
+    "Ṫ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top) == NUMBER_TYPE:\n"
+        "    stack.append(1)\n"
+        "    stack.append(top)\n"
+        "else:\n"
+        "    stack.append(tail_remove(top, ctx))",
+        1,
+    ),
     "Ẇ": process_element(split_keep, 2),
     "Ẋ": process_element(cartesian_product, 2),
     "Ẏ": process_element(zero_slice, 2),
@@ -6700,6 +6752,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∩": process_element(multiset_intersection, 2),
     "Þ∪": process_element(multiset_union, 2),
     "Þ⊍": process_element(multiset_symmetric_difference, 2),
+    "ÞŻ": process_element(sort_every_level, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

@@ -2873,9 +2873,9 @@ var codepage_descriptions =
   ],
   "199": [
     {
-      "name": "Tail Remove",
-      "description": "Cut off the last item of a list",
-      "overloads": "any -> a[:-1] (all but the last item)",
+      "name": "Tail Remove / Truthy Under",
+      "description": "Cut off the last item of a list / push 1 under the top of the stack",
+      "overloads": "num -> push 1 then the popped item\nany -> a[:-1] (all but the last item)",
       "token": "\u1e6a"
     },
     {
@@ -2921,6 +2921,12 @@ var codepage_descriptions =
       "description": "Slice from index 1 until a number / get groups of a regex match",
       "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
       "token": "\u017b"
+    },
+    {
+      "name": "Sort Every Level",
+      "description": "Sort every level of a multidimensional list",
+      "overloads": "lst -> sort every level",
+      "token": "\u00de\u017b"
     }
   ],
   "204": [
