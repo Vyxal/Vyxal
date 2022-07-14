@@ -4607,9 +4607,7 @@ def sort_every_level(lhs, ctx):
     """
     if vy_type(lhs, simple=True) is not list:
         return lhs
-    return vy_sort(
-        (sort_every_level(item, ctx) for item in lhs), ctx=ctx
-    )
+    return vy_sort((sort_every_level(item, ctx) for item in lhs), ctx=ctx)
 
 
 def split_keep(lhs, rhs, ctx):

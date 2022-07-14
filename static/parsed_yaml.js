@@ -2921,6 +2921,12 @@ var codepage_descriptions =
       "description": "Slice from index 1 until a number / get groups of a regex match",
       "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
       "token": "\u017b"
+    },
+    {
+      "name": "Sort Every Level",
+      "description": "Sort every level of a multidimensional list",
+      "overloads": "lst -> sort every level",
+      "token": "\u00de\u017b"
     }
   ],
   "204": [
