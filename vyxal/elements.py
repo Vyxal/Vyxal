@@ -6453,7 +6453,15 @@ elements: dict[str, tuple[str, int]] = {
     "Ṗ": process_element(permutations, 1),
     "Ṙ": process_element(reverse, 1),
     "Ṡ": process_element(vectorised_sum, 1),
-    "Ṫ": process_element(tail_remove, 1),
+    "Ṫ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top) == NUMBER_TYPE:\n"
+        "    stack.append(1)\n"
+        "    stack.append(top)\n"
+        "else:\n"
+        "    stack.append(tail_remove(top, ctx))",
+        1,
+    ),
     "Ẇ": process_element(split_keep, 2),
     "Ẋ": process_element(cartesian_product, 2),
     "Ẏ": process_element(zero_slice, 2),

@@ -1599,12 +1599,13 @@ Reverse a value
 Sum of each item in a list
 
 -------------------------------
-## `` Ṫ `` (Tail Remove)
+## `` Ṫ `` (Tail Remove / Truthy Under)
 
-Cut off the last item of a list
+Cut off the last item of a list / push 1 under the top of the stack
 
 ### Overloads
 
+- num a: `push 1 then the popped item`
 - any a: `a[:-1] (all but the last item)`
 -------------------------------
 ## `` Ẇ `` (Split And Keep Delimiter)

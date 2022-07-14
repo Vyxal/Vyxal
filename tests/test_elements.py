@@ -14953,7 +14953,7 @@ def test_Vectorisedsums():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_TailRemove():
+def test_TailRemoveTruthyUnder():
 
     stack = [vyxalify(item) for item in ["1234"]]
     expected = vyxalify("123")
@@ -15040,7 +15040,7 @@ def test_TailRemove():
 
 
     stack = [vyxalify(item) for item in [-1234.56]]
-    expected = vyxalify(-1234.5)
+    expected = vyxalify(-1234.56)
     ctx = Context()
 
     ctx.stacks.append(stack)
