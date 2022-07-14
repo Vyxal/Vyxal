@@ -1958,7 +1958,7 @@ def halve(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.Rational(lhs, 2),
+        NUMBER_TYPE: lambda: sympy.nsimplify(lhs / 2, rational=True),
         str: lambda: wrap(lhs, math.ceil(len(lhs) / 2), ctx=ctx)
         if len(lhs) > 1
         else [lhs, ""],
