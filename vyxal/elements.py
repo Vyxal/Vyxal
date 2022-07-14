@@ -1645,7 +1645,7 @@ def first_integer(lhs, ctx):
         (NUMBER_TYPE): lambda: int(bool(abs(lhs) <= 1)),
         (str): lambda: lhs.zfill((len(lhs) + ((8 - len(lhs)) % 8)) or 8),
         (list): lambda: join(lhs, "", ctx)
-        if all(vy_type(x) is not list for x in lhs)
+        if all(vy_type(x, simple=True) is not list for x in lhs)
         else vectorise(first_integer, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(first_integer, lhs, ctx=ctx))()
 
