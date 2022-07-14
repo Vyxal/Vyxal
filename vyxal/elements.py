@@ -4607,6 +4607,17 @@ def sort_by_length(lhs, ctx):
     return sort_by(lhs, length, ctx)
 
 
+def sort_every_level(lhs, ctx):
+    """Element ÞŻ
+    (lst) -> Sort every level of a multidimensional list
+    """
+    if vy_type(lhs, simple=True) is not list:
+        return lhs
+    return vy_sort(
+        (sort_every_level(item, ctx) for item in lhs), ctx=ctx
+    )
+
+
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
@@ -6706,6 +6717,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∩": process_element(multiset_intersection, 2),
     "Þ∪": process_element(multiset_union, 2),
     "Þ⊍": process_element(multiset_symmetric_difference, 2),
+    "ÞŻ": process_element(sort_every_level, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
