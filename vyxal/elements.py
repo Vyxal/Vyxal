@@ -2089,9 +2089,15 @@ def index(lhs, rhs, ctx):
 
     else:
         assert len(rhs) <= 3
-        return lhs[
+        originally_string = type(lhs) is str
+        if originally_string:
+            lhs = LazyList(list(lhs))
+
+        temp = lhs[
             slice(*[None if vy_type(v) != NUMBER_TYPE else int(v) for v in rhs])
         ]
+
+        return "".join(temp) if originally_string else temp
 
 
 def index_indices_or_cycle(lhs, rhs, ctx):

@@ -6710,8 +6710,50 @@ def test_Head():
 
 def test_Index():
 
-    stack = [vyxalify(item) for item in ["abc",[1,2]]]
+    stack = [vyxalify(item) for item in ["abc", [1,2]]]
     expected = vyxalify("b")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('i')
+    # print('i', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["abc", 3]]
+    expected = vyxalify("a")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('i')
+    # print('i', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[1, 2, 3], [4, 9]]]
+    expected = vyxalify([2, 3, 1, 2, 3])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -15297,6 +15339,27 @@ def test_SliceUntil():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+    stack = [vyxalify(item) for item in ["abc", 9]]
+    expected = vyxalify("abcabcabc")
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Ẏ')
+    # print('Ẏ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_SliceFromOneUntil():
 
     stack = [vyxalify(item) for item in ["abc",2]]
@@ -15385,6 +15448,27 @@ def test_SliceFromOneUntil():
 
     stack = [vyxalify(item) for item in ["abc","d"]]
     expected = vyxalify([])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Ż')
+    # print('Ż', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in ["abc", 9]]
+    expected = vyxalify("bcabcabc")
     ctx = Context()
 
     ctx.stacks.append(stack)
