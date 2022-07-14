@@ -3302,6 +3302,14 @@ Multiply a numeric list by a range from 1 to its length
 
 - lst a: `lift`
 -------------------------------
+## `` ÞŻ `` (Sort Every Level)
+
+Sort every level of a multidimensional list
+
+### Overloads
+
+- lst a: `sort every level`
+-------------------------------
 ## `` ÞA `` (Adjacency matrix (Undirected))
 
 Adjacency matrix of undirected graph

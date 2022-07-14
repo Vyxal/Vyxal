@@ -2868,6 +2868,12 @@ k• (Qwerty Keyboard)
 
     lst a: lift
 -------------------------------
+ÞŻ (Sort Every Level)
+
+- Sort every level of a multidimensional list
+
+    lst a: sort every level
+-------------------------------
 ÞA (Adjacency matrix (Undirected))
 
 - Adjacency matrix of undirected graph
