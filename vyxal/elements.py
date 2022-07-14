@@ -5011,8 +5011,13 @@ def suffixes_element(lhs, ctx):
     """Element ÞK
     (lst) -> Suffixes of a
     """
-
-    return suffixes(lhs, ctx)
+    temp = suffixes(lhs, ctx)
+    if vy_type(lhs) == NUMBER_TYPE:
+        return LazyList(
+            map(lambda x: vy_eval(first_integer(x, ctx), ctx), temp)
+        )
+    else:
+        return temp
 
 
 def surround(lhs, rhs, ctx):
