@@ -3871,10 +3871,12 @@ def prepend(lhs, rhs, ctx):
     """Element p
     (any, any) -> a.prepend(b) (Prepend b to a)
     """
-    ts = vy_type(lhs, rhs)
-    return {(ts[0], ts[1]): lambda: merge(rhs, lhs, ctx=ctx)}.get(
-        ts, lambda: [rhs] + lhs
-    )()
+
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts != (list, list):
+        return merge(rhs, lhs, ctx)
+    else:
+        return [rhs] + lhs
 
 
 def prev_prime(lhs, ctx):
