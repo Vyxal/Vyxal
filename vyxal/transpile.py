@@ -4,7 +4,6 @@ import re
 import secrets
 from typing import Union
 
-from sympy import arity
 
 from vyxal import encoding, helpers, lexer, parse, structure
 from vyxal.elements import *
