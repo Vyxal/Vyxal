@@ -720,6 +720,12 @@ var codepage_descriptions =
       "token": "kA"
     },
     {
+      "name": "Letter to Number",
+      "description": "Convert a letter to a number, or vice versa (1-indexed)",
+      "overloads": "str -> number_to_letter(a)\nnum -> letter_to_number(a)",
+      "token": "\u00f8A"
+    },
+    {
       "name": "Adjacency matrix (Undirected)",
       "description": "Adjacency matrix of undirected graph",
       "overloads": "lst -> adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])",

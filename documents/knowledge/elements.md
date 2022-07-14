@@ -2941,6 +2941,15 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 
 - any a: `palindromise, without duplicating center, and flip brackets and slashes in the second half`
 -------------------------------
+## `` øA `` (Letter to Number)
+
+Convert a letter to a number, or vice versa (1-indexed)
+
+### Overloads
+
+- str a: `number_to_letter(a)`
+- num a: `letter_to_number(a)`
+-------------------------------
 ## `` øṗ `` (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
 
 Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
