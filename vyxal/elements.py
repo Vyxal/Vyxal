@@ -2671,9 +2671,13 @@ def letter_to_number(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: chr(lhs + 96),
-        str: lambda: (ord(lhs) - 96 if lhs > "Z" else ord(lhs) - 64) # No, I'm not making this less cursed
+        str: lambda: (
+            ord(lhs) - 96 if lhs > "Z" else ord(lhs) - 64
+        )  # No, I'm not making this less cursed
         if len(lhs) == 1
-        else LazyList(ord(char) - 96 if char > "Z" else ord(char) - 64 for char in lhs)
+        else LazyList(
+            ord(char) - 96 if char > "Z" else ord(char) - 64 for char in lhs
+        )
         if len(lhs)
         else [],
     }.get(ts, lambda: vectorise(letter_to_number, lhs, ctx=ctx))()
