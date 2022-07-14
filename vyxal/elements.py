@@ -2271,8 +2271,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     (any, num, any) -> a.insert(b, c) (Insert c at position b in a)
     (any, num, fun) -> c mapped over every bth item of a
 
-    If `ind` is negative, the absolute value is used. If `ind` is greater than
-    or equal to the LazyList's length, `other` is appended to the end.
+    If `ind` is greater than or equal to the LazyList's length, `other` is appended to the end.
     """
     is_number = vy_type(lhs) == NUMBER_TYPE
     lhs = iterable(lhs, ctx)
@@ -2286,16 +2285,26 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
         @lazylist_from(lhs)
         def gen():
             i = 0
-            places = chr_ord(rhs) if isinstance(rhs, str) else rhs
+            places = chr_ord(rhs) if isinstance(rhs, str) else int(rhs)
+            position_is_number = vy_type(places) == NUMBER_TYPE
+            if position_is_number and places < 0:
+                if places == -1:
+                    yield from lhs
+                    yield other
+                else:
+                    temp = list(lhs)
+                    temp.insert(places + 1, other)
+                    yield from temp
+                return
             for elem in lhs:
-                if vy_type(places) == NUMBER_TYPE:
+                if position_is_number:
                     if i == places:
                         yield other
                 elif i in places:
                     yield other
                 yield elem
                 i += 1
-            if vy_type(places) == NUMBER_TYPE and i < places:
+            if position_is_number and i < places:
                 yield other
 
         if is_number:
