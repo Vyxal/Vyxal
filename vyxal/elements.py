@@ -2678,6 +2678,26 @@ def less_than_or_equal(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(less_than_or_equal, lhs, rhs, ctx=ctx))()
 
 
+def letter_to_number(lhs, ctx):
+    """Element øA
+    (num) -> number_to_letter(a)
+    (str) -> letter_to_number(a)
+    """
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: chr(lhs + 96),
+        str: lambda: (
+            ord(lhs) - 96 if lhs > "Z" else ord(lhs) - 64
+        )  # No, I'm not making this less cursed
+        if len(lhs) == 1
+        else LazyList(
+            ord(char) - 96 if char > "Z" else ord(char) - 64 for char in lhs
+        )
+        if len(lhs)
+        else [],
+    }.get(ts, lambda: vectorise(letter_to_number, lhs, ctx=ctx))()
+
+
 def lift(lhs, ctx):
     """Element Þż
     (any) -> a * 1...a.length
@@ -6630,6 +6650,7 @@ elements: dict[str, tuple[str, int]] = {
     "øm": process_element(vertical_mirror_center_join, 1),
     "øṀ": process_element(flip_brackets_vertical_mirror, 1),
     "øW": process_element(group_on_words, 1),
+    "øA": process_element(letter_to_number, 1),
     "øP": process_element(pluralise_count, 2),
     "øp": process_element(starts_with, 2),
     "øE": process_element(ends_with, 2),

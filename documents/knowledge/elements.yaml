@@ -4479,6 +4479,25 @@
       - '["{] "] : "{] [}"'
       - '["/*>X"] : "/*>X<*\\"'
 
+- element: "øA"
+  name: Letter to Number
+  arity: 1
+  description: Convert a letter to a number, or vice versa (1-indexed)
+  overloads:
+      str: number_to_letter(a)
+      num: letter_to_number(a)
+  vectorise: true
+  tests:
+    - '["a"] : 1'
+    - '["b"] : 2'
+    - '["c"] : 3'
+    - '[4] : "d"'
+    - '[[3, 4]] : ["c", "d"]'
+    - '["xyz"] : [24, 25, 26]'
+    - '[""] : []'
+    - '["A"] : 1'
+    - '["Z"] : 26'
+
 - element: "øṗ"
   name: Flip Brackets Vertical Palindromise, Center, Join on Newlines
   description: Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
