@@ -17559,7 +17559,7 @@ def test_MultiplicityRemoveFixpointFirstTruthyIndexUnderFunction():
 
 
     stack = [vyxalify(item) for item in [1.125, 2]]
-    expected = vyxalify(-3)
+    expected = vyxalify(0)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -17580,7 +17580,7 @@ def test_MultiplicityRemoveFixpointFirstTruthyIndexUnderFunction():
 
 
     stack = [vyxalify(item) for item in [1.125, 3]]
-    expected = vyxalify(2)
+    expected = vyxalify(0)
     ctx = Context()
 
     ctx.stacks.append(stack)
