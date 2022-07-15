@@ -44,6 +44,46 @@ def lambda_wrap(
             return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
+        elif isinstance(branch[0], structure.MonadicModifier):
+            arity = vyxal.parse.DEFAULT_ARITY
+            if isinstance(
+                branch[0].function_A, vyxal.structure.GenericStatement
+            ):
+                if branch[0].function_A.branches[0][0].name in NILADIC_TYPES:
+                    arity = 0
+                else:
+                    arity = elements.get(
+                        branch[0].function_A.branches[0][0].value, ("", 1)
+                    )[1]
+            return vyxal.structure.Lambda(arity, branch)
+        elif isinstance(branch[0], structure.DyadicModifier):
+            arities = [vyxal.parse.DEFAULT_ARITY] * 2
+            for i, f in enumerate([branch[0].function_A, branch[0].function_B]):
+                if isinstance(f, vyxal.structure.GenericStatement):
+                    if f.branches[0][0].name in NILADIC_TYPES:
+                        arities[i] = 0
+                    else:
+                        arities[i] = elements.get(
+                            f.branches[0][0].value, ("", 1)
+                        )[1]
+            return vyxal.structure.Lambda(max(arities), branch)
+        elif isinstance(branch[0], structure.TriadicModifier):
+            arities = [vyxal.parse.DEFAULT_ARITY] * 3
+            for i, f in enumerate(
+                [
+                    branch[0].function_A,
+                    branch[0].function_B,
+                    branch[0].function_C,
+                ]
+            ):
+                if isinstance(f, vyxal.structure.GenericStatement):
+                    if f.branches[0][0].name in NILADIC_TYPES:
+                        arities[i] = 0
+                    else:
+                        arities[i] = elements.get(
+                            f.branches[0][0].value, ("", 1)
+                        )[1]
+            return vyxal.structure.Lambda(max(arities), branch)
         else:
             return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
     else:
