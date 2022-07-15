@@ -128,11 +128,6 @@ def kill():
     return ""
 
 
-@app.route("/oeis", methods=("GET",))
-def oeis():
-    return render_template("oeis.html")
-
-
 @app.route("/update", methods=("POST",))
 def update():
     key = request.headers.get("X-funky-password", "")

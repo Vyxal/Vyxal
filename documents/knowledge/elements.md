@@ -1599,12 +1599,13 @@ Reverse a value
 Sum of each item in a list
 
 -------------------------------
-## `` Ṫ `` (Tail Remove)
+## `` Ṫ `` (Tail Remove / Truthy Under)
 
-Cut off the last item of a list
+Cut off the last item of a list / push 1 under the top of the stack
 
 ### Overloads
 
+- num a: `push 1 then the popped item`
 - any a: `a[:-1] (all but the last item)`
 -------------------------------
 ## `` Ẇ `` (Split And Keep Delimiter)
@@ -2940,6 +2941,15 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 
 - any a: `palindromise, without duplicating center, and flip brackets and slashes in the second half`
 -------------------------------
+## `` øA `` (Letter to Number)
+
+Convert a letter to a number, or vice versa (1-indexed)
+
+### Overloads
+
+- str a: `number_to_letter(a)`
+- num a: `letter_to_number(a)`
+-------------------------------
 ## `` øṗ `` (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
 
 Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `øMøĊ⁋`
@@ -3302,6 +3312,14 @@ Multiply a numeric list by a range from 1 to its length
 
 - lst a: `lift`
 -------------------------------
+## `` ÞŻ `` (Sort Every Level)
+
+Sort every level of a multidimensional list
+
+### Overloads
+
+- lst a: `sort every level`
+-------------------------------
 ## `` ÞA `` (Adjacency matrix (Undirected))
 
 Adjacency matrix of undirected graph
@@ -3443,12 +3461,12 @@ Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 -------------------------------
 ## `` Þ÷ `` (Divide List Into N Equal Length Parts)
 
-Divide a list into n equal length parts, possibly with an extra part
+Divide a list into n equal length parts
 
 ### Overloads
 
-- any a, num b: `divide a into b equal length parts, possibly with an extra part`
-- num a, any b: `divide b into a equal length parts, possibly with an extra part`
+- any a, num b: `divide a into b equal length parts`
+- num a, any b: `divide b into a equal length parts`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 
@@ -3994,6 +4012,16 @@ Usage:
 ## `` ¨? `` (Explicit STDIN)
 
 Read from STDIN, even if there are arguments
+
+-------------------------------
+## `` ¨S `` (Override Inputs)
+
+Overrides the list of inputs
+
+-------------------------------
+## `` ¨R `` (Reset Inputs)
+
+Resets the list of inputs to what they were before overriding with `¨S`
 
 -------------------------------
 ## `` ¨i `` (If/Else)

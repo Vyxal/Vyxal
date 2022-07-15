@@ -95,8 +95,8 @@ var codepage_descriptions =
     },
     {
       "name": "Divide List Into N Equal Length Parts",
-      "description": "Divide a list into n equal length parts, possibly with an extra part",
-      "overloads": "any, num -> divide a into b equal length parts, possibly with an extra part\nnum, any -> divide b into a equal length parts, possibly with an extra part",
+      "description": "Divide a list into n equal length parts",
+      "overloads": "any, num -> divide a into b equal length parts\nnum, any -> divide b into a equal length parts",
       "token": "\u00de\u00f7"
     }
   ],
@@ -720,6 +720,12 @@ var codepage_descriptions =
       "token": "kA"
     },
     {
+      "name": "Letter to Number",
+      "description": "Convert a letter to a number, or vice versa (1-indexed)",
+      "overloads": "str -> number_to_letter(a)\nnum -> letter_to_number(a)",
+      "token": "\u00f8A"
+    },
+    {
       "name": "Adjacency matrix (Undirected)",
       "description": "Adjacency matrix of undirected graph",
       "overloads": "lst -> adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])",
@@ -1088,6 +1094,11 @@ var codepage_descriptions =
       "description": "Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for \u00a6\u1e6a0p",
       "overloads": "lst -> [0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]",
       "token": "\u00deR"
+    },
+    {
+      "name": "Reset Inputs",
+      "description": "Resets the list of inputs to what they were before overriding with `\u00a8S`",
+      "token": "\u00a8R"
     }
   ],
   "83": [
@@ -1119,6 +1130,11 @@ var codepage_descriptions =
       "description": "Sublists of a list.",
       "overloads": "lst -> non-empty sublists of a",
       "token": "\u00deS"
+    },
+    {
+      "name": "Override Inputs",
+      "description": "Overrides the list of inputs",
+      "token": "\u00a8S"
     }
   ],
   "84": [
@@ -2873,9 +2889,9 @@ var codepage_descriptions =
   ],
   "199": [
     {
-      "name": "Tail Remove",
-      "description": "Cut off the last item of a list",
-      "overloads": "any -> a[:-1] (all but the last item)",
+      "name": "Tail Remove / Truthy Under",
+      "description": "Cut off the last item of a list / push 1 under the top of the stack",
+      "overloads": "num -> push 1 then the popped item\nany -> a[:-1] (all but the last item)",
       "token": "\u1e6a"
     },
     {
@@ -2921,6 +2937,12 @@ var codepage_descriptions =
       "description": "Slice from index 1 until a number / get groups of a regex match",
       "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
       "token": "\u017b"
+    },
+    {
+      "name": "Sort Every Level",
+      "description": "Sort every level of a multidimensional list",
+      "overloads": "lst -> sort every level",
+      "token": "\u00de\u017b"
     }
   ],
   "204": [
