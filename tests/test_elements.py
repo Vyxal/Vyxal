@@ -31019,7 +31019,7 @@ def test_MultisetIntersection():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([1,2])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31040,7 +31040,7 @@ def test_MultisetIntersection():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify(["1","2"])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
