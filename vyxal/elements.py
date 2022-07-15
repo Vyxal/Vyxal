@@ -896,7 +896,7 @@ def combinations_with_replacement(lhs, rhs, ctx):
         ),
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx),
         (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx),
-    }.get(ts, lambda: keep(lhs, rhs))()
+    }.get(ts, lambda: set_intersection(lhs, rhs))()
 
 
 def complement(lhs, ctx):
@@ -5997,36 +5997,6 @@ def vy_sum(lhs, ctx=None):
     if not lhs:
         return 0
     return foldl(add, lhs, ctx=ctx)
-
-
-def vy_type(item, rhs=None, other=None, simple=False):
-    """
-    Get the Vyxal-friendly type(s) of 1-3 values.
-    If only `item` is given, returns the Vyxal type of `item`.
-    If both`item` and `rhs` or all three (`item`, `rhs`, and `other`)
-    are given, then it returns a tuple containing their types.
-
-    Returns `list` for lists
-    Returns `str` for strings
-    Returns `NUMBER_TYPE` if a value is int, complex, float, or sympy
-    Returns `LazyList` for `LazyList`s if `simple` is `False`
-      (the default) but `list` if `simple` is `True`
-    """
-    if other is not None:
-        return (
-            vy_type(item, simple=simple),
-            vy_type(rhs, simple=simple),
-            vy_type(other, simple=simple),
-        )
-    elif rhs is not None:
-        return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
-        assert x is not float
-        return NUMBER_TYPE
-    elif simple and isinstance(item, LazyList):
-        return list
-    else:
-        return x
 
 
 def vy_zip(lhs, rhs, ctx):
