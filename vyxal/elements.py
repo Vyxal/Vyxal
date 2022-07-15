@@ -4688,10 +4688,7 @@ def split_keep(lhs, rhs, ctx):
                 yield temp
 
         if is_num:
-            return LazyList(
-                vy_eval("".join(map(str, x)), ctx)
-                for x in gen()
-            )
+            return LazyList(vy_eval("".join(map(str, x)), ctx) for x in gen())
         else:
             return LazyList(
                 gen(), isinf=(type(lhs) is LazyList and lhs.infinite)
