@@ -3192,6 +3192,7 @@ def multiset_intersection(lhs, rhs, ctx):
 
     @lazylist_from(lhs)
     def gen():
+        nonlocal rhs
         for item in lhs:
             if item in rhs:
                 yield item
@@ -3873,11 +3874,10 @@ def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
+    lhs = iterable(lhs, ctx=ctx)
 
     @lazylist_from(lhs)
     def gen():
-        nonlocal lhs
-        lhs = iterable(lhs, ctx=ctx)
         it = iter(lhs)
 
         prev_sets = [[]]

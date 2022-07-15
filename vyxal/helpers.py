@@ -141,10 +141,10 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 def drop_while(vec, fun, ctx):
+    vec = iterable(vec, ctx=ctx)
+
     @lazylist_from(vec)
     def gen():
-        nonlocal vec
-        vec = iterable(vec, ctx=ctx)
         t = True
         for item in vec:
             if not safe_apply(fun, item, ctx=ctx):
@@ -890,11 +890,11 @@ def scanl(
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
 
+    vector = iterable(vector, ctx=ctx)
+
     @lazylist_from(vector)
     def gen():
-        nonlocal vector
         working = None
-        vector = iterable(vector, ctx=ctx)
         for item in vector:
             if working is None:
                 working = item
@@ -953,11 +953,9 @@ def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
     if isinstance(lhs, str):
         return [lhs[-i:] for i in range(len(lhs), 0, -1)]
 
-    lst = iterable(lhs, ctx=ctx)
-
     @lazylist_from(lhs)
     def gen():
-        nonlocal lst
+        lst = iterable(lhs, ctx=ctx)
         while lst:
             yield lst
             lst = lst[1:]
