@@ -1599,12 +1599,13 @@ Reverse a value
 Sum of each item in a list
 
 -------------------------------
-## `` Ṫ `` (Tail Remove)
+## `` Ṫ `` (Tail Remove / Truthy Under)
 
-Cut off the last item of a list
+Cut off the last item of a list / push 1 under the top of the stack
 
 ### Overloads
 
+- num a: `push 1 then the popped item`
 - any a: `a[:-1] (all but the last item)`
 -------------------------------
 ## `` Ẇ `` (Split And Keep Delimiter)
@@ -2939,6 +2940,15 @@ Vertically palindromise and reverse brackets and slashes, without duplicating ce
 ### Overloads
 
 - any a: `palindromise, without duplicating center, and flip brackets and slashes in the second half`
+-------------------------------
+## `` øA `` (Letter to Number)
+
+Convert a letter to a number, or vice versa (1-indexed)
+
+### Overloads
+
+- str a: `number_to_letter(a)`
+- num a: `letter_to_number(a)`
 -------------------------------
 ## `` øṗ `` (Flip Brackets Vertical Palindromise, Center, Join on Newlines)
 

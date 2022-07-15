@@ -720,6 +720,12 @@ var codepage_descriptions =
       "token": "kA"
     },
     {
+      "name": "Letter to Number",
+      "description": "Convert a letter to a number, or vice versa (1-indexed)",
+      "overloads": "str -> number_to_letter(a)\nnum -> letter_to_number(a)",
+      "token": "\u00f8A"
+    },
+    {
       "name": "Adjacency matrix (Undirected)",
       "description": "Adjacency matrix of undirected graph",
       "overloads": "lst -> adjacency matrix of undirected graph (where a = [[i, j] for each edge i to j])",
@@ -2883,9 +2889,9 @@ var codepage_descriptions =
   ],
   "199": [
     {
-      "name": "Tail Remove",
-      "description": "Cut off the last item of a list",
-      "overloads": "any -> a[:-1] (all but the last item)",
+      "name": "Tail Remove / Truthy Under",
+      "description": "Cut off the last item of a list / push 1 under the top of the stack",
+      "overloads": "num -> push 1 then the popped item\nany -> a[:-1] (all but the last item)",
       "token": "\u1e6a"
     },
     {
