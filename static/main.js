@@ -504,7 +504,7 @@ const other_aliases = {
     "∆R": [/to_?rad(ians)?/],
     "øR": [/strip_?right/],
     // How does ÞR
-    "∆S": ["arcsin"],
+    "∆S": [/arc_?sine?/],
     "øS": [/strip_?(left|right)/],
     "ÞS": ["sublists"],
     "∆T": ["arctan"],
