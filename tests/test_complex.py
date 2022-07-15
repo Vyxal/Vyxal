@@ -854,6 +854,7 @@ def test_if_modifier():
     stack = run_vyxal("1 5 0 ¨i$_ W")
     assert stack[-1] == [1]
 
+
 def test_set_intersect():
     stack = run_vyxal("Þ∞:↔")
     assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]

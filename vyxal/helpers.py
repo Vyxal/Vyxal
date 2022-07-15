@@ -932,11 +932,11 @@ def set_intersection(
             # Not taking any chances
             lhs = deep_copy(lhs)
             rhs = deep_copy(rhs)
-            
+
             # This is unordered and woefully inefficient, but whatever, it works in theory
             @infinite_lazylist
             def gen():
-                result = [] # Store what's been counted before
+                result = []  # Store what's been counted before
                 while True:
                     a = next(lhs)
                     b = next(rhs)
@@ -950,10 +950,11 @@ def set_intersection(
                     if b in lhs.generated and b not in result:
                         yield b
                         result.append(b)
+
             return gen()
         # Otherwise, the result will be finite
         # So a more efficient algorithm can be used
-        if is_inf(rhs): 
+        if is_inf(rhs):
             lhs, rhs = rhs, lhs
         return keep(lhs, rhs)
     if ts[0] == list:
