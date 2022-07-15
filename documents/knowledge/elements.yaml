@@ -6118,6 +6118,16 @@
   description: Read from STDIN, even if there are arguments
   arity: 0
 
+- element: "¨S"
+  name: Override Inputs
+  description: Overrides the list of inputs
+  arity: 1
+
+- element: "¨R"
+  name: Reset Inputs
+  description: Resets the list of inputs to what they were before overriding with `¨S`
+  arity: 0
+
 - modifier: "¨i"
   name: If/Else
   description: If the top of the stack is truthy, run the first element, otherwise the second.
