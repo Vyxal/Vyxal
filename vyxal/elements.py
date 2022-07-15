@@ -3174,7 +3174,8 @@ def multiset_difference(lhs, rhs, ctx):
 
     original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
-    if type(lhs) is str: lhs = list(lhs)
+    if type(lhs) is str:
+        lhs = list(lhs)
     lhs_copy = deep_copy(lhs)
     rhs = iterable(rhs, ctx=ctx)
 
