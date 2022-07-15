@@ -289,7 +289,7 @@ const other_aliases = {
     "ṗ": [/(p(ower)?|sub)sets?/],
     "kṗ": [/brac(ket)?_?pairs?/],
     "∆ṗ": [/prev(ious)?_?prime/],
-    // how does shortcut øṗ?
+    "øṗ": [/pal(indromi[sz]e)?_?cen(ter)?_?new(lines?)?/],
     "ṙ": ["round",/real_?imag/,/quad_?p(alin(dromise)?)?/],
     "∆ṙ": [/poly_?roots?/],
     "øṙ": [/regex_?repl(ace(ment)?)?/],
