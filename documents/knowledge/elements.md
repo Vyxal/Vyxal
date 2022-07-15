@@ -3461,12 +3461,12 @@ Infinite list of sets of positive integers (equivalent to Þ∞vṄÞf)
 -------------------------------
 ## `` Þ÷ `` (Divide List Into N Equal Length Parts)
 
-Divide a list into n equal length parts, possibly with an extra part
+Divide a list into n equal length parts
 
 ### Overloads
 
-- any a, num b: `divide a into b equal length parts, possibly with an extra part`
-- num a, any b: `divide b into a equal length parts, possibly with an extra part`
+- any a, num b: `divide a into b equal length parts`
+- num a, any b: `divide b into a equal length parts`
 -------------------------------
 ## `` ÞZ `` (Fill By Coordinates)
 

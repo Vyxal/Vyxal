@@ -29624,7 +29624,7 @@ def test_ZeroMatrix():
 def test_DivideListIntoNEqualLengthParts():
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8], 3]]
-    expected = vyxalify([[1,2],[3,4],[5,6],[7,8]])
+    expected = vyxalify([[1,2,3],[4,5,6],[7,8]])
     ctx = Context()
 
     ctx.stacks.append(stack)
