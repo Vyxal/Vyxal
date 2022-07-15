@@ -442,7 +442,7 @@ const other_aliases = {
     "Ǒ": [/multiplic(ity)?/,/(remove|rm)_?fix(ed)?(_?point)?/,/find_?tru(e|thy)/],
     "ǒ": [/mod_?(3|three)|(3|three)_?mod/,/chunks?_?2|2_?chunks?/],
     "Ǔ": [/rot(ate)?_?r(ight)?/],
-    "ÞǓ": [/conn(ected)?_?uniq(ue|ify)?/],
+    "ÞǓ": [/conn(ected)?_?uniqu(e|ify)?/],
     "ǔ": [/rot(ate)?_?l(eft)?/],
     "Þǔ": ["untruth"],
     "⁽": [/l(am(bda)?)?_?1|1_?l(am(bda)?)?/],
