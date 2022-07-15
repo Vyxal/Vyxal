@@ -9,6 +9,7 @@ import collections
 import inspect
 import itertools
 import math  # lgtm [py/unused-import]
+import re
 import textwrap
 import types
 from typing import Any, Iterable, List, Optional, Union
@@ -1167,6 +1168,15 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return vyxalify(t)
         except Exception:  # skipcq: PYL-W0703
             # TODO: eval as vyxal
+            t = item
+            pobj = re.compile(r"(\d+)/(\d+)")
+            mobj = pobj.match(t)
+            if mobj:
+                t = sympy.nsimplify(
+                    sympy.nsimplify(mobj.group(1))
+                    / sympy.nsimplify(mobj.group(2))
+                )
+                return t
             return item
     else:
         try:
