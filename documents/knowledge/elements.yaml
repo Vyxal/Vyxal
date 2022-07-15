@@ -196,14 +196,14 @@
   description: Used for string-based digraphs
 
 - element: "↔"
-  name: Combinations/Set Intersection/Fixed Point Collection
+  name: Combinations/Remove/Fixed Point Collection
   arity: 2
-  description: Does either combinations_with_replacement, takes the set intersection of a and b, or applies a on b until the result stops changing.
+  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
   overloads:
       any-num: combinations_with_replacement(a, length=b)
       fun-any: apply a on b until the result does not change, yielding intermediate values
-      any-str: Set intersection of a and b
-      any-lst: Set intersection of a and b
+      any-str: remove elements from a that are not in b
+      any-lst: remove elements from a that are not in b
   vectorise: false
   tests:
       - '["cabbage", "abcde"] : "cabbae"'
