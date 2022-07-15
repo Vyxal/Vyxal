@@ -9,6 +9,7 @@ import collections
 import inspect
 import itertools
 import math  # lgtm [py/unused-import]
+import re
 import textwrap
 import types
 from typing import Any, Iterable, List, Optional, Union
@@ -140,10 +141,10 @@ def digits(num: NUMBER_TYPE) -> List[int]:
 
 
 def drop_while(vec, fun, ctx):
+    vec = iterable(vec, ctx=ctx)
+
     @lazylist_from(vec)
     def gen():
-        nonlocal vec
-        vec = iterable(vec, ctx=ctx)
         t = True
         for item in vec:
             if not safe_apply(fun, item, ctx=ctx):
@@ -889,11 +890,11 @@ def scanl(
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
 
+    vector = iterable(vector, ctx=ctx)
+
     @lazylist_from(vector)
     def gen():
-        nonlocal vector
         working = None
-        vector = iterable(vector, ctx=ctx)
         for item in vector:
             if working is None:
                 working = item
@@ -952,11 +953,9 @@ def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
     if isinstance(lhs, str):
         return [lhs[-i:] for i in range(len(lhs), 0, -1)]
 
-    lst = iterable(lhs, ctx=ctx)
-
     @lazylist_from(lhs)
     def gen():
-        nonlocal lst
+        lst = iterable(lhs, ctx=ctx)
         while lst:
             yield lst
             lst = lst[1:]
@@ -1167,6 +1166,15 @@ def vy_eval(item: str, ctx: Context) -> Any:
             return vyxalify(t)
         except Exception:  # skipcq: PYL-W0703
             # TODO: eval as vyxal
+            t = item
+            pobj = re.compile(r"(\d+)/(\d+)")
+            mobj = pobj.match(t)
+            if mobj:
+                t = sympy.nsimplify(
+                    sympy.nsimplify(mobj.group(1))
+                    / sympy.nsimplify(mobj.group(2))
+                )
+                return t
             return item
     else:
         try:
