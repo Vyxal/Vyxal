@@ -95,8 +95,8 @@ var codepage_descriptions =
     },
     {
       "name": "Divide List Into N Equal Length Parts",
-      "description": "Divide a list into n equal length parts, possibly with an extra part",
-      "overloads": "any, num -> divide a into b equal length parts, possibly with an extra part\nnum, any -> divide b into a equal length parts, possibly with an extra part",
+      "description": "Divide a list into n equal length parts",
+      "overloads": "any, num -> divide a into b equal length parts\nnum, any -> divide b into a equal length parts",
       "token": "\u00de\u00f7"
     }
   ],
