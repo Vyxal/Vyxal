@@ -477,7 +477,7 @@ const other_aliases = {
     "ÞA": [/adj(acency)?_?mat(rix)?/],
     "øB": ["bracketify"],
     "ÞB": [/rand(om)?_?bits/],
-    "∆C": ["arccos"],
+    "∆C": [/arc_?cos(ine)?/],
     "øC": [/num_?compress/],
     "∆D": [/to_?deg(rees)?/],
     "øD": [/dict_?comp(ress)?/],
