@@ -31464,7 +31464,7 @@ def test_MultisetSymmetricDifference():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([])
+    expected = vyxalify([1, 2, "1", "2"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31485,7 +31485,7 @@ def test_MultisetSymmetricDifference():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify([])
+    expected = vyxalify(["1","2",1,2])
     ctx = Context()
 
     ctx.stacks.append(stack)
