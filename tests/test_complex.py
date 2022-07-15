@@ -855,6 +855,14 @@ def test_if_modifier():
     assert stack[-1] == [1]
 
 
+def test_set_intersect():
+    stack = run_vyxal("Þ∞:↔")
+    assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    stack = run_vyxal("Þ∞dÞ∞3*↔")
+    assert stack[-1][:4] == [6, 12, 18, 24]
+
+
 def test_nested_modifier_arity():
     stack = run_vyxal("vv+", inputs=[[1, 2, 3, 4], [1, 2, 3, 4]])
     assert stack[-1] == [[2, 3, 4, 5], [3, 4, 5, 6], [4, 5, 6, 7], [5, 6, 7, 8]]

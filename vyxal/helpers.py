@@ -124,7 +124,7 @@ def deep_copy(value: Any) -> Any:
         # I don't have any fancy memory references because I'm an epic
         # chad unlike those virgin memory reference needing lists".
 
-    return LazyList(itertools.tee(value)[-1])
+    return LazyList(itertools.tee(value)[-1], isinf=is_inf(value))
 
 
 def dict_to_list(dictionary: dict) -> List[Any]:
@@ -921,6 +921,48 @@ def sentence_case(item: str) -> str:
     return ret
 
 
+def set_intersection(
+    lhs: Union[VyList, str], rhs: Union[VyList, str]
+) -> VyList:
+    """Returns the intersection of two (possibly infinite) sets"""
+    ts = vy_type(lhs, rhs, simple=True)
+    if ts == (str, str):
+        return keep(lhs, rhs)
+    if ts == (list, list):
+        if is_inf(lhs) and is_inf(rhs):
+            # Not taking any chances
+            lhs = deep_copy(lhs)
+            rhs = deep_copy(rhs)
+
+            # This is unordered and woefully inefficient, but whatever, it works in theory
+            @infinite_lazylist
+            def gen():
+                result = []  # Store what's been counted before
+                while True:
+                    a = next(lhs)
+                    b = next(rhs)
+                    # Consider each value between the two sets. Only the ones appearing in both sets will be in the result
+                    # We store only the first n generated items at a time, so checking doesn't take infinite time.
+                    # The second time a value is encountered, it will be in the other's generated values, and is yielded.
+                    # It is appended to the list of what's been counted before so it can never appear again.
+                    if a in rhs.generated and a not in result:
+                        yield a
+                        result.append(a)
+                    if b in lhs.generated and b not in result:
+                        yield b
+                        result.append(b)
+
+            return gen()
+        # Otherwise, the result will be finite
+        # So a more efficient algorithm can be used
+        if is_inf(rhs):
+            lhs, rhs = rhs, lhs
+        return keep(lhs, rhs)
+    if ts[0] == list:
+        lhs, rhs = rhs, lhs
+    return keep(rhs, lhs)
+
+
 def simplify(value: Any) -> Union[int, float, str, list]:
     """
     Simplify values.
@@ -1225,6 +1267,36 @@ def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
             idx += 1
 
     return gen()
+
+
+def vy_type(item, rhs=None, other=None, simple=False):
+    """
+    Get the Vyxal-friendly type(s) of 1-3 values.
+    If only `item` is given, returns the Vyxal type of `item`.
+    If both`item` and `rhs` or all three (`item`, `rhs`, and `other`)
+    are given, then it returns a tuple containing their types.
+
+    Returns `list` for lists
+    Returns `str` for strings
+    Returns `NUMBER_TYPE` if a value is int, complex, float, or sympy
+    Returns `LazyList` for `LazyList`s if `simple` is `False`
+      (the default) but `list` if `simple` is `True`
+    """
+    if other is not None:
+        return (
+            vy_type(item, simple=simple),
+            vy_type(rhs, simple=simple),
+            vy_type(other, simple=simple),
+        )
+    elif rhs is not None:
+        return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
+    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
+        assert x is not float
+        return NUMBER_TYPE
+    elif simple and isinstance(item, LazyList):
+        return list
+    else:
+        return x
 
 
 def vyxalify(value: Any) -> Any:
