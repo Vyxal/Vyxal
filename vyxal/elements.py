@@ -3242,7 +3242,7 @@ def multiset_union(lhs, rhs, ctx):
     """
 
     return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
-        multiset_difference(rhs, lhs, ctx)
+        iterable(multiset_difference(rhs, lhs, ctx), ctx=ctx)
     )
 
 
