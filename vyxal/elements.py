@@ -3197,17 +3197,30 @@ def multiset_intersection(lhs, rhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     rhs = deep_copy(iterable(rhs, ctx=ctx))
 
+    original_type = vy_type(lhs)
+    lhs = iterable(lhs, ctx=ctx)
+    if type(lhs) is str:
+        lhs = list(lhs)
+
     @lazylist_from(lhs)
     def gen():
         nonlocal rhs
+        rhs = deep_copy(iterable(rhs, ctx=ctx))
+        if type(rhs) is str:
+            rhs = list(rhs)
+
         for item in lhs:
-            if item in rhs:
+            if contains(rhs, item, ctx):
                 yield item
                 if vy_type(rhs) == LazyList:
                     rhs = rhs.remove(item)
                 else:
                     rhs.remove(item)
 
+    if original_type is str:
+        return "".join(map(str, gen()))
+    elif original_type == NUMBER_TYPE:
+        return vy_eval("".join(map(str, gen())), ctx=ctx)
     return gen()
 
 
