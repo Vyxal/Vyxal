@@ -4014,6 +4014,16 @@ Usage:
 Read from STDIN, even if there are arguments
 
 -------------------------------
+## `` ¨S `` (Override Inputs)
+
+Overrides the list of inputs
+
+-------------------------------
+## `` ¨R `` (Reset Inputs)
+
+Resets the list of inputs to what they were before overriding with `¨S`
+
+-------------------------------
 ## `` ¨i `` (If/Else)
 If the top of the stack is truthy, run the first element, otherwise the second.
 
