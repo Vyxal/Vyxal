@@ -3172,14 +3172,21 @@ def multiset_difference(lhs, rhs, ctx):
     (lst, lst) -> Return the mutli-set difference of two lists
     """
 
+    original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
+    if type(lhs) is str:
+        lhs = list(lhs)
     lhs_copy = deep_copy(lhs)
     rhs = iterable(rhs, ctx=ctx)
 
     for item in rhs:
-        if item in lhs_copy:
+        if contains(lhs_copy, item, ctx):
             lhs_copy = lhs_copy.remove(item)
 
+    if original_type is str:
+        return "".join(lhs_copy)
+    elif original_type == NUMBER_TYPE:
+        return vy_eval("".join(map(str, lhs_copy)), ctx)
     return lhs_copy
 
 
@@ -3187,6 +3194,8 @@ def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
     """
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = deep_copy(iterable(rhs, ctx=ctx))
 
     original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
@@ -3885,11 +3894,10 @@ def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
+    lhs = iterable(lhs, ctx=ctx)
 
     @lazylist_from(lhs)
     def gen():
-        nonlocal lhs
-        lhs = iterable(lhs, ctx=ctx)
         it = iter(lhs)
 
         prev_sets = [[]]
@@ -4698,10 +4706,7 @@ def split_keep(lhs, rhs, ctx):
                 yield temp
 
         if is_num:
-            return LazyList(
-                sympy.nsimplify("".join(map(str, x)), rational=True)
-                for x in gen()
-            )
+            return LazyList(vy_eval("".join(map(str, x)), ctx) for x in gen())
         else:
             return LazyList(
                 gen(), isinf=(type(lhs) is LazyList and lhs.infinite)
@@ -6802,6 +6807,8 @@ elements: dict[str, tuple[str, int]] = {
         'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
         0,
     ),
+    "¨S": ("ctx.inputs.insert(0, [list(stack.pop()), 0])", 1),
+    "¨R": ("ctx.inputs.pop(0)", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
