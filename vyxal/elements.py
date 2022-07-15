@@ -4689,7 +4689,7 @@ def split_keep(lhs, rhs, ctx):
 
         if is_num:
             return LazyList(
-                sympy.nsimplify("".join(map(str, x)), rational=True)
+                vy_eval("".join(map(str, x)), ctx)
                 for x in gen()
             )
         else:
