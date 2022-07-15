@@ -3172,14 +3172,20 @@ def multiset_difference(lhs, rhs, ctx):
     (lst, lst) -> Return the mutli-set difference of two lists
     """
 
+    original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
+    if type(lhs) is str: lhs = list(lhs)
     lhs_copy = deep_copy(lhs)
     rhs = iterable(rhs, ctx=ctx)
 
     for item in rhs:
-        if item in lhs_copy:
+        if contains(lhs_copy, item, ctx):
             lhs_copy = lhs_copy.remove(item)
 
+    if original_type is str:
+        return "".join(lhs_copy)
+    elif original_type == NUMBER_TYPE:
+        return vy_eval("".join(map(str, lhs_copy)), ctx)
     return lhs_copy
 
 
