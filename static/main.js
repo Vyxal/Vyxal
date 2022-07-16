@@ -860,7 +860,7 @@ function initCodeMirror() {
                 const num = line.match(/\d+$/)?.[0] || "";
                 if (num) {
                     let n = BigInt(num);
-                    const c = codepage.replace('»', '');
+                    const c = codepage.replace('»', '').replace('␠', ' ').replace('␤', '\n');
                     let compressed = '';
                     do {
                         compressed = c[Number(n % 255n)] + compressed;
