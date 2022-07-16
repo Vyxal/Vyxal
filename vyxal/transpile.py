@@ -282,11 +282,15 @@ def transpile_structure(
             + indent_str(f"counter{sec3} = ctx.range_start", indent)
             + indent_str(f"temp_len{sec} = len(ctx.context_values)", indent)
             + indent_str(f"while boolify(condition{sec2}, ctx):", indent)
-            + indent_str(f"    ctx.context_values.append(counter{sec3})", indent)
+            + indent_str(
+                f"    ctx.context_values.append(counter{sec3})", indent
+            )
             + transpile_ast(struct.body, indent + 1, options=options)
             + indent_str("    ctx.context_values.pop()", indent)
             + transpile_ast(struct.condition, indent + 1, options=options)
-            + indent_str(f"    condition{sec2} = pop(stack, 1, ctx=ctx)", indent)
+            + indent_str(
+                f"    condition{sec2} = pop(stack, 1, ctx=ctx)", indent
+            )
             + indent_str(f"    counter{sec3} += 1", indent)
             + indent_str(f"if len(ctx.context_values) > temp_len{sec}:", indent)
             + indent_str("    ctx.context_values.pop()", indent)
