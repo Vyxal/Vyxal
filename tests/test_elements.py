@@ -15104,8 +15104,29 @@ def test_SplitAndKeepDelimiter():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [-1231234.5, 3]]
-    expected = vyxalify([12, 3, 12, 3, 4.5])
+    stack = [vyxalify(item) for item in [-1231234.5, 4]]
+    expected = vyxalify([2, 4, 62, 4, 34.5])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Ẇ')
+    # print('Ẇ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [-1231234.5, 2]]
+    expected = vyxalify(['', 2.0, 46.0, 2.0, '469/', 2.0])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27489,7 +27510,7 @@ def test_ReplaceFirstOccurrence():
 
 
     stack = [vyxalify(item) for item in [234,"2",4]]
-    expected = vyxalify(234)
+    expected = vyxalify(434)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27510,7 +27531,7 @@ def test_ReplaceFirstOccurrence():
 
 
     stack = [vyxalify(item) for item in ["234",2,4]]
-    expected = vyxalify("234")
+    expected = vyxalify("434")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27764,7 +27785,7 @@ def test_ReplaceNthOccurrence():
 
 
     stack = [vyxalify(item) for item in [234,"2",4,1]]
-    expected = vyxalify(234)
+    expected = vyxalify(434)
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -27785,7 +27806,7 @@ def test_ReplaceNthOccurrence():
 
 
     stack = [vyxalify(item) for item in ["234",2,4,1]]
-    expected = vyxalify("234")
+    expected = vyxalify("434")
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -29603,7 +29624,7 @@ def test_ZeroMatrix():
 def test_DivideListIntoNEqualLengthParts():
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,6,7,8], 3]]
-    expected = vyxalify([[1,2],[3,4],[5,6],[7,8]])
+    expected = vyxalify([[1,2,3],[4,5,6],[7,8]])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -30785,6 +30806,27 @@ def test_MultisetDifference():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+    stack = [vyxalify(item) for item in [[], [1, 2, 3]]]
+    expected = vyxalify([])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þ∨')
+    # print('Þ∨', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
     stack = [vyxalify(item) for item in [12,234]]
     expected = vyxalify([1])
     ctx = Context()
@@ -30807,7 +30849,7 @@ def test_MultisetDifference():
 
 
     stack = [vyxalify(item) for item in [1234,"13"]]
-    expected = vyxalify([2,4])
+    expected = vyxalify([1234])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -30828,7 +30870,7 @@ def test_MultisetDifference():
 
 
     stack = [vyxalify(item) for item in ["1234",13]]
-    expected = vyxalify(["2","4"])
+    expected = vyxalify(["1234"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31019,7 +31061,7 @@ def test_MultisetIntersection():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([1,2])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31040,7 +31082,7 @@ def test_MultisetIntersection():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify(["1","2"])
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31231,7 +31273,7 @@ def test_MultisetUnion():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([1,2])
+    expected = vyxalify([1,2,"1","2"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31252,7 +31294,7 @@ def test_MultisetUnion():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify(["1","2"])
+    expected = vyxalify(["1","2",1,2])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31422,7 +31464,7 @@ def test_MultisetSymmetricDifference():
 
 
     stack = [vyxalify(item) for item in [12,"12"]]
-    expected = vyxalify([])
+    expected = vyxalify([1, 2, "1", "2"])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -31443,7 +31485,7 @@ def test_MultisetSymmetricDifference():
 
 
     stack = [vyxalify(item) for item in ["12",12]]
-    expected = vyxalify([])
+    expected = vyxalify(["1","2",1,2])
     ctx = Context()
 
     ctx.stacks.append(stack)
