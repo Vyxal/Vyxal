@@ -503,7 +503,7 @@ const other_aliases = {
     "∆Q": [/solve_?quad(ratic)?/],
     "∆R": [/to_?rad(ians)?/],
     "øR": [/strip_?right/],
-    // How does ÞR
+    "ÞR": [/(zero|0)_?cum(ulative)?_?sums?/],
     "∆S": [/arc_?sine?/],
     "øS": [/strip_?both/],
     "ÞS": ["sublists"],
