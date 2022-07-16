@@ -872,7 +872,7 @@ function initCodeMirror() {
                         return;
                     }
                 }
-                const str = line.match(/`([a-z ]|\\`)+`$/)?.[0]?.slice(1, -1);
+                const str = line.match(/`[a-z ]+`$/)?.[0]?.slice(1, -1);
                 if (str) {
                     let r = 0n;
                     for (const c of str)
