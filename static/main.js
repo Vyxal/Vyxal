@@ -541,7 +541,7 @@ const other_aliases = {
     "Þj": ["depth"],
     "∆l": [/log_?2/],
     "øl": [/strip_?left_?by/],
-    // øm?
+    "øm": [/m(ir(ror)?)?_?c(enter)?_?newlines?/],
     "Þm": [/(zero|0)_?mat(rix)?/],
     "Þn": [/a(ll)?_?ints?/],
     "∆o": [/n(th)?_?ord(inal)?/],
