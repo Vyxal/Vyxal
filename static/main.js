@@ -214,7 +214,6 @@ const other_aliases = {
     "÷": [/(i(tem)?_?)split/, /p(ush)?_?ea(ch)?/],
     "Þ÷": [/div(ide)?_?eq(ual)?(_?parts)?/],
     "×": ["asterisk","star"],
-    // Constants mostly skipped
     "Þ×": [/(all_?)?comb(inations?|os?)(_?with)r(epl(acement)?)?/],
     "«": [/c(ompressed)?_?str(ing)?/],
     "»": [/c(ompressed)?_?(int|num)/],
@@ -239,7 +238,6 @@ const other_aliases = {
     "∆ƈ": ["npr",/n_?p(ick)?_?r/],
     "∞": [/pal(indrom(e|i[sz]e))?/],
     "Þ∞": ["inf","infinity"],
-    // TODO: add more completions
     "↑": [/max(imum)?_?by_?t(ail)?/],
     //Þ↑ and Þ↓ deprecated
     "↓": [/min(imum)?_?by_?t(ail)?/],
@@ -856,8 +854,23 @@ function initCodeMirror() {
                 const k = lines[cur.line].slice(cur.ch - 2, cur.ch);
                 const t = Object.entries(aliases).find(x => x[1].includes(k));
                 if (t) {
-                    // Sorry Steffan, you've been usurped by the robots.
                     cm.replaceRange(t[0], { line: cur.line, ch: cur.ch - 2 }, { line: cur.line, ch: cur.ch });
+                    return;
+                }
+                const num = line.match(/\d+$/)?.[0] || "";
+                if (num) {
+                    let n = BigInt(num);
+                    const c = codepage.replace('»', '');
+                    let compressed = '';
+                    do {
+                        compressed = c[Number(n % 255n)] + compressed;
+                        n /= 255n;
+                    } while (n);
+                    compressed = '»' + compressed + '»';
+                    if (compressed.length <= num.length) {
+                        cm.replaceRange(compressed, { line: cur.line, ch: cur.ch - num.length }, { line: cur.line, ch: cur.ch });
+                        // Suggested by Copilot, again. Works.
+                    }
                 }
             }
         }
