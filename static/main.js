@@ -558,6 +558,7 @@ const other_aliases = {
     "¨v": [/simp(le)?_?vec(tori[sz]e)/],
     "Þw": [/dist(ance)?_?mat(rix)?/],
     "Þx": [/a(ll)?_?comb(ination)?s?_?(without|no|sans)_?rep(l(acement)?)?/],
+    "∆p": [/(near|clos)est_?prime/]
 }
 
 
