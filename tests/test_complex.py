@@ -853,3 +853,29 @@ def test_if_modifier():
 
     stack = run_vyxal("1 5 0 ¨i$_ W")
     assert stack[-1] == [1]
+
+
+def test_set_intersect():
+    stack = run_vyxal("Þ∞:↔")
+    assert stack[-1][:10] == [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    stack = run_vyxal("Þ∞dÞ∞3*↔")
+    assert stack[-1][:4] == [6, 12, 18, 24]
+
+
+def test_nested_modifier_arity():
+    stack = run_vyxal("vv+", inputs=[[1, 2, 3, 4], [1, 2, 3, 4]])
+    assert stack[-1] == [[2, 3, 4, 5], [3, 4, 5, 6], [4, 5, 6, 7], [5, 6, 7, 8]]
+
+    stack = run_vyxal("3 2 ₍+₍-*")
+    assert stack[-1] == [5, [1, 6]]
+
+
+def test_override_inputs():
+    stack = run_vyxal("23f¨S??□¨R?W")
+    assert stack[-1] == [2, 3, [2, 3], 0]
+
+
+def test_context_var_while():
+    stack = run_vyxal("`abcd`({X}n⅛)¾")
+    assert stack[-1] == ["a", "b", "c", "d"]

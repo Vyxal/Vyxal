@@ -95,8 +95,8 @@ var codepage_descriptions =
     },
     {
       "name": "Divide List Into N Equal Length Parts",
-      "description": "Divide a list into n equal length parts, possibly with an extra part",
-      "overloads": "any, num -> divide a into b equal length parts, possibly with an extra part\nnum, any -> divide b into a equal length parts, possibly with an extra part",
+      "description": "Divide a list into n equal length parts",
+      "overloads": "any, num -> divide a into b equal length parts\nnum, any -> divide b into a equal length parts",
       "token": "\u00de\u00f7"
     }
   ],
@@ -1094,6 +1094,11 @@ var codepage_descriptions =
       "description": "Remove the last item of the cumulative sums of a list and prepend 0. A shortcut for \u00a6\u1e6a0p",
       "overloads": "lst -> [0, a[0], a[0]+a[1], ..., a[0]+a[1]+...+a[-2]]",
       "token": "\u00deR"
+    },
+    {
+      "name": "Reset Inputs",
+      "description": "Resets the list of inputs to what they were before overriding with `\u00a8S`",
+      "token": "\u00a8R"
     }
   ],
   "83": [
@@ -1125,6 +1130,11 @@ var codepage_descriptions =
       "description": "Sublists of a list.",
       "overloads": "lst -> non-empty sublists of a",
       "token": "\u00deS"
+    },
+    {
+      "name": "Override Inputs",
+      "description": "Overrides the list of inputs",
+      "token": "\u00a8S"
     }
   ],
   "84": [

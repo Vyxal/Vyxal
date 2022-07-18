@@ -896,7 +896,7 @@ def combinations_with_replacement(lhs, rhs, ctx):
         ),
         (types.FunctionType, ts[1]): lambda: fixed_point(lhs, rhs, ctx=ctx),
         (ts[0], types.FunctionType): lambda: fixed_point(rhs, lhs, ctx=ctx),
-    }.get(ts, lambda: keep(lhs, rhs))()
+    }.get(ts, lambda: set_intersection(lhs, rhs))()
 
 
 def complement(lhs, ctx):
@@ -3172,14 +3172,21 @@ def multiset_difference(lhs, rhs, ctx):
     (lst, lst) -> Return the mutli-set difference of two lists
     """
 
+    original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
+    if type(lhs) is str:
+        lhs = list(lhs)
     lhs_copy = deep_copy(lhs)
     rhs = iterable(rhs, ctx=ctx)
 
     for item in rhs:
-        if item in lhs_copy:
+        if contains(lhs_copy, item, ctx):
             lhs_copy = lhs_copy.remove(item)
 
+    if original_type is str:
+        return "".join(lhs_copy)
+    elif original_type == NUMBER_TYPE:
+        return vy_eval("".join(map(str, lhs_copy)), ctx)
     return lhs_copy
 
 
@@ -3187,21 +3194,33 @@ def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
     """
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = deep_copy(iterable(rhs, ctx=ctx))
+
+    original_type = vy_type(lhs)
+    lhs = iterable(lhs, ctx=ctx)
+    if type(lhs) is str:
+        lhs = list(lhs)
 
     @lazylist_from(lhs)
     def gen():
         nonlocal rhs
-        lhs = iterable(lhs, ctx=ctx)
         rhs = deep_copy(iterable(rhs, ctx=ctx))
+        if type(rhs) is str:
+            rhs = list(rhs)
 
         for item in lhs:
-            if item in rhs:
+            if contains(rhs, item, ctx):
                 yield item
                 if vy_type(rhs) == LazyList:
                     rhs = rhs.remove(item)
                 else:
                     rhs.remove(item)
 
+    if original_type is str:
+        return "".join(map(str, gen()))
+    elif original_type == NUMBER_TYPE:
+        return vy_eval("".join(map(str, gen())), ctx=ctx)
     return gen()
 
 
@@ -3223,7 +3242,7 @@ def multiset_union(lhs, rhs, ctx):
     """
 
     return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
-        multiset_difference(rhs, lhs, ctx)
+        iterable(multiset_difference(rhs, lhs, ctx), ctx=ctx)
     )
 
 
@@ -3875,11 +3894,10 @@ def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
     """
+    lhs = iterable(lhs, ctx=ctx)
 
     @lazylist_from(lhs)
     def gen():
-        nonlocal lhs
-        lhs = iterable(lhs, ctx=ctx)
         it = iter(lhs)
 
         prev_sets = [[]]
@@ -4688,10 +4706,7 @@ def split_keep(lhs, rhs, ctx):
                 yield temp
 
         if is_num:
-            return LazyList(
-                sympy.nsimplify("".join(map(str, x)), rational=True)
-                for x in gen()
-            )
+            return LazyList(vy_eval("".join(map(str, x)), ctx) for x in gen())
         else:
             return LazyList(
                 gen(), isinf=(type(lhs) is LazyList and lhs.infinite)
@@ -6012,36 +6027,6 @@ def vy_sum(lhs, ctx=None):
     return foldl(add, lhs, ctx=ctx)
 
 
-def vy_type(item, rhs=None, other=None, simple=False):
-    """
-    Get the Vyxal-friendly type(s) of 1-3 values.
-    If only `item` is given, returns the Vyxal type of `item`.
-    If both`item` and `rhs` or all three (`item`, `rhs`, and `other`)
-    are given, then it returns a tuple containing their types.
-
-    Returns `list` for lists
-    Returns `str` for strings
-    Returns `NUMBER_TYPE` if a value is int, complex, float, or sympy
-    Returns `LazyList` for `LazyList`s if `simple` is `False`
-      (the default) but `list` if `simple` is `True`
-    """
-    if other is not None:
-        return (
-            vy_type(item, simple=simple),
-            vy_type(rhs, simple=simple),
-            vy_type(other, simple=simple),
-        )
-    elif rhs is not None:
-        return (vy_type(item, simple=simple), vy_type(rhs, simple=simple))
-    elif (x := type(item)) in (int, complex, float) or is_sympy(item):
-        assert x is not float
-        return NUMBER_TYPE
-    elif simple and isinstance(item, LazyList):
-        return list
-    else:
-        return x
-
-
 def vy_zip(lhs, rhs, ctx):
     """Element Z
     (any, any) -> zip(a, b)
@@ -6805,6 +6790,8 @@ elements: dict[str, tuple[str, int]] = {
         'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
         0,
     ),
+    "¨S": ("ctx.inputs.insert(0, [list(stack.pop()), 0])", 1),
+    "¨R": ("ctx.inputs.pop(0)", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

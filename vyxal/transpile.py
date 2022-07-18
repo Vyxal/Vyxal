@@ -44,6 +44,46 @@ def lambda_wrap(
             return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
         elif isinstance(branch[0], vyxal.structure.Lambda):
             return branch[0]
+        elif isinstance(branch[0], structure.MonadicModifier):
+            arity = vyxal.parse.DEFAULT_ARITY
+            if isinstance(
+                branch[0].function_A, vyxal.structure.GenericStatement
+            ):
+                if branch[0].function_A.branches[0][0].name in NILADIC_TYPES:
+                    arity = 0
+                else:
+                    arity = elements.get(
+                        branch[0].function_A.branches[0][0].value, ("", 1)
+                    )[1]
+            return vyxal.structure.Lambda(arity, branch)
+        elif isinstance(branch[0], structure.DyadicModifier):
+            arities = [vyxal.parse.DEFAULT_ARITY] * 2
+            for i, f in enumerate([branch[0].function_A, branch[0].function_B]):
+                if isinstance(f, vyxal.structure.GenericStatement):
+                    if f.branches[0][0].name in NILADIC_TYPES:
+                        arities[i] = 0
+                    else:
+                        arities[i] = elements.get(
+                            f.branches[0][0].value, ("", 1)
+                        )[1]
+            return vyxal.structure.Lambda(max(arities), branch)
+        elif isinstance(branch[0], structure.TriadicModifier):
+            arities = [vyxal.parse.DEFAULT_ARITY] * 3
+            for i, f in enumerate(
+                [
+                    branch[0].function_A,
+                    branch[0].function_B,
+                    branch[0].function_C,
+                ]
+            ):
+                if isinstance(f, vyxal.structure.GenericStatement):
+                    if f.branches[0][0].name in NILADIC_TYPES:
+                        arities[i] = 0
+                    else:
+                        arities[i] = elements.get(
+                            f.branches[0][0].value, ("", 1)
+                        )[1]
+            return vyxal.structure.Lambda(max(arities), branch)
         else:
             return vyxal.structure.Lambda(vyxal.parse.DEFAULT_ARITY, branch)
     else:
@@ -233,18 +273,27 @@ def transpile_structure(
             + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, vyxal.structure.WhileLoop):
+        sec = secrets.token_hex(16)
+        sec2 = secrets.token_hex(16)
+        sec3 = secrets.token_hex(16)
         return (
             transpile_ast(struct.condition, indent, options=options)
-            + indent_str("condition = pop(stack, 1, ctx=ctx)", indent)
-            + indent_str("counter = ctx.range_start", indent)
-            + indent_str("while boolify(condition, ctx):", indent)
-            + indent_str("    ctx.context_values.append(condition)", indent)
-            + indent_str("    ctx.context_values.append(counter)", indent)
+            + indent_str(f"condition{sec2} = pop(stack, 1, ctx=ctx)", indent)
+            + indent_str(f"counter{sec3} = ctx.range_start", indent)
+            + indent_str(f"temp_len{sec} = len(ctx.context_values)", indent)
+            + indent_str(f"while boolify(condition{sec2}, ctx):", indent)
+            + indent_str(
+                f"    ctx.context_values.append(counter{sec3})", indent
+            )
             + transpile_ast(struct.body, indent + 1, options=options)
             + indent_str("    ctx.context_values.pop()", indent)
             + transpile_ast(struct.condition, indent + 1, options=options)
-            + indent_str("    condition = pop(stack, 1, ctx=ctx)", indent)
-            + indent_str("    counter += 1", indent)
+            + indent_str(
+                f"    condition{sec2} = pop(stack, 1, ctx=ctx)", indent
+            )
+            + indent_str(f"    counter{sec3} += 1", indent)
+            + indent_str(f"if len(ctx.context_values) > temp_len{sec}:", indent)
+            + indent_str("    ctx.context_values.pop()", indent)
         )
     if isinstance(struct, vyxal.structure.FunctionCall):
         var = re.sub("[^A-Za-z0-9_]", "", struct.name)
