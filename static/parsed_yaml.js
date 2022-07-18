@@ -2118,7 +2118,7 @@ var codepage_descriptions =
     {
       "name": "To Decimal",
       "description": "Convert a rational to its decimal representation.",
-      "overloads": "num -> to_decimal(a)",
+      "overloads": "num -> to_decimal(a)\nstr -> decimal representation of interpreting lhs as a fraction",
       "token": "\u00f8\u1e0b"
     },
     {
