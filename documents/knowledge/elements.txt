@@ -2736,6 +2736,8 @@ k• (Qwerty Keyboard)
 - Convert a rational to its decimal representation.
 
     num a: to_decimal(a)
+    str a: decimal representation of interpreting lhs as a fraction
+    otherwise: vectorise
 -------------------------------
 ø⟇ (Get Codepage Character / Get Codepage Index)
 

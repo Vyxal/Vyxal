@@ -5196,6 +5196,19 @@ def to_base(lhs, rhs, ctx):
     return res
 
 
+def to_decimal(lhs, ctx):
+    """Element øḋ
+    (num) -> to_decimal(lhs)
+    (str) -> decimal representation of interpreting lhs as a fraction
+    """
+
+    ts = vy_type(lhs)
+    return {
+        NUMBER_TYPE: lambda: str(float(lhs)),
+        str: lambda: to_decimal(vy_eval(lhs, ctx), ctx),
+    }.get(ts, lambda: vectorise(to_decimal, lhs, ctx=ctx))()
+
+
 def to_degrees(lhs, ctx):
     """Element ∆D
     (num) -> a * (180 / pi)
@@ -6623,7 +6636,7 @@ elements: dict[str, tuple[str, int]] = {
     "øċ": process_element(optimal_number_compress, 1),
     "ød": process_element(run_length_decoding, 1),
     "øD": process_element(optimal_compress, 1),
-    "øḋ": process_element("str(float(lhs))", 1),
+    "øḋ": process_element(to_decimal, 1),
     "øḊ": process_element(dyadic_runl_decode, 2),
     "øe": process_element(run_length_encoding, 1),
     "øĖ": process_element(separate_runl_encode, 1),
