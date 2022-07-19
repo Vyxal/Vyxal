@@ -869,7 +869,24 @@ function initCodeMirror() {
                     compressed = '»' + compressed + '»';
                     if (compressed.length <= num.length) {
                         cm.replaceRange(compressed, { line: cur.line, ch: cur.ch - num.length }, { line: cur.line, ch: cur.ch });
-                        // Suggested by Copilot, again. Works.
+                        return;
+                    }
+                }
+                const str = line.match(/`[a-z ]+`$/)?.[0]?.slice(1, -1);
+                if (str) {
+                    let r = 0n;
+                    for (const c of str)
+                        r = 27n * r + BigInt(' abcdefghijklmnopqrstuvwxyz'.indexOf(c));
+                    const c = codepage.replace('«', '').replace('␠', ' ').replace('␤', '\n');
+                    let compressed = '';
+                    do {
+                        compressed = c[Number(r % 255n)] + compressed;
+                        r /= 255n;
+                    } while (r);
+                    compressed = '«' + compressed + '«';
+                    if (compressed.length <= str.length + 2) {
+                        cm.replaceRange(compressed, { line: cur.line, ch: cur.ch - str.length - 2 }, { line: cur.line, ch: cur.ch });
+                        return;
                     }
                 }
             }

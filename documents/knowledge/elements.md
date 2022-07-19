@@ -3143,6 +3143,7 @@ Convert a rational to its decimal representation.
 ### Overloads
 
 - num a: `to_decimal(a)`
+- str a: `decimal representation of interpreting lhs as a fraction`
 -------------------------------
 ## `` ø⟇ `` (Get Codepage Character / Get Codepage Index)
 

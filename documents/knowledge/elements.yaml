@@ -4785,9 +4785,11 @@
   arity: 1
   overloads:
       num: to_decimal(a)
-  vectorise: false
+      str: decimal representation of interpreting lhs as a fraction
+  vectorise: true
   tests:
-      - '[-5/2] : "-2.5"'
+      - '[-2.5] : "-2.5"'
+      - '["-5/2"] : "-2.5"'
 
 - element: "ø⟇"
   name: Get Codepage Character / Get Codepage Index

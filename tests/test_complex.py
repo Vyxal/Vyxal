@@ -874,3 +874,8 @@ def test_nested_modifier_arity():
 def test_override_inputs():
     stack = run_vyxal("23f¨S??□¨R?W")
     assert stack[-1] == [2, 3, [2, 3], 0]
+
+
+def test_context_var_while():
+    stack = run_vyxal("`abcd`({X}n⅛)¾")
+    assert stack[-1] == ["a", "b", "c", "d"]
