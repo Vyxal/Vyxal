@@ -310,7 +310,6 @@ def all_multiples(lhs, ctx):
     (num) -> [a*1, a*2, a*3, a*4, ...]
     (str) -> [a*1, a*2, a*3, a*4, ...]
     """
-
     return multiply(lhs, infinite_positives(ctx), ctx)
 
 
@@ -318,7 +317,6 @@ def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
     """
-
     if primitive_type(lhs) == SCALAR_TYPE:
         temp = all_partitions(list(iterable(lhs, ctx=ctx)), ctx)
         if isinstance(lhs, str):
@@ -423,7 +421,6 @@ def apply_at(lhs, rhs, other, ctx):
     (lst, lst, fun) -> Map a function to elements of a list whose
                        indices are in another list
     """
-
     if vy_type(lhs) == types.FunctionType:
         return apply_at(rhs, other, lhs, ctx)
     if vy_type(rhs) == types.FunctionType:
@@ -869,7 +866,6 @@ def codepage_digraph(lhs, ctx):
     (num) -> vyxal_codepage[a]
     (str) -> vyxal_codepage.index(a)
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: vyxal.encoding.codepage[int(lhs)],
@@ -1004,7 +1000,6 @@ def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
     """
-
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if vy_type(lhs) in (NUMBER_TYPE, str):
@@ -1101,7 +1096,6 @@ def decrement_until_false(lhs, rhs, ctx):
     (any, fun) -> while b(a): a -= 1
     (fun, any) -> while a(b): b -= 1
     """
-
     function, value = (
         (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
     )
@@ -1678,7 +1672,6 @@ def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
     """
-
     if vy_type(lhs, simple=True) in (str, NUMBER_TYPE):
         result = str(lhs).split("\n")
         for i in range(len(result)):
@@ -1994,7 +1987,6 @@ def identity_matrix(lhs, ctx):
     """Element Þ□
     (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: [
@@ -2047,7 +2039,6 @@ def increment_until_false(lhs, rhs, ctx):
     (any, fun) -> while b(a): a += 1
     (fun, any) -> while a(b): b += 1
     """
-
     function, value = (
         (rhs, lhs) if type(rhs) is types.FunctionType else (lhs, rhs)
     )
@@ -2144,7 +2135,6 @@ def infinite_all_integers(_, ctx=None):
     """Element Þn
     An infinite list of all integers (0, 1, -1, 2, -2, ...)
     """
-
     yield 0
     i = 1
     while 1:
@@ -2225,7 +2215,6 @@ def infinite_replace(lhs, rhs, other, ctx):
     (lst, lst, fun) -> apply function c to items in a at indices in b
     (fun, lst, lst) -> apply function a to items in b at indices in c
     """
-
     ts = (vy_type(lhs), vy_type(rhs), vy_type(other))
     if types.FunctionType in ts:
         function = first_where(
@@ -2502,7 +2491,6 @@ def is_ordered(lhs, ctx):
     (lst) -> Returns true if the item is sorted in either descending
              or ascending order.
     """
-
     return is_sorted_ascending(lhs, ctx) or is_sorted_descending(lhs, ctx)
 
 
@@ -2525,7 +2513,6 @@ def is_sorted_ascending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in ascending order
              using default sorting rules.
     """
-
     return non_vectorising_equals(lhs, vy_sort(lhs, ctx), ctx=ctx)
 
 
@@ -2534,7 +2521,6 @@ def is_sorted_descending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in ascending order
              using default sorting rules.
     """
-
     return non_vectorising_equals(
         reverse(deep_copy(lhs), ctx), vy_sort(lhs, ctx), ctx=ctx
     )
@@ -2545,7 +2531,6 @@ def is_sorted_strictly_ascending(lhs, ctx):
     (lst) -> Returns true if an item is sorted in strictly
              ascending order using default sorting rules.
     """
-
     return int(
         all(
             strict_less_than(x[0], x[1], ctx)
@@ -2586,7 +2571,6 @@ def is_unordered(lhs, ctx):
     (lst) -> Returns true if the item is not sorted in either
             descending or ascending order. (i.e. chaos chaos)
     """
-
     return int(not is_ordered(lhs, ctx))
 
 
@@ -2804,7 +2788,6 @@ def longest(lhs, ctx):
     """Element ÞG
     (lst) -> Return the longest item in a list
     """
-
     return max_by_function(lhs, length, ctx)
 
 
@@ -2839,7 +2822,6 @@ def matrix_exponentiation(lhs, rhs, ctx):
     (lst, num) -> (a * a) b times
     (num, lst) -> (b * b) a times
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     if set(ts) != {list, NUMBER_TYPE}:
         raise TypeError("Matrix exponentiation requires a matrix and a number")
@@ -3118,7 +3100,6 @@ def multiplicity(lhs, rhs, ctx):
     (str, str) -> Remove a from b until b does not change
     (any, fun) -> Index of the first truthy item in a under b(x)
     """
-
     ts = vy_type(lhs, rhs)
     if ts == (NUMBER_TYPE, NUMBER_TYPE):
         if lhs == 0 or rhs == 0:
@@ -3171,7 +3152,6 @@ def multiset_difference(lhs, rhs, ctx):
     """Element Þ∨
     (lst, lst) -> Return the mutli-set difference of two lists
     """
-
     original_type = vy_type(lhs)
     lhs = iterable(lhs, ctx=ctx)
     if type(lhs) is str:
@@ -3228,7 +3208,6 @@ def multiset_symmetric_difference(lhs, rhs, ctx):
     """Element Þ⊍
     (lst, lst) -> Return the multi-set symmetric difference of two lists
     """
-
     return multiset_union(
         multiset_difference(lhs, rhs, ctx),
         multiset_difference(rhs, lhs, ctx),
@@ -3240,7 +3219,6 @@ def multiset_union(lhs, rhs, ctx):
     """Element Þ∪
     (lst, lst) -> Return the multi-set union of two lists
     """
-
     return LazyList(iterable(lhs, ctx=ctx)) + LazyList(
         iterable(multiset_difference(rhs, lhs, ctx), ctx=ctx)
     )
@@ -3435,7 +3413,6 @@ def nth_fibonacci(lhs, ctx):
     (num) -> nth fibonacci number # sympy.fibonacci(lhs + 1)
     (str) -> nop
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.fibonacci(lhs + 1),
@@ -3523,7 +3500,6 @@ def optimal_compress(lhs, ctx):
     """Element øD
     (str) -> return the most optimal dictionary compressed string
     """
-
     dp = [""] + [" " * (len(lhs) + 1)] * len(lhs)
 
     for i in range(1, len(lhs) + 1):
@@ -3918,7 +3894,6 @@ def prepend(lhs, rhs, ctx):
     """Element p
     (any, any) -> a.prepend(b) (Prepend b to a)
     """
-
     ts = vy_type(lhs, rhs, simple=True)
     if ts != (list, list):
         return merge(rhs, lhs, ctx)
@@ -3985,7 +3960,6 @@ def product(lhs, ctx):
     (lst[num]) -> product(list)
     (lst[str|lst]) -> Cartesian product over a list of lists
     """
-
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
         return foldl(multiply, lhs, initial=1, ctx=ctx)
 
@@ -4114,7 +4088,6 @@ def remove_at_index(lhs, rhs, ctx):
     """Element ⟇
     (any, num) -> remove item b of a
     """
-
     lhs, rhs = (rhs, lhs) if vy_type(rhs) != NUMBER_TYPE else (lhs, rhs)
     lhs = iterable(lhs, ctx=ctx)
 
@@ -4215,7 +4188,6 @@ def replace_first(lhs, rhs, other, ctx):
     """Element øḞ
     (any, any, any) -> a.replace_first(b, c)
     """
-
     if vy_type(lhs, simple=True) is not list:
         return str(lhs).replace(str(rhs), str(other), 1)
     else:
@@ -4239,7 +4211,6 @@ def replace_nth_occurrence(lhs, rhs, other, n, ctx):
     """Element øṄ
     (any, any, any, num) -> a.replace_nth_occurrence(b, c, d)
     """
-
     if vy_type(lhs, simple=True) is not list:
         try:
             where = [m.start() for m in re.finditer(str(rhs), str(lhs))][
@@ -4284,7 +4255,6 @@ def replace_until_no_change(lhs, rhs, other, ctx):
 def request(lhs, ctx):
     """Element ¨U
     (str) -> Send a GET request to a URL if online"""
-
     req = urllib.request.Request(
         urlify(lhs), headers={"User-Agent": "Mozilla/5.0 Vyxal"}
     )
@@ -4424,7 +4394,6 @@ def rotate_left(lhs, rhs, ctx):
     (any, num) -> a rotated left by b
     (any) -> a rotated left by 1
     """
-
     lhs = iterable(lhs, ctx=ctx)
     ts = vy_type(lhs)
 
@@ -4449,7 +4418,6 @@ def rotate_right(lhs, rhs, ctx):
     (any, num) -> a rotated right by b
     (any) -> a rotated right by 1
     """
-
     lhs = iterable(lhs, ctx=ctx)
     ts = vy_type(lhs)
 
@@ -4547,7 +4515,6 @@ def shortest(lhs, ctx):
     """Element Þg
     (lst) -> Return the shortest item in a list.
     """
-
     return min_by_function(lhs, length, ctx)
 
 
@@ -4652,7 +4619,6 @@ def sort_by_length(lhs, ctx):
     """Element Þṡ
     (lst) -> Sort a list by length.
     """
-
     return sort_by(lhs, length, ctx)
 
 
@@ -4670,7 +4636,6 @@ def split_keep(lhs, rhs, ctx):
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
     (fun, any) -> apply a to every second item of b starting with the first item
     """
-
     ts = vy_type(lhs, rhs)
     if types.FunctionType in ts:
         lhs, rhs = (rhs, lhs) if ts[1] is types.FunctionType else (lhs, rhs)
@@ -4986,7 +4951,6 @@ def sublists(lhs, ctx):
     """Element ÞS
     Sublists of a list.
     """
-
     is_number = vy_type(lhs) == NUMBER_TYPE
 
     @lazylist_from(lhs)
@@ -5173,7 +5137,6 @@ def to_decimal(lhs, ctx):
     (num) -> to_decimal(lhs)
     (str) -> decimal representation of interpreting lhs as a fraction
     """
-
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: str(float(lhs)),
@@ -5755,7 +5718,6 @@ def vy_floor(lhs, ctx):
     (num) -> floor(a)
     (str) -> integer part of a
     """
-
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: lhs.real

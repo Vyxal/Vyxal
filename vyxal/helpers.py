@@ -136,7 +136,6 @@ def digits(num: NUMBER_TYPE) -> List[int]:
     """Get the digits of a (possibly Rational) number.
     This differs from to_base_digits because it works with floats.
     This does NOT include signs and decimal points"""
-
     return [int(let) if let not in "-./" else let for let in str(num)]
 
 
@@ -305,7 +304,6 @@ def get_input(ctx: Context, explicit=False) -> Any:
 
 def edges_to_dir_graph(edges: list, ctx: Context) -> dict:
     """Convert a list of edges to a directed graph (as a dictionary)"""
-
     edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
     graph = {}
     for edge in edges:
@@ -341,7 +339,6 @@ def edges_to_dir_graph(edges: list, ctx: Context) -> dict:
 
 def edges_to_undir_graph(edges: list, ctx: Context) -> dict:
     """Convert a list of edges representing an undirected graph to a dictionary"""
-
     edges = [iterable(edge, ctx) for edge in iterable(edges, ctx)]
     graph = {}
     for edge in edges:
@@ -409,7 +406,6 @@ def group_by_function(
     lst: VyList, function: types.FunctionType, ctx: Context
 ) -> LazyList:
     """Group a list of elements by a function"""
-
     ret = {}
     for el in lst:
         key = safe_apply(function, el, ctx=ctx)
@@ -424,7 +420,6 @@ def group_by_function_ordered(
     lst: VyList, function: types.FunctionType, ctx: Context
 ) -> LazyList:
     """Group a list of elements by a function, but order is preserved"""
-
     ret = []
     is_lst = isinstance(lst, LazyList) or isinstance(lst, list)
     for el in lst:
@@ -889,7 +884,6 @@ def scanl(
     function: types.FunctionType, vector: List[Any], ctx: Context
 ) -> List[Any]:
     """Cumulative reduction of vector by function"""
-
     vector = iterable(vector, ctx=ctx)
 
     @lazylist_from(vector)
