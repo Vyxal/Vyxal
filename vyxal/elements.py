@@ -5593,7 +5593,10 @@ def vy_divmod(lhs, rhs, ctx):
     ts = vy_type(lhs, rhs, simple=True)
 
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: [integer_divide(lhs, rhs, ctx), modulo(lhs, rhs, ctx)],
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: [
+            integer_divide(lhs, rhs, ctx),
+            modulo(lhs, rhs, ctx),
+        ],
         (NUMBER_TYPE, str): lambda: vyxalify(
             map(vy_sum, itertools.combinations(rhs, lhs))
         ),
