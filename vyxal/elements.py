@@ -5921,7 +5921,9 @@ def vy_sort(lhs, ctx):
     if vy_type(lhs) == NUMBER_TYPE:
         sign = 1 if lhs >= 0 else -1
         number = str(sympy.N(abs(lhs), 15))
-        parts = ["".join(sorted(x.strip("0"))) for x in number.split(".")]
+        parts = [
+            "".join(sorted(x.strip("0"))) or "0" for x in number.split(".")
+        ]
         return sympy.nsimplify(".".join(parts), rational=True) * sign
 
     elif isinstance(lhs, str):
