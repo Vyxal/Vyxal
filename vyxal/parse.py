@@ -403,15 +403,12 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
             and token.value
             and token.value in CLOSING_CHARACTERS
         ):
-            # that is, it's a closing character that isn't
-            # the one we're expecting.
-            if token.value == bracket_stack[-1]:
-                # that is, if it's closing the inner-most
-                # structure
-
+            while bracket_stack and token.value != bracket_stack[-1]:
                 bracket_stack.pop()
-                if bracket_stack:
-                    branches[-1].append(token)
+
+            if bracket_stack:
+                bracket_stack.pop()
+                branches[-1].append(token)
         else:
             branches[-1].append(token)
 

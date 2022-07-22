@@ -879,3 +879,14 @@ def test_override_inputs():
 def test_context_var_while():
     stack = run_vyxal("`abcd`({X}n⅛)¾")
     assert stack[-1] == ["a", "b", "c", "d"]
+
+
+def test_close_multiple_structs():
+    stack = run_vyxal("λ0[2|3(n⅛;†¾")
+    assert stack[-1] == [1, 2, 3]
+
+
+def test_close_all_structs():
+    # aka being a sussy baka with syntax and readability
+    stack = run_vyxal("1[0[2|3(n⅛[[0(}9W")
+    assert stack[-1] == [9]
