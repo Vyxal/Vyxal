@@ -5728,7 +5728,7 @@ def vy_floor(lhs, ctx):
         else (
             sympy.re(lhs)
             if is_sympy(lhs) and not lhs.is_real
-            else math.floor(lhs)
+            else sympy.floor(lhs)
         ),
         (str): lambda: vy_floor_str_helper(lhs),
     }.get(ts, lambda: vectorise(vy_floor, lhs, ctx=ctx))()
