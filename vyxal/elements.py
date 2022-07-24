@@ -443,7 +443,9 @@ def arccos(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs), rational=True),
-        (str): lambda: str(sympy.nsimplify(sympy.acos(make_expression(lhs)), rational=True)),
+        (str): lambda: str(
+            sympy.nsimplify(sympy.acos(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
@@ -455,7 +457,9 @@ def arcsin(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs), rational=True),
-        (str): lambda: str(sympy.nsimplify(sympy.asin(make_expression(lhs)), rational=True)),
+        (str): lambda: str(
+            sympy.nsimplify(sympy.asin(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
@@ -467,7 +471,9 @@ def arctan(lhs, ctx):
     ts = vy_type(lhs)
     return {
         (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs), rational=True),
-        (str): lambda: str(sympy.nsimplify(sympy.atan(make_expression(lhs)), rational=True)),
+        (str): lambda: str(
+            sympy.nsimplify(sympy.atan(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -992,7 +998,9 @@ def cosine(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs), rational=True),
-        str: lambda: str(sympy.nsimplify(sympy.cos(make_expression(lhs)),rational=True)),
+        str: lambda: str(
+            sympy.nsimplify(sympy.cos(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -2776,7 +2784,9 @@ def log_mold_multi(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs), rational=True),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            math.log(lhs, rhs), rational=True
+        ),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
         (str, NUMBER_TYPE): lambda: "".join([char * rhs for char in lhs]),
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
@@ -4547,7 +4557,9 @@ def sine(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs), rational=True),
-        str: lambda: str(sympy.nsimplify(sympy.sin(make_expression(lhs)), rational=True)),
+        str: lambda: str(
+            sympy.nsimplify(sympy.sin(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -5093,7 +5105,9 @@ def tangent(lhs, ctx):
     ts = vy_type(lhs)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs), rational=True),
-        str: lambda: str(sympy.nsimplify(sympy.tan(make_expression(lhs)), rational=True)),
+        str: lambda: str(
+            sympy.nsimplify(sympy.tan(make_expression(lhs)), rational=True)
+        ),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
@@ -6773,7 +6787,9 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
-    "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0),
+    "kg": process_element(
+        "sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0
+    ),
     "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
         "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
