@@ -11071,7 +11071,7 @@ def test_Slice():
 def test_Powerset():
 
     stack = [vyxalify(item) for item in ["ab"]]
-    expected = vyxalify([[],["a"],["b"],["a","b"]])
+    expected = vyxalify(["","a","b","ab"])
     ctx = Context()
 
     ctx.stacks.append(stack)
