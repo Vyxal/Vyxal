@@ -2975,6 +2975,14 @@ Remove b from a until a does not change
 - str a, str b: `remove b from a until a does not change`
 - str a, lst b: `remove everything in b (in order) from a until a does not change`
 -------------------------------
+## `` øO `` (Count Overlapping)
+
+Count the number of overlapping occurances of b in a
+
+### Overloads
+
+- any a, any b: `Count the number of overlapping occurances of b in a`
+-------------------------------
 ## `` øV `` (Replace Until No Change)
 
 Replace b with c in a until a does not change

@@ -1023,9 +1023,10 @@ def count_overlapping(lhs, rhs, ctx):
     rhs = iterable(rhs, ctx=ctx)
     count = 0
     for i in range(len(lhs)):
-        if lhs[i:len(rhs) + i] == rhs:
+        if lhs[i : len(rhs) + i] == rhs:
             count += 1
     return count
+
 
 def counts(lhs, ctx):
     """Element Ċ
