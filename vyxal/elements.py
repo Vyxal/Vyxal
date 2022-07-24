@@ -1015,6 +1015,18 @@ def count_item(lhs, rhs, ctx):
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
+def count_overlapping(lhs, rhs, ctx):
+    """Element øO
+    (any, any) -> returns the number of overlapping occurances of b in a
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = iterable(rhs, ctx=ctx)
+    count = 0
+    for i in range(len(lhs)):
+        if lhs[i:len(rhs) + i] == rhs:
+            count += 1
+    return count
+
 def counts(lhs, ctx):
     """Element Ċ
     (any) -> Counts: [[x, a.count(x)] for x in a]"""
@@ -6609,6 +6621,7 @@ elements: dict[str, tuple[str, int]] = {
     "øf": process_element(ends_with_set, 2),
     "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
+    "øO": process_element(count_overlapping, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),
