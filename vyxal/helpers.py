@@ -1235,7 +1235,7 @@ def vy_floor_str_helper(item):
             temp += char
     if not temp:
         return sympy.nsimplify(0)
-    return sympy.nsimplify(temp)
+    return sympy.nsimplify(temp, rational=True)
 
 
 def vy_map(function, vector, ctx: Context = DEFAULT_CTX):
