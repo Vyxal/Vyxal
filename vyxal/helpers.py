@@ -1208,7 +1208,8 @@ def vy_eval(item: str, ctx: Context) -> Any:
             if mobj:
                 t = sympy.nsimplify(
                     sympy.nsimplify(mobj.group(1))
-                    / sympy.nsimplify(mobj.group(2))
+                    / sympy.nsimplify(mobj.group(2)),
+                    rational=True,
                 )
                 return t
             return item

@@ -442,8 +442,8 @@ def arccos(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs)),
-        (str): lambda: str(sympy.nsimplify(sympy.acos(make_expression(lhs)))),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.acos(lhs), rational=True),
+        (str): lambda: str(sympy.nsimplify(sympy.acos(make_expression(lhs)), rational=True)),
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
@@ -454,8 +454,8 @@ def arcsin(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs)),
-        (str): lambda: str(sympy.nsimplify(sympy.asin(make_expression(lhs)))),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.asin(lhs), rational=True),
+        (str): lambda: str(sympy.nsimplify(sympy.asin(make_expression(lhs)), rational=True)),
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
@@ -466,8 +466,8 @@ def arctan(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs)),
-        (str): lambda: str(sympy.nsimplify(sympy.atan(make_expression(lhs)))),
+        (NUMBER_TYPE): lambda: sympy.nsimplify(sympy.atan(lhs), rational=True),
+        (str): lambda: str(sympy.nsimplify(sympy.atan(make_expression(lhs)), rational=True)),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
@@ -913,7 +913,7 @@ def connected_uniquify(lhs, ctx: Context):
     ts = vy_type(lhs, simple=True)
     return {
         NUMBER_TYPE: lambda: sympy.nsimplify(
-            connected_uniquify(str(lhs), ctx=ctx)
+            connected_uniquify(str(lhs), ctx=ctx), rational=True
         ),
         str: lambda: "".join(x[0] for x in group_consecutive(lhs, ctx=ctx)),
         list: lambda: LazyList(x[0] for x in group_consecutive(lhs, ctx=ctx)),
@@ -991,8 +991,8 @@ def cosine(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs)),
-        str: lambda: str(sympy.nsimplify(sympy.cos(make_expression(lhs)))),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cos(lhs), rational=True),
+        str: lambda: str(sympy.nsimplify(sympy.cos(make_expression(lhs)),rational=True)),
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
@@ -1191,7 +1191,7 @@ def divide(lhs, rhs, ctx):
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: 0
         if rhs == 0
-        else vyxalify(sympy.nsimplify(lhs / rhs)),
+        else vyxalify(sympy.nsimplify(lhs / rhs, rational=True)),
         (NUMBER_TYPE, str): lambda: chop(rhs, lhs),
         (str, NUMBER_TYPE): lambda: chop(lhs, rhs),
         (str, str): lambda: lhs.split(rhs),
@@ -2776,7 +2776,7 @@ def log_mold_multi(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     return {
-        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs)),
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(math.log(lhs, rhs), rational=True),
         (NUMBER_TYPE, str): lambda: "".join([char * lhs for char in rhs]),
         (str, NUMBER_TYPE): lambda: "".join([char * rhs for char in lhs]),
         (str, str): lambda: transfer_capitalisation(rhs, lhs),
@@ -2800,7 +2800,7 @@ def lowest_common_multiple(lhs, rhs=None, ctx=None):
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
-            sympy.lcm(lhs, rhs)
+            sympy.lcm(lhs, rhs), rational=True
         ),
         (NUMBER_TYPE, str): lambda: -1,
         (str, NUMBER_TYPE): lambda: -1,
@@ -4546,8 +4546,8 @@ def sine(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs)),
-        str: lambda: str(sympy.nsimplify(sympy.sin(make_expression(lhs)))),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sin(lhs), rational=True),
+        str: lambda: str(sympy.nsimplify(sympy.sin(make_expression(lhs)), rational=True)),
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
@@ -5025,7 +5025,7 @@ def surround(lhs, rhs, ctx):
     print(ts)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
-            str(rhs) + str(lhs) + str(rhs)
+            str(rhs) + str(lhs) + str(rhs), rational=True
         ),
         (str, NUMBER_TYPE): lambda: str(rhs) + lhs + str(rhs),
         (NUMBER_TYPE, str): lambda: rhs + str(lhs) + rhs,
@@ -5092,8 +5092,8 @@ def tangent(lhs, ctx):
     """
     ts = vy_type(lhs)
     return {
-        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs)),
-        str: lambda: str(sympy.nsimplify(sympy.tan(make_expression(lhs)))),
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tan(lhs), rational=True),
+        str: lambda: str(sympy.nsimplify(sympy.tan(make_expression(lhs)), rational=True)),
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
@@ -5226,7 +5226,7 @@ def transliterate(lhs, rhs, other, ctx):
         vy_type(x) == NUMBER_TYPE or x in ".-" for x in ret
     ):
         try:
-            return sympy.nsimplify(int("".join(map(str, ret))))
+            return sympy.nsimplify(int("".join(map(str, ret))), rational=True)
         except:
             return "".join(map(str, ret))
     else:
@@ -6552,7 +6552,7 @@ elements: dict[str, tuple[str, int]] = {
         "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
         2,
     ),
-    "∆Ṙ": process_element("sympy.nsimplify(random.random())", 0),
+    "∆Ṙ": process_element("sympy.nsimplify(random.random(), rational=True)", 0),
     "∆Z": process_element(zfiller, 2),
     "∆ċ": process_element(nth_cardinal, 1),
     "∆o": process_element(nth_ordinal, 1),
@@ -6773,7 +6773,7 @@ elements: dict[str, tuple[str, int]] = {
     ),
     "ki": process_element("sympy.pi", 0),
     "kn": process_element("math.nan", 0),
-    "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2')", 0),
+    "kg": process_element("sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0),
     "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
     "kN": process_element(
         "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
