@@ -5492,11 +5492,18 @@ def vectorised_not(lhs, ctx):
 
 def vectorised_sum(lhs, ctx):
     """Element Ṡ
-    (any) -> the equivalent of v∑
+    (lst) -> the equivalent of v∑
+    (str) -> strip whitespace from both sides
+    (num) -> is positive
     """
-    return LazyList(
-        vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
-    )
+    ts = vy_type(lhs, simple=True)
+    return {
+        list: lambda: LazyList(
+            vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
+        ),
+        str: lambda: vy_str(lhs, ctx=ctx).strip(),
+        NUMBER_TYPE: lambda: 1 if lhs > 0 else 0
+    }.get(ts)()
 
 
 def vertical_join(lhs, rhs=" ", ctx=None):
