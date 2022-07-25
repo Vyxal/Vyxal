@@ -4533,6 +4533,19 @@
       - '["((()))","()"] : ""'
       - '["--+--+-",["--","+-"]] : "+"'
 
+- element: "øO"
+  name: Count Overlapping
+  arity: 2
+  description: Count the number of overlapping occurances of b in a
+  overloads:
+      any-any: Count the number of overlapping occurances of b in a
+  vectorise: false
+  tests:
+      - '["ababa", "aba"] : 2'
+      - '["bbba", "ba"] : 1'
+      - '[[1, 2, 2, 1, 2, 1], [1, 2]] : 2'
+      - '[[3, "3", 3, "3", 3], [3, "3", 3]] : 2'
+
 - element: "øV"
   name: Replace Until No Change
   arity: 3

@@ -1020,6 +1020,12 @@ var codepage_descriptions =
       "description": "Count number of times b occurs in a",
       "overloads": "any, any -> a.count(b)",
       "token": "O"
+    },
+    {
+      "name": "Count Overlapping",
+      "description": "Count the number of overlapping occurances of b in a",
+      "overloads": "any, any -> Count the number of overlapping occurances of b in a",
+      "token": "\u00f8O"
     }
   ],
   "80": [
