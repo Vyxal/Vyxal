@@ -1594,10 +1594,15 @@ Reverse a value
 
 - any a: `reversed(a)`
 -------------------------------
-## `` Ṡ `` (Vectorised sums)
+## `` Ṡ `` (Vectorised sums / Strip whitespace from both sides / Is positive)
 
 Sum of each item in a list
 
+### Overloads
+
+- lst a: `vectorising_sum(a)`
+- str a: `a.strip()`
+- num a: `is_positive(a)`
 -------------------------------
 ## `` Ṫ `` (Tail Remove / Truthy Under)
 

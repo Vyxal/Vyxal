@@ -5502,7 +5502,7 @@ def vectorised_sum(lhs, ctx):
             vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
         ),
         str: lambda: vy_str(lhs, ctx=ctx).strip(),
-        NUMBER_TYPE: lambda: 1 if lhs > 0 else 0
+        NUMBER_TYPE: lambda: 1 if lhs > 0 else 0,
     }.get(ts)()
 
 

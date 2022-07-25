@@ -2882,8 +2882,9 @@ var codepage_descriptions =
   ],
   "198": [
     {
-      "name": "Vectorised sums",
+      "name": "Vectorised sums / Strip whitespace from both sides / Is positive",
       "description": "Sum of each item in a list",
+      "overloads": "lst -> vectorising_sum(a)\nstr -> a.strip()\nnum -> is_positive(a)",
       "token": "\u1e60"
     },
     {
