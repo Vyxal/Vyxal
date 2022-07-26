@@ -3910,6 +3910,8 @@ def powerset(lhs, ctx):
             prev_sets += [subset[:] for subset in new_sets]
             yield from new_sets
 
+    if vy_type(lhs) == str:
+        return LazyList("".join(x) for x in gen())
     return gen()
 
 
