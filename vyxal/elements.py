@@ -3514,12 +3514,15 @@ def one_slice(lhs, rhs, ctx):
             for item in lhs:
                 state = bool(safe_apply(rhs, item, ctx=ctx))
                 if state != last_state and last_state is not None:
-                    if group: yield group
+                    if group:
+                        yield group
                     group = []
                 if state:
                     group.append(item)
                 last_state = state
-            if group: yield group
+            if group:
+                yield group
+
         return gen()
     return {
         (ts[0], NUMBER_TYPE): lambda: index(

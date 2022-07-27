@@ -892,8 +892,8 @@ def test_close_all_structs():
 
 
 def test_adjacent_filter():
-    stack = run_vyxal("λ;Ż", inputs=[[0,0,1,2,3,0,4,5,0]])
+    stack = run_vyxal("λ;Ż", inputs=[[0, 0, 1, 2, 3, 0, 4, 5, 0]])
     assert stack[-1] == [[1, 2, 3], [4, 5]]
 
-    stack = run_vyxal("λ;Ż", inputs=[[1,[2],3,[],0,1,2]])
+    stack = run_vyxal("λ;Ż", inputs=[[1, [2], 3, [], 0, 1, 2]])
     assert stack[-1] == [[1, [2], 3], [1, 2]]
