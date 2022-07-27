@@ -4547,8 +4547,10 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(iterable(lhs, ctx=ctx)))
+    temp = list(deep_copy(iterable(lhs, range, ctx=ctx)))
     random.shuffle(temp)
+    if type(lhs) is str:
+        return ''.join(temp)
     return LazyList(temp)
 
 
