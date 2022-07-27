@@ -198,10 +198,10 @@
 - element: "↔"
   name: Combinations/Remove/Fixed Point Collection
   arity: 2
-  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).
   overloads:
       any-num: combinations_with_replacement(a, length=b)
-      fun-any: apply a on b until the result does not change, yielding intermediate values
+      fun-any: Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.
       any-str: remove elements from a that are not in b
       any-lst: remove elements from a that are not in b
   vectorise: false
@@ -2326,10 +2326,10 @@
   arity: 1
   description: >-
       Index into list at indices /
-      Collect values while values are unique
+      Collect values while values are unique (not including the initial value)
   overloads:
       any-lst: "[a[item] for item in b]"
-      any-fun: apply b on a and collect unique values
+      any-fun: Apply b on a and collect unique values. Does not include the initial value.
   vectorise: false
   tests: # TODO more tests for the second overload
       - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'

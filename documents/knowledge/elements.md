@@ -145,12 +145,12 @@ Used for string-based digraphs
 -------------------------------
 ## `` ↔ `` (Combinations/Remove/Fixed Point Collection)
 
-Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).
 
 ### Overloads
 
 - any a, num b: `combinations_with_replacement(a, length=b)`
-- fun a, any b: `apply a on b until the result does not change, yielding intermediate values`
+- fun a, any b: `Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.`
 - any a, str b: `remove elements from a that are not in b`
 - any a, lst b: `remove elements from a that are not in b`
 -------------------------------
@@ -1539,12 +1539,12 @@ All but the first item of a list / Drop 1
 -------------------------------
 ## `` İ `` (Index into or collect while unique)
 
-Index into list at indices / Collect values while values are unique
+Index into list at indices / Collect values while values are unique (not including the initial value)
 
 ### Overloads
 
 - any a, lst b: `[a[item] for item in b]`
-- any a, fun b: `apply b on a and collect unique values`
+- any a, fun b: `Apply b on a and collect unique values. Does not include the initial value.`
 -------------------------------
 ## `` Ŀ `` (Transliterate)
 
