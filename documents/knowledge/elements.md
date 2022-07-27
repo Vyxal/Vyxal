@@ -1483,7 +1483,7 @@ Returns a list of [item, count of item in the top of stack]
 -------------------------------
 ## `` Ḋ `` (Is Divisible / Arbitrary Duplicate / Ordered Group By)
 
-Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
+Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)
 
 ### Overloads
 
@@ -1491,8 +1491,8 @@ Returns whether two items are divisible / numerous copies of the top of the stac
 - num a, str b: `a copies of b`
 - str a, num b: `b copies of a`
 - str a, str b: `b + " " + a`
-- any a, fun b: `group a by the results of b, order is preserved`
-- fun a, any b: `group b by the results of a, order is preserved`
+- any a, fun b: `group a by the results of b, order is preserved (adjacent group-by)`
+- fun a, any b: `group b by the results of a, order is preserved (adjacent group-by)`
 -------------------------------
 ## `` Ė `` (Vyxal Exec / Reciprocal)
 
@@ -1653,6 +1653,7 @@ Slice from index 1 until a number / get groups of a regex match
 - any a, num b: `a[1:b] (slice from 1 until b)`
 - num a, any b: `b[1:a] (slice from 1 until a)`
 - str a, str b: `regex.match(pattern=a,string=b).groups() (Get groups for a regex match)`
+- fun a, any b: `get all groups from b where a(x) is truthy`
 -------------------------------
 ## `` ₌ `` (Parallel Apply)
 Parallel apply two elements to the top of the stack

@@ -2661,8 +2661,8 @@ var codepage_descriptions =
   "186": [
     {
       "name": "Is Divisible / Arbitrary Duplicate / Ordered Group By",
-      "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order",
-      "overloads": "num, num -> a % b == 0\nnum, str -> a copies of b\nstr, num -> b copies of a\nstr, str -> b + \" \" + a\nany, fun -> group a by the results of b, order is preserved\nfun, any -> group b by the results of a, order is preserved",
+      "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)",
+      "overloads": "num, num -> a % b == 0\nnum, str -> a copies of b\nstr, num -> b copies of a\nstr, str -> b + \" \" + a\nany, fun -> group a by the results of b, order is preserved (adjacent group-by)\nfun, any -> group b by the results of a, order is preserved (adjacent group-by)",
       "token": "\u1e0a"
     },
     {
@@ -2942,7 +2942,7 @@ var codepage_descriptions =
     {
       "name": "Slice From One Until",
       "description": "Slice from index 1 until a number / get groups of a regex match",
-      "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
+      "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)\nfun, any -> get all groups from b where a(x) is truthy",
       "token": "\u017b"
     },
     {
