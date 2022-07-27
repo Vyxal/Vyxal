@@ -2235,14 +2235,14 @@
 - element: "Ḋ"
   name: Is Divisible / Arbitrary Duplicate / Ordered Group By
   arity: 2
-  description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
+  description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)
   overloads:
       num-num: a % b == 0
       num-str: a copies of b
       str-num: b copies of a
       str-str: b + " " + a
-      any-fun: group a by the results of b, order is preserved
-      fun-any: group b by the results of a, order is preserved
+      any-fun: group a by the results of b, order is preserved (adjacent group-by)
+      fun-any: group b by the results of a, order is preserved (adjacent group-by)
   vectorise: true
   tests:
       - "[15, 5] : 1"
@@ -2513,6 +2513,7 @@
       any-num: a[1:b] (slice from 1 until b)
       num-any: b[1:a] (slice from 1 until a)
       str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+      fun-any: get all groups from b where a(x) is truthy
   vectorise: true
   tests:
       - '["abc",2] : "b"'
