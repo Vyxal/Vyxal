@@ -612,7 +612,7 @@ function shareOptions(shareType) {
     const url = generateURL()
     const flags = document.getElementById("flag").value
     let flagAppendage = ","
-    const flagsThatMatter = flags.replace(/[5bBTAP…]/g, "");
+    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ]/g, "");
     if (flagsThatMatter) {
         flagAppendage = " `" + flagsThatMatter + "`,"
     }
