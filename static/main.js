@@ -608,16 +608,17 @@ function generateURL() {
 
 // onclick event listener for sharing buttons
 function shareOptions(shareType) {
-    var code = e_code.doc.getValue()
-    var url = generateURL()
-    var flags = document.getElementById("flag").value
-    var flag_appendage = ","
-    if (flags) {
-        flag_appendage = " `" + flags + "`,"
+    const code = e_code.doc.getValue()
+    const url = generateURL()
+    const flags = document.getElementById("flag").value
+    let flagAppendage = ","
+    const flagsThatMatter = flags.replace(/[5bBTAP…aṠ]/g, "");
+    if (flagsThatMatter) {
+        flagAppendage = " `" + flagsThatMatter + "`,"
     }
-    var output = ""
-    var utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
-    var len = utfable ? code.length : new Blob([code]).size
+    let output = ""
+    const utfable = [...code].every(x => (codepage + ' ' + '\n').includes(x))
+    const len = utfable ? code.length : new Blob([code]).size
     switch (shareType) {
         case "permalink":
             output = url
@@ -626,7 +627,7 @@ function shareOptions(shareType) {
             output = `[Vyxal, ${len} byte${"s".repeat(code.length != 1)}${utfable ? '' : ' (UTF-8)'}](${url})`
             break
         case "post-template":
-            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flag_appendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
+            output = `# [Vyxal](https://github.com/Vyxal/Vyxal)${flagAppendage} ${len} byte${"s".repeat(len != 1)}${utfable ? '' : ' (UTF-8)'}
 \`\`\`
 ${code}
 \`\`\`
@@ -636,7 +637,7 @@ ${code}
             output = `[Try it Online!](${url})`
             break
     }
-    var outputBox = document.getElementById("output")
+    const outputBox = document.getElementById("output")
     outputBox.value = output
     copyToClipboard("output")
     resizeCodeBox("output")
