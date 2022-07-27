@@ -3501,8 +3501,29 @@ def one_slice(lhs, rhs, ctx):
     (num, any) -> b[1:a] (Slice from 1 until a)
     (str, str) -> re.match(pattern=a,string=b)
     """
-    # no, not one_shot, one_slice.
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        if ts[0] == types.FunctionType:
+            lhs, rhs = rhs, lhs
+        lhs = iterable(lhs, ctx=ctx)
+
+        @lazylist_from(lhs)
+        def gen():
+            last_state = None
+            group = []
+            for item in lhs:
+                state = bool(safe_apply(rhs, item, ctx=ctx))
+                if state != last_state and last_state is not None:
+                    if group:
+                        yield group
+                    group = []
+                if state:
+                    group.append(item)
+                last_state = state
+            if group:
+                yield group
+
+        return gen()
     return {
         (ts[0], NUMBER_TYPE): lambda: index(
             iterable(lhs, ctx=ctx), [1, rhs], ctx
