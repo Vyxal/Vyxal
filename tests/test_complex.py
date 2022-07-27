@@ -887,6 +887,13 @@ def test_close_multiple_structs():
 
 
 def test_close_all_structs():
-    # aka being a sussy baka with syntax and readability
     stack = run_vyxal("1[0[2|3(n⅛[[0(}9W")
     assert stack[-1] == [9]
+
+
+def test_adjacent_filter():
+    stack = run_vyxal("λ;Ż", inputs=[[0,0,1,2,3,0,4,5,0]])
+    assert stack[-1] == [[1, 2, 3], [4, 5]]
+
+    stack = run_vyxal("λ;Ż", inputs=[[1,[2],3,[],0,1,2]])
+    assert stack[-1] == [[1, [2], 3], [1, 2]]
