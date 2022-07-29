@@ -486,8 +486,12 @@ def assign_iterable(lhs, rhs, other, ctx):
         rhs = chr_ord(rhs, ctx)
 
     if vy_type(rhs, simple=True) is list:
-        for item in rhs:
-            lhs = assign_iterable(lhs, item, other, ctx)
+        if vy_type(other, simple=True) is list:
+            for a in vy_zip(rhs, other, ctx=ctx):
+                lhs = assign_iterable(lhs, *a, ctx)
+        else:
+            for item in rhs:
+                lhs = assign_iterable(lhs, item, other, ctx)
         return lhs
 
     if type(lhs) is str:
@@ -1013,6 +1017,19 @@ def count_item(lhs, rhs, ctx):
     if vy_type(lhs) in (NUMBER_TYPE, str):
         lhs, rhs = str(lhs), str(rhs)
     return iterable(lhs, ctx=ctx).count(rhs)
+
+
+def count_overlapping(lhs, rhs, ctx):
+    """Element øO
+    (any, any) -> returns the number of overlapping occurances of b in a
+    """
+    lhs = iterable(lhs, ctx=ctx)
+    rhs = iterable(rhs, ctx=ctx)
+    count = 0
+    for i in range(len(lhs)):
+        if lhs[i : len(rhs) + i] == rhs:
+            count += 1
+    return count
 
 
 def counts(lhs, ctx):
@@ -2111,11 +2128,15 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         @lazylist
         def gen():
             curr = lhs
+            first = True
             while True:
                 curr = deep_copy(safe_apply(rhs, curr, ctx=ctx))
+                if curr == lhs and not first:
+                    break
                 if curr in prevs:
                     yield from prevs
                     break
+                first = False
 
                 prevs.append(curr)
 
@@ -3488,8 +3509,29 @@ def one_slice(lhs, rhs, ctx):
     (num, any) -> b[1:a] (Slice from 1 until a)
     (str, str) -> re.match(pattern=a,string=b)
     """
-    # no, not one_shot, one_slice.
     ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        if ts[0] == types.FunctionType:
+            lhs, rhs = rhs, lhs
+        lhs = iterable(lhs, ctx=ctx)
+
+        @lazylist_from(lhs)
+        def gen():
+            last_state = None
+            group = []
+            for item in lhs:
+                state = bool(safe_apply(rhs, item, ctx=ctx))
+                if state != last_state and last_state is not None:
+                    if group:
+                        yield group
+                    group = []
+                if state:
+                    group.append(item)
+                last_state = state
+            if group:
+                yield group
+
+        return gen()
     return {
         (ts[0], NUMBER_TYPE): lambda: index(
             iterable(lhs, ctx=ctx), [1, rhs], ctx
@@ -3897,6 +3939,8 @@ def powerset(lhs, ctx):
             prev_sets += [subset[:] for subset in new_sets]
             yield from new_sets
 
+    if vy_type(lhs) == str:
+        return LazyList("".join(x) for x in gen())
     return gen()
 
 
@@ -4532,8 +4576,10 @@ def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
     """
-    temp = list(deep_copy(iterable(lhs, ctx=ctx)))
+    temp = list(deep_copy(iterable(lhs, range, ctx=ctx)))
     random.shuffle(temp)
+    if type(lhs) is str:
+        return "".join(temp)
     return LazyList(temp)
 
 
@@ -5479,11 +5525,18 @@ def vectorised_not(lhs, ctx):
 
 def vectorised_sum(lhs, ctx):
     """Element Ṡ
-    (any) -> the equivalent of v∑
+    (lst) -> the equivalent of v∑
+    (str) -> strip whitespace from both sides
+    (num) -> is positive
     """
-    return LazyList(
-        vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
-    )
+    ts = vy_type(lhs, simple=True)
+    return {
+        list: lambda: LazyList(
+            vy_sum(iterable(x, ctx=ctx), ctx) for x in iterable(lhs, ctx=ctx)
+        ),
+        str: lambda: vy_str(lhs, ctx=ctx).strip(),
+        NUMBER_TYPE: lambda: 1 if lhs > 0 else 0,
+    }.get(ts)()
 
 
 def vertical_join(lhs, rhs=" ", ctx=None):
@@ -6609,6 +6662,7 @@ elements: dict[str, tuple[str, int]] = {
     "øf": process_element(ends_with_set, 2),
     "øṖ": process_element(all_partitions, 1),
     "øo": process_element(remove_until_no_change, 2),
+    "øO": process_element(count_overlapping, 2),
     "øV": process_element(replace_until_no_change, 3),
     "øF": process_element(factorial_of_range, 1),
     "øṙ": process_element(regex_sub, 3),

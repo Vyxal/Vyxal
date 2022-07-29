@@ -145,12 +145,12 @@ Used for string-based digraphs
 -------------------------------
 ## `` ↔ `` (Combinations/Remove/Fixed Point Collection)
 
-Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).
 
 ### Overloads
 
 - any a, num b: `combinations_with_replacement(a, length=b)`
-- fun a, any b: `apply a on b until the result does not change, yielding intermediate values`
+- fun a, any b: `Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.`
 - any a, str b: `remove elements from a that are not in b`
 - any a, lst b: `remove elements from a that are not in b`
 -------------------------------
@@ -1483,7 +1483,7 @@ Returns a list of [item, count of item in the top of stack]
 -------------------------------
 ## `` Ḋ `` (Is Divisible / Arbitrary Duplicate / Ordered Group By)
 
-Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
+Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)
 
 ### Overloads
 
@@ -1491,8 +1491,8 @@ Returns whether two items are divisible / numerous copies of the top of the stac
 - num a, str b: `a copies of b`
 - str a, num b: `b copies of a`
 - str a, str b: `b + " " + a`
-- any a, fun b: `group a by the results of b, order is preserved`
-- fun a, any b: `group b by the results of a, order is preserved`
+- any a, fun b: `group a by the results of b, order is preserved (adjacent group-by)`
+- fun a, any b: `group b by the results of a, order is preserved (adjacent group-by)`
 -------------------------------
 ## `` Ė `` (Vyxal Exec / Reciprocal)
 
@@ -1539,12 +1539,12 @@ All but the first item of a list / Drop 1
 -------------------------------
 ## `` İ `` (Index into or collect while unique)
 
-Index into list at indices / Collect values while values are unique
+Index into list at indices / Collect values while values are unique (not including the initial value)
 
 ### Overloads
 
 - any a, lst b: `[a[item] for item in b]`
-- any a, fun b: `apply b on a and collect unique values`
+- any a, fun b: `Apply b on a and collect unique values. Does not include the initial value.`
 -------------------------------
 ## `` Ŀ `` (Transliterate)
 
@@ -1594,10 +1594,15 @@ Reverse a value
 
 - any a: `reversed(a)`
 -------------------------------
-## `` Ṡ `` (Vectorised sums)
+## `` Ṡ `` (Vectorised sums / Strip whitespace from both sides / Is positive)
 
 Sum of each item in a list
 
+### Overloads
+
+- lst a: `vectorising_sum(a)`
+- str a: `a.strip()`
+- num a: `is_positive(a)`
 -------------------------------
 ## `` Ṫ `` (Tail Remove / Truthy Under)
 
@@ -1648,6 +1653,7 @@ Slice from index 1 until a number / get groups of a regex match
 - any a, num b: `a[1:b] (slice from 1 until b)`
 - num a, any b: `b[1:a] (slice from 1 until a)`
 - str a, str b: `regex.match(pattern=a,string=b).groups() (Get groups for a regex match)`
+- fun a, any b: `get all groups from b where a(x) is truthy`
 -------------------------------
 ## `` ₌ `` (Parallel Apply)
 Parallel apply two elements to the top of the stack
@@ -2974,6 +2980,14 @@ Remove b from a until a does not change
 
 - str a, str b: `remove b from a until a does not change`
 - str a, lst b: `remove everything in b (in order) from a until a does not change`
+-------------------------------
+## `` øO `` (Count Overlapping)
+
+Count the number of overlapping occurances of b in a
+
+### Overloads
+
+- any a, any b: `Count the number of overlapping occurances of b in a`
 -------------------------------
 ## `` øV `` (Replace Until No Change)
 

@@ -224,8 +224,8 @@ var codepage_descriptions =
   "20": [
     {
       "name": "Combinations/Remove/Fixed Point Collection",
-      "description": "Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.",
-      "overloads": "any, num -> combinations_with_replacement(a, length=b)\nfun, any -> apply a on b until the result does not change, yielding intermediate values\nany, str -> remove elements from a that are not in b\nany, lst -> remove elements from a that are not in b",
+      "description": "Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).",
+      "overloads": "any, num -> combinations_with_replacement(a, length=b)\nfun, any -> Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.\nany, str -> remove elements from a that are not in b\nany, lst -> remove elements from a that are not in b",
       "token": "\u2194"
     }
   ],
@@ -1020,6 +1020,12 @@ var codepage_descriptions =
       "description": "Count number of times b occurs in a",
       "overloads": "any, any -> a.count(b)",
       "token": "O"
+    },
+    {
+      "name": "Count Overlapping",
+      "description": "Count the number of overlapping occurances of b in a",
+      "overloads": "any, any -> Count the number of overlapping occurances of b in a",
+      "token": "\u00f8O"
     }
   ],
   "80": [
@@ -2655,8 +2661,8 @@ var codepage_descriptions =
   "186": [
     {
       "name": "Is Divisible / Arbitrary Duplicate / Ordered Group By",
-      "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order",
-      "overloads": "num, num -> a % b == 0\nnum, str -> a copies of b\nstr, num -> b copies of a\nstr, str -> b + \" \" + a\nany, fun -> group a by the results of b, order is preserved\nfun, any -> group b by the results of a, order is preserved",
+      "description": "Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)",
+      "overloads": "num, num -> a % b == 0\nnum, str -> a copies of b\nstr, num -> b copies of a\nstr, str -> b + \" \" + a\nany, fun -> group a by the results of b, order is preserved (adjacent group-by)\nfun, any -> group b by the results of a, order is preserved (adjacent group-by)",
       "token": "\u1e0a"
     },
     {
@@ -2736,8 +2742,8 @@ var codepage_descriptions =
   "191": [
     {
       "name": "Index into or collect while unique",
-      "description": "Index into list at indices / Collect values while values are unique",
-      "overloads": "any, lst -> [a[item] for item in b]\nany, fun -> apply b on a and collect unique values",
+      "description": "Index into list at indices / Collect values while values are unique (not including the initial value)",
+      "overloads": "any, lst -> [a[item] for item in b]\nany, fun -> Apply b on a and collect unique values. Does not include the initial value.",
       "token": "\u0130"
     },
     {
@@ -2876,8 +2882,9 @@ var codepage_descriptions =
   ],
   "198": [
     {
-      "name": "Vectorised sums",
+      "name": "Vectorised sums / Strip whitespace from both sides / Is positive",
       "description": "Sum of each item in a list",
+      "overloads": "lst -> vectorising_sum(a)\nstr -> a.strip()\nnum -> is_positive(a)",
       "token": "\u1e60"
     },
     {
@@ -2935,7 +2942,7 @@ var codepage_descriptions =
     {
       "name": "Slice From One Until",
       "description": "Slice from index 1 until a number / get groups of a regex match",
-      "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)",
+      "overloads": "any, num -> a[1:b] (slice from 1 until b)\nnum, any -> b[1:a] (slice from 1 until a)\nstr, str -> regex.match(pattern=a,string=b).groups() (Get groups for a regex match)\nfun, any -> get all groups from b where a(x) is truthy",
       "token": "\u017b"
     },
     {

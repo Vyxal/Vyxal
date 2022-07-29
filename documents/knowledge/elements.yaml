@@ -198,10 +198,10 @@
 - element: "↔"
   name: Combinations/Remove/Fixed Point Collection
   arity: 2
-  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing.
+  description: Does either combinations_with_replacement, removes items from a not in b, or applies a on b until the result stops changing (including the initial value).
   overloads:
       any-num: combinations_with_replacement(a, length=b)
-      fun-any: apply a on b until the result does not change, yielding intermediate values
+      fun-any: Apply a on b until the result does not change, yielding intermediate values. Includes the initial value.
       any-str: remove elements from a that are not in b
       any-lst: remove elements from a that are not in b
   vectorise: false
@@ -1836,7 +1836,7 @@
       any: all subsets of a (including the empty subset)
   vectorise: false
   tests:
-      - '["ab"] : [[],["a"],["b"],["a","b"]]'
+      - '["ab"] : ["","a","b","ab"]'
       - "[[1,2,3]] : [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]"
       - "[123] : [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]"
       - "[[]] : [[]]"
@@ -2235,14 +2235,14 @@
 - element: "Ḋ"
   name: Is Divisible / Arbitrary Duplicate / Ordered Group By
   arity: 2
-  description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order
+  description: Returns whether two items are divisible / numerous copies of the top of the stack / groups by results of function preserving order (adjacent group-by)
   overloads:
       num-num: a % b == 0
       num-str: a copies of b
       str-num: b copies of a
       str-str: b + " " + a
-      any-fun: group a by the results of b, order is preserved
-      fun-any: group b by the results of a, order is preserved
+      any-fun: group a by the results of b, order is preserved (adjacent group-by)
+      fun-any: group b by the results of a, order is preserved (adjacent group-by)
   vectorise: true
   tests:
       - "[15, 5] : 1"
@@ -2326,10 +2326,10 @@
   arity: 1
   description: >-
       Index into list at indices /
-      Collect values while values are unique
+      Collect values while values are unique (not including the initial value)
   overloads:
       any-lst: "[a[item] for item in b]"
-      any-fun: apply b on a and collect unique values
+      any-fun: Apply b on a and collect unique values. Does not include the initial value.
   vectorise: false
   tests: # TODO more tests for the second overload
       - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
@@ -2422,13 +2422,22 @@
       - "[[1, 2, 3, 4]] : [4, 3, 2, 1]"
 
 - element: "Ṡ"
-  name: Vectorised sums
+  name: Vectorised sums / Strip whitespace from both sides / Is positive
   description: Sum of each item in a list
-  arity: 0
+  arity: 1
+  overloads:
+      lst: vectorising_sum(a)
+      str: a.strip()
+      num: is_positive(a)
   tests:
-      - "[[[1,2,3],[4,5,6]]] : [6, 15]"
-      - "[[3,4,5]] : [3, 4, 5]"
-      - "[[[1,2,3], [1, 2, 3, 4]]] : [6, 10]"
+      - "[[[1 ,2, 3], [4, 5, 6]]] : [6, 15]"
+      - "[[3, 4, 5]] : [3, 4, 5]"
+      - "[[[1, 2, 3], [1, 2, 3, 4]]] : [6, 10]"
+      - "[' abc  '] : 'abc'"
+      - "['abc     '] : 'abc'"
+      - "[3] : 1"
+      - "[0] : 0"
+      - "[-5] : 0"
 
 - element: "Ṫ"
   name: Tail Remove / Truthy Under
@@ -2504,6 +2513,7 @@
       any-num: a[1:b] (slice from 1 until b)
       num-any: b[1:a] (slice from 1 until a)
       str-str: regex.match(pattern=a,string=b).groups() (Get groups for a regex match)
+      fun-any: get all groups from b where a(x) is truthy
   vectorise: true
   tests:
       - '["abc",2] : "b"'
@@ -4532,6 +4542,19 @@
   tests:
       - '["((()))","()"] : ""'
       - '["--+--+-",["--","+-"]] : "+"'
+
+- element: "øO"
+  name: Count Overlapping
+  arity: 2
+  description: Count the number of overlapping occurances of b in a
+  overloads:
+      any-any: Count the number of overlapping occurances of b in a
+  vectorise: false
+  tests:
+      - '["ababa", "aba"] : 2'
+      - '["bbba", "ba"] : 1'
+      - '[[1, 2, 2, 1, 2, 1], [1, 2]] : 2'
+      - '[[3, "3", 3, "3", 3], [3, "3", 3]] : 2'
 
 - element: "øV"
   name: Replace Until No Change
