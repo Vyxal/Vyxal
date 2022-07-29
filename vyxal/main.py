@@ -97,7 +97,6 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
             except:
                 inps = inp.split(", ")
             repred_inps = [repr(x) for x in inps]
-            print("\n".join(repred_inps), "INPS =", inps, repred_inps)
             if online_mode:
                 ctx.online_output[1] += ", ".join(repred_inps) + " => "
             else:
