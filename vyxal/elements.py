@@ -486,8 +486,12 @@ def assign_iterable(lhs, rhs, other, ctx):
         rhs = chr_ord(rhs, ctx)
 
     if vy_type(rhs, simple=True) is list:
-        for item in rhs:
-            lhs = assign_iterable(lhs, item, other, ctx)
+        if vy_type(other, simple=True) is list:
+            for a in vy_zip(rhs, other, ctx=ctx):
+                lhs = assign_iterable(lhs, *a, ctx)
+        else:
+            for item in rhs:
+                lhs = assign_iterable(lhs, item, other, ctx)
         return lhs
 
     if type(lhs) is str:

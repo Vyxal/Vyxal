@@ -897,3 +897,8 @@ def test_adjacent_filter():
 
     stack = run_vyxal("λ;Ż", inputs=[[1, [2], 3, [], 0, 1, 2]])
     assert stack[-1] == [[1, [2], 3], [1, 2]]
+
+
+def test_multiple_lists_assign():
+    stack = run_vyxal("`hello`130f`hel`fȦ")
+    assert stack[-1] == "lhleo"
