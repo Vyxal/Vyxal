@@ -2525,6 +2525,13 @@ k• (Qwerty Keyboard)
     num a: prime_exponents(a) (in the order of prime_factors(a))
     otherwise: vectorise
 -------------------------------
+∆* (Next Multiple)
+
+- Get the next multiple of a number greater than another number
+
+    num, num a: get the next multiple of b that is greater than a
+    otherwise: vectorise
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string

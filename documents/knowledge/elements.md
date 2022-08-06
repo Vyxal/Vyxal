@@ -2881,6 +2881,14 @@ Get the exponents of prime factors of a number
 
 - num a: `prime_exponents(a) (in the order of prime_factors(a))`
 -------------------------------
+## `` ∆* `` (Next Multiple)
+
+Get the next multiple of a number greater than another number
+
+### Overloads
+
+- num, num a: `get the next multiple of b that is greater than a`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
