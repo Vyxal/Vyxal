@@ -5009,18 +5009,12 @@ def sublists(lhs, ctx):
     """Element ÞS
     Sublists of a list.
     """
-    is_number = vy_type(lhs) == NUMBER_TYPE
+    lhs = iterable(lhs, range, ctx=ctx)
 
     @lazylist_from(lhs)
     def gen():
         for prefix in prefixes(lhs, ctx=ctx):
-            if is_number:
-                yield from map(
-                    lambda x: vy_eval("".join(map(str, x)), ctx=ctx),
-                    suffixes(prefix, ctx=ctx),
-                )
-            else:
-                yield from suffixes(prefix, ctx=ctx)
+            yield from suffixes(prefix, ctx=ctx)
 
     return gen()
 
