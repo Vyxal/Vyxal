@@ -1352,7 +1352,7 @@
       - "[[3,1,2]] : [1,2,3]"
       - "[312] : 123"
       - '["bca"] : "abc"'
-      - '[0] : 0'
+      - "[0] : 0"
 
 - element: "t"
   name: Tail
@@ -4391,6 +4391,19 @@
       - "[6] : [1, 1]"
       - "[4] : [2]"
 
+- element: "∆*"
+  name: Next Multiple
+  arity: 2
+  description: Get the next multiple of a number greater than another number
+  overloads:
+      num, num: get the next multiple of b that is greater than a
+  vectorise: true
+  tests:
+      - "[6, 5] : 10"
+      - "[4, 5] : 5"
+      - "[5, 5] : 10"
+      - "[0, -1] : -1"
+
 - element: "øb"
   name: Parenthesise
   arity: 1
@@ -4553,7 +4566,7 @@
   tests:
       - '["ababa", "aba"] : 2'
       - '["bbba", "ba"] : 1'
-      - '[[1, 2, 2, 1, 2, 1], [1, 2]] : 2'
+      - "[[1, 2, 2, 1, 2, 1], [1, 2]] : 2"
       - '[[3, "3", 3, "3", 3], [3, "3", 3]] : 2'
 
 - element: "øV"
