@@ -73,3 +73,8 @@
   type: element
   overloads: [number]
   candidates: ["ʑ"]
+
+- function: "Multiplication"
+  type: element
+  overloads: [number-number, number-string*, string-string]
+  candidates: ["×"]
