@@ -3963,7 +3963,7 @@ def prepend(lhs, rhs, ctx):
     if ts != (list, list):
         return merge(rhs, lhs, ctx)
     else:
-        return [rhs] + lhs
+        return LazyList([rhs]) + LazyList(lhs)
 
 
 def prev_prime(lhs, ctx):
