@@ -1,233 +1,233 @@
-1. Map Over Prefixes - ¡ - Modifier
-2. Conditional Execution - ¿ - Modifier
-3. Filter by Element - © - Modifier
-4. Last Element as Function - ¤ - Modifier
-5. Last Two Elements as Function - ¢ - Modifier
-6. Last Three Elements as Function - € - Modifier
-7. Last Four Elements as Function - § - Modifier
-8. Reject by Element - ® - Modifier
-9. Outer Product / Table - ┬ - Modifier
-10. Normal Lambda - λ - Syntax
-11. Mapping Lambda - ƛ - Syntax
-12. Filtering Lambda - Ω - Syntax
-13. Reduction Lambda - Λ - Syntax
-14. Sorting Lambda - µ - Syntax
-15. Halve - ½ - Element
-16. Range `[1, n]` - ʒ - Element
-17. Range `[0, n)` - ʑ - Element
-18. Range `[0, n]` - z - Element
-19. Multiplication - × - Element
-20. Division - ÷ - Element
-21. Factorial - ! - Element
-22. If statement - [...} - Syntax
-23. For loop - (...} - Syntax
-24. While loop - {...} - Syntax
-25. Strings - "..." - Syntax
-26. Numeric literals - [0-9]+ - Syntax
-27. String compression - ▲ - Syntax
-28. Sort by element - $ - Modifier
-29. Lambda to start of line - ) - Modifier
-30. Vectorise element - v - Modifier
-31. Exponentiation - * - Element
-32. Addition - + - Element
-33. Subtraction - - - Element
-34. Print - , - Element
-35. Foldl / Reduce left - / - Modifier
-36. Duplicate - : - Element
-37. Less than - < - Element
-38. Equals - = - Element
-39. Greater than - > - Element
-40. Input - ? - Element
-41. `all()` in python - A (lst) - Element
-42. From binary - B (lst | str) - Element
-43. To binary - b (num) - Element
-44. `a.count(b)` - C - Element
-45. Triplicate - D - Element
-46. Filter by function - F (any, fun) - Element
-47. Map function - M (any, fun) - Element
-48. Monadic maximum - G - Element
-49. Dyadic maximum - G - Element
-50. Monadic minimum - g - Element
-51. Dyadic mimimum - g - Element
-52. To hexadecimal - H (num) - Element
-53. From hexadecimal - H (str) - Element
-54. `abs(x) <= 1` - I (num) - Element
-55. Concatenate - J (scl, scl) + (str, [num, str]) - Element
-56. Negated filter - K (any, fun) - Element
-57. Set difference - K - element
-58. Length - L - Element
-59. Map function over list - M - element
-60. Negate - N - Element
-61. `chr/ord` - O - Element
-62. Prepend - P - Element
-63. Reduce by function - R (any, fun) - Element
-64. Transpose matrix/list - T - Element
+1. Map Over Prefixes 
+2. Conditional Execution 
+3. Filter by Element 
+4. Last Element as Function 
+5. Last Two Elements as Function 
+6. Last Three Elements as Function 
+7. Last Four Elements as Function 
+8. Reject by Element 
+9. Outer Product / Table 
+10. Normal Lambda 
+11. Mapping Lambda 
+12. Filtering Lambda 
+13. Reduction Lambda 
+14. Sorting Lambda 
+15. Halve 
+16. Range `[1, n]` 
+17. Range `[0, n)` 
+18. Range `[0, n]` 
+19. Multiplication 
+20. Division 
+21. Factorial 
+22. If statement 
+23. For loop 
+24. While loop 
+25. Strings 
+26. Numeric literals 
+27. String compression 
+28. Sort by element 
+29. Lambda to start of line 
+30. Vectorise element 
+31. Exponentiation 
+32. Addition 
+33. Subtraction 
+34. Print 
+35. Foldl / Reduce left 
+36. Duplicate 
+37. Less than 
+38. Equals 
+39. Greater than 
+40. Input 
+41. `all()` in python 
+42. From binary 
+43. To binary 
+44. `a.count(b)` 
+45. Triplicate 
+46. Filter by function 
+47. Map function 
+48. Monadic maximum 
+49. Dyadic maximum 
+50. Monadic minimum 
+51. Dyadic mimimum 
+52. To hexadecimal 
+53. From hexadecimal 
+54. `abs(x) <= 1` 
+55. Concatenate 
+56. Negated filter 
+57. Set difference 
+58. Length 
+59. Map function over list 
+60. Negate 
+61. `chr/ord` 
+62. Prepend 
+63. Reduce by function 
+64. Transpose matrix/list 
 65. Transpose matrix/list with filler
-66. Uniquify - U - Element
-67. Replace b in a with c - V - Element
-68. Wrap stack - W - Element
-69. Wrap item in list - w - Element
-70. Break / Return - X - Element
-71. Recurse - x - Element
-72. Interleave - Y - Element
-73. Uninterleave - y - element
-74. Zip two lists - Z - Element
-75. Monadic mimimum without popping - Ġ - Element
-76. Monadic maximum without popping - ġ - Element
-77. Reduce each overlap of size 2 by an element - β - Modifier
-78. Apply at indices - ε - Modifier
-79. scanl - \ - Modifier
-80. scanr - #\ - Modifier
-81. foldr - #/ - Modifier
-82. register - £ and ¥ - Element
-83. reverse - Ṙ - Element
-84. sum - ∑ - Element
-85. vectorised sums - σ - Element
-86. absolute difference - Ȧ - Element
-87. powerset - Ṗ - Element
-88. permutations - ṗ - Element
-89. mirror - Ṁ - Element
-90. palindromise - ʑ (str) - Element
-91. increment - › - Element
-92. decrement - ‹ - Element
-93. double / dyadify - d - Element
-94. half - ½ - Element
-95. Floor division - İ (int, int) - element
-96. Floor - Ḟ - element
-97. Ceiling - Ċ - element
-98.  Join on newlines - Ṅ (lst) - Element
-99.  Group consecutive - Ġ - Element
-100. Pop - _ - Element
-101. Swap - s - Element
-102. Print without newline - Ȯ - element
-103. Print without popping - Ọ - element
-104. Uppercase - A (str) - element
-105. Lowercase - a (str) - element
-106. Shallow flat - Þf - element
-107. Deep flat - f - element
-108. Head - h - element
-109. Tail - t - element
-110. Head extract - ḣ - element
-111. Tail extract - ṫ - element
-112. Overlapping chunks of length - l - element
-113. Generate infinite list from function - G or g - element
-114. Cumulative sums - ¦ - Element 
-115. Vectorising length - Ŀ - Element
-116. Truthy indices - Ṫ - Element
-117. Range between two numbers - r - Element
-118. Range of length of value - Ż - element
-119. scan fixedpoint [apply until a previous value is repeated, collecting intermediate results] - χ - Modifier
-120. all neighbours [apply to neighbours (windows of length 2) and check if all elements are equal] - δ - Modifier
-121. truthy indices after applying - #τ - Modifier
-122. apply to neighbours [applies to windows of length 2] - ζ - Modifier
-123. invariant / Equal under element - ≡ - Modifier
-124. all equal - ≈ - Element
-125. increments / deltas - ¯ - Element
-126. join on spaces - ṅ (lst) - Element
-127. vectorised reverse - R (non-function) - Element
-128. choose random item - ℅ - Element
-129. bitwise not - ⌐ - Element
-130. bitwise and - ∴ - Element
-131. bitwise or - ∵ - Element
-132. bitwise xor - ⊻ - Element
-133. logical not - ¬ - Element
-134. logical and - ȧ - Element
-135. logical or - ȯ - Element
-136. sort ascending - u - Element
-137. sort descending - #u - Element
-138. is prime? - ᴾ - Element
-139. is even? - ₂ - Element
-140. parity - ḃ - Element
-141. to string - S - Element
-142. split string on anything - ÷ (str, str) Ṣ (any, any) - Element
-143. split string on newlines - Ṇ (str) - Element
-144. split string on spaces - ṇ (str) - Element
-145. to number - Ị - Element
-146. reciprocal - T (num) - Element
-147. sign of number - a (num) - Element
-148. sublists - Ṡ
-149. pair - ; - Element
-150. triplet (x, y, z -> [x, y, z]) - #; - Element
-151. base conversion - b - Element
-152. n choose k - ċ - Element
-153. n pick k - ṙ - Element
-154. GCD - ġ (num, num) - Element
-155. LCM - ŀ (num, num) - Element
-156. logarithm - ḷ - Element
-157. integer partitions - ị (num) - Element
-158. list partitions - ị (str | lst) - element
-159. partition at truthy indices - Ṭ - Element
-160. cartesian product - Ẋ - element
-161. cartesian power - ẋ - element
-162. split into slices of length - Ẇ - element
-165. trim / Trim all elements of y from both sides of x. - #T - Element
-166. eval as vyxal - E - element
-167. find needle in haystack - ḟ - element
-168. find all needles in haystack - #ḟ - element
-169. absolute value - A (num) - Element
-170. divides? - Ḋ - Element
-171. index - i - Element
-172. Order, multiplicity, valuation; how many times is x divisible by y? - ọ - Element
-173. append - J (lst, scl) + (str, [num, str]) - Element
-174. dot product - ḍ - Element
-175. shift left - « - Element
-176. shift right - » - Element
-177. repeat x times (string - `[4], 5 -> [4, 4, 4, 4]`) - Ẋ (any, num) - Element
-178. repeat x times (list - `[4], 5 -> [[4], [4], [4], [4]]`) - ẋ (any, num) - Element
-179. square root - √
-180. sequence generation - ṣ...} - Syntax
-181. does there exist an item in container such that predicate returns true - ẹ...} - Syntax
-182. rotate stack left - #« - Element
-183. rotate stack right - #» - Element
-184. rotate top three items - ₃ - Element
-185. 2dup [x, y - x, y, x, y] - #: - Element
-186. over [x, y - x, y, x] - Ẹ - Element
-187. pick ( x y z -- x y z x ) - #Ẹ - Element
-188. swapd ( x y z -- y x z ) - #₃ - Element
-189. is string? - ø? - Element
-190. is number? - ∆? - Element
-191. is list? - Þ? - Element
-192. is positive? - ᵀ (num) - Element
-193. is alphabet? - ᴬ (str) - Element
-194. is numeric? - ᴺ (str) - Element
-195. prime factors - Ḳ - Element
-196. prime factorisation - ḳ - Element
-197. 2 ** n - E - Element
-198. 10 ** n - ᴺ (num) - Element
-199. lift - Ḷ - Element
-200. if 1, push context variable n - ᴱ - Element
-201. ath prime - Ṅ (num) - Element
-202. e ** n - ṅ (num) - Element
-203. cycled list - [1, 2, 3] -> [1, 2, 3, 1, 2, 3, 1, 2, 3, ...] - Ạ - Element
-204. keep only alphabet - Ṅ (str) - Element
-205. keep only numbers - ṅ (str) - Element
-206. round - ṛ (num) - Element
-207. sort by length - ᴸ (lst) - Element
-208. join on anything - j - Element
-209. n-dup - Þ: - Element
-210. title case - T (str) - Element
-211. first number where function is truthy - ṅ (fun) - Element
-212. split on function results - Ṣ (fun, any) - Element
-213. run func on the prev result until the result no longer changes returning all intermediate results - i (fun, any) - Element
-214. find the index for the first element such that function evaluates as truthy - c (fun, any) - Element
-215. apply func to the elements in a where the index in b is truthy - ṁ (fun, lst) - Element
-216. zipwith - Z (fun, any) - Element
-217. Key. Map an element over the groups formed by identical items. - § - Modifier
-218. Tie. Cycle through a number of (default 2) elements each time called. - τ - Modifier
-219. Keep items with minimal element value - #↓ - Modifier
-220. Keep items with maximal element value - #↑ - Modifier
-221. Loop an element. Repeat until the results are no longer unique. - ↑ - Modifier
-222. Loop an element. Repeat until the results are no longer unique. Record intermediate results. - ↓ - Modifier
-223. Return a Boolean array with 1s at the indices in a list. - ṭ - Element
-224. Shortcut for ĠvL (group consecutive, vectorised lengths) - ĠĿ - Regular combo
-225. Shape of list - Ṛ - Element
-226. Matrix inverse - ṁ - Element
-227. Grade up - ẏ
-228. Grade down - ż
-229. Contains - shallow - c - Element
-230. Contains - deep - Þc - Element
-231. Reshape array - r (lst, num) - Element
-232. Mold one list to the shape of another - e - Element
+66. Uniquify 
+67. Replace b in a with c 
+68. Wrap stack 
+69. Wrap item in list 
+70. Break / Return 
+71. Recurse 
+72. Interleave 
+73. Uninterleave 
+74. Zip two lists 
+75. Monadic mimimum without popping 
+76. Monadic maximum without popping 
+77. Reduce each overlap of size 2 by an element 
+78. Apply at indices 
+79. scanl 
+80. scanr 
+81. foldr 
+82. register 
+83. reverse 
+84. sum 
+85. vectorised sums 
+86. absolute difference 
+87. powerset 
+88. permutations 
+89. mirror 
+90. palindromise 
+91. increment 
+92. decrement 
+93. double / dyadify 
+94. half 
+95. Floor division 
+96. Floor 
+97. Ceiling 
+98.  Join on newlines 
+99.  Group consecutive 
+100. Pop 
+101. Swap 
+102. Print without newline 
+103. Print without popping 
+104. Uppercase 
+105. Lowercase 
+106. Shallow flat 
+107. Deep flat 
+108. Head 
+109. Tail 
+110. Head extract 
+111. Tail extract 
+112. Overlapping chunks of length 
+113. Generate infinite list from function 
+114. Cumulative sums 
+115. Vectorising length 
+116. Truthy indices 
+117. Range between two numbers 
+118. Range of length of value 
+119. scan fixedpoint [apply until a previous value is repeated, collecting intermediate results] 
+120. all neighbours [apply to neighbours (windows of length 2) and check if all elements are equal] 
+121. truthy indices after applying 
+122. apply to neighbours [applies to windows of length 2] 
+123. invariant / Equal under element 
+124. all equal 
+125. increments / deltas 
+126. join on spaces 
+127. vectorised reverse 
+128. choose random item 
+129. bitwise not 
+130. bitwise and 
+131. bitwise or 
+132. bitwise xor 
+133. logical not 
+134. logical and 
+135. logical or 
+136. sort ascending 
+137. sort descending 
+138. is prime? 
+139. is even? 
+140. parity 
+141. to string 
+142. split string on anything 
+143. split string on newlines 
+144. split string on spaces 
+145. to number 
+146. reciprocal 
+147. sign of number 
+148. sublists
+149. pair 
+150. triplet (x, y, z -> [x, y, z]) 
+151. base conversion 
+152. n choose k 
+153. n pick k 
+154. GCD 
+155. LCM 
+156. logarithm 
+157. integer partitions 
+158. list partitions 
+159. partition at truthy indices 
+160. cartesian product 
+161. cartesian power 
+162. split into slices of length 
+165. trim / Trim all elements of y from both sides of x. 
+166. eval as vyxal 
+167. find needle in haystack 
+168. find all needles in haystack 
+169. absolute value 
+170. divides? 
+171. index 
+172. Order, multiplicity, valuation; how many times is x divisible by y? 
+173. append 
+174. dot product 
+175. shift left 
+176. shift right 
+177. repeat x times (string 
+178. repeat x times (list 
+179. square root
+180. sequence generation 
+181. does there exist an item in container such that predicate returns true 
+182. rotate stack left 
+183. rotate stack right 
+184. rotate top three items 
+185. 2dup [x, y 
+186. over [x, y 
+187. pick ( x y z -
+188. swapd ( x y z -
+189. is string? 
+190. is number? 
+191. is list? 
+192. is positive? 
+193. is alphabet? 
+194. is numeric? 
+195. prime factors 
+196. prime factorisation 
+197. 2 ** n 
+198. 10 ** n 
+199. lift 
+200. if 1, push context variable n 
+201. ath prime 
+202. e ** n 
+203. cycled list 
+204. keep only alphabet 
+205. keep only numbers 
+206. round 
+207. sort by length 
+208. join on anything 
+209. n-dup 
+210. title case 
+211. first number where function is truthy 
+212. split on function results 
+213. run func on the prev result until the result no longer changes returning all intermediate results 
+214. find the index for the first element such that function evaluates as truthy 
+215. apply func to the elements in a where the index in b is truthy 
+216. zipwith 
+217. Key. Map an element over the groups formed by identical items. 
+218. Tie. Cycle through a number of (default 2) elements each time called. 
+219. Keep items with minimal element value 
+220. Keep items with maximal element value 
+221. Loop an element. Repeat until the results are no longer unique. 
+222. Loop an element. Repeat until the results are no longer unique. Record intermediate results. 
+223. Return a Boolean array with 1s at the indices in a list. 
+224. Shortcut for ĠvL (group consecutive, vectorised lengths) 
+225. Shape of list 
+226. Matrix inverse 
+227. Grade up
+228. Grade down
+229. Contains 
+230. Contains 
+231. Reshape array 
+232. Mold one list to the shape of another 
 233. take (↑ in APL)
 234. drop (↓ in APL)
 235. Insert zeros (or blanks) in B corresponding to zeros in A

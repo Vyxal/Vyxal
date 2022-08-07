@@ -1,0 +1,7 @@
+- function: "Map Over Prefixes"
+  type: modifier
+  candidates: ["ᵖ"]
+
+- function: "Conditional Execution"
+  type: modifier
+  candidates: ["?", "¿"]
