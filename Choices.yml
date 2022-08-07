@@ -4,4 +4,72 @@
 
 - function: "Conditional Execution"
   type: modifier
-  candidates: ["?", "¿"]
+  candidates: ["?", "¿"] # ¡
+
+- function: "Filter by Element"
+  type: modifier
+  candidates: ["ᶠ", "ᶿ", "~", "ꜝ"] # ⋅
+
+- function: "Last Element as Function"
+  type: modifier
+  candidates: ["′"]
+
+- function: "Last Two Elements as Function"
+  type: modifier
+  candidates: ["″"] # ‵
+
+- function: "Last Three Elements as Function"
+  type: modifier
+  candidates: ["‴"] # ‶
+
+- function: "Last Four Elements as Function"
+  type: modifier
+  candidates: ["⁴", "ᶲ", "⁺"] # ‵
+
+- function: "Reject by Element"
+  type: modifier
+  candidates: ["ᴿ", "ꜝ"]
+
+- function: "Outer Product / Table"
+  type: modifier
+  candidates: ["ᵗ", "ᵡ", "ᵖ"] # ⨯
+
+- function: "Normal Lambda"
+  type: syntax
+  candidates: ["λ"]
+
+- function: "Mapping Lambda"
+  type: syntax
+  candidates: ["ƛ"]
+
+- function: "Filtering Lambda"
+  type: syntax
+  candidates: ["Ω"] # ƒ
+
+- function: "Reduction Lambda"
+  type: syntax
+  candidates: ["₳"] # ⋅
+
+- function: "Sorting Lambda"
+  type: syntax
+  candidates: ["µ"] # ₴
+
+- function: "Half"
+  type: element
+  overloads: [number, string]
+  candidates: ["½"]
+
+- function: "Range `[1, n]`"
+  type: element
+  overloads: [number]
+  candidates: ["ʓ"]
+
+- function: "Range `[0, n)`"
+  type: element
+  overloads: [number]
+  candidates: ["z"] # ʔ
+
+- function: "Range `[0, n]`"
+  type: element
+  overloads: [number]
+  candidates: ["ʑ"]
