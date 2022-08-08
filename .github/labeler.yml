@@ -1,0 +1,9 @@
+enhancement:
+    - '\\badd\\b'
+element request:
+    - 'add element'
+bug:
+    - 'useless'
+    - "doesn't work"
+    - "not working"
+    - "error"
