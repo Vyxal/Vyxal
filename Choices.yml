@@ -199,28 +199,34 @@
   candidates: ["D", "d"]
 
 - function: Filter by function 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function*]
+  candidates: ["F"]
 
 - function: Map function 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function*]
+  candidates: ["M"]
 
 - function: Monadic maximum 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["M", "G", "↑", "Ṁ", "Ṃ"] # ⋀
 
 - function: Dyadic maximum 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["M", "G", "↑", "Ṁ", "Ṃ"] # ⋀
 
 - function: Monadic minimum 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["m", "g", "↓", "ṁ", "ṃ"] # ⋁
 
 - function: Dyadic mimimum 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["m", "g", "↓", "ṁ", "ṃ"] # ⋁
 
 - function: To hexadecimal 
   type:
