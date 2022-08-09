@@ -77,4 +77,38 @@
 - function: "Multiplication"
   type: element
   overloads: [number-number, number-string*, string-string]
-  candidates: ["×"]
+  candidates: ["×", "*"]
+
+- function: "Division"
+  type: element
+  overloads: [number-number, number-string*, string-string]
+  candidates: ["÷", "/"]
+
+- function: "Factorial"
+  type: element
+  overloads: [number]
+  candidates: ["!"]
+
+- function: "If statement"
+  type: syntax
+  candidates: ["["]
+
+- function: "For loop"
+  type: syntax
+  candidates: ["("]
+
+- function: "While loop"
+  type: syntax
+  candidates: ["{"]
+
+- function: "Strings"
+  type: syntax
+  candidates: ['"']
+
+- function: "Numeric literal"
+  type: syntax
+  candidates: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+
+- function: "String compression"
+  type: syntax
+  candidates: ["“"]
