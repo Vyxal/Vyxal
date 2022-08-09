@@ -180,12 +180,12 @@
 
 - function: From binary 
   type: element
-  overloads: [number, string]
+  overloads: [string]
   candidates: ["B", "b"]
 
 - function: To binary 
   type: element
-  overloads: [number, string]
+  overloads: [number]
   candidates: ["B", "b"]
 
 - function: `a.count(b)` 
@@ -229,12 +229,14 @@
   candidates: ["m", "g", "↓", "ṁ", "ṃ"] # ⋁
 
 - function: To hexadecimal 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["H"]
 
 - function: From hexadecimal 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [string]
+  candidates: ["H"]
 
 - function: `abs(x) <= 1` 
   type:
