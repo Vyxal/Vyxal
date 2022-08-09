@@ -112,3 +112,1255 @@
 - function: "String compression"
   type: syntax
   candidates: ["“"]
+
+- function: "Sort by Element"
+  type: modifier
+  candidates: ["ᶳ", "ᵒ", "$", "¦"] # ["ᶠ", "ᶿ", "~", "ꜝ"]
+
+- function: Lambda to start of line 
+  type:
+  candidates: [""]
+
+- function: Vectorise element 
+  type:
+  candidates: [""]
+
+- function: Exponentiation 
+  type:
+  candidates: [""]
+
+- function: Addition 
+  type:
+  candidates: [""]
+
+- function: Subtraction 
+  type:
+  candidates: [""]
+
+- function: Print 
+  type:
+  candidates: [""]
+
+- function: Foldl / Reduce left 
+  type:
+  candidates: [""]
+
+- function: Duplicate 
+  type:
+  candidates: [""]
+
+- function: Less than 
+  type:
+  candidates: [""]
+
+- function: Equals 
+  type:
+  candidates: [""]
+
+- function: Greater than 
+  type:
+  candidates: [""]
+
+- function: Input 
+  type:
+  candidates: [""]
+
+- function: `all()` in python 
+  type:
+  candidates: [""]
+
+- function: From binary 
+  type:
+  candidates: [""]
+
+- function: To binary 
+  type:
+  candidates: [""]
+
+- function: `a.count(b)` 
+  type:
+  candidates: [""]
+
+- function: Triplicate 
+  type:
+  candidates: [""]
+
+- function: Filter by function 
+  type:
+  candidates: [""]
+
+- function: Map function 
+  type:
+  candidates: [""]
+
+- function: Monadic maximum 
+  type:
+  candidates: [""]
+
+- function: Dyadic maximum 
+  type:
+  candidates: [""]
+
+- function: Monadic minimum 
+  type:
+  candidates: [""]
+
+- function: Dyadic mimimum 
+  type:
+  candidates: [""]
+
+- function: To hexadecimal 
+  type:
+  candidates: [""]
+
+- function: From hexadecimal 
+  type:
+  candidates: [""]
+
+- function: `abs(x) <= 1` 
+  type:
+  candidates: [""]
+
+- function: Concatenate 
+  type:
+  candidates: [""]
+
+- function: Negated filter 
+  type:
+  candidates: [""]
+
+- function: Set difference 
+  type:
+  candidates: [""]
+
+- function: Length 
+  type:
+  candidates: [""]
+
+- function: Map function over list 
+  type:
+  candidates: [""]
+
+- function: Negate 
+  type:
+  candidates: [""]
+
+- function: `chr/ord` 
+  type:
+  candidates: [""]
+
+- function: Prepend 
+  type:
+  candidates: [""]
+
+- function: Reduce by function 
+  type:
+  candidates: [""]
+
+- function: Transpose matrix/list 
+  type:
+  candidates: [""]
+
+- function: Transpose matrix/list with filler
+  type:
+  candidates: [""]
+
+- function: Uniquify 
+  type:
+  candidates: [""]
+
+- function: Replace b in a with c 
+  type:
+  candidates: [""]
+
+- function: Wrap stack 
+  type:
+  candidates: [""]
+
+- function: Wrap item in list 
+  type:
+  candidates: [""]
+
+- function: Break / Return 
+  type:
+  candidates: [""]
+
+- function: Recurse 
+  type:
+  candidates: [""]
+
+- function: Interleave 
+  type:
+  candidates: [""]
+
+- function: Uninterleave 
+  type:
+  candidates: [""]
+
+- function: Zip two lists 
+  type:
+  candidates: [""]
+
+- function: Monadic mimimum without popping 
+  type:
+  candidates: [""]
+
+- function: Monadic maximum without popping 
+  type:
+  candidates: [""]
+
+- function: Reduce each overlap of size 2 by an element 
+  type:
+  candidates: [""]
+
+- function: Apply at indices 
+  type:
+  candidates: [""]
+
+- function: scanl 
+  type:
+  candidates: [""]
+
+- function: scanr 
+  type:
+  candidates: [""]
+
+- function: foldr 
+  type:
+  candidates: [""]
+
+- function: register 
+  type:
+  candidates: [""]
+
+- function: reverse 
+  type:
+  candidates: [""]
+
+- function: sum 
+  type:
+  candidates: [""]
+
+- function: vectorised sums 
+  type:
+  candidates: [""]
+
+- function: absolute difference 
+  type:
+  candidates: [""]
+
+- function: powerset 
+  type:
+  candidates: [""]
+
+- function: permutations 
+  type:
+  candidates: [""]
+
+- function: mirror 
+  type:
+  candidates: [""]
+
+- function: palindromise 
+  type:
+  candidates: [""]
+
+- function: increment 
+  type:
+  candidates: [""]
+
+- function: decrement 
+  type:
+  candidates: [""]
+
+- function: double / dyadify 
+  type:
+  candidates: [""]
+
+- function: half 
+  type:
+  candidates: [""]
+
+- function: Floor division 
+  type:
+  candidates: [""]
+
+- function: Floor 
+  type:
+  candidates: [""]
+
+- function: Ceiling 
+  type:
+  candidates: [""]
+
+- function:  Join on newlines 
+  type:
+  candidates: [""]
+
+- function:  Group consecutive 
+  type:
+  candidates: [""]
+
+- function: Pop 
+  type:
+  candidates: [""]
+
+- function: Swap 
+  type:
+  candidates: [""]
+
+- function: Print without newline 
+  type:
+  candidates: [""]
+
+- function: Print without popping 
+  type:
+  candidates: [""]
+
+- function: Uppercase 
+  type:
+  candidates: [""]
+
+- function: Lowercase 
+  type:
+  candidates: [""]
+
+- function: Shallow flat 
+  type:
+  candidates: [""]
+
+- function: Deep flat 
+  type:
+  candidates: [""]
+
+- function: Head 
+  type:
+  candidates: [""]
+
+- function: Tail 
+  type:
+  candidates: [""]
+
+- function: Head extract 
+  type:
+  candidates: [""]
+
+- function: Tail extract 
+  type:
+  candidates: [""]
+
+- function: Overlapping chunks of length 
+  type:
+  candidates: [""]
+
+- function: Generate infinite list from function 
+  type:
+  candidates: [""]
+
+- function: Cumulative sums 
+  type:
+  candidates: [""]
+
+- function: Vectorising length 
+  type:
+  candidates: [""]
+
+- function: Truthy indices 
+  type:
+  candidates: [""]
+
+- function: Range between two numbers 
+  type:
+  candidates: [""]
+
+- function: Range of length of value 
+  type:
+  candidates: [""]
+
+- function: scan fixedpoint [apply until a previous value is repeated, collecting intermediate results] 
+  type:
+  candidates: [""]
+
+- function: all neighbours [apply to neighbours (windows of length 2) and check if all elements are equal] 
+  type:
+  candidates: [""]
+
+- function: truthy indices after applying 
+  type:
+  candidates: [""]
+
+- function: apply to neighbours [applies to windows of length 2] 
+  type:
+  candidates: [""]
+
+- function: invariant / Equal under element 
+  type:
+  candidates: [""]
+
+- function: all equal 
+  type:
+  candidates: [""]
+
+- function: increments / deltas 
+  type:
+  candidates: [""]
+
+- function: join on spaces 
+  type:
+  candidates: [""]
+
+- function: vectorised reverse 
+  type:
+  candidates: [""]
+
+- function: choose random item 
+  type:
+  candidates: [""]
+
+- function: bitwise not 
+  type:
+  candidates: [""]
+
+- function: bitwise and 
+  type:
+  candidates: [""]
+
+- function: bitwise or 
+  type:
+  candidates: [""]
+
+- function: bitwise xor 
+  type:
+  candidates: [""]
+
+- function: logical not 
+  type:
+  candidates: [""]
+
+- function: logical and 
+  type:
+  candidates: [""]
+
+- function: logical or 
+  type:
+  candidates: [""]
+
+- function: sort ascending 
+  type:
+  candidates: [""]
+
+- function: sort descending 
+  type:
+  candidates: [""]
+
+- function: is prime? 
+  type:
+  candidates: [""]
+
+- function: is even? 
+  type:
+  candidates: [""]
+
+- function: parity 
+  type:
+  candidates: [""]
+
+- function: to string 
+  type:
+  candidates: [""]
+
+- function: split string on anything 
+  type:
+  candidates: [""]
+
+- function: split string on newlines 
+  type:
+  candidates: [""]
+
+- function: split string on spaces 
+  type:
+  candidates: [""]
+
+- function: to number 
+  type:
+  candidates: [""]
+
+- function: reciprocal 
+  type:
+  candidates: [""]
+
+- function: sign of number 
+  type:
+  candidates: [""]
+
+- function: sublists
+  type:
+  candidates: [""]
+
+- function: pair 
+  type:
+  candidates: [""]
+
+- function: triplet (x, y, z -> [x, y, z]) 
+  type:
+  candidates: [""]
+
+- function: base conversion 
+  type:
+  candidates: [""]
+
+- function: n choose k 
+  type:
+  candidates: [""]
+
+- function: n pick k 
+  type:
+  candidates: [""]
+
+- function: GCD 
+  type:
+  candidates: [""]
+
+- function: LCM 
+  type:
+  candidates: [""]
+
+- function: logarithm 
+  type:
+  candidates: [""]
+
+- function: integer partitions 
+  type:
+  candidates: [""]
+
+- function: list partitions 
+  type:
+  candidates: [""]
+
+- function: partition at truthy indices 
+  type:
+  candidates: [""]
+
+- function: cartesian product 
+  type:
+  candidates: [""]
+
+- function: cartesian power 
+  type:
+  candidates: [""]
+
+- function: split into slices of length 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: eval as vyxal 
+  type:
+  candidates: [""]
+
+- function: find needle in haystack 
+  type:
+  candidates: [""]
+
+- function: find all needles in haystack 
+  type:
+  candidates: [""]
+
+- function: absolute value 
+  type:
+  candidates: [""]
+
+- function: divides? 
+  type:
+  candidates: [""]
+
+- function: index 
+  type:
+  candidates: [""]
+
+- function: Order, multiplicity, valuation; how many times is x divisible by y? 
+  type:
+  candidates: [""]
+
+- function: append 
+  type:
+  candidates: [""]
+
+- function: dot product 
+  type:
+  candidates: [""]
+
+- function: shift left 
+  type:
+  candidates: [""]
+
+- function: shift right 
+  type:
+  candidates: [""]
+
+- function: repeat x times (string 
+  type:
+  candidates: [""]
+
+- function: repeat x times (list 
+  type:
+  candidates: [""]
+
+- function: square root
+  type:
+  candidates: [""]
+
+- function: sequence generation 
+  type:
+  candidates: [""]
+
+- function: does there exist an item in container such that predicate returns true 
+  type:
+  candidates: [""]
+
+- function: rotate stack left 
+  type:
+  candidates: [""]
+
+- function: rotate stack right 
+  type:
+  candidates: [""]
+
+- function: rotate top three items 
+  type:
+  candidates: [""]
+
+- function: 2dup [x, y 
+  type:
+  candidates: [""]
+
+- function: over [x, y 
+  type:
+  candidates: [""]
+
+- function: pick ( x y z -
+  type:
+  candidates: [""]
+
+- function: swapd ( x y z -
+  type:
+  candidates: [""]
+
+- function: is string? 
+  type:
+  candidates: [""]
+
+- function: is number? 
+  type:
+  candidates: [""]
+
+- function: is list? 
+  type:
+  candidates: [""]
+
+- function: is positive? 
+  type:
+  candidates: [""]
+
+- function: is alphabet? 
+  type:
+  candidates: [""]
+
+- function: is numeric? 
+  type:
+  candidates: [""]
+
+- function: prime factors 
+  type:
+  candidates: [""]
+
+- function: prime factorisation 
+  type:
+  candidates: [""]
+
+- function: 2 ** n 
+  type:
+  candidates: [""]
+
+- function: 10 ** n 
+  type:
+  candidates: [""]
+
+- function: lift 
+  type:
+  candidates: [""]
+
+- function: if 1, push context variable n 
+  type:
+  candidates: [""]
+
+- function: ath prime 
+  type:
+  candidates: [""]
+
+- function: e ** n 
+  type:
+  candidates: [""]
+
+- function: cycled list 
+  type:
+  candidates: [""]
+
+- function: keep only alphabet 
+  type:
+  candidates: [""]
+
+- function: keep only numbers 
+  type:
+  candidates: [""]
+
+- function: round 
+  type:
+  candidates: [""]
+
+- function: sort by length 
+  type:
+  candidates: [""]
+
+- function: join on anything 
+  type:
+  candidates: [""]
+
+- function: n-dup 
+  type:
+  candidates: [""]
+
+- function: title case 
+  type:
+  candidates: [""]
+
+- function: first number where function is truthy 
+  type:
+  candidates: [""]
+
+- function: split on function results 
+  type:
+  candidates: [""]
+
+- function: run func on the prev result until the result no longer changes returning all intermediate results 
+  type:
+  candidates: [""]
+
+- function: find the index for the first element such that function evaluates as truthy 
+  type:
+  candidates: [""]
+
+- function: apply func to the elements in a where the index in b is truthy 
+  type:
+  candidates: [""]
+
+- function: zipwith 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: Keep items with minimal element value 
+  type:
+  candidates: [""]
+
+- function: Keep items with maximal element value 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: 
+  type:
+  candidates: [""]
+
+- function: Shortcut for ĠvL (group consecutive, vectorised lengths) 
+  type:
+  candidates: [""]
+
+- function: Shape of list 
+  type:
+  candidates: [""]
+
+- function: Matrix inverse 
+  type:
+  candidates: [""]
+
+- function: Grade up
+  type:
+  candidates: [""]
+
+- function: Grade down
+  type:
+  candidates: [""]
+
+- function: Contains 
+  type:
+  candidates: [""]
+
+- function: Contains 
+  type:
+  candidates: [""]
+
+- function: Reshape array 
+  type:
+  candidates: [""]
+
+- function: Mold one list to the shape of another 
+  type:
+  candidates: [""]
+
+- function: take (↑ in APL)
+  type:
+  candidates: [""]
+
+- function: drop (↓ in APL)
+  type:
+  candidates: [""]
+
+- function: Insert zeros (or blanks) in B corresponding to zeros in A
+  type:
+  candidates: [""]
+
+- function: Conjugate a complex number
+  type:
+  candidates: [""]
+
+- function: Solo (≍ in BQN)
+  type:
+  candidates: [""]
+
+- function: Couple (≍ in BQN)
+  type:
+  candidates: [""]
+
+- function: Window (↕ in BQN)
+  type:
+  candidates: [""]
+
+- function: Vectorise but to the rows (˘ in BQN - cells)
+  type:
+  candidates: [""]
+
+- function: Vertical fold (˝ in BQN)
+  type:
+  candidates: [""]
+
+- function: Depth of list
+  type:
+  candidates: [""]
+
+- function: Vertical scan
+  type:
+  candidates: [""]
+
+- function: Deshape (⥊ in BQN)
+  type:
+  candidates: [""]
+
+- function: apply last element to each item, treating the item as a stack: ƛ~<element>}
+  type:
+  candidates: [""]
+
+- function: maximum by element
+  type:
+  candidates: [""]
+
+- function: mimimum by element
+  type:
+  candidates: [""]
+
+- function: first truthy item by element
+  type:
+  candidates: [""]
+
+- function: remove duplicates by element
+  type:
+  candidates: [""]
+
+- function: number of truthy items by element
+  type:
+  candidates: [""]
+
+- function: diagonals of list
+  type:
+  candidates: [""]
+
+- function: anti-diagonals
+  type:
+  candidates: [""]
+
+- function: slice index
+  type:
+  candidates: [""]
+
+- function: get function arity
+  type:
+  candidates: [""]
+
+- function: remove an item from a list
+  type:
+  candidates: [""]
+
+- function: remove a string from another string
+  type:
+  candidates: [""]
+
+- function: remove whitespace
+  type:
+  candidates: [""]
+
+- function: remove non-numbers
+  type:
+  candidates: [""]
+
+- function: remove non-alphabet
+  type:
+  candidates: [""]
+
+- function: remove non-alphanumeric
+  type:
+  candidates: [""]
+
+- function: remove alphanumeri
+  type:
+  candidates: [""]
+
+- function: remove alphabet
+  type:
+  candidates: [""]
+
+- function: remove numbers
+  type:
+  candidates: [""]
+
+- function: Default values are either falsy values (0,[],...) or functions returning those values.
+  type:
+  candidates: [""]
+
+- function: length is 1?
+  type:
+  candidates: [""]
+
+- function: apply twice
+  type:
+  candidates: [""]
+
+- function: every nth item of a list
+  type:
+  candidates: [""]
+
+- function: factors of a number
+  type:
+  candidates: [""]
+
+- function: prefixes
+  type:
+  candidates: [""]
+
+- function: suffixes
+  type:
+  candidates: [""]
+
+- function: Replicate each item a list by a given number
+  type:
+  candidates: [""]
+
+- function: Symmetric range
+  type:
+  candidates: [""]
+
+- function: are all function results equal?
+  type:
+  candidates: [""]
+
+- function: Remove duplicates by function result
+  type:
+  candidates: [""]
+
+- function: empty list
+  type:
+  candidates: [""]
+
+- function: regex search (`re.search`)
+  type:
+  candidates: [""]
+
+- function: regex match (`re.match`)
+  type:
+  candidates: [""]
+
+- function: regex fullmatch (`re.fullmatch`)
+  type:
+  candidates: [""]
+
+- function: regex split (`re.split`)
+  type:
+  candidates: [""]
+
+- function: regex findall (`re.findall`)
+  type:
+  candidates: [""]
+
+- function: regex substitute (`re.sub`)
+  type:
+  candidates: [""]
+
+- function: regex escape (`re.escape`)
+  type:
+  candidates: [""]
+
+- function: overwrite the start of a with b
+  type:
+  candidates: [""]
+
+- function: transliteration
+  type:
+  candidates: [""]
+
+- function: set equality
+  type:
+  candidates: [""]
+
+- function: a.split_before(b) (https://chat.stackexchange.com/transcript/message/58361993#58361993)
+  type:
+  candidates: [""]
+
+- function: range from a to b with step c
+  type:
+  candidates: [""]
+
+- function: shape a as an a * c rectangle
+  type:
+  candidates: [""]
+
+- function: pad a on the right with a prefix of repeated copies of b to a length of the nearest multiple of c
+  type:
+  candidates: [""]
+
+- function: canvas
+  type:
+  candidates: [""]
+
+- function: a formatted into rectangle with smallest perimeter
+  type:
+  candidates: [""]
+
+- function: a and b joined on longest common prefix and suffix
+  type:
+  candidates: [""]
+
+- function: remove nth item of a list
+  type:
+  candidates: [""]
+
+- function: remove nth letter of a string
+  type:
+  candidates: [""]
+
+- function: set union
+  type:
+  candidates: [""]
+
+- function: set xor
+  type:
+  candidates: [""]
+
+- function: multiset union
+  type:
+  candidates: [""]
+
+- function: multiset intersection
+  type:
+  candidates: [""]
+
+- function: multiset xor
+  type:
+  candidates: [""]
+
+- function: [[a, item] for item in b]
+  type:
+  candidates: [""]
+
+- function: reverse stack
+  type:
+  candidates: [""]
+
+- function: two things have same length?
+  type:
+  candidates: [""]
+
+- function: non-vectorising non-equals
+  type:
+  candidates: [""]
+
+- function: exactly equals
+  type:
+  candidates: [""]
+
+- function: all and any
+  type:
+  candidates: [""]
+
+- function: fold fixedpoint
+  type:
+  candidates: [""]
+
+- function: connected uniquify (`Ġvh`)
+  type:
+  candidates: [""]
+
+- function: triple / triadify
+  type:
+  candidates: [""]
+
+- function: number compression
+  type:
+  candidates: [""]
+
+- function: next two bytes number compression
+  type:
+  candidates: [""]
+
+- function: powerset
+  type:
+  candidates: [""]
+
+- function: empty string
+  type:
+  candidates: [""]
+
+- function: empty space
+  type:
+  candidates: [""]
+
+- function: move element to beginning of list
+  type:
+  candidates: [""]
+
+- function: degrees to radians
+  type:
+  candidates: [""]
+
+- function: radians to degrees
+  type:
+  candidates: [""]
+
+- function: Complement; compute 1 − z.
+  type:
+  candidates: [""]
+
+- function: Return all indices of z that correspond to maximal elements.
+  type:
+  candidates: [""]
+
+- function: Return a Boolean array with 1s at the indices in z.
+  type:
+  candidates: [""]
+
+- function: enumerate a list
+  type:
+  candidates: [""]
+
+- function: If y is zero, mirror: prepend x to its reverse.
+  type:
+  candidates: [""]
+
+- function: ring translate
+  type:
+  candidates: [""]
+
+- function: Sublist exists; return 1 if x is a contiguous sublist of y, else 0.
+  type:
+  candidates: [""]
+
+- function: May contain duplicates.
+  type:
+  candidates: [""]
+
+- function: Apply element only to the head of list
+  type:
+  candidates: [""]
+
+- function: Apply element only to the first n elements of list
+  type:
+  candidates: [""]
+
+- function: Cartesian product over a list of lists
+  type:
+  candidates: [""]
+
+- function: Uniquify Mask
+  type:
+  candidates: [""]
+
+- function: is sorted?
+  type:
+  candidates: [""]
+
+- function: Pipe ("|") constant
+  type:
+  candidates: [""]
+
+- function: Backslash ("\") constant
+  type:
+  candidates: [""]
+
+- function: if-equal structure (`=[`)
+  type:
+  candidates: [""]
+
+- function: split into lengths of 2 (`2ẇ`)
+  type:
+  candidates: [""]
+
+- function: Apply element without popping
+  type:
+  candidates: [""]
+
+- function: Parallel apply
+  type:
+  candidates: [""]
+
+- function: Parallel apply into list
+  type:
+  candidates: [""]
+
+- function: Inner-product by element
+  type:
+  candidates: [""]
+
+- function: Apply last element to register
+  type:
+  candidates: [""]
+
+- function: Head remove
+  type:
+  candidates: [""]
+
+- function: Tail remove
+  type:
+  candidates: [""]
+
+- function: a.split_after(b) (like `split_before`, but splits after the delimiter instead of before)
+  type:
+  candidates: [""]
+
+- function: split and keep delimiter
+  type:
+  candidates: [""]
