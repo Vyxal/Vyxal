@@ -146,48 +146,57 @@
   candidates: [","]
 
 - function: Foldl / Reduce left 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["/"]
 
 - function: Duplicate 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: [":", "D", "d"]
 
 - function: Less than 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string, string-number, string-string]
+  candidates: ["<"]
 
 - function: Equals 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string, string-number, string-string]
+  candidates: ["="]
 
 - function: Greater than 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string, string-number, string-string]
+  candidates: [">"]
 
 - function: Input 
-  type:
-  candidates: [""]
+  type: element
+  candidates: ["?", "¿", "I"]
 
 - function: `all()` in python 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["A", "a", "Ȧ", "ȧ", "Ạ", "ạ"] # ∀
 
 - function: From binary 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number, string]
+  candidates: ["B", "b"]
 
 - function: To binary 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number, string]
+  candidates: ["B", "b"]
 
 - function: `a.count(b)` 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["c", "C", "O"]
 
 - function: Triplicate 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["D", "d"]
 
 - function: Filter by function 
   type:
