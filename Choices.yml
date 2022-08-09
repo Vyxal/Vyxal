@@ -118,28 +118,32 @@
   candidates: ["ᶳ", "ᵒ", "$", "¦"] # ["ᶠ", "ᶿ", "~", "ꜝ"]
 
 - function: Lambda to start of line 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: [")", "]"]
 
 - function: Vectorise element 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["v"]
 
 - function: Exponentiation 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string*, string-string]
+  candidates: ["*", "e", "^"]
 
 - function: Addition 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string*, string-string]
+  candidates: ["+"]
 
 - function: Subtraction 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number, number-string, string-number, string-string]
+  candidates: ["-"]
 
 - function: Print 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: [","]
 
 - function: Foldl / Reduce left 
   type:
