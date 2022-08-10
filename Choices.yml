@@ -405,11 +405,13 @@
   candidates: ["Ṗ","ṗ"]
 
 - function: permutations 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṗ","ṗ"]
 
 - function: mirror 
-  type:
+  type: element
+  overloads: [any]
   candidates: [""]
 
 - function: palindromise 
