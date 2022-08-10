@@ -380,20 +380,24 @@
   candidates: ["£","¥"]
 
 - function: reverse 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["R", "r", "Ṙ", "ṙ","Ṛ","ṛ"]
 
 - function: sum 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["∑"]
 
 - function: vectorised sums 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [list]
+  candidates: ["Ṣ", "Ṡ", "ṣ", "ṡ"]
 
 - function: absolute difference 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["¦","Ȧ","ȧ","Ạ","ạ"]
 
 - function: powerset 
   type:
