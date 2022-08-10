@@ -281,27 +281,32 @@
 - function: Prepend 
   type: element
   overloads: [any-any]
-  candidates: [""]
+  candidates: ["P", "p", "Ṗ", "ṗ"]
 
 - function: Reduce by function 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function*]
+  candidates: ["R"]
 
 - function: Transpose matrix/list 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [list]
+  candidates: ["T", "z", "Z", "Ṫ", "ṫ", "Ṭ", "ṭ"]
 
 - function: Transpose matrix/list with filler
-  type:
-  candidates: [""]
+  type: element
+  overloads: [list]
+  candidates: ["T", "z", "Z", "Ṫ", "ṫ", "Ṭ", "ṭ"]
 
 - function: Uniquify 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["U", "u"]
 
 - function: Replace b in a with c 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any-any]
+  candidates: ["R", "r", "V"]
 
 - function: Wrap stack 
   type:
