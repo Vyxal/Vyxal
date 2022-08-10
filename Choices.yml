@@ -239,20 +239,24 @@
   candidates: ["H"]
 
 - function: `abs(x) <= 1` 
-  type:
-  candidates: [""]
+  type: element
+  overloads: ["Number"]
+  candidates: ["I", "İ", "Ị"]
 
 - function: Concatenate 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["+", "J", "‡"]
 
 - function: Negated filter 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function*]
+  candidates: ["Ḟ", "ḟ", "†", "¤"] # "Ḡ", "ḡ"
 
 - function: Set difference 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [string-string, list-list]
+  candidates: ["¦", "D", "d", "Ḋ", "ḋ", "Ṡ", "ṡ", "Ḍ", "ḍ"]
 
 - function: Length 
   type:
