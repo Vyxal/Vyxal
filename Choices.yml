@@ -412,7 +412,7 @@
 - function: mirror 
   type: element
   overloads: [any]
-  candidates: [""]
+  candidates: ["m", "Ṁ", "ṁ", "Ṃ", "ṃ"]
 
 - function: palindromise 
   type:
