@@ -309,40 +309,47 @@
   candidates: ["R", "r", "V"]
 
 - function: Wrap stack 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["W", "w"]
 
 - function: Wrap item in list 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["W", "w"]
 
 - function: Break / Return 
-  type:
-  candidates: [""]
+  type: syntax
+  candidates: ["X", "x"]
 
 - function: Recurse 
-  type:
-  candidates: [""]
+  type: syntax
+  candidates: ["X", "x"]
 
 - function: Interleave 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["I", "i", "T", "L", "l", "Y"]
 
 - function: Uninterleave 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["U", "u", "T", "^", "y"]
 
 - function: Zip two lists 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["Z", "z"]
 
 - function: Monadic mimimum without popping 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["mṁṃgġ↓"]
 
 - function: Monadic maximum without popping 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["MṀṂGĠ↑"]
 
 - function: Reduce each overlap of size 2 by an element 
   type:
