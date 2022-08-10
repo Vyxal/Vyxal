@@ -259,23 +259,28 @@
   candidates: ["¦", "D", "d", "Ḋ", "ḋ", "Ṡ", "ṡ", "Ḍ", "ḍ"]
 
 - function: Length 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["L", "l"]
 
 - function: Map function over list 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function*]
+  candidates: ["M"]
 
 - function: Negate 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["N", "±"]
 
-- function: `chr/ord` 
-  type:
-  candidates: [""]
+- function: "chr/ord" 
+  type: element
+  overloads: [number, string]
+  candidates: ["O", "C", "o", "c", "Ċ", "ċ", "Ȯ", "ȯ", "Ọ", "ọ"]
 
 - function: Prepend 
-  type:
+  type: element
+  overloads: [any-any]
   candidates: [""]
 
 - function: Reduce by function 
