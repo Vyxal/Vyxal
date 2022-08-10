@@ -352,28 +352,32 @@
   candidates: ["MṀṂGĠ↑"]
 
 - function: Reduce each overlap of size 2 by an element 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["ᶪ", "¤", "ᵖ", "ᵗ"]
 
 - function: Apply at indices 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["ᵃ", "ᶤ", "ᵐ"]
 
 - function: scanl 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["\\"]
 
 - function: scanr 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["#\\", "ᶳ"]
 
 - function: foldr 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["/"]
 
-- function: register 
-  type:
-  candidates: [""]
+- function: register set
+  type: element
+  candidates: ["£","¥"]
+
+- function: register get
+  type: element
+  candidates: ["£","¥"]
 
 - function: reverse 
   type:
