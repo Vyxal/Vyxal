@@ -400,8 +400,9 @@
   candidates: ["¦","Ȧ","ȧ","Ạ","ạ"]
 
 - function: powerset 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṗ","ṗ"]
 
 - function: permutations 
   type:
