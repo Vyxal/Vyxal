@@ -465,28 +465,34 @@
   candidates: ["Ġ","ġ"]
 
 - function: Pop 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["_"]
 
 - function: Swap 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["$", "s", "S"]
 
 - function: Print without newline 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["„"]
 
 - function: Print without popping 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["”"]
 
 - function: Uppercase 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [string]
+  candidates: ["↑"]
 
 - function: Lowercase 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [string]
+  candidates: ["↓"]
 
 - function: Shallow flat 
   type:
