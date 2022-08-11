@@ -902,3 +902,8 @@ def test_adjacent_filter():
 def test_multiple_lists_assign():
     stack = run_vyxal("`hello`130f`hel`fȦ")
     assert stack[-1] == "lhleo"
+
+
+def test_complex_numbers():
+    stack = run_vyxal("°2")
+    assert stack[-1] == 2 * sympy.I
