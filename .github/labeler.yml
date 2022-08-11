@@ -1,12 +1,12 @@
 enhancement:
-    - '\\badd\\b'
+    - '\\b[aA]dd\\b'
 element request:
-    - 'add element'
+    - '/add element/i'
 bug:
-    - 'useless'
-    - "doesn't work"
-    - "not working"
-    - "error"
-    - "buggy"
+    - '/useless/i'
+    - "/doesn't work/i"
+    - "/not working/i"
+    - "/error/i"
+    - "/buggy/i"
 online interpreter:
-    - "online interpreter"
+    - "/online interpreter/i"
