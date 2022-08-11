@@ -30479,8 +30479,8 @@ def test_Sublists():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [123]]
-    expected = vyxalify([1,12,2,123,23,3])
+    stack = [vyxalify(item) for item in [3]]
+    expected = vyxalify([[1],[1,2],[2],[1,2,3],[2,3],[3]])
     ctx = Context()
 
     ctx.stacks.append(stack)
