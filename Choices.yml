@@ -571,67 +571,84 @@
 
 - function: apply to neighbours [applies to windows of length 2] 
   type:
-  candidates: [""]
+  candidates: ["ᵂ"]
 
 - function: invariant / Equal under element 
   type:
-  candidates: [""]
+  candidates: ["ᵉ", "ᶤ"]
 
 - function: all equal 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["≈"]
+
+- function: all equal another object
+  type: element
+  overloads: [any-any]
+  candidates: ["•", "†", "‡"]
 
 - function: increments / deltas 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["¯"]
 
 - function: join on spaces 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [list]
+  candidates: ["Ṣ"]
 
 - function: vectorised reverse 
-  type:
-  candidates: [""]
+  type: element
+  candidates: ["R"]
 
 - function: choose random item 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṛ","ṛ"]
 
 - function: bitwise not 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["⌐"]
 
 - function: bitwise and 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["∴"]
 
 - function: bitwise or 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["∵"]
 
 - function: bitwise xor 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["⊻"]
 
 - function: logical not 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["¬"]
 
 - function: logical and 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["∧"]
 
 - function: logical or 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-any]
+  candidates: ["∨"]
 
 - function: sort ascending 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["s"]
 
 - function: sort descending 
   type:
-  candidates: [""]
+  candidates: ["#s", "Þs"]
 
 - function: is prime? 
   type:
