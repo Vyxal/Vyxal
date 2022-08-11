@@ -503,40 +503,49 @@
   candidates: ["f"]
 
 - function: Head 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["h"]
 
 - function: Tail 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["t"]
 
 - function: Head extract 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ḣ","ḣ","Ḥ","ḥ"]
 
 - function: Tail extract 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṫ","ṫ","Ṭ","ṭ"]
 
 - function: Overlapping chunks of length 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-number]
+  candidates: ["ð"]
 
 - function: Generate infinite list from function 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any-function]
+  candidates: ["G", "g", "Ġ", "ġ"]
 
 - function: Cumulative sums 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["¦", "Ṡ", "ṡ"]
 
 - function: Vectorising length 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["l","Ŀ","ŀ","Ḷ","ḷ"]
 
 - function: Truthy indices 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṫ","Ṭ"]
 
 - function: Range between two numbers 
   type:
