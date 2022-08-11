@@ -548,24 +548,26 @@
   candidates: ["Ṫ","Ṭ"]
 
 - function: Range between two numbers 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["R", "r"]
 
 - function: Range of length of value 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [string, list]
+  candidates: ["Ṙ","ṙ","Ṛ","ṛ"]
 
 - function: scan fixedpoint [apply until a previous value is repeated, collecting intermediate results] 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["ᵘ", "ᵞ", "ᶴ"]
 
 - function: all neighbours [apply to neighbours (windows of length 2) and check if all elements are equal] 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["ⁿ"]
 
 - function: truthy indices after applying 
-  type:
-  candidates: [""]
+  type: modifier
+  candidates: ["ᵗ", "ᵇ"]
 
 - function: apply to neighbours [applies to windows of length 2] 
   type:
