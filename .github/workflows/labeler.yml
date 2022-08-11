@@ -11,5 +11,5 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: .github/labeler.yml
-        not-before: 2022-08-07T00:00:00Z
+        include-title: 1
         enable-versioned-regex: 0
