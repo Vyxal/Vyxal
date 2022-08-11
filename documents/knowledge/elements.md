@@ -2796,6 +2796,22 @@ Get the totient function of a number / local minima of a function
 - num a: `totient(a)`
 - str a: `local_minima(a)`
 -------------------------------
+## `` ∆n `` (Next Power)
+
+Get the next power of b after a.
+
+### Overloads
+
+- num a, num b: `b ** floor(log(a, b) + 1)`
+-------------------------------
+## `` ∆ḟ `` (Previous Power)
+
+Get the previous power of b before a.
+
+### Overloads
+
+- num a, num b: `b ** ceil(log(a, b) - 1)`
+-------------------------------
 ## `` ∆Z `` (ZFill)
 
 Pad a string with zeros to a given length
