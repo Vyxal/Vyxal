@@ -447,12 +447,12 @@
 - function: Floor 
   type: element
   overloads: [number]
-  candidates: ["ḟ"]
+  candidates: ["Ḟ", "ḟ"]
 
 - function: Ceiling 
   type: element
   overloads: [number]
-  candidates: ["ċ"]
+  candidates: ["Ċ", "ċ"]
 
 - function:  Join on newlines 
   type: element
@@ -495,12 +495,12 @@
   candidates: ["↓"]
 
 - function: Shallow flat 
-  type:
-  candidates: [""]
+  type: element
+  candidates: ["Ḟ", "ḟ"]
 
 - function: Deep flat 
   type:
-  candidates: [""]
+  candidates: ["f"]
 
 - function: Head 
   type:
