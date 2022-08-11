@@ -6248,6 +6248,18 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
+def next_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(next_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.floor(sympy.log(lhs, rhs) + 1)
+
+
+def prev_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(prev_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.ceiling(sympy.log(lhs, rhs) - 1)
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6625,6 +6637,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆n": process_element(next_power, 2),
+    "∆ḟ": process_element(prev_power, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
