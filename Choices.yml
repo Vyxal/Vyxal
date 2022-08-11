@@ -412,47 +412,57 @@
 - function: mirror 
   type: element
   overloads: [any]
-  candidates: ["m", "Ṁ", "ṁ", "Ṃ", "ṃ"]
+  candidates: ["Ṁ", "ṁ", "Ṃ", "ṃ"]
 
 - function: palindromise 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ṗ","ṗ", "Ṁ", "ṁ", "Ṃ", "ṃ", "‡"]
 
 - function: increment 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["↑"]
 
 - function: decrement 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["↓"]
 
 - function: double / dyadify 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["d"]
 
 - function: half 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["½"]
 
 - function: Floor division 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number-number]
+  candidates: ["¦", "ị"]
 
 - function: Floor 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["ḟ"]
 
 - function: Ceiling 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [number]
+  candidates: ["ċ"]
 
 - function:  Join on newlines 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [list]
+  candidates: ["Ṅ", "Ṇ"]
 
 - function:  Group consecutive 
-  type:
-  candidates: [""]
+  type: element
+  overloads: [any]
+  candidates: ["Ġ","ġ"]
 
 - function: Pop 
   type:
