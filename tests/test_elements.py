@@ -4740,7 +4740,7 @@ def test_NegateSwapCaseFirstIntegerWhereTruthy():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Count():
+def test_CountMaximums_by():
 
     stack = [vyxalify(item) for item in [[1,2,3,4,5,4,3], 4]]
     expected = vyxalify(2)
@@ -4847,7 +4847,7 @@ def test_Count():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Strip():
+def test_StripMinimums_by():
 
     stack = [vyxalify(item) for item in [[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]]]
     expected = vyxalify([3, 4, 5, 4, 3])

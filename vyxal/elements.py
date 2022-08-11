@@ -1017,7 +1017,8 @@ def count_item(lhs, rhs, ctx):
         lhs, rhs = rhs, lhs
     if vy_type(rhs) == types.FunctionType:
         lhs = iterable(lhs, ctx=ctx)
-        if not lhs: return lhs
+        if not lhs:
+            return lhs
         m = None
         fun_vals = []
         for item in lhs:
@@ -1027,10 +1028,12 @@ def count_item(lhs, rhs, ctx):
                 m = fn_val
             else:
                 m = dyadic_maximum(m, fn_val, ctx=ctx)
+
         def gen():
             for item in lhs:
                 if fun_vals.pop(0) == m:
                     yield item
+
         return LazyList(gen())
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
@@ -4895,7 +4898,8 @@ def strip(lhs, rhs, ctx):
         lhs, rhs = rhs, lhs
     if vy_type(rhs) == types.FunctionType:
         lhs = iterable(lhs, ctx=ctx)
-        if not lhs: return lhs
+        if not lhs:
+            return lhs
         m = None
         fun_vals = []
         for item in lhs:
@@ -4905,10 +4909,12 @@ def strip(lhs, rhs, ctx):
                 m = fn_val
             else:
                 m = dyadic_minimum(m, fn_val, ctx=ctx)
+
         def gen():
             for item in lhs:
                 if fun_vals.pop(0) == m:
                     yield item
+
         return LazyList(gen())
     ts = vy_type(lhs, rhs)
     return {
