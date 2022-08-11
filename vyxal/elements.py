@@ -3361,6 +3361,12 @@ def newline_split(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
 
+def next_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(next_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.floor(sympy.log(lhs, rhs) + 1)
+
+
 def next_prime(lhs, ctx):
     """Element ∆Ṗ
     (num) -> next prime after a
@@ -3953,6 +3959,12 @@ def prepend(lhs, rhs, ctx):
         return merge(rhs, lhs, ctx)
     else:
         return LazyList([rhs]) + LazyList(lhs)
+
+
+def prev_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(prev_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.ceiling(sympy.log(lhs, rhs) - 1)
 
 
 def prev_prime(lhs, ctx):
@@ -6625,6 +6637,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆n": process_element(next_power, 2),
+    "∆ḟ": process_element(prev_power, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

@@ -1644,6 +1644,12 @@ var codepage_descriptions =
       "token": "kn"
     },
     {
+      "name": "Next Power",
+      "description": "Get the next power of b after a.",
+      "overloads": "num, num -> b ** floor(log(a, b) + 1)",
+      "token": "\u2206n"
+    },
+    {
       "name": "Infinite list of all integers",
       "description": "All integers in an infinite list (0, 1, -1, 2, -2, ...)",
       "token": "\u00den"
@@ -2164,6 +2170,12 @@ var codepage_descriptions =
       "description": "Find a value in another",
       "overloads": "any, any -> a.find(b) (indexing, -1 if not found)\nany, fun -> truthy indices of mapping b over a",
       "token": "\u1e1f"
+    },
+    {
+      "name": "Previous Power",
+      "description": "Get the previous power of b before a.",
+      "overloads": "num, num -> b ** ceil(log(a, b) - 1)",
+      "token": "\u2206\u1e1f"
     },
     {
       "name": "Multidimensional Search",
