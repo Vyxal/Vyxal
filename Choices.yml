@@ -652,11 +652,11 @@
 
 - function: is prime? 
   type:
-  candidates: [""]
+  candidates: ["ḳ", "Ḳ"]
 
 - function: is even? 
   type:
-  candidates: [""]
+  candidates: ["₂"]
 
 - function: parity 
   type:
