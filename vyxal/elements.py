@@ -1029,12 +1029,7 @@ def count_item(lhs, rhs, ctx):
             else:
                 m = dyadic_maximum(m, fn_val, ctx=ctx)
 
-        def gen():
-            for item in lhs:
-                if fun_vals.pop(0) == m:
-                    yield item
-
-        return LazyList(gen())
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if vy_type(lhs) in (NUMBER_TYPE, str):
