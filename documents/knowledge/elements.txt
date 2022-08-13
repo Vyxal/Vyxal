@@ -2458,6 +2458,20 @@ k• (Qwerty Keyboard)
     str a: local_minima(a)
     otherwise: vectorise
 -------------------------------
+∆n (Next Power)
+
+- Get the next power of b after a.
+
+    num a, num b: b ** floor(log(a, b) + 1)
+    otherwise: vectorise
+-------------------------------
+∆ḟ (Previous Power)
+
+- Get the previous power of b before a.
+
+    num a, num b: b ** ceil(log(a, b) - 1)
+    otherwise: vectorise
+-------------------------------
 ∆Z (ZFill)
 
 - Pad a string with zeros to a given length
