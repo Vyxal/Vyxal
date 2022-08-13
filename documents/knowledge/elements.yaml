@@ -1352,7 +1352,7 @@
       - "[[3,1,2]] : [1,2,3]"
       - "[312] : 123"
       - '["bca"] : "abc"'
-      - '[0] : 0'
+      - "[0] : 0"
 
 - element: "t"
   name: Tail
@@ -4272,6 +4272,36 @@
       # - "['5*x**2 - 34*x + 213'] : [3.4]"
       # - "['(x**2 + x + 1) / x'] : [1]"
 
+- element: "∆n"
+  name: Next Power
+  arity: 2
+  description: Get the next power of b after a.
+  overloads:
+      num-num: b ** floor(log(a, b) + 1)
+  vectorise: true
+  tests:
+      - "[10, 10] : 100"
+      - "[9, 10] : 10"
+      - "[11, 10] : 100"
+      - "[4, 2] : 8"
+      - "[17, 3] : 27"
+      - "[7, 2] : 8"
+
+- element: "∆ḟ"
+  name: Previous Power
+  arity: 2
+  description: Get the previous power of b before a.
+  overloads:
+      num-num: b ** ceil(log(a, b) - 1)
+  vectorise: true
+  tests:
+      - "[10, 10] : 1"
+      - "[9, 10] : 1"
+      - "[11, 10] : 10"
+      - "[4, 2] : 2"
+      - "[17, 3] : 9"
+      - "[100, 10] : 10"
+
 - element: "∆Z"
   name: ZFill
   arity: 2
@@ -4553,7 +4583,7 @@
   tests:
       - '["ababa", "aba"] : 2'
       - '["bbba", "ba"] : 1'
-      - '[[1, 2, 2, 1, 2, 1], [1, 2]] : 2'
+      - "[[1, 2, 2, 1, 2, 1], [1, 2]] : 2"
       - '[[3, "3", 3, "3", 3], [3, "3", 3]] : 2'
 
 - element: "øV"
@@ -5461,7 +5491,7 @@
       - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
       - "[[]] : []"
       - "[[[]]] : [[[]]]"
-      - "[123] : [1,12,2,123,23,3]"
+      - "[3] : [[1],[1,2],[2],[1,2,3],[2,3],[3]]"
       - '["ab"] : ["a","ab","b"]'
 
 - element: "ÞṪ"
