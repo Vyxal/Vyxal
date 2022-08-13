@@ -2312,16 +2312,16 @@
   overloads:
       lst: a[1:] or [] if empty
       str: a[1:] or '' if empty
-      num: remove first digit or do nothing if <1
+      num: range(2, a + 1)
   vectorise: false
   tests:
       - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
       - "[[]] : []"
       - '["foo"] : "oo"'
       - '[""] : ""'
-      - "[1234.56] : 234.56"
-      - "[0.2] : 0.2"
-      - "[-123] : 123"
+      - "[12.34] : [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+      - "[0.2] : []"
+      - "[-123] : []"
 
 - element: "İ"
   name: Index into / Collect while unique / Complex Number
