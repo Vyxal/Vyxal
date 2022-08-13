@@ -14181,8 +14181,8 @@ def test_HeadRemoveBehead():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1234.56]]
-    expected = vyxalify(234.56)
+    stack = [vyxalify(item) for item in [12.34]]
+    expected = vyxalify([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -14203,7 +14203,7 @@ def test_HeadRemoveBehead():
 
 
     stack = [vyxalify(item) for item in [0.2]]
-    expected = vyxalify(0.2)
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)
@@ -14224,7 +14224,7 @@ def test_HeadRemoveBehead():
 
 
     stack = [vyxalify(item) for item in [-123]]
-    expected = vyxalify(123)
+    expected = vyxalify([])
     ctx = Context()
 
     ctx.stacks.append(stack)

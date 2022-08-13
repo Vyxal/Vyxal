@@ -1537,7 +1537,7 @@ All but the first item of a list / Drop 1
 
 - lst a: `a[1:] or [] if empty`
 - str a: `a[1:] or '' if empty`
-- num a: `remove first digit or do nothing if <1`
+- num a: `range(2, a + 1)`
 -------------------------------
 ## `` İ `` (Index into / Collect while unique / Complex Number)
 
