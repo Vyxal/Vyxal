@@ -4905,12 +4905,7 @@ def strip(lhs, rhs, ctx):
             else:
                 m = dyadic_minimum(m, fn_val, ctx=ctx)
 
-        def gen():
-            for item in lhs:
-                if fun_vals.pop(0) == m:
-                    yield item
-
-        return LazyList(gen())
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
