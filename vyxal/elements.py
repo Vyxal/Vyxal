@@ -3381,6 +3381,17 @@ def newline_split(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
 
+def next_multiple(lhs, rhs, ctx):
+    """Element ∆*
+    (num, num) -> get the next multiple of b that is greater than a
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs - lhs % rhs,
+    }.get(ts, lambda: vectorise(next_multiple, lhs, rhs, ctx=ctx))()
+
+
 def next_power(lhs, rhs, ctx):
     if list in vy_type(lhs, rhs, simple=True):
         return vectorise(next_power, lhs, rhs, ctx=ctx)()
@@ -6675,6 +6686,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),
     "øḂ": process_element(angle_bracketify, 1),

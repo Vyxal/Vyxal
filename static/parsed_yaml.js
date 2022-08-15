@@ -436,6 +436,12 @@ var codepage_descriptions =
       "token": "*"
     },
     {
+      "name": "Next Multiple",
+      "description": "Get the next multiple of a number greater than another number",
+      "overloads": "num, num -> get the next multiple of b that is greater than a",
+      "token": "\u2206*"
+    },
+    {
       "name": "Cartesian product over list",
       "description": "Cartesian product over a list of lists",
       "overloads": "lst -> itertools.product(*a)",
