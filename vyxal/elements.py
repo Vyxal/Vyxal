@@ -1011,7 +1011,25 @@ def cosine(lhs, ctx):
 def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
+    (any, fun) -> all elements in a where the result of b(x) is highest
     """
+    if vy_type(lhs) == types.FunctionType:
+        lhs, rhs = rhs, lhs
+    if vy_type(rhs) == types.FunctionType:
+        lhs = iterable(lhs, ctx=ctx)
+        if not lhs:
+            return lhs
+        m = None
+        fun_vals = []
+        for item in lhs:
+            fn_val = safe_apply(rhs, item, ctx=ctx)
+            fun_vals.append(fn_val)
+            if m is None:
+                m = fn_val
+            else:
+                m = dyadic_maximum(m, fn_val, ctx=ctx)
+
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if vy_type(lhs) in (NUMBER_TYPE, str):
@@ -3372,6 +3390,12 @@ def next_multiple(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(next_multiple, lhs, rhs, ctx=ctx))()
 
 
+def next_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(next_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.floor(sympy.log(lhs, rhs) + 1)
+
+
 def next_prime(lhs, ctx):
     """Element ∆Ṗ
     (num) -> next prime after a
@@ -3964,6 +3988,12 @@ def prepend(lhs, rhs, ctx):
         return merge(rhs, lhs, ctx)
     else:
         return LazyList([rhs]) + LazyList(lhs)
+
+
+def prev_power(lhs, rhs, ctx):
+    if list in vy_type(lhs, rhs, simple=True):
+        return vectorise(prev_power, lhs, rhs, ctx=ctx)()
+    return rhs ** sympy.ceiling(sympy.log(lhs, rhs) - 1)
 
 
 def prev_prime(lhs, ctx):
@@ -4880,7 +4910,25 @@ def strict_less_than(lhs, rhs, ctx):
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
+    (any, fun) -> all elements in a where the result of b(x) is lowest
     """
+    if vy_type(lhs) == types.FunctionType:
+        lhs, rhs = rhs, lhs
+    if vy_type(rhs) == types.FunctionType:
+        lhs = iterable(lhs, ctx=ctx)
+        if not lhs:
+            return lhs
+        m = None
+        fun_vals = []
+        for item in lhs:
+            fn_val = safe_apply(rhs, item, ctx=ctx)
+            fun_vals.append(fn_val)
+            if m is None:
+                m = fn_val
+            else:
+                m = dyadic_minimum(m, fn_val, ctx=ctx)
+
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
@@ -5020,18 +5068,12 @@ def sublists(lhs, ctx):
     """Element ÞS
     Sublists of a list.
     """
-    is_number = vy_type(lhs) == NUMBER_TYPE
+    lhs = iterable(lhs, range, ctx=ctx)
 
     @lazylist_from(lhs)
     def gen():
         for prefix in prefixes(lhs, ctx=ctx):
-            if is_number:
-                yield from map(
-                    lambda x: vy_eval("".join(map(str, x)), ctx=ctx),
-                    suffixes(prefix, ctx=ctx),
-                )
-            else:
-                yield from suffixes(prefix, ctx=ctx)
+            yield from suffixes(prefix, ctx=ctx)
 
     return gen()
 
@@ -6643,6 +6685,8 @@ elements: dict[str, tuple[str, int]] = {
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
     "∆*": process_element(next_multiple, 2),
+    "∆n": process_element(next_power, 2),
+    "∆ḟ": process_element(prev_power, 2),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

@@ -176,7 +176,7 @@ def transpile_token(
 
         parts = "+".join(parts)
         if parts[0] == "+":
-            parts = (parts or "1") + "I"
+            parts = (parts or "1") + "* I"
         elif parts[-1] == "+":
             parts = parts + "1 * I"
         elif "+" in parts:

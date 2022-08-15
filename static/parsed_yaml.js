@@ -1022,9 +1022,9 @@ var codepage_descriptions =
   ],
   "79": [
     {
-      "name": "Count",
-      "description": "Count number of times b occurs in a",
-      "overloads": "any, any -> a.count(b)",
+      "name": "Count / Maximums-by",
+      "description": "Count number of times b occurs in a / Maximums-by",
+      "overloads": "any, any -> a.count(b)\nany, fun -> all elements in a where the result of b(x) is highest",
       "token": "O"
     },
     {
@@ -1036,9 +1036,9 @@ var codepage_descriptions =
   ],
   "80": [
     {
-      "name": "Strip",
-      "description": "Remove the set of elements in b from both ends of a",
-      "overloads": "any, any -> a.strip(b)",
+      "name": "Strip / Minimums-by",
+      "description": "Remove the set of elements in b from both ends of a / Minimums-by",
+      "overloads": "any, any -> a.strip(b)\nany, fun -> all elements in a where the result of b(x) is lowest",
       "token": "P"
     },
     {
@@ -1650,6 +1650,12 @@ var codepage_descriptions =
       "token": "kn"
     },
     {
+      "name": "Next Power",
+      "description": "Get the next power of b after a.",
+      "overloads": "num, num -> b ** floor(log(a, b) + 1)",
+      "token": "\u2206n"
+    },
+    {
       "name": "Infinite list of all integers",
       "description": "All integers in an infinite list (0, 1, -1, 2, -2, ...)",
       "token": "\u00den"
@@ -2170,6 +2176,12 @@ var codepage_descriptions =
       "description": "Find a value in another",
       "overloads": "any, any -> a.find(b) (indexing, -1 if not found)\nany, fun -> truthy indices of mapping b over a",
       "token": "\u1e1f"
+    },
+    {
+      "name": "Previous Power",
+      "description": "Get the previous power of b before a.",
+      "overloads": "num, num -> b ** ceil(log(a, b) - 1)",
+      "token": "\u2206\u1e1f"
     },
     {
       "name": "Multidimensional Search",

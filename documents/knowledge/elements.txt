@@ -544,17 +544,19 @@ N (Negate / Swap Case / First Integer Where Truthy)
     fun a: first integer where a(n) is true
     otherwise: vectorise
 -------------------------------
-O (Count)
+O (Count / Maximums-by)
 
-- Count number of times b occurs in a
+- Count number of times b occurs in a / Maximums-by
 
     any a, any b: a.count(b)
+    any a, fun b: all elements in a where the result of b(x) is highest
 -------------------------------
-P (Strip)
+P (Strip / Minimums-by)
 
-- Remove the set of elements in b from both ends of a
+- Remove the set of elements in b from both ends of a / Minimums-by
 
     any a, any b: a.strip(b)
+    any a, fun b: all elements in a where the result of b(x) is lowest
 -------------------------------
 Q (Quit)
 
@@ -2454,6 +2456,20 @@ k• (Qwerty Keyboard)
 
     num a: totient(a)
     str a: local_minima(a)
+    otherwise: vectorise
+-------------------------------
+∆n (Next Power)
+
+- Get the next power of b after a.
+
+    num a, num b: b ** floor(log(a, b) + 1)
+    otherwise: vectorise
+-------------------------------
+∆ḟ (Previous Power)
+
+- Get the previous power of b before a.
+
+    num a, num b: b ** ceil(log(a, b) - 1)
     otherwise: vectorise
 -------------------------------
 ∆Z (ZFill)

@@ -902,3 +902,18 @@ def test_adjacent_filter():
 def test_multiple_lists_assign():
     stack = run_vyxal("`hello`130f`hel`fȦ")
     assert stack[-1] == "lhleo"
+
+
+def test_maximums_by():
+    stack = run_vyxal("λ∆l⌊;O", inputs=[[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]])
+    assert stack[-1] == [8, 9, 10, 11]
+
+
+def test_minimums_by():
+    stack = run_vyxal("λ∆l⌊;P", inputs=[[2, 3, 4, 5, 6, 7, 8, 9, 10, 11]])
+    assert stack[-1] == [2, 3]
+
+
+def test_complex_numbers():
+    stack = run_vyxal("°2")
+    assert stack[-1] == 2 * sympy.I

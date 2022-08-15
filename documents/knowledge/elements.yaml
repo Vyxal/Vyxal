@@ -879,11 +879,12 @@
       - '["aBc"] : "AbC"'
 
 - element: "O"
-  name: Count
-  description: Count number of times b occurs in a
+  name: Count / Maximums-by
+  description: Count number of times b occurs in a / Maximums-by
   arity: 2
   overloads:
       any-any: a.count(b)
+      any-fun: all elements in a where the result of b(x) is highest
   vectorise: false
   tests:
       - "[[1,2,3,4,5,4,3], 4] : 2"
@@ -893,11 +894,12 @@
       - '["1213121", 1] : 4'
 
 - element: "P"
-  name: Strip
-  description: Remove the set of elements in b from both ends of a
+  name: Strip / Minimums-by
+  description: Remove the set of elements in b from both ends of a / Minimums-by
   arity: 2
   overloads:
       any-any: a.strip(b)
+      any-fun: all elements in a where the result of b(x) is lowest
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
@@ -4272,6 +4274,36 @@
       # - "['5*x**2 - 34*x + 213'] : [3.4]"
       # - "['(x**2 + x + 1) / x'] : [1]"
 
+- element: "∆n"
+  name: Next Power
+  arity: 2
+  description: Get the next power of b after a.
+  overloads:
+      num-num: b ** floor(log(a, b) + 1)
+  vectorise: true
+  tests:
+      - "[10, 10] : 100"
+      - "[9, 10] : 10"
+      - "[11, 10] : 100"
+      - "[4, 2] : 8"
+      - "[17, 3] : 27"
+      - "[7, 2] : 8"
+
+- element: "∆ḟ"
+  name: Previous Power
+  arity: 2
+  description: Get the previous power of b before a.
+  overloads:
+      num-num: b ** ceil(log(a, b) - 1)
+  vectorise: true
+  tests:
+      - "[10, 10] : 1"
+      - "[9, 10] : 1"
+      - "[11, 10] : 10"
+      - "[4, 2] : 2"
+      - "[17, 3] : 9"
+      - "[100, 10] : 10"
+
 - element: "∆Z"
   name: ZFill
   arity: 2
@@ -5474,7 +5506,7 @@
       - "[[1,2,3]] : [[1], [1, 2], [2], [1, 2, 3], [2, 3], [3]]"
       - "[[]] : []"
       - "[[[]]] : [[[]]]"
-      - "[123] : [1,12,2,123,23,3]"
+      - "[3] : [[1],[1,2],[2],[1,2,3],[2,3],[3]]"
       - '["ab"] : ["a","ab","b"]'
 
 - element: "ÞṪ"
