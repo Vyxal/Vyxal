@@ -2753,7 +2753,7 @@ var codepage_descriptions =
     {
       "name": "Head Remove / Behead",
       "description": "All but the first item of a list / Drop 1",
-      "overloads": "lst -> a[1:] or [] if empty\nstr -> a[1:] or '' if empty\nnum -> remove first digit or do nothing if <1",
+      "overloads": "lst -> a[1:] or [] if empty\nstr -> a[1:] or '' if empty\nnum -> range(2, a + 1)",
       "token": "\u1e22"
     }
   ],

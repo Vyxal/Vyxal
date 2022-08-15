@@ -2016,15 +2016,13 @@ def head_remove(lhs, ctx):
     """Element Ḣ
     (lst) -> a[1:] or [] if empty
     (str) -> a[1:] or '' if empty
-    (num) -> Remove first digit or do nothing if <1"""
+    (num) -> range(2, a + 1)"""
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
-    if lhs == 0:
-        return lhs
-    if isinstance(lhs, int):
-        return int(str(lhs)[1:])
-    assert isinstance(lhs, sympy.Rational)
-    return sympy.Rational(str(float(lhs))[1:])
+    if lhs < 2:
+        return []
+
+    return iterable(lhs, range, ctx=ctx)[1:]
 
 
 def identity_matrix(lhs, ctx):
