@@ -879,11 +879,12 @@
       - '["aBc"] : "AbC"'
 
 - element: "O"
-  name: Count
-  description: Count number of times b occurs in a
+  name: Count / Maximums-by
+  description: Count number of times b occurs in a / Maximums-by
   arity: 2
   overloads:
       any-any: a.count(b)
+      any-fun: all elements in a where the result of b(x) is highest
   vectorise: false
   tests:
       - "[[1,2,3,4,5,4,3], 4] : 2"
@@ -893,11 +894,12 @@
       - '["1213121", 1] : 4'
 
 - element: "P"
-  name: Strip
-  description: Remove the set of elements in b from both ends of a
+  name: Strip / Minimums-by
+  description: Remove the set of elements in b from both ends of a / Minimums-by
   arity: 2
   overloads:
       any-any: a.strip(b)
+      any-fun: all elements in a where the result of b(x) is lowest
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"

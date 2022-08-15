@@ -616,21 +616,23 @@ Negate a number / swap case of a string / first integer where a function truthy
 - str a: `swap_case(a) (toggle case)`
 - fun a: `first integer where a(n) is true`
 -------------------------------
-## `` O `` (Count)
+## `` O `` (Count / Maximums-by)
 
-Count number of times b occurs in a
+Count number of times b occurs in a / Maximums-by
 
 ### Overloads
 
 - any a, any b: `a.count(b)`
+- any a, fun b: `all elements in a where the result of b(x) is highest`
 -------------------------------
-## `` P `` (Strip)
+## `` P `` (Strip / Minimums-by)
 
-Remove the set of elements in b from both ends of a
+Remove the set of elements in b from both ends of a / Minimums-by
 
 ### Overloads
 
 - any a, any b: `a.strip(b)`
+- any a, fun b: `all elements in a where the result of b(x) is lowest`
 -------------------------------
 ## `` Q `` (Quit)
 

@@ -1016,9 +1016,9 @@ var codepage_descriptions =
   ],
   "79": [
     {
-      "name": "Count",
-      "description": "Count number of times b occurs in a",
-      "overloads": "any, any -> a.count(b)",
+      "name": "Count / Maximums-by",
+      "description": "Count number of times b occurs in a / Maximums-by",
+      "overloads": "any, any -> a.count(b)\nany, fun -> all elements in a where the result of b(x) is highest",
       "token": "O"
     },
     {
@@ -1030,9 +1030,9 @@ var codepage_descriptions =
   ],
   "80": [
     {
-      "name": "Strip",
-      "description": "Remove the set of elements in b from both ends of a",
-      "overloads": "any, any -> a.strip(b)",
+      "name": "Strip / Minimums-by",
+      "description": "Remove the set of elements in b from both ends of a / Minimums-by",
+      "overloads": "any, any -> a.strip(b)\nany, fun -> all elements in a where the result of b(x) is lowest",
       "token": "P"
     },
     {
