@@ -2016,7 +2016,7 @@ def head_remove(lhs, ctx):
     """Element Ḣ
     (lst) -> a[1:] or [] if empty
     (str) -> a[1:] or '' if empty
-    (num) -> Remove first digit or do nothing if <1"""
+    (num) -> range(2, a + 1)"""
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
     if lhs < 2:
