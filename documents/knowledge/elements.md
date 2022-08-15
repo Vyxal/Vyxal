@@ -1539,12 +1539,13 @@ All but the first item of a list / Drop 1
 - str a: `a[1:] or '' if empty`
 - num a: `remove first digit or do nothing if <1`
 -------------------------------
-## `` İ `` (Index into or collect while unique)
+## `` İ `` (Index into / Collect while unique / Complex Number)
 
 Index into list at indices / Collect values while values are unique (not including the initial value)
 
 ### Overloads
 
+- num a, num b: `a + b * i`
 - any a, lst b: `[a[item] for item in b]`
 - any a, fun b: `Apply b on a and collect unique values. Does not include the initial value.`
 -------------------------------

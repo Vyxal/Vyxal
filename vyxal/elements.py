@@ -2161,6 +2161,8 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return gen()
 
     else:
+        if vy_type(lhs, rhs) == (NUMBER_TYPE, NUMBER_TYPE):
+            return lhs + rhs * sympy.I
         if primitive_type(rhs) is SCALAR_TYPE:
             lhs, rhs = rhs, lhs
         lhs = LazyList(iterable(lhs))

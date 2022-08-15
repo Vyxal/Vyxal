@@ -2324,16 +2324,19 @@
       - "[-123] : 123"
 
 - element: "İ"
-  name: Index into or collect while unique
+  name: Index into / Collect while unique / Complex Number
   arity: 1
   description: >-
       Index into list at indices /
       Collect values while values are unique (not including the initial value)
   overloads:
+      num-num: a + b * i
       any-lst: "[a[item] for item in b]"
       any-fun: Apply b on a and collect unique values. Does not include the initial value.
   vectorise: false
   tests: # TODO more tests for the second overload
+      - "[6, 2] : [6 + 2j]"
+      - "[3, -7] : [3 - 7j]"
       - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
       - "[[3, 4, 5, 6, 7, 8, 9, 10], [0, 2, 4, 6, 8]] : [3, 5, 7, 9, 3]"
       - "[[1, 4, 9, 16], [[0, 1], [2, 3]]] : [[1, 4], [9, 16]]"

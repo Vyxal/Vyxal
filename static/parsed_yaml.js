@@ -2753,9 +2753,9 @@ var codepage_descriptions =
   ],
   "191": [
     {
-      "name": "Index into or collect while unique",
+      "name": "Index into / Collect while unique / Complex Number",
       "description": "Index into list at indices / Collect values while values are unique (not including the initial value)",
-      "overloads": "any, lst -> [a[item] for item in b]\nany, fun -> Apply b on a and collect unique values. Does not include the initial value.",
+      "overloads": "num, num -> a + b * i\nany, lst -> [a[item] for item in b]\nany, fun -> Apply b on a and collect unique values. Does not include the initial value.",
       "token": "\u0130"
     },
     {
