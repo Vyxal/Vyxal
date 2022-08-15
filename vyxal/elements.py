@@ -6854,8 +6854,11 @@ elements: dict[str, tuple[str, int]] = {
         'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
         0,
     ),
-    "¨S": ("ctx.inputs.insert(0, [list(stack.pop()), 0])", 1),
-    "¨R": ("ctx.inputs.pop(0)", 0),
+    "¨S": (
+        "a = [list(stack.pop()), 0]; ctx.inputs.insert(0, a); ctx.inputs.append(a)",
+        1,
+    ),
+    "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
