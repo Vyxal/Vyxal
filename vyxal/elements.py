@@ -1642,7 +1642,8 @@ def find(lhs, rhs, ctx):
                     return pos
                 pos += 1
             return -1
-        while pos < len(lhs):
+        lhs = LazyList(lhs)
+        while lhs.has_ind(pos):
             if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                 return pos
             pos += 1
