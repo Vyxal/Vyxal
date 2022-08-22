@@ -6566,15 +6566,21 @@ elements: dict[str, tuple[str, int]] = {
     "□": (
         "if ctx.inputs[0][0]: stack.append(ctx.inputs[0][0])\n"
         "else:\n"
-        "    input_list = []\n"
-        "    try:\n"
-        "        temp = input()\n"
-        "        while temp:\n"
-        "            input_list.append(vy_eval(temp, ctx=ctx) if ctx.inputs_as_strings else temp)\n"
+        "    stdin = open(0)\n"
+        "    if stdin:\n"
+        "        a = [x[:-1] if ctx.inputs_as_strings else vy_eval(x[:-1], ctx=ctx) for x in stdin]\n"
+        "        ctx.inputs[0][0] = deep_copy(a)\n"
+        "        stack.append(a)\n"
+        "    else:\n"
+        "        input_list = []\n"
+        "        try:\n"
         "            temp = input()\n"
-        "        ctx.inputs[0][0] = list(deep_copy(input_list))\n"
-        "        stack.append(input_list)\n"
-        "    except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
+        "            while temp:\n"
+        "                input_list.append(temp if ctx.inputs_as_strings else vy_eval(temp, ctx=ctx))\n"
+        "                temp = input()\n"
+        "            ctx.inputs[0][0] = list(deep_copy(input_list))\n"
+        "            stack.append(input_list)\n"
+        "        except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
         0,
     ),
     "↳": process_element(right_bit_shift, 2),
