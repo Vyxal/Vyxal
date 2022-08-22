@@ -879,11 +879,12 @@
       - '["aBc"] : "AbC"'
 
 - element: "O"
-  name: Count
-  description: Count number of times b occurs in a
+  name: Count / Maximums-by
+  description: Count number of times b occurs in a / Maximums-by
   arity: 2
   overloads:
       any-any: a.count(b)
+      any-fun: all elements in a where the result of b(x) is highest
   vectorise: false
   tests:
       - "[[1,2,3,4,5,4,3], 4] : 2"
@@ -893,11 +894,12 @@
       - '["1213121", 1] : 4'
 
 - element: "P"
-  name: Strip
-  description: Remove the set of elements in b from both ends of a
+  name: Strip / Minimums-by
+  description: Remove the set of elements in b from both ends of a / Minimums-by
   arity: 2
   overloads:
       any-any: a.strip(b)
+      any-fun: all elements in a where the result of b(x) is lowest
   vectorise: false
   tests:
       - "[[1, 2, 3, 4, 5, 4, 3, 2, 1], [1, 2]] : [3, 4, 5, 4, 3]"
@@ -2310,28 +2312,31 @@
   overloads:
       lst: a[1:] or [] if empty
       str: a[1:] or '' if empty
-      num: remove first digit or do nothing if <1
+      num: range(2, a + 1)
   vectorise: false
   tests:
       - '[[0, [43, 69], "foo"]] : [[43, 69], "foo"]'
       - "[[]] : []"
       - '["foo"] : "oo"'
       - '[""] : ""'
-      - "[1234.56] : 234.56"
-      - "[0.2] : 0.2"
-      - "[-123] : 123"
+      - "[12.34] : [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+      - "[0.2] : []"
+      - "[-123] : []"
 
 - element: "İ"
-  name: Index into or collect while unique
+  name: Index into / Collect while unique / Complex Number
   arity: 1
   description: >-
       Index into list at indices /
       Collect values while values are unique (not including the initial value)
   overloads:
+      num-num: a + b * i
       any-lst: "[a[item] for item in b]"
       any-fun: Apply b on a and collect unique values. Does not include the initial value.
   vectorise: false
   tests: # TODO more tests for the second overload
+      - "[6, 2] : [6 + 2j]"
+      - "[3, -7] : [3 - 7j]"
       - '[["foo", "bar", -69, 420, "baz"], [0, 2, 4]] : ["foo", -69, "baz"]'
       - "[[3, 4, 5, 6, 7, 8, 9, 10], [0, 2, 4, 6, 8]] : [3, 5, 7, 9, 3]"
       - "[[1, 4, 9, 16], [[0, 1], [2, 3]]] : [[1, 4], [9, 16]]"
@@ -4420,6 +4425,19 @@
       - "[8] : [3]"
       - "[6] : [1, 1]"
       - "[4] : [2]"
+
+- element: "∆*"
+  name: Next Multiple
+  arity: 2
+  description: Get the next multiple of a number greater than another number
+  overloads:
+      num, num: get the next multiple of b that is greater than a
+  vectorise: true
+  tests:
+      - "[6, 5] : 10"
+      - "[4, 5] : 5"
+      - "[5, 5] : 10"
+      - "[0, -1] : -1"
 
 - element: "øb"
   name: Parenthesise

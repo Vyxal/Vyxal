@@ -1011,7 +1011,25 @@ def cosine(lhs, ctx):
 def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
+    (any, fun) -> all elements in a where the result of b(x) is highest
     """
+    if vy_type(lhs) == types.FunctionType:
+        lhs, rhs = rhs, lhs
+    if vy_type(rhs) == types.FunctionType:
+        lhs = iterable(lhs, ctx=ctx)
+        if not lhs:
+            return lhs
+        m = None
+        fun_vals = []
+        for item in lhs:
+            fn_val = safe_apply(rhs, item, ctx=ctx)
+            fun_vals.append(fn_val)
+            if m is None:
+                m = fn_val
+            else:
+                m = dyadic_maximum(m, fn_val, ctx=ctx)
+
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     if (primitive_type(lhs), primitive_type(rhs)) == (SCALAR_TYPE, list):
         lhs, rhs = rhs, lhs
     if vy_type(lhs) in (NUMBER_TYPE, str):
@@ -1624,7 +1642,8 @@ def find(lhs, rhs, ctx):
                     return pos
                 pos += 1
             return -1
-        while pos < len(lhs):
+        lhs = LazyList(lhs)
+        while lhs.has_ind(pos):
             if non_vectorising_equals(index(lhs, pos, ctx), rhs, ctx):
                 return pos
             pos += 1
@@ -1997,15 +2016,13 @@ def head_remove(lhs, ctx):
     """Element Ḣ
     (lst) -> a[1:] or [] if empty
     (str) -> a[1:] or '' if empty
-    (num) -> Remove first digit or do nothing if <1"""
+    (num) -> range(2, a + 1)"""
     if vy_type(lhs, simple=True) in (list, str):
         return lhs[1:] if lhs else []
-    if lhs == 0:
-        return lhs
-    if isinstance(lhs, int):
-        return int(str(lhs)[1:])
-    assert isinstance(lhs, sympy.Rational)
-    return sympy.Rational(str(float(lhs))[1:])
+    if lhs < 2:
+        return []
+
+    return iterable(lhs, range, ctx=ctx)[1:]
 
 
 def identity_matrix(lhs, ctx):
@@ -2143,6 +2160,8 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return gen()
 
     else:
+        if vy_type(lhs, rhs) == (NUMBER_TYPE, NUMBER_TYPE):
+            return lhs + rhs * sympy.I
         if primitive_type(rhs) is SCALAR_TYPE:
             lhs, rhs = rhs, lhs
         lhs = LazyList(iterable(lhs))
@@ -3359,6 +3378,17 @@ def newline_split(lhs, ctx):
         (NUMBER_TYPE): lambda: 10**lhs,
         (str): lambda: lhs.split("\n"),
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
+
+
+def next_multiple(lhs, rhs, ctx):
+    """Element ∆*
+    (num, num) -> get the next multiple of b that is greater than a
+    """
+
+    ts = vy_type(lhs, rhs)
+    return {
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs + rhs - lhs % rhs,
+    }.get(ts, lambda: vectorise(next_multiple, lhs, rhs, ctx=ctx))()
 
 
 def next_power(lhs, rhs, ctx):
@@ -4881,7 +4911,25 @@ def strict_less_than(lhs, rhs, ctx):
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
+    (any, fun) -> all elements in a where the result of b(x) is lowest
     """
+    if vy_type(lhs) == types.FunctionType:
+        lhs, rhs = rhs, lhs
+    if vy_type(rhs) == types.FunctionType:
+        lhs = iterable(lhs, ctx=ctx)
+        if not lhs:
+            return lhs
+        m = None
+        fun_vals = []
+        for item in lhs:
+            fn_val = safe_apply(rhs, item, ctx=ctx)
+            fun_vals.append(fn_val)
+            if m is None:
+                m = fn_val
+            else:
+                m = dyadic_minimum(m, fn_val, ctx=ctx)
+
+        return LazyList(item for item in lhs if fun_vals.pop(0) == m)
     ts = vy_type(lhs, rhs)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: vy_eval(
@@ -6637,6 +6685,7 @@ elements: dict[str, tuple[str, int]] = {
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),
     "øḂ": process_element(angle_bracketify, 1),
@@ -6805,8 +6854,11 @@ elements: dict[str, tuple[str, int]] = {
         'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
         0,
     ),
-    "¨S": ("ctx.inputs.insert(0, [list(stack.pop()), 0])", 1),
-    "¨R": ("ctx.inputs.pop(0)", 0),
+    "¨S": (
+        "a = [list(stack.pop()), 0]; ctx.inputs.insert(0, a); ctx.inputs.append(a)",
+        1,
+    ),
+    "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
