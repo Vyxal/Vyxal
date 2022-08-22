@@ -6564,12 +6564,17 @@ elements: dict[str, tuple[str, int]] = {
         1,
     ),
     "□": (
-        "if ctx.inputs[0]: stack.append(ctx.inputs[0][0])\n"
+        "if ctx.inputs[0][0]: stack.append(ctx.inputs[0][0])\n"
         "else:\n"
-        "    input_list, temp = [], input()\n"
-        "    while temp:\n"
-        "        input_list.append(vy_eval(temp))\n"
-        "        temp = input()",
+        "    input_list = []\n"
+        "    try:\n"
+        "        temp = input()\n"
+        "        while temp:\n"
+        "            input_list.append(vy_eval(temp, ctx=ctx) if ctx.inputs_as_strings else temp)\n"
+        "            temp = input()\n"
+        "        ctx.inputs[0][0] = list(deep_copy(input_list))\n"
+        "        stack.append(input_list)\n"
+        "    except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
         0,
     ),
     "↳": process_element(right_bit_shift, 2),

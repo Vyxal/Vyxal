@@ -130,6 +130,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "Ṡ" in flags:  # All inputs as strings
         inputs = list(map(str, inputs))
+        ctx.inputs_as_strings = True
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
