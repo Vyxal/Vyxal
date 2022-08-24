@@ -436,6 +436,12 @@ var codepage_descriptions =
       "token": "*"
     },
     {
+      "name": "Next Multiple",
+      "description": "Get the next multiple of a number greater than another number",
+      "overloads": "num, num -> get the next multiple of b that is greater than a",
+      "token": "\u2206*"
+    },
+    {
       "name": "Cartesian product over list",
       "description": "Cartesian product over a list of lists",
       "overloads": "lst -> itertools.product(*a)",
@@ -1016,9 +1022,9 @@ var codepage_descriptions =
   ],
   "79": [
     {
-      "name": "Count",
-      "description": "Count number of times b occurs in a",
-      "overloads": "any, any -> a.count(b)",
+      "name": "Count / Maximums-by",
+      "description": "Count number of times b occurs in a / Maximums-by",
+      "overloads": "any, any -> a.count(b)\nany, fun -> all elements in a where the result of b(x) is highest",
       "token": "O"
     },
     {
@@ -1030,9 +1036,9 @@ var codepage_descriptions =
   ],
   "80": [
     {
-      "name": "Strip",
-      "description": "Remove the set of elements in b from both ends of a",
-      "overloads": "any, any -> a.strip(b)",
+      "name": "Strip / Minimums-by",
+      "description": "Remove the set of elements in b from both ends of a / Minimums-by",
+      "overloads": "any, any -> a.strip(b)\nany, fun -> all elements in a where the result of b(x) is lowest",
       "token": "P"
     },
     {
@@ -1644,6 +1650,12 @@ var codepage_descriptions =
       "token": "kn"
     },
     {
+      "name": "Next Power",
+      "description": "Get the next power of b after a.",
+      "overloads": "num, num -> b ** floor(log(a, b) + 1)",
+      "token": "\u2206n"
+    },
+    {
       "name": "Infinite list of all integers",
       "description": "All integers in an infinite list (0, 1, -1, 2, -2, ...)",
       "token": "\u00den"
@@ -2164,6 +2176,12 @@ var codepage_descriptions =
       "description": "Find a value in another",
       "overloads": "any, any -> a.find(b) (indexing, -1 if not found)\nany, fun -> truthy indices of mapping b over a",
       "token": "\u1e1f"
+    },
+    {
+      "name": "Previous Power",
+      "description": "Get the previous power of b before a.",
+      "overloads": "num, num -> b ** ceil(log(a, b) - 1)",
+      "token": "\u2206\u1e1f"
     },
     {
       "name": "Multidimensional Search",
@@ -2735,15 +2753,15 @@ var codepage_descriptions =
     {
       "name": "Head Remove / Behead",
       "description": "All but the first item of a list / Drop 1",
-      "overloads": "lst -> a[1:] or [] if empty\nstr -> a[1:] or '' if empty\nnum -> remove first digit or do nothing if <1",
+      "overloads": "lst -> a[1:] or [] if empty\nstr -> a[1:] or '' if empty\nnum -> range(2, a + 1)",
       "token": "\u1e22"
     }
   ],
   "191": [
     {
-      "name": "Index into or collect while unique",
+      "name": "Index into / Collect while unique / Complex Number",
       "description": "Index into list at indices / Collect values while values are unique (not including the initial value)",
-      "overloads": "any, lst -> [a[item] for item in b]\nany, fun -> Apply b on a and collect unique values. Does not include the initial value.",
+      "overloads": "num, num -> a + b * i\nany, lst -> [a[item] for item in b]\nany, fun -> Apply b on a and collect unique values. Does not include the initial value.",
       "token": "\u0130"
     },
     {

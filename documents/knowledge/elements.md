@@ -616,21 +616,23 @@ Negate a number / swap case of a string / first integer where a function truthy
 - str a: `swap_case(a) (toggle case)`
 - fun a: `first integer where a(n) is true`
 -------------------------------
-## `` O `` (Count)
+## `` O `` (Count / Maximums-by)
 
-Count number of times b occurs in a
+Count number of times b occurs in a / Maximums-by
 
 ### Overloads
 
 - any a, any b: `a.count(b)`
+- any a, fun b: `all elements in a where the result of b(x) is highest`
 -------------------------------
-## `` P `` (Strip)
+## `` P `` (Strip / Minimums-by)
 
-Remove the set of elements in b from both ends of a
+Remove the set of elements in b from both ends of a / Minimums-by
 
 ### Overloads
 
 - any a, any b: `a.strip(b)`
+- any a, fun b: `all elements in a where the result of b(x) is lowest`
 -------------------------------
 ## `` Q `` (Quit)
 
@@ -1535,14 +1537,15 @@ All but the first item of a list / Drop 1
 
 - lst a: `a[1:] or [] if empty`
 - str a: `a[1:] or '' if empty`
-- num a: `remove first digit or do nothing if <1`
+- num a: `range(2, a + 1)`
 -------------------------------
-## `` İ `` (Index into or collect while unique)
+## `` İ `` (Index into / Collect while unique / Complex Number)
 
 Index into list at indices / Collect values while values are unique (not including the initial value)
 
 ### Overloads
 
+- num a, num b: `a + b * i`
 - any a, lst b: `[a[item] for item in b]`
 - any a, fun b: `Apply b on a and collect unique values. Does not include the initial value.`
 -------------------------------
@@ -2796,6 +2799,22 @@ Get the totient function of a number / local minima of a function
 - num a: `totient(a)`
 - str a: `local_minima(a)`
 -------------------------------
+## `` ∆n `` (Next Power)
+
+Get the next power of b after a.
+
+### Overloads
+
+- num a, num b: `b ** floor(log(a, b) + 1)`
+-------------------------------
+## `` ∆ḟ `` (Previous Power)
+
+Get the previous power of b before a.
+
+### Overloads
+
+- num a, num b: `b ** ceil(log(a, b) - 1)`
+-------------------------------
 ## `` ∆Z `` (ZFill)
 
 Pad a string with zeros to a given length
@@ -2880,6 +2899,14 @@ Get the exponents of prime factors of a number
 ### Overloads
 
 - num a: `prime_exponents(a) (in the order of prime_factors(a))`
+-------------------------------
+## `` ∆* `` (Next Multiple)
+
+Get the next multiple of a number greater than another number
+
+### Overloads
+
+- num, num a: `get the next multiple of b that is greater than a`
 -------------------------------
 ## `` øb `` (Parenthesise)
 
