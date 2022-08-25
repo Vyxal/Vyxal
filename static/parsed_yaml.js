@@ -1081,7 +1081,7 @@ var codepage_descriptions =
     {
       "name": "Reduce",
       "description": "Reduce a by b, or reverse each item of b",
-      "overloads": "num, num -> a in base b, using a default alphabet 0-9A-Za-z\nany, fun -> reduce(b,a) (Reduce a by b)\nany, any -> a, vectorised_reverse(b)",
+      "overloads": "num, num -> a in base b, using a default alphabet 0-9A-Z\nany, fun -> reduce(b,a) (Reduce a by b)\nany, any -> a, vectorised_reverse(b)",
       "token": "R"
     },
     {
