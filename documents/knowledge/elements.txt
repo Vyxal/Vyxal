@@ -725,7 +725,7 @@ i (Index)
 -------------------------------
 j (Join)
 
-- Join a list by a string
+- Join a by b.
 
     any a, any b: a.join(b)
 -------------------------------

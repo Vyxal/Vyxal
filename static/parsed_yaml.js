@@ -1575,7 +1575,7 @@ var codepage_descriptions =
   "106": [
     {
       "name": "Join",
-      "description": "Join a list by a string",
+      "description": "Join a by b.",
       "overloads": "any, any -> a.join(b)",
       "token": "j"
     },
