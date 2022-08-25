@@ -920,7 +920,7 @@
   description: Reduce a by b, or reverse each item of b
   arity: 2
   overloads:
-      num-num: a in base b, using a default alphabet 0-9A-Za-z
+      num-num: a in base b, using a default alphabet 0-9A-Z
       any-fun: reduce(b,a) (Reduce a by b)
       any-any: a, vectorised_reverse(b)
   vectorise: false
