@@ -831,7 +831,7 @@ Index into a list
 -------------------------------
 ## `` j `` (Join)
 
-Join a list by a string
+Join a by b.
 
 ### Overloads
 
