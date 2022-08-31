@@ -4710,7 +4710,7 @@ def slice_from(lhs, rhs, ctx):
             (list, NUMBER_TYPE): lambda: lhs[int(rhs) :],
             (NUMBER_TYPE, list): lambda: rhs[int(lhs) :],
             (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
-                str(lhs)[int(rhs) :]
+                str(lhs)[int(rhs) :].lstrip("0")
             ),
         }.get(ts)()
 
