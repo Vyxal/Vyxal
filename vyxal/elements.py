@@ -6332,6 +6332,15 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
+def gridify(lhs, ctx):
+    """Element ÞĠ
+    Gridify
+    """
+    lhs = [[vy_str(x, ctx=ctx) for x in x] for x in lhs]
+    width = max(max(map(len, x)) for x in lhs)
+    return "\n".join(' '.join(x.rjust(width) for x in x) for x in lhs)
+
+
 elements: dict[str, tuple[str, int]] = {
     "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
     "∧": process_element("rhs and lhs", 2),
@@ -6833,6 +6842,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þż": process_element(lift, 1),
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
+    "ÞĠ": process_element(gridify, 1),
     "Þṡ": process_element(sort_by_length, 1),
     "ÞṠ": process_element(is_sorted_ascending, 1),
     "ÞṘ": process_element(is_sorted_descending, 1),
