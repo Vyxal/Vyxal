@@ -1936,6 +1936,15 @@ def greater_than_or_equal(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(greater_than_or_equal, lhs, rhs, ctx=ctx))()
 
 
+def gridify(lhs, ctx):
+    """Element ÞĠ
+    Gridify
+    """
+    lhs = [[vy_str(x, ctx=ctx) for x in x] for x in lhs]
+    width = max(max(map(len, x)) for x in lhs)
+    return "\n".join(" ".join(x.rjust(width) for x in x) for x in lhs)
+
+
 def group_consecutive(lhs, ctx):
     """Element Ġ
     (lst) -> Group consecutive identical items
@@ -6330,15 +6339,6 @@ def zfiller(lhs, rhs, ctx):
         + lhs,
         (str, str): lambda: lhs.zfill(len(rhs)),
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
-
-
-def gridify(lhs, ctx):
-    """Element ÞĠ
-    Gridify
-    """
-    lhs = [[vy_str(x, ctx=ctx) for x in x] for x in lhs]
-    width = max(max(map(len, x)) for x in lhs)
-    return "\n".join(' '.join(x.rjust(width) for x in x) for x in lhs)
 
 
 elements: dict[str, tuple[str, int]] = {
