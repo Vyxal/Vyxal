@@ -1645,11 +1645,6 @@ var codepage_descriptions =
       "token": "n"
     },
     {
-      "name": "NaN",
-      "description": "math.nan",
-      "token": "kn"
-    },
-    {
       "name": "Next Power",
       "description": "Get the next power of b after a.",
       "overloads": "num, num -> b ** floor(log(a, b) + 1)",
