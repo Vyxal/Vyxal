@@ -2303,6 +2303,12 @@ var codepage_descriptions =
       "description": "Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `\u00f8M\u00f8\u010a\u204b`",
       "overloads": "any -> palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines",
       "token": "\u00f8\u1e57"
+    },
+    {
+      "name": "Split on Truthy Indices",
+      "description": "Split a list on truthy indices / Partition a list on truthy items",
+      "overloads": "lst, lst -> Split a on truthy indices in b",
+      "token": "\u00de\u1e57"
     }
   ],
   "154": [
@@ -2865,6 +2871,12 @@ var codepage_descriptions =
       "description": "All partitions of a string/list",
       "overloads": "any -> all_partitions(a)",
       "token": "\u00f8\u1e56"
+    },
+    {
+      "name": "Split Before Indices",
+      "description": "Split a list before indices in another list",
+      "overloads": "lst, lst -> Split a list before indices in another list",
+      "token": "\u00de\u1e56"
     }
   ],
   "197": [
