@@ -27,7 +27,6 @@ from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
-from LazyList import lazylist_from
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -748,15 +747,34 @@ def pad_to_square(array: VyList) -> VyList:
     return mat
 
 
+@lazylist
 def partition_at(booleans: VyList, array: VyList) -> VyList:
     """
     Partitions an array at the indices where booleans is True.
     """
     chunk = []
     index = 0
-    booleans, array = lazylist_from(booleans), lazylist_from(array)
+    booleans, array = LazyList(booleans), LazyList(array)
     while array.has_ind(index):
         if booleans.has_ind(index) and booleans[index]:
+            yield chunk
+            chunk = []
+        chunk.append(array[index])
+        index += 1
+    if chunk:
+        yield chunk
+
+
+@lazylist
+def partition_at_indices(indices: VyList, array: VyList) -> VyList:
+    """
+    Partitions an array at the indices given.
+    """
+    chunk = []
+    index = 0
+    indices, array = LazyList(indices), LazyList(array)
+    while array.has_ind(index):
+        if index + 1 in indices:
             yield chunk
             chunk = []
         chunk.append(array[index])
