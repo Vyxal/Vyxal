@@ -27,6 +27,8 @@ from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
+from LazyList import lazylist_from
+
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 VyList = Union[list, LazyList]
@@ -744,6 +746,23 @@ def pad_to_square(array: VyList) -> VyList:
     if max_dim > len(mat):
         mat += [[0] * max_dim for _ in range(max_dim - len(mat))]
     return mat
+
+
+def partition_at(booleans: VyList, array: VyList) -> VyList:
+    """
+    Partitions an array at the indices where booleans is True.
+    """
+    chunk = []
+    index = 0
+    booleans, array = lazylist_from(booleans), lazylist_from(array)
+    while array.has_ind(index):
+        if booleans.has_ind(index) and booleans[index]:
+            yield chunk
+            chunk = []
+        chunk.append(array[index])
+        index += 1
+    if chunk:
+        yield chunk
 
 
 def pi_digits(n: int):
