@@ -108,7 +108,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 output_var,
                 online_mode,
             )
-        sys.exit(0)
+        return
 
     if "e" in flags:  # Program is file name
         code = file_name
