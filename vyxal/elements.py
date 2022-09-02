@@ -6940,7 +6940,6 @@ elements: dict[str, tuple[str, int]] = {
         '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
     ),
     "ki": process_element("sympy.pi", 0),
-    "kn": process_element("math.nan", 0),
     "kg": process_element(
         "sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0
     ),
