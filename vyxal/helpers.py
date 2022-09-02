@@ -747,40 +747,60 @@ def pad_to_square(array: VyList) -> VyList:
     return mat
 
 
-@lazylist
 def partition_at(booleans: VyList, array: VyList) -> VyList:
     """
     Partitions an array at the indices where booleans is True.
     """
-    chunk = []
-    index = 0
-    booleans, array = LazyList(booleans), LazyList(array)
-    while array.has_ind(index):
-        if booleans.has_ind(index) and booleans[index]:
+
+    is_infinite = (
+        type(array) is LazyList
+        and array.infinite
+        or type(booleans) is LazyList
+        and booleans.infinite
+    )
+
+    def gen(array, booleans):
+        chunk = []
+        index = 0
+        booleans, array = LazyList(booleans), LazyList(array)
+        while array.has_ind(index):
+            if booleans.has_ind(index) and booleans[index]:
+                yield chunk
+                chunk = []
+            chunk.append(array[index])
+            index += 1
+        if chunk:
             yield chunk
-            chunk = []
-        chunk.append(array[index])
-        index += 1
-    if chunk:
-        yield chunk
+
+    return LazyList(gen(array, booleans), is_infinite)
 
 
-@lazylist
 def partition_at_indices(indices: VyList, array: VyList) -> VyList:
     """
     Partitions an array at the indices given.
     """
-    chunk = []
-    index = 0
-    indices, array = LazyList(indices), LazyList(array)
-    while array.has_ind(index):
-        if index + 1 in indices:
+
+    is_infinite = (
+        type(array) is LazyList
+        and array.infinite
+        or type(indices) is LazyList
+        and indices.infinite
+    )
+
+    def gen(array, indices):
+        chunk = []
+        index = 0
+        indices, array = LazyList(indices), LazyList(array)
+        while array.has_ind(index):
+            if index + 1 in indices:
+                yield chunk
+                chunk = []
+            chunk.append(array[index])
+            index += 1
+        if chunk:
             yield chunk
-            chunk = []
-        chunk.append(array[index])
-        index += 1
-    if chunk:
-        yield chunk
+
+    return LazyList(gen(array, indices), is_infinite)
 
 
 def pi_digits(n: int):
