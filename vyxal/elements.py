@@ -3214,8 +3214,9 @@ def multiply(lhs, rhs, ctx):
         rhs.stored_arity = lhs
         return rhs
     else:
+        print(lhs, rhs)
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(lhs * rhs),
             (NUMBER_TYPE, str): lambda: lhs * rhs,
             (str, NUMBER_TYPE): lambda: lhs * rhs,
             (str, str): lambda: ring_translate(lhs, rhs),
