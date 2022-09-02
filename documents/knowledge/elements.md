@@ -2218,11 +2218,6 @@ All ASCII whitespace
 3.141592653589793 (Pi)
 
 -------------------------------
-## `` kn `` (NaN)
-
-math.nan
-
--------------------------------
 ## `` kg `` (Golden ratio/phi)
 
 1.618033988749895 (golden ratio/phi)

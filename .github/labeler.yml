@@ -1,5 +1,5 @@
 enhancement:
-    - '\\b[aA]dd\\b'
+    - '/add/i'
 element request:
     - '/add element/i'
 bug:
@@ -7,6 +7,6 @@ bug:
     - "/doesn't work/i"
     - "/not working/i"
     - "/error/i"
-    - "/buggy/i"
+    - "/bug/i"
 online interpreter:
     - "/online interpreter/i"

@@ -3328,12 +3328,6 @@
   tests:
       - "[] : 3.141592653589793"
 
-- element: "kn"
-  name: NaN
-  arity: 0
-  description: math.nan
-  vectorise: false
-
 - element: "kg"
   name: Golden ratio/phi
   arity: 0
