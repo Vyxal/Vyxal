@@ -22,10 +22,8 @@ def run_vyxal(code, inputs, flags):
     return ret[1][:-1]
 
 
-
 def test_A_flag():
-   """Test the A flag"""
-
+    """Test the A flag"""
     res = run_vyxal("L", ["abc\ndef\nghi", "gaming\nmore\n\nmoremore"], "A")
     expected = """'abc\ndef\nghi' => 11
 'gaming\nmore\n\nmoremore' => 21"""
