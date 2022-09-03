@@ -4938,8 +4938,18 @@ def string_base_convert(lhs, rhs, ctx):
     <See vy_reduce for fun, any overload>
     """
 
+    if rhs < 2 or rhs > 36:
+        raise ValueError(
+            "Error in R (num, num) overload - " "rhs must be between 2 and 36"
+        )
+
     temp = to_base_digits(lhs, rhs)
-    assert all(x < rhs for x in temp)
+    if any(x > rhs for x in temp):
+        raise ValueError(
+            "Error in R (num, num) overload - digit"
+            " in resulting value too large. That is, one of the digits"
+            "in to_base(lhs, rhs) is greater than rhs."
+        )
     return "".join(
         index_indices_or_cycle(
             string.digits + string.ascii_uppercase, temp, ctx
