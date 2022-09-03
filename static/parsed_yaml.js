@@ -1575,7 +1575,7 @@ var codepage_descriptions =
   "106": [
     {
       "name": "Join",
-      "description": "Join a list by a string",
+      "description": "Join a by b.",
       "overloads": "any, any -> a.join(b)",
       "token": "j"
     },
@@ -1643,11 +1643,6 @@ var codepage_descriptions =
       "name": "Context",
       "description": "Context variable, value of the current loop or function.",
       "token": "n"
-    },
-    {
-      "name": "NaN",
-      "description": "math.nan",
-      "token": "kn"
     },
     {
       "name": "Next Power",

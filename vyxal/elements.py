@@ -2626,9 +2626,33 @@ def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
     """
-    return vy_str(rhs, ctx=ctx).join(
-        map(lambda a: vy_str(a, ctx=ctx), iterable(lhs, ctx=ctx))
-    )
+    if (vy_type(lhs) is not LazyList or not lhs.infinite) and (
+        vy_type(lhs, simple=True) is not list
+        or vy_type(rhs) is str
+        or any(vy_type(x) is str for x in lhs)
+    ):
+        return vy_str(rhs, ctx=ctx).join(
+            map(lambda a: vy_str(a, ctx=ctx), iterable(lhs, ctx=ctx))
+        )
+
+    @lazylist_from(lhs)
+    def gen():
+        ind = 0
+        for i in lhs:
+            if vy_type(i, simple=True) is list:
+                yield from i
+            else:
+                yield i
+            if (vy_type(lhs) is LazyList and lhs.has_ind(ind + 1)) or (
+                vy_type(lhs) is list and ind < len(lhs) - 1
+            ):
+                if vy_type(rhs, simple=True) is list:
+                    yield from rhs
+                else:
+                    yield rhs
+            ind += 1
+
+    return gen()
 
 
 def join_newlines(lhs, ctx):
@@ -4686,7 +4710,7 @@ def slice_from(lhs, rhs, ctx):
             (list, NUMBER_TYPE): lambda: lhs[int(rhs) :],
             (NUMBER_TYPE, list): lambda: rhs[int(lhs) :],
             (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
-                str(lhs)[int(rhs) :]
+                str(lhs)[int(rhs) :].lstrip("0")
             ),
         }.get(ts)()
 
@@ -6900,7 +6924,6 @@ elements: dict[str, tuple[str, int]] = {
         '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
     ),
     "ki": process_element("sympy.pi", 0),
-    "kn": process_element("math.nan", 0),
     "kg": process_element(
         "sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0
     ),

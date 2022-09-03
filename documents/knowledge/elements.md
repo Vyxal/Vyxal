@@ -830,7 +830,7 @@ Index into a list
 -------------------------------
 ## `` j `` (Join)
 
-Join a list by a string
+Join a by b.
 
 ### Overloads
 
@@ -2216,11 +2216,6 @@ All ASCII whitespace
 ## `` ki `` (Pi)
 
 3.141592653589793 (Pi)
-
--------------------------------
-## `` kn `` (NaN)
-
-math.nan
 
 -------------------------------
 ## `` kg `` (Golden ratio/phi)
