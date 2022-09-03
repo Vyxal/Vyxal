@@ -612,6 +612,13 @@ def bitwise_xor(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_xor, lhs, rhs, ctx=ctx))()
 
 
+def boolean_partition(lhs, rhs, ctx):
+    """Element Þṗ
+    (lst, lst) -> Split lhs on truthy indices in rhs
+    """
+    return partition_at(rhs, lhs)
+
+
 def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
@@ -2185,6 +2192,13 @@ def index_indices_or_cycle(lhs, rhs, ctx):
                 return LazyList(recursive_helper(v) for v in value)
 
         return recursive_helper(rhs)
+
+
+def index_partition(lhs, rhs, ctx):
+    """Element ÞṖ
+    (lst, lst) -> Parititon lhs before indices of rhs
+    """
+    return partition_at_indices(rhs, lhs)
 
 
 @infinite_lazylist
@@ -6881,6 +6895,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∪": process_element(multiset_union, 2),
     "Þ⊍": process_element(multiset_symmetric_difference, 2),
     "ÞŻ": process_element(sort_every_level, 1),
+    "ÞṖ": process_element(index_partition, 2),
+    "Þṗ": process_element(boolean_partition, 2),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

@@ -27,6 +27,7 @@ from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
 
+
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
 VyList = Union[list, LazyList]
@@ -744,6 +745,62 @@ def pad_to_square(array: VyList) -> VyList:
     if max_dim > len(mat):
         mat += [[0] * max_dim for _ in range(max_dim - len(mat))]
     return mat
+
+
+def partition_at(booleans: VyList, array: VyList) -> VyList:
+    """
+    Partitions an array at the indices where booleans is True.
+    """
+
+    is_infinite = (
+        type(array) is LazyList
+        and array.infinite
+        or type(booleans) is LazyList
+        and booleans.infinite
+    )
+
+    def gen(array, booleans):
+        chunk = []
+        index = 0
+        booleans, array = LazyList(booleans), LazyList(array)
+        while array.has_ind(index):
+            if booleans.has_ind(index) and booleans[index]:
+                yield chunk
+                chunk = []
+            chunk.append(array[index])
+            index += 1
+        if chunk:
+            yield chunk
+
+    return LazyList(gen(array, booleans), is_infinite)
+
+
+def partition_at_indices(indices: VyList, array: VyList) -> VyList:
+    """
+    Partitions an array at the indices given.
+    """
+
+    is_infinite = (
+        type(array) is LazyList
+        and array.infinite
+        or type(indices) is LazyList
+        and indices.infinite
+    )
+
+    def gen(array, indices):
+        chunk = []
+        index = 0
+        indices, array = LazyList(indices), LazyList(array)
+        while array.has_ind(index):
+            if index + 1 in indices:
+                yield chunk
+                chunk = []
+            chunk.append(array[index])
+            index += 1
+        if chunk:
+            yield chunk
+
+    return LazyList(gen(array, indices), is_infinite)
 
 
 def pi_digits(n: int):

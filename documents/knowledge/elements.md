@@ -3920,6 +3920,22 @@ Distance matrix of undirected graph
 
 - lst a: `distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])`
 -------------------------------
+## `` ÞṖ `` (Split Before Indices)
+
+Split a list before indices in another list
+
+### Overloads
+
+- lst a, lst b: `Split a list before indices in another list`
+-------------------------------
+## `` Þṗ `` (Split on Truthy Indices)
+
+Split a list on truthy indices / Partition a list on truthy items
+
+### Overloads
+
+- lst a, lst b: `Split a on truthy indices in b`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
