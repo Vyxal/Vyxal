@@ -22,21 +22,20 @@ def run_vyxal(code, inputs, flags):
     return ret[1][:-1]
 
 
-# Uncomment after #1373 is merged.
 
-# def test_A_flag():
-#    """Test the A flag"""
+def test_A_flag():
+   """Test the A flag"""
 
-#     res = run_vyxal("L", ["abc\ndef\nghi", "gaming\nmore\n\nmoremore"], "A")
-#     expected = """'abc\ndef\nghi' => 11
-# 'gaming\nmore\n\nmoremore' => 21"""
+    res = run_vyxal("L", ["abc\ndef\nghi", "gaming\nmore\n\nmoremore"], "A")
+    expected = """'abc\ndef\nghi' => 11
+'gaming\nmore\n\nmoremore' => 21"""
 
-#     assert res == expected
+    assert res == expected
 
-#     res = run_vyxal("¶o²⁋=", ["foo\nbar\nbaz"], "A")
-#     expected = """'foo\nbar\nbaz' => 1"""
+    res = run_vyxal("¶o²⁋=", ["foo\nbar\nbaz"], "A")
+    expected = """'foo\nbar\nbaz' => 1"""
 
-#     assert res == expected
+    assert res == expected
 
 
 def test_H_flag():
