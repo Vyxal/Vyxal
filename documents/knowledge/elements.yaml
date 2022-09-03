@@ -5592,6 +5592,16 @@
       lst-fun: reduce columns of a with b
   vectorise: false
 
+- element: "ÞĠ"
+  name: Gridify
+  description: Gridify a 2-D list by padding each element with space to make columns aligned, joining each row on spaces, then joining by newlines.
+  arity: 1
+  overloads:
+      lst: gridify a
+  vectorise: false
+  tests:
+      - "[[[12,2,3],[4,5,6],[7,8,'hi']]] : '12  2  3\\n 4  5  6\\n 7  8 hi'"
+
 - element: "Þ∨"
   name: Multiset Difference
   description: Similar to set difference, but with duplicates allowed.

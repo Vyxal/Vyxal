@@ -3651,6 +3651,14 @@ Reduce columns of a matrix by a function.
 
 - lst a, fun b: `reduce columns of a with b`
 -------------------------------
+## `` ÞĠ `` (Gridify)
+
+Gridify a 2-D list by padding each element with space to make columns aligned, joining each row on spaces, then joining by newlines.
+
+### Overloads
+
+- lst a: `gridify a`
+-------------------------------
 ## `` Þ∨ `` (Multiset Difference)
 
 Similar to set difference, but with duplicates allowed.

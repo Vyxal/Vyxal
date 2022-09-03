@@ -2742,6 +2742,12 @@ var codepage_descriptions =
       "description": "Group consecutive identical items",
       "overloads": "lst -> group consecutive identical items\nstr -> group consecutive identical characters\nnum -> group consecutive identical digits",
       "token": "\u0120"
+    },
+    {
+      "name": "Gridify",
+      "description": "Gridify a 2-D list by padding each element with space to make columns aligned, joining each row on spaces, then joining by newlines.",
+      "overloads": "lst -> gridify a",
+      "token": "\u00de\u0120"
     }
   ],
   "190": [
