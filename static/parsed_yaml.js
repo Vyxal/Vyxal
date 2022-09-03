@@ -1645,11 +1645,6 @@ var codepage_descriptions =
       "token": "n"
     },
     {
-      "name": "NaN",
-      "description": "math.nan",
-      "token": "kn"
-    },
-    {
       "name": "Next Power",
       "description": "Get the next power of b after a.",
       "overloads": "num, num -> b ** floor(log(a, b) + 1)",
@@ -2303,6 +2298,12 @@ var codepage_descriptions =
       "description": "Vertically palindromise each and reverse brackets and slashes, without duplicating center, then center and join by newlines. Equivalent to `\u00f8M\u00f8\u010a\u204b`",
       "overloads": "any -> palindromise each, without duplicating center, flip brackets and slashes in the second half, center by padding with spaces, and join by newlines",
       "token": "\u00f8\u1e57"
+    },
+    {
+      "name": "Split on Truthy Indices",
+      "description": "Split a list on truthy indices / Partition a list on truthy items",
+      "overloads": "lst, lst -> Split a on truthy indices in b",
+      "token": "\u00de\u1e57"
     }
   ],
   "154": [
@@ -2747,6 +2748,12 @@ var codepage_descriptions =
       "description": "Group consecutive identical items",
       "overloads": "lst -> group consecutive identical items\nstr -> group consecutive identical characters\nnum -> group consecutive identical digits",
       "token": "\u0120"
+    },
+    {
+      "name": "Gridify",
+      "description": "Gridify a 2-D list by padding each element with space to make columns aligned, joining each row on spaces, then joining by newlines.",
+      "overloads": "lst -> gridify a",
+      "token": "\u00de\u0120"
     }
   ],
   "190": [
@@ -2865,6 +2872,12 @@ var codepage_descriptions =
       "description": "All partitions of a string/list",
       "overloads": "any -> all_partitions(a)",
       "token": "\u00f8\u1e56"
+    },
+    {
+      "name": "Split Before Indices",
+      "description": "Split a list before indices in another list",
+      "overloads": "lst, lst -> Split a list before indices in another list",
+      "token": "\u00de\u1e56"
     }
   ],
   "197": [

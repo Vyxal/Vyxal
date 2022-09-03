@@ -96,9 +96,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 inps = [vyxalify(x) for x in inps]
             except:
                 inps = inp.split(", ")
-            temp_ctx = Context()
-            temp_ctx.vyxal_lists = False
-            repred_inps = [vy_repr(x, temp_ctx) for x in inps]
+            repred_inps = [repr(x) for x in inps]
             if online_mode:
                 ctx.online_output[1] += ", ".join(repred_inps) + " => "
             else:
@@ -110,7 +108,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
                 output_var,
                 online_mode,
             )
-        sys.exit(0)
+        return
 
     if "e" in flags:  # Program is file name
         code = file_name
@@ -130,6 +128,7 @@ def execute_vyxal(file_name, flags, inputs, output_var=None, online_mode=False):
 
     if "Ṡ" in flags:  # All inputs as strings
         inputs = list(map(str, inputs))
+        ctx.inputs_as_strings = True
     else:
         inputs = list(map(lambda x: vy_eval(x, ctx), inputs))
 
