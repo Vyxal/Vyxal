@@ -18,6 +18,7 @@ class Context:
     def __init__(self):
         self.context_values = [0]
         self.empty_input_is_zero = True
+        self.inputs_as_strings = False
         self.default_arity = 1
         self.ghost_variable = sympy.nsimplify(0)
         self.function_stack = []
