@@ -454,7 +454,7 @@
       - '[4,"*"] : "****"'
       - '["x",5] : "xxxxx"'
       - '["aeiou","hello"] : "alihu"'
-
+      - "[-4+9j, 2+2j] : -26+10j"
 - element: "+"
   name: Addition
   arity: 2
