@@ -882,7 +882,7 @@ def test_context_var_while():
 
 
 def test_close_multiple_structs():
-    stack = run_vyxal("λ0[2|3(n⅛;†¾")
+    stack = run_vyxal("λ0[2|3(n⅛}†¾")
     assert stack[-1] == [1, 2, 3]
 
 
