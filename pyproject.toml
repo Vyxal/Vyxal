@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vyxal"
-version = "2.16.0"
+version = "2.16.1"
 description = "A golfing language that has aspects of traditional programming languages."
 authors = []
 license = "MIT"
