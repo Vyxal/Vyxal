@@ -240,3 +240,21 @@ def test_break_works_good_with_modifiers():
             )
         ]
     )
+
+
+def test_lambda_to_newline():
+
+    g = str(fully_parse("++)"))
+    h = str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
+                ],
+            )
+        ]
+    )
+
+    assert g == h

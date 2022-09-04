@@ -16,6 +16,7 @@ from typing import Optional
 
 from vyxal import lexer, structure
 
+
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)
     "[": (structure.IfStatement, "]"),
@@ -45,6 +46,7 @@ TRIADIC_MODIFIERS = list("≬")
 
 BREAK_CHARACTER = "X"
 RECURSE_CHARACTER = "x"
+CLOSE_PARENTHESIS = ")"
 
 DEFAULT_ARITY = "default"
 
@@ -119,6 +121,16 @@ def parse(
             structures.append(structure.BreakStatement(parent))
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))
+        elif head.value == CLOSE_PARENTHESIS:
+            temp = []
+            while structures and (
+                structures[-1].branches[0][0].value != "\n"
+                if isinstance(structures[-1], structure.GenericStatement)
+                else True
+            ):
+                temp.append(structures.pop())
+            temp = temp[::-1]
+            structures.append(structure.Lambda("default", temp))
         elif (
             head.name == lexer.TokenType.GENERAL
             and head.value in OPENING_CHARACTERS
@@ -127,6 +139,12 @@ def parse(
             bracket_stack.append(end_bracket)
 
             branches = _get_branches(tokens, bracket_stack)
+            place_into_lambda = False
+            if branches[-1] == -1:
+                # Lambda to newline
+                branches = branches[:-1]
+                place_into_lambda = True
+
             # Now, we have to actually process the branch(es) to make
             # them _nice_ for the transpiler.
 
@@ -241,6 +259,17 @@ def parse(
                     map(lambda x: parse(x, parent or structure_cls), branches)
                 )
                 structures.append(structure_cls(*branches))
+
+            if place_into_lambda:
+                temp = []
+                while structures and (
+                    structures[-1].branches[0][0].value != "\n"
+                    if isinstance(structures[-1], structure.GenericStatement)
+                    else True
+                ):
+                    temp.append(structures.pop())
+                temp = temp[::-1]
+                structures.append(structure.Lambda("default", temp))
 
         elif head.value in MONADIC_MODIFIERS:
             # the way to deal with all modifiers is to parse everything
@@ -403,12 +432,21 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
             and token.value
             and token.value in CLOSING_CHARACTERS
         ):
-            while bracket_stack and token.value != bracket_stack[-1]:
-                bracket_stack.pop()
+            # that is, it's a closing character that isn't
+            # the one we're expecting.
+            if token.value == bracket_stack[-1]:
+                # that is, if it's closing the inner-most
+                # structure
 
-            if bracket_stack:
                 bracket_stack.pop()
-                branches[-1].append(token)
+                if bracket_stack:
+                    branches[-1].append(token)
+            elif token.value == "}":
+                bracket_stack = []
+            elif token.value == ")":
+                bracket_stack = []
+                branches.append(-1)
+
         else:
             branches[-1].append(token)
 
