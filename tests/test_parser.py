@@ -264,3 +264,22 @@ def test_lambda_to_newline():
     )
 
     assert g == h
+
+    g = str(fully_parse("₁\n₍₃₅)M"))
+    h = str(
+        [
+            GenericStatement(([Token(TokenType.GENERAL, "₁")],)),
+            GenericStatement(([Token(TokenType.GENERAL, "\n")],)),
+            Lambda(
+                "default",
+                [
+                    DyadicModifier(
+                        GenericStatement(([Token(TokenType.GENERAL, "₃")],)),
+                        GenericStatement(([Token(TokenType.GENERAL, "₅")],)),
+                        "₍",
+                    )
+                ],
+            ),
+            GenericStatement(([Token(TokenType.GENERAL, "M")],)),
+        ]
+    )
