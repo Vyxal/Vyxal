@@ -46,6 +46,11 @@ def test_deltas():
     assert stack[-1][:4] == [1, 1, 1, 1]
 
 
+def test_inf_non_negative():
+    stack = run_vyxal("Þ:")
+    assert stack[-1][:5] == [0, 1, 2, 3, 4]
+
+
 def test_vertical_mirror():
     """Test øṁ"""
     # Join these on newlines into one string and check if the result

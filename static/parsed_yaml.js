@@ -326,7 +326,7 @@ var codepage_descriptions =
       "token": "\u221e"
     },
     {
-      "name": "Infinite List",
+      "name": "Infinite List of Positive Integers",
       "description": "An infinite list of positive integers",
       "token": "\u00de\u221e"
     }
@@ -637,6 +637,11 @@ var codepage_descriptions =
       "description": "Push a twice",
       "overloads": "any -> a,a",
       "token": ":"
+    },
+    {
+      "name": "Infinite List of Non-Negative Integers",
+      "description": "An infinite list of non-negative integers",
+      "token": "\u00de:"
     }
   ],
   "59": [

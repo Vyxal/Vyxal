@@ -5776,8 +5776,13 @@
       - '[""] : "0"'
 
 - element: "Þ∞"
-  name: Infinite List
+  name: Infinite List of Positive Integers
   description: An infinite list of positive integers
+  arity: 0
+
+- element: "Þ:"
+  name: Infinite List of Non-Negative Integers
+  description: An infinite list of non-negative integers
   arity: 0
 
 - element: "ÞR"
