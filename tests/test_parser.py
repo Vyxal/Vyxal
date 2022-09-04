@@ -221,11 +221,17 @@ def test_break_works_good_with_modifiers():
 
 def test_break_works_good_with_modifiers():
     assert str(fully_parse("vx")) == str(
-        [MonadicModifier("v", RecurseStatement(None))]
+        [MonadicModifier("v", RecurseStatement(structure.GenericStatement))]
     )
 
     assert str(fully_parse("₌xx")) == str(
-        [DyadicModifier("₌", RecurseStatement(None), RecurseStatement(None))]
+        [
+            DyadicModifier(
+                "₌",
+                RecurseStatement(structure.GenericStatement),
+                RecurseStatement(structure.GenericStatement),
+            )
+        ]
     )
 
     assert str(fully_parse("≬3dx")) == str(
@@ -235,7 +241,7 @@ def test_break_works_good_with_modifiers():
                 [
                     GenericStatement([Token(TokenType.NUMBER, "3")]),
                     GenericStatement([Token(TokenType.GENERAL, "d")]),
-                    RecurseStatement(None),
+                    RecurseStatement(structure.GenericStatement),
                 ],
             )
         ]
