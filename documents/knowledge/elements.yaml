@@ -920,12 +920,18 @@
   description: Reduce a by b, or reverse each item of b
   arity: 2
   overloads:
+      num-num: a in base b, using a default alphabet 0-9A-Z
       any-fun: reduce(b,a) (Reduce a by b)
       any-any: a, vectorised_reverse(b)
   vectorise: false
   tests:
       - "[[[1,2],[3,4]]] : [[2,1],[4,3]]"
       - "[[[1,2]]] : [[2,1]]"
+      - "[5, 2] : '101'"
+      - "[5, 3] : '12'"
+      - "[69, 10] : '69'"
+      - "[69, 16] : '45'"
+      - "[69, 36] : '1X'"
 
 - element: "S"
   name: Stringify

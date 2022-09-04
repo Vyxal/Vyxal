@@ -645,6 +645,7 @@ Reduce a by b, or reverse each item of b
 
 ### Overloads
 
+- num a, num b: `a in base b, using a default alphabet 0-9A-Z`
 - any a, fun b: `reduce(b,a) (Reduce a by b)`
 - any a, any b: `a, vectorised_reverse(b)`
 -------------------------------

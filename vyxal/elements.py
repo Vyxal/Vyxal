@@ -4956,6 +4956,31 @@ def strict_less_than(lhs, rhs, ctx):
     )()
 
 
+def string_base_convert(lhs, rhs, ctx):
+    """Element R
+    (num, num) -> convert lhs to base rhs, returning a string
+    <See vy_reduce for fun, any overload>
+    """
+
+    if rhs < 2 or rhs > 36:
+        raise ValueError(
+            "Error in R (num, num) overload - " "rhs must be between 2 and 36"
+        )
+
+    temp = to_base_digits(lhs, rhs)
+    if any(x > rhs for x in temp):
+        raise ValueError(
+            "Error in R (num, num) overload - digit"
+            " in resulting value too large. That is, one of the digits"
+            "in to_base(lhs, rhs) is greater than rhs."
+        )
+    return "".join(
+        index_indices_or_cycle(
+            string.digits + string.ascii_uppercase, temp, ctx
+        )
+    )
+
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
@@ -6432,12 +6457,17 @@ elements: dict[str, tuple[str, int]] = {
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
-        "if len(stack) > 1 and types.FunctionType "
-        "in vy_type(stack[-1], stack[-2]):\n"
-        "    rhs, lhs = pop(stack, 2, ctx);"
-        "    stack.append(vy_reduce(lhs, rhs, ctx))\n"
-        "else:\n"
-        "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
+        """
+ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
+if ts == (NUMBER_TYPE, NUMBER_TYPE):
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(string_base_convert(lhs, rhs, ctx))
+elif types.FunctionType in ts:
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(vy_reduce(lhs, rhs, ctx))
+else:
+    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))
+""",
         2,
     ),
     "S": process_element(vy_str, 1),
