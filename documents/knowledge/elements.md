@@ -3753,9 +3753,14 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `[0] + a[:-1]`
 -------------------------------
-## `` Þ∞ `` (Infinite List)
+## `` Þ∞ `` (Infinite List of Positive Integers)
 
 An infinite list of positive integers
+
+-------------------------------
+## `` Þ: `` (Infinite List of Non-Negative Integers)
+
+An infinite list of non-negative integers
 
 -------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
