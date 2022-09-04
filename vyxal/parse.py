@@ -122,15 +122,18 @@ def parse(
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))
         elif head.value == CLOSE_PARENTHESIS:
-            temp = []
-            while structures and (
-                structures[-1].branches[0][0].value != "\n"
-                if isinstance(structures[-1], structure.GenericStatement)
-                else True
-            ):
-                temp.append(structures.pop())
-            temp = temp[::-1]
-            structures.append(structure.Lambda("default", temp))
+            if parent is None:
+                temp = []
+                while structures and (
+                    structures[-1].branches[0][0].value != "\n"
+                    if isinstance(structures[-1], structure.GenericStatement)
+                    else True
+                ):
+                    temp.append(structures.pop())
+                temp = temp[::-1]
+                structures.append(structure.Lambda(DEFAULT_ARITY, temp))
+            else:
+                structures.append(")")
         elif (
             head.name == lexer.TokenType.GENERAL
             and head.value in OPENING_CHARACTERS
@@ -261,15 +264,20 @@ def parse(
                 structures.append(structure_cls(*branches))
 
             if place_into_lambda:
-                temp = []
-                while structures and (
-                    structures[-1].branches[0][0].value != "\n"
-                    if isinstance(structures[-1], structure.GenericStatement)
-                    else True
-                ):
-                    temp.append(structures.pop())
-                temp = temp[::-1]
-                structures.append(structure.Lambda("default", temp))
+                if parent is None:
+                    temp = []
+                    while structures and (
+                        structures[-1].branches[0][0].value != "\n"
+                        if isinstance(
+                            structures[-1], structure.GenericStatement
+                        )
+                        else True
+                    ):
+                        temp.append(structures.pop())
+                    temp = temp[::-1]
+                    structures.append(structure.Lambda(DEFAULT_ARITY, temp))
+                else:
+                    structures.append(")")
 
         elif head.value in MONADIC_MODIFIERS:
             # the way to deal with all modifiers is to parse everything
@@ -279,35 +287,33 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
             relevant = remaining[0]
 
             if isinstance(
-                remaining[0],
+                relevant,
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[0].parent_structure = structure.MonadicModifier
+                relevant.parent_structure = structure.MonadicModifier
 
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(
-                    structure.Lambda(DEFAULT_ARITY, [remaining[0]])
-                )
+                structures.append(structure.Lambda(DEFAULT_ARITY, [relevant]))
             elif head.value == "ß":
                 # Conditional execute
                 # This is a bit of a hacky fix, as modifiers are not
                 # powerful enough to deal with this.
-                structures.append(structure.IfStatement([remaining[0]]))
+                structures.append(structure.IfStatement([relevant]))
             else:
                 structures.append(
-                    structure.MonadicModifier(head.value, remaining[0])
+                    structure.MonadicModifier(head.value, relevant)
                 )
             structures += remaining[1:]
             break
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
 
             if len(remaining) < 2:
                 remaining.append(
@@ -350,7 +356,7 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
             if isinstance(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
@@ -396,7 +402,25 @@ def parse(
         else:
             structures.append(structure.GenericStatement([head]))
 
-    return structures
+    # Handle lambdas to newline that have been left over by modifiers
+    if parent is None:
+        final, temp = [], []
+        while structures:
+            head = structures.pop(0)
+            if head == ")":
+                temp = []
+                while final and (
+                    final[-1].branches[0][0].value != "\n"
+                    if isinstance(final[-1], structure.GenericStatement)
+                    else True
+                ):
+                    temp.append(final.pop())
+                final.append(structure.Lambda(DEFAULT_ARITY, temp[::-1]))
+            else:
+                final.append(head)
+        return final
+    else:
+        return structures
 
 
 def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
