@@ -645,6 +645,7 @@ Reduce a by b, or reverse each item of b
 
 ### Overloads
 
+- num a, num b: `a in base b, using a default alphabet 0-9A-Z`
 - any a, fun b: `reduce(b,a) (Reduce a by b)`
 - any a, any b: `a, vectorised_reverse(b)`
 -------------------------------
@@ -3651,6 +3652,14 @@ Reduce columns of a matrix by a function.
 
 - lst a, fun b: `reduce columns of a with b`
 -------------------------------
+## `` ÞĠ `` (Gridify)
+
+Gridify a 2-D list by padding each element with space to make columns aligned, joining each row on spaces, then joining by newlines.
+
+### Overloads
+
+- lst a: `gridify a`
+-------------------------------
 ## `` Þ∨ `` (Multiset Difference)
 
 Similar to set difference, but with duplicates allowed.
@@ -3911,6 +3920,22 @@ Distance matrix of undirected graph
 ### Overloads
 
 - lst a: `distance matrix of an undirected graph (where a = [[i, j] for each edge i to j])`
+-------------------------------
+## `` ÞṖ `` (Split Before Indices)
+
+Split a list before indices in another list
+
+### Overloads
+
+- lst a, lst b: `Split a list before indices in another list`
+-------------------------------
+## `` Þṗ `` (Split on Truthy Indices)
+
+Split a list on truthy indices / Partition a list on truthy items
+
+### Overloads
+
+- lst a, lst b: `Split a on truthy indices in b`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

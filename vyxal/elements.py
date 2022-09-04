@@ -612,6 +612,13 @@ def bitwise_xor(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_xor, lhs, rhs, ctx=ctx))()
 
 
+def boolean_partition(lhs, rhs, ctx):
+    """Element Þṗ
+    (lst, lst) -> Split lhs on truthy indices in rhs
+    """
+    return partition_at(rhs, lhs)
+
+
 def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
@@ -1936,6 +1943,15 @@ def greater_than_or_equal(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(greater_than_or_equal, lhs, rhs, ctx=ctx))()
 
 
+def gridify(lhs, ctx):
+    """Element ÞĠ
+    Gridify
+    """
+    lhs = [[vy_str(x, ctx=ctx) for x in x] for x in lhs]
+    width = max(max(map(len, x)) for x in lhs)
+    return "\n".join(" ".join(x.rjust(width) for x in x) for x in lhs)
+
+
 def group_consecutive(lhs, ctx):
     """Element Ġ
     (lst) -> Group consecutive identical items
@@ -2176,6 +2192,13 @@ def index_indices_or_cycle(lhs, rhs, ctx):
                 return LazyList(recursive_helper(v) for v in value)
 
         return recursive_helper(rhs)
+
+
+def index_partition(lhs, rhs, ctx):
+    """Element ÞṖ
+    (lst, lst) -> Parititon lhs before indices of rhs
+    """
+    return partition_at_indices(rhs, lhs)
 
 
 @infinite_lazylist
@@ -3214,8 +3237,9 @@ def multiply(lhs, rhs, ctx):
         rhs.stored_arity = lhs
         return rhs
     else:
+        print(lhs, rhs)
         return {
-            (NUMBER_TYPE, NUMBER_TYPE): lambda: lhs * rhs,
+            (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(lhs * rhs),
             (NUMBER_TYPE, str): lambda: lhs * rhs,
             (str, NUMBER_TYPE): lambda: lhs * rhs,
             (str, str): lambda: ring_translate(lhs, rhs),
@@ -4932,6 +4956,31 @@ def strict_less_than(lhs, rhs, ctx):
     )()
 
 
+def string_base_convert(lhs, rhs, ctx):
+    """Element R
+    (num, num) -> convert lhs to base rhs, returning a string
+    <See vy_reduce for fun, any overload>
+    """
+
+    if rhs < 2 or rhs > 36:
+        raise ValueError(
+            "Error in R (num, num) overload - " "rhs must be between 2 and 36"
+        )
+
+    temp = to_base_digits(lhs, rhs)
+    if any(x > rhs for x in temp):
+        raise ValueError(
+            "Error in R (num, num) overload - digit"
+            " in resulting value too large. That is, one of the digits"
+            "in to_base(lhs, rhs) is greater than rhs."
+        )
+    return "".join(
+        index_indices_or_cycle(
+            string.digits + string.ascii_uppercase, temp, ctx
+        )
+    )
+
+
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
@@ -6408,12 +6457,17 @@ elements: dict[str, tuple[str, int]] = {
     "P": process_element(strip, 2),
     "Q": process_element("exit()", 0),
     "R": (
-        "if len(stack) > 1 and types.FunctionType "
-        "in vy_type(stack[-1], stack[-2]):\n"
-        "    rhs, lhs = pop(stack, 2, ctx);"
-        "    stack.append(vy_reduce(lhs, rhs, ctx))\n"
-        "else:\n"
-        "    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))",
+        """
+ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
+if ts == (NUMBER_TYPE, NUMBER_TYPE):
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(string_base_convert(lhs, rhs, ctx))
+elif types.FunctionType in ts:
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(vy_reduce(lhs, rhs, ctx))
+else:
+    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))
+""",
         2,
     ),
     "S": process_element(vy_str, 1),
@@ -6588,12 +6642,23 @@ elements: dict[str, tuple[str, int]] = {
         1,
     ),
     "□": (
-        "if ctx.inputs[0]: stack.append(ctx.inputs[0][0])\n"
+        "if ctx.inputs[0][0]: stack.append(ctx.inputs[0][0])\n"
         "else:\n"
-        "    input_list, temp = [], input()\n"
-        "    while temp:\n"
-        "        input_list.append(vy_eval(temp))\n"
-        "        temp = input()",
+        "    stdin = open(0)\n"
+        "    if stdin:\n"
+        "        a = [x[:-1] if ctx.inputs_as_strings else vy_eval(x[:-1], ctx=ctx) for x in stdin]\n"
+        "        ctx.inputs[0][0] = deep_copy(a)\n"
+        "        stack.append(a)\n"
+        "    else:\n"
+        "        input_list = []\n"
+        "        try:\n"
+        "            temp = input()\n"
+        "            while temp:\n"
+        "                input_list.append(temp if ctx.inputs_as_strings else vy_eval(temp, ctx=ctx))\n"
+        "                temp = input()\n"
+        "            ctx.inputs[0][0] = list(deep_copy(input_list))\n"
+        "            stack.append(input_list)\n"
+        "        except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
         0,
     ),
     "↳": process_element(right_bit_shift, 2),
@@ -6833,6 +6898,7 @@ elements: dict[str, tuple[str, int]] = {
     "Þż": process_element(lift, 1),
     "Þg": process_element(shortest, 1),
     "ÞG": process_element(longest, 1),
+    "ÞĠ": process_element(gridify, 1),
     "Þṡ": process_element(sort_by_length, 1),
     "ÞṠ": process_element(is_sorted_ascending, 1),
     "ÞṘ": process_element(is_sorted_descending, 1),
@@ -6860,6 +6926,8 @@ elements: dict[str, tuple[str, int]] = {
     "Þ∪": process_element(multiset_union, 2),
     "Þ⊍": process_element(multiset_symmetric_difference, 2),
     "ÞŻ": process_element(sort_every_level, 1),
+    "ÞṖ": process_element(index_partition, 2),
+    "Þṗ": process_element(boolean_partition, 2),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
