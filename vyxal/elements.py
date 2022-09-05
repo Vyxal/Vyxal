@@ -6977,7 +6977,6 @@ else:
     "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
     "¨e": process_element(all_powers, 1),
     "¨²": ("stack.append(all_powers(2, ctx))", 0),
-    "¨ε": ("stack.append(all_powers(3, ctx))", 0),
     "¨₀": ("stack.append(all_powers(10, ctx))", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
