@@ -4453,6 +4453,15 @@ def right_bit_shift(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 
+def right_vectorise(function, *args, explicit=False, ctx: Context = None):
+    return vectorise(
+        lambda *a: safe_apply(function, *a[::-1], ctx=ctx),
+        *args[::-1],
+        explicit=explicit,
+        ctx=ctx,
+    )
+
+
 def roman_numeral(lhs, ctx):
     """Element øṘ
     (num) -> roman numeral of a
@@ -5656,10 +5665,6 @@ def vectorise(
             vectorise_helper(),
             isinf=any(type(x) is LazyList and x.infinite for x in args),
         )
-
-
-def right_vectorise(function, *args, explicit=False, ctx: Context = None):
-    return vectorise(lambda *a: safe_apply(function, *a[::-1], ctx=ctx), *args[::-1], explicit=explicit, ctx=ctx)
 
 
 def vectorised_not(lhs, ctx):

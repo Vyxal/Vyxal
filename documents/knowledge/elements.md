@@ -944,6 +944,15 @@ Usage:
 ```
 
 -------------------------------
+## `` ¨V `` (Right vectorize)
+Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+
+Usage:
+```
+¨V<element>
+```
+
+-------------------------------
 ## `` w `` (Listify)
 
 a wrapped in a singleton list
