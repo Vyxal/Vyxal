@@ -2545,6 +2545,54 @@ k• (Qwerty Keyboard)
     num, num a: get the next multiple of b that is greater than a
     otherwise: vectorise
 -------------------------------
+∆ȯ (Hyperbolic Cosine)
+
+- Get the hyperbolic cosine of a number in radians
+
+    num a: cosh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ȯ (Hyperbolic Arccosine)
+
+- Get the hyperbolic arccosine of a number in radians
+
+    num a: acosh(a)
+    otherwise: vectorise
+-------------------------------
+∆ṡ (Hyperbolic Sine)
+
+- Get the hyperbolic sine of a number in radians
+
+    num a: sinh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṡ (Hyperbolic Arcsine)
+
+- Get the hyperbolic arcsine of a number in radians
+
+    num a: asinh(a)
+    otherwise: vectorise
+-------------------------------
+∆ṅ (Hyperbolic Tangent)
+
+- Get the hyperbolic tangent of a number in radians
+
+    num a: tanh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṅ (Hyperbolic Arctangent)
+
+- Get the hyperbolic arctangent of a number in radians
+
+    num a: atanh(a)
+    otherwise: vectorise
+-------------------------------
+∆/ (Hypotenuse)
+
+- Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+
+    lst a: sqrt(sum(a[i] ** 2 for i in range(len(a))))
+-------------------------------
 øb (Parenthesise)
 
 - Parenthesise a string

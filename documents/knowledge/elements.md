@@ -2904,6 +2904,62 @@ Get the next multiple of a number greater than another number
 
 - num, num a: `get the next multiple of b that is greater than a`
 -------------------------------
+## `` ∆ȯ `` (Hyperbolic Cosine)
+
+Get the hyperbolic cosine of a number in radians
+
+### Overloads
+
+- num a: `cosh(a)`
+-------------------------------
+## `` ∆Ȯ `` (Hyperbolic Arccosine)
+
+Get the hyperbolic arccosine of a number in radians
+
+### Overloads
+
+- num a: `acosh(a)`
+-------------------------------
+## `` ∆ṡ `` (Hyperbolic Sine)
+
+Get the hyperbolic sine of a number in radians
+
+### Overloads
+
+- num a: `sinh(a)`
+-------------------------------
+## `` ∆Ṡ `` (Hyperbolic Arcsine)
+
+Get the hyperbolic arcsine of a number in radians
+
+### Overloads
+
+- num a: `asinh(a)`
+-------------------------------
+## `` ∆ṅ `` (Hyperbolic Tangent)
+
+Get the hyperbolic tangent of a number in radians
+
+### Overloads
+
+- num a: `tanh(a)`
+-------------------------------
+## `` ∆Ṅ `` (Hyperbolic Arctangent)
+
+Get the hyperbolic arctangent of a number in radians
+
+### Overloads
+
+- num a: `atanh(a)`
+-------------------------------
+## `` ∆/ `` (Hypotenuse)
+
+Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+
+### Overloads
+
+- lst a: `sqrt(sum(a[i] ** 2 for i in range(len(a))))`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string

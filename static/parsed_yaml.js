@@ -520,6 +520,12 @@ var codepage_descriptions =
       "token": "k/"
     },
     {
+      "name": "Hypotenuse",
+      "description": "Get the hypotenuse of a right-angled triangle - equivalent to `\u00b2\u2211\u221a`",
+      "overloads": "lst -> sqrt(sum(a[i] ** 2 for i in range(len(a))))",
+      "token": "\u2206/"
+    },
+    {
       "name": "Main Diagonal",
       "description": "Diagonal of a matrix",
       "overloads": "lst -> diagonal(a)",
@@ -2276,6 +2282,12 @@ var codepage_descriptions =
       "name": "8192",
       "description": "8192",
       "token": "k\u1e45"
+    },
+    {
+      "name": "Hyperbolic Tangent",
+      "description": "Get the hyperbolic tangent of a number in radians",
+      "overloads": "num -> tanh(a)",
+      "token": "\u2206\u1e45"
     }
   ],
   "152": [
@@ -2284,6 +2296,12 @@ var codepage_descriptions =
       "description": "Slice from an index to the end",
       "overloads": "fun, num -> first b integers for which a(x) is truthy\nany, num -> a[b:] (slice from b to the end)\nstr, str -> vertically merge a and b",
       "token": "\u022f"
+    },
+    {
+      "name": "Hyperbolic Cosine",
+      "description": "Get the hyperbolic cosine of a number in radians",
+      "overloads": "num -> cosh(a)",
+      "token": "\u2206\u022f"
     }
   ],
   "153": [
@@ -2343,6 +2361,12 @@ var codepage_descriptions =
       "description": "Sort a list by a function / create a range / split on a regex",
       "overloads": "any, fun -> sorted(a, key=b) (sort by b)\nnum, num -> range(a, b + 1) (inclusive range from a to b)\nstr, str -> regex.split(pattern=b, string=a)",
       "token": "\u1e61"
+    },
+    {
+      "name": "Hyperbolic Sine",
+      "description": "Get the hyperbolic sine of a number in radians",
+      "overloads": "num -> sinh(a)",
+      "token": "\u2206\u1e61"
     },
     {
       "name": "Sort By Length",
@@ -2842,6 +2866,12 @@ var codepage_descriptions =
       "token": "k\u1e44"
     },
     {
+      "name": "Hyperbolic Arctangent",
+      "description": "Get the hyperbolic arctangent of a number in radians",
+      "overloads": "num -> atanh(a)",
+      "token": "\u2206\u1e44"
+    },
+    {
       "name": "Replace Nth Occurrence",
       "description": "Replace the nth instance of an item with another item. If n is negative, then replaces the last nth instance.",
       "overloads": "any, any, any, any -> a.replace_nth_occurrence(b, c, d)",
@@ -2858,6 +2888,12 @@ var codepage_descriptions =
       "name": "Over",
       "description": "Push the second-last item of stack to the top",
       "token": "\u022e"
+    },
+    {
+      "name": "Hyperbolic Arccosine",
+      "description": "Get the hyperbolic arccosine of a number in radians",
+      "overloads": "num -> acosh(a)",
+      "token": "\u2206\u022e"
     },
     {
       "name": "Is Ordered?",
@@ -2934,6 +2970,12 @@ var codepage_descriptions =
       "description": "Sum of each item in a list",
       "overloads": "lst -> vectorising_sum(a)\nstr -> a.strip()\nnum -> is_positive(a)",
       "token": "\u1e60"
+    },
+    {
+      "name": "Hyperbolic Arcsine",
+      "description": "Get the hyperbolic arcsine of a number in radians",
+      "overloads": "num -> asinh(a)",
+      "token": "\u2206\u1e60"
     },
     {
       "name": "Is Sorted?",
