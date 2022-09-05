@@ -17,8 +17,8 @@ from vyxal.LazyList import *
 
 
 def run_vyxal(vy_code, inputs=[], *, debug=False):
-    stack = list(map(vyxalify, inputs))
     ctx = Context()
+    stack = list(map(vyxalify, map(lambda x: vy_eval(x, ctx), inputs)))
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
@@ -633,11 +633,22 @@ def test_group_by_function_ordered():
 
 
 def test_lambda_as_input():
-    stack = run_vyxal("‡⁰RİL", inputs=[68889, "λ*;"])
-    assert stack[-1] == 7
+    stack = run_vyxal("R", inputs=["λ*;", 68889])
+    assert stack[-1] == 27648
 
     stack = run_vyxal("10M", inputs=["λ₍₃₅kF½*∑∴;"])
-    assert stack[-1] == [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz"]
+    assert list(stack[-1]) == [
+        1,
+        2,
+        "Fizz",
+        4,
+        "Buzz",
+        "Fizz",
+        7,
+        8,
+        "Fizz",
+        "Buzz",
+    ]
 
 
 def test_overlapping_groups_modifier():
