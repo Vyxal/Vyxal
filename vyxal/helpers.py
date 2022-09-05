@@ -1252,6 +1252,12 @@ def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
     if ctx.online:
+        if item[0] == "λ":
+            # Lambda, so return that
+            ctx.stacks.append([])
+            vyxal.elements.vy_exec(item, ctx=ctx)
+            fn = ctx.stacks.pop().pop()
+            return fn
         try:
             t = ast.literal_eval(item)
             if type(t) is float:

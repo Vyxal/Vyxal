@@ -632,6 +632,14 @@ def test_group_by_function_ordered():
     ]
 
 
+def test_lambda_as_input():
+    stack = run_vyxal("‡⁰RİL", inputs=[68889, "λ*;"])
+    assert stack[-1] == 7
+
+    stack = run_vyxal("10M", inputs=["λ₍₃₅kF½*∑∴;"])
+    assert stack[-1] == [1, 2, "Fizz", 4, "Buzz", "Fizz", 7, 8, "Fizz", "Buzz"]
+
+
 def test_overlapping_groups_modifier():
     stack = run_vyxal("¨p+", inputs=[[1, 2, 3, 4, 5]])
     assert stack[-1] == [3, 5, 7, 9]
