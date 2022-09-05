@@ -326,7 +326,7 @@ var codepage_descriptions =
       "token": "\u221e"
     },
     {
-      "name": "Infinite List",
+      "name": "Infinite List of Positive Integers",
       "description": "An infinite list of positive integers",
       "token": "\u00de\u221e"
     }
@@ -637,6 +637,11 @@ var codepage_descriptions =
       "description": "Push a twice",
       "overloads": "any -> a,a",
       "token": ":"
+    },
+    {
+      "name": "Infinite List of Non-Negative Integers",
+      "description": "An infinite list of non-negative integers",
+      "token": "\u00de:"
     }
   ],
   "59": [
@@ -1081,7 +1086,7 @@ var codepage_descriptions =
     {
       "name": "Reduce",
       "description": "Reduce a by b, or reverse each item of b",
-      "overloads": "any, fun -> reduce(b,a) (Reduce a by b)\nany, any -> a, vectorised_reverse(b)",
+      "overloads": "num, num -> a in base b, using a default alphabet 0-9A-Z\nany, fun -> reduce(b,a) (Reduce a by b)\nany, any -> a, vectorised_reverse(b)",
       "token": "R"
     },
     {

@@ -645,6 +645,7 @@ Reduce a by b, or reverse each item of b
 
 ### Overloads
 
+- num a, num b: `a in base b, using a default alphabet 0-9A-Z`
 - any a, fun b: `reduce(b,a) (Reduce a by b)`
 - any a, any b: `a, vectorised_reverse(b)`
 -------------------------------
@@ -3753,9 +3754,14 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `[0] + a[:-1]`
 -------------------------------
-## `` Þ∞ `` (Infinite List)
+## `` Þ∞ `` (Infinite List of Positive Integers)
 
 An infinite list of positive integers
+
+-------------------------------
+## `` Þ: `` (Infinite List of Non-Negative Integers)
+
+An infinite list of non-negative integers
 
 -------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
