@@ -2239,6 +2239,21 @@ def infinite_integer_partitions(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+def infinite_non_negative_integers(_, ctx=None):
+    """Element Þ:
+    The list [0, 1, 2, ..., ∞]
+    """
+
+    @infinite_lazylist
+    def gen():
+        i = 0
+        while True:
+            yield i
+            i += 1
+
+    return gen()
+
+
 def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
@@ -6890,6 +6905,7 @@ else:
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
     "Þ∞": process_element(infinite_positives, 0),
+    "Þ:": process_element(infinite_non_negative_integers, 0),
     "Þn": process_element(infinite_all_integers, 0),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
