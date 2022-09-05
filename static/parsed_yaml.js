@@ -2585,12 +2585,6 @@ var codepage_descriptions =
       "name": "32768",
       "description": "32768",
       "token": "k\u03b5"
-    },
-    {
-      "name": "All Powers of 3",
-      "description": "Return all powers of 3",
-      "overloads": "none -> [3**1, 3**2, 3**3, 3**4, ...]",
-      "token": "\u00a8\u03b5"
     }
   ],
   "178": [

@@ -4042,14 +4042,6 @@ Return all powers of 2
 
 - none a: `[2**1, 2**2, 2**3, 2**4, ...]`
 -------------------------------
-## `` ¨ε `` (All Powers of 3)
-
-Return all powers of 3
-
-### Overloads
-
-- none a: `[3**1, 3**2, 3**3, 3**4, ...]`
--------------------------------
 ## `` ¨₀ `` (All Powers of 10)
 
 Return all powers of 10
