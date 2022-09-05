@@ -5658,6 +5658,10 @@ def vectorise(
         )
 
 
+def right_vectorise(function, *args, explicit=False, ctx: Context = None):
+    return vectorise(lambda *a: safe_apply(function, *a[::-1], ctx=ctx), *args[::-1], explicit=explicit, ctx=ctx)
+
+
 def vectorised_not(lhs, ctx):
     """List overload for element †"""
     return {NUMBER_TYPE: lambda: int(not lhs), str: lambda: int(not lhs)}.get(
@@ -7084,6 +7088,12 @@ modifiers: dict[str, str] = {
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
+    ),
+    "¨V": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "res = right_vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx)\n"
+        "if eager: res = list(res)\n"
+        "stack.append(res)"
     ),
     "~": (
         "if function_A.arity >= 2:\n"
