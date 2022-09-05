@@ -337,6 +337,14 @@ def all_partitions(lhs, ctx):
     return uniquify(gen(), ctx=ctx)
 
 
+def all_powers(lhs, ctx):
+    """Element ¨e
+    (num) -> [a**1, a**2, a**3, a**4, ...]
+    (str) -> [a**1, a**2, a**3, a**4, ...]
+    """
+    return exponent(lhs, infinite_positives(ctx), ctx)
+
+
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
@@ -6967,6 +6975,9 @@ else:
         1,
     ),
     "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
+    "¨e": process_element(all_powers, 1),
+    "¨²": ("stack.append(all_powers(2, ctx))", 0),
+    "¨₀": ("stack.append(all_powers(10, ctx))", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),

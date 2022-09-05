@@ -4025,6 +4025,31 @@ Return all multiples of a
 - num a: `[a*1, a*2, a*3, a*4, ...]`
 - str a: `[a*1, a*2, a*3, a*4, ...]`
 -------------------------------
+## `` ¨e `` (All Powers)
+
+Return all powers of a
+
+### Overloads
+
+- num a: `[a**1, a**2, a**3, a**4, ...]`
+- str a: `[a**1, a**2, a**3, a**4, ...]`
+-------------------------------
+## `` ¨² `` (All Powers of 2)
+
+Return all powers of 2
+
+### Overloads
+
+- none a: `[2**1, 2**2, 2**3, 2**4, ...]`
+-------------------------------
+## `` ¨₀ `` (All Powers of 10)
+
+Return all powers of 10
+
+### Overloads
+
+- none a: `[10**1, 10**2, 10**3, 10**4, ...]`
+-------------------------------
 ## `` ¨£ `` (Star Map)
 Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
 
