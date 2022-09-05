@@ -6473,7 +6473,10 @@ elements: dict[str, tuple[str, int]] = {
     "Q": process_element("exit()", 0),
     "R": (
         """
-ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
+if len(stack) < 2:
+    stack += wrapify(stack, 2 - len(stack), ctx)
+    print(stack)
+ts = (vy_type(stack[-2]), vy_type(stack[-1]))
 if ts == (NUMBER_TYPE, NUMBER_TYPE):
     rhs, lhs = pop(stack, 2, ctx)
     stack.append(string_base_convert(lhs, rhs, ctx))
