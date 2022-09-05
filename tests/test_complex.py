@@ -931,7 +931,6 @@ def test_all_powers():
     stack = run_vyxal("¨²")
     assert stack[-1][:8] == [2, 4, 8, 16, 32, 64, 128, 256]
 
-
     stack = run_vyxal("¨₀")
     assert stack[-1][:8] == [
         10,
