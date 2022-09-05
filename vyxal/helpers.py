@@ -1251,7 +1251,7 @@ def urlify(item: str) -> str:
 def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
-    if type(item) is str and item[0] == "λ":
+    if item and type(item) is str and item[0] == "λ":
         # Lambda, so return that
         ctx.stacks.append([])
         vyxal.elements.vy_exec(item, ctx=ctx)
