@@ -932,4 +932,22 @@ def test_right_vectorize():
         [3, 4, 5, 6, 7],
         [2, 3, 4, 5, 6],
         [1, 2, 3, 4, 5],
+def test_all_powers():
+    stack = run_vyxal("4 ¨e")
+    assert stack[-1][:8] == [4, 16, 64, 256, 1024, 4096, 16384, 65536]
+
+    stack = run_vyxal("¨²")
+    assert stack[-1][:8] == [2, 4, 8, 16, 32, 64, 128, 256]
+
+
+    stack = run_vyxal("¨₀")
+    assert stack[-1][:8] == [
+        10,
+        100,
+        1000,
+        10000,
+        100000,
+        1000000,
+        10000000,
+        100000000,
     ]

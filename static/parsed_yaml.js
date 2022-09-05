@@ -1487,6 +1487,12 @@ var codepage_descriptions =
       "description": "A matrix multiplied by itself n times",
       "overloads": "lst, num -> a ** b (matrix exponentiation)\nnum, lst -> b ** a (matrix exponentiation)",
       "token": "\u00dee"
+    },
+    {
+      "name": "All Powers",
+      "description": "Return all powers of a",
+      "overloads": "num -> [a**1, a**2, a**3, a**4, ...]\nstr -> [a**1, a**2, a**3, a**4, ...]",
+      "token": "\u00a8e"
     }
   ],
   "102": [
@@ -2449,6 +2455,12 @@ var codepage_descriptions =
       "name": "Ten",
       "description": "Push 10 to the stack",
       "token": "\u2080"
+    },
+    {
+      "name": "All Powers of 10",
+      "description": "Return all powers of 10",
+      "overloads": "none -> [10**1, 10**2, 10**3, 10**4, ...]",
+      "token": "\u00a8\u2080"
     }
   ],
   "166": [
@@ -3051,6 +3063,12 @@ var codepage_descriptions =
       "description": "Is the number a perfect square? (1, 4, 9, 16, 25, 36)",
       "overloads": "num -> is_perfect_square(a)",
       "token": "\u2206\u00b2"
+    },
+    {
+      "name": "All Powers of 2",
+      "description": "Return all powers of 2",
+      "overloads": "none -> [2**1, 2**2, 2**3, 2**4, ...]",
+      "token": "\u00a8\u00b2"
     }
   ],
   "209": [

@@ -6192,6 +6192,31 @@
       str: "[a*1, a*2, a*3, a*4, ...]"
   vectorise: true
 
+- element: "¨e"
+  name: All Powers
+  description: Return all powers of a
+  arity: 1
+  overloads:
+      num: "[a**1, a**2, a**3, a**4, ...]"
+      str: "[a**1, a**2, a**3, a**4, ...]"
+  vectorise: true
+
+- element: "¨²"
+  name: All Powers of 2
+  description: Return all powers of 2
+  arity: 0
+  overloads:
+      none: "[2**1, 2**2, 2**3, 2**4, ...]"
+  vectorise: false
+
+- element: "¨₀"
+  name: All Powers of 10
+  description: Return all powers of 10
+  arity: 0
+  overloads:
+      none: "[10**1, 10**2, 10**3, 10**4, ...]"
+  vectorise: false
+
 - modifier: "¨£"
   name: Star Map
   description: Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
