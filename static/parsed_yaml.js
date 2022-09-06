@@ -522,7 +522,7 @@ var codepage_descriptions =
     {
       "name": "Hypotenuse",
       "description": "Get the hypotenuse of a right-angled triangle - equivalent to `\u00b2\u2211\u221a`",
-      "overloads": "lst -> sqrt(sum(a[i] ** 2 for i in range(len(a))))",
+      "overloads": "lst -> sqrt(sum(x ** 2 for x in a))",
       "token": "\u2206/"
     },
     {

@@ -2958,7 +2958,7 @@ Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
 
 ### Overloads
 
-- lst a: `sqrt(sum(a[i] ** 2 for i in range(len(a))))`
+- lst a: `sqrt(sum(x ** 2 for x in a))`
 -------------------------------
 ## `` øb `` (Parenthesise)
 
