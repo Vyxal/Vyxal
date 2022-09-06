@@ -2992,6 +2992,12 @@ var codepage_descriptions =
       "token": "\u1e6a"
     },
     {
+      "name": "Arc Tangent 2",
+      "description": "Get the arctangent of an angle in radians",
+      "overloads": "num, num -> math.arctan2(a, b)",
+      "token": "\u2206\u1e6a"
+    },
+    {
       "name": "Transpose With Filler",
       "description": "Transpose a matrix, with a filler value for empty cells.",
       "overloads": "lst, any -> transpose a, with filler value b",

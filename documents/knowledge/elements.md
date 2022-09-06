@@ -2557,6 +2557,14 @@ Get the arctangent of an angle in radians
 
 - num a: `math.arctan(a)`
 -------------------------------
+## `` ∆Ṫ `` (Arc Tangent 2)
+
+Get the arctangent of an angle in radians
+
+### Overloads
+
+- num a, num b: `math.arctan2(a, b)`
+-------------------------------
 ## `` ∆P `` (Polynomial Solver)
 
 Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
