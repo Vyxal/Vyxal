@@ -485,6 +485,19 @@ def arctan(lhs, ctx):
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
+def arctan2(lhs, rhs, ctx):
+    """Element ∆Ṫ
+    (num) -> arctan2(lhs, rhs)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        ts: lambda: [lhs, rhs],
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            sympy.atan2(lhs, rhs), rational=True
+        ),
+    }.get(ts, lambda: vectorise(arctan2, lhs, rhs, ctx=ctx))()
+
+
 def assign_iterable(lhs, rhs, other, ctx):
     """Element Ȧ
     (any, num, any) -> a but item b (0-indexed) is set to c
@@ -2120,7 +2133,7 @@ def hypotenuse(lhs, ctx):
     (lst) -> sqrt(lhs[0] ** 2 + lhs[1] ** 2)
     """
 
-    return square_root(vy_sum(square(lhs, ctx=ctx), ctx=ctx), ctx=ctx)
+    return sympy.nsimplify(math.hypot(*lhs), rational=True)
 
 
 def identity_matrix(lhs, ctx):

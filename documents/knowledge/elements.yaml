@@ -3865,6 +3865,18 @@
       - "[-1] : -0.78539816339744830962"
       - "[1] : 0.78539816339744830962"
 
+- element: "∆Ṫ"
+  name: Arc Tangent 2
+  arity: 2
+  description: Get the arctangent of an angle in radians
+  overloads:
+      num-num: math.arctan2(a, b)
+  vectorise: true
+  tests:
+      - "[1, 1] : 0.78539816339744830962"
+      - "[1, -1] : 2.3561944901923449288"
+      - "[1, 0] : 1.5707963267948966192"
+
 - element: "∆P"
   name: Polynomial Solver
   arity: 1
