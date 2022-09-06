@@ -4532,7 +4532,7 @@
   arity: 1
   description: Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
   overloads:
-      lst: sqrt(sum(a[i] ** 2 for i in range(len(a))))
+      lst: sqrt(sum(x ** 2 for x in a))
   vectorise: false
   tests:
       - "[[3, 4]] : 5.0"
