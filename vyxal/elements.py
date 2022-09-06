@@ -6834,6 +6834,7 @@ else:
     "∆S": process_element(arcsin, 1),
     "∆t": process_element(tangent, 1),
     "∆T": process_element(arctan, 1),
+    "∆Ṫ": process_element(arctan2, 2),
     "∆q": process_element(quadratic_solver, 2),
     "∆Q": process_element(general_quadratic_solver, 2),
     "∆P": process_element(polynomial_roots, 1),
