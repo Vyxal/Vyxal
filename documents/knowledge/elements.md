@@ -645,6 +645,7 @@ Reduce a by b, or reverse each item of b
 
 ### Overloads
 
+- num a, num b: `a in base b, using a default alphabet 0-9A-Z`
 - any a, fun b: `reduce(b,a) (Reduce a by b)`
 - any a, any b: `a, vectorised_reverse(b)`
 -------------------------------
@@ -3753,9 +3754,14 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `[0] + a[:-1]`
 -------------------------------
-## `` Þ∞ `` (Infinite List)
+## `` Þ∞ `` (Infinite List of Positive Integers)
 
 An infinite list of positive integers
+
+-------------------------------
+## `` Þ: `` (Infinite List of Non-Negative Integers)
+
+An infinite list of non-negative integers
 
 -------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
@@ -4018,6 +4024,31 @@ Return all multiples of a
 
 - num a: `[a*1, a*2, a*3, a*4, ...]`
 - str a: `[a*1, a*2, a*3, a*4, ...]`
+-------------------------------
+## `` ¨e `` (All Powers)
+
+Return all powers of a
+
+### Overloads
+
+- num a: `[a**1, a**2, a**3, a**4, ...]`
+- str a: `[a**1, a**2, a**3, a**4, ...]`
+-------------------------------
+## `` ¨² `` (All Powers of 2)
+
+Return all powers of 2
+
+### Overloads
+
+- none a: `[2**1, 2**2, 2**3, 2**4, ...]`
+-------------------------------
+## `` ¨₀ `` (All Powers of 10)
+
+Return all powers of 10
+
+### Overloads
+
+- none a: `[10**1, 10**2, 10**3, 10**4, ...]`
 -------------------------------
 ## `` ¨£ `` (Star Map)
 Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ
