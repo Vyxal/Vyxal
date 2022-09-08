@@ -466,7 +466,12 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
                 if bracket_stack:
                     branches[-1].append(token)
             elif token.value in "}];":
-                bracket_stack = []
+                while bracket_stack and token.value != bracket_stack[-1]:
+                    bracket_stack.pop()
+
+                if bracket_stack:
+                    bracket_stack.pop()
+                    branches[-1].append(token)
             elif token.value == ")":
                 bracket_stack = []
                 branches.append(-1)
