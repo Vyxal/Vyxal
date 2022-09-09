@@ -1606,9 +1606,9 @@ var codepage_descriptions =
   ],
   "108": [
     {
-      "name": "Cumulative Groups",
+      "name": "Cumulative Groups / First Non-Negative Truthy Integers",
       "description": "Cumulative groups (overlapping groups, aperture) / Equal length",
-      "overloads": "any, num -> [a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]\nnum, any -> [b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]\nany, any -> length(a) == length(b)",
+      "overloads": "any, num -> [a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]\nnum, any -> [b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]\nany, any -> length(a) == length(b)\nany, fun -> first a non-negative integers where b is truthy\nfun, any -> first b non-negative integers where a is truthy",
       "token": "l"
     },
     {
@@ -2831,9 +2831,9 @@ var codepage_descriptions =
   ],
   "194": [
     {
-      "name": "Integer partitions",
+      "name": "Integer partitions / First Truthy Non-Negative Integer",
       "description": "Integer partitions / join by space",
-      "overloads": "num -> integer_partitions(a) (integer partitions)\nany -> \" \".join(a) (join by space)",
+      "overloads": "num -> integer_partitions(a) (integer partitions)\nany -> \" \".join(a) (join by space)\nfun -> first truthy non-negative integer where a is truthy",
       "token": "\u1e44"
     },
     {
