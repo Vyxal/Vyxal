@@ -563,6 +563,10 @@ def test_first_integer_where_condition():
     assert stack[-1] == -4
     stack = run_vyxal("λ*16=;N")
     assert stack[-1] == 4
+    stack = run_vyxal("λu$e1=;Ṅ")
+    assert stack[-1] == 0
+    stack = run_vyxal("λu$e1=;5l")
+    assert stack[-1] == [0, 2, 4, 6, 8]
 
 
 def test_group_by_function():

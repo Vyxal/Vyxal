@@ -2430,6 +2430,7 @@ def integer_divide(lhs, rhs, ctx):
 def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
+    (fun) -> First non-negative integer where function is truthy
     (any) -> Join on spaces
     """
     if vy_type(lhs) == NUMBER_TYPE:
@@ -2445,6 +2446,12 @@ def integer_parts_or_join_spaces(lhs, ctx):
             yield [n * sign]
 
         return helper(abs(lhs), 1)
+
+    elif isinstance(lhs, types.FunctionType):
+        x = 0
+        while not safe_apply(lhs, x, ctx=ctx):
+            x += 1
+        return x
 
     return join(lhs, " ", ctx)
 
@@ -3791,14 +3798,31 @@ def overlapping_groups(lhs, rhs, ctx):
     """Element l
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
+    (any, fun) -> first lhs non-negative integers where function truthy
     """
-    if NUMBER_TYPE not in vy_type(lhs, rhs):
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        lhs, rhs = (rhs, lhs) if ts[0] == types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            x = 0
+            found = 0
+            while found < lhs:
+                if safe_apply(rhs, x, ctx=ctx):
+                    found += 1
+                    yield x
+                x += 1
+
+        return gen()
+
+    if NUMBER_TYPE not in ts:
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
 
-    if vy_type(lhs) == NUMBER_TYPE:
+    if ts[0] == NUMBER_TYPE:
         lhs, rhs = rhs, lhs
 
-    stringify = vy_type(lhs) is str
+    stringify = ts[0] is str
 
     @lazylist_from(lhs)
     def gen():
