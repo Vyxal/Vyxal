@@ -3865,6 +3865,18 @@
       - "[-1] : -0.78539816339744830962"
       - "[1] : 0.78539816339744830962"
 
+- element: "∆Ṫ"
+  name: Arc Tangent 2
+  arity: 2
+  description: Get the arctangent of an angle in radians
+  overloads:
+      num-num: math.arctan2(a, b)
+  vectorise: true
+  tests:
+      - "[1, 1] : 0.78539816339744830962"
+      - "[1, -1] : 2.3561944901923449288"
+      - "[1, 0] : 1.5707963267948966192"
+
 - element: "∆P"
   name: Polynomial Solver
   arity: 1
@@ -4443,6 +4455,117 @@
       - "[4, 5] : 5"
       - "[5, 5] : 10"
       - "[0, -1] : -1"
+
+- element: "∆ȯ"
+  name: Hyperbolic Cosine
+  arity: 1
+  description: Get the hyperbolic cosine of a number in radians
+  overloads:
+      num: cosh(a)
+  vectorise: true
+  tests:
+      - "[0.0] : 1.0"
+      - "[0.1] : 1.0050041680558035"
+      - "[0.5] : 1.1276259652063807"
+      - "[1.0] : 1.5430806348152437"
+      - "[2.0] : 3.7621956910836314"
+      - "[10.0] : 11013.232920103323"
+
+- element: "∆Ȯ"
+  name: Hyperbolic Arccosine
+  arity: 1
+  description: Get the hyperbolic arccosine of a number in radians
+  overloads:
+      num: acosh(a)
+  vectorise: true
+  tests:
+      - "[1.0] : 0.0"
+      - "[1.0050041680558035] : 0.1"
+      - "[1.1276259652063807] : 0.5"
+      - "[1.5430806348152437] : 1.0"
+      - "[3.7621956910836314] : 2.0"
+      - "[11013.232920103323] : 10.0"
+
+- element: "∆ṡ"
+  name: Hyperbolic Sine
+  arity: 1
+  description: Get the hyperbolic sine of a number in radians
+  overloads:
+      num: sinh(a)
+  vectorise: true
+  tests:
+      - "[0.0] : 0.0"
+      - "[0.1] : 0.10016675001984402"
+      - "[0.5] : 0.5210953054937474"
+      - "[1.0] : 1.1752011936438014"
+      - "[2.0] : 3.626860407847019"
+      - "[10.0] : 11013.232874703393"
+
+- element: "∆Ṡ"
+  name: Hyperbolic Arcsine
+  arity: 1
+  description: Get the hyperbolic arcsine of a number in radians
+  overloads:
+      num: asinh(a)
+  vectorise: true
+  tests:
+      - "[0.0] : 0.0"
+      - "[0.10016675001984402] : 0.1"
+      - "[0.5210953054937474] : 0.5"
+      - "[1.1752011936438014] : 1.0"
+      - "[3.626860407847019] : 2.0"
+      - "[11013.232874703393] : 10.0"
+
+- element: "∆ṅ"
+  name: Hyperbolic Tangent
+  arity: 1
+  description: Get the hyperbolic tangent of a number in radians
+  overloads:
+      num: tanh(a)
+  vectorise: true
+  tests:
+      - "[0.1] : 0.09966799462495582"
+      - "[0.2] : 0.197375320224904"
+      - "[0.3] : 0.2913126124515909"
+
+- element: "∆Ṅ"
+  name: Hyperbolic Arctangent
+  arity: 1
+  description: Get the hyperbolic arctangent of a number in radians
+  overloads:
+      num: atanh(a)
+  vectorise: true
+  tests:
+      - "[0.1] : 0.10033534773107558"
+      - "[0.2] : 0.2027325540540822"
+      - "[0.3] : 0.3095196042031117"
+- element: "∆/"
+  name: Hypotenuse
+  arity: 1
+  description: Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+  overloads:
+      lst: sqrt(sum(x ** 2 for x in a))
+  vectorise: false
+  tests:
+      - "[[3, 4]] : 5.0"
+      - "[[5, 12]] : 13.0"
+      - "[[8, 15]] : 17.0"
+      - "[[7, 24]] : 25.0"
+      - "[[20, 21]] : 29.0"
+      - "[[12, 35]] : 37.0"
+      - "[[9, 40]] : 41.0"
+      - "[[28, 45]] : 53.0"
+      - "[[11, 60]] : 61.0"
+      - "[[16, 63]] : 65.0"
+      - "[[33, 56]] : 65.0"
+      - "[[48, 55]] : 73.0"
+      - "[[13, 84]] : 85.0"
+      - "[[36, 77]] : 85.0"
+      - "[[39, 80]] : 89.0"
+      - "[[65, 72]] : 97.0"
+      - "[[20, 21]] : 29.0"
+      - "[[24, 45]] : 51.0"
+      - "[[30, 40]] : 50.0"
 
 - element: "øb"
   name: Parenthesise

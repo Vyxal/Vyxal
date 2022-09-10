@@ -485,6 +485,19 @@ def arctan(lhs, ctx):
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
+def arctan2(lhs, rhs, ctx):
+    """Element ∆Ṫ
+    (num) -> arctan2(lhs, rhs)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        ts: lambda: [lhs, rhs],
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            sympy.atan2(lhs, rhs), rational=True
+        ),
+    }.get(ts, lambda: vectorise(arctan2, lhs, rhs, ctx=ctx))()
+
+
 def assign_iterable(lhs, rhs, other, ctx):
     """Element Ȧ
     (any, num, any) -> a but item b (0-indexed) is set to c
@@ -2047,6 +2060,80 @@ def head_remove(lhs, ctx):
         return []
 
     return iterable(lhs, range, ctx=ctx)[1:]
+
+
+def hyperbolic_arccosine(lhs, ctx):
+    """Element ∆Ȯ
+    (num) -> arccosh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.acosh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
+
+
+def hyperbolic_arcsine(lhs, ctx):
+    """Element ∆Ṡ
+    (num) -> arcsinh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.asinh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
+
+
+def hyperbolic_arctangent(lhs, ctx):
+    """Element ∆Ṅ
+    (num) -> arctanh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.atanh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
+
+
+def hyperbolic_cosine(lhs, ctx):
+    """Element ∆ȯ
+    (num) -> cosh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cosh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
+
+
+def hyperbolic_sine(lhs, ctx):
+    """Element ∆ṡ
+    (num) -> sinh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sinh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
+
+
+def hyperbolic_tangent(lhs, ctx):
+    """Element ∆ṅ
+    (num) -> tanh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tanh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
+
+
+def hypotenuse(lhs, ctx):
+    """Element ∆/
+    (lst) -> sqrt(lhs[0] ** 2 + lhs[1] ** 2)
+    """
+
+    return sympy.nsimplify(math.hypot(*lhs), rational=True)
 
 
 def identity_matrix(lhs, ctx):
@@ -6747,6 +6834,7 @@ else:
     "∆S": process_element(arcsin, 1),
     "∆t": process_element(tangent, 1),
     "∆T": process_element(arctan, 1),
+    "∆Ṫ": process_element(arctan2, 2),
     "∆q": process_element(quadratic_solver, 2),
     "∆Q": process_element(general_quadratic_solver, 2),
     "∆P": process_element(polynomial_roots, 1),
@@ -6797,6 +6885,13 @@ else:
     "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),
+    "∆ȯ": process_element(hyperbolic_cosine, 1),
+    "∆ṡ": process_element(hyperbolic_sine, 1),
+    "∆ṅ": process_element(hyperbolic_tangent, 1),
+    "∆Ȯ": process_element(hyperbolic_arccosine, 1),
+    "∆Ṡ": process_element(hyperbolic_arcsine, 1),
+    "∆Ṅ": process_element(hyperbolic_arctangent, 1),
+    "∆/": process_element(hypotenuse, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),

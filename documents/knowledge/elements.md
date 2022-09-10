@@ -2557,6 +2557,14 @@ Get the arctangent of an angle in radians
 
 - num a: `math.arctan(a)`
 -------------------------------
+## `` ∆Ṫ `` (Arc Tangent 2)
+
+Get the arctangent of an angle in radians
+
+### Overloads
+
+- num a, num b: `math.arctan2(a, b)`
+-------------------------------
 ## `` ∆P `` (Polynomial Solver)
 
 Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
@@ -2903,6 +2911,62 @@ Get the next multiple of a number greater than another number
 ### Overloads
 
 - num, num a: `get the next multiple of b that is greater than a`
+-------------------------------
+## `` ∆ȯ `` (Hyperbolic Cosine)
+
+Get the hyperbolic cosine of a number in radians
+
+### Overloads
+
+- num a: `cosh(a)`
+-------------------------------
+## `` ∆Ȯ `` (Hyperbolic Arccosine)
+
+Get the hyperbolic arccosine of a number in radians
+
+### Overloads
+
+- num a: `acosh(a)`
+-------------------------------
+## `` ∆ṡ `` (Hyperbolic Sine)
+
+Get the hyperbolic sine of a number in radians
+
+### Overloads
+
+- num a: `sinh(a)`
+-------------------------------
+## `` ∆Ṡ `` (Hyperbolic Arcsine)
+
+Get the hyperbolic arcsine of a number in radians
+
+### Overloads
+
+- num a: `asinh(a)`
+-------------------------------
+## `` ∆ṅ `` (Hyperbolic Tangent)
+
+Get the hyperbolic tangent of a number in radians
+
+### Overloads
+
+- num a: `tanh(a)`
+-------------------------------
+## `` ∆Ṅ `` (Hyperbolic Arctangent)
+
+Get the hyperbolic arctangent of a number in radians
+
+### Overloads
+
+- num a: `atanh(a)`
+-------------------------------
+## `` ∆/ `` (Hypotenuse)
+
+Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+
+### Overloads
+
+- lst a: `sqrt(sum(x ** 2 for x in a))`
 -------------------------------
 ## `` øb `` (Parenthesise)
 
