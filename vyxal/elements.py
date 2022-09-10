@@ -3821,7 +3821,7 @@ def overlapping_groups(lhs, rhs, ctx):
     if ts[0] == NUMBER_TYPE:
         lhs, rhs = rhs, lhs
 
-    stringify = ts[0] is str
+    stringify = type(lhs) is str
 
     @lazylist_from(lhs)
     def gen():
