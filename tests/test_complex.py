@@ -651,6 +651,11 @@ def test_lambda_as_input():
     ]
 
 
+def test_mold():
+    stack = run_vyxal("⟨0|1|2|3|4|5|6|7|8|9⟩⟨`abc`f|\d|\e|`fg`f|`hij`f⟩•vh")
+    assert stack[-1] == [0, 3, 4, 5, 7]
+
+
 def test_overlapping_groups_modifier():
     stack = run_vyxal("¨p+", inputs=[[1, 2, 3, 4, 5]])
     assert stack[-1] == [3, 5, 7, 9]
