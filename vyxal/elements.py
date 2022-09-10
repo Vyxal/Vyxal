@@ -3267,7 +3267,6 @@ def multiply(lhs, rhs, ctx):
         rhs.stored_arity = lhs
         return rhs
     else:
-        print(lhs, rhs)
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(lhs * rhs),
             (NUMBER_TYPE, str): lambda: lhs * rhs,
@@ -5254,7 +5253,6 @@ def surround(lhs, rhs, ctx):
     """
     # Also works with lists!
     ts = vy_type(lhs, rhs, simple=True)
-    print(ts)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
             str(rhs) + str(lhs) + str(rhs), rational=True
@@ -6311,7 +6309,6 @@ def wrap(lhs, rhs, ctx):
 
     elif ts == (str, str):
         parts = lhs.partition(rhs)[::2]
-        print(parts)
         if parts[1] == "" and not lhs.endswith(rhs):
             return [parts[0]]
         return list(parts)
