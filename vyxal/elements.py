@@ -4571,6 +4571,15 @@ def right_bit_shift(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
 
 
+def right_vectorise(function, *args, explicit=False, ctx: Context = None):
+    return vectorise(
+        lambda *a: safe_apply(function, *a[::-1], ctx=ctx),
+        *args[::-1],
+        explicit=explicit,
+        ctx=ctx,
+    )
+
+
 def roman_numeral(lhs, ctx):
     """Element øṘ
     (num) -> roman numeral of a
@@ -7211,6 +7220,12 @@ modifiers: dict[str, str] = {
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
+    ),
+    "¨V": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "res = right_vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx)\n"
+        "if eager: res = list(res)\n"
+        "stack.append(res)"
     ),
     "~": (
         "if function_A.arity >= 2:\n"

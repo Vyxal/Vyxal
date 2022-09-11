@@ -952,6 +952,17 @@ def test_complex_numbers():
     assert stack[-1] == 2 * sympy.I
 
 
+def test_right_vectorize():
+    stack = run_vyxal("¨V-", inputs=[[6, 7, 8, 9, 10], [1, 2, 3, 4, 5]])
+    assert stack[-1] == [
+        [5, 6, 7, 8, 9],
+        [4, 5, 6, 7, 8],
+        [3, 4, 5, 6, 7],
+        [2, 3, 4, 5, 6],
+        [1, 2, 3, 4, 5],
+    ]
+
+
 def test_all_powers():
     stack = run_vyxal("4 ¨e")
     assert stack[-1][:8] == [4, 16, 64, 256, 1024, 4096, 16384, 65536]

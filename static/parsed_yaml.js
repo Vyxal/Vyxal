@@ -1213,6 +1213,12 @@ var codepage_descriptions =
       "token": "V"
     },
     {
+      "name": "Right vectorize",
+      "description": "Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.",
+      "usage": "\u00a8V<element>",
+      "token": "\u00a8V"
+    },
+    {
       "name": "Upercase vowels",
       "description": "\"AEIOU\" (Vowels uppercase)",
       "token": "kV"

@@ -1400,6 +1400,12 @@
   arity: "*"
   usage: ¨v<element>
 
+- modifier: "¨V"
+  name: Right vectorize
+  description: Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+  arity: "*"
+  usage: ¨V<element>
+
 - element: "w"
   name: Listify
   description: a wrapped in a singleton list
