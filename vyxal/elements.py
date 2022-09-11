@@ -337,6 +337,14 @@ def all_partitions(lhs, ctx):
     return uniquify(gen(), ctx=ctx)
 
 
+def all_powers(lhs, ctx):
+    """Element ¨e
+    (num) -> [a**1, a**2, a**3, a**4, ...]
+    (str) -> [a**1, a**2, a**3, a**4, ...]
+    """
+    return exponent(lhs, infinite_positives(ctx), ctx)
+
+
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
@@ -475,6 +483,19 @@ def arctan(lhs, ctx):
             sympy.nsimplify(sympy.atan(make_expression(lhs)), rational=True)
         ),
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
+
+
+def arctan2(lhs, rhs, ctx):
+    """Element ∆Ṫ
+    (num) -> arctan2(lhs, rhs)
+    """
+    ts = vy_type(lhs, rhs)
+    return {
+        ts: lambda: [lhs, rhs],
+        (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
+            sympy.atan2(lhs, rhs), rational=True
+        ),
+    }.get(ts, lambda: vectorise(arctan2, lhs, rhs, ctx=ctx))()
 
 
 def assign_iterable(lhs, rhs, other, ctx):
@@ -2041,6 +2062,80 @@ def head_remove(lhs, ctx):
     return iterable(lhs, range, ctx=ctx)[1:]
 
 
+def hyperbolic_arccosine(lhs, ctx):
+    """Element ∆Ȯ
+    (num) -> arccosh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.acosh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
+
+
+def hyperbolic_arcsine(lhs, ctx):
+    """Element ∆Ṡ
+    (num) -> arcsinh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.asinh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
+
+
+def hyperbolic_arctangent(lhs, ctx):
+    """Element ∆Ṅ
+    (num) -> arctanh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.atanh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
+
+
+def hyperbolic_cosine(lhs, ctx):
+    """Element ∆ȯ
+    (num) -> cosh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.cosh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
+
+
+def hyperbolic_sine(lhs, ctx):
+    """Element ∆ṡ
+    (num) -> sinh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.sinh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
+
+
+def hyperbolic_tangent(lhs, ctx):
+    """Element ∆ṅ
+    (num) -> tanh(lhs)
+    """
+
+    return {
+        NUMBER_TYPE: lambda: sympy.nsimplify(sympy.tanh(lhs), rational=True),
+        str: lambda: lhs,
+    }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
+
+
+def hypotenuse(lhs, ctx):
+    """Element ∆/
+    (lst) -> sqrt(lhs[0] ** 2 + lhs[1] ** 2)
+    """
+
+    return sympy.nsimplify(math.hypot(*lhs), rational=True)
+
+
 def identity_matrix(lhs, ctx):
     """Element Þ□
     (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
@@ -2231,6 +2326,21 @@ def infinite_integer_partitions(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+def infinite_non_negative_integers(_, ctx=None):
+    """Element Þ:
+    The list [0, 1, 2, ..., ∞]
+    """
+
+    @infinite_lazylist
+    def gen():
+        i = 0
+        while True:
+            yield i
+            i += 1
+
+    return gen()
+
+
 def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
@@ -2407,6 +2517,7 @@ def integer_divide(lhs, rhs, ctx):
 def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
+    (fun) -> First non-negative integer where function is truthy
     (any) -> Join on spaces
     """
     if vy_type(lhs) == NUMBER_TYPE:
@@ -2422,6 +2533,12 @@ def integer_parts_or_join_spaces(lhs, ctx):
             yield [n * sign]
 
         return helper(abs(lhs), 1)
+
+    elif isinstance(lhs, types.FunctionType):
+        x = 0
+        while not safe_apply(lhs, x, ctx=ctx):
+            x += 1
+        return x
 
     return join(lhs, " ", ctx)
 
@@ -3237,7 +3354,6 @@ def multiply(lhs, rhs, ctx):
         rhs.stored_arity = lhs
         return rhs
     else:
-        print(lhs, rhs)
         return {
             (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(lhs * rhs),
             (NUMBER_TYPE, str): lambda: lhs * rhs,
@@ -3768,14 +3884,31 @@ def overlapping_groups(lhs, rhs, ctx):
     """Element l
     (any, num) -> Overlapping groups/windows of a of length b
     (any, any) -> length(a) == length(b)
+    (any, fun) -> first lhs non-negative integers where function truthy
     """
-    if NUMBER_TYPE not in vy_type(lhs, rhs):
+    ts = vy_type(lhs, rhs)
+    if types.FunctionType in ts:
+        lhs, rhs = (rhs, lhs) if ts[0] == types.FunctionType else (lhs, rhs)
+
+        @lazylist
+        def gen():
+            x = 0
+            found = 0
+            while found < lhs:
+                if safe_apply(rhs, x, ctx=ctx):
+                    found += 1
+                    yield x
+                x += 1
+
+        return gen()
+
+    if NUMBER_TYPE not in ts:
         return int(len(iterable(lhs, ctx=ctx)) == len(rhs))
 
-    if vy_type(lhs) == NUMBER_TYPE:
+    if ts[0] == NUMBER_TYPE:
         lhs, rhs = rhs, lhs
 
-    stringify = vy_type(lhs) is str
+    stringify = type(lhs) is str
 
     @lazylist_from(lhs)
     def gen():
@@ -4436,6 +4569,15 @@ def right_bit_shift(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
+
+
+def right_vectorise(function, *args, explicit=False, ctx: Context = None):
+    return vectorise(
+        lambda *a: safe_apply(function, *a[::-1], ctx=ctx),
+        *args[::-1],
+        explicit=explicit,
+        ctx=ctx,
+    )
 
 
 def roman_numeral(lhs, ctx):
@@ -5207,7 +5349,6 @@ def surround(lhs, rhs, ctx):
     """
     # Also works with lists!
     ts = vy_type(lhs, rhs, simple=True)
-    print(ts)
     return {
         (NUMBER_TYPE, NUMBER_TYPE): lambda: sympy.nsimplify(
             str(rhs) + str(lhs) + str(rhs), rational=True
@@ -6264,7 +6405,6 @@ def wrap(lhs, rhs, ctx):
 
     elif ts == (str, str):
         parts = lhs.partition(rhs)[::2]
-        print(parts)
         if parts[1] == "" and not lhs.endswith(rhs):
             return [parts[0]]
         return list(parts)
@@ -6727,6 +6867,7 @@ else:
     "∆S": process_element(arcsin, 1),
     "∆t": process_element(tangent, 1),
     "∆T": process_element(arctan, 1),
+    "∆Ṫ": process_element(arctan2, 2),
     "∆q": process_element(quadratic_solver, 2),
     "∆Q": process_element(general_quadratic_solver, 2),
     "∆P": process_element(polynomial_roots, 1),
@@ -6777,6 +6918,13 @@ else:
     "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),
+    "∆ȯ": process_element(hyperbolic_cosine, 1),
+    "∆ṡ": process_element(hyperbolic_sine, 1),
+    "∆ṅ": process_element(hyperbolic_tangent, 1),
+    "∆Ȯ": process_element(hyperbolic_arccosine, 1),
+    "∆Ṡ": process_element(hyperbolic_arcsine, 1),
+    "∆Ṅ": process_element(hyperbolic_arctangent, 1),
+    "∆/": process_element(hypotenuse, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -6882,6 +7030,7 @@ else:
     "Þṁ": process_element(mold_special, 2),
     "ÞM": process_element(maximal_indices, 1),
     "Þ∞": process_element(infinite_positives, 0),
+    "Þ:": process_element(infinite_non_negative_integers, 0),
     "Þn": process_element(infinite_all_integers, 0),
     "Þ∴": process_element(element_wise_dyadic_maximum, 2),
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
@@ -6951,6 +7100,9 @@ else:
         1,
     ),
     "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
+    "¨e": process_element(all_powers, 1),
+    "¨²": ("stack.append(all_powers(2, ctx))", 0),
+    "¨₀": ("stack.append(all_powers(10, ctx))", 0),
     "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
     "ke": process_element("sympy.E", 0),
     "kf": process_element('"Fizz"', 0),
@@ -7068,6 +7220,12 @@ modifiers: dict[str, str] = {
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
+    ),
+    "¨V": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "res = right_vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx)\n"
+        "if eager: res = list(res)\n"
+        "stack.append(res)"
     ),
     "~": (
         "if function_A.arity >= 2:\n"

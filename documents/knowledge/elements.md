@@ -842,7 +842,7 @@ Join a by b.
 Used for constant digraphs.
 
 -------------------------------
-## `` l `` (Cumulative Groups)
+## `` l `` (Cumulative Groups / First Non-Negative Truthy Integers)
 
 Cumulative groups (overlapping groups, aperture) / Equal length
 
@@ -851,6 +851,8 @@ Cumulative groups (overlapping groups, aperture) / Equal length
 - any a, num b: `[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]`
 - num a, any b: `[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]`
 - any a, any b: `length(a) == length(b)`
+- any a, fun b: `first a non-negative integers where b is truthy`
+- fun a, any b: `first b non-negative integers where a is truthy`
 -------------------------------
 ## `` m `` (Mirror)
 
@@ -941,6 +943,15 @@ Simple vectorise an element. Well, you'll have to look at the code to know what 
 Usage:
 ```
 ¨v<element>
+```
+
+-------------------------------
+## `` ¨V `` (Right vectorize)
+Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+
+Usage:
+```
+¨V<element>
 ```
 
 -------------------------------
@@ -1568,7 +1579,7 @@ Insert a value at a specified index / Map a function over every nth item of a li
 - any a, num b, any c: `a.insert(b,c) (insert c at position b in a)`
 - any a, num b, fun c: `c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])`
 -------------------------------
-## `` Ṅ `` (Integer partitions)
+## `` Ṅ `` (Integer partitions / First Truthy Non-Negative Integer)
 
 Integer partitions / join by space
 
@@ -1576,6 +1587,7 @@ Integer partitions / join by space
 
 - num a: `integer_partitions(a) (integer partitions)`
 - any a: `" ".join(a) (join by space)`
+- fun a: `first truthy non-negative integer where a is truthy`
 -------------------------------
 ## `` Ȯ `` (Over)
 
@@ -2557,6 +2569,14 @@ Get the arctangent of an angle in radians
 
 - num a: `math.arctan(a)`
 -------------------------------
+## `` ∆Ṫ `` (Arc Tangent 2)
+
+Get the arctangent of an angle in radians
+
+### Overloads
+
+- num a, num b: `math.arctan2(a, b)`
+-------------------------------
 ## `` ∆P `` (Polynomial Solver)
 
 Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
@@ -2903,6 +2923,62 @@ Get the next multiple of a number greater than another number
 ### Overloads
 
 - num, num a: `get the next multiple of b that is greater than a`
+-------------------------------
+## `` ∆ȯ `` (Hyperbolic Cosine)
+
+Get the hyperbolic cosine of a number in radians
+
+### Overloads
+
+- num a: `cosh(a)`
+-------------------------------
+## `` ∆Ȯ `` (Hyperbolic Arccosine)
+
+Get the hyperbolic arccosine of a number in radians
+
+### Overloads
+
+- num a: `acosh(a)`
+-------------------------------
+## `` ∆ṡ `` (Hyperbolic Sine)
+
+Get the hyperbolic sine of a number in radians
+
+### Overloads
+
+- num a: `sinh(a)`
+-------------------------------
+## `` ∆Ṡ `` (Hyperbolic Arcsine)
+
+Get the hyperbolic arcsine of a number in radians
+
+### Overloads
+
+- num a: `asinh(a)`
+-------------------------------
+## `` ∆ṅ `` (Hyperbolic Tangent)
+
+Get the hyperbolic tangent of a number in radians
+
+### Overloads
+
+- num a: `tanh(a)`
+-------------------------------
+## `` ∆Ṅ `` (Hyperbolic Arctangent)
+
+Get the hyperbolic arctangent of a number in radians
+
+### Overloads
+
+- num a: `atanh(a)`
+-------------------------------
+## `` ∆/ `` (Hypotenuse)
+
+Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+
+### Overloads
+
+- lst a: `sqrt(sum(x ** 2 for x in a))`
 -------------------------------
 ## `` øb `` (Parenthesise)
 
@@ -3754,9 +3830,14 @@ Remove the last item of a list and prepend 0. A shortcut for Ṫ0p
 
 - lst a: `[0] + a[:-1]`
 -------------------------------
-## `` Þ∞ `` (Infinite List)
+## `` Þ∞ `` (Infinite List of Positive Integers)
 
 An infinite list of positive integers
+
+-------------------------------
+## `` Þ: `` (Infinite List of Non-Negative Integers)
+
+An infinite list of non-negative integers
 
 -------------------------------
 ## `` ÞR `` (Remove Last Item From Cumulative Sums and Prepend 0)
@@ -4019,6 +4100,31 @@ Return all multiples of a
 
 - num a: `[a*1, a*2, a*3, a*4, ...]`
 - str a: `[a*1, a*2, a*3, a*4, ...]`
+-------------------------------
+## `` ¨e `` (All Powers)
+
+Return all powers of a
+
+### Overloads
+
+- num a: `[a**1, a**2, a**3, a**4, ...]`
+- str a: `[a**1, a**2, a**3, a**4, ...]`
+-------------------------------
+## `` ¨² `` (All Powers of 2)
+
+Return all powers of 2
+
+### Overloads
+
+- none a: `[2**1, 2**2, 2**3, 2**4, ...]`
+-------------------------------
+## `` ¨₀ `` (All Powers of 10)
+
+Return all powers of 10
+
+### Overloads
+
+- none a: `[10**1, 10**2, 10**3, 10**4, ...]`
 -------------------------------
 ## `` ¨£ `` (Star Map)
 Reduce each pair of two lists zipped together by a function. Equivalent to Zvƒ

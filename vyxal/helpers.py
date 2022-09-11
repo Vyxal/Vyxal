@@ -658,10 +658,7 @@ def min_by(vec: VyList, key=None, cmp=None, ctx=DEFAULT_CTX):
     )
 
 
-def mold(
-    content: VyList,
-    shape: VyList,
-) -> VyList:
+def mold(content: VyList, shape: VyList) -> VyList:
 
     """
     Mold a list into a shape.
@@ -677,22 +674,22 @@ def mold(
     The content, molded into the shape.
     """
     # Because something needs to be mutated.
-    index = 0
+
+    content, shape = LazyList(content), LazyList(shape)
 
     @lazylist_from(content)
-    def _mold(content, shape):
-        nonlocal index
+    def _mold(content, shape, index=0):
+        output = []
+        index = index
         for item in shape:
-            if type(item) is list or type(item) is LazyList:
-                yield _mold(content, item)
+            if vy_type(item, simple=True) is list:
+                output.append(_mold(content, item, index))
+                yield output[-1]
+                index += len(output[-1]) - 1
             else:
-                # This should work for infinite lists
-                # Because taking the length of one will hang
-                try:
-                    yield content[index]
-                except IndexError:
-                    yield content[index % len(content)]
-                index += 1
+                output.append(content[index])
+                yield output[-1]
+            index += 1
 
     return _mold(content, shape)
 
@@ -715,20 +712,23 @@ def mold_without_repeat(
     VyList
     The content, molded into the shape.
     """
-    index = 0
 
     @lazylist_from(content)
-    def _mold(content, shape):
-        nonlocal index
+    def _mold(content, shape, index=0):
+        index = index
+        output = []
         for item in shape:
             if type(item) is list or type(item) is LazyList:
-                yield _mold(content, item)
+                output.append(_mold(content, item, index))
+                yield output[-1]
+                index += len(output[-1]) - 1
             else:
                 try:
-                    yield content[index]
-                    index += 1
+                    output.append(content[index])
+                    yield output[-1]
                 except IndexError:
                     break  # We've reached the end of content, stop looping
+            index += 1
 
     return _mold(content, shape)
 
@@ -1251,6 +1251,12 @@ def urlify(item: str) -> str:
 def vy_eval(item: str, ctx: Context) -> Any:
     """Evaluates an item. Does so safely if using the online
     interpreter"""
+    if item and type(item) is str and item[0] == "λ":
+        # Lambda, so return that
+        ctx.stacks.append([])
+        vyxal.elements.vy_exec(item, ctx=ctx)
+        fn = ctx.stacks.pop().pop()
+        return fn
     if ctx.online:
         try:
             t = ast.literal_eval(item)

@@ -17,8 +17,8 @@ from vyxal.LazyList import *
 
 
 def run_vyxal(vy_code, inputs=[], *, debug=False):
-    stack = list(map(vyxalify, inputs))
     ctx = Context()
+    stack = list(map(vyxalify, map(lambda x: vy_eval(x, ctx), inputs)))
     ctx.stacks.append(stack)
 
     py_code = transpile(vy_code)
@@ -44,6 +44,11 @@ def test_combs_without_replace():
 def test_deltas():
     stack = run_vyxal("Þ∞ ¯")
     assert stack[-1][:4] == [1, 1, 1, 1]
+
+
+def test_inf_non_negative():
+    stack = run_vyxal("Þ:")
+    assert stack[-1][:5] == [0, 1, 2, 3, 4]
 
 
 def test_vertical_mirror():
@@ -558,6 +563,10 @@ def test_first_integer_where_condition():
     assert stack[-1] == -4
     stack = run_vyxal("λ*16=;N")
     assert stack[-1] == 4
+    stack = run_vyxal("λu$e1=;Ṅ")
+    assert stack[-1] == 0
+    stack = run_vyxal("λu$e1=;5l")
+    assert stack[-1] == [0, 2, 4, 6, 8]
 
 
 def test_group_by_function():
@@ -625,6 +634,30 @@ def test_group_by_function_ordered():
         "v",
         "e",
     ]
+
+
+def test_lambda_as_input():
+    stack = run_vyxal("R", inputs=["λ*;", 68889])
+    assert stack[-1] == 27648
+
+    stack = run_vyxal("10M", inputs=["λ₍₃₅kF½*∑∴;"])
+    assert list(stack[-1]) == [
+        1,
+        2,
+        "Fizz",
+        4,
+        "Buzz",
+        "Fizz",
+        7,
+        8,
+        "Fizz",
+        "Buzz",
+    ]
+
+
+def test_mold():
+    stack = run_vyxal("⟨0|1|2|3|4|5|6|7|8|9⟩⟨`abc`f|\d|\e|`fg`f|`hij`f⟩•vh")
+    assert stack[-1] == [0, 3, 4, 5, 7]
 
 
 def test_overlapping_groups_modifier():
@@ -917,3 +950,34 @@ def test_minimums_by():
 def test_complex_numbers():
     stack = run_vyxal("°2")
     assert stack[-1] == 2 * sympy.I
+
+
+def test_right_vectorize():
+    stack = run_vyxal("¨V-", inputs=[[6, 7, 8, 9, 10], [1, 2, 3, 4, 5]])
+    assert stack[-1] == [
+        [5, 6, 7, 8, 9],
+        [4, 5, 6, 7, 8],
+        [3, 4, 5, 6, 7],
+        [2, 3, 4, 5, 6],
+        [1, 2, 3, 4, 5],
+    ]
+
+
+def test_all_powers():
+    stack = run_vyxal("4 ¨e")
+    assert stack[-1][:8] == [4, 16, 64, 256, 1024, 4096, 16384, 65536]
+
+    stack = run_vyxal("¨²")
+    assert stack[-1][:8] == [2, 4, 8, 16, 32, 64, 128, 256]
+
+    stack = run_vyxal("¨₀")
+    assert stack[-1][:8] == [
+        10,
+        100,
+        1000,
+        10000,
+        100000,
+        1000000,
+        10000000,
+        100000000,
+    ]
