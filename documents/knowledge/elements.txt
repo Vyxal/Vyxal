@@ -735,13 +735,15 @@ k (Constant Digraph)
 - Used for constant digraphs.
 
 -------------------------------
-l (Cumulative Groups)
+l (Cumulative Groups / First Non-Negative Truthy Integers)
 
 - Cumulative groups (overlapping groups, aperture) / Equal length
 
     any a, num b: [a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]
     num a, any b: [b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]
     any a, any b: length(a) == length(b)
+    any a, fun b: first a non-negative integers where b is truthy
+    fun a, any b: first b non-negative integers where a is truthy
 -------------------------------
 m (Mirror)
 
@@ -1348,12 +1350,13 @@ z (Zip-self)
     any a, num b, any c: a.insert(b,c) (insert c at position b in a)
     any a, num b, fun c: c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])
 -------------------------------
-Ṅ (Integer partitions)
+Ṅ (Integer partitions / First Truthy Non-Negative Integer)
 
 - Integer partitions / join by space
 
     num a: integer_partitions(a) (integer partitions)
     any a: " ".join(a) (join by space)
+    fun a: first truthy non-negative integer where a is truthy
 -------------------------------
 Ȯ (Over)
 
@@ -2256,6 +2259,13 @@ k• (Qwerty Keyboard)
     num a: math.arctan(a)
     otherwise: vectorise
 -------------------------------
+∆Ṫ (Arc Tangent 2)
+
+- Get the arctangent of an angle in radians
+
+    num a, num b: math.arctan2(a, b)
+    otherwise: vectorise
+-------------------------------
 ∆P (Polynomial Solver)
 
 - Solve a polynomial of the form a[0]x^len(a) + a[1]x^len(a)-1 ... = 0
@@ -2551,6 +2561,54 @@ k• (Qwerty Keyboard)
 
     num, num a: get the next multiple of b that is greater than a
     otherwise: vectorise
+-------------------------------
+∆ȯ (Hyperbolic Cosine)
+
+- Get the hyperbolic cosine of a number in radians
+
+    num a: cosh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ȯ (Hyperbolic Arccosine)
+
+- Get the hyperbolic arccosine of a number in radians
+
+    num a: acosh(a)
+    otherwise: vectorise
+-------------------------------
+∆ṡ (Hyperbolic Sine)
+
+- Get the hyperbolic sine of a number in radians
+
+    num a: sinh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṡ (Hyperbolic Arcsine)
+
+- Get the hyperbolic arcsine of a number in radians
+
+    num a: asinh(a)
+    otherwise: vectorise
+-------------------------------
+∆ṅ (Hyperbolic Tangent)
+
+- Get the hyperbolic tangent of a number in radians
+
+    num a: tanh(a)
+    otherwise: vectorise
+-------------------------------
+∆Ṅ (Hyperbolic Arctangent)
+
+- Get the hyperbolic arctangent of a number in radians
+
+    num a: atanh(a)
+    otherwise: vectorise
+-------------------------------
+∆/ (Hypotenuse)
+
+- Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
+
+    lst a: sqrt(sum(x ** 2 for x in a))
 -------------------------------
 øb (Parenthesise)
 
