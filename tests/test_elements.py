@@ -7300,7 +7300,7 @@ def test_Join():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_CumulativeGroups():
+def test_CumulativeGroupsFirstNon_NegativeTruthyIntegers():
 
     stack = [vyxalify(item) for item in ["hello",3]]
     expected = vyxalify(["hel","ell","llo"])
@@ -14943,7 +14943,7 @@ def test_Insert():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Integerpartitions():
+def test_IntegerpartitionsFirstTruthyNon_NegativeInteger():
 
     stack = [vyxalify(item) for item in [5]]
     expected = vyxalify([[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]])

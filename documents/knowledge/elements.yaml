@@ -1245,13 +1245,15 @@
   arity: 0
 
 - element: "l"
-  name: Cumulative Groups
+  name: Cumulative Groups / First Non-Negative Truthy Integers
   description: Cumulative groups (overlapping groups, aperture) / Equal length
   arity: 2
   overloads:
       any-num: "[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]"
       num-any: "[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]"
       any-any: length(a) == length(b)
+      any-fun: first a non-negative integers where b is truthy
+      fun-any: first b non-negative integers where a is truthy
   vectorise: false
   tests:
       - '["hello",3] : ["hel","ell","llo"]'
@@ -2392,12 +2394,13 @@
       - '["jknop",2,"lm"] : "jklmnop"'
 
 - element: "Ṅ"
-  name: Integer partitions
+  name: Integer partitions / First Truthy Non-Negative Integer
   description: Integer partitions / join by space
   arity: 1
   overloads:
       num: integer_partitions(a) (integer partitions)
       any: '" ".join(a) (join by space)'
+      fun: first truthy non-negative integer where a is truthy
   vectorise: false
   tests:
       - "[5] : [[1,1,1,1,1],[2,1,1,1],[3,1,1],[2,2,1],[4,1],[3,2],[5]]"

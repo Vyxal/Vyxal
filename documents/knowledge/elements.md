@@ -842,7 +842,7 @@ Join a by b.
 Used for constant digraphs.
 
 -------------------------------
-## `` l `` (Cumulative Groups)
+## `` l `` (Cumulative Groups / First Non-Negative Truthy Integers)
 
 Cumulative groups (overlapping groups, aperture) / Equal length
 
@@ -851,6 +851,8 @@ Cumulative groups (overlapping groups, aperture) / Equal length
 - any a, num b: `[a[0:b], a[1:b+1], a[2:b+2], ..., a[-b:]]`
 - num a, any b: `[b[0:a], b[1:a+1], b[2:a+2], ..., b[-a:]]`
 - any a, any b: `length(a) == length(b)`
+- any a, fun b: `first a non-negative integers where b is truthy`
+- fun a, any b: `first b non-negative integers where a is truthy`
 -------------------------------
 ## `` m `` (Mirror)
 
@@ -1568,7 +1570,7 @@ Insert a value at a specified index / Map a function over every nth item of a li
 - any a, num b, any c: `a.insert(b,c) (insert c at position b in a)`
 - any a, num b, fun c: `c mapped over every bth item of a ([c(v) if i%b==0 else v for i,v in enumerate(a)])`
 -------------------------------
-## `` Ṅ `` (Integer partitions)
+## `` Ṅ `` (Integer partitions / First Truthy Non-Negative Integer)
 
 Integer partitions / join by space
 
@@ -1576,6 +1578,7 @@ Integer partitions / join by space
 
 - num a: `integer_partitions(a) (integer partitions)`
 - any a: `" ".join(a) (join by space)`
+- fun a: `first truthy non-negative integer where a is truthy`
 -------------------------------
 ## `` Ȯ `` (Over)
 
