@@ -4239,7 +4239,7 @@ def product(lhs, ctx):
     (lst[str|lst]) -> Cartesian product over a list of lists
     """
     if vy_type(lhs) == NUMBER_TYPE:
-        return bin(lhs)[1:]
+        return bin(lhs)[2:]
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
         return foldl(multiply, lhs, initial=1, ctx=ctx)
 
