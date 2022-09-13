@@ -13,6 +13,7 @@ import re
 import textwrap
 import types
 from typing import Any, Iterable, List, Optional, Union
+import unicodedata
 
 import sympy
 from sympy.parsing.sympy_parser import (
@@ -576,17 +577,41 @@ def make_equation(eqn: str) -> sympy:
     return sympy.Eq(make_expression(eqn[0]), make_expression(eqn[1]))
 
 
-# Deleted until we can fix bugs
-"""
 def make_expression(expr: str) -> sympy:
-    """ """Turns a string into a nice sympy expression""" """
+    """Turns a string into a nice sympy expression"""
+
+    # Normalize the string according to how python normalizes it first
+    expr = unicodedata.normalize("NFKC", expr)
+
+    # Remove all problematic characters from expr
+    # "\\\"'{}_`" is the set of characters that are problematic
+
+    expr = "".join(char for char in expr if char not in "\\\"'{}[]_`")
+
+    # Keep only "."s that have numbers on either side
+
+    expr = re.sub(r"(\D)\.(\D)", r"\1\2", expr)
+
+    # Remove runs of characters longer than 1
+
+    expr = re.sub(r"([A-z])+", r"\1", expr)
+
+    # Substitute some letters for their Sympy equivalents
+
+    expr = expr.replace("T", "tan")
+    expr = expr.replace("S", "sin")
+    expr = expr.replace("C", "cos")
+    expr = expr.replace("N", "log")
+    expr = expr.replace("E", "exp")
+    expr = expr.replace("I", "integrate")
+    expr = expr.replace("D", "diff")
+
     transformations = standard_transformations + (
         implicit_multiplication_application,
         convert_xor,
     )
 
     return sympy.parse_expr(expr, transformations=transformations)
-"""
 
 
 def max_by(vec: VyList, key=lambda x: x, cmp=None, ctx=DEFAULT_CTX):
