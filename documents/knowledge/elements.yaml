@@ -3089,10 +3089,13 @@
   arity: 1
   description: Product of Array / Cartesian product over a list of lists
   overloads:
+      num: binary representation of a (shortcut for bṅ)
       lst[num]: reduce list by multiplication
       lst[str|lst]: reduce list by Cartesian product
   vectorise: false
   tests:
+      - '[3] : "11"'
+      - '[30] : "11110"'
       - "[[3,4,5]] : 60"
       - "[[]] : 1"
       - "[[[1, 2], [3], [4, 5]]] : [[1, 3, 4], [1, 3, 5], [2, 3, 4], [2, 3, 5]]"
