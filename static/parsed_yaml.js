@@ -1213,6 +1213,12 @@ var codepage_descriptions =
       "token": "V"
     },
     {
+      "name": "Right vectorize",
+      "description": "Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.",
+      "usage": "\u00a8V<element>",
+      "token": "\u00a8V"
+    },
+    {
       "name": "Upercase vowels",
       "description": "\"AEIOU\" (Vowels uppercase)",
       "token": "kV"
@@ -3610,7 +3616,7 @@ var codepage_descriptions =
     {
       "name": "Product of Array / Cartesian product over list",
       "description": "Product of Array / Cartesian product over a list of lists",
-      "overloads": "lst[num] -> reduce list by multiplication\nlst[str|lst] -> reduce list by Cartesian product",
+      "overloads": "num -> binary representation of a (shortcut for b\u1e45)\nlst[num] -> reduce list by multiplication\nlst[str|lst] -> reduce list by Cartesian product",
       "token": "\u03a0"
     },
     {

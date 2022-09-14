@@ -946,6 +946,15 @@ Usage:
 ```
 
 -------------------------------
+## `` ¨V `` (Right vectorize)
+Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+
+Usage:
+```
+¨V<element>
+```
+
+-------------------------------
 ## `` w `` (Listify)
 
 a wrapped in a singleton list
@@ -2064,6 +2073,7 @@ Product of Array / Cartesian product over a list of lists
 
 ### Overloads
 
+- num a: `binary representation of a (shortcut for bṅ)`
 - lst[num] a: `reduce list by multiplication`
 - lst[str|lst] a: `reduce list by Cartesian product`
 -------------------------------

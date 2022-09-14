@@ -4234,9 +4234,12 @@ def prime_factors(lhs, ctx):
 
 def product(lhs, ctx):
     """Element Π
+    (num) -> bin(lhs)
     (lst[num]) -> product(list)
     (lst[str|lst]) -> Cartesian product over a list of lists
     """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return bin(lhs)[2:]
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
         return foldl(multiply, lhs, initial=1, ctx=ctx)
 
@@ -4569,6 +4572,15 @@ def right_bit_shift(lhs, rhs, ctx):
         (NUMBER_TYPE, str): lambda: rhs.rjust(int(lhs), " "),
         (str, str): lambda: lhs.rjust(len(rhs), " "),
     }.get(ts, lambda: vectorise(right_bit_shift, lhs, rhs, ctx=ctx))()
+
+
+def right_vectorise(function, *args, explicit=False, ctx: Context = None):
+    return vectorise(
+        lambda *a: safe_apply(function, *a[::-1], ctx=ctx),
+        *args[::-1],
+        explicit=explicit,
+        ctx=ctx,
+    )
 
 
 def roman_numeral(lhs, ctx):
@@ -7211,6 +7223,12 @@ modifiers: dict[str, str] = {
         "stack.append"
         "(vectorise(function_A, *(arguments[::-1]), ctx=ctx))"
         "\n"
+    ),
+    "¨V": (
+        "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
+        "res = right_vectorise(function_A, *(arguments[::-1]), explicit=True, ctx=ctx)\n"
+        "if eager: res = list(res)\n"
+        "stack.append(res)"
     ),
     "~": (
         "if function_A.arity >= 2:\n"

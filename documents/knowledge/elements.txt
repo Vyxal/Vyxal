@@ -820,6 +820,13 @@ v (Vectorise)
     ¨v<element>
 
 -------------------------------
+¨V (Right vectorize)
+
+- Right vectorize an element. Like `v`, but vectorizes on the rightmost list instead of the leftmost list.
+
+    ¨V<element>
+
+-------------------------------
 w (Listify)
 
 - a wrapped in a singleton list
@@ -1765,6 +1772,7 @@ z (Zip-self)
 
 - Product of Array / Cartesian product over a list of lists
 
+    num a: binary representation of a (shortcut for bṅ)
     lst[num] a: reduce list by multiplication
     lst[str|lst] a: reduce list by Cartesian product
 -------------------------------
