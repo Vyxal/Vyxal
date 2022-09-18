@@ -590,7 +590,7 @@ def make_expression(expr: str) -> sympy:
 
     # Keep only "."s that have numbers on either side
 
-    expr = re.sub(r"(\D)\.(\D)", r"\1\2", expr)
+    expr = re.sub(r"(\D)\.(\D)", "", expr)
 
     # Remove runs of characters longer than 1
 
