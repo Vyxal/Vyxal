@@ -1098,7 +1098,7 @@ def cumulative_sum(lhs, ctx):
     """
     if lhs == "":
         return []
-    elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
+    elif vy_type(lhs, simple=True) is list and not LazyList(lhs).has_ind(0):
         return []
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
 
