@@ -2073,6 +2073,7 @@ Product of Array / Cartesian product over a list of lists
 
 ### Overloads
 
+- num a: `binary representation of a (shortcut for bṅ)`
 - lst[num] a: `reduce list by multiplication`
 - lst[str|lst] a: `reduce list by Cartesian product`
 -------------------------------

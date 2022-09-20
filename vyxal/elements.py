@@ -1098,7 +1098,7 @@ def cumulative_sum(lhs, ctx):
     """
     if lhs == "":
         return []
-    elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
+    elif vy_type(lhs, simple=True) is list and not LazyList(lhs).has_ind(0):
         return []
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
 
@@ -4234,9 +4234,12 @@ def prime_factors(lhs, ctx):
 
 def product(lhs, ctx):
     """Element Π
+    (num) -> bin(lhs)
     (lst[num]) -> product(list)
     (lst[str|lst]) -> Cartesian product over a list of lists
     """
+    if vy_type(lhs) == NUMBER_TYPE:
+        return bin(lhs)[2:]
     if all(vy_type(x) == NUMBER_TYPE for x in lhs):
         return foldl(multiply, lhs, initial=1, ctx=ctx)
 

@@ -924,6 +924,11 @@ def test_close_all_structs():
     assert stack[-1] == [9]
 
 
+def test_cumulative_sum_inf():
+    stack = run_vyxal("Þ∞¦")
+    assert stack[-1][:10] == [1, 3, 6, 10, 15, 21, 28, 36, 45, 55]
+
+
 def test_adjacent_filter():
     stack = run_vyxal("λ;Ż", inputs=[[0, 0, 1, 2, 3, 0, 4, 5, 0]])
     assert stack[-1] == [[1, 2, 3], [4, 5]]
