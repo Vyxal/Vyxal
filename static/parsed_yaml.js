@@ -3574,7 +3574,7 @@ var codepage_descriptions =
   "248": [
     {
       "name": "Index of next character in codepage",
-      "description": "Compressed number in 1-128 (prefix)",
+      "description": "Return the index of the next character in the vyxal code page + 101",
       "token": "\u207a"
     }
   ],
