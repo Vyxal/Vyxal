@@ -26,7 +26,7 @@ object lexer extends RegexParsers {
     def digraph: Parser[DIGRAPH] = s"[∆øÞ#][$CODEPAGE]".r ^^ { case value => DIGRAPH(value) }
     def command: Parser[COMMAND] = s"[$CODEPAGE]".r ^^ { case value => COMMAND(value) }
 
-    def tokens: Parser[List[VyxalToken]] = phrase(rep1(digraph | structureClose | number | string | command | structureOpen)) ^^ { case tokens => tokens }
+    def tokens: Parser[List[VyxalToken]] = phrase(rep1(number | string | digraph | structureOpen | structureClose | command)) ^^ { case tokens => tokens }
     def apply(code: String): Either[VyxalLexerError, List[VyxalToken]] = {
     parse(tokens, code) match {
       case NoSuccess(msg, next) => Left(VyxalLexerError(msg))
