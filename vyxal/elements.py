@@ -5687,24 +5687,38 @@ def untruth(lhs, ctx):
     """Element Þǔ
     (any) -> [int(x in a) for x in range(max(a))]
     """
+
+
+def untruth(lhs, ctx):
+    """Element Þǔ
+    (any) -> [int(x in a) for x in range(max(a))]
+    """
+
     lhs = iterable(lhs, ctx=ctx)
-    if any(vy_type(x) != NUMBER_TYPE for x in lhs):
-        lhs = [iterable(x, ctx=ctx) for x in lhs]
-        dimensions = len(lhs[0])
-        maxCoords = [max(x[i] for x in lhs) + 1 for i in range(dimensions)]
-        deep_listify = (
-            lambda a: [deep_listify(x) for x in a]
-            if vy_type(a, simple=True) is list
-            else a
-        )
-        matrix = deep_listify(zero_matrix(maxCoords[::-1], ctx=ctx))
-        for x in lhs:
-            ref = matrix
-            for i in range(dimensions - 1):
-                ref = ref[x[i]]
-            ref[x[dimensions - 1]] = 1
-        return matrix
-    return [int(x in lhs) for x in range((monadic_maximum(lhs, ctx) or -1) + 1)]
+
+    if all(vy_type(x) == NUMBER_TYPE for x in lhs):
+        return [sympy.nsimplify(int(x in lhs)) for x in range(max(lhs) + 1)]
+
+    def recursive_helper(indices, shape=None, upper_level=[]):
+        if not shape:
+            shape = [max(index_zipped) for index_zipped in zip(*indices)]
+        upper_len = len(upper_level)
+        if upper_len < len(shape) - 1:
+            return [
+                recursive_helper(
+                    indices, shape=shape, upper_level=upper_level + [i]
+                )
+                for i in range(shape[upper_len] + 1)
+            ]
+        else:
+            return [
+                sympy.nsimplify(1)
+                if (upper_level + [i] in indices)
+                else sympy.nsimplify(0)
+                for i in range(shape[-1] + 1)
+            ]
+
+    return recursive_helper(lhs)
 
 
 def unwrap(lhs, ctx):
