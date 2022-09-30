@@ -3266,6 +3266,25 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
+def multi_dimensional_enumerate(lhs, ctx):
+    """Element Þė
+    (lst) -> Enumerate the list but also the sublists and so on
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+    temp = enumerate_md(lhs)
+
+    @lazylist_from(temp)
+    def gen():
+        for item in temp:
+            if len(item[0]) == 1:
+                yield [item[0][0], item[1]]
+            else:
+                yield item
+
+    return gen()
+
+
 def multi_dimensional_index(lhs, rhs, ctx):
     """Element Þi
     (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
@@ -3275,6 +3294,21 @@ def multi_dimensional_index(lhs, rhs, ctx):
         lhs = index(lhs, item, ctx)
 
     return lhs
+
+
+def multi_dimensional_indices(lhs, ctx):
+    """Element Þẏ
+    (lst) -> All the possible indices in a, accounting for ragged lists
+    """
+
+    lhs = iterable(lhs, ctx=ctx)
+
+    @lazylist_from(lhs)
+    def gen():
+        for ind, _ in enumerate_md(lhs):
+            yield ind if len(ind) > 1 else ind[0]
+
+    return gen()
 
 
 def multi_dimensional_search(lhs, rhs, ctx):
@@ -7080,6 +7114,8 @@ else:
     "ÞŻ": process_element(sort_every_level, 1),
     "ÞṖ": process_element(index_partition, 2),
     "Þṗ": process_element(boolean_partition, 2),
+    "Þė": process_element(multi_dimensional_enumerate, 1),
+    "Þẏ": process_element(multi_dimensional_indices, 1),
     "¨□": process_element(parse_direction_arrow_to_integer, 1),
     "¨^": process_element(parse_direction_arrow_to_vector, 1),
     "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),

@@ -169,17 +169,19 @@ def enumerate_md(
     def gen():
         for i, item in enumerate(haystack):
             if type(item) in (list, LazyList):
+                if not item:
+                    yield [LazyList(_index_stack) + [i], item]
                 if include_all:
-                    yield (list(_index_stack) + [i], item)
+                    yield [LazyList(_index_stack) + [i], item]
                 yield from enumerate_md(item, _index_stack + (i,), include_all)
             elif type(item) is str and len(item) > 1:
                 if include_all:
-                    yield (list(_index_stack) + [i], item)
+                    yield [LazyList(_index_stack) + [i], item]
                 yield from enumerate_md(
-                    list(item), _index_stack + (i,), include_all
+                    LazyList(item), _index_stack + (i,), include_all
                 )
             else:
-                yield (list(_index_stack) + [i], item)
+                yield (LazyList(_index_stack) + [i], item)
 
     return gen()
 
