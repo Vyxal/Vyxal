@@ -726,6 +726,17 @@ def test_string_interop():
     assert stack[-1] == "hello 2 world 1"
 
 
+def test_parallel_modifiers():
+    stack = run_vyxal("1001 1001 ₍₃₅", inputs=[1001, 1001])
+    assert stack[-1] == [0, 0]
+    stack = run_vyxal("₍₃₅W", inputs=[1001])
+    assert stack[-1] == [[0, 0]]
+    stack = run_vyxal("₌+-", inputs=[3, 4])
+    assert stack[-1] == -1
+    stack = run_vyxal("2 3 4₍+-")
+    assert stack[-1] == [7, -1]
+
+
 def test_conditional_execute_modifier():
     stack = run_vyxal("12 19 1 ß%")
     assert stack[-1] == 12
