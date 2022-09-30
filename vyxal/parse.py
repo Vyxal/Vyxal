@@ -250,7 +250,7 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, parent)
             relevant = remaining[0]
 
             if isinstance(
@@ -278,7 +278,7 @@ def parse(
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, parent)
 
             if len(remaining) < 2:
                 remaining.append(
@@ -321,7 +321,7 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, parent)
             if isinstance(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
@@ -366,7 +366,6 @@ def parse(
             continue  # ignore it. This also ignores spaces btw
         else:
             structures.append(structure.GenericStatement([head]))
-
     return structures
 
 
