@@ -727,14 +727,14 @@ def test_string_interop():
 
 
 def test_parallel_modifiers():
-    stack = run_vyxal("1001 1001 ₍₃₅", inputs=[1001, 1001])
+    stack = run_vyxal("₍₃₅", inputs=[1001])
     assert stack[-1] == [0, 0]
     stack = run_vyxal("₍₃₅W", inputs=[1001])
     assert stack[-1] == [[0, 0]]
     stack = run_vyxal("₌+-", inputs=[3, 4])
     assert stack[-1] == -1
     stack = run_vyxal("2 3 4₍+-")
-    assert stack[-1] == [7, -1]
+    assert stack == [2, [7, -1]]
 
 
 def test_conditional_execute_modifier():
