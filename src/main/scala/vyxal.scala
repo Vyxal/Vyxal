@@ -1,8 +1,8 @@
 object vyxal {
   def main(args: Array[String]) = {
     if (args.length == 0) {
-      // println("Usage: vyxal <file>")
-      // System.exit(1)
+      println("Usage: vyxal <file>")
+      System.exit(1)
 
     }
     val fileLocation = args(0)
@@ -20,5 +20,6 @@ object vyxal {
     println(fileLocation)
     println(flags)
     println(inputs.mkString("[ ", " | ", " ]"))
+    println(lexer(fileLocation))
   }
 }
