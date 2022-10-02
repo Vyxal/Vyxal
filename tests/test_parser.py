@@ -283,5 +283,28 @@ def test_lambda_to_newline():
             GenericStatement([Token(TokenType.GENERAL, "M")]),
         ]
     )
-    print(g, "|", h)
     assert g == h
+
+
+def test_recursion_and_break_has_parent_after_a_modifier():
+    assert str(fully_parse("λf[vḢx")) == str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "f")]),
+                    IfStatement(
+                        [
+                            MonadicModifier(
+                                "v",
+                                GenericStatement(
+                                    [Token(TokenType.GENERAL, "Ḣ")]
+                                ),
+                            ),
+                            RecurseStatement(structure.Lambda),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    )
