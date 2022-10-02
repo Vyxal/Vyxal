@@ -287,7 +287,7 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens, parent)
+            remaining = parse(tokens, parent or structure_cls)
             relevant = remaining[0]
 
             if isinstance(
@@ -313,7 +313,7 @@ def parse(
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens, parent)
+            remaining = parse(tokens, parent or structure_cls)
 
             if len(remaining) < 2:
                 remaining.append(
@@ -356,7 +356,7 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens, parent)
+            remaining = parse(tokens, parent or structure_cls)
             if isinstance(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
