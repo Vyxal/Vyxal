@@ -7249,22 +7249,24 @@ modifiers: dict[str, str] = {
         "ctx=ctx))\n"
     ),
     "₌": (
+        "temp = wrapify(stack, max(function_A.arity, function_B.arity), ctx=ctx)\n"
+        "stack += temp\n"
         "stack_copy = list(deep_copy(stack))\n"
-        "arguments_A = wrapify(stack_copy, max(function_A.arity, "
-        "len(stack_copy)), ctx=ctx)\n"
-        "arguments_B = wrapify(stack, max(function_B.arity, len(stack)), "
-        "ctx=ctx)\n"
-        "stack.append(safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx))\n"
-        "stack.append(safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx))\n"
+        "pop(stack, max(function_A.arity, function_B.arity), ctx)\n"
+        "a_arity = function_A.arity or len(stack)\n"
+        "b_arity = function_B.arity or len(stack)\n"
+        "stack.append(safe_apply(function_A, *stack_copy[-a_arity:][::-1], ctx=ctx))\n"
+        "stack.append(safe_apply(function_B, *stack_copy[-b_arity:][::-1], ctx=ctx))\n"
     ),
     "₍": (
+        "temp = wrapify(stack, max(function_A.arity, function_B.arity), ctx=ctx)\n"
+        "stack += temp\n"
         "stack_copy = list(deep_copy(stack))\n"
-        "arguments_A = wrapify(stack_copy, max(function_A.arity, "
-        "len(stack_copy)), ctx=ctx)\n"
-        "arguments_B = wrapify(stack, max(function_B.arity, len(stack)), "
-        "ctx=ctx)\n"
-        "res_A = safe_apply(function_A, *(arguments_A[::-1]), ctx=ctx)\n"
-        "res_B = safe_apply(function_B, *(arguments_B[::-1]), ctx=ctx)\n"
+        "pop(stack, max(function_A.arity, function_B.arity), ctx)\n"
+        "a_arity = function_A.arity or len(stack)\n"
+        "b_arity = function_B.arity or len(stack)\n"
+        "res_A = safe_apply(function_A, *stack_copy[-a_arity:][::-1], ctx=ctx)\n"
+        "res_B = safe_apply(function_B, *stack_copy[-b_arity:][::-1], ctx=ctx)\n"
         "stack.append([res_A, res_B])\n"
     ),
     "ƒ": (
