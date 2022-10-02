@@ -2040,7 +2040,7 @@ Three Element lambda function (prefix)
 -------------------------------
 ## `` ⁺ `` (Index of next character in codepage)
 
-Compressed number in 1-128 (prefix)
+Return the index of the next character in the vyxal code page + 101
 
 -------------------------------
 ## `` ↵ `` (Split On newlines)
@@ -4018,6 +4018,22 @@ Split a list on truthy indices / Partition a list on truthy items
 ### Overloads
 
 - lst a, lst b: `Split a on truthy indices in b`
+-------------------------------
+## `` Þẏ `` (Multidimensonal Indices)
+
+A list of indices for a multidimensional list
+
+### Overloads
+
+- lst a: `A list of indices for a multidimensional list`
+-------------------------------
+## `` Þė `` (Multidimensonal Enumeration)
+
+Enumerate a list and all its sublists
+
+### Overloads
+
+- lst a: `Enumerate a list and all its sublists`
 -------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 

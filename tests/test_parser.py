@@ -221,11 +221,17 @@ def test_break_works_good_with_modifiers():
 
 def test_break_works_good_with_modifiers():
     assert str(fully_parse("vx")) == str(
-        [MonadicModifier("v", RecurseStatement(None))]
+        [MonadicModifier("v", RecurseStatement(structure.GenericStatement))]
     )
 
     assert str(fully_parse("₌xx")) == str(
-        [DyadicModifier("₌", RecurseStatement(None), RecurseStatement(None))]
+        [
+            DyadicModifier(
+                "₌",
+                RecurseStatement(structure.GenericStatement),
+                RecurseStatement(structure.GenericStatement),
+            )
+        ]
     )
 
     assert str(fully_parse("≬3dx")) == str(
@@ -235,7 +241,69 @@ def test_break_works_good_with_modifiers():
                 [
                     GenericStatement([Token(TokenType.NUMBER, "3")]),
                     GenericStatement([Token(TokenType.GENERAL, "d")]),
-                    RecurseStatement(None),
+                    RecurseStatement(structure.GenericStatement),
+                ],
+            )
+        ]
+    )
+
+
+def test_lambda_to_newline():
+
+    g = str(fully_parse("++)"))
+    h = str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
+                    GenericStatement([Token(TokenType.GENERAL, "+")]),
+                ],
+            )
+        ]
+    )
+
+    assert g == h
+
+    g = str(fully_parse("₁\n₍₃₅)M"))
+    h = str(
+        [
+            GenericStatement([Token(TokenType.GENERAL, "₁")]),
+            GenericStatement([Token(TokenType.GENERAL, "\n")]),
+            Lambda(
+                "default",
+                [
+                    DyadicModifier(
+                        "₍",
+                        GenericStatement([Token(TokenType.GENERAL, "₃")]),
+                        GenericStatement([Token(TokenType.GENERAL, "₅")]),
+                    )
+                ],
+            ),
+            GenericStatement([Token(TokenType.GENERAL, "M")]),
+        ]
+    )
+    assert g == h
+
+
+def test_recursion_and_break_has_parent_after_a_modifier():
+    assert str(fully_parse("λf[vḢx")) == str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "f")]),
+                    IfStatement(
+                        [
+                            MonadicModifier(
+                                "v",
+                                GenericStatement(
+                                    [Token(TokenType.GENERAL, "Ḣ")]
+                                ),
+                            ),
+                            RecurseStatement(structure.Lambda),
+                        ]
+                    ),
                 ],
             )
         ]

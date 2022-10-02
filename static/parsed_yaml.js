@@ -2186,6 +2186,12 @@ var codepage_descriptions =
       "description": "Get the nth digit of Euler's number (e)",
       "overloads": "num -> nth_digit_of_e(a)\nstr -> derivative(a)",
       "token": "\u2206\u0117"
+    },
+    {
+      "name": "Multidimensonal Enumeration",
+      "description": "Enumerate a list and all its sublists",
+      "overloads": "lst -> Enumerate a list and all its sublists",
+      "token": "\u00de\u0117"
     }
   ],
   "145": [
@@ -2429,6 +2435,12 @@ var codepage_descriptions =
       "description": "Range from 0 to length of a",
       "overloads": "any -> range(0, len(a)) (exclusive range from 0 to length of a)",
       "token": "\u1e8f"
+    },
+    {
+      "name": "Multidimensonal Indices",
+      "description": "A list of indices for a multidimensional list",
+      "overloads": "lst -> A list of indices for a multidimensional list",
+      "token": "\u00de\u1e8f"
     }
   ],
   "160": [
@@ -3574,7 +3586,7 @@ var codepage_descriptions =
   "248": [
     {
       "name": "Index of next character in codepage",
-      "description": "Compressed number in 1-128 (prefix)",
+      "description": "Return the index of the next character in the vyxal code page + 101",
       "token": "\u207a"
     }
   ],
