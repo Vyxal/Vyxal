@@ -6224,6 +6224,32 @@
       - "[[1,2,3,4,5,6], [0,1,0,0]] : [[1], [2, 3, 4, 5, 6]]"
       - "[[2,3,4,5,6], [1,1,0,1]] : [[], [2], [3, 4], [5, 6]]"
 
+- element: "Þẏ"
+  name: Multidimensonal Indices
+  description: A list of indices for a multidimensional list
+  arity: 1
+  overloads:
+      lst: A list of indices for a multidimensional list
+  vectorise: false
+  tests:
+      - "[[69, 69, 69, 69, 69]] : [0, 1, 2, 3, 4]"
+      - "[[69, [69, 69, 69], 69, [69, 69]]] : [0, [1, 0], [1, 1], [1, 2], 2, [3, 0], [3, 1]]"
+      - "[[]] : []"
+      - "[[[], [], []]] : [0, 1, 2]"
+
+- element: "Þė"
+  name: Multidimensonal Enumeration
+  description: Enumerate a list and all its sublists
+  arity: 1
+  overloads:
+      lst: Enumerate a list and all its sublists
+  vectorise: false
+  tests:
+      - "[[69, 69, 69, 69, 69]] : [[0, 69], [1, 69], [2, 69], [3, 69], [4, 69]]"
+      - "[[69, [69, 69, 69], 69, [69, 69]]] : [[0, 69], [[1, 0], 69], [[1, 1], 69], [[1, 2], 69], [2, 69], [[3, 0], 69], [[3, 1], 69]]"
+      - "[[]] : []"
+      - "[[[], [], []]] : [[0, []], [1, []], [2, []]]"
+
 - element: "¨□"
   name: Parse direction arrow to integer
   description: Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)

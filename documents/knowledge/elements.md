@@ -4019,6 +4019,22 @@ Split a list on truthy indices / Partition a list on truthy items
 
 - lst a, lst b: `Split a on truthy indices in b`
 -------------------------------
+## `` Þẏ `` (Multidimensonal Indices)
+
+A list of indices for a multidimensional list
+
+### Overloads
+
+- lst a: `A list of indices for a multidimensional list`
+-------------------------------
+## `` Þė `` (Multidimensonal Enumeration)
+
+Enumerate a list and all its sublists
+
+### Overloads
+
+- lst a: `Enumerate a list and all its sublists`
+-------------------------------
 ## `` ¨□ `` (Parse direction arrow to integer)
 
 Map characters in `>^<v` to integers (0, 1, 2, 3 respectively)
