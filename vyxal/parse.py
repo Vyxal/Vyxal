@@ -16,6 +16,7 @@ from typing import Optional
 
 from vyxal import lexer, structure
 
+
 STRUCTURE_INFORMATION = {
     # (Name, Closing character)
     "[": (structure.IfStatement, "]"),
@@ -45,6 +46,7 @@ TRIADIC_MODIFIERS = list("≬")
 
 BREAK_CHARACTER = "X"
 RECURSE_CHARACTER = "x"
+CLOSE_PARENTHESIS = ")"
 
 DEFAULT_ARITY = "default"
 
@@ -119,6 +121,19 @@ def parse(
             structures.append(structure.BreakStatement(parent))
         elif head.value == RECURSE_CHARACTER:
             structures.append(structure.RecurseStatement(parent))
+        elif head.value == CLOSE_PARENTHESIS:
+            if parent is None:
+                temp = []
+                while structures and (
+                    structures[-1].branches[0][0].value != "\n"
+                    if isinstance(structures[-1], structure.GenericStatement)
+                    else True
+                ):
+                    temp.append(structures.pop())
+                temp = temp[::-1]
+                structures.append(structure.Lambda(DEFAULT_ARITY, temp))
+            else:
+                structures.append(")")
         elif (
             head.name == lexer.TokenType.GENERAL
             and head.value in OPENING_CHARACTERS
@@ -127,6 +142,12 @@ def parse(
             bracket_stack.append(end_bracket)
 
             branches = _get_branches(tokens, bracket_stack)
+            place_into_lambda = False
+            if branches[-1] == -1:
+                # Lambda to newline
+                branches = branches[:-1]
+                place_into_lambda = True
+
             # Now, we have to actually process the branch(es) to make
             # them _nice_ for the transpiler.
 
@@ -242,6 +263,22 @@ def parse(
                 )
                 structures.append(structure_cls(*branches))
 
+            if place_into_lambda:
+                if parent is None:
+                    temp = []
+                    while structures and (
+                        structures[-1].branches[0][0].value != "\n"
+                        if isinstance(
+                            structures[-1], structure.GenericStatement
+                        )
+                        else True
+                    ):
+                        temp.append(structures.pop())
+                    temp = temp[::-1]
+                    structures.append(structure.Lambda(DEFAULT_ARITY, temp))
+                else:
+                    structures.append(")")
+
         elif head.value in MONADIC_MODIFIERS:
             # the way to deal with all modifiers is to parse everything
             # after the modifier and dequeue as many structures as
@@ -250,35 +287,33 @@ def parse(
             # modifier.
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
             relevant = remaining[0]
 
             if isinstance(
-                remaining[0],
+                relevant,
                 (structure.RecurseStatement, structure.BreakStatement),
             ):
-                remaining[0].parent_structure = structure.MonadicModifier
+                relevant.parent_structure = structure.MonadicModifier
 
             if head.value == "⁽":
                 # 1-element lambda
-                structures.append(
-                    structure.Lambda(DEFAULT_ARITY, [remaining[0]])
-                )
+                structures.append(structure.Lambda(DEFAULT_ARITY, [relevant]))
             elif head.value == "ß":
                 # Conditional execute
                 # This is a bit of a hacky fix, as modifiers are not
                 # powerful enough to deal with this.
-                structures.append(structure.IfStatement([remaining[0]]))
+                structures.append(structure.IfStatement([relevant]))
             else:
                 structures.append(
-                    structure.MonadicModifier(head.value, remaining[0])
+                    structure.MonadicModifier(head.value, relevant)
                 )
             structures += remaining[1:]
             break
         elif head.value in DYADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
 
             if len(remaining) < 2:
                 remaining.append(
@@ -321,7 +356,7 @@ def parse(
         elif head.value in TRIADIC_MODIFIERS:
             if not tokens:
                 break
-            remaining = parse(tokens)
+            remaining = parse(tokens, structure_cls)
             if isinstance(
                 remaining[0],
                 (structure.RecurseStatement, structure.BreakStatement),
@@ -367,7 +402,25 @@ def parse(
         else:
             structures.append(structure.GenericStatement([head]))
 
-    return structures
+    # Handle lambdas to newline that have been left over by modifiers
+    if parent is None:
+        final, temp = [], []
+        while structures:
+            head = structures.pop(0)
+            if head == ")":
+                temp = []
+                while final and (
+                    final[-1].branches[0][0].value != "\n"
+                    if isinstance(final[-1], structure.GenericStatement)
+                    else True
+                ):
+                    temp.append(final.pop())
+                final.append(structure.Lambda(DEFAULT_ARITY, temp[::-1]))
+            else:
+                final.append(head)
+        return final
+    else:
+        return structures
 
 
 def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
@@ -403,12 +456,26 @@ def _get_branches(tokens: deque[lexer.Token], bracket_stack: list[str]):
             and token.value
             and token.value in CLOSING_CHARACTERS
         ):
-            while bracket_stack and token.value != bracket_stack[-1]:
-                bracket_stack.pop()
+            # that is, it's a closing character that isn't
+            # the one we're expecting.
+            if token.value == bracket_stack[-1]:
+                # that is, if it's closing the inner-most
+                # structure
 
-            if bracket_stack:
                 bracket_stack.pop()
-                branches[-1].append(token)
+                if bracket_stack:
+                    branches[-1].append(token)
+            elif token.value in "}];":
+                while bracket_stack and token.value != bracket_stack[-1]:
+                    bracket_stack.pop()
+
+                if bracket_stack:
+                    bracket_stack.pop()
+                    branches[-1].append(token)
+            elif token.value == ")":
+                bracket_stack = []
+                branches.append(-1)
+
         else:
             branches[-1].append(token)
 

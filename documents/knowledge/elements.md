@@ -2040,7 +2040,7 @@ Three Element lambda function (prefix)
 -------------------------------
 ## `` ⁺ `` (Index of next character in codepage)
 
-Compressed number in 1-128 (prefix)
+Return the index of the next character in the vyxal code page + 101
 
 -------------------------------
 ## `` ↵ `` (Split On newlines)
