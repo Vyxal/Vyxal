@@ -10,7 +10,10 @@ case class STRUCTURE_OPEN(value: String) extends VyxalToken
 case class STRUCTURE_CLOSE(value: String) extends VyxalToken
 case class COMMAND(value: String) extends VyxalToken
 case class DIGRAPH(value: String) extends VyxalToken
-case class MODIFIER(value: String) extends VyxalToken
+case class MONADIC_MODIFIER(value: String) extends VyxalToken
+case class DYADIC_MODIFIER(value: String) extends VyxalToken
+case class TRADIC_MODIFIER(value: String) extends VyxalToken
+case class SPECIAL_MODIFIER(value: String) extends VyxalToken
 case class COMPRESSED_STRING(value: String) extends VyxalToken
 case class COMPRESSED_NUMBER(value: String) extends VyxalToken
 case class DICTIONARY_STRING(value: String) extends VyxalToken
@@ -20,7 +23,11 @@ val CODEPAGE: String = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳ
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
 ×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"""
 
-val MODIFIERS: String = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ/\\~v@`∥∦¿ꜝ"
+val MONADIC_MODIFIERS: String = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ"
+val DYADIC_MODIFIERS: String = "″∥∦"
+val TRADIC_MODIFIERS: String = "‴"
+val QUADRIC_MODIFIERS: String = "⁴"
+val SPECIAL_MODIFIERS: String = "ᵗᵜ"
 
 object lexer extends RegexParsers {
   override def skipWhitespace = true
@@ -40,13 +47,34 @@ object lexer extends RegexParsers {
   def command: Parser[COMMAND] = s"[$CODEPAGE]".r ^^ { case value =>
     COMMAND(value)
   }
-  def modifier: Parser[MODIFIER] = s"""[$MODIFIERS]""".r ^^ { case value =>
-    MODIFIER(value)
-  }
+  def monadicModifier: Parser[MONADIC_MODIFIER] =
+    s"""[$MONADIC_MODIFIERS]""".r ^^ { case value =>
+      MONADIC_MODIFIER(value)
+    }
+
+  def dyadicModifier: Parser[DYADIC_MODIFIER] =
+    s"""[$DYADIC_MODIFIERS]""".r ^^ { case value =>
+      DYADIC_MODIFIER(value)
+    }
+
+  def tradicModifier: Parser[TRADIC_MODIFIER] =
+    s"""[$TRADIC_MODIFIERS]""".r ^^ { case value =>
+      TRADIC_MODIFIER(value)
+    }
+
+  def quadricModifier: Parser[TRADIC_MODIFIER] =
+    s"""[$QUADRIC_MODIFIERS]""".r ^^ { case value =>
+      TRADIC_MODIFIER(value)
+    }
+
+  def specialModifier: Parser[SPECIAL_MODIFIER] =
+    s"""[$SPECIAL_MODIFIERS]""".r ^^ { case value =>
+      SPECIAL_MODIFIER(value)
+    }
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      number | string | digraph | modifier | structureOpen | structureClose | command
+      number | string | digraph | monadicModifier | dyadicModifier | tradicModifier | quadricModifier | specialModifier | structureOpen | structureClose | command
     )
   ) ^^ { case tokens => handleStrings(tokens) }
   def apply(code: String): Either[VyxalLexerError, List[VyxalToken]] = {
