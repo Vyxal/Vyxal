@@ -7127,7 +7127,10 @@ else:
         1,
     ),
     "¨M": process_element(apply_at, 3),
-    "¨U": ("if ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))", 1),
+    "¨U": (
+        "if not ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))",
+        1,
+    ),
     "¨>": process_element(strict_greater_than, 2),
     "¨<": process_element(strict_less_than, 2),
     "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
