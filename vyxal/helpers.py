@@ -10,10 +10,11 @@ import inspect
 import itertools
 import math  # lgtm [py/unused-import]
 import re
+import string
 import textwrap
 import types
-from typing import Any, Iterable, List, Optional, Union
 import unicodedata
+from typing import Any, Iterable, List, Optional, Union
 
 import sympy
 from sympy.parsing.sympy_parser import (
@@ -27,7 +28,6 @@ import vyxal.encoding
 from vyxal import lexer
 from vyxal.context import DEFAULT_CTX, Context
 from vyxal.LazyList import *
-
 
 NUMBER_TYPE = "number"
 SCALAR_TYPE = "scalar"
@@ -596,7 +596,11 @@ def make_expression(expr: str) -> sympy:
 
     # Remove runs of characters longer than 1
 
-    expr = re.sub(r"([A-z])+", r"\1", expr)
+    parts = re.split(r"([A-Za-z]+)", expr)
+    expr = "".join(
+        part[0] if part and part[0] in string.ascii_letters else part
+        for part in parts
+    )
 
     # Substitute some letters for their Sympy equivalents
 
