@@ -16,6 +16,7 @@ DyadicModifier ::= [″∥∦]
 TriadicModifier ::= "‴"
 QuadraticModifier ::= "⁴"
 SpecialModifier ::= "ᵗᵜ"
+Branch = "|"
 Command ::= EverythingElse
 ```
 
