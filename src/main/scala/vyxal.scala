@@ -20,6 +20,6 @@ object vyxal {
     println(fileLocation)
     println(flags)
     println(inputs.mkString("[ ", " | ", " ]"))
-    println(lexer(fileLocation))
+    println(Lexer(fileLocation))
   }
 }
