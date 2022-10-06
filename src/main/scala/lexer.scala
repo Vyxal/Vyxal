@@ -18,6 +18,7 @@ case class COMPRESSED_STRING(value: String) extends VyxalToken
 case class COMPRESSED_NUMBER(value: String) extends VyxalToken
 case class DICTIONARY_STRING(value: String) extends VyxalToken
 case class COMMENT(value: String) extends VyxalToken
+case object BRANCH extends VyxalToken
 
 val CODEPAGE: String = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
@@ -32,15 +33,18 @@ val SPECIAL_MODIFIERS: String = "ᵗᵜ"
 
 object Lexer extends RegexParsers {
   override def skipWhitespace = true
-  def number: Parser[NUMBER] = """(0(?:[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ { case value => NUMBER(value) }
+  def number: Parser[NUMBER] = """(0(?:[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
+    case value => NUMBER(value)
+  }
   def string: Parser[STRING] = """"[^"„”“]*["„”“]""".r ^^ { case value =>
     STRING(value.substring(1, value.length))
   }
   def structureOpen: Parser[STRUCTURE_OPEN] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ {
     case value => STRUCTURE_OPEN(value)
   }
-  def structureClose: Parser[STRUCTURE_CLOSE] = """[\}\)\]]""".r ^^ { case value =>
-    STRUCTURE_CLOSE(value)
+  def structureClose: Parser[STRUCTURE_CLOSE] = """[\}\)\]]""".r ^^ {
+    case value =>
+      STRUCTURE_CLOSE(value)
   }
   def digraph: Parser[DIGRAPH] = s"[∆øÞ#][$CODEPAGE]".r ^^ { case value =>
     DIGRAPH(value)
@@ -77,9 +81,14 @@ object Lexer extends RegexParsers {
     COMMENT(value)
   }
 
+  def branch = "|" ^^ { case _ =>
+    BRANCH
+  }
+
   def tokens: Parser[List[VyxalToken]] = phrase(
-    rep1(comment |
-      number | string | digraph | monadicModifier | dyadicModifier | tradicModifier | quadricModifier | specialModifier | structureOpen | structureClose | command
+    rep1(
+      comment | branch |
+        number | string | digraph | monadicModifier | dyadicModifier | tradicModifier | quadricModifier | specialModifier | structureOpen | structureClose | command
     )
   ) ^^ { case tokens => handleStrings(tokens) }
   def apply(code: String): Either[VyxalLexerError, List[VyxalToken]] = {
