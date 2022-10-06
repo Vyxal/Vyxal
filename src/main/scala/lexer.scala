@@ -30,7 +30,7 @@ val TRADIC_MODIFIERS: String = "‴"
 val QUADRIC_MODIFIERS: String = "⁴"
 val SPECIAL_MODIFIERS: String = "ᵗᵜ"
 
-object lexer extends RegexParsers {
+object Lexer extends RegexParsers {
   override def skipWhitespace = true
   def number: Parser[NUMBER] = """(0(?:[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ { case value => NUMBER(value) }
   def string: Parser[STRING] = """"[^"„”“]*["„”“]""".r ^^ { case value =>
