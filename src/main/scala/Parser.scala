@@ -6,8 +6,8 @@ object Parser extends Parsers {
 
   private def parseAll: Parser[List[AST]] = ???
 
-  def parse(code: String): Either[VyxalCompilationError, List[AST]] = {
-    Lexer(code).flatMap { tokens =>
+  def parse(code: Either[VyxalLexerError, List[VyxalToken]]): Either[VyxalCompilationError, List[AST]] = {
+    (code).flatMap { tokens =>
       parseAll(VyxalTokenReader(tokens)) match {
         case NoSuccess(msg, next)  => Left(VyxalLexerError(msg))
         case Success(result, next) => Right(result)

@@ -13,7 +13,7 @@ object vyxal {
 
     println(fileLocation)
     println(flags)
-    println(inputs.mkString("[ ", " | ", " ]"))
-    println(Lexer(fileLocation))
+    println(inputs.mkString("[ ", " | ", " ]")) 
+    println(Parser.parse(Lexer(fileLocation)))
   }
 }
