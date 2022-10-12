@@ -15,8 +15,10 @@ MonadicModifier ::= [ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘ�
 DyadicModifier ::= [″∥∦]
 TriadicModifier ::= "‴"
 QuadraticModifier ::= "⁴"
-SpecialModifier ::= "ᵗᵜ"
-Branch = "|"
+NewlineModifier ::= "ᵜ"
+TieModifier ::= "ᵗ"
+Branch ::= "|"
+Newline :: = "\n"
 Command ::= EverythingElse
 ```
 
