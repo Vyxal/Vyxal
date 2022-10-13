@@ -308,7 +308,7 @@ def repl():
         # reference. Never thought I'd fine a time
         # when it wouldn't be an actual pain.
         print(line)
-        exec(line)
+        exec(line, locals() | globals())
 
         res = []
         while stack:

@@ -24,7 +24,7 @@ def run_vyxal(vy_code, inputs=[], *, debug=False):
     py_code = transpile(vy_code)
     if debug:
         print(py_code)
-    exec(py_code)
+    exec(py_code, locals() | globals())
 
     ctx.stacks.pop()
     return stack
@@ -871,6 +871,11 @@ def test_multidimensional_truthy_indices_infinite():
         [10],
         [11, 1],
     ]
+
+
+def test_varargs():
+    stack = run_vyxal("@f:*|!; 1 2 3 3 @f;")
+    assert stack[-1] == 3
 
 
 def test_take_while():
