@@ -2614,13 +2614,14 @@ Get the sum of all proper divisors of a number /  get the stationary points of a
 - num a: `sum_of_proper_divisors(a)`
 - str a: `stationary_points(a)`
 -------------------------------
-## `` ∆² `` (Perfect Square?)
+## `` ∆² `` (Perfect Square? / Square Expression)
 
-Is the number a perfect square? (1, 4, 9, 16, 25, 36)
+Is the number a perfect square? (1, 4, 9, 16, 25, 36) / Raise an algebraic expression to the power of 2
 
 ### Overloads
 
 - num a: `is_perfect_square(a)`
+- str a: `expr ** 2`
 -------------------------------
 ## `` ∆e `` (Euler's Number (e) raised to power a)
 

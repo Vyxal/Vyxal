@@ -3119,9 +3119,9 @@ var codepage_descriptions =
       "token": "k\u00b2"
     },
     {
-      "name": "Perfect Square?",
-      "description": "Is the number a perfect square? (1, 4, 9, 16, 25, 36)",
-      "overloads": "num -> is_perfect_square(a)",
+      "name": "Perfect Square? / Square Expression",
+      "description": "Is the number a perfect square? (1, 4, 9, 16, 25, 36) / Raise an algebraic expression to the power of 2",
+      "overloads": "num -> is_perfect_square(a)\nstr -> expr ** 2",
       "token": "\u2206\u00b2"
     },
     {
