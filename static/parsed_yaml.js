@@ -3084,8 +3084,8 @@ var codepage_descriptions =
   ],
   "206": [
     {
-      "name": "First Input",
-      "description": "Push the first input",
+      "name": "Very Last Input",
+      "description": "Push the very last input (input[::-1][0]) to the stack",
       "token": "\u2070"
     },
     {
@@ -3096,8 +3096,8 @@ var codepage_descriptions =
   ],
   "207": [
     {
-      "name": "Second Input",
-      "description": "Push the second input",
+      "name": "Second Last Input",
+      "description": "Push the very last input (input[::-1][1]) to the stack",
       "token": "\u00b9"
     },
     {
