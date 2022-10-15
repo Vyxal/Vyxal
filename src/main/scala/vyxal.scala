@@ -11,9 +11,9 @@ object vyxal {
       if (args.length > 2) args.slice(3, args.length)
       else Array()
 
-    println(fileLocation)
-    println(flags)
-    println(inputs.mkString("[ ", " | ", " ]"))
+    // println(fileLocation)
+    // println(flags)
+    // println(inputs.mkString("[ ", " | ", " ]"))
     println(VyxalCompiler(fileLocation))
   }
 }

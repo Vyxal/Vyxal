@@ -6,7 +6,7 @@ object Parser extends Parsers {
 
   def program: Parser[List[AST]] = phrase(rep1(element))
   def element: Parser[AST] =
-    number | command | structure
+    number | command | structure | monadicModifier
   private def number: Parser[AST] =
     accept("number", { case VyxalToken.Number(value) => AST.Number(value) })
   private def command: Parser[AST] =
@@ -32,6 +32,14 @@ object Parser extends Parsers {
       println(branches)
       AST.Structure(open, firstBranch :: branches.map(_._2))
     }
+  }
+
+  def monadicModifier: Parser[AST] = {
+    val modifier = accept(
+      "monadic modifier",
+      { case VyxalToken.MonadicModifier(value) => value }
+    )
+    modifier ~ element ^^ { case mod ~ elem => AST.MonadicModifier(mod, elem) }
   }
 
   def apply(
