@@ -13,7 +13,21 @@ object vyxal {
 
     println(fileLocation)
     println(flags)
-    println(inputs.mkString("[ ", " | ", " ]")) 
-    println(Parser.parse(Lexer(fileLocation)))
+    println(inputs.mkString("[ ", " | ", " ]"))
+    println(VyxalCompiler(fileLocation))
+  }
+}
+
+object VyxalCompiler {
+  def apply(code: String): Either[VyxalCompilationError, List[AST]] = {
+    Lexer(code) match {
+      case Left(error) => Left(error)
+      case Right(tokens) => {
+        Parser(tokens) match {
+          case Left(error) => Left(error)
+          case Right(ast)  => Right(ast)
+        }
+      }
+    }
   }
 }

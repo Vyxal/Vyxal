@@ -10,4 +10,5 @@ enum AST {
   case CompressedString(value: String)
   case CompressedNumber(value: String)
   case DictionaryString(value: String)
+  case Structure(open: String, branches: List[List[AST]])
 }
