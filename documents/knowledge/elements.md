@@ -1689,14 +1689,14 @@ Usage:
 ```
 
 -------------------------------
-## `` ⁰ `` (First Input)
+## `` ⁰ `` (Very Last Input)
 
-Push the first input
+Push the very last input (input[::-1][0]) to the stack
 
 -------------------------------
-## `` ¹ `` (Second Input)
+## `` ¹ `` (Second Last Input)
 
-Push the second input
+Push the very last input (input[::-1][1]) to the stack
 
 -------------------------------
 ## `` ² `` (Square)
