@@ -545,6 +545,16 @@ def test_less_than_decrement_until_false():
     assert stack[-1] == 9
 
 
+def test_web_request():
+    stack = run_vyxal(
+        "`https://example.com/` ¨U `<title>Example Domain</title>` c"
+    )
+    assert stack[-1] == 1
+
+    stack = run_vyxal("`example.com/` ¨U `<title>Example Domain</title>` c")
+    assert stack[-1] == 1
+
+
 def test_star_map():
     stack = run_vyxal("¨£ε", inputs=[[1, 2, 3], [4, 6, 8]])
     assert stack[-1] == [3, 4, 5]

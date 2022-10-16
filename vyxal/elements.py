@@ -12,7 +12,7 @@ import re
 import string
 import sys
 import types
-import urllib
+import urllib.request
 import json
 from datetime import datetime
 from typing import Callable, Union
