@@ -14,6 +14,7 @@ object vyxal {
     // println(fileLocation)
     // println(flags)
     // println(inputs.mkString("[ ", " | ", " ]"))
+    println(Lexer(fileLocation))
     println(VyxalCompiler(fileLocation))
   }
 }

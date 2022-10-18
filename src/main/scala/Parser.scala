@@ -1,12 +1,16 @@
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.{Reader, Position, NoPosition}
 
+case class VyxalParserError(msg: String) extends VyxalCompilationError
+
 object Parser extends Parsers {
   override type Elem = VyxalToken
 
-  def program: Parser[List[AST]] = phrase(rep1(element))
+  def program: Parser[List[AST]] = phrase(rep1(element | monadicModifier)) ^^ {
+    case elements => elements
+  }
   def element: Parser[AST] =
-    number | command | structure | monadicModifier
+    number | command | structure
   private def number: Parser[AST] =
     accept("number", { case VyxalToken.Number(value) => AST.Number(value) })
   private def command: Parser[AST] =
@@ -28,8 +32,6 @@ object Parser extends Parsers {
     open ~ rep(element) ~ rep(
       branch ~ rep(element)
     ) ~ close ^^ { case open ~ firstBranch ~ branches ~ _ =>
-      println("branches")
-      println(branches)
       AST.Structure(open, firstBranch :: branches.map(_._2))
     }
   }
@@ -37,16 +39,19 @@ object Parser extends Parsers {
   def monadicModifier: Parser[AST] = {
     val modifier = accept(
       "monadic modifier",
-      { case VyxalToken.MonadicModifier(value) => value }
+      { case VyxalToken.MonadicModifier(value) => println(value); value }
     )
-    modifier ~ element ^^ { case mod ~ elem => AST.MonadicModifier(mod, elem) }
+    element ~ modifier ^^ { case elem ~ modi =>
+      println(modi); println(elem);
+      AST.MonadicModifier(modi, elem)
+    }
   }
 
   def apply(
       code: List[VyxalToken]
   ): Either[VyxalCompilationError, List[AST]] = {
     program(VyxalTokenReader(code)) match {
-      case NoSuccess(msg, next)  => Left(VyxalLexerError(msg))
+      case NoSuccess(msg, next)  => Left(VyxalParserError(msg))
       case Success(result, next) => Right(result)
     }
   }
