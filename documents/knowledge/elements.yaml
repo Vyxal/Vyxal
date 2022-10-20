@@ -2558,13 +2558,13 @@
   usage: ₍<element><element>
 
 - element: "⁰"
-  name: First Input
-  description: Push the first input
+  name: Very Last Input
+  description: Push the very last input (input[::-1][0]) to the stack
   arity: 0
 
 - element: "¹"
-  name: Second Input
-  description: Push the second input
+  name: Second Last Input
+  description: Push the very last input (input[::-1][1]) to the stack
   arity: 0
 
 - element: "²"

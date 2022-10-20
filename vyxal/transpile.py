@@ -317,7 +317,7 @@ def transpile_structure(
             elif parameter == "*":
                 function_parameters += (
                     "parameters += "
-                    + "wrapify(stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx)"
+                    + "wrapify(arg_stack, pop(arg_stack, 1, ctx=ctx), ctx=ctx)"
                     + "\n"
                 )
             else:
