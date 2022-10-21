@@ -3,9 +3,8 @@ Unlike Vyxal 2, Vyxal 3 does not use a hand-written parser. Instead, it uses the
 ## EBNF Summary
 
 ```
-Structure ::= StructureOpen Command* (Branch Command*)* StructureClose
-LambdaToNewline ::= Newline Element* NewlineModifier
-Tie ::= Number TieModifier | Element Element TieModifier
-Element ::= Command | Structure | Number | String | Element MonadicModifier | Element Element DyadicModifier | Element Element Element TriadicModifier | Element Element Element Element QuadraticModifier
-List ::= ListOpen Element (Branch Element)* ListClose
+Structure ::= (StructureOpen Element* (Branch Element*)? StructureClose) | (StructureOpen (PartialStructure)* (Branch PartialStructure*)? AllStructureClose)
+PartialStructure ::= StructureOpen Element* (Branch Element*)? StructureClose?
+Element ::= Number | String | Structure | MonadicModifier Element | DyadicModifier Element Element | TriadicModifier Element Element Element | QuadraticModifier Element Element Element Element
+NewlineAST ::= Newline 
 ```

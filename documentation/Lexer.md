@@ -9,7 +9,8 @@ Number ::= "0" | (Digit+ ("." (Digit)*)? ("ı" (Digit)*)?)
 String ::= '"' [^"„”“]+ '"'
 Comment ::= "##" [^\n]+
 StructureOpen ::= "[" | "(" | "{" | "λ" | "ƛ" | "Ω" | "₳" | "µ" | "#@"
-StructureClose ::= "}" | "]" | ")"
+StructureClose ::= [\])]
+AllStructureClose
 Digraph ::= [∆øÞ#] AnyCharacter
 MonadicModifier ::= [ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ]
 DyadicModifier ::= [″∥∦]
