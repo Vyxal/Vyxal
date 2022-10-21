@@ -3945,11 +3945,12 @@
       - "['(x**2 + x + 1) / x'] : [-1, 1]"
 
 - element: "∆²"
-  name: Perfect Square?
+  name: Perfect Square? / Square Expression
   arity: 1
-  description: Is the number a perfect square? (1, 4, 9, 16, 25, 36)
+  description: Is the number a perfect square? (1, 4, 9, 16, 25, 36) / Raise an algebraic expression to the power of 2
   overloads:
       num: is_perfect_square(a)
+      str: expr ** 2
   vectorise: true
   tests:
       - "[1] : 1"
@@ -3962,6 +3963,9 @@
       - "[-1] : 0"
       - "[0] : 1"
       - "[1.5] : 0"
+      - '["3x"] : "9*x**2"'
+      - '["2x + 3y - 1"] : "4*x**2 + 12*x*y - 4*x + 9*y**2 - 6*y + 1"'
+      - '["630"] : "396900"'
 
 - element: "∆e"
   name: Euler's Number (e) raised to power a
