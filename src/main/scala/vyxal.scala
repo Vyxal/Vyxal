@@ -20,10 +20,10 @@ object vyxal {
 }
 
 object VyxalCompiler {
-  def apply(code: String): List[VyxalToken] = {
+  def apply(code: String): Seq[AST] = {
     Lexer(code) match {
       case Left(error) => List()
-      case Right(tokens) => preprocess(tokens)
+      case Right(tokens) => VyxalParser(tokens)
       }
     }
   }
