@@ -87,4 +87,38 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
+  test("Does the parser understand mixed monadic modifiers and structures?") {
+    assert(
+      VyxalParser.parse("1 { 2 | { v{3 | 4 ] 5") ===
+        Right(
+          List(
+            Number("1"),
+            Structure(
+              "{",
+              List(
+                List(Number("2")),
+                List(
+                  Structure(
+                    "{",
+                    List(
+                      List(
+                        MonadicModifier(
+                          "v",
+                          Structure(
+                            "{",
+                            List(List(Number("3")), List(Number("4")))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+            Number("5")
+          )
+        )
+    )
+  }
+
 end ParserTests

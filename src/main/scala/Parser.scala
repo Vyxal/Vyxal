@@ -13,9 +13,11 @@ object VyxalParser extends Parsers {
   type Elem = VyxalToken
 
   // The VyxalToken.StructureAllClose.? is to get rid of leftover ']'s from parsing structures
-  def parseAll: Parser[List[AST]] = phrase(rep(element <~ VyxalToken.StructureAllClose.?))
+  def parseAll: Parser[List[AST]] = phrase(
+    rep(element <~ VyxalToken.StructureAllClose.?)
+  )
 
-  def nonStructElement: Parser[AST] = number | string | command
+  def nonStructElement: Parser[AST] = number | string | command | modifier
 
   def element: Parser[AST] = nonStructElement | structure
 
@@ -42,6 +44,44 @@ object VyxalParser extends Parsers {
     )) ^^ { case open ~ branches =>
       AST.Structure(open, branches)
     }
+  
+  def modifier = monadicModifier | dyadicModifier | triadicModifier | quadricModifier
+
+  def monadicModifier =
+    accept(
+      "Monadic modifier",
+      { case VyxalToken.MonadicModifier(value) => value }
+    )
+      ~ element ^^ { case modifier ~ elem1 =>
+        AST.MonadicModifier(modifier, elem1)
+      }
+  
+  def dyadicModifier =
+    accept(
+      "Dyadic modifier",
+      { case VyxalToken.DyadicModifier(value) => value }
+    )
+      ~ element ~ element ^^ { case modifier ~ elem1 ~ elem2 =>
+        AST.DyadicModifier(modifier, elem1, elem2)
+      }
+  
+  def triadicModifier =
+    accept(
+      "Triadic modifier",
+      { case VyxalToken.TriadicModifier(value) => value }
+    )
+      ~ element ~ element ~ element ^^ { case modifier ~ elem1 ~ elem2 ~ elem3 =>
+        AST.TriadicModifier(modifier, elem1, elem2, elem3)
+      }
+
+  def quadricModifier =
+    accept(
+      "Quadric modifier",
+      { case VyxalToken.QuadricModifier(value) => value }
+    )
+      ~ element ~ element ~ element ~ element ^^ { case modifier ~ elem1 ~ elem2 ~ elem3 ~ elem4 =>
+        AST.QuadricModifier(modifier, elem1, elem2, elem3, elem4)
+      }
 
   def parse(code: String): Either[VyxalCompilationError, List[AST]] = {
     Lexer(code).flatMap { tokens =>
