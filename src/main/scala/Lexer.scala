@@ -13,7 +13,7 @@ enum VyxalToken {
   case MonadicModifier(value: String)
   case DyadicModifier(value: String)
   case TriadicModifier(value: String)
-  case QuadricModifier(value: String)
+  case TetradicModifier(value: String)
   case SpecialModifier(value: String)
   case CompressedString(value: String)
   case CompressedNumber(value: String)
@@ -32,7 +32,7 @@ val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘ�
 val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
 val TRIADIC_MODIFIERS = "‴"
-val QUADRIC_MODIFIERS = "⁴"
+val TETRADIC_MODIFIERS = "⁴"
 val SPECIAL_MODIFIERS = "ᵗᵜ"
 
 object Lexer extends RegexParsers {
@@ -89,8 +89,8 @@ object Lexer extends RegexParsers {
   def triadicModifier: Parser[VyxalToken] =
     s"""[$TRIADIC_MODIFIERS]""".r ^^ { value => TriadicModifier(value) }
 
-  def quadricModifier: Parser[VyxalToken] =
-    s"""[$QUADRIC_MODIFIERS]""".r ^^ { value => QuadricModifier(value) }
+  def tetradicModifier: Parser[VyxalToken] =
+    s"""[$TETRADIC_MODIFIERS]""".r ^^ { value => TetradicModifier(value) }
 
   def specialModifier: Parser[VyxalToken] =
     s"""[$SPECIAL_MODIFIERS]""".r ^^ { value => SpecialModifier(value) }
@@ -104,7 +104,7 @@ object Lexer extends RegexParsers {
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
       comment | branch | number | string | digraph | monadicModifier |
-        dyadicModifier | triadicModifier | quadricModifier | specialModifier |
+        dyadicModifier | triadicModifier | tetradicModifier | specialModifier |
         structureOpen | structureClose | structureAllClose | command
     )
   )

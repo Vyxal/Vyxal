@@ -5,7 +5,7 @@ enum AST {
   case MonadicModifier(modi: String, elem1: AST)
   case DyadicModifier(modi: String, elem1: AST, elem2: AST)
   case TriadicModifier(modi: String, elem1: AST, elem2: AST, elem3: AST)
-  case QuadricModifier(
+  case TetradicModifier(
       modi: String,
       elem1: AST,
       elem2: AST,

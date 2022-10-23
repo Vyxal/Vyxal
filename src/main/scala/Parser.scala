@@ -45,7 +45,7 @@ object VyxalParser extends Parsers {
       AST.Structure(open, branches)
     }
   
-  def modifier = monadicModifier | dyadicModifier | triadicModifier | quadricModifier
+  def modifier = monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
 
   def monadicModifier =
     accept(
@@ -74,13 +74,13 @@ object VyxalParser extends Parsers {
         AST.TriadicModifier(modifier, elem1, elem2, elem3)
       }
 
-  def quadricModifier =
+  def tetradicModifier =
     accept(
-      "Quadric modifier",
-      { case VyxalToken.QuadricModifier(value) => value }
+      "Tetradic modifier",
+      { case VyxalToken.TetradicModifier(value) => value }
     )
       ~ element ~ element ~ element ~ element ^^ { case modifier ~ elem1 ~ elem2 ~ elem3 ~ elem4 =>
-        AST.QuadricModifier(modifier, elem1, elem2, elem3, elem4)
+        AST.TetradicModifier(modifier, elem1, elem2, elem3, elem4)
       }
 
   def parse(code: String): Either[VyxalCompilationError, List[AST]] = {
