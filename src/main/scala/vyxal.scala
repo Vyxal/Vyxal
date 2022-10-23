@@ -21,9 +21,6 @@ object vyxal {
 
 object VyxalCompiler {
   def apply(code: String): Seq[AST] = {
-    Lexer(code) match {
-      case Left(error) => List()
-      case Right(tokens) => VyxalParser(tokens)
-      }
-    }
+    VyxalParser.parse(code).getOrElse(List())
   }
+}

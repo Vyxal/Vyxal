@@ -1,7 +1,6 @@
 import scala.util.parsing.combinator._
 
-trait VyxalCompilationError
-case class VyxalLexerError(msg: String) extends VyxalCompilationError
+case class VyxalCompilationError(msg: String)
 
 enum VyxalToken {
   case Number(value: String)
@@ -106,13 +105,13 @@ object Lexer extends RegexParsers {
     rep1(
       comment | branch | number | string | digraph | monadicModifier |
         dyadicModifier | triadicModifier | quadricModifier | specialModifier |
-        structureOpen | structureClose | command
+        structureOpen | structureClose | structureAllClose | command
     )
   )
 
-  def apply(code: String): Either[VyxalLexerError, List[VyxalToken]] = {
+  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] = {
     parse(tokens, code) match {
-      case NoSuccess(msg, next)  => Left(VyxalLexerError(msg))
+      case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
     }
   }
