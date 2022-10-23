@@ -2750,7 +2750,7 @@ def is_square(lhs, ctx):
         NUMBER_TYPE: lambda: int(
             int(lhs) == lhs and sympy.ntheory.primetest.is_square(lhs)
         ),
-        str: lambda: str(sympy.expand(make_expression(lhs + " ** 2"))),
+        str: lambda: str(sympy.expand(make_expression(lhs) ** 2)),
     }.get(ts, lambda: vectorise(is_square, lhs, ctx=ctx))()
 
 
