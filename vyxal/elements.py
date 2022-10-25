@@ -3250,6 +3250,7 @@ def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
     """
+    lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return []
     else:
@@ -3260,6 +3261,7 @@ def monadic_minimum(lhs, ctx):
     """Element g
     (any) -> Smallest item of a
     """
+    lhs = iterable(lhs, ctx=ctx)
     if len(lhs) == 0:
         return []
     else:
