@@ -20,7 +20,8 @@ object vyxal {
 }
 
 object VyxalCompiler {
-  def apply(code: String): Seq[AST] = {
-    VyxalParser.parse(code).getOrElse(List())
+  def apply(code: String): AST = {
+    // todo handle errors
+    VyxalParser.parse(code).getOrElse(AST.Group(List.empty))
   }
 }

@@ -4,13 +4,13 @@ import AST.*
 
 class ParserTests extends AnyFunSuite:
   test("Does the parser recognise numbers?") {
-    assert(VyxalParser.parse("123") === Right(List(Number("123"))))
+    assert(VyxalParser.parse("123") === Right(Number("123")))
   }
 
   test("Does the parser recognise strings?") {
     assert(
       VyxalParser.parse(""" "Hello, world!" """) === Right(
-        List(Str("Hello, world!"))
+        Str("Hello, world!")
       )
     )
   }
@@ -18,7 +18,7 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser recognise multiple literals?") {
     assert(
       VyxalParser.parse("""123 "Hello" 24 """) === Right(
-        List(Number("123"), Str("Hello"), Number("24"))
+        AST.makeSingle(Number("123"), Str("Hello"), Number("24"))
       )
     )
   }
@@ -27,26 +27,18 @@ class ParserTests extends AnyFunSuite:
     assert(
       VyxalParser.parse("1 { 2 | { {3 | 4} | } } 6") ===
         Right(
-          List(
+          AST.makeSingle(
             Number("1"),
-            Structure(
-              "{",
-              List(
-                List(Number("2")),
-                List(
-                  Structure(
-                    "{",
-                    List(
-                      List(
-                        Structure(
-                          "{",
-                          List(List(Number("3")), List(Number("4")))
-                        )
-                      ),
-                      List()
-                    )
+            AST.While(
+              Some(Number("2")),
+              AST.While(
+                Some(
+                  AST.While(
+                    Some(Number("3")),
+                    Number("4")
                   )
-                )
+                ),
+                AST.makeSingle()
               )
             ),
             Number("6")
@@ -59,26 +51,18 @@ class ParserTests extends AnyFunSuite:
     assert(
       VyxalParser.parse("1 { 2 | { {3 | 4} | ] 6") ===
         Right(
-          List(
+          AST.makeSingle(
             Number("1"),
-            Structure(
-              "{",
-              List(
-                List(Number("2")),
-                List(
-                  Structure(
-                    "{",
-                    List(
-                      List(
-                        Structure(
-                          "{",
-                          List(List(Number("3")), List(Number("4")))
-                        )
-                      ),
-                      List()
-                    )
+            AST.While(
+              Some(Number("2")),
+              AST.While(
+                Some(
+                  AST.While(
+                    Some(Number("3")),
+                    Number("4")
                   )
-                )
+                ),
+                AST.makeSingle()
               )
             ),
             Number("6")
@@ -91,26 +75,17 @@ class ParserTests extends AnyFunSuite:
     assert(
       VyxalParser.parse("1 { 2 | { v{3 | 4 ] 5") ===
         Right(
-          List(
+          AST.makeSingle(
             Number("1"),
-            Structure(
-              "{",
-              List(
-                List(Number("2")),
-                List(
-                  Structure(
-                    "{",
-                    List(
-                      List(
-                        MonadicModifier(
-                          "v",
-                          Structure(
-                            "{",
-                            List(List(Number("3")), List(Number("4")))
-                          )
-                        )
-                      )
-                    )
+            AST.While(
+              Some(Number("2")),
+              AST.While(
+                None,
+                MonadicModifier(
+                  "v",
+                  AST.While(
+                    Some(Number("3")),
+                    Number("4")
                   )
                 )
               )
