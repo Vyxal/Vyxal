@@ -10,8 +10,9 @@ hs_err_pid*
 .metals/
 .vscode/
 null/
-project/
+project/project/
 target/
+metals.sbt
 
 # Python gitignore because cached stuff from python on v2 branches acts all goofy
 
