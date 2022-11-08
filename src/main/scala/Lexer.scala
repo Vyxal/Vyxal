@@ -1,3 +1,5 @@
+package vyxal
+
 import scala.util.parsing.combinator._
 
 case class VyxalCompilationError(msg: String)

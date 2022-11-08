@@ -1,3 +1,5 @@
+package vyxal
+
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.{Reader, Position, NoPosition}
 import scala.collection.mutable.ListBuffer

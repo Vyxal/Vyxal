@@ -1,3 +1,5 @@
+package vyxal
+
 enum AST {
   case Number(value: String)
   case Str(value: String)
