@@ -1,0 +1,9 @@
+version = 1
+
+[[analyzers]]
+name = "scala"
+enabled = true
+
+[[transformers]]
+name = "scalafmt"
+enabled = true
