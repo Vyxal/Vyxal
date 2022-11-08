@@ -5,12 +5,13 @@
 hs_err_pid*
 
 # Goofy ahh folders
-project/
-target/
 .bloop/
 .bsp/
 .metals/
 .vscode/
+null/
+project/
+target/
 
 # Python gitignore because cached stuff from python on v2 branches acts all goofy
 
