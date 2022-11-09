@@ -73,6 +73,8 @@ object Main {
 
         if (config.file.nonEmpty || config.code.nonEmpty) {
           return
+        } else {
+          Repl.startRepl()
         }
       case None => ???
     }

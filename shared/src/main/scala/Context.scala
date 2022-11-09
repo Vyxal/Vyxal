@@ -19,7 +19,13 @@ class Context private (
 ) {
   def pop(): VAny = if (stack.isEmpty) 0 else stack.remove(stack.size - 1)
 
+  /** Get the top element on the stack without popping */
+  def peek: VAny = if (stack.isEmpty) 0 else stack.last
+
   def push(item: VAny): Unit = stack += item
+
+  /** Whether the stack is empty */
+  def isEmpty: Boolean = stack.isEmpty
 }
 
 object Context {
