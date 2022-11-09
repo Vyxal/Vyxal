@@ -1,3 +1,5 @@
+package vyxal
+
 import org.scalatest.funsuite.AnyFunSuite
 
 import VyxalToken.*

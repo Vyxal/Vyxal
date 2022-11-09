@@ -1,0 +1,29 @@
+name: Test and upload jar
+
+on:
+  push:
+    branches: [ version-3 ]
+  pull_request:
+    branches: [ version-3 ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+    - name: Test
+      run: sbt vyxalJVM/test
+    - name: Build jar
+      run: sbt vyxalJVM/assembly
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: jar
+        path: jvm/target/scala-*/vyxal-*.jar

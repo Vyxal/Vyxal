@@ -1,3 +1,5 @@
+package vyxal
+
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.{Reader, Position, NoPosition}
 import scala.collection.mutable.ListBuffer
@@ -45,7 +47,7 @@ object VyxalParser extends Parsers {
     open ~ repsep(elements, VyxalToken.Branch) <~ (close | not(
       not(VyxalToken.StructureAllClose)
     )) ^^ { case open ~ branches =>
-      open match {
+      (open: @unchecked) match {
         case "[" =>
           branches match {
             case List(thenBody, elseBody) => AST.If(thenBody, Some(elseBody))
@@ -74,7 +76,7 @@ object VyxalParser extends Parsers {
           }
           // todo using the command names is a bit brittle
           //   maybe refer to the functions directly
-          open match {
+          (open: @unchecked) match {
             case "λ" => lambda
             case "ƛ" => AST.makeSingle(lambda, AST.Command("M"))
             case "Ω" => AST.makeSingle(lambda, AST.Command("F"))

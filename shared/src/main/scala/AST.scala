@@ -1,3 +1,5 @@
+package vyxal
+
 enum AST {
   case Number(value: String)
   case Str(value: String)
@@ -24,6 +26,13 @@ enum AST {
   case For(loopVar: Option[String], body: AST)
   case While(cond: Option[AST], body: AST)
   case Lambda(body: AST)
+  /** A function definition */
+  case FnDef(
+      name: String,
+      arity: Int,
+      params: Option[List[String]],
+      body: AST
+  )
 }
 
 object AST {
