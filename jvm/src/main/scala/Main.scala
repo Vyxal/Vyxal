@@ -21,7 +21,7 @@ case class Config(
 )
 
 object Main {
-  def main(args: Array[String]) = {
+  def main(args: Array[String]): Unit = {
     val builder = OParser.builder[Config]
     val parser = {
       import builder.*
@@ -39,7 +39,7 @@ object Main {
           .optional(),
         opt[Unit]("docs")
           .action((printDocs, cfg) => cfg.copy(printDocs = true))
-          .text("Print documentation for elements")
+          .text("Print documentation for elements and exit")
           .optional(),
         arg[String]("<input>...")
           .unbounded()
@@ -55,6 +55,7 @@ object Main {
 
         if (config.printDocs) {
           printDocs()
+          return
         }
 
         config.file.foreach { file =>
@@ -68,6 +69,10 @@ object Main {
 
         config.code.foreach { code =>
           Interpreter.execute(code)
+        }
+
+        if (config.file.nonEmpty || config.code.nonEmpty) {
+          return
         }
       case None => ???
     }

@@ -27,3 +27,11 @@ jobs:
       with:
         name: jar
         path: jvm/target/scala-*/vyxal-*.jar
+    - name: Create elements.txt
+      run: java -jar jvm/target/scala-*/vyxal-*.jar --docs > documentation/elements.txt
+    - name: Stage changes
+      run: git add .
+    - name: Commit and push
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: "Create elements.txt"
