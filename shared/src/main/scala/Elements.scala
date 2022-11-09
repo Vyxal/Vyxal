@@ -154,7 +154,7 @@ object Elements {
 
     val add: Dyad = addDyadVect(
       "+",
-      "Add stuff",
+      "Addition",
       List(
         "a: num, b: num -> a + b",
         "a: num, b: str -> a + b",
