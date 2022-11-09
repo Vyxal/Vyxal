@@ -13,7 +13,7 @@ import scopt.OParser
   * @param inputs
   *   Inputs to program (optional)
   */
-case class Config(
+case class CLIConfig(
     file: Option[File] = None,
     code: Option[String] = None,
     inputs: Seq[String] = Seq.empty,
@@ -22,7 +22,7 @@ case class Config(
 
 object Main {
   def main(args: Array[String]): Unit = {
-    val builder = OParser.builder[Config]
+    val builder = OParser.builder[CLIConfig]
     val parser = {
       import builder.*
 
@@ -38,7 +38,7 @@ object Main {
           .text("Code to execute directly")
           .optional(),
         opt[Unit]("docs")
-          .action((printDocs, cfg) => cfg.copy(printDocs = true))
+          .action((_, cfg) => cfg.copy(printDocs = true))
           .text("Print documentation for elements and exit")
           .optional(),
         arg[String]("<input>...")
@@ -49,7 +49,7 @@ object Main {
       )
     }
 
-    OParser.parse(parser, args, Config()) match {
+    OParser.parse(parser, args, CLIConfig()) match {
       case Some(config) =>
         given Context = Context()
 
