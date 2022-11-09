@@ -1,3 +1,7 @@
+$ (Swap)
+
+- a, b -> b, a
+-----------------------
 + (Add stuff)
 
 - a: num, b: num -> a + b
