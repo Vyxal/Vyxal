@@ -145,6 +145,13 @@ object Elements {
     ): Unit =
       elements += symbol -> Element(symbol, name, None, overloads, () => impl)
 
+    val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
+      val b = ctx.pop()
+      val a = ctx.pop()
+      ctx.push(a)
+      ctx.push(b)
+    }
+
     val add: Dyad = addDyadVect(
       "+",
       "Add stuff",
