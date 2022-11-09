@@ -1,128 +1,166 @@
 package vyxal
 
-type Overload = (Tuple, String)
+import spire.math.Number
+
+type Overload = String
 
 case class Element(
     symbol: String,
+    name: String,
     arity: Option[Int],
-    desc: String,
     overloads: List[Overload],
-    impl: () => Context ?=> Unit
+    impl: DirectFn
 )
 
 object Elements {
+  val elements: Map[String, Element] = Impls.elements.toMap
+
   private object Impls {
     val elements = collection.mutable.Map.empty[String, Element]
 
-    def addNilad(name: String, desc: String, overloads: List[Overload])(
+    /** Turn a monad into a function that operates on the stack */
+    def monadToDirect(f: Monad): DirectFn = { () => ctx ?=>
+      ctx.push(f(ctx.pop()))
+    }
+
+    /** Turn a dyad into a function that operates on the stack */
+    def dyadToDirect(f: Dyad): DirectFn = { () => ctx ?=>
+      val arg2, arg1 = ctx.pop()
+      ctx.push(f(arg1, arg2))
+    }
+
+    /** Turn a triad into a function that operates on the stack */
+    def triadToDirect(f: Triad): DirectFn = { () => ctx ?=>
+      val arg3, arg2, arg1 = ctx.pop()
+      ctx.push(f(arg1, arg2, arg3))
+    }
+
+    /** Turn a tetrad into a function that operates on the stack */
+    def tetradToDirect(f: Tetrad): DirectFn = { () => ctx ?=>
+      val arg4, arg3, arg2, arg1 = ctx.pop()
+      ctx.push(f(arg1, arg2, arg3, arg4))
+    }
+
+    def addNilad(symbol: String, name: String, overloads: List[Overload])(
         impl: Context ?=> VAny
     ): Unit = {
-      elements += name -> Element(
+      elements += symbol -> Element(
+        symbol,
         name,
         Some(0),
-        desc,
         overloads,
         () => ctx ?=> ctx.push(impl(using ctx))
       )
     }
 
-    def addMonad(name: String, desc: String, overloads: List[Overload], vectorises: Boolean = false)(
+    def addMonad(
+        symbol: String,
+        name: String,
+        overloads: List[Overload],
+        vectorises: Boolean = false
+    )(
         impl: Monad
     ): Monad = {
-      elements += name -> Element(
+      elements += symbol -> Element(
+        symbol,
         name,
         Some(1),
-        desc,
         overloads,
-        { () => ctx ?=>
-          ctx.push(impl(ctx.pop()))
-        }
+        monadToDirect(impl)
       )
       impl
     }
 
-    def addMonadVect(name: String, desc: String, overloads: List[Overload])(
+    def addMonadVect(symbol: String, name: String, overloads: List[Overload])(
         impl: SimpleMonad
     ) =
-      addMonad(name, desc, overloads, vectorises = true)(vect1(impl))
+      addMonad(symbol, name, overloads, vectorises = true)(vect1(impl))
 
-    def addDyad(name: String, desc: String, overloads: List[Overload], vectorises: Boolean = false)(
+    def addDyad(
+        symbol: String,
+        name: String,
+        overloads: List[Overload],
+        vectorises: Boolean = false
+    )(
         impl: Dyad
     ): Dyad = {
-      elements += name -> Element(
+      elements += symbol -> Element(
+        symbol,
         name,
         Some(2),
-        desc,
         overloads,
-        { () => ctx ?=>
-          val arg2, arg1 = ctx.pop()
-          ctx.push(impl(arg1, arg2))
-        }
+        dyadToDirect(impl)
       )
       impl
     }
 
-    def addDyadVect(name: String, desc: String, overloads: List[Overload])(
+    def addDyadVect(symbol: String, name: String, overloads: List[Overload])(
         impl: SimpleDyad
-    ) = addDyad(name, desc, overloads, vectorises = true)(vect2(impl))
+    ) = addDyad(symbol, name, overloads, vectorises = true)(vect2(impl))
 
-    def addTriad(name: String, desc: String, overloads: List[Overload], vectorises: Boolean = false)(
+    def addTriad(
+        symbol: String,
+        name: String,
+        overloads: List[Overload],
+        vectorises: Boolean = false
+    )(
         impl: Triad
     ): Triad = {
-      elements += name -> Element(
+      elements += symbol -> Element(
+        symbol,
         name,
         Some(3),
-        desc,
         overloads,
-        { () => ctx ?=>
-          val arg3, arg2, arg1 = ctx.pop()
-          ctx.push(
-            impl(arg1, arg2, arg3)
-          )
-        }
+        triadToDirect(impl)
       )
       impl
     }
 
-    def addTriadVect(name: String, desc: String, overloads: List[Overload])(
+    def addTriadVect(symbol: String, name: String, overloads: List[Overload])(
         impl: SimpleTriad
     ) =
-      addTriad(name, desc, overloads, vectorises = true)(vect3(impl))
+      addTriad(symbol, name, overloads, vectorises = true)(vect3(impl))
 
-    def addTetrad(name: String, desc: String, overloads: List[Overload], vectorises: Boolean = false)(
+    def addTetrad(
+        symbol: String,
+        name: String,
+        overloads: List[Overload],
+        vectorises: Boolean = false
+    )(
         impl: Tetrad
     ): Tetrad = {
-      elements += name -> Element(
+      elements += symbol -> Element(
+        symbol,
         name,
         Some(4),
-        desc,
         overloads,
-        { () => ctx ?=>
-          val arg4, arg3, arg2, arg1 = ctx.pop()
-          ctx.push(
-            impl(arg1, arg2, arg3, arg4)
-          )
-        }
+        tetradToDirect(impl)
       )
       impl
     }
 
     /** Add an element that works directly on the entire stack */
-    def addDirect(name: String, desc: String, overloads: List[Overload])(
+    def addDirect(symbol: String, name: String, overloads: List[Overload])(
         impl: Context ?=> Unit
     ): Unit =
-      elements += name -> Element(name, None, desc, overloads, () => impl)
+      elements += symbol -> Element(symbol, name, None, overloads, () => impl)
 
-
-    val add = addDyadVect(
+    val add: Dyad = addDyadVect(
       "+",
       "Add stuff",
       List(
-        ("num", "num") -> "num",
-        ("str", "str") -> "str"
+        "a: num, b: num -> a + b",
+        "a: num, b: str -> a + b",
+        "a: str, b: num -> a + b",
+        "a: str, b: str -> a + b"
       )
     ) {
-      case (a: VNum, b: VNum) => a + b
+      case (a: Number, b: Number) => a + b
+      case (a: String, b: Number) => s"$a$b"
+      case (a: Number, b: String) => s"$a$b"
+      case (a: String, b: String) => s"$a$b"
+      case _ => throw NotImplementedError("Can't add functions :(")
+      // todo consider doing something like APL's forks
     }
   }
 }

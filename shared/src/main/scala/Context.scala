@@ -21,3 +21,7 @@ class Context private (
 
   def push(item: VAny): Unit = stack += item
 }
+
+object Context {
+  def apply(): Context = new Context(stack = mut.ArrayBuffer())
+}

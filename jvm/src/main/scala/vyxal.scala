@@ -1,27 +1,86 @@
 package vyxal
 
-@main def vyxal(args: String*) = {
-  if (args.length == 0) {
-    println("Usage: vyxal <file>")
-    System.exit(1)
+import java.io.File
+
+import scopt.OParser
+
+/** Configuration for the command line argument parser
+  *
+  * @param file
+  *   File to read code from (optional)
+  * @param code
+  *   Code to run (optional)
+  * @param inputs
+  *   Inputs to program (optional)
+  */
+case class Config(
+    file: Option[File] = None,
+    code: Option[String] = None,
+    inputs: Seq[String] = Seq.empty,
+    printDocs: Boolean = false
+)
+
+object Vyxal {
+  def main(args: Array[String]) = {
+    val builder = OParser.builder[Config]
+    val parser = {
+      import builder.*
+
+      OParser.sequence(
+        programName("vyxal"),
+        head("vyxal", "3.1.1"),
+        opt[File]("file")
+          .action((file, cfg) => cfg.copy(file = Some(file)))
+          .text("The file to read the program from")
+          .optional(),
+        opt[String]("code")
+          .action((code, cfg) => cfg.copy(code = Some(code)))
+          .text("Code to execute directly")
+          .optional(),
+        opt[Unit]("docs")
+          .action((printDocs, cfg) => cfg.copy(printDocs = true))
+          .text("Print documentation for elements")
+          .optional(),
+        arg[String]("<input>...")
+          .unbounded()
+          .optional()
+          .action((input, cfg) => cfg.copy(inputs = cfg.inputs :+ input))
+          .text("Input to the program")
+      )
+    }
+
+    OParser.parse(parser, args, Config()) match {
+      case Some(config) =>
+        given Context = Context()
+
+        if (config.printDocs) {
+          printDocs()
+        }
+
+        config.file.foreach { file =>
+          val source = io.Source.fromFile(config.file.get)
+          try {
+            Interpreter.execute(source.mkString)
+          } finally {
+            source.close()
+          }
+        }
+
+        config.code.foreach { code =>
+          Interpreter.execute(code)
+        }
+      case None => ???
+    }
   }
 
-  val fileLocation = args(0)
-  val flags = if (args.length > 1) args(2) else ""
-  val inputs: Seq[String] =
-    if (args.length > 2) args.slice(3, args.length)
-    else Seq.empty
-
-  // println(fileLocation)
-  // println(flags)
-  // println(inputs.mkString("[ ", " | ", " ]"))
-  println(Lexer(fileLocation))
-  println(VyxalCompiler(fileLocation))
-}
-
-object VyxalCompiler {
-  def apply(code: String): AST = {
-    // todo handle errors
-    VyxalParser.parse(code).getOrElse(AST.Group(List.empty))
+  private def printDocs(): Unit = {
+    Elements.elements.values.foreach {
+      case Element(symbol, name, arity, overloads, impl) =>
+        println(s"$symbol ($name)\n")
+        overloads.foreach{
+          overload => println(s"- $overload")
+        }
+        println("-----------------------")
+    }
   }
 }

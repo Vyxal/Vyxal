@@ -11,10 +11,8 @@ type SimpleDyad = (VAtom, VAtom) => Context ?=> VAny
 type SimpleTriad = (VAtom, VAtom, VAtom) => Context ?=> VAny
 type SimpleTetrad = (VAtom, VAtom, VAtom, VAtom) => Context ?=> VAny
 
-/** A function that works directly on the stack */
-case class DirectFn(fn: () => Context ?=> Unit, arity: Int) {
-  def apply()(using Context) = fn()
-}
+/** A function that operates directly on the stack */
+type DirectFn = () => Context ?=> Unit
 
 extension (f: Monad)
   /** Turn the monad into a normal function of type `VAny => VAny`
@@ -34,6 +32,7 @@ extension (f: Dyad)
     */
   def norm(using ctx: Context): (VAny, VAny) => VAny =
     f(_, _)(using ctx)
+
 extension (f: Triad)
   /** Turn the triad into a normal function of type `(VAny, VAny, VAny) => VAny`
     */

@@ -46,17 +46,18 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
       "-language:implicitConversions",
-      "-explain",
+      // "-explain",
       "-print-lines",
       "-Ycheck-all-patmat"
     ),
   )
   .jvmSettings(
     // JVM-specific settings
-    Compile / mainClass := Some("vyxal.vyxal"),
-    assembly / mainClass := Some("vyxal.vyxal"),
+    Compile / mainClass := Some("vyxal.Vyxal"),
+    assembly / mainClass := Some("vyxal.Vyxal"),
     assembly / logLevel := Level.Debug,
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
+    libraryDependencies += "com.github.scopt" %% "scopt" % "4.1.0"
   )
   .jsSettings(
     // JS-specific settings
