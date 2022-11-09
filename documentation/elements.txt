@@ -1,0 +1,11 @@
+$ (Swap)
+
+- a, b -> b, a
+-----------------------
++ (Addition)
+
+- a: num, b: num -> a + b
+- a: num, b: str -> a + b
+- a: str, b: num -> a + b
+- a: str, b: str -> a + b
+-----------------------

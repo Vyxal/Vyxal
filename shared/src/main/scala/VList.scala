@@ -10,9 +10,21 @@ import scala.collection.SpecificIterableFactory
   * @param lst
   *   The wrapped list actually holdings this VList's elements.
   */
-case class VList(val lst: Seq[VAny])
+class VList private (val lst: Seq[VAny])
     extends Seq[VAny],
       SeqOps[VAny, Seq, VList] {
+
+  /** Map the list using a Vyxal function
+    */
+  def vmap(f: Monad)(using Context): VList = new VList(lst.map(f(_)))
+
+  /** Zip two VLists together with a function. If one is longer than the other,
+    * keep the longer one's elements as-is.
+    */
+  def zipWith(other: VList)(f: (VAny, VAny) => Context ?=> VAny)(using
+      Context
+  ): VList =
+    new VList(lst.lazyZip(other.lst).map(f(_, _)))
 
   /** Get the element at index `ind`
     */
@@ -36,6 +48,18 @@ case class VList(val lst: Seq[VAny])
 }
 
 object VList extends SpecificIterableFactory[VAny, VList] {
+
+  /** Zip multiple VLists together with a function.
+    */
+  def zipMulti(lists: VList*)(f: Seq[VAny] => VAny): VList = {
+    ???
+  }
+
+  /** This lets us pattern match on `VList`s, silly as the implementation may
+    * be.
+    */
+  def unapplySeq(vlist: VList): Seq[VAny] = vlist.lst
+
   override def empty: VList = new VList(Seq.empty)
 
   override def newBuilder: mutable.Builder[VAny, VList] =
