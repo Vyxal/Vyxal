@@ -53,8 +53,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
   )
   .jvmSettings(
     // JVM-specific settings
-    Compile / mainClass := Some("vyxal.Vyxal"),
-    assembly / mainClass := Some("vyxal.Vyxal"),
+    Compile / mainClass := Some("vyxal.Main"),
+    assembly / mainClass := Some("vyxal.Main"),
     assembly / logLevel := Level.Debug,
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
     libraryDependencies += "com.github.scopt" %% "scopt" % "4.1.0"

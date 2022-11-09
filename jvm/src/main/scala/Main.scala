@@ -20,7 +20,7 @@ case class Config(
     printDocs: Boolean = false
 )
 
-object Vyxal {
+object Main {
   def main(args: Array[String]) = {
     val builder = OParser.builder[Config]
     val parser = {
