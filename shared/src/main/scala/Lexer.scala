@@ -77,11 +77,11 @@ object Lexer extends RegexParsers {
     StructureAllClose
   }
 
-  def listOpen: Parser[VyxalToken] = """⟨""".r ^^ { value =>
+  def listOpen: Parser[VyxalToken] = """(#\[)|⟨""".r ^^ { value =>
     ListOpen
   }
 
-  def listClose: Parser[VyxalToken] = """⟩""".r ^^ { value =>
+  def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^ { value =>
     ListClose
   }
 
