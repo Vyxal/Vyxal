@@ -172,7 +172,7 @@ object Elements {
     }
 
     val multiply: Dyad = addDyadVect(
-      "*",
+      "×",
       "Multiplication",
       List(
         "a: num, b: num -> a * b",
@@ -184,7 +184,7 @@ object Elements {
       case (a: Number, b: Number) => a * b
       case (a: String, b: Number) => a.repeat(b.toInt)
       case (a: Number, b: String) => b.repeat(a.toInt)
-      case (a: String, b: String) => a
+      case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
       case _ => throw NotImplementedError("Todo: Figure out arity changing")
     }
   }
