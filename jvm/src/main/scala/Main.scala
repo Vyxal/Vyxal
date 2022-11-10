@@ -20,7 +20,7 @@ import scopt.OParser
 case class CLIConfig(
     file: Option[File] = None,
     code: Option[String] = None,
-    inputs: Seq[String] = Seq.empty,
+    inputs: List[String] = List.empty,
     printDocs: Boolean = false,
     printHelp: Boolean = false,
     settings: Settings = Settings()
@@ -30,7 +30,7 @@ object Main {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CLIConfig()) match {
       case Some(config) =>
-        given Context = Context()
+        given Context = Context(config.inputs.reverse.map(VyxalParser.parseInput))
 
         if (config.printHelp) {
           println(OParser.usage(parser))
@@ -94,15 +94,15 @@ object Main {
         .action((_, cfg) => cfg.copy(printHelp = true))
         .text("Print this help message and exit")
         .optional(),
-      opt[File]("file")
+      opt[File]('f', "file")
         .action((file, cfg) => cfg.copy(file = Some(file)))
         .text("The file to read the program from")
         .optional(),
-      opt[String]("code")
+      opt[String]('c', "code")
         .action((code, cfg) => cfg.copy(code = Some(code)))
         .text("Code to execute directly")
         .optional(),
-      opt[Unit]("docs")
+      opt[Unit]('d', "docs")
         .action((_, cfg) => cfg.copy(printDocs = true))
         .text("Print documentation for elements and exit")
         .optional(),

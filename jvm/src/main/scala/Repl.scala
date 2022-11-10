@@ -8,9 +8,6 @@ object Repl {
       print("> ")
       val code = StdIn.readLine()
       Interpreter.execute(code)
-      if (!ctx.isEmpty) {
-        println(ctx.peek)
-      }
     }
   }
 }

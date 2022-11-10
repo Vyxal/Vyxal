@@ -1,11 +1,15 @@
 package vyxal
 
 object Interpreter {
-  def execute(code: String)(using Context): Unit = {
+  def execute(code: String)(using ctx: Context): Unit = {
     VyxalParser.parse(code) match {
       case Right(ast) =>
         println(ast)
         execute(ast)
+        // todo implicit output according to settings
+        if (!ctx.isStackEmpty) {
+          println(ctx.peek)
+        }
       case Left(error) =>
         println(error)
         ???
@@ -13,6 +17,9 @@ object Interpreter {
   }
 
   def execute(ast: AST)(using Context): Unit = {
-    // todo implement
+    ast match {
+      case AST.Command(cmd) => Elements.elements(cmd).impl()
+      case _ => ???
+    }
   }
 }

@@ -5,7 +5,8 @@ import spire.math.Number
 // todo check if these names or this whole way of structuring need to be changed
 type VAny = VAtom | VList
 type VAtom = VVal | VFun
-type VVal = Number | String
+type VVal = VNum | String
+type VNum = Number
 
 /** A function object (not a function definition)
   *

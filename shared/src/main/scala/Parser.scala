@@ -19,7 +19,9 @@ object VyxalParser extends Parsers {
     rep(element <~ VyxalToken.StructureAllClose.?)
   ) ^^ { asts => AST.makeSingle(asts*) }
 
-  def nonStructElement: Parser[AST] = number | string | command | modifier
+  def literal = number | string
+
+  def nonStructElement: Parser[AST] = literal | command | modifier
 
   def element: Parser[AST] = nonStructElement | structure
 
@@ -136,6 +138,21 @@ object VyxalParser extends Parsers {
         case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
       }
     }
+  }
+
+  def parseInput(input: String): VAny = {
+    Lexer(input).toOption.flatMap { tokens =>
+      val reader = new VyxalTokenReader(preprocess(tokens))
+      literal(reader) match {
+        case Success(result, _) =>
+          result match {
+            case AST.Number(value) => Some(value.toInt: VAny)
+            case AST.Str(str) => Some(str)
+            case _ => None
+          }
+        case _ => None
+      }
+    }.getOrElse(input)
   }
 
   /** Filter out the alphanumeric characters from a given string to get a valid
