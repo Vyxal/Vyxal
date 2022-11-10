@@ -29,7 +29,10 @@ object VyxalParser extends Parsers {
     rep(element) ^^ { elems => AST.makeSingle(elems*) }
 
   def number: Parser[AST] =
-    accept("number", { case VyxalToken.Number(value) => AST.Number(VNum.from(value)) })
+    accept(
+      "number",
+      { case VyxalToken.Number(value) => AST.Number(VNum.from(value)) }
+    )
 
   def string: Parser[AST] =
     accept("string", { case VyxalToken.Str(value) => AST.Str(value) })
@@ -83,8 +86,7 @@ object VyxalParser extends Parsers {
             case "ƛ" => AST.makeSingle(lambda, AST.Command("M"))
             case "Ω" => AST.makeSingle(lambda, AST.Command("F"))
             case "₳" => AST.makeSingle(lambda, AST.Command("R"))
-            // todo is ᶳ the correct one?
-            case "µ" => AST.makeSingle(lambda, AST.Command("ᶳ"))
+            case "µ" => AST.makeSingle(lambda, AST.Command("ṡ"))
           }
       }
     }
@@ -141,18 +143,20 @@ object VyxalParser extends Parsers {
   }
 
   def parseInput(input: String): VAny = {
-    Lexer(input).toOption.flatMap { tokens =>
-      val reader = new VyxalTokenReader(preprocess(tokens))
-      literal(reader) match {
-        case Success(result, _) =>
-          result match {
-            case AST.Number(value) => Some[VAny](value)
-            case AST.Str(str) => Some(str)
-            case _ => None
-          }
-        case _ => None
+    Lexer(input).toOption
+      .flatMap { tokens =>
+        val reader = new VyxalTokenReader(preprocess(tokens))
+        literal(reader) match {
+          case Success(result, _) =>
+            result match {
+              case AST.Number(value) => Some[VAny](value)
+              case AST.Str(str)      => Some(str)
+              case _                 => None
+            }
+          case _ => None
+        }
       }
-    }.getOrElse(input)
+      .getOrElse(input)
   }
 
   /** Filter out the alphanumeric characters from a given string to get a valid
