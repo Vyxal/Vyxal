@@ -12,5 +12,7 @@ object Interpreter {
     }
   }
 
-  def execute(ast: AST)(using Context): Unit = ???
+  def execute(ast: AST)(using Context): Unit = {
+    // todo implement
+  }
 }
