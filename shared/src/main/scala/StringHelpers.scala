@@ -1,3 +1,5 @@
+package vyxal
+
 object StringHelpers {
   def ringTranslate(source: String, mapping: String): String = {
     /* Ring translates a given string according to the provided mapping
