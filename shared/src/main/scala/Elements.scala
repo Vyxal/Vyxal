@@ -1,9 +1,6 @@
 package vyxal
 
-import spire.math.Number
-
 type Overload = String
-
 case class Element(
     symbol: String,
     name: String,
@@ -148,8 +145,8 @@ object Elements {
     val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
       val b = ctx.pop()
       val a = ctx.pop()
-      ctx.push(a)
       ctx.push(b)
+      ctx.push(a)
     }
 
     val add: Dyad = addDyadVect(
@@ -162,9 +159,9 @@ object Elements {
         "a: str, b: str -> a + b"
       )
     ) {
-      case (a: Number, b: Number) => a + b
-      case (a: String, b: Number) => s"$a$b"
-      case (a: Number, b: String) => s"$a$b"
+      case (a: VNum, b: VNum) => a + b
+      case (a: String, b: VNum) => s"$a$b"
+      case (a: VNum, b: String) => s"$a$b"
       case (a: String, b: String) => s"$a$b"
       case _ =>
         throw NotImplementedError("Unsupported types for addition")
@@ -176,7 +173,7 @@ object Elements {
       "Factorial | To Uppercase",
       List("a: num -> a!", "a: str -> a.toUpperCase()")
     ) {
-      case a: Number => spire.math.fact(a.toInt)
+      case a: VNum => spire.math.fact(a.toLong)
       case a: String => a.toUpperCase()
       case _ =>
         throw NotImplementedError("Unsuported type for factorial")
@@ -190,9 +187,10 @@ object Elements {
         "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
       )
     ) {
-      case (a: Number, b: Number) => a.tmod(b)
+      case (a: VNum, b: VNum) => a.tmod(b)
       case (a: String, b: VAny)   => StringHelpers.formatString(a, b)
       case (a: VAny, b: String)   => StringHelpers.formatString(b, a)
+      case (a, b) => throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
     val multiply: Dyad = addDyadVect(
@@ -205,11 +203,11 @@ object Elements {
         "a: str, b: str -> ring translate a according to b"
       )
     ) {
-      case (a: Number, b: Number) => a * b
-      case (a: String, b: Number) => a.repeat(b.toInt)
-      case (a: Number, b: String) => b.repeat(a.toInt)
+      case (a: VNum, b: VNum) => a * b
+      case (a: String, b: VNum) => a.repeat(b.toInt)
+      case (a: VNum, b: String) => b.repeat(a.toInt)
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
-      case (a: VFun, b: Number)   => a.withArity(b.toInt)
+      case (a: VFun, b: VNum)   => a.withArity(b.toInt)
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
     }
