@@ -19,6 +19,9 @@ object Interpreter {
   def execute(ast: AST)(using Context): Unit = {
     ast match {
       case AST.Command(cmd) => Elements.elements(cmd).impl()
+      case AST.Chain(head, tail) =>
+        execute(head)
+        execute(tail)
       case _ => ???
     }
   }

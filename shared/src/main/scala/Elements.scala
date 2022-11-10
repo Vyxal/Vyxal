@@ -146,8 +146,8 @@ object Elements {
     val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
       val b = ctx.pop()
       val a = ctx.pop()
-      ctx.push(a)
       ctx.push(b)
+      ctx.push(a)
     }
 
     val add: Dyad = addDyadVect(
