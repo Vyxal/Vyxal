@@ -10,6 +10,8 @@ enum VyxalToken {
   case StructureOpen(value: String)
   case StructureClose(value: String)
   case StructureAllClose
+  case ListOpen
+  case ListClose
   case Command(value: String)
   case Digraph(value: String)
   case MonadicModifier(value: String)
@@ -62,8 +64,9 @@ object Lexer extends RegexParsers {
     }
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
-    StructureOpen(value)
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@|""".r ^^ {
+    value =>
+      StructureOpen(value)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
@@ -72,6 +75,14 @@ object Lexer extends RegexParsers {
 
   def structureAllClose: Parser[VyxalToken] = """\]""".r ^^ { value =>
     StructureAllClose
+  }
+
+  def listOpen: Parser[VyxalToken] = """⟨""".r ^^ { value =>
+    ListOpen
+  }
+
+  def listClose: Parser[VyxalToken] = """⟩""".r ^^ { value =>
+    ListClose
   }
 
   def digraph: Parser[VyxalToken] = s"[∆øÞ#][$CODEPAGE]".r ^^ { value =>

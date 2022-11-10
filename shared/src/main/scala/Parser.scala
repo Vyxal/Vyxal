@@ -19,7 +19,7 @@ object VyxalParser extends Parsers {
     rep(element <~ VyxalToken.StructureAllClose.?)
   ) ^^ { asts => AST.makeSingle(asts*) }
 
-  def literal = number | string
+  def literal = number | string | listStructure
 
   def nonStructElement: Parser[AST] = literal | command | modifier
 
@@ -44,6 +44,14 @@ object VyxalParser extends Parsers {
 
   def close =
     accept("close", { case VyxalToken.StructureClose(close) => close })
+
+  def listStructure =
+    VyxalToken.ListOpen ~ repsep(
+      element,
+      VyxalToken.Branch
+    ) ~ VyxalToken.ListClose ^^ { case _ ~ elems ~ _ =>
+      AST.Lst(elems)
+    }
 
   // not(not(VyxalToken.StructureAllClose)) is used to match that token
   // without consuming it.
