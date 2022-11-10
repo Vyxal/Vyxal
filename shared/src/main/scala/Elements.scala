@@ -182,6 +182,19 @@ object Elements {
         throw NotImplementedError("Unsuported type for factorial")
     }
 
+    val modulo: Dyad = addDyadVect(
+      "%",
+      "Modulo | String Formatting",
+      List(
+        "a: num, b: num -> a % b",
+        "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
+      )
+    ) {
+      case (a: Number, b: Number) => a.tmod(b)
+      case (a: String, b: VAny)   => StringHelpers.formatString(a, b)
+      case (a: VAny, b: String)   => StringHelpers.formatString(b, a)
+    }
+
     val multiply: Dyad = addDyadVect(
       "×",
       "Multiplication",
