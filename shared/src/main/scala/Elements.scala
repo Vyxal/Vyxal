@@ -167,8 +167,19 @@ object Elements {
       case (a: Number, b: String) => s"$a$b"
       case (a: String, b: String) => s"$a$b"
       case _ =>
-        throw NotImplementedError("Addition of Functions Not Implemented")
+        throw NotImplementedError("Unsupported types for addition")
       // todo consider doing something like APL's forks
+    }
+
+    val factorial: Monad = addMonadVect(
+      "!",
+      "Factorial | To Uppercase",
+      List("a: num -> a!", "a: str -> a.toUpperCase()")
+    ) {
+      case a: Number => spire.math.fact(a.toInt)
+      case a: String => a.toUpperCase()
+      case _ =>
+        throw NotImplementedError("Unsuported type for factorial")
     }
 
     val multiply: Dyad = addDyadVect(
@@ -185,7 +196,9 @@ object Elements {
       case (a: String, b: Number) => a.repeat(b.toInt)
       case (a: Number, b: String) => b.repeat(a.toInt)
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
-      case _ => throw NotImplementedError("Todo: Figure out arity changing")
+      case (a: VFun, b: Number)   => a.withArity(b.toInt)
+      case _ =>
+        throw NotImplementedError("Unsupported types for multiplication")
     }
   }
 }
