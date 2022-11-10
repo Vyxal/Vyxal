@@ -47,7 +47,7 @@ object VyxalParser extends Parsers {
 
   def listStructure =
     VyxalToken.ListOpen
-      ~>! repsep(element, VyxalToken.Branch)
+      ~>! repsep(elements, VyxalToken.Branch)
       <~! VyxalToken.ListClose ^^ { elems => AST.Lst(elems) }
 
   // not(not(VyxalToken.StructureAllClose)) is used to match that token

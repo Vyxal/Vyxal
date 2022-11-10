@@ -17,10 +17,29 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
+  test("Does the parser recognise lists?") {
+    assert(
+      VyxalParser.parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
+        Lst(
+          List(
+            Str("foo"),
+            AST.makeSingle(Number(1), Number(2)),
+            Number(3)
+          )
+        )
+      )
+    )
+  }
+
   test("Does the parser recognise multiple literals?") {
     assert(
-      VyxalParser.parse("""123 "Hello" 24 """) === Right(
-        AST.makeSingle(Number(123), Str("Hello"), Number(24))
+      VyxalParser.parse("""123 "Hello" 24 #[ | 1 2 | 3 ⟩""") === Right(
+        AST.makeSingle(
+          Number(123),
+          Str("Hello"),
+          Number(24),
+          Lst(List(Empty, AST.makeSingle(Number(1), Number(2)), Number(3)))
+        )
       )
     )
   }
