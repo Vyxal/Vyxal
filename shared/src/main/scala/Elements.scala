@@ -1,5 +1,7 @@
 package vyxal
 
+import spire.math.Number
+
 type Overload = String
 
 case class Element(
@@ -146,8 +148,8 @@ object Elements {
     val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
       val b = ctx.pop()
       val a = ctx.pop()
-      ctx.push(b)
       ctx.push(a)
+      ctx.push(b)
     }
 
     val add: Dyad = addDyadVect(
@@ -160,9 +162,9 @@ object Elements {
         "a: str, b: str -> a + b"
       )
     ) {
-      case (a: VNum, b: VNum) => a + b
-      case (a: String, b: VNum) => s"$a$b"
-      case (a: VNum, b: String) => s"$a$b"
+      case (a: Number, b: Number) => a + b
+      case (a: String, b: Number) => s"$a$b"
+      case (a: Number, b: String) => s"$a$b"
       case (a: String, b: String) => s"$a$b"
       case _ =>
         throw NotImplementedError("Addition of Functions Not Implemented")
@@ -179,9 +181,9 @@ object Elements {
         "a: str, b: str -> ring translate a according to b"
       )
     ) {
-      case (a: VNum, b: VNum) => a * b
-      case (a: String, b: VNum) => a.repeat(b.toInt)
-      case (a: VNum, b: String) => b.repeat(a.toInt)
+      case (a: Number, b: Number) => a * b
+      case (a: String, b: Number) => a.repeat(b.toInt)
+      case (a: Number, b: String) => b.repeat(a.toInt)
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
       case _ => throw NotImplementedError("Todo: Figure out arity changing")
     }
