@@ -166,8 +166,26 @@ object Elements {
       case (a: String, b: Number) => s"$a$b"
       case (a: Number, b: String) => s"$a$b"
       case (a: String, b: String) => s"$a$b"
-      case _ => throw NotImplementedError("Can't add functions :(")
+      case _ =>
+        throw NotImplementedError("Addition of Functions Not Implemented")
       // todo consider doing something like APL's forks
+    }
+
+    val multiply: Dyad = addDyadVect(
+      "*",
+      "Multiplication",
+      List(
+        "a: num, b: num -> a * b",
+        "a: num, b: str -> b repeated a times",
+        "a: str, b: num -> a repeated b times",
+        "a: str, b: str -> ring translate a according to b"
+      )
+    ) {
+      case (a: Number, b: Number) => a * b
+      case (a: String, b: Number) => a.repeat(b.toInt)
+      case (a: Number, b: String) => b.repeat(a.toInt)
+      case (a: String, b: String) => a
+      case _ => throw NotImplementedError("Todo: Figure out arity changing")
     }
   }
 }
