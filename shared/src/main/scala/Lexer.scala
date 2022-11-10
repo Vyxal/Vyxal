@@ -64,26 +64,19 @@ object Lexer extends RegexParsers {
     }
   }
 
-  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@|""".r ^^ {
-    value =>
-      StructureOpen(value)
+  def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
+    StructureOpen(value)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
     StructureClose(value)
   }
 
-  def structureAllClose: Parser[VyxalToken] = """\]""".r ^^ { value =>
-    StructureAllClose
-  }
+  def structureAllClose: Parser[VyxalToken] = """\]""".r ^^^ StructureAllClose
 
-  def listOpen: Parser[VyxalToken] = """(#\[)|⟨""".r ^^ { value =>
-    ListOpen
-  }
+  def listOpen: Parser[VyxalToken] = """(#\[)|⟨""".r ^^^ ListOpen
 
-  def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^ { value =>
-    ListClose
-  }
+  def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def digraph: Parser[VyxalToken] = s"[∆øÞ#][$CODEPAGE]".r ^^ { value =>
     Digraph(value)
@@ -112,13 +105,14 @@ object Lexer extends RegexParsers {
     Comment(value)
   }
 
-  def branch = "|" ^^ { _ => Branch }
+  def branch = "|" ^^^ Branch
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | digraph | monadicModifier |
-        dyadicModifier | triadicModifier | tetradicModifier | specialModifier |
-        structureOpen | structureClose | structureAllClose | command
+      comment | branch | number | string | digraph
+        | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
+        | specialModifier | structureOpen | structureClose | structureAllClose
+        | listOpen | listClose | command
     )
   )
 
