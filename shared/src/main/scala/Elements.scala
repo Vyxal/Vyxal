@@ -149,6 +149,12 @@ object Elements {
       ctx.push(a)
     }
 
+    val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>
+      val a = ctx.pop()
+      ctx.push(a)
+      ctx.push(a)
+    }
+
     val add: Dyad = addDyadVect(
       "+",
       "Addition",
@@ -159,10 +165,23 @@ object Elements {
         "a: str, b: str -> a + b"
       )
     ) {
-      case (a: VNum, b: VNum) => a + b
-      case (a: String, b: VNum) => s"$a$b"
-      case (a: VNum, b: String) => s"$a$b"
+      case (a: VNum, b: VNum)     => a + b
+      case (a: String, b: VNum)   => s"$a$b"
+      case (a: VNum, b: String)   => s"$a$b"
       case (a: String, b: String) => s"$a$b"
+      case _ =>
+        throw NotImplementedError("Unsupported types for addition")
+      // todo consider doing something like APL's forks
+    }
+
+    val sub: Dyad = addDyadVect(
+      "-",
+      "Subtraction",
+      List(
+        "a: num, b: num -> a - b"
+      )
+    ) {
+      case (a: VNum, b: VNum) => a - b
       case _ =>
         throw NotImplementedError("Unsupported types for addition")
       // todo consider doing something like APL's forks
@@ -173,7 +192,7 @@ object Elements {
       "Factorial | To Uppercase",
       List("a: num -> a!", "a: str -> a.toUpperCase()")
     ) {
-      case a: VNum => spire.math.fact(a.toLong)
+      case a: VNum   => spire.math.fact(a.toLong)
       case a: String => a.toUpperCase()
       case _ =>
         throw NotImplementedError("Unsuported type for factorial")
@@ -187,10 +206,11 @@ object Elements {
         "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
       )
     ) {
-      case (a: VNum, b: VNum) => a.tmod(b)
-      case (a: String, b: VAny)   => StringHelpers.formatString(a, b)
-      case (a: VAny, b: String)   => StringHelpers.formatString(b, a)
-      case (a, b) => throw NotImplementedError(s"Modulo won't work on $a and $b")
+      case (a: VNum, b: VNum)   => a.tmod(b)
+      case (a: String, b: VAny) => StringHelpers.formatString(a, b)
+      case (a: VAny, b: String) => StringHelpers.formatString(b, a)
+      case (a, b) =>
+        throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
     val multiply: Dyad = addDyadVect(
@@ -203,11 +223,11 @@ object Elements {
         "a: str, b: str -> ring translate a according to b"
       )
     ) {
-      case (a: VNum, b: VNum) => a * b
-      case (a: String, b: VNum) => a.repeat(b.toInt)
-      case (a: VNum, b: String) => b.repeat(a.toInt)
+      case (a: VNum, b: VNum)     => a * b
+      case (a: String, b: VNum)   => a.repeat(b.toInt)
+      case (a: VNum, b: String)   => b.repeat(a.toInt)
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
-      case (a: VFun, b: VNum)   => a.withArity(b.toInt)
+      case (a: VFun, b: VNum)     => a.withArity(b.toInt)
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
     }

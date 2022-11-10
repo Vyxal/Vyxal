@@ -122,7 +122,7 @@ class Context private (
 }
 
 object Context {
-  def apply(inputs: List[VAny]): Context =
+  def apply(inputs: List[VAny] = List.empty): Context =
     new Context(stack = mut.ArrayBuffer(), inputs = inputs)
 
   /** Find a parent that has a variable with the given name */

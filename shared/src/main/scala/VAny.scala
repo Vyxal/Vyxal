@@ -32,6 +32,9 @@ enum VFun {
 }
 
 object VNum {
+  /** To force an implicit conversion */
+  def apply(n: VNum): VNum = n
+
   // todo implement properly
   /** Parse a number from a string */
   def from(s: String): VNum = s.toInt

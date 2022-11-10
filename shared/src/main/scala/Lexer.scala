@@ -42,7 +42,7 @@ val SPECIAL_MODIFIERS = "ᵗᵜ"
 object Lexer extends RegexParsers {
   override def skipWhitespace = true
 
-  def number: Parser[VyxalToken] = """(0(?:[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
+  def number: Parser[VyxalToken] = """(0(?=[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
     value => Number(value)
   }
 
