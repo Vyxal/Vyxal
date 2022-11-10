@@ -29,7 +29,7 @@ object VyxalParser extends Parsers {
     rep(element) ^^ { elems => AST.makeSingle(elems*) }
 
   def number: Parser[AST] =
-    accept("number", { case VyxalToken.Number(value) => AST.Number(value) })
+    accept("number", { case VyxalToken.Number(value) => AST.Number(VNum.from(value)) })
 
   def string: Parser[AST] =
     accept("string", { case VyxalToken.Str(value) => AST.Str(value) })
@@ -146,7 +146,7 @@ object VyxalParser extends Parsers {
       literal(reader) match {
         case Success(result, _) =>
           result match {
-            case AST.Number(value) => Some(value.toInt: VAny)
+            case AST.Number(value) => Some[VAny](value)
             case AST.Str(str) => Some(str)
             case _ => None
           }

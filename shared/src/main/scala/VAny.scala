@@ -30,3 +30,9 @@ enum VFun {
     case FnRef(fnDef, _, ctx) => FnRef(fnDef, newArity, ctx)
   }
 }
+
+object VNum {
+  // todo implement properly
+  /** Parse a number from a string */
+  def from(s: String): VNum = s.toInt
+}

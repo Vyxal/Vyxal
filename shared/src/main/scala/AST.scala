@@ -3,7 +3,7 @@ package vyxal
 enum AST {
   /** Do nothing */
   case Empty
-  case Number(value: String)
+  case Number(value: VNum)
   case Str(value: String)
   case Lst(elems: List[AST])
   case Command(value: String)

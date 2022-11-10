@@ -16,8 +16,10 @@ object Interpreter {
     }
   }
 
-  def execute(ast: AST)(using Context): Unit = {
+  def execute(ast: AST)(using ctx: Context): Unit = {
     ast match {
+      case AST.Number(value) => ctx.push(value)
+      case AST.Str(value) => ctx.push(value)
       case AST.Command(cmd) => Elements.elements(cmd).impl()
       case AST.Chain(head, tail) =>
         execute(head)
