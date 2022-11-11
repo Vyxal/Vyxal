@@ -38,7 +38,13 @@ class ParserTests extends AnyFunSuite:
           Number(123),
           Str("Hello"),
           Number(24),
-          Lst(List(Empty, AST.makeSingle(Number(1), Number(2)), Number(3)))
+          Lst(
+            List(
+              AST.makeSingle(),
+              AST.makeSingle(Number(1), Number(2)),
+              Number(3)
+            )
+          )
         )
       )
     )

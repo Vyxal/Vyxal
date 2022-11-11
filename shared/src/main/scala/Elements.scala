@@ -169,13 +169,11 @@ object Elements {
       ),
       false
     ) {
-      case (a: VList, b: VList) => a.append(b)
-      case (a: VList, b: VAny)  => a.append(b)
-      case (a: VAny, b: VList)  => VList(a).append(b)
+      case (a: VList, b: VList) => VList(a ++ b*)
+      case (a: VList, b: VAny)  => VList(a :+ b*)
+      case (a: VAny, b: VList)  => VList(a +: b*)
       case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
       case (a: VAny, b: VAny)   => add(a, b)
-      case _ =>
-        throw NotImplementedError("Unsupported types for concatenation")
     }
 
     val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>

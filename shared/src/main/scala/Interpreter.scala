@@ -19,7 +19,6 @@ object Interpreter {
   def execute(ast: AST)(using ctx: Context): Unit = {
     println(s"Executing $ast")
     ast match {
-      case AST.Empty         =>
       case AST.Number(value) => ctx.push(value)
       case AST.Str(value)    => ctx.push(value)
       case AST.Lst(elems) =>
@@ -34,9 +33,8 @@ object Interpreter {
           case Some(elem) => elem.impl()
           case None       => throw RuntimeException(s"No such command: '$cmd'")
         }
-      case AST.Chain(head, tail) =>
-        execute(head)
-        execute(tail)
+      case AST.Group(elems) =>
+        elems.foreach { elem => Interpreter.execute(elem) }
       case AST.If(thenBody, elseBody) =>
         if (MiscHelpers.boolify(ctx.pop())) {
           execute(thenBody)
