@@ -26,6 +26,8 @@ class VList private (val lst: Seq[VAny])
   ): VList =
     new VList(lst.lazyZip(other.lst).map(f(_, _)))
 
+  def append(value: VAny): VList = new VList(lst :+ value)
+
   /** Get the element at index `ind`
     */
   override def apply(ind: Int): VAny = lst(ind)

@@ -161,6 +161,23 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
+    val concatenate: Dyad = addDyad(
+      "&",
+      "Concatenate",
+      List(
+        "a: any, b: any -> a ++ b"
+      ),
+      false
+    ) {
+      case (a: VList, b: VList) => a.append(b)
+      case (a: VList, b: VAny)  => a.append(b)
+      case (a: VAny, b: VList)  => VList(a).append(b)
+      case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
+      case (a: VAny, b: VAny)   => add(a, b)
+      case _ =>
+        throw NotImplementedError("Unsupported types for concatenation")
+    }
+
     val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>
       val a = ctx.pop()
       ctx.push(a)
