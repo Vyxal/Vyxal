@@ -142,19 +142,6 @@ object Elements {
     ): Unit =
       elements += symbol -> Element(symbol, name, None, overloads, () => impl)
 
-    val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
-      val b = ctx.pop()
-      val a = ctx.pop()
-      ctx.push(b)
-      ctx.push(a)
-    }
-
-    val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>
-      val a = ctx.pop()
-      ctx.push(a)
-      ctx.push(a)
-    }
-
     val add: Dyad = addDyadVect(
       "+",
       "Addition",
@@ -174,17 +161,10 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
-    val sub: Dyad = addDyadVect(
-      "-",
-      "Subtraction",
-      List(
-        "a: num, b: num -> a - b"
-      )
-    ) {
-      case (a: VNum, b: VNum) => a - b
-      case _ =>
-        throw NotImplementedError("Unsupported types for addition")
-      // todo consider doing something like APL's forks
+    val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>
+      val a = ctx.pop()
+      ctx.push(a)
+      ctx.push(a)
     }
 
     val factorial: Monad = addMonadVect(
@@ -230,6 +210,26 @@ object Elements {
       case (a: VFun, b: VNum)     => a.withArity(b.toInt)
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
+    }
+
+    val subtraction: Dyad = addDyadVect(
+      "-",
+      "Subtraction",
+      List(
+        "a: num, b: num -> a - b"
+      )
+    ) {
+      case (a: VNum, b: VNum) => a - b
+      case _ =>
+        throw NotImplementedError("Unsupported types for subtraction")
+      // todo consider doing something like APL's forks
+    }
+
+    val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
+      val b = ctx.pop()
+      val a = ctx.pop()
+      ctx.push(b)
+      ctx.push(a)
     }
   }
 }
