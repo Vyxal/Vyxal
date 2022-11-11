@@ -14,6 +14,7 @@ type VNum = Number
   * and ctx?
   */
 enum VFun {
+
   /** A lambda just left on the stack */
   case Lam(lam: AST.Lambda, arity: Int, ctx: Context)
 
@@ -32,6 +33,7 @@ enum VFun {
 }
 
 object VNum {
+
   /** To force an implicit conversion */
   def apply(n: VNum): VNum = n
 
