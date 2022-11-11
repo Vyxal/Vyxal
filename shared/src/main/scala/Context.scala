@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.collection.{mutable => mut}
+import scala.collection.mutable.Stack
 
 /** What kind of implicit output is wanted at the end
   */
@@ -29,7 +30,9 @@ enum EndPrintMode {
 case class Settings(
     presetStack: Boolean = false,
     endPrintMode: EndPrintMode = EndPrintMode.Default,
-    defaultValue: VAny = 0
+    defaultValue: VAny = 0,
+    rangeStart: VNum = 1,
+    rangeOffset: VNum = 1
 ) {
 
   /** Add a flag to these settings
@@ -42,8 +45,11 @@ case class Settings(
     case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
     case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
     case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
+    case 'M' => this.copy(rangeStart = 0)
+    case 'm' => this.copy(rangeOffset = 0)
+    case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = 0)
     // todo implement the others
-    case _   => throw IllegalArgumentException(s"$flag is an invalid flag")
+    case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
   }
 }
 
@@ -61,7 +67,7 @@ case class Settings(
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    val contextVar: VAny = 0,
+    var contextVar: Stack[VAny] = Stack[VAny](),
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: List[VAny] = List.empty,
     private val parent: Option[Context] = None,

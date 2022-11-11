@@ -203,9 +203,9 @@ object Elements {
       }
       case (a: VNum, b: String) => exponentation(b, a)
       case (a: String, b: String) =>
-        a.dropWhile(_ == b)
+        a.dropWhile(_.toString == b)
           .reverse
-          .dropWhile(_ == b)
+          .dropWhile(_.toString == b)
           .reverse // https://stackoverflow.com/a/17995686/9363594
       case _ =>
         throw NotImplementedError("Unsupported types for exponentation")
@@ -220,6 +220,14 @@ object Elements {
       case a: String => a.toUpperCase()
       case _ =>
         throw NotImplementedError("Unsuported type for factorial")
+    }
+
+    val getContextVariable = addNilad(
+      "n",
+      "Get Context Variable",
+      List("_ -> context variable n")
+    ) { ctx ?=>
+      ctx.contextVar.top
     }
 
     val modulo: Dyad = addDyadVect(
@@ -254,6 +262,15 @@ object Elements {
       case (a: VFun, b: VNum)     => a.withArity(b.toInt)
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
+    }
+
+    val print = addDirect(
+      ",",
+      "Print",
+      List("a -> print a")
+    ) { ctx ?=>
+      val a = ctx.pop()
+      println(a)
     }
 
     val subtraction: Dyad = addDyadVect(

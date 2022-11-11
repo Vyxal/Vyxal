@@ -19,20 +19,21 @@ object Interpreter {
   def execute(ast: AST)(using ctx: Context): Unit = {
     println(s"Executing $ast")
     ast match {
-      case AST.Empty =>
+      case AST.Empty         =>
       case AST.Number(value) => ctx.push(value)
       case AST.Str(value)    => ctx.push(value)
-      case AST.Lst(elems)    =>
+      case AST.Lst(elems) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for (elem <- elems) {
           execute(elem)
           list += ctx.pop()
         }
         ctx.push(VList(list.toList*))
-      case AST.Command(cmd)  => Elements.elements.get(cmd) match {
-        case Some(elem) => elem.impl()
-        case None => throw RuntimeException(s"No such command: '$cmd'")
-      }
+      case AST.Command(cmd) =>
+        Elements.elements.get(cmd) match {
+          case Some(elem) => elem.impl()
+          case None       => throw RuntimeException(s"No such command: '$cmd'")
+        }
       case AST.Chain(head, tail) =>
         execute(head)
         execute(tail)
@@ -43,14 +44,34 @@ object Interpreter {
           execute(elseBody.get)
         }
       case AST.While(None, body) =>
+        ctx.contextVar.push(ctx.settings.rangeStart)
         while (true) {
           execute(body)
+          val temp = ctx.contextVar.pop()
+          temp match {
+            case temp: VNum =>
+              ctx.contextVar.push(VNum(temp + 1))
+            case _ =>
+              throw RuntimeException(
+                "Non-numeric value pushed onto context stack in while loop"
+              )
+          }
         }
       case AST.While(Some(cond), body) =>
         execute(cond)
+        ctx.contextVar.push(ctx.settings.rangeStart)
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
+          val temp = ctx.contextVar.pop()
+          temp match {
+            case temp: VNum =>
+              ctx.contextVar.push(VNum(temp + 1))
+            case _ =>
+              throw RuntimeException(
+                "Non-numeric value pushed onto context stack in while loop"
+              )
+          }
         }
     }
   }
