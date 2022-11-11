@@ -184,6 +184,33 @@ object Elements {
       ctx.push(a)
     }
 
+    val exponentation: Dyad = addDyadVect(
+      "*",
+      "Exponentation | Remove Nth Letter | Trim",
+      List(
+        "a: num, b: num -> a ^ b",
+        "a: str, b: num -> a with the bth letter removed",
+        "a: num, b: str -> b with the ath letter removed",
+        "a: str, b: str -> trim b from both sides of a"
+      )
+    ) {
+      case (a: VNum, b: VNum) => a.pow(b)
+      case (a: String, b: VNum) => {
+        var i = b.toInt
+        if (i < 0) { i = a.length + i }
+        if (i >= a.length) { i = i % a.length }
+        a.substring(0, i) + a.substring(i + 1)
+      }
+      case (a: VNum, b: String) => exponentation(b, a)
+      case (a: String, b: String) =>
+        a.dropWhile(_ == b)
+          .reverse
+          .dropWhile(_ == b)
+          .reverse // https://stackoverflow.com/a/17995686/9363594
+      case _ =>
+        throw NotImplementedError("Unsupported types for exponentation")
+    }
+
     val factorial: Monad = addMonadVect(
       "!",
       "Factorial | To Uppercase",
