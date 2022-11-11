@@ -2432,6 +2432,7 @@
       - '["abc"] : ["abc","acb","bac","bca","cab","cba"]'
       - "[[1,2]] : [[1,2],[2,1]]"
       - "[12] : [[1,2],[2,1]]"
+      - '[["abc", "def", "ghi"]] : [["abc", "def", "ghi"], ["abc", "ghi", "def"], ["def", "abc", "ghi"], ["def", "ghi", "abc"], ["ghi", "abc", "def"], ["ghi", "def", "abc"]]'
 
 - element: "Ṙ"
   name: Reverse
