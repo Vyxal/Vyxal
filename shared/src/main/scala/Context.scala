@@ -32,7 +32,8 @@ case class Settings(
     endPrintMode: EndPrintMode = EndPrintMode.Default,
     defaultValue: VAny = 0,
     rangeStart: VNum = 1,
-    rangeOffset: VNum = 1
+    rangeOffset: VNum = 0,
+    numToRange: Boolean = false
 ) {
 
   /** Add a flag to these settings
@@ -46,8 +47,8 @@ case class Settings(
     case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
     case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
     case 'M' => this.copy(rangeStart = 0)
-    case 'm' => this.copy(rangeOffset = 0)
-    case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = 0)
+    case 'm' => this.copy(rangeOffset = -1)
+    case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
     // todo implement the others
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
   }

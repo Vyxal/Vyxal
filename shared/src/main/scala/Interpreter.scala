@@ -73,6 +73,14 @@ object Interpreter {
               )
           }
         }
+
+      case AST.For(None, body) =>
+        val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        for (elem <- iterable) {
+          ctx.contextVar.push(elem)
+          execute(body)
+          ctx.contextVar.pop()
+        }
     }
   }
 }
