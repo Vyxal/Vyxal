@@ -21,7 +21,8 @@ object VyxalParser extends Parsers {
 
   def literal = number | string | listStructure
 
-  def nonStructElement: Parser[AST] = literal | command | modifier
+  def nonStructElement: Parser[AST] =
+    literal | command | modifier | getvar | setvar
 
   def element: Parser[AST] = nonStructElement | structure
 
@@ -39,6 +40,12 @@ object VyxalParser extends Parsers {
 
   def command: Parser[AST] =
     accept("command", { case VyxalToken.Command(value) => AST.Command(value) })
+
+  def getvar: Parser[AST] =
+    accept("getvar", { case VyxalToken.GetVar(value) => AST.GetVar(value) })
+
+  def setvar: Parser[AST] =
+    accept("setvar", { case VyxalToken.SetVar(value) => AST.SetVar(value) })
 
   def open = accept("open", { case VyxalToken.StructureOpen(open) => open })
 

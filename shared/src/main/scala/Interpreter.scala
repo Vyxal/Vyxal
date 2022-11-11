@@ -81,6 +81,19 @@ object Interpreter {
           execute(body)
           ctx.contextVar.pop()
         }
+
+      case AST.For(Some(name), body) =>
+        println(name)
+        val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        for (elem <- iterable) {
+          ctx.setVar(name, elem)
+          ctx.contextVar.push(name)
+          execute(body)
+          ctx.contextVar.pop()
+        }
+
+      case AST.GetVar(name) => ctx.push(ctx.getVar(name))
+      case AST.SetVar(name) => ctx.setVar(name, ctx.pop())
     }
   }
 }

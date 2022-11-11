@@ -23,6 +23,8 @@ enum VyxalToken {
   case CompressedNumber(value: String)
   case DictionaryString(value: String)
   case Comment(value: String)
+  case GetVar(value: String)
+  case SetVar(value: String)
   case Branch
 }
 
@@ -90,6 +92,14 @@ object Lexer extends RegexParsers {
     Command(value)
   }
 
+  def getVariable: Parser[VyxalToken] = """(\#\<)[0-9A-Za-z]*""".r ^^ { value =>
+    GetVar(value.substring(2, value.length))
+  }
+
+  def setVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z]*""".r ^^ { value =>
+    SetVar(value.substring(2, value.length))
+  }
+
   def monadicModifier: Parser[VyxalToken] =
     s"""[$MONADIC_MODIFIERS]""".r ^^ { value => MonadicModifier(value) }
 
@@ -113,7 +123,7 @@ object Lexer extends RegexParsers {
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | singleCharString | digraph
+      comment | branch | number | string | getVariable | setVariable | singleCharString | digraph
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | command

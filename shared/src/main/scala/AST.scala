@@ -1,6 +1,7 @@
 package vyxal
 
 enum AST {
+
   /** Do nothing */
   case Empty
   case Number(value: VNum)
@@ -28,6 +29,7 @@ enum AST {
   case For(loopVar: Option[String], body: AST)
   case While(cond: Option[AST], body: AST)
   case Lambda(body: AST)
+
   /** A function definition */
   case FnDef(
       name: String,
@@ -35,6 +37,8 @@ enum AST {
       params: Option[List[String]],
       body: AST
   )
+  case GetVar(name: String)
+  case SetVar(name: String)
 }
 
 object AST {
@@ -43,8 +47,8 @@ object AST {
     */
   def makeSingle(elems: AST*): AST =
     elems match {
-      case Seq(elem) => elem
+      case Seq(elem)        => elem
       case Seq(head, tail*) => AST.Chain(head, makeSingle(tail*))
-      case _ => AST.Empty
+      case _                => AST.Empty
     }
 }
