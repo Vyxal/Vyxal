@@ -42,29 +42,29 @@ object Interpreter {
           execute(elseBody.get)
         }
       case AST.While(None, body) =>
-        ctx.contextVar.push(ctx.settings.rangeStart)
+        ctx.contextVars.push(ctx.settings.rangeStart)
         while (true) {
           execute(body)
-          val temp = ctx.contextVar.pop()
+          val temp = ctx.contextVars.pop()
           temp match {
             case temp: VNum =>
-              ctx.contextVar.push(VNum(temp + 1))
+              ctx.contextVars.push(VNum(temp + 1))
             case _ =>
               throw RuntimeException(
                 "Non-numeric value pushed onto context stack in while loop"
               )
           }
         }
+        ctx.contextVars.pop()
       case AST.While(Some(cond), body) =>
         execute(cond)
-        ctx.contextVar.push(ctx.settings.rangeStart)
+        ctx.contextVars.push(ctx.settings.rangeStart)
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
-          val temp = ctx.contextVar.pop()
-          temp match {
-            case temp: VNum =>
-              ctx.contextVar.push(VNum(temp + 1))
+          ctx.contextVars.pop() match {
+            case prev: VNum =>
+              ctx.contextVars.push(VNum(prev + 1))
             case _ =>
               throw RuntimeException(
                 "Non-numeric value pushed onto context stack in while loop"
@@ -75,9 +75,9 @@ object Interpreter {
       case AST.For(None, body) =>
         val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
         for (elem <- iterable) {
-          ctx.contextVar.push(elem)
+          ctx.contextVars.push(elem)
           execute(body)
-          ctx.contextVar.pop()
+          ctx.contextVars.pop()
         }
 
       case AST.For(Some(name), body) =>
@@ -85,9 +85,9 @@ object Interpreter {
         val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
         for (elem <- iterable) {
           ctx.setVar(name, elem)
-          ctx.contextVar.push(name)
+          ctx.contextVars.push(elem)
           execute(body)
-          ctx.contextVar.pop()
+          ctx.contextVars.pop()
         }
 
       case AST.GetVar(name) => ctx.push(ctx.getVar(name))

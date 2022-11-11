@@ -7,4 +7,14 @@ object MiscHelpers {
     case f: VFun => true
     case l: VList => l.nonEmpty
   }
+
+  def vyPrint(x: VAny)(using Context): Unit = {
+    print(x)
+    // todo change later
+  }
+
+  def vyPrintln(x: VAny)(using Context): Unit = {
+    vyPrint(x)
+    vyPrint("\n")
+  }
 }

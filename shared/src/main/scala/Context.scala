@@ -68,7 +68,7 @@ case class Settings(
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    var contextVar: Stack[VAny] = Stack[VAny](),
+    val contextVars: Stack[VAny] = Stack[VAny](),
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: List[VAny] = List.empty,
     private val parent: Option[Context] = None,
@@ -101,6 +101,10 @@ class Context private (
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
+
+  /** Get the current/topmost context variable */
+  def contextVar: VAny =
+    if (contextVars.isEmpty) settings.defaultValue else contextVars.top
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns

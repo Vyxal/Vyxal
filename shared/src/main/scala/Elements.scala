@@ -194,7 +194,7 @@ object Elements {
       "a: num, b: str -> b with the ath letter removed",
       "a: str, b: str -> trim b from both sides of a"
     ) {
-      case (a: VNum, b: VNum) => a.pow(b)
+      case (a: VNum, b: VNum)   => a.pow(b)
       case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
       case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
       case (a: String, b: String) =>
@@ -221,10 +221,8 @@ object Elements {
     val getContextVariable = addNilad(
       "n",
       "Get Context Variable",
-      "_ -> context variable n"
-    ) { ctx ?=>
-      ctx.contextVar.top
-    }
+      " -> context variable n"
+    ) { ctx ?=> ctx.contextVar }
 
     val modulo: Dyad = addDyadVect(
       "%",
@@ -281,6 +279,10 @@ object Elements {
       val a = ctx.pop()
       ctx.push(b)
       ctx.push(a)
+    }
+
+    addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
+      MiscHelpers.vyPrintln(ctx.pop())
     }
   }
 }
