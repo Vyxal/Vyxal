@@ -64,6 +64,10 @@ object Lexer extends RegexParsers {
     }
   }
 
+  def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
+    Str(value.substring(1))
+  }
+
   def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
     StructureOpen(value)
   }
@@ -109,7 +113,7 @@ object Lexer extends RegexParsers {
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | digraph
+      comment | branch | number | string | singleCharString | digraph
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | command
