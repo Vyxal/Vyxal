@@ -15117,6 +15117,27 @@ def test_Permutations():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+    stack = [vyxalify(item) for item in [["abc", "def", "ghi"]]]
+    expected = vyxalify([["abc", "def", "ghi"], ["abc", "ghi", "def"], ["def", "abc", "ghi"], ["def", "ghi", "abc"], ["ghi", "abc", "def"], ["ghi", "def", "abc"]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Ṗ')
+    # print('Ṗ', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Reverse():
 
     stack = [vyxalify(item) for item in [203]]
