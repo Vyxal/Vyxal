@@ -54,9 +54,11 @@ object VyxalParser extends Parsers {
   // without consuming it.
   // TODO see if there's a builtin way to do it
   def structure: Parser[AST] =
-    open ~ repsep(elements, VyxalToken.Branch) <~ (close | not(
-      not(VyxalToken.StructureAllClose)
-    )) ^^ { case open ~ branches =>
+    open ~ repsep(elements, VyxalToken.Branch) <~ opt(
+      close | not(
+        not(VyxalToken.StructureAllClose)
+      )
+    ) ^^ { case open ~ branches =>
       (open: @unchecked) match {
         case "[" =>
           branches match {
