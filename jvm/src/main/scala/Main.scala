@@ -30,7 +30,9 @@ object Main {
   def main(args: Array[String]): Unit = {
     OParser.parse(parser, args, CLIConfig()) match {
       case Some(config) =>
-        given Context = Context(config.inputs.reverse.map(VyxalParser.parseInput))
+        given Context = Context(
+          config.inputs.reverse.map(VyxalParser.parseInput)
+        )
 
         if (config.printHelp) {
           println(OParser.usage(parser))
@@ -66,8 +68,10 @@ object Main {
 
   private def printDocs(): Unit = {
     Elements.elements.values.foreach {
-      case Element(symbol, name, arity, overloads, impl) =>
-        println(s"$symbol ($name)\n")
+      case Element(symbol, name, arity, vectorises, overloads, impl) =>
+        print(
+          s"$symbol ($name) (${if (vectorises) "" else "non-"}vectorising)\n"
+        )
         overloads.foreach { overload =>
           println(s"- $overload")
         }

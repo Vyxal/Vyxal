@@ -5,7 +5,8 @@ case class Element(
     symbol: String,
     name: String,
     arity: Option[Int],
-    overloads: List[Overload],
+    vectorises: Boolean,
+    overloads: Seq[Overload],
     impl: DirectFn
 )
 
@@ -38,13 +39,14 @@ object Elements {
       ctx.push(f(arg1, arg2, arg3, arg4))
     }
 
-    def addNilad(symbol: String, name: String, overloads: List[Overload])(
+    def addNilad(symbol: String, name: String, overloads: Overload*)(
         impl: Context ?=> VAny
     ): Unit = {
       elements += symbol -> Element(
         symbol,
         name,
         Some(0),
+        false,
         overloads,
         () => ctx ?=> ctx.push(impl(using ctx))
       )
@@ -53,60 +55,59 @@ object Elements {
     def addMonad(
         symbol: String,
         name: String,
-        overloads: List[Overload],
-        vectorises: Boolean = false
+        overloads: Overload*
     )(
-        impl: Monad
+        impl: Monad,
+        vectorises: Boolean = false
     ): Monad = {
       elements += symbol -> Element(
         symbol,
         name,
         Some(1),
+        vectorises,
         overloads,
         monadToDirect(impl)
       )
       impl
     }
 
-    def addMonadVect(symbol: String, name: String, overloads: List[Overload])(
-        impl: SimpleMonad
-    ) =
-      addMonad(symbol, name, overloads, vectorises = true)(vect1(impl))
+    def addMonadVect(
+        symbol: String,
+        name: String,
+        overloads: Overload*
+    )(impl: SimpleMonad): Monad =
+      addMonad(symbol, name, overloads*)(vect1(impl), vectorises = true)
 
     def addDyad(
         symbol: String,
         name: String,
-        overloads: List[Overload],
-        vectorises: Boolean = false
-    )(
-        impl: Dyad
-    ): Dyad = {
+        overloads: Overload*
+    )(impl: Dyad, vectorises: Boolean = false): Dyad = {
       elements += symbol -> Element(
         symbol,
         name,
         Some(2),
+        vectorises,
         overloads,
         dyadToDirect(impl)
       )
       impl
     }
 
-    def addDyadVect(symbol: String, name: String, overloads: List[Overload])(
+    def addDyadVect(symbol: String, name: String, overloads: Overload*)(
         impl: SimpleDyad
-    ) = addDyad(symbol, name, overloads, vectorises = true)(vect2(impl))
+    ) = addDyad(symbol, name, overloads*)(vect2(impl), vectorises = true)
 
     def addTriad(
         symbol: String,
         name: String,
-        overloads: List[Overload],
-        vectorises: Boolean = false
-    )(
-        impl: Triad
-    ): Triad = {
+        overloads: Overload*
+    )(impl: Triad, vectorises: Boolean = false): Triad = {
       elements += symbol -> Element(
         symbol,
         name,
         Some(3),
+        vectorises,
         overloads,
         triadToDirect(impl)
       )
@@ -116,7 +117,7 @@ object Elements {
     def addTriadVect(symbol: String, name: String, overloads: List[Overload])(
         impl: SimpleTriad
     ) =
-      addTriad(symbol, name, overloads, vectorises = true)(vect3(impl))
+      addTriad(symbol, name, overloads*)(vect3(impl), vectorises = true)
 
     def addTetrad(
         symbol: String,
@@ -130,6 +131,7 @@ object Elements {
         symbol,
         name,
         Some(4),
+        vectorises,
         overloads,
         tetradToDirect(impl)
       )
@@ -137,20 +139,25 @@ object Elements {
     }
 
     /** Add an element that works directly on the entire stack */
-    def addDirect(symbol: String, name: String, overloads: List[Overload])(
+    def addDirect(symbol: String, name: String, overloads: Overload*)(
         impl: Context ?=> Unit
     ): Unit =
-      elements += symbol -> Element(symbol, name, None, overloads, () => impl)
+      elements += symbol -> Element(
+        symbol,
+        name,
+        None,
+        false,
+        overloads,
+        () => impl
+      )
 
     val add: Dyad = addDyadVect(
       "+",
       "Addition",
-      List(
-        "a: num, b: num -> a + b",
-        "a: num, b: str -> a + b",
-        "a: str, b: num -> a + b",
-        "a: str, b: str -> a + b"
-      )
+      "a: num, b: num -> a + b",
+      "a: num, b: str -> a + b",
+      "a: str, b: num -> a + b",
+      "a: str, b: str -> a + b"
     ) {
       case (a: VNum, b: VNum)     => a + b
       case (a: String, b: VNum)   => s"$a$b"
@@ -164,10 +171,7 @@ object Elements {
     val concatenate: Dyad = addDyad(
       "&",
       "Concatenate",
-      List(
-        "a: any, b: any -> a ++ b"
-      ),
-      false
+      "a: any, b: any -> a ++ b"
     ) {
       case (a: VList, b: VList) => VList(a ++ b*)
       case (a: VList, b: VAny)  => VList(a :+ b*)
@@ -176,7 +180,7 @@ object Elements {
       case (a: VAny, b: VAny)   => add(a, b)
     }
 
-    val dup = addDirect(":", "Duplicate", List("a -> a, a")) { ctx ?=>
+    val dup = addDirect(":", "Duplicate", "a -> a, a") { ctx ?=>
       val a = ctx.pop()
       ctx.push(a)
       ctx.push(a)
@@ -185,12 +189,10 @@ object Elements {
     val exponentation: Dyad = addDyadVect(
       "*",
       "Exponentation | Remove Nth Letter | Trim",
-      List(
-        "a: num, b: num -> a ^ b",
-        "a: str, b: num -> a with the bth letter removed",
-        "a: num, b: str -> b with the ath letter removed",
-        "a: str, b: str -> trim b from both sides of a"
-      )
+      "a: num, b: num -> a ^ b",
+      "a: str, b: num -> a with the bth letter removed",
+      "a: num, b: str -> b with the ath letter removed",
+      "a: str, b: str -> trim b from both sides of a"
     ) {
       case (a: VNum, b: VNum) => a.pow(b)
       case (a: String, b: VNum) => {
@@ -212,7 +214,8 @@ object Elements {
     val factorial: Monad = addMonadVect(
       "!",
       "Factorial | To Uppercase",
-      List("a: num -> a!", "a: str -> a.toUpperCase()")
+      "a: num -> a!",
+      "a: str -> a.toUpperCase()"
     ) {
       case a: VNum   => spire.math.fact(a.toLong)
       case a: String => a.toUpperCase()
@@ -223,7 +226,7 @@ object Elements {
     val getContextVariable = addNilad(
       "n",
       "Get Context Variable",
-      List("_ -> context variable n")
+      "_ -> context variable n"
     ) { ctx ?=>
       ctx.contextVar.top
     }
@@ -231,10 +234,8 @@ object Elements {
     val modulo: Dyad = addDyadVect(
       "%",
       "Modulo | String Formatting",
-      List(
-        "a: num, b: num -> a % b",
-        "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
-      )
+      "a: num, b: num -> a % b",
+      "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
       case (a: VNum, b: VNum)   => a.tmod(b)
       case (a: String, b: VAny) => StringHelpers.formatString(a, b)
@@ -246,12 +247,10 @@ object Elements {
     val multiply: Dyad = addDyadVect(
       "×",
       "Multiplication",
-      List(
-        "a: num, b: num -> a * b",
-        "a: num, b: str -> b repeated a times",
-        "a: str, b: num -> a repeated b times",
-        "a: str, b: str -> ring translate a according to b"
-      )
+      "a: num, b: num -> a * b",
+      "a: num, b: str -> b repeated a times",
+      "a: str, b: num -> a repeated b times",
+      "a: str, b: str -> ring translate a according to b"
     ) {
       case (a: VNum, b: VNum)     => a * b
       case (a: String, b: VNum)   => a.repeat(b.toInt)
@@ -265,7 +264,7 @@ object Elements {
     val print = addDirect(
       ",",
       "Print",
-      List("a -> print a")
+      "a -> print a"
     ) { ctx ?=>
       val a = ctx.pop()
       println(a)
@@ -274,9 +273,7 @@ object Elements {
     val subtraction: Dyad = addDyadVect(
       "-",
       "Subtraction",
-      List(
-        "a: num, b: num -> a - b"
-      )
+      "a: num, b: num -> a - b"
     ) {
       case (a: VNum, b: VNum) => a - b
       case _ =>
@@ -284,7 +281,7 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
-    val swap = addDirect("$", "Swap", List("a, b -> b, a")) { ctx ?=>
+    val swap = addDirect("$", "Swap", "a, b -> b, a") { ctx ?=>
       val b = ctx.pop()
       val a = ctx.pop()
       ctx.push(b)
