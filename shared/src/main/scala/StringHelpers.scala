@@ -23,6 +23,12 @@ object StringHelpers {
     sb.toString
   }
 
+  /** Remove the character at the given index */
+  def remove(s: String, i: Int): String = {
+    val wrapped = (i + s.length) % s.length
+    s.substring(0, wrapped) + s.substring(wrapped + 1)
+  }
+
   /** Ring translates a given string according to the provided mapping \- that
     * is, map matching elements to the subsequent element in the translation
     * ring. The ring wraps around.

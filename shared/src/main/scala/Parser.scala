@@ -84,7 +84,7 @@ object VyxalParser extends Parsers {
             case List(cond, body) =>
               // todo come up with a better solution than simply stripping out
               // non-alphanumeric characters?
-              AST.For(Some(toValidName(cond.toString)), body)
+              AST.For(Some(toValidName(cond.toVyxal)), body)
             case List(body) => AST.For(None, body)
             case _          => ???
           }

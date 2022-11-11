@@ -36,6 +36,33 @@ enum AST {
   )
   case GetVar(name: String)
   case SetVar(name: String)
+
+  /** Generate the Vyxal code this AST represents */
+  def toVyxal: String = this match {
+    case Number(n)      => n.toString
+    case Str(value)     => s"\"$value\""
+    case Lst(elems)     => elems.map(_.toVyxal).mkString("#[", "|", "#]")
+    case Command(value) => value
+    case Group(elems)   => elems.map(_.toVyxal).mkString
+    case MonadicModifier(modi, elem1) => s"$modi${elem1.toVyxal}"
+    case DyadicModifier(modi, elem1, elem2) =>
+      s"$modi${elem1.toVyxal}${elem2.toVyxal}"
+    case TriadicModifier(modi, elem1, elem2, elem3) =>
+      s"$modi${elem1.toVyxal}${elem2.toVyxal}${elem3.toVyxal}"
+    case TetradicModifier(modi, elem1, elem2, elem3, elem4) =>
+      s"$modi${elem1.toVyxal}${elem2.toVyxal}${elem3.toVyxal}${elem4.toVyxal}"
+    case SpecialModifier(modi, value) => s"$modi$value"
+    case CompressedString(value) => s"\"$value“"
+    case CompressedNumber(value) => s"\"$value„"
+    case DictionaryString(value) => s"\"$value”"
+    case If(thenBody, elseBody) => s"[$thenBody|$elseBody}"
+    case For(loopVar, body) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
+    case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
+    case Lambda(body) => s"λ${body.toVyxal}}"
+    case FnDef(name, arity, params, body) => ???
+    case GetVar(name) => s"#<$name"
+    case SetVar(name) => s"#>$name"
+  }
 }
 
 object AST {

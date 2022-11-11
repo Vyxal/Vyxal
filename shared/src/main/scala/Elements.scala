@@ -195,13 +195,8 @@ object Elements {
       "a: str, b: str -> trim b from both sides of a"
     ) {
       case (a: VNum, b: VNum) => a.pow(b)
-      case (a: String, b: VNum) => {
-        var i = b.toInt
-        if (i < 0) { i = a.length + i }
-        if (i >= a.length) { i = i % a.length }
-        a.substring(0, i) + a.substring(i + 1)
-      }
-      case (a: VNum, b: String) => exponentation(b, a)
+      case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
+      case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
       case (a: String, b: String) =>
         a.dropWhile(_.toString == b)
           .reverse
