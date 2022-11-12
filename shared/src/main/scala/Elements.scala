@@ -1,12 +1,12 @@
 package vyxal
 
-type Overload = String
+/** Implementations for elements */
 case class Element(
     symbol: String,
     name: String,
     arity: Option[Int],
     vectorises: Boolean,
-    overloads: Seq[Overload],
+    overloads: Seq[String],
     impl: DirectFn
 )
 
@@ -14,6 +14,7 @@ object Elements {
   val elements: Map[String, Element] = Impls.elements.toMap
 
   private object Impls {
+    val x=2
     val elements = collection.mutable.Map.empty[String, Element]
 
     /** Turn a monad into a function that operates on the stack */
@@ -39,7 +40,7 @@ object Elements {
       ctx.push(f(arg1, arg2, arg3, arg4))
     }
 
-    def addNilad(symbol: String, name: String, overloads: Overload*)(
+    def addNilad(symbol: String, name: String, overloads: String*)(
         impl: Context ?=> VAny
     ): Unit = {
       elements += symbol -> Element(
@@ -55,7 +56,7 @@ object Elements {
     def addMonad(
         symbol: String,
         name: String,
-        overloads: Overload*
+        overloads: String*
     )(
         impl: Monad,
         vectorises: Boolean = false
@@ -74,14 +75,14 @@ object Elements {
     def addMonadVect(
         symbol: String,
         name: String,
-        overloads: Overload*
+        overloads: String*
     )(impl: SimpleMonad): Monad =
       addMonad(symbol, name, overloads*)(vect1(impl), vectorises = true)
 
     def addDyad(
         symbol: String,
         name: String,
-        overloads: Overload*
+        overloads: String*
     )(impl: Dyad, vectorises: Boolean = false): Dyad = {
       elements += symbol -> Element(
         symbol,
@@ -94,14 +95,14 @@ object Elements {
       impl
     }
 
-    def addDyadVect(symbol: String, name: String, overloads: Overload*)(
+    def addDyadVect(symbol: String, name: String, overloads: String*)(
         impl: SimpleDyad
     ) = addDyad(symbol, name, overloads*)(vect2(impl), vectorises = true)
 
     def addTriad(
         symbol: String,
         name: String,
-        overloads: Overload*
+        overloads: String*
     )(impl: Triad, vectorises: Boolean = false): Triad = {
       elements += symbol -> Element(
         symbol,
@@ -114,7 +115,7 @@ object Elements {
       impl
     }
 
-    def addTriadVect(symbol: String, name: String, overloads: List[Overload])(
+    def addTriadVect(symbol: String, name: String, overloads: List[String])(
         impl: SimpleTriad
     ) =
       addTriad(symbol, name, overloads*)(vect3(impl), vectorises = true)
@@ -122,7 +123,7 @@ object Elements {
     def addTetrad(
         symbol: String,
         name: String,
-        overloads: List[Overload],
+        overloads: List[String],
         vectorises: Boolean = false
     )(
         impl: Tetrad
@@ -139,7 +140,7 @@ object Elements {
     }
 
     /** Add an element that works directly on the entire stack */
-    def addDirect(symbol: String, name: String, overloads: Overload*)(
+    def addDirect(symbol: String, name: String, overloads: String*)(
         impl: Context ?=> Unit
     ): Unit =
       elements += symbol -> Element(

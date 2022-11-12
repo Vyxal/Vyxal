@@ -42,29 +42,30 @@ object Interpreter {
           execute(elseBody.get)
         }
       case AST.While(None, body) =>
-        ctx.contextVars.push(ctx.settings.rangeStart)
+        val loopCtx = ctx.makeChild()
+        loopCtx.contextVar = ctx.settings.rangeStart
         while (true) {
-          execute(body)
-          val temp = ctx.contextVars.pop()
-          temp match {
+          execute(body)(using loopCtx)
+          loopCtx.contextVar match {
             case temp: VNum =>
-              ctx.contextVars.push(VNum(temp + 1))
+              ctx.contextVar = temp + 1
             case _ =>
+              // todo is this even possible? Maybe we can just cast
               throw RuntimeException(
                 "Non-numeric value pushed onto context stack in while loop"
               )
           }
         }
-        ctx.contextVars.pop()
       case AST.While(Some(cond), body) =>
         execute(cond)
-        ctx.contextVars.push(ctx.settings.rangeStart)
+        given loopCtx: Context = ctx.makeChild()
+        loopCtx.contextVar = ctx.settings.rangeStart
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
-          ctx.contextVars.pop() match {
+          loopCtx.contextVar match {
             case prev: VNum =>
-              ctx.contextVars.push(VNum(prev + 1))
+              loopCtx.contextVar = prev + 1
             case _ =>
               throw RuntimeException(
                 "Non-numeric value pushed onto context stack in while loop"
@@ -74,20 +75,20 @@ object Interpreter {
 
       case AST.For(None, body) =>
         val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
-          ctx.contextVars.push(elem)
-          execute(body)
-          ctx.contextVars.pop()
+          loopCtx.contextVar = elem
+          execute(body)(using loopCtx)
         }
 
       case AST.For(Some(name), body) =>
         println(name)
         val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
-          ctx.setVar(name, elem)
-          ctx.contextVars.push(elem)
-          execute(body)
-          ctx.contextVars.pop()
+          loopCtx.setVar(name, elem)
+          loopCtx.contextVar = elem
+          execute(body)(using loopCtx)
         }
 
       case AST.GetVar(name) => ctx.push(ctx.getVar(name))

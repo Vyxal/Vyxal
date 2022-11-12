@@ -8,17 +8,12 @@ enum AST {
 
   /** Multiple ASTs grouped into one list */
   case Group(elems: List[AST])
-  case MonadicModifier(modi: String, elem1: AST)
-  case DyadicModifier(modi: String, elem1: AST, elem2: AST)
-  case TriadicModifier(modi: String, elem1: AST, elem2: AST, elem3: AST)
-  case TetradicModifier(
-      modi: String,
-      elem1: AST,
-      elem2: AST,
-      elem3: AST,
-      elem4: AST
-  )
   case SpecialModifier(modi: String, value: String)
+
+  /** The result of applying a modifier to some arguments. `res` can be applied
+    * directly to the stack.
+    */
+  case Modified(modi: String, res: DirectFn)
   case CompressedString(value: String)
   case CompressedNumber(value: String)
   case DictionaryString(value: String)
@@ -44,24 +39,17 @@ enum AST {
     case Lst(elems)     => elems.map(_.toVyxal).mkString("#[", "|", "#]")
     case Command(value) => value
     case Group(elems)   => elems.map(_.toVyxal).mkString
-    case MonadicModifier(modi, elem1) => s"$modi${elem1.toVyxal}"
-    case DyadicModifier(modi, elem1, elem2) =>
-      s"$modi${elem1.toVyxal}${elem2.toVyxal}"
-    case TriadicModifier(modi, elem1, elem2, elem3) =>
-      s"$modi${elem1.toVyxal}${elem2.toVyxal}${elem3.toVyxal}"
-    case TetradicModifier(modi, elem1, elem2, elem3, elem4) =>
-      s"$modi${elem1.toVyxal}${elem2.toVyxal}${elem3.toVyxal}${elem4.toVyxal}"
     case SpecialModifier(modi, value) => s"$modi$value"
-    case CompressedString(value) => s"\"$value“"
-    case CompressedNumber(value) => s"\"$value„"
-    case DictionaryString(value) => s"\"$value”"
-    case If(thenBody, elseBody) => s"[$thenBody|$elseBody}"
+    case CompressedString(value)      => s"\"$value“"
+    case CompressedNumber(value)      => s"\"$value„"
+    case DictionaryString(value)      => s"\"$value”"
+    case If(thenBody, elseBody)       => s"[$thenBody|$elseBody}"
     case For(loopVar, body) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
-    case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-    case Lambda(body) => s"λ${body.toVyxal}}"
+    case While(cond, body)  => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
+    case Lambda(body)       => s"λ${body.toVyxal}}"
     case FnDef(name, arity, params, body) => ???
-    case GetVar(name) => s"#<$name"
-    case SetVar(name) => s"#>$name"
+    case GetVar(name)                     => s"#<$name"
+    case SetVar(name)                     => s"#>$name"
   }
 }
 

@@ -114,7 +114,7 @@ object VyxalParser extends Parsers {
       { case VyxalToken.MonadicModifier(value) => value }
     )
       ~ element ^^ { case modifier ~ elem1 =>
-        AST.MonadicModifier(modifier, elem1)
+        Modifiers.modifiers(modifier).impl(List(elem1))
       }
 
   def dyadicModifier =
@@ -123,7 +123,7 @@ object VyxalParser extends Parsers {
       { case VyxalToken.DyadicModifier(value) => value }
     )
       ~ element ~ element ^^ { case modifier ~ elem1 ~ elem2 =>
-        AST.DyadicModifier(modifier, elem1, elem2)
+        Modifiers.modifiers(modifier).impl(List(elem1, elem2))
       }
 
   def triadicModifier =
@@ -133,7 +133,7 @@ object VyxalParser extends Parsers {
     )
       ~ element ~ element ~ element ^^ {
         case modifier ~ elem1 ~ elem2 ~ elem3 =>
-          AST.TriadicModifier(modifier, elem1, elem2, elem3)
+          Modifiers.modifiers(modifier).impl(List(elem1, elem2, elem3))
       }
 
   def tetradicModifier =
@@ -143,7 +143,7 @@ object VyxalParser extends Parsers {
     )
       ~ element ~ element ~ element ~ element ^^ {
         case modifier ~ elem1 ~ elem2 ~ elem3 ~ elem4 =>
-          AST.TetradicModifier(modifier, elem1, elem2, elem3, elem4)
+          Modifiers.modifiers(modifier).impl(List(elem1, elem2, elem3, elem4))
       }
 
   def parse(code: String): Either[VyxalCompilationError, AST] = {

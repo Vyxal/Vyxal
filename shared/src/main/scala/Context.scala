@@ -56,6 +56,11 @@ case class Settings(
 
 /** @constructor
   *   Make a Context object for the current scope
+  * @param stack
+  *   The stack on which all operations happen
+  * @param _contextVar
+  *   The context variable. It's an Option because this scope might not have its
+  *   own context variable. See [[this.contextVar]] for more information.
   * @param vars
   *   The variables currently in scope, accessible by their names. Null values
   *   signify that the variable is nonlocal, i.e., it should be gotten from the
@@ -68,7 +73,7 @@ case class Settings(
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    val contextVars: Stack[VAny] = Stack[VAny](),
+    private var _contextVar: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: List[VAny] = List.empty,
     private val parent: Option[Context] = None,
@@ -102,9 +107,21 @@ class Context private (
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
 
-  /** Get the current/topmost context variable */
+  /** Get the context variable for this scope if it exists. If it doesn't, get
+    * the context variable from the parent. If there's no parent Context, just
+    * get the default value (0)
+    */
   def contextVar: VAny =
-    if (contextVars.isEmpty) settings.defaultValue else contextVars.top
+    _contextVar
+      .orElse(parent.map(_.contextVar))
+      .getOrElse(settings.defaultValue)
+
+  /** Setter for the context variable so that outsiders don't have to deal with
+    * it being an Option
+    */
+  def contextVar_=(newCtx: VAny) = {
+    _contextVar = Some(newCtx)
+  }
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns
@@ -130,6 +147,16 @@ class Context private (
         case None         => vars(name) = value
       }
     }
+
+  /** Make a new Context for a structure inside the current structure */
+  def makeChild() = new Context(
+    stack,
+    _contextVar,
+    vars,
+    inputs,
+    Some(this),
+    settings
+  )
 }
 
 object Context {
