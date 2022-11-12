@@ -253,14 +253,9 @@ object Elements {
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
     }
-
-    val print = addDirect(
-      ",",
-      "Print",
-      "a -> print a"
-    ) { ctx ?=>
-      val a = ctx.pop()
-      println(a)
+    
+    val print = addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
+      MiscHelpers.vyPrintln(ctx.pop())
     }
 
     val subtraction: Dyad = addDyadVect(
@@ -281,8 +276,6 @@ object Elements {
       ctx.push(a)
     }
 
-    addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
-      MiscHelpers.vyPrintln(ctx.pop())
-    }
+    
   }
 }
