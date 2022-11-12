@@ -4099,7 +4099,9 @@ def permutations(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
+            lambda x: "".join(x)
+            if all(isinstance(y, str) for y in x) and isinstance(lhs, str)
+            else x,
             itertools.permutations(
                 iterable(lhs, number_type=range, ctx=ctx), len(lhs)
             ),
