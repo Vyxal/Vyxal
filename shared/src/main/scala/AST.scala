@@ -13,7 +13,7 @@ enum AST {
   /** The result of applying a modifier to some arguments. `res` can be applied
     * directly to the stack.
     */
-  case Modified(modi: String, res: DirectFn)
+  case Modified(res: DirectFn)
   case CompressedString(value: String)
   case CompressedNumber(value: String)
   case DictionaryString(value: String)

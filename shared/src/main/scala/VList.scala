@@ -22,9 +22,13 @@ class VList private (val lst: Seq[VAny])
     * keep the longer one's elements as-is.
     */
   def zipWith(other: VList)(f: (VAny, VAny) => Context ?=> VAny)(using
-      Context
+      ctx: Context
   ): VList =
-    new VList(lst.lazyZip(other.lst).map(f(_, _)))
+    new VList(
+      lst
+        .zipAll(other.lst, ctx.settings.defaultValue, ctx.settings.defaultValue)
+        .map(f(_, _))
+    )
 
   /** Get the element at index `ind`
     */

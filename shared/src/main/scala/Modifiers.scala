@@ -30,27 +30,21 @@ object Modifiers {
         a match {
           case AST.Command(symbol) =>
             val element = Elements.elements(symbol)
-            AST.Modified(
-              "v",
-              { () => (ctx: Context) ?=>
-                // todo should default arity be 1 for weird elements?
-                FuncHelpers.vectorise(
-                  VFun(
-                    element.impl,
-                    element.arity.getOrElse(1),
-                    List.empty,
-                    ctx
-                  )
+            AST.Modified { () => (ctx: Context) ?=>
+              // todo should default arity be 1 for weird elements?
+              FuncHelpers.vectorise(
+                VFun(
+                  element.impl,
+                  element.arity.getOrElse(1),
+                  List.empty,
+                  ctx
                 )
-              }
-            )
+              )
+            }
           case lam: AST.Lambda =>
-            AST.Modified(
-              "v",
-              { () => (ctx: Context) ?=>
-                FuncHelpers.vectorise(VFun.fromLambda(lam))
-              }
-            )
+            AST.Modified { () => (ctx: Context) ?=>
+              FuncHelpers.vectorise(VFun.fromLambda(lam))
+            }
         }
       }
     ),

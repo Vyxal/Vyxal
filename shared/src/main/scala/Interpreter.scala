@@ -34,6 +34,7 @@ object Interpreter {
         }
       case AST.Group(elems) =>
         elems.foreach { elem => Interpreter.execute(elem) }
+      case AST.Modified(fn) => fn()
       case AST.If(thenBody, elseBody) =>
         if (MiscHelpers.boolify(ctx.pop())) {
           execute(thenBody)
