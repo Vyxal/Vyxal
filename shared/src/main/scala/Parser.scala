@@ -150,7 +150,7 @@ object VyxalParser extends Parsers {
   def parse(code: String): Either[VyxalCompilationError, AST] = {
     Lexer(code).flatMap { tokens =>
       val reader = new VyxalTokenReader(preprocess(tokens))
-      parseAll(reader) match {
+      (parseAll(reader): @unchecked) match {
         case Success(result, _) => Right(result)
         case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
       }

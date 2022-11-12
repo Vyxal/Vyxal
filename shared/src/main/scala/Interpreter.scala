@@ -17,7 +17,6 @@ object Interpreter {
   }
 
   def execute(ast: AST)(using ctx: Context): Unit = {
-    println(s"Executing $ast")
     ast match {
       case AST.Number(value) => ctx.push(value)
       case AST.Str(value)    => ctx.push(value)
@@ -46,7 +45,7 @@ object Interpreter {
         loopCtx.contextVar = ctx.settings.rangeStart
         while (true) {
           execute(body)(using loopCtx)
-          loopCtx.contextVar += 1
+          loopCtx.contextVar = loopCtx.contextVar.asInstanceOf[VNum] + 1
         }
       case AST.While(Some(cond), body) =>
         execute(cond)
@@ -55,11 +54,11 @@ object Interpreter {
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
-          loopCtx.contextVar += 1
+          loopCtx.contextVar = loopCtx.contextVar.asInstanceOf[VNum] + 1
         }
 
       case AST.For(None, body) =>
-        val iterable = ListHelpers.makeIterable(ctx.pop())
+        val iterable = ListHelpers.makeIterable(ctx.pop())(using ctx)
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.contextVar = elem
@@ -68,7 +67,7 @@ object Interpreter {
 
       case AST.For(Some(name), body) =>
         println(name)
-        val iterable = ListHelpers.makeIterable(ctx.pop())
+        val iterable = ListHelpers.makeIterable(ctx.pop())(using ctx)
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.setVar(name, elem)
@@ -83,6 +82,7 @@ object Interpreter {
           case fn: VFun => executeFn(fn).foreach(ctx.push(_))
           case _ => ???
         }
+      case _ => throw NotImplementedError(s"$ast not implemented")
     }
   }
 

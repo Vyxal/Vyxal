@@ -131,7 +131,7 @@ object Lexer extends RegexParsers {
   )
 
   def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] = {
-    parse(tokens, code) match {
+    (parse(tokens, code): @unchecked) match {
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
     }
