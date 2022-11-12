@@ -20,17 +20,13 @@ enum AST {
   case If(thenBody: AST, elseBody: Option[AST])
   case For(loopVar: Option[String], body: AST)
   case While(cond: Option[AST], body: AST)
-  case Lambda(body: AST)
+  case Lambda(arity: Int, params: List[String], body: AST)
 
-  /** A function definition */
-  case FnDef(
-      name: String,
-      arity: Int,
-      params: Option[List[String]],
-      body: AST
-  )
+  /** A function definition, basically sugar a lambda assigned to a variable */
+  case FnDef(name: String, lam: Lambda)
   case GetVar(name: String)
   case SetVar(name: String)
+  case ExecuteFn
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
@@ -46,10 +42,10 @@ enum AST {
     case If(thenBody, elseBody)       => s"[$thenBody|$elseBody}"
     case For(loopVar, body) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
     case While(cond, body)  => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
-    case Lambda(body)       => s"λ${body.toVyxal}}"
-    case FnDef(name, arity, params, body) => ???
-    case GetVar(name)                     => s"#<$name"
-    case SetVar(name)                     => s"#>$name"
+    case Lambda(arity, params, body) => s"λ${body.toVyxal}}"
+    case FnDef(name, lam)            => ???
+    case GetVar(name)                => s"#<$name"
+    case SetVar(name)                => s"#>$name"
   }
 }
 

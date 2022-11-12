@@ -10,25 +10,24 @@ type VNum = Number
 
 /** A function object (not a function definition)
   *
-  * todo rethink the structure of this, maybe make a separate wrapper for arity
-  * and ctx?
+  * @param impl
+  *   The implementation of this function
+  * @param arity
+  *   The arity of this function (may have been changed)
+  * @param params
+  *   Parameter names
+  * @param ctx
+  *   The context in which this function was defined
   */
-enum VFun {
+case class VFun(impl: DirectFn, arity: Int, params: List[String], ctx: Context) {
+  /** Make a copy of this function with a different arity. */
+  def withArity(newArity: Int): VFun = this.copy(arity = newArity)
+}
 
-  /** A lambda just left on the stack */
-  case Lam(lam: AST.Lambda, arity: Int, ctx: Context)
-
-  /** A reference to a user-defined function */
-  case FnRef(fnDef: AST.FnDef, arity: Int, ctx: Context)
-
-  /** Make a copy of this function with a different arity.
-    *
-    * If the function is composed from two functions, only the arity of the
-    * first function is changed.
-    */
-  def withArity(newArity: Int): VFun = this match {
-    case Lam(lam, _, ctx)     => Lam(lam, newArity, ctx)
-    case FnRef(fnDef, _, ctx) => FnRef(fnDef, newArity, ctx)
+object VFun {
+  def fromLambda(lam: AST.Lambda)(using ctx: Context) = {
+    val AST.Lambda(arity, params, body) = lam
+    VFun(() => ctx ?=> Interpreter.execute(body), arity, params, ctx)
   }
 }
 

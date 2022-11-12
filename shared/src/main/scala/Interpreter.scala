@@ -74,7 +74,7 @@ object Interpreter {
         }
 
       case AST.For(None, body) =>
-        val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        val iterable = ListHelpers.makeIterable(ctx.pop())
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.contextVar = elem
@@ -83,7 +83,7 @@ object Interpreter {
 
       case AST.For(Some(name), body) =>
         println(name)
-        val iterable = ListHelpers.makeIterable(ctx.pop(), ctx)
+        val iterable = ListHelpers.makeIterable(ctx.pop())
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.setVar(name, elem)
@@ -93,6 +93,23 @@ object Interpreter {
 
       case AST.GetVar(name) => ctx.push(ctx.getVar(name))
       case AST.SetVar(name) => ctx.setVar(name, ctx.pop())
+      case AST.ExecuteFn =>
+        ctx.pop() match {
+          case fn: VFun => executeFn(fn).foreach(ctx.push(_))
+          case _ => ???
+        }
     }
+  }
+
+  /** Execute a function and return what was on the top of the stack, if there
+    * was anything
+    */
+  def executeFn(fn: VFun)(using ctx: Context): Option[VAny] = {
+    val VFun(impl, arity, params, origCtx) = fn
+    given fnCtx: Context = Context.makeFnCtx(origCtx, ctx, arity, params)
+
+    impl()
+
+    Option.when(!fnCtx.isStackEmpty)(fnCtx.pop())
   }
 }

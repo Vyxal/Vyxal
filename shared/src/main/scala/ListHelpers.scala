@@ -1,35 +1,35 @@
 package vyxal
 
 object ListHelpers {
+
+  /** Make an iterable from a value
+    *
+    * @param value
+    *   The value to make an iterable from
+    * @param overrideRangify
+    *   Whether to rangify (optional). If given, overrides
+    *   `ctx.settings.rangify`
+    * @return
+    */
   def makeIterable(
       value: VAny,
-      ctx: Context,
-      rangify: Boolean = true
-  ): VList =
-    /** Make an iterable from a value
-      * @param value
-      *   The value to make an iterable from
-      * @param ctx
-      *   The context to use
-      * @param rangify
-      *   Whether to rangify the value if it's a number
-      */
-
+      overrideRangify: Option[Boolean] = None
+  )(using ctx: Context): VList =
     value match {
       case list: VList => list
+      case str: String => VList(str.map(_.toString)*)
+      case fn: VFun    => VList(fn)
       case num: VNum =>
-        if (rangify) {
+        if (overrideRangify.getOrElse(ctx.settings.rangify)) {
           val start = ctx.settings.rangeStart
           val offset = ctx.settings.rangeOffset
-          VList.fromSpecific(
-            (start.toInt to (num.toInt - offset.toInt)).toList
-              .map(VNum.apply(_))
+          VList(
+            start.toInt
+              .to(num.toInt - offset.toInt)
+              .map(VNum(_))*
           )
         } else {
-          VList.fromSpecific(List(num))
+          VList(num)
         }
-
-      case strval: String => VList.fromSpecific(strval.toList.map(_.toString))
-      case _              => throw RuntimeException("Cannot iterate over value")
     }
 }

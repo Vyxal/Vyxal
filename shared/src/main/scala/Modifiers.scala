@@ -27,7 +27,31 @@ object Modifiers {
       """|Vectorises
          |vf: f but vectorised""".stripMargin,
       { case List(a) =>
-        ???
+        a match {
+          case AST.Command(symbol) =>
+            val element = Elements.elements(symbol)
+            AST.Modified(
+              "v",
+              { () => (ctx: Context) ?=>
+                // todo should default arity be 1 for weird elements?
+                FuncHelpers.vectorise(
+                  VFun(
+                    element.impl,
+                    element.arity.getOrElse(1),
+                    List.empty,
+                    ctx
+                  )
+                )
+              }
+            )
+          case lam: AST.Lambda =>
+            AST.Modified(
+              "v",
+              { () => (ctx: Context) ?=>
+                FuncHelpers.vectorise(VFun.fromLambda(lam))
+              }
+            )
+        }
       }
     ),
     "@" -> Modifier(

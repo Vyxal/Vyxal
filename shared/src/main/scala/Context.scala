@@ -31,6 +31,7 @@ case class Settings(
     presetStack: Boolean = false,
     endPrintMode: EndPrintMode = EndPrintMode.Default,
     defaultValue: VAny = 0,
+    rangify: Boolean = false,
     rangeStart: VNum = 1,
     rangeOffset: VNum = 0,
     numToRange: Boolean = false
@@ -91,6 +92,9 @@ class Context private (
     } else {
       settings.defaultValue
     }
+
+  /** Pop n elements and wrap in a list */
+  def pop(n: Int): List[VAny] = List.fill(n)(this.pop())
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
@@ -178,4 +182,24 @@ object Context {
         }
       case None => None
     }
+
+  /** Make a new Context for a function that was defined inside `origCtx` but is
+    * now executing inside `currCtx`
+    */
+  def makeFnCtx(
+      origCtx: Context,
+      currCtx: Context,
+      arity: Int,
+      params: List[String]
+  ) = {
+    val newInputs = currCtx.pop(arity)
+    new Context(
+      mut.ArrayBuffer.empty,
+      currCtx._contextVar,
+      mut.Map(params.zip(newInputs)*),
+      newInputs,
+      Some(currCtx),
+      currCtx.settings
+    )
+  }
 }

@@ -90,7 +90,8 @@ object VyxalParser extends Parsers {
           }
         case "λ" | "ƛ" | "Ω" | "₳" | "µ" =>
           val lambda = branches match {
-            case List(body) => AST.Lambda(body)
+            // todo actually parse arity and parameters
+            case List(body) => AST.Lambda(1, List.empty, body)
             case _          => ???
           }
           // todo using the command names is a bit brittle
