@@ -46,15 +46,7 @@ object Interpreter {
         loopCtx.contextVar = ctx.settings.rangeStart
         while (true) {
           execute(body)(using loopCtx)
-          loopCtx.contextVar match {
-            case temp: VNum =>
-              ctx.contextVar = temp + 1
-            case _ =>
-              // todo is this even possible? Maybe we can just cast
-              throw RuntimeException(
-                "Non-numeric value pushed onto context stack in while loop"
-              )
-          }
+          loopCtx.contextVar += 1
         }
       case AST.While(Some(cond), body) =>
         execute(cond)
@@ -63,14 +55,7 @@ object Interpreter {
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
-          loopCtx.contextVar match {
-            case prev: VNum =>
-              loopCtx.contextVar = prev + 1
-            case _ =>
-              throw RuntimeException(
-                "Non-numeric value pushed onto context stack in while loop"
-              )
-          }
+          loopCtx.contextVar += 1
         }
 
       case AST.For(None, body) =>
