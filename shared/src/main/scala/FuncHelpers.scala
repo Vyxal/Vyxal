@@ -2,7 +2,7 @@ package vyxal
 
 /** Helpers for function-related stuff */
 object FuncHelpers {
-  def vectorise(fn: VFun)(using ctx: Context) = {
+  def vectorise(fn: VFun)(using ctx: Context): Unit = {
     if (fn.arity == 1) {
       ctx.push(vectorise1(fn))
     } else if (fn.arity == 2) {
@@ -57,6 +57,69 @@ object FuncHelpers {
       case (a, b) =>
         ctx.push(a)
         ctx.push(b)
+        Interpreter.executeFn(fn).getOrElse(ctx.settings.defaultValue)
+    }
+  }
+
+  private def vectorise3(fn: VFun)(using ctx: Context): VAny = {
+    val a = ctx.pop()
+    val b = ctx.pop()
+    val c = ctx.pop()
+
+    (a, b, c) match {
+      case (a: VList, b: VList, c: VList) =>
+        VList.zipMulti(a, b, c) { case Seq(x, y, z) =>
+          ctx.push(x)
+          ctx.push(y)
+          ctx.push(z)
+          vectorise3(fn)
+        }
+      case (a: VList, b: VList, c) =>
+        a.zipWith(b) { (x, y) =>
+          ctx.push(x)
+          ctx.push(y)
+          ctx.push(c)
+          vectorise3(fn)
+        }
+      case (a: VList, b, c: VList) =>
+        a.zipWith(c) { (x, z) =>
+          ctx.push(x)
+          ctx.push(b)
+          ctx.push(z)
+          vectorise3(fn)
+        }
+      case (a, b: VList, c: VList) =>
+        b.zipWith(c) { (y, z) =>
+          ctx.push(a)
+          ctx.push(y)
+          ctx.push(z)
+          vectorise3(fn)
+        }
+      case (a: VList, b, c) =>
+        a.vmap { x =>
+          ctx.push(x)
+          ctx.push(b)
+          ctx.push(c)
+          vectorise3(fn)
+        }
+      case (a, b: VList, c) =>
+        b.vmap { y =>
+          ctx.push(a)
+          ctx.push(y)
+          ctx.push(c)
+          vectorise3(fn)
+        }
+      case (a, b, c: VList) =>
+        c.vmap { z =>
+          ctx.push(a)
+          ctx.push(b)
+          ctx.push(z)
+          vectorise3(fn)
+        }
+      case (a, b, c) =>
+        ctx.push(a)
+        ctx.push(b)
+        ctx.push(c)
         Interpreter.executeFn(fn).getOrElse(ctx.settings.defaultValue)
     }
   }

@@ -3,7 +3,7 @@ package vyxal
 object StringHelpers {
 
   def formatString(fmtstr: String, args: AnyRef*): String = {
-    val sb = new StringBuilder
+    val sb = new collection.mutable.StringBuilder()
     var i = 0
     var j = 0
     while (i < fmtstr.length) {
@@ -33,16 +33,10 @@ object StringHelpers {
     * is, map matching elements to the subsequent element in the translation
     * ring. The ring wraps around.
     */
-  def ringTranslate(source: String, mapping: String): String = {
-    var result: String = ""
-    for (c <- source) {
+  def ringTranslate(source: String, mapping: String): String =
+    source.map { c =>
       val index = mapping.indexOf(c)
-      if (index == -1) {
-        result += c
-      } else {
-        result += mapping((index + 1) % mapping.length)
-      }
-    }
-    result
-  }
+      if (index == -1) c
+      else mapping((index + 1) % mapping.length)
+    }.mkString
 }
