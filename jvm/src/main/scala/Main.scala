@@ -68,7 +68,15 @@ object Main {
 
   private def printDocs(): Unit = {
     Elements.elements.values.foreach {
-      case Element(symbol, name, arity, vectorises, overloads, impl) =>
+      case Element(
+            symbol,
+            name,
+            keywords,
+            arity,
+            vectorises,
+            overloads,
+            impl
+          ) =>
         print(
           s"$symbol ($name) (${if (vectorises) "" else "non-"}vectorising)\n"
         )

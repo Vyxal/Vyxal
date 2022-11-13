@@ -7,6 +7,7 @@ given Conversion[Boolean, VNum] with
 case class Element(
     symbol: String,
     name: String,
+    keywords: Seq[String],
     arity: Option[Int],
     vectorises: Boolean,
     overloads: Seq[String],
@@ -43,12 +44,18 @@ object Elements {
       ctx.push(f(arg1, arg2, arg3, arg4))
     }
 
-    def addNilad(symbol: String, name: String, overloads: String*)(
+    def addNilad(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(
         impl: Context ?=> VAny
     ): Unit = {
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         Some(0),
         false,
         overloads,
@@ -59,6 +66,7 @@ object Elements {
     def addMonad(
         symbol: String,
         name: String,
+        keywords: Seq[String],
         overloads: String*
     )(
         impl: Monad,
@@ -67,6 +75,7 @@ object Elements {
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         Some(1),
         vectorises,
         overloads,
@@ -78,18 +87,24 @@ object Elements {
     def addMonadVect(
         symbol: String,
         name: String,
+        keywords: Seq[String],
         overloads: String*
     )(impl: SimpleMonad): Monad =
-      addMonad(symbol, name, overloads*)(vect1(impl), vectorises = true)
+      addMonad(symbol, name, keywords, overloads*)(
+        vect1(impl),
+        vectorises = true
+      )
 
     def addDyad(
         symbol: String,
         name: String,
+        keywords: Seq[String],
         overloads: String*
     )(impl: Dyad, vectorises: Boolean = false): Dyad = {
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         Some(2),
         vectorises,
         overloads,
@@ -98,18 +113,28 @@ object Elements {
       impl
     }
 
-    def addDyadVect(symbol: String, name: String, overloads: String*)(
+    def addDyadVect(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(
         impl: SimpleDyad
-    ) = addDyad(symbol, name, overloads*)(vect2(impl), vectorises = true)
+    ) = addDyad(symbol, name, keywords, overloads*)(
+      vect2(impl),
+      vectorises = true
+    )
 
     def addTriad(
         symbol: String,
         name: String,
+        keywords: Seq[String],
         overloads: String*
     )(impl: Triad, vectorises: Boolean = false): Triad = {
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         Some(3),
         vectorises,
         overloads,
@@ -118,14 +143,23 @@ object Elements {
       impl
     }
 
-    def addTriadVect(symbol: String, name: String, overloads: List[String])(
+    def addTriadVect(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: List[String]
+    )(
         impl: SimpleTriad
     ) =
-      addTriad(symbol, name, overloads*)(vect3(impl), vectorises = true)
+      addTriad(symbol, name, keywords, overloads*)(
+        vect3(impl),
+        vectorises = true
+      )
 
     def addTetrad(
         symbol: String,
         name: String,
+        keywords: Seq[String],
         overloads: List[String],
         vectorises: Boolean = false
     )(
@@ -134,6 +168,7 @@ object Elements {
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         Some(4),
         vectorises,
         overloads,
@@ -143,12 +178,18 @@ object Elements {
     }
 
     /** Add an element that works directly on the entire stack */
-    def addDirect(symbol: String, name: String, overloads: String*)(
+    def addDirect(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(
         impl: Context ?=> Unit
     ): Unit =
       elements += symbol -> Element(
         symbol,
         name,
+        keywords,
         None,
         false,
         overloads,
@@ -158,6 +199,7 @@ object Elements {
     val add: Dyad = addDyadVect(
       "+",
       "Addition",
+      List("add", "+", "plus"),
       "a: num, b: num -> a + b",
       "a: num, b: str -> a + b",
       "a: str, b: num -> a + b",
@@ -175,6 +217,7 @@ object Elements {
     val concatenate: Dyad = addDyad(
       "&",
       "Concatenate",
+      List("concat", "&&", "append"),
       "a: any, b: any -> a ++ b"
     ) {
       case (a: VList, b: VList) => VList(a ++ b*)
@@ -182,6 +225,19 @@ object Elements {
       case (a: VAny, b: VList)  => VList(a +: b*)
       case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
       case (a: VAny, b: VAny)   => add(a, b)
+    }
+
+    val divide: Dyad = addDyadVect(
+      "÷",
+      "Divide | Split",
+      List("divide", "div", "str-split"),
+      "a: num, b: num -> a / b",
+      "a: str, b: str -> a.split(b)"
+    ) {
+      case (a: VNum, b: VNum)     => a / b
+      case (a: String, b: String) => VList.fromSpecific(a.split(b))
+      case (a, b) =>
+        throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
     val divide: Dyad = addDyadVect(
@@ -196,7 +252,7 @@ object Elements {
         throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
-    val dup = addDirect(":", "Duplicate", "a -> a, a") { ctx ?=>
+    val dup = addDirect(":", "Duplicate", List("dup"), "a -> a, a") { ctx ?=>
       val a = ctx.pop()
       ctx.push(a)
       ctx.push(a)
@@ -205,6 +261,7 @@ object Elements {
     val equals: Dyad = addDyadVect(
       "=",
       "Equals",
+      List("eq", "==", "equal", "same?"),
       "a: any, b: any -> a == b"
     ) {
       case (a: VNum, b: VNum)     => a == b
@@ -216,6 +273,7 @@ object Elements {
     val exponentation: Dyad = addDyadVect(
       "*",
       "Exponentation | Remove Nth Letter | Trim",
+      List("exp", "**", "pow", "exponent", "remove-letter", "str-trim"),
       "a: num, b: num -> a ^ b",
       "a: str, b: num -> a with the bth letter removed",
       "a: num, b: str -> b with the ath letter removed",
@@ -236,6 +294,7 @@ object Elements {
     val factorial: Monad = addMonadVect(
       "!",
       "Factorial | To Uppercase",
+      List("fact", "factorial", "to-upper", "upper", "uppercase", "!"),
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {
@@ -248,12 +307,14 @@ object Elements {
     val getContextVariable = addNilad(
       "n",
       "Get Context Variable",
+      List("get-context", "context", "c-var", "ctx"),
       " -> context variable n"
     ) { ctx ?=> ctx.contextVar }
 
     val greaterThan: Dyad = addDyadVect(
       ">",
       "Greater Than",
+      List("gt", "greater", "greater-than", ">"),
       "a: num, b: num -> a > b",
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
@@ -270,6 +331,7 @@ object Elements {
     val lessThan: Dyad = addDyadVect(
       "<",
       "Less Than",
+      List("lt", "less", "less-than", "<"),
       "a: num, b: num -> a < b",
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
@@ -286,6 +348,7 @@ object Elements {
     val modulo: Dyad = addDyadVect(
       "%",
       "Modulo | String Formatting",
+      List("mod", "modulo", "str-format", "format", "%"),
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
@@ -299,6 +362,7 @@ object Elements {
     val multiply: Dyad = addDyadVect(
       "×",
       "Multiplication",
+      List("mul", "multiply", "times", "str-repeat", "*", "ring-trans"),
       "a: num, b: num -> a * b",
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
@@ -314,26 +378,47 @@ object Elements {
     }
 
     val ordChr =
-      addMonadVect("O", "Ord/Chr", "a: str -> ord(a)", "a: num -> chr(a)") {
+      addMonadVect(
+        "O",
+        "Ord/Chr",
+        List("ord", "chr"),
+        "a: str -> ord(a)",
+        "a: num -> chr(a)"
+      ) {
         case (a: String) =>
           if (a.length == 1) a.codePointAt(0)
           else VList.fromSpecific(a.map(x => VNum(x.toInt)))
         case (a: VNum) => a.toInt.toChar.toString
       }
 
-    val pair = addDirect(";", "Pair", "a, b -> [a, b]") { ctx ?=>
+    val pair = addDirect(";", "Pair", List("pair"), "a, b -> [a, b]") { ctx ?=>
       val a = ctx.pop()
       val b = ctx.pop()
       ctx.push(VList(a, b))
     }
 
-    val print = addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
+    val print = addDirect(
+      ",",
+      "Print",
+      List("print", "puts", "out"),
+      "a -> printed to stdout"
+    ) { ctx ?=>
       MiscHelpers.vyPrintln(ctx.pop())
     }
 
     val subtraction: Dyad = addDyadVect(
       "-",
       "Subtraction",
+      List(
+        "sub",
+        "subtract",
+        "minus",
+        "str-remove",
+        "remove",
+        "str-remove-all",
+        "remove-all",
+        "-"
+      ),
       "a: num, b: num -> a - b",
       "a: str, b: num -> a + b '-'s",
       "a: num, b: str -> a '-'s + b",
@@ -350,7 +435,7 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
-    val swap = addDirect("$", "Swap", "a, b -> b, a") { ctx ?=>
+    val swap = addDirect("$", "Swap", List("swap"), "a, b -> b, a") { ctx ?=>
       val b = ctx.pop()
       val a = ctx.pop()
       ctx.push(b)
@@ -359,18 +444,38 @@ object Elements {
 
     // Constants
 
-    addNilad("₀", "Ten", "10") { 10 }
-    addNilad("₁", "Sixteen", "16") { 26 }
-    addNilad("₂", "Twenty-six", "26") { 26 }
-    addNilad("₃", "Thirty-two", "32") { 32 }
-    addNilad("₄", "Sixty-four", "64") { 64 }
-    addNilad("₅", "One hundred", "100") { 100 }
-    addNilad("₆", "One hundred twenty-eight", "128") { 128 }
-    addNilad("₇", "Two hundred fifty-six", "256") { 256 }
-    addNilad("₈", "Alphabet", "\"abcdefghijklmnopqrstuvwxyz\"") {
+    addNilad("₀", "Ten", List("ten"), "10") { 10 }
+    addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 }
+    addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 }
+    addNilad("₃", "Thirty-two", List("thirty-two"), "32") { 32 }
+    addNilad("₄", "Sixty-four", List("sixty-four"), "64") { 64 }
+    addNilad("₅", "One hundred", List("one-hundred"), "100") { 100 }
+    addNilad(
+      "₆",
+      "One hundred twenty-eight",
+      List("one-hundred-twenty-eight"),
+      "128"
+    ) { 128 }
+    addNilad(
+      "₇",
+      "Two hundred fifty-six",
+      List("two-hundred-fifty-six"),
+      "256"
+    ) { 256 }
+    addNilad(
+      "₈",
+      "Alphabet",
+      List("alphabet", "a-z"),
+      "\"abcdefghijklmnopqrstuvwxyz\""
+    ) {
       "abcdefghijklmnopqrstuvwxyz"
     }
-    addNilad("₉", "Empty array", "[]") { VList.empty }
+    addNilad(
+      "₉",
+      "Empty array",
+      List("empty-list", "nil-list", "new-list"),
+      "[]"
+    ) { VList.empty }
 
   }
 }
