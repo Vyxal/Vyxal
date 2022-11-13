@@ -313,6 +313,11 @@ object Elements {
         throw NotImplementedError("Unsupported types for multiplication")
     }
 
+    val ordChr = addMonadVect("O", "Ord/Chr", "a: str -> ord(a)", "a: num -> chr(a)") {
+      case (a: String) => if (a.length == 1) a.codePointAt(0) else VList.fromSpecific(a.map(x => VNum(x.toInt)))
+      case (a: VNum) => a.toInt.toChar.toString
+    }
+
     val pair = addDirect(";", "Pair", "a, b -> [a, b]") { ctx ?=>
       val a = ctx.pop()
       val b = ctx.pop()
