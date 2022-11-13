@@ -190,7 +190,7 @@ object Elements {
       "a: num, b: num -> a / b",
       "a: str, b: str -> a.split(b)"
     ) {
-      case (a: VNum, b: VNum)   => a / b
+      case (a: VNum, b: VNum)     => a / b
       case (a: String, b: String) => VList.fromSpecific(a.split(b))
       case (a, b) =>
         throw NotImplementedError(s"Modulo won't work on $a and $b")
@@ -313,10 +313,13 @@ object Elements {
         throw NotImplementedError("Unsupported types for multiplication")
     }
 
-    val ordChr = addMonadVect("O", "Ord/Chr", "a: str -> ord(a)", "a: num -> chr(a)") {
-      case (a: String) => if (a.length == 1) a.codePointAt(0) else VList.fromSpecific(a.map(x => VNum(x.toInt)))
-      case (a: VNum) => a.toInt.toChar.toString
-    }
+    val ordChr =
+      addMonadVect("O", "Ord/Chr", "a: str -> ord(a)", "a: num -> chr(a)") {
+        case (a: String) =>
+          if (a.length == 1) a.codePointAt(0)
+          else VList.fromSpecific(a.map(x => VNum(x.toInt)))
+        case (a: VNum) => a.toInt.toChar.toString
+      }
 
     val pair = addDirect(";", "Pair", "a, b -> [a, b]") { ctx ?=>
       val a = ctx.pop()
@@ -364,7 +367,9 @@ object Elements {
     addNilad("₅", "One hundred", "100") { 100 }
     addNilad("₆", "One hundred twenty-eight", "128") { 128 }
     addNilad("₇", "Two hundred fifty-six", "256") { 256 }
-    addNilad("₈", "Alphabet", "\"abcdefghijklmnopqrstuvwxyz\"") { "abcdefghijklmnopqrstuvwxyz" }
+    addNilad("₈", "Alphabet", "\"abcdefghijklmnopqrstuvwxyz\"") {
+      "abcdefghijklmnopqrstuvwxyz"
+    }
     addNilad("₉", "Empty array", "[]") { VList.empty }
 
   }
