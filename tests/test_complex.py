@@ -242,6 +242,14 @@ def test_vectorised_lambda_multiplication():
     assert stack[-1] == [3, 6, 2, 3, 6, 3, 5, 1]
 
 
+def test_find_first_truthy_under_function():
+    stack = run_vyxal("⟨ 3 | 7 | 2 | 8 | 5 ⟩ ⁽₅ Ǒ")
+    assert stack[-1] == 4
+
+    stack = run_vyxal("⟨ 3 | 7 | 2 | 8 ⟩ ⁽₅ Ǒ")
+    assert stack[-1] == -1
+
+
 def test_powerset_inf():
     stack = run_vyxal("⁽› 1 Ḟ ṗ", debug=True)
     assert stack[-1][:4] == [[], [1], [2], [1, 2]]

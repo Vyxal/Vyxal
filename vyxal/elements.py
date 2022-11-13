@@ -3361,7 +3361,8 @@ def multiplicity(lhs, rhs, ctx):
     elif ts == (str, str):
         return remove_until_no_change(lhs, rhs, ctx)
     elif types.FunctionType in ts:
-        return find(lhs, rhs, ctx)[0]
+        temp = find(lhs, rhs, ctx)
+        return temp[0] if temp else -1
     else:
         return vectorise(multiplicity, lhs, rhs, ctx=ctx)
 
@@ -4098,7 +4099,9 @@ def permutations(lhs, ctx):
     lhs = iterable(lhs, ctx=ctx)
     return LazyList(
         map(
-            lambda x: "".join(x) if all(isinstance(y, str) for y in x) else x,
+            lambda x: "".join(x)
+            if all(isinstance(y, str) for y in x) and isinstance(lhs, str)
+            else x,
             itertools.permutations(
                 iterable(lhs, number_type=range, ctx=ctx), len(lhs)
             ),
