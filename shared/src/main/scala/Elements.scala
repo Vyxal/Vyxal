@@ -196,6 +196,7 @@ object Elements {
       "a: any, b: any -> a == b"
     ) {
       case (a: VNum, b: VNum)     => a == b
+      case (a: VNum, b: String)   => a.toString == b
       case (a: String, b: VNum)   => a == b.toString
       case (a: String, b: String) => a == b
     }
@@ -292,8 +293,8 @@ object Elements {
       "a: str, b: str -> ring translate a according to b"
     ) {
       case (a: VNum, b: VNum)     => a * b
-      case (a: String, b: VNum)   => a.repeat(b.toInt)
-      case (a: VNum, b: String)   => b.repeat(a.toInt)
+      case (a: String, b: VNum)   => a * b.toInt
+      case (a: VNum, b: String)   => b * a.toInt
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
       case (a: VFun, b: VNum)     => a.withArity(b.toInt)
       case _ =>
@@ -335,6 +336,19 @@ object Elements {
       ctx.push(b)
       ctx.push(a)
     }
+
+    // Constants
+
+    addNilad("₀", "Ten", "10") { 10 }
+    addNilad("₁", "Sixteen", "16") { 26 }
+    addNilad("₂", "Twenty-six", "26") { 26 }
+    addNilad("₃", "Thirty-two", "32") { 32 }
+    addNilad("₄", "Sixty-four", "64") { 64 }
+    addNilad("₅", "One hundred", "100") { 100 }
+    addNilad("₆", "One hundred twenty-eight", "128") { 128 }
+    addNilad("₇", "Two hundred fifty-six", "256") { 256 }
+    addNilad("₈", "Alphabet", "\"abcdefghijklmnopqrstuvwxyz\"") { "abcdefghijklmnopqrstuvwxyz" }
+    addNilad("₉", "Empty array", "[]") { VList.empty }
 
   }
 }
