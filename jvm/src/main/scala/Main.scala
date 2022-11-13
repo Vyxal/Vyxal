@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.{Elements, Element}
+
 import java.io.File
 
 import scopt.OParser

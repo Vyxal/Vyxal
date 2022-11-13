@@ -8,9 +8,9 @@ object MiscHelpers {
     case l: VList => l.nonEmpty
   }
 
-  def vyPrint(x: VAny)(using Context): Unit = {
-    print(x)
+  def vyPrint(x: VAny)(using ctx: Context): Unit = {
     // todo change later
+    ctx.settings.printFn(x)
   }
 
   def vyPrintln(x: VAny)(using Context): Unit = {

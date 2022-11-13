@@ -23,11 +23,19 @@ class InterpreterTests extends AnyFunSuite:
     assert(ctx.pop() == VNum(2))
   }
 
-  test("Can the interpreter vectorise simple stuff?") {
+  test("Can the interpreter vectorise simple monads?") {
+    val sb = new StringBuilder()
+    // Instead of printing, add to sb so we can inspect it
+    given ctx: Context = Context(printFn = sb.append)
+    Interpreter.execute("#[4 | #[5 | 6#] #] v,")
+    assert(sb.toString == "4\n5\n6\n")
+  }
+
+  test("Can the interpreter vectorise simple dyads?") {
     given ctx: Context = Context()
-    Interpreter.execute("#[4 | #[5 | 6#] #] 3 v+")
-    assert(ctx.pop() == VList(7, VList(8, 9)))
-    Interpreter.execute("#[4 | #[5 | 6#] #] #[4#] v+")
-    assert(ctx.pop() == VList(8, VList(5, 6)))
+    Interpreter.execute("#[4 | #[5 | 6#] #] 3 v;")
+    assert(ctx.pop() == VList(VList(4, 3), VList(VList(5, 3), VList(6, 3))))
+    Interpreter.execute("#[4 | #[5 | 6#] #] #[4#] v;")
+    assert(ctx.pop() == VList(VList(4, 4), VList(VList(5, 0), VList(6, 0))))
   }
 end InterpreterTests

@@ -1,5 +1,12 @@
-package vyxal
+package vyxal.impls
+// todo figure out a better solution than putting this in a different package
+// it's in a different package so that ElementTests can access the impls without
+// other classes being able to access them
+
 import scala.language.implicitConversions
+
+import vyxal.*
+
 given Conversion[Boolean, VNum] with
   def apply(s: Boolean): VNum = if s then 1 else 0
 
@@ -16,8 +23,7 @@ case class Element(
 object Elements {
   val elements: Map[String, Element] = Impls.elements.toMap
 
-  private object Impls {
-    val x = 2
+  private[impls] object Impls {
     val elements = collection.mutable.Map.empty[String, Element]
 
     /** Turn a monad into a function that operates on the stack */
@@ -315,16 +321,14 @@ object Elements {
 
     val ordChr =
       addMonadVect("O", "Ord/Chr", "a: str -> ord(a)", "a: num -> chr(a)") {
-        case (a: String) =>
+        case a: String =>
           if (a.length == 1) a.codePointAt(0)
-          else VList.fromSpecific(a.map(x => VNum(x.toInt)))
-        case (a: VNum) => a.toInt.toChar.toString
+          else VList(a.map(_.toInt: VNum)*)
+        case a: VNum => a.toInt.toChar.toString
       }
 
-    val pair = addDirect(";", "Pair", "a, b -> [a, b]") { ctx ?=>
-      val a = ctx.pop()
-      val b = ctx.pop()
-      ctx.push(VList(a, b))
+    val pair = addDyad(";", "Pair", "a, b -> [a, b]") { (a, b) =>
+      VList(a, b)
     }
 
     val print = addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
@@ -351,8 +355,7 @@ object Elements {
     }
 
     val swap = addDirect("$", "Swap", "a, b -> b, a") { ctx ?=>
-      val b = ctx.pop()
-      val a = ctx.pop()
+      val b, a = ctx.pop()
       ctx.push(b)
       ctx.push(a)
     }

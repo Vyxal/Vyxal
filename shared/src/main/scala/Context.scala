@@ -26,6 +26,8 @@ enum EndPrintMode {
   *   How to print implicit output at the end
   * @param defaultValue
   *   Value to give when empty stack is popped
+  * @param printFn
+  *   Function used to output (necessary for online interpreter)
   */
 case class Settings(
     presetStack: Boolean = false,
@@ -34,7 +36,8 @@ case class Settings(
     rangify: Boolean = false,
     rangeStart: VNum = 1,
     rangeOffset: VNum = 0,
-    numToRange: Boolean = false
+    numToRange: Boolean = false,
+    printFn: Any => Unit = print,
 ) {
 
   /** Add a flag to these settings
@@ -164,8 +167,8 @@ class Context private (
 }
 
 object Context {
-  def apply(inputs: List[VAny] = List.empty): Context =
-    new Context(stack = mut.ArrayBuffer(), inputs = inputs)
+  def apply(inputs: List[VAny] = List.empty, printFn: Any => Unit = print): Context =
+    new Context(stack = mut.ArrayBuffer(), inputs = inputs, settings = Settings(printFn = printFn))
 
   /** Find a parent that has a variable with the given name */
   @annotation.tailrec

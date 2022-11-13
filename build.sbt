@@ -18,6 +18,10 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 
 import org.scalajs.linker.interface.OutputPatterns
 
+// From https://github.com/scalatest/scalatest/issues/405
+// Suppresses output from successful tests
+Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
+
 lazy val root = project
   .in(file("."))
   .aggregate(vyxal.js, vyxal.jvm)
@@ -46,6 +50,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
       "-language:implicitConversions",
+      "-language:adhocExtensions",
       // "-explain",
       "-print-lines",
       "-Ycheck-all-patmat"

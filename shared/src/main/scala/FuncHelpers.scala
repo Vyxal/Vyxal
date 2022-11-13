@@ -32,8 +32,7 @@ object FuncHelpers {
   }
 
   private def vectorise2(fn: VFun)(using ctx: Context): VAny = {
-    val a = ctx.pop()
-    val b = ctx.pop()
+    val b, a = ctx.pop()
 
     (a, b) match {
       case (a: VList, b: VList) =>

@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.Elements
+
 object Interpreter {
   def execute(code: String)(using ctx: Context): Unit = {
     VyxalParser.parse(code) match {

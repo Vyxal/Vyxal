@@ -54,8 +54,11 @@ class VList private (val lst: Seq[VAny])
 object VList extends SpecificIterableFactory[VAny, VList] {
 
   /** Zip multiple VLists together with a function.
+    *
+    * The parameter is a `PartialFunction` instead of a function because it's
+    * going to match on a list and assume it's a specific length
     */
-  def zipMulti(lists: VList*)(f: Seq[VAny] => VAny): VList = {
+  def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny]): VList = {
     ???
   }
 

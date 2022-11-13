@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.Elements
+
 /** @param name
   *   The modifier's name
   * @param description
@@ -26,8 +28,8 @@ object Modifiers {
       "Vectorise",
       """|Vectorises
          |vf: f but vectorised""".stripMargin,
-      { case List(a) =>
-        a match {
+      { case List(elem) =>
+        elem match {
           case AST.Command(symbol) =>
             val element = Elements.elements(symbol)
             AST.Modified { () => (ctx: Context) ?=>
@@ -44,6 +46,12 @@ object Modifiers {
           case lam: AST.Lambda =>
             AST.Modified { () => (ctx: Context) ?=>
               FuncHelpers.vectorise(VFun.fromLambda(lam))
+            }
+          case _ =>
+            AST.Modified { () => (ctx: Context) ?=>
+              FuncHelpers.vectorise(
+                VFun.fromLambda(AST.Lambda(1, List.empty, elem))
+              )
             }
         }
       }
