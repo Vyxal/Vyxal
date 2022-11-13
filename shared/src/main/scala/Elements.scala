@@ -1,4 +1,7 @@
 package vyxal
+import scala.language.implicitConversions
+given Conversion[Boolean, VNum] with
+  def apply(s: Boolean): VNum = VNum.apply(if s then 1 else 0)
 
 /** Implementations for elements */
 case class Element(
@@ -14,7 +17,7 @@ object Elements {
   val elements: Map[String, Element] = Impls.elements.toMap
 
   private object Impls {
-    val x=2
+    val x = 2
     val elements = collection.mutable.Map.empty[String, Element]
 
     /** Turn a monad into a function that operates on the stack */
@@ -187,6 +190,16 @@ object Elements {
       ctx.push(a)
     }
 
+    val equals: Dyad = addDyadVect(
+      "=",
+      "Equals",
+      "a: any, b: any -> a == b"
+    ) {
+      case (a: VNum, b: VNum)     => a == b
+      case (a: String, b: VNum)   => a == b.toString
+      case (a: String, b: String) => a == b
+    }
+
     val exponentation: Dyad = addDyadVect(
       "*",
       "Exponentation | Remove Nth Letter | Trim",
@@ -225,6 +238,38 @@ object Elements {
       " -> context variable n"
     ) { ctx ?=> ctx.contextVar }
 
+    val greaterThan: Dyad = addDyadVect(
+      ">",
+      "Greater Than",
+      "a: num, b: num -> a > b",
+      "a: str, b: num -> a > str(b)",
+      "a: num, b: str -> str(a) > b",
+      "a: str, b: str -> a > b"
+    ) {
+      case (a: VNum, b: VNum)     => a > b
+      case (a: String, b: VNum)   => a > b.toString
+      case (a: VNum, b: String)   => a.toString > b
+      case (a: String, b: String) => a > b
+      case _ =>
+        throw NotImplementedError("Unsupported types for less than")
+    }
+
+    val lessThan: Dyad = addDyadVect(
+      "<",
+      "Less Than",
+      "a: num, b: num -> a < b",
+      "a: str, b: num -> a < str(b)",
+      "a: num, b: str -> str(a) < b",
+      "a: str, b: str -> a < b"
+    ) {
+      case (a: VNum, b: VNum)     => a < b
+      case (a: String, b: VNum)   => a < b.toString
+      case (a: VNum, b: String)   => a.toString < b
+      case (a: String, b: String) => a < b
+      case _ =>
+        throw NotImplementedError("Unsupported types for less than")
+    }
+
     val modulo: Dyad = addDyadVect(
       "%",
       "Modulo | String Formatting",
@@ -254,7 +299,13 @@ object Elements {
       case _ =>
         throw NotImplementedError("Unsupported types for multiplication")
     }
-    
+
+    val pair = addDirect(";", "Pair", "a, b -> [a, b]") { ctx ?=>
+      val a = ctx.pop()
+      val b = ctx.pop()
+      ctx.push(VList(a, b))
+    }
+
     val print = addDirect(",", "Print", "a -> printed to stdout") { ctx ?=>
       MiscHelpers.vyPrintln(ctx.pop())
     }
@@ -262,9 +313,17 @@ object Elements {
     val subtraction: Dyad = addDyadVect(
       "-",
       "Subtraction",
-      "a: num, b: num -> a - b"
+      "a: num, b: num -> a - b",
+      "a: str, b: num -> a + b '-'s",
+      "a: num, b: str -> a '-'s + b",
+      "a: str, b: str -> a with b removed"
     ) {
       case (a: VNum, b: VNum) => a - b
+      case (a: String, b: VNum) =>
+        a + "-" * b.toInt
+      case (a: VNum, b: String) => "-" * a.toInt + b
+      case (a: String, b: String) =>
+        a.replace(b, "")
       case _ =>
         throw NotImplementedError("Unsupported types for subtraction")
       // todo consider doing something like APL's forks
@@ -277,6 +336,5 @@ object Elements {
       ctx.push(a)
     }
 
-    
   }
 }
