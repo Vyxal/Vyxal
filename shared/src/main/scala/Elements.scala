@@ -1,7 +1,7 @@
 package vyxal
 import scala.language.implicitConversions
 given Conversion[Boolean, VNum] with
-  def apply(s: Boolean): VNum = VNum.apply(if s then 1 else 0)
+  def apply(s: Boolean): VNum = if s then 1 else 0
 
 /** Implementations for elements */
 case class Element(
