@@ -240,18 +240,6 @@ object Elements {
         throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
-    val divide: Dyad = addDyadVect(
-      "÷",
-      "Divide | Split",
-      "a: num, b: num -> a / b",
-      "a: str, b: str -> a.split(b)"
-    ) {
-      case (a: VNum, b: VNum)     => a / b
-      case (a: String, b: String) => VList.fromSpecific(a.split(b))
-      case (a, b) =>
-        throw NotImplementedError(s"Modulo won't work on $a and $b")
-    }
-
     val dup = addDirect(":", "Duplicate", List("dup"), "a -> a, a") { ctx ?=>
       val a = ctx.pop()
       ctx.push(a)
