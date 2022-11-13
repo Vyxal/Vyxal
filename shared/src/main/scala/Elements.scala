@@ -249,7 +249,7 @@ object Elements {
     val equals: Dyad = addDyadVect(
       "=",
       "Equals",
-      List("eq", "==", "equal", "same?"),
+      List("eq", "==", "equal", "same?", "equals?", "equal?"),
       "a: any, b: any -> a == b"
     ) {
       case (a: VNum, b: VNum)     => a == b
@@ -302,7 +302,7 @@ object Elements {
     val greaterThan: Dyad = addDyadVect(
       ">",
       "Greater Than",
-      List("gt", "greater", "greater-than", ">"),
+      List("gt", "greater", "greater-than", ">", "greater?", "bigger?"),
       "a: num, b: num -> a > b",
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
@@ -319,7 +319,7 @@ object Elements {
     val lessThan: Dyad = addDyadVect(
       "<",
       "Less Than",
-      List("lt", "less", "less-than", "<"),
+      List("lt", "less", "less-than", "<", "less?", "smaller?"),
       "a: num, b: num -> a < b",
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
