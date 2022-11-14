@@ -8,6 +8,14 @@ object MiscHelpers {
     case l: VList => l.nonEmpty
   }
 
+  def compare(a: VAny, b: VAny): Int = (a, b) match {
+    case (a: VNum, b: VNum)     => a.compare(b)
+    case (a: String, b: VNum)   => a.compareTo(b.toString)
+    case (a: VNum, b: String)   => a.toString.compareTo(b)
+    case (a: String, b: String) => a.compareTo(b)
+    case (a, b) => throw IllegalArgumentException(s"'$a' and '$b' can't be compared")
+  }
+
   def vyPrint(x: VAny)(using ctx: Context): Unit = {
     // todo change later
     ctx.settings.printFn(x)

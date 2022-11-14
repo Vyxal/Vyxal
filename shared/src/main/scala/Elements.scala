@@ -382,12 +382,7 @@ object Elements {
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
-    ) {
-      case (a: VNum, b: VNum)     => a > b
-      case (a: String, b: VNum)   => a > b.toString
-      case (a: VNum, b: String)   => a.toString > b
-      case (a: String, b: String) => a > b
-    }
+    ) { (a, b) => MiscHelpers.compare(a, b) > 0 }
 
     val lessThan: Dyad = addDyadVect(
       "<",
@@ -397,12 +392,7 @@ object Elements {
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b"
-    ) {
-      case (a: VNum, b: VNum)     => a < b
-      case (a: String, b: VNum)   => a < b.toString
-      case (a: VNum, b: String)   => a.toString < b
-      case (a: String, b: String) => a < b
-    }
+    ) { (a, b) => MiscHelpers.compare(a, b) < 0 }
 
     val modulo: Dyad = addDyadVect(
       "%",

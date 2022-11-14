@@ -38,4 +38,16 @@ class InterpreterTests extends AnyFunSuite:
     Interpreter.execute("#[4 | #[5 | 6#] #] #[4#] v;")
     assert(ctx.pop() == VList(VList(4, 4), VList(VList(5, 0), VList(6, 0))))
   }
+
+  test("Can the interpreter execute monadic lambdas?") {
+    given ctx: Context = Context()
+    Interpreter.execute(
+      AST.makeSingle(
+        AST.Number(3),
+        AST.Lambda(1, List.empty, AST.Command("!")),
+        AST.ExecuteFn
+      )
+    )
+    assertResult(VNum(6))(ctx.pop())
+  }
 end InterpreterTests

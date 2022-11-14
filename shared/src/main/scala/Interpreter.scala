@@ -78,12 +78,14 @@ object Interpreter {
           execute(body)(using loopCtx)
         }
 
-      case AST.GetVar(name) => ctx.push(ctx.getVar(name))
-      case AST.SetVar(name) => ctx.setVar(name, ctx.pop())
+      case lam: AST.Lambda      => ctx.push(VFun.fromLambda(lam))
+      case AST.FnDef(name, lam) => ctx.setVar(name, VFun.fromLambda(lam))
+      case AST.GetVar(name)     => ctx.push(ctx.getVar(name))
+      case AST.SetVar(name)     => ctx.setVar(name, ctx.pop())
       case AST.ExecuteFn =>
         ctx.pop() match {
           case fn: VFun => executeFn(fn).foreach(ctx.push(_))
-          case _ => ???
+          case _        => ???
         }
       case _ => throw NotImplementedError(s"$ast not implemented")
     }
