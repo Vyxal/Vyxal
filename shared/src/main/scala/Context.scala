@@ -18,6 +18,11 @@ enum EndPrintMode {
   case Sum
 }
 
+// todo use a proper logging library instead
+enum LogLevel {
+  case Debug, Normal
+}
+
 /** Settings set by flags
   *
   * @param presetStack
@@ -38,6 +43,7 @@ case class Settings(
     rangeOffset: VNum = 0,
     numToRange: Boolean = false,
     printFn: Any => Unit = print,
+    logLevel: LogLevel = LogLevel.Normal
 ) {
 
   /** Add a flag to these settings
@@ -83,8 +89,8 @@ class Context private (
     private val parent: Option[Context] = None,
     val settings: Settings = Settings()
 ) {
-  def pop(): VAny =
-    if (stack.nonEmpty) {
+  def pop(): VAny = {
+    val elem = if (stack.nonEmpty) {
       stack.remove(stack.size - 1)
     } else if (inputs.nonEmpty) {
       val (head :: tail) = inputs
@@ -95,6 +101,11 @@ class Context private (
     } else {
       settings.defaultValue
     }
+    if (settings.logLevel == LogLevel.Debug) {
+      println(s"Popped $elem")
+    }
+    elem
+  }
 
   /** Pop n elements and wrap in a list */
   def pop(n: Int): List[VAny] = List.fill(n)(this.pop())
@@ -108,6 +119,17 @@ class Context private (
     } else {
       settings.defaultValue
     }
+
+  /** Get the top n elements on the stack without popping */
+  def peek(n: Int): List[VAny] = {
+    // Number of elements peekable from the stack
+    val numStack = n.max(stack.length)
+    // Number of elements that need to be taken from the input
+    val numInput = n - numStack
+    // todo repeat the inputs or something?
+    inputs.slice(inputs.length - n, inputs.length)
+      ++ stack.slice(stack.length - numStack, stack.length)
+  }
 
   def push(item: VAny): Unit = stack += item
 
@@ -167,8 +189,15 @@ class Context private (
 }
 
 object Context {
-  def apply(inputs: List[VAny] = List.empty, printFn: Any => Unit = print): Context =
-    new Context(stack = mut.ArrayBuffer(), inputs = inputs, settings = Settings(printFn = printFn))
+  def apply(
+      inputs: List[VAny] = List.empty,
+      settings: Settings = Settings()
+  ): Context =
+    new Context(
+      stack = mut.ArrayBuffer(),
+      inputs = inputs,
+      settings = settings
+    )
 
   /** Find a parent that has a variable with the given name */
   @annotation.tailrec
@@ -188,14 +217,24 @@ object Context {
 
   /** Make a new Context for a function that was defined inside `origCtx` but is
     * now executing inside `currCtx`
+    *
+    * @param popArgs
+    *   Whether the inputs for the function will be popped from the stack
+    *   (instead of merely peeking)
     */
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
       arity: Int,
-      params: List[String]
+      params: List[String],
+      popArgs: Boolean
   ) = {
-    val newInputs = currCtx.pop(arity)
+    val newInputs = if (popArgs) currCtx.pop(arity) else currCtx.peek(arity)
+    if (currCtx.settings.logLevel == LogLevel.Debug) {
+      println(
+        s"newInputs = $newInputs, arity = $arity, stack = ${currCtx.stack}, popArgs = $popArgs"
+      )
+    }
     new Context(
       mut.ArrayBuffer.empty,
       currCtx._contextVar,

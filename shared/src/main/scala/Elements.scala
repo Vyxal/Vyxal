@@ -35,7 +35,7 @@ object Elements {
       */
     def errorIfUndefined[T](
         name: String,
-        fn: PartialFunction[T, Context ?=> VAny]
+        fn: Context ?=> PartialFunction[T, VAny]
     ): T => Context ?=> VAny = args =>
       if (fn.isDefinedAt(args)) fn(args)
       else throw UnimplementedOverloadException(name, args)
@@ -288,11 +288,7 @@ object Elements {
       "a: str, b: num -> a + b",
       "a: str, b: str -> a + b"
     ) {
-      case (a: VNum, b: VNum)     => a + b
-      case (a: String, b: VNum)   => s"$a$b"
-      case (a: VNum, b: String)   => s"$a$b"
-      case (a: String, b: String) => s"$a$b"
-      // todo consider doing something like APL's forks
+      MiscHelpers.add(_, _)
     }
 
     val concatenate = addDyad(
@@ -382,7 +378,7 @@ object Elements {
       "a: str, b: num -> a > str(b)",
       "a: num, b: str -> str(a) > b",
       "a: str, b: str -> a > b"
-    ) { (a, b) => MiscHelpers.compare(a, b) > 0 }
+    ) { MiscHelpers.compare(_, _) > 0 }
 
     val lessThan: Dyad = addDyadVect(
       "<",
@@ -392,7 +388,7 @@ object Elements {
       "a: str, b: num -> a < str(b)",
       "a: num, b: str -> str(a) < b",
       "a: str, b: str -> a < b"
-    ) { (a, b) => MiscHelpers.compare(a, b) < 0 }
+    ) { MiscHelpers.compare(_, _) < 0 }
 
     val modulo: Dyad = addDyadVect(
       "%",
@@ -414,13 +410,7 @@ object Elements {
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
       "a: str, b: str -> ring translate a according to b"
-    ) {
-      case (a: VNum, b: VNum)     => a * b
-      case (a: String, b: VNum)   => a * b.toInt
-      case (a: VNum, b: String)   => b * a.toInt
-      case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
-      case (a: VFun, b: VNum)     => a.withArity(b.toInt)
-    }
+    ) { MiscHelpers.multiply(_, _) }
 
     val ordChr =
       addMonadVect(

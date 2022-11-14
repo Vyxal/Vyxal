@@ -4,7 +4,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import AST.*
 
-class ParserTests extends AnyFunSuite:
+class ParserTests extends AnyFunSuite {
   test("Does the parser recognise numbers?") {
     assert(VyxalParser.parse("123") === Right(Number(123)))
   }
@@ -123,5 +123,4 @@ class ParserTests extends AnyFunSuite:
   //       )
   //   )
   // }
-
-end ParserTests
+}

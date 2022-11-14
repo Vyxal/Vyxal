@@ -4,7 +4,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import VyxalToken.*
 
-class LexerTests extends AnyFunSuite:
+class LexerTests extends AnyFunSuite {
   test("Does the lexer recognise numbers?") {
     assert(Lexer("123") == Right(List(Number("123"))))
   }
@@ -40,4 +40,4 @@ class LexerTests extends AnyFunSuite:
       )
     )
   }
-end LexerTests
+}

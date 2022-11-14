@@ -13,7 +13,34 @@ class ElementTests extends AnyFunSpec {
     describe("when given lists") {
       it("should vectorise properly") {
         given Context = Context()
-        assert(Impls.add(VList(VList(2, 5), "foo"), VList(VList(3, 4))) == VList(VList(5, 9), "foo0"))
+        assertResult(
+          VList(
+            VList(5, 9),
+            "foo0"
+          )
+        )(
+          Impls.add(VList(VList(2, 5), "foo"), VList(VList(3, 4)))
+        )
+      }
+    }
+    describe("when given functions") {
+      it("should turn two functions into an fgh fork") {
+        given ctx: Context = Context(settings = Settings(logLevel = LogLevel.Debug))
+        // Factorial
+        val f = VFun.fromElement(Elements.elements("!"))
+        // Function to subtract 8
+        val g = VFun.fromLambda(
+          AST.Lambda(
+            1,
+            List.empty,
+            AST.makeSingle(AST.Number(8), AST.Command("-"))
+          )
+        )
+        ctx.push(3)
+        ctx.push(Impls.add(f, g))
+        println(s"Made fork, executing function")
+        Interpreter.execute(AST.ExecuteFn)
+        assertResult(VNum(1))(ctx.pop())
       }
     }
   }

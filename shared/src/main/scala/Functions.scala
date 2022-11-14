@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.UnimplementedOverloadException
+
 //These represent normal Scala functions, not functions operating on the stack
 type Monad = VAny => Context ?=> VAny
 type Dyad = (VAny, VAny) => Context ?=> VAny
@@ -11,7 +13,7 @@ type VyFn[Arity <: Int] = TupleOfSize[Arity] => Context ?=> VAny
 
 /** Same as [[VyFn]] but may be undefined for some inputs */
 type PartialVyFn[Arity <: Int] =
-  PartialFunction[TupleOfSize[Arity], Context ?=> VAny]
+  Context ?=> PartialFunction[TupleOfSize[Arity], VAny]
 
 /** Make a tuple of size `N` filled with [[VAny]]s */
 private type TupleOfSize[N <: Int] <: Tuple = N match {
@@ -46,6 +48,62 @@ extension (f: Triad)
     */
   def norm(using ctx: Context): (VAny, VAny, VAny) => VAny =
     f(_, _, _)(using ctx)
+
+/** Make a partial function that only works on non-functions act kinda like an
+  * APL fork when given functions as arguments.
+  *
+  *   - If the arguments are something `impl` can take, then it just calls
+  *     `impl` on them
+  *   - If the arguments are 2 functions f and g, then it applies `impl` to the
+  *     result of `f` and the result of `g`
+  *   - If the arguments are a value `a` and a function f, then it applies
+  *     `impl` to `a` and the result of `f`
+  *   - If the arguments are a function `f` and a value `b`, then it applies
+  *     `impl` to the result of `f` and `b`
+  */
+def forkify(name: String)(impl: PartialVyFn[2]): VyFn[2] = {
+  case (a, b) if impl.isDefinedAt((a, b)) => impl((a, b))
+  case (f: VFun, g: VFun) =>
+    VFun(
+      { () => ctx ?=>
+        println(s"forkify: ctx stack = ${ctx.peek(10)}")
+        // Don't pop args so that g can reuse them
+        val a = Interpreter.executeFn(f, popArgs = false)
+        println(s"forkify: a = $a")
+        val b = Interpreter.executeFn(g, popArgs = false)
+        println(s"forkify: a = $a, b = $b")
+        ctx.push(impl(a, b))
+      },
+      f.arity.max(g.arity),
+      List.empty,
+      summon[Context]
+    )
+  case (f: VFun, b) =>
+    VFun(
+      { () => ctx ?=>
+        // Don't pop args so that g can reuse them
+        val a = Interpreter.executeFn(f, popArgs = false)
+        ctx.push(impl(a, b))
+      },
+      f.arity,
+      List.empty,
+      summon[Context]
+    )
+  case (a, f: VFun) =>
+    VFun(
+      { () => ctx ?=>
+        // Don't pop args so that g can reuse them
+        val b = Interpreter.executeFn(f, popArgs = false)
+        ctx.push(impl(a, b))
+      },
+      f.arity,
+      List.empty,
+      summon[Context]
+    )
+  case args => throw UnimplementedOverloadException(name, args)
+}
+
+// TODO reduce duplication between these functions and the ones in FuncHelpers.scala
 
 /** Vectorise an unvectorised monad
   */

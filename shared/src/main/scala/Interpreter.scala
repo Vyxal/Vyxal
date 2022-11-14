@@ -6,7 +6,9 @@ object Interpreter {
   def execute(code: String)(using ctx: Context): Unit = {
     VyxalParser.parse(code) match {
       case Right(ast) =>
-        println(ast)
+        if (ctx.settings.logLevel == LogLevel.Debug) {
+          println(s"Executing '$code' (ast: $ast)")
+        }
         execute(ast)
         // todo implicit output according to settings
         if (!ctx.isStackEmpty) {
@@ -19,6 +21,9 @@ object Interpreter {
   }
 
   def execute(ast: AST)(using ctx: Context): Unit = {
+    if (ctx.settings.logLevel == LogLevel.Debug) {
+      println(s"Executing AST $ast, stack = ${ctx.peek(5)}")
+    }
     ast match {
       case AST.Number(value) => ctx.push(value)
       case AST.Str(value)    => ctx.push(value)
@@ -69,7 +74,6 @@ object Interpreter {
         }
 
       case AST.For(Some(name), body) =>
-        println(name)
         val iterable = ListHelpers.makeIterable(ctx.pop())(using ctx)
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
@@ -84,22 +88,36 @@ object Interpreter {
       case AST.SetVar(name)     => ctx.setVar(name, ctx.pop())
       case AST.ExecuteFn =>
         ctx.pop() match {
-          case fn: VFun => executeFn(fn).foreach(ctx.push(_))
+          case fn: VFun => ctx.push(executeFn(fn))
           case _        => ???
         }
       case _ => throw NotImplementedError(s"$ast not implemented")
+    }
+    if (ctx.settings.logLevel == LogLevel.Debug) {
+      println(s"res was ${ctx.peek}")
     }
   }
 
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
+    *
+    * @param popArgs
+    *   Whether to pop the arguments from the stack (instead of merely peeking)
     */
-  def executeFn(fn: VFun)(using ctx: Context): Option[VAny] = {
+  def executeFn(
+      fn: VFun,
+      popArgs: Boolean = true
+  )(using ctx: Context): VAny = {
     val VFun(impl, arity, params, origCtx) = fn
-    given fnCtx: Context = Context.makeFnCtx(origCtx, ctx, arity, params)
+    if (ctx.settings.logLevel == LogLevel.Debug) {
+      println(s"executeFn: ctx.stack = ${ctx.peek(5)}")
+    }
+    given fnCtx: Context =
+      Context.makeFnCtx(origCtx, ctx, arity, params, popArgs)
 
     impl()
 
-    Option.when(!fnCtx.isStackEmpty)(fnCtx.pop())
+    if (fnCtx.isStackEmpty) ctx.settings.defaultValue
+    else fnCtx.pop()
   }
 }

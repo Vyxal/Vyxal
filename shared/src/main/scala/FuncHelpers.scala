@@ -27,7 +27,7 @@ object FuncHelpers {
         }
       case x =>
         ctx.push(x)
-        Interpreter.executeFn(fn).getOrElse(ctx.settings.defaultValue)
+        Interpreter.executeFn(fn)
     }
   }
 
@@ -56,7 +56,7 @@ object FuncHelpers {
       case (a, b) =>
         ctx.push(a)
         ctx.push(b)
-        Interpreter.executeFn(fn).getOrElse(ctx.settings.defaultValue)
+        Interpreter.executeFn(fn)
     }
   }
 
@@ -119,7 +119,7 @@ object FuncHelpers {
         ctx.push(a)
         ctx.push(b)
         ctx.push(c)
-        Interpreter.executeFn(fn).getOrElse(ctx.settings.defaultValue)
+        Interpreter.executeFn(fn)
     }
   }
 }

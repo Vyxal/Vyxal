@@ -2,9 +2,7 @@ package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
 
-import AST.*
-
-class InterpreterTests extends AnyFunSuite:
+class InterpreterTests extends AnyFunSuite {
   test("Can the interpreter make lists?") {
     given ctx: Context = Context()
     Interpreter.execute("#[1 | 2 3 + | 4#]")
@@ -26,7 +24,7 @@ class InterpreterTests extends AnyFunSuite:
   test("Can the interpreter vectorise simple monads?") {
     val sb = new StringBuilder()
     // Instead of printing, add to sb so we can inspect it
-    given ctx: Context = Context(printFn = sb.append)
+    given ctx: Context = Context(settings = Settings(printFn = sb.append))
     Interpreter.execute("#[4 | #[5 | 6#] #] v,")
     assert(sb.toString == "4\n5\n6\n")
   }
@@ -82,4 +80,4 @@ class InterpreterTests extends AnyFunSuite:
     )
     assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
   }
-end InterpreterTests
+}

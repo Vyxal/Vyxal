@@ -1,5 +1,7 @@
 package vyxal
 
+import vyxal.impls.Element
+
 import spire.math.Number
 
 // todo check if these names or this whole way of structuring need to be changed
@@ -19,15 +21,32 @@ type VNum = Number
   * @param ctx
   *   The context in which this function was defined
   */
-case class VFun(impl: DirectFn, arity: Int, params: List[String], ctx: Context) {
+case class VFun(
+    impl: DirectFn,
+    arity: Int,
+    params: List[String],
+    ctx: Context
+) {
+
   /** Make a copy of this function with a different arity. */
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
 }
 
 object VFun {
-  def fromLambda(lam: AST.Lambda)(using ctx: Context) = {
+  def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun = {
     val AST.Lambda(arity, params, body) = lam
-    VFun(() => ctx ?=> Interpreter.execute(body), arity, params, ctx)
+    VFun(
+      () => ctx ?=> Interpreter.execute(body)(using ctx),
+      arity,
+      params,
+      origCtx
+    )
+  }
+
+  def fromElement(elem: Element)(using origCtx: Context): VFun = {
+    val Element(symbol, name, _, arity, _, _, impl) = elem
+    println(s"fromElement, arity = $arity")
+    VFun(impl, arity.getOrElse(1), List.empty, origCtx)
   }
 }
 
