@@ -50,4 +50,36 @@ class InterpreterTests extends AnyFunSuite:
     )
     assertResult(VNum(6))(ctx.pop())
   }
+
+  test("Can the interpreter vectorise monadic lambdas?") {
+    given ctx: Context = Context()
+    ctx.push(VList(0, 3, VList(2, 1)))
+    Interpreter.execute(
+      Modifiers.modifiers("v").impl(List(AST.Lambda(1, List.empty, AST.Command("!"))))
+    )
+    assertResult(VList(1, 6, VList(2, 1)))(ctx.pop())
+  }
+
+  test("Can the interpreter execute dyadic lambdas?") {
+    given ctx: Context = Context()
+    Interpreter.execute(
+      AST.makeSingle(
+        AST.Number(3),
+        AST.Number(1),
+        AST.Lambda(2, List.empty, AST.Command("-")),
+        AST.ExecuteFn
+      )
+    )
+    assertResult(VNum(2))(ctx.pop())
+  }
+
+  test("Can the interpreter vectorise dyadic lambdas?") {
+    given ctx: Context = Context()
+    ctx.push(VList(0, 3, VList(2, 1)))
+    ctx.push(VList(4, 2, 6))
+    Interpreter.execute(
+      Modifiers.modifiers("v").impl(List(AST.Lambda(2, List.empty, AST.Command("-"))))
+    )
+    assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
+  }
 end InterpreterTests
