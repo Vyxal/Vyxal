@@ -5,11 +5,19 @@ type Monad = VAny => Context ?=> VAny
 type Dyad = (VAny, VAny) => Context ?=> VAny
 type Triad = (VAny, VAny, VAny) => Context ?=> VAny
 type Tetrad = (VAny, VAny, VAny, VAny) => Context ?=> VAny
-//These are the same as Monad, Dyad, and Triad, except they don't work on lists
-type SimpleMonad = VAtom => Context ?=> VAny
-type SimpleDyad = (VAtom, VAtom) => Context ?=> VAny
-type SimpleTriad = (VAtom, VAtom, VAtom) => Context ?=> VAny
-type SimpleTetrad = (VAtom, VAtom, VAtom, VAtom) => Context ?=> VAny
+
+/** Make a function taking `Arity` VAnys in a tuple */
+type VyFn[Arity <: Int] = TupleOfSize[Arity] => Context ?=> VAny
+
+/** Same as [[VyFn]] but may be undefined for some inputs */
+type PartialVyFn[Arity <: Int] =
+  PartialFunction[TupleOfSize[Arity], Context ?=> VAny]
+
+/** Make a tuple of size `N` filled with [[VAny]]s */
+private type TupleOfSize[N <: Int] <: Tuple = N match {
+  case 0                        => EmptyTuple
+  case compiletime.ops.int.S[n] => VAny *: TupleOfSize[n]
+}
 
 /** A function that operates directly on the stack */
 type DirectFn = () => Context ?=> Unit
@@ -41,30 +49,32 @@ extension (f: Triad)
 
 /** Vectorise an unvectorised monad
   */
-def vect1(f: SimpleMonad) = {
+def vect1(f: Monad): Monad = {
   lazy val res: Monad = {
     case lhs: VAtom => f(lhs)
     case lst: VList => lst.vmap(res)
   }
+
   res
 }
 
 /** Vectorise an unvectorised dyad
   */
-def vect2(f: SimpleDyad): Dyad = {
-  lazy val res: Dyad = {
+def vect2(f: VyFn[2]): VyFn[2] = {
+  lazy val res: VyFn[2] = {
     case (lhs: VAtom, rhs: VAtom) => f(lhs, rhs)
     case (lhs: VAtom, rhs: VList) => rhs.vmap(res(lhs, _))
     case (lhs: VList, rhs: VAtom) => lhs.vmap(res(_, rhs))
     case (lhs: VList, rhs: VList) => lhs.zipWith(rhs)(res(_, _))
   }
+
   res
 }
 
 /** Vectorise a triad
   */
-def vect3(f: SimpleTriad): Triad = {
-  lazy val res: Triad = {
+def vect3(f: VyFn[3]): VyFn[3] = {
+  lazy val res: VyFn[3] = {
     case (lhs: VAtom, rhs: VAtom, third: VAtom) => f(lhs, rhs, third)
     case (lhs: VAtom, rhs: VList, third: VAtom) => rhs.vmap(res(lhs, _, third))
     case (lhs: VList, rhs: VAtom, third: VAtom) => lhs.vmap(res(_, rhs, third))
@@ -87,6 +97,7 @@ def vect3(f: SimpleTriad): Triad = {
         }
       }
   }
+
   res
 }
 

@@ -16,7 +16,9 @@ class VList private (val lst: Seq[VAny])
 
   /** Map the list using a Vyxal function
     */
-  def vmap(f: Monad)(using Context): VList = new VList(lst.map(f(_)))
+  def vmap(f: VAny => Context ?=> VAny)(using Context): VList = new VList(
+    lst.map(f(_))
+  )
 
   /** Zip two VLists together with a function. If one is longer than the other,
     * keep the longer one's elements as-is.

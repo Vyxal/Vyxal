@@ -13,7 +13,7 @@ object Interpreter {
           println(ctx.peek)
         }
       case Left(error) =>
-        println(error)
+        println(s"Error while executing $code: $error")
         ???
     }
   }

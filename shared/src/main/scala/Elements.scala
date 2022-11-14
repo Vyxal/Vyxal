@@ -21,62 +21,49 @@ case class Element(
     impl: DirectFn
 )
 
+case class UnimplementedOverloadException(element: String, args: Any)
+    extends RuntimeException(s"$element not supported for inputs $args")
+
 object Elements {
   val elements: Map[String, Element] = Impls.elements.toMap
 
   private[impls] object Impls {
     val elements = collection.mutable.Map.empty[String, Element]
 
-    /** Turn a monad into a function that operates on the stack */
-    def monadToDirect(f: Monad): DirectFn = { () => ctx ?=>
-      ctx.push(f(ctx.pop()))
-    }
-
-    /** Turn a dyad into a function that operates on the stack */
-    def dyadToDirect(f: Dyad): DirectFn = { () => ctx ?=>
-      val arg2, arg1 = ctx.pop()
-      ctx.push(f(arg1, arg2))
-    }
-
-    /** Turn a triad into a function that operates on the stack */
-    def triadToDirect(f: Triad): DirectFn = { () => ctx ?=>
-      val arg3, arg2, arg1 = ctx.pop()
-      ctx.push(f(arg1, arg2, arg3))
-    }
-
-    /** Turn a tetrad into a function that operates on the stack */
-    def tetradToDirect(f: Tetrad): DirectFn = { () => ctx ?=>
-      val arg4, arg3, arg2, arg1 = ctx.pop()
-      ctx.push(f(arg1, arg2, arg3, arg4))
-    }
+    /** Take a monad, dyad, or triad, and return a proper (not Partial) function
+      * that errors if it's not defined for the input
+      */
+    def errorIfUndefined[T](
+        name: String,
+        fn: PartialFunction[T, Context ?=> VAny]
+    ): T => Context ?=> VAny = args =>
+      if (fn.isDefinedAt(args)) fn(args)
+      else throw UnimplementedOverloadException(name, args)
 
     def addNilad(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: String*
-    )(
-        impl: Context ?=> VAny
-    ): Unit = {
+        desc: String
+    )(impl: Context ?=> VAny): Unit = {
       elements += symbol -> Element(
         symbol,
         name,
         keywords,
         Some(0),
         false,
-        overloads,
+        List(s"-> $desc"),
         () => ctx ?=> ctx.push(impl(using ctx))
       )
     }
 
-    def addMonad(
+    def addMonadHelper(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: String*
-    )(
-        impl: Monad,
-        vectorises: Boolean = false
+        vectorises: Boolean,
+        overloads: Seq[String],
+        impl: Monad
     ): Monad = {
       elements += symbol -> Element(
         symbol,
@@ -85,28 +72,59 @@ object Elements {
         Some(1),
         vectorises,
         overloads,
-        monadToDirect(impl)
+        { () => ctx ?=>
+          ctx.push(impl(ctx.pop()))
+        }
       )
       impl
     }
+
+    def addMonad(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(impl: PartialFunction[VAny, Context ?=> VAny]): Monad =
+      addMonadHelper(
+        symbol,
+        name,
+        keywords,
+        false,
+        overloads,
+        { arg =>
+          // need to specially implement this because it doesn't take a tuple
+          if (impl.isDefinedAt(arg)) impl(arg)
+          else throw UnimplementedOverloadException(symbol, arg)
+        }
+      )
 
     def addMonadVect(
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: SimpleMonad): Monad =
-      addMonad(symbol, name, keywords, overloads*)(
-        vect1(impl),
-        vectorises = true
+    )(impl: PartialFunction[VAny, Context ?=> VAny]): Monad =
+      addMonadHelper(
+        symbol,
+        name,
+        keywords,
+        true,
+        overloads,
+        vect1 { arg =>
+          // need to specially implement this because it doesn't take a tuple
+          if (impl.isDefinedAt(arg)) impl(arg)
+          else throw UnimplementedOverloadException(symbol, arg)
+        }
       )
 
-    def addDyad(
+    def addDyadHelper(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: String*
-    )(impl: Dyad, vectorises: Boolean = false): Dyad = {
+        vectorises: Boolean,
+        overloads: Seq[String],
+        impl: VyFn[2]
+    ): Dyad = {
       elements += symbol -> Element(
         symbol,
         name,
@@ -114,29 +132,53 @@ object Elements {
         Some(2),
         vectorises,
         overloads,
-        dyadToDirect(impl)
+        { () => ctx ?=>
+          val arg2, arg1 = ctx.pop()
+          val args = (arg1, arg2)
+          ctx.push(impl(args))
+        }
       )
-      impl
+      (a, b) => impl((a, b))
     }
+
+    def addDyad(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(impl: PartialVyFn[2]): Dyad =
+      addDyadHelper(
+        symbol,
+        name,
+        keywords,
+        false,
+        overloads,
+        errorIfUndefined(symbol, impl)
+      )
 
     def addDyadVect(
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(
-        impl: SimpleDyad
-    ) = addDyad(symbol, name, keywords, overloads*)(
-      vect2(impl),
-      vectorises = true
-    )
+    )(impl: PartialVyFn[2]) =
+      addDyadHelper(
+        symbol,
+        name,
+        keywords,
+        true,
+        overloads,
+        vect2(errorIfUndefined(symbol, impl))
+      )
 
-    def addTriad(
+    def addTriadHelper(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: String*
-    )(impl: Triad, vectorises: Boolean = false): Triad = {
+        vectorises: Boolean,
+        overloads: Seq[String],
+        impl: VyFn[3]
+    ): Triad = {
       elements += symbol -> Element(
         symbol,
         name,
@@ -144,32 +186,51 @@ object Elements {
         Some(3),
         vectorises,
         overloads,
-        triadToDirect(impl)
+        { () => ctx ?=>
+          val arg3, arg2, arg1 = ctx.pop()
+          val args = (arg1, arg2, arg3)
+          ctx.push(impl(args))
+        }
       )
-      impl
+      (a, b, c) => impl((a, b, c))
     }
+
+    def addTriad(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(impl: PartialVyFn[3]): Triad = addTriadHelper(
+      symbol,
+      name,
+      keywords,
+      false,
+      overloads,
+      errorIfUndefined(name, impl)
+    )
 
     def addTriadVect(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: List[String]
-    )(
-        impl: SimpleTriad
-    ) =
-      addTriad(symbol, name, keywords, overloads*)(
-        vect3(impl),
-        vectorises = true
+        overloads: String*
+    )(impl: PartialVyFn[3]) =
+      addTriadHelper(
+        symbol,
+        name,
+        keywords,
+        true,
+        overloads,
+        vect3(errorIfUndefined(symbol, impl))
       )
 
-    def addTetrad(
+    def addTetradHelper(
         symbol: String,
         name: String,
         keywords: Seq[String],
-        overloads: List[String],
-        vectorises: Boolean = false
-    )(
-        impl: Tetrad
+        vectorises: Boolean,
+        overloads: Seq[String],
+        impl: VyFn[4]
     ): Tetrad = {
       elements += symbol -> Element(
         symbol,
@@ -178,10 +239,28 @@ object Elements {
         Some(4),
         vectorises,
         overloads,
-        tetradToDirect(impl)
+        { () => ctx ?=>
+          val arg4, arg3, arg2, arg1 = ctx.pop()
+          val args = (arg1, arg2, arg3, arg4)
+          ctx.push(impl(args))
+        }
       )
-      impl
+      (a, b, c, d) => impl((a, b, c, d))
     }
+
+    def addTetrad(
+        symbol: String,
+        name: String,
+        keywords: Seq[String],
+        overloads: String*
+    )(impl: PartialVyFn[4]): Tetrad = addTetradHelper(
+      symbol,
+      name,
+      keywords,
+      false,
+      overloads,
+      errorIfUndefined(symbol, impl)
+    )
 
     /** Add an element that works directly on the entire stack */
     def addDirect(
@@ -189,9 +268,7 @@ object Elements {
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(
-        impl: Context ?=> Unit
-    ): Unit =
+    )(impl: Context ?=> Unit): Unit =
       elements += symbol -> Element(
         symbol,
         name,
@@ -202,7 +279,7 @@ object Elements {
         () => impl
       )
 
-    val add: Dyad = addDyadVect(
+    val add = addDyadVect(
       "+",
       "Addition",
       List("add", "+", "plus"),
@@ -215,12 +292,10 @@ object Elements {
       case (a: String, b: VNum)   => s"$a$b"
       case (a: VNum, b: String)   => s"$a$b"
       case (a: String, b: String) => s"$a$b"
-      case _ =>
-        throw NotImplementedError("Unsupported types for addition")
       // todo consider doing something like APL's forks
     }
 
-    val concatenate: Dyad = addDyad(
+    val concatenate = addDyad(
       "&",
       "Concatenate",
       List("concat", "&&", "append"),
@@ -233,17 +308,15 @@ object Elements {
       case (a: VAny, b: VAny)   => add(a, b)
     }
 
-    val divide: Dyad = addDyadVect(
+    val divide = addDyadVect(
       "÷",
       "Divide | Split",
-      List("divide", "div", "str-split"),
+      List("divide", "div", "split"),
       "a: num, b: num -> a / b",
-      "a: str, b: str -> a.split(b)"
+      "a: str, b: str -> Split a on the regex b"
     ) {
       case (a: VNum, b: VNum)     => a / b
-      case (a: String, b: String) => VList.fromSpecific(a.split(b))
-      case (a, b) =>
-        throw NotImplementedError(s"Modulo won't work on $a and $b")
+      case (a: String, b: String) => VList(a.split(b)*)
     }
 
     val dup = addDirect(":", "Duplicate", List("dup"), "a -> a, a") { ctx ?=>
@@ -252,7 +325,7 @@ object Elements {
       ctx.push(a)
     }
 
-    val equals: Dyad = addDyadVect(
+    val equals = addDyadVect(
       "=",
       "Equals",
       List("eq", "==", "equal", "same?", "equals?", "equal?"),
@@ -264,7 +337,7 @@ object Elements {
       case (a: String, b: String) => a == b
     }
 
-    val exponentation: Dyad = addDyadVect(
+    val exponentation = addDyadVect(
       "*",
       "Exponentation | Remove Nth Letter | Trim",
       List("exp", "**", "pow", "exponent", "remove-letter", "str-trim"),
@@ -281,11 +354,9 @@ object Elements {
           .reverse
           .dropWhile(_.toString == b)
           .reverse // https://stackoverflow.com/a/17995686/9363594
-      case _ =>
-        throw NotImplementedError("Unsupported types for exponentation")
     }
 
-    val factorial: Monad = addMonadVect(
+    val factorial = addMonadVect(
       "!",
       "Factorial | To Uppercase",
       List("fact", "factorial", "to-upper", "upper", "uppercase", "!"),
@@ -294,8 +365,6 @@ object Elements {
     ) {
       case a: VNum   => spire.math.fact(a.toLong)
       case a: String => a.toUpperCase()
-      case _ =>
-        throw NotImplementedError("Unsuported type for factorial")
     }
 
     val getContextVariable = addNilad(
@@ -305,7 +374,7 @@ object Elements {
       " -> context variable n"
     ) { ctx ?=> ctx.contextVar }
 
-    val greaterThan: Dyad = addDyadVect(
+    val greaterThan = addDyadVect(
       ">",
       "Greater Than",
       List("gt", "greater", "greater-than", ">", "greater?", "bigger?"),
@@ -318,8 +387,6 @@ object Elements {
       case (a: String, b: VNum)   => a > b.toString
       case (a: VNum, b: String)   => a.toString > b
       case (a: String, b: String) => a > b
-      case _ =>
-        throw NotImplementedError("Unsupported types for less than")
     }
 
     val lessThan: Dyad = addDyadVect(
@@ -335,8 +402,6 @@ object Elements {
       case (a: String, b: VNum)   => a < b.toString
       case (a: VNum, b: String)   => a.toString < b
       case (a: String, b: String) => a < b
-      case _ =>
-        throw NotImplementedError("Unsupported types for less than")
     }
 
     val modulo: Dyad = addDyadVect(
@@ -349,11 +414,9 @@ object Elements {
       case (a: VNum, b: VNum)   => a.tmod(b)
       case (a: String, b: VAny) => StringHelpers.formatString(a, b)
       case (a: VAny, b: String) => StringHelpers.formatString(b, a)
-      case (a, b) =>
-        throw NotImplementedError(s"Modulo won't work on $a and $b")
     }
 
-    val multiply: Dyad = addDyadVect(
+    val multiply = addDyadVect(
       "×",
       "Multiplication",
       List("mul", "multiply", "times", "str-repeat", "*", "ring-trans"),
@@ -367,8 +430,6 @@ object Elements {
       case (a: VNum, b: String)   => b * a.toInt
       case (a: String, b: String) => StringHelpers.ringTranslate(a, b)
       case (a: VFun, b: VNum)     => a.withArity(b.toInt)
-      case _ =>
-        throw NotImplementedError("Unsupported types for multiplication")
     }
 
     val ordChr =
@@ -398,7 +459,7 @@ object Elements {
       MiscHelpers.vyPrintln(ctx.pop())
     }
 
-    val subtraction: Dyad = addDyadVect(
+    val subtraction = addDyadVect(
       "-",
       "Subtraction",
       List(
@@ -422,8 +483,6 @@ object Elements {
       case (a: VNum, b: String) => "-" * a.toInt + b
       case (a: String, b: String) =>
         a.replace(b, "")
-      case _ =>
-        throw NotImplementedError("Unsupported types for subtraction")
       // todo consider doing something like APL's forks
     }
 
