@@ -23,5 +23,7 @@ TieModifier ::= "ᵗ"
 Branch ::= "|"
 Newline :: = "\n"
 Command ::= EverythingElse
+GetVariable ::= "#<" ([a-z]|Digit|[A-Z])*
+SetVariable ::= "#>" ([a-z]|Digit|[A-Z])*
 ```
 
