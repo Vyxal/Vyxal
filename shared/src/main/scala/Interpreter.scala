@@ -71,7 +71,6 @@ object Interpreter {
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
         var index: VNum = 0
-        println(iterable)
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.contextVarN = elem
