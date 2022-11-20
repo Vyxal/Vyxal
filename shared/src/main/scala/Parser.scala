@@ -200,23 +200,21 @@ object VyxalParser extends Parsers {
     asts match {
       case AST.Group(elems) => {
 
-        val nilads = elems.reverse.takeWhile(ast =>
-          ast match {
-            case AST.Number(value) => true
-            case AST.Str(value)    => true
-            case AST.Lst(value)    => true
-            case AST.Command(cmd) =>
-              Elements.elements.get(cmd) match {
-                case Some(elem) =>
-                  elem.arity match {
-                    case Some(value) => value == 0
-                    case _           => false
-                  }
-                case _ => false
-              }
-            case _ => false
-          }
-        )
+        val nilads = elems.reverse.takeWhile {
+          case AST.Number(value) => true
+          case AST.Str(value)    => true
+          case AST.Lst(value)    => true
+          case AST.Command(cmd) =>
+            Elements.elements.get(cmd) match {
+              case Some(elem) =>
+                elem.arity match {
+                  case Some(value) => value == 0
+                  case _           => false
+                }
+              case _ => false
+            }
+          case _ => false
+        }.reverse
 
         // remove nilads from end of elems
         val elemsWithoutNilads = elems.dropRight(nilads.length)
