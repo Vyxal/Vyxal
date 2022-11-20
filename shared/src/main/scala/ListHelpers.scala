@@ -29,7 +29,7 @@ object ListHelpers {
               .map(VNum(_))*
           )
         } else {
-          VList(num)
+          VList(num.toString.map(x => VNum.from(x.toString))*)
         }
     }
 

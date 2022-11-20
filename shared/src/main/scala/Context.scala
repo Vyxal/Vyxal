@@ -70,7 +70,7 @@ case class Settings(
   *   The stack on which all operations happen
   * @param _contextVar
   *   The context variable. It's an Option because this scope might not have its
-  *   own context variable. See [[this.contextVar]] for more information.
+  *   own context variable. See [[this.contextVarN]] for more information.
   * @param vars
   *   The variables currently in scope, accessible by their names. Null values
   *   signify that the variable is nonlocal, i.e., it should be gotten from the
@@ -83,7 +83,8 @@ case class Settings(
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    private var _contextVar: Option[VAny] = None,
+    private var _contextVarN: Option[VAny] = None,
+    private var _contextVarM: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: List[VAny] = List.empty,
     private val parent: Option[Context] = None,
@@ -140,16 +141,28 @@ class Context private (
     * the context variable from the parent. If there's no parent Context, just
     * get the default value (0)
     */
-  def contextVar: VAny =
-    _contextVar
-      .orElse(parent.map(_.contextVar))
+  def contextVarN: VAny =
+    _contextVarN
+      .orElse(parent.map(_.contextVarN))
       .getOrElse(settings.defaultValue)
 
   /** Setter for the context variable so that outsiders don't have to deal with
     * it being an Option
     */
-  def contextVar_=(newCtx: VAny) = {
-    _contextVar = Some(newCtx)
+  def contextVarN_=(newCtx: VAny) = {
+    _contextVarN = Some(newCtx)
+  }
+
+  def contextVarM: VAny =
+    _contextVarM
+      .orElse(parent.map(_.contextVarM))
+      .getOrElse(settings.defaultValue)
+
+  /** Setter for the context variable so that outsiders don't have to deal with
+    * it being an Option
+    */
+  def contextVarM_=(newCtx: VAny) = {
+    _contextVarM = Some(newCtx)
   }
 
   /** Get a variable by the given name. If it doesn't exist in the current
@@ -180,7 +193,8 @@ class Context private (
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
     stack,
-    _contextVar,
+    _contextVarN,
+    _contextVarM,
     vars,
     inputs,
     Some(this),
@@ -237,7 +251,8 @@ object Context {
     }
     new Context(
       mut.ArrayBuffer.empty,
-      currCtx._contextVar,
+      currCtx._contextVarN,
+      currCtx._contextVarM,
       mut.Map(params.zip(newInputs)*),
       newInputs,
       Some(currCtx),

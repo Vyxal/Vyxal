@@ -363,12 +363,19 @@ object Elements {
       case a: String => a.toUpperCase()
     }
 
-    val getContextVariable = addNilad(
+    val getContextVariableM = addNilad(
+      "m",
+      "Get Context Variable M",
+      List("get-context-m", "context-m", "c-var-m", "ctx-m"),
+      " -> context variable m"
+    ) { ctx ?=> ctx.contextVarM }
+
+    val getContextVariableN = addNilad(
       "n",
-      "Get Context Variable",
-      List("get-context", "context", "c-var", "ctx"),
+      "Get Context Variable N",
+      List("get-context-n", "context-n", "c-var-n", "ctx-n"),
       " -> context variable n"
-    ) { ctx ?=> ctx.contextVar }
+    ) { ctx ?=> ctx.contextVarN }
 
     val greaterThan = addDyadVect(
       ">",

@@ -50,35 +50,46 @@ object Interpreter {
         }
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
-        loopCtx.contextVar = ctx.settings.rangeStart
+        loopCtx.contextVarN = ctx.settings.rangeStart
+        loopCtx.contextVarM = 1
         while (true) {
           execute(body)(using loopCtx)
-          loopCtx.contextVar = loopCtx.contextVar.asInstanceOf[VNum] + 1
+          loopCtx.contextVarN = loopCtx.contextVarN.asInstanceOf[VNum] + 1
         }
       case AST.While(Some(cond), body) =>
         execute(cond)
         given loopCtx: Context = ctx.makeChild()
-        loopCtx.contextVar = ctx.settings.rangeStart
+        loopCtx.contextVarN = ctx.settings.rangeStart
+        loopCtx.contextVarM = ctx.peek
         while (MiscHelpers.boolify(ctx.pop())) {
           execute(body)
           execute(cond)
-          loopCtx.contextVar = loopCtx.contextVar.asInstanceOf[VNum] + 1
+          loopCtx.contextVarN = loopCtx.contextVarN.asInstanceOf[VNum] + 1
         }
 
       case AST.For(None, body) =>
-        val iterable = ListHelpers.makeIterable(ctx.pop())(using ctx)
+        val iterable =
+          ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
+        var index: VNum = 0
+        println(iterable)
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
-          loopCtx.contextVar = elem
+          loopCtx.contextVarN = elem
+          loopCtx.contextVarM = index
+          index += 1
           execute(body)(using loopCtx)
         }
 
       case AST.For(Some(name), body) =>
-        val iterable = ListHelpers.makeIterable(ctx.pop())(using ctx)
+        val iterable =
+          ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
+        var index: VNum = 0
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.setVar(name, elem)
-          loopCtx.contextVar = elem
+          loopCtx.contextVarN = elem
+          loopCtx.contextVarM = index
+          index += 1
           execute(body)(using loopCtx)
         }
 
