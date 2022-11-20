@@ -4,6 +4,8 @@ import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.{Reader, Position, NoPosition}
 import scala.collection.mutable.ListBuffer
 
+import vyxal.impls.Elements
+
 class VyxalTokenReader(tokens: Seq[VyxalToken]) extends Reader[VyxalToken] {
   override def first: VyxalToken = tokens.head
   override def atEnd: Boolean = tokens.isEmpty
@@ -151,7 +153,7 @@ object VyxalParser extends Parsers {
     Lexer(code).flatMap { tokens =>
       val reader = new VyxalTokenReader(preprocess(tokens))
       (parseAll(reader): @unchecked) match {
-        case Success(result, _) => Right(result)
+        case Success(result, _) => Right(postprocess(result))
         case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
       }
     }
@@ -191,5 +193,37 @@ object VyxalParser extends Parsers {
       case x => processed += x
     }
     processed.toList
+  }
+
+  private def postprocess(asts: AST): AST = {
+    // Move all Numbers, Strings, Lists and Nilads to the end
+    asts match {
+      case AST.Group(elems) => {
+
+        val nilads = elems.reverse.takeWhile(ast =>
+          ast match {
+            case AST.Number(value) => true
+            case AST.Str(value)    => true
+            case AST.Lst(value)    => true
+            case AST.Command(cmd) =>
+              Elements.elements.get(cmd) match {
+                case Some(elem) =>
+                  elem.arity match {
+                    case Some(value) => value == 0
+                    case _           => false
+                  }
+                case _ => false
+              }
+            case _ => false
+          }
+        )
+
+        // remove nilads from end of elems
+        val elemsWithoutNilads = elems.dropRight(nilads.length)
+        AST.Group(nilads ++ elemsWithoutNilads)
+      }
+      case _ => asts
+
+    }
   }
 }
