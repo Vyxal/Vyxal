@@ -2,6 +2,8 @@ package vyxal
 
 import scala.util.parsing.combinator._
 
+import vyxal.impls.Elements
+
 case class VyxalCompilationError(msg: String)
 
 enum VyxalToken {
@@ -12,7 +14,8 @@ enum VyxalToken {
   case StructureAllClose
   case ListOpen
   case ListClose
-  case Command(value: String)
+  case Command(value: String, arity: Int)
+  case CompositeCommand(values: List[VyxalToken], arity: Int)
   case Digraph(value: String)
   case MonadicModifier(value: String)
   case DyadicModifier(value: String)
@@ -89,7 +92,7 @@ object Lexer extends RegexParsers {
   }
 
   def command: Parser[VyxalToken] = s"[$CODEPAGE]".r ^^ { value =>
-    Command(value)
+    Command(value, elementArity(value))
   }
 
   def getVariable: Parser[VyxalToken] = """(\#\<)[0-9A-Za-z]*""".r ^^ { value =>
@@ -135,5 +138,15 @@ object Lexer extends RegexParsers {
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
     }
+  }
+}
+
+def elementArity(command: String): Int = {
+  Elements.elements.get(command) match {
+    case Some(element) =>
+      element.arity match {
+        case Some(arity) => arity
+        case None        => -1
+      }
   }
 }
