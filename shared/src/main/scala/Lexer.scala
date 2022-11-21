@@ -26,6 +26,10 @@ enum VyxalToken {
   case GetVar(value: String)
   case SetVar(value: String)
   case Branch
+  // Special intermediate composite tokens
+  case CompositeNilad(value: List[VyxalToken])
+  case CompositeMonad(value: List[VyxalToken])
+  case CompositeDyad(value: List[VyxalToken])
 }
 
 import VyxalToken.*

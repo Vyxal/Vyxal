@@ -3,6 +3,7 @@ package vyxal
 import scala.util.parsing.combinator.Parsers
 import scala.util.parsing.input.{Reader, Position, NoPosition}
 import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Stack
 
 import vyxal.impls.Elements
 
@@ -24,7 +25,7 @@ object VyxalParser extends Parsers {
   def literal = number | string | listStructure
 
   def nonStructElement: Parser[AST] =
-    literal | command | modifier | getvar | setvar
+    literal | compositeNilad | compositeMonad | compositeDyad | command | modifier | getvar | setvar
 
   def element: Parser[AST] = nonStructElement | structure
 
@@ -35,6 +36,54 @@ object VyxalParser extends Parsers {
     accept(
       "number",
       { case VyxalToken.Number(value) => AST.Number(VNum.from(value)) }
+    )
+
+  def compositeNilad: Parser[AST] =
+    accept(
+      "number",
+      { case VyxalToken.CompositeNilad(value) =>
+        val temp = value.map(tok => {
+          val inner = VyxalParser.parse(List(tok))
+          inner match {
+            case Right(ast) => ast
+            case Left(error) =>
+              throw RuntimeException(s"Error while parsing $tok: $error")
+          }
+        })
+        AST.CompositeNilad(temp)
+      }
+    )
+
+  def compositeMonad: Parser[AST] =
+    accept(
+      "number",
+      { case VyxalToken.CompositeMonad(value) =>
+        val temp = value.map(tok => {
+          val inner = VyxalParser.parse(List(tok))
+          inner match {
+            case Right(ast) => ast
+            case Left(error) =>
+              throw RuntimeException(s"Error while parsing $tok: $error")
+          }
+        })
+        AST.Group(temp)
+      }
+    )
+
+  def compositeDyad: Parser[AST] =
+    accept(
+      "number",
+      { case VyxalToken.CompositeDyad(value) =>
+        val temp = value.map(tok => {
+          val inner = VyxalParser.parse(List(tok))
+          inner match {
+            case Right(ast) => ast
+            case Left(error) =>
+              throw RuntimeException(s"Error while parsing $tok: $error")
+          }
+        })
+        AST.Group(temp)
+      }
     )
 
   def string: Parser[AST] =
@@ -159,6 +208,14 @@ object VyxalParser extends Parsers {
     }
   }
 
+  def parse(code: List[VyxalToken]): Either[VyxalCompilationError, AST] = {
+    val reader = new VyxalTokenReader(preprocess(code))
+    (parseAll(reader): @unchecked) match {
+      case Success(result, _) => Right(postprocess(result))
+      case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
+    }
+  }
+
   def parseInput(input: String): VAny = {
     Lexer(input).toOption
       .flatMap { tokens =>
@@ -192,12 +249,149 @@ object VyxalParser extends Parsers {
       }
       case x => processed += x
     }
-    processed.toList
+    val grouped = Stack[VyxalToken]()
+    for token <- processed do {
+      token match {
+        case VyxalToken.Command(value) => {
+          getArity(value) match {
+            case 0 => grouped += VyxalToken.CompositeNilad(List(token))
+            case 1 => {
+              grouped.lastOption match {
+                case None => grouped.push(token)
+                case Some(VyxalToken.CompositeNilad(tokens)) => {
+                  val top = grouped.pop()
+                  grouped.push(VyxalToken.CompositeNilad(List(top, token)))
+                }
+                case _ => {
+                  val top = grouped.pop
+                  isNilad(top) match {
+                    case true => {
+                      grouped.push(VyxalToken.CompositeNilad(List(top, token)))
+                    }
+                    case false => {
+                      grouped.push(top)
+                      grouped.push(token)
+                    }
+                  }
+                }
+              }
+            }
+            case 2 => {
+              grouped.lastOption match {
+                case None => grouped.push(token)
+                case _ => {
+                  val top = grouped.pop
+                  grouped.lastOption match {
+                    case None => {
+                      if (isNilad(top)) {
+                        grouped.push(
+                          VyxalToken.CompositeMonad(List(top, token))
+                        )
+                      } else {
+                        grouped.push(top)
+                        grouped.push(token)
+                      }
+                    }
+                    case _ => {
+                      val top2 = grouped.pop
+                      (isNilad(top), isNilad(top2)) match {
+                        case (true, true) =>
+                          grouped.push(
+                            VyxalToken.CompositeNilad(List(top, top2, token))
+                          )
+                        case (true, false) =>
+                          grouped.push(top2)
+                          grouped.push(
+                            VyxalToken.CompositeMonad(List(top, token))
+                          )
+                        case (_, _) => {
+                          grouped.push(top2)
+                          grouped.push(top)
+                          grouped.push(token)
+                        }
+                      }
+                    }
+                  }
+
+                }
+              }
+            }
+            case 3 => {
+              val top = if (grouped.nonEmpty) grouped.pop else null
+              val top2 = if (grouped.nonEmpty) grouped.pop else null
+              val top3 = if (grouped.nonEmpty) grouped.pop else null
+
+              (top, top2, top3) match {
+                case (_, _, null) => {
+                  (isNilad(top), isNilad(top2)) match {
+                    case (true, true) =>
+                      grouped.push(
+                        VyxalToken.CompositeMonad(List(top, top2, token))
+                      )
+                    case (true, false) =>
+                      grouped.push(top2)
+                      grouped.push(
+                        VyxalToken.CompositeDyad(List(top, token))
+                      )
+                    case (_, _) => {
+                      grouped.push(top2)
+                      grouped.push(top)
+                      grouped.push(token)
+                    }
+                  }
+                }
+                case (_, null, null) => {
+                  if (isNilad(top)) {
+                    grouped.push(
+                      VyxalToken.CompositeDyad(List(top, token))
+                    )
+                  } else {
+                    grouped.push(top)
+                    grouped.push(token)
+                  }
+                }
+                case (null, null, null) => {
+                  grouped.push(token)
+                }
+                case _ => {
+                  (isNilad(top), isNilad(top2), isNilad(top3)) match {
+                    case (true, true, true) =>
+                      grouped.push(
+                        VyxalToken.CompositeNilad(List(top, top2, top3, token))
+                      )
+                    case (true, true, false) =>
+                      grouped.push(top3)
+                      grouped.push(
+                        VyxalToken.CompositeMonad(List(top, top2, token))
+                      )
+                    case (true, false, false) =>
+                      grouped.push(top3)
+                      grouped.push(top2)
+                      grouped.push(
+                        VyxalToken.CompositeDyad(List(top, token))
+                      )
+                    case (_, _, _) => {
+                      grouped.push(top3)
+                      grouped.push(top2)
+                      grouped.push(top)
+                      grouped.push(token)
+                    }
+                  }
+                }
+              }
+            }
+            case _ => grouped += token
+          }
+        }
+        case _ => grouped += token
+      }
+    }
+    grouped.reverse.toList
   }
 
   private def postprocess(asts: AST): AST = {
     // Move all Numbers, Strings, Lists and Nilads to the end
-    asts match {
+    val temp = asts match {
       case AST.Group(elems) => {
 
         val nilads = elems.reverse.takeWhile {
@@ -213,7 +407,8 @@ object VyxalParser extends Parsers {
                 }
               case _ => false
             }
-          case _ => false
+          case AST.CompositeNilad(elems) => true
+          case _                         => false
         }.reverse
 
         // remove nilads from end of elems
@@ -221,7 +416,51 @@ object VyxalParser extends Parsers {
         AST.Group(nilads ++ elemsWithoutNilads)
       }
       case _ => asts
-
     }
+    // replace all composite nilads with groups
+    temp match {
+      case AST.Group(elems) => {
+        AST.Group(
+          elems.map {
+            case AST.CompositeNilad(elems) => AST.Group(elems)
+            case x                         => x
+          }
+        )
+      }
+      case AST.CompositeNilad(elems) => AST.Group(elems)
+      case x                         => x
+    }
+  }
+}
+
+def getArity(cmd: String): Int = {
+  val elem = Elements.elements.get(cmd)
+  elem match {
+    case Some(value) =>
+      value.arity match {
+        case Some(value) => value
+        case _           => -1
+      }
+    case _ => -1
+  }
+}
+
+def isNilad(token: VyxalToken): Boolean = {
+  token match {
+    case VyxalToken.Command(value) => {
+      val elem = Elements.elements.get(value)
+      elem match {
+        case Some(value) =>
+          value.arity match {
+            case Some(value) => value == 0
+            case _           => false
+          }
+        case _ => false
+      }
+    }
+    case VyxalToken.CompositeNilad(value) => true
+    case VyxalToken.Number(_)             => true
+    case VyxalToken.Str(_)                => true
+    case _                                => false
   }
 }
