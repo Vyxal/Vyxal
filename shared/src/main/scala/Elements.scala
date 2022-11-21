@@ -419,15 +419,6 @@ object Elements {
       "a: str, b: str -> ring translate a according to b"
     ) { MiscHelpers.multiply(_, _) }
 
-    val negate = addMonadVect(
-      "N",
-      "Negate",
-      List("negate"),
-      "a: num -> -a" // TODO: String overload
-    ) { case a: VNum =>
-      -a
-    }
-
     val ordChr =
       addMonadVect(
         "O",

@@ -9,7 +9,6 @@ enum AST {
   /** Multiple ASTs grouped into one list */
   case Group(elems: List[AST])
   case SpecialModifier(modi: String, value: String)
-  case CompositeCommand(elem: AST, arity: Int)
 
   /** The result of applying a modifier to some arguments. `res` can be applied
     * directly to the stack.

@@ -21,7 +21,6 @@ object Interpreter {
   }
 
   def execute(ast: AST)(using ctx: Context): Unit = {
-    println(ast) // TODO: Remove
     if (ctx.settings.logLevel == LogLevel.Debug) {
       println(s"Executing AST $ast, stack = ${ctx.peek(5)}")
     }
@@ -42,8 +41,7 @@ object Interpreter {
         }
       case AST.Group(elems) =>
         elems.foreach { elem => Interpreter.execute(elem) }
-      case AST.CompositeCommand(elem, _) => Interpreter.execute(elem)
-      case AST.Modified(fn)              => fn()
+      case AST.Modified(fn) => fn()
       case AST.If(thenBody, elseBody) =>
         if (MiscHelpers.boolify(ctx.pop())) {
           execute(thenBody)

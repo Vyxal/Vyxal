@@ -24,7 +24,7 @@ object VyxalParser extends Parsers {
   def literal = number | string | listStructure
 
   def nonStructElement: Parser[AST] =
-    literal | compositeCommand | command | modifier | getvar | setvar
+    literal | command | modifier | getvar | setvar
 
   def element: Parser[AST] = nonStructElement | structure
 
@@ -41,10 +41,7 @@ object VyxalParser extends Parsers {
     accept("string", { case VyxalToken.Str(value) => AST.Str(value) })
 
   def command: Parser[AST] =
-    accept(
-      "command",
-      { case VyxalToken.Command(value, _) => AST.Command(value) }
-    )
+    accept("command", { case VyxalToken.Command(value) => AST.Command(value) })
 
   def getvar: Parser[AST] =
     accept("getvar", { case VyxalToken.GetVar(value) => AST.GetVar(value) })
@@ -56,22 +53,6 @@ object VyxalParser extends Parsers {
 
   def close =
     accept("close", { case VyxalToken.StructureClose(close) => close })
-
-  def compositeCommand = accept(
-    "composite command",
-    {
-      case VyxalToken.CompositeCommand(value, arity) => {
-        val temp = VyxalParser.parse(value)
-        temp match {
-          case Right(ast) => AST.CompositeCommand(ast, arity)
-          case Left(error) =>
-            throw RuntimeException(
-              s"Error while parsing composite command: $error"
-            )
-        }
-      }
-    }
-  )
 
   def listStructure =
     VyxalToken.ListOpen
@@ -178,14 +159,6 @@ object VyxalParser extends Parsers {
     }
   }
 
-  def parse(code: List[VyxalToken]): Either[VyxalCompilationError, AST] = {
-    val reader = new VyxalTokenReader(preprocess(code))
-    (parseAll(reader): @unchecked) match {
-      case Success(result, _) => Right(postprocess(result))
-      case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
-    }
-  }
-
   def parseInput(input: String): VAny = {
     Lexer(input).toOption
       .flatMap { tokens =>
@@ -210,156 +183,16 @@ object VyxalParser extends Parsers {
     name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
 
   private def preprocess(code: Seq[VyxalToken]): List[VyxalToken] = {
-    val bracketFixed = ListBuffer[VyxalToken]()
+    val processed = ListBuffer[VyxalToken]()
 
     code.foreach {
       case VyxalToken.StructureClose(")") => {
-        bracketFixed += VyxalToken.StructureClose("}")
-        bracketFixed += VyxalToken.StructureClose("}")
+        processed += VyxalToken.StructureClose("}")
+        processed += VyxalToken.StructureClose("}")
       }
-      case x => bracketFixed += x
+      case x => processed += x
     }
-
-    // Group nilad-nilad-dyad into a single nilad
-    // as well as nilad-monad
-
-    val grouped = ListBuffer[VyxalToken]()
-    for token <- bracketFixed.toList do {
-      token match {
-        case VyxalToken.Command(cmd, arity) => {
-          arity match {
-            case 0 => grouped += token
-            case 1 => {
-              val top = grouped.lastOption
-              top match { // nilad-monad
-                case Some(VyxalToken.Command(_, 0)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  grouped += VyxalToken.CompositeCommand(
-                    List(topSolid, token),
-                    0
-                  )
-                }
-                case Some(VyxalToken.CompositeCommand(_, 0)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  grouped += VyxalToken.CompositeCommand(
-                    List(topSolid, token),
-                    0
-                  )
-                }
-                case Some(VyxalToken.Number(_)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  grouped += VyxalToken.CompositeCommand(
-                    List(topSolid, token),
-                    0
-                  )
-                }
-
-                case Some(VyxalToken.Str(_)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  grouped += VyxalToken.CompositeCommand(
-                    List(topSolid, token),
-                    0
-                  )
-                }
-                case _ => grouped += token
-              }
-
-            }
-            case 2 => {
-              val top = grouped.lastOption
-              top match { // nilad-dyad?
-                case Some(VyxalToken.Command(_, 0)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  val top2 = grouped.lastOption
-                  top2 match { // nilad-nilad-dyad?
-                    case Some(VyxalToken.Command(_, 0)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.CompositeCommand(_, 0)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.Number(_)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.Str(_)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case None => grouped += token
-                    case _ => {
-                      grouped += VyxalToken.CompositeCommand(
-                        List(topSolid, token),
-                        1
-                      )
-                    }
-                  }
-                }
-                case Some(VyxalToken.CompositeCommand(_, 0)) => {
-                  val topSolid = grouped.dropRight(1)(0)
-                  val top2 = grouped.lastOption
-                  top2 match { // nilad-nilad-dyad?
-                    case Some(VyxalToken.Command(_, 0)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.CompositeCommand(_, 0)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.Number(_)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case Some(VyxalToken.Str(_)) => {
-                      val top2Solid = grouped.dropRight(1)(0)
-                      grouped += VyxalToken.CompositeCommand(
-                        List(top2Solid, topSolid, token),
-                        0
-                      )
-                    }
-                    case None => ???
-                    case _ => {
-                      grouped += VyxalToken.CompositeCommand(
-                        List(topSolid, token),
-                        1
-                      )
-                    }
-                  }
-                }
-                case _ => grouped += token
-              }
-            }
-            case _ => grouped += token
-          }
-        }
-        case _ => grouped += token
-      }
-    }
-    grouped.toList
+    processed.toList
   }
 
   private def postprocess(asts: AST): AST = {
@@ -368,10 +201,9 @@ object VyxalParser extends Parsers {
       case AST.Group(elems) => {
 
         val nilads = elems.reverse.takeWhile {
-          case AST.Number(value)          => true
-          case AST.Str(value)             => true
-          case AST.Lst(value)             => true
-          case AST.CompositeCommand(_, 0) => true // todo: check arity somehow
+          case AST.Number(value) => true
+          case AST.Str(value)    => true
+          case AST.Lst(value)    => true
           case AST.Command(cmd) =>
             Elements.elements.get(cmd) match {
               case Some(elem) =>
