@@ -1,11 +1,13 @@
 package vyxal
 
+import vyxal.Interpreter.executeFn
+
 object MiscHelpers {
   // todo consider doing something like APL's forks so this doesn't have to be a partial function
   val add: VyFn[2] = forkify("add") {
-    case (a: VNum, b: VNum)   => a + b
-    case (a: String, b: VNum)  => s"$a$b"
-    case (a: VNum, b: String)  => s"$a$b"
+    case (a: VNum, b: VNum)     => a + b
+    case (a: String, b: VNum)   => s"$a$b"
+    case (a: VNum, b: String)   => s"$a$b"
     case (a: String, b: String) => s"$a$b"
   }
 
@@ -23,6 +25,17 @@ object MiscHelpers {
     case (a: String, b: String) => a.compareTo(b)
     case (a, b) =>
       throw IllegalArgumentException(s"'$a' and '$b' can't be compared")
+  }
+
+  def firstNonNegative(f: VFun)(using ctx: Context): Int = {
+    var i = 0
+    while (true) {
+      ctx.push(i)
+      val result = executeFn(f)
+      if (boolify(result)) return i
+      i += 1
+    }
+    ???
   }
 
   def multiply(a: VAny, b: VAny)(using Context): VAny = (a, b) match {

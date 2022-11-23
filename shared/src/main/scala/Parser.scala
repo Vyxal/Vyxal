@@ -254,7 +254,7 @@ object VyxalParser extends Parsers {
       token match {
         case VyxalToken.Command(value) => {
           getArity(value) match {
-            case 0 => grouped += VyxalToken.CompositeNilad(List(token))
+            case 0 => grouped.push(VyxalToken.CompositeNilad(List(token)))
             case 1 => {
               grouped.lastOption match {
                 case None => grouped.push(token)
@@ -380,11 +380,14 @@ object VyxalParser extends Parsers {
                 }
               }
             }
-            case _ => grouped += token
+            case _ => grouped.push(token)
           }
         }
-        case _ => grouped += token
+        case _ => grouped.push(token)
       }
+    }
+    if (grouped.size == 1) {
+      return List(processed.last)
     }
     grouped.reverse.toList
   }
