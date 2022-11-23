@@ -1,6 +1,6 @@
 # Rules for Literate Mode Names
 
-Allowed characters: `a-z`, `A-Z`, `0-9`, `-`, `?`, `!`, `*`, `+`, `=`, `&`, `%`
+Allowed characters: `a-z`, `A-Z`, `0-9`, `-`, `?`, `!`, `*`, `+`, `=`, `&`, `%`, `>`, `<`
 
 ## Naming Conventions
 

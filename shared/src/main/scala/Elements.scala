@@ -419,6 +419,27 @@ object Elements {
       "a: str, b: str -> ring translate a according to b"
     ) { MiscHelpers.multiply(_, _) }
 
+    val negate = addMonadVect(
+      "N",
+      "Negation | Swap Case | First Non-Negative Integer Where Predicate is True",
+      List(
+        "neg",
+        "negate",
+        "swap-case",
+        "caseswap",
+        "first-non-negative",
+        "first-nonneg",
+        "first>-1"
+      ),
+      "a: num -> -a",
+      "a: str -> a.swapcase()",
+      "a: fun -> first non-negative integer where predicate a is true"
+    ) {
+      case a: VNum   => -a
+      case a: String => a.map(c => if (c.isUpper) c.toLower else c.toUpper)
+      case a: VFun   => MiscHelpers.firstNonNegative(a)
+    }
+
     val ordChr =
       addMonadVect(
         "O",
