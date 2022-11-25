@@ -47,14 +47,9 @@ object ListHelpers {
       var mutContent = content
       var mutShape = shape.toList
       var index = ind
-
-      println(mutShape)
-      println(mutContent)
-      println()
       for item <- mutShape do {
         item match {
           case item: VList =>
-            println(item)
             output = output :+ (moldHelper(mutContent, item, index))
             output.last match {
               case list: VList => index += list.length - 1
