@@ -75,7 +75,7 @@ I = Interleave
 J = Merge ([1, 2, 3] J [4, 5] = [1, 2, 3, 4, 5])
 K = Factors / is numeric
 L = Length
-M = Map function to list / Mold one list to the shape of another / Multiplicity (how many times does rhs divide lhs) / Regex match? / <str, num>
+M = Map function to list / Mold one list to the shape of another / Multiplicity (how many times does rhs divide lhs) / <str, str> / <str, num>
 N = Negate / swap case / first non-negative integer where a pred is true
 O = Ord / chr
 P = Prefixes

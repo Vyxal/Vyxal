@@ -397,6 +397,23 @@ object Elements {
       "a: str, b: str -> a < b"
     ) { MiscHelpers.compare(_, _) < 0 }
 
+    val mapElement: Dyad = addDyad(
+      "M",
+      "Map Function | Mold Lists | Multiplicity",
+      List("map", "mold", "multiplicity", "times-divide"),
+      "a: any, b: fun -> a.map(b)",
+      "a: fun, b: any -> b.map(a)",
+      "a: lst, b: lst -> a molded to the shape of b",
+      "a: num, b: num -> how many times b divides a"
+    ) {
+      case (a: VList, b: VList) => ??? // ListHelpers.mold(a, b)
+      case (a: VNum, b: VNum)   => NumberHelpers.multiplicity(a, b)
+      case (a: VAny, b: VFun) =>
+        MiscHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
+      case (a: VFun, b: VAny) =>
+        MiscHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
+    }
+
     val modulo: Dyad = addDyadVect(
       "%",
       "Modulo | String Formatting",

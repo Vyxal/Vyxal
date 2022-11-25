@@ -38,6 +38,16 @@ object MiscHelpers {
     ???
   }
 
+  def map(f: VFun, to: VList)(using ctx: Context): VList = {
+    val result = to.toList.zipWithIndex.map { case (item, index) =>
+      val mapCtx = Context.makeFnCtx(ctx, f.ctx, f.arity, f.params, true)
+      mapCtx.contextVarM = index
+      mapCtx.contextVarN = item
+      f(item)(using mapCtx)
+    }.toList
+    VList(result*)
+  }
+
   def multiply(a: VAny, b: VAny)(using Context): VAny = (a, b) match {
     case (a: VNum, b: VNum)     => a * b
     case (a: String, b: VNum)   => a * b.toInt
