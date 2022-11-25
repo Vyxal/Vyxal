@@ -35,7 +35,9 @@ case class VFun(
   def apply(args: List[VAny], customContext: Option[Context] = None)(using
       origCtx: Context
   ): VAny = {
-    val VFun(impl, arity, params, ctx) = this
+
+    // Good for functions which need to set context variable M
+
     val innerCtx = customContext.getOrElse(
       Context.makeFnCtx(origCtx, ctx, arity, params, true)
     )
@@ -49,6 +51,20 @@ case class VFun(
     else innerCtx.pop()
 
   }
+
+  def apply(args: VAny*)(using origCtx: Context): VAny = {
+    val innerCtx = Context.makeFnCtx(origCtx, ctx, arity, params, true)
+
+    for (arg <- args) {
+      innerCtx.push(arg)
+    }
+
+    impl()(using innerCtx)
+
+    if (innerCtx.isStackEmpty) ctx.settings.defaultValue
+    else innerCtx.pop()
+  }
+
 }
 
 object VFun {
