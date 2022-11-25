@@ -6,6 +6,7 @@ package vyxal.impls
 import scala.language.implicitConversions
 
 import vyxal.*
+import FuncHelpers.errorIfUndefined
 
 given Conversion[Boolean, VNum] with
   def apply(s: Boolean): VNum = if s then 1 else 0
@@ -29,16 +30,6 @@ object Elements {
 
   private[impls] object Impls {
     val elements = collection.mutable.Map.empty[String, Element]
-
-    /** Take a monad, dyad, or triad, and return a proper (not Partial) function
-      * that errors if it's not defined for the input
-      */
-    def errorIfUndefined[T](
-        name: String,
-        fn: Context ?=> PartialFunction[T, VAny]
-    ): T => Context ?=> VAny = args =>
-      if (fn.isDefinedAt(args)) fn(args)
-      else throw UnimplementedOverloadException(name, args)
 
     def addNilad(
         symbol: String,
@@ -83,13 +74,14 @@ object Elements {
         symbol: String,
         name: String,
         keywords: Seq[String],
+        vectorises: Boolean,
         overloads: String*
     )(impl: PartialFunction[VAny, Context ?=> VAny]): Monad =
       addMonadHelper(
         symbol,
         name,
         keywords,
-        false,
+        vectorises,
         overloads,
         { arg =>
           // need to specially implement this because it doesn't take a tuple
@@ -145,13 +137,14 @@ object Elements {
         symbol: String,
         name: String,
         keywords: Seq[String],
+        vectorises: Boolean,
         overloads: String*
     )(impl: PartialVyFn[2]): Dyad =
       addDyadHelper(
         symbol,
         name,
         keywords,
-        false,
+        vectorises,
         overloads,
         errorIfUndefined(symbol, impl)
       )
@@ -279,10 +272,11 @@ object Elements {
         () => impl
       )
 
-    val add = addDyadVect(
+    val add = addDyad(
       "+",
       "Addition",
       List("add", "+", "plus"),
+      true,
       "a: num, b: num -> a + b",
       "a: num, b: str -> a + b",
       "a: str, b: num -> a + b",
@@ -295,6 +289,7 @@ object Elements {
       "&",
       "Concatenate",
       List("concat", "&&", "append"),
+      false,
       "a: any, b: any -> a ++ b"
     ) {
       case (a: VList, b: VList) => VList(a ++ b*)
@@ -401,6 +396,7 @@ object Elements {
       "M",
       "Map Function | Mold Lists | Multiplicity",
       List("map", "mold", "multiplicity", "times-divide"),
+      false,
       "a: any, b: fun -> a.map(b)",
       "a: fun, b: any -> b.map(a)",
       "a: lst, b: lst -> a molded to the shape of b",
@@ -409,9 +405,9 @@ object Elements {
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum)   => NumberHelpers.multiplicity(a, b)
       case (a: VAny, b: VFun) =>
-        MiscHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
+        ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
       case (a: VFun, b: VAny) =>
-        MiscHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
+        ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
     val modulo: Dyad = addDyadVect(
@@ -426,10 +422,11 @@ object Elements {
       case (a: VAny, b: String) => StringHelpers.formatString(b, a)
     }
 
-    val multiply = addDyadVect(
+    val multiply = addDyad(
       "×",
       "Multiplication",
       List("mul", "multiply", "times", "str-repeat", "*", "ring-trans"),
+      true,
       "a: num, b: num -> a * b",
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
@@ -471,8 +468,8 @@ object Elements {
         case a: VNum => a.toInt.toChar.toString
       }
 
-    val pair = addDyad(";", "Pair", List("pair"), "a, b -> [a, b]") { (a, b) =>
-      VList(a, b)
+    val pair = addDyad(";", "Pair", List("pair"), false, "a, b -> [a, b]") {
+      (a, b) => VList(a, b)
     }
 
     val print = addDirect(
@@ -497,6 +494,7 @@ object Elements {
         "re-match?",
         "has-regex-match?"
       ),
+      false,
       "a: fun, b: any -> reduce iterable b by function a",
       "a: any, b: fun -> reduce iterable a by function b",
       "a: num, b: num -> the range [a, b)",

@@ -34,7 +34,17 @@ class VList private (val lst: Seq[VAny])
 
   /** Get the element at index `ind`
     */
-  override def apply(ind: Int): VAny = lst(ind)
+  override def apply(ind: Int): VAny =
+    if (ind < 0) {
+      // floorMod because % gives negative results with negative dividends
+      lst(Math.floorMod(ind, lst.length))
+    } else {
+      try {
+        lst(ind)
+      } catch {
+        case _: IndexOutOfBoundsException => lst(ind % lst.length)
+      }
+    }
 
   override def iterator: Iterator[VAny] = lst.iterator
 

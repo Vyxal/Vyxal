@@ -121,7 +121,13 @@ object VyxalParser extends Parsers {
     accept("string", { case VyxalToken.Str(value) => AST.Str(value) })
 
   def command: Parser[AST] =
-    accept("command", { case VyxalToken.Command(value) => AST.Command(value) })
+    accept(
+      "command",
+      {
+        case VyxalToken.Command(value) if Elements.elements.contains(value) =>
+          AST.Command(value)
+      }
+    )
 
   def getvar: Parser[AST] =
     accept("getvar", { case VyxalToken.GetVar(value) => AST.GetVar(value) })
@@ -447,14 +453,7 @@ object VyxalParser extends Parsers {
           case AST.Str(value)    => true
           case AST.Lst(value)    => true
           case AST.Command(cmd) =>
-            Elements.elements.get(cmd) match {
-              case Some(elem) =>
-                elem.arity match {
-                  case Some(value) => value == 0
-                  case _           => false
-                }
-              case _ => false
-            }
+            Elements.elements(cmd).arity.fold(false)(_ == 0)
           case AST.CompositeNilad(elems) => true
           case _                         => false
         }.reverse
@@ -467,48 +466,29 @@ object VyxalParser extends Parsers {
     }
     // replace all composite nilads with groups
     temp match {
-      case AST.Group(elems) => {
+      case AST.Group(elems) =>
         AST.Group(
           elems.map {
             case AST.CompositeNilad(elems) => AST.Group(elems)
             case x                         => x
           }
         )
-      }
       case AST.CompositeNilad(elems) => AST.Group(elems)
       case x                         => x
     }
   }
-}
 
-def getArity(cmd: String): Int = {
-  val elem = Elements.elements.get(cmd)
-  elem match {
-    case Some(value) =>
-      value.arity match {
-        case Some(value) => value
-        case _           => -1
-      }
-    case _ => -1
-  }
-}
+  private def getArity(cmd: String) =
+    Elements.elements(cmd).arity.getOrElse(-1)
 
-def isNilad(token: VyxalToken): Boolean = {
-  token match {
-    case VyxalToken.Command(value) => {
-      val elem = Elements.elements.get(value)
-      elem match {
-        case Some(value) =>
-          value.arity match {
-            case Some(value) => value == 0
-            case _           => false
-          }
-        case _ => false
-      }
+  private def isNilad(token: VyxalToken): Boolean = {
+    token match {
+      case VyxalToken.Command(value) =>
+        Elements.elements(value).arity.fold(false)(_ == 0)
+      case VyxalToken.CompositeNilad(value) => true
+      case VyxalToken.Number(_)             => true
+      case VyxalToken.Str(_)                => true
+      case _                                => false
     }
-    case VyxalToken.CompositeNilad(value) => true
-    case VyxalToken.Number(_)             => true
-    case VyxalToken.Str(_)                => true
-    case _                                => false
   }
 }

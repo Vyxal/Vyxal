@@ -1,9 +1,11 @@
 package vyxal
 
+import collection.mutable.StringBuilder
+
 object StringHelpers {
 
   def formatString(fmtstr: String, args: AnyRef*): String = {
-    val sb = new collection.mutable.StringBuilder()
+    val sb = StringBuilder()
     var i = 0
     var j = 0
     while (i < fmtstr.length) {

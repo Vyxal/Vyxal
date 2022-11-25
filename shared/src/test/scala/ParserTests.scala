@@ -55,6 +55,7 @@ class ParserTests extends AnyFunSuite {
       VyxalParser.parse("1 { 2 | { {3 | 4} | } } 6") ===
         Right(
           AST.makeSingle(
+            Number(6),
             Number(1),
             AST.While(
               Some(Number(2)),
@@ -67,8 +68,7 @@ class ParserTests extends AnyFunSuite {
                 ),
                 AST.makeSingle()
               )
-            ),
-            Number(6)
+            )
           )
         )
     )
@@ -79,6 +79,7 @@ class ParserTests extends AnyFunSuite {
       VyxalParser.parse("1 { 2 | { {3 | 4} | ] 6") ===
         Right(
           AST.makeSingle(
+            Number(6),
             Number(1),
             AST.While(
               Some(Number(2)),
@@ -91,8 +92,7 @@ class ParserTests extends AnyFunSuite {
                 ),
                 AST.makeSingle()
               )
-            ),
-            Number(6)
+            )
           )
         )
     )

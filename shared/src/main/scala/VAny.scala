@@ -32,39 +32,20 @@ case class VFun(
   /** Make a copy of this function with a different arity. */
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
 
-  def apply(args: List[VAny], customContext: Option[Context] = None)(using
-      ctx: Context
-  ): VAny = {
-
-    // Good for functions which need to set context variable M
-
-    val innerCtx = customContext.getOrElse(
-      Context.makeFnCtx(this.ctx, ctx, arity, params, true)
+  /** Call this function on the given arguments, using custom context variables.
+    */
+  def execute(
+    contextVarM: VAny, contextVarN: VAny, args: Seq[VAny]
+  )(using ctx: Context): VAny =
+    Interpreter.executeFn(
+      this,
+      Some(contextVarM),
+      Some(contextVarN),
+      Some(args)
     )
-    for (arg <- args) {
-      innerCtx.push(arg)
-    }
 
-    impl()(using innerCtx)
-
-    if (innerCtx.isStackEmpty) ctx.settings.defaultValue
-    else innerCtx.pop()
-
-  }
-
-  def apply(args: VAny*)(using ctx: Context): VAny = {
-    val innerCtx = Context.makeFnCtx(this.ctx, ctx, arity, params, true)
-
-    for (arg <- args) {
-      innerCtx.push(arg)
-    }
-
-    impl()(using innerCtx)
-
-    if (innerCtx.isStackEmpty) ctx.settings.defaultValue
-    else innerCtx.pop()
-  }
-
+  def apply(args: VAny*)(using ctx: Context): VAny =
+    Interpreter.executeFn(this)
 }
 
 object VFun {
