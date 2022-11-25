@@ -113,23 +113,27 @@ object Interpreter {
   /** Execute a function and return what was on the top of the stack, if there
     * was anything
     *
+    * @param args
+    *   Custom arguments (instead of popping from the stack)
     * @param popArgs
     *   Whether to pop the arguments from the stack (instead of merely peeking)
     */
   def executeFn(
       fn: VFun,
+      contextVarM: Option[VAny] = None,
+      contextVarN: Option[VAny] = None,
+      args: Option[Seq[VAny]] = None,
       popArgs: Boolean = true
   )(using ctx: Context): VAny = {
     val VFun(impl, arity, params, origCtx) = fn
-    if (ctx.settings.logLevel == LogLevel.Debug) {
-      println(s"executeFn: ctx.stack = ${ctx.peek(5)}")
-    }
     given fnCtx: Context =
-      Context.makeFnCtx(origCtx, ctx, arity, params, popArgs)
+      Context.makeFnCtx(origCtx, ctx, arity, params, args, popArgs)
 
-    impl()
+    contextVarM.foreach { m => fnCtx.contextVarM = m }
+    contextVarN.foreach { n => fnCtx.contextVarN = n }
 
-    if (fnCtx.isStackEmpty) ctx.settings.defaultValue
-    else fnCtx.pop()
+    impl()(using fnCtx)
+
+    fnCtx.pop()
   }
 }

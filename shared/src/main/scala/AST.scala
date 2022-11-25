@@ -9,7 +9,7 @@ enum AST {
   /** Multiple ASTs grouped into one list */
   case Group(elems: List[AST])
   case SpecialModifier(modi: String, value: String)
-  case CompositeNilad(elem: List[AST])
+  case CompositeNilad(elems: List[AST])
 
   /** The result of applying a modifier to some arguments. `res` can be applied
     * directly to the stack.
@@ -37,6 +37,7 @@ enum AST {
     case Command(value) => value
     case Group(elems)   => elems.map(_.toVyxal).mkString
     case SpecialModifier(modi, value) => s"$modi$value"
+    case CompositeNilad(elems)        => elems.map(_.toVyxal).mkString
     case CompressedString(value)      => s"\"$value“"
     case CompressedNumber(value)      => s"\"$value„"
     case DictionaryString(value)      => s"\"$value”"
@@ -47,6 +48,7 @@ enum AST {
     case FnDef(name, lam)            => ???
     case GetVar(name)                => s"#<$name"
     case SetVar(name)                => s"#>$name"
+    case ast                         => ast.toString
   }
 }
 

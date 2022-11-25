@@ -61,4 +61,21 @@ class ElementTests extends AnyFunSpec {
       }
     }
   }
+
+  describe("Element R") {
+    describe("when given function and iterable") {
+      it("should work with singleton lists") {
+        given ctx: Context = Context()
+        assertResult(1: VNum)(
+          Impls.reduction(VList(1), VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+        )
+      }
+      it("should calculate sum properly") {
+        given ctx: Context = Context()
+        assertResult(15: VNum)(
+          Impls.reduction(VNum(5), VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+        )
+      }
+    }
+  }
 }

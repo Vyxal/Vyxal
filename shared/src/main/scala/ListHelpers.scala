@@ -35,6 +35,12 @@ object ListHelpers {
         }
     }
 
+  def map(f: VFun, to: VList)(using ctx: Context): VList = {
+    VList(to.zipWithIndex.map { (item, index) =>
+      f.execute(index, item, List(item))
+    }*)
+  }
+
   /** Mold a list into a shape.
     * @param content
     *   The list to mold.

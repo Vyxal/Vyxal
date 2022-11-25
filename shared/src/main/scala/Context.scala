@@ -232,6 +232,10 @@ object Context {
   /** Make a new Context for a function that was defined inside `origCtx` but is
     * now executing inside `currCtx`
     *
+    * @param origCtx
+    *   The context in which the function was defined
+    * @param currCtx
+    *   The context where the function is currently executing
     * @param popArgs
     *   Whether the inputs for the function will be popped from the stack
     *   (instead of merely peeking)
@@ -241,9 +245,12 @@ object Context {
       currCtx: Context,
       arity: Int,
       params: List[String],
+      args: Option[Seq[VAny]],
       popArgs: Boolean
   ) = {
-    val newInputs = if (popArgs) currCtx.pop(arity) else currCtx.peek(arity)
+    val newInputs = args
+      .map(_.toList)
+      .getOrElse(if (popArgs) currCtx.pop(arity) else currCtx.peek(arity))
     if (currCtx.settings.logLevel == LogLevel.Debug) {
       println(
         s"newInputs = $newInputs, arity = $arity, stack = ${currCtx.stack}, popArgs = $popArgs"
