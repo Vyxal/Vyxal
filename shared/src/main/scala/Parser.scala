@@ -297,7 +297,7 @@ object VyxalParser extends Parsers {
                       (isNilad(top), isNilad(top2)) match {
                         case (true, true) =>
                           grouped.push(
-                            VyxalToken.CompositeNilad(List(top, top2, token))
+                            VyxalToken.CompositeNilad(List(top2, top, token))
                           )
                         case (true, false) =>
                           grouped.push(top2)
@@ -326,7 +326,7 @@ object VyxalParser extends Parsers {
                   (isNilad(top), isNilad(top2)) match {
                     case (true, true) =>
                       grouped.push(
-                        VyxalToken.CompositeMonad(List(top, top2, token))
+                        VyxalToken.CompositeMonad(List(top2, top, token))
                       )
                     case (true, false) =>
                       grouped.push(top2)
@@ -387,7 +387,7 @@ object VyxalParser extends Parsers {
       }
     }
     if (grouped.size == 1) {
-      return List(processed.last)
+      return List(grouped.last)
     }
     grouped.reverse.toList
   }

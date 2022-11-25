@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.Element
+import vyxal.Interpreter.executeFn
 
 import spire.math.Number
 
@@ -30,6 +31,24 @@ case class VFun(
 
   /** Make a copy of this function with a different arity. */
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
+
+  def apply(args: List[VAny], customContext: Option[Context] = None)(using
+      origCtx: Context
+  ): VAny = {
+    val VFun(impl, arity, params, ctx) = this
+    val innerCtx = customContext.getOrElse(
+      Context.makeFnCtx(origCtx, ctx, arity, params, true)
+    )
+    for (arg <- args) {
+      innerCtx.push(arg)
+    }
+
+    impl()(using innerCtx)
+
+    if (innerCtx.isStackEmpty) ctx.settings.defaultValue
+    else innerCtx.pop()
+
+  }
 }
 
 object VFun {

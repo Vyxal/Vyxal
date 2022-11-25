@@ -467,6 +467,34 @@ object Elements {
       MiscHelpers.vyPrintln(ctx.pop())
     }
 
+    val reduction = addDyad(
+      "R",
+      "Reduce by Function Object | Dyadic Range | Regex Match",
+      List(
+        "fun-reduce",
+        "reduce",
+        "fold-by",
+        "range",
+        "a->b",
+        "regex-match?",
+        "re-match?",
+        "has-regex-match?"
+      ),
+      "a: fun, b: any -> reduce iterable b by function a",
+      "a: any, b: fun -> reduce iterable a by function b",
+      "a: num, b: num -> the range [a, b)",
+      "a: str, b: num|str -> does regex pattern b match haystack a?"
+    ) {
+      case (a: VNum, b: VNum) =>
+        NumberHelpers.range(a, b - 1)
+      case (a: String, b: String) => a.r.findFirstIn(b).isDefined
+      case (a: String, b: VNum)   => a.r.findFirstIn(b.toString).isDefined
+      case (a: VFun, b: VAny) =>
+        MiscHelpers.reduce(b, a)
+      case (a: VAny, b: VFun) =>
+        MiscHelpers.reduce(a, b)
+    }
+
     val subtraction = addDyadVect(
       "-",
       "Subtraction",
