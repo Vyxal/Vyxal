@@ -1,7 +1,20 @@
 package vyxal
 
+import vyxal.impls.UnimplementedOverloadException
+
 /** Helpers for function-related stuff */
 object FuncHelpers {
+
+  /** Take a monad, dyad, or triad, and return a proper (not Partial) function
+    * that errors if it's not defined for the input
+    */
+  def errorIfUndefined[T](
+      name: String,
+      fn: Context ?=> PartialFunction[T, VAny]
+  ): T => Context ?=> VAny = args =>
+    if (fn.isDefinedAt(args)) fn(args)
+    else throw UnimplementedOverloadException(name, args)
+
   def vectorise(fn: VFun)(using ctx: Context): Unit = {
     if (fn.arity == 1) {
       ctx.push(vectorise1(fn))
