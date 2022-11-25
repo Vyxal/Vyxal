@@ -406,7 +406,7 @@ object Elements {
       "a: lst, b: lst -> a molded to the shape of b",
       "a: num, b: num -> how many times b divides a"
     ) {
-      case (a: VList, b: VList) => ??? // ListHelpers.mold(a, b)
+      case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum)   => NumberHelpers.multiplicity(a, b)
       case (a: VAny, b: VFun) =>
         MiscHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))

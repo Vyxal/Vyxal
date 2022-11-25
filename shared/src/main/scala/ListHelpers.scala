@@ -33,6 +33,43 @@ object ListHelpers {
         }
     }
 
+  /** Mold a list into a shape.
+    * @param content
+    *   The list to mold.
+    * @param shape
+    *   The shape to mold the list into.
+    * @return
+    *   VyList The content, molded into the shape.
+    */
+  def mold(content: VList, shape: VList)(using ctx: Context): VList = {
+    def moldHelper(content: VList, shape: VList, ind: Int): VList = {
+      var output: List[VAny] = List()
+      var mutContent = content
+      var mutShape = shape.toList
+      var index = ind
+
+      println(mutShape)
+      println(mutContent)
+      println()
+      for item <- mutShape do {
+        item match {
+          case item: VList =>
+            println(item)
+            output = output :+ (moldHelper(mutContent, item, index))
+            output.last match {
+              case list: VList => index += list.length - 1
+              case _           => index += 1
+            }
+          case item: VAny => output = output :+ mutContent(index)
+        }
+        index += 1
+      }
+
+      VList(output*)
+    }
+    moldHelper(content, shape, 0)
+  }
+
   /** Split a list on a sublist
     *
     * @param sep

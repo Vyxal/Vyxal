@@ -4,10 +4,10 @@ object NumberHelpers {
 
   def multiplicity(a: VNum, b: VNum): VNum = {
     var result = 0
-    var current = a
-    while (current % b == 0) {
+    var current = a.toInt
+    while (current % b.toInt == 0) {
       result += 1
-      current /= b
+      current /= b.toInt
     }
     result
   }
