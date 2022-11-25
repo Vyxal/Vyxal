@@ -1,5 +1,7 @@
 package vyxal
 
+import collection.mutable.ArrayBuffer
+
 object ListHelpers {
 
   /** Make an iterable from a value
@@ -43,24 +45,24 @@ object ListHelpers {
     */
   def mold(content: VList, shape: VList)(using ctx: Context): VList = {
     def moldHelper(content: VList, shape: VList, ind: Int): VList = {
-      var output: List[VAny] = List()
-      var mutContent = content
-      var mutShape = shape.toList
+      val output = ArrayBuffer.empty[VAny]
+      val mutContent = content
+      val mutShape = shape.toList
       var index = ind
       for item <- mutShape do {
         item match {
           case item: VList =>
-            output = output :+ (moldHelper(mutContent, item, index))
+            output += moldHelper(mutContent, item, index)
             output.last match {
               case list: VList => index += list.length - 1
               case _           => index += 1
             }
-          case item: VAny => output = output :+ mutContent(index)
+          case item: VAny => output += mutContent(index)
         }
         index += 1
       }
 
-      VList(output*)
+      VList(output.toSeq*)
     }
     moldHelper(content, shape, 0)
   }
@@ -76,7 +78,7 @@ object ListHelpers {
     *   list, the last element of the returned sequence will be an empty list.
     */
   def split[T](list: Seq[T], sep: Seq[T]): Seq[Seq[T]] = {
-    val parts = collection.mutable.ArrayBuffer.empty[Seq[T]]
+    val parts = ArrayBuffer.empty[Seq[T]]
 
     var lastInd = 0
     var sliceInd = list.indexOfSlice(sep)

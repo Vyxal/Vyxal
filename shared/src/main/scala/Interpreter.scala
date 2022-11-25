@@ -40,7 +40,9 @@ object Interpreter {
           case None       => throw RuntimeException(s"No such command: '$cmd'")
         }
       case AST.Group(elems) =>
-        elems.foreach { elem => Interpreter.execute(elem) }
+        elems.foreach(Interpreter.execute(_))
+      case AST.CompositeNilad(elems) =>
+        elems.foreach(Interpreter.execute(_))
       case AST.Modified(fn) => fn()
       case AST.If(thenBody, elseBody) =>
         if (MiscHelpers.boolify(ctx.pop())) {
