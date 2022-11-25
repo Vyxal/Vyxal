@@ -33,13 +33,13 @@ case class VFun(
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
 
   def apply(args: List[VAny], customContext: Option[Context] = None)(using
-      origCtx: Context
+      ctx: Context
   ): VAny = {
 
     // Good for functions which need to set context variable M
 
     val innerCtx = customContext.getOrElse(
-      Context.makeFnCtx(origCtx, ctx, arity, params, true)
+      Context.makeFnCtx(this.ctx, ctx, arity, params, true)
     )
     for (arg <- args) {
       innerCtx.push(arg)
@@ -52,8 +52,8 @@ case class VFun(
 
   }
 
-  def apply(args: VAny*)(using origCtx: Context): VAny = {
-    val innerCtx = Context.makeFnCtx(origCtx, ctx, arity, params, true)
+  def apply(args: VAny*)(using ctx: Context): VAny = {
+    val innerCtx = Context.makeFnCtx(this.ctx, ctx, arity, params, true)
 
     for (arg <- args) {
       innerCtx.push(arg)

@@ -42,47 +42,78 @@ object VyxalParser extends Parsers {
     accept(
       "number",
       { case VyxalToken.CompositeNilad(value) =>
-        val temp = value.map(tok => {
-          val inner = VyxalParser.parse(List(tok))
-          inner match {
+        if (value.length == 1) {
+          val temp = VyxalParser.parseWithoutProcessing(value)
+          temp match {
             case Right(ast) => ast
             case Left(error) =>
-              throw RuntimeException(s"Error while parsing $tok: $error")
+              throw RuntimeException(s"Error while parsing $value: $error")
           }
-        })
-        AST.CompositeNilad(temp)
+        } else {
+          val temp = value.map(tok => {
+            val inner = VyxalParser.parse(List(tok))
+            inner match {
+              case Right(ast) => ast
+              case Left(error) =>
+                throw RuntimeException(s"Error while parsing $tok: $error")
+            }
+          })
+          AST.CompositeNilad(temp)
+        }
       }
     )
 
   def compositeMonad: Parser[AST] =
     accept(
       "number",
-      { case VyxalToken.CompositeMonad(value) =>
-        val temp = value.map(tok => {
-          val inner = VyxalParser.parse(List(tok))
-          inner match {
-            case Right(ast) => ast
-            case Left(error) =>
-              throw RuntimeException(s"Error while parsing $tok: $error")
+      {
+        case VyxalToken.CompositeMonad(value) => {
+          if (value.length == 1) {
+            val temp = VyxalParser.parseWithoutProcessing(value)
+            temp match {
+              case Right(ast) => ast
+              case Left(error) =>
+                throw RuntimeException(s"Error while parsing $value: $error")
+            }
+          } else {
+            val temp = value.map(tok => {
+              val inner = VyxalParser.parse(List(tok))
+              inner match {
+                case Right(ast) => ast
+                case Left(error) =>
+                  throw RuntimeException(s"Error while parsing $tok: $error")
+              }
+            })
+            AST.Group(temp)
           }
-        })
-        AST.Group(temp)
+        }
       }
     )
 
   def compositeDyad: Parser[AST] =
     accept(
       "number",
-      { case VyxalToken.CompositeDyad(value) =>
-        val temp = value.map(tok => {
-          val inner = VyxalParser.parse(List(tok))
-          inner match {
-            case Right(ast) => ast
-            case Left(error) =>
-              throw RuntimeException(s"Error while parsing $tok: $error")
+      {
+        case VyxalToken.CompositeDyad(value) => {
+          if (value.length == 1) {
+            val temp = VyxalParser.parseWithoutProcessing(value)
+            temp match {
+              case Right(ast) => ast
+              case Left(error) =>
+                throw RuntimeException(s"Error while parsing $value: $error")
+            }
+          } else {
+            val temp = value.map(tok => {
+              val inner = VyxalParser.parse(List(tok))
+              inner match {
+                case Right(ast) => ast
+                case Left(error) =>
+                  throw RuntimeException(s"Error while parsing $tok: $error")
+              }
+            })
+            AST.Group(temp)
           }
-        })
-        AST.Group(temp)
+        }
       }
     )
 
@@ -216,6 +247,16 @@ object VyxalParser extends Parsers {
     }
   }
 
+  def parseWithoutProcessing(
+      code: List[VyxalToken]
+  ): Either[VyxalCompilationError, AST] = {
+    val reader = new VyxalTokenReader(code)
+    (parseAll(reader): @unchecked) match {
+      case Success(result, _) => Right(result)
+      case NoSuccess(msg, _)  => Left(VyxalCompilationError(msg))
+    }
+  }
+
   def parseInput(input: String): VAny = {
     Lexer(input).toOption
       .flatMap { tokens =>
@@ -241,7 +282,6 @@ object VyxalParser extends Parsers {
 
   private def preprocess(code: Seq[VyxalToken]): List[VyxalToken] = {
     val processed = ListBuffer[VyxalToken]()
-
     code.foreach {
       case VyxalToken.StructureClose(")") => {
         processed += VyxalToken.StructureClose("}")
@@ -254,7 +294,12 @@ object VyxalParser extends Parsers {
       token match {
         case VyxalToken.Command(value) => {
           getArity(value) match {
-            case 0 => grouped.push(VyxalToken.CompositeNilad(List(token)))
+            case 0 =>
+              token match {
+                case VyxalToken.CompositeNilad(tokens) =>
+                  grouped.push(token)
+                case _ => grouped.push(VyxalToken.CompositeNilad(List(token)))
+              }
             case 1 => {
               grouped.lastOption match {
                 case None => grouped.push(token)
