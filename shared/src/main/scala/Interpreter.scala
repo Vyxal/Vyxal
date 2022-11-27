@@ -30,6 +30,7 @@ object Interpreter {
       case AST.Lst(elems) =>
         val list = collection.mutable.ListBuffer.empty[VAny]
         for (elem <- elems) {
+          given elemCtx: Context = ctx.makeChild()
           execute(elem)
           list += ctx.pop()
         }
