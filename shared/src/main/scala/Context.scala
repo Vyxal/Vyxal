@@ -2,6 +2,7 @@ package vyxal
 
 import scala.collection.{mutable => mut}
 import scala.collection.mutable.Stack
+import scala.io.StdIn
 
 /** @constructor
   *   Make a Context object for the current scope
@@ -37,7 +38,12 @@ class Context private (
     } else if (inputs.nonEmpty) {
       inputs.next()
     } else {
-      settings.defaultValue
+      val temp = StdIn.readLine()
+      if (temp.nonEmpty) {
+        VyxalParser.parseInput(temp)
+      } else {
+        settings.defaultValue
+      }
     }
     if (settings.logLevel == LogLevel.Debug) {
       println(s"Popped $elem")

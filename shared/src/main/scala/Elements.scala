@@ -7,6 +7,7 @@ import scala.language.implicitConversions
 
 import vyxal.*
 import FuncHelpers.errorIfUndefined
+import scala.io.StdIn
 
 given Conversion[Boolean, VNum] with
   def apply(s: Boolean): VNum = if s then 1 else 0
@@ -371,6 +372,24 @@ object Elements {
       List("get-context-n", "context-n", "c-var-n", "ctx-n"),
       " -> context variable n"
     ) { ctx ?=> ctx.contextVarN }
+
+    val getInput = addNilad(
+      "?",
+      "Get Input",
+      List("get-input", "input", "stdin", "readline"),
+      " -> input"
+    ) { ctx ?=>
+      if (ctx.globals.inputs.nonEmpty) {
+        ctx.globals.inputs.next()
+      } else {
+        val temp = StdIn.readLine()
+        if (temp.nonEmpty) {
+          VyxalParser.parseInput(temp)
+        } else {
+          ctx.settings.defaultValue
+        }
+      }
+    }
 
     val greaterThan = addDyadVect(
       ">",
