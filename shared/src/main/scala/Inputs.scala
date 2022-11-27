@@ -1,1 +1,0 @@
-final case class Inputs()

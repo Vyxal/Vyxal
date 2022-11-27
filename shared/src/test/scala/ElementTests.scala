@@ -26,7 +26,7 @@ class ElementTests extends AnyFunSpec {
     describe("when given functions") {
       it("should turn two functions into an fgh fork") {
         given ctx: Context =
-          Context(settings = Settings(logLevel = LogLevel.Debug))
+          Context(globals = Globals(settings = Settings(logLevel = LogLevel.Debug)))
         // Factorial
         val f = VFun.fromElement(Elements.elements("!"))
         // Function to subtract 8

@@ -3,67 +3,6 @@ package vyxal
 import scala.collection.{mutable => mut}
 import scala.collection.mutable.Stack
 
-/** What kind of implicit output is wanted at the end
-  */
-enum EndPrintMode {
-
-  /** Just print the top of the stack */
-  case Default
-  case JoinNewlines
-
-  /** Join on newlines vertically */
-  case JoinNewlinesVert
-
-  /** Sum/concatenate the top of the stack */
-  case Sum
-}
-
-// todo use a proper logging library instead
-enum LogLevel {
-  case Debug, Normal
-}
-
-/** Settings set by flags
-  *
-  * @param presetStack
-  *   Whether to push a 100 onto the stack before the program starts
-  * @param endPrintMode
-  *   How to print implicit output at the end
-  * @param defaultValue
-  *   Value to give when empty stack is popped
-  * @param printFn
-  *   Function used to output (necessary for online interpreter)
-  */
-case class Settings(
-    presetStack: Boolean = false,
-    endPrintMode: EndPrintMode = EndPrintMode.Default,
-    defaultValue: VAny = 0,
-    rangify: Boolean = false,
-    rangeStart: VNum = 1,
-    rangeOffset: VNum = 0,
-    numToRange: Boolean = false,
-    printFn: Any => Unit = print,
-    logLevel: LogLevel = LogLevel.Normal
-) {
-
-  /** Add a flag to these settings
-    *
-    * @return
-    *   A Some with the new settings, or None if the flag is invalid
-    */
-  def withFlag(flag: Char): Settings = flag match {
-    case 'H' => this.copy(presetStack = true)
-    case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
-    case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
-    case 's' => this.copy(endPrintMode = EndPrintMode.Sum)
-    case 'M' => this.copy(rangeStart = 0)
-    case 'm' => this.copy(rangeOffset = -1)
-    case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
-    // todo implement the others
-    case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
-  }
-}
-
 /** @constructor
   *   Make a Context object for the current scope
   * @param stack
@@ -86,19 +25,17 @@ class Context private (
     private var _contextVarN: Option[VAny] = None,
     private var _contextVarM: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
-    private var inputs: List[VAny] = List.empty,
+    private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
-    val settings: Settings = Settings()
+    val globals: Globals = Globals()
 ) {
+  def settings: Settings = globals.settings
+
   def pop(): VAny = {
     val elem = if (stack.nonEmpty) {
       stack.remove(stack.size - 1)
     } else if (inputs.nonEmpty) {
-      val (head :: tail) = inputs
-      // todo this is a bad way to rotate inputs, use something like a
-      // circular buffer instead
-      inputs = tail :+ head
-      head
+      inputs.next()
     } else {
       settings.defaultValue
     }
@@ -116,7 +53,7 @@ class Context private (
     if (stack.nonEmpty) {
       stack.last
     } else if (inputs.nonEmpty) {
-      inputs.head
+      inputs.next()
     } else {
       settings.defaultValue
     }
@@ -128,8 +65,7 @@ class Context private (
     // Number of elements that need to be taken from the input
     val numInput = n - numStack
     // todo repeat the inputs or something?
-    inputs.slice(inputs.length - n, inputs.length)
-      ++ stack.slice(stack.length - numStack, stack.length)
+    inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
   }
 
   def push(item: VAny): Unit = stack += item
@@ -198,19 +134,19 @@ class Context private (
     vars,
     inputs,
     Some(this),
-    settings
+    globals
   )
 }
 
 object Context {
   def apply(
-      inputs: List[VAny] = List.empty,
-      settings: Settings = Settings()
+      inputs: Seq[VAny] = Seq.empty,
+      globals: Globals = Globals()
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
-      inputs = inputs,
-      settings = settings
+      inputs = Inputs(inputs),
+      globals = globals
     )
 
   /** Find a parent that has a variable with the given name */
@@ -261,9 +197,9 @@ object Context {
       currCtx._contextVarN,
       currCtx._contextVarM,
       mut.Map(params.zip(newInputs)*),
-      newInputs,
+      Inputs(newInputs),
       Some(currCtx),
-      currCtx.settings
+      currCtx.globals
     )
   }
 }
