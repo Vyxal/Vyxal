@@ -24,7 +24,8 @@ class InterpreterTests extends AnyFunSuite {
   test("Can the interpreter vectorise simple monads?") {
     val sb = new StringBuilder()
     // Instead of printing, add to sb so we can inspect it
-    given ctx: Context = Context(settings = Settings(printFn = sb.append))
+    given ctx: Context =
+      Context(globals = Globals(settings = Settings(printFn = sb.append)))
     Interpreter.execute("#[4 | #[5 | 6#] #] v,")
     assert(sb.toString == "4\n5\n6\n")
   }
@@ -53,7 +54,9 @@ class InterpreterTests extends AnyFunSuite {
     given ctx: Context = Context()
     ctx.push(VList(0, 3, VList(2, 1)))
     Interpreter.execute(
-      Modifiers.modifiers("v").impl(List(AST.Lambda(1, List.empty, AST.Command("!"))))
+      Modifiers
+        .modifiers("v")
+        .impl(List(AST.Lambda(1, List.empty, AST.Command("!"))))
     )
     assertResult(VList(1, 6, VList(2, 1)))(ctx.pop())
   }
@@ -76,7 +79,9 @@ class InterpreterTests extends AnyFunSuite {
     ctx.push(VList(0, 3, VList(2, 1)))
     ctx.push(VList(4, 2, 6))
     Interpreter.execute(
-      Modifiers.modifiers("v").impl(List(AST.Lambda(2, List.empty, AST.Command("-"))))
+      Modifiers
+        .modifiers("v")
+        .impl(List(AST.Lambda(2, List.empty, AST.Command("-"))))
     )
     assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
   }
