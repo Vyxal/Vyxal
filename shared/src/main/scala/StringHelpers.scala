@@ -25,6 +25,11 @@ object StringHelpers {
     sb.toString
   }
 
+  def isVowel(c: String): VNum = c.toLowerCase() match {
+    case "a" | "e" | "i" | "o" | "u" => 1
+    case _                           => 0
+  }
+
   /** Remove the character at the given index */
   def remove(s: String, i: Int): String = {
     val wrapped = (i + s.length) % s.length

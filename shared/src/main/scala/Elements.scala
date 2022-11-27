@@ -286,6 +286,29 @@ object Elements {
       MiscHelpers.add(_, _)
     }
 
+    val allTruthy = addMonad(
+      "A",
+      "All Truthy | All() | Is Vowel?",
+      List("all", "is-vowel?"),
+      false,
+      "a: str -> is (a) a vowel? vectorises for strings len > 1",
+      "a: list -> is (a) all truthy?"
+    ) {
+      case a: VNum =>
+        if (ListHelpers.makeIterable(a).forall(MiscHelpers.boolify(_))) { 1 }
+        else { 0 }
+      case a: String => {
+        var temp = VList()
+        for (i <- a) {
+          temp = VList(temp :+ StringHelpers.isVowel(i.toString)*)
+        }
+        temp
+      }
+      case a: VList =>
+        if (a.forall(MiscHelpers.boolify(_))) { 1 }
+        else { 0 }
+    }
+
     val concatenate = addDyad(
       "&",
       "Concatenate",
