@@ -371,6 +371,13 @@ object Elements {
           .reverse // https://stackoverflow.com/a/17995686/9363594
     }
 
+    val discard = addDirect(
+      "_",
+      "Pop and Discard",
+      List("pop", "discard"),
+      "a ->"
+    ) { ctx ?=> ctx.pop() }
+
     val factorial = addMonadVect(
       "!",
       "Factorial | To Uppercase",

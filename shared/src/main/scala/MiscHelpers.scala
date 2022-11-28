@@ -73,10 +73,9 @@ object MiscHelpers {
     var contextVarM = operating(1)
 
     while remaining.length + operating.length != 1 do {
-      val result = byFun.execute(contextVarM, contextVarN, operating)
+      val result = byFun.execute(contextVarM, contextVarN, operating.reverse)
       contextVarM = remaining.headOption.getOrElse(result)
       contextVarN = result
-      println(s"m: ${contextVarM}, n: ${contextVarN}")
       operating = result +: remaining.take(byFun.arity - 1)
       remaining = remaining.drop(byFun.arity - 1)
     }

@@ -135,4 +135,9 @@ object FuncHelpers {
         Interpreter.executeFn(fn)
     }
   }
+
+  def reduceByElement(fn: VFun)(using ctx: Context): Unit = {
+    val iter = ctx.pop()
+    ctx.push(MiscHelpers.reduce(iter, fn))
+  }
 }
