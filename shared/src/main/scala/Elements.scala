@@ -323,6 +323,29 @@ object Elements {
       case (a: VAny, b: VAny)   => add(a, b)
     }
 
+    val convertFromBinary = addMonad(
+      "B",
+      "Convert From Binary",
+      List("from-binary", "bin->dec", "bin->decimal"),
+      false,
+      "a: num -> str(a) from binary",
+      "a: str -> int(a, 2)",
+      "a: lst -> int(a, 2), using list of digits"
+    ) { case a: VAny =>
+      NumberHelpers.fromBinary(a)
+    }
+
+    val convertToBinary = addMonad(
+      "b",
+      "Convert To Binary",
+      List("to-binary", "dec->bin", "decimal->bin"),
+      true,
+      "a: num -> convert a to binary",
+      "a: str -> bin(chr(x) for x in a)"
+    ) { case a: VAny =>
+      NumberHelpers.toBinary(a)
+    }
+
     val divide = addDyadVect(
       "÷",
       "Divide | Split",
