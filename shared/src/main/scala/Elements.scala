@@ -629,6 +629,13 @@ object Elements {
       ctx.push(a)
     }
 
+    val triplicate =
+      addDirect("D", "Triplicate", List("trip"), "a -> [a, a, a]") { ctx ?=>
+        val a = ctx.pop()
+        ctx.push(a)
+        ctx.push(a)
+        ctx.push(a)
+      }
     // Constants
 
     addNilad("₀", "Ten", List("ten"), "10") { 10 }
