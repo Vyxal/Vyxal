@@ -1,8 +1,13 @@
 package vyxal
 
 import collection.mutable.StringBuilder
+import scala.util.matching.Regex
 
 object StringHelpers {
+
+  def countString(haystack: String, needle: String): Int = {
+    Regex.quote(needle).r.findAllIn(haystack).length
+  }
 
   def formatString(fmtstr: String, args: AnyRef*): String = {
     val sb = StringBuilder()

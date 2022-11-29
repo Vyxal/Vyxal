@@ -346,6 +346,19 @@ object Elements {
       NumberHelpers.toBinary(a)
     }
 
+    val count = addDyad(
+      "C",
+      "Count",
+      List("count"),
+      false,
+      "a: any, b: any -> count(b in a)"
+    ) {
+      case (a: VList, b: VAny) => VNum(a.count(_ == b))
+      case (a: VAny, b: VList) => VNum(b.count(_ == a))
+      case (a: VAny, b: VAny) =>
+        StringHelpers.countString(a.toString, b.toString)
+    }
+
     val divide = addDyadVect(
       "÷",
       "Divide | Split",
