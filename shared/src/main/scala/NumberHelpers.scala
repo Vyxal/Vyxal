@@ -36,7 +36,7 @@ object NumberHelpers {
     a match {
       case n: VNum =>
         val binary = n.toInt.toBinaryString
-        VList(binary.map(_.asDigit).map(VNum(_))*)
+        VList(binary.map(_.asDigit: VNum)*)
       case s: String =>
         // get binary representation of each character
         var result = ListBuffer.empty[VAny]
@@ -52,41 +52,13 @@ object NumberHelpers {
   def toint(value: VAny, radix: Int)(using ctx: Context): VAny = {
     value match {
       case n: VNum => toint(n.toString(), radix)
-      case l: VList => {
-        var result: VAny = VNum(0)
-        for (i <- l) {
-          result = Elements.elements.get("×") match {
-            case Some(elem) => {
-              ctx.push(result)
-              ctx.push(radix)
-              elem.impl()(using ctx)
-              ctx.pop()
-            }
-          }
-          result = Elements.elements.get("+") match {
-            case Some(elem) => {
-              ctx.push(result)
-              ctx.push(i)
-              elem.impl()(using ctx)
-              ctx.pop()
-            }
-          }
+      case l: VList =>
+        l.foldLeft(0: VAny) { (res, i) =>
+          MiscHelpers.add(MiscHelpers.multiply(res, radix), i)
         }
-        result
-      }
-      case s: String =>
-        // Python has a built-in function for this, but Scala doesn't
-        // so we have to do it ourselves. Uses the alphabet 0-9A-Z for
-        // bases 2-36
-        var result = 0
-        for (character <- s) {
-          result *= radix
-          result += "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".indexOf(
-            character.toUpper
-          )
-        }
-        result
-      case _ => throw new Exception("Cannot convert to int")
+
+      case s: String => BigInt(s.toUpperCase(), radix).toInt
+      case _         => throw new Exception("Cannot convert to int")
     }
   }
 }
