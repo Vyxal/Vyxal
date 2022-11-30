@@ -35,7 +35,9 @@ case class VFun(
   /** Call this function on the given arguments, using custom context variables.
     */
   def execute(
-    contextVarM: VAny, contextVarN: VAny, args: Seq[VAny]
+      contextVarM: VAny,
+      contextVarN: VAny,
+      args: Seq[VAny]
   )(using ctx: Context): VAny =
     Interpreter.executeFn(
       this,
@@ -75,3 +77,12 @@ object VNum {
   /** Parse a number from a string */
   def from(s: String): VNum = s.toInt
 }
+
+extension (self: VAny)
+  def ===(that: VAny): Boolean = {
+    (self, that) match {
+      case (a: VAtom, b: VAtom) => MiscHelpers.compare(a, b) == 0
+      case (a: VList, b: VList) => a == b
+      case _                    => false
+    }
+  }

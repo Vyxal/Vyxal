@@ -353,8 +353,8 @@ object Elements {
       false,
       "a: any, b: any -> count(b in a)"
     ) {
-      case (a: VList, b: VAny) => VNum(a.count(_ == b))
-      case (a: VAny, b: VList) => VNum(b.count(_ == a))
+      case (a: VList, b: VAny) => a.count(_ === b)
+      case (a: VAny, b: VList) => b.count(_ === a)
       case (a: VAny, b: VAny) =>
         StringHelpers.countString(a.toString, b.toString)
     }

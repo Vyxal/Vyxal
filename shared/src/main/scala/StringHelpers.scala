@@ -6,7 +6,7 @@ import scala.util.matching.Regex
 object StringHelpers {
 
   def countString(haystack: String, needle: String): Int = {
-    Regex.quote(needle).r.findAllIn(haystack).length
+    haystack.split(needle, -1).length - 1
   }
 
   def formatString(fmtstr: String, args: AnyRef*): String = {
