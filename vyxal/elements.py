@@ -7252,7 +7252,7 @@ modifiers: dict[str, str] = {
     "&": (
         "stack.append(ctx.register)\n"
         "ctx.register = safe_apply(function_A, "
-        "pop(stack, function_A.arity, ctx), ctx=ctx)\n"
+        "*wrapify(stack, function_A.arity, ctx), ctx=ctx)\n"
     ),
     "v": (
         "arguments = wrapify(stack, function_A.arity if function_A.arity != 0 else 1, ctx=ctx)\n"
