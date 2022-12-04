@@ -423,6 +423,14 @@ def test_cart_pow_finite():
     ]
 
 
+def apply_to_register_modifier():
+    stack = run_vyxal("1&+¥")
+    assert stack[-1] == 1
+
+    stack = run_vyxal("4£&d¥")
+    assert stack[-1] == 8
+
+
 def test_alternating_negations():
     stack = run_vyxal("5 ÞN")
     assert stack[-1][:10] == [5, -5, 5, -5, 5, -5, 5, -5, 5, -5]
