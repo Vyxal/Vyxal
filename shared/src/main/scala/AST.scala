@@ -29,6 +29,9 @@ enum AST {
   case SetVar(name: String)
   case ExecuteFn
 
+  /** Junk newline AST that is removed in post-processing */
+  case Newline
+
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
     case Number(n)      => n.toString
