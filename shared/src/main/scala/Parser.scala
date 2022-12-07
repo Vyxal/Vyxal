@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.collection.mutable.Queue
+import scala.collection.mutable.ListBuffer
 
 def toValidName(name: String): String =
   name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
@@ -8,8 +9,8 @@ def toValidName(name: String): String =
 def parse(
     code: List[VyxalToken]
 ): Either[VyxalCompilationError, AST] = {
-  var asts: Queue[AST] = Queue()
-  var program = Queue() ++ code
+  val asts = Queue[AST]()
+  val program = code.to(Queue)
   while (program.nonEmpty) {
     val token = program.dequeue()
     token match {
@@ -21,8 +22,7 @@ def parse(
         var branches: List[List[VyxalToken]] = List()
         var branch: List[VyxalToken] = List()
         while (
-          program.nonEmpty && !program.head
-            .isInstanceOf[VyxalToken.StructureClose]
+          program.nonEmpty && program.head != VyxalToken.StructureClose
         ) {
           val structureToken = program.dequeue()
           structureToken match {
@@ -84,7 +84,7 @@ def parse(
             }
             // todo using the command names is a bit brittle
             //   maybe refer to the functions directly
-            asts.enqueue(structureType match {
+            asts.enqueue((structureType: @unchecked) match {
               case "λ" => lambda
               case "ƛ" => AST.makeSingle(lambda, AST.Command("M"))
               case "Ω" => AST.makeSingle(lambda, AST.Command("F"))
@@ -96,35 +96,35 @@ def parse(
 
       }
       case VyxalToken.ListOpen => {
-        var elements: List[List[VyxalToken]] = List()
-        var element: List[VyxalToken] = List()
+        val elements = ListBuffer[List[VyxalToken]]()
+        var element = List[VyxalToken]()
         while (
-          program.nonEmpty && !program.head
-            .isInstanceOf[VyxalToken.ListClose.type]
+          program.nonEmpty && program.head != VyxalToken.ListClose
         ) {
           val listToken = program.dequeue()
           listToken match {
             case VyxalToken.Branch => {
-              elements = elements :+ element
+              elements += element
               element = List()
             }
             case _ => element = element :+ listToken
           }
         }
-        elements = elements :+ element
-        var parsedElements = List[AST]()
+        elements += element
+        val parsedElements = ListBuffer[AST]()
         for (element <- elements) {
           parse(element) match {
-            case Right(ast)  => parsedElements = parsedElements :+ ast
+            case Right(ast)  => parsedElements += ast
             case Left(error) => return Left(error)
           }
         }
 
-        asts.enqueue(AST.Lst(parsedElements))
+        asts.enqueue(AST.Lst(parsedElements.toList))
 
       }
     }
   }
+
   Right(AST.Group(asts.toList))
 }
 
