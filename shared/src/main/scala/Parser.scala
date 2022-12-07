@@ -8,7 +8,7 @@ def toValidName(name: String): String =
 def parse(
     code: List[VyxalToken]
 ): Either[VyxalCompilationError, AST] = {
-  var asts = Queue()[AST]
+  var asts: Queue[AST] = Queue()
   var program = Queue() ++ code
   while (program.nonEmpty) {
     val token = program.dequeue()
@@ -18,31 +18,35 @@ def parse(
       case VyxalToken.Str(value) => asts.enqueue(AST.Str(value))
       case VyxalToken.Newline    => asts.enqueue(AST.Newline)
       case VyxalToken.StructureOpen(structureType) => {
-        var branches = List()[List[VyxalToken]]
-        var branch = List()[VyxalToken]
+        var branches: List[List[VyxalToken]] = List()
+        var branch: List[VyxalToken] = List()
         while (
-          program.nonEmpty && program.head != VyxalToken.StructureClose(value)
+          program.nonEmpty && !program.head
+            .isInstanceOf[VyxalToken.StructureClose]
         ) {
           val structureToken = program.dequeue()
           structureToken match {
             case VyxalToken.Branch => {
-              branches = branches +: branch
+              // append branch to branches
+              branches = branches :+ branch
               branch = List()
             }
             case _ => branch = branch :+ structureToken
           }
         }
         branches = branches :+ branch
-        branches.foreach(branch => {
+        var parsedBranches = List[AST]()
+
+        for (branch <- branches) {
           parse(branch) match {
+            case Right(ast)  => parsedBranches = parsedBranches :+ ast
             case Left(error) => return Left(error)
-            case Right(ast)  => ast
           }
-        })
+        }
 
         structureType match {
           case "[" => {
-            branches match {
+            parsedBranches match {
               case List(thenBranch) =>
                 asts.enqueue(AST.If(thenBranch, None))
               case List(thenBranch, elseBranch) =>
@@ -53,7 +57,7 @@ def parse(
             }
           }
           case "{" => {
-            branches match {
+            parsedBranches match {
               case List(cond, body) =>
                 asts.enqueue(AST.While(Some(cond), body))
               case List(body) => asts.enqueue(AST.While(None, body))
@@ -63,7 +67,7 @@ def parse(
           }
 
           case "(" => {
-            branches match {
+            parsedBranches match {
               case List(cond, body) =>
                 asts.enqueue(AST.For(Some(toValidName(cond.toVyxal)), body))
               case List(body) => asts.enqueue(AST.For(None, body))
@@ -73,7 +77,7 @@ def parse(
           }
 
           case "λ" | "ƛ" | "Ω" | "₳" | "µ" =>
-            val lambda = branches match {
+            val lambda = parsedBranches match {
               // todo actually parse arity and parameters
               case List(body) => AST.Lambda(1, List.empty, body)
               case _          => ???
@@ -91,8 +95,45 @@ def parse(
         }
 
       }
-      case VyxalToken.ListOpen => {}
+      case VyxalToken.ListOpen => {
+        var elements: List[List[VyxalToken]] = List()
+        var element: List[VyxalToken] = List()
+        while (
+          program.nonEmpty && !program.head
+            .isInstanceOf[VyxalToken.ListClose.type]
+        ) {
+          val listToken = program.dequeue()
+          listToken match {
+            case VyxalToken.Branch => {
+              elements = elements :+ element
+              element = List()
+            }
+            case _ => element = element :+ listToken
+          }
+        }
+        elements = elements :+ element
+        var parsedElements = List[AST]()
+        for (element <- elements) {
+          parse(element) match {
+            case Right(ast)  => parsedElements = parsedElements :+ ast
+            case Left(error) => return Left(error)
+          }
+        }
+
+        asts.enqueue(AST.Lst(parsedElements))
+
+      }
     }
   }
-  Right(asts.toList)
+  Right(AST.Group(asts.toList))
+}
+
+object VyxalParser {
+  def parse(code: String): Either[VyxalCompilationError, AST] = {
+    Right(AST.Newline)
+  }
+
+  def parseInput(input: String): VAny = {
+    3
+  }
 }
