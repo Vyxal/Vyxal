@@ -4,10 +4,10 @@ enum AST {
   case Number(value: VNum)
   case Str(value: String)
   case Lst(elems: List[AST])
-  case Command(value: String)
+  case Command(value: String, arity: Option[Int])
 
   /** Multiple ASTs grouped into one list */
-  case Group(elems: List[AST])
+  case Group(elems: List[AST], arity: Option[Int])
   case SpecialModifier(modi: String, value: String)
   case CompositeNilad(elems: List[AST])
 
@@ -34,11 +34,11 @@ enum AST {
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
-    case Number(n)      => n.toString
-    case Str(value)     => s"\"$value\""
-    case Lst(elems)     => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-    case Command(value) => value
-    case Group(elems)   => elems.map(_.toVyxal).mkString
+    case Number(n)         => n.toString
+    case Str(value)        => s"\"$value\""
+    case Lst(elems)        => elems.map(_.toVyxal).mkString("#[", "|", "#]")
+    case Command(value, _) => value
+    case Group(elems, _)   => elems.map(_.toVyxal).mkString
     case SpecialModifier(modi, value) => s"$modi$value"
     case CompositeNilad(elems)        => elems.map(_.toVyxal).mkString
     case CompressedString(value)      => s"\"$value“"
@@ -61,5 +61,5 @@ object AST {
     */
   def makeSingle(elems: AST*): AST =
     if (elems.size == 1) elems.head
-    else AST.Group(elems.toList)
+    else AST.Group(elems.toList, Some(1))
 }

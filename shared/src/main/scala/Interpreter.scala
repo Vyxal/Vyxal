@@ -35,12 +35,12 @@ object Interpreter {
           list += ctx.pop()
         }
         ctx.push(VList(list.toList*))
-      case AST.Command(cmd) =>
+      case AST.Command(cmd, _) =>
         Elements.elements.get(cmd) match {
           case Some(elem) => elem.impl()
           case None       => throw RuntimeException(s"No such command: '$cmd'")
         }
-      case AST.Group(elems) =>
+      case AST.Group(elems, _) =>
         elems.foreach(Interpreter.execute(_))
       case AST.CompositeNilad(elems) =>
         elems.foreach(Interpreter.execute(_))
