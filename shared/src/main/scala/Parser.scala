@@ -7,12 +7,11 @@ import scala.collection.mutable.Stack
 import vyxal.impls.Elements
 
 object VyxalParser {
+  type ParserRet = Either[VyxalCompilationError, AST]
   private def toValidName(name: String): String =
     name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
 
-  private def parse(
-      code: List[VyxalToken]
-  ): Either[VyxalCompilationError, AST] = {
+  private def parse(code: List[VyxalToken]): ParserRet = {
     val asts = Stack[AST]()
     val program = code.to(Queue)
     // First sweep, doesn't do modifiers, does do arity grouping
