@@ -189,6 +189,13 @@ object VyxalParser {
           asts.push(AST.Lst(parsedElements.toList))
 
         }
+        /*
+         * Now comes command handling. When handling commands, we need to
+         * perform the arity grouping when pushing the command. This is done
+         * by checking the arity of the command, and then checking however many
+         * top stack elements are needed to make the command equivalent to a
+         * nilad. For arities -1 and 0, the command doesn't need to be grouped.
+         */
         case VyxalToken.Command(name) => {
           getArity(name) match {
             case -1 => asts.push(AST.Command(name, None))
@@ -198,7 +205,7 @@ object VyxalParser {
                 asts.push(AST.Command(name, Some(1)))
               } else {
                 val top = asts.top
-                if (isNilad(top)) {
+                if (isNilad(top)) { // Compose a nilad if the top is a nilad
                   asts.pop()
                   asts.push(
                     AST.Group(List(top, AST.Command(name, Some(1))), Some(0))
@@ -212,12 +219,16 @@ object VyxalParser {
               if (asts.isEmpty) {
                 asts.push(AST.Command(name, Some(2)))
               } else {
-                val top = asts.take(2)
-                val topNilads = top.map(isNilad).toList.reverse
+                val top = asts.take(2) // Returns a stack of the top 2 elements
+                val topNilads =
+                  top
+                    .map(isNilad)
+                    .toList
+                    .reverse // which needs to be reversed for pattern matching
                 topNilads match {
+                  // (true, true) means that this command is a nilad
                   case List(true, true) => {
-                    asts.pop()
-                    asts.pop()
+                    asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
                         List(top(1), top(0), AST.Command(name, Some(2))),
@@ -225,6 +236,7 @@ object VyxalParser {
                       )
                     )
                   }
+                  // (false, true) or (true) means that this command is a monad
                   case List(false, true) => {
                     asts.pop()
                     asts.push(
@@ -243,6 +255,8 @@ object VyxalParser {
                       )
                     )
                   }
+                  // otherwise, it's a dyad (this includes the case of
+                  // (true, false))
                   case _ => {
                     asts.push(AST.Command(name, Some(2)))
                   }
@@ -250,6 +264,7 @@ object VyxalParser {
               }
             }
             case 3 => {
+              // Same deal as arity 2, but with arity 3 and more code
               if (asts.isEmpty) {
                 asts.push(AST.Command(name, Some(3)))
               } else {
@@ -257,9 +272,7 @@ object VyxalParser {
                 val topNilads = top.map(isNilad).toList.reverse
                 topNilads match {
                   case List(true, true, true) => {
-                    asts.pop()
-                    asts.pop()
-                    asts.pop()
+                    asts.pop(); asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
                         List(
@@ -273,8 +286,7 @@ object VyxalParser {
                     )
                   }
                   case List(false, true, true) => {
-                    asts.pop()
-                    asts.pop()
+                    asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
                         List(top(2), top(1), AST.Command(name, Some(3))),
@@ -292,8 +304,7 @@ object VyxalParser {
                     )
                   }
                   case List(true, true) => {
-                    asts.pop()
-                    asts.pop()
+                    asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
                         List(top(1), top(0), AST.Command(name, Some(3))),
@@ -325,9 +336,12 @@ object VyxalParser {
                 }
               }
             }
+            // For all other arities, just push the command
             case _: Int => asts.push(AST.Command(name, None))
           }
         }
+        // At this stage, modifiers aren't explicitly handled, so just push a
+        // temporary AST to comply with the type of the AST stack
         case VyxalToken.MonadicModifier(v) => asts.push(AST.JunkModifier(v, 1))
         case VyxalToken.DyadicModifier(v)  => asts.push(AST.JunkModifier(v, 2))
         case VyxalToken.TriadicModifier(v) => asts.push(AST.JunkModifier(v, 3))
