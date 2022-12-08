@@ -42,14 +42,15 @@ enum AST {
     case Lst(elems)        => elems.map(_.toVyxal).mkString("#[", "|", "#]")
     case Command(value, _) => value
     case Group(elems, _)   => elems.map(_.toVyxal).mkString
-    case SpecialModifier(modi, value) => s"$modi$value"
-    case CompositeNilad(elems)        => elems.map(_.toVyxal).mkString
-    case CompressedString(value)      => s"\"$value“"
-    case CompressedNumber(value)      => s"\"$value„"
-    case DictionaryString(value)      => s"\"$value”"
-    case If(thenBody, elseBody)       => s"[$thenBody|$elseBody}"
-    case For(loopVar, body) => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
-    case While(cond, body)  => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
+    // case SpecialModifier(modi, value) => s"$modi"
+    // ^ Might not need this because it'll be converted into different ASTs
+    case CompositeNilad(elems)   => elems.map(_.toVyxal).mkString
+    case CompressedString(value) => s"\"$value“"
+    case CompressedNumber(value) => s"\"$value„"
+    case DictionaryString(value) => s"\"$value”"
+    case If(thenBody, elseBody)  => s"[$thenBody|$elseBody}"
+    case For(loopVar, body)      => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
+    case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
     case Lambda(arity, params, body) => s"λ${body.toVyxal}}"
     case FnDef(name, lam)            => ???
     case GetVar(name)                => s"#<$name"

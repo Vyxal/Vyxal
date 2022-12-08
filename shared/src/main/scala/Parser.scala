@@ -274,7 +274,9 @@ def parse(
         arity match {
           case 1 =>
             finalAsts.push(
-              AST.Modified(Modifiers.modifiers(name).impl(List(asts.pop())))
+              AST.Modified(
+                Modifiers.modifiers(name).impl(List(finalAsts.pop()))
+              )
             )
         }
       }
