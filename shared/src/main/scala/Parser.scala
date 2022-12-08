@@ -146,12 +146,15 @@ object VyxalParser {
               })
           }
         }
+        /*
+         * List are just structures with two different opening and closing
+         * token possibilities, so handle them the same way.
+         */
         case VyxalToken.ListOpen => {
           var listDepth: Int = 1
           val elements = ListBuffer[List[VyxalToken]]()
           var element = List[VyxalToken]()
           while (program.nonEmpty && listDepth > 0) {
-            print(listDepth)
             val listToken = program.dequeue()
             listToken match {
               case VyxalToken.Branch => {
