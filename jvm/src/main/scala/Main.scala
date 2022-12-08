@@ -30,9 +30,6 @@ case class CLIConfig(
 
 object Main {
   def main(args: Array[String]): Unit = {
-    println(parse("1 1 ; v 2+"))
-
-    return
     OParser.parse(parser, args, CLIConfig()) match {
       case Some(config) =>
         given Context = Context(
