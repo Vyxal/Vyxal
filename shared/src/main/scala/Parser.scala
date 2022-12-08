@@ -14,6 +14,7 @@ def parse(
 ): Either[VyxalCompilationError, AST] = {
   val asts = Stack[AST]()
   val program = code.to(Queue)
+  // First sweep, doesn't do modifiers, does do arity grouping
   while (program.nonEmpty) {
     val token = program.dequeue()
     token match {
@@ -144,8 +145,8 @@ def parse(
             if (asts.isEmpty) {
               asts.push(AST.Command(name, Some(2)))
             } else {
-              val top = asts.takeRight(2)
-              val topNilads = top.map(isNilad).toList
+              val top = asts.take(2)
+              val topNilads = top.map(isNilad).toList.reverse
               topNilads match {
                 case List(true, true) => {
                   asts.pop()
@@ -161,7 +162,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(1), AST.Command(name, Some(1))),
+                      List(top(1), AST.Command(name, Some(2))),
                       Some(1)
                     )
                   )
@@ -170,7 +171,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(0), AST.Command(name, Some(1))),
+                      List(top(0), AST.Command(name, Some(2))),
                       Some(1)
                     )
                   )
@@ -185,8 +186,8 @@ def parse(
             if (asts.isEmpty) {
               asts.push(AST.Command(name, Some(3)))
             } else {
-              val top = asts.takeRight(3)
-              val topNilads = top.map(isNilad).toList
+              val top = asts.take(3)
+              val topNilads = top.map(isNilad).toList.reverse
               topNilads match {
                 case List(true, true, true) => {
                   asts.pop()
@@ -204,7 +205,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(2), top(1), AST.Command(name, Some(2))),
+                      List(top(2), top(1), AST.Command(name, Some(3))),
                       Some(1)
                     )
                   )
@@ -213,7 +214,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(0), AST.Command(name, Some(2))),
+                      List(top(0), AST.Command(name, Some(3))),
                       Some(2)
                     )
                   )
@@ -223,7 +224,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(1), top(0), AST.Command(name, Some(2))),
+                      List(top(1), top(0), AST.Command(name, Some(3))),
                       Some(1)
                     )
                   )
@@ -232,7 +233,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(1), AST.Command(name, Some(1))),
+                      List(top(1), AST.Command(name, Some(3))),
                       Some(2)
                     )
                   )
@@ -241,7 +242,7 @@ def parse(
                   asts.pop()
                   asts.push(
                     AST.Group(
-                      List(top(0), AST.Command(name, Some(1))),
+                      List(top(0), AST.Command(name, Some(3))),
                       Some(2)
                     )
                   )
@@ -255,7 +256,28 @@ def parse(
           case _: Int => asts.push(AST.Command(name, None))
         }
       }
+      case VyxalToken.MonadicModifier(v) => asts.push(AST.JunkModifier(v, 1))
+      case VyxalToken.DyadicModifier(v)  => asts.push(AST.JunkModifier(v, 2))
+      case VyxalToken.TriadicModifier(v) => asts.push(AST.JunkModifier(v, 3))
+      case VyxalToken.TetradicModifier(v) =>
+        asts.push(AST.JunkModifier(v, 4))
+      case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
+    }
+  }
 
+  var finalAsts = Stack[AST]()
+  while (!asts.isEmpty) {
+    val topAst = asts.pop()
+    topAst match {
+      case AST.Newline => ???
+      case AST.JunkModifier(name, arity) => {
+        arity match {
+          case 1 =>
+            finalAsts.push(
+              AST.Modified(Modifiers.modifiers(name).impl(List(asts.pop())))
+            )
+        }
+      }
     }
   }
 

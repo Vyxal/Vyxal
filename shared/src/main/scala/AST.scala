@@ -8,7 +8,7 @@ enum AST {
 
   /** Multiple ASTs grouped into one list */
   case Group(elems: List[AST], arity: Option[Int])
-  case SpecialModifier(modi: String, value: String)
+  case SpecialModifier(modi: String)
   case CompositeNilad(elems: List[AST])
 
   /** The result of applying a modifier to some arguments. `res` can be applied
@@ -31,6 +31,9 @@ enum AST {
 
   /** Junk newline AST that is removed in post-processing */
   case Newline
+
+  /** Junk modifier AST that is removed during parsing after first pass */
+  case JunkModifier(name: String, arity: Int)
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
