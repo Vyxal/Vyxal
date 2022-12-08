@@ -178,7 +178,7 @@ object VyxalParser {
             }
           }
           elements += element
-          println(elements)
+
           val parsedElements = ListBuffer[AST]()
           for (element <- elements) {
             parse(element) match {
@@ -186,7 +186,6 @@ object VyxalParser {
               case Left(error) => return Left(error)
             }
           }
-
           asts.push(AST.Lst(parsedElements.toList))
 
         }
