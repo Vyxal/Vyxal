@@ -27,22 +27,34 @@ object VyxalParser {
         case VyxalToken.Str(value) => asts.push(AST.Str(value))
         case VyxalToken.Newline    => asts.push(AST.Newline)
         case VyxalToken.StructureOpen(structureType) => {
+          var structureDepth: Int = 1
           var branches: List[List[VyxalToken]] = List()
           var branch: List[VyxalToken] = List()
-          while (
-            program.nonEmpty && program.head != VyxalToken.StructureClose
-          ) {
+          while (program.nonEmpty && structureDepth > 0) {
             val structureToken = program.dequeue()
             structureToken match {
               case VyxalToken.Branch => {
                 // append branch to branches
-                branches = branches :+ branch
-                branch = List()
+                if (structureDepth == 1) {
+                  branches = branches :+ branch
+                  branch = List()
+                } else {
+                  branch = branch :+ structureToken
+                }
+              }
+              case VyxalToken.StructureOpen(_) => {
+                structureDepth += 1
+                branch = branch :+ structureToken
+              }
+              case VyxalToken.StructureClose(_) => {
+                structureDepth -= 1
+                if (structureDepth > 0) {
+                  branch = branch :+ structureToken
+                }
               }
               case _ => branch = branch :+ structureToken
             }
           }
-          program.dequeue()
           branches = branches :+ branch
           var parsedBranches = List[AST]()
 
@@ -105,20 +117,35 @@ object VyxalParser {
 
         }
         case VyxalToken.ListOpen => {
+          var listDepth: Int = 1
           val elements = ListBuffer[List[VyxalToken]]()
           var element = List[VyxalToken]()
-          while (program.nonEmpty && program.head != VyxalToken.ListClose) {
+          while (program.nonEmpty && listDepth > 0) {
+            print(listDepth)
             val listToken = program.dequeue()
             listToken match {
               case VyxalToken.Branch => {
-                elements += element
-                element = List()
+                if (listDepth == 1) {
+                  elements += element
+                  element = List()
+                } else {
+                  element = element :+ listToken
+                }
+              }
+              case VyxalToken.ListOpen => {
+                listDepth += 1
+                element = element :+ listToken
+              }
+              case VyxalToken.ListClose => {
+                listDepth -= 1
+                if (listDepth > 0)
+                  element = element :+ listToken
               }
               case _ => element = element :+ listToken
             }
           }
-          program.dequeue()
           elements += element
+          println(elements)
           val parsedElements = ListBuffer[AST]()
           for (element <- elements) {
             parse(element) match {
