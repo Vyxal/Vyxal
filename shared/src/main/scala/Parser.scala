@@ -12,25 +12,59 @@ object VyxalParser {
     name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
 
   private def parse(code: List[VyxalToken]): ParserRet = {
+
+    /** The parser takes a list of tokens and performs two sweeps of parsing:
+      * structures + arity grouping and then modifiers. The first sweep deals
+      * directly with the token list provided to the parser, and leaves its
+      * results in a stack of ASTs (the stack data type is used because it means
+      * that arity grouping is simply popping previous ASTs until a niladic
+      * state is reached). The second sweep takes the stack of ASTs and applies
+      * the logic of modifier grouping, placing its result in a single Group
+      * AST.
+      */
     val asts = Stack[AST]()
-    val program = code.to(Queue)
-    // First sweep, doesn't do modifiers, does do arity grouping
+    val program =
+      code.to(Queue) // Convert the list of tokens to a queue so that
+    // ASTs like Structures can freely take as many tokens as they need without needing
+    // to worry about changing indexes like a for-loop would require.
+
+    // Begin the first sweep of parsing
+
     while (program.nonEmpty) {
       val token = program.dequeue()
       token match {
+        // Numbers, strings and newlines are trivial, and are simply evaluated
         case VyxalToken.Number(value) =>
           asts.push(AST.Number(VNum.from(value)))
         case VyxalToken.Str(value) => asts.push(AST.Str(value))
         case VyxalToken.Newline    => asts.push(AST.Newline)
+
+        /*
+         * Structures are a bit more complicated. They require keeping track of
+         * a) the branches of the structure and b) the number of structures that
+         * have been previously opened (this is to allow for nested structures).
+         * The algorithm is as follows:
+         * 1. While the program is not empty and structure depth > 0
+         * 2. Dequeue the next token
+         * 3. If the token is a branch (|), either add the current branch to the
+         *    list of branches in this structure, or just add it to the current
+         *    branch
+         * 4. If the token is a structure open, increment the structure depth
+         *    and append the token to the current branch
+         * 5. If the token is a structure close, decrement the structure depth,
+         *    and if we're still in a structure, append the token to the current
+         *    branch
+         * 6. Otherwise, append the token to the current branch
+         * */
         case VyxalToken.StructureOpen(structureType) => {
           var structureDepth: Int = 1
           var branches: List[List[VyxalToken]] = List()
           var branch: List[VyxalToken] = List()
+
           while (program.nonEmpty && structureDepth > 0) {
             val structureToken = program.dequeue()
             structureToken match {
               case VyxalToken.Branch => {
-                // append branch to branches
                 if (structureDepth == 1) {
                   branches = branches :+ branch
                   branch = List()
@@ -51,7 +85,11 @@ object VyxalParser {
               case _ => branch = branch :+ structureToken
             }
           }
+          // Make sure that the current branch is added to the list of branches,
+          // because it won't be added by the branch token
           branches = branches :+ branch
+
+          // Now that we have the branches, we can parse them into ASTs
           var parsedBranches = List[AST]()
 
           for (branch <- branches) {
@@ -61,11 +99,11 @@ object VyxalParser {
             }
           }
 
+          // Now, we can create the appropriate AST for the structure
           structureType match {
             case "[" => {
               parsedBranches match {
-                case List(thenBranch) =>
-                  asts.push(AST.If(thenBranch, None))
+                case List(thenBranch) => asts.push(AST.If(thenBranch, None))
                 case List(thenBranch, elseBranch) =>
                   asts.push(AST.If(thenBranch, Some(elseBranch)))
                 case _ =>
@@ -75,24 +113,22 @@ object VyxalParser {
             }
             case "{" => {
               parsedBranches match {
-                case List(cond, body) =>
-                  asts.push(AST.While(Some(cond), body))
-                case List(body) => asts.push(AST.While(None, body))
+                case List(cond, body) => asts.push(AST.While(Some(cond), body))
+                case List(body)       => asts.push(AST.While(None, body))
                 case _ =>
                   return Left(VyxalCompilationError("Invalid while statement"))
               }
             }
-
             case "(" => {
               parsedBranches match {
                 case List(cond, body) =>
-                  asts.push(AST.For(Some(toValidName(cond.toVyxal)), body))
+                  val name = Some(toValidName(cond.toVyxal))
+                  asts.push(AST.For(name, body))
                 case List(body) => asts.push(AST.For(None, body))
                 case _ =>
                   return Left(VyxalCompilationError("Invalid for statement"))
               }
             }
-
             case "λ" | "ƛ" | "Ω" | "₳" | "µ" =>
               val lambda = parsedBranches match {
                 // todo actually parse arity and parameters
@@ -108,9 +144,7 @@ object VyxalParser {
                 case "₳" => AST.makeSingle(lambda, AST.Command("R", Some(2)))
                 case "µ" => AST.makeSingle(lambda, AST.Command("ṡ", Some(2)))
               })
-
           }
-
         }
         case VyxalToken.ListOpen => {
           var listDepth: Int = 1
