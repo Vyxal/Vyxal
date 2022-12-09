@@ -351,7 +351,7 @@ object VyxalParser {
       }
     }
 
-    var finalAsts = Stack[AST]()
+    val finalAsts = Stack[AST]()
     while (!asts.isEmpty) {
       val topAst = asts.pop()
       topAst match {
