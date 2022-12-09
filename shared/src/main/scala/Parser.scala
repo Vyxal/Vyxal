@@ -58,8 +58,8 @@ object VyxalParser {
          * */
         case VyxalToken.StructureOpen(structureType) => {
           var structureDepth: Int = 1
-          var branches: List[List[VyxalToken]] = List()
-          var branch: List[VyxalToken] = List()
+          val branches = ListBuffer.empty[List[VyxalToken]]
+          val branch = ListBuffer.empty[VyxalToken]
 
           while (program.nonEmpty && structureDepth > 0) {
             val structureToken = program.dequeue()
