@@ -418,13 +418,10 @@ object VyxalParser {
     Lexer(code).flatMap { tokens =>
       val preprocessed = preprocess(tokens)
       val parsed = parse(preprocessed) match {
-        case Right(ast) => Right(ast)
+        case Right(ast) => Right(postprocess(ast))
         case Left(error) =>
           Left(VyxalCompilationError(s"Error parsing code: $error"))
       }
-      parsed match
-        case Right(ast)  => Right(postprocess(ast))
-        case Left(error) => Left(error)
     }
   }
 
