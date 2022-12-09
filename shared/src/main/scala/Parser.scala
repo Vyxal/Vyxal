@@ -356,7 +356,7 @@ object VyxalParser {
       val topAst = asts.pop()
       topAst match {
         case AST.Newline => ???
-        case AST.JunkModifier(name, arity) => {
+        case AST.JunkModifier(name, arity) =>
           arity match {
             case 1 =>
               finalAsts.push(
