@@ -7,7 +7,7 @@ case class VyxalCompilationError(msg: String)
 enum VyxalToken {
   case Number(value: String)
   case Str(value: String)
-  case StructureOpen(value: String)
+  case StructureOpen(structureType: StructureType)
   case StructureClose(value: String)
   case StructureAllClose
   case ListOpen
@@ -27,6 +27,17 @@ enum VyxalToken {
   case SetVar(value: String)
   case Branch
   case Newline
+}
+
+enum StructureType(val open: String) {
+  case If extends StructureType("[")
+  case While extends StructureType("{")
+  case For extends StructureType("(")
+  case Lambda extends StructureType("λ")
+  case LambdaMap extends StructureType("ƛ")
+  case LambdaFilter extends StructureType("Ω")
+  case LambdaReduce extends StructureType("₳")
+  case LambdaSort extends StructureType("µ")
 }
 
 import VyxalToken.*
@@ -72,7 +83,7 @@ object Lexer extends RegexParsers {
   }
 
   def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
-    StructureOpen(value)
+    StructureOpen(StructureType.values.find(_.open == value).get)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>

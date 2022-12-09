@@ -202,7 +202,7 @@ object Parser {
     *   - Otherwise, append the token to the current branch
     */
   private def parseStructure(
-      structureType: String,
+      structureType: StructureType,
       asts: Stack[AST],
       program: Queue[VyxalToken]
   ): Unit = {
@@ -251,7 +251,7 @@ object Parser {
     val parsedBranches = branchList.toList
     // Now, we can create the appropriate AST for the structure
     structureType match {
-      case "[" => {
+      case StructureType.If => {
         parsedBranches match {
           case List(thenBranch) => asts.push(AST.If(thenBranch, None))
           case List(thenBranch, elseBranch) =>
@@ -261,7 +261,7 @@ object Parser {
           // TODO: One day make this extended elif
         }
       }
-      case "{" => {
+      case StructureType.While => {
         parsedBranches match {
           case List(cond, body) => asts.push(AST.While(Some(cond), body))
           case List(body)       => asts.push(AST.While(None, body))
@@ -269,7 +269,7 @@ object Parser {
             return Left(VyxalCompilationError("Invalid while statement"))
         }
       }
-      case "(" => {
+      case StructureType.For => {
         parsedBranches match {
           case List(cond, body) =>
             val name = Some(toValidName(cond.toVyxal))
@@ -279,7 +279,10 @@ object Parser {
             return Left(VyxalCompilationError("Invalid for statement"))
         }
       }
-      case lambdaType @ ("λ" | "ƛ" | "Ω" | "₳" | "µ") =>
+      case lambdaType @ (
+          StructureType.Lambda | StructureType.LambdaMap |
+          StructureType.LambdaFilter | StructureType.LambdaReduce |
+          StructureType.LambdaSort) =>
         val lambda = parsedBranches match {
           // todo actually parse arity and parameters
           case List(body) => AST.Lambda(1, List.empty, body)
@@ -288,11 +291,15 @@ object Parser {
         // todo using the command names is a bit brittle
         //   maybe refer to the functions directly
         asts.push(lambdaType match {
-          case "λ" => lambda
-          case "ƛ" => AST.makeSingle(lambda, AST.Command("M"))
-          case "Ω" => AST.makeSingle(lambda, AST.Command("F"))
-          case "₳" => AST.makeSingle(lambda, AST.Command("R"))
-          case "µ" => AST.makeSingle(lambda, AST.Command("ṡ"))
+          case StructureType.Lambda => lambda
+          case StructureType.LambdaMap =>
+            AST.makeSingle(lambda, AST.Command("M"))
+          case StructureType.LambdaFilter =>
+            AST.makeSingle(lambda, AST.Command("F"))
+          case StructureType.LambdaReduce =>
+            AST.makeSingle(lambda, AST.Command("R"))
+          case StructureType.LambdaSort =>
+            AST.makeSingle(lambda, AST.Command("ṡ"))
         })
     }
   }
