@@ -69,32 +69,32 @@ object VyxalParser {
                   branches += branch.toList
                   branch.clear()
                 } else {
-                  branch = branch :+ structureToken
+                  branch += structureToken
                 }
               }
               case VyxalToken.StructureOpen(_) => {
                 structureDepth += 1
-                branch = branch :+ structureToken
+                branch += structureToken
               }
               case VyxalToken.StructureClose(_) => {
                 structureDepth -= 1
                 if (structureDepth > 0) {
-                  branch = branch :+ structureToken
+                  branch += structureToken
                 }
               }
-              case _ => branch = branch :+ structureToken
+              case _ => branch += structureToken
             }
           }
           // Make sure that the current branch is added to the list of branches,
           // because it won't be added by the branch token
-          branches = branches :+ branch
+          branches += branch.toList
 
           // Now that we have the branches, we can parse them into ASTs
-          var parsedBranches = List[AST]()
+          val parsedBranches = ListBuffer[AST]()
 
           for (branch <- branches) {
             parse(branch) match {
-              case Right(ast)  => parsedBranches = parsedBranches :+ ast
+              case Right(ast)  => parsedBranches += ast
               case Left(error) => return Left(error)
             }
           }
@@ -386,7 +386,7 @@ object VyxalParser {
             case 4 => ??? // Are there even arity 4 modifiers?
 
           }
-        }
+
         case AST.SpecialModifier(name) => {
           name match {
             case "ᵜ" => {
