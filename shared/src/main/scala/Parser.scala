@@ -90,15 +90,16 @@ object VyxalParser {
           branches += branch.toList
 
           // Now that we have the branches, we can parse them into ASTs
-          val parsedBranches = ListBuffer[AST]()
+          val branchList = ListBuffer[AST]()
 
           for (branch <- branches) {
             parse(branch) match {
-              case Right(ast)  => parsedBranches += ast
+              case Right(ast)  => branchList += ast
               case Left(error) => return Left(error)
             }
           }
 
+          val parsedBranches = branchList.toList
           // Now, we can create the appropriate AST for the structure
           structureType match {
             case "[" => {
@@ -400,6 +401,7 @@ object VyxalParser {
         case Left(error) =>
           Left(VyxalCompilationError(s"Error parsing code: $error"))
       }
+      parsed
     }
   }
 
