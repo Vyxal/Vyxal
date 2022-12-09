@@ -357,38 +357,13 @@ object VyxalParser {
       topAst match {
         case AST.Newline => ???
         case AST.JunkModifier(name, arity) =>
-          arity match {
-            case 1 =>
-              finalAsts.push(
-                Modifiers.modifiers(name).impl(List(finalAsts.pop()))
-              )
-            case 2 =>
-              finalAsts.push(
-                Modifiers
-                  .modifiers(name)
-                  .impl(
-                    List(finalAsts.pop(), finalAsts.pop())
-                  )
-              )
-            case 3 =>
-              finalAsts.push(
-                Modifiers
-                  .modifiers(name)
-                  .impl(
-                    List(
-                      finalAsts.pop(),
-                      finalAsts.pop(),
-                      finalAsts.pop()
-                    )
-                  )
-              )
-
-            case 4 => ??? // Are there even arity 4 modifiers?
-
+          if (arity > 0) {
+            finalAsts.push(
+              Modifiers.modifiers(name).impl(List.fill(arity)(finalAsts.pop()))
+            )
           }
-
         case AST.SpecialModifier(name) => {
-          name match {
+          (name: @unchecked) match {
             case "ᵜ" => {
               var lambdaAsts = ListBuffer[AST]()
               while (asts.top != AST.Newline) {
@@ -405,6 +380,9 @@ object VyxalParser {
             case "ᵗ" => ??? // TODO: Implement tie
             case _ =>
               ??? // The hell kinda special modifier is this? Actually unreachable
+            // Why? Because the lexer only recognises ᵜ and ᵗ as special modifiers
+            // if you've got to this case, then someone has figured out how to
+            // screw around with ACE exploits. Good job, you.
           }
         }
         case _ => finalAsts.push(topAst)
