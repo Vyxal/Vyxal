@@ -87,150 +87,7 @@ object Parser {
          * top stack elements are needed to make the command equivalent to a
          * nilad. For arities -1 and 0, the command doesn't need to be grouped.
          */
-        case VyxalToken.Command(name) => {
-          getArity(name) match {
-            case -1 => asts.push(AST.Command(name))
-            case 0  => asts.push(AST.Command(name))
-            case 1 => {
-              if (asts.isEmpty) { // Nothing to group, so just push
-                asts.push(AST.Command(name))
-              } else {
-                val top = asts.top
-                if (isNilad(top)) { // Compose a nilad if the top is a nilad
-                  asts.pop()
-                  asts.push(
-                    AST.Group(List(top, AST.Command(name)), Some(0))
-                  )
-                } else {
-                  asts.push(AST.Command(name))
-                }
-              }
-            }
-            case 2 => {
-              if (asts.isEmpty) {
-                asts.push(AST.Command(name))
-              } else {
-                val top = asts.take(2) // Returns a stack of the top 2 elements
-                val topNilads =
-                  top
-                    .map(isNilad)
-                    .toList
-                    .reverse // which needs to be reversed for pattern matching
-                topNilads match {
-                  // (true, true) means that this command is a nilad
-                  case List(true, true) => {
-                    asts.pop(); asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(1), top(0), AST.Command(name)),
-                        Some(0)
-                      )
-                    )
-                  }
-                  // (false, true) or (true) means that this command is a monad
-                  case List(false, true) => {
-                    asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(1), AST.Command(name)),
-                        Some(1)
-                      )
-                    )
-                  }
-                  case List(true) => {
-                    asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(0), AST.Command(name)),
-                        Some(1)
-                      )
-                    )
-                  }
-                  // otherwise, it's a dyad (this includes the case of
-                  // (true, false))
-                  case _ => {
-                    asts.push(AST.Command(name))
-                  }
-                }
-              }
-            }
-            case 3 => {
-              // Same deal as arity 2, but with arity 3 and more code
-              if (asts.isEmpty) {
-                asts.push(AST.Command(name))
-              } else {
-                val top = asts.take(3)
-                val topNilads = top.map(isNilad).toList.reverse
-                topNilads match {
-                  case List(true, true, true) => {
-                    asts.pop(); asts.pop(); asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(
-                          top(2),
-                          top(1),
-                          top(0),
-                          AST.Command(name)
-                        ),
-                        Some(0)
-                      )
-                    )
-                  }
-                  case List(false, true, true) => {
-                    asts.pop(); asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(2), top(1), AST.Command(name)),
-                        Some(1)
-                      )
-                    )
-                  }
-                  case List(_, false, true) => {
-                    asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(0), AST.Command(name)),
-                        Some(2)
-                      )
-                    )
-                  }
-                  case List(true, true) => {
-                    asts.pop(); asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(1), top(0), AST.Command(name)),
-                        Some(1)
-                      )
-                    )
-                  }
-                  case List(false, true) => {
-                    asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(1), AST.Command(name)),
-                        Some(2)
-                      )
-                    )
-                  }
-                  case List(true) => {
-                    asts.pop()
-                    asts.push(
-                      AST.Group(
-                        List(top(0), AST.Command(name)),
-                        Some(2)
-                      )
-                    )
-                  }
-                  case _ => {
-                    asts.push(AST.Command(name))
-                  }
-                }
-              }
-            }
-            // For all other arities, just push the command
-            case _: Int => asts.push(AST.Command(name))
-          }
-        }
+        case VyxalToken.Command(name) => parseCommand(name, asts, program)
         // At this stage, modifiers aren't explicitly handled, so just push a
         // temporary AST to comply with the type of the AST stack
         case VyxalToken.MonadicModifier(v) => asts.push(AST.JunkModifier(v, 1))
@@ -281,6 +138,49 @@ object Parser {
     }
 
     Right(AST.makeSingle(finalAsts.toList*))
+  }
+
+  /** @param name The command's name */
+  def parseCommand(
+      name: String,
+      asts: Stack[AST],
+      program: Queue[VyxalToken]
+  ): Unit = {
+    val cmd = AST.Command(name)
+    if (asts.isEmpty) {
+      // Nothing to group, so just push
+      asts.push(cmd)
+    } else {
+      Elements.elements(name).arity match {
+        case None => asts.push(cmd)
+        case Some(arity) =>
+          @annotation.tailrec
+          def group(neededArgs: Int, numToPop: Int = 0): Unit = {
+            if (
+              neededArgs > 0 && numToPop < asts.size && isNilad(asts(numToPop))
+            ) {
+              val nextArg = asts(numToPop)
+              if (nextArg.arity == Some(0)) {
+                group(neededArgs - 1, numToPop + 1)
+              } else {
+                asts.push(cmd)
+              }
+            } else {
+              if (numToPop == 0) {
+                asts.push(cmd)
+              } else {
+                val args = asts.take(numToPop).toList
+                asts.dropInPlace(numToPop)
+                asts.push(
+                  AST.Group((cmd :: args).reverse, Some(neededArgs - numToPop))
+                )
+              }
+            }
+          }
+
+          group(arity)
+      }
+    }
   }
 
   /** @param structureType
@@ -379,7 +279,7 @@ object Parser {
             return Left(VyxalCompilationError("Invalid for statement"))
         }
       }
-      case lambdaType@("λ" | "ƛ" | "Ω" | "₳" | "µ") =>
+      case lambdaType @ ("λ" | "ƛ" | "Ω" | "₳" | "µ") =>
         val lambda = parsedBranches match {
           // todo actually parse arity and parameters
           case List(body) => AST.Lambda(1, List.empty, body)
@@ -432,12 +332,6 @@ object Parser {
     }
     temp
   }
-
-  private def getArity(cmd: String) = Elements.elements(cmd).arity.getOrElse(-1)
-
-  private def getArity(cmd: AST.Command) = cmd.arity
-
-  private def getArity(cmd: AST.Group) = cmd.arity
 
   private def isNilad(ast: AST) = ast.arity == Some(0)
 
