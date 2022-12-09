@@ -66,8 +66,8 @@ object VyxalParser {
             structureToken match {
               case VyxalToken.Branch => {
                 if (structureDepth == 1) {
-                  branches = branches :+ branch
-                  branch = List()
+                  branches += branch.toList
+                  branch.clear()
                 } else {
                   branch = branch :+ structureToken
                 }
