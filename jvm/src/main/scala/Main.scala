@@ -33,7 +33,7 @@ object Main {
     OParser.parse(parser, args, CLIConfig()) match {
       case Some(config) =>
         given Context = Context(
-          config.inputs.reverse.map(VyxalParser.parseInput)
+          config.inputs.reverse.map(Parser.parseInput)
         )
 
         if (config.printHelp) {

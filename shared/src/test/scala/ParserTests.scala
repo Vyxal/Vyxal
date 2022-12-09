@@ -6,12 +6,12 @@ import AST.*
 
 class ParserTests extends AnyFunSuite {
   test("Does the parser recognise numbers?") {
-    assert(VyxalParser.parse("123") === Right(Number(123)))
+    assert(Parser.parse("123") === Right(Number(123)))
   }
 
   test("Does the parser recognise strings?") {
     assert(
-      VyxalParser.parse(""" "Hello, world!" """) === Right(
+      Parser.parse(""" "Hello, world!" """) === Right(
         Str("Hello, world!")
       )
     )
@@ -19,7 +19,7 @@ class ParserTests extends AnyFunSuite {
 
   test("Does the parser recognise lists?") {
     assert(
-      VyxalParser.parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
+      Parser.parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
         Lst(
           List(
             Str("foo"),
@@ -33,7 +33,7 @@ class ParserTests extends AnyFunSuite {
 
   test("Does the parser recognise multiple literals?") {
     assert(
-      VyxalParser.parse("""123 "Hello" 24 #[ | 1 2 | 3 ⟩""") === Right(
+      Parser.parse("""123 "Hello" 24 #[ | 1 2 | 3 ⟩""") === Right(
         AST.makeSingle(
           Number(123),
           Str("Hello"),
@@ -52,7 +52,7 @@ class ParserTests extends AnyFunSuite {
 
   test("Does the parser understand nested structures?") {
     assert(
-      VyxalParser.parse("1 { 2 | { {3 | 4} | } } 6") ===
+      Parser.parse("1 { 2 | { {3 | 4} | } } 6") ===
         Right(
           AST.makeSingle(
             Number(6),
@@ -76,7 +76,7 @@ class ParserTests extends AnyFunSuite {
 
   test("Does the parser understand close all structures (']')?") {
     assert(
-      VyxalParser.parse("1 { 2 | { {3 | 4} | ] 6") ===
+      Parser.parse("1 { 2 | { {3 | 4} | ] 6") ===
         Right(
           AST.makeSingle(
             Number(6),

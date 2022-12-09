@@ -6,7 +6,7 @@ import scala.collection.mutable.Stack
 
 import vyxal.impls.Elements
 
-object VyxalParser {
+object Parser {
   type ParserRet = Either[VyxalCompilationError, AST]
   private def toValidName(name: String): String =
     name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)

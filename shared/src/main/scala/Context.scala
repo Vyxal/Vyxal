@@ -40,7 +40,7 @@ class Context private (
     } else {
       val temp = StdIn.readLine()
       if (temp.nonEmpty) {
-        VyxalParser.parseInput(temp)
+        Parser.parseInput(temp)
       } else {
         settings.defaultValue
       }

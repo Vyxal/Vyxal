@@ -4,7 +4,7 @@ import vyxal.impls.Elements
 
 object Interpreter {
   def execute(code: String)(using ctx: Context): Unit = {
-    VyxalParser.parse(code) match {
+    Parser.parse(code) match {
       case Right(ast) =>
         if (ctx.settings.logLevel == LogLevel.Debug) {
           println(s"Executing '$code' (ast: $ast)")
