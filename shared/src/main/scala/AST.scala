@@ -1,46 +1,49 @@
 package vyxal
 
-enum AST {
-  case Number(value: VNum)
-  case Str(value: String)
-  case Lst(elems: List[AST])
-  case Command(value: String, arity: Option[Int])
+import vyxal.impls.Elements
+
+enum AST(val arity: Option[Int]) {
+  case Number(value: VNum) extends AST(Some(0))
+  case Str(value: String) extends AST(Some(0))
+  case Lst(elems: List[AST]) extends AST(Some(0))
+  case Command(value: String)
+      extends AST(Elements.elements.get(value).flatMap(_.arity))
 
   /** Multiple ASTs grouped into one list */
-  case Group(elems: List[AST], arity: Option[Int])
-  case SpecialModifier(modi: String)
-  case CompositeNilad(elems: List[AST])
+  case Group(elems: List[AST], override val arity: Option[Int]) extends AST(arity)
+  case SpecialModifier(modi: String) extends AST(None)
+  case CompositeNilad(elems: List[AST]) extends AST(Some(0))
 
   /** The result of applying a modifier to some arguments. `res` can be applied
     * directly to the stack.
     */
-  case Modified(res: DirectFn)
-  case CompressedString(value: String)
-  case CompressedNumber(value: String)
-  case DictionaryString(value: String)
-  case If(thenBody: AST, elseBody: Option[AST])
-  case For(loopVar: Option[String], body: AST)
-  case While(cond: Option[AST], body: AST)
-  case Lambda(arity: Int, params: List[String], body: AST)
+  case Modified(res: DirectFn) extends AST(None)
+  case CompressedString(value: String) extends AST(Some(0))
+  case CompressedNumber(value: String) extends AST(Some(0))
+  case DictionaryString(value: String) extends AST(Some(0))
+  case If(thenBody: AST, elseBody: Option[AST]) extends AST(None)
+  case For(loopVar: Option[String], body: AST) extends AST(None)
+  case While(cond: Option[AST], body: AST) extends AST(None)
+  case Lambda(lambdaArity: Int, params: List[String], body: AST) extends AST(Some(lambdaArity))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
-  case FnDef(name: String, lam: Lambda)
-  case GetVar(name: String)
-  case SetVar(name: String)
-  case ExecuteFn
+  case FnDef(name: String, lam: Lambda) extends AST(Some(0))
+  case GetVar(name: String) extends AST(Some(0))
+  case SetVar(name: String) extends AST(Some(1))
+  case ExecuteFn extends AST(None)
 
   /** Junk newline AST that is removed in post-processing */
-  case Newline
+  case Newline extends AST(Some(0))
 
   /** Junk modifier AST that is removed during parsing after first pass */
-  case JunkModifier(name: String, arity: Int)
+  case JunkModifier(name: String, modArity: Int) extends AST(Some(modArity))
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
     case Number(n)         => n.toString
     case Str(value)        => s"\"$value\""
     case Lst(elems)        => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-    case Command(value, _) => value
+    case Command(value) => value
     case Group(elems, _)   => elems.map(_.toVyxal).mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
@@ -65,5 +68,5 @@ object AST {
     */
   def makeSingle(elems: AST*): AST =
     if (elems.size == 1) elems.head
-    else AST.Group(elems.toList, Some(1))
+    else AST.Group(elems.toList, None)
 }

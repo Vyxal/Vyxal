@@ -35,7 +35,7 @@ object Interpreter {
           list += ctx.pop()
         }
         ctx.push(VList(list.toList*))
-      case AST.Command(cmd, _) =>
+      case AST.Command(cmd) =>
         Elements.elements.get(cmd) match {
           case Some(elem) => elem.impl()
           case None       => throw RuntimeException(s"No such command: '$cmd'")

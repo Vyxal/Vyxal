@@ -16,7 +16,7 @@ class InterpreterTests extends AnyFunSuite {
   }
 
   test("Can the interpreter execute while loops?") {
-    given ctx: Context = Context()
+    given ctx: Context = Context(globals = Globals(settings = Settings(logLevel = LogLevel.Debug)))
     Interpreter.execute("6 { : 2 - | 1 -}")
     assert(ctx.pop() == VNum(2))
   }

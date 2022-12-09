@@ -11,142 +11,32 @@ object Parser {
   private def toValidName(name: String): String =
     name.filter(_.isLetterOrDigit).dropWhile(!_.isLetter)
 
+  /** The parser takes a list of tokens and performs two sweeps of parsing:
+    * structures + arity grouping and then modifiers. The first sweep deals
+    * directly with the token list provided to the parser, and leaves its
+    * results in a stack of ASTs (the stack data type is used because it means
+    * that arity grouping is simply popping previous ASTs until a niladic state
+    * is reached). The second sweep takes the stack of ASTs and applies the
+    * logic of modifier grouping, placing its result in a single Group AST.
+    */
   private def parse(code: List[VyxalToken]): ParserRet = {
-
-    /** The parser takes a list of tokens and performs two sweeps of parsing:
-      * structures + arity grouping and then modifiers. The first sweep deals
-      * directly with the token list provided to the parser, and leaves its
-      * results in a stack of ASTs (the stack data type is used because it means
-      * that arity grouping is simply popping previous ASTs until a niladic
-      * state is reached). The second sweep takes the stack of ASTs and applies
-      * the logic of modifier grouping, placing its result in a single Group
-      * AST.
-      */
     val asts = Stack[AST]()
-    val program =
-      code.to(Queue) // Convert the list of tokens to a queue so that
-    // ASTs like Structures can freely take as many tokens as they need without needing
-    // to worry about changing indexes like a for-loop would require.
+    val program = code.to(Queue)
+    // Convert the list of tokens to a queue so that ASTs like Structures can
+    // freely take as many tokens as they need without needing to worry about
+    // changing indexes like a for-loop would require.
 
     // Begin the first sweep of parsing
 
     while (program.nonEmpty) {
-      val token = program.dequeue()
-      token match {
+      program.dequeue() match {
         // Numbers, strings and newlines are trivial, and are simply evaluated
         case VyxalToken.Number(value) =>
           asts.push(AST.Number(VNum.from(value)))
         case VyxalToken.Str(value) => asts.push(AST.Str(value))
         case VyxalToken.Newline    => asts.push(AST.Newline)
-
-        /*
-         * Structures are a bit more complicated. They require keeping track of
-         * a) the branches of the structure and b) the number of structures that
-         * have been previously opened (this is to allow for nested structures).
-         * The algorithm is as follows:
-         * 1. While the program is not empty and structure depth > 0
-         * 2. Dequeue the next token
-         * 3. If the token is a branch (|), either add the current branch to the
-         *    list of branches in this structure, or just add it to the current
-         *    branch
-         * 4. If the token is a structure open, increment the structure depth
-         *    and append the token to the current branch
-         * 5. If the token is a structure close, decrement the structure depth,
-         *    and if we're still in a structure, append the token to the current
-         *    branch
-         * 6. Otherwise, append the token to the current branch
-         * */
-        case VyxalToken.StructureOpen(structureType) => {
-          var structureDepth: Int = 1
-          val branches = ListBuffer.empty[List[VyxalToken]]
-          val branch = ListBuffer.empty[VyxalToken]
-
-          while (program.nonEmpty && structureDepth > 0) {
-            val structureToken = program.dequeue()
-            structureToken match {
-              case VyxalToken.Branch => {
-                if (structureDepth == 1) {
-                  branches += branch.toList
-                  branch.clear()
-                } else {
-                  branch += structureToken
-                }
-              }
-              case VyxalToken.StructureOpen(_) => {
-                structureDepth += 1
-                branch += structureToken
-              }
-              case VyxalToken.StructureClose(_) => {
-                structureDepth -= 1
-                if (structureDepth > 0) {
-                  branch += structureToken
-                }
-              }
-              case _ => branch += structureToken
-            }
-          }
-          // Make sure that the current branch is added to the list of branches,
-          // because it won't be added by the branch token
-          branches += branch.toList
-
-          // Now that we have the branches, we can parse them into ASTs
-          val branchList = ListBuffer[AST]()
-
-          for (branch <- branches) {
-            parse(branch) match {
-              case Right(ast)  => branchList += ast
-              case Left(error) => return Left(error)
-            }
-          }
-
-          val parsedBranches = branchList.toList
-          // Now, we can create the appropriate AST for the structure
-          structureType match {
-            case "[" => {
-              parsedBranches match {
-                case List(thenBranch) => asts.push(AST.If(thenBranch, None))
-                case List(thenBranch, elseBranch) =>
-                  asts.push(AST.If(thenBranch, Some(elseBranch)))
-                case _ =>
-                  return Left(VyxalCompilationError("Invalid if statement"))
-                // TODO: One day make this extended elif
-              }
-            }
-            case "{" => {
-              parsedBranches match {
-                case List(cond, body) => asts.push(AST.While(Some(cond), body))
-                case List(body)       => asts.push(AST.While(None, body))
-                case _ =>
-                  return Left(VyxalCompilationError("Invalid while statement"))
-              }
-            }
-            case "(" => {
-              parsedBranches match {
-                case List(cond, body) =>
-                  val name = Some(toValidName(cond.toVyxal))
-                  asts.push(AST.For(name, body))
-                case List(body) => asts.push(AST.For(None, body))
-                case _ =>
-                  return Left(VyxalCompilationError("Invalid for statement"))
-              }
-            }
-            case "λ" | "ƛ" | "Ω" | "₳" | "µ" =>
-              val lambda = parsedBranches match {
-                // todo actually parse arity and parameters
-                case List(body) => AST.Lambda(1, List.empty, body)
-                case _          => ???
-              }
-              // todo using the command names is a bit brittle
-              //   maybe refer to the functions directly
-              asts.push((structureType: @unchecked) match {
-                case "λ" => lambda
-                case "ƛ" => AST.makeSingle(lambda, AST.Command("M", Some(2)))
-                case "Ω" => AST.makeSingle(lambda, AST.Command("F", Some(2)))
-                case "₳" => AST.makeSingle(lambda, AST.Command("R", Some(2)))
-                case "µ" => AST.makeSingle(lambda, AST.Command("ṡ", Some(2)))
-              })
-          }
-        }
+        case VyxalToken.StructureOpen(open) =>
+          parseStructure(open, asts, program)
         /*
          * List are just structures with two different opening and closing
          * token possibilities, so handle them the same way.
@@ -199,26 +89,26 @@ object Parser {
          */
         case VyxalToken.Command(name) => {
           getArity(name) match {
-            case -1 => asts.push(AST.Command(name, None))
-            case 0  => asts.push(AST.Command(name, Some(0)))
+            case -1 => asts.push(AST.Command(name))
+            case 0  => asts.push(AST.Command(name))
             case 1 => {
               if (asts.isEmpty) { // Nothing to group, so just push
-                asts.push(AST.Command(name, Some(1)))
+                asts.push(AST.Command(name))
               } else {
                 val top = asts.top
                 if (isNilad(top)) { // Compose a nilad if the top is a nilad
                   asts.pop()
                   asts.push(
-                    AST.Group(List(top, AST.Command(name, Some(1))), Some(0))
+                    AST.Group(List(top, AST.Command(name)), Some(0))
                   )
                 } else {
-                  asts.push(AST.Command(name, Some(1)))
+                  asts.push(AST.Command(name))
                 }
               }
             }
             case 2 => {
               if (asts.isEmpty) {
-                asts.push(AST.Command(name, Some(2)))
+                asts.push(AST.Command(name))
               } else {
                 val top = asts.take(2) // Returns a stack of the top 2 elements
                 val topNilads =
@@ -232,7 +122,7 @@ object Parser {
                     asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(1), top(0), AST.Command(name, Some(2))),
+                        List(top(1), top(0), AST.Command(name)),
                         Some(0)
                       )
                     )
@@ -242,7 +132,7 @@ object Parser {
                     asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(1), AST.Command(name, Some(2))),
+                        List(top(1), AST.Command(name)),
                         Some(1)
                       )
                     )
@@ -251,7 +141,7 @@ object Parser {
                     asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(0), AST.Command(name, Some(2))),
+                        List(top(0), AST.Command(name)),
                         Some(1)
                       )
                     )
@@ -259,7 +149,7 @@ object Parser {
                   // otherwise, it's a dyad (this includes the case of
                   // (true, false))
                   case _ => {
-                    asts.push(AST.Command(name, Some(2)))
+                    asts.push(AST.Command(name))
                   }
                 }
               }
@@ -267,7 +157,7 @@ object Parser {
             case 3 => {
               // Same deal as arity 2, but with arity 3 and more code
               if (asts.isEmpty) {
-                asts.push(AST.Command(name, Some(3)))
+                asts.push(AST.Command(name))
               } else {
                 val top = asts.take(3)
                 val topNilads = top.map(isNilad).toList.reverse
@@ -280,7 +170,7 @@ object Parser {
                           top(2),
                           top(1),
                           top(0),
-                          AST.Command(name, Some(3))
+                          AST.Command(name)
                         ),
                         Some(0)
                       )
@@ -290,7 +180,7 @@ object Parser {
                     asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(2), top(1), AST.Command(name, Some(3))),
+                        List(top(2), top(1), AST.Command(name)),
                         Some(1)
                       )
                     )
@@ -299,7 +189,7 @@ object Parser {
                     asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(0), AST.Command(name, Some(3))),
+                        List(top(0), AST.Command(name)),
                         Some(2)
                       )
                     )
@@ -308,7 +198,7 @@ object Parser {
                     asts.pop(); asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(1), top(0), AST.Command(name, Some(3))),
+                        List(top(1), top(0), AST.Command(name)),
                         Some(1)
                       )
                     )
@@ -317,7 +207,7 @@ object Parser {
                     asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(1), AST.Command(name, Some(3))),
+                        List(top(1), AST.Command(name)),
                         Some(2)
                       )
                     )
@@ -326,19 +216,19 @@ object Parser {
                     asts.pop()
                     asts.push(
                       AST.Group(
-                        List(top(0), AST.Command(name, Some(3))),
+                        List(top(0), AST.Command(name)),
                         Some(2)
                       )
                     )
                   }
                   case _ => {
-                    asts.push(AST.Command(name, Some(3)))
+                    asts.push(AST.Command(name))
                   }
                 }
               }
             }
             // For all other arities, just push the command
-            case _: Int => asts.push(AST.Command(name, None))
+            case _: Int => asts.push(AST.Command(name))
           }
         }
         // At this stage, modifiers aren't explicitly handled, so just push a
@@ -374,7 +264,7 @@ object Parser {
                 AST.Lambda(
                   1,
                   List(),
-                  AST.Group(lambdaAsts.toList.reverse, None)
+                  AST.makeSingle(lambdaAsts.toList.reverse*)
                 )
               )
             }
@@ -390,7 +280,121 @@ object Parser {
       }
     }
 
-    Right(AST.Group(finalAsts.toList, None))
+    Right(AST.makeSingle(finalAsts.toList*))
+  }
+
+  /** @param structureType
+    *   The opening character of the structure
+    *
+    * Structures are a bit more complicated. They require keeping track of a)
+    * the branches of the structure and b) the number of structures that have
+    * been previously opened (this is to allow for nested structures). The
+    * algorithm is as follows:
+    *   - While the program is not empty and structure depth > 0
+    *   - Dequeue the next token
+    *   - If the token is a branch (|), either add the current branch to the
+    *     list of branches in this structure, or just add it to the current
+    *     branch
+    *   - If the token is a structure open, increment the structure depth and
+    *     append the token to the current branch
+    *   - If the token is a structure close, decrement the structure depth, and
+    *     if we're still in a structure, append the token to the current branch
+    *   - Otherwise, append the token to the current branch
+    */
+  private def parseStructure(
+      structureType: String,
+      asts: Stack[AST],
+      program: Queue[VyxalToken]
+  ): Unit = {
+    var structureDepth: Int = 1
+    val branches = ListBuffer.empty[List[VyxalToken]]
+    val branch = ListBuffer.empty[VyxalToken]
+
+    while (program.nonEmpty && structureDepth > 0) {
+      val structureToken = program.dequeue()
+      structureToken match {
+        case VyxalToken.Branch => {
+          if (structureDepth == 1) {
+            branches += branch.toList
+            branch.clear()
+          } else {
+            branch += structureToken
+          }
+        }
+        case VyxalToken.StructureOpen(_) => {
+          structureDepth += 1
+          branch += structureToken
+        }
+        case VyxalToken.StructureClose(_) => {
+          structureDepth -= 1
+          if (structureDepth > 0) {
+            branch += structureToken
+          }
+        }
+        case _ => branch += structureToken
+      }
+    }
+    // Make sure that the current branch is added to the list of branches,
+    // because it won't be added by the branch token
+    branches += branch.toList
+
+    // Now that we have the branches, we can parse them into ASTs
+    val branchList = ListBuffer[AST]()
+
+    for (branch <- branches) {
+      parse(branch) match {
+        case Right(ast)  => branchList += ast
+        case Left(error) => return Left(error)
+      }
+    }
+
+    val parsedBranches = branchList.toList
+    // Now, we can create the appropriate AST for the structure
+    structureType match {
+      case "[" => {
+        parsedBranches match {
+          case List(thenBranch) => asts.push(AST.If(thenBranch, None))
+          case List(thenBranch, elseBranch) =>
+            asts.push(AST.If(thenBranch, Some(elseBranch)))
+          case _ =>
+            return Left(VyxalCompilationError("Invalid if statement"))
+          // TODO: One day make this extended elif
+        }
+      }
+      case "{" => {
+        parsedBranches match {
+          case List(cond, body) => asts.push(AST.While(Some(cond), body))
+          case List(body)       => asts.push(AST.While(None, body))
+          case _ =>
+            return Left(VyxalCompilationError("Invalid while statement"))
+        }
+      }
+      case "(" => {
+        parsedBranches match {
+          case List(cond, body) =>
+            val name = Some(toValidName(cond.toVyxal))
+            asts.push(AST.For(name, body))
+          case List(body) => asts.push(AST.For(None, body))
+          case _ =>
+            return Left(VyxalCompilationError("Invalid for statement"))
+        }
+      }
+      case lambdaType@("λ" | "ƛ" | "Ω" | "₳" | "µ") =>
+        val lambda = parsedBranches match {
+          // todo actually parse arity and parameters
+          case List(body) => AST.Lambda(1, List.empty, body)
+          case _          => ???
+        }
+        // todo using the command names is a bit brittle
+        //   maybe refer to the functions directly
+        asts.push(lambdaType match {
+          case "λ" => lambda
+          case "ƛ" => AST.makeSingle(lambda, AST.Command("M"))
+          case "Ω" => AST.makeSingle(lambda, AST.Command("F"))
+          case "₳" => AST.makeSingle(lambda, AST.Command("R"))
+          case "µ" => AST.makeSingle(lambda, AST.Command("ṡ"))
+        })
+    }
   }
 
   def parse(code: String): Either[VyxalCompilationError, AST] = {
@@ -435,25 +439,8 @@ object Parser {
 
   private def getArity(cmd: AST.Group) = cmd.arity
 
-  private def isNilad(ast: AST) = ast match {
-    case AST.Command(_, arity) =>
-      arity match {
-        case Some(0) => true
-        case _       => false
-      }
-    case AST.Number(_) => true
-    case AST.Str(_)    => true
-    case AST.Lst(Nil)  => true
-    case AST.Lambda(_, _, _) =>
-      true // The lambda object itself is a nilad, not the actual function call
-    case AST.Group(_, arity) =>
-      arity match {
-        case Some(0) => true
-        case _       => false
-      }
-    case AST.Lst(_) => true
-    case _          => false
-  }
+  private def isNilad(ast: AST) = ast.arity == Some(0)
+
   def parseInput(input: String): VAny = {
     Lexer(input).toOption
       .flatMap { tokens =>

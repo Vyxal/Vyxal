@@ -32,7 +32,7 @@ object Modifiers {
       List("vectorise-", "vec-"),
       { case List(elem) =>
         elem match {
-          case AST.Command(symbol, _) =>
+          case AST.Command(symbol) =>
             val element = Elements.elements(symbol)
             AST.Modified { () => (ctx: Context) ?=>
               // todo should default arity be 1 for weird elements?
@@ -66,7 +66,7 @@ object Modifiers {
       List("foldl-", "reduce-", "/-"),
       { case List(elem) =>
         elem match {
-          case AST.Command(symbol, _) =>
+          case AST.Command(symbol) =>
             val element = Elements.elements(symbol)
             AST.Modified { () => (ctx: Context) ?=>
               FuncHelpers.reduceByElement(
