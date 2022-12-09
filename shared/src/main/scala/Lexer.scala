@@ -4,29 +4,31 @@ import scala.util.parsing.combinator._
 
 case class VyxalCompilationError(msg: String)
 
-enum VyxalToken {
-  case Number(value: String)
-  case Str(value: String)
+// todo maybe make a separate TokenType enum and make VyxalToken a simple case class
+enum VyxalToken(val value: String) {
+  case Number(override val value: String) extends VyxalToken(value)
+  case Str(override val value: String) extends VyxalToken(value)
   case StructureOpen(structureType: StructureType)
-  case StructureClose(value: String)
-  case StructureAllClose
-  case ListOpen
-  case ListClose
-  case Command(value: String)
-  case Digraph(value: String)
-  case MonadicModifier(value: String)
-  case DyadicModifier(value: String)
-  case TriadicModifier(value: String)
-  case TetradicModifier(value: String)
-  case SpecialModifier(value: String)
-  case CompressedString(value: String)
-  case CompressedNumber(value: String)
-  case DictionaryString(value: String)
-  case Comment(value: String)
-  case GetVar(value: String)
-  case SetVar(value: String)
-  case Branch
-  case Newline
+      extends VyxalToken(structureType.open)
+  case StructureClose(override val value: String) extends VyxalToken(value)
+  case StructureAllClose extends VyxalToken("]")
+  case ListOpen extends VyxalToken("#[")
+  case ListClose extends VyxalToken("#]")
+  case Command(override val value: String) extends VyxalToken(value)
+  case Digraph(override val value: String) extends VyxalToken(value)
+  case MonadicModifier(override val value: String) extends VyxalToken(value)
+  case DyadicModifier(override val value: String) extends VyxalToken(value)
+  case TriadicModifier(override val value: String) extends VyxalToken(value)
+  case TetradicModifier(override val value: String) extends VyxalToken(value)
+  case SpecialModifier(override val value: String) extends VyxalToken(value)
+  case CompressedString(override val value: String) extends VyxalToken(value)
+  case CompressedNumber(override val value: String) extends VyxalToken(value)
+  case DictionaryString(override val value: String) extends VyxalToken(value)
+  case Comment(override val value: String) extends VyxalToken(value)
+  case GetVar(override val value: String) extends VyxalToken(value)
+  case SetVar(override val value: String) extends VyxalToken(value)
+  case Branch extends VyxalToken("|")
+  case Newline extends VyxalToken("\n")
 }
 
 enum StructureType(val open: String) {

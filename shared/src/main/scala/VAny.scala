@@ -63,7 +63,6 @@ object VFun {
 
   def fromElement(elem: Element)(using origCtx: Context): VFun = {
     val Element(symbol, name, _, arity, _, _, impl) = elem
-    println(s"fromElement, arity = $arity")
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
   }
 }

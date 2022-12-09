@@ -66,12 +66,9 @@ def forkify(name: String)(impl: PartialVyFn[2]): VyFn[2] = {
   case (f: VFun, g: VFun) =>
     VFun(
       { () => ctx ?=>
-        println(s"forkify: ctx stack = ${ctx.peek(10)}")
         // Don't pop args so that g can reuse them
         val a = Interpreter.executeFn(f, popArgs = false)
-        println(s"forkify: a = $a")
         val b = Interpreter.executeFn(g, popArgs = false)
-        println(s"forkify: a = $a, b = $b")
         ctx.push(impl(a, b))
       },
       f.arity.max(g.arity),
