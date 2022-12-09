@@ -483,7 +483,7 @@ object VyxalParser {
               case AST.Number(n) => Some[VAny](n)
               case AST.Str(s)    => Some(s)
               case AST.Lst(l) =>
-                Some[VAny](VList(l.map(e => parseInput(e.toString))*))
+                Some(VList(l.map(e => parseInput(e.toString))*))
               case _ => None
             }
           case Left(_) => None
