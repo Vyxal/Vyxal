@@ -130,7 +130,6 @@ object Parser {
         case AST.Newline => ???
         case AST.JunkModifier(name, arity) =>
           if (arity > 0) {
-            println(s"finalAsts.top ${finalAsts.top}")
             finalAsts.push(
               Modifiers.modifiers(name).impl(List.fill(arity)(finalAsts.pop()))
             )
