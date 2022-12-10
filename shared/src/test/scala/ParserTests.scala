@@ -27,8 +27,12 @@ class ParserTests extends AnyFunSuite {
     assert(
       Parser.parse("1 1 + 2 *") === Right(
         Group(
-          List(Number(1), Number(1), Command("+"), Number(2), Command("*")),
-          Some(0)
+          List(
+            Group(List(Number(1), Number(1), Command("+")), Some(0)),
+            Number(2),
+            Command("*")
+          ),
+          None
         )
       )
     )
@@ -111,6 +115,53 @@ class ParserTests extends AnyFunSuite {
                 AST.makeSingle()
               )
             )
+          )
+        )
+    )
+  }
+
+  test(
+    "Is the parser capable of parsing (something that looks like) FizzBuzz?"
+  ) {
+    assert(
+      Parser.parse("""100 ƛ35O+"FizzBuzz"O++O""") ===
+        Right(
+          Group(
+            List(
+              Number(100),
+              Group(
+                List(
+                  Lambda(
+                    1,
+                    List(),
+                    Group(
+                      List(
+                        Group(
+                          List(
+                            Group(List(Number(35), Command("O")), Some(0)),
+                            Command("+")
+                          ),
+                          Some(1)
+                        ),
+                        Group(
+                          List(
+                            Group(List(Str("FizzBuzz"), Command("O")), Some(0)),
+                            Command("+")
+                          ),
+                          Some(1)
+                        ),
+                        Group(List(Command("+")), Some(2)),
+                        Group(List(Command("O")), Some(1))
+                      ),
+                      None
+                    )
+                  ),
+                  Command("M")
+                ),
+                None
+              )
+            ),
+            None
           )
         )
     )
