@@ -296,13 +296,14 @@ object Elements {
         symbol: String,
         name: String,
         keywords: Seq[String],
+        arity: Option[Int],
         overloads: String*
     )(impl: Context ?=> Unit): Unit =
       elements += symbol -> Element(
         symbol,
         name,
         keywords,
-        None,
+        arity,
         false,
         overloads,
         () => impl
@@ -401,10 +402,11 @@ object Elements {
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
-    val dup = addDirect(":", "Duplicate", List("dup"), "a -> a, a") { ctx ?=>
-      val a = ctx.pop()
-      ctx.push(a)
-      ctx.push(a)
+    val dup = addDirect(":", "Duplicate", List("dup"), Some(1), "a -> a, a") {
+      ctx ?=>
+        val a = ctx.pop()
+        ctx.push(a)
+        ctx.push(a)
     }
 
     val equals = addDyadVect(
@@ -442,6 +444,7 @@ object Elements {
       "_",
       "Pop and Discard",
       List("pop", "discard"),
+      Some(1),
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
@@ -591,6 +594,7 @@ object Elements {
       ",",
       "Print",
       List("print", "puts", "out"),
+      Some(1),
       "a -> printed to stdout"
     ) { ctx ?=>
       MiscHelpers.vyPrintln(ctx.pop())
@@ -651,19 +655,21 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
-    val swap = addDirect("$", "Swap", List("swap"), "a, b -> b, a") { ctx ?=>
-      val b = ctx.pop()
-      val a = ctx.pop()
-      ctx.push(b)
-      ctx.push(a)
+    val swap = addDirect("$", "Swap", List("swap"), Some(2), "a, b -> b, a") {
+      ctx ?=>
+        val b = ctx.pop()
+        val a = ctx.pop()
+        ctx.push(b)
+        ctx.push(a)
     }
 
     val triplicate =
-      addDirect("D", "Triplicate", List("trip"), "a -> [a, a, a]") { ctx ?=>
-        val a = ctx.pop()
-        ctx.push(a)
-        ctx.push(a)
-        ctx.push(a)
+      addDirect("D", "Triplicate", List("trip"), Some(1), "a -> [a, a, a]") {
+        ctx ?=>
+          val a = ctx.pop()
+          ctx.push(a)
+          ctx.push(a)
+          ctx.push(a)
       }
     // Constants
 

@@ -188,6 +188,9 @@ object Parser {
       asts: Stack[AST],
       program: Queue[VyxalToken]
   ): ParserRet[AST] = {
+    if (asts.isEmpty) {
+      return Right(AST.Command(name))
+    }
     val arity = Elements.elements(name).arity match
       case None        => 0
       case Some(value) => value

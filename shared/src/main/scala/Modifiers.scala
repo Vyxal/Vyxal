@@ -21,8 +21,7 @@ case class Modifier(
     impl: PartialFunction[List[AST], AST]
 )
 
-/** Implementations of modifiers
-  */
+/** Implementations of modifiers */
 object Modifiers {
   val modifiers: Map[String, Modifier] = Map(
     "v" -> Modifier(
@@ -31,6 +30,7 @@ object Modifiers {
          |vf: f but vectorised""".stripMargin,
       List("vectorise-", "vec-"),
       { case List(elem) =>
+        println(s"vec'd elem = $elem")
         elem match {
           case AST.Command(symbol) =>
             val element = Elements.elements(symbol)
@@ -51,8 +51,11 @@ object Modifiers {
             }
           case _ =>
             AST.Modified { () => (ctx: Context) ?=>
+              println(s"elem.arity ${elem.arity}")
               FuncHelpers.vectorise(
-                VFun.fromLambda(AST.Lambda(1, List.empty, elem))
+                VFun.fromLambda(
+                  AST.Lambda(elem.arity.getOrElse(1), List.empty, elem)
+                )
               )
             }
         }
