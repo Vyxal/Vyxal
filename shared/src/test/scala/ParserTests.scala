@@ -17,6 +17,24 @@ class ParserTests extends AnyFunSuite {
     )
   }
 
+  test("Does the parser recognise basic expressions?") {
+    assert(
+      Parser.parse("1 1 +") === Right(
+        Group(List(Number(1), Number(1), Command("+")), None)
+      )
+    )
+
+    assert(
+      Parser.parse("1 1 + 2 *") === Right(
+        Group(
+          List(Number(1), Number(1), Command("+"), Number(2), Command("*")),
+          Some(0)
+        )
+      )
+    )
+
+  }
+
   test("Does the parser recognise lists?") {
     assert(
       Parser.parse(""" ⟨"foo" | 1 2 | 3 #] """) === Right(
@@ -98,29 +116,4 @@ class ParserTests extends AnyFunSuite {
     )
   }
 
-  // TODO fix this test
-  // test("Does the parser understand mixed monadic modifiers and structures?") {
-  //   assert(
-  //     VyxalParser.parse("1 { 2 | { v{3 | 4 ] 5") ===
-  //       Right(
-  //         AST.makeSingle(
-  //           Number(1),
-  //           AST.While(
-  //             Some(Number(2)),
-  //             AST.While(
-  //               None,
-  //               Modified(
-  //                 "v",
-  //                 AST.While(
-  //                   Some(Number(3)),
-  //                   Number(4)
-  //                 )
-  //               )
-  //             )
-  //           ),
-  //           Number(5)
-  //         )
-  //       )
-  //   )
-  // }
 }

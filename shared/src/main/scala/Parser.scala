@@ -130,6 +130,7 @@ object Parser {
         case AST.Newline => ???
         case AST.JunkModifier(name, arity) =>
           if (arity > 0) {
+            println(s"finalAsts.top ${finalAsts.top}")
             finalAsts.push(
               Modifiers.modifiers(name).impl(List.fill(arity)(finalAsts.pop()))
             )
@@ -164,55 +165,50 @@ object Parser {
     Right(AST.makeSingle(finalAsts.toList*))
   }
 
-  /** @param name The command's name */
+  /** This is the function that performs arity grouping of elements. Here's a
+    * table of all the different groupings:
+    *
+    * N = Nilad M = Monad D = Dyad T = Triad
+    *
+    * Pattern | Resulting Arity
+    * --------|-----------------------------------------------------------------
+    * N M ....| 0 ..............................................................
+    * N N D ..| 0 ..............................................................
+    * N N N T | 0 ..............................................................
+    * N D ....| 1 ..............................................................
+    * N N T ..| 1 ..............................................................
+    * N T ....| 2
+    *
+    * ASTs will pop off the stack while: the top arity is 0 and the maximum
+    * number of nilads is not reached.
+    * @param name
+    *   The command's name
+    */
   def parseCommand(
       name: String,
       asts: Stack[AST],
       program: Queue[VyxalToken]
   ): ParserRet[AST] = {
-    if (!Elements.elements.contains(name)) {
-      Left(VyxalCompilationError(s"No such command: '$name'"))
-    } else {
-      val cmd = AST.Command(name)
-      val grouped = if (asts.isEmpty) {
-        // Nothing to group, so just push
-        cmd
-      } else {
-        Elements.elements(name).arity match {
-          case None => cmd
-          case Some(arity) =>
-            @annotation.tailrec
-            def group(neededArgs: Int, numToPop: Int = 0): AST = {
-              if (
-                neededArgs > 0 && numToPop < asts.size && isNilad(
-                  asts(numToPop)
-                )
-              ) {
-                val nextArg = asts(numToPop)
-                if (nextArg.arity == Some(0)) {
-                  group(neededArgs - 1, numToPop + 1)
-                } else {
-                  cmd
-                }
-              } else {
-                if (numToPop == 0) {
-                  cmd
-                } else {
-                  val args = asts.take(numToPop).toList
-                  asts.dropInPlace(numToPop)
-                  AST.Group(
-                    (cmd :: args).reverse,
-                    Some(neededArgs - numToPop)
-                  )
-                }
-              }
-            }
-            group(arity)
-        }
-      }
+    val arity = Elements.elements(name).arity match
+      case None        => 0
+      case Some(value) => value
 
-      Right(grouped)
+    val nilads = ListBuffer[AST]()
+
+    while (
+      !asts.isEmpty && nilads.size < arity && (asts.top.arity match {
+        case None        => false
+        case Some(value) => value == 0
+      })
+    ) {
+      nilads += asts.pop()
     }
+    Right(
+      AST.Group(
+        nilads.toList.reverse :+ AST.Command(name),
+        Some(arity - nilads.size)
+      )
+    )
   }
 
   /** Parse branches for an unknown structure, nothing more.
