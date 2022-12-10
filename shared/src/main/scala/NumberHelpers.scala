@@ -1,6 +1,8 @@
 package vyxal
 
 import vyxal.impls.Elements
+import vyxal.VNum.given
+
 import scala.collection.mutable.ListBuffer
 
 object NumberHelpers {
@@ -8,8 +10,8 @@ object NumberHelpers {
   def fromBinary(a: VAny)(using ctx: Context): VAny = {
     a match {
       case n: VNum   => fromBinary(n.toString())
-      case l: VList  => toint(l, 2)
-      case s: String => toint(s, 2)
+      case l: VList  => toInt(l, 2)
+      case s: String => toInt(s, 2)
       case _         => throw new Exception("Cannot convert to binary")
     }
   }
@@ -49,15 +51,15 @@ object NumberHelpers {
     }
   }
 
-  def toint(value: VAny, radix: Int)(using ctx: Context): VAny = {
+  def toInt(value: VAny, radix: Int)(using ctx: Context): VAny = {
     value match {
-      case n: VNum => toint(n.toString(), radix)
+      case n: VNum => toInt(n.toString(), radix)
       case l: VList =>
         l.foldLeft(0: VAny) { (res, i) =>
           MiscHelpers.add(MiscHelpers.multiply(res, radix), i)
         }
 
-      case s: String => BigInt(s.toUpperCase(), radix).toInt
+      case s: String => BigInt(s.toUpperCase(), radix)
       case _         => throw new Exception("Cannot convert to int")
     }
   }

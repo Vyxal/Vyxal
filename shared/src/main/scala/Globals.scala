@@ -1,5 +1,7 @@
 package vyxal
 
+import VNum.given
+
 /** Stuff that's shared across all contexts
   *
   * @param inputs

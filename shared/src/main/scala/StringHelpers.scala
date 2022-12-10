@@ -1,7 +1,11 @@
 package vyxal
 
+import VNum.given
+
 import collection.mutable.StringBuilder
 import scala.util.matching.Regex
+
+import spire.implicits.*
 
 object StringHelpers {
 
@@ -9,7 +13,7 @@ object StringHelpers {
     haystack.split(needle, -1).length - 1
   }
 
-  def formatString(fmtstr: String, args: AnyRef*): String = {
+  def formatString(fmtstr: String, args: Any*): String = {
     val sb = StringBuilder()
     var i = 0
     var j = 0

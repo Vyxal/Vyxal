@@ -3,14 +3,16 @@ package vyxal
 import vyxal.impls.Element
 import vyxal.Interpreter.executeFn
 
-import spire.math.Number
-import spire.math.Complex
+import scala.reflect.TypeTest
+
+import spire.algebra.*
+import spire.implicits.*
+import spire.math.{Complex, Real}
 
 // todo check if these names or this whole way of structuring need to be changed
 type VAny = VAtom | VList
 type VAtom = VVal | VFun
 type VVal = VNum | String
-type VNum = Complex[Number] | Number
 
 /** A function object (not a function definition)
   *
@@ -68,34 +70,10 @@ object VFun {
   }
 }
 
-object VNum {
-
-  /** To force an implicit conversion */
-  def apply(n: VNum): VNum = n
-
-  // todo implement properly
-  /** Parse a number from a string */
-  def from(s: String): VNum = {
-    // Not as simple as it seems - can't just use Number.parse
-    // because it doesn't handle hanging decimals (3. -> 3.5) nor
-    // complex numbers (3ı4 -> 3+4i)
-
-    val parts = s.split("ı") // Spits into real and imaginary parts
-    val real = parts(0)
-    val imag = parts.lift(1).getOrElse("0")
-
-    val realNum = (if (real.last == '.') then real + "5" else real).toInt
-    val imagNum = (if (imag.last == '.') then imag + "5" else imag).toInt
-
-    if (imagNum == 0) then return realNum
-    else return Complex(realNum, imagNum)
-  }
-}
-
 extension (self: VAny)
   def ===(that: VAny): Boolean = {
     (self, that) match {
-      case (a: VAtom, b: VAtom) => MiscHelpers.compare(a, b) == 0
+      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
       case _                    => false
     }

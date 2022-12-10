@@ -5,15 +5,42 @@ import vyxal.impls.UnimplementedOverloadException
 /** Helpers for function-related stuff */
 object FuncHelpers {
 
-  /** Take a monad, dyad, or triad, and return a proper (not Partial) function
-    * that errors if it's not defined for the input
+  /** Take a monad and return a proper (not Partial) function that errors if
+    * it's not defined for the input
     */
-  def errorIfUndefined[T](
+  def fillMonad(
       name: String,
-      fn: Context ?=> PartialFunction[T, VAny]
-  ): T => Context ?=> VAny = args =>
+      fn: Context ?=> PartialFunction[VAny, VAny]
+  ): VAny => Context ?=> VAny = args =>
     if (fn.isDefinedAt(args)) fn(args)
     else throw UnimplementedOverloadException(name, args)
+
+  /** Take a dyad and return a proper (not Partial) function that errors if it's
+    * not defined for the input
+    */
+  def fillDyad(name: String, fn: PartialVyFn[2]): Dyad = { (a, b) =>
+    val args = (a, b)
+    if (fn.isDefinedAt(args)) fn(args)
+    else throw UnimplementedOverloadException(name, args)
+  }
+
+  /** Take a triad and return a proper (not Partial) function that errors if
+    * it's not defined for the input
+    */
+  def fillTriad(name: String, fn: PartialVyFn[3]): Triad = { (a, b, c) =>
+    val args = (a, b, c)
+    if (fn.isDefinedAt(args)) fn(args)
+    else throw UnimplementedOverloadException(name, args)
+  }
+
+  /** Take a tetrad and return a proper (not Partial) function that errors if
+    * it's not defined for the input
+    */
+  def fillTetrad(name: String, fn: PartialVyFn[4]): Tetrad = { (a, b, c, d) =>
+    val args = (a, b, c, d)
+    if (fn.isDefinedAt(args)) fn(args)
+    else throw UnimplementedOverloadException(name, args)
+  }
 
   def vectorise(fn: VFun)(using ctx: Context): Unit = {
     if (fn.arity == 1) {

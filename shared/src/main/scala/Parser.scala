@@ -62,7 +62,7 @@ object Parser {
          * List are just structures with two different opening and closing
          * token possibilities, so handle them the same way.
          */
-        case VyxalToken.ListOpen => {
+        case VyxalToken.ListOpen =>
           var listDepth: Int = 1
           val elements = ListBuffer[List[VyxalToken]]()
           var element = List[VyxalToken]()
@@ -100,7 +100,6 @@ object Parser {
           }
           asts.push(AST.Lst(parsedElements.toList))
 
-        }
         /*
          * Now comes command handling. When handling commands, we need to
          * perform the arity grouping when pushing the command. This is done
@@ -284,37 +283,34 @@ object Parser {
     val id =
       Option.when(structureType == StructureType.For)(parseIdentifier(program))
 
-    parseBranches(program).map { branches =>
+    parseBranches(program).flatMap { branches =>
       // Now, we can create the appropriate AST for the structure
       structureType match {
-        case StructureType.If => {
+        case StructureType.If =>
           branches match {
-            case List(thenBranch) => AST.If(thenBranch, None)
+            case List(thenBranch) => Right(AST.If(thenBranch, None))
             case List(thenBranch, elseBranch) =>
-              AST.If(thenBranch, Some(elseBranch))
+              Right(AST.If(thenBranch, Some(elseBranch)))
             case _ =>
-              return Left(VyxalCompilationError("Invalid if statement"))
+              Left(VyxalCompilationError("Invalid if statement"))
             // TODO: One day make this extended elif
           }
-        }
-        case StructureType.While => {
+        case StructureType.While =>
           branches match {
-            case List(cond, body) => AST.While(Some(cond), body)
-            case List(body)       => AST.While(None, body)
+            case List(cond, body) => Right(AST.While(Some(cond), body))
+            case List(body)       => Right(AST.While(None, body))
             case _ =>
-              return Left(VyxalCompilationError("Invalid while statement"))
+              Left(VyxalCompilationError("Invalid while statement"))
           }
-        }
-        case StructureType.For => {
+        case StructureType.For =>
           branches match {
             case List(cond, body) =>
               val name = Some(toValidName(id.get))
-              AST.For(name, body)
-            case List(body) => AST.For(None, body)
+              Right(AST.For(name, body))
+            case List(body) => Right(AST.For(None, body))
             case _ =>
-              return Left(VyxalCompilationError("Invalid for statement"))
+              Left(VyxalCompilationError("Invalid for statement"))
           }
-        }
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
             StructureType.LambdaFilter | StructureType.LambdaReduce |
             StructureType.LambdaSort) =>
@@ -325,7 +321,7 @@ object Parser {
           }
           // todo using the command names is a bit brittle
           //   maybe refer to the functions directly
-          lambdaType match {
+          Right(lambdaType match {
             case StructureType.Lambda => lambda
             case StructureType.LambdaMap =>
               AST.makeSingle(lambda, AST.Command("M"))
@@ -335,7 +331,7 @@ object Parser {
               AST.makeSingle(lambda, AST.Command("R"))
             case StructureType.LambdaSort =>
               AST.makeSingle(lambda, AST.Command("ṡ"))
-          }
+          })
       }
     }
   }

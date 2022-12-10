@@ -1,6 +1,7 @@
 package vyxal
 
 import vyxal.impls.Elements
+import VNum.given
 
 object Interpreter {
   def execute(code: String)(using ctx: Context): Unit = {
@@ -73,7 +74,7 @@ object Interpreter {
       case AST.For(None, body) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
-        var index: VNum = 0
+        var index = 0
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.contextVarN = elem
@@ -85,7 +86,7 @@ object Interpreter {
       case AST.For(Some(name), body) =>
         val iterable =
           ListHelpers.makeIterable(ctx.pop(), Some(true))(using ctx)
-        var index: VNum = 0
+        var index = 0
         given loopCtx: Context = ctx.makeChild()
         for (elem <- iterable) {
           loopCtx.setVar(name, elem)

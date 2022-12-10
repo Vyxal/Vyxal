@@ -2,6 +2,8 @@ package vyxal
 
 import collection.mutable.ArrayBuffer
 
+import VNum.given
+
 object ListHelpers {
 
   /** Make an iterable from a value
