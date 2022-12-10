@@ -43,9 +43,7 @@ object FuncHelpers {
   }
 
   def vectorise(fn: VFun)(using ctx: Context): Unit = {
-    if (fn.arity == 1 || fn.arity == 0) {
-      // Treat nilads as if they're monads
-      // todo: this is kind of a bandaid fix to get `,` to work
+    if (fn.arity == 1) {
       ctx.push(vectorise1(fn))
     } else if (fn.arity == 2) {
       ctx.push(vectorise2(fn))

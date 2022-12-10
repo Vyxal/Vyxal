@@ -131,9 +131,8 @@ object Interpreter {
   )(using ctx: Context): VAny = {
     val VFun(impl, arity, params, origCtx) = fn
     println(s"Executing function with arity $arity")
-    // Bump up the arity to 1 if it's 0
     given fnCtx: Context =
-      Context.makeFnCtx(origCtx, ctx, arity.max(1), params, args, popArgs)
+      Context.makeFnCtx(origCtx, ctx, arity, params, args, popArgs)
 
     contextVarM.foreach { m => fnCtx.contextVarM = m }
     contextVarN.foreach { n => fnCtx.contextVarN = n }

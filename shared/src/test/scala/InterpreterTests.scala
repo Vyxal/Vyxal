@@ -22,12 +22,9 @@ class InterpreterTests extends AnyFunSuite {
   }
 
   test("Can the interpreter vectorise simple monads?") {
-    val sb = new StringBuilder()
-    // Instead of printing, add to sb so we can inspect it
-    given ctx: Context =
-      Context(globals = Globals(settings = Settings(printFn = sb.append)))
-    Interpreter.execute("#[4 | #[5 | 6#] #] v,")
-    assert(sb.toString == "4\n5\n6\n")
+    given ctx: Context = Context()
+    Interpreter.execute("#[100 | #[101 | 0#] #] vB")
+    assert(ctx.pop() == VList(4, VList(5, 0)))
   }
 
   test("Can the interpreter vectorise simple dyads?") {
