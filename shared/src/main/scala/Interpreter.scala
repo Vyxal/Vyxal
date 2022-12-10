@@ -12,7 +12,9 @@ object Interpreter {
         }
         execute(ast)
         // todo implicit output according to settings
-        if (!ctx.isStackEmpty) {
+        if (
+          !ctx.isStackEmpty && ctx.settings.endPrintMode == EndPrintMode.Default
+        ) {
           println(ctx.peek)
         }
       case Left(error) =>
@@ -128,8 +130,10 @@ object Interpreter {
       popArgs: Boolean = true
   )(using ctx: Context): VAny = {
     val VFun(impl, arity, params, origCtx) = fn
+    println(s"Executing function with arity $arity")
+    // Bump up the arity to 1 if it's 0
     given fnCtx: Context =
-      Context.makeFnCtx(origCtx, ctx, arity, params, args, popArgs)
+      Context.makeFnCtx(origCtx, ctx, arity.max(1), params, args, popArgs)
 
     contextVarM.foreach { m => fnCtx.contextVarM = m }
     contextVarN.foreach { n => fnCtx.contextVarN = n }

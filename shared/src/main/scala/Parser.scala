@@ -188,29 +188,29 @@ object Parser {
       asts: Stack[AST],
       program: Queue[VyxalToken]
   ): ParserRet[AST] = {
-    if (asts.isEmpty) {
-      return Right(AST.Command(name))
-    }
-    val arity = Elements.elements(name).arity match
-      case None        => 0
-      case Some(value) => value
+    Elements.elements.get(name) match {
+      case None => Left(VyxalCompilationError(s"No such element: $name"))
+      case Some(element) =>
+        if (asts.isEmpty) {
+          Right(AST.Command(name))
+        } else {
+          val arity = element.arity.getOrElse(0)
+          val nilads = ListBuffer[AST]()
 
-    val nilads = ListBuffer[AST]()
-
-    while (
-      !asts.isEmpty && nilads.size < arity && (asts.top.arity match {
-        case None        => false
-        case Some(value) => value == 0
-      })
-    ) {
-      nilads += asts.pop()
+          while (
+            asts.nonEmpty && nilads.size < arity
+            && (asts.top.arity.fold(false)(_ == 0))
+          ) {
+            nilads += asts.pop()
+          }
+          Right(
+            AST.Group(
+              (AST.Command(name) :: nilads.toList).reverse,
+              Some(arity - nilads.size)
+            )
+          )
+        }
     }
-    Right(
-      AST.Group(
-        nilads.toList.reverse :+ AST.Command(name),
-        Some(arity - nilads.size)
-      )
-    )
   }
 
   /** Parse branches for an unknown structure, nothing more.
@@ -237,9 +237,8 @@ object Parser {
             // Get rid of the `|` token to move on to the next branch
             program.dequeue()
             if (
-              program.isEmpty || (isCloser(
-                program.front
-              ) && program.front != VyxalToken.Branch)
+              program.isEmpty ||
+              (isCloser(program.front) && program.front != VyxalToken.Branch)
             ) {
               // Don't forget empty branches at the end
               branches += AST.makeSingle()
@@ -381,10 +380,9 @@ object Parser {
   private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] = {
     val processed = ListBuffer[VyxalToken]()
     tokens.foreach {
-      case VyxalToken.StructureClose(")") => {
+      case VyxalToken.StructureClose(")") =>
         processed += VyxalToken.StructureClose("}")
         processed += VyxalToken.StructureClose("}")
-      }
       case x => processed += x
     }
     processed.toList

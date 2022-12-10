@@ -59,7 +59,7 @@ class Context private (
     if (stack.nonEmpty) {
       stack.last
     } else if (inputs.nonEmpty) {
-      inputs.next()
+      inputs.peek
     } else {
       settings.defaultValue
     }

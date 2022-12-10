@@ -6,7 +6,6 @@ import vyxal.VNum.given
 import spire.algebra.*
 
 object MiscHelpers {
-  given reflect.Typeable[VNum] = ???
   // todo consider doing something like APL's forks so this doesn't have to be a partial function
   val add = vect2("add")(forkify {
     case (a: VNum, b: VNum)     => a + b

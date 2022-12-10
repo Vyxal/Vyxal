@@ -402,7 +402,7 @@ object Elements {
       case (a: String, b: String) => VList(a.split(b)*)
     }
 
-    val dup = addDirect(":", "Duplicate", List("dup"), Some(1), "a -> a, a") {
+    val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
       ctx ?=>
         val a = ctx.pop()
         ctx.push(a)
@@ -444,7 +444,7 @@ object Elements {
       "_",
       "Pop and Discard",
       List("pop", "discard"),
-      Some(1),
+      None,
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
@@ -594,7 +594,7 @@ object Elements {
       ",",
       "Print",
       List("print", "puts", "out"),
-      Some(1),
+      None,
       "a -> printed to stdout"
     ) { ctx ?=>
       MiscHelpers.vyPrintln(ctx.pop())
@@ -655,7 +655,7 @@ object Elements {
       // todo consider doing something like APL's forks
     }
 
-    val swap = addDirect("$", "Swap", List("swap"), Some(2), "a, b -> b, a") {
+    val swap = addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") {
       ctx ?=>
         val b = ctx.pop()
         val a = ctx.pop()
@@ -664,7 +664,7 @@ object Elements {
     }
 
     val triplicate =
-      addDirect("D", "Triplicate", List("trip"), Some(1), "a -> [a, a, a]") {
+      addDirect("D", "Triplicate", List("trip"), None, "a -> [a, a, a]") {
         ctx ?=>
           val a = ctx.pop()
           ctx.push(a)
