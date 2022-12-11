@@ -61,7 +61,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-project-version",
       vyxalVersion,
       "-groups", // Group similar functions
-      "-Ygenerate-inkuire" // Allow type-based searches
+      "-Ygenerate-inkuire", // Allow type-based searches
+      "-external-mappings:.*scala.*::scaladoc3::https://scala-lang.org/api/3.x/,.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
     )
   )
   .jvmSettings(
