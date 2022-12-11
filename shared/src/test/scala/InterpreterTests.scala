@@ -53,7 +53,7 @@ class InterpreterTests extends AnyFunSuite {
     Interpreter.execute(
       Modifiers
         .modifiers("v")
-        .impl(List(AST.Lambda(1, List.empty, AST.Command("!"))))
+        .from(List(AST.Lambda(1, List.empty, AST.Command("!"))))
     )
     assertResult(VList(1, 6, VList(2, 1)))(ctx.pop())
   }
@@ -78,7 +78,7 @@ class InterpreterTests extends AnyFunSuite {
     Interpreter.execute(
       Modifiers
         .modifiers("v")
-        .impl(List(AST.Lambda(2, List.empty, AST.Command("-"))))
+        .from(List(AST.Lambda(2, List.empty, AST.Command("-"))))
     )
     assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
   }

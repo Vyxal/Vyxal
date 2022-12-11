@@ -671,6 +671,25 @@ object Elements {
           ctx.push(a)
           ctx.push(a)
       }
+
+    val vectoriseAsElement = addDirect(
+      "#v",
+      "Vectorise (Element Form) [Internal Use]",
+      List(),
+      None,
+      "*a, f -> f vectorised over however many arguments in a. It is reccomended to use the modifier instead"
+    ) { ctx ?=>
+      val f = ctx.pop()
+
+      // For sake of simplicity, error if not a function
+
+      f match {
+        case f: VFun =>
+          FuncHelpers.vectorise(f)
+        case _ => throw new Exception("Vectorise: Not a function")
+      }
+
+    }
     // Constants
 
     addNilad("₀", "Ten", List("ten"), "10") { 10 }

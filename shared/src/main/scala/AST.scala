@@ -10,21 +10,19 @@ enum AST(val arity: Option[Int]) {
       extends AST(Elements.elements.get(value).flatMap(_.arity))
 
   /** Multiple ASTs grouped into one list */
-  case Group(elems: List[AST], override val arity: Option[Int]) extends AST(arity)
+  case Group(elems: List[AST], override val arity: Option[Int])
+      extends AST(arity)
   case SpecialModifier(modi: String) extends AST(None)
   case CompositeNilad(elems: List[AST]) extends AST(Some(0))
 
-  /** The result of applying a modifier to some arguments. `res` can be applied
-    * directly to the stack.
-    */
-  case Modified(res: DirectFn) extends AST(None)
   case CompressedString(value: String) extends AST(Some(0))
   case CompressedNumber(value: String) extends AST(Some(0))
   case DictionaryString(value: String) extends AST(Some(0))
-  case If(thenBody: AST, elseBody: Option[AST]) extends AST(None)
+  case If(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
   case For(loopVar: Option[String], body: AST) extends AST(None)
   case While(cond: Option[AST], body: AST) extends AST(None)
-  case Lambda(lambdaArity: Int, params: List[String], body: AST) extends AST(Some(lambdaArity))
+  case Lambda(lambdaArity: Int, params: List[String], body: AST)
+      extends AST(Some(lambdaArity))
 
   /** A function definition, basically sugar a lambda assigned to a variable */
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
@@ -40,11 +38,11 @@ enum AST(val arity: Option[Int]) {
 
   /** Generate the Vyxal code this AST represents */
   def toVyxal: String = this match {
-    case Number(n)         => n.toString
-    case Str(value)        => s"\"$value\""
-    case Lst(elems)        => elems.map(_.toVyxal).mkString("#[", "|", "#]")
-    case Command(value) => value
-    case Group(elems, _)   => elems.map(_.toVyxal).mkString
+    case Number(n)       => n.toString
+    case Str(value)      => s"\"$value\""
+    case Lst(elems)      => elems.map(_.toVyxal).mkString("#[", "|", "#]")
+    case Command(value)  => value
+    case Group(elems, _) => elems.map(_.toVyxal).mkString
     // case SpecialModifier(modi, value) => s"$modi"
     // ^ Might not need this because it'll be converted into different ASTs
     case CompositeNilad(elems)   => elems.map(_.toVyxal).mkString

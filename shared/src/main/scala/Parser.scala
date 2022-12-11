@@ -131,7 +131,7 @@ object Parser {
         case AST.JunkModifier(name, arity) =>
           if (arity > 0) {
             finalAsts.push(
-              Modifiers.modifiers(name).impl(List.fill(arity)(finalAsts.pop()))
+              Modifiers.modifiers(name).from(List.fill(arity)(finalAsts.pop()))
             )
           }
         case AST.SpecialModifier(name) => {

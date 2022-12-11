@@ -47,7 +47,6 @@ object Interpreter {
         elems.foreach(Interpreter.execute(_))
       case AST.CompositeNilad(elems) =>
         elems.foreach(Interpreter.execute(_))
-      case AST.Modified(fn) => fn()
       case AST.If(thenBody, elseBody) =>
         if (MiscHelpers.boolify(ctx.pop())) {
           execute(thenBody)
@@ -130,7 +129,7 @@ object Interpreter {
       popArgs: Boolean = true
   )(using ctx: Context): VAny = {
     val VFun(impl, arity, params, origCtx) = fn
-    println(s"Executing function with arity $arity")
+    // println(s"Executing function with arity $arity")
     given fnCtx: Context =
       Context.makeFnCtx(origCtx, ctx, arity, params, args, popArgs)
 

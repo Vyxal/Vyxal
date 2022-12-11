@@ -18,7 +18,7 @@ case class Modifier(
     name: String,
     description: String,
     keywords: List[String],
-    impl: PartialFunction[List[AST], AST]
+    from: PartialFunction[List[AST], AST]
 )
 
 /** Implementations of modifiers */
@@ -29,34 +29,12 @@ object Modifiers {
       """|Vectorises
          |vf: f but vectorised""".stripMargin,
       List("vectorise-", "vec-"),
-      { case List(elem) =>
-        elem match {
-          case AST.Command(symbol) =>
-            val element = Elements.elements(symbol)
-            AST.Modified { () => (ctx: Context) ?=>
-              // todo should default arity be 1 for weird elements?
-              FuncHelpers.vectorise(
-                VFun(
-                  element.impl,
-                  element.arity.getOrElse(1),
-                  List.empty,
-                  ctx
-                )
-              )
-            }
-          case lam: AST.Lambda =>
-            AST.Modified { () => (ctx: Context) ?=>
-              FuncHelpers.vectorise(VFun.fromLambda(lam))
-            }
-          case _ =>
-            AST.Modified { () => (ctx: Context) ?=>
-              FuncHelpers.vectorise(
-                VFun.fromLambda(
-                  AST.Lambda(elem.arity.getOrElse(1), List.empty, elem)
-                )
-              )
-            }
-        }
+      { case List(ast) =>
+        var lambdaAst: AST = AST.Newline // Because it's being reassigned
+        ast match
+          case AST.Lambda(_, _, _) => lambdaAst = ast
+          case _ => lambdaAst = AST.Lambda(ast.arity.getOrElse(1), List(), ast)
+        AST.makeSingle(lambdaAst, AST.Command("#v"))
       }
     ),
     "/" -> Modifier(
@@ -65,39 +43,13 @@ object Modifiers {
          |/f: reduce by element f
       """.stripMargin,
       List("foldl-", "reduce-", "/-"),
-      { case List(elem) =>
-        elem match {
-          case AST.Command(symbol) =>
-            val element = Elements.elements(symbol)
-            AST.Modified { () => (ctx: Context) ?=>
-              FuncHelpers.reduceByElement(
-                VFun(
-                  element.impl,
-                  element.arity.getOrElse(1),
-                  List.empty,
-                  ctx
-                )
-              )
-            }
-          case lam: AST.Lambda =>
-            AST.Modified { () => (ctx: Context) ?=>
-              FuncHelpers.reduceByElement(VFun.fromLambda(lam))
-            }
-          case _ =>
-            AST.Modified { () => (ctx: Context) ?=>
-              FuncHelpers.reduceByElement(
-                VFun.fromLambda(AST.Lambda(1, List.empty, elem))
-              )
-            }
-        }
+      { case List(ast) =>
+        var lambdaAst: AST = AST.Newline // Because it's being reassigned
+        ast match
+          case AST.Lambda(_, _, _) => lambdaAst = ast
+          case _                   => lambdaAst = AST.Lambda(2, List(), ast)
+        AST.makeSingle(lambdaAst, AST.Command("R"))
       }
-    ),
-    "@" -> Modifier(
-      "Apply at indices",
-      """|Applies at indices
-         |@a b: asdf""".stripMargin,
-      List("apply-at-"),
-      { case List(a, b) => ??? }
     )
   )
 }
