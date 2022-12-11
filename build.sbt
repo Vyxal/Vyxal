@@ -55,6 +55,13 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-print-lines",
       "-Ycheck-all-patmat"
     ),
+    // Configure Scaladoc
+    Compile / doc / target := file("docs"),
+    Compile / doc / scalacOptions ++= Seq(
+      "-project-version",
+      vyxalVersion,
+      "-groups",
+    )
   )
   .jvmSettings(
     // JVM-specific settings
