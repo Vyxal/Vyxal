@@ -41,7 +41,7 @@ jobs:
           distribution: 'adopt'
       
       - name: Build docs
-        run: sbt doc
+        run: sbt vyxalJVM/doc
 
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
