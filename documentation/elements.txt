@@ -105,7 +105,7 @@ M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 - a, b -> [a, b]
 ---------------------
 #v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
-- *a, f -> f vectorised over however many arguments in a. It is reccomended to use the modifier instead
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
 ---------------------
 ₃ (Thirty-two) (non-vectorising)
 - -> 32
