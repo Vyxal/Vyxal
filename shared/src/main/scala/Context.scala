@@ -1,6 +1,6 @@
 package vyxal
 
-import scala.collection.{mutable => mut}
+import scala.collection.{mutable as mut}
 import scala.collection.mutable.Stack
 import scala.io.StdIn
 
@@ -29,50 +29,38 @@ class Context private (
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
     val globals: Globals = Globals()
-) {
+):
   def settings: Settings = globals.settings
 
-  def pop(): VAny = {
-    val elem = if (stack.nonEmpty) {
-      stack.remove(stack.size - 1)
-    } else if (inputs.nonEmpty) {
-      inputs.next()
-    } else {
-      val temp = StdIn.readLine()
-      if (temp.nonEmpty) {
-        Parser.parseInput(temp)
-      } else {
-        settings.defaultValue
+  def pop(): VAny =
+    val elem =
+      if stack.nonEmpty then stack.remove(stack.size - 1)
+      else if inputs.nonEmpty then inputs.next()
+      else {
+        val temp = StdIn.readLine()
+        if temp.nonEmpty then Parser.parseInput(temp)
+        else settings.defaultValue
       }
-    }
-    if (settings.logLevel == LogLevel.Debug) {
-      println(s"Popped $elem")
-    }
+    if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
-  }
 
   /** Pop n elements and wrap in a list */
   def pop(n: Int): List[VAny] = List.fill(n)(this.pop())
 
   /** Get the top element on the stack without popping */
   def peek: VAny =
-    if (stack.nonEmpty) {
-      stack.last
-    } else if (inputs.nonEmpty) {
-      inputs.peek
-    } else {
-      settings.defaultValue
-    }
+    if stack.nonEmpty then stack.last
+    else if inputs.nonEmpty then inputs.peek
+    else settings.defaultValue
 
   /** Get the top n elements on the stack without popping */
-  def peek(n: Int): List[VAny] = {
+  def peek(n: Int): List[VAny] =
     // Number of elements peekable from the stack
     val numStack = n.max(stack.length)
     // Number of elements that need to be taken from the input
     val numInput = n - numStack
     // todo repeat the inputs or something?
     inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
-  }
 
   def push(item: VAny): Unit = stack += item
 
@@ -91,9 +79,8 @@ class Context private (
   /** Setter for the context variable so that outsiders don't have to deal with
     * it being an Option
     */
-  def contextVarN_=(newCtx: VAny) = {
+  def contextVarN_=(newCtx: VAny) =
     _contextVarN = Some(newCtx)
-  }
 
   def contextVarM: VAny =
     _contextVarM
@@ -103,9 +90,8 @@ class Context private (
   /** Setter for the context variable so that outsiders don't have to deal with
     * it being an Option
     */
-  def contextVarM_=(newCtx: VAny) = {
+  def contextVarM_=(newCtx: VAny) =
     _contextVarM = Some(newCtx)
-  }
 
   /** Get a variable by the given name. If it doesn't exist in the current
     * context, looks in the parent context. If not found in any context, returns
@@ -123,14 +109,11 @@ class Context private (
     * current context.
     */
   def setVar(name: String, value: VAny): Unit =
-    if (vars.contains(name)) {
-      vars(name) = value
-    } else {
-      Context.findParentWithVar(this, name) match {
+    if vars.contains(name) then vars(name) = value
+    else
+      Context.findParentWithVar(this, name) match
         case Some(parent) => parent.setVar(name, value)
         case None         => vars(name) = value
-      }
-    }
 
   /** Make a new Context for a structure inside the current structure */
   def makeChild() = new Context(
@@ -142,9 +125,9 @@ class Context private (
     Some(this),
     globals
   )
-}
+end Context
 
-object Context {
+object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
       globals: Globals = Globals()
@@ -161,15 +144,11 @@ object Context {
       ctx: Context,
       varName: String
   ): Option[Context] =
-    ctx.parent match {
+    ctx.parent match
       case Some(parent) =>
-        if (parent.vars.contains(varName)) {
-          Some(parent)
-        } else {
-          findParentWithVar(parent, varName)
-        }
+        if parent.vars.contains(varName) then Some(parent)
+        else findParentWithVar(parent, varName)
       case None => None
-    }
 
   /** Make a new Context for a function that was defined inside `origCtx` but is
     * now executing inside `currCtx`
@@ -189,15 +168,14 @@ object Context {
       params: List[String],
       args: Option[Seq[VAny]],
       popArgs: Boolean
-  ) = {
+  ) =
     val newInputs = args
       .map(_.toList)
-      .getOrElse(if (popArgs) currCtx.pop(arity) else currCtx.peek(arity))
-    if (currCtx.settings.logLevel == LogLevel.Debug) {
+      .getOrElse(if popArgs then currCtx.pop(arity) else currCtx.peek(arity))
+    if currCtx.settings.logLevel == LogLevel.Debug then
       println(
         s"newInputs = $newInputs, arity = $arity, stack = ${currCtx.stack}, popArgs = $popArgs"
       )
-    }
     new Context(
       mut.ArrayBuffer.empty,
       currCtx._contextVarN,
@@ -207,5 +185,5 @@ object Context {
       Some(currCtx),
       currCtx.globals
     )
-  }
-}
+  end makeFnCtx
+end Context

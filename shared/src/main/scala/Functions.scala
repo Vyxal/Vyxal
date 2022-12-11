@@ -11,12 +11,11 @@ type Tetrad = (VAny, VAny, VAny, VAny) => Context ?=> VAny
 /** Make a function taking `Arity` VAnys TODO: Either merge this with Monad,
   * Dyad, etc. or make this accept tuples like it used to
   */
-type VyFn[Arity <: Int] = Arity match {
+type VyFn[Arity <: Int] = Arity match
   case 1 => Monad
   case 2 => Dyad
   case 3 => Triad
   case 4 => Tetrad
-}
 // type VyFn[Arity <: Int] = TupleOfSize[Arity] => Context ?=> VAny
 
 /** Same as [[VyFn]] but may be undefined for some inputs */
@@ -24,10 +23,9 @@ type PartialVyFn[Arity <: Int] =
   Context ?=> PartialFunction[TupleOfSize[Arity], VAny]
 
 /** Make a tuple of size `N` filled with [[VAny]]s */
-private type TupleOfSize[N <: Int] <: Tuple = N match {
+private type TupleOfSize[N <: Int] <: Tuple = N match
   case 0                        => EmptyTuple
   case compiletime.ops.int.S[n] => VAny *: TupleOfSize[n]
-}
 
 /** A function that operates directly on the stack */
 type DirectFn = () => Context ?=> Unit
@@ -36,13 +34,12 @@ extension (f: Monad)
   /** Turn the monad into a normal function of type `VAny => VAny` */
   def norm(using ctx: Context): VAny => VAny = f(_)(using ctx)
 
-  def vectorised = {
+  def vectorised =
     lazy val res: Monad = {
       case lhs: VAtom => f(lhs)
       case lst: VList => lst.vmap(res)
     }
     res
-  }
 
 extension (f: Dyad)
   /** Turn the dyad into a normal function of type `(VAny, VAny) => VAny` */
@@ -108,7 +105,7 @@ def forkify(impl: PartialVyFn[2]): PartialVyFn[2] = {
 // TODO reduce duplication between these functions and the ones in FuncHelpers.scala
 
 /** Vectorise an unvectorised monad */
-def vect1(name: String)(f: Context ?=> PartialFunction[VAny, VAny]): Monad = {
+def vect1(name: String)(f: Context ?=> PartialFunction[VAny, VAny]): Monad =
   val filled = FuncHelpers.fillMonad(name, f)
   lazy val res: Monad = {
     case lhs: VAtom => filled(lhs)
@@ -116,10 +113,9 @@ def vect1(name: String)(f: Context ?=> PartialFunction[VAny, VAny]): Monad = {
   }
 
   res
-}
 
 /** Vectorise an unvectorised dyad */
-def vect2(name: String)(f: PartialVyFn[2]): Dyad = {
+def vect2(name: String)(f: PartialVyFn[2]): Dyad =
   val filled = FuncHelpers.fillDyad(name, f)
   lazy val res: Dyad = {
     case (lhs: VAtom, rhs: VAtom) => filled(lhs, rhs)
@@ -129,10 +125,9 @@ def vect2(name: String)(f: PartialVyFn[2]): Dyad = {
   }
 
   res
-}
 
 /** Vectorise a triad */
-def vect3(name: String)(f: PartialVyFn[3]): VyFn[3] = {
+def vect3(name: String)(f: PartialVyFn[3]): VyFn[3] =
   val filled = FuncHelpers.fillTriad(name, f)
   lazy val res: VyFn[3] = {
     case (lhs: VAtom, rhs: VAtom, third: VAtom) => filled(lhs, rhs, third)
@@ -147,18 +142,17 @@ def vect3(name: String)(f: PartialVyFn[3]): VyFn[3] = {
       lhs.zipWith(third)(res(_, rhs, _))
     case (lhs: VList, rhs: VList, third: VList) =>
       VList.zipMulti(lhs, rhs, third) { zipped =>
-        (zipped: @unchecked) match {
+        (zipped: @unchecked) match
           case VList(l, r, t) =>
             f(
               l.asInstanceOf[VAtom],
               r.asInstanceOf[VAtom],
               t.asInstanceOf[VAtom]
             )
-        }
       }
   }
 
   res
-}
+end vect3
 
 // TODO: add vect4

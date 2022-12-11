@@ -22,7 +22,7 @@ case class Modifier(
 )(val from: PartialFunction[List[AST], AST])
 
 /** Implementations of modifiers */
-object Modifiers {
+object Modifiers:
   val modifiers: Map[String, Modifier] = Map(
     "v" -> Modifier(
       "Vectorise",
@@ -48,4 +48,4 @@ object Modifiers {
       AST.makeSingle(lambdaAst, AST.Command("R"))
     }
   )
-}
+end Modifiers

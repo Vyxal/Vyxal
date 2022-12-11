@@ -3,14 +3,12 @@ package vyxal.impls
 // it's in a different package so that ElementTests can access the impls without
 // other classes being able to access them
 
-import scala.language.implicitConversions
-
 import vyxal.*
-import VNum.given
 
 import scala.io.StdIn
-
+import scala.language.implicitConversions
 import spire.algebra.*
+import VNum.given
 
 /** Implementations for elements */
 case class Element(
@@ -26,10 +24,10 @@ case class Element(
 case class UnimplementedOverloadException(element: String, args: Any)
     extends RuntimeException(s"$element not supported for inputs $args")
 
-object Elements {
+object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
 
-  private[impls] object Impls {
+  private[impls] object Impls:
     val elements = collection.mutable.Map.empty[String, Element]
 
     def addNilad(
@@ -37,7 +35,7 @@ object Elements {
         name: String,
         keywords: Seq[String],
         desc: String
-    )(impl: Context ?=> VAny): Unit = {
+    )(impl: Context ?=> VAny): Unit =
       elements += symbol -> Element(
         symbol,
         name,
@@ -47,7 +45,6 @@ object Elements {
         List(s"-> $desc"),
         () => ctx ?=> ctx.push(impl(using ctx))
       )
-    }
 
     def addMonadHelper(
         symbol: String,
@@ -56,7 +53,7 @@ object Elements {
         vectorises: Boolean,
         overloads: Seq[String],
         impl: Monad
-    ): Monad = {
+    ): Monad =
       elements += symbol -> Element(
         symbol,
         name,
@@ -69,7 +66,7 @@ object Elements {
         }
       )
       impl
-    }
+    end addMonadHelper
 
     /** Add a monad that handles all `VAny`s (it doesn't take a
       * `PartialFunction`, hence "Full")
@@ -132,7 +129,7 @@ object Elements {
         vectorises: Boolean,
         overloads: Seq[String],
         impl: Dyad
-    ): Dyad = {
+    ): Dyad =
       elements += symbol -> Element(
         symbol,
         name,
@@ -146,7 +143,7 @@ object Elements {
         }
       )
       impl
-    }
+    end addDyadHelper
 
     /** Add a dyad that handles all `VAny`s */
     def addDyadFull(
@@ -208,7 +205,7 @@ object Elements {
         vectorises: Boolean,
         overloads: Seq[String],
         impl: VyFn[3]
-    ): Triad = {
+    ): Triad =
       elements += symbol -> Element(
         symbol,
         name,
@@ -222,7 +219,7 @@ object Elements {
         }
       )
       impl
-    }
+    end addTriadHelper
 
     def addTriad(
         symbol: String,
@@ -261,7 +258,7 @@ object Elements {
         vectorises: Boolean,
         overloads: Seq[String],
         impl: VyFn[4]
-    ): Tetrad = {
+    ): Tetrad =
       elements += symbol -> Element(
         symbol,
         name,
@@ -275,7 +272,7 @@ object Elements {
         }
       )
       impl
-    }
+    end addTetradHelper
 
     def addTetrad(
         symbol: String,
@@ -329,18 +326,16 @@ object Elements {
       "a: list -> is (a) all truthy?"
     ) {
       case a: VNum =>
-        if (ListHelpers.makeIterable(a).forall(MiscHelpers.boolify(_))) { 1 }
-        else { 0 }
+        if ListHelpers.makeIterable(a).forall(MiscHelpers.boolify(_)) then 1
+        else 0
       case a: String => {
         var temp = VList()
-        for (i <- a) {
-          temp = VList(temp :+ StringHelpers.isVowel(i.toString)*)
-        }
+        for i <- a do temp = VList(temp :+ StringHelpers.isVowel(i.toString)*)
         temp
       }
       case a: VList =>
-        if (a.forall(MiscHelpers.boolify(_))) { 1 }
-        else { 0 }
+        if a.forall(MiscHelpers.boolify(_)) then 1
+        else 0
     }
 
     val concatenate = addDyad(
@@ -479,15 +474,11 @@ object Elements {
       List("get-input", "input", "stdin", "readline"),
       " -> input"
     ) { ctx ?=>
-      if (ctx.globals.inputs.nonEmpty) {
-        ctx.globals.inputs.next()
-      } else {
+      if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
+      else {
         val temp = StdIn.readLine()
-        if (temp.nonEmpty) {
-          Parser.parseInput(temp)
-        } else {
-          ctx.settings.defaultValue
-        }
+        if temp.nonEmpty then Parser.parseInput(temp)
+        else ctx.settings.defaultValue
       }
     }
 
@@ -568,7 +559,7 @@ object Elements {
       "a: fun -> first non-negative integer where predicate a is true"
     ) {
       case a: VNum   => -a
-      case a: String => a.map(c => if (c.isUpper) c.toLower else c.toUpper)
+      case a: String => a.map(c => if c.isUpper then c.toLower else c.toUpper)
       case a: VFun   => MiscHelpers.firstNonNegative(a)
     }
 
@@ -581,7 +572,7 @@ object Elements {
         "a: num -> chr(a)"
       ) {
         case a: String =>
-          if (a.length == 1) a.codePointAt(0)
+          if a.length == 1 then a.codePointAt(0)
           else VList(a.map(_.toInt: VNum)*)
         case a: VNum => a.toInt.toChar.toString
       }
@@ -680,13 +671,12 @@ object Elements {
       "*a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead"
     ) { ctx ?=>
       // For sake of simplicity, error if not a function
-      ctx.pop() match {
+      ctx.pop() match
         case f: VFun => FuncHelpers.vectorise(f)
         case _ =>
           throw IllegalArgumentException(
             "Vectorise: First argument should be a function"
           )
-      }
     }
 
     // Constants
@@ -722,6 +712,5 @@ object Elements {
       List("empty-list", "nil-list", "new-list"),
       "[]"
     ) { VList.empty }
-
-  }
-}
+  end Impls
+end Elements

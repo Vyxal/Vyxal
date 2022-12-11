@@ -4,7 +4,6 @@ import vyxal.impls.Element
 import vyxal.Interpreter.executeFn
 
 import scala.reflect.TypeTest
-
 import spire.algebra.*
 import spire.implicits.*
 import spire.math.{Complex, Real}
@@ -30,7 +29,7 @@ case class VFun(
     arity: Int,
     params: List[String],
     ctx: Context
-) {
+):
 
   /** Make a copy of this function with a different arity. */
   def withArity(newArity: Int): VFun = this.copy(arity = newArity)
@@ -51,10 +50,10 @@ case class VFun(
 
   def apply(args: VAny*)(using ctx: Context): VAny =
     Interpreter.executeFn(this)
-}
+end VFun
 
-object VFun {
-  def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun = {
+object VFun:
+  def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
     val AST.Lambda(arity, params, body) = lam
     VFun(
       () => ctx ?=> Interpreter.execute(body)(using ctx),
@@ -62,19 +61,14 @@ object VFun {
       params,
       origCtx
     )
-  }
 
-  def fromElement(elem: Element)(using origCtx: Context): VFun = {
+  def fromElement(elem: Element)(using origCtx: Context): VFun =
     val Element(symbol, name, _, arity, _, _, impl) = elem
     VFun(impl, arity.getOrElse(1), List.empty, origCtx)
-  }
-}
 
 extension (self: VAny)
-  def ===(that: VAny): Boolean = {
-    (self, that) match {
-      case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) == 0
+  def ===(that: VAny): Boolean =
+    (self, that) match
+      case (a: VVal, b: VVal)   => MiscHelpers.compare(a, b) == 0
       case (a: VList, b: VList) => a == b
       case _                    => false
-    }
-  }
