@@ -60,7 +60,8 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     Compile / doc / scalacOptions ++= Seq(
       "-project-version",
       vyxalVersion,
-      "-groups",
+      "-groups", // Group similar functions
+      "-Ygenerate-inkuire" // Allow type-based searches
     )
   )
   .jvmSettings(
