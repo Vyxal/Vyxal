@@ -130,14 +130,22 @@ object Parser {
         case AST.Newline => ???
         case AST.JunkModifier(name, arity) =>
           if (arity > 0) {
-            finalAsts.push(
-              Modifiers.modifiers(name).from(List.fill(arity)(finalAsts.pop()))
-            )
+            val modifier = Modifiers.modifiers(name)
+            val modifierArgs = List.fill(arity)(finalAsts.pop())
+            if (modifier.from.isDefinedAt(modifierArgs)) {
+              finalAsts.push(modifier.from(modifierArgs))
+            } else {
+              return Left(
+                VyxalCompilationError(
+                  s"Modifier $name not defined for $modifierArgs"
+                )
+              )
+            }
           }
         case AST.SpecialModifier(name) => {
           (name: @unchecked) match {
-            case "ᵜ" => {
-              var lambdaAsts = ListBuffer[AST]()
+            case "ᵜ" =>
+              val lambdaAsts = ListBuffer[AST]()
               while (asts.top != AST.Newline) {
                 lambdaAsts += finalAsts.pop()
               }
@@ -148,7 +156,6 @@ object Parser {
                   AST.makeSingle(lambdaAsts.toList.reverse*)
                 )
               )
-            }
             case "ᵗ" => ??? // TODO: Implement tie
             case _ =>
               ??? // The hell kinda special modifier is this? Actually unreachable

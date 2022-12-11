@@ -677,21 +677,19 @@ object Elements {
       "Vectorise (Element Form) [Internal Use]",
       List(),
       None,
-      "*a, f -> f vectorised over however many arguments in a. It is reccomended to use the modifier instead"
+      "*a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead"
     ) { ctx ?=>
-      val f = ctx.pop()
-
       // For sake of simplicity, error if not a function
-
-      f match {
-        case f: VFun =>
-          FuncHelpers.vectorise(f)
-        case _ => throw new Exception("Vectorise: Not a function")
+      ctx.pop() match {
+        case f: VFun => FuncHelpers.vectorise(f)
+        case _ =>
+          throw IllegalArgumentException(
+            "Vectorise: First argument should be a function"
+          )
       }
-
     }
-    // Constants
 
+    // Constants
     addNilad("₀", "Ten", List("ten"), "10") { 10 }
     addNilad("₁", "Sixteen", List("sixteen"), "16") { 26 }
     addNilad("₂", "Twenty-six", List("twenty-six"), "26") { 26 }
