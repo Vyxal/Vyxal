@@ -43,10 +43,13 @@ jobs:
       - name: Build docs
         run: sbt vyxalJVM/doc
 
+        # Move docs to pages directory
+      - run: mkdir pages && mv docs/ pages/
+
       - name: Upload built HTML
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './docs'
+          path: './pages'
 
       - name: Deploy to GitHub Pages
         id: deployment
