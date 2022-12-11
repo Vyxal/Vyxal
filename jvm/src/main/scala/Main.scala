@@ -1,9 +1,8 @@
 package vyxal
 
-import vyxal.impls.{Elements, Element}
+import vyxal.impls.{Element, Elements}
 
 import java.io.File
-
 import scopt.OParser
 
 /** Configuration for the command line argument parser
@@ -28,47 +27,39 @@ case class CLIConfig(
     settings: Settings = Settings()
 )
 
-object Main {
-  def main(args: Array[String]): Unit = {
-    OParser.parse(parser, args, CLIConfig()) match {
+object Main:
+  def main(args: Array[String]): Unit =
+    OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         given Context = Context(
           config.inputs.reverse.map(Parser.parseInput)
         )
 
-        if (config.printHelp) {
+        if config.printHelp then
           println(OParser.usage(parser))
           return
-        }
 
-        if (config.printDocs) {
+        if config.printDocs then
           printDocs()
           return
-        }
 
         config.file.foreach { file =>
           val source = io.Source.fromFile(config.file.get)
-          try {
+          try
             Interpreter.execute(source.mkString)
-          } finally {
+          finally
             source.close()
-          }
         }
 
         config.code.foreach { code =>
           Interpreter.execute(code)
         }
 
-        if (config.file.nonEmpty || config.code.nonEmpty) {
-          return
-        } else {
-          Repl.startRepl()
-        }
+        if config.file.nonEmpty || config.code.nonEmpty then return
+        else Repl.startRepl()
       case None => ???
-    }
-  }
 
-  private def printDocs(): Unit = {
+  private def printDocs(): Unit =
     Elements.elements.values.foreach {
       case Element(
             symbol,
@@ -80,18 +71,17 @@ object Main {
             impl
           ) =>
         print(
-          s"$symbol ($name) (${if (vectorises) "" else "non-"}vectorising)\n"
+          s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
         )
         overloads.foreach { overload =>
           println(s"- $overload")
         }
         println("---------------------")
     }
-  }
 
   private val builder = OParser.builder[CLIConfig]
 
-  private val parser = {
+  private val parser =
     import builder.*
 
     def flag(short: Char, name: String, text: String) =
@@ -256,5 +246,5 @@ object Main {
         "Limit list output to the first 100 items of that list"
       )
     )
-  }
-}
+  end parser
+end Main

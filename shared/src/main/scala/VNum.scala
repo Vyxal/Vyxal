@@ -1,10 +1,9 @@
 package vyxal
 
 import scala.language.implicitConversions
-
 import spire.math.{Complex, Real}
 
-class VNum private (val underlying: Complex[Real]) {
+class VNum private (val underlying: Complex[Real]):
   def real = underlying.real
   def imag = underlying.imag
 
@@ -22,16 +21,15 @@ class VNum private (val underlying: Complex[Real]) {
     Complex(this.real.tmod(rhs.real), this.imag.tmod(rhs.imag))
 
   override def toString =
-    if (this.imag == 0) this.real.toString else this.underlying.toString
+    if this.imag == 0 then this.real.toString else this.underlying.toString
 
-  override def equals(obj: Any) = obj match {
+  override def equals(obj: Any) = obj match
     case n: VNum => underlying == n.underlying
     case _       => false
-  }
-}
+end VNum
 
 /** Be sure to import `VNum.given` to be able to match on VNums and stuff */
-object VNum {
+object VNum:
 
   /** To force an implicit conversion */
   def apply(n: VNum): VNum = n
@@ -40,7 +38,7 @@ object VNum {
 
   // todo implement properly
   /** Parse a number from a string */
-  def from(s: String): VNum = {
+  def from(s: String): VNum =
     // Not as simple as it seems - can't just use Number.parse
     // because it doesn't handle hanging decimals (3. -> 3.5) nor
     // complex numbers (3ı4 -> 3+4i)
@@ -51,12 +49,12 @@ object VNum {
     val real = parts(0)
     val imag = parts.lift(1).getOrElse("0")
 
-    val realNum = (if (real.last == '.') real + "5" else real).toInt
-    val imagNum = (if (imag.last == '.') imag + "5" else imag).toInt
+    val realNum = (if real.last == '.' then real + "5" else real).toInt
+    val imagNum = (if imag.last == '.' then imag + "5" else imag).toInt
 
-    if (imagNum == 0) complex(realNum, 0)
+    if imagNum == 0 then complex(realNum, 0)
     else complex(realNum, imagNum)
-  }
+  end from
 
   /** Allow pattern matching like `VNum(r, i)` */
   def unapply(n: VNum): (Real, Real) = n.underlying.asTuple
@@ -70,4 +68,4 @@ object VNum {
   given Conversion[BigInt, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] = b => if b then 1 else 0
-}
+end VNum

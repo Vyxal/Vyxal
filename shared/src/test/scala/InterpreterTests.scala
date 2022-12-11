@@ -2,7 +2,7 @@ package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
 
-class InterpreterTests extends AnyFunSuite {
+class InterpreterTests extends AnyFunSuite:
   test("Can the interpreter make lists?") {
     given ctx: Context = Context()
     Interpreter.execute("#[1 | 2 3 + | 4#]")
@@ -82,4 +82,4 @@ class InterpreterTests extends AnyFunSuite {
     )
     assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
   }
-}
+end InterpreterTests
