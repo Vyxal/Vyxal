@@ -71,6 +71,36 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
+  test("Does the parser understand for loops?") {
+    assert(
+      Parser.parse("1 10R (i|2n*,") === Right(
+        Group(
+          List(
+            Group(List(Number(1), Number(10), Command("R")), Some(0)),
+            For(
+              Some("i"),
+              Group(
+                List(
+                  Group(
+                    List(
+                      Number(2),
+                      Group(List(Command("n")), Some(0)),
+                      Command("*")
+                    ),
+                    Some(0)
+                  ),
+                  Group(List(Command(",")), Some(0))
+                ),
+                None
+              )
+            )
+          ),
+          None
+        )
+      )
+    )
+  }
+
   test("Does the parser understand nested structures?") {
     assert(
       Parser.parse("1 { 2 | { {3 | 4} | } } 6") ===

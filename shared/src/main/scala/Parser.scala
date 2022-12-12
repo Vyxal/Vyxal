@@ -113,7 +113,7 @@ object Parser:
     end while
 
     val finalAsts = Stack[AST]()
-    while !asts.isEmpty do
+    while asts.nonEmpty do
       val topAst = asts.pop()
       topAst match
         case AST.Newline => None
@@ -276,10 +276,7 @@ object Parser:
               Left(VyxalCompilationError("Invalid while statement"))
         case StructureType.For =>
           branches match
-            case List(cond, body) =>
-              val name = Some(toValidName(id.get))
-              Right(AST.For(name, body))
-            case List(body) => Right(AST.For(None, body))
+            case List(body) => Right(AST.For(id.get, body))
             case _ =>
               Left(VyxalCompilationError("Invalid for statement"))
         case lambdaType @ (StructureType.Lambda | StructureType.LambdaMap |
@@ -305,15 +302,18 @@ object Parser:
     }
   end parseStructure
 
-  /** Parse an identifier (for for loops) */
-  private def parseIdentifier(program: Queue[VyxalToken]): String =
-    val id = StringBuilder()
-    while program.nonEmpty && !isCloser(program.front) do
-      id ++= program.front.value
-    if program.nonEmpty && program.front == VyxalToken.Branch then
-      // Get rid of `|` so that the other branches can be parsed
-      program.dequeue()
-    toValidName(id.toString())
+  /** Parse an identifier for for loops. Consume only if there are 2 branches */
+  private def parseIdentifier(program: Queue[VyxalToken]): Option[String] =
+    val idEnd = program.indexWhere(isCloser)
+    if idEnd == -1 || program(idEnd) != VyxalToken.Branch then None
+    else
+      val id = StringBuilder()
+      var i = 0
+      while i < idEnd do
+        id ++= program.dequeue().value.filter(c => c.isLetter || c.isDigit)
+        i += 1
+      program.dequeue() // Get rid of the `|`
+      Some(toValidName(id.toString()))
 
   /** Whether this token is a branch or a structure/list closer */
   def isCloser(token: VyxalToken): Boolean =
@@ -332,7 +332,7 @@ object Parser:
         // Some tokens were left at the end, which should never happen
         Left(
           VyxalCompilationError(
-            s"Error parsing code: These tokens were not parsed ${preprocessed.toList}"
+            s"Error parsing code: These tokens were not parsed ${preprocessed.toList}. Only parsed $parsed"
           )
         )
       else
