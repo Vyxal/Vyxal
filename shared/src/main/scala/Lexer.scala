@@ -48,7 +48,7 @@ val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘ�
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
 ×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"""
 
-val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ"
+val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
 val TRIADIC_MODIFIERS = "‴"
 val TETRADIC_MODIFIERS = "⁴"
@@ -80,6 +80,10 @@ object Lexer extends RegexParsers:
   }
 
   def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
+    Str(value.substring(1))
+  }
+
+  def twoCharString: Parser[VyxalToken] = """ᶴ..""".r ^^ { value =>
     Str(value.substring(1))
   }
 
@@ -138,7 +142,7 @@ object Lexer extends RegexParsers:
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | getVariable | setVariable | singleCharString | digraph
+      comment | branch | number | string | getVariable | setVariable | twoCharString | singleCharString | digraph
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | newlines | command

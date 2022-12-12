@@ -127,6 +127,19 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
+  test("Does the parser recognise single-character strings in structures?") {
+    assert(
+      Parser.parse("('|") === Right(For(None, Str("|")))
+    )
+  }
+  test("Does the parser recognise two-character strings in structures?") {
+    assert(
+      Parser.parse("(bᶴ|c") === Right(
+        For(None, Group(List(Command("b"), Str("|c")), None))
+      )
+    )
+  }
+
   test("Does the parser understand close all structures (']')?") {
     assert(
       Parser.parse("1 { 2 | { {3 | 4} | ] 6") ===
