@@ -8,6 +8,10 @@ exclude_patterns = [
 ]
 
 [[analyzers]]
+name = "scala"
+enabled = true
+
+[[analyzers]]
 name = "python"
 enabled = true
 
