@@ -167,4 +167,77 @@ class ParserTests extends AnyFunSuite {
     )
   }
 
+  test("Does the parser handle basic modifiers?") {
+    assert(
+      Parser.parse("v+ +") === Right(
+        Group(
+          List(
+            Group(
+              List(
+                Lambda(2, List(), Group(List(Command("+")), Some(2))),
+                Command("#v")
+              ),
+              None
+            ),
+            Group(List(Command("+")), Some(2))
+          ),
+          None
+        )
+      )
+    )
+
+    assert(
+      Parser.parse("1 /+ 2") === Right(
+        Group(
+          List(
+            Number(2),
+            Number(1),
+            Group(
+              List(
+                Lambda(2, List(), Group(List(Command("+")), Some(2))),
+                Command("R")
+              ),
+              None
+            )
+          ),
+          None
+        )
+      )
+    )
+  }
+
+  test("Does the parser handle nested modifiers?") {
+    assert(
+      Parser.parse("#[#[1|2|3#]|#[4|5|6#]#] v/+") === Right(
+        Group(
+          List(
+            Lst(
+              List(
+                Lst(List(Number(1), Number(2), Number(3))),
+                Lst(List(Number(4), Number(5), Number(6)))
+              )
+            ),
+            Group(
+              List(
+                Lambda(
+                  1,
+                  List(),
+                  Group(
+                    List(
+                      Lambda(2, List(), Group(List(Command("+")), Some(2))),
+                      Command("R")
+                    ),
+                    None
+                  )
+                ),
+                Command("#v")
+              ),
+              None
+            )
+          ),
+          None
+        )
+      )
+    )
+  }
 }

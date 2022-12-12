@@ -1,11 +1,12 @@
 package vyxal
 
-import scala.util.parsing.combinator._
+import scala.util.parsing.combinator.*
+import VyxalToken.*
 
 case class VyxalCompilationError(msg: String)
 
 // todo maybe make a separate TokenType enum and make VyxalToken a simple case class
-enum VyxalToken(val value: String) {
+enum VyxalToken(val value: String):
   case Number(override val value: String) extends VyxalToken(value)
   case Str(override val value: String) extends VyxalToken(value)
   case StructureOpen(structureType: StructureType)
@@ -29,9 +30,9 @@ enum VyxalToken(val value: String) {
   case SetVar(override val value: String) extends VyxalToken(value)
   case Branch extends VyxalToken("|")
   case Newline extends VyxalToken("\n")
-}
+end VyxalToken
 
-enum StructureType(val open: String) {
+enum StructureType(val open: String):
   case If extends StructureType("[")
   case While extends StructureType("{")
   case For extends StructureType("(")
@@ -40,9 +41,6 @@ enum StructureType(val open: String) {
   case LambdaFilter extends StructureType("Ω")
   case LambdaReduce extends StructureType("₳")
   case LambdaSort extends StructureType("µ")
-}
-
-import VyxalToken.*
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
@@ -55,7 +53,7 @@ val TRIADIC_MODIFIERS = "‴"
 val TETRADIC_MODIFIERS = "⁴"
 val SPECIAL_MODIFIERS = "ᵗᵜ"
 
-object Lexer extends RegexParsers {
+object Lexer extends RegexParsers:
   override def skipWhitespace = true
 
   def number: Parser[VyxalToken] = """(0(?=[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
@@ -71,13 +69,12 @@ object Lexer extends RegexParsers {
     // So replace the non-normal string tokens with the appropriate token type
 
     val text = value.substring(1, value.length - 1)
-    value.charAt(value.length - 1) match {
+    value.charAt(value.length - 1) match
       case '"' => Str(text)
       case '„' => CompressedString(text)
       case '”' => DictionaryString(text)
       case '“' => CompressedNumber(text)
       case _   => throw Exception("Invalid string")
-    }
   }
 
   def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
@@ -144,10 +141,8 @@ object Lexer extends RegexParsers {
     )
   )
 
-  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] = {
-    (parse(tokens, code): @unchecked) match {
+  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] =
+    (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
-    }
-  }
-}
+end Lexer
