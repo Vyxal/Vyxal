@@ -97,7 +97,7 @@ object Lexer extends RegexParsers:
 
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
-  def digraph: Parser[VyxalToken] = s"[∆øÞ#][$CODEPAGE]".r ^^ { value =>
+  def digraph: Parser[VyxalToken] = s"[∆øÞ#k][$CODEPAGE]".r ^^ { value =>
     Digraph(value)
   }
 

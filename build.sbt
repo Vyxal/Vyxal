@@ -55,6 +55,18 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-print-lines",
       "-Ycheck-all-patmat"
     ),
+    // Configure Scaladoc
+    Compile / doc / target := file("docs"),
+    Compile / doc / scalacOptions ++= Seq(
+      "-project-version",
+      vyxalVersion,
+      "-groups", // Group similar functions
+      "-Ygenerate-inkuire", // Allow type-based searches
+      "-external-mappings:.*vyxal.*::scaladoc3::https://vyxal.github.io/Vyxal/docs/",
+      "-external-mappings:.*scala.util.parsing.*::scaladoc3::https://scala-lang.org/api/2.12.8/scala-parser-combinators/",
+      "-external-mappings:.*scala(?!.util.parsing).*::scaladoc3::https://scala-lang.org/api/3.x/",
+      "-external-mappings:.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
+    )
   )
   .jvmSettings(
     // JVM-specific settings
