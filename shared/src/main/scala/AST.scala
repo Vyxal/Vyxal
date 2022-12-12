@@ -1,45 +1,68 @@
 package vyxal
 
-enum AST {
-  case Number(value: String)
-  case Str(value: String)
-  case Lst(elems: List[AST])
+import vyxal.impls.Elements
+
+enum AST(val arity: Option[Int]):
+  case Number(value: VNum) extends AST(Some(0))
+  case Str(value: String) extends AST(Some(0))
+  case Lst(elems: List[AST]) extends AST(Some(0))
   case Command(value: String)
+      extends AST(Elements.elements.get(value).flatMap(_.arity))
 
-  /** Treat multiple trees as a single one (for lambdas) */
-  case Group(asts: List[AST])
-  case MonadicModifier(modi: String, elem1: AST)
-  case DyadicModifier(modi: String, elem1: AST, elem2: AST)
-  case TriadicModifier(modi: String, elem1: AST, elem2: AST, elem3: AST)
-  case TetradicModifier(
-      modi: String,
-      elem1: AST,
-      elem2: AST,
-      elem3: AST,
-      elem4: AST
-  )
-  case SpecialModifier(modi: String, value: String)
-  case CompressedString(value: String)
-  case CompressedNumber(value: String)
-  case DictionaryString(value: String)
-  case If(thenBody: AST, elseBody: Option[AST])
-  case For(loopVar: Option[String], body: AST)
-  case While(cond: Option[AST], body: AST)
-  case Lambda(body: AST)
-  /** A function definition */
-  case FnDef(
-      name: String,
-      arity: Int,
-      params: Option[List[String]],
-      body: AST
-  )
-}
+  /** Multiple ASTs grouped into one list */
+  case Group(elems: List[AST], override val arity: Option[Int])
+      extends AST(arity)
+  case SpecialModifier(modi: String) extends AST(None)
+  case CompositeNilad(elems: List[AST]) extends AST(Some(0))
 
-object AST {
+  case CompressedString(value: String) extends AST(Some(0))
+  case CompressedNumber(value: String) extends AST(Some(0))
+  case DictionaryString(value: String) extends AST(Some(0))
+  case If(thenBody: AST, elseBody: Option[AST]) extends AST(Some(1))
+  case For(loopVar: Option[String], body: AST) extends AST(None)
+  case While(cond: Option[AST], body: AST) extends AST(None)
+  case Lambda(lambdaArity: Int, params: List[String], body: AST)
+      extends AST(Some(lambdaArity))
+
+  /** A function definition, basically sugar a lambda assigned to a variable */
+  case FnDef(name: String, lam: Lambda) extends AST(Some(0))
+  case GetVar(name: String) extends AST(Some(0))
+  case SetVar(name: String) extends AST(Some(1))
+  case ExecuteFn extends AST(None)
+
+  /** Junk newline AST that is removed in post-processing */
+  case Newline extends AST(None)
+
+  /** Junk modifier AST that is removed during parsing after first pass */
+  case JunkModifier(name: String, modArity: Int) extends AST(Some(modArity))
+
+  /** Generate the Vyxal code this AST represents */
+  def toVyxal: String = this match
+    case Number(n)       => n.toString
+    case Str(value)      => s"\"$value\""
+    case Lst(elems)      => elems.map(_.toVyxal).mkString("#[", "|", "#]")
+    case Command(value)  => value
+    case Group(elems, _) => elems.map(_.toVyxal).mkString
+    // case SpecialModifier(modi, value) => s"$modi"
+    // ^ Might not need this because it'll be converted into different ASTs
+    case CompositeNilad(elems)   => elems.map(_.toVyxal).mkString
+    case CompressedString(value) => s"\"$value“"
+    case CompressedNumber(value) => s"\"$value„"
+    case DictionaryString(value) => s"\"$value”"
+    case If(thenBody, elseBody)  => s"[$thenBody|$elseBody}"
+    case For(loopVar, body)      => s"(${loopVar.getOrElse("")}|${body.toVyxal}"
+    case While(cond, body) => s"{${cond.fold("")(_.toVyxal)}|${body.toVyxal}}"
+    case Lambda(arity, params, body) => s"λ${body.toVyxal}}"
+    case FnDef(name, lam)            => ???
+    case GetVar(name)                => s"#<$name"
+    case SetVar(name)                => s"#>$name"
+    case ast                         => ast.toString
+end AST
+
+object AST:
 
   /** Turn zero or more ASTs into one, wrapping in a [[AST.Group]] if necessary
     */
   def makeSingle(elems: AST*): AST =
-    if (elems.size == 1) elems.head
-    else AST.Group(elems.toList)
-}
+    if elems.size == 1 then elems.head
+    else AST.Group(elems.toList, None)

@@ -1,31 +1,74 @@
 package vyxal
 
-import spire.math.Number
+import vyxal.impls.Element
+import vyxal.Interpreter.executeFn
+
+import scala.reflect.TypeTest
+import spire.algebra.*
+import spire.implicits.*
+import spire.math.{Complex, Real}
 
 // todo check if these names or this whole way of structuring need to be changed
 type VAny = VAtom | VList
 type VAtom = VVal | VFun
-type VVal = Number | String
+type VVal = VNum | String
 
 /** A function object (not a function definition)
   *
-  * todo rethink the structure of this, maybe make a separate wrapper for arity
-  * and ctx?
+  * @param impl
+  *   The implementation of this function
+  * @param arity
+  *   The arity of this function (may have been changed)
+  * @param params
+  *   Parameter names
+  * @param ctx
+  *   The context in which this function was defined
   */
-enum VFun {
-  /** A lambda just left on the stack */
-  case Lam(lam: AST.Lambda, arity: Int, ctx: Context)
+case class VFun(
+    impl: DirectFn,
+    arity: Int,
+    params: List[String],
+    ctx: Context
+):
 
-  /** A reference to a user-defined function */
-  case FnRef(fnDef: AST.FnDef, arity: Int, ctx: Context)
+  /** Make a copy of this function with a different arity. */
+  def withArity(newArity: Int): VFun = this.copy(arity = newArity)
 
-  /** Make a copy of this function with a different arity.
-    *
-    * If the function is composed from two functions, only the arity of the
-    * first function is changed.
+  /** Call this function on the given arguments, using custom context variables.
     */
-  def withArity(newArity: Int): VFun = this match {
-    case Lam(lam, _, ctx)     => Lam(lam, newArity, ctx)
-    case FnRef(fnDef, _, ctx) => FnRef(fnDef, newArity, ctx)
-  }
-}
+  def execute(
+      contextVarM: VAny,
+      contextVarN: VAny,
+      args: Seq[VAny]
+  )(using ctx: Context): VAny =
+    Interpreter.executeFn(
+      this,
+      Some(contextVarM),
+      Some(contextVarN),
+      Some(args)
+    )
+
+  def apply(args: VAny*)(using ctx: Context): VAny =
+    Interpreter.executeFn(this)
+end VFun
+
+object VFun:
+  def fromLambda(lam: AST.Lambda)(using origCtx: Context): VFun =
+    val AST.Lambda(arity, params, body) = lam
+    VFun(
+      () => ctx ?=> Interpreter.execute(body)(using ctx),
+      arity,
+      params,
+      origCtx
+    )
+
+  def fromElement(elem: Element)(using origCtx: Context): VFun =
+    val Element(symbol, name, _, arity, _, _, impl) = elem
+    VFun(impl, arity.getOrElse(1), List.empty, origCtx)
+
+extension (self: VAny)
+  def ===(that: VAny): Boolean =
+    (self, that) match
+      case (a: VVal, b: VVal)   => MiscHelpers.compare(a, b) == 0
+      case (a: VList, b: VList) => a == b
+      case _                    => false

@@ -3,7 +3,7 @@
 
 val vyxalVersion = "3.0.0"
 
-ThisBuild / scalaVersion := "3.1.1"
+ThisBuild / scalaVersion := "3.2.1"
 
 //Automatically reload SBT when build.sbt changes
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -17,6 +17,10 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 // Both fastOptJS and fullOptJS output lib/scalajs-<version>.js
 
 import org.scalajs.linker.interface.OutputPatterns
+
+// From https://github.com/scalatest/scalatest/issues/405
+// Suppresses output from successful tests
+Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
 
 lazy val root = project
   .in(file("."))
@@ -33,7 +37,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     name := "vyxal",
     version := vyxalVersion,
     libraryDependencies ++= Seq(
-      ("org.typelevel" %%% "spire" % "0.17.0").cross(CrossVersion.for3Use2_13),
+      ("org.typelevel" %%% "spire" % "0.18.0").cross(CrossVersion.for3Use2_13),
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
@@ -46,10 +50,23 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-unchecked", // Enable additional warnings where generated code depends on assumptions.
       // Above options from https://tpolecat.github.io/2017/04/25/scalac-flags.html
       "-language:implicitConversions",
+      "-language:adhocExtensions",
       // "-explain",
       "-print-lines",
       "-Ycheck-all-patmat"
     ),
+    // Configure Scaladoc
+    Compile / doc / target := file("docs"),
+    Compile / doc / scalacOptions ++= Seq(
+      "-project-version",
+      vyxalVersion,
+      "-groups", // Group similar functions
+      "-Ygenerate-inkuire", // Allow type-based searches
+      "-external-mappings:.*vyxal.*::scaladoc3::https://vyxal.github.io/Vyxal/docs/",
+      "-external-mappings:.*scala.util.parsing.*::scaladoc3::https://scala-lang.org/api/2.12.8/scala-parser-combinators/",
+      "-external-mappings:.*scala(?!.util.parsing).*::scaladoc3::https://scala-lang.org/api/3.x/",
+      "-external-mappings:.*java.*::javadoc::https://docs.oracle.com/javase/8/docs/api/"
+    )
   )
   .jvmSettings(
     // JVM-specific settings

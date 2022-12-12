@@ -1,85 +1,123 @@
 package vyxal
 
-import scala.util.parsing.combinator._
+import scala.util.matching.Regex
+import scala.util.parsing.combinator.*
+import VyxalToken.*
 
 case class VyxalCompilationError(msg: String)
 
-enum VyxalToken {
-  case Number(value: String)
-  case Str(value: String)
-  case StructureOpen(value: String)
-  case StructureClose(value: String)
-  case StructureAllClose
-  case Command(value: String)
-  case Digraph(value: String)
-  case MonadicModifier(value: String)
-  case DyadicModifier(value: String)
-  case TriadicModifier(value: String)
-  case TetradicModifier(value: String)
-  case SpecialModifier(value: String)
-  case CompressedString(value: String)
-  case CompressedNumber(value: String)
-  case DictionaryString(value: String)
-  case Comment(value: String)
-  case Branch
-}
+// todo maybe make a separate TokenType enum and make VyxalToken a simple case class
+enum VyxalToken(val value: String):
+  case Number(override val value: String) extends VyxalToken(value)
+  case Str(override val value: String) extends VyxalToken(value)
+  case StructureOpen(structureType: StructureType)
+      extends VyxalToken(structureType.open)
+  case StructureClose(override val value: String) extends VyxalToken(value)
+  case StructureAllClose extends VyxalToken("]")
+  case ListOpen extends VyxalToken("#[")
+  case ListClose extends VyxalToken("#]")
+  case Command(override val value: String) extends VyxalToken(value)
+  case Digraph(override val value: String) extends VyxalToken(value)
+  case MonadicModifier(override val value: String) extends VyxalToken(value)
+  case DyadicModifier(override val value: String) extends VyxalToken(value)
+  case TriadicModifier(override val value: String) extends VyxalToken(value)
+  case TetradicModifier(override val value: String) extends VyxalToken(value)
+  case SpecialModifier(override val value: String) extends VyxalToken(value)
+  case CompressedString(override val value: String) extends VyxalToken(value)
+  case CompressedNumber(override val value: String) extends VyxalToken(value)
+  case DictionaryString(override val value: String) extends VyxalToken(value)
+  case Comment(override val value: String) extends VyxalToken(value)
+  case GetVar(override val value: String) extends VyxalToken(value)
+  case SetVar(override val value: String) extends VyxalToken(value)
+  case Branch extends VyxalToken("|")
+  case Newline extends VyxalToken("\n")
+end VyxalToken
 
-import VyxalToken.*
+enum StructureType(val open: String):
+  case If extends StructureType("[")
+  case While extends StructureType("{")
+  case For extends StructureType("(")
+  case Lambda extends StructureType("λ")
+  case LambdaMap extends StructureType("ƛ")
+  case LambdaFilter extends StructureType("Ω")
+  case LambdaReduce extends StructureType("₳")
+  case LambdaSort extends StructureType("µ")
 
 val CODEPAGE = """ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵗᵘᵛᵂᵡᵞᶻᶴ′″‴⁴ᵜ !"#$%&'()*+,-./0123456789:;
 <=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~¦ȦḂĊḊĖḞĠḢİĿṀṄ
 ȮṖṘṠṪẆẊικȧḃċḋėḟġḣŀṁṅȯṗṙṡṫẋƒΘΦ§ẠḄḌḤỊḶṂṆỌṚṢṬ…≤≥≠₌⁺⁻⁾√∑«»⌐∴∵⊻₀₁₂₃₄₅₆₇₈₉λƛΩ₳µ∆øÞ½ʀɾ¯
 ×÷£¥←↑→↓±‡†Π¬∧∨⁰¹²³¤¨∥∦ı„”ð€“¶ᶿᶲ•≈¿ꜝ"""
 
-val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ"
+val MONADIC_MODIFIERS = "ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻ¿′/\\~v@`ꜝ"
 val DYADIC_MODIFIERS = "″∥∦"
 val TRIADIC_MODIFIERS = "‴"
 val TETRADIC_MODIFIERS = "⁴"
 val SPECIAL_MODIFIERS = "ᵗᵜ"
 
-object Lexer extends RegexParsers {
+object Lexer extends RegexParsers:
   override def skipWhitespace = true
+  override val whiteSpace: Regex = "[ \t\r\f]+".r
 
-  def number: Parser[VyxalToken] = """(0(?:[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
+  def number: Parser[VyxalToken] = """(0(?=[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
     value => Number(value)
   }
 
-  def string: Parser[VyxalToken] = """"[^"„”“]*["„”“]""".r ^^ { value =>
-    // If the last character of each token is ", then it's a normal string
-    // If the last character of each token is „, then it's a compressed string
-    // If the last character of each token is ”, then it's a dictionary string
-    // If the last character of each token is “, then it's a compressed number
+  def string: Parser[VyxalToken] = """("(?:[^"„”“\\\\]|\\.)*["„”“])""".r ^^ {
+    value =>
+      // If the last character of each token is ", then it's a normal string
+      // If the last character of each token is „, then it's a compressed string
+      // If the last character of each token is ”, then it's a dictionary string
+      // If the last character of each token is “, then it's a compressed number
 
-    // So replace the non-normal string tokens with the appropriate token type
+      // So replace the non-normal string tokens with the appropriate token type
 
-    val text = value.substring(1, value.length - 1)
-    value.charAt(value.length - 1) match {
-      case '"' => Str(text)
-      case '„' => CompressedString(text)
-      case '”' => DictionaryString(text)
-      case '“' => CompressedNumber(text)
-      case _   => throw Exception("Invalid string")
-    }
+      // btw thanks to @pxeger and @mousetail for the regex
+      val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
+
+      value.charAt(value.length - 1) match
+        case '"' => Str(text)
+        case '„' => CompressedString(text)
+        case '”' => DictionaryString(text)
+        case '“' => CompressedNumber(text)
+        case _   => throw Exception("Invalid string")
+  }
+
+  def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
+    Str(value.substring(1))
+  }
+
+  def twoCharString: Parser[VyxalToken] = """ᶴ..""".r ^^ { value =>
+    Str(value.substring(1))
   }
 
   def structureOpen: Parser[VyxalToken] = """[\[\(\{λƛΩ₳µ]|#@""".r ^^ { value =>
-    StructureOpen(value)
+    StructureOpen(StructureType.values.find(_.open == value).get)
   }
 
   def structureClose: Parser[VyxalToken] = """[\}\)]""".r ^^ { value =>
     StructureClose(value)
   }
 
-  def structureAllClose: Parser[VyxalToken] = """\]""".r ^^ { value =>
-    StructureAllClose
-  }
+  def structureAllClose: Parser[VyxalToken] = """\]""".r ^^^ StructureAllClose
 
-  def digraph: Parser[VyxalToken] = s"[∆øÞ#][$CODEPAGE]".r ^^ { value =>
+  def listOpen: Parser[VyxalToken] = """(#\[)|⟨""".r ^^^ ListOpen
+
+  def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
+
+  def digraph: Parser[VyxalToken] = s"[∆øÞ#k][$CODEPAGE]".r ^^ { value =>
     Digraph(value)
   }
 
   def command: Parser[VyxalToken] = s"[$CODEPAGE]".r ^^ { value =>
     Command(value)
+  }
+
+  def getVariable: Parser[VyxalToken] = """(\#\<)[0-9A-Za-z]*""".r ^^ { value =>
+    GetVar(value.substring(2, value.length))
+  }
+
+  def setVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z]*""".r ^^ { value =>
+    SetVar(value.substring(2, value.length))
   }
 
   def monadicModifier: Parser[VyxalToken] =
@@ -101,20 +139,21 @@ object Lexer extends RegexParsers {
     Comment(value)
   }
 
-  def branch = "|" ^^ { _ => Branch }
+  def branch = "|" ^^^ Branch
+
+  def newlines = "\n" ^^^ Newline
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | digraph | monadicModifier |
-        dyadicModifier | triadicModifier | tetradicModifier | specialModifier |
-        structureOpen | structureClose | structureAllClose | command
+      comment | branch | number | string | getVariable | setVariable | twoCharString | singleCharString | digraph
+        | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
+        | specialModifier | structureOpen | structureClose | structureAllClose
+        | listOpen | listClose | newlines | command
     )
   )
 
-  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] = {
-    parse(tokens, code) match {
+  def apply(code: String): Either[VyxalCompilationError, List[VyxalToken]] =
+    (parse(tokens, code): @unchecked) match
       case NoSuccess(msg, next)  => Left(VyxalCompilationError(msg))
       case Success(result, next) => Right(result)
-    }
-  }
-}
+end Lexer

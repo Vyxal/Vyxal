@@ -9,8 +9,10 @@ Number ::= "0" | (Digit+ ("." (Digit)*)? ("ı" (Digit)*)?)
 String ::= '"' [^"„”“]+ '"'
 Comment ::= "##" [^\n]+
 StructureOpen ::= "[" | "(" | "{" | "λ" | "ƛ" | "Ω" | "₳" | "µ" | "#@"
-StructureClose ::= [\])]
-AllStructureClose
+StructureClose ::= [\})]
+AllStructureClose ::= \]
+ListOpen ::= "#[" | "⟨"
+ListClose ::= "#]" | "⟩"
 Digraph ::= [∆øÞ#] AnyCharacter
 MonadicModifier ::= [ᵃᵇᶜᵈᵉᶠᶢᴴᶤᶨᵏᶪᵐⁿᵒᵖᴿᶳᵘᵛᵂᵡᵞᶻᶴ¿′/\\~v@`ꜝ]
 DyadicModifier ::= [″∥∦]
@@ -21,5 +23,6 @@ TieModifier ::= "ᵗ"
 Branch ::= "|"
 Newline :: = "\n"
 Command ::= EverythingElse
+GetVariable ::= "#<" ([a-z]|Digit|[A-Z])*
+SetVariable ::= "#>" ([a-z]|Digit|[A-Z])*
 ```
-
