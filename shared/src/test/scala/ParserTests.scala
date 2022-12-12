@@ -71,36 +71,6 @@ class ParserTests extends AnyFunSuite:
     )
   }
 
-  test("Does the parser understand for loops?") {
-    assert(
-      Parser.parse("1 10R (i|2n*,") === Right(
-        Group(
-          List(
-            Group(List(Number(1), Number(10), Command("R")), Some(0)),
-            For(
-              Some("i"),
-              Group(
-                List(
-                  Group(
-                    List(
-                      Number(2),
-                      Group(List(Command("n")), Some(0)),
-                      Command("*")
-                    ),
-                    Some(0)
-                  ),
-                  Group(List(Command(",")), Some(0))
-                ),
-                None
-              )
-            )
-          ),
-          None
-        )
-      )
-    )
-  }
-
   test("Does the parser understand nested structures?") {
     assert(
       Parser.parse("1 { 2 | { {3 | 4} | } } 6") ===
@@ -135,7 +105,26 @@ class ParserTests extends AnyFunSuite:
       )
     )
 
-    assert(Parser.parse("1 10R(i|n2*,") === Right(Newline))
+    assert(
+      Parser.parse("1 10R(i|n2*,") === Right(
+        Group(
+          List(
+            Group(List(Number(1), Number(10), Command("R")), Some(0)),
+            For(
+              Some("i"),
+              Group(
+                List(
+                  Group(List(Command("n"), Number(2), Command("*")), Some(0)),
+                  Command(",")
+                ),
+                None
+              )
+            )
+          ),
+          None
+        )
+      )
+    )
   }
 
   test("Does the parser understand close all structures (']')?") {
@@ -192,8 +181,8 @@ class ParserTests extends AnyFunSuite:
                           ),
                           Some(1)
                         ),
-                        Group(List(Command("+")), Some(2)),
-                        Group(List(Command("O")), Some(1))
+                        Command("+"),
+                        Command("O")
                       ),
                       None
                     )
@@ -214,14 +203,8 @@ class ParserTests extends AnyFunSuite:
       Parser.parse("v+ +") === Right(
         Group(
           List(
-            Group(
-              List(
-                Lambda(2, List(), Group(List(Command("+")), Some(2))),
-                Command("#v")
-              ),
-              None
-            ),
-            Group(List(Command("+")), Some(2))
+            Group(List(Lambda(2, List(), Command("+")), Command("#v")), None),
+            Command("+")
           ),
           None
         )
@@ -234,13 +217,7 @@ class ParserTests extends AnyFunSuite:
           List(
             Number(2),
             Number(1),
-            Group(
-              List(
-                Lambda(2, List(), Group(List(Command("+")), Some(2))),
-                Command("R")
-              ),
-              None
-            )
+            Group(List(Lambda(2, List(), Command("+")), Command("R")), None)
           ),
           None
         )
@@ -265,10 +242,7 @@ class ParserTests extends AnyFunSuite:
                   1,
                   List(),
                   Group(
-                    List(
-                      Lambda(2, List(), Group(List(Command("+")), Some(2))),
-                      Command("R")
-                    ),
+                    List(Lambda(2, List(), Command("+")), Command("R")),
                     None
                   )
                 ),
@@ -293,21 +267,15 @@ class ParserTests extends AnyFunSuite:
                   Lambda(
                     1,
                     List(),
-                    Group(
-                      List(
-                        Group(List(Command("*")), Some(2)),
-                        Group(List(Command("O")), Some(1))
-                      ),
-                      None
-                    )
+                    Group(List(Command("*"), Command("O")), None)
                   ),
-                  Group(List(Command("+")), Some(2))
+                  Command("+")
                 ),
                 None
               )
             ),
-            Group(List(Command("O")), Some(1)),
-            Group(List(Command("O")), Some(1))
+            Command("O"),
+            Command("O")
           ),
           None
         )
@@ -371,7 +339,7 @@ class ParserTests extends AnyFunSuite:
                 None
               )
             ),
-            Group(List(Command("M")), Some(2))
+            Command("M")
           ),
           None
         )
