@@ -51,13 +51,13 @@ object Modifiers:
       "Single Element Lambda",
       """|Turn the next element (whether that be a structure/modifier/element) into a lambda
          |′f: Push the equivalent of λf} to the stack""".stripMargin,
-      List()
+      List("*-")
     ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
     "″" -> Modifier(
       "Double Element Lambda",
       """|Turn the next two elements (whether that be a structure/modifier/element) into a lambda
          |″fg: Push the equivalent of λfg} to the stack""".stripMargin,
-      List()
+      List("**-")
     ) { case List(ast1, ast2) =>
       AST.makeSingle(astToLambda(AST.makeSingle(ast1, ast2), 1))
     },
@@ -65,7 +65,7 @@ object Modifiers:
       "Triple Element Lambda",
       """|Turn the next three elements (whether that be a structure/modifier/element) into a lambda
          |‴fgh: Push the equivalent of λfgh} to the stack""".stripMargin,
-      List()
+      List("***-")
     ) { case List(ast1, ast2, ast3) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3), 1)
     },
@@ -73,7 +73,7 @@ object Modifiers:
       "Quadruple Element Lambda",
       """|Turn the next four elements (whether that be a structure/modifier/element) into a lambda
          |⁴fghi: Push the equivalent of λfghi} to the stack""".stripMargin,
-      List()
+      List("****-")
     ) { case List(ast1, ast2, ast3, ast4) =>
       astToLambda(AST.makeSingle(ast1, ast2, ast3, ast4), 1)
     }
