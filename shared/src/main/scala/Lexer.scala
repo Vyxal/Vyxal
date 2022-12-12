@@ -1,5 +1,6 @@
 package vyxal
 
+import scala.util.matching.Regex
 import scala.util.parsing.combinator.*
 import VyxalToken.*
 
@@ -55,6 +56,7 @@ val SPECIAL_MODIFIERS = "ᵗᵜ"
 
 object Lexer extends RegexParsers:
   override def skipWhitespace = true
+  override val whiteSpace: Regex = "[ \t\r\f]+".r
 
   def number: Parser[VyxalToken] = """(0(?=[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
     value => Number(value)
@@ -132,12 +134,14 @@ object Lexer extends RegexParsers:
 
   def branch = "|" ^^^ Branch
 
+  def newlines = "\n" ^^^ Newline
+
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
       comment | branch | number | string | getVariable | setVariable | singleCharString | digraph
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
-        | listOpen | listClose | command
+        | listOpen | listClose | newlines | command
     )
   )
 

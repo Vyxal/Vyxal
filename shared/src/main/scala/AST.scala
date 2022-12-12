@@ -31,7 +31,7 @@ enum AST(val arity: Option[Int]):
   case ExecuteFn extends AST(None)
 
   /** Junk newline AST that is removed in post-processing */
-  case Newline extends AST(Some(0))
+  case Newline extends AST(None)
 
   /** Junk modifier AST that is removed during parsing after first pass */
   case JunkModifier(name: String, modArity: Int) extends AST(Some(modArity))

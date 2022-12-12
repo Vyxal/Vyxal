@@ -1,10 +1,9 @@
 package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
-
 import AST.*
 
-class ParserTests extends AnyFunSuite {
+class ParserTests extends AnyFunSuite:
   test("Does the parser recognise numbers?") {
     assert(Parser.parse("123") === Right(Number(123)))
   }
@@ -239,5 +238,72 @@ class ParserTests extends AnyFunSuite {
         )
       )
     )
+    assert(
+      Parser.parse("″″*O+OO") === Right(Newline)
+    )
   }
-}
+
+  test("Does the parser recognise lambda to newline?") {
+    assert(
+      Parser.parse("1 + 2 * ᵜ #[1|2|3#] M") === Right(
+        Group(
+          List(
+            Lambda(
+              1,
+              List(),
+              Group(
+                List(
+                  Group(List(Number(1), Command("+")), Some(1)),
+                  Group(List(Number(2), Command("*")), Some(1))
+                ),
+                None
+              )
+            ),
+            Group(
+              List(Lst(List(Number(1), Number(2), Number(3))), Command("M")),
+              Some(1)
+            )
+          ),
+          None
+        )
+      )
+    )
+    assert(
+      Parser.parse("1 + 2 * ᵜ") === Right(
+        Lambda(
+          1,
+          List(),
+          Group(
+            List(
+              Group(List(Number(1), Command("+")), Some(1)),
+              Group(List(Number(2), Command("*")), Some(1))
+            ),
+            None
+          )
+        )
+      )
+    )
+    assert(
+      Parser.parse("#[1|2|3#]\n1 + 2 * ᵜ M") === Right(
+        Group(
+          List(
+            Lst(List(Number(1), Number(2), Number(3))),
+            Lambda(
+              1,
+              List(),
+              Group(
+                List(
+                  Group(List(Number(1), Command("+")), Some(1)),
+                  Group(List(Number(2), Command("*")), Some(1))
+                ),
+                None
+              )
+            ),
+            Group(List(Command("M")), Some(2))
+          ),
+          None
+        )
+      )
+    )
+  }
+end ParserTests

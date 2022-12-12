@@ -23,6 +23,10 @@ case class Modifier(
 
 /** Implementations of modifiers */
 object Modifiers:
+  private def astToLambda(ast: AST, arity: Int): AST =
+    ast match
+      case _: AST.Lambda => ast
+      case _             => AST.Lambda(arity, List(), ast)
   val modifiers: Map[String, Modifier] = Map(
     "v" -> Modifier(
       "Vectorise",
@@ -30,9 +34,7 @@ object Modifiers:
          |vf: f but vectorised""".stripMargin,
       List("vectorise-", "vec-")
     ) { case List(ast) =>
-      val lambdaAst = ast match
-        case _: AST.Lambda => ast
-        case _             => AST.Lambda(ast.arity.getOrElse(1), List(), ast)
+      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(1))
       AST.makeSingle(lambdaAst, AST.Command("#v"))
     },
     "/" -> Modifier(
@@ -42,10 +44,32 @@ object Modifiers:
       """.stripMargin,
       List("foldl-", "reduce-", "/-")
     ) { case List(ast) =>
-      val lambdaAst = ast match
-        case _: AST.Lambda => ast
-        case _             => AST.Lambda(2, List(), ast)
+      val lambdaAst = astToLambda(ast, ast.arity.getOrElse(2))
       AST.makeSingle(lambdaAst, AST.Command("R"))
-    }
+    },
+    "′" -> Modifier(
+      "Single Element Lambda",
+      """|Turn the next element (whether that be a structure/modifier/element) into a lambda
+         |′f: Push the equivalent of λf} to the stack""".stripMargin,
+      List()
+    ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
+    "″" -> Modifier(
+      "Double Element Lambda",
+      """|Turn the next two elements (whether that be a structure/modifier/element) into a lambda
+         |″fg: Push the equivalent of λfg} to the stack""".stripMargin,
+      List()
+    ) { case List(ast) => AST.makeSingle(astToLambda(ast, 1)) },
+    "‴" -> Modifier(
+      "Triple Element Lambda",
+      """|Turn the next three elements (whether that be a structure/modifier/element) into a lambda
+         |‴fgh: Push the equivalent of λfgh} to the stack""".stripMargin,
+      List()
+    ) { case List(ast) => astToLambda(ast, 1) },
+    "⁴" -> Modifier(
+      "Quadruple Element Lambda",
+      """|Turn the next four elements (whether that be a structure/modifier/element) into a lambda
+         |⁴fghi: Push the equivalent of λfghi} to the stack""".stripMargin,
+      List()
+    ) { case List(ast) => astToLambda(ast, 1) }
   )
 end Modifiers

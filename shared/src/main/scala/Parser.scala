@@ -116,7 +116,7 @@ object Parser:
     while !asts.isEmpty do
       val topAst = asts.pop()
       topAst match
-        case AST.Newline => ???
+        case AST.Newline => None
         case AST.JunkModifier(name, arity) =>
           if arity > 0 then
             val modifier = Modifiers.modifiers(name)
@@ -133,7 +133,8 @@ object Parser:
           (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
-              while asts.top != AST.Newline do lambdaAsts += finalAsts.pop()
+              while asts.nonEmpty && asts.top != AST.Newline do
+                lambdaAsts += asts.pop()
               finalAsts.push(
                 AST.Lambda(
                   1,
@@ -183,7 +184,7 @@ object Parser:
       case None => Left(VyxalCompilationError(s"No such element: $name"))
       case Some(element) =>
         if asts.isEmpty then Right(AST.Command(name))
-        else {
+        else
           val arity = element.arity.getOrElse(0)
           val nilads = ListBuffer[AST]()
 
@@ -196,7 +197,6 @@ object Parser:
               Some(arity - nilads.size)
             )
           )
-        }
 
   /** Parse branches for an unknown structure, nothing more.
     *
@@ -267,7 +267,7 @@ object Parser:
               Right(AST.If(thenBranch, Some(elseBranch)))
             case _ =>
               Left(VyxalCompilationError("Invalid if statement"))
-            // TODO: One day make this extended elif
+        // TODO: One day make this extended elif
         case StructureType.While =>
           branches match
             case List(cond, body) => Right(AST.While(Some(cond), body))
