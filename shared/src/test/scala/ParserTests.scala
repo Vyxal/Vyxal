@@ -239,7 +239,36 @@ class ParserTests extends AnyFunSuite:
       )
     )
     assert(
-      Parser.parse("″″*O+OO") === Right(Newline)
+      Parser.parse("″″*O+OO") === Right(
+        Group(
+          List(
+            Lambda(
+              1,
+              List(),
+              Group(
+                List(
+                  Lambda(
+                    1,
+                    List(),
+                    Group(
+                      List(
+                        Group(List(Command("*")), Some(2)),
+                        Group(List(Command("O")), Some(1))
+                      ),
+                      None
+                    )
+                  ),
+                  Group(List(Command("+")), Some(2))
+                ),
+                None
+              )
+            ),
+            Group(List(Command("O")), Some(1)),
+            Group(List(Command("O")), Some(1))
+          ),
+          None
+        )
+      )
     )
   }
 
