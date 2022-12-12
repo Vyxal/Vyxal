@@ -12,10 +12,9 @@ import scala.collection.SpecificIterableFactory
   */
 class VList private (val lst: Seq[VAny])
     extends Seq[VAny],
-      SeqOps[VAny, Seq, VList] {
+      SeqOps[VAny, Seq, VList]:
 
-  /** Map the list using a Vyxal function
-    */
+  /** Map the list using a Vyxal function */
   def vmap(f: VAny => Context ?=> VAny)(using Context): VList = new VList(
     lst.map(f(_))
   )
@@ -32,19 +31,14 @@ class VList private (val lst: Seq[VAny])
         .map(f(_, _))
     )
 
-  /** Get the element at index `ind`
-    */
+  /** Get the element at index `ind` */
   override def apply(ind: Int): VAny =
-    if (ind < 0) {
+    if ind < 0 then
       // floorMod because % gives negative results with negative dividends
       lst(Math.floorMod(ind, lst.length))
-    } else {
-      try {
-        lst(ind)
-      } catch {
-        case _: IndexOutOfBoundsException => lst(ind % lst.length)
-      }
-    }
+    else
+      try lst(ind)
+      catch case _: IndexOutOfBoundsException => lst(ind % lst.length)
 
   override def iterator: Iterator[VAny] = lst.iterator
 
@@ -61,18 +55,17 @@ class VList private (val lst: Seq[VAny])
     VList.newBuilder
 
   override def empty: VList = VList.empty
-}
+end VList
 
-object VList extends SpecificIterableFactory[VAny, VList] {
+object VList extends SpecificIterableFactory[VAny, VList]:
 
   /** Zip multiple VLists together with a function.
     *
     * The parameter is a `PartialFunction` instead of a function because it's
     * going to match on a list and assume it's a specific length
     */
-  def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny]): VList = {
+  def zipMulti(lists: VList*)(f: PartialFunction[Seq[VAny], VAny]): VList =
     ???
-  }
 
   /** This lets us pattern match on `VList`s, silly as the implementation may
     * be.
@@ -89,4 +82,4 @@ object VList extends SpecificIterableFactory[VAny, VList] {
   override def fromSpecific(it: IterableOnce[VAny]): VList = new VList(
     it.iterator.toSeq
   )
-}
+end VList

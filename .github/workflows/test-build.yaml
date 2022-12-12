@@ -1,8 +1,8 @@
 name: Test and upload jar
 
 on:
+  push:
   pull_request:
-    branches: [ version-3 ]
 
 jobs:
   build:

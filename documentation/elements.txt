@@ -41,9 +41,6 @@ B (Convert From Binary) (non-vectorising)
 - a: str -> int(a, 2)
 - a: lst -> int(a, 2), using list of digits
 ---------------------
-₃ (Thirty-two) (non-vectorising)
-- -> 32
----------------------
 + (Addition) (vectorising)
 - a: num, b: num -> a + b
 - a: num, b: str -> a + b
@@ -106,6 +103,12 @@ M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 ---------------------
 ; (Pair) (non-vectorising)
 - a, b -> [a, b]
+---------------------
+#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+---------------------
+₃ (Thirty-two) (non-vectorising)
+- -> 32
 ---------------------
 ? (Get Input) (non-vectorising)
 - ->  -> input

@@ -1,5 +1,7 @@
 package vyxal
 
+import VNum.given
+
 /** Stuff that's shared across all contexts
   *
   * @param inputs
@@ -13,15 +15,14 @@ case class Globals(
     inputs: Inputs = Inputs(),
     settings: Settings = Settings(),
     var register: VAny = 0
-) {
+):
   register = settings.defaultValue
-}
 
 /** Stores the inputs for some Context. Inputs can be overridden.
   *
   * Implemented as a circular buffer to wrap around.
   */
-class Inputs(origInputs: Seq[VAny] = Seq.empty) {
+class Inputs(origInputs: Seq[VAny] = Seq.empty):
   private var origArr = origInputs.toArray
 
   /** Uses an array for constant access, not for mutating items */
@@ -33,23 +34,20 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty) {
   def nonEmpty: Boolean = currInputs.nonEmpty
 
   /** Make sure to call [[this.nonEmpty]] first */
-  def next(): VAny = {
+  def next(): VAny =
     val res = currInputs(ind)
     ind = (ind + 1) % currInputs.size
     res
-  }
 
   /** Temporarily replace inputs with the given `Seq` */
-  def overrideInputs(newInputs: Seq[VAny]): Unit = {
+  def overrideInputs(newInputs: Seq[VAny]): Unit =
     currInputs = newInputs.toArray
     ind = 0
-  }
 
   /** Use the original inputs again */
-  def reset(): Unit = {
+  def reset(): Unit =
     currInputs = origArr
     ind = 0
-  }
 
   /** Get the current input without moving on to the one after that */
   def peek: VAny = currInputs(ind)
@@ -57,14 +55,13 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty) {
   /** Get the next n inputs without moving the index/pointer forward (wrap if
     * necessary)
     */
-  def peek(n: Int): List[VAny] = {
+  def peek(n: Int): List[VAny] =
     // The number of elems that can be gotten without wrapping
     val numNonWrapping = n.max(currInputs.length - ind)
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping + 1).toList
 
-    if (n <= numNonWrapping) {
-      nonWrapping
-    } else {
+    if n <= numNonWrapping then nonWrapping
+    else {
       // The number of times the entire inputs array has to be repeated
       val numRepeats = (n - numNonWrapping) / currInputs.size
       val repeats = List.fill(numRepeats)(currInputs.toList)
@@ -75,12 +72,11 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty) {
 
       nonWrapping ::: repeats.flatten ::: end
     }
-  }
-}
+  end peek
+end Inputs
 
-/** What kind of implicit output is wanted at the end
-  */
-enum EndPrintMode {
+/** What kind of implicit output is wanted at the end */
+enum EndPrintMode:
 
   /** Just print the top of the stack */
   case Default
@@ -91,12 +87,10 @@ enum EndPrintMode {
 
   /** Sum/concatenate the top of the stack */
   case Sum
-}
 
 // todo use a proper logging library instead
-enum LogLevel {
+enum LogLevel:
   case Debug, Normal
-}
 
 /** Settings set by flags
   *
@@ -119,14 +113,14 @@ case class Settings(
     numToRange: Boolean = false,
     printFn: Any => Unit = print,
     logLevel: LogLevel = LogLevel.Normal
-) {
+):
 
   /** Add a flag to these settings
     *
     * @return
     *   A Some with the new settings, or None if the flag is invalid
     */
-  def withFlag(flag: Char): Settings = flag match {
+  def withFlag(flag: Char): Settings = flag match
     case 'H' => this.copy(presetStack = true)
     case 'j' => this.copy(endPrintMode = EndPrintMode.JoinNewlines)
     case 'L' => this.copy(endPrintMode = EndPrintMode.JoinNewlinesVert)
@@ -136,5 +130,4 @@ case class Settings(
     case 'Ṁ' => this.copy(rangeStart = 0, rangeOffset = -1)
     // todo implement the others
     case _ => throw IllegalArgumentException(s"$flag is an invalid flag")
-  }
-}
+end Settings

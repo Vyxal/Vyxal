@@ -5,8 +5,7 @@ import org.scalatest.funspec.AnyFunSpec
 import vyxal.*
 import Elements.Impls
 
-/** Tests for specific elements
-  */
+/** Tests for specific elements */
 class ElementTests extends AnyFunSpec {
 
   describe("Element +") {
@@ -25,8 +24,7 @@ class ElementTests extends AnyFunSpec {
     }
     describe("when given functions") {
       it("should turn two functions into an fgh fork") {
-        given ctx: Context =
-          Context(globals = Globals(settings = Settings(logLevel = LogLevel.Debug)))
+        given ctx: Context = Context()
         // Factorial
         val f = VFun.fromElement(Elements.elements("!"))
         // Function to subtract 8
@@ -39,7 +37,6 @@ class ElementTests extends AnyFunSpec {
         )
         ctx.push(3)
         ctx.push(Impls.add(f, g))
-        println(s"Made fork, executing function")
         Interpreter.execute(AST.ExecuteFn)
         assertResult(VNum(1))(ctx.pop())
       }
@@ -67,13 +64,19 @@ class ElementTests extends AnyFunSpec {
       it("should work with singleton lists") {
         given ctx: Context = Context()
         assertResult(1: VNum)(
-          Impls.reduction(VList(1), VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Impls.reduction(
+            VList(1),
+            VFun(Elements.elements("+").impl, 2, List.empty, ctx)
+          )
         )
       }
       it("should calculate sum properly") {
         given ctx: Context = Context()
         assertResult(15: VNum)(
-          Impls.reduction(VNum(5), VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Impls.reduction(
+            VNum(5),
+            VFun(Elements.elements("+").impl, 2, List.empty, ctx)
+          )
         )
       }
     }

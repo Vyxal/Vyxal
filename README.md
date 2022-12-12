@@ -21,3 +21,7 @@ directly instead of going into the shell and then running just `somecommand`.
 Run `sbt` without any arguments to drop into the sbt shell.
 
 To run the CLI inside the shell, use `vyxalJVM/run`.
+
+To run only the tests in a specific class, say `ParserTests`, run `vyxalJVM/testOnly *ParserTests`
+
+To run only the tests in a specific class whose names contain some specific text, say "for loops", run `vyxalJVM/testOnly *ParserTests -- -t "for loops"`

@@ -3,7 +3,7 @@
 
 val vyxalVersion = "3.0.0"
 
-ThisBuild / scalaVersion := "3.1.1"
+ThisBuild / scalaVersion := "3.2.1"
 
 //Automatically reload SBT when build.sbt changes
 Global / onChangedBuildSource := ReloadOnSourceChanges
@@ -37,7 +37,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     name := "vyxal",
     version := vyxalVersion,
     libraryDependencies ++= Seq(
-      ("org.typelevel" %%% "spire" % "0.17.0").cross(CrossVersion.for3Use2_13),
+      ("org.typelevel" %%% "spire" % "0.18.0").cross(CrossVersion.for3Use2_13),
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test

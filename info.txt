@@ -24,11 +24,11 @@
 ᵡ = scan fixedpoint [apply until a previous value is repeated, collecting intermediate results]
 ᵞ = vertical scan
 ᶻ = zipwith
-ᶴ = Apply element only to the first n elements of list
-′ = Last Element as Function
-″ = Last Two Elements as Function
-‴ = Last Three Elements as Function
-⁴ = Last Four Elements as Function
+ᶴ = Two character string
+′ = Next Element as Function
+″ = Next Two Elements as Function
+‴ = Next Three Elements as Function
+⁴ = Next Four Elements as Function
 ᵜ = Lambda to start of line
   = NOP
 ! = Factorial / Uppercase
