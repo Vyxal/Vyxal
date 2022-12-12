@@ -62,21 +62,24 @@ object Lexer extends RegexParsers:
     value => Number(value)
   }
 
-  def string: Parser[VyxalToken] = """"[^"„”“]*["„”“]""".r ^^ { value =>
-    // If the last character of each token is ", then it's a normal string
-    // If the last character of each token is „, then it's a compressed string
-    // If the last character of each token is ”, then it's a dictionary string
-    // If the last character of each token is “, then it's a compressed number
+  def string: Parser[VyxalToken] = """("(?:[^"„”“\\\\]|\\.)*["„”“])""".r ^^ {
+    value =>
+      // If the last character of each token is ", then it's a normal string
+      // If the last character of each token is „, then it's a compressed string
+      // If the last character of each token is ”, then it's a dictionary string
+      // If the last character of each token is “, then it's a compressed number
 
-    // So replace the non-normal string tokens with the appropriate token type
+      // So replace the non-normal string tokens with the appropriate token type
 
-    val text = value.substring(1, value.length - 1)
-    value.charAt(value.length - 1) match
-      case '"' => Str(text)
-      case '„' => CompressedString(text)
-      case '”' => DictionaryString(text)
-      case '“' => CompressedNumber(text)
-      case _   => throw Exception("Invalid string")
+      // btw thanks to @pxeger and @mousetail for the regex
+      val text = value.substring(1, value.length - 1).replaceAll("\\\\\"", "\"")
+
+      value.charAt(value.length - 1) match
+        case '"' => Str(text)
+        case '„' => CompressedString(text)
+        case '”' => DictionaryString(text)
+        case '“' => CompressedNumber(text)
+        case _   => throw Exception("Invalid string")
   }
 
   def singleCharString: Parser[VyxalToken] = """'.""".r ^^ { value =>
