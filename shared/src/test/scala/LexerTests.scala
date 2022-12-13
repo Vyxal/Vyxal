@@ -72,4 +72,8 @@ class LexerTests extends AnyFunSuite {
       )
     )
   }
+
+  test("Does the lexer recognise variable digraphs?"){assert(Lexer("3 #$my_var +") === Right(List(Number("3"), GetVar("my_var"), Command("+"))))
+
+assert(Lexer("42 #=answer") === Right(List(Number("42"), SetVar("answer"))))}
 }
