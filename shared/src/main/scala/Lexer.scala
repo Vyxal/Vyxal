@@ -112,11 +112,11 @@ object Lexer extends RegexParsers:
     Command(value)
   }
 
-  def getVariable: Parser[VyxalToken] = """(\#\<)[0-9A-Za-z]*""".r ^^ { value =>
+  def getVariable: Parser[VyxalToken] = """(\#\$)[0-9A-Za-z_]*""".r ^^ { value =>
     GetVar(value.substring(2, value.length))
   }
 
-  def setVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z]*""".r ^^ { value =>
+  def setVariable: Parser[VyxalToken] = """(\#\=)[0-9A-Za-z_]*""".r ^^ { value =>
     SetVar(value.substring(2, value.length))
   }
 
