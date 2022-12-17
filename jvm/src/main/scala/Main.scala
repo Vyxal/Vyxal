@@ -29,8 +29,6 @@ case class CLIConfig(
 
 object Main:
   def main(args: Array[String]): Unit =
-    println(Lexer("#:[abc|def|ghi]"))
-    return
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         given Context = Context(
