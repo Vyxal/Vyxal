@@ -32,7 +32,7 @@ end VNum
 object VNum:
 
   /** To force an implicit conversion */
-  def apply(n: VNum): VNum = n
+  def apply[T](n: T)(using Conversion[T, VNum]): VNum = n
 
   def complex(real: Real, imag: Real) = new VNum(Complex(real, imag))
 
