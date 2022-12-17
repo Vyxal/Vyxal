@@ -29,6 +29,8 @@ case class CLIConfig(
 
 object Main:
   def main(args: Array[String]): Unit =
+    println(Lexer("#:[abc|def|ghi]"))
+    return
     OParser.parse(parser, args, CLIConfig()) match
       case Some(config) =>
         given Context = Context(
@@ -58,6 +60,8 @@ object Main:
         if config.file.nonEmpty || config.code.nonEmpty then return
         else Repl.startRepl()
       case None => ???
+    end match
+  end main
 
   private def printDocs(): Unit =
     Elements.elements.values.foreach {

@@ -2,9 +2,11 @@ package vyxal
 
 import vyxal.impls.Elements
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
 import scala.collection.mutable.Stack
+import scala.compiletime.ops.double
 import spire.syntax.truncatedDivision
 
 object Parser:
@@ -331,14 +333,36 @@ object Parser:
     }
 
   private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] =
-    val processed = ListBuffer[VyxalToken]()
+    val doubleClose = ListBuffer[VyxalToken]()
     tokens.foreach {
       case VyxalToken.StructureClose(")") =>
-        processed += VyxalToken.StructureClose("}")
-        processed += VyxalToken.StructureClose("}")
-      case x => processed += x
+        doubleClose += VyxalToken.StructureClose("}")
+        doubleClose += VyxalToken.StructureClose("}")
+      case x => doubleClose += x
     }
+    val lineup = Queue(doubleClose.toList*)
+    val processed = ListBuffer[VyxalToken]()
+
+    while (lineup.length != 0) do
+      val temp = lineup.dequeue()
+      (temp: @unchecked) match
+        case VyxalToken.SyntaxTrigraph("#:[") =>
+          val contents = mutable.StringBuilder()
+          var depth = 1
+          while depth != 0 do
+            val top = lineup.dequeue()
+            (top: @unchecked) match
+              case VyxalToken.StructureOpen(StructureType.If) => depth += 1
+              case VyxalToken.StructureAllClose               => depth -= 1
+              case _                                          => ???
+            contents.++=(top.value)
+          end while
+          processed += VyxalToken.UnpackVar(contents.toString())
+        case _ => processed += temp
+      end match
+    end while
     processed.toList
+  end preprocess
 
   private def postprocess(asts: AST): AST =
     val temp = asts match

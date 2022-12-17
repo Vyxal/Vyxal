@@ -7,6 +7,7 @@ import VyxalToken.*
 case class VyxalCompilationError(msg: String)
 
 // todo maybe make a separate TokenType enum and make VyxalToken a simple case class
+
 enum VyxalToken(val value: String):
   case Number(override val value: String) extends VyxalToken(value)
   case Str(override val value: String) extends VyxalToken(value)
@@ -18,6 +19,8 @@ enum VyxalToken(val value: String):
   case ListClose extends VyxalToken("#]")
   case Command(override val value: String) extends VyxalToken(value)
   case Digraph(override val value: String) extends VyxalToken(value)
+  case SugarTrigraph(override val value: String) extends VyxalToken(value)
+  case SyntaxTrigraph(override val value: String) extends VyxalToken(value)
   case MonadicModifier(override val value: String) extends VyxalToken(value)
   case DyadicModifier(override val value: String) extends VyxalToken(value)
   case TriadicModifier(override val value: String) extends VyxalToken(value)
@@ -29,6 +32,8 @@ enum VyxalToken(val value: String):
   case Comment(override val value: String) extends VyxalToken(value)
   case GetVar(override val value: String) extends VyxalToken(value)
   case SetVar(override val value: String) extends VyxalToken(value)
+  case AugmentVar(override val value: String) extends VyxalToken(value)
+  case UnpackVar(override val value: String) extends VyxalToken(value)
   case Branch extends VyxalToken("|")
   case Newline extends VyxalToken("\n")
 end VyxalToken
@@ -104,20 +109,25 @@ object Lexer extends RegexParsers:
 
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
-  def digraph: Parser[VyxalToken] = s"[∆øÞ#k][$CODEPAGE]".r ^^ { value =>
-    Digraph(value)
-  }
+  def multigraph: Parser[VyxalToken] =
+    s"([∆øÞk].)|(#[:.,]?.)".r ^^ { value =>
+      if value.length == 2 then Digraph(value)
+      else if value.charAt(1) == ':' then SyntaxTrigraph(value)
+      else SugarTrigraph(value)
+    }
 
   def command: Parser[VyxalToken] = s"[$CODEPAGE]".r ^^ { value =>
     Command(value)
   }
 
-  def getVariable: Parser[VyxalToken] = """(\#\$)[0-9A-Za-z_]*""".r ^^ { value =>
-    GetVar(value.substring(2, value.length))
+  def getVariable: Parser[VyxalToken] = """(\#\$)[0-9A-Za-z_]*""".r ^^ {
+    value =>
+      GetVar(value.substring(2, value.length))
   }
 
-  def setVariable: Parser[VyxalToken] = """(\#\=)[0-9A-Za-z_]*""".r ^^ { value =>
-    SetVar(value.substring(2, value.length))
+  def setVariable: Parser[VyxalToken] = """(\#\=)[0-9A-Za-z_]*""".r ^^ {
+    value =>
+      SetVar(value.substring(2, value.length))
   }
 
   def monadicModifier: Parser[VyxalToken] =
@@ -145,7 +155,8 @@ object Lexer extends RegexParsers:
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | branch | number | string | getVariable | setVariable | twoCharString | singleCharString | digraph
+      comment | multigraph | branch | number | string | getVariable | setVariable
+        | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
         | listOpen | listClose | newlines | command
