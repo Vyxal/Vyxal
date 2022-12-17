@@ -84,6 +84,11 @@ object Parser:
         case VyxalToken.TetradicModifier(v) =>
           asts.push(AST.JunkModifier(v, 4))
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
+        case VyxalToken.GetVar(v)          => asts.push(AST.GetVar(v))
+        case VyxalToken.SetVar(v)          => asts.push(AST.SetVar(v))
+        case VyxalToken.AugmentVar(value) =>
+          asts.push(AST.AuxAugmentVar(value))
+        case VyxalToken.UnpackVar(value) => ???
     end while
 
     val finalAsts = Stack[AST]()
@@ -123,6 +128,8 @@ object Parser:
             // if you've got to this case, then someone has figured out how to
             // screw around with ACE exploits. Good job, you.
         }
+        case AST.AuxAugmentVar(name) =>
+          finalAsts.push(AST.AugmentVar(name, finalAsts.pop))
         case _ => finalAsts.push(topAst)
       end match
     end while

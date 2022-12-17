@@ -28,6 +28,7 @@ enum AST(val arity: Option[Int]):
   case FnDef(name: String, lam: Lambda) extends AST(Some(0))
   case GetVar(name: String) extends AST(Some(0))
   case SetVar(name: String) extends AST(Some(1))
+  case AuxAugmentVar(name: String) extends AST(None)
   case AugmentVar(name: String, what: AST) extends AST(None)
   case UnpackVar(names: Tuple2[String, Int]) extends AST(None)
   case ExecuteFn extends AST(None)
