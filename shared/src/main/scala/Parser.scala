@@ -59,37 +59,9 @@ object Parser:
          * token possibilities, so handle them the same way.
          */
         case VyxalToken.ListOpen =>
-          var listDepth: Int = 1
-          val elements = ListBuffer[List[VyxalToken]]()
-          var element = List[VyxalToken]()
-          while program.nonEmpty && listDepth > 0 do
-            val listToken = program.dequeue()
-            listToken match
-              case VyxalToken.Branch => {
-                if listDepth == 1 then
-                  elements += element
-                  element = List()
-                else element = element :+ listToken
-              }
-              case VyxalToken.ListOpen => {
-                listDepth += 1
-                element = element :+ listToken
-              }
-              case VyxalToken.ListClose => {
-                listDepth -= 1
-                if listDepth > 0 then element = element :+ listToken
-              }
-              case _ => element = element :+ listToken
-            end match
-          end while
-          elements += element
-
-          val parsedElements = ListBuffer[AST]()
-          for element <- elements do
-            parse(element.to(Queue)) match
-              case Right(ast)  => parsedElements += ast
-              case Left(error) => return Left(error)
-          asts.push(AST.Lst(parsedElements.toList))
+          parseBranches(program, true)(_ == VyxalToken.ListClose) match
+            case Right(elements) => asts.push(AST.Lst(elements))
+            case Left(err)       => return Left(err)
 
         /*
          * Now comes command handling. When handling commands, we need to
@@ -199,18 +171,25 @@ object Parser:
             )
           )
 
-  /** Parse branches for an unknown structure, nothing more.
+  /** Parse branches for an unknown structure or list, nothing more.
     *
+    * @param canBeEmpty
+    *   Whether the structure/list can be empty. If `true`, it will be possible
+    *   to return an empty list. If `false`, an empty structure/list will result
+    *   in a list containing a single empty branch.
+    * @param isEnd
+    *   Function to check if a token ends the structure/list
     * @return
-    *   The parsed branches, along with whether or not it encountered a
-    *   `StructureAllClose`
+    *   The parsed branches
     */
-  def parseBranches(program: Queue[VyxalToken]): ParserRet[List[AST]] =
+  def parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)(
+      isEnd: VyxalToken => Boolean
+  ): ParserRet[List[AST]] =
     if program.isEmpty then Right((List(AST.makeSingle()), None))
     val branches = ListBuffer.empty[AST]
 
     while program.nonEmpty
-      && (program.front == VyxalToken.Branch || !isCloser(program.front))
+      && (!isCloser(program.front) || program.front == VyxalToken.Branch)
     do
       parse(program) match
         case Left(err) => return Left(err)
@@ -226,8 +205,13 @@ object Parser:
               branches += AST.makeSingle()
     end while
 
-    if program.nonEmpty && program.front != VyxalToken.StructureAllClose then
-      // Get rid of the structure closer
+    if branches.isEmpty && !canBeEmpty then branches += AST.makeSingle()
+
+    if program.nonEmpty
+      && isEnd(program.front)
+      && program.front != VyxalToken.StructureAllClose
+    then
+      // Get rid of the structure/list closer
       program.dequeue()
 
     Right(branches.toList)
@@ -258,7 +242,10 @@ object Parser:
     val id =
       Option.when(structureType == StructureType.For)(parseIdentifier(program))
 
-    parseBranches(program).flatMap { branches =>
+    parseBranches(program, false) {
+      case VyxalToken.StructureAllClose | VyxalToken.StructureClose(_) => true
+      case _                                                           => false
+    }.flatMap { branches =>
       // Now, we can create the appropriate AST for the structure
       structureType match
         case StructureType.If =>
