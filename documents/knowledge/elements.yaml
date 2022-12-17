@@ -5129,6 +5129,10 @@
       - '[234,"2",4,1] : 434'
       - '["234",2,4,1] : "434"'
       - '["234","2",4,1] : "434"'
+      - '["abbbabbb", "bb", "c", 1] : "acbabbb"'
+      - '["abbbabbb", "bb", "c", 2] : "abcabbb"'
+      - '["abbbabbb", "bb", "c", 3] : "abbbacb"'
+      - '["abbbabbb", "bb", "c", 4] : "abbbabc"'
 
 - element: "øS"
   name: Strip whitespace from both sides
