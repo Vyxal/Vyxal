@@ -443,6 +443,22 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
+    val execute = addMonad(
+      "Ė",
+      "Execute lambda | Evaluate as Vyxal | Power with base 10",
+      List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
+      false,
+      "a: fun -> Execute a",
+      "a: str -> Evaluate a as Vyxal",
+      "a: num -> 10 ** n"
+    ) {
+      case fn: VFun => Interpreter.executeFn(fn)
+      case code: String =>
+        Interpreter.execute(code)
+        summon[Context].pop()
+      case n: VNum => 10 ** n
+    }
+
     val factorial = addMonadVect(
       "!",
       "Factorial | To Uppercase",
@@ -475,11 +491,10 @@ object Elements:
       " -> input"
     ) { ctx ?=>
       if ctx.globals.inputs.nonEmpty then ctx.globals.inputs.next()
-      else {
+      else
         val temp = StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
         else ctx.settings.defaultValue
-      }
     }
 
     val greaterThan = addDyadVect(

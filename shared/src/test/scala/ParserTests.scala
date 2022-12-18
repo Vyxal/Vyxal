@@ -4,6 +4,10 @@ import org.scalatest.funsuite.AnyFunSuite
 import AST.*
 
 class ParserTests extends AnyFunSuite:
+  test("Can the parser parse an empty string?") {
+    assert(Parser.parse("") === Right(AST.makeSingle()))
+  }
+
   test("Does the parser recognise numbers?") {
     assert(Parser.parse("123") === Right(Number(123)))
   }
