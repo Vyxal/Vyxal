@@ -42,6 +42,9 @@ B (Convert From Binary) (non-vectorising)
 - a: lst -> int(a, 2), using list of digits
 ---------------------
 Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
+- a: fun -> Execute a
+- a: str -> Evaluate a as Vyxal
+- a: num -> 10 ** n
 ---------------------
 + (Addition) (vectorising)
 - a: num, b: num -> a + b
