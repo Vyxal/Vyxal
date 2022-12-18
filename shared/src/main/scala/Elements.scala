@@ -447,7 +447,10 @@ object Elements:
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
       List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
-      false
+      false,
+      "a: fun -> Execute a",
+      "a: str -> Evaluate a as Vyxal",
+      "a: num -> 10 ** n"
     ) {
       case fn: VFun => Interpreter.executeFn(fn)
       case code: String =>
