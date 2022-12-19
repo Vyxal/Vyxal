@@ -90,6 +90,8 @@ object Interpreter:
         ctx.push(ctx.getVar(name))
         execute(op)
         ctx.setVar(name, ctx.pop())
+      case AST.UnpackVar(names) =>
+        MiscHelpers.unpack(names)
       case AST.ExecuteFn =>
         ctx.pop() match
           case fn: VFun => ctx.push(executeFn(fn))

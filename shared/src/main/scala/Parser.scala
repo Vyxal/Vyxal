@@ -91,25 +91,25 @@ object Parser:
         case VyxalToken.UnpackVar(value) =>
           val names = ListBuffer[Tuple2[String, VNum]]()
           var name = ""
-          var depth = 1
-
-          while program.nonEmpty && depth != 0 do
-            val top = program.dequeue()
+          var depth = 0
+          val nameQueue = Queue[String](value.split("").toList*)
+          while nameQueue.nonEmpty && depth != -1 do
+            val top = nameQueue.dequeue()
             (top: @unchecked) match
-              case VyxalToken.StructureOpen(_) =>
-                names += ((name, depth))
+              case "[" =>
+                if name.nonEmpty then names += ((name, depth))
                 name = ""
                 depth += 1
-              case VyxalToken.StructureAllClose =>
-                names += ((name, depth))
+              case "]" =>
+                if name.nonEmpty then names += ((name, depth))
                 name = ""
                 depth -= 1
-              case VyxalToken.Branch =>
+              case "|" =>
+                if name.nonEmpty then names += ((name, depth))
                 name = ""
-                names += ((name, depth))
-              case _ => name += top.value
+              case _ => name += top
           end while
-          if depth != 0 then names += ((name, depth))
+          if depth != -1 then names += ((name, depth))
           asts.push(AST.UnpackVar(names.toList))
 
     end while
@@ -388,7 +388,7 @@ object Parser:
             (top: @unchecked) match
               case VyxalToken.StructureOpen(StructureType.If) => depth += 1
               case VyxalToken.StructureAllClose               => depth -= 1
-              case _                                          => ???
+              case _                                          => None
             contents.++=(top.value)
           end while
           processed += VyxalToken.UnpackVar(contents.toString())

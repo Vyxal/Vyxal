@@ -3,6 +3,8 @@ package vyxal
 import vyxal.Interpreter.executeFn
 import vyxal.VNum.given
 
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Stack
 import spire.algebra.*
 
 object MiscHelpers:
@@ -72,6 +74,34 @@ object MiscHelpers:
 
     contextVarN
   end reduce
+
+  def unpack(names: List[Tuple2[String, VNum]]): Unit =
+    // String = variable name
+    // VNum = depth inside ragged list
+
+    val nameStack = Stack[ListBuffer[VAny]]()
+    nameStack.push(ListBuffer[VAny]())
+    var depth = 0
+
+    for tup <- names do
+      if depth == tup._2.toInt then nameStack.top += tup._1
+      else if tup._2.toInt > depth then
+        for i <- 0 until tup._2.toInt - depth do
+          nameStack.push(ListBuffer[VAny]())
+        nameStack.top += tup._1
+      else if tup._2.toInt < depth then
+        for i <- 0 until depth - tup._2.toInt do
+          val temp = VList(nameStack.pop().toList*)
+          nameStack.top += temp
+        nameStack.top += tup._1
+      depth = tup._2.toInt
+    end for
+    for i <- 0 until depth do
+      val temp = VList(nameStack.pop().toList*)
+      nameStack.top += temp
+    end for
+    println(nameStack.top.toList)
+  end unpack
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     // todo change later
