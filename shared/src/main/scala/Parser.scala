@@ -88,7 +88,30 @@ object Parser:
         case VyxalToken.SetVar(v)          => asts.push(AST.SetVar(v))
         case VyxalToken.AugmentVar(value) =>
           asts.push(AST.AuxAugmentVar(value))
-        case VyxalToken.UnpackVar(value) => ???
+        case VyxalToken.UnpackVar(value) =>
+          val names = ListBuffer[Tuple2[String, VNum]]()
+          var name = ""
+          var depth = 1
+
+          while program.nonEmpty && depth != 0 do
+            val top = program.dequeue()
+            (top: @unchecked) match
+              case VyxalToken.StructureOpen(_) =>
+                names += ((name, depth))
+                name = ""
+                depth += 1
+              case VyxalToken.StructureAllClose =>
+                names += ((name, depth))
+                name = ""
+                depth -= 1
+              case VyxalToken.Branch =>
+                name = ""
+                names += ((name, depth))
+              case _ => name += top.value
+          end while
+          if depth != 0 then names += ((name, depth))
+          asts.push(AST.UnpackVar(names.toList))
+
     end while
 
     val finalAsts = Stack[AST]()
@@ -129,7 +152,11 @@ object Parser:
             // screw around with ACE exploits. Good job, you.
         }
         case AST.AuxAugmentVar(name) =>
-          finalAsts.push(AST.AugmentVar(name, finalAsts.pop))
+          if asts.isEmpty then
+            return Left(
+              VyxalCompilationError("Missing element for augmented assign")
+            )
+          finalAsts.push(AST.AugmentVar(name, asts.pop()))
         case _ => finalAsts.push(topAst)
       end match
     end while
@@ -380,6 +407,7 @@ object Parser:
       }
       case _ => asts
     temp
+  end postprocess
 
   private def isNilad(ast: AST) = ast.arity == Some(0)
 

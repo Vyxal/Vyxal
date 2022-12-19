@@ -86,6 +86,10 @@ object Interpreter:
       case AST.FnDef(name, lam) => ctx.setVar(name, VFun.fromLambda(lam))
       case AST.GetVar(name)     => ctx.push(ctx.getVar(name))
       case AST.SetVar(name)     => ctx.setVar(name, ctx.pop())
+      case AST.AugmentVar(name, op) =>
+        ctx.push(ctx.getVar(name))
+        execute(op)
+        ctx.setVar(name, ctx.pop())
       case AST.ExecuteFn =>
         ctx.pop() match
           case fn: VFun => ctx.push(executeFn(fn))

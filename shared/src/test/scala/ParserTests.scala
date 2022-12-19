@@ -168,7 +168,13 @@ class ParserTests extends AnyFunSuite:
   test("Does the parser auto-close lists in structures?") {
     assert(
       Parser.parse("(2 #[} +") === Right(
-        Group(List(For(None, Group(List(Number(2), Lst(List())), None)), Command("+")), None)
+        Group(
+          List(
+            For(None, Group(List(Number(2), Lst(List())), None)),
+            Command("+")
+          ),
+          None
+        )
       )
     )
   }

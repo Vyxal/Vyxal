@@ -110,7 +110,7 @@ object Lexer extends RegexParsers:
   def listClose: Parser[VyxalToken] = """(#\])|⟩""".r ^^^ ListClose
 
   def multigraph: Parser[VyxalToken] =
-    s"([∆øÞk].)|(#[:.,]?[^\\[\\]$$=#])".r ^^ { value =>
+    "([∆øÞk].)|(#[:.,]?[^\\[\\]$=#>@])".r ^^ { value =>
       if value.length == 2 then Digraph(value)
       else if value.charAt(1) == ':' then SyntaxTrigraph(value)
       else SugarTrigraph(value)
@@ -128,6 +128,10 @@ object Lexer extends RegexParsers:
   def setVariable: Parser[VyxalToken] = """(\#\=)[0-9A-Za-z_]*""".r ^^ {
     value =>
       SetVar(value.substring(2, value.length))
+  }
+
+  def augVariable: Parser[VyxalToken] = """(\#\>)[0-9A-Za-z_]""".r ^^ { value =>
+    AugmentVar(value.substring(2, value.length))
   }
 
   def monadicModifier: Parser[VyxalToken] =
@@ -155,7 +159,7 @@ object Lexer extends RegexParsers:
 
   def tokens: Parser[List[VyxalToken]] = phrase(
     rep1(
-      comment | multigraph | branch | number | string | getVariable | setVariable
+      comment | multigraph | branch | number | string | augVariable | getVariable | setVariable
         | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
         | specialModifier | structureOpen | structureClose | structureAllClose
