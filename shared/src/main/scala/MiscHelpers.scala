@@ -75,26 +75,25 @@ object MiscHelpers:
     contextVarN
   end reduce
 
-  def unpack(names: List[Tuple2[String, VNum]]): Unit =
+  def unpack(names: List[(String, Int)]): Unit =
     // String = variable name
-    // VNum = depth inside ragged list
+    // Int = depth inside ragged list
 
     val nameStack = Stack[ListBuffer[VAny]]()
     nameStack.push(ListBuffer[VAny]())
     var depth = 0
 
-    for tup <- names do
-      if depth == tup._2.toInt then nameStack.top += tup._1
-      else if tup._2.toInt > depth then
-        for i <- 0 until tup._2.toInt - depth do
-          nameStack.push(ListBuffer[VAny]())
-        nameStack.top += tup._1
-      else if tup._2.toInt < depth then
-        for i <- 0 until depth - tup._2.toInt do
+    for (name, varDepth) <- names do
+      if depth == varDepth then nameStack.top += name
+      else if varDepth > depth then
+        for i <- 0 until varDepth - depth do nameStack.push(ListBuffer[VAny]())
+        nameStack.top += name
+      else if varDepth < depth then
+        for i <- 0 until depth - varDepth do
           val temp = VList(nameStack.pop().toList*)
           nameStack.top += temp
-        nameStack.top += tup._1
-      depth = tup._2.toInt
+        nameStack.top += name
+      depth = varDepth
     end for
     for i <- 0 until depth do
       val temp = VList(nameStack.pop().toList*)

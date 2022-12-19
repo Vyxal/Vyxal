@@ -86,10 +86,9 @@ object Parser:
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
         case VyxalToken.GetVar(v)          => asts.push(AST.GetVar(v))
         case VyxalToken.SetVar(v)          => asts.push(AST.SetVar(v))
-        case VyxalToken.AugmentVar(value) =>
-          asts.push(AST.AuxAugmentVar(value))
+        case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
         case VyxalToken.UnpackVar(value) =>
-          val names = ListBuffer[Tuple2[String, VNum]]()
+          val names = ListBuffer[(String, Int)]()
           var name = ""
           var depth = 0
           val nameQueue = Queue[String](value.split("").toList*)
@@ -145,11 +144,6 @@ object Parser:
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
-            case _ =>
-              ??? // The hell kinda special modifier is this? Actually unreachable
-            // Why? Because the lexer only recognises ᵜ and ᵗ as special modifiers
-            // if you've got to this case, then someone has figured out how to
-            // screw around with ACE exploits. Good job, you.
         }
         case AST.AuxAugmentVar(name) =>
           if asts.isEmpty then
@@ -253,10 +247,7 @@ object Parser:
     Right(branches.toList)
   end parseBranches
 
-  /** @param structureType
-    *   The opening character of the structure
-    *
-    * Structures are a bit more complicated. They require keeping track of a)
+  /** Structures are a bit more complicated. They require keeping track of a)
     * the branches of the structure and b) the number of structures that have
     * been previously opened (this is to allow for nested structures). The
     * algorithm is as follows:
@@ -270,6 +261,9 @@ object Parser:
     *   - If the token is a structure close, decrement the structure depth, and
     *     if we're still in a structure, append the token to the current branch
     *   - Otherwise, append the token to the current branch
+    *
+    * @param program
+    *   The program without the opening character of the structure
     */
   private def parseStructure(
       structureType: StructureType,
@@ -331,6 +325,7 @@ object Parser:
     val idEnd = program.indexWhere(isCloser)
     if idEnd == -1 || program(idEnd) != VyxalToken.Branch then None
     else
+      // There are two branches, so get the name and consume the first branch
       val id = StringBuilder()
       var i = 0
       while i < idEnd do
