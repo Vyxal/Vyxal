@@ -75,7 +75,7 @@ object MiscHelpers:
     contextVarN
   end reduce
 
-  def unpack(names: List[(String, Int)]): Unit =
+  def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
     // String = variable name
     // Int = depth inside ragged list
 
@@ -99,7 +99,15 @@ object MiscHelpers:
       val temp = VList(nameStack.pop().toList*)
       nameStack.top += temp
     end for
-    println(nameStack.top.toList)
+    val unpackedNames = VList(nameStack.top.toList*)
+    val shapedValues =
+      ListHelpers.mold(ListHelpers.makeIterable(ctx.pop()), unpackedNames)
+
+    for (name, value) <- unpackedNames.zip(shapedValues) do
+      println(s"name = $name, value = $value")
+      // ctx.setVar(name, value)
+    end for
+
   end unpack
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
