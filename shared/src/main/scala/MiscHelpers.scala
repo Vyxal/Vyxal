@@ -103,12 +103,26 @@ object MiscHelpers:
     val shapedValues =
       ListHelpers.mold(ListHelpers.makeIterable(ctx.pop()), unpackedNames)
 
-    for (name, value) <- unpackedNames.zip(shapedValues) do
-      println(s"name = $name, value = $value")
-      // ctx.setVar(name, value)
-    end for
+    println(s"BEF: $unpackedNames, $shapedValues")
+    val temp = unpackHelper(unpackedNames, shapedValues)
+    println(s"AFT: $temp")
 
   end unpack
+
+  def unpackHelper(
+      nameShape: VAny,
+      value: VList | VAny
+  ): VList =
+    println(s"GAMING: $nameShape, $value")
+    nameShape match
+      case _: String => VList(nameShape, value)
+      case l: VList =>
+        value match
+          case v: VList =>
+            VList(l.zip(v).map(x => unpackHelper(x(0), x(1))).toList*)
+          case _ => throw Error("Impossible case")
+      case _ => throw Error("Impossible case")
+  end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     // todo change later
