@@ -1,7 +1,7 @@
 package vyxal
 
-import scala.collection.{mutable as mut}
 import scala.collection.mutable.Stack
+import scala.collection.mutable as mut
 import scala.io.StdIn
 
 /** @constructor
@@ -36,11 +36,10 @@ class Context private (
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
       else if inputs.nonEmpty then inputs.next()
-      else {
+      else
         val temp = StdIn.readLine()
         if temp.nonEmpty then Parser.parseInput(temp)
         else settings.defaultValue
-      }
     if settings.logLevel == LogLevel.Debug then println(s"Popped $elem")
     elem
 

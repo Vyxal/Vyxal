@@ -82,4 +82,24 @@ class InterpreterTests extends AnyFunSuite:
     )
     assertResult(VList(-4, 1, VList(-4, -5)))(ctx.pop())
   }
+
+  test("Does the interpreter set the ghost variable?") {
+    given ctx: Context = Context()
+    ctx.push(VNum(3))
+    Interpreter.execute("#=")
+    assert(ctx.getVar("") == VNum(3))
+  }
+
+  test("Does the interpreter handle augmented assignment?") {
+    given ctx: Context = Context()
+    ctx.setVar("x", VNum(3))
+    Interpreter.execute("1 +#>x")
+    assert(ctx.getVar("x") == VNum(4))
+
+    ctx.setVar("x", VNum(3))
+    Interpreter.execute("3 #=x λ+×}#>x #$x")
+    assert(ctx.pop() == VNum(18))
+
+  }
+
 end InterpreterTests

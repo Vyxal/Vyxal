@@ -88,7 +88,9 @@ object Interpreter:
       case AST.SetVar(name)     => ctx.setVar(name, ctx.pop())
       case AST.AugmentVar(name, op) =>
         ctx.push(ctx.getVar(name))
-        execute(op)
+        op match
+          case lam: AST.Lambda => ctx.push(executeFn(VFun.fromLambda(lam)))
+          case _               => execute(op)
         ctx.setVar(name, ctx.pop())
       case AST.UnpackVar(names) =>
         MiscHelpers.unpack(names)
