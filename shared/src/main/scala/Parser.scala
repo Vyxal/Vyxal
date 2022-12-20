@@ -2,9 +2,11 @@ package vyxal
 
 import vyxal.impls.Elements
 
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Queue
 import scala.collection.mutable.Stack
+import scala.compiletime.ops.double
 import spire.syntax.truncatedDivision
 
 object Parser:
@@ -82,6 +84,33 @@ object Parser:
         case VyxalToken.TetradicModifier(v) =>
           asts.push(AST.JunkModifier(v, 4))
         case VyxalToken.SpecialModifier(v) => asts.push(AST.SpecialModifier(v))
+        case VyxalToken.GetVar(v)          => asts.push(AST.GetVar(v))
+        case VyxalToken.SetVar(v)          => asts.push(AST.SetVar(v))
+        case VyxalToken.AugmentVar(value) => asts.push(AST.AuxAugmentVar(value))
+        case VyxalToken.UnpackVar(value) =>
+          val names = ListBuffer[(String, Int)]()
+          var name = ""
+          var depth = 0
+          val nameQueue = Queue[String](value.split("").toList*)
+          while nameQueue.nonEmpty && depth != -1 do
+            val top = nameQueue.dequeue()
+            (top: @unchecked) match
+              case "[" =>
+                if name.nonEmpty then names += ((name, depth))
+                name = ""
+                depth += 1
+              case "]" =>
+                if name.nonEmpty then names += ((name, depth))
+                name = ""
+                depth -= 1
+              case "|" =>
+                if name.nonEmpty then names += ((name, depth))
+                name = ""
+              case _ => name += top
+          end while
+          if depth != -1 then names += ((name, depth))
+          asts.push(AST.UnpackVar(names.toList))
+
     end while
 
     val finalAsts = Stack[AST]()
@@ -115,12 +144,13 @@ object Parser:
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
-            case _ =>
-              ??? // The hell kinda special modifier is this? Actually unreachable
-            // Why? Because the lexer only recognises ᵜ and ᵗ as special modifiers
-            // if you've got to this case, then someone has figured out how to
-            // screw around with ACE exploits. Good job, you.
         }
+        case AST.AuxAugmentVar(name) =>
+          if asts.isEmpty then
+            return Left(
+              VyxalCompilationError("Missing element for augmented assign")
+            )
+          finalAsts.push(AST.AugmentVar(name, asts.pop()))
         case _ => finalAsts.push(topAst)
       end match
     end while
@@ -217,10 +247,7 @@ object Parser:
     Right(branches.toList)
   end parseBranches
 
-  /** @param structureType
-    *   The opening character of the structure
-    *
-    * Structures are a bit more complicated. They require keeping track of a)
+  /** Structures are a bit more complicated. They require keeping track of a)
     * the branches of the structure and b) the number of structures that have
     * been previously opened (this is to allow for nested structures). The
     * algorithm is as follows:
@@ -234,6 +261,9 @@ object Parser:
     *   - If the token is a structure close, decrement the structure depth, and
     *     if we're still in a structure, append the token to the current branch
     *   - Otherwise, append the token to the current branch
+    *
+    * @param program
+    *   The program without the opening character of the structure
     */
   private def parseStructure(
       structureType: StructureType,
@@ -295,6 +325,7 @@ object Parser:
     val idEnd = program.indexWhere(isCloser)
     if idEnd == -1 || program(idEnd) != VyxalToken.Branch then None
     else
+      // There are two branches, so get the name and consume the first branch
       val id = StringBuilder()
       var i = 0
       while i < idEnd do
@@ -331,14 +362,36 @@ object Parser:
     }
 
   private def preprocess(tokens: List[VyxalToken]): List[VyxalToken] =
-    val processed = ListBuffer[VyxalToken]()
+    val doubleClose = ListBuffer[VyxalToken]()
     tokens.foreach {
       case VyxalToken.StructureClose(")") =>
-        processed += VyxalToken.StructureClose("}")
-        processed += VyxalToken.StructureClose("}")
-      case x => processed += x
+        doubleClose += VyxalToken.StructureClose("}")
+        doubleClose += VyxalToken.StructureClose("}")
+      case x => doubleClose += x
     }
+    val lineup = Queue(doubleClose.toList*)
+    val processed = ListBuffer[VyxalToken]()
+
+    while (lineup.length != 0) do
+      val temp = lineup.dequeue()
+      (temp: @unchecked) match
+        case VyxalToken.SyntaxTrigraph("#:[") =>
+          val contents = mutable.StringBuilder()
+          var depth = 1
+          while depth != 0 do
+            val top = lineup.dequeue()
+            (top: @unchecked) match
+              case VyxalToken.StructureOpen(StructureType.If) => depth += 1
+              case VyxalToken.StructureAllClose               => depth -= 1
+              case _                                          => None
+            contents.++=(top.value)
+          end while
+          processed += VyxalToken.UnpackVar(contents.toString())
+        case _ => processed += temp
+      end match
+    end while
     processed.toList
+  end preprocess
 
   private def postprocess(asts: AST): AST =
     val temp = asts match
@@ -349,8 +402,13 @@ object Parser:
       }
       case _ => asts
     temp
+  end postprocess
 
-  private def isNilad(ast: AST) = ast.arity == Some(0)
+  private def isNilad(ast: AST) =
+    ast match
+      case AST.GetVar(_) => false // you might want a variable at the end
+      // after doing stuff like augmented assignment
+      case _ => ast.arity == Some(0)
 
   def parseInput(input: String): VAny =
     Lexer(input).toOption

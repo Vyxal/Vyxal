@@ -58,6 +58,8 @@ object Main:
         if config.file.nonEmpty || config.code.nonEmpty then return
         else Repl.startRepl()
       case None => ???
+    end match
+  end main
 
   private def printDocs(): Unit =
     Elements.elements.values.foreach {

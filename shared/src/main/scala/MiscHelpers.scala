@@ -3,6 +3,8 @@ package vyxal
 import vyxal.Interpreter.executeFn
 import vyxal.VNum.given
 
+import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.Stack
 import spire.algebra.*
 
 object MiscHelpers:
@@ -72,6 +74,55 @@ object MiscHelpers:
 
     contextVarN
   end reduce
+
+  def unpack(names: List[(String, Int)])(using ctx: Context): Unit =
+    // String = variable name
+    // Int = depth inside ragged list
+
+    val nameStack = Stack[ListBuffer[VAny]]()
+    nameStack.push(ListBuffer[VAny]())
+    var depth = 0
+
+    for (name, varDepth) <- names do
+      if depth == varDepth then nameStack.top += name
+      else if varDepth > depth then
+        for i <- 0 until varDepth - depth do nameStack.push(ListBuffer[VAny]())
+        nameStack.top += name
+      else if varDepth < depth then
+        for i <- 0 until depth - varDepth do
+          val temp = VList(nameStack.pop().toList*)
+          nameStack.top += temp
+        nameStack.top += name
+      depth = varDepth
+    end for
+    for i <- 0 until depth do
+      val temp = VList(nameStack.pop().toList*)
+      nameStack.top += temp
+    end for
+    val unpackedNames = VList(nameStack.top.toList*)
+    val shapedValues = ListHelpers.makeIterable(ctx.pop())(using ctx)
+
+    unpackHelper(unpackedNames, shapedValues)(using ctx)
+
+  end unpack
+
+  def unpackHelper(
+      nameShape: VAny,
+      value: VAny
+  )(using ctx: Context): Unit =
+    (nameShape: @unchecked) match
+      case n: String =>
+        ctx.setVar(n, value)
+        VList(n, value)
+      case l: VList =>
+        value match
+          case v: VList =>
+            // make sure v is the same length as l by repeating items
+            val v2 = ListBuffer[VAny]()
+            for i <- 0 until l.length do v2 += v(i % v.length)
+            l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList
+          case _ => unpackHelper(l, VList(value))
+  end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
     // todo change later
