@@ -1,12 +1,12 @@
 package vyxal.impls
 
-import org.scalatest.funspec.AnyFunSpec
-
 import vyxal.*
+
+import org.scalatest.funspec.AnyFunSpec
 import Elements.Impls
 
 /** Tests for specific elements */
-class ElementTests extends AnyFunSpec {
+class ElementTests extends AnyFunSpec:
 
   describe("Element +") {
     describe("when given lists") {
@@ -81,4 +81,38 @@ class ElementTests extends AnyFunSpec {
       }
     }
   }
-}
+
+  describe("Element Ė") {
+    describe("when given a number") {
+      it("should do 10**n properly") {
+        given ctx: Context = Context()
+        assertResult(1: VNum)(Impls.execute(0))
+        assertResult(100: VNum)(Impls.execute(2))
+        assertResult(VNum(1) / 1000)(Impls.execute(-3))
+      }
+    }
+
+    describe("when given a string") {
+      it("should properly execute code that uses the stack") {
+        given ctx: Context = Context()
+        assertResult(3: VNum)(Impls.execute("1 2 + D"))
+      }
+
+      it("should use the same context for executing the code") {
+        given ctx: Context = Context(inputs = List(3, 4))
+        assertResult(7: VNum)(Impls.execute("+"))
+      }
+    }
+
+    describe("when given a function") {
+      it("should execute the function") {
+        given ctx: Context = Context()
+        ctx.push(1)
+        ctx.push(2)
+        assertResult(3: VNum)(
+          Impls.execute(VFun.fromElement(Elements.elements("+")))
+        )
+      }
+    }
+  }
+end ElementTests

@@ -35,6 +35,16 @@ class InterpreterTests extends AnyFunSuite:
     assert(ctx.pop() == VList(VList(4, 4), VList(VList(5, 0), VList(6, 0))))
   }
 
+  test("Can the interpreter execute named functions?") {
+    given ctx: Context = Context()
+    ctx.push(3)
+    ctx.push(4)
+    Interpreter.execute(AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-"))))
+    Interpreter.execute(AST.GetVar("f"))
+    Interpreter.execute(AST.Command("Ė"))
+    assertResult(VNum(-1))(ctx.pop())
+  }
+
   test("Can the interpreter execute monadic lambdas?") {
     given ctx: Context = Context()
     Interpreter.execute(
