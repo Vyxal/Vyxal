@@ -158,7 +158,7 @@ object Lexer extends RegexParsers:
   def newlines = "\n" ^^^ Newline
 
   def tokens: Parser[List[VyxalToken]] = phrase(
-    rep1(
+    rep(
       comment | multigraph | branch | number | string | augVariable | getVariable | setVariable
         | twoCharString | singleCharString
         | monadicModifier | dyadicModifier | triadicModifier | tetradicModifier
