@@ -103,9 +103,9 @@ object MiscHelpers:
     val shapedValues =
       ListHelpers.mold(ListHelpers.makeIterable(ctx.pop()), unpackedNames)
 
-    println(s"BEF: $unpackedNames, $shapedValues")
+    // println(s"BEF: $unpackedNames, $shapedValues")
     val temp = unpackHelper(unpackedNames, shapedValues)
-    println(s"AFT: $temp")
+    // println(s"AFT: $temp")
 
   end unpack
 
@@ -113,7 +113,7 @@ object MiscHelpers:
       nameShape: VAny,
       value: VList | VAny
   ): VList =
-    println(s"GAMING: $nameShape, $value")
+    // println(s"HELP: $nameShape, $value")
     nameShape match
       case _: String => VList(nameShape, value)
       case l: VList =>
