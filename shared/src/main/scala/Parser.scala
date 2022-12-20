@@ -404,7 +404,11 @@ object Parser:
     temp
   end postprocess
 
-  private def isNilad(ast: AST) = ast.arity == Some(0)
+  private def isNilad(ast: AST) =
+    ast match
+      case AST.GetVar(_) => false // you might want a variable at the end
+      // after doing stuff like augmented assignment
+      case _ => ast.arity == Some(0)
 
   def parseInput(input: String): VAny =
     Lexer(input).toOption
