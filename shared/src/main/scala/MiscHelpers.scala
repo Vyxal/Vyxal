@@ -100,12 +100,9 @@ object MiscHelpers:
       nameStack.top += temp
     end for
     val unpackedNames = VList(nameStack.top.toList*)
-    val shapedValues =
-      ListHelpers.mold(ListHelpers.makeIterable(ctx.pop()), unpackedNames)
+    val shapedValues = ListHelpers.makeIterable(ctx.pop())(using ctx)
 
-    // println(s"BEF: $unpackedNames, $shapedValues")
     val temp = unpackHelper(unpackedNames, shapedValues)
-    // println(s"AFT: $temp")
 
   end unpack
 
@@ -113,13 +110,16 @@ object MiscHelpers:
       nameShape: VAny,
       value: VList | VAny
   ): VList =
-    // println(s"HELP: $nameShape, $value")
     nameShape match
       case _: String => VList(nameShape, value)
       case l: VList =>
         value match
           case v: VList =>
-            VList(l.zip(v).map(x => unpackHelper(x(0), x(1))).toList*)
+            // make sure v is the same length as l by repeating items
+            val v2 = ListBuffer[VAny]()
+            for i <- 0 until l.length do v2 += v(i % v.length)
+            end for
+            VList(l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList*)
           case _ => throw Error("Impossible case")
       case _ => throw Error("Impossible case")
   end unpackHelper
