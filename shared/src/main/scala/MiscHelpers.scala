@@ -108,7 +108,7 @@ object MiscHelpers:
 
   def unpackHelper(
       nameShape: VAny,
-      value: VList | VAny
+      value: VAny
   )(using ctx: Context): Unit =
     (nameShape: @unchecked) match
       case n: String =>
@@ -120,7 +120,6 @@ object MiscHelpers:
             // make sure v is the same length as l by repeating items
             val v2 = ListBuffer[VAny]()
             for i <- 0 until l.length do v2 += v(i % v.length)
-            end for
             l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList
           case _ => unpackHelper(l, VList(value))
   end unpackHelper
