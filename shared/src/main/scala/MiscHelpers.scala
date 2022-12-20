@@ -102,16 +102,18 @@ object MiscHelpers:
     val unpackedNames = VList(nameStack.top.toList*)
     val shapedValues = ListHelpers.makeIterable(ctx.pop())(using ctx)
 
-    val temp = unpackHelper(unpackedNames, shapedValues)
+    unpackHelper(unpackedNames, shapedValues)(using ctx)
 
   end unpack
 
   def unpackHelper(
       nameShape: VAny,
       value: VList | VAny
-  ): VList =
-    nameShape match
-      case _: String => VList(nameShape, value)
+  )(using ctx: Context): Unit =
+    (nameShape: @unchecked) match
+      case n: String =>
+        ctx.setVar(n, value)
+        VList(n, value)
       case l: VList =>
         value match
           case v: VList =>
@@ -119,9 +121,8 @@ object MiscHelpers:
             val v2 = ListBuffer[VAny]()
             for i <- 0 until l.length do v2 += v(i % v.length)
             end for
-            VList(l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList*)
-          case _ => throw Error("Impossible case")
-      case _ => throw Error("Impossible case")
+            l.zip(v2).map(x => unpackHelper(x(0), x(1))).toList
+          case _ => unpackHelper(l, VList(value))
   end unpackHelper
 
   def vyPrint(x: VAny)(using ctx: Context): Unit =
