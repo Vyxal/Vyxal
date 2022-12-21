@@ -14,5 +14,9 @@ Each of the stages transforms its input into a format that is helpful for the ne
 
 The first stage of the pipeline is token preprocessing. This stage substitutes some tokens for others, so that the next stage can fully focus on token grouping, rather than handling annoying quirks. The tokens that are changed are:
 
-- `VyxalToken.StructureClose(")")` -> 2 x `VyxalToken.StructureClose("}")
-- `VyxalToken.SyntaxTrigraph("#:[") {a bunch of tokens and branches} VyxalToken.StructureAllClose` -> `VyxalToken.UnpackVar("...")`
+- `VyxalToken.StructureClose(")")` -> 2 x `VyxalToken.StructureClose("}")`
+
+This is done using a temporary storage `ListBuffer` and a for loop to iterate over the unprocessed tokens. If a token is `)`, two `}`s are added, otherwise the normal token is added to the list.
+
+- `VyxalToken.SyntaxTrigraph("#:[") {a bunch of tokens and branches} VyxalToken.StructureAllClose` -> `VyxalToken.UnpackVar("...")` (where the `...` is the entire string correlating to the unpack statement)
+
