@@ -1,14 +1,18 @@
-Unlike Vyxal 2, Vyxal 3 does not use a hand-written parser. Instead, it uses the `scala-parser-combinators` libary to turn tokenised programs into Abstract Syntax Trees. The way it works is very similar to EBNF, but in Scala syntax.
+The Vyxal parser may seem like a complex beast at first glance - with all its private def functions and `@unchecked` pattern matching, it can be hard to comprehend what's happening. Rest assured that this documentation is here to help you make sense of the Vyxal parser. It'll break down the various components and explain how they work together to achieve the desired parsing results.
 
-## EBNF Summary
+## The Pipeline - A 30k Feet Overview
 
-```
-ListStructure ::= ListOpen Element* (Branch Element*)* ListClose
-Literal ::= Number | String | ListStructure
-NonStructureElement ::= Literal | Command | Modifier | GetVariable | SetVariable
-Element ::= NonStructureElement | Structure
-Structure ::= StructureOpen Element* (Branch Element*)* (StructureClose | AllStructureClose )
-Modifier ::= MonadicModifier | DyadicModifier | TriadicModifier | QuadraticModifier
-```
+To start with, it's helpful to know that the parser follows a sort of three-stage pipeline:
 
-Note that there will be some differences in how the EBNF is implemented and how it is displayed here, but it is generally correct.
+1. Token Preprocessing
+2. Token Parsing
+3. AST Postprocessing
+
+Each of the stages transforms its input into a format that is helpful for the next stage.
+
+## Token Preprocessing
+
+The first stage of the pipeline is token preprocessing. This stage substitutes some tokens for others, so that the next stage can fully focus on token grouping, rather than handling annoying quirks. The tokens that are changed are:
+
+- `VyxalToken.StructureClose(")")` -> 2 x `VyxalToken.StructureClose("}")
+- `VyxalToken.SyntaxTrigraph("#:[") {a bunch of tokens and branches} VyxalToken.StructureAllClose` -> `VyxalToken.UnpackVar("...")`
