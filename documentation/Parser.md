@@ -92,7 +92,21 @@ When parsing lists, `canBeEmpty` is `true` because we want to be able to make em
 Once `parseBranches` parses the branches of the structure/list (separated by `VyxalToken.Branch` tokens), it'll return a list of those branches.
 Note that the return type is `ParserRet[List[AST]]`, not `List[AST]`. `ParserRet` is a type alias, so the return type is really
 `Either[VyxalCompilationError, List[AST]]`. This is because a compilation error could happen at any point, requiring us to return a
-`Left` containing a `VyxalCompilationError` rather than a `Right` containing a `List[AST]`. Rustaceans may see the similarities between `Result`
-and `Either`s used this way.
+`Left` containing a `VyxalCompilationError` rather than a `Right` containing a `List[AST]`.
 
 TODO: Finish writing this
+
+---
+
+#### Some types
+
+- `AST` - An Abstract Syntax Tree. This is what we ultimately want to get from the parser! Defined in [AST.scala](/shared/src/main/scala/AST.scala).
+- `VyxalToken` - Represents a token, which the lexer returns a list of. These tokens are completely unrelated to the actual structure of the program. Take a look at [Lexer.md](Lexer.md) for that.
+- `ParserRet[T]` - A type alias for `Either[VyxalCompilationError, T]`. Even though Vyxal is a golflang, there is a limit to how much abuse it
+  will tolerate, and compilation errors are possible. Because of this, the main `parse` method, as well as `parseStructure` and the like, return `ParserRet`s
+  instead of directly returning `AST`s or `List[AST]`s or whatever. An [`Either`](https://dotty.epfl.ch/api/scala/util/Either.html) is a type used to
+  represent one of two possible values. It can be either a `Left` (here, a `VyxalCompilationError` indicating failure) or a `Right` (here, a successfully
+  parsed `AST`, `List[AST]`, or something else). Rustaceans may see the similarity to `Result`.
+- `ListBuffer[T]` - Scala's most commonly used data structure - `List` - is immutable. When you want to build up a `List` by adding elements to it one by one,
+  [`ListBuffer`](https://dotty.epfl.ch/api/scala/collection/mutable/ListBuffer.html#) is a good choice. If you just want a mutable list that you won't
+  necessarily convert to a `List` later, `ArrayBuffer` works too.
