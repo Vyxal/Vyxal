@@ -76,6 +76,23 @@ A list of `(String, Int)` tuples (also caled a depth map) is used for this proce
 - There's no need to define yet another object/type - tuples come with Scala
 - Easier debugging in the parser - instead of struggling to comprehend rugged list syntax, there's a flat list of 2-item tuples.
 
-#### `parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)`
+#### `parseBranches`
 
-TODO: Figure out how this works
+The signature of `parseBranches` is:
+
+```scala
+parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)(isEnd: VyxalToken => Boolean): ParserRet[List[AST]]
+```
+
+The reason it's got such a complicated signature is because it's supposed to work for both structures and lists.
+`isEnd` tells it whether to look for a `ListClose` token or a `StructureClose` token.
+When parsing structures, `canBeEmpty` is `false` so that you have at least one empty branch even if the structure has nothing in it.
+When parsing lists, `canBeEmpty` is `true` because we want to be able to make empty lists.
+
+Once `parseBranches` parses the branches of the structure/list (separated by `VyxalToken.Branch` tokens), it'll return a list of those branches.
+Note that the return type is `ParserRet[List[AST]]`, not `List[AST]`. `ParserRet` is a type alias, so the return type is really
+`Either[VyxalCompilationError, List[AST]]`. This is because a compilation error could happen at any point, requiring us to return a
+`Left` containing a `VyxalCompilationError` rather than a `Right` containing a `List[AST]`. Rustaceans may see the similarities between `Result`
+and `Either`s used this way.
+
+TODO: Finish writing this
