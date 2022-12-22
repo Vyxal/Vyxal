@@ -20,3 +20,64 @@ This is done using a temporary storage `ListBuffer` and a for loop to iterate ov
 
 - `VyxalToken.SyntaxTrigraph("#:[") {a bunch of tokens and branches} VyxalToken.StructureAllClose` -> `VyxalToken.UnpackVar("...")` (where the `...` is the entire string correlating to the unpack statement)
 
+This is done by turning the program into a queue (a FIFO data structure) and then dequeuing tokens. When a `#:[` is reached, a depth counter is kept and token values are added to a string builder under that depth is 0. `[`s increase the depth, `]`s decrease the depth. Once the depth reaches 0, a `VyxalToken.UnpackVar()` token is added to a list of preprocessed tokens. Other tokens are also added to the list as-is. This list is what is returned and used in the next phase.
+
+
+## Token Parsing
+
+For the main token parsing stage, the list of tokens that have been preprocessed are once again turned into a queue, and a list to store all the processed ASTs is created. A queue is used because the naive for-loop approach has troubles parsing unknown-length structures (which can be fixed with continue statements, but by then you've got a glorified while loop that needs way too many additional variables.)
+
+There are two "sweeps" of parsing: the mapping sweep and the modifying sweep.
+
+### The Mapping Sweep
+
+In this sweep, each token is considered in turn, and depending on the token type, a simple corresponding AST is added to the processed list, or control flow moves to a specialised function. After a mapping is made, the AST is pushed to a `Stack` of ASTs. The table below indicates how tokens are mapped.
+
+| Token Type (`VyxalToken.`)    	| Simple AST?                          	| Called Function             	|
+|-------------------------------	|--------------------------------------	|-----------------------------	|
+| `Number(value)`               	| ✅ (`AST.Number`)                     	| ❌                           	|
+| `Str(Value)`                  	| ✅ (`AST.Str`)                        	| ❌                           	|
+| `Newline`                     	| ✅ (`AST.Newline`)                    	| ❌                           	|
+| `StructureOpen(value)`        	| ❌                                    	| `parseStructure`            	|
+| `ListOpen`                    	| ❌                                    	| `parseBranches`             	|
+| `Command(value)`              	| ❌                                    	| `parseCommand`              	|
+| any kind of `Modifier(value)` 	| ✅ (`AST.JunkModifier(value, arity)`) 	| ❌                           	|
+| `SpecialModifier(value)`      	| ✅ (`AST.SpecialModifier`)            	| ❌                           	|
+| `GetVar(value)`               	| ✅ (`AST.GetVar`)                     	| ❌                           	|
+| `SetVar(value)`               	| ✅ (`AST.SetVar`)                     	| ❌                           	|
+| `AugmentVar(value)`           	| 🟨 (`AST.AuxAugmentVar`)              	| Handled later in the parser 	|
+| `UnpackVar(value)`            	| ❌                                    	| Explained in depth further down    	|
+
+### The Modifying Sweep
+
+After the mapping sweep, there is a `Stack` of ASTs. The `Stack` data structure was chosen so that mapped ASTs would end up in a LIFO order that greatly simplifies modifier grouping logic. There is also a second `Stack` of ASTs that contains ASTs that have been grouped if needed - this is what will be returned.
+
+In this section, a while loop pops from the mapped AST stack until it is empty, doing the following:
+
+- If the popped AST is a n-adic modifier, pop as many ASTs as needed from the mapped AST stack
+- If the popped AST is a special modifier, handle it accordingly
+- If the popped AST is `AST.AuxAugmentVar`, pop the top of the _grouped_ AST stack and push an `AST.AugmentVar(name, op)` to the grouped AST stack.
+
+That last point handles the fact that Augmented Assignment is basically a postfix modifer, rather than a standard prefix modifier.
+
+### Control Flow Redirection
+
+This section of the parser documentation will detail the functions found in the `Called Function` column in the table from the mapping sweep section.
+
+#### `VyxalToken.UnpackVar` handling
+
+This token isn't handled in an external function, but is handled directly by the match case. Like the token preprocessing stage, it uses a take-from-program-queue-until-depth-is-(-1) approach to extracting all the variable names.
+
+Whenever one of `[]|` is reached, the current name that is being read is pushed to a list of names with its depth as a tuple, and the name is reset. If the token is `[`, the depth is incremented and if the token is `]`, the depth is decremented.
+
+A list of `(String, Int)` tuples (also caled a depth map) is used for this process instead of a ragged list of strings and lists for a few reasons:
+
+- It reduces dependency on Vyxal objects that are designed primarily for handling program execution (i.e. the "purity" of the parser is kept as high as possible)
+- There's no need to define yet another object/type - tuples come with Scala
+- Easier debugging in the parser - instead of struggling to comprehend rugged list syntax, there's a flat list of 2-item tuples.
+
+#### `parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)`
+
+This function takes as many tokens as it can until the front of the program queue is a closing token. If a branch token is reached, the function recurses on the program queue and repeats. It then makes sure that there are branches to return, and removes the trailing closing token.
+
+While at first glance, that sounds like it won't consider nested structures, a trace of the values in the function shows that it does indeed work.
