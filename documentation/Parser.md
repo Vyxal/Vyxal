@@ -78,6 +78,4 @@ A list of `(String, Int)` tuples (also caled a depth map) is used for this proce
 
 #### `parseBranches(program: Queue[VyxalToken], canBeEmpty: Boolean)`
 
-This function takes as many tokens as it can until the front of the program queue is a closing token. If a branch token is reached, the function recurses on the program queue and repeats. It then makes sure that there are branches to return, and removes the trailing closing token.
-
-While at first glance, that sounds like it won't consider nested structures, a trace of the values in the function shows that it does indeed work.
+TODO: Figure out how this works
