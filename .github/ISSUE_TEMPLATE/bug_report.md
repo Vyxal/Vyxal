@@ -31,6 +31,6 @@ in -> out
 <!-- to help with diagnostics - completely optional, answer as many or as few -->
 
 - Latest main release
-- Do any flag combinations resolve the issue? 
+- Do any flag combinations resolve the issue?
 - Does forced evaluation of any lists resolve the issue? (`⟑;` will do so)
 - Is there anything else you've tried that is relevant to the issue?
