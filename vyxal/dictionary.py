@@ -23120,6 +23120,8 @@ weren't
 wasn't
 hasn't
 Dialfrost
+scissors
+Scissors
 """.split(
     "\n"
 )
