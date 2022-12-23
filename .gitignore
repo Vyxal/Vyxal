@@ -148,3 +148,15 @@ tests/test_extras.py
 .vscode
 
 temp.vy
+
+
+# Scala stuff for when you're switching between v2 and v3 branches
+
+.bloop/
+.bsp/
+.metals/
+.vscode/
+null/
+project/project/
+target/
+metals.sbt
