@@ -4528,9 +4528,10 @@ def replace_nth_occurrence(lhs, rhs, other, n, ctx):
     """
     if vy_type(lhs, simple=True) is not list:
         try:
-            where = [m.start() for m in re.finditer(str(rhs), str(lhs))][
-                n if n < 0 else n - 1
-            ]
+            where = [
+                m.start()
+                for m in re.finditer("((?=" + str(rhs) + "))", str(lhs))
+            ][n if n < 0 else n - 1]
         except IndexError:
             return str(lhs)
         before = str(lhs)[:where]
@@ -6209,7 +6210,18 @@ def vy_print(lhs, end="\n", ctx=None):
             if ctx.print_decimals and not lhs.is_Integer:
                 lhs = str(float(lhs))
             else:
-                lhs = sympy.nsimplify(lhs.round(20), rational=True)
+                # Determine if the number is a imaginary sympy literal
+                if not lhs.is_real:
+                    if ctx.print_decimals:
+                        lhs = sympy.nsimplify(lhs)
+                    else:
+                        lhs = (
+                            str(lhs.as_real_imag()[0])
+                            + "°"
+                            + str(lhs.as_real_imag()[1])
+                        )
+                else:
+                    lhs = sympy.nsimplify(lhs.round(20), rational=True)
         if ctx.online:
             ctx.online_output[1] += vy_str(lhs, ctx=ctx) + end
         else:
