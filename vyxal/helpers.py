@@ -1134,6 +1134,13 @@ def to_base_alphabet(value: int, alphabet: str) -> str:
     return "".join([alphabet[i] for i in temp])
 
 
+def to_simple_number(value: NUMBER_TYPE) -> Union[int, float, complex]:
+    if not is_sympy(value): return value
+    if sympy.im(value) != 0: return complex(value)
+    elif value.is_integer: return int(value)
+    else: return float(value)
+
+
 def transfer_capitalisation(source: str, target: str) -> str:
     """Returns target with the capitalisation of source"""
     ret = ""
