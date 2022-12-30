@@ -850,12 +850,12 @@
       - "[-0.25] : 4"
 
 - element: "M"
-  name: Map
-  description: Map b over a
+  name: Map Function
+  description: Map function object b over a
   arity: 2
   vectorise: false
   overloads:
-      any-fun: map(b,a) (apply b to each of a)
+      any-fun: map(b,a) (apply function b to each of a)
       any-any: pair each item of b with a ([[a, i] for i in b])
   tests:
       - "[5,[1,2,3]] : [[5,1],[5,2],[5,3]]"
