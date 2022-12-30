@@ -5678,8 +5678,8 @@ def union(lhs, rhs, ctx):
     return LazyList(
         gen(),
         isinf=(
-            (type(lhs) is LazyList and lhs.isinf)
-            or (type(rhs) is LazyList and rhs.isinf)
+            (type(lhs) is LazyList and lhs.infinite)
+            or (type(rhs) is LazyList and rhs.infinite)
         ),
     )
 
@@ -6366,10 +6366,19 @@ def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
     """
+    neg_flag = False
+    if vy_type(lhs) == NUMBER_TYPE:
+        if sympy.nsimplify(lhs).is_negative:
+            lhs = -lhs
+            neg_flag = True
+        lhs = str(to_simple_number(lhs))
+        lhs = int(lhs.replace(".", ""))
+
     lhs = iterable(lhs, ctx=ctx)
     if not lhs:
         return 0
-    return foldl(add, lhs, ctx=ctx)
+    temp = foldl(add, lhs, ctx=ctx)
+    return temp if not neg_flag else negate(temp, ctx)
 
 
 def vy_zip(lhs, rhs, ctx):
