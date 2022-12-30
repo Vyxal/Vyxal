@@ -5659,8 +5659,8 @@ def union(lhs, rhs, ctx):
     return LazyList(
         gen(),
         isinf=(
-            (type(lhs) is LazyList and lhs.isinf)
-            or (type(rhs) is LazyList and rhs.isinf)
+            (type(lhs) is LazyList and lhs.infinite)
+            or (type(rhs) is LazyList and rhs.infinite)
         ),
     )
 
