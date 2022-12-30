@@ -13363,8 +13363,8 @@ def test_Summate():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1.4142135623730951]]
-    expected = vyxalify(57)
+    stack = [vyxalify(item) for item in [1.414213562]]
+    expected = vyxalify(29)
     ctx = Context()
 
     ctx.stacks.append(stack)
