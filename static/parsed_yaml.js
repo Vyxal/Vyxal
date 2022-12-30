@@ -982,9 +982,9 @@ var codepage_descriptions =
   ],
   "77": [
     {
-      "name": "Map",
-      "description": "Map b over a",
-      "overloads": "any, fun -> map(b,a) (apply b to each of a)\nany, any -> pair each item of b with a ([[a, i] for i in b])",
+      "name": "Map Function",
+      "description": "Map function object b over a",
+      "overloads": "any, fun -> map(b,a) (apply function b to each of a)\nany, any -> pair each item of b with a ([[a, i] for i in b])",
       "token": "M"
     },
     {
