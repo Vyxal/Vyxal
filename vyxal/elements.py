@@ -4252,7 +4252,7 @@ def prime_exponents_all(lhs, ctx):
                 2, max(sympy.ntheory.primefactors(lhs)) + 1
             )
         ]
-    }
+    }.get(ts, lambda: vectorise(prime_exponents_all, lhs, ctx=ctx))()
 
 
 def prime_factorisation(lhs, ctx):
