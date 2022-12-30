@@ -4244,15 +4244,12 @@ def prime_exponents_all(lhs, ctx):
     """
 
     ts = vy_type(lhs)
-    return {
-        # Get ALL primes less than lhs and then their exponents in the prime factorisation
-        NUMBER_TYPE: lambda: [
-            sympy.ntheory.factor_.factorint(lhs).get(x, 0)
-            for x in sympy.primerange(
-                2, max(sympy.ntheory.primefactors(lhs)) + 1
-            )
-        ]
-    }.get(ts, lambda: vectorise(prime_exponents_all, lhs, ctx=ctx))()
+    if ts == NUMBER_TYPE:
+        # Get ALL primes less than lhs and then their exponents in the prime 
+        factors = sympy.ntheory.factor_.factorint(lhs)
+        return [factors.get(x, 0) for x in sympy.primerange(2, max(sympy.ntheory.primefactors(lhs)) + 1)]
+    else:
+        return vectorise(prime_exponents_all, lhs, ctx=ctx)
 
 
 def prime_factorisation(lhs, ctx):
