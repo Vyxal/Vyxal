@@ -4238,6 +4238,25 @@ def prime_exponents(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
+def prime_exponents_all(lhs, ctx):
+    """Element ∆Ǐ
+    (num) -> prime exponents of a, includes 0s
+    """
+
+    ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        # Get ALL primes less than lhs and then their exponents in the prime
+        factors = sympy.ntheory.factor_.factorint(lhs)
+        return [
+            factors.get(x, 0)
+            for x in sympy.primerange(
+                2, max(sympy.ntheory.primefactors(lhs)) + 1
+            )
+        ]
+    else:
+        return vectorise(prime_exponents_all, lhs, ctx=ctx)
+
+
 def prime_factorisation(lhs, ctx):
     """Element Ǐ
     (num) -> prime_factors(a) (no duplicates)
@@ -6976,6 +6995,7 @@ else:
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆Ǐ": process_element(prime_exponents_all, 1),
     "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),

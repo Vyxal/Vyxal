@@ -2918,6 +2918,14 @@ Get the exponents of prime factors of a number
 
 - num a: `prime_exponents(a) (in the order of prime_factors(a))`
 -------------------------------
+## `` ∆Ǐ `` (All Prime Exponents)
+
+Get all exponents of prime factors less than the maximum prime factor
+
+### Overloads
+
+- num a: `prime_exponents(a) (includes 0s)`
+-------------------------------
 ## `` ∆* `` (Next Multiple)
 
 Get the next multiple of a number greater than another number
