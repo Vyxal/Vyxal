@@ -4589,7 +4589,7 @@ def test_Length():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-def test_Map():
+def test_MapFunction():
 
     stack = [vyxalify(item) for item in [5,[1,2,3]]]
     expected = vyxalify([[5,1],[5,2],[5,3]])

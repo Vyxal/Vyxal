@@ -597,13 +597,13 @@ Get length of a
 
 - any a: `len(a)`
 -------------------------------
-## `` M `` (Map)
+## `` M `` (Map Function)
 
-Map b over a
+Map function object b over a
 
 ### Overloads
 
-- any a, fun b: `map(b,a) (apply b to each of a)`
+- any a, fun b: `map(b,a) (apply function b to each of a)`
 - any a, any b: `pair each item of b with a ([[a, i] for i in b])`
 -------------------------------
 ## `` N `` (Negate / Swap Case / First Integer Where Truthy)
