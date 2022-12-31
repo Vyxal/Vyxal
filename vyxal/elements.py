@@ -4238,6 +4238,25 @@ def prime_exponents(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
+def prime_exponents_all(lhs, ctx):
+    """Element ∆Ǐ
+    (num) -> prime exponents of a, includes 0s
+    """
+
+    ts = vy_type(lhs)
+    if ts == NUMBER_TYPE:
+        # Get ALL primes less than lhs and then their exponents in the prime
+        factors = sympy.ntheory.factor_.factorint(lhs)
+        return [
+            factors.get(x, 0)
+            for x in sympy.primerange(
+                2, max(sympy.ntheory.primefactors(lhs)) + 1
+            )
+        ]
+    else:
+        return vectorise(prime_exponents_all, lhs, ctx=ctx)
+
+
 def prime_factorisation(lhs, ctx):
     """Element Ǐ
     (num) -> prime_factors(a) (no duplicates)
@@ -6347,10 +6366,19 @@ def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
     """
+    neg_flag = False
+    if vy_type(lhs) == NUMBER_TYPE:
+        if sympy.nsimplify(lhs).is_negative:
+            lhs = -lhs
+            neg_flag = True
+        lhs = str(to_simple_number(lhs))
+        lhs = int(lhs.replace(".", ""))
+
     lhs = iterable(lhs, ctx=ctx)
     if not lhs:
         return 0
-    return foldl(add, lhs, ctx=ctx)
+    temp = foldl(add, lhs, ctx=ctx)
+    return temp if not neg_flag else negate(temp, ctx)
 
 
 def vy_zip(lhs, rhs, ctx):
@@ -6967,6 +6995,7 @@ else:
     "∆›": process_element(increment_until_false, 2),
     "∆‹": process_element(decrement_until_false, 2),
     "∆ǐ": process_element(prime_exponents, 1),
+    "∆Ǐ": process_element(prime_exponents_all, 1),
     "∆*": process_element(next_multiple, 2),
     "∆n": process_element(next_power, 2),
     "∆ḟ": process_element(prev_power, 2),

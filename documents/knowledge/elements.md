@@ -597,13 +597,13 @@ Get length of a
 
 - any a: `len(a)`
 -------------------------------
-## `` M `` (Map)
+## `` M `` (Map Function)
 
-Map b over a
+Map function object b over a
 
 ### Overloads
 
-- any a, fun b: `map(b,a) (apply b to each of a)`
+- any a, fun b: `map(b,a) (apply function b to each of a)`
 - any a, any b: `pair each item of b with a ([[a, i] for i in b])`
 -------------------------------
 ## `` N `` (Negate / Swap Case / First Integer Where Truthy)
@@ -2917,6 +2917,14 @@ Get the exponents of prime factors of a number
 ### Overloads
 
 - num a: `prime_exponents(a) (in the order of prime_factors(a))`
+-------------------------------
+## `` ∆Ǐ `` (All Prime Exponents)
+
+Get all exponents of prime factors less than the maximum prime factor
+
+### Overloads
+
+- num a: `prime_exponents(a) (includes 0s)`
 -------------------------------
 ## `` ∆* `` (Next Multiple)
 

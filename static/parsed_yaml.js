@@ -982,9 +982,9 @@ var codepage_descriptions =
   ],
   "77": [
     {
-      "name": "Map",
-      "description": "Map b over a",
-      "overloads": "any, fun -> map(b,a) (apply b to each of a)\nany, any -> pair each item of b with a ([[a, i] for i in b])",
+      "name": "Map Function",
+      "description": "Map function object b over a",
+      "overloads": "any, fun -> map(b,a) (apply function b to each of a)\nany, any -> pair each item of b with a ([[a, i] for i in b])",
       "token": "M"
     },
     {
@@ -3502,6 +3502,12 @@ var codepage_descriptions =
       "description": "prime factorization / append first element",
       "overloads": "num -> prime_factorization(a) (distinct prime factors)\nstr -> a + a[0]\nlst -> a + [a[0]]",
       "token": "\u01cf"
+    },
+    {
+      "name": "All Prime Exponents",
+      "description": "Get all exponents of prime factors less than the maximum prime factor",
+      "overloads": "num -> prime_exponents(a) (includes 0s)",
+      "token": "\u2206\u01cf"
     }
   ],
   "240": [
