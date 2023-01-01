@@ -1331,6 +1331,12 @@ var codepage_descriptions =
       "name": "String Literal",
       "description": "A string literal - `...`",
       "token": "`"
+    },
+    {
+      "name": "Anti-diagonals Ordered",
+      "description": "Anti-diagonals of a matrix, starting with the shortest top anti-diagonal",
+      "overloads": "lst -> anti-diagonals of a, starting with the shortest top anti-diagonal",
+      "token": "\u00de`"
     }
   ],
   "95": [
@@ -2463,6 +2469,12 @@ var codepage_descriptions =
       "description": "Square root a number / every second character of a",
       "overloads": "num -> sqrt(a) (square root)\nstr -> every second character of a (a[0] + a[2] + ...)",
       "token": "\u221a"
+    },
+    {
+      "name": "Diagonals Ordered",
+      "description": "Diagonals of a matrix, starting with the shortest top diagonal",
+      "overloads": "lst -> diagonals of a, starting with the shortest top diagonal",
+      "token": "\u00de\u221a"
     }
   ],
   "162": [
