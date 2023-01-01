@@ -193,6 +193,28 @@ def all_antidiagonals(lhs, ctx):
     return all_diags
 
 
+def all_antidiagonals_ordered(lhs, ctx):
+    """Element Þ`
+    (lhs) -> Anti-diagonals of a matrix, starting with the shortest top diagonal
+    """
+
+    def get_anti_diag(vector, i):
+        return [
+            vector[j][i - j]
+            for j in range(len(vector))
+            if 0 <= i - j < len(vector[0])
+        ]
+
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
+
+    all_diags = []
+    for i in range(len(vector) + len(vector[0]) - 1):
+        all_diags.append(get_anti_diag(vector, i))
+    return all_diags
+
+
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -245,6 +267,31 @@ def all_diagonals(lhs, ctx):
         for i in range(len(vector[0])):
             all_diags[(start + i) % len(all_diags)].append(row[i])
         start -= 1
+    return all_diags
+
+
+def all_diagonals_ordered(lhs, ctx):
+    """Element Þ√
+    (lhs) -> Diagonals of a matrix, starting with the shortest top diagonal
+    """
+
+    def get_diagonal(matrix, row, col):
+        """Get the diagonal of a matrix starting at row, col"""
+        diagonal = []
+        while row < len(matrix) and col < len(matrix[0]):
+            diagonal.append(matrix[row][col])
+            row += 1
+            col += 1
+        return diagonal
+
+    vector = [iterable(x, ctx=ctx) for x in lhs]
+    if not vector:
+        return []
+    all_diags = []
+    for i in range(len(vector[0]) - 1, -1, -1):
+        all_diags.append(get_diagonal(vector, 0, i))
+    for i in range(1, len(vector)):
+        all_diags.append(get_diagonal(vector, i, 0))
     return all_diags
 
 
@@ -7092,7 +7139,9 @@ else:
     "Þ…": process_element(evenly_distribute, 2),
     "Þ<": process_element(all_less_than_increasing, 2),
     "ÞD": process_element(all_diagonals, 1),
+    "Þ√": process_element(all_diagonals_ordered, 1),
     "Þḋ": process_element(all_antidiagonals, 1),
+    "Þ`": process_element(all_antidiagonals_ordered, 1),
     "ÞS": process_element(sublists, 1),
     "ÞṪ": process_element(transpose, 2),
     "ÞṀ": process_element(matrix_multiply, 2),
