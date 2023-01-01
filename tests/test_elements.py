@@ -26287,6 +26287,50 @@ def test_Hypotenuse():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_ReducedEchelonForm():
+
+    stack = [vyxalify(item) for item in [[[1, 3, -1], [0, 1, 7]]]]
+    expected = vyxalify([[1, 0, -22], [0, 1, 7]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('∆r')
+    # print('∆r', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[[5, 78, 165, -234, 23.2], [239, 78, 4, 86, 9], [78972, -213.1, 8, 349, 190], [0.222, 1.69, 69, 420, 13]]]]
+    expected = vyxalify([[1, 0, 0, 0, 0.00258198934942578], [0, 1, 0, 0, 0.0886947247312697], [0, 0, 1, 0, 0.115157284075847], [0, 0, 0, 1, 0.0116754288388931]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('∆r')
+    # print('∆r', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_Parenthesise():
 
     stack = [vyxalify(item) for item in ["xyz"]]

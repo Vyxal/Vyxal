@@ -1772,6 +1772,12 @@ var codepage_descriptions =
       "token": "kr"
     },
     {
+      "name": "Reduced Echelon Form",
+      "description": "Get the reduced echelon form of a matrix",
+      "overloads": "lst -> reduced_echelon_form(a)",
+      "token": "\u2206r"
+    },
+    {
       "name": "Strip from the right side",
       "description": "Strip from the right side of a string",
       "overloads": "str, num -> a.rstrip(b)",

@@ -904,6 +904,7 @@ def primitive_type(item: Any) -> Union[str, type]:
     assert type(item) in [list, LazyList]
     return list
 
+
 def reverse_number(
     item: Union[int, sympy.Rational]
 ) -> Union[int, sympy.Rational]:

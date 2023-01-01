@@ -2990,6 +2990,14 @@ Get the hypotenuse of a right-angled triangle - equivalent to `²∑√`
 
 - lst a: `sqrt(sum(x ** 2 for x in a))`
 -------------------------------
+## `` ∆r `` (Reduced Echelon Form)
+
+Get the reduced echelon form of a matrix
+
+### Overloads
+
+- lst a: `reduced_echelon_form(a)`
+-------------------------------
 ## `` øb `` (Parenthesise)
 
 Parenthesise a string
