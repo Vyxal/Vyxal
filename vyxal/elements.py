@@ -6004,7 +6004,6 @@ def vy_divmod(lhs, rhs, ctx):
         (NUMBER_TYPE, list): lambda: combinations(rhs, lhs),
         (list, types.FunctionType): lambda: chunk_while(lhs, rhs, ctx),
         (types.FunctionType, list): lambda: chunk_while(rhs, lhs, ctx),
-
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
