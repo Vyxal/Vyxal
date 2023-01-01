@@ -4362,6 +4362,16 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
+def reduced_echelon_form(lhs, ctx):
+    """Element ∆r
+    Returns the reduced echelon form of a matrix"""
+    return (
+        sympy.Matrix(vy_map(iterable, iterable(lhs, ctx=ctx), ctx))
+        .rref()[0]
+        .tolist()
+    )
+
+
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -7006,6 +7016,7 @@ else:
     "∆Ṡ": process_element(hyperbolic_arcsine, 1),
     "∆Ṅ": process_element(hyperbolic_arctangent, 1),
     "∆/": process_element(hypotenuse, 1),
+    "∆r": process_element(reduced_echelon_form, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
