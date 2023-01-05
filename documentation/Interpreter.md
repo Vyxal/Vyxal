@@ -17,7 +17,7 @@ Table of contents (unnecessary but tables of contents are kinda cool):
 
 ## `Interpreter.execute`
 
-The [Interpreter](/version-3/shared/src/main/scala/Interpreter.scala) object
+The [Interpreter](/shared/src/main/scala/Interpreter.scala) object
 is the entry point for executing code. It has two methods, both named `execute`,
 with the following signatures:
 
@@ -89,7 +89,7 @@ its own context holding the stack, variables, inputs, and a few other things for
 that scope.
 
 The `Context` class also has a `globals` field. All the `Context`s
-have the same [`Globals`](/version-3/shared/src/main/scala/Globals.scala) object
+have the same [`Globals`](/shared/src/main/scala/Globals.scala) object
 in their `globals` field, and it holds the settings (set using flags), the
 global inputs (passed in the "Inputs" field of the online interpreter), and the
 register.
@@ -110,7 +110,7 @@ Vyxal has 4 basic types:
 - Functions
 - Lists (which are heterogeneous and may contain any of these 4)
 
-Internally, the [`VAny`](/version-3/shared/src/main/scala/VAny.scala) type is
+Internally, the [`VAny`](/shared/src/main/scala/VAny.scala) type is
 used. It's a [union type] that's more or less equivalent to
 `String | VNum | VFun | VList`.
 
@@ -147,7 +147,7 @@ standard library).
 - If it's an `AST.Group` (multiple ASTs grouped into a single AST), then it
   `execute`s each one of them in order.
 - If it's a command (`+`, `M`, etc.), it gets the corresponding implementation
-  from [`Elements`](/version-3/shared/src/main/scala/Elements.scala) and
+  from [`Elements`](/shared/src/main/scala/Elements.scala) and
   calls that, passing it the [`ctx` parameter](#the-ctx-parameter).
 - If it's an if statement, it executes it in the current context. They don't
   need their own child contexts.
@@ -184,6 +184,6 @@ functin was defined in.
 ---
 
 [implicit docs]: https://docs.scala-lang.org/scala3/book/ca-given-using-clauses.html
-[Context]: /version-3/shared/src/main/scala/Context.scala
+[Context]: /shared/src/main/scala/Context.scala
 [Element-Impls]: Element-Impls.md
 [union type]: https://docs.scala-lang.org/scala3/book/types-union.html
