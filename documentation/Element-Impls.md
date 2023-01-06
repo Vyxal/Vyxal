@@ -1,6 +1,6 @@
 # Element implementations
 
-This doc will go over the elements' implementations. The elements are all 
+This doc will go over the elements' implementations. The elements are all
 implemented in [Elements.scala](/shared/src/main/scala/Elements.scala).
 
 The `Elements` object contains a field `elements` of type `Map[String, Element]`, which
