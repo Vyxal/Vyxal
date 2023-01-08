@@ -32014,6 +32014,50 @@ def test_ConnectedUniquify():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
+def test_2_dimensionalConvolution():
+
+    stack = [vyxalify(item) for item in [[[1,2],[3,4]], [[5,6],[7,8]]]]
+    expected = vyxalify([[5,16,12],[22,60,40],[21,52,32]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þk')
+    # print('Þk', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
+    stack = [vyxalify(item) for item in [[[1,2]], [[5,6],[7,8]]]]
+    expected = vyxalify([[5,6,12],[7,22,16]])
+    ctx = Context()
+
+    ctx.stacks.append(stack)
+
+    code = transpile('Þk')
+    # print('Þk', code)
+    exec(code)
+
+    ctx.stacks.pop()
+    actual = vyxalify(stack[-1])
+
+    print(simplify(expected), simplify(actual))
+
+    if vy_type(actual, simple=True) is list or vy_type(expected, simple=True) is list:
+        assert all(deep_flatten(equals(actual, expected, ctx), ctx)) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+    else:
+        assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
+
+
 def test_MultidimensionalIndexing():
 
     stack = [vyxalify(item) for item in [[1,[2,3]],[1,0]]]

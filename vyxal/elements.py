@@ -997,7 +997,7 @@ def convolve(lhs, rhs, ctx=None):
             lhs_cutout = numpy.array(
                 [sublist[j : j + rhs_h] for sublist in lhs[i : i + rhs_w]]
             )
-            output[i][j] = numpy.sum(rhs*lhs_cutout)
+            output[i][j] = numpy.sum(rhs * lhs_cutout)
 
     return output.tolist()
 

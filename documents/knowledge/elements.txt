@@ -3068,6 +3068,12 @@ k• (Qwerty Keyboard)
 
     any a: connected uniquify a (`Ġvh`)
 -------------------------------
+Þk (2-dimensional Convolution)
+
+- Return two-dimensional convolution of matrices
+
+    lst a, lst b: 2D-Convolution of a and b
+-------------------------------
 Þi (Multidimensional Indexing)
 
 - Index a list of coordinates into a value.
