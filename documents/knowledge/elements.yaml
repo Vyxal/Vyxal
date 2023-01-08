@@ -5486,6 +5486,17 @@
       - "[[1,2,2,2,3,4,3,3,4]] : [1,2,3,4,3,4]"
       - '["aabccdbb"] : "abcdb"'
 
+- element: "Þk"
+  name: 2-dimensional Convolution
+  description: Return two-dimensional convolution of matrices
+  arity: 2
+  overloads:
+      lst-lst: 2D-Convolution of a and b
+  vectorise: false
+  tests:
+      - "[[[1,2],[3,4]], [[5,6],[7,8]]] : [[5,16,12],[22,60,40],[21,52,32]]"
+      - "[[[1,2]], [[5,6],[7,8]]] : [[5,6,12],[7,22,16]]"
+            
 - element: "Þi"
   name: Multidimensional Indexing
   description: Index a list of coordinates into a value.
