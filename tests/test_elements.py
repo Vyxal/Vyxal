@@ -32038,7 +32038,7 @@ def test_2_dimensionalConvolution():
 
 
     stack = [vyxalify(item) for item in [[[1,2]], [[5,6],[7,8]]]]
-    expected = vyxalify([[5,6,12],[7,22,16]])
+    expected = vyxalify([[5,16,12],[7,22,16]])
     ctx = Context()
 
     ctx.stacks.append(stack)
