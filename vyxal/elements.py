@@ -18,6 +18,7 @@ from datetime import datetime
 from typing import Callable, Union
 
 import num2words
+import numpy
 import sympy
 
 from vyxal import dictionary
@@ -974,6 +975,31 @@ def contains(lhs, rhs, ctx):
         lhs = iterable(lhs, ctx=ctx)
         return int(rhs in lhs)
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
+
+
+def convolve(lhs, rhs, ctx=None):
+    """Element Þk
+    (lst, lst) -> return 2-dimensional convolution of matrices a and b
+    """
+    rhs = numpy.flip(iterable(rhs, ctx=ctx))
+
+    rhs_w, rhs_h = numpy.array(rhs).shape
+    lhs = numpy.pad(
+        iterable(lhs),
+        ((rhs_w - 1, rhs_w - 1), (rhs_h - 1, rhs_h - 1)),
+        mode="constant",
+    )
+    lhs_w, lhs_h = numpy.array(lhs).shape
+
+    output = numpy.zeros((lhs_w - rhs_w + 1, lhs_h - rhs_h + 1), dtype=int)
+    for i in range(lhs_w - rhs_w + 1):
+        for j in range(lhs_h - rhs_h + 1):
+            lhs_cutout = numpy.array(
+                [sublist[j : j + rhs_h] for sublist in lhs[i : i + rhs_w]]
+            )
+            output[i][j] = sympy.nsimplify(numpy.sum(rhs * lhs_cutout))
+
+    return output.tolist()
 
 
 def cookie(_, ctx):
@@ -4362,6 +4388,16 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
+def reduced_echelon_form(lhs, ctx):
+    """Element ∆r
+    Returns the reduced echelon form of a matrix"""
+    return (
+        sympy.Matrix(vy_map(iterable, iterable(lhs, ctx=ctx), ctx))
+        .rref()[0]
+        .tolist()
+    )
+
+
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -7006,6 +7042,7 @@ else:
     "∆Ṡ": process_element(hyperbolic_arcsine, 1),
     "∆Ṅ": process_element(hyperbolic_arctangent, 1),
     "∆/": process_element(hypotenuse, 1),
+    "∆r": process_element(reduced_echelon_form, 1),
     "øḂ": process_element(angle_bracketify, 1),
     "øḃ": process_element(curly_bracketify, 1),
     "øb": process_element(parenthesise, 1),
@@ -7117,6 +7154,7 @@ else:
     "Þ∵": process_element(element_wise_dyadic_minimum, 2),
     "Þs": process_element(all_slices, 2),
     "ÞǓ": process_element(connected_uniquify, 1),
+    "Þk": process_element(convolve, 2),
     "Þ¾": ("ctx.global_array = []", 0),
     "Þr": process_element(sans_last_prepend_zero, 1),
     "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
