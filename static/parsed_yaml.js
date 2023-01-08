@@ -1614,6 +1614,12 @@ var codepage_descriptions =
       "name": "Constant Digraph",
       "description": "Used for constant digraphs.",
       "token": "k"
+    },
+    {
+      "name": "2-dimensional Convolution",
+      "description": "Return two-dimensional convolution of matrices",
+      "overloads": "lst, lst -> 2D-Convolution of a and b",
+      "token": "\u00dek"
     }
   ],
   "108": [

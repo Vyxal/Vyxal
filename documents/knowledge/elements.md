@@ -3543,6 +3543,14 @@ Remove occurences of adjacent duplicates in a list
 
 - any a: `connected uniquify a (`Ġvh`)`
 -------------------------------
+## `` Þk `` (2-dimensional Convolution)
+
+Return two-dimensional convolution of matrices
+
+### Overloads
+
+- lst a, lst b: `2D-Convolution of a and b`
+-------------------------------
 ## `` Þi `` (Multidimensional Indexing)
 
 Index a list of coordinates into a value.

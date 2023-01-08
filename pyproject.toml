@@ -15,6 +15,7 @@ vyxal = "vyxal.main:cli"
 python = "^3.9,<3.11"
 sympy = "^1.9"
 num2words = "^0.5.10"
+numpy = "^1.24.1"
 
 [tool.poetry.dev-dependencies]
 black = "^21.12b0"
