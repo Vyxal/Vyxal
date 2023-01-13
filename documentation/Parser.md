@@ -1,3 +1,4 @@
+
 The Vyxal parser may seem like a complex beast at first glance - with all its private def functions and `@unchecked` pattern matching, it can be hard to comprehend what's happening. Rest assured that this documentation is here to help you make sense of the Vyxal parser. It'll break down the various components and explain how they work together to achieve the desired parsing results.
 
 ## The Pipeline - A 30k Feet Overview
@@ -94,7 +95,36 @@ Note that the return type is `ParserRet[List[AST]]`, not `List[AST]`. `ParserRet
 `Either[VyxalCompilationError, List[AST]]`. This is because a compilation error could happen at any point, requiring us to return a
 `Left` containing a `VyxalCompilationError` rather than a `Right` containing a `List[AST]`.
 
-TODO: Finish writing this
+#### `parseStructure`
+
+The signature of `parseStructure` is:
+
+```scala
+parseStructure(structureType: StructureType, program: Queue[VyxalToken]): ParserRet[AST]
+```
+
+Meaning it takes the structure character being parsed and the remaining program queue. It takes tokens until a matching `}` is found at a matching level. That is, there won't be an unbalanced number of structure openers and structure closes.
+
+Once token collection has finished,  there is a list of lists of ASTs/Lists of AST. These are the branches of the structure, and are handled according to the structure type:
+
+| Structure Type 	| Branches                                    	|
+|----------------	|---------------------------------------------	|
+| If Statement   	| Truthy Branch (default), Falsey Branch      	|
+| While Loop     	| Condition, Loop Body (default)              	|
+| For Loop       	| Iterator Variable Name, Loop Body (default) 	|
+| Lambda         	| Parameters, Lambda Body (default)           	|
+
+Note that structures such as variable unpacking are handled elsewhere due to their unusual structure.
+
+#### `parseIdentifier`
+
+The signature for `parseIdentifier` is:
+
+```scala
+parseIdentifier(program: Queue[VyxalToken]): Option[String]
+```
+
+This function collects tokens until a branch or end of structure is found. It then only keeps tokens with a value that is alphanumeric. It then concatenates the token values into a single string and returns it. This function is for getting the variable names of for-loops.
 
 ---
 
