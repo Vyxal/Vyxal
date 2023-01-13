@@ -126,6 +126,19 @@ parseIdentifier(program: Queue[VyxalToken]): Option[String]
 
 This function collects tokens until a branch or end of structure is found. It then only keeps tokens with a value that is alphanumeric. It then concatenates the token values into a single string and returns it. This function is for getting the variable names of for-loops.
 
+#### `isCloser`
+
+These tokens are considered to be structure closing tokens by the function:
+
+- `VyxalToken.ListClose`
+- `VyxalToken.StructureClose`
+- `VyxalToken.StructureAllClose`
+`VyxalToken.Branch`es are also considered closing tokens, but aren't strictly closing tokens as such.
+
+All other tokens are not considered closing tokens.
+
+
+
 ---
 
 #### Some types
