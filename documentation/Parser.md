@@ -153,3 +153,7 @@ All other tokens are not considered closing tokens.
 - `ListBuffer[T]` - Scala's most commonly used data structure - `List` - is immutable. When you want to build up a `List` by adding elements to it one by one,
   [`ListBuffer`](https://dotty.epfl.ch/api/scala/collection/mutable/ListBuffer.html#) is a good choice. If you just want a mutable list that you won't
   necessarily convert to a `List` later, `ArrayBuffer` works too.
+
+## Token Post-Processing
+The post-processing phase of the parser simply moves all trailing nilads in a program to the front of the program to avoid redundancies.
+
