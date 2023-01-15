@@ -289,7 +289,6 @@ def parse(
                 break
             remaining = parse(tokens, parent or structure_cls)
             relevant = remaining[0]
-            original_parent = relevant.parent_structure
 
             if isinstance(
                 relevant,
