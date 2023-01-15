@@ -294,7 +294,7 @@ def parse(
             if isinstance(
                 relevant,
                 (structure.RecurseStatement, structure.BreakStatement),
-            ):
+            ) and head.value !=  "ß":
                 relevant.parent_structure = structure.MonadicModifier
 
             if head.value == "⁽":
@@ -304,7 +304,6 @@ def parse(
                 # Conditional execute
                 # This is a bit of a hacky fix, as modifiers are not
                 # powerful enough to deal with this.
-                relevant.parent_structure = original_parent
                 structures.append(structure.IfStatement([relevant]))
             else:
                 structures.append(
