@@ -289,6 +289,7 @@ def parse(
                 break
             remaining = parse(tokens, parent or structure_cls)
             relevant = remaining[0]
+            original_parent = relevant.parent_structure
 
             if isinstance(
                 relevant,
@@ -303,6 +304,7 @@ def parse(
                 # Conditional execute
                 # This is a bit of a hacky fix, as modifiers are not
                 # powerful enough to deal with this.
+                relevant.parent_structure = original_parent
                 structures.append(structure.IfStatement([relevant]))
             else:
                 structures.append(
