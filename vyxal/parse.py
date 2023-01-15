@@ -291,10 +291,13 @@ def parse(
             relevant = remaining[0]
             original_parent = relevant.parent_structure
 
-            if isinstance(
-                relevant,
-                (structure.RecurseStatement, structure.BreakStatement),
-            ) and head.value !=  "ß":
+            if (
+                isinstance(
+                    relevant,
+                    (structure.RecurseStatement, structure.BreakStatement),
+                )
+                and head.value != "ß"
+            ):
                 relevant.parent_structure = structure.MonadicModifier
 
             if head.value == "⁽":
