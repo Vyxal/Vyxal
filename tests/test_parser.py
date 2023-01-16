@@ -322,4 +322,18 @@ def test_recursion_and_break_has_parent_after_a_modifier():
         ]
     )
 
-    assert str(fully_parse("λḢ:¨ixX;")) == str([Lambda('default', [GenericStatement([Token(TokenType.GENERAL, 'Ḣ')]), GenericStatement([Token(TokenType.GENERAL, ':')]), IfStatement([RecurseStatement(structure.Lambda)], [BreakStatement(structure.Lambda)])])])
+    assert str(fully_parse("λḢ:¨ixX;")) == str(
+        [
+            Lambda(
+                "default",
+                [
+                    GenericStatement([Token(TokenType.GENERAL, "Ḣ")]),
+                    GenericStatement([Token(TokenType.GENERAL, ":")]),
+                    IfStatement(
+                        [RecurseStatement(structure.Lambda)],
+                        [BreakStatement(structure.Lambda)],
+                    ),
+                ],
+            )
+        ]
+    )

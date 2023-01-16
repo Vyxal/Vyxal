@@ -325,10 +325,13 @@ def parse(
                     )
                 )
 
-            if isinstance(
-                remaining[0],
-                (structure.RecurseStatement, structure.BreakStatement),
-            ) and head.value != "¨i":
+            if (
+                isinstance(
+                    remaining[0],
+                    (structure.RecurseStatement, structure.BreakStatement),
+                )
+                and head.value != "¨i"
+            ):
                 remaining[0].parent_structure = structure.DyadicModifier
 
             if isinstance(
