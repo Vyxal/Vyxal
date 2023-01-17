@@ -2164,8 +2164,8 @@ var codepage_descriptions =
   "143": [
     {
       "name": "Divmod",
-      "description": "Divmod / combinations / trim",
-      "overloads": "num, num -> [a // b, a % b] (divmod - division and modulo)\nstr, num -> combinations of a with length b\nlst, num -> combinations of a with length b\nstr, str -> overwrite the start of a with b (b + a[len(b):])",
+      "description": "Divmod / combinations / trim / chunk-while",
+      "overloads": "num, num -> [a // b, a % b] (divmod - division and modulo)\nstr, num -> combinations of a with length b\nlst, num -> combinations of a with length b\nstr, str -> overwrite the start of a with b (b + a[len(b):])\nlst, fun -> group elements in a by elements that fulfil predicate b",
       "token": "\u1e0b"
     },
     {

@@ -912,6 +912,20 @@ def test_take_while():
     assert stack[-1] == [1, 2, 3, 4, 5, 6]
 
 
+def test_chunk_by():
+    stack = run_vyxal(
+        "λ2|$›=;ḋ", inputs=[[2, 4, 9, 10, 11, 12, 15, 16, 19, 20, 21, 23]]
+    )
+    assert stack[-1] == [
+        [2],
+        [4],
+        [9, 10, 11, 12],
+        [15, 16],
+        [19, 20, 21],
+        [23],
+    ]
+
+
 def test_find_indices_infinite():
     stack = run_vyxal("Þ∞ λ2%0=; ḟ")
     assert stack[-1][:10] == [1, 3, 5, 7, 9, 11, 13, 15, 17, 19]

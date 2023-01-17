@@ -6020,6 +6020,7 @@ def vy_divmod(lhs, rhs, ctx):
     (num, num) -> [lhs // rhs, lhs % rhs]
     (iterable, num) -> combinations of a with length b
     (str, str) ->  overwrite the start of a with b
+    (lst, fun) -> group elements in a by elements that fulfil predicate b
     """
     ts = vy_type(lhs, rhs, simple=True)
 
@@ -6037,6 +6038,8 @@ def vy_divmod(lhs, rhs, ctx):
         (str, str): lambda: rhs + lhs[len(rhs) :],
         (list, NUMBER_TYPE): lambda: combinations(lhs, rhs),
         (NUMBER_TYPE, list): lambda: combinations(rhs, lhs),
+        (list, types.FunctionType): lambda: chunk_while(lhs, rhs, ctx),
+        (types.FunctionType, list): lambda: chunk_while(rhs, lhs, ctx),
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
