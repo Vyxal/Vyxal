@@ -218,12 +218,12 @@ def all_antidiagonals_ordered(lhs, ctx):
                 break
 
             antidiag = []
-            for col in range(i - start, -1, -1):
-                row = i - col
+            for row in range(start, i + 1):
                 if not has_ind(lhs, row):
                     break
-                # Use the index function in case the list is too short
-                antidiag.append(index(lhs[row], col, ctx))
+                col = i - row
+                if has_ind(lhs[row], col):
+                    antidiag.append(lhs[row][col])
             yield antidiag
 
             i += 1
