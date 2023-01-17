@@ -25,6 +25,6 @@ If you don't know Scala but do know another language, here are some helpful guid
 
 TODO
 
-### What are context variables?
+### Context Variables
 
-TODO
+Context variables are TODO

@@ -1,28 +1,16 @@
-# The interpreter
+# The Interpreter
 
-This document will describe how the interpreter works (I say "will" because I'm
-hoping someone will finish/fix it in the future). You don't need to read this
-whole thing to get a handle on how the interpreter works, you can probably just
-skim this or even forgo reading this file and dive into the source code.
+*This file is to accompany [Interpreter.scala](/shared/src/main/scala/Interpreter.scala). For a general overview of how the whole interpretation process works, visit [INSERT MD FILE HERE](link).*
 
-Table of contents (unnecessary but tables of contents are kinda cool):
-
-- [`Interpreter.execute`](#interpreterexecute)
-- [Contexts](#contexts)
-  - [The `ctx` parameter](#the-ctx-parameter)
-  - [The `Context` class](#the-context-class)
-- [Runtime values](#runtime-values)
-- [Back to `execute`](#back-to-execute)
-- [Executing functions](#executing-functions)
-
-## `Interpreter.execute`
-
-The [Interpreter](/shared/src/main/scala/Interpreter.scala) object
-is the entry point for executing code. It has two methods, both named `execute`,
-with the following signatures:
+The interpreter file is the main brains of the whole Vyxal project - it's where the pipeline flows to after reading all neccesary inputs (like program files) and where vyxal programs are lexed and parsed. It also handles execution of Vyxal programs, via the `execute` function. There are two overloads of the execute function:
 
 ```scala
 def execute(code: String)(using ctx: Context): Unit
+```
+
+and
+
+```scala
 def execute(ast: AST)(using ctx: Context): Unit
 ```
 
@@ -40,15 +28,42 @@ def foo(a: A): (B => C) = (b: B) => c(a, b)
 Both can be called using `foo(a)(b)` (or `foo(a)`, to get a value of type
 `B => C`).
 
-The second overload of `execute` (the one taking an AST) is for internal use,
-and the first is the one that code outside of the main Vyxal code will call. The
-overload taking a `String` is basically just a helper of sorts. It will parse
-the string into an AST, call the second overload on that AST, and then print the
-top of the stack or whatever the flags tell it to do.
+The `code: String` overload of `execute` is for programss that are still in their string form. This overload takes the string, lexes and parses it, and then hands it to the `ast: AST` overload of execute.
+
+The `ast: AST` overload of `execute` is the one that actually does the executing.
+After parsing, the result is an `AST.Group`, which is an AST object that contains a list of `AST` objects that are executed sequentially. `AST`s are evaluated according to the following rules:
+
+| AST Object           | How it's Executed | [Context Variable]((./README.md/#context-variables)) Involved? |
+|----------------------|-------------------|----------------------------|
+| `AST.Number`         | Value simply pushed to stack | ❌ |
+| `AST.Str`            | Value simply pushed to stack | ❌ |
+| `AST.Lst`            | Each AST group in the list's items are evaluated. The list of results are pushed to the stack. | ❌ |
+| `AST.Command`        | The element name is indexed into the element dictionary (in [`Elements`](/shared/src/main/scala/Elements.scala)) | ❌ |
+| `AST.Group`          | Each AST in the group is executed individually | ❌ |
+| `AST.CompositeNilad` | Same as `AST.Group`. This AST type is for arity grouping purposes. | ❌ |
+| `AST.If`             | Pop the top of the stack, truthy: execute truthy branch, else: execute falsey branch if present | ❌ |
+| `AST.While` | While the condition branch evaluated on the stack is truthy, execute the loop body. | ✅<br><br>`N` = Number of while loop iterations<br>`M` = Last condition value  |
+| `AST.For`            | Pop the top of the stack, cast to iterable, and execute body loop for each item in that. | ✅<br><br>`N` = Current loop item<br>`M` = Current loop index |
+| `AST.Lambda`         | Push a `VFun` object to the stack that represents the lambda | ❌(no context variable is set when pushing, but context variable may be set when executing function) |
+| `AST.FnDef`          | Set variable equivalent to function name to lambda that represents function body | ❌ |
+| `AST.GetVar`         | Push value of variable name to stack | ❌ |
+| `AST.SetVar`         | Pop value from stack and set the variable with corresponding name to that | ❌ |
+| `AST.AugmentVar`     | Push the value of the variable to the stack, execute the associated variable and pop that result into the same variable | 🟨 (execution of the element may have context variables set if the element is a lambda) |
+| `AST.UnpackVar`      | Explained separately below | ❌ |
+| `AST.ExecuteFn`      | Execute the corresponding function object and push the result to the stack (explained in more detail [below](#executing-functions)) | 🟨<br><br>`N` = function argument<br>`M` depends on how the function is called. |
+
+## `AST.UnpackVar`
+
+When an `AST.UnpackVar` is executed, a depth map of each variable is created (so something like `[x|y|[z]]` will turn into `[["x", 0], ["y", 0], ["z", 1]]`). This is then turned into a ragged list that matches the visual structure of the variables. The top of the stack is then popped and molded to that ragged list. Variable names and corresponding values are then zipped into a single list of `[String, VAny]` using a method that can be seen as overlaying one list on top of another and pulling out pairs that overlap.
 
 ## Contexts
 
 If you know what `Context` is, feel free to [skip](#back-to-execute) this section.
+
+Note: the `Context` class is not to be confused with context variables, which
+are a Vyxal feature. The `Context` class is an implementation thing that has
+nothing to do with context variables apart from the fact that the `Context`
+class holds the two context variables for the current scope.
 
 ### The `ctx` parameter
 
@@ -82,11 +97,10 @@ the `execute` method(s) inside `Interpreter` [above](#interpreterexecute))
 
 ### The `Context` class
 
-Now, on to the [`Context`][Context]
-class itself. It's used for keeping track of everything in the current
-execution context/scope. Every scope (while loops, for loops, functions) gets
-its own context holding the stack, variables, inputs, and a few other things for
-that scope.
+Now, on to the [`Context`][Context] class itself. It's used for keeping track of
+everything in the current execution context/scope. Every scope (while loops, for
+loops, functions) gets its own child context holding the stack, variables,
+inputs, and a few other things for that scope.
 
 The `Context` class also has a `globals` field. All the `Context`s
 have the same [`Globals`](/shared/src/main/scala/Globals.scala) object
@@ -95,7 +109,8 @@ global inputs (passed in the "Inputs" field of the online interpreter), and the
 register.
 
 Every element's implementation takes a `Context` as input, even if it
-doesn't directly use it. See [this][Element-Impls] for information on how the elements are implemented.
+doesn't directly use it. See [this][Element-Impls] for information on how the
+elements are implemented.
 
 `Context` has methods for pushing to and popping from the stack, getting and
 setting variables, and creating child contexts. See the [Context] class for all
@@ -111,8 +126,7 @@ Vyxal has 4 basic types:
 - Lists (which are heterogeneous and may contain any of these 4)
 
 Internally, the [`VAny`](/shared/src/main/scala/VAny.scala) type is
-used. It's a [union type] that's more or less equivalent to
-`String | VNum | VFun | VList`.
+used. It's a [union type], defined as `String | VNum | VFun | VList`.
 
 ### `String`
 
@@ -138,26 +152,6 @@ implementation of the function, its arity, its parameters (optional), and the
 Represents a Vyxal list. Scala doesn't allow recursive type aliases, so it's
 a whole class of its own wrapping around a `Seq[VAny]` (a class from Scala's
 standard library).
-
-## Back to `execute`
-
-`execute(ast)` pattern matches on the inputted AST and decides what to do based on that.
-
-- If it's a number or string literal, it simply pushes it onto the stack.
-- If it's an `AST.Group` (multiple ASTs grouped into a single AST), then it
-  `execute`s each one of them in order.
-- If it's a command (`+`, `M`, etc.), it gets the corresponding implementation
-  from [`Elements`](/shared/src/main/scala/Elements.scala) and
-  calls that, passing it the [`ctx` parameter](#the-ctx-parameter).
-- If it's an if statement, it executes it in the current context. They don't
-  need their own child contexts.
-- If it's a while loop or for loop, a child context is created. It uses the same
-  stack and everything, the only thing different about the child context is the
-  [context variables](./README.md/#what-are-context-variables), which are set
-  according to the type of loop. Note: context variables are a Vyxal feature,
-  not to be confused with the `Context` class, which is an implementation thing
-  that has nothing to do with context variables apart from the fact that the
-  `Context` class holds the two context variables for that scope.
 
 ## Executing functions
 
