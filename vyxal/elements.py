@@ -199,7 +199,11 @@ def all_antidiagonals_ordered(lhs, ctx):
     (lhs) -> Anti-diagonals of a matrix, starting with the shortest top diagonal
     """
 
-    lhs = iterable(lhs, ctx)
+    lhs = iterable(lhs, ctx=ctx)
+    if isinstance(lhs, LazyList):
+        lhs = vy_map(lambda row: iterable(row, ctx=ctx), lhs, ctx)
+    else:
+        lhs = [iterable(row, ctx=ctx) for row in lhs]
 
     @lazylist_from(lhs)
     def gen():
