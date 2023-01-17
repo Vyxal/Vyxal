@@ -14,19 +14,8 @@ and
 def execute(ast: AST)(using ctx: Context): Unit
 ```
 
-Don't worry about the `using`, it'll be explained [later](#the-ctx-parameter).
-Scala lets you define a method with multiple parameter lists so that you can do
-[currying](https://en.wikipedia.org/wiki/Currying) more easily. These two
-methods are basically equivalent (Scala does compile them to different things,
-but we don't need to worry about that):
-
-```scala
-def foo(a: A)(b: B): C = c(a, b)
-def foo(a: A): (B => C) = (b: B) => c(a, b)
-```
-
-Both can be called using `foo(a)(b)` (or `foo(a)`, to get a value of type
-`B => C`).
+Don't worry about the `using`, it'll be explained [later](#the-ctx-parameter). If
+you're curious about those multiple parameter lists, see [below](#multiple-parameter-lists).
 
 The `code: String` overload of `execute` is for programss that are still in their string form. This overload takes the string, lexes and parses it, and then hands it to the `ast: AST` overload of execute.
 
@@ -174,6 +163,23 @@ functin was defined in.
   function was defined in (just the `Map`, not the values of the variables
   themselves). In addition to this, it has access to variables to the outer
   context (the `parent` context).
+
+### Multiple parameter lists?!
+
+Scala lets you define a method with multiple parameter lists so that you can do
+[currying](https://en.wikipedia.org/wiki/Currying) more easily. These two
+methods are basically equivalent (Scala does compile them to different things,
+but we don't need to worry about that):
+
+```scala
+def foo(a: A)(b: B): C = c(a, b)
+def foo(a: A): (B => C) = (b: B) => c(a, b)
+```
+
+Both can be called using `foo(a)(b)` (or `foo(a)`, to get a value of type
+`B => C`).
+
+[Back to top](#the-interpreter)
 
 ---
 
