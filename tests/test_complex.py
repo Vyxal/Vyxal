@@ -682,7 +682,7 @@ def test_lambda_as_input():
 
 
 def test_mold():
-    stack = run_vyxal("⟨0|1|2|3|4|5|6|7|8|9⟩⟨`abc`f|\d|\e|`fg`f|`hij`f⟩•vh")
+    stack = run_vyxal("⟨0|1|2|3|4|5|6|7|8|9⟩⟨`abc`f|\\d|\\e|`fg`f|`hij`f⟩•vh")
     assert stack[-1] == [0, 3, 4, 5, 7]
 
 
@@ -1042,3 +1042,15 @@ def test_all_powers():
         10000000,
         100000000,
     ]
+
+def test_antidiagonals_ordered():
+    # Make an infinite 2D list like [[0, 1, ...], [5, 6, ...], ...]
+    @lazylist
+    def gen():
+        i = 0
+        while True:
+            yield LazyList(itertools.count(i, 1))
+            i += 5
+
+    stack = run_vyxal("Þ`", inputs = [gen()])
+    assert stack[-1][:3] == [[0], [1, 5], [2, 6, 10]]

@@ -199,21 +199,32 @@ def all_antidiagonals_ordered(lhs, ctx):
     (lhs) -> Anti-diagonals of a matrix, starting with the shortest top diagonal
     """
 
-    def get_anti_diag(vector, i):
-        return [
-            vector[j][i - j]
-            for j in range(len(vector))
-            if 0 <= i - j < len(vector[0])
-        ]
+    lhs = iterable(lhs, ctx)
 
-    vector = [iterable(x, ctx=ctx) for x in lhs]
-    if not vector:
-        return []
+    @lazylist_from(lhs)
+    def gen():
+        # The row with the first element of the antidiagonal
+        start = 0
+        # The index of the antidiagonal
+        i = 0
+        while True:
+            while has_ind(lhs, start) and not has_ind(lhs[start], i - start):
+                start += 1
+            if not has_ind(lhs, start):
+                break
 
-    all_diags = []
-    for i in range(len(vector) + len(vector[0]) - 1):
-        all_diags.append(get_anti_diag(vector, i))
-    return all_diags
+            antidiag = []
+            for col in range(i - start, -1, -1):
+                row = i - col
+                if not has_ind(lhs, row):
+                    break
+                # Use the index function in case the list is too short
+                antidiag.append(index(lhs[row], col, ctx))
+            yield antidiag
+
+            i += 1
+
+    return gen()
 
 
 def all_combos(lhs, ctx):
