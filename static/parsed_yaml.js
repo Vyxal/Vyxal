@@ -1620,6 +1620,12 @@ var codepage_descriptions =
       "name": "Constant Digraph",
       "description": "Used for constant digraphs.",
       "token": "k"
+    },
+    {
+      "name": "2-dimensional Convolution",
+      "description": "Return two-dimensional convolution of matrices",
+      "overloads": "lst, lst -> 2D-Convolution of a and b",
+      "token": "\u00dek"
     }
   ],
   "108": [
@@ -1776,6 +1782,12 @@ var codepage_descriptions =
       "name": "Digits, lowercase alphabet, and uppercase alphabet",
       "description": "\"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ\" (0-9A-Za-z)",
       "token": "kr"
+    },
+    {
+      "name": "Reduced Echelon Form",
+      "description": "Get the reduced echelon form of a matrix",
+      "overloads": "lst -> reduced_echelon_form(a)",
+      "token": "\u2206r"
     },
     {
       "name": "Strip from the right side",
@@ -2158,8 +2170,8 @@ var codepage_descriptions =
   "143": [
     {
       "name": "Divmod",
-      "description": "Divmod / combinations / trim",
-      "overloads": "num, num -> [a // b, a % b] (divmod - division and modulo)\nstr, num -> combinations of a with length b\nlst, num -> combinations of a with length b\nstr, str -> overwrite the start of a with b (b + a[len(b):])",
+      "description": "Divmod / combinations / trim / chunk-while",
+      "overloads": "num, num -> [a // b, a % b] (divmod - division and modulo)\nstr, num -> combinations of a with length b\nlst, num -> combinations of a with length b\nstr, str -> overwrite the start of a with b (b + a[len(b):])\nlst, fun -> group elements in a by elements that fulfil predicate b",
       "token": "\u1e0b"
     },
     {

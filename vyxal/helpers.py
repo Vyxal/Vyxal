@@ -61,6 +61,28 @@ def chop(it: VyIterable, n: int) -> LazyList:
     return gen()
 
 
+def chunk_while(it: VyList, fun: types.FunctionType, ctx: Context) -> VyList:
+    """Chunk a list while a function returns True."""
+    it = iterable(it, ctx=ctx)
+    indexable = LazyList(it)
+
+    @lazylist_from(it)
+    def gen():
+        ind = 0
+        while indexable.has_ind(ind + fun.arity):
+            chunk = [indexable[ind]]
+            while indexable.has_ind(ind + fun.arity) and safe_apply(
+                fun, *indexable[ind : ind + fun.arity], ctx=ctx
+            ):
+                chunk.append(indexable[ind + 1])
+                ind += 1
+            yield chunk
+            ind += 1
+        yield indexable[ind:]
+
+    return list(gen())
+
+
 @lazylist
 def collect_until_false(
     predicate: types.FunctionType,
