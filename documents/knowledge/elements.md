@@ -3747,9 +3747,9 @@ Calculate the determinant of a matrix.
 
 - lst a: `determinant(a)`
 -------------------------------
-## `` Þ\ `` (Antidiagonal)
+## `` Þ\ `` (Anti-diagonal)
 
-Antidiagonal of a matrix
+Anti-diagonal of a matrix
 
 ### Overloads
 

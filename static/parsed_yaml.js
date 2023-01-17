@@ -1313,8 +1313,8 @@ var codepage_descriptions =
       "token": "\\"
     },
     {
-      "name": "Antidiagonal",
-      "description": "Antidiagonal of a matrix",
+      "name": "Anti-diagonal",
+      "description": "Anti-diagonal of a matrix",
       "overloads": "lst -> antidiagonal(a)",
       "token": "\u00de\\"
     }
