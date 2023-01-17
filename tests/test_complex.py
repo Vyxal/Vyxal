@@ -1043,6 +1043,7 @@ def test_all_powers():
         100000000,
     ]
 
+
 def test_antidiagonals_ordered():
     # Make an infinite 2D list like [[0, 1, ...], [5, 6, ...], ...]
     @lazylist
@@ -1052,5 +1053,5 @@ def test_antidiagonals_ordered():
             yield LazyList(itertools.count(i, 1))
             i += 5
 
-    stack = run_vyxal("Þ`", inputs = [gen()])
+    stack = run_vyxal("Þ`", inputs=[gen()])
     assert stack[-1][:3] == [[0], [1, 5], [2, 6, 10]]
