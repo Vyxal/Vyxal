@@ -54,7 +54,7 @@ A list of keywords that can be used for this element in literate mode. Please se
 
 The number of items the element pops from the stack.
 
-### Overloads 
+### Overloads
 
 For each overload of the element, what expression it evaluates to.
 Use lowercase psuedocode, or Scala/Python.

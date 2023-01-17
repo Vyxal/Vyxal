@@ -156,4 +156,3 @@ All other tokens are not considered closing tokens.
 
 ## Token Post-Processing
 The post-processing phase of the parser simply moves all trailing nilads in a program to the front of the program to avoid redundancies.
-
