@@ -1,4 +1,4 @@
-*This file is to accompy [Interpreter.scala](../shared/src/main/scala/Interpreter.scala). For a general overview of how the whole interpretation process works, visit [INSERT MD FILE HERE](link).*
+*This file is to accompany [Interpreter.scala](../shared/src/main/scala/Interpreter.scala). For a general overview of how the whole interpretation process works, visit [INSERT MD FILE HERE](link).*
 
 The interpreter file is the main brains of the whole Vyxal project - it's where the pipeline flows to after reading all neccesary inputs (like program files) and where vyxal programs are lexed and parsed. It also handles execution of Vyxal programs, via the `execute` function. There are two overloads of the execute function:
 
