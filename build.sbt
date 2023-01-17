@@ -37,7 +37,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     name := "vyxal",
     version := vyxalVersion,
     libraryDependencies ++= Seq(
-      ("org.typelevel" %%% "spire" % "0.18.0").cross(CrossVersion.for3Use2_13),
+      "org.typelevel" %%% "spire" % "0.18.0",
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
