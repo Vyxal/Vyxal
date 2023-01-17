@@ -34,3 +34,8 @@ The `ast: AST` overload of `execute` uses the [visitor](https://en.wikipedia.org
 | `AST.AugmentVar`     	| Push the value of the variable to the stack, execute the associated variable and pop that result into the same variable 	| 🟨 (execution of the element may have context variables set if the element is a lambda)              	|
 | `AST.UnpackVar`      	| Explained separately                                                                                                    	| ❌                                                                                                   	|
 | `AST.ExecuteFn`      	| Execute the corresponding function object and push the result to the stack                                              	| 🟨<br><br>`N` = function argument<br>`M` depends on how the function is called.                      	|
+
+
+## `AST.UnpackVar`
+
+When an `AST.UnpackVar` is executed, a depth map of each variable is created (so something like `[x|y|[z]]` will turn into `[["x", 0], ["y", 0], ["z", 1]]`). This is then turned into a ragged list that matches the visual structure of the variables. The top of the stack is then popped and molded to that ragged list. Variable names and corresponding values are then zipped into a single list of `[String, VAny]` using a method that can be seen as overlaying one list on top of another and pulling out pairs that overlap.
