@@ -11,15 +11,11 @@ class ElementTests extends AnyFunSpec:
   describe("Element +") {
     describe("when given lists") {
       it("should vectorise properly") {
-        given Context = Context()
-        assertResult(
-          VList(
-            VList(5, 9),
-            "foo0"
-          )
-        )(
-          Impls.add(VList(VList(2, 5), "foo"), VList(VList(3, 4)))
-        )
+        given ctx: Context = Context()
+        ctx.push(VList(VList(2, 5), "foo"))
+        ctx.push(VList(VList(3, 4)))
+        Interpreter.execute(AST.Command("+"))
+        assertResult(VList(VList(5, 9), "foo0"))(ctx.pop())
       }
     }
     describe("when given functions") {
@@ -36,7 +32,9 @@ class ElementTests extends AnyFunSpec:
           )
         )
         ctx.push(3)
-        ctx.push(Impls.add(f, g))
+        ctx.push(f)
+        ctx.push(g)
+        Interpreter.execute(AST.Command("+"))
         Interpreter.execute(AST.ExecuteFn)
         assertResult(VNum(1))(ctx.pop())
       }
@@ -47,9 +45,7 @@ class ElementTests extends AnyFunSpec:
     describe("when given two lists") {
       it("should mold them properly") {
         given Context = Context()
-        assertResult(
-          VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2))
-        )(
+        assertResult(VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)))(
           Impls.mapElement(
             VList(1, 2, VList(3, 4), 5),
             VList(1, 2, VList(VList(3, 4, 6), 5))

@@ -21,8 +21,10 @@ case class Element(
     impl: DirectFn
 )
 
-case class UnimplementedOverloadException(element: String, args: Any)
-    extends RuntimeException(s"$element not supported for inputs $args")
+case class UnimplementedOverloadException(element: String, args: Seq[VAny])
+    extends RuntimeException(
+      s"$element not supported for input(s) ${args.mkString("(", ", ", ")")}"
+    )
 
 object Elements:
   val elements: Map[String, Element] = Impls.elements.toMap
@@ -46,247 +48,81 @@ object Elements:
         () => ctx ?=> ctx.push(impl(using ctx))
       )
 
-    def addMonadHelper(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: Seq[String],
-        impl: Monad
-    ): Monad =
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(1),
-        vectorises,
-        overloads,
-        { () => ctx ?=>
-          ctx.push(impl(ctx.pop()))
-        }
-      )
-      impl
-    end addMonadHelper
-
     /** Add a monad that handles all `VAny`s (it doesn't take a
       * `PartialFunction`, hence "Full")
       */
-    def addMonadFull(
+    def addFull[F](
+        helper: ImplHelpers[?, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         vectorises: Boolean,
         overloads: String*
-    )(impl: VAny => Context ?=> VAny): Monad =
-      addMonadHelper(
-        symbol,
-        name,
-        keywords,
-        vectorises,
-        overloads,
-        impl
-      )
-
-    def addMonad(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: String*
-    )(impl: Context ?=> PartialFunction[VAny, VAny]): Monad =
-      addMonadHelper(
-        symbol,
-        name,
-        keywords,
-        vectorises,
-        overloads,
-        FuncHelpers.fillMonad(symbol, impl)
-      )
-
-      /** If using this method, make sure to use `case` to define the function,
-        * since it needs a `PartialFunction`. A normal function literal or one
-        * using underscores won't work, as those make normal `Function`s.
-        */
-    def addMonadVect(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: Context ?=> PartialFunction[VAny, VAny]): Monad =
-      addMonadHelper(
-        symbol,
-        name,
-        keywords,
-        true,
-        overloads,
-        vect1(symbol)(impl)
-      )
-
-    def addDyadHelper(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: Seq[String],
-        impl: Dyad
-    ): Dyad =
+    )(impl: F): F =
       elements += symbol -> Element(
         symbol,
         name,
         keywords,
-        Some(2),
+        Some(helper.arity),
         vectorises,
         overloads,
-        { () => ctx ?=>
-          val arg2, arg1 = ctx.pop()
-          ctx.push(impl(arg1, arg2))
-        }
+        helper.toDirectFn(impl)
       )
+
       impl
-    end addDyadHelper
+    end addFull
 
-    /** Add a dyad that handles all `VAny`s */
-    def addDyadFull(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: String*
-    )(impl: Dyad): Dyad =
-      addDyadHelper(
-        symbol,
-        name,
-        keywords,
-        vectorises,
-        overloads,
-        impl
-      )
-
-    /** Add a dyad that's defined using a bunch of `case`s. The `Partial` is
-      * because it can be a `PartialFunction`, meaning it may be undefined for
-      * some inputs. Because of this, `fillDyad` is used to "fill" the partial
-      * function and make it error on undefined inputs.
+    /** Define an unvectorised element that doesn't necessarily work on all
+      * inputs
+      *
+      * If using this method, make sure to use `case` to define the function,
+      * since it needs a `PartialFunction`. If it is possible to define it using
+      * a normal function literal or it covers every single case, then try
+      * [[addFull]] instead.
       */
-    def addDyad(
+    def addElem[P, F](
+        helper: ImplHelpers[P, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: PartialVyFn[2]): Dyad =
-      addDyadHelper(
+    )(impl: P): F =
+      val full = helper.fill(symbol, impl)
+      elements += symbol -> Element(
         symbol,
         name,
         keywords,
+        Some(helper.arity),
         false,
         overloads,
-        FuncHelpers.fillDyad(symbol, impl)
+        helper.toDirectFn(full)
       )
+      full
+    end addElem
 
-    /** See [[addMonadVect]] for how to define `impl` */
-    def addDyadVect(
+    /** If using this method, make sure to use `case` to define the function,
+      * since it needs a `PartialFunction`. If it is possible to define it using
+      * a normal function literal, then try [[addFull]] instead.
+      */
+    def addVect[P, F](
+        helper: ImplHelpers[P, F],
         symbol: String,
         name: String,
         keywords: Seq[String],
         overloads: String*
-    )(impl: PartialVyFn[2]) =
-      addDyadHelper(
-        symbol,
-        name,
-        keywords,
-        true,
-        overloads,
-        vect2(symbol)(impl)
-      )
-
-    def addTriadHelper(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: Seq[String],
-        impl: VyFn[3]
-    ): Triad =
+    )(impl: P): F =
+      val vectorised = helper.vectorise(symbol)(impl)
       elements += symbol -> Element(
         symbol,
         name,
         keywords,
-        Some(3),
-        vectorises,
-        overloads,
-        { () => ctx ?=>
-          val arg3, arg2, arg1 = ctx.pop()
-          ctx.push(impl(arg1, arg2, arg3))
-        }
-      )
-      impl
-    end addTriadHelper
-
-    def addTriad(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: PartialVyFn[3]): Triad = addTriadHelper(
-      symbol,
-      name,
-      keywords,
-      false,
-      overloads,
-      FuncHelpers.fillTriad(name, impl)
-    )
-
-    /** See [[addMonadVect]] for how to define `impl` */
-    def addTriadVect(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: PartialVyFn[3]) =
-      addTriadHelper(
-        symbol,
-        name,
-        keywords,
+        Some(helper.arity),
         true,
         overloads,
-        vect3(symbol)(impl)
+        helper.toDirectFn(vectorised)
       )
-
-    def addTetradHelper(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        vectorises: Boolean,
-        overloads: Seq[String],
-        impl: VyFn[4]
-    ): Tetrad =
-      elements += symbol -> Element(
-        symbol,
-        name,
-        keywords,
-        Some(4),
-        vectorises,
-        overloads,
-        { () => ctx ?=>
-          val arg4, arg3, arg2, arg1 = ctx.pop()
-          ctx.push(impl(arg1, arg2, arg3, arg4))
-        }
-      )
-      impl
-    end addTetradHelper
-
-    def addTetrad(
-        symbol: String,
-        name: String,
-        keywords: Seq[String],
-        overloads: String*
-    )(impl: PartialVyFn[4]): Tetrad = addTetradHelper(
-      symbol,
-      name,
-      keywords,
-      false,
-      overloads,
-      FuncHelpers.fillTetrad(symbol, impl)
-    )
+      vectorised
+    end addVect
 
     /** Add an element that works directly on the entire stack */
     def addDirect(
@@ -306,7 +142,8 @@ object Elements:
         () => impl
       )
 
-    val add = addDyadFull(
+    addFull(
+      Dyad,
       "+",
       "Addition",
       List("add", "+", "plus"),
@@ -317,28 +154,21 @@ object Elements:
       "a: str, b: str -> a + b"
     )(MiscHelpers.add)
 
-    val allTruthy = addMonad(
+    val allTruthy = addElem(
+      Monad,
       "A",
       "All Truthy | All() | Is Vowel?",
       List("all", "is-vowel?"),
-      false,
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum =>
-        if ListHelpers.makeIterable(a).forall(MiscHelpers.boolify(_)) then 1
-        else 0
-      case a: String => {
-        var temp = VList()
-        for i <- a do temp = VList(temp :+ StringHelpers.isVowel(i.toString)*)
-        temp
-      }
-      case a: VList =>
-        if a.forall(MiscHelpers.boolify(_)) then 1
-        else 0
+      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: String => VList(a.map(StringHelpers.isVowel)*)
+      case a: VList => a.forall(MiscHelpers.boolify)
     }
 
-    val concatenate = addDyad(
+    val concatenate = addElem(
+      Dyad,
       "&",
       "Concatenate",
       List("concat", "&&", "append"),
@@ -348,10 +178,11 @@ object Elements:
       case (a: VList, b: VAny)  => VList(a :+ b*)
       case (a: VAny, b: VList)  => VList(a +: b*)
       case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
-      case (a: VAny, b: VAny)   => add(a, b)
+      case (a: VAny, b: VAny)   => MiscHelpers.add(a, b)
     }
 
-    val convertFromBinary = addMonad(
+    addFull(
+      Monad,
       "B",
       "Convert From Binary",
       List("from-binary", "bin->dec", "bin->decimal"),
@@ -359,22 +190,20 @@ object Elements:
       "a: num -> str(a) from binary",
       "a: str -> int(a, 2)",
       "a: lst -> int(a, 2), using list of digits"
-    ) { case a: VAny =>
-      NumberHelpers.fromBinary(a)
-    }
+    )(NumberHelpers.fromBinary)
 
-    val convertToBinary = addMonad(
+    addFull(
+      Monad,
       "b",
       "Convert To Binary",
       List("to-binary", "dec->bin", "decimal->bin"),
       true,
       "a: num -> convert a to binary",
       "a: str -> bin(chr(x) for x in a)"
-    ) { case a: VAny =>
-      NumberHelpers.toBinary(a)
-    }
+    )(NumberHelpers.toBinary)
 
-    val count = addDyad(
+    val count = addElem(
+      Dyad,
       "C",
       "Count",
       List("count"),
@@ -386,7 +215,8 @@ object Elements:
         StringHelpers.countString(a.toString, b.toString)
     }
 
-    val divide = addDyadVect(
+    val divide = addVect(
+      Dyad,
       "÷",
       "Divide | Split",
       List("divide", "div", "split"),
@@ -404,7 +234,9 @@ object Elements:
         ctx.push(a)
     }
 
-    val equals = addDyadVect(
+    // todo extract to helper in MiscHelpers?
+    val equals = addVect(
+      Dyad,
       "=",
       "Equals",
       List("eq", "==", "equal", "same?", "equals?", "equal?"),
@@ -416,7 +248,8 @@ object Elements:
       case (a: String, b: String) => a == b
     }
 
-    val exponentation = addDyadVect(
+    val exponentation = addVect(
+      Dyad,
       "*",
       "Exponentation | Remove Nth Letter | Trim",
       List("exp", "**", "pow", "exponent", "remove-letter", "str-trim"),
@@ -443,11 +276,11 @@ object Elements:
       "a ->"
     ) { ctx ?=> ctx.pop() }
 
-    val execute = addMonad(
+    val execute = addElem(
+      Monad,
       "Ė",
       "Execute lambda | Evaluate as Vyxal | Power with base 10",
       List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
-      false,
       "a: fun -> Execute a",
       "a: str -> Evaluate a as Vyxal",
       "a: num -> 10 ** n"
@@ -459,7 +292,8 @@ object Elements:
       case n: VNum => 10 ** n
     }
 
-    val factorial = addMonadVect(
+    val factorial = addVect(
+      Monad,
       "!",
       "Factorial | To Uppercase",
       List("fact", "factorial", "to-upper", "upper", "uppercase", "!"),
@@ -497,7 +331,8 @@ object Elements:
         else ctx.settings.defaultValue
     }
 
-    val greaterThan = addDyadVect(
+    val greaterThan = addVect(
+      Dyad,
       ">",
       "Greater Than",
       List("gt", "greater", "greater-than", ">", "greater?", "bigger?"),
@@ -507,7 +342,8 @@ object Elements:
       "a: str, b: str -> a > b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) > 0 }
 
-    val lessThan: Dyad = addDyadVect(
+    val lessThan: Dyad = addVect(
+      Dyad,
       "<",
       "Less Than",
       List("lt", "less", "less-than", "<", "less?", "smaller?"),
@@ -517,7 +353,8 @@ object Elements:
       "a: str, b: str -> a < b"
     ) { case (a: VVal, b: VVal) => MiscHelpers.compare(a, b) < 0 }
 
-    val mapElement: Dyad = addDyad(
+    val mapElement: Dyad = addElem(
+      Dyad,
       "M",
       "Map Function | Mold Lists | Multiplicity",
       List("map", "mold", "multiplicity", "times-divide"),
@@ -534,7 +371,8 @@ object Elements:
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
-    val modulo: Dyad = addDyadVect(
+    val modulo: Dyad = addVect(
+      Dyad,
       "%",
       "Modulo | String Formatting",
       List("mod", "modulo", "str-format", "format", "%"),
@@ -546,7 +384,8 @@ object Elements:
       case (a: VAny, b: String) => StringHelpers.formatString(b, a)
     }
 
-    val multiply = addDyadFull(
+    val multiply = addFull(
+      Dyad,
       "×",
       "Multiplication",
       List("mul", "multiply", "times", "str-repeat", "*", "ring-trans"),
@@ -555,9 +394,10 @@ object Elements:
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
       "a: str, b: str -> ring translate a according to b"
-    ) { MiscHelpers.multiply(_, _) }
+    )(MiscHelpers.multiply)
 
-    val negate = addMonadVect(
+    val negate = addVect(
+      Monad,
       "N",
       "Negation | Swap Case | First Non-Negative Integer Where Predicate is True",
       List(
@@ -579,7 +419,8 @@ object Elements:
     }
 
     val ordChr =
-      addMonadVect(
+      addVect(
+        Monad,
         "O",
         "Ord/Chr",
         List("ord", "chr"),
@@ -592,9 +433,10 @@ object Elements:
         case a: VNum => a.toInt.toChar.toString
       }
 
-    val pair = addDyadFull(";", "Pair", List("pair"), false, "a, b -> [a, b]") {
-      VList(_, _)
-    }
+    val pair =
+      addFull(Dyad, ";", "Pair", List("pair"), false, "a, b -> [a, b]") {
+        VList(_, _)
+      }
 
     val print = addDirect(
       ",",
@@ -606,7 +448,8 @@ object Elements:
       MiscHelpers.vyPrintln(ctx.pop())
     }
 
-    val reduction = addDyad(
+    val reduction = addElem(
+      Dyad,
       "R",
       "Reduce by Function Object | Dyadic Range | Regex Match",
       List(
@@ -634,7 +477,8 @@ object Elements:
         MiscHelpers.reduce(a, b)
     }
 
-    val subtraction = addDyadVect(
+    val subtraction = addVect(
+      Dyad,
       "-",
       "Subtraction",
       List(

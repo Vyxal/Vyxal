@@ -19,20 +19,16 @@ object StringHelpers:
         if i + 1 < fmtstr.length && fmtstr(i + 1) == '%' then
           sb.append('%')
           i += 2
-        else {
+        else
           sb.append(args(j % args.length))
           i += 1
-        }
-      else {
+      else
         sb.append(fmtstr(i))
         i += 1
-      }
     sb.toString
   end formatString
 
-  def isVowel(c: String): VNum = c.toLowerCase() match
-    case "a" | "e" | "i" | "o" | "u" => 1
-    case _                           => 0
+  def isVowel(c: Char): VNum = "aeiouAEIOU".contains(c)
 
   /** Remove the character at the given index */
   def remove(s: String, i: Int): String =
