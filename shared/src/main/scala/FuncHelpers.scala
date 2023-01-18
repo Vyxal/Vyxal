@@ -11,32 +11,22 @@ object FuncHelpers:
         case 1 =>
           val a = ctx.pop()
           Monad.vectoriseNoFill { a =>
-            ctx.push(a)
-            Interpreter.executeFn(fn)
+            Interpreter.executeFn(fn, args = Some(List(a)))
           }(a)
         case 2 =>
           val b, a = ctx.pop()
           Dyad.vectoriseNoFill { (a, b) =>
-            ctx.push(a)
-            ctx.push(b)
-            Interpreter.executeFn(fn)
+            Interpreter.executeFn(fn, args = Some(List(a, b)))
           }(a, b)
         case 3 =>
           val c, b, a = ctx.pop()
           Triad.vectoriseNoFill { (a, b, c) =>
-            ctx.push(a)
-            ctx.push(b)
-            ctx.push(c)
-            Interpreter.executeFn(fn)
+            Interpreter.executeFn(fn, args = Some(List(a, b, c)))
           }(a, b, c)
         case 4 =>
           val d, c, b, a = ctx.pop()
           Tetrad.vectoriseNoFill { (a, b, c, d) =>
-            ctx.push(a)
-            ctx.push(b)
-            ctx.push(c)
-            ctx.push(d)
-            Interpreter.executeFn(fn)
+            Interpreter.executeFn(fn, args = Some(List(a, b, c, d)))
           }(a, b, c, d)
         case _ =>
           throw UnsupportedOperationException(
