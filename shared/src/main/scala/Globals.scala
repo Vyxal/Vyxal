@@ -61,7 +61,7 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
     val nonWrapping = currInputs.slice(ind, ind + numNonWrapping + 1).toList
 
     if n <= numNonWrapping then nonWrapping
-    else {
+    else
       // The number of times the entire inputs array has to be repeated
       val numRepeats = (n - numNonWrapping) / currInputs.size
       val repeats = List.fill(numRepeats)(currInputs.toList)
@@ -71,7 +71,6 @@ class Inputs(origInputs: Seq[VAny] = Seq.empty):
       val end = currInputs.take(numEnd).toList
 
       nonWrapping ::: repeats.flatten ::: end
-    }
   end peek
 end Inputs
 
