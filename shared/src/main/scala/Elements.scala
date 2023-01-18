@@ -230,8 +230,7 @@ object Elements:
     val dup = addDirect(":", "Duplicate", List("dup"), None, "a -> a, a") {
       ctx ?=>
         val a = ctx.pop()
-        ctx.push(a)
-        ctx.push(a)
+        ctx.push(a, a)
     }
 
     // todo extract to helper in MiscHelpers?
@@ -507,19 +506,15 @@ object Elements:
 
     val swap = addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") {
       ctx ?=>
-        val b = ctx.pop()
-        val a = ctx.pop()
-        ctx.push(b)
-        ctx.push(a)
+        val b, a = ctx.pop()
+        ctx.push(b, a)
     }
 
     val triplicate =
       addDirect("D", "Triplicate", List("trip"), None, "a -> [a, a, a]") {
         ctx ?=>
           val a = ctx.pop()
-          ctx.push(a)
-          ctx.push(a)
-          ctx.push(a)
+          ctx.push(a, a, a)
       }
 
     val vectoriseAsElement = addDirect(

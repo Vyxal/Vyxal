@@ -66,8 +66,8 @@ class Context private (
     // todo repeat the inputs or something?
     inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
 
-  /** Push an item onto the stack */
-  def push(item: VAny): Unit = stack += item
+  /** Push items onto the stack. The first argument will be pushed first. */
+  def push(items: VAny*): Unit = stack ++= items
 
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
@@ -175,7 +175,7 @@ object Context:
       popArgs: Boolean
   ) =
     val newInputs = args
-      .map(_.toList)
+      .map(_.toList.reverse)
       .getOrElse(if popArgs then currCtx.pop(arity) else currCtx.peek(arity))
     if currCtx.settings.logLevel == LogLevel.Debug then
       println(
