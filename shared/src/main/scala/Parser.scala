@@ -192,7 +192,7 @@ object Parser:
           while asts.nonEmpty && nilads.size < arity
             && (asts.top.arity.fold(false)(_ == 0))
           do nilads += asts.pop()
-          if nilads.size == 0 then return Right(AST.Command(name))
+          if nilads.isEmpty then return Right(AST.Command(name))
           Right(
             AST.Group(
               (AST.Command(name) :: nilads.toList).reverse,
@@ -371,7 +371,7 @@ object Parser:
     val lineup = Queue(doubleClose.toList*)
     val processed = ListBuffer[VyxalToken]()
 
-    while (lineup.length != 0) do
+    while (lineup.nonEmpty) do
       val temp = lineup.dequeue()
       (temp: @unchecked) match
         case VyxalToken.SyntaxTrigraph("#:[") =>

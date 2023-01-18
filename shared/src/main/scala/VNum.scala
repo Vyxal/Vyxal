@@ -67,5 +67,6 @@ object VNum:
   given Conversion[Long, VNum] = n => complex(n, 0)
   given Conversion[BigInt, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
-  given Conversion[Boolean, VNum] = b => if b then 1 else 0
+  given Conversion[Boolean, VNum] =
+    b => if b then 1 else 0 // scalafix:ok DisableSyntax.BooleanToVNum
 end VNum
