@@ -1135,7 +1135,7 @@ Check if something is not equal to 1
 -------------------------------
 ## `` ḋ `` (Divmod)
 
-Divmod / combinations / trim
+Divmod / combinations / trim / chunk-while
 
 ### Overloads
 
@@ -1143,6 +1143,7 @@ Divmod / combinations / trim
 - str a, num b: `combinations of a with length b`
 - lst a, num b: `combinations of a with length b`
 - str a, str b: `overwrite the start of a with b (b + a[len(b):])`
+- lst a, fun b: `group elements in a by elements that fulfil predicate b`
 -------------------------------
 ## `` ė `` (Enumerate)
 
@@ -3682,6 +3683,14 @@ Diagonals of a matrix, starting with the main diagonal.
 
 - lst a: `diagonals of a, starting with the main diagonal`
 -------------------------------
+## `` Þ√ `` (Diagonals Ordered)
+
+Diagonals of a matrix, starting with the shortest top diagonal
+
+### Overloads
+
+- lst a: `diagonals of a, starting with the shortest top diagonal`
+-------------------------------
 ## `` Þḋ `` (Anti-diagonals)
 
 Anti-diagonals of a matrix, starting with the main anti-diagonal.
@@ -3689,6 +3698,14 @@ Anti-diagonals of a matrix, starting with the main anti-diagonal.
 ### Overloads
 
 - lst a: `anti-diagonals of a, starting with the main anti-diagonal`
+-------------------------------
+## `` Þ` `` (Anti-diagonals Ordered)
+
+Anti-diagonals of a matrix, starting with the shortest top anti-diagonal
+
+### Overloads
+
+- lst a: `anti-diagonals of a, starting with the shortest top anti-diagonal`
 -------------------------------
 ## `` ÞS `` (Sublists)
 
@@ -3730,9 +3747,9 @@ Calculate the determinant of a matrix.
 
 - lst a: `determinant(a)`
 -------------------------------
-## `` Þ\ `` (Antidiagonal)
+## `` Þ\ `` (Anti-diagonal)
 
-Antidiagonal of a matrix
+Anti-diagonal of a matrix
 
 ### Overloads
 
