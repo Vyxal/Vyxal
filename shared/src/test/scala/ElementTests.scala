@@ -12,8 +12,7 @@ class ElementTests extends AnyFunSpec:
     describe("when given lists") {
       it("should vectorise properly") {
         given ctx: Context = Context()
-        ctx.push(VList(VList(2, 5), "foo"))
-        ctx.push(VList(VList(3, 4)))
+        ctx.push(VList(VList(2, 5), "foo"), VList(VList(3, 4)))
         Interpreter.execute(AST.Command("+"))
         assertResult(VList(VList(5, 9), "foo0"))(ctx.pop())
       }
@@ -31,9 +30,7 @@ class ElementTests extends AnyFunSpec:
             AST.makeSingle(AST.Number(8), AST.Command("-"))
           )
         )
-        ctx.push(3)
-        ctx.push(f)
-        ctx.push(g)
+        ctx.push(3, f, g)
         Interpreter.execute(AST.Command("+"))
         Interpreter.execute(AST.ExecuteFn)
         assertResult(VNum(1))(ctx.pop())
@@ -103,8 +100,7 @@ class ElementTests extends AnyFunSpec:
     describe("when given a function") {
       it("should execute the function") {
         given ctx: Context = Context()
-        ctx.push(1)
-        ctx.push(2)
+        ctx.push(1, 2)
         assertResult(3: VNum)(
           Impls.execute(VFun.fromElement(Elements.elements("+")))
         )

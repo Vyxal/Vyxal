@@ -37,8 +37,7 @@ class InterpreterTests extends AnyFunSuite:
 
   test("Can the interpreter execute named functions?") {
     given ctx: Context = Context()
-    ctx.push(3)
-    ctx.push(4)
+    ctx.push(3, 4)
     Interpreter.execute(AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-"))))
     Interpreter.execute(AST.GetVar("f"))
     Interpreter.execute(AST.Command("Ė"))
@@ -83,8 +82,7 @@ class InterpreterTests extends AnyFunSuite:
 
   test("Can the interpreter vectorise dyadic lambdas?") {
     given ctx: Context = Context()
-    ctx.push(VList(0, 3, VList(2, 1)))
-    ctx.push(VList(4, 2, 6))
+    ctx.push(VList(0, 3, VList(2, 1)), VList(4, 2, 6))
     Interpreter.execute(
       Modifiers
         .modifiers("v")
