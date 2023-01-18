@@ -53,7 +53,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-language:adhocExtensions",
       // "-explain",
       "-print-lines",
-      "-Ycheck-all-patmat"
+      "-Yno-adapted-args"
     ),
     // Configure Scaladoc
     Compile / doc / target := file("docs"),
