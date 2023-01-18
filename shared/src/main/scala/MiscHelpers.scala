@@ -9,7 +9,7 @@ import spire.algebra.*
 
 object MiscHelpers:
   // todo consider doing something like APL's forks so this doesn't have to be a partial function
-  val add = vect2("add")(forkify {
+  val add = Dyad.vectorise("add")(forkify {
     case (a: VNum, b: VNum)     => a + b
     case (a: String, b: VNum)   => s"$a$b"
     case (a: VNum, b: String)   => s"$a$b"
@@ -37,7 +37,7 @@ object MiscHelpers:
       i += 1
     ???
 
-  val multiply = vect2("multiply") {
+  val multiply = Dyad.vectorise("multiply") {
     case (a: VNum, b: VNum)     => a * b
     case (a: String, b: VNum)   => a * b.toInt
     case (a: VNum, b: String)   => b * a.toInt
@@ -94,7 +94,6 @@ object MiscHelpers:
           nameStack.top += temp
         nameStack.top += name
       depth = varDepth
-    end for
     for i <- 0 until depth do
       val temp = VList(nameStack.pop().toList*)
       nameStack.top += temp

@@ -385,10 +385,8 @@ object Parser:
               case VyxalToken.StructureAllClose               => depth -= 1
               case _                                          => None
             contents.++=(top.value)
-          end while
           processed += VyxalToken.UnpackVar(contents.toString())
         case _ => processed += temp
-      end match
     end while
     processed.toList
   end preprocess
@@ -402,7 +400,6 @@ object Parser:
       }
       case _ => asts
     temp
-  end postprocess
 
   private def isNilad(ast: AST) =
     ast match

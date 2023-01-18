@@ -11,14 +11,17 @@ class ElementTests extends AnyFunSpec:
   describe("Element +") {
     describe("when given lists") {
       it("should vectorise properly") {
-        given Context = Context()
+        given ctx: Context = Context()
+        ctx.push(VList(VList(2, 5), "foo"))
+        ctx.push(VList(VList(3, 4)))
+        Interpreter.execute(AST.Command("+"))
         assertResult(
           VList(
             VList(5, 9),
             "foo0"
           )
         )(
-          Impls.add(VList(VList(2, 5), "foo"), VList(VList(3, 4)))
+          ctx.pop()
         )
       }
     }
@@ -36,7 +39,9 @@ class ElementTests extends AnyFunSpec:
           )
         )
         ctx.push(3)
-        ctx.push(Impls.add(f, g))
+        ctx.push(f)
+        ctx.push(g)
+        Interpreter.execute(AST.Command("+"))
         Interpreter.execute(AST.ExecuteFn)
         assertResult(VNum(1))(ctx.pop())
       }

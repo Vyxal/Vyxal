@@ -19,14 +19,12 @@ object StringHelpers:
         if i + 1 < fmtstr.length && fmtstr(i + 1) == '%' then
           sb.append('%')
           i += 2
-        else {
+        else
           sb.append(args(j % args.length))
           i += 1
-        }
-      else {
+      else
         sb.append(fmtstr(i))
         i += 1
-      }
     sb.toString
   end formatString
 

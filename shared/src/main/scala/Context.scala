@@ -32,6 +32,11 @@ class Context private (
 ):
   def settings: Settings = globals.settings
 
+  /** Pop the top of the stack
+    *
+    * If the stack's empty, get the next input (inputs repeat). If there are no
+    * inputs, read a line of input from stdin.
+    */
   def pop(): VAny =
     val elem =
       if stack.nonEmpty then stack.remove(stack.size - 1)
@@ -61,6 +66,7 @@ class Context private (
     // todo repeat the inputs or something?
     inputs.peek(numInput) ++ stack.slice(stack.length - numStack, stack.length)
 
+  /** Push an item onto the stack */
   def push(item: VAny): Unit = stack += item
 
   /** Whether the stack is empty */
