@@ -5674,6 +5674,19 @@
     - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[1,5,9],[2,6],[3],[10],[7,11],[4,8,12]]"
     - "[[[]]] : []"
 
+- element: "Þ√"
+  name: Diagonals Ordered
+  description: Diagonals of a matrix, starting with the shortest top diagonal
+  arity: 1
+  overloads:
+      lst: diagonals of a, starting with the shortest top diagonal
+  vectorise: false
+  tests:
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[3], [2, 6], [1, 5, 9], [4, 8], [7]]"
+      - "[[[1,2,3,4],[5,6,7,8],[9,10,11,12]]] : [[4], [3, 8], [2, 7, 12], [1, 6, 11], [5, 10], [9]]"
+      - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[3], [2, 6], [1, 5, 9], [4, 8, 12], [7, 11], [10]]"
+      - "[[[]]] : []"
+
 - element: "Þḋ"
   name: Anti-diagonals
   description: Anti-diagonals of a matrix, starting with the main anti-diagonal.
@@ -5686,6 +5699,20 @@
     - "[[[1,2,3,4],[5,6,7,8],[9,10,11,12]]] : [[3,6,9],[2,5],[1],[12],[8,11],[4,7,10]]"
     - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[3,5,7],[2,4],[1],[12],[9,11],[6,8,10]]"
     - "[[[]]] : []"
+
+- element: "Þ`"
+  name: Anti-diagonals Ordered
+  description: Anti-diagonals of a matrix, starting with the shortest top anti-diagonal
+  arity: 1
+  overloads:
+      lst: anti-diagonals of a, starting with the shortest top anti-diagonal
+  vectorise: false
+  tests:
+      - "[[[1,2,3],[4,5,6],[7,8,9]]] : [[1], [2, 4], [3, 5, 7], [6, 8], [9]]"
+      - "[[[1,2,3,4],[5,6,7,8],[9,10,11,12]]] : [[1], [2, 5], [3, 6, 9], [4, 7, 10], [8, 11], [12]]"
+      - "[[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]] : [[1], [2, 4], [3, 5, 7], [6, 8, 10], [9, 11], [12]]"
+      - "[[[1,2,3],[4],[7,8,9]]] : [[1], [2, 4], [3, 7], [8], [9]]"
+      - "[[[]]] : []"
 
 - element: "ÞS"
   name: Sublists
@@ -5749,8 +5776,8 @@
     - "[[[]]] : 1"
 
 - element: "Þ\\"
-  name: Antidiagonal
-  description: Antidiagonal of a matrix
+  name: Anti-diagonal
+  description: Anti-diagonal of a matrix
   arity: 1
   overloads:
     lst: antidiagonal(a)

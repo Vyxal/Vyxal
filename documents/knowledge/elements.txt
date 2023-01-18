@@ -3178,11 +3178,23 @@ k• (Qwerty Keyboard)
 
     lst a: diagonals of a, starting with the main diagonal
 -------------------------------
+Þ√ (Diagonals Ordered)
+
+- Diagonals of a matrix, starting with the shortest top diagonal
+
+    lst a: diagonals of a, starting with the shortest top diagonal
+-------------------------------
 Þḋ (Anti-diagonals)
 
 - Anti-diagonals of a matrix, starting with the main anti-diagonal.
 
     lst a: anti-diagonals of a, starting with the main anti-diagonal
+-------------------------------
+Þ` (Anti-diagonals Ordered)
+
+- Anti-diagonals of a matrix, starting with the shortest top anti-diagonal
+
+    lst a: anti-diagonals of a, starting with the shortest top anti-diagonal
 -------------------------------
 ÞS (Sublists)
 
@@ -3214,9 +3226,9 @@ k• (Qwerty Keyboard)
 
     lst a: determinant(a)
 -------------------------------
-Þ\ (Antidiagonal)
+Þ\ (Anti-diagonal)
 
-- Antidiagonal of a matrix
+- Anti-diagonal of a matrix
 
     lst a: antidiagonal(a)
 -------------------------------

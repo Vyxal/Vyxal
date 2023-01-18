@@ -3683,6 +3683,14 @@ Diagonals of a matrix, starting with the main diagonal.
 
 - lst a: `diagonals of a, starting with the main diagonal`
 -------------------------------
+## `` Þ√ `` (Diagonals Ordered)
+
+Diagonals of a matrix, starting with the shortest top diagonal
+
+### Overloads
+
+- lst a: `diagonals of a, starting with the shortest top diagonal`
+-------------------------------
 ## `` Þḋ `` (Anti-diagonals)
 
 Anti-diagonals of a matrix, starting with the main anti-diagonal.
@@ -3690,6 +3698,14 @@ Anti-diagonals of a matrix, starting with the main anti-diagonal.
 ### Overloads
 
 - lst a: `anti-diagonals of a, starting with the main anti-diagonal`
+-------------------------------
+## `` Þ` `` (Anti-diagonals Ordered)
+
+Anti-diagonals of a matrix, starting with the shortest top anti-diagonal
+
+### Overloads
+
+- lst a: `anti-diagonals of a, starting with the shortest top anti-diagonal`
 -------------------------------
 ## `` ÞS `` (Sublists)
 
@@ -3731,9 +3747,9 @@ Calculate the determinant of a matrix.
 
 - lst a: `determinant(a)`
 -------------------------------
-## `` Þ\ `` (Antidiagonal)
+## `` Þ\ `` (Anti-diagonal)
 
-Antidiagonal of a matrix
+Anti-diagonal of a matrix
 
 ### Overloads
 
