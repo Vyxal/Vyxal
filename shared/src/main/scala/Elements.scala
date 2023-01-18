@@ -58,7 +58,7 @@ object Elements:
         keywords: Seq[String],
         vectorises: Boolean,
         overloads: String*
-    )(impl: F): Unit =
+    )(impl: F): F =
       elements += symbol -> Element(
         symbol,
         name,
@@ -69,9 +69,16 @@ object Elements:
         helper.toDirectFn(impl)
       )
 
-    /** If using this method, make sure to use `case` to define the function,
+      impl
+    end addFull
+
+    /** Define an unvectorised element that doesn't necessarily work on all
+      * inputs
+      *
+      * If using this method, make sure to use `case` to define the function,
       * since it needs a `PartialFunction`. If it is possible to define it using
-      * a normal function literal, then try [[addFull]] instead.
+      * a normal function literal or it covers every single case, then try
+      * [[addFull]] instead.
       */
     def addElem[P, F](
         helper: ImplHelpers[P, F],
@@ -155,17 +162,9 @@ object Elements:
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum =>
-        if ListHelpers.makeIterable(a).forall(MiscHelpers.boolify(_)) then 1
-        else 0
-      case a: String => {
-        var temp = VList()
-        for i <- a do temp = VList(temp :+ StringHelpers.isVowel(i.toString)*)
-        temp
-      }
-      case a: VList =>
-        if a.forall(MiscHelpers.boolify(_)) then 1
-        else 0
+      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: String => VList(a.map(StringHelpers.isVowel)*)
+      case a: VList => a.forall(MiscHelpers.boolify)
     }
 
     val concatenate = addElem(
@@ -235,6 +234,7 @@ object Elements:
         ctx.push(a)
     }
 
+    // todo extract to helper in MiscHelpers?
     val equals = addVect(
       Dyad,
       "=",
@@ -394,7 +394,7 @@ object Elements:
       "a: num, b: str -> b repeated a times",
       "a: str, b: num -> a repeated b times",
       "a: str, b: str -> ring translate a according to b"
-    ) { MiscHelpers.multiply(_, _) }
+    )(MiscHelpers.multiply)
 
     val negate = addVect(
       Monad,
