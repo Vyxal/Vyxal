@@ -59,7 +59,7 @@ object MiscHelpers:
       case None       => remaining.take(byFun.arity)
     remaining = remaining.drop(operating.length)
 
-    if operating.length == 0 then return 0
+    if operating.isEmpty then return 0
     if operating.length == 1 then return operating.head
 
     var contextVarN = operating(0)
@@ -97,7 +97,6 @@ object MiscHelpers:
     for i <- 0 until depth do
       val temp = VList(nameStack.pop().toList*)
       nameStack.top += temp
-    end for
     val unpackedNames = VList(nameStack.top.toList*)
     val shapedValues = ListHelpers.makeIterable(ctx.pop())(using ctx)
 

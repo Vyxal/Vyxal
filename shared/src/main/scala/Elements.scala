@@ -162,9 +162,9 @@ object Elements:
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: VNum   => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
       case a: String => VList(a.map(StringHelpers.isVowel)*)
-      case a: VList => a.forall(MiscHelpers.boolify)
+      case a: VList  => a.forall(MiscHelpers.boolify)
     }
 
     val concatenate = addElem(
@@ -175,10 +175,10 @@ object Elements:
       "a: any, b: any -> a ++ b"
     ) {
       case (a: VList, b: VList) => VList(a ++ b*)
-      case (a: VList, b: VAny)  => VList(a :+ b*)
-      case (a: VAny, b: VList)  => VList(a +: b*)
+      case (a: VList, b)        => VList(a :+ b*)
+      case (a, b: VList)        => VList(a +: b*)
       case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
-      case (a: VAny, b: VAny)   => MiscHelpers.add(a, b)
+      case (a, b)               => MiscHelpers.add(a, b)
     }
 
     addFull(
@@ -209,9 +209,9 @@ object Elements:
       List("count"),
       "a: any, b: any -> count(b in a)"
     ) {
-      case (a: VList, b: VAny) => a.count(_ === b)
-      case (a: VAny, b: VList) => b.count(_ === a)
-      case (a: VAny, b: VAny) =>
+      case (a: VList, b) => a.count(_ === b)
+      case (a, b: VList) => b.count(_ === a)
+      case (a, b) =>
         StringHelpers.countString(a.toString, b.toString)
     }
 
@@ -365,9 +365,9 @@ object Elements:
     ) {
       case (a: VList, b: VList) => ListHelpers.mold(a, b)
       case (a: VNum, b: VNum)   => NumberHelpers.multiplicity(a, b)
-      case (a: VAny, b: VFun) =>
+      case (a, b: VFun) =>
         ListHelpers.map(b, ListHelpers.makeIterable(a, Some(true)))
-      case (a: VFun, b: VAny) =>
+      case (a: VFun, b) =>
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
@@ -379,9 +379,9 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
-      case (a: VNum, b: VNum)   => a % b
-      case (a: String, b: VAny) => StringHelpers.formatString(a, b)
-      case (a: VAny, b: String) => StringHelpers.formatString(b, a)
+      case (a: VNum, b: VNum) => a % b
+      case (a: String, b)     => StringHelpers.formatString(a, b)
+      case (a, b: String)     => StringHelpers.formatString(b, a)
     }
 
     val multiply = addFull(
@@ -471,9 +471,9 @@ object Elements:
         NumberHelpers.range(a, b - 1)
       case (a: String, b: String) => a.r.findFirstIn(b).isDefined
       case (a: String, b: VNum)   => a.r.findFirstIn(b.toString).isDefined
-      case (a: VFun, b: VAny) =>
+      case (a: VFun, b) =>
         MiscHelpers.reduce(b, a)
-      case (a: VAny, b: VFun) =>
+      case (a, b: VFun) =>
         MiscHelpers.reduce(a, b)
     }
 
