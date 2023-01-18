@@ -36,6 +36,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     // Shared settings
     name := "vyxal",
     version := vyxalVersion,
+    semanticdbEnabled := true,
     libraryDependencies ++= Seq(
       "org.typelevel" %%% "spire" % "0.18.0",
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
@@ -52,8 +53,7 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
       "-language:implicitConversions",
       "-language:adhocExtensions",
       // "-explain",
-      "-print-lines",
-      "-Yno-adapted-args"
+      "-print-lines"
     ),
     // Configure Scaladoc
     Compile / doc / target := file("docs"),

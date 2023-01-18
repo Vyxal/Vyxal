@@ -130,7 +130,7 @@ object Parser:
                   s"Modifier $name not defined for $modifierArgs"
                 )
               )
-        case AST.SpecialModifier(name) => {
+        case AST.SpecialModifier(name) =>
           (name: @unchecked) match
             case "ᵜ" =>
               val lambdaAsts = ListBuffer[AST]()
@@ -144,7 +144,6 @@ object Parser:
                 )
               )
             case "ᵗ" => ??? // TODO: Implement tie
-        }
         case AST.AuxAugmentVar(name) =>
           if asts.isEmpty then
             return Left(
@@ -395,11 +394,10 @@ object Parser:
 
   private def postprocess(asts: AST): AST =
     val temp = asts match
-      case AST.Group(elems, _) => {
+      case AST.Group(elems, _) =>
         val nilads = elems.reverse.takeWhile(isNilad).reverse
         val rest = elems.dropRight(nilads.length)
         AST.Group(nilads ++ rest, None)
-      }
       case _ => asts
     temp
   end postprocess
