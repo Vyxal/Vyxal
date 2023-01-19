@@ -23,6 +23,7 @@ def token_equal(source: str, expected: list[Token]) -> bool:
         expected list have the same name and value
     """
 
+    print(tokenise(source))
     return all(
         map(
             lambda x: x[0] == x[1],
@@ -123,11 +124,14 @@ def test_variables():
     )
 
 
-if __name__ == "__main__":
-    test_single_token()
-    test_one_plus_one()
-    test_strings()
-    test_comments()
-    test_numbers()
-    test_variables()
-    print("everything passed.")
+def test_multiline_comments():
+    assert token_equal("#{}##{\n1", [])
+    assert token_equal(
+        "#{}#{ }#\n1",
+        [
+            Token(TokenType.GENERAL, "{"),
+            Token(TokenType.GENERAL, " "),
+            Token(TokenType.GENERAL, "}"),
+            Token(TokenType.NUMBER, "1"),
+        ],
+    )
