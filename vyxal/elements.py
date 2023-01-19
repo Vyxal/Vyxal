@@ -3294,8 +3294,10 @@ def mode(lhs, ctx):
     Most common item in a list.
     Equivalent to Ċ↑h
     """
-    item_counts = collections.Counter(iterable(lhs, ctx=ctx))
-    return item_counts.most_common(1)[0][0]
+    item_counts = [
+        (item, count_item(lhs, item, ctx)) for item in uniquify(lhs, ctx)
+    ]
+    return max(item_counts, key=lambda x: x[1])[0]
 
 
 def modulo(lhs, rhs, ctx):
