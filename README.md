@@ -1,6 +1,6 @@
 # Vyxal
 
-<!-- secret hidden comment from a bot test--> 
+<!-- secret hidden comment from a bot test-->
 
 ![Vyxal Logo](./documents/logo/vylogo.png)
 
