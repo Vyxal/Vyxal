@@ -135,3 +135,5 @@ def test_multiline_comments():
             Token(TokenType.NUMBER, "1"),
         ],
     )
+    assert token_equal("#{#", [])
+    assert token_equal("#{}", [])
