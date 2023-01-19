@@ -290,9 +290,12 @@ def parse(
             remaining = parse(tokens, parent or structure_cls)
             relevant = remaining[0]
 
-            if isinstance(
-                relevant,
-                (structure.RecurseStatement, structure.BreakStatement),
+            if (
+                isinstance(
+                    relevant,
+                    (structure.RecurseStatement, structure.BreakStatement),
+                )
+                and head.value != "ß"
             ):
                 relevant.parent_structure = structure.MonadicModifier
 
@@ -322,9 +325,12 @@ def parse(
                     )
                 )
 
-            if isinstance(
-                remaining[0],
-                (structure.RecurseStatement, structure.BreakStatement),
+            if (
+                isinstance(
+                    remaining[0],
+                    (structure.RecurseStatement, structure.BreakStatement),
+                )
+                and head.value != "¨i"
             ):
                 remaining[0].parent_structure = structure.DyadicModifier
 
