@@ -6,6 +6,7 @@ and other stuff that needs to be lazily evaluated.
 """
 
 import itertools
+from reprlib import Repr, recursive_repr
 import types
 import vyxal.helpers
 
@@ -205,6 +206,13 @@ class LazyList:
         if index >= len(self.generated):
             self.__getitem__(index)
         del self.generated[index]
+
+    @recursive_repr()
+    def __repr__(self):
+        vyRepr = Repr()
+        vyRepr.maxstring = 20
+        vyRepr.maxother = 10
+        return '<LazyList(' + '|'.join(map(vyRepr.repr, self)) + ')>'
 
     def compare(self, other):
         # Returns -1 / 0 / 1 depending on whether this is smaller / equal /
