@@ -212,7 +212,7 @@ class LazyList:
         vyRepr = Repr()
         vyRepr.maxstring = 20
         vyRepr.maxother = 10
-        return '<LazyList(' + '|'.join(map(vyRepr.repr, self)) + ')>'
+        return "<LazyList(" + "|".join(map(vyRepr.repr, self)) + ")>"
 
     def compare(self, other):
         # Returns -1 / 0 / 1 depending on whether this is smaller / equal /
