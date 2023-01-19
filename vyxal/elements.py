@@ -2499,9 +2499,11 @@ def infinite_replace(lhs, rhs, other, ctx):
             function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
         )
         new_vector = []
+        place = 0
         for i, v in enumerate(vector):
             if i in indicies:
-                new_vector.append(values[i])
+                new_vector.append(values[place])
+                place += 1
             else:
                 new_vector.append(v)
         return new_vector
