@@ -1209,7 +1209,7 @@ var codepage_descriptions =
     {
       "name": "Replace / Map to Indices",
       "description": "Replace b with c in a / Map a function at elements of a list whose indices are in another list",
-      "overloads": "any, any, any -> a.replace(b,c) (replace)\nlst, lst, fun -> for each i in b, change the ith element in a by applying the function, then return the new list\nlst, num, fun -> replace the bth element in a by applying the function, then return the new list",
+      "overloads": "any, any, any -> a.replace(b,c) (replace deep)\nlst, lst, fun -> for each i in b, change the ith element in a by applying the function, then return the new list\nlst, num, fun -> replace the bth element in a by applying the function, then return the new list",
       "token": "V"
     },
     {
