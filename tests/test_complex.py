@@ -355,6 +355,11 @@ def test_tilde_dyad():
     assert stack == [1, 2, 3]
 
 
+def test_apply_at_indices():
+    stack = run_vyxal("`abcde`⁽Ṙ⟨1|3⟩¢")
+    assert stack[-1] == ["a", "d", "c", "b", "e"]
+
+
 def test_infinite_integer_partitions():
     stack = run_vyxal("ÞṄ")
     assert stack[-1][:30] == [
