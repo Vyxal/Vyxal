@@ -160,10 +160,10 @@ def tokenise(
                 depth = 1
                 while source:
                     h = source.popleft()
-                    if h == "#" and source[0] == "{":
+                    if h == "#" and source and source[0] == "{":
                         source.popleft()
                         depth += 1
-                    if h == "}" and source[0] == "#":
+                    if h == "}" and source and source[0] == "#":
                         source.popleft()
                         depth -= 1
                         if depth == 0:
