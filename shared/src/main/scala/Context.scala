@@ -8,9 +8,12 @@ import scala.io.StdIn
   *   Make a Context object for the current scope
   * @param stack
   *   The stack on which all operations happen
-  * @param _contextVar
-  *   The context variable. It's an Option because this scope might not have its
-  *   own context variable. See [[this.contextVarN]] for more information.
+  * @param _contextVarM
+  *   Context variable M. It's an Option because this scope might not have its
+  *   own context variable(s). See [[this.contextVarM]] for more information.
+  * @param _contextVarN
+  *   Context variable N. It's an Option because this scope might not have its
+  *   own context variable(s). See [[this.contextVarN]] for more information.
   * @param vars
   *   The variables currently in scope, accessible by their names. Null values
   *   signify that the variable is nonlocal, i.e., it should be gotten from the
@@ -19,7 +22,8 @@ import scala.io.StdIn
   *   The inputs available in this scope
   * @param parent
   *   The context inside which this context is (to inherit variables). `None`
-  *   for toplevel contexts
+  *   for toplevel contexts. When executing a [[VFun]], this is the context that
+  *   the function was *defined* in, not the one it is executing inside.
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
@@ -72,27 +76,36 @@ class Context private (
   /** Whether the stack is empty */
   def isStackEmpty: Boolean = stack.isEmpty
 
-  /** Get the context variable for this scope if it exists. If it doesn't, get
-    * the context variable from the parent. If there's no parent Context, just
-    * get the default value (0)
+  /** Get the context variable N for this scope if it exists. If it doesn't, get
+    * its parent's. If there's no parent Context, just get the default value (0)
+    *
+    *   - Inside while loops, this is the last condition value
+    *   - Inside for loops, this is the current loop item
+    *   - Inside lambdas/named functions, this is the argument
     */
   def contextVarN: VAny =
     _contextVarN
       .orElse(parent.map(_.contextVarN))
       .getOrElse(settings.defaultValue)
 
-  /** Setter for the context variable so that outsiders don't have to deal with
+  /** Setter for context variable N so that outsiders don't have to deal with
     * it being an Option
     */
   def contextVarN_=(newCtx: VAny) =
     _contextVarN = Some(newCtx)
 
+  /** Get the context variable M for this scope if it exists. If it doesn't, get
+    * its parent's. If there's no parent Context, just get the default value (0)
+    *
+    *   - Inside both for loops and while loops, this is the current
+    *     index/number of loop iterations
+    */
   def contextVarM: VAny =
     _contextVarM
       .orElse(parent.map(_.contextVarM))
       .getOrElse(settings.defaultValue)
 
-  /** Setter for the context variable so that outsiders don't have to deal with
+  /** Setter for context variable M so that outsiders don't have to deal with
     * it being an Option
     */
   def contextVarM_=(newCtx: VAny) =
@@ -162,32 +175,22 @@ object Context:
     *   The context in which the function was defined
     * @param currCtx
     *   The context where the function is currently executing
-    * @param popArgs
-    *   Whether the inputs for the function will be popped from the stack
-    *   (instead of merely peeking)
     */
   def makeFnCtx(
       origCtx: Context,
       currCtx: Context,
-      arity: Int,
-      params: List[String],
-      args: Option[Seq[VAny]],
-      popArgs: Boolean
+      contextVarM: Option[VAny],
+      contextVarN: Option[VAny],
+      params: Seq[String],
+      inputs: Seq[VAny]
   ) =
-    val newInputs = args
-      .map(_.toList.reverse)
-      .getOrElse(if popArgs then currCtx.pop(arity) else currCtx.peek(arity))
-    if currCtx.settings.logLevel == LogLevel.Debug then
-      println(
-        s"newInputs = $newInputs, arity = $arity, stack = ${currCtx.stack}, popArgs = $popArgs"
-      )
     new Context(
       mut.ArrayBuffer.empty,
-      currCtx._contextVarN,
-      currCtx._contextVarM,
-      mut.Map(params.zip(newInputs)*),
-      Inputs(newInputs),
-      Some(currCtx),
+      contextVarM.orElse(currCtx._contextVarN),
+      contextVarN.orElse(currCtx._contextVarM),
+      mut.Map(params.zip(inputs)*),
+      Inputs(inputs),
+      Some(origCtx),
       currCtx.globals
     )
   end makeFnCtx

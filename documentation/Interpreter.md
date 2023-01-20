@@ -31,7 +31,7 @@ After parsing, the result is an `AST.Group`, which is an AST object that contain
 | `AST.Group`          | Each AST in the group is executed individually | ❌ |
 | `AST.CompositeNilad` | Same as `AST.Group`. This AST type is for arity grouping purposes. | ❌ |
 | `AST.If`             | Pop the top of the stack, truthy: execute truthy branch, else: execute falsey branch if present | ❌ |
-| `AST.While` | While the condition branch evaluated on the stack is truthy, execute the loop body. | ✅<br><br>`N` = Number of while loop iterations<br>`M` = Last condition value  |
+| `AST.While` | While the condition branch evaluated on the stack is truthy, execute the loop body. | ✅<br><br>`N` = Last condition value<br>`M` = Number of while loop iterations (current loop index) |
 | `AST.For`            | Pop the top of the stack, cast to iterable, and execute body loop for each item in that. | ✅<br><br>`N` = Current loop item<br>`M` = Current loop index |
 | `AST.Lambda`         | Push a `VFun` object to the stack that represents the lambda | ❌(no context variable is set when pushing, but context variable may be set when executing function) |
 | `AST.FnDef`          | Set variable equivalent to function name to lambda that represents function body | ❌ |
