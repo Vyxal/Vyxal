@@ -2499,9 +2499,11 @@ def infinite_replace(lhs, rhs, other, ctx):
             function, index_indices_or_cycle(vector, indicies, ctx), ctx=ctx
         )
         new_vector = []
+        place = 0
         for i, v in enumerate(vector):
             if i in indicies:
-                new_vector.append(values[i])
+                new_vector.append(values[place])
+                place += 1
             else:
                 new_vector.append(v)
         return new_vector
@@ -3294,8 +3296,10 @@ def mode(lhs, ctx):
     Most common item in a list.
     Equivalent to Ċ↑h
     """
-    item_counts = collections.Counter(iterable(lhs, ctx=ctx))
-    return item_counts.most_common(1)[0][0]
+    item_counts = [
+        (item, count_item(lhs, item, ctx)) for item in uniquify(lhs, ctx)
+    ]
+    return max(item_counts, key=lambda x: x[1])[0]
 
 
 def modulo(lhs, rhs, ctx):
