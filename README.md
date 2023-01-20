@@ -1,5 +1,7 @@
 # Vyxal
 
+<!-- secret hidden comment from a bot test-->
+
 ![Vyxal Logo](./documents/logo/vylogo.png)
 
 ![Test status](https://github.com/Vyxal/Vyxal/actions/workflows/run-tests.yaml/badge.svg)
