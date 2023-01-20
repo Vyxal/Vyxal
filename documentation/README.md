@@ -27,7 +27,12 @@ TODO
 
 ### Context Variables
 
-Context variables are TODO
+Vyxal has 2 context variables, `N` and `M`. They hold different values inside different
+structures:
+
+- Inside for loops, `N` is the current value, and `M` is the current index
+- Inside while loops, `N` is the last condition value and `M` is the current index
+- Inside lambdas/named functions, `N` is the argument
 
 ### Ghost variable
 
