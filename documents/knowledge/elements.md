@@ -681,7 +681,7 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 
 ### Overloads
 
-- any a, any b, any c: `a.replace(b,c) (replace)`
+- any a, any b, any c: `a.replace(b,c) (replace). b can be a list of substrings to replace. If b is a list of substrings, so can c. If c is shorter, the extra strings in b will be replaced with the empty string, i.e., removed.`
 - lst a, lst b, fun c: `for each i in b, change the ith element in a by applying the function, then return the new list`
 - lst a, num b, fun c: `replace the bth element in a by applying the function, then return the new list`
 -------------------------------
@@ -3309,7 +3309,7 @@ Replace the first instance of an item with another item
 
 ### Overloads
 
-- any a, any b, any c: `a.replace_first(b, c)`
+- any a, any b, any c: `a.replace(b, c, count=1). See "V" (Replace First) for specifics.`
 -------------------------------
 ## `` øṄ `` (Replace Nth Occurrence)
 
