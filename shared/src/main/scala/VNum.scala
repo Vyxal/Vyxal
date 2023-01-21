@@ -46,14 +46,16 @@ object VNum:
     // Spits into real and imaginary parts
     // todo handle empty real part
     val parts = s.split("ı")
-    val real = parts(0)
-    val imag = parts.lift(1).getOrElse("0")
+    val real = parts.lift(0).getOrElse("0")
+    val imag = if s.endsWith("ı") then "1" else parts.lift(1).getOrElse("0")
 
-    val realNum = (if real.last == '.' then real + "5" else real).toInt
-    val imagNum = (if imag.last == '.' then imag + "5" else imag).toInt
+    var realNum: String = if real.last == '.' then real + "5" else real
+    realNum = if realNum.startsWith(".") then "0" + realNum else realNum
+    var imagNum: String = if imag.last == '.' then imag + "5" else imag
+    imagNum = if imagNum.startsWith(".") then "0" + imagNum else imagNum
 
-    if imagNum == 0 then complex(realNum, 0)
-    else complex(realNum, imagNum)
+    if Real(imagNum) == 0 then complex(Real(realNum), 0)
+    else complex(Real(realNum), Real(imagNum))
   end from
 
   /** Allow pattern matching like `VNum(r, i)` */
@@ -66,6 +68,7 @@ object VNum:
   given Conversion[Double, VNum] = n => complex(n, 0)
   given Conversion[Long, VNum] = n => complex(n, 0)
   given Conversion[BigInt, VNum] = n => complex(n, 0)
+  given Conversion[Real, VNum] = n => complex(n, 0)
   given Conversion[Complex[Real], VNum] = new VNum(_)
   given Conversion[Boolean, VNum] =
     b => if b then 1 else 0 // scalafix:ok DisableSyntax.BooleanToVNum

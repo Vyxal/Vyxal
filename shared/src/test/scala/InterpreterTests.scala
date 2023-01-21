@@ -1,6 +1,7 @@
 package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
+import spire.math.{Complex, Real}
 
 class InterpreterTests extends AnyFunSuite:
   test("Can the interpreter make lists?") {
@@ -152,13 +153,31 @@ class InterpreterTests extends AnyFunSuite:
   test("References to variables in other contexts") {
     val ctx1 = Context()
     ctx1.setVar("x", 5)
-    Interpreter.execute(AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+"))))(using ctx1)
+    Interpreter.execute(
+      AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+")))
+    )(using ctx1)
     val ctx2 = Context()
     ctx2.setVar("x", "foo")
     ctx2.push(1)
     ctx2.push(ctx1.pop())
     Interpreter.execute(AST.ExecuteFn)(using ctx2)
     assertResult((VNum(6), "foo"))((ctx1.getVar("x"), ctx2.getVar("x")))
+  }
+
+  test("Numeric literals are handled correctly") {
+    assertResult(VNum(0))(VNum.from("0"))
+    assertResult(VNum(1))(VNum.from("1"))
+    assertResult(VNum(Real("6.9")))(VNum.from("6.9"))
+    assertResult(VNum(Real("0.9")))(VNum.from(".9"))
+    assertResult(VNum(Real("0.9")))(VNum.from("0.9"))
+    assertResult(VNum(Real("0.5")))(VNum.from("."))
+    assertResult(VNum(Real("0.5")))(VNum.from("0."))
+    assertResult(VNum(Real("5.5")))(VNum.from("5."))
+    assertResult(VNum.complex(0, 1))(VNum.from("ı"))
+    assertResult(VNum.complex(0, 1))(VNum.from("0ı"))
+    assertResult(VNum.complex(0.5, 1))(VNum.from("0.ı"))
+    assertResult(VNum.complex(0.5, 0.5))(VNum.from(".ı."))
+    assertResult(VNum.complex(69, 420))(VNum.from("69ı420"))
   }
 
 end InterpreterTests
