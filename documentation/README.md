@@ -13,6 +13,8 @@ If any part of the documentation is lacking (either the Markdown files here or
 doc comments in the source code), please let us know (through an issue or in
 chat) so we can improve it.
 
+We're using SBT as our build tool. See [here](UsingSBT.md) for info on using it.
+
 If you don't know Scala but do know another language, here are some helpful guides:
 
 - [Scala for Python devs](https://docs.scala-lang.org/scala3/book/scala-for-python-devs.html)

@@ -8,14 +8,6 @@ ThisBuild / scalaVersion := "3.2.1"
 //Automatically reload SBT when build.sbt changes
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-// Use ("com.foo" %%% "bar.baz" % version).cross(CrossVersion.for3Use2_13)
-// if a library isn't available for Scala 3
-// Use compile to just compile when testing on your computer
-// Use vyxalJVM/run to actually run the JVMMain class
-// Use fastOptJS to quickly link JS, and fullOptJS when releasing
-// Use vyxalJS/run to run the JSMain class (you will need Node.JS for this)
-// Both fastOptJS and fullOptJS output lib/scalajs-<version>.js
-
 import org.scalajs.linker.interface.OutputPatterns
 
 // From https://github.com/scalatest/scalatest/issues/405
@@ -38,8 +30,10 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     version := vyxalVersion,
     semanticdbEnabled := true,
     libraryDependencies ++= Seq(
+      // For number stuff
       "org.typelevel" %%% "spire" % "0.18.0",
       "org.scala-lang.modules" %%% "scala-parser-combinators" % "2.1.1",
+      // Used by ScalaTest
       "org.scalactic" %%% "scalactic" % "3.2.14",
       "org.scalatest" %%% "scalatest" % "3.2.14" % Test
     ),
@@ -73,13 +67,17 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     Compile / mainClass := Some("vyxal.Main"),
     assembly / mainClass := Some("vyxal.Main"),
     assembly / assemblyJarName := s"vyxal-$vyxalVersion.jar",
-    libraryDependencies += "com.github.scopt" %% "scopt" % "4.1.0"
+    libraryDependencies ++= Seq(
+      // For command line parsing
+      "com.github.scopt" %% "scopt" % "4.1.0"
+    )
   )
   .jsSettings(
     // JS-specific settings
     libraryDependencies ++= Seq(
       "org.scala-js" %%% "scalajs-dom" % "2.2.0"
     ),
+    // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js"
   )
