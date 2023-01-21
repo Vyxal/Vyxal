@@ -3309,7 +3309,7 @@ Replace the first instance of an item with another item
 
 ### Overloads
 
-- any a, any b, any c: `a.replace(b, c, count=1). See "V" (Replace First) for specifics.`
+- any a, any b, any c: `a.replace(b, c, count=1). See "V" (Replace) for specifics.`
 -------------------------------
 ## `` øṄ `` (Replace Nth Occurrence)
 

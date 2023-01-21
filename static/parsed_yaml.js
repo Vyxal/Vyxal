@@ -2815,7 +2815,7 @@ var codepage_descriptions =
     {
       "name": "Replace First Occurrence",
       "description": "Replace the first instance of an item with another item",
-      "overloads": "any, any, any -> a.replace(b, c, count=1). See \"V\" (Replace First) for specifics.",
+      "overloads": "any, any, any -> a.replace(b, c, count=1). See \"V\" (Replace) for specifics.",
       "token": "\u00f8\u1e1e"
     },
     {
