@@ -49,6 +49,7 @@ object VNum:
     val real = parts.lift(0).getOrElse("0")
     val imag = if s.endsWith("ı") then "1" else parts.lift(1).getOrElse("0")
 
+    // Apologies for not using val - I need to use the same variable twice
     var realNum: String = if real.last == '.' then real + "5" else real
     realNum = if realNum.startsWith(".") then "0" + realNum else realNum
     var imagNum: String = if imag.last == '.' then imag + "5" else imag
