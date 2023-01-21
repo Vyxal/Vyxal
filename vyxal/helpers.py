@@ -1094,6 +1094,39 @@ def stationary_points(lhs: str) -> List[Union[int, float]]:
     return LazyList(zeros)
 
 
+def string_replace(
+    text: str, target: Union[str, VyList], repl: Union[str, VyList], count=0
+) -> str:
+    """Generic helper to replace substrings
+
+    Parameters:
+    text: The text in which to make replacements.
+    targets: The substring(s) to replace. Should be a list if repl is a list. If
+        targets is longer than repls, repls will be extended with empty strings.
+    repls: The substring(s) to replace with. If a list, should not be longer
+        than target.
+    count: How many replacements to make. Replaces all by default.
+    """
+    if vy_type(target, simple=True) is not list:
+        # str.replace requires -1 to replace all occurrences, not 0
+        return text.replace(str(target), str(repl), count or -1)
+    elif vy_type(repl, simple=True) is list:
+        # Multiple targets, multiple replacements
+        if len(repl) < len(target):
+            repl += [""] * (len(target) - len(repl))
+        # Approach taken from https://stackoverflow.com/a/6117124
+        # Dictionary mapping targets to their replacements
+        repl_dict = dict(zip(map(str, target), map(str, repl)))
+        # OR all the targets together
+        pattern = re.compile("|".join(map(re.escape, repl_dict.keys())))
+        # Map each matched target to its corresponding replacement
+        return pattern.sub(lambda m: repl_dict[m.group(0)], text, count=count)
+    else:
+        # Multiple targets, single replacement
+        pattern = re.compile("|".join(re.escape(str(elem)) for elem in target))
+        return pattern.sub(str(repl), text, count=count)
+
+
 def suffixes(lhs: VyIterable, ctx: Context) -> VyList:
     """Returns a list of suffixes, including the original list"""
     if isinstance(lhs, str):

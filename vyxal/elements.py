@@ -4608,12 +4608,12 @@ def replace(lhs, rhs, other, ctx):
     """Element V
     (any, any, any) -> a.replace(b, c)
     """
-    ts = vy_type(lhs, rhs, other)
-    if types.FunctionType in ts:
+    lhs_type, other_type = vy_type(lhs, other, simple=True)
+    if other_type == types.FunctionType:
         return apply_at(lhs, rhs, other, ctx=ctx)
-    if vy_type(lhs, simple=True) is not list:
-        res = str(lhs).replace(str(rhs), str(other))
-        if vy_type(lhs) == NUMBER_TYPE:
+    elif lhs_type is not list:
+        res = string_replace(str(lhs), rhs, other)
+        if lhs_type == NUMBER_TYPE:
             return vy_eval(res, ctx)
         return res
     else:
@@ -4625,7 +4625,7 @@ def replace_first(lhs, rhs, other, ctx):
     (any, any, any) -> a.replace_first(b, c)
     """
     if vy_type(lhs, simple=True) is not list:
-        return str(lhs).replace(str(rhs), str(other), 1)
+        return string_replace(str(lhs), rhs, other, count=1)
     else:
 
         @lazylist_from(lhs)
