@@ -980,7 +980,7 @@
   description: Replace b with c in a / Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
-    any-any-any: a.replace(b,c) (replace)
+    any-any-any: a.replace(b,c) (replace). b can be a list of substrings to replace. If b is a list of substrings, so can c. If c is shorter, the extra strings in b will be replaced with the empty string, i.e., removed.
     lst-lst-fun: for each i in b, change the ith element in a by applying the function, then return the new list
     lst-num-fun: replace the bth element in a by applying the function, then return the new list
   vectorise: false
@@ -5127,7 +5127,7 @@
   description: Replace the first instance of an item with another item
   arity: 3
   overloads:
-    any-any-any: a.replace_first(b, c)
+    any-any-any: a.replace(b, c, count=1). See "V" (Replace First) for specifics.
   vectorise: false
   tests:
     - '["abcabc", "c", "H"] : "abHabc"'
