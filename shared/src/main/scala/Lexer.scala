@@ -63,9 +63,10 @@ object Lexer extends RegexParsers:
   override def skipWhitespace = true
   override val whiteSpace: Regex = "[ \t\r\f]+".r
 
-  def number: Parser[VyxalToken] = """(0(?=[^.ı])|\d+(\.\d*)?(\ı\d*)?)""".r ^^ {
-    value => Number(value)
-  }
+  def number: Parser[VyxalToken] =
+    """(0(?=[^.ı])|\d*\.\d*(ı(\d*\.\d*|\d+)?)?|\.|ı|\d+)""".r ^^ { value =>
+      Number(value)
+    }
 
   def string: Parser[VyxalToken] = """("(?:[^"„”“\\\\]|\\.)*["„”“])""".r ^^ {
     value =>
