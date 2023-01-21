@@ -38,7 +38,9 @@ class InterpreterTests extends AnyFunSuite:
   test("Can the interpreter execute named functions?") {
     given ctx: Context = Context()
     ctx.push(3, 4)
-    Interpreter.execute(AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-"))))
+    Interpreter.execute(
+      AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-")))
+    )
     Interpreter.execute(AST.GetVar("f"))
     Interpreter.execute(AST.Command("Ė"))
     assertResult(VNum(-1))(ctx.pop())
@@ -124,6 +126,39 @@ class InterpreterTests extends AnyFunSuite:
     assert(ctx.getVar("x") == VNum(1))
     assert(ctx.getVar("y") == VNum(2))
     assert(ctx.getVar("z") == VNum(3))
+  }
+
+  test("Can the interpreter get nonlocal variables inside lambdas?") {
+    given ctx: Context = Context()
+    ctx.setVar("x", 5)
+    ctx.push(1)
+    assertResult(VNum(5))(
+      Interpreter.executeFn(
+        VFun.fromLambda(AST.Lambda(1, Nil, AST.GetVar("x")))
+      )
+    )
+  }
+
+  test("Can the interpreter set nonlocal variables inside lambdas?") {
+    given ctx: Context = Context()
+    ctx.setVar("x", 5)
+    ctx.push(1)
+    Interpreter.executeFn(
+      VFun.fromLambda(AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+"))))
+    )
+    assertResult(VNum(6))(ctx.getVar("x"))
+  }
+
+  test("References to variables in other contexts") {
+    val ctx1 = Context()
+    ctx1.setVar("x", 5)
+    Interpreter.execute(AST.Lambda(1, Nil, AST.AugmentVar("x", AST.Command("+"))))(using ctx1)
+    val ctx2 = Context()
+    ctx2.setVar("x", "foo")
+    ctx2.push(1)
+    ctx2.push(ctx1.pop())
+    Interpreter.execute(AST.ExecuteFn)(using ctx2)
+    assertResult((VNum(6), "foo"))((ctx1.getVar("x"), ctx2.getVar("x")))
   }
 
 end InterpreterTests

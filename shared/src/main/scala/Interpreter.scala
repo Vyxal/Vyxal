@@ -44,20 +44,21 @@ object Interpreter:
         else if elseBody.nonEmpty then execute(elseBody.get)
       case AST.While(None, body) =>
         val loopCtx = ctx.makeChild()
-        loopCtx.contextVarN = ctx.settings.rangeStart
-        loopCtx.contextVarM = 1
+        loopCtx.contextVarN = true
+        loopCtx.contextVarM = ctx.settings.rangeStart
         while true do
           execute(body)(using loopCtx)
-          loopCtx.contextVarN = loopCtx.contextVarN.asInstanceOf[VNum] + 1
+          loopCtx.contextVarM = loopCtx.contextVarM.asInstanceOf[VNum] + 1
       case AST.While(Some(cond), body) =>
         execute(cond)
         given loopCtx: Context = ctx.makeChild()
-        loopCtx.contextVarN = ctx.settings.rangeStart
-        loopCtx.contextVarM = ctx.peek
+        loopCtx.contextVarN = ctx.peek
+        loopCtx.contextVarM = ctx.settings.rangeStart
         while MiscHelpers.boolify(ctx.pop()) do
           execute(body)
           execute(cond)
-          loopCtx.contextVarN = loopCtx.contextVarN.asInstanceOf[VNum] + 1
+          loopCtx.contextVarN = ctx.peek
+          loopCtx.contextVarM = loopCtx.contextVarM.asInstanceOf[VNum] + 1
 
       case AST.For(None, body) =>
         val iterable =
@@ -120,15 +121,15 @@ object Interpreter:
       popArgs: Boolean = true
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx) = fn
-    // println(s"Executing function with arity $arity")
+    val inputs = args
+      .map(_.toList.reverse)
+      .getOrElse(if popArgs then ctx.pop(arity) else ctx.peek(arity))
+
     given fnCtx: Context =
-      Context.makeFnCtx(origCtx, ctx, arity, params, args, popArgs)
+      Context.makeFnCtx(origCtx, ctx, contextVarM, contextVarN, params, inputs)
 
-    contextVarM.foreach { m => fnCtx.contextVarM = m }
-    contextVarN.foreach { n => fnCtx.contextVarN = n }
+    fn.impl()(using fnCtx)
 
-    impl()(using fnCtx)
-
-    fnCtx.pop()
+    fnCtx.peek
   end executeFn
 end Interpreter
