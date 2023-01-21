@@ -7,7 +7,7 @@ You probably want to read the MD files on how the interpreter works in approxima
 1. [Lexer.md](./Lexer.md)
 2. [Parser.md](./Parser.md)
 3. [Interpreter.md](./Interpreter.md)
-4. [Element-Impls.md](./Element-Impls.md)
+4. [ElementDocumentation.md](./ElementDocumentation.md)
 
 If any part of the documentation is lacking (either the Markdown files here or
 doc comments in the source code), please let us know (through an issue or in
