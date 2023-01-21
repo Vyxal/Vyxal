@@ -681,7 +681,7 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 
 ### Overloads
 
-- any a, any b, any c: `a.replace(b,c) (replace deep)`
+- any a, any b, any c: `a.replace(b,c) (replace)`
 - lst a, lst b, fun c: `for each i in b, change the ith element in a by applying the function, then return the new list`
 - lst a, num b, fun c: `replace the bth element in a by applying the function, then return the new list`
 -------------------------------
