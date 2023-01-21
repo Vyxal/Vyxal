@@ -5127,7 +5127,7 @@
   description: Replace the first instance of an item with another item
   arity: 3
   overloads:
-    any-any-any: a.replace(b, c, count=1). See "V" (Replace First) for specifics.
+    any-any-any: a.replace(b, c, count=1). See "V" (Replace) for specifics.
   vectorise: false
   tests:
     - '["abcabc", "c", "H"] : "abHabc"'
