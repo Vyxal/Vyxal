@@ -1209,7 +1209,7 @@ var codepage_descriptions =
     {
       "name": "Replace / Map to Indices",
       "description": "Replace b with c in a / Map a function at elements of a list whose indices are in another list",
-      "overloads": "any, any, any -> a.replace(b,c) (replace)\nlst, lst, fun -> for each i in b, change the ith element in a by applying the function, then return the new list\nlst, num, fun -> replace the bth element in a by applying the function, then return the new list",
+      "overloads": "any, any, any -> a.replace(b,c) (replace). b can be a list of substrings to replace. If b is a list of substrings, so can c. If c is shorter, the extra strings in b will be replaced with the empty string, i.e., removed.\nlst, lst, fun -> for each i in b, change the ith element in a by applying the function, then return the new list\nlst, num, fun -> replace the bth element in a by applying the function, then return the new list",
       "token": "V"
     },
     {
@@ -2815,7 +2815,7 @@ var codepage_descriptions =
     {
       "name": "Replace First Occurrence",
       "description": "Replace the first instance of an item with another item",
-      "overloads": "any, any, any -> a.replace_first(b, c)",
+      "overloads": "any, any, any -> a.replace(b, c, count=1). See \"V\" (Replace) for specifics.",
       "token": "\u00f8\u1e1e"
     },
     {
