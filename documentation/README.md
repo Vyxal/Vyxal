@@ -9,6 +9,7 @@ You probably want to read the MD files on how the interpreter works in approxima
 3. [High level overview of `Interpreter`](./Interpreter.md)
 4. [Element implementation](./ElementDocumentation.md)
 5. [Modifier implementation](./ModifierImpl.md)
+6. [Writing tests](./Tests.md)
 
 If any part of the documentation is lacking (either the Markdown files here or
 doc comments in the source code), please let us know (through an issue or in
