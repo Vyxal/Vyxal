@@ -1,8 +1,7 @@
 # Element documentation
 
 This doc will go over implementing elements. The elements are all
-implemented in [Elements.scala](/shared/src/main/scala/Elements.scala), while
-the modifiers are in [Modifiers.scala](/shared/src/main/scala/Modifiers.scala).
+implemented in [Elements.scala](/shared/src/main/scala/Elements.scala).
 
 When implementing elements, it's important that they are documented with
 all their overloads and test cases; doing so means that test case
@@ -12,36 +11,44 @@ element.
 
 ## The Template
 
-For elements:
+There are 4 methods that can be used to add an element, and each one is intended
+for a different sort of element implementation:
+
+- `addElem`
+- `addVect`
+- `addFull`
+- `addDirect`
+
+See [below](#what-add-function-do-i-use) for when to use which one of these.
 
 ```scala
-val elementName = add...(
+val elementName = add<Elem|Vect|Full|Direct>(
+  <Arity>, // Not needed for addDirect
   "<character>",
   "Formal Name | Alternate Formal Name ...",
   List("literate-mode-keyword", "literate-mode-keyword", ...),
   arity, // only needed if using addDirect, all the other methods auto-fill this parameter
-  vectorises?, // only needed if not using an add<Whatever>Vect
+  vectorises?, // only needed if using addFull
   "a: type, b: type -> expression",
-  "a: type, b: type -> expression",...){
+  "a: type, b: type -> expression",
+  ...) {
     implementation
   }
 ```
 
-For modifiers:
-
-```scala
-val modifierName = Modifier(
-  "Formal Name | Alternate Formal Name ...",
-  """|Description
-     |usage: what it does to f
-  """.stripMargin,
-  List("literate-mode-keyword"...)
- ){
-   implementation
- }
-```
-
 ## The Parts Explained
+
+### `<Arity>`
+
+Since there's a few methods that need to be implemented separately for functions
+of each arity, such as `vectorise`, there are objects `Monad`, `Dyad`, `Triad`,
+and `Tetrad` which hold arity-specific methods for that object's arity. It is one
+of these objects that you need to pass as the first parameter to `addFull`,
+`addElem`, and `addVect` (`addDirect` is a little special).
+
+So if you're implementing a monad that vectorises, you would use
+`addVect(Monad, ...)`. If you're implementing a dyad that doesn't vectorise, you
+would use `addElem(Dyad, ...)`.
 
 ### `<character>`
 
@@ -60,7 +67,10 @@ A list of keywords that can be used for this element in literate mode. Please se
 
 ### arity
 
-The number of items the element pops from the stack.
+`addDirect` doesn't take one of those `Monad`, `Dyad`, `Triad`, `Tetrad` objects
+mentioned above. Instead it only takes an `Option[Int]` representing the
+element's arity (the number of items the element pops from the stack). The other
+`addX` functions don't need this argument.
 
 ### Overloads
 
@@ -121,24 +131,36 @@ or false.
 
 ## What `add...` Function Do I Use?
 
-If you're implmenting something that takes a fixed number of arguments and always returns a single result (or is a nilad), use one of:
+- If the element needs access to the stack or `Context`, use `addDirect`
+- If the element is being implemented using a pattern matching function (if it has `case =>`s):
+  - If it covers all cases and doesn't vectorise, use `addFull`
+  - If it vectorises, use `addVect`
+  - Otherwise, use `addElem`
+  - If you're unsure whether an element covers all cases, try using `addFull` at
+    first. If the compiler yells at you about the match not being exhaustive,
+    that means you're not covering all cases and need to use `addElem` or `addVect`.
+    Otherwise, carry on using `addFull`! Alternatively, don't worry about it too
+    much and just use `addElem` if it doesn't vectorise.
+- If the element has already been implemented elsewhere (e.g. `MiscHelpers`),
+  use `addFull`
+- If the element must be implemented using a normal function literal (such as
+  `a => a.toString`), use `addFull`
 
-- `addNilad`
-- `addMonad`
-- `addDyad`
-- `addTriad`
-- `addTetrad`
-
-If the element always vectorises, the `add<Arity>Vect` variants can be used.
-
-If you're using a full function (something defined elsewhere) or something that can be expressed without type checks, use `add<Arity>Full` variants.
-
-Otherwise, use `addDirect`.
+The reason `addFull` is separate from `addElem` and `addVect` is that the latter
+two take `PartialFunction`s instead of normal functions. This allows us to call
+[`isDefined`](https://www.scala-lang.org/api/3.2.1/scala/PartialFunction.html#isDefinedAt-4ad)
+to check if the element will work on the arguments we want to pass it.
 
 ## A Proper Example
 
+### `addFull` example
+
+The behavior of `add` has already been implemented elsewhere, so we just use
+that and call `addFull`.
+
 ```scala
-val add = addDyadFull(
+val add = addFull(
+  Dyad,
   "+",
   "Addition",
   List("add", "+", "plus"),
@@ -148,6 +170,45 @@ val add = addDyadFull(
   "a: str, b: num -> a + b",
   "a: str, b: str -> a + b"
 )(MiscHelpers.add)
+```
+
+### `addVect` example
+
+Suppose we want to add a very useful function that adds two numbers
+and then adds 1 to the result. We'll make it vectorise too.
+
+```scala
+val addPlusOne = addVect(
+  Dyad,
+  "<something>",
+  "Addition Plus One",
+  List("<something>"),
+  "a: num, b: num -> a + b + 1",
+) {
+  case (a: VNum, b: VNum) => a + b + 1
+}
+```
+
+Because we used `addVect`, the element will be vectorised and work on numbers
+and lists of numbers. However, when it meets anything other than that, it will
+throw an error saying it doesn't work for those arguments.
+
+### `addDirect` example
+
+Suppose we want to make an element to pop the top 69 items off the stack and
+then push `"420"` to it.
+
+```scala
+val pop69 = addDirect(
+  "S",
+  "Pop 69 Push 420",
+  List("pop-69-push-420", "nice"),
+  Some(69), // Takes 69 arguments
+  "_ * 69 -> \"420\""
+) { ctx ?=> // The funky ?=> thing is because ctx is an implicit parameter
+  ctx.pop(69)
+  ctx.push("420")
+}
 ```
 
 ## A little more detail on the `Elements` object

@@ -88,8 +88,8 @@ class Context private (
       .orElse(parent.map(_.contextVarN))
       .getOrElse(settings.defaultValue)
 
-  /** Setter for context variable N so that outsiders don't have to deal with
-    * it being an Option
+  /** Setter for context variable N so that outsiders don't have to deal with it
+    * being an Option
     */
   def contextVarN_=(newCtx: VAny) =
     _contextVarN = Some(newCtx)
@@ -105,8 +105,8 @@ class Context private (
       .orElse(parent.map(_.contextVarM))
       .getOrElse(settings.defaultValue)
 
-  /** Setter for context variable M so that outsiders don't have to deal with
-    * it being an Option
+  /** Setter for context variable M so that outsiders don't have to deal with it
+    * being an Option
     */
   def contextVarM_=(newCtx: VAny) =
     _contextVarM = Some(newCtx)
