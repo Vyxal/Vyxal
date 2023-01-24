@@ -5,7 +5,15 @@ import mill.scalalib._
 
 /** Shared settings for all modules */
 trait VyxalModule extends SbtModule {
+  def platform: String
+
   def scalaVersion = "3.2.1"
+
+  def ivyDeps = Agg(
+    ivy"org.typelevel::spire::0.18.0",
+    ivy"org.scala-lang.modules::scala-parser-combinators::2.1.1",
+    ivy"org.scalactic::scalactic::3.2.14"
+  )
 
   def scalacOptions = Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs.
@@ -20,37 +28,36 @@ trait VyxalModule extends SbtModule {
     "-print-lines"
   )
 
+  // Combine shared sources and platform-specific sources
+  def sources = T.sources(
+    build.millSourcePath / platform / "src" / "main" / "scala",
+    build.millSourcePath / "shared" / "src" / "main" / "scala"
+  )
+
   trait VyxalTestModule extends Tests with TestModule.ScalaTest {
     def scalaVersion = VyxalModule.this.scalaVersion()
 
     def ivyDeps = Agg(ivy"org.scalatest::scalatest:3.2.14")
+
+    def sources = T.sources(
+      build.millSourcePath / platform / "src" / "test" / "scala",
+      build.millSourcePath / "shared" / "src" / "test" / "scala"
+    )
   }
 }
 
-/** Code shared between JVM and JS */
-object shared extends VyxalModule {
-  def ivyDeps = Agg(
-    ivy"org.typelevel::spire::0.18.0",
-    ivy"org.scala-lang.modules::scala-parser-combinators::2.1.1",
-    ivy"org.scalactic::scalactic::3.2.14"
-  )
-
-  object test extends VyxalTestModule
-}
-
-/** JVM-specific code */
+/** Shared and JVM-specific code */
 object jvm extends VyxalModule {
-  def moduleDeps = Seq(shared)
+  def platform = "jvm"
 
-  def ivyDeps = Agg(ivy"com.github.scopt::scopt:4.1.0")
+  def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0") }
 }
 
-/** JS-specific code */
+/** Shared and JS-specific code */
 object js extends VyxalModule with ScalaJSModule {
+  def platform = "js"
   def scalaJSVersion = "1.12.0"
   def moduleKind = T { ModuleKind.NoModule }
-
-  def moduleDeps = Seq(shared)
 
   object test extends VyxalTestModule
 }
