@@ -47,7 +47,7 @@ When an `AST.UnpackVar` is executed, a depth map of each variable is created (so
 
 ## Contexts
 
-If you know what `Context` is, feel free to [skip](#back-to-execute) this section.
+If you know what `Context` is, feel free to [skip](#runtime-values) this section.
 
 Note: the `Context` class is not to be confused with context variables, which
 are a Vyxal feature. The `Context` class is an implementation thing that has
@@ -82,23 +82,38 @@ compiler will automatically pass that implicit `Context` for you. If you want
 to explicitly pass the context, you can do `execute(myAst)(using myContext)`.
 
 If you are inside a method that has an implicit `Context` parameter (like
-the `execute` method(s) inside `Interpreter` [above](#interpreterexecute))
+the `execute` method(s) inside `Interpreter` [above](#the-interpreter))
 
 ### The `Context` class
 
-Now, on to the [`Context`][Context] class itself. It's used for keeping track of
-everything in the current execution context/scope. Every scope (while loops, for
-loops, functions) gets its own child context holding the stack, variables,
-inputs, and a few other things for that scope.
+Now, on to the [`Context`][Context] class itself. Back in the days of Vyxal 2.4.x, there was a code clean-up planned. However, it
+resulted in the horrible mess that was the 2.5.x releases. One of the reasons
+the original code clean-up failed is that the one-file interpreter relied too
+heavily on global variable; in order to access values such as flag settings,
+input levels and context values (the ones used with n), variables had to be
+scoped as global within functions. Ignoring the fact that global variables are
+generally a bad programming practice, this was an issue because you can't access
+global variables from one file inside another file.
 
-The `Context` class also has a `globals` field. All the `Context`s
-have the same [`Globals`](/shared/src/main/scala/Globals.scala) object
+The best solution to this was to have a special Context class that contains all
+the variables that were previously global. And it's the same solution that's
+used in Vyxal 3.x releases.
+
+At the start of the interpreter, an instance of Context called ctx (think
+`ctx = Context()`) will be created. This will need to be passed between element
+functions, meaning they all need a ctx parameter.
+
+The `Context` class is used for keeping track of everything in the current
+execution context/scope. Every scope (while loops, for loops, functions) gets
+its own child context holding the stack, variables, inputs, and a few other
+things for that scope. The `Context` class also has a `globals` field. All the
+`Context`s have the same [`Globals`](/shared/src/main/scala/Globals.scala) object
 in their `globals` field, and it holds the settings (set using flags), the
 global inputs (passed in the "Inputs" field of the online interpreter), and the
 register.
 
 Every element's implementation takes a `Context` as input, even if it
-doesn't directly use it. See [this][Element-Impls] for information on how the
+doesn't directly use it. See [ElementDocumentation.md] for information on how the
 elements are implemented.
 
 `Context` has methods for pushing to and popping from the stack, getting and
@@ -185,5 +200,5 @@ Both can be called using `foo(a)(b)` (or `foo(a)`, to get a value of type
 
 [implicit docs]: https://docs.scala-lang.org/scala3/book/ca-given-using-clauses.html
 [Context]: /shared/src/main/scala/Context.scala
-[Element-Impls]: Element-Impls.md
+[ElementDocumentation.md]: ./ElementDocumentation.md
 [union type]: https://docs.scala-lang.org/scala3/book/types-union.html

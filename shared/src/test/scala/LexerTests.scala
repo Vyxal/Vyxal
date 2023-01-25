@@ -1,13 +1,20 @@
 package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
-
 import VyxalToken.*
 
-class LexerTests extends AnyFunSuite {
+class LexerTests extends AnyFunSuite:
   test("Does the lexer recognise numbers?") {
     assert(Lexer("123") == Right(List(Number("123"))))
     assert(Lexer("6.") == Right(List(Number("6."))))
+    assert(Lexer("3.4ı1.2") == Right(List(Number("3.4ı1.2"))))
+    assert(Lexer("3.4ı1.") == Right(List(Number("3.4ı1."))))
+    assert(Lexer("3.4ı.2") == Right(List(Number("3.4ı.2"))))
+    assert(Lexer("3.4ı.") == Right(List(Number("3.4ı."))))
+    assert(Lexer(".ı.") == Right(List(Number(".ı."))))
+    assert(Lexer("3.4ı") == Right(List(Number("3.4ı"))))
+    assert(Lexer(".4") == Right(List(Number(".4"))))
+    assert(Lexer(".") == Right(List(Number("."))))
   }
 
   test("Does the lexer recognise strings?") {
@@ -73,7 +80,13 @@ class LexerTests extends AnyFunSuite {
     )
   }
 
-  test("Does the lexer recognise variable digraphs?"){assert(Lexer("3 #$my_var +") === Right(List(Number("3"), GetVar("my_var"), Command("+"))))
+  test("Does the lexer recognise variable digraphs?") {
+    assert(
+      Lexer("3 #$my_var +") === Right(
+        List(Number("3"), GetVar("my_var"), Command("+"))
+      )
+    )
 
-assert(Lexer("42 #=answer") === Right(List(Number("42"), SetVar("answer"))))}
-}
+    assert(Lexer("42 #=answer") === Right(List(Number("42"), SetVar("answer"))))
+  }
+end LexerTests
