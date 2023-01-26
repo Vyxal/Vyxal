@@ -53,7 +53,7 @@ class Context private (
     elem
 
   /** Pop n elements and wrap in a list */
-  def pop(n: Int): List[VAny] = List.fill(n)(this.pop())
+  def pop(n: Int): Seq[VAny] = Seq.fill(n)(this.pop()).reverse
 
   /** Get the top element on the stack without popping */
   def peek: VAny =

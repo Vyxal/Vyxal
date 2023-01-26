@@ -122,8 +122,8 @@ object Interpreter:
   )(using ctx: Context): VAny =
     val VFun(impl, arity, params, origCtx) = fn
     val inputs = args
-      .map(_.toList.reverse)
       .getOrElse(if popArgs then ctx.pop(arity) else ctx.peek(arity))
+      .toList
 
     given fnCtx: Context =
       Context.makeFnCtx(origCtx, ctx, contextVarM, contextVarN, params, inputs)
