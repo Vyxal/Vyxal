@@ -43,10 +43,10 @@ class ElementTests extends AnyFunSpec:
       it("should check if all are truthy") {
         given Context = Context()
         assertResult(1: VNum)(
-          Impls.allTruthy(VList(VNum(1), VNum(391), "dqw4w9wgxcq", VList(0)))
+          Impls.allTruthy(VList(1, 391, "dqw4w9wgxcq", VList(0)))
         )
         assertResult(0: VNum)(
-          Impls.allTruthy(VList(VNum(0), VNum(69420), VList()))
+          Impls.allTruthy(VList(0, 69420, VList()))
         )
       }
     }
@@ -63,10 +63,19 @@ class ElementTests extends AnyFunSpec:
     describe("when given a multi-character string") {
       it("should vectorize and work properly") {
         given Context = Context()
-        assertResult(VList(VNum(1), VNum(0), VNum(0), VNum(1), VNum(0)))(
+        assertResult(VList(1, 0, 0, 1, 0))(
           Impls.allTruthy("asdEy")
         )
       }
+    }
+  }
+
+  describe("Element &") {
+    it("should convert the first to a list and tack the other onto it") {
+      given Context = Context()
+      assertResult(VList(1, 2, 3, VList(4, 5)))(Impls.tack(VList(1, 2, 3), VList(4, 5)))
+      assertResult(VList(1, 2, 3, 69))(Impls.tack(VList(1, 2, 3), 69))
+      assertResult(VList("a", "b", "c", VList()))(Impls.tack("abc", VList()))
     }
   }
 

@@ -168,18 +168,14 @@ object Elements:
       case a: VList                   => a.forall(MiscHelpers.boolify)
     }
 
-    val concatenate = addElem(
+    val tack = addElem(
       Dyad,
       "&",
-      "Concatenate",
-      List("concat", "&&", "append"),
-      "a: any, b: any -> a ++ b"
+      "Tack",
+      List("tack"),
+      "a: any, b: any -> list(a) ++ [b]"
     ) {
-      case (a: VList, b: VList) => VList(a ++ b*)
-      case (a: VList, b)        => VList(a :+ b*)
-      case (a, b: VList)        => VList(a +: b*)
-      case (a: VNum, b: VNum)   => VNum.from(f"$a$b")
-      case (a, b)               => MiscHelpers.add(a, b)
+      case (a, b) => VList(ListHelpers.makeIterable(a) :+ b*)
     }
 
     addFull(
