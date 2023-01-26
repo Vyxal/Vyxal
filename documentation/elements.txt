@@ -78,8 +78,8 @@ O (Ord/Chr) (vectorising)
 ₉ (Empty array) (non-vectorising)
 - -> []
 ---------------------
-& (Concatenate) (non-vectorising)
-- a: any, b: any -> a ++ b
+& (Tack) (non-vectorising)
+- a: any, b: any -> list(a) ++ [b]
 ---------------------
 ! (Factorial | To Uppercase) (vectorising)
 - a: num -> a!
