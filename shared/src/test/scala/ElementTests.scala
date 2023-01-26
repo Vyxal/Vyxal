@@ -71,11 +71,11 @@ class ElementTests extends AnyFunSpec:
   }
 
   describe("Element &") {
-    it("should convert the first to a list and tack the other onto it") {
+    it("should convert the first to a list and append the other onto it") {
       given Context = Context()
-      assertResult(VList(1, 2, 3, VList(4, 5)))(Impls.tack(VList(1, 2, 3), VList(4, 5)))
-      assertResult(VList(1, 2, 3, 69))(Impls.tack(VList(1, 2, 3), 69))
-      assertResult(VList("a", "b", "c", VList()))(Impls.tack("abc", VList()))
+      assertResult(VList(1, 2, 3, VList(4, 5)))(Impls.append(VList(1, 2, 3), VList(4, 5)))
+      assertResult(VList(1, 2, 3, 69))(Impls.append(VList(1, 2, 3), 69))
+      assertResult(VList("a", "b", "c", VList()))(Impls.append("abc", VList()))
     }
   }
 

@@ -168,11 +168,11 @@ object Elements:
       case a: VList                   => a.forall(MiscHelpers.boolify)
     }
 
-    val tack = addElem(
+    val append = addElem(
       Dyad,
       "&",
-      "Tack",
-      List("tack"),
+      "Append",
+      List("append"),
       "a: any, b: any -> list(a) ++ [b]"
     ) {
       case (a, b) => VList(ListHelpers.makeIterable(a) :+ b*)
