@@ -45,7 +45,9 @@ object NumberHelpers:
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
-      case n: VNum => if radix != 10 then toInt(n.toString(), radix) else n
+      case n: VNum =>
+        if radix != 10 then toInt(n.toIntegral.toString(), radix)
+        else n.toIntegral
       case l: VList =>
         l.foldLeft(0: VAny) { (res, i) =>
           MiscHelpers.add(MiscHelpers.multiply(res, radix), toInt(i, radix))
