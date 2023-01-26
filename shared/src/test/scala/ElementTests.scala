@@ -38,6 +38,26 @@ class ElementTests extends AnyFunSpec:
     }
   }
 
+  describe("Element C") {
+    describe("when given lists") {
+      it("should count properly") {
+        given Context = Context()
+        assertResult(3: VNum)(
+          Impls.count(VNum(3), VList(1, 3, 30, 2, 33, 4, 3, 3))
+        )
+      }
+    }
+
+    describe("when given strings") {
+      it("should count properly") {
+        given Context = Context()
+        assertResult(3: VNum)(
+          Impls.count("lolollol lol asd", "lol")
+        )
+      }
+    }
+  }
+
   describe("Element M") {
     describe("when given two lists") {
       it("should mold them properly") {

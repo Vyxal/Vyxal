@@ -199,7 +199,7 @@ object Elements:
       List("to-binary", "dec->bin", "decimal->bin"),
       true,
       "a: num -> convert a to binary",
-      "a: str -> bin(chr(x) for x in a)"
+      "a: str -> bin(ord(x) for x in a)"
     )(NumberHelpers.toBinary)
 
     val count = addElem(
