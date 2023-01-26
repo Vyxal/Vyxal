@@ -78,7 +78,7 @@ O (Ord/Chr) (vectorising)
 ₉ (Empty array) (non-vectorising)
 - -> []
 ---------------------
-& (Tack) (non-vectorising)
+& (Append) (non-vectorising)
 - a: any, b: any -> list(a) ++ [b]
 ---------------------
 ! (Factorial | To Uppercase) (vectorising)
