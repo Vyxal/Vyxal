@@ -34,7 +34,7 @@ A (All Truthy | All() | Is Vowel?) (non-vectorising)
 ---------------------
 b (Convert To Binary) (vectorising)
 - a: num -> convert a to binary
-- a: str -> bin(chr(x) for x in a)
+- a: str -> bin(ord(x) for x in a)
 ---------------------
 B (Convert From Binary) (non-vectorising)
 - a: num -> str(a) from binary
