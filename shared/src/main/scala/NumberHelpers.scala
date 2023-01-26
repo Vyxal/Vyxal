@@ -45,12 +45,11 @@ object NumberHelpers:
 
   def toInt(value: VAny, radix: Int)(using ctx: Context): VAny =
     value match
-      case n: VNum => toInt(n.toString(), radix)
+      case n: VNum => if radix != 10 then toInt(n.toString(), radix) else n
       case l: VList =>
         l.foldLeft(0: VAny) { (res, i) =>
-          MiscHelpers.add(MiscHelpers.multiply(res, radix), i)
+          MiscHelpers.add(MiscHelpers.multiply(res, radix), toInt(i, radix))
         }
-
-      case s: String => BigInt(s.toUpperCase(), radix)
+      case s: String => VNum.from(s, radix).toIntegral
       case _         => throw new Exception("Cannot convert to int")
 end NumberHelpers

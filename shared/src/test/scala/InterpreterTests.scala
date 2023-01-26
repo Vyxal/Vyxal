@@ -167,6 +167,7 @@ class InterpreterTests extends AnyFunSuite:
   test("Numeric literals are handled correctly") {
     assertResult(VNum(0))(VNum.from("0"))
     assertResult(VNum(1))(VNum.from("1"))
+    assertResult(VNum(23))(VNum.from("A3", 2))
     assertResult(VNum(Real("6.9")))(VNum.from("6.9"))
     assertResult(VNum(Real("0.9")))(VNum.from(".9"))
     assertResult(VNum(Real("0.9")))(VNum.from("0.9"))
@@ -178,6 +179,7 @@ class InterpreterTests extends AnyFunSuite:
     assertResult(VNum.complex(0.5, 1))(VNum.from("0.ı"))
     assertResult(VNum.complex(0.5, 0.5))(VNum.from(".ı."))
     assertResult(VNum.complex(69, 420))(VNum.from("69ı420"))
+    assertResult(VNum(Real("12.3")))(VNum.from("1@#$%2#$%. 3"))
   }
 
 end InterpreterTests

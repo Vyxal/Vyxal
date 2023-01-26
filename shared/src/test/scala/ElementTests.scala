@@ -73,7 +73,9 @@ class ElementTests extends AnyFunSpec:
   describe("Element &") {
     it("should convert the first to a list and append the other onto it") {
       given Context = Context()
-      assertResult(VList(1, 2, 3, VList(4, 5)))(Impls.append(VList(1, 2, 3), VList(4, 5)))
+      assertResult(VList(1, 2, 3, VList(4, 5)))(
+        Impls.append(VList(1, 2, 3), VList(4, 5))
+      )
       assertResult(VList(1, 2, 3, 69))(Impls.append(VList(1, 2, 3), 69))
       assertResult(VList("a", "b", "c", VList()))(Impls.append("abc", VList()))
     }
@@ -164,6 +166,17 @@ class ElementTests extends AnyFunSpec:
         ctx.push(1, 2)
         assertResult(3: VNum)(
           Impls.execute(VFun.fromElement(Elements.elements("+")))
+        )
+      }
+    }
+  }
+
+  describe("Element B") {
+    describe("With lists of strings and lists") {
+      it("Shouldn't do string multiplication") {
+        given ctx: Context = Context()
+        assertResult(5: VNum)(
+          NumberHelpers.fromBinary(VList("1", "0", VList("0", "1")))
         )
       }
     }
