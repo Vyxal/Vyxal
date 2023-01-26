@@ -38,6 +38,38 @@ class ElementTests extends AnyFunSpec:
     }
   }
 
+  describe("Element A") {
+    describe("when given lists") {
+      it("should check if all are truthy") {
+        given Context = Context()
+        assertResult(1: VNum)(
+          Impls.allTruthy(VList(VNum(1), VNum(391), "dqw4w9wgxcq", VList(0)))
+        )
+        assertResult(0: VNum)(
+          Impls.allTruthy(VList(VNum(0), VNum(69420), VList()))
+        )
+      }
+    }
+
+    describe("when given a single-character string") {
+      it("should return a single number according to if it is a vowel or not") {
+        given Context = Context()
+        assertResult(1: VNum)(Impls.allTruthy("a"))
+        assertResult(1: VNum)(Impls.allTruthy("E"))
+        assertResult(0: VNum)(Impls.allTruthy("y"))
+      }
+    }
+
+    describe("when given a multi-character string") {
+      it("should vectorize and work properly") {
+        given Context = Context()
+        assertResult(VList(VNum(1), VNum(0), VNum(0), VNum(1), VNum(0)))(
+          Impls.allTruthy("asdEy")
+        )
+      }
+    }
+  }
+
   describe("Element C") {
     describe("when given lists") {
       it("should count properly") {

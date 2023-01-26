@@ -162,9 +162,10 @@ object Elements:
       "a: str -> is (a) a vowel? vectorises for strings len > 1",
       "a: list -> is (a) all truthy?"
     ) {
-      case a: VNum   => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
-      case a: String => VList(a.map(StringHelpers.isVowel)*)
-      case a: VList  => a.forall(MiscHelpers.boolify)
+      case a: VNum => ListHelpers.makeIterable(a).forall(MiscHelpers.boolify)
+      case a: String if a.length == 1 => StringHelpers.isVowel(a.head)
+      case a: String                  => VList(a.map(StringHelpers.isVowel)*)
+      case a: VList                   => a.forall(MiscHelpers.boolify)
     }
 
     val concatenate = addElem(
