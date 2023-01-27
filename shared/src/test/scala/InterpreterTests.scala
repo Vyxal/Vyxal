@@ -1,7 +1,6 @@
 package vyxal
 
 import org.scalatest.funsuite.AnyFunSuite
-import org.scalatest.Checkpoints.Checkpoint
 import spire.math.{Complex, Real}
 
 class InterpreterTests extends VyxalTests:
@@ -134,29 +133,29 @@ class InterpreterTests extends VyxalTests:
       it("should handle non nested lists") {
         given ctx: Context = Context()
         Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z]")
-        val cp = Checkpoint()
-        cp { assertResult(VNum(1))(ctx.getVar("x")) }
-        cp { assertResult(VNum(2))(ctx.getVar("y")) }
-        cp { assertResult(VNum(3))(ctx.getVar("z")) }
-        cp.reportAll()
+        group {
+          assertResult(VNum(1))(ctx.getVar("x"))
+          assertResult(VNum(2))(ctx.getVar("y"))
+          assertResult(VNum(3))(ctx.getVar("z"))
+        }
       }
       it("should handle nested lists") {
         given ctx: Context = Context()
         Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|z]")
-        val cp = Checkpoint()
-        cp { assertResult(VNum(1))(ctx.getVar("x")) }
-        cp { assertResult(VNum(2))(ctx.getVar("y")) }
-        cp { assertResult(VList(3))(ctx.getVar("z")) }
-        cp.reportAll()
+        group {
+          assertResult(VNum(1))(ctx.getVar("x"))
+          assertResult(VNum(2))(ctx.getVar("y"))
+          assertResult(VList(3))(ctx.getVar("z"))
+        }
       }
       it("should handle simple nested patterns") {
         given ctx: Context = Context()
         Interpreter.execute("#[1 | 2 | #[3#]#] #:[x|y|[z]]")
-        val cp = Checkpoint()
-        cp { assertResult(VNum(1))(ctx.getVar("x")) }
-        cp { assertResult(VNum(2))(ctx.getVar("y")) }
-        cp { assertResult(VNum(3))(ctx.getVar("z")) }
-        cp.reportAll()
+        group {
+          assertResult(VNum(1))(ctx.getVar("x"))
+          assertResult(VNum(2))(ctx.getVar("y"))
+          assertResult(VNum(3))(ctx.getVar("z"))
+        }
       }
     }
     describe("Nonlocal variables") {
@@ -199,53 +198,49 @@ class InterpreterTests extends VyxalTests:
     }
   }
 
-  // todo come up with an easier way to run multiple assertions without using
-  // Checkpoint
   describe("Numeric literals") {
     it("should parse simple integers correctly") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum(0))(VNum.from("0")) }
-      cp { assertResult(VNum(1))(VNum.from("1")) }
-      cp {
+      group {
+        assertResult(VNum(0))(VNum.from("0"))
+        assertResult(VNum(1))(VNum.from("1"))
         assertResult(VNum(BigInt("9999999999999999999")))(
           VNum.from("9999999999999999999")
         )
       }
-      cp.reportAll()
     }
     it("should parse decimals correctly") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum(Real("6.9")))(VNum.from("6.9")) }
-      cp { assertResult(VNum(Real("0.9")))(VNum.from("0.9")) }
-      cp { assertResult(VNum(Real("0.9")))(VNum.from(".9")) }
-      cp.reportAll()
+      group {
+        assertResult(VNum(Real("6.9")))(VNum.from("6.9"))
+        assertResult(VNum(Real("0.9")))(VNum.from("0.9"))
+        assertResult(VNum(Real("0.9")))(VNum.from(".9"))
+      }
     }
     it("should handle trailing dots correctly") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum(Real("0.5")))(VNum.from(".")) }
-      cp { assertResult(VNum(Real("0.5")))(VNum.from("0.")) }
-      cp { assertResult(VNum(Real("5.5")))(VNum.from("5.")) }
-      cp.reportAll()
+      group {
+        assertResult(VNum(Real("0.5")))(VNum.from("."))
+        assertResult(VNum(Real("0.5")))(VNum.from("0."))
+        assertResult(VNum(Real("5.5")))(VNum.from("5."))
+      }
     }
     it("should handle complex numbers correctly") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum.complex(0, 1))(VNum.from("ı")) }
-      cp { assertResult(VNum.complex(0, 1))(VNum.from("0ı")) }
-      cp { assertResult(VNum.complex(0.5, 1))(VNum.from("0.ı")) }
-      cp { assertResult(VNum.complex(0.5, 0.5))(VNum.from(".ı.")) }
-      cp { assertResult(VNum.complex(69, 420))(VNum.from("69ı420")) }
-      cp.reportAll()
+      group {
+        assertResult(VNum.complex(0, 1))(VNum.from("ı"))
+        assertResult(VNum.complex(0, 1))(VNum.from("0ı"))
+        assertResult(VNum.complex(0.5, 1))(VNum.from("0.ı"))
+        assertResult(VNum.complex(0.5, 0.5))(VNum.from(".ı."))
+        assertResult(VNum.complex(69, 420))(VNum.from("69ı420"))
+      }
     }
     it("should handle digits too large for the radix") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum(23))(VNum.from("A3", 2)) }
-      cp.reportAll()
+      group {
+        assertResult(VNum(23))(VNum.from("A3", 2))
+      }
     }
     it("should handle invalid characters") {
-      val cp = Checkpoint()
-      cp { assertResult(VNum(Real("12.3")))(VNum.from("1@#$%2#$%. 3")) }
-      cp { assertResult(VNum(Real(0)))(VNum.from("@#  `/$%#$% ")) }
-      cp.reportAll()
+      group {
+        assertResult(VNum(Real("12.3")))(VNum.from("1@#$%2#$%. 3"))
+        assertResult(VNum(Real(0)))(VNum.from("@#  `/$%#$% "))
+      }
     }
   }
 

@@ -2,6 +2,10 @@ package vyxal
 
 import org.scalatest.compatible.Assertion
 import org.scalatest.funspec.AnyFunSpec
+import org.scalatest.Checkpoints.Checkpoint
+import org.scalatest.Succeeded
+import scala.compiletime.codeOf
+import scala.quoted.*
 
 trait VyxalTests extends AnyFunSpec:
 
@@ -74,3 +78,56 @@ trait VyxalTests extends AnyFunSpec:
         assertResult(expected)(ctx.peek)
       }
 end VyxalTests
+
+/** Group multiple assertions together.
+  *
+  * An example:
+  * ```scala
+  * group {
+  *   assert(false)
+  *   assertResult(VNum(1))(VNum.from("1"))
+  *   assertResult(VNum(0.5))(VNum.from("."))
+  * }
+  * ```
+  * The first assertion will fail, but the second and third will still be
+  * checked and found to pass because they're run separately using
+  * [[org.scalatest.Checkpoints]]. That block would turn into roughly
+  * ```scala
+  * val cp = new Checkpoint()
+  * cp { assert(false) }
+  * cp { assertResult(VNum(1))(VNum.from("1")) }
+  * cp { assertResult(VNum(0.5))(VNum.from(".")) }
+  * cp.reportAll()
+  * ```
+  *
+  * TODO figure out how to do this without macros
+  */
+inline def group(inline asserts: Unit): Unit =
+  ${ groupImpl('asserts) }
+
+/** Implementation for [[group]] */
+private def groupImpl(asserts: Expr[Unit])(using Quotes): Expr[Unit] =
+  import quotes.reflect.*
+  asserts.asTerm match
+    case Inlined(_, _, term) =>
+      term match
+        case Block(stmts, lastTerm) =>
+          '{
+            val cp = Checkpoint()
+            ${
+              Block(
+                stmts.map { stmt => '{ cp { ${ stmt.asExpr } } }.asTerm },
+                '{ cp { ${ lastTerm.asExpr } } }.asTerm
+              ).asExpr.asInstanceOf[Expr[Unit]]
+            }
+            cp.reportAll()
+          }
+        case expr =>
+          '{
+            val cp = Checkpoint()
+            cp { ${ expr.asExpr } }
+            cp.reportAll()
+          }
+    case _ => throw new IllegalArgumentException(asserts.show)
+  end match
+end groupImpl
