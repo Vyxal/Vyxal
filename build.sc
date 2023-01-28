@@ -51,6 +51,8 @@ object jvm extends VyxalModule {
   def platform = "jvm"
 
   def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0") }
+
+  object test extends VyxalTestModule
 }
 
 /** Shared and JS-specific code */
