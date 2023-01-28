@@ -52,6 +52,6 @@ object NumberHelpers:
         l.foldLeft(0: VAny) { (res, i) =>
           MiscHelpers.add(MiscHelpers.multiply(res, radix), toInt(i, radix))
         }
-      case s: String => VNum.from(s, radix).toIntegral
+      case s: String => VNum(s, radix).toIntegral
       case _         => throw new Exception("Cannot convert to int")
 end NumberHelpers

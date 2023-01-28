@@ -41,21 +41,32 @@ object VNum:
 
   def complex(real: Real, imag: Real) = new VNum(Complex(real, imag))
 
+  /** Parse a number from a string */
+  def apply(s: String): VNum = apply(s, 10)
+
   /** Parse a number from a string in the given base */
-  def from(s: String, radix: Int = 10): VNum =
-    s.replaceAll("[^0-9a-zA-Z.ı]", "") match
+  def apply(s: String, radix: Int): VNum =
+    s.replaceAll("[^-0-9a-zA-Z.ı]", "") match
       case s"${real}ı$imag" =>
         complex(
-          parseDecimal(real, radix),
-          if imag.isEmpty then 1 else parseDecimal(imag, radix)
+          parseDecimal(real, radix, 0),
+          if imag.isEmpty then 1 else parseDecimal(imag, radix, 1)
         )
-      case n => complex(parseDecimal(n, radix), 0)
+      case n => complex(parseDecimal(n, radix, 0), 0)
 
-  /** Parse a real number that possibly has `.`s */
-  def parseDecimal(comp: String, radix: Int): Real =
+  /** Parse a real number that possibly has `.`s
+    * @param default
+    *   What to return if `component` is empty (not including minus sign)
+    */
+  private def parseDecimal(component: String, radix: Int, default: Int): Real =
+    val neg = component.startsWith("-")
+    val comp = if neg then component.substring(1) else component
     val sepInd = comp.indexOf('.')
-    if comp.isEmpty then 0
-    else if sepInd == -1 then parseIntegral(comp, radix)
+    if comp.isEmpty then
+      if neg then -default else default
+    else if sepInd == -1 then
+      val i = parseIntegral(comp, radix)
+      if neg then -i else i
     else
       val integral: Real =
         if sepInd == 0 then 0
@@ -64,7 +75,8 @@ object VNum:
       val frac: Real =
         if sepInd == comp.length - 1 then 0.5
         else parseIntegral(fracStr, radix) / (Real(radix) ** fracStr.length)
-      integral + frac
+      if neg then -integral - frac else integral + frac
+  end parseDecimal
 
   /** Parse an integral number (no `.`). BigInt doesn't allow passing strings
     * with digits higher than the radix, so this method lets you do that.

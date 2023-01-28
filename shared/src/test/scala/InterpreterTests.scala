@@ -201,45 +201,52 @@ class InterpreterTests extends VyxalTests:
   describe("Numeric literals") {
     it("should parse simple integers correctly") {
       group {
-        assertResult(VNum(0))(VNum.from("0"))
-        assertResult(VNum(1))(VNum.from("1"))
+        assertResult(VNum(0))(VNum("0"))
+        assertResult(VNum(1))(VNum("1"))
         assertResult(VNum(BigInt("9999999999999999999")))(
-          VNum.from("9999999999999999999")
+          VNum("9999999999999999999")
         )
       }
     }
     it("should parse decimals correctly") {
       group {
-        assertResult(VNum(Real("6.9")))(VNum.from("6.9"))
-        assertResult(VNum(Real("0.9")))(VNum.from("0.9"))
-        assertResult(VNum(Real("0.9")))(VNum.from(".9"))
+        assertResult(VNum(Real("6.9")))(VNum("6.9"))
+        assertResult(VNum(Real("0.9")))(VNum("0.9"))
+        assertResult(VNum(Real("0.9")))(VNum(".9"))
+      }
+    }
+    it("should handle signs correctly") {
+      group {
+        assertResult(VNum(Real("-6.9")))(VNum("-6.9"))
+        assertResult(VNum(Real("6.9")))(VNum("+6.9"))
+        assertResult(VNum.complex(Real("6.9"), -1))(VNum("+6.9ı-"))
       }
     }
     it("should handle trailing dots correctly") {
       group {
-        assertResult(VNum(Real("0.5")))(VNum.from("."))
-        assertResult(VNum(Real("0.5")))(VNum.from("0."))
-        assertResult(VNum(Real("5.5")))(VNum.from("5."))
+        assertResult(VNum(Real("0.5")))(VNum("."))
+        assertResult(VNum(Real("0.5")))(VNum("0."))
+        assertResult(VNum(Real("5.5")))(VNum("5."))
       }
     }
     it("should handle complex numbers correctly") {
       group {
-        assertResult(VNum.complex(0, 1))(VNum.from("ı"))
-        assertResult(VNum.complex(0, 1))(VNum.from("0ı"))
-        assertResult(VNum.complex(0.5, 1))(VNum.from("0.ı"))
-        assertResult(VNum.complex(0.5, 0.5))(VNum.from(".ı."))
-        assertResult(VNum.complex(69, 420))(VNum.from("69ı420"))
+        assertResult(VNum.complex(0, 1))(VNum("ı"))
+        assertResult(VNum.complex(0, 1))(VNum("0ı"))
+        assertResult(VNum.complex(0.5, 1))(VNum("0.ı"))
+        assertResult(VNum.complex(0.5, 0.5))(VNum(".ı."))
+        assertResult(VNum.complex(69, 420))(VNum("69ı420"))
       }
     }
     it("should handle digits too large for the radix") {
       group {
-        assertResult(VNum(23))(VNum.from("A3", 2))
+        assertResult(VNum(23))(VNum("A3", 2))
       }
     }
     it("should handle invalid characters") {
       group {
-        assertResult(VNum(Real("12.3")))(VNum.from("1@#$%2#$%. 3"))
-        assertResult(VNum(Real(0)))(VNum.from("@#  `/$%#$% "))
+        assertResult(VNum(Real("12.3")))(VNum("1@#$%2#$%. 3"))
+        assertResult(VNum(Real(0)))(VNum("@#  `/$%#$% "))
       }
     }
   }

@@ -87,8 +87,8 @@ trait VyxalTests extends AnyFunSpec:
     * ```scala
     * group {
     *   assert(false)
-    *   assertResult(VNum(1))(VNum.from("1"))
-    *   assertResult(VNum(0.5))(VNum.from("."))
+    *   assertResult(VNum(1))(VNum("1"))
+    *   assertResult(VNum(0.5))(VNum("."))
     * }
     * ```
     * The first assertion will fail, but the second and third will still be
@@ -97,8 +97,8 @@ trait VyxalTests extends AnyFunSpec:
     * ```scala
     * val cp = new Checkpoint()
     * cp { assert(false) }
-    * cp { assertResult(VNum(1))(VNum.from("1")) }
-    * cp { assertResult(VNum(0.5))(VNum.from(".")) }
+    * cp { assertResult(VNum(1))(VNum("1")) }
+    * cp { assertResult(VNum(0.5))(VNum(".")) }
     * cp.reportAll()
     * ```
     */

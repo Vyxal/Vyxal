@@ -47,7 +47,7 @@ object Parser:
       (program.dequeue(): @unchecked) match
         // Numbers, strings and newlines are trivial, and are simply evaluated
         case VyxalToken.Number(value) =>
-          asts.push(AST.Number(VNum.from(value)))
+          asts.push(AST.Number(VNum(value)))
         case VyxalToken.Str(value) => asts.push(AST.Str(value))
         case VyxalToken.Newline    => asts.push(AST.Newline)
         case VyxalToken.StructureOpen(open) =>
