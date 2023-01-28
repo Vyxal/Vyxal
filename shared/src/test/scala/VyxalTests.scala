@@ -77,57 +77,62 @@ trait VyxalTests extends AnyFunSpec:
         assert(!ctx.isStackEmpty)
         assertResult(expected)(ctx.peek)
       }
+
+  // TODO figure out how to do group without macros
+  // TODO figure out why we need to go through another inline method in the
+  //     companion instead of calling groupImpl directly from here
+  /** Group multiple assertions together.
+    *
+    * An example:
+    * ```scala
+    * group {
+    *   assert(false)
+    *   assertResult(VNum(1))(VNum.from("1"))
+    *   assertResult(VNum(0.5))(VNum.from("."))
+    * }
+    * ```
+    * The first assertion will fail, but the second and third will still be
+    * checked and found to pass because they're run separately using
+    * [[org.scalatest.Checkpoints]]. That block would turn into roughly
+    * ```scala
+    * val cp = new Checkpoint()
+    * cp { assert(false) }
+    * cp { assertResult(VNum(1))(VNum.from("1")) }
+    * cp { assertResult(VNum(0.5))(VNum.from(".")) }
+    * cp.reportAll()
+    * ```
+    */
+  inline def group(inline asserts: Unit): Unit = VyxalTests.group(asserts)
 end VyxalTests
 
-/** Group multiple assertions together.
-  *
-  * An example:
-  * ```scala
-  * group {
-  *   assert(false)
-  *   assertResult(VNum(1))(VNum.from("1"))
-  *   assertResult(VNum(0.5))(VNum.from("."))
-  * }
-  * ```
-  * The first assertion will fail, but the second and third will still be
-  * checked and found to pass because they're run separately using
-  * [[org.scalatest.Checkpoints]]. That block would turn into roughly
-  * ```scala
-  * val cp = new Checkpoint()
-  * cp { assert(false) }
-  * cp { assertResult(VNum(1))(VNum.from("1")) }
-  * cp { assertResult(VNum(0.5))(VNum.from(".")) }
-  * cp.reportAll()
-  * ```
-  *
-  * TODO figure out how to do this without macros
-  */
-inline def group(inline asserts: Unit): Unit =
-  ${ groupImpl('asserts) }
+object VyxalTests:
+  private inline def group(inline asserts: Unit): Unit =
+    ${ VyxalTests.groupImpl('asserts) }
 
-/** Implementation for [[group]] */
-private def groupImpl(asserts: Expr[Unit])(using Quotes): Expr[Unit] =
-  import quotes.reflect.*
-  asserts.asTerm match
-    case Inlined(_, _, term) =>
-      term match
-        case Block(stmts, lastTerm) =>
-          '{
-            val cp = Checkpoint()
-            ${
-              Block(
-                stmts.map { stmt => '{ cp { ${ stmt.asExpr } } }.asTerm },
-                '{ cp { ${ lastTerm.asExpr } } }.asTerm
-              ).asExpr.asInstanceOf[Expr[Unit]]
+  /** Implementation for [[group]] */
+  private def groupImpl(asserts: Expr[Unit])(using Quotes): Expr[Unit] =
+    import quotes.reflect.*
+    asserts.asTerm match
+      case Inlined(_, _, term) =>
+        term match
+          case Block(stmts, lastTerm) =>
+            '{
+              val cp = Checkpoint()
+              ${
+                Block(
+                  stmts.map { stmt => '{ cp { ${ stmt.asExpr } } }.asTerm },
+                  '{ cp { ${ lastTerm.asExpr } } }.asTerm
+                ).asExpr.asInstanceOf[Expr[Unit]]
+              }
+              cp.reportAll()
             }
-            cp.reportAll()
-          }
-        case expr =>
-          '{
-            val cp = Checkpoint()
-            cp { ${ expr.asExpr } }
-            cp.reportAll()
-          }
-    case _ => throw new IllegalArgumentException(asserts.show)
-  end match
-end groupImpl
+          case expr =>
+            '{
+              val cp = Checkpoint()
+              cp { ${ expr.asExpr } }
+              cp.reportAll()
+            }
+      case _ => throw new IllegalArgumentException(asserts.show)
+    end match
+  end groupImpl
+end VyxalTests
