@@ -17173,8 +17173,8 @@ def test_RandomChoice():
         assert equals(actual, expected, ctx) or non_vectorising_equals(actual, expected, ctx), "Expected " + str(expected) + ", got " + str(simplify(actual))
 
 
-    stack = [vyxalify(item) for item in [1]]
-    expected = vyxalify(1)
+    stack = [vyxalify(item) for item in [0]]
+    expected = vyxalify(0)
     ctx = Context()
 
     ctx.stacks.append(stack)
