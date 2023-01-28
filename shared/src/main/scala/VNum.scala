@@ -1,6 +1,7 @@
 package vyxal
 
 import scala.language.implicitConversions
+import spire.implicits.partialOrderOps // For <, >, etc.
 import spire.math.{Complex, Real}
 
 class VNum private (val underlying: Complex[Real]):
@@ -27,7 +28,9 @@ class VNum private (val underlying: Complex[Real]):
     if this.imag == 0 then this.real.toString else this.underlying.toString
 
   override def equals(obj: Any) = obj match
-    case n: VNum => underlying == n.underlying
+    case n: VNum =>
+      (underlying `eq` n.underlying) ||
+      ((this.real - n.real).abs < VNum.Epsilon && (this.imag - n.imag).abs < VNum.Epsilon)
     case _       => false
 end VNum
 
@@ -35,6 +38,8 @@ end VNum
 object VNum:
 
   private val MaxRadix = 36
+
+  private val Epsilon = Real(0.0001)
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n

@@ -210,23 +210,23 @@ class InterpreterTests extends VyxalTests:
     }
     it("should parse decimals correctly") {
       group {
-        assertResult(VNum(Real("6.9")))(VNum("6.9"))
-        assertResult(VNum(Real("0.9")))(VNum("0.9"))
-        assertResult(VNum(Real("0.9")))(VNum(".9"))
+        assertResult(VNum(6.9))(VNum("6.9"))
+        assertResult(VNum(0.1))(VNum("0.1"))
+        assertResult(VNum(0.9))(VNum(".9"))
       }
     }
     it("should handle signs correctly") {
       group {
-        assertResult(VNum(Real("-6.9")))(VNum("-6.9"))
-        assertResult(VNum(Real("6.9")))(VNum("+6.9"))
-        assertResult(VNum.complex(Real("6.9"), -1))(VNum("+6.9ı-"))
+        assertResult(VNum(-6.9))(VNum("-6.9"))
+        assertResult(VNum(3.0))(VNum("+3.0"))
+        assertResult(VNum.complex(5.7, -1))(VNum("+5.7ı-"))
       }
     }
     it("should handle trailing dots correctly") {
       group {
-        assertResult(VNum(Real("0.5")))(VNum("."))
-        assertResult(VNum(Real("0.5")))(VNum("0."))
-        assertResult(VNum(Real("5.5")))(VNum("5."))
+        assertResult(VNum(0.5))(VNum("."))
+        assertResult(VNum(0.5))(VNum("0."))
+        assertResult(VNum(5.5))(VNum("5."))
       }
     }
     it("should handle complex numbers correctly") {
@@ -245,8 +245,14 @@ class InterpreterTests extends VyxalTests:
     }
     it("should handle invalid characters") {
       group {
-        assertResult(VNum(Real("12.3")))(VNum("1@#$%2#$%. 3"))
-        assertResult(VNum(Real(0)))(VNum("@#  `/$%#$% "))
+        assertResult(VNum(12.3))(VNum("1@#$%2#$%. 3"))
+        assertResult(VNum(0))(VNum("@#  `/$%#$% "))
+      }
+    }
+    it("shouldn't be too tolerant when comparing") {
+      group {
+        assert(VNum(12.2999) != VNum("12.3"))
+        assert(VNum(0.01) != VNum(0))
       }
     }
   }
