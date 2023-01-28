@@ -17,6 +17,39 @@ class ElementTests extends AnyFunSpec:
         assertResult(VList(VList(5, 9), "foo0"))(ctx.pop())
       }
     }
+    describe("when given two non-list values") {
+      it("should add numbers properly") {
+        given ctx: Context = Context()
+        ctx.push(2, 3)
+        Interpreter.execute(AST.Command("+"))
+        assertResult(VNum(5))(ctx.pop())
+
+        ctx.push(0, 0)
+        Interpreter.execute(AST.Command("+"))
+        assertResult(VNum(0))(ctx.pop())
+
+        ctx.push(VNum("5.1"), VNum("-45.4"))
+        Interpreter.execute(AST.Command("+"))
+        assertResult(VNum("-40.3"))(ctx.pop())
+      }
+      it("should concatenate strings properly") {
+        given ctx: Context = Context()
+        ctx.push("foo", "bar")
+        Interpreter.execute(AST.Command("+"))
+        assertResult("foobar")(ctx.pop())
+      }
+      it("should concatenate numbers and strings properly") {
+        given ctx: Context = Context()
+        ctx.push("foo", 3)
+        Interpreter.execute(AST.Command("+"))
+        assertResult("foo3")(ctx.pop())
+
+        ctx.push(3, "foo")
+        Interpreter.execute(AST.Command("+"))
+        assertResult("3foo")(ctx.pop())
+      }
+    }
+
     describe("when given functions") {
       it("should turn two functions into an fgh fork") {
         given ctx: Context = Context()
