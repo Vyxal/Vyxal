@@ -39,7 +39,7 @@ object VNum:
 
   private val MaxRadix = 36
 
-  private val Epsilon = Real(0.0001)
+  private val Epsilon = Real(10) ** -9
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n
