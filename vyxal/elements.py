@@ -4451,6 +4451,8 @@ def random_choice(lhs, ctx):
         return ""
     elif vy_type(lhs, simple=True) is list and len(lhs) == 0:
         return 0
+    elif vy_type(lhs) is NUMBER_TYPE:
+        return random.randint(0, int(lhs))
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
