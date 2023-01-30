@@ -2279,7 +2279,7 @@ var codepage_descriptions =
     {
       "name": "Mean",
       "description": "Average of a list - sum / length",
-      "overloads": "str -> palindromise(a) (a + a[:-1:-1])\nlst -> mean(a)",
+      "overloads": "str -> palindromise(a) (a + a[:-1:-1])\nnum -> random.randint(0, a)\nlst -> mean(a)",
       "token": "\u1e41"
     },
     {

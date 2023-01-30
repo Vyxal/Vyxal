@@ -1217,6 +1217,7 @@ Average of a list - sum / length
 ### Overloads
 
 - str a: `palindromise(a) (a + a[:-1:-1])`
+- num a: `random.randint(0, a)`
 - lst a: `mean(a)`
 -------------------------------
 ## `` ṅ `` (Join By Nothing)
