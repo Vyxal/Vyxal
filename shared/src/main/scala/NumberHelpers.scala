@@ -1,8 +1,6 @@
 package vyxal
 
-import vyxal.impls.Elements
-import vyxal.VNum.given
-
+import vyxal.*
 import scala.collection.mutable.ListBuffer
 
 object NumberHelpers:
@@ -49,9 +47,12 @@ object NumberHelpers:
         if radix != 10 then toInt(n.toIntegral.toString(), radix)
         else n.toIntegral
       case l: VList =>
-        l.foldLeft(0: VAny) { (res, i) =>
-          MiscHelpers.add(MiscHelpers.multiply(res, radix), toInt(i, radix))
-        }
+        var res: VAny = VNum(0)
+        var exponent = 0
+        for i <- l.reverse do
+          res = MiscHelpers.add(res, MiscHelpers.multiply(toInt(i, 10), VNum(radix) ** VNum(exponent))(using ctx))
+          exponent += 1
+        res
       case s: String => VNum(s, radix).toIntegral
       case _         => throw new Exception("Cannot convert to int")
 end NumberHelpers

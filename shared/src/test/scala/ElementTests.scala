@@ -6,7 +6,18 @@ import org.scalatest.funspec.AnyFunSpec
 import Elements.Impls
 
 /** Tests for specific elements */
-class ElementTests extends AnyFunSpec:
+class ElementTests extends VyxalTests:
+
+ describe("Element &") {
+    it("should convert the first to a list and append the other onto it") {
+      given Context = Context()
+      assertResult(VList(1, 2, 3, VList(4, 5)))(
+        Impls.append(VList(1, 2, 3), VList(4, 5))
+      )
+      assertResult(VList(1, 2, 3, 69))(Impls.append(VList(1, 2, 3), 69))
+      assertResult(VList("a", "b", "c", VList()))(Impls.append("abc", VList()))
+    }
+  }
 
   describe("Element +") {
     describe("when given lists") {
@@ -103,14 +114,44 @@ class ElementTests extends AnyFunSpec:
     }
   }
 
-  describe("Element &") {
-    it("should convert the first to a list and append the other onto it") {
-      given Context = Context()
-      assertResult(VList(1, 2, 3, VList(4, 5)))(
-        Impls.append(VList(1, 2, 3), VList(4, 5))
+  describe("Element B"){
+    describe("when given a number"){
+        testMulti(
+          "110 B" -> VNum(6),
+          "1000 B" -> VNum(8),
+          "69 B" -> VNum(21),
+          "69420 B" -> VNum(188),
+          "7654 N B" -> VNum(-94),
+          "111 N B" -> VNum(-7)
+        )
+    }
+    describe("when given a string"){
+      testMulti(
+        "\"110\" B" -> VNum(6),
+        "\"1000\" B" -> VNum(8),
+        "\"69\" B" -> VNum(21),
+        "\"69420\" B" -> VNum(188),
+        "\"-7654\" B" -> VNum(-94),
+        "\"-111\" B" -> VNum(-7)
       )
-      assertResult(VList(1, 2, 3, 69))(Impls.append(VList(1, 2, 3), 69))
-      assertResult(VList("a", "b", "c", VList()))(Impls.append("abc", VList()))
+    }
+    describe("when given a list"){
+      testMulti(
+        "#[1|1|0#] B" -> VNum(6),
+        "#[1|0|0|0#] B" -> VNum(8),
+        "#[6|9#] B" -> VNum(21),
+        "#[6|9|4|2|0#] B" -> VNum(188),
+        "#[7|6|5|4#] N B" -> VNum(-94),
+        "#[1|1|1#] N B" -> VNum(-7)
+      )
+    }
+    describe("With lists of strings and lists") {
+      it("Shouldn't do string multiplication") {
+        given ctx: Context = Context()
+        assertResult(5: VNum)(
+          NumberHelpers.fromBinary(VList("1", "0", VList("0", "1")))
+        )
+      }
     }
   }
 
@@ -199,17 +240,6 @@ class ElementTests extends AnyFunSpec:
         ctx.push(1, 2)
         assertResult(3: VNum)(
           Impls.execute(VFun.fromElement(Elements.elements("+")))
-        )
-      }
-    }
-  }
-
-  describe("Element B") {
-    describe("With lists of strings and lists") {
-      it("Shouldn't do string multiplication") {
-        given ctx: Context = Context()
-        assertResult(5: VNum)(
-          NumberHelpers.fromBinary(VList("1", "0", VList("0", "1")))
         )
       }
     }
