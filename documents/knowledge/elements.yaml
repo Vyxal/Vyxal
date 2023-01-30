@@ -1804,6 +1804,7 @@
   arity: 1
   overloads:
     str: palindromise(a) (a + a[:-1:-1])
+    num: random.randint(0, a)
     lst: mean(a)
   vectorise: false
   tests:
