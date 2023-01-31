@@ -3884,7 +3884,6 @@ def optimal_compress(lhs, ctx):
             j = dictionary.word_index(lhs[left:i])
             if j != -1:
                 dp[i] = min([dp[i], dp[left] + j], key=len)
-                break
 
         sub = lhs[:i]
         for index, word in enumerate(dictionary.small_dictionary):
