@@ -4056,6 +4056,7 @@ def next_multiple(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(next_multiple, lhs, rhs, ctx=ctx))()
 
 
+@element("∆n", 2)
 def next_power(lhs, rhs, ctx):
     if list in vy_type(lhs, rhs, simple=True):
         return vectorise(next_power, lhs, rhs, ctx=ctx)()
@@ -6342,7 +6343,7 @@ def vectorised_sum(lhs, ctx):
         NUMBER_TYPE: lambda: 1 if lhs > 0 else 0,
     }.get(ts)()
 
-@element("§", 2)
+@element("§", 1)
 def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
@@ -6369,7 +6370,7 @@ def vertical_join_with_filler(lhs, rhs, ctx):
     """
     return vertical_join(lhs, rhs, ctx)
 
-@element("øṁ", 2)
+@element("øṁ", 1)
 def vertical_mirror(lhs, rhs=None, ctx=None):
     """Element øṁ and øṀ"""
     if type(lhs) is str:
