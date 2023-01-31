@@ -4887,8 +4887,8 @@
     - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
     - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
     - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
-    - '["Anchorage"] : "'ε₈⟇§'"'
-    - '["memorabiliairplane"] : "'ḭ⌈irḋβ'"'
+    - '["Anchorage"] : "`ε₈⟇§`"'
+    - '["memorabiliairplane"] : "`ḭ⌈irḋβ`"'
 
 - element: "øW"
   name: Group on words
