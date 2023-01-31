@@ -12,5 +12,5 @@ jobs:
     - uses: actions/first-interaction@v1
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        issue-message: "Hey, @${{ github.actor }}, welcome to Vyxal! Thanks for creating an issue, that's cool!🙌"
-        pr-message: "Hi, @${{ github.actor }}! Thank you for helping us make Vyxal better, stay epic!😎"
+        issue-message: "Hey, @${{ github.actor }}, that's a nice issue you've got there! It'd sure be a shame if somebody were to assign you to it!"
+        pr-message: "Hi, @${{ github.actor }}, and welcome to the Vyxal cult! We sure hope you wrote a will, because once you've joined you can never leave! 😎"
