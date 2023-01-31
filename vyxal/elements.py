@@ -278,7 +278,6 @@ else:
         2,
     ),
     "∆Ṙ": process_element("sympy.nsimplify(random.random(), rational=True)", 0),
-    # TODO Why doesn't this just use process_element?
     "ø∧": (
         "other, rhs, lhs = pop(stack, 3, ctx)\n"
         "canvas_global_draw(lhs, rhs, other, ctx)\n",
