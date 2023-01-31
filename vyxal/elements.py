@@ -2065,10 +2065,10 @@ def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
         str: lambda: vectorise(factorial_of_range, lhs, ctx=ctx),
     }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
 
-@element("ÞF", 1)
-def fibonaacis(_, ctx):
+@element("ÞF", 0)
+def fibonaccis(_, ctx):
     """Element ÞF
-    An infinite lazylist of fibonaaci numbers
+    An infinite lazylist of fibonacci numbers
     """
 
     def gen():
@@ -2079,7 +2079,7 @@ def fibonaacis(_, ctx):
 
     return LazyList(gen(), isinf=True)
 
-@element("Þ!", 1)
+@element("Þ!", 0)
 def factorials(_, ctx):
     """Element Þ!
     An infinite lazylist of factorials
@@ -2759,7 +2759,7 @@ def index_partition(lhs, rhs, ctx):
     """
     return partition_at_indices(rhs, lhs)
 
-@element("Þn", 1)
+@element("Þn", 0)
 @infinite_lazylist
 def infinite_all_integers(_, ctx=None):
     """Element Þn
@@ -2772,14 +2772,14 @@ def infinite_all_integers(_, ctx=None):
         yield -i
         i += 1
 
-@element("Þc", 1)
+@element("Þc", 0)
 def infinite_cardinals(_, ctx=None):
     """Element Þc
     infinite sequence of cardinals
     """
     return LazyList(map(num2words.num2words, itertools.count(1)), isinf=True)
 
-@element("ÞṄ", 1)
+@element("ÞṄ", 0)
 def infinite_integer_partitions(_, ctx=None):
     """Element ÞṄ"""
 
@@ -2789,7 +2789,7 @@ def infinite_integer_partitions(_, ctx=None):
 
     return LazyList(gen(), isinf=True)
 
-@element("Þ:", 1)
+@element("Þ:", 0)
 def infinite_non_negative_integers(_, ctx=None):
     """Element Þ:
     The list [0, 1, 2, ..., ∞]
@@ -2804,7 +2804,7 @@ def infinite_non_negative_integers(_, ctx=None):
 
     return gen()
 
-@element("Þo", 1)
+@element("Þo", 0)
 def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
@@ -2822,7 +2822,7 @@ def infinite_ordinals(_, ctx=None):
 
     return LazyList(gen(), isinf=True)
 
-@element("Þ∞", 1)
+@element("Þ∞", 0)
 def infinite_positives(_, ctx=None):
     """Element Þ∞
     An infinite list of positive numbers
@@ -2837,7 +2837,7 @@ def infinite_positives(_, ctx=None):
 
     return gen()
 
-@element("Þp", 1)
+@element("Þp", 0)
 def infinite_primes(_, ctx=None):
     """Element Þp
     An infinite list of primes
