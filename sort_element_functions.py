@@ -7,9 +7,9 @@ f.close()
 fns = [
     x.strip()
     for x in re.findall(
-        "(?:@[a-zA-Z_]+\n)?def +[a-zA-Z_][a-zA-Z_\d]*\s*\([\S\s]*?\)(?: *-> *.+?)?\:(?:\n(?:(?:    |\t).*)?)+",
+        "(?:@.+\n)*def +[a-zA-Z_][a-zA-Z_\d]*\s*\([\S\s]*?\)(?: *-> *.+?)?\:(?:\n(?:(?:    |\t).*)?)+",
         file,
-    )[1:]
+    )[2:]
 ]
 
 file = file.split("\n")
