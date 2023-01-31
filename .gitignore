@@ -160,3 +160,9 @@ null/
 project/project/
 target/
 metals.sbt
+
+# replit stuff
+.replit
+replit.nix
+venv/
+.config/
