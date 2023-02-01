@@ -282,7 +282,7 @@ def test_slice_to_end_infinite_lists():
 
 
 def test_first_integers():
-    stack = run_vyxal("λ1; 5 ȯ")
+    stack = run_vyxal("λ1; 5 o")
     # Lambda basically accepts everything
     assert stack[-1][:5] == [0, 1, -1, 2, -2]
 
