@@ -10,7 +10,7 @@ import scala.quoted.*
 trait VyxalTests extends AnyFunSpec:
 
   def testEquals(expected: VAny)(getRes: Context ?=> VAny): Assertion =
-    assertResult(expected)(getRes(using Context()))
+    assertResult(expected)(getRes(using Context(testMode = true)))
 
   /** Run some code and check if it matches the expected value
     * @param ctx

@@ -131,7 +131,7 @@ class InterpreterTests extends VyxalTests:
     }
     describe("Variable unpacking") {
       it("should handle non nested lists") {
-        given ctx: Context = Context()
+        given ctx: Context = Context(testMode = true)
         Interpreter.execute("#[1 | 2 | 3#] #:[x|y|z]")
         group {
           assertResult(VNum(1))(ctx.getVar("x"))
