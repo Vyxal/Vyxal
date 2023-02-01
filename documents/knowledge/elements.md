@@ -681,7 +681,7 @@ Replace b with c in a / Map a function at elements of a list whose indices are i
 
 ### Overloads
 
-- any a, any b, any c: `a.replace(b,c) (replace)`
+- any a, any b, any c: `a.replace(b,c) (replace). b can be a list of substrings to replace. If b is a list of substrings, so can c. If c is shorter, the extra strings in b will be replaced with the empty string, i.e., removed.`
 - lst a, lst b, fun c: `for each i in b, change the ith element in a by applying the function, then return the new list`
 - lst a, num b, fun c: `replace the bth element in a by applying the function, then return the new list`
 -------------------------------
@@ -875,8 +875,8 @@ Remove instances of b in a
 
 ### Overloads
 
-- num a, fun b: `first a positive integers where b is truthy`
-- fun a, num b: `first b positive integers where a is truthy`
+- num a, fun b: `first a integers where b is truthy (0, 1, -1, ...)`
+- fun a, num b: `first b integers where a is truthy`
 - any a, any b: `a.replace(b,"")`
 -------------------------------
 ## `` p `` (Prepend)
@@ -1217,6 +1217,7 @@ Average of a list - sum / length
 ### Overloads
 
 - str a: `palindromise(a) (a + a[:-1:-1])`
+- num a: `random.randint(0, a)`
 - lst a: `mean(a)`
 -------------------------------
 ## `` ṅ `` (Join By Nothing)
@@ -1236,7 +1237,7 @@ Slice from an index to the end
 
 ### Overloads
 
-- fun a, num b: `first b integers for which a(x) is truthy`
+- fun a, num b: `first b positive integers for which a(x) is truthy`
 - any a, num b: `a[b:] (slice from b to the end)`
 - str a, str b: `vertically merge a and b`
 -------------------------------
@@ -1841,7 +1842,7 @@ Random choice of single item from array
 ### Overloads
 
 - lst a: `random.choice(a)`
-- num a: `Random integer from 0 to a`
+- num a: `Random integer from 1 to a`
 -------------------------------
 ## `` ≤ `` (Lesser Than or Equal To)
 
@@ -3309,7 +3310,7 @@ Replace the first instance of an item with another item
 
 ### Overloads
 
-- any a, any b, any c: `a.replace_first(b, c)`
+- any a, any b, any c: `a.replace(b, c, count=1). See "V" (Replace) for specifics.`
 -------------------------------
 ## `` øṄ `` (Replace Nth Occurrence)
 

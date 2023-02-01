@@ -932,6 +932,7 @@
     - "[69, 10] : '69'"
     - "[69, 16] : '45'"
     - "[69, 36] : '1X'"
+    - "[123, 62] : '1z'"
 
 - element: "S"
   name: Stringify
@@ -980,7 +981,7 @@
   description: Replace b with c in a / Map a function at elements of a list whose indices are in another list
   arity: 3
   overloads:
-    any-any-any: a.replace(b,c) (replace)
+    any-any-any: a.replace(b,c) (replace). b can be a list of substrings to replace. If b is a list of substrings, so can c. If c is shorter, the extra strings in b will be replaced with the empty string, i.e., removed.
     lst-lst-fun: for each i in b, change the ith element in a by applying the function, then return the new list
     lst-num-fun: replace the bth element in a by applying the function, then return the new list
   vectorise: false
@@ -993,6 +994,9 @@
     - '[234,"2",4] : 434'
     - '["234",2,4] : "434"'
     - '["234","2",4] : "434"'
+    - '["abcdefabdee", ["abc","ab","e","d"], [1,2,3,"ab"]] : "1ab3f2ab33"'
+    - '["alice,bobabcfred", ["lice","bob","red"], "123"] : "a123,123abcf123"'
+    - '["abcdef", ["a","b","c","d"], ["1"]] : "1ef"'
 
 - element: "W"
   name: Wrap
@@ -1292,8 +1296,8 @@
   description: Remove instances of b in a
   arity: 2
   overloads:
-    num-fun: first a positive integers where b is truthy
-    fun-num: first b positive integers where a is truthy
+    num-fun: first a integers where b is truthy (0, 1, -1, ...)
+    fun-num: first b integers where a is truthy
     any-any: a.replace(b,"")
   vectorise: false
   tests:
@@ -1801,6 +1805,7 @@
   arity: 1
   overloads:
     str: palindromise(a) (a + a[:-1:-1])
+    num: random.randint(0, a)
     lst: mean(a)
   vectorise: false
   tests:
@@ -1835,7 +1840,7 @@
   description: Slice from an index to the end
   arity: 2
   overloads:
-    fun-num: first b integers for which a(x) is truthy
+    fun-num: first b positive integers for which a(x) is truthy
     any-num: a[b:] (slice from b to the end)
     str-str: vertically merge a and b
   vectorise: false
@@ -2771,7 +2776,7 @@
   description: Random choice of single item from array
   overloads:
     lst: random.choice(a)
-    num: Random integer from 0 to a
+    num: Random integer from 1 to a
   vectorise: false
   tests:
     - '[""] : ""'
@@ -4882,6 +4887,9 @@
     - '["Vyxal"] : "`₴ŀ`"'
     - '["abcdef`gh"] : "`ėġḣ²\\`gh`"'
     - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
+    - '["and [A-Za-z0-9] .* ?<! the"] : "`λ¬ ⟇ € › λλ`"'
+    - '["Anchorage"] : "`ε₈⟇§`"'
+    - '["memorabiliairplane"] : "`ḭ⌈irḋβ`"'
 
 - element: "øW"
   name: Group on words
@@ -5124,7 +5132,7 @@
   description: Replace the first instance of an item with another item
   arity: 3
   overloads:
-    any-any-any: a.replace_first(b, c)
+    any-any-any: a.replace(b, c, count=1). See "V" (Replace) for specifics.
   vectorise: false
   tests:
     - '["abcabc", "c", "H"] : "abHabc"'
