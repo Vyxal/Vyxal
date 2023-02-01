@@ -1237,7 +1237,7 @@ Slice from an index to the end
 
 ### Overloads
 
-- fun a, num b: `first b integers for which a(x) is truthy`
+- fun a, num b: `first b integers for which a(x) is truthy (0, 1, -1, ...)`
 - any a, num b: `a[b:] (slice from b to the end)`
 - str a, str b: `vertically merge a and b`
 -------------------------------

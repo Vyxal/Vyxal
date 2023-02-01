@@ -2324,7 +2324,7 @@ var codepage_descriptions =
     {
       "name": "Slice",
       "description": "Slice from an index to the end",
-      "overloads": "fun, num -> first b integers for which a(x) is truthy\nany, num -> a[b:] (slice from b to the end)\nstr, str -> vertically merge a and b",
+      "overloads": "fun, num -> first b integers for which a(x) is truthy (0, 1, -1, ...)\nany, num -> a[b:] (slice from b to the end)\nstr, str -> vertically merge a and b",
       "token": "\u022f"
     },
     {

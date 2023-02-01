@@ -5645,9 +5645,7 @@ def slice_from(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType in ts:
-        func, count = (
-            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
-        )
+        func, count = (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
         return vy_filter(func, infinite_all_integers(None, ctx), ctx)[:count]
     else:
         return {
