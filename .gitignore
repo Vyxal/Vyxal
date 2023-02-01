@@ -160,6 +160,7 @@ null/
 project/project/
 target/
 metals.sbt
+out/
 
 # replit stuff
 .replit
