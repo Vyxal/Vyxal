@@ -180,6 +180,20 @@ class ElementTests extends VyxalTests:
         assertResult(3: VNum)(
           Impls.count("lolollol lol asd", "lol")
         )
+        assertResult(0: VNum)(
+          Impls.count("lolollol lol asd", "asdf")
+        )
+      }
+    }
+
+    describe("when given mixed types") {
+      it("should convert both to string and count as usual") {
+        testMulti("C")(
+          List(VNum(12), VNum(1)) -> 1,
+          List("ab1111ab", VNum(1)) -> 4,
+          List(VNum(12341234), VNum(2)) -> 2,
+          List(VNum(23432423), "3") -> 3
+        )
       }
     }
   }
