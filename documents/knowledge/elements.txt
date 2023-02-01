@@ -762,8 +762,8 @@ o (Remove)
 
 - Remove instances of b in a
 
-    num a, fun b: first a positive integers where b is truthy
-    fun a, num b: first b positive integers where a is truthy
+    num a, fun b: first a integers where b is truthy (0, 1, -1, ...)
+    fun a, num b: first b integers where a is truthy
     any a, any b: a.replace(b,"")
 -------------------------------
 p (Prepend)
@@ -1063,7 +1063,7 @@ z (Zip-self)
 
 - Slice from an index to the end
 
-    fun a, num b: first b integers for which a(x) is truthy (0, 1, -1, ...)
+    fun a, num b: first b positive integers for which a(x) is truthy
     any a, num b: a[b:] (slice from b to the end)
     str a, str b: vertically merge a and b
 -------------------------------
