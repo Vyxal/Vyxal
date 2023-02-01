@@ -8,7 +8,7 @@ import Elements.Impls
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
 
- describe("Element &") {
+  describe("Element &") {
     it("should convert the first to a list and append the other onto it") {
       given Context = Context()
       assertResult(VList(1, 2, 3, VList(4, 5)))(
@@ -114,18 +114,18 @@ class ElementTests extends VyxalTests:
     }
   }
 
-  describe("Element B"){
-    describe("when given a number"){
-        testMulti(
-          "110 B" -> VNum(6),
-          "1000 B" -> VNum(8),
-          "69 B" -> VNum(21),
-          "69420 B" -> VNum(188),
-          "7654 N B" -> VNum(-94),
-          "111 N B" -> VNum(-7)
-        )
+  describe("Element B") {
+    describe("when given a number") {
+      testMulti(
+        "110 B" -> VNum(6),
+        "1000 B" -> VNum(8),
+        "69 B" -> VNum(21),
+        "69420 B" -> VNum(188),
+        "7654 N B" -> VNum(-94),
+        "111 N B" -> VNum(-7)
+      )
     }
-    describe("when given a string"){
+    describe("when given a string") {
       testMulti(
         "\"110\" B" -> VNum(6),
         "\"1000\" B" -> VNum(8),
@@ -135,7 +135,7 @@ class ElementTests extends VyxalTests:
         "\"-111\" B" -> VNum(-7)
       )
     }
-    describe("when given a list"){
+    describe("when given a list") {
       testMulti(
         "#[1|1|0#] B" -> VNum(6),
         "#[1|0|0|0#] B" -> VNum(8),
@@ -161,6 +161,15 @@ class ElementTests extends VyxalTests:
         given Context = Context()
         assertResult(3: VNum)(
           Impls.count(VNum(3), VList(1, 3, 30, 2, 33, 4, 3, 3))
+        )
+        assertResult(0: VNum)(
+          Impls.count(VList(1, 30, 2, 33, 4), VNum(3))
+        )
+        assertResult(1: VNum)(
+          Impls.count(
+            VList(1, 30, VList(VList("h"), VList("e"), VList("c")), 33, 4),
+            VList(VList("h"), VList("e"), VList("c"))
+          )
         )
       }
     }

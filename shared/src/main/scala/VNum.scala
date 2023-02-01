@@ -31,7 +31,7 @@ class VNum private (val underlying: Complex[Real]):
     case n: VNum =>
       (underlying `eq` n.underlying) ||
       ((this.real - n.real).abs < VNum.Epsilon && (this.imag - n.imag).abs < VNum.Epsilon)
-    case _       => false
+    case _ => false
 end VNum
 
 /** Be sure to import `VNum.given` to be able to match on VNums and stuff */
@@ -39,7 +39,7 @@ object VNum:
 
   private val MaxRadix = 36
 
-  private val Epsilon = Real(10) ** -9
+  private val Epsilon = Real(10) ** -15
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n
@@ -67,8 +67,7 @@ object VNum:
     val neg = component.startsWith("-")
     val comp = if neg then component.substring(1) else component
     val sepInd = comp.indexOf('.')
-    if comp.isEmpty then
-      if neg then -default else default
+    if comp.isEmpty then if neg then -default else default
     else if sepInd == -1 then
       val i = parseIntegral(comp, radix)
       if neg then -i else i
