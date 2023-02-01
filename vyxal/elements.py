@@ -5125,7 +5125,7 @@ def remove(lhs, rhs, ctx):
     lhs = iterable(lhs)
     ts = vy_type(lhs)
     if set(vy_type(lhs, rhs)) == {types.FunctionType, NUMBER_TYPE}:
-        func, count = (rhs, lhs) if ts is types.FunctionType else (lhs, rhs)
+        func, count = (lhs, rhs) if ts is types.FunctionType else (rhs, lhs)
         return vy_filter(func, infinite_all_integers(None, ctx), ctx)[:count]
     if ts == str:
         return replace(lhs, rhs, "", ctx)
