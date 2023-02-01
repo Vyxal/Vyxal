@@ -5125,19 +5125,8 @@ def remove(lhs, rhs, ctx):
     lhs = iterable(lhs)
     ts = vy_type(lhs)
     if set(vy_type(lhs, rhs)) == {types.FunctionType, NUMBER_TYPE}:
-        lhs, rhs = (rhs, lhs) if ts is types.FunctionType else (lhs, rhs)
-
-        @lazylist
-        def gen():
-            value = 1
-            found = 0
-            while found != rhs:
-                if lhs(value):
-                    yield value
-                    found += 1
-                value += 1
-
-        return gen()
+        func, count = (lhs, rhs) if ts is types.FunctionType else (rhs, lhs)
+        return vy_filter(func, infinite_all_integers(None, ctx), ctx)[:count]
     if ts == str:
         return replace(lhs, rhs, "", ctx)
     elif ts == LazyList:
@@ -5656,25 +5645,8 @@ def slice_from(lhs, rhs, ctx):
     """
     ts = vy_type(lhs, rhs, simple=True)
     if types.FunctionType in ts:
-        function, count = (
-            (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
-        )
-
-        @lazylist
-        def gen():
-            found = 0
-            item = 1
-            while True:
-                if found == count:
-                    break
-                res = safe_apply(function, item, ctx=ctx)
-                if boolify(res, ctx=ctx):
-                    found += 1
-                    yield item
-                item += 1
-
-        return gen()
-
+        func, count = (lhs, rhs) if ts[0] is types.FunctionType else (rhs, lhs)
+        return vy_filter(func, infinite_positives(None, ctx), ctx)[:count]
     else:
         return {
             (str, str): lambda: lhs + "\n" + rhs,

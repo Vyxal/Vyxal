@@ -1296,8 +1296,8 @@
   description: Remove instances of b in a
   arity: 2
   overloads:
-    num-fun: first a positive integers where b is truthy
-    fun-num: first b positive integers where a is truthy
+    num-fun: first a integers where b is truthy (0, 1, -1, ...)
+    fun-num: first b integers where a is truthy
     any-any: a.replace(b,"")
   vectorise: false
   tests:
@@ -1840,7 +1840,7 @@
   description: Slice from an index to the end
   arity: 2
   overloads:
-    fun-num: first b integers for which a(x) is truthy
+    fun-num: first b positive integers for which a(x) is truthy
     any-num: a[b:] (slice from b to the end)
     str-str: vertically merge a and b
   vectorise: false
