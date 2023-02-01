@@ -3325,7 +3325,7 @@ var codepage_descriptions =
     {
       "name": "Random Choice",
       "description": "Random choice of single item from array",
-      "overloads": "lst -> random.choice(a)\nnum -> Random integer from 0 to a",
+      "overloads": "lst -> random.choice(a)\nnum -> Random integer from 1 to a",
       "token": "\u2105"
     },
     {

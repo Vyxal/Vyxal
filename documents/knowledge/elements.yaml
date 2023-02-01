@@ -2776,7 +2776,7 @@
   description: Random choice of single item from array
   overloads:
     lst: random.choice(a)
-    num: Random integer from 0 to a
+    num: Random integer from 1 to a
   vectorise: false
   tests:
     - '[""] : ""'
