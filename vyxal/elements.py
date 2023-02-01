@@ -69,6 +69,381 @@ def process_element(
     return py_code, arity
 
 
+elements: dict[str, tuple[str, int]] = {
+    "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
+    "∧": process_element("rhs and lhs", 2),
+    "∨": process_element("rhs or lhs", 2),
+    "÷": (
+        "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
+        1,
+    ),
+    "×": process_element("'*'", 0),
+    "†": (
+        "top = function_call(stack, ctx)\n"
+        + "if top is not None: stack.append(top)",
+        1,
+    ),
+    "!": process_element("len(stack)", -1),
+    '"': process_element("[lhs, rhs]", 2),
+    "$": (
+        "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
+        "stack.append(lhs)",
+        2,
+    ),
+    ",": ("top = pop(stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
+    ":": (
+        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
+        "stack.append(top)",
+        1,
+    ),
+    "?": (
+        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True); "
+        "ctx.use_top_input = False; stack.append(lhs)",
+        0,
+    ),
+    "B": process_element("vy_int(lhs, 2)", 1),
+    "D": (
+        "top = pop(stack, 1, ctx); stack.append(top);"
+        "stack.append(deep_copy(top)); stack.append(deep_copy(top));",
+        1,
+    ),
+    "Q": process_element("exit()", 0),
+    "R": (
+        """
+ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
+if ts == (NUMBER_TYPE, NUMBER_TYPE):
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(string_base_convert(lhs, rhs, ctx))
+elif types.FunctionType in ts:
+    rhs, lhs = pop(stack, 2, ctx)
+    stack.append(vy_reduce(lhs, rhs, ctx))
+else:
+    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))
+""",
+        2,
+    ),
+    "W": (
+        "temp = list(deep_copy(stack))\n"
+        "pop(stack, len(stack), ctx)\n"
+        "stack.append(temp)",
+        -1,
+    ),
+    # X doesn't need to be implemented here, because it's already a structure
+    "^": ("stack += wrapify(stack, len(stack), ctx)", -1),
+    "_": ("pop(stack, 1, ctx)", 1),
+    "d": process_element("multiply(lhs, 2, ctx)", 1),
+    "n": process_element("ctx.context_values[-1]", 0),
+    "u": process_element("-1", 0),
+    "w": process_element("[lhs]", 1),
+    "x": process_element("", 2),
+    "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
+    "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
+    "¤": process_element("''", 0),
+    "ð": process_element("' '", 0),
+    "ġ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top, simple=True) is list:\n"
+        "    stack.append(vy_gcd(top, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(vy_gcd(pop(stack, 1, ctx), top, ctx))\n",
+        2,
+    ),
+    "ḣ": (
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
+        " stack.append(head(top, ctx));"
+        " stack.append(top[1:])",
+        1,
+    ),
+    "ṫ": (
+        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
+        " stack.append(index(top, [None, -1], ctx));"
+        " stack.append(tail(top, ctx))",
+        1,
+    ),
+    "₀": process_element("10", 0),
+    "₁": process_element("100", 0),
+    "₄": process_element("26", 0),
+    "₅": (
+        "top = pop(stack, 1, ctx); stack += is_divisible_by_five(top, ctx)",
+        1,
+    ),
+    "₆": process_element("64", 0),
+    "₇": process_element("128", 0),
+    "₈": process_element("256", 0),
+    "¶": process_element("'\\n'", 0),
+    "Ḃ": (
+        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
+        "stack.append(reverse(top, ctx))",
+        1,
+    ),
+    "Ḋ": (
+        "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
+        2,
+    ),
+    "Ė": (
+        "stack += vy_exec(pop(stack, 1, ctx), ctx)",
+        1,
+    ),
+    "Ȯ": (
+        "if len(stack) > 1: stack.append(index(stack, -2, ctx))\n"
+        "else: stack.append(get_input(ctx))",
+        0,
+    ),
+    "Ṫ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top) == NUMBER_TYPE:\n"
+        "    stack.append(1)\n"
+        "    stack.append(top)\n"
+        "else:\n"
+        "    stack.append(tail_remove(top, ctx))",
+        1,
+    ),
+    "⁰": process_element("ctx.inputs[0][0][-1]", 0),
+    "¹": process_element("ctx.inputs[0][0][-2]", 0),
+    "∇": (
+        "third, second, first = pop(stack, 3, ctx); "
+        "stack.append(third); stack.append(first); "
+        "stack.append(second)",
+        3,
+    ),
+    "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
+    "…": (
+        "top = pop(stack, 1, ctx); "
+        "vy_print(top, end='\\n', ctx=ctx); stack.append(top)",
+        1,
+    ),
+    "□": (
+        "if ctx.inputs[0][0]: stack.append(ctx.inputs[0][0])\n"
+        "else:\n"
+        "    stdin = open(0)\n"
+        "    if stdin:\n"
+        "        a = [x[:-1] if ctx.inputs_as_strings else vy_eval(x[:-1], ctx=ctx) for x in stdin]\n"
+        "        ctx.inputs[0][0] = deep_copy(a)\n"
+        "        stack.append(a)\n"
+        "    else:\n"
+        "        input_list = []\n"
+        "        try:\n"
+        "            temp = input()\n"
+        "            while temp:\n"
+        "                input_list.append(temp if ctx.inputs_as_strings else vy_eval(temp, ctx=ctx))\n"
+        "                temp = input()\n"
+        "            ctx.inputs[0][0] = list(deep_copy(input_list))\n"
+        "            stack.append(input_list)\n"
+        "        except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
+        0,
+    ),
+    "∩": process_element(transpose, 1),
+    "£": ("ctx.register = pop(stack, 1, ctx)", 1),
+    "¥": process_element("ctx.register", 0),
+    "Ǔ": (
+        "rhs = pop(stack, 1, ctx)\n"
+        + "if vy_type(rhs) == NUMBER_TYPE: \n"
+        + "    lhs = pop(stack, 1, ctx)\n"
+        + "    stack.append(rotate_left(lhs, rhs, ctx))\n"
+        + "else:\n"
+        + "    stack.append(rotate_left(rhs, 1, ctx))\n",
+        2,
+    ),
+    "ǔ": (
+        "rhs = pop(stack, 1, ctx)\n"
+        + "if vy_type(rhs) == NUMBER_TYPE: \n"
+        + "    lhs = pop(stack, 1, ctx)\n"
+        + "    stack.append(rotate_right(lhs, rhs, ctx))\n"
+        + "else:\n"
+        + "    stack.append(rotate_right(rhs, 1, ctx))\n",
+        2,
+    ),
+    "¼": process_element("ctx.global_array.pop()", 0),
+    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.append(lhs)", 1),
+    "¾": process_element("list(deep_copy(ctx.global_array))", 0),
+    "„": (
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
+        "stack += temp[1:] + [temp[0]]",
+        -1,
+    ),
+    "‟": (
+        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
+        "stack += [temp[-1]] + temp[:-1]",
+        -1,
+    ),
+    "ඞ": process_element('"sus"', 0),
+    "∆I": process_element("pi_digits(lhs)", 1),
+    "∆Ŀ": (
+        "top = pop(stack, 1, ctx)\n"
+        "if vy_type(top, simple=True) is list:\n"
+        "    stack.append(lowest_common_multiple(top, ctx=ctx))\n"
+        "else:\n"
+        "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
+        2,
+    ),
+    "∆Ṙ": process_element("sympy.nsimplify(random.random(), rational=True)", 0),
+    "ø∧": (
+        "other, rhs, lhs = pop(stack, 3, ctx)\n"
+        "canvas_global_draw(lhs, rhs, other, ctx)\n",
+    ),
+    "Þf": (
+        "rhs = pop(stack, 1, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "    stack.append(flatten_by(rhs, 1, ctx))\n"
+        "else:\n"
+        "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
+        2,
+    ),
+    "ÞṪ": process_element(transpose, 2),
+    "Þ¾": ("ctx.global_array = []", 0),
+    "Þẇ": (
+        "res = unwrap(pop(stack, 1, ctx), ctx); "
+        "stack.append(res[0]); stack.append(res[1])",
+        1,
+    ),
+    "Þİ": (
+        "rhs, lhs = pop(stack, 2, ctx)\n"
+        "if vy_type(rhs) != NUMBER_TYPE:\n"
+        "    lhs, rhs = rhs, lhs\n"
+        "stack.append(index(lhs, [0, rhs], ctx))\n"
+        "stack.append(index(lhs, [rhs, None], ctx))\n",
+        2,
+    ),
+    "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
+    "¨…": (
+        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx); "
+        "stack.append(top)",
+        1,
+    ),
+    "¨U": (
+        "if not ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))",
+        1,
+    ),
+    "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
+    "¨?": (
+        'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
+        0,
+    ),
+    "¨S": (
+        "a = [list(stack.pop()), 0]; ctx.inputs.insert(0, a); ctx.inputs.append(a)",
+        1,
+    ),
+    "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
+    "¨²": ("stack.append(all_powers(2, ctx))", 0),
+    "¨₀": ("stack.append(all_powers(10, ctx))", 0),
+    "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
+    "ke": process_element("sympy.E", 0),
+    "kf": process_element('"Fizz"', 0),
+    "kb": process_element('"Buzz"', 0),
+    "kF": process_element('"FizzBuzz"', 0),
+    "kH": process_element('"Hello, World!"', 0),
+    "kh": process_element('"Hello World"', 0),
+    "k1": process_element("1000", 0),
+    "k2": process_element("10000", 0),
+    "k3": process_element("100000", 0),
+    "k4": process_element("1000000", 0),
+    "ka": process_element('"abcdefghijklmnopqrstuvwxyz"', 0),
+    "kL": process_element(
+        '"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
+    ),
+    "kd": process_element('"0123456789"', 0),
+    "k6": process_element('"0123456789abcdef"', 0),
+    "k^": process_element('"0123456789ABCDEF"', 0),
+    "ko": process_element('"01234567"', 0),
+    "kp": process_element("string.punctuation", 0),
+    "kP": process_element(
+        '"!\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
+        0,
+    ),
+    "kQ": process_element(
+        '" !\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
+        0,
+    ),
+    "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),
+    "kr": process_element(
+        '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
+    ),
+    "kB": process_element(
+        '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"', 0
+    ),
+    "kZ": process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBA"', 0),
+    "kz": process_element(' "zyxwvutsrqponmlkjihgfedcba"', 0),
+    "kl": process_element(
+        '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
+    ),
+    "ki": process_element("sympy.pi", 0),
+    "kg": process_element(
+        "sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0
+    ),
+    "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
+    "kN": process_element(
+        "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
+    ),
+    "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
+    "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
+    "kð": process_element(
+        "LazyList([(d:=datetime.now()).day, d.month, d.year])", 0
+    ),
+    "kβ": process_element('"{}[]<>()"', 0),
+    "kḂ": process_element('"()[]{}"', 0),
+    "kḃ": process_element("'([{'", 0),
+    "kß": process_element('"()[]"', 0),
+    "k≤": process_element('"([{<"', 0),
+    "k≥": process_element('")]}"', 0),
+    "kΠ": process_element('")]}>"', 0),
+    "kv": process_element('"aeiou"', 0),
+    "kV": process_element('"AEIOU"', 0),
+    "k∨": process_element('"aeiouAEIOU"', 0),
+    "k⟇": process_element("vyxal.encoding.codepage", 0),
+    "k½": process_element("LazyList([1,2])", 0),
+    "kḭ": process_element("2 ** 32", 0),
+    "k₁": process_element("LazyList([1, 1])", 0),
+    "k+": process_element("LazyList([1, -1])", 0),
+    "k-": process_element("LazyList([-1, 1])", 0),
+    "k≈": process_element("LazyList([0, 1])", 0),
+    "k/": process_element('"/\\\\"', 0),
+    "kR": process_element("360", 0),
+    "kW": process_element('"https://"', 0),
+    "k℅": process_element('"http://"', 0),
+    "k↳": process_element('"https://www."', 0),
+    "k²": process_element('"http://www."', 0),
+    "k¶": process_element("512", 0),
+    "k⁋": process_element("1024", 0),
+    "k¦": process_element("2048", 0),
+    "kṄ": process_element("4096", 0),
+    "kṅ": process_element("8192", 0),
+    "k¡": process_element("2 ** 14", 0),
+    "kε": process_element("2 ** 15", 0),
+    "k₴": process_element("2 ** 16", 0),
+    "k×": process_element("2 ** 31", 0),
+    "k⁰": process_element('"bcdfghjklmnpqrstvwxyz"', 0),
+    "k¹": process_element('"bcdfghjklmnpqrstvwxz"', 0),
+    "kT": process_element('"[]<>-+.,"', 0),
+    "kṗ": process_element('LazyList(["()","[]","{}","<>"])', 0),
+    "kṖ": process_element('"([{<>}])"', 0),
+    "kS": process_element('"ඞ"', 0),
+    "k₂": process_element("2 ** 20", 0),
+    "k₃": process_element("2 ** 30", 0),
+    "k∪": process_element('"aeiouy"', 0),
+    "k⊍": process_element('"AEIOUY"', 0),
+    "k∩": process_element('"aeiouyAEIOUY"', 0),
+    "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
+    "kṘ": process_element('"IVXLCDM"', 0),
+    "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
+}
+
+
+def element(symbol: str, arity: int):
+    """
+    Decorator to make elements
+    """
+
+    def decorator(impl):
+        if symbol in elements:
+            raise Exception(f"Element {symbol} already in elements dict")
+        else:
+            elements[symbol] = process_element(impl, arity)
+            return impl
+
+    return decorator
+
+
+@element("ε", 2)
 def absolute_difference(lhs, rhs, ctx):
     """Element ε
     (num, num) -> abs(a - b)
@@ -87,6 +462,7 @@ def absolute_difference(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(absolute_difference, lhs, rhs, ctx=ctx))()
 
 
+@element("+", 2)
 def add(lhs, rhs, ctx):
     """Element +
     (num, num) -> lhs + rhs
@@ -103,6 +479,7 @@ def add(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(add, lhs, rhs, ctx=ctx))()
 
 
+@element("Þa", 1)
 def adjacency_matrix_dir(lhs, ctx):
     """Element Þa
     (lst) -> adjacency matrix of directed graph.
@@ -116,6 +493,7 @@ def adjacency_matrix_dir(lhs, ctx):
     return adj
 
 
+@element("ÞA", 1)
 def adjacency_matrix_undir(lhs, ctx):
     """Element ÞA
     (lst) -> adjacency matrix of undirected graph"""
@@ -131,6 +509,7 @@ def adjacency_matrix_undir(lhs, ctx):
     return adj
 
 
+@element("øŀ", 1)
 def align_left(lhs, ctx):
     """Element øŀ
     (str) -> left-aligned string
@@ -153,6 +532,7 @@ def align_left(lhs, ctx):
     return result
 
 
+@element("øɽ", 1)
 def align_right(lhs, ctx):
     """element øɽ
     (str) -> right-aligned string
@@ -175,6 +555,7 @@ def align_right(lhs, ctx):
     return result
 
 
+@element("Þḋ", 1)
 def all_antidiagonals(lhs, ctx):
     """Element Þḋ
     Anti-diagonals of a matrix, starting with the main anti-diagonal.
@@ -194,6 +575,7 @@ def all_antidiagonals(lhs, ctx):
     return all_diags
 
 
+@element("Þ`", 1)
 def all_antidiagonals_ordered(lhs, ctx):
     """Element Þ`
     (lhs) -> Anti-diagonals of a matrix, starting with the shortest top diagonal
@@ -231,6 +613,7 @@ def all_antidiagonals_ordered(lhs, ctx):
     return gen()
 
 
+@element("Þx", 1)
 def all_combos(lhs, ctx):
     """Element Þx
     (any) -> all combinations without replacement of lhs (all lengths)
@@ -251,6 +634,7 @@ def all_combos(lhs, ctx):
     return gen()
 
 
+@element("Þ×", 1)
 def all_combos_with_replacement(lhs, ctx):
     """Element Þ×
     (any) -> all combinations with replacement of lhs (all lengths)
@@ -270,6 +654,7 @@ def all_combos_with_replacement(lhs, ctx):
     return gen()
 
 
+@element("ÞD", 1)
 def all_diagonals(lhs, ctx):
     """Element ÞD
     Diagonals of a matrix, starting with the main diagonal.
@@ -286,6 +671,7 @@ def all_diagonals(lhs, ctx):
     return all_diags
 
 
+@element("Þ√", 1)
 def all_diagonals_ordered(lhs, ctx):
     """Element Þ√
     (lhs) -> Diagonals of a matrix, starting with the shortest top diagonal
@@ -311,6 +697,7 @@ def all_diagonals_ordered(lhs, ctx):
     return all_diags
 
 
+@element("≈", 1)
 def all_equal(lhs, ctx):
     """Element ≈
     (any) -> are all items in a the same?
@@ -325,6 +712,7 @@ def all_equal(lhs, ctx):
     return 1
 
 
+@element("ÞI", 2)
 def all_indices_multidim(lhs, rhs, ctx):
     """Element ÞI
     (lst, any) -> All indices of rhs in lhs (multidimensional)
@@ -350,6 +738,7 @@ def all_indices_multidim(lhs, rhs, ctx):
     return gen()
 
 
+@element("Þ<", 2)
 def all_less_than_increasing(lhs, rhs, ctx):
     """Element Þ<
     (any, num): All values of a up to (not including) the first greater
@@ -368,6 +757,7 @@ def all_less_than_increasing(lhs, rhs, ctx):
     return gen()
 
 
+@element("¨*", 1)
 def all_multiples(lhs, ctx):
     """Element ¨*
     (num) -> [a*1, a*2, a*3, a*4, ...]
@@ -376,6 +766,7 @@ def all_multiples(lhs, ctx):
     return multiply(lhs, infinite_positives(ctx), ctx)
 
 
+@element("øṖ", 1)
 def all_partitions(lhs, ctx):
     """Element øṖ
     (any) -> all_partitions(a)
@@ -400,6 +791,7 @@ def all_partitions(lhs, ctx):
     return uniquify(gen(), ctx=ctx)
 
 
+@element("¨e", 1)
 def all_powers(lhs, ctx):
     """Element ¨e
     (num) -> [a**1, a**2, a**3, a**4, ...]
@@ -408,6 +800,7 @@ def all_powers(lhs, ctx):
     return exponent(lhs, infinite_positives(ctx), ctx)
 
 
+@element("Þs", 2)
 def all_slices(lhs, rhs, ctx):
     """Element Þs
     (lst, int) -> Get all slices of a list, skipping a certain number of items
@@ -420,6 +813,7 @@ def all_slices(lhs, rhs, ctx):
     return LazyList(index(lhs, [start, None, rhs], ctx) for start in range(rhs))
 
 
+@element("A", 1)
 def all_true(lhs, ctx):
     """Element A
     (lst) -> all of lhs is truthy?
@@ -433,6 +827,7 @@ def all_true(lhs, ctx):
     return int(all(iterable(lhs, ctx)))
 
 
+@element("Þu", 1)
 def all_unique(lhs, ctx):
     """Element Þu
     (any) -> Are all elements of a unique?
@@ -440,6 +835,7 @@ def all_unique(lhs, ctx):
     return int(len(uniquify(lhs, ctx)) == len(iterable(lhs, ctx=ctx)))
 
 
+@element("ÞN", 1)
 def alternating_negations(lhs, ctx):
     """Element ÞN
     (any) -> alternating negations of lhs
@@ -455,6 +851,7 @@ def alternating_negations(lhs, ctx):
     return gen()
 
 
+@element("øḂ", 1)
 def angle_bracketify(lhs, ctx):
     """Element øḂ
     (any) -> "<" + lhs + ">"
@@ -465,6 +862,7 @@ def angle_bracketify(lhs, ctx):
     return "<" + str(lhs) + ">"
 
 
+@element("Þ\\", 1)
 def anti_diagonal(lhs, ctx):
     """Element Þ\\
     (lst) -> Antidiagonal of matrix
@@ -474,6 +872,7 @@ def anti_diagonal(lhs, ctx):
     return [lhs[i][m - i - 1] for i in range(m)]
 
 
+@element("a", 1)
 def any_true(lhs, ctx):
     """Element a
     (lst) -> any of lhs is truthy?
@@ -487,6 +886,7 @@ def any_true(lhs, ctx):
     return int(any(iterable(lhs, ctx=ctx)))
 
 
+@element("¨M", 3)
 def apply_at(lhs, rhs, other, ctx):
     """Element ¨M
     (lst, lst, fun) -> Map a function to elements of a list whose
@@ -506,6 +906,7 @@ def apply_at(lhs, rhs, other, ctx):
     return lhs
 
 
+@element("∆C", 1)
 def arccos(lhs, ctx):
     """Element ∆C
     (num) -> arccos(lhs)
@@ -520,6 +921,7 @@ def arccos(lhs, ctx):
     }.get(ts, lambda: vectorise(arccos, lhs, ctx=ctx))()
 
 
+@element("∆S", 1)
 def arcsin(lhs, ctx):
     """Element ∆S
     (num) -> arcsin(a)
@@ -534,6 +936,7 @@ def arcsin(lhs, ctx):
     }.get(ts, lambda: vectorise(arcsin, lhs, ctx=ctx))()
 
 
+@element("∆T", 1)
 def arctan(lhs, ctx):
     """Element ∆T
     (num) -> arctan(a)
@@ -548,6 +951,7 @@ def arctan(lhs, ctx):
     }.get(ts, lambda: vectorise(arctan, lhs, ctx=ctx))()
 
 
+@element("∆Ṫ", 2)
 def arctan2(lhs, rhs, ctx):
     """Element ∆Ṫ
     (num) -> arctan2(lhs, rhs)
@@ -561,6 +965,7 @@ def arctan2(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(arctan2, lhs, rhs, ctx=ctx))()
 
 
+@element("Ȧ", 3)
 def assign_iterable(lhs, rhs, other, ctx):
     """Element Ȧ
     (any, num, any) -> a but item b (0-indexed) is set to c
@@ -599,6 +1004,7 @@ def assign_iterable(lhs, rhs, other, ctx):
         return gen()
 
 
+@element("øC", 1)
 def base_255_number_compress(lhs, ctx):
     """Element øC
     (num) -> Compress a number in base 255
@@ -606,6 +1012,7 @@ def base_255_number_compress(lhs, ctx):
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
+@element("øc", 1)
 def base_255_string_compress(lhs, ctx):
     """Element øc
     (str) -> Compress a string of lowercase letters and spaces in base 255
@@ -621,12 +1028,14 @@ def base_255_string_compress(lhs, ctx):
     )
 
 
+@element("∆b", 1)
 def binary_string(lhs, ctx: Context):
     if vy_type(lhs, simple=True) == list:
         return vectorise(binary_string, lhs, ctx=ctx)
     return bin(lhs).replace("0b", "")
 
 
+@element("⋏", 2)
 def bitwise_and(lhs, rhs, ctx):
     """Element ⋏
     (num, num) -> a & b
@@ -643,6 +1052,7 @@ def bitwise_and(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_and, lhs, rhs, ctx=ctx))()
 
 
+@element("ꜝ", 1)
 def bitwise_not(lhs, ctx):
     """Element ꜝ
     (num) -> ~a
@@ -657,6 +1067,7 @@ def bitwise_not(lhs, ctx):
         return int(any(char.isupper() for char in str(lhs)))
 
 
+@element("⋎", 2)
 def bitwise_or(lhs, rhs, ctx):
     """Element ⋎
     (num, num) -> a | b
@@ -680,6 +1091,7 @@ def bitwise_or(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_or, lhs, rhs, ctx=ctx))()
 
 
+@element("꘍", 2)
 def bitwise_xor(lhs, rhs, ctx):
     """Element ꘍
     (num, num) -> a ^ b
@@ -696,6 +1108,7 @@ def bitwise_xor(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(bitwise_xor, lhs, rhs, ctx=ctx))()
 
 
+@element("Þṗ", 2)
 def boolean_partition(lhs, rhs, ctx):
     """Element Þṗ
     (lst, lst) -> Split lhs on truthy indices in rhs
@@ -703,6 +1116,7 @@ def boolean_partition(lhs, rhs, ctx):
     return partition_at(rhs, lhs)
 
 
+@element("ḃ", 1)
 def boolify(lhs, ctx):
     """Element ḃ
     (any) -> is truthy?
@@ -713,6 +1127,7 @@ def boolify(lhs, ctx):
         return int(bool(lhs))
 
 
+@element("øB", 1)
 def bracketify(lhs, ctx):
     """Element øB
     (any) -> "[" + lhs + "]"
@@ -723,6 +1138,7 @@ def bracketify(lhs, ctx):
     return "[" + str(lhs) + "]"
 
 
+@element("øβ", 1)
 def brackets_balanced(lhs, ctx):
     """Element øβ
     (str) -> is lhs balanced?
@@ -742,6 +1158,7 @@ def brackets_balanced(lhs, ctx):
     return int(len(temp) == 0)
 
 
+@element("ø^", 3)
 def canvas_draw(lhs, rhs, other, ctx):
     """Element ø^
     Creates an empty canvas and draws on it, returning the result. Does some complex type overloading.
@@ -773,6 +1190,7 @@ def canvas_global_draw(lhs, rhs, other, ctx):
     ctx.canvas.draw(*overloaded_canvas_draw(lhs, rhs, other, ctx=ctx))
 
 
+@element("∆¢", 1)
 def carmichael_function(lhs, ctx):
     """Element ∆¢
     (num) -> is lhs a Carmichael number?
@@ -785,6 +1203,7 @@ def carmichael_function(lhs, ctx):
     }.get(ts, lambda: vectorise(carmichael_function, lhs, ctx=ctx))()
 
 
+@element("Þ*", 1)
 def cartesian_over_list(lhs, ctx):
     """Element Þ*
     (lst) -> itertools.product(*lhs)
@@ -797,6 +1216,7 @@ def cartesian_over_list(lhs, ctx):
     )
 
 
+@element("ÞẊ", 2)
 def cartesian_power(lhs, rhs, ctx):
     """Element ÞẊ
     (any, num) -> cartesian_power(a, b)
@@ -877,6 +1297,7 @@ def cartesian_power(lhs, rhs, ctx):
         return gen()
 
 
+@element("Ẋ", 2)
 def cartesian_product(lhs, rhs, ctx):
     """Element Ẋ
     (any, any) -> cartesian product of lhs and rhs
@@ -937,6 +1358,7 @@ def cartesian_product(lhs, rhs, ctx):
         )
 
 
+@element("øĊ", 1)
 def center(lhs, ctx):
     """Element øĊ
     (list) -> center align list by padding with spaces
@@ -946,6 +1368,7 @@ def center(lhs, ctx):
     return [line.center(focal) for line in lhs]
 
 
+@element("C", 1)
 def chr_ord(lhs, ctx):
     """Element C
     (num) -> chr(a)
@@ -962,6 +1385,7 @@ def chr_ord(lhs, ctx):
     }.get(ts, lambda: vectorise(chr_ord, lhs, ctx=ctx))()
 
 
+@element("ø⟇", 1)
 def codepage_digraph(lhs, ctx):
     """Element ø⟇
     (num) -> vyxal_codepage[a]
@@ -976,6 +1400,7 @@ def codepage_digraph(lhs, ctx):
     }.get(ts, lambda: vectorise(codepage_digraph, lhs, ctx=ctx))()
 
 
+@element("↔", 2)
 def combinations_with_replacement(lhs, rhs, ctx):
     """Element ↔
     (any, num) -> combinations of lhs of length rhs with replacement
@@ -996,6 +1421,7 @@ def combinations_with_replacement(lhs, rhs, ctx):
     }.get(ts, lambda: set_intersection(lhs, rhs))()
 
 
+@element("⌐", 1)
 def complement(lhs, ctx):
     """Element ⌐
     (num) -> 1 - a
@@ -1007,6 +1433,7 @@ def complement(lhs, ctx):
     )()
 
 
+@element("ÞǓ", 1)
 def connected_uniquify(lhs, ctx: Context):
     """Element ÞǓ
     (any) -> connected uniquify a (Ġvh)
@@ -1021,6 +1448,7 @@ def connected_uniquify(lhs, ctx: Context):
     }.get(ts)()
 
 
+@element("c", 2)
 def contains(lhs, rhs, ctx):
     """Element c
     (any, fun) -> first item in a where b is truthy
@@ -1039,6 +1467,7 @@ def contains(lhs, rhs, ctx):
     return int(vy_str(rhs, ctx=ctx) in vy_str(lhs, ctx=ctx))
 
 
+@element("Þk", 2)
 def convolve(lhs, rhs, ctx=None):
     """Element Þk
     (lst, lst) -> return 2-dimensional convolution of matrices a and b
@@ -1064,11 +1493,13 @@ def convolve(lhs, rhs, ctx=None):
     return output.tolist()
 
 
+@element("🍪", 0)
 def cookie(_, ctx):
     while 1:
         vy_print("cookie", ctx=ctx)
 
 
+@element("ÞZ", 2)
 def coords_deepmap(lhs, rhs, ctx):
     """Element ÞZ
     (any, fun) -> For each value of a (all the way down) call b with the
@@ -1101,6 +1532,7 @@ def coords_deepmap(lhs, rhs, ctx):
     return f(lhs, rhs)
 
 
+@element("∆±", 2)
 def copy_sign(lhs, rhs, ctx):
     """Element ∆±
     (num, num) -> math.copysign(a, b)
@@ -1110,6 +1542,7 @@ def copy_sign(lhs, rhs, ctx):
     )
 
 
+@element("∆c", 1)
 def cosine(lhs, ctx):
     """Element ∆c
     (num) -> cosine(a)
@@ -1124,6 +1557,7 @@ def cosine(lhs, ctx):
     }.get(ts, lambda: vectorise(cosine, lhs, ctx=ctx))()
 
 
+@element("O", 2)
 def count_item(lhs, rhs, ctx):
     """Element O
     (any, any) -> returns the number of occurances of b in a
@@ -1153,6 +1587,7 @@ def count_item(lhs, rhs, ctx):
     return iterable(lhs, ctx=ctx).count(rhs)
 
 
+@element("øO", 2)
 def count_overlapping(lhs, rhs, ctx):
     """Element øO
     (any, any) -> returns the number of overlapping occurances of b in a
@@ -1166,6 +1601,7 @@ def count_overlapping(lhs, rhs, ctx):
     return count
 
 
+@element("Ċ", 1)
 def counts(lhs, ctx):
     """Element Ċ
     (any) -> Counts: [[x, a.count(x)] for x in a]"""
@@ -1173,6 +1609,7 @@ def counts(lhs, ctx):
     return [[x, count_item(lhs, x, ctx)] for x in temp]
 
 
+@element("ÞR", 1)
 def cumul_sum_sans_last_prepend_zero(lhs, ctx):
     """Element ÞR
     Remove the last item of the cumulative sums of a list and prepend 0.
@@ -1180,6 +1617,7 @@ def cumul_sum_sans_last_prepend_zero(lhs, ctx):
     return prepend(cumulative_sum(lhs[:-1], ctx=ctx), 0, ctx)
 
 
+@element("¦", 1)
 def cumulative_sum(lhs, ctx):
     """Element ¦
     (any) -> cumulative sum of a
@@ -1191,6 +1629,7 @@ def cumulative_sum(lhs, ctx):
     return LazyList(scanl(add, iterable(lhs, ctx=ctx), ctx))
 
 
+@element("øḃ", 1)
 def curly_bracketify(lhs, ctx):
     """Element øḃ
     (any) -> "[" + lhs + "]"
@@ -1201,6 +1640,7 @@ def curly_bracketify(lhs, ctx):
     return "{" + str(lhs) + "}"
 
 
+@element("ø↲", 3)
 def custom_pad_left(lhs, rhs, other, ctx):
     """Element ø↲
     (any, num, str) -> pad a on the left with c to length b
@@ -1215,6 +1655,7 @@ def custom_pad_left(lhs, rhs, other, ctx):
         return lhs.ljust(int(other), rhs)
 
 
+@element("ø↳", 3)
 def custom_pad_right(lhs, rhs, other, ctx):
     """Element ø↳
     (any, num, str) -> pad a on the right with c to length b
@@ -1229,6 +1670,7 @@ def custom_pad_right(lhs, rhs, other, ctx):
         return lhs.rjust(int(other), rhs)
 
 
+@element("Þċ", 1)
 @infinite_lazylist
 def cycle(lhs, ctx):
     """Element Þċ
@@ -1239,6 +1681,7 @@ def cycle(lhs, ctx):
         yield from lhs
 
 
+@element("‹", 1)
 def decrement(lhs, ctx):
     """Element ‹
     (num) -> a - 1
@@ -1250,6 +1693,7 @@ def decrement(lhs, ctx):
     )()
 
 
+@element("∆‹", 2)
 def decrement_until_false(lhs, rhs, ctx):
     """Element ∆‹
     (any, fun) -> while b(a): a -= 1
@@ -1263,6 +1707,7 @@ def decrement_until_false(lhs, rhs, ctx):
     return value
 
 
+@element("f", 1)
 def deep_flatten(lhs, ctx):
     """Element f
     (any) -> flatten list completely
@@ -1279,6 +1724,7 @@ def deep_flatten(lhs, ctx):
     return gen()
 
 
+@element("¯", 1)
 def deltas(lhs, ctx):
     """Element ¯
     (any) -> deltas of a
@@ -1296,6 +1742,7 @@ def deltas(lhs, ctx):
     return gen()
 
 
+@element("Þj", 1)
 def depth(lhs, ctx=None):
     """Element Þj
     (lst) -> depth of a
@@ -1307,6 +1754,7 @@ def depth(lhs, ctx=None):
         return 0
 
 
+@element("Þ/", 1)
 def diagonal(lhs, ctx):
     """Element Þ/
     (any) -> diagonal of a
@@ -1317,6 +1765,7 @@ def diagonal(lhs, ctx):
     return [lhs[i][i] for i in range(min(len(lhs), len(lhs[0])))]
 
 
+@element("Þd", 1)
 def dist_matrix_dir(lhs, ctx):
     """Element Þd
     (lst) -> distance matrix of directed graph"""
@@ -1328,6 +1777,7 @@ def dist_matrix_dir(lhs, ctx):
     ]
 
 
+@element("Þw", 1)
 def dist_matrix_undir(lhs, ctx):
     """Element Þw
     (lst) -> distance matrix of undirected graph"""
@@ -1339,6 +1789,7 @@ def dist_matrix_undir(lhs, ctx):
     ]
 
 
+@element("/", 2)
 def divide(lhs, rhs, ctx):
     """Element /
     (num, num) -> a / b
@@ -1357,6 +1808,7 @@ def divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(divide, lhs, rhs, ctx=ctx))()
 
 
+@element("Þ÷", 2)
 def divide_lists(lhs, rhs, ctx):
     """Element Þ÷
     (any, num) -> a split into b even length pieces, possibly with an extra part
@@ -1368,6 +1820,7 @@ def divide_lists(lhs, rhs, ctx):
     return chop(lhs, rhs)
 
 
+@element("∆K", 1)
 def divisor_sum(lhs, ctx):
     """Element ∆K
     (num) -> sum of proper divisors of a
@@ -1380,6 +1833,7 @@ def divisor_sum(lhs, ctx):
     }.get(ts, lambda: vectorise(divisor_sum, lhs, ctx=ctx))()
 
 
+@element("K", 1)
 def divisors_or_prefixes(lhs, ctx):
     """Element K
     (num) -> divisors(a) # Factors or divisors of a
@@ -1405,6 +1859,7 @@ def divisors_or_prefixes(lhs, ctx):
         return prefixes(lhs, ctx=ctx)
 
 
+@element("Þ•", 2)
 def dot_product(lhs, rhs, ctx):
     """Element Þ•
     Return the dot product of lhs and rhs
@@ -1412,6 +1867,7 @@ def dot_product(lhs, rhs, ctx):
     return vy_sum(multiply(lhs, rhs, ctx), ctx)
 
 
+@element("∴", 2)
 def dyadic_maximum(lhs, rhs, ctx):
     """Element ∴
     (any, any) -> max(a, b)
@@ -1423,6 +1879,7 @@ def dyadic_maximum(lhs, rhs, ctx):
     return lhs if strict_greater_than(lhs, rhs, ctx) else rhs
 
 
+@element("∵", 2)
 def dyadic_minimum(lhs, rhs, ctx):
     """Element ∵
     (any, any) -> min(a, b)
@@ -1433,6 +1890,7 @@ def dyadic_minimum(lhs, rhs, ctx):
     return lhs if strict_less_than(lhs, rhs, ctx) else rhs
 
 
+@element("øḊ", 2)
 def dyadic_runl_decode(lhs, rhs, ctx: Context):
     """Element øḊ
     (any, any) -> run length decode a with lengths b
@@ -1440,6 +1898,7 @@ def dyadic_runl_decode(lhs, rhs, ctx: Context):
     return run_length_decoding(vy_zip(lhs, rhs, ctx=ctx), ctx=ctx)
 
 
+@element("∆Ė", 1)
 def e_digits(lhs, ctx):
     """Element ∆Ė
     (int) -> e_digits(a)
@@ -1455,6 +1914,7 @@ def e_digits(lhs, ctx):
         return vectorise(e_digits, lhs, ctx=ctx)
 
 
+@element("Þ∴", 2)
 def element_wise_dyadic_maximum(lhs, rhs, ctx):
     """Element Þ∴
     (lst, lst) -> max(a, b)
@@ -1466,6 +1926,7 @@ def element_wise_dyadic_maximum(lhs, rhs, ctx):
     return max(lhs, rhs)
 
 
+@element("Þ∵", 2)
 def element_wise_dyadic_minimum(lhs, rhs, ctx):
     """Element Þ∵
     (lst, lst) -> min(a, b)
@@ -1476,6 +1937,7 @@ def element_wise_dyadic_minimum(lhs, rhs, ctx):
     return min(lhs, rhs)
 
 
+@element("øE", 2)
 def ends_with(lhs, rhs, ctx):
     """Element øE
     (str, str) -> True if a ends with b
@@ -1490,6 +1952,7 @@ def ends_with(lhs, rhs, ctx):
     )
 
 
+@element("øf", 2)
 def ends_with_set(lhs, rhs, ctx):
     """Element øf
     (list, list) -> True if a ends with all of b
@@ -1504,6 +1967,7 @@ def ends_with_set(lhs, rhs, ctx):
     )
 
 
+@element("=", 2)
 def equals(lhs, rhs, ctx):
     """Element =
     (num, num) -> lhs == rhs
@@ -1538,6 +2002,7 @@ def equals(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(equals, lhs, rhs, ctx=ctx))()
 
 
+@element("∆d", 2)
 def euclidean_distance(lhs, rhs, ctx):
     """Element ∆d
     (num, num) -> distance between a and b
@@ -1547,6 +2012,7 @@ def euclidean_distance(lhs, rhs, ctx):
     )
 
 
+@element("Þ…", 2)
 def evenly_distribute(lhs, rhs, ctx):
     """Element Þ…
     (list, num) -> Evenly distribute a over all elements of b,
@@ -1578,6 +2044,7 @@ def evenly_distribute(lhs, rhs, ctx):
     return gen()
 
 
+@element("ɽ", 1)
 def exclusive_one_range(lhs, ctx):
     """Element ɽ
     (num) -> range(1, a)
@@ -1590,6 +2057,7 @@ def exclusive_one_range(lhs, ctx):
     }.get(ts, lambda: vectorise(exclusive_one_range, lhs, ctx=ctx))()
 
 
+@element("ʁ", 1)
 def exclusive_zero_range(lhs, ctx):
     """Element ʁ
     (num) -> range(0, a)
@@ -1602,6 +2070,7 @@ def exclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(exclusive_zero_range, lhs, ctx=ctx))()
 
 
+@element("E", 1)
 def exp2_or_eval(lhs, ctx):
     """Element E
     (num) -> 2 ** a
@@ -1615,6 +2084,7 @@ def exp2_or_eval(lhs, ctx):
     }.get(ts, lambda: vectorise(exp2_or_eval, lhs, ctx=ctx))()
 
 
+@element("∆e", 1)
 def expe(lhs, ctx):
     """Element ∆e
     (num) -> e ** a
@@ -1627,6 +2097,7 @@ def expe(lhs, ctx):
     }.get(ts, lambda: vectorise(expe, lhs, ctx=ctx))()
 
 
+@element("∆E", 1)
 def expe_minus_1(lhs, ctx):
     """Element ∆E
     (num) -> (e ** a) - 1
@@ -1639,6 +2110,7 @@ def expe_minus_1(lhs, ctx):
     }.get(ts, lambda: vectorise(expe_minus_1, lhs, ctx=ctx))()
 
 
+@element("e", 2)
 def exponent(lhs, rhs, ctx):
     """Element e
     (num, num) -> a ** b (exponentiation)
@@ -1662,6 +2134,7 @@ def exponent(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(exponent, lhs, rhs, ctx=ctx))()
 
 
+@element("¡", 1)
 def factorial(lhs, ctx):
     """Element ¡
     (num) -> factorial(a) (math.gamma(a + 1))
@@ -1675,6 +2148,7 @@ def factorial(lhs, ctx):
     }.get(ts, lambda: vectorise(factorial, lhs, ctx=ctx))()
 
 
+@element("øF", 1)
 def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
     """Element øF
     (num, num) -> factorial of range
@@ -1687,9 +2161,10 @@ def factorial_of_range(lhs, ctx):  # WHY does this still exist lmao
     }.get(ts, lambda: vectorise(factorial_of_range, lhs, ctx=ctx))()
 
 
-def fibonaacis(_, ctx):
+@element("ÞF", 0)
+def fibonaccis(_, ctx):
     """Element ÞF
-    An infinite lazylist of fibonaaci numbers
+    An infinite lazylist of fibonacci numbers
     """
 
     def gen():
@@ -1701,6 +2176,7 @@ def fibonaacis(_, ctx):
     return LazyList(gen(), isinf=True)
 
 
+@element("Þ!", 0)
 def factorials(_, ctx):
     """Element Þ!
     An infinite lazylist of factorials
@@ -1715,6 +2191,7 @@ def factorials(_, ctx):
     return LazyList(gen(), isinf=True)
 
 
+@element("ÞḞ", 2)
 def fill(lhs, rhs, ctx: Context):
     """Element ÞḞ
     (any, any) -> fill a with b to make a rectangular
@@ -1725,6 +2202,7 @@ def fill(lhs, rhs, ctx: Context):
     return transpose(transpose(lhs, filler=rhs, ctx=ctx))
 
 
+@element("ḟ", 2)
 def find(lhs, rhs, ctx):
     """Element ḟ
     (any, any) -> a.find(b)
@@ -1778,6 +2256,7 @@ def find(lhs, rhs, ctx):
         return f(lhs, rhs)
 
 
+@element("ṅ", 1)
 def first_integer(lhs, ctx):
     """Element ṅ
     (num) -> abs(a) <= 1
@@ -1827,6 +2306,7 @@ def flatten_by(lhs, rhs, ctx):
         return [lhs]
 
 
+@element("øṀ", 1)
 def flip_brackets_vertical_mirror(lhs, ctx):
     """Element øṀ
     (str) -> vertical_mirror(a, mapping = flip brackets and slashes)
@@ -1840,6 +2320,7 @@ def flip_brackets_vertical_mirror(lhs, ctx):
         return vectorise(flip_brackets_vertical_mirror, lhs, ctx=ctx)()
 
 
+@element("øM", 1)
 def flip_brackets_vertical_palindromise(lhs, ctx):
     """Element øM
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped.
@@ -1855,6 +2336,7 @@ def flip_brackets_vertical_palindromise(lhs, ctx):
     return "\n".join(result)
 
 
+@element("ÞC", 2)
 def foldl_columns(lhs, rhs, ctx):
     """Element ÞC
     (lst, fun) -> reduce the columns of a by function b
@@ -1864,6 +2346,7 @@ def foldl_columns(lhs, rhs, ctx):
     return [foldl(rhs, col, ctx=ctx) for col in lhs]
 
 
+@element("β", 2)
 def from_base(lhs, rhs, ctx):
     """Element β
     Convert lhs from base rhs to base 10
@@ -1910,6 +2393,7 @@ def function_call(lhs, ctx):
     }.get(ts)()
 
 
+@element("Ḟ", 2)
 def gen_from_fn(lhs, rhs, ctx):
     """Element Ḟ
     (num, num) -> sympy.N(a, b) (evaluate a to b decimal places)
@@ -1956,6 +2440,7 @@ def gen_from_fn(lhs, rhs, ctx):
     return LazyList(gen(), isinf=True)
 
 
+@element("∆Q", 2)
 def general_quadratic_solver(lhs, rhs, ctx):
     """Element ∆Q
     (num, num) -> roots(a, b) # x^2 + ax + b = 0
@@ -1977,6 +2462,7 @@ def general_quadratic_solver(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(general_quadratic_solver, lhs, rhs, ctx=ctx))()
 
 
+@element("⇩", 1)
 def grade_down(lhs, ctx):
     """Element ⇩
     (lst) -> graded_down(a)
@@ -1997,6 +2483,7 @@ def grade_down(lhs, ctx):
     )()
 
 
+@element("⇧", 1)
 def grade_up(lhs, ctx):
     """Element ⇧
     (lst) -> graded_up(a)
@@ -2015,6 +2502,7 @@ def grade_up(lhs, ctx):
     )()
 
 
+@element(">", 2)
 def greater_than(lhs, rhs, ctx):
     """Element >
     (num, num) -> a > b
@@ -2035,6 +2523,7 @@ def greater_than(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(greater_than, lhs, rhs, ctx=ctx))()
 
 
+@element("≥", 2)
 def greater_than_or_equal(lhs, rhs, ctx):
     """Element ≥
     (num, num) -> a ≥ b
@@ -2051,6 +2540,7 @@ def greater_than_or_equal(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(greater_than_or_equal, lhs, rhs, ctx=ctx))()
 
 
+@element("ÞĠ", 1)
 def gridify(lhs, ctx):
     """Element ÞĠ
     Gridify
@@ -2060,6 +2550,7 @@ def gridify(lhs, ctx):
     return "\n".join(" ".join(x.rjust(width) for x in x) for x in lhs)
 
 
+@element("Ġ", 1)
 def group_consecutive(lhs, ctx):
     """Element Ġ
     (lst) -> Group consecutive identical items
@@ -2094,6 +2585,7 @@ def group_consecutive(lhs, ctx):
     return res
 
 
+@element("øW", 1)
 def group_on_words(lhs, ctx):
     """Element øW
     (str) -> Group lhs on sequences of letters
@@ -2112,6 +2604,7 @@ def group_on_words(lhs, ctx):
     return result
 
 
+@element("½", 1)
 def halve(lhs, ctx):
     """Element ½
     (num) -> lhs / 2
@@ -2126,6 +2619,7 @@ def halve(lhs, ctx):
     }.get(ts, lambda: vectorise(halve, lhs, ctx=ctx))()
 
 
+@element("h", 1)
 def head(lhs, ctx):
     """Element h
     (any) -> a[0]
@@ -2136,6 +2630,7 @@ def head(lhs, ctx):
     )
 
 
+@element("Ḣ", 1)
 def head_remove(lhs, ctx):
     """Element Ḣ
     (lst) -> a[1:] or [] if empty
@@ -2149,6 +2644,7 @@ def head_remove(lhs, ctx):
     return iterable(lhs, range, ctx=ctx)[1:]
 
 
+@element("∆Ȯ", 1)
 def hyperbolic_arccosine(lhs, ctx):
     """Element ∆Ȯ
     (num) -> arccosh(lhs)
@@ -2160,6 +2656,7 @@ def hyperbolic_arccosine(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
 
 
+@element("∆Ṡ", 1)
 def hyperbolic_arcsine(lhs, ctx):
     """Element ∆Ṡ
     (num) -> arcsinh(lhs)
@@ -2171,6 +2668,7 @@ def hyperbolic_arcsine(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
 
 
+@element("∆Ṅ", 1)
 def hyperbolic_arctangent(lhs, ctx):
     """Element ∆Ṅ
     (num) -> arctanh(lhs)
@@ -2182,6 +2680,7 @@ def hyperbolic_arctangent(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
 
 
+@element("∆ȯ", 1)
 def hyperbolic_cosine(lhs, ctx):
     """Element ∆ȯ
     (num) -> cosh(lhs)
@@ -2193,6 +2692,7 @@ def hyperbolic_cosine(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_cosine, lhs, ctx=ctx))()
 
 
+@element("∆ṡ", 1)
 def hyperbolic_sine(lhs, ctx):
     """Element ∆ṡ
     (num) -> sinh(lhs)
@@ -2204,6 +2704,7 @@ def hyperbolic_sine(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_sine, lhs, ctx=ctx))()
 
 
+@element("∆ṅ", 1)
 def hyperbolic_tangent(lhs, ctx):
     """Element ∆ṅ
     (num) -> tanh(lhs)
@@ -2215,6 +2716,7 @@ def hyperbolic_tangent(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(hyperbolic_tangent, lhs, ctx=ctx))()
 
 
+@element("∆/", 1)
 def hypotenuse(lhs, ctx):
     """Element ∆/
     (lst) -> sqrt(lhs[0] ** 2 + lhs[1] ** 2)
@@ -2223,6 +2725,7 @@ def hypotenuse(lhs, ctx):
     return sympy.nsimplify(math.hypot(*lhs), rational=True)
 
 
+@element("Þ□", 1)
 def identity_matrix(lhs, ctx):
     """Element Þ□
     (num) -> A matrix with 1s on the main diagonal and zeroes elsewhere
@@ -2236,6 +2739,7 @@ def identity_matrix(lhs, ctx):
     }.get(ts, lambda: vectorise(identity_matrix, lhs, ctx=ctx))()
 
 
+@element("ɾ", 1)
 def inclusive_one_range(lhs, ctx):
     """Element ɾ
     (num) -> range(1, a + 1)
@@ -2248,6 +2752,7 @@ def inclusive_one_range(lhs, ctx):
     }.get(ts, lambda: vectorise(inclusive_one_range, lhs, ctx=ctx))()
 
 
+@element("ʀ", 1)
 def inclusive_zero_range(lhs, ctx):
     """Element ʀ
     (num) -> range(0, a + 1)
@@ -2262,6 +2767,7 @@ def inclusive_zero_range(lhs, ctx):
     }.get(ts, lambda: vectorise(inclusive_zero_range, lhs, ctx=ctx))()
 
 
+@element("›", 1)
 def increment(lhs, ctx):
     """Element ›
     (num) -> lhs + 1
@@ -2274,8 +2780,9 @@ def increment(lhs, ctx):
     }.get(ts, lambda: vectorise(increment, lhs, ctx=ctx))()
 
 
+@element("∆›", 2)
 def increment_until_false(lhs, rhs, ctx):
-    """Element ∆‹
+    """Element ∆›
     (any, fun) -> while b(a): a += 1
     (fun, any) -> while a(b): b += 1
     """
@@ -2287,6 +2794,7 @@ def increment_until_false(lhs, rhs, ctx):
     return value
 
 
+@element("i", 2)
 def index(lhs, rhs, ctx):
     """Element i
     (any, num) -> a[b] (Index)
@@ -2331,6 +2839,7 @@ def index(lhs, rhs, ctx):
         return "".join(temp) if originally_string else temp
 
 
+@element("İ", 2)
 def index_indices_or_cycle(lhs, rhs, ctx):
     """Element İ
     (any, lst) -> [a[item] for item in b]
@@ -2376,6 +2885,7 @@ def index_indices_or_cycle(lhs, rhs, ctx):
         return recursive_helper(rhs)
 
 
+@element("ÞṖ", 2)
 def index_partition(lhs, rhs, ctx):
     """Element ÞṖ
     (lst, lst) -> Parititon lhs before indices of rhs
@@ -2383,6 +2893,7 @@ def index_partition(lhs, rhs, ctx):
     return partition_at_indices(rhs, lhs)
 
 
+@element("Þn", 0)
 @infinite_lazylist
 def infinite_all_integers(_, ctx=None):
     """Element Þn
@@ -2396,6 +2907,7 @@ def infinite_all_integers(_, ctx=None):
         i += 1
 
 
+@element("Þc", 0)
 def infinite_cardinals(_, ctx=None):
     """Element Þc
     infinite sequence of cardinals
@@ -2403,6 +2915,7 @@ def infinite_cardinals(_, ctx=None):
     return LazyList(map(num2words.num2words, itertools.count(1)), isinf=True)
 
 
+@element("ÞṄ", 0)
 def infinite_integer_partitions(_, ctx=None):
     """Element ÞṄ"""
 
@@ -2413,6 +2926,7 @@ def infinite_integer_partitions(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+@element("Þ:", 0)
 def infinite_non_negative_integers(_, ctx=None):
     """Element Þ:
     The list [0, 1, 2, ..., ∞]
@@ -2428,6 +2942,7 @@ def infinite_non_negative_integers(_, ctx=None):
     return gen()
 
 
+@element("Þo", 0)
 def infinite_ordinals(_, ctx=None):
     """Element Þo
     infinite list of place numbers starting at a - first, second,
@@ -2446,6 +2961,7 @@ def infinite_ordinals(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+@element("Þ∞", 0)
 def infinite_positives(_, ctx=None):
     """Element Þ∞
     An infinite list of positive numbers
@@ -2461,6 +2977,7 @@ def infinite_positives(_, ctx=None):
     return gen()
 
 
+@element("Þp", 0)
 def infinite_primes(_, ctx=None):
     """Element Þp
     An infinite list of primes
@@ -2476,6 +2993,7 @@ def infinite_primes(_, ctx=None):
     return LazyList(gen(), isinf=True)
 
 
+@element("¢", 3)
 def infinite_replace(lhs, rhs, other, ctx):
     """Element ¢
     (any, any, any) -> replace b in a with c until a doesn't change
@@ -2525,6 +3043,7 @@ def infinite_replace(lhs, rhs, other, ctx):
     return lhs
 
 
+@element("Ṁ", 3)
 def insert_or_map_nth(lhs, rhs, other, ctx):
     """Element Ṁ
     (any, num, any) -> a.insert(b, c) (Insert c at position b in a)
@@ -2581,6 +3100,7 @@ def insert_or_map_nth(lhs, rhs, other, ctx):
     return gen()
 
 
+@element("ḭ", 2)
 def integer_divide(lhs, rhs, ctx):
     """Element ḭ
     (num, num) -> a // b (Floor division, floor(a / b))
@@ -2603,6 +3123,7 @@ def integer_divide(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(integer_divide, lhs, rhs, ctx=ctx))()
 
 
+@element("Ṅ", 1)
 def integer_parts_or_join_spaces(lhs, ctx):
     """Element Ṅ
     (num) -> Integer partitions of a. [] if 0, all negative if n < 0
@@ -2632,6 +3153,7 @@ def integer_parts_or_join_spaces(lhs, ctx):
     return join(lhs, " ", ctx)
 
 
+@element("Y", 2)
 def interleave(lhs, rhs, ctx):
     """Element Y
     (any, any) -> interleave a and b
@@ -2668,6 +3190,7 @@ def interleave(lhs, rhs, ctx):
         )
 
 
+@element("I", 1)
 def into_two(lhs, ctx):
     """Element I
     (num) -> push a spaces
@@ -2734,6 +3257,7 @@ def is_divisible_by_five(lhs, ctx):
         return [lhs, len(lhs)]
 
 
+@element("₃", 1)
 def is_divisible_by_three(lhs, ctx):
     """Element ₃
     (num) -> a % 3 == 0
@@ -2745,6 +3269,7 @@ def is_divisible_by_three(lhs, ctx):
         return int(len(lhs) == 1)
 
 
+@element("₂", 1)
 def is_even(lhs, ctx):
     """Element ₂
     (num) -> a % 2 == 0
@@ -2756,6 +3281,7 @@ def is_even(lhs, ctx):
         return int(len(lhs) % 2 == 0)
 
 
+@element("ċ", 1)
 def is_falsey(lhs, ctx):
     """Element ċ
     (any) -> a != 1
@@ -2763,6 +3289,7 @@ def is_falsey(lhs, ctx):
     return vectorised_not(equals(lhs, 1, ctx=ctx), ctx=ctx)
 
 
+@element("ÞȮ", 1)
 def is_ordered(lhs, ctx):
     """Element ÞȮ
     (lst) -> Returns true if the item is sorted in either descending
@@ -2771,6 +3298,7 @@ def is_ordered(lhs, ctx):
     return is_sorted_ascending(lhs, ctx) or is_sorted_descending(lhs, ctx)
 
 
+@element("æ", 1)
 def is_prime(lhs, ctx):
     """Element æ
     (num) -> is a prime?
@@ -2785,6 +3313,7 @@ def is_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(is_prime, lhs, ctx=ctx))()
 
 
+@element("ÞṠ", 1)
 def is_sorted_ascending(lhs, ctx):
     """Element ÞṠ
     (lst) -> Returns true if an item is sorted in ascending order
@@ -2793,8 +3322,9 @@ def is_sorted_ascending(lhs, ctx):
     return non_vectorising_equals(lhs, vy_sort(lhs, ctx), ctx=ctx)
 
 
+@element("ÞṘ", 1)
 def is_sorted_descending(lhs, ctx):
-    """Element ÞṠ
+    """Element ÞṘ
     (lst) -> Returns true if an item is sorted in ascending order
              using default sorting rules.
     """
@@ -2803,6 +3333,7 @@ def is_sorted_descending(lhs, ctx):
     )
 
 
+@element("Þ⇧", 1)
 def is_sorted_strictly_ascending(lhs, ctx):
     """Element Þ⇧
     (lst) -> Returns true if an item is sorted in strictly
@@ -2816,6 +3347,7 @@ def is_sorted_strictly_ascending(lhs, ctx):
     )
 
 
+@element("Þ⇩", 1)
 def is_sorted_strictly_descending(lhs, ctx):
     """Element Þ⇩
     (lst) -> Returns true if an item is sorted in strictly
@@ -2829,6 +3361,7 @@ def is_sorted_strictly_descending(lhs, ctx):
     )
 
 
+@element("∆²", 1)
 def is_square(lhs, ctx):
     """Element ∆²
     (num) -> is square number?
@@ -2843,6 +3376,7 @@ def is_square(lhs, ctx):
     }.get(ts, lambda: vectorise(is_square, lhs, ctx=ctx))()
 
 
+@element("ÞĊ", 1)
 def is_unordered(lhs, ctx):
     """Element ÞĊ
     (lst) -> Returns true if the item is not sorted in either
@@ -2851,6 +3385,7 @@ def is_unordered(lhs, ctx):
     return int(not is_ordered(lhs, ctx))
 
 
+@element("j", 2)
 def join(lhs, rhs, ctx):
     """Element j
     (any, any) -> a.join(b)
@@ -2884,6 +3419,7 @@ def join(lhs, rhs, ctx):
     return gen()
 
 
+@element("⁋", 1)
 def join_newlines(lhs, ctx):
     """Element ⁋
     (any) -> a.join("\n")
@@ -2897,6 +3433,7 @@ def join_newlines(lhs, ctx):
     return "\n".join(ret)
 
 
+@element("øJ", 1)
 def json_parse(lhs, ctx):
     """Element øJ
     (str) -> json.loads(a)
@@ -2904,6 +3441,7 @@ def json_parse(lhs, ctx):
     return vyxalify(json.loads(lhs))
 
 
+@element("↲", 2)
 def left_bit_shift(lhs, rhs, ctx):
     """Element ↲
     (num, num) -> a << b
@@ -2920,6 +3458,7 @@ def left_bit_shift(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(left_bit_shift, lhs, rhs, ctx=ctx))()
 
 
+@element("L", 1)
 def length(lhs, ctx):
     """Element L
     (any) -> len(a)
@@ -2927,6 +3466,7 @@ def length(lhs, ctx):
     return len(iterable(lhs, ctx=ctx))
 
 
+@element("<", 2)
 def less_than(lhs, rhs, ctx):
     """Element <
     (num, num) -> a < b
@@ -2947,6 +3487,7 @@ def less_than(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(less_than, lhs, rhs, ctx=ctx))()
 
 
+@element("≤", 2)
 def less_than_or_equal(lhs, rhs, ctx):
     """Element ≤
     (num, num) -> a ≤ b
@@ -2963,6 +3504,7 @@ def less_than_or_equal(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(less_than_or_equal, lhs, rhs, ctx=ctx))()
 
 
+@element("øA", 1)
 def letter_to_number(lhs, ctx):
     """Element øA
     (num) -> number_to_letter(a)
@@ -2983,6 +3525,7 @@ def letter_to_number(lhs, ctx):
     }.get(ts, lambda: vectorise(letter_to_number, lhs, ctx=ctx))()
 
 
+@element("Þż", 1)
 def lift(lhs, ctx):
     """Element Þż
     (any) -> a * 1...a.length
@@ -2998,6 +3541,7 @@ def lift(lhs, ctx):
     return gen()
 
 
+@element("ŀ", 3)
 def ljust(lhs, rhs, other, ctx):
     """Element ŀ
     (num, num, num) -> a <= c <= b
@@ -3043,6 +3587,7 @@ def ljust(lhs, rhs, other, ctx):
     }.get(ts, lambda: vectorise(ljust, lhs, rhs, other, ctx=ctx))()
 
 
+@element("∆τ", 1)
 def log_10(lhs, ctx):
     """Element ∆τ
     (num) -> log10(a)
@@ -3055,6 +3600,7 @@ def log_10(lhs, ctx):
     }.get(ts, lambda: vectorise(log_10, lhs, ctx=ctx))()
 
 
+@element("∆l", 1)
 def log_2(lhs, ctx):
     """Element ∆l
     (num) -> log2(a)
@@ -3067,6 +3613,7 @@ def log_2(lhs, ctx):
     }.get(ts, lambda: vectorise(log_2, lhs, ctx=ctx))()
 
 
+@element("•", 2)
 def log_mold_multi(lhs, rhs, ctx):
     """Element •
     (num, num) -> log_lhs(rhs)
@@ -3087,6 +3634,7 @@ def log_mold_multi(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(log_mold_multi, lhs, rhs, ctx=ctx))()
 
 
+@element("ÞG", 1)
 def longest(lhs, ctx):
     """Element ÞG
     (lst) -> Return the longest item in a list
@@ -3111,6 +3659,7 @@ def lowest_common_multiple(lhs, rhs=None, ctx=None):
     }.get(ts, lambda: vectorise(lowest_common_multiple, lhs, rhs, ctx=ctx))()
 
 
+@element("ÞḊ", 1)
 def matrix_determinant(lhs, ctx):
     """Element ÞḊ
     (mat) -> determinant(a)
@@ -3120,6 +3669,7 @@ def matrix_determinant(lhs, ctx):
     return sympy.det(sympy.Matrix(lhs))
 
 
+@element("Þe", 2)
 def matrix_exponentiation(lhs, rhs, ctx):
     """Element Þe
     (lst, num) -> (a * a) b times
@@ -3137,6 +3687,7 @@ def matrix_exponentiation(lhs, rhs, ctx):
     return matrix
 
 
+@element("ÞṀ", 2)
 def matrix_multiply(lhs, rhs, ctx):
     """Element ÞṀ
     (lst, lst) -> Matrix multiplication
@@ -3148,6 +3699,7 @@ def matrix_multiply(lhs, rhs, ctx):
     )
 
 
+@element("Þ↑", 2)
 def max_by_function(lhs, rhs, ctx):
     """Element Þ↑
     (lst, fun) -> Maximum value of a by applying b to each element
@@ -3168,6 +3720,7 @@ def max_by_function(lhs, rhs, ctx):
         return biggest
 
 
+@element("↑", 1)
 def max_by_tail(lhs, ctx):
     """Element ↑
     (any) -> max(a, key=lambda x: x[-1])
@@ -3179,6 +3732,7 @@ def max_by_tail(lhs, ctx):
         return max_by(lhs, key=tail, cmp=greater_than, ctx=ctx)
 
 
+@element("ÞM", 1)
 def maximal_indices(lhs, ctx):
     """Element ÞM
     Return the indexes of maximal objects in lhs
@@ -3194,6 +3748,7 @@ def maximal_indices(lhs, ctx):
     return gen()
 
 
+@element("ṁ", 1)
 def mean(lhs, ctx):
     """Element ṁ
     (num) -> random.randint(0, a)
@@ -3207,6 +3762,7 @@ def mean(lhs, ctx):
     }.get(ts, lambda: divide(vy_sum(lhs, ctx), len(lhs), ctx))()
 
 
+@element("∆ṁ", 1)
 def median(lhs, ctx):
     """Element ∆ṁ
     Return the median of a list - the middle item(s)
@@ -3217,6 +3773,7 @@ def median(lhs, ctx):
     return lhs[len(lhs) // 2]
 
 
+@element("J", 2)
 def merge(lhs, rhs, ctx):
     """Element J
     (scl, scl) -> concatenate a and b
@@ -3238,6 +3795,7 @@ def merge(lhs, rhs, ctx):
     }.get(ts)()
 
 
+@element("Þ↓", 2)
 def min_by_function(lhs, rhs, ctx):
     """Element Þ↓
     (lst, fun) -> Minimum value of a by applying b to each element
@@ -3258,6 +3816,7 @@ def min_by_function(lhs, rhs, ctx):
         return smallest
 
 
+@element("↓", 1)
 def min_by_tail(lhs, ctx):
     """Element ↓
     (any) -> min(a, key=lambda x: x[-1])
@@ -3269,6 +3828,7 @@ def min_by_tail(lhs, ctx):
         return min_by(lhs, key=tail, cmp=less_than, ctx=ctx)
 
 
+@element("m", 1)
 def mirror(lhs, ctx):
     """Element m
     (num) -> a + reversed(a) (as number)
@@ -3281,6 +3841,7 @@ def mirror(lhs, ctx):
         return concat(lhs, reverse(lhs, ctx), ctx)
 
 
+@element("∆%", 3)
 def mod_pow(lhs, rhs, other, ctx: Context):
     """Element ∆%
     (any, any, any) -> a ** b mod c
@@ -3291,6 +3852,7 @@ def mod_pow(lhs, rhs, other, ctx: Context):
     return sympy.nsimplify(pow(int(lhs), int(rhs), int(other)), rational=True)
 
 
+@element("∆M", 1)
 def mode(lhs, ctx):
     """Element ∆M
     Most common item in a list.
@@ -3302,6 +3864,7 @@ def mode(lhs, ctx):
     return max(item_counts, key=lambda x: x[1])[0]
 
 
+@element("%", 2)
 def modulo(lhs, rhs, ctx):
     """Element %
     (num, num) -> a % b
@@ -3319,6 +3882,7 @@ def modulo(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(modulo, lhs, rhs, ctx=ctx))()
 
 
+@element("ǒ", 1)
 def modulo_3(lhs, ctx):
     """Element ǒ
     (num) -> a % 3
@@ -3330,6 +3894,7 @@ def modulo_3(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(modulo_3, lhs, ctx=ctx))()
 
 
+@element("Þṁ", 2)
 def mold_special(lhs, rhs, ctx):
     """Element Þṁ
     (lst, lst) -> mold, but don't reuse items"""
@@ -3337,6 +3902,7 @@ def mold_special(lhs, rhs, ctx):
     return mold_without_repeat(lhs, rhs)
 
 
+@element("G", 1)
 def monadic_maximum(lhs, ctx):
     """Element G
     (any) -> Maximal element of the input
@@ -3347,6 +3913,7 @@ def monadic_maximum(lhs, ctx):
         return max_by(lhs, cmp=strict_greater_than, ctx=ctx)
 
 
+@element("g", 1)
 def monadic_minimum(lhs, ctx):
     """Element g
     (any) -> Smallest item of a
@@ -3357,6 +3924,7 @@ def monadic_minimum(lhs, ctx):
         return min_by(lhs, cmp=strict_less_than, ctx=ctx)
 
 
+@element("Þė", 1)
 def multi_dimensional_enumerate(lhs, ctx):
     """Element Þė
     (lst) -> Enumerate the list but also the sublists and so on
@@ -3376,6 +3944,7 @@ def multi_dimensional_enumerate(lhs, ctx):
     return gen()
 
 
+@element("Þi", 2)
 def multi_dimensional_index(lhs, rhs, ctx):
     """Element Þi
     (lst, lst) -> a[b[0]][b[1]][b[2]]... Reduce by indexing with
@@ -3387,6 +3956,7 @@ def multi_dimensional_index(lhs, rhs, ctx):
     return lhs
 
 
+@element("Þẏ", 1)
 def multi_dimensional_indices(lhs, ctx):
     """Element Þẏ
     (lst) -> All the possible indices in a, accounting for ragged lists
@@ -3402,6 +3972,7 @@ def multi_dimensional_indices(lhs, ctx):
     return gen()
 
 
+@element("Þḟ", 2)
 def multi_dimensional_search(lhs, rhs, ctx):
     """Element Þḟ
     (lst, any) -> Find the first occurrence of a in b and return as a
@@ -3416,6 +3987,7 @@ def multi_dimensional_search(lhs, rhs, ctx):
     return []
 
 
+@element("ÞT", 1)
 def multidimensional_truthy_indices(lhs, ctx: Context):
     """Element ÞT
     (any) -> multi-dimensional truthy indices
@@ -3433,6 +4005,7 @@ def multidimensional_truthy_indices(lhs, ctx: Context):
     return f(lhs)
 
 
+@element("Ǒ", 2)
 def multiplicity(lhs, rhs, ctx):
     """Element Ǒ
     (num, num) -> number of times a divides b
@@ -3459,6 +4032,7 @@ def multiplicity(lhs, rhs, ctx):
         return vectorise(multiplicity, lhs, rhs, ctx=ctx)
 
 
+@element("*", 2)
 def multiply(lhs, rhs, ctx):
     """Element *
     (num, num) -> a * b
@@ -3488,6 +4062,7 @@ def multiply(lhs, rhs, ctx):
         }.get(ts, lambda: vectorise(multiply, lhs, rhs, ctx=ctx))()
 
 
+@element("Þ∨", 2)
 def multiset_difference(lhs, rhs, ctx):
     """Element Þ∨
     (lst, lst) -> Return the mutli-set difference of two lists
@@ -3510,6 +4085,7 @@ def multiset_difference(lhs, rhs, ctx):
     return lhs_copy
 
 
+@element("Þ∩", 2)
 def multiset_intersection(lhs, rhs, ctx):
     """Element Þ∩
     (lst, lst) -> Return the multi-set intersection of two lists
@@ -3544,6 +4120,7 @@ def multiset_intersection(lhs, rhs, ctx):
     return gen()
 
 
+@element("Þ⊍", 2)
 def multiset_symmetric_difference(lhs, rhs, ctx):
     """Element Þ⊍
     (lst, lst) -> Return the multi-set symmetric difference of two lists
@@ -3555,6 +4132,7 @@ def multiset_symmetric_difference(lhs, rhs, ctx):
     )
 
 
+@element("Þ∪", 2)
 def multiset_union(lhs, rhs, ctx):
     """Element Þ∪
     (lst, lst) -> Return the multi-set union of two lists
@@ -3564,6 +4142,7 @@ def multiset_union(lhs, rhs, ctx):
     )
 
 
+@element("ƈ", 2)
 def n_choose_r(lhs, rhs, ctx):
     """Element ƈ
     (num, num) -> n choose r
@@ -3587,6 +4166,7 @@ def n_choose_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_choose_r, lhs, rhs, ctx=ctx))()
 
 
+@element("∆ƈ", 2)
 def n_pick_r(lhs, rhs, ctx):
     """Element ∆ƈ
     (num, num) -> n_pick_r(a, b)
@@ -3605,6 +4185,7 @@ def n_pick_r(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(n_pick_r, lhs, rhs, ctx=ctx))()
 
 
+@element("∆L", 1)
 def natural_log(lhs, ctx):
     """Element ∆L
     (num) -> ln(a)
@@ -3621,6 +4202,7 @@ def natural_log(lhs, ctx):
     }.get(ts, lambda: vectorise(natural_log, lhs, ctx=ctx))()
 
 
+@element("∆p", 1)
 def nearest_prime(lhs, ctx):
     """Element ∆p
     (num) -> nearest prime to a
@@ -3643,6 +4225,7 @@ def nearest_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(nearest_prime, lhs, ctx=ctx))()
 
 
+@element("N", 1)
 def negate(lhs, ctx):
     """Element N
     (num) -> -a
@@ -3659,6 +4242,7 @@ def negate(lhs, ctx):
     }.get(ts, lambda: vectorise(negate, lhs, ctx=ctx))()
 
 
+@element("↵", 1)
 def newline_split(lhs, ctx):
     """Element ↵
     (num) -> 10 ** a
@@ -3670,6 +4254,7 @@ def newline_split(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(newline_split, lhs, ctx=ctx))()
 
 
+@element("∆*", 2)
 def next_multiple(lhs, rhs, ctx):
     """Element ∆*
     (num, num) -> get the next multiple of b that is greater than a
@@ -3681,12 +4266,14 @@ def next_multiple(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(next_multiple, lhs, rhs, ctx=ctx))()
 
 
+@element("∆n", 2)
 def next_power(lhs, rhs, ctx):
     if list in vy_type(lhs, rhs, simple=True):
         return vectorise(next_power, lhs, rhs, ctx=ctx)()
     return rhs ** sympy.floor(sympy.log(lhs, rhs) + 1)
 
 
+@element("∆Ṗ", 1)
 def next_prime(lhs, ctx):
     """Element ∆Ṗ
     (num) -> next prime after a
@@ -3699,6 +4286,7 @@ def next_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(next_prime, lhs, ctx=ctx))()
 
 
+@element("⁼", 2)
 def non_vectorising_equals(lhs, rhs, ctx):
     """Element ⁼
     (num, num) -> a == b
@@ -3717,6 +4305,7 @@ def non_vectorising_equals(lhs, rhs, ctx):
     )
 
 
+@element("≠", 2)
 def not_equals(lhs, rhs, ctx):
     """Element ≠
     (num, num) -> a != b
@@ -3732,6 +4321,7 @@ def not_equals(lhs, rhs, ctx):
     )
 
 
+@element("∆ċ", 1)
 def nth_cardinal(lhs, ctx):
     """Element ∆ċ
     Given a number, return that number as a cardinal - minus one, zero,
@@ -3746,6 +4336,7 @@ def nth_cardinal(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_cardinal, lhs, ctx=ctx))()
 
 
+@element("∆ė", 1)
 def nth_e(lhs, ctx):
     """Element ∆ė
     (int) -> nth_e(a)
@@ -3765,6 +4356,7 @@ def nth_e(lhs, ctx):
         return vectorise(nth_e, lhs, ctx=ctx)
 
 
+@element("∆f", 1)
 def nth_fibonacci(lhs, ctx):
     """Element ∆f
     (num) -> nth fibonacci number # sympy.fibonacci(lhs + 1)
@@ -3777,6 +4369,7 @@ def nth_fibonacci(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_fibonacci, lhs, ctx=ctx))()
 
 
+@element("∆F", 1)
 def nth_fibonacci_0(lhs, ctx):
     """Element ∆F
     (num) -> nth fibonacci number, 0 indexed
@@ -3788,6 +4381,7 @@ def nth_fibonacci_0(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_fibonacci_0, lhs, ctx=ctx))()
 
 
+@element("∆o", 1)
 def nth_ordinal(lhs, ctx):
     """Element ∆o
     Nth item of Þo
@@ -3801,6 +4395,7 @@ def nth_ordinal(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_ordinal, lhs, ctx=ctx))()
 
 
+@element("∆i", 1)
 def nth_pi(lhs, ctx):
     """Element ∆i
     (int) -> nth_pi(a)
@@ -3813,6 +4408,7 @@ def nth_pi(lhs, ctx):
     }.get(ts, lambda: vectorise(nth_pi, lhs, ctx=ctx))()
 
 
+@element("ż", 1)
 def one_length_range(lhs, ctx):
     """Element ż
     (any) -> range(1, len(a) + 1) (Inclusive range from 1 to length of a)
@@ -3828,6 +4424,7 @@ def one_length_range(lhs, ctx):
     return gen()
 
 
+@element("Ż", 2)
 def one_slice(lhs, rhs, ctx):
     """Element Ż
     (any, num) -> a[1:b] (Slice from 1 until b)
@@ -3873,6 +4470,7 @@ def one_slice(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(one_slice, lhs, rhs, ctx=ctx))()
 
 
+@element("øD", 1)
 def optimal_compress(lhs, ctx):
     """Element øD
     (str) -> return the most optimal dictionary compressed string
@@ -3898,6 +4496,7 @@ def optimal_compress(lhs, ctx):
     return quotify(dp[i], ctx)
 
 
+@element("øċ", 1)
 def optimal_number_compress(lhs, ctx):
     """Element øċ
     (num) -> Semi-optimally compress a number
@@ -3973,6 +4572,7 @@ def optimal_number_compress(lhs, ctx):
     return "»" + to_base(lhs, codepage_number_compress, ctx) + "»"
 
 
+@element("r", 2)
 def orderless_range(lhs, rhs, ctx):
     """Element r
     (num, num) -> range(a,b) (Range form a to b)
@@ -4004,6 +4604,7 @@ def orderless_range(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(orderless_range, lhs, rhs, ctx=ctx))()
 
 
+@element("l", 2)
 def overlapping_groups(lhs, rhs, ctx):
     """Element l
     (any, num) -> Overlapping groups/windows of a of length b
@@ -4110,6 +4711,7 @@ def overloaded_canvas_draw(lhs, rhs, other, ctx):
         return (dirs, length, text)
 
 
+@element("∞", 1)
 def palindromise(lhs, ctx):
     """Element ∞
     (num) -> equivalent to m
@@ -4129,6 +4731,7 @@ def palindromise(lhs, ctx):
     }.get(ts)()
 
 
+@element("øb", 1)
 def parenthesise(lhs, ctx):
     """Element øb
     (any) -> "(" + lhs + ")"
@@ -4139,6 +4742,7 @@ def parenthesise(lhs, ctx):
     return "(" + str(lhs) + ")"
 
 
+@element("∷", 1)
 def parity(lhs, ctx):
     """Element ∷
     (num) -> parity of a
@@ -4151,8 +4755,9 @@ def parity(lhs, ctx):
     }.get(ts, lambda: vectorise(parity, lhs, ctx=ctx))()
 
 
+@element("¨□", 1)
 def parse_direction_arrow_to_integer(lhs, ctx):
-    """Element ¨^
+    """Element ¨□
     (str) -> map characters in `>^<v` to integers
     """
     ts = vy_type(lhs)
@@ -4167,6 +4772,7 @@ def parse_direction_arrow_to_integer(lhs, ctx):
         return vectorise(parse_direction_arrow_to_integer, list(lhs), ctx=ctx)()
 
 
+@element("¨^", 1)
 def parse_direction_arrow_to_vector(lhs, ctx):
     """Element ¨^
     (str) -> map characters in `>^<v` to direction vectors
@@ -4183,6 +4789,7 @@ def parse_direction_arrow_to_vector(lhs, ctx):
         return vectorise(parse_direction_arrow_to_vector, list(lhs), ctx=ctx)()
 
 
+@element("Ṗ", 1)
 def permutations(lhs, ctx):
     """Element Ṗ
     (any) -> Permutations of a
@@ -4200,6 +4807,7 @@ def permutations(lhs, ctx):
     )
 
 
+@element("øP", 2)
 def pluralise_count(lhs, rhs, ctx):
     """Element øP
     (str, num) -> count lhs lots of rhs
@@ -4210,6 +4818,7 @@ def pluralise_count(lhs, rhs, ctx):
     return str(rhs) + " " + str(lhs) + "s" * (rhs != 1)
 
 
+@element("∆Ċ", 1)
 def polynomial_expr_from_coeffs(lhs, ctx):
     """Element ∆Ċ
     (num) -> symbolic math representation of polynomial of degree n
@@ -4229,6 +4838,7 @@ def polynomial_expr_from_coeffs(lhs, ctx):
     }.get(ts, lambda: vectorise(polynomial_expr_from_coeffs, lhs, ctx=ctx))()
 
 
+@element("∆ṙ", 1)
 def polynomial_from_roots(lhs, ctx):
     """Element ∆ṙ
     (lst) -> Get the polynomial with coefficients from the roots of a polynomial
@@ -4239,6 +4849,7 @@ def polynomial_from_roots(lhs, ctx):
     return sympy.Poly(eqn, x).coeffs()
 
 
+@element("∆P", 1)
 def polynomial_roots(lhs, ctx):
     """Element ∆P
     (lst) -> roots(a)
@@ -4261,6 +4872,7 @@ def polynomial_roots(lhs, ctx):
     return vyxalify(sympy.solve(sympy.Eq(equation, 0), x))
 
 
+@element("ṗ", 1)
 def powerset(lhs, ctx):
     """Element ṗ
     (any) -> powerset of a
@@ -4287,6 +4899,7 @@ def powerset(lhs, ctx):
     return gen()
 
 
+@element("p", 2)
 def prepend(lhs, rhs, ctx):
     """Element p
     (any, any) -> a.prepend(b) (Prepend b to a)
@@ -4298,12 +4911,14 @@ def prepend(lhs, rhs, ctx):
         return LazyList([rhs]) + LazyList(lhs)
 
 
+@element("∆ḟ", 2)
 def prev_power(lhs, rhs, ctx):
     if list in vy_type(lhs, rhs, simple=True):
         return vectorise(prev_power, lhs, rhs, ctx=ctx)()
     return rhs ** sympy.ceiling(sympy.log(lhs, rhs) - 1)
 
 
+@element("∆ṗ", 1)
 def prev_prime(lhs, ctx):
     """Element ∆ṗ
     (num) -> previous prime
@@ -4316,6 +4931,7 @@ def prev_prime(lhs, ctx):
     }.get(ts, lambda: vectorise(prev_prime, lhs, ctx=ctx))()
 
 
+@element("∆ǐ", 1)
 def prime_exponents(lhs, ctx):
     """Element ∆ǐ
     (num) -> prime exponents of a
@@ -4329,6 +4945,7 @@ def prime_exponents(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_exponents, lhs, ctx=ctx))()
 
 
+@element("∆Ǐ", 1)
 def prime_exponents_all(lhs, ctx):
     """Element ∆Ǐ
     (num) -> prime exponents of a, includes 0s
@@ -4348,6 +4965,7 @@ def prime_exponents_all(lhs, ctx):
         return vectorise(prime_exponents_all, lhs, ctx=ctx)
 
 
+@element("Ǐ", 1)
 def prime_factorisation(lhs, ctx):
     """Element Ǐ
     (num) -> prime_factors(a) (no duplicates)
@@ -4359,6 +4977,7 @@ def prime_factorisation(lhs, ctx):
     }.get(ts, lambda: lhs + [lhs[0]] if lhs else lhs)()
 
 
+@element("ǐ", 1)
 def prime_factors(lhs, ctx):
     """Element ǐ
     (num) -> prime_factors(a) (with duplicates)
@@ -4377,6 +4996,7 @@ def prime_factors(lhs, ctx):
     }.get(ts, lambda: vectorise(prime_factors, lhs, ctx=ctx))()
 
 
+@element("Π", 1)
 def product(lhs, ctx):
     """Element Π
     (num) -> bin(lhs)
@@ -4391,6 +5011,7 @@ def product(lhs, ctx):
     return cartesian_over_list(lhs, ctx)
 
 
+@element("∆q", 2)
 def quadratic_solver(lhs, rhs, ctx):
     """Element ∆q
     (num, num) -> x such that ax^2 + bx = 0
@@ -4416,6 +5037,7 @@ def quadratic_solver(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(quadratic_solver, lhs, rhs, ctx=ctx))()
 
 
+@element("q", 1)
 def quotify(lhs, ctx):
     """Element q
     (any) -> ` + a + ` (Quotify a)
@@ -4430,6 +5052,7 @@ def quotify(lhs, ctx):
     }.get(ts, lambda: quotify(vy_str(lhs, ctx=ctx), ctx))()
 
 
+@element("ÞB", 1)
 def rand_bits(lhs, ctx):
     """Element ÞB
     (int) -> rand_bits(a)
@@ -4441,6 +5064,7 @@ def rand_bits(lhs, ctx):
     }.get(ts, lambda: vectorise(rand_bits, lhs, ctx=ctx))()
 
 
+@element("℅", 1)
 def random_choice(lhs, ctx):
     """Element ℅
     (lst) -> random element of a
@@ -4453,6 +5077,7 @@ def random_choice(lhs, ctx):
     return random.choice(iterable(lhs, range, ctx=ctx))
 
 
+@element("∆r", 1)
 def reduced_echelon_form(lhs, ctx):
     """Element ∆r
     Returns the reduced echelon form of a matrix"""
@@ -4463,6 +5088,7 @@ def reduced_echelon_form(lhs, ctx):
     )
 
 
+@element("øṙ", 3)
 def regex_sub(lhs, rhs, other, ctx):
     """Element øṙ
     (str, str, str) -> Replace matches of a with c in b
@@ -4489,6 +5115,7 @@ def regex_sub(lhs, rhs, other, ctx):
         return out
 
 
+@element("o", 2)
 def remove(lhs, rhs, ctx):
     """Element o
     (num, fun) -> first a positive integers where b is truthy
@@ -4519,6 +5146,7 @@ def remove(lhs, rhs, ctx):
         return [elem for elem in lhs if elem != rhs]
 
 
+@element("⟇", 2)
 def remove_at_index(lhs, rhs, ctx):
     """Element ⟇
     (any, num) -> remove item b of a
@@ -4529,6 +5157,7 @@ def remove_at_index(lhs, rhs, ctx):
     return LazyList(item for i, item in enumerate(lhs) if i != rhs)
 
 
+@element("Ǎ", 1)
 def remove_non_alphabets(lhs, ctx):
     """Element Ǎ
     (str) -> filter(isalpha, a)
@@ -4541,6 +5170,7 @@ def remove_non_alphabets(lhs, ctx):
     }.get(ts, lambda: vectorise(remove_non_alphabets, lhs, ctx=ctx))()
 
 
+@element("øo", 2)
 def remove_until_no_change(lhs, rhs, ctx):
     """Element øo
     (any, any) -> a.remove_until_no_change(b)
@@ -4562,6 +5192,7 @@ def remove_until_no_change(lhs, rhs, ctx):
     return lhs
 
 
+@element("ẋ", 2)
 def repeat(lhs, rhs, ctx):
     """Element ẋ
     (str, num) -> a * b
@@ -4603,6 +5234,7 @@ def repeat(lhs, rhs, ctx):
         return vectorise(repeat, lhs, rhs, ctx=ctx)
 
 
+@element("V", 3)
 def replace(lhs, rhs, other, ctx):
     """Element V
     (any, any, any) -> a.replace(b, c)
@@ -4619,6 +5251,7 @@ def replace(lhs, rhs, other, ctx):
         return [other if value == rhs else value for value in iterable(lhs)]
 
 
+@element("øḞ", 3)
 def replace_first(lhs, rhs, other, ctx):
     """Element øḞ
     (any, any, any) -> a.replace_first(b, c)
@@ -4642,6 +5275,7 @@ def replace_first(lhs, rhs, other, ctx):
         return gen()
 
 
+@element("øṄ", 4)
 def replace_nth_occurrence(lhs, rhs, other, n, ctx):
     """Element øṄ
     (any, any, any, num) -> a.replace_nth_occurrence(b, c, d)
@@ -4677,6 +5311,7 @@ def replace_nth_occurrence(lhs, rhs, other, n, ctx):
         return gen()
 
 
+@element("øV", 3)
 def replace_until_no_change(lhs, rhs, other, ctx):
     """Element øV
     (any,any,any) -> Replace rhs with other in lhs while lhs changes
@@ -4701,6 +5336,7 @@ def request(lhs, ctx):
         return x.decode("latin-1")
 
 
+@element("Ṙ", 1)
 def reverse(lhs, ctx):
     """Element Ṙ
     (any) -> a reversed
@@ -4714,6 +5350,7 @@ def reverse(lhs, ctx):
     }.get(ts)()
 
 
+@element("↳", 2)
 def right_bit_shift(lhs, rhs, ctx):
     """Element ↳
     (num, num) -> a << b
@@ -4739,6 +5376,7 @@ def right_vectorise(function, *args, explicit=False, ctx: Context = None):
     )
 
 
+@element("øṘ", 1)
 def roman_numeral(lhs, ctx):
     """Element øṘ
     (num) -> roman numeral of a
@@ -4882,6 +5520,7 @@ def rotate_right(lhs, rhs, ctx):
     return gen()
 
 
+@element("∆W", 2)
 def round_to(lhs, rhs, ctx):
     """Element ∆W
     (num, num) -> round(a, no_dec_places=b)
@@ -4897,6 +5536,7 @@ def round_to(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(round_to, lhs, rhs, ctx=ctx))()
 
 
+@element("ød", 1)
 def run_length_decoding(lhs, ctx):
     """Element ød
     (lst) -> Run length decoding
@@ -4921,6 +5561,7 @@ def run_length_decoding(lhs, ctx):
         return LazyList(temp)
 
 
+@element("øe", 1)
 def run_length_encoding(lhs, ctx):
     """Element øe
     (str) -> List of the form [[character, count], ...]
@@ -4934,6 +5575,7 @@ def run_length_encoding(lhs, ctx):
     )
 
 
+@element("Þr", 1)
 def sans_last_prepend_zero(lhs, ctx):
     """Element Þr
     Remove the last item of a list and prepend 0
@@ -4946,6 +5588,7 @@ def sans_last_prepend_zero(lhs, ctx):
     }.get(ts, lambda: prepend(tail_remove(lhs, ctx), 0, ctx=ctx))()
 
 
+@element("øĖ", 1)
 def separate_runl_encode(lhs, ctx: Context):
     """Element øĖ
     (any) -> run length encode a and push items and lengths both to the stack separately
@@ -4956,6 +5599,7 @@ def separate_runl_encode(lhs, ctx: Context):
     return lengths
 
 
+@element("Þg", 1)
 def shortest(lhs, ctx):
     """Element Þg
     (lst) -> Return the shortest item in a list.
@@ -4963,6 +5607,7 @@ def shortest(lhs, ctx):
     return min_by_function(lhs, length, ctx)
 
 
+@element("Þ℅", 1)
 def shuffle(lhs, ctx):
     """Element Þ℅
     (lst) -> Return a random permutation of a
@@ -4974,6 +5619,7 @@ def shuffle(lhs, ctx):
     return LazyList(temp)
 
 
+@element("±", 1)
 def sign_of(lhs, ctx):
     """
     (num) -> sign_of(a) (positive = 1, 0 = 0; negative = -1)
@@ -4986,6 +5632,7 @@ def sign_of(lhs, ctx):
     }.get(ts, lambda: vectorise(sign_of, lhs, ctx=ctx))()
 
 
+@element("∆s", 1)
 def sine(lhs, ctx):
     """Element ∆s
     (num) -> sin(a)
@@ -5000,6 +5647,7 @@ def sine(lhs, ctx):
     }.get(ts, lambda: vectorise(sine, lhs, ctx=ctx))()
 
 
+@element("ȯ", 2)
 def slice_from(lhs, rhs, ctx):
     """Element ȯ
     (fun, num) -> First b integers for which a(x) is truthy
@@ -5040,6 +5688,7 @@ def slice_from(lhs, rhs, ctx):
         }.get(ts)()
 
 
+@element("ṡ", 2)
 def sort_by(lhs, rhs, ctx):
     """Element ṡ
     (any, fun) -> sorted(a, key=b) (Sort by b)
@@ -5064,6 +5713,7 @@ def sort_by(lhs, rhs, ctx):
         }.get(ts, lambda: vectorise(sort_by, lhs, rhs, ctx=ctx))()
 
 
+@element("Þṡ", 1)
 def sort_by_length(lhs, ctx):
     """Element Þṡ
     (lst) -> Sort a list by length.
@@ -5071,6 +5721,7 @@ def sort_by_length(lhs, ctx):
     return sort_by(lhs, length, ctx)
 
 
+@element("ÞŻ", 1)
 def sort_every_level(lhs, ctx):
     """Element ÞŻ
     (lst) -> Sort every level of a multidimensional list
@@ -5080,6 +5731,7 @@ def sort_every_level(lhs, ctx):
     return vy_sort((sort_every_level(item, ctx) for item in lhs), ctx=ctx)
 
 
+@element("Ẇ", 2)
 def split_keep(lhs, rhs, ctx):
     """Element Ẇ
     (any, any) -> a.split_and_keep_delimiter(b) (Split and keep the delimiter)
@@ -5127,6 +5779,7 @@ def split_keep(lhs, rhs, ctx):
             )
 
 
+@element("€", 2)
 def split_on(lhs, rhs, ctx):
     """
     Element €
@@ -5162,6 +5815,7 @@ def split_on(lhs, rhs, ctx):
     return gen()
 
 
+@element("²", 1)
 def square(lhs, ctx):
     """Element ²
     (num) -> a ** 2 (Squared)
@@ -5181,6 +5835,7 @@ def square(lhs, ctx):
     }.get(ts, lambda: vectorise(square, lhs, ctx=ctx))()
 
 
+@element("√", 1)
 def square_root(lhs, ctx):
     """Element √
     (num) -> sqrt(a)
@@ -5193,6 +5848,7 @@ def square_root(lhs, ctx):
     }.get(ts, lambda: vectorise(square_root, lhs, ctx=ctx))()
 
 
+@element("øp", 2)
 def starts_with(lhs, rhs, ctx):
     """Element øp
     (str, str) -> True if a starts with b
@@ -5207,6 +5863,7 @@ def starts_with(lhs, rhs, ctx):
     )
 
 
+@element("øs", 2)
 def starts_with_set(lhs, rhs, ctx):
     """Element øs
     (list, list) -> True if a starts with all of b
@@ -5221,6 +5878,7 @@ def starts_with_set(lhs, rhs, ctx):
     )
 
 
+@element("¨>", 2)
 def strict_greater_than(lhs, rhs, ctx):
     """Element ¨>
     Non-vectorising greater than
@@ -5239,8 +5897,9 @@ def strict_greater_than(lhs, rhs, ctx):
     )()
 
 
+@element("¨<", 2)
 def strict_less_than(lhs, rhs, ctx):
-    """Element ¨>
+    """Element ¨<
     Non-vectorising less than
     """
     ts = vy_type(lhs, rhs)
@@ -5282,6 +5941,7 @@ def string_base_convert(lhs, rhs, ctx):
     )
 
 
+@element("P", 2)
 def strip(lhs, rhs, ctx):
     """Element P
     (any, any) -> a.strip(b)
@@ -5318,6 +5978,7 @@ def strip(lhs, rhs, ctx):
     }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx))()
 
 
+@element("øl", 2)
 def strip_left(lhs, rhs, ctx):
     """Element øl
     (any, any) -> a.lstrip(b)
@@ -5387,6 +6048,7 @@ def strip_list_helper(left, right, ctx, sign=0):
     return left
 
 
+@element("ør", 2)
 def strip_right(lhs, rhs, ctx):
     """Element ør
     (any, any) -> a.rstrip(b)
@@ -5405,6 +6067,7 @@ def strip_right(lhs, rhs, ctx):
     }.get(ts, lambda: strip_list_helper(lhs, rhs, ctx, 1))()
 
 
+@element("øS", 1)
 def strip_whitespace(lhs, ctx):
     """Element øS
     (str) -> a.strip()
@@ -5419,6 +6082,7 @@ def strip_whitespace(lhs, ctx):
     }.get(ts, lambda: vectorise(strip_whitespace, lhs, ctx=ctx))()
 
 
+@element("øL", 1)
 def strip_whitespace_left(lhs, ctx):
     """Element øL
     (str) -> a.lstrip()
@@ -5429,6 +6093,7 @@ def strip_whitespace_left(lhs, ctx):
     )()
 
 
+@element("øR", 1)
 def strip_whitespace_right(lhs, ctx):
     """Element øR
     (str) -> a.rstrip()
@@ -5439,6 +6104,7 @@ def strip_whitespace_right(lhs, ctx):
     )()
 
 
+@element("ÞS", 1)
 def sublists(lhs, ctx):
     """Element ÞS
     Sublists of a list.
@@ -5453,6 +6119,7 @@ def sublists(lhs, ctx):
     return gen()
 
 
+@element("ǎ", 1)
 def substrings(lhs, ctx):
     """Element ǎ
     (num) -> ath prime
@@ -5472,6 +6139,7 @@ def substrings(lhs, ctx):
     }.get(ts, lambda: vectorise(substrings, lhs, ctx=ctx))()
 
 
+@element("-", 2)
 def subtract(lhs, rhs, ctx):
     """Element -
     (num, num) -> lhs - rhs
@@ -5488,6 +6156,7 @@ def subtract(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(subtract, lhs, rhs, ctx=ctx))()
 
 
+@element("ÞK", 1)
 def suffixes_element(lhs, ctx):
     """Element ÞK
     (lst) -> Suffixes of a
@@ -5501,6 +6170,7 @@ def suffixes_element(lhs, ctx):
         return temp
 
 
+@element("ø.", 2)
 def surround(lhs, rhs, ctx):
     """Element ø.
     (str, str) -> Surround a with b
@@ -5523,6 +6193,7 @@ def surround(lhs, rhs, ctx):
     }.get(ts)()
 
 
+@element("⊍", 2)
 def symmetric_difference(lhs, rhs, ctx):
     """Element ⊍
     (any, any) -> set(a) ^ set(b)
@@ -5546,6 +6217,7 @@ def symmetric_difference(lhs, rhs, ctx):
     return gen()
 
 
+@element("t", 1)
 def tail(lhs, ctx):
     """Element t
     (any) -> a[-1]
@@ -5570,6 +6242,7 @@ def tail_remove(lhs, ctx):
         return temp
 
 
+@element("∆t", 1)
 def tangent(lhs, ctx):
     """Element ∆t
     (num) -> tan(a)
@@ -5584,6 +6257,7 @@ def tangent(lhs, ctx):
     }.get(ts, lambda: vectorise(tangent, lhs, ctx=ctx))()
 
 
+@element("τ", 2)
 def to_base(lhs, rhs, ctx):
     """Element τ
     Convert lhs from base 10 to base rhs
@@ -5619,6 +6293,7 @@ def to_base(lhs, rhs, ctx):
     return res
 
 
+@element("øḋ", 1)
 def to_decimal(lhs, ctx):
     """Element øḋ
     (num) -> to_decimal(lhs)
@@ -5631,6 +6306,7 @@ def to_decimal(lhs, ctx):
     }.get(ts, lambda: vectorise(to_decimal, lhs, ctx=ctx))()
 
 
+@element("∆D", 1)
 def to_degrees(lhs, ctx):
     """Element ∆D
     (num) -> a * (180 / pi)
@@ -5642,6 +6318,7 @@ def to_degrees(lhs, ctx):
     }.get(ts, lambda: vectorise(to_degrees, lhs, ctx=ctx))()
 
 
+@element("∆R", 1)
 def to_radians(lhs, ctx):
     """Element ∆R
     (num) -> a * (pi / 180)
@@ -5653,6 +6330,7 @@ def to_radians(lhs, ctx):
     }.get(ts, lambda: vectorise(to_radians, lhs, ctx=ctx))()
 
 
+@element("∆ṫ", 1)
 def totient(lhs, ctx):
     """Element ∆ṫ
     (num) -> Euler's totient function
@@ -5665,6 +6343,7 @@ def totient(lhs, ctx):
     }.get(ts, lambda: vectorise(totient, lhs, ctx=ctx))()
 
 
+@element("Ŀ", 3)
 def transliterate(lhs, rhs, other, ctx):
     """Element Ŀ
     (any, any, any) -> transliterate lhs according to the
@@ -5720,6 +6399,7 @@ def transliterate(lhs, rhs, other, ctx):
         return ret
 
 
+@element("T", 1)
 def truthy_indices(lhs, ctx):
     """Element T
     (any) -> indices of truthy elements
@@ -5760,6 +6440,7 @@ def uninterleave(lhs, ctx):
     ]
 
 
+@element("∪", 2)
 def union(lhs, rhs, ctx):
     """Element ∪
     (any, any) -> union of lhs and rhs
@@ -5785,6 +6466,7 @@ def union(lhs, rhs, ctx):
     )
 
 
+@element("U", 1)
 def uniquify(lhs, ctx):
     """Element U
     (any) -> only unique items of a
@@ -5808,6 +6490,7 @@ def uniquify(lhs, ctx):
     return f()
 
 
+@element("ÞU", 1)
 def uniquify_mask(lhs, ctx):
     """Element ÞU
     (any) -> A list of booleans describing which elements of a will
@@ -5839,6 +6522,7 @@ def uniquify_mask(lhs, ctx):
     return gen()
 
 
+@element("Þǔ", 1)
 def untruth(lhs, ctx):
     """Element Þǔ
     (any) -> [int(x in a) for x in range(max(a))]
@@ -5952,6 +6636,7 @@ def vectorised_not(lhs, ctx):
     )()
 
 
+@element("Ṡ", 1)
 def vectorised_sum(lhs, ctx):
     """Element Ṡ
     (lst) -> the equivalent of v∑
@@ -5968,6 +6653,7 @@ def vectorised_sum(lhs, ctx):
     }.get(ts)()
 
 
+@element("§", 1)
 def vertical_join(lhs, rhs=" ", ctx=None):
     """Element §
     any: Transpose a (filling with b), join on newlines
@@ -5988,6 +6674,7 @@ def vertical_join(lhs, rhs=" ", ctx=None):
     return join(temp, "\n", ctx)
 
 
+@element("øε", 2)
 def vertical_join_with_filler(lhs, rhs, ctx):
     """Element øε
     (lst, any) -> Vertical join of lhs with rhs, with filler
@@ -5995,6 +6682,7 @@ def vertical_join_with_filler(lhs, rhs, ctx):
     return vertical_join(lhs, rhs, ctx)
 
 
+@element("øṁ", 1)
 def vertical_mirror(lhs, rhs=None, ctx=None):
     """Element øṁ and øṀ"""
     if type(lhs) is str:
@@ -6012,6 +6700,7 @@ def vertical_mirror(lhs, rhs=None, ctx=None):
         return vectorise(vertical_mirror, lhs, rhs, ctx=ctx)
 
 
+@element("øm", 1)
 def vertical_mirror_center_join(lhs, ctx):
     """Element øm
     (str) -> lhs vertically mirrored, with brackets flipped, then centered by padding with spaces, then joined on newlines.
@@ -6021,6 +6710,7 @@ def vertical_mirror_center_join(lhs, ctx):
     )
 
 
+@element("øṗ", 1)
 def vertical_palindromise_center_join(lhs, ctx):
     """Element øṗ
     (str) -> lhs vertically palindromised without duplicating the center, with brackets flipped, then centered by padding with spaces, then joined on newlines.
@@ -6031,8 +6721,9 @@ def vertical_palindromise_center_join(lhs, ctx):
     )
 
 
+@element("ȧ", 1)
 def vy_abs(lhs, ctx):
-    """Elements ȧ
+    """Element ȧ
     (num) -> abs(a)
     (str) -> remove whitespace from a
     """
@@ -6042,6 +6733,7 @@ def vy_abs(lhs, ctx):
     }.get(vy_type(lhs), lambda: vectorise(vy_abs, lhs, ctx=ctx))()
 
 
+@element("b", 1)
 def vy_bin(lhs, ctx):
     """Element b
     (num) -> list of binary digits
@@ -6062,6 +6754,7 @@ def vy_bin(lhs, ctx):
         return vectorise(vy_bin, lhs, ctx=ctx)
 
 
+@element("⌈", 1)
 def vy_ceil(lhs, ctx):
     """Element ⌈
     (num) -> ceil(a)
@@ -6080,6 +6773,7 @@ def vy_ceil(lhs, ctx):
     }.get(ts, lambda: vectorise(vy_ceil, lhs, ctx=ctx))()
 
 
+@element("ḋ", 2)
 def vy_divmod(lhs, rhs, ctx):
     """Element ḋ
     (num, num) -> [lhs // rhs, lhs % rhs]
@@ -6108,6 +6802,7 @@ def vy_divmod(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(vy_divmod, lhs, rhs, ctx=ctx))()
 
 
+@element("ė", 1)
 def vy_enumerate(lhs, ctx):
     """Element ė
     (any) -> Zip with a range of the same length
@@ -6153,6 +6848,7 @@ def vy_exec(lhs, ctx):
     return [temp]
 
 
+@element("F", 2)
 def vy_filter(lhs: Any, rhs: Any, ctx):
     """Element F
     (any, fun) -> Keep elements in a that b is true for
@@ -6215,6 +6911,7 @@ def vy_filter(lhs: Any, rhs: Any, ctx):
     return res
 
 
+@element("⌊", 1)
 def vy_floor(lhs, ctx):
     """Element ⌊
     (num) -> floor(a)
@@ -6254,6 +6951,7 @@ def vy_gcd(lhs, rhs=None, ctx=None):
     }.get(ts, lambda: vectorise(vy_gcd, lhs, rhs, ctx=ctx))()
 
 
+@element("H", 1)
 def vy_hex(lhs, ctx):
     """Element H
     (num) -> hex(a)
@@ -6292,6 +6990,7 @@ def vy_int(item: Any, base: int = 10, ctx: Context = DEFAULT_CTX):
         return vy_int(iterable(item, ctx=ctx), base)
 
 
+@element("M", 2)
 def vy_map_or_pair_each(lhs, rhs, ctx):
     """Element M
     (any, fun) -> apply function b to each element of a
@@ -6396,6 +7095,7 @@ def vy_repr(lhs, ctx):
     )()
 
 
+@element("ṙ", 1)
 def vy_round(lhs, ctx):
     """Element ṙ
     (num) -> round(a)
@@ -6417,6 +7117,7 @@ def vy_round(lhs, ctx):
     }.get(ts, lambda: vectorise(vy_round, lhs, ctx=ctx))()
 
 
+@element("s", 1)
 def vy_sort(lhs, ctx):
     """
     (any) -> sorted(a)
@@ -6442,6 +7143,7 @@ def vy_sort(lhs, ctx):
         return LazyList(sorted(lhs))
 
 
+@element("S", 1)
 def vy_str(lhs, ctx=None):
     """Element S
     (any) -> str(s)
@@ -6466,6 +7168,7 @@ def vy_str(lhs, ctx=None):
     )()
 
 
+@element("∑", 1)
 def vy_sum(lhs, ctx=None):
     """Element ∑
     (any) -> reduce a by addition
@@ -6485,6 +7188,7 @@ def vy_sum(lhs, ctx=None):
     return temp if not neg_flag else negate(temp, ctx)
 
 
+@element("Z", 2)
 def vy_zip(lhs, rhs, ctx):
     """Element Z
     (any, any) -> zip(a, b)
@@ -6534,6 +7238,7 @@ def vy_zip(lhs, rhs, ctx):
         )
 
 
+@element("ẇ", 2)
 def wrap(lhs, rhs, ctx):
     """Element ẇ
     (any, num) -> a wrapped in chunks of length b
@@ -6625,6 +7330,7 @@ def wrap(lhs, rhs, ctx):
         return gen()
 
 
+@element("ẏ", 1)
 def zero_length_range(lhs, ctx):
     """Element ẏ
     (any) -> range(0, len(a)) (exlcusive range from 0 to length of a)
@@ -6640,6 +7346,7 @@ def zero_length_range(lhs, ctx):
     return gen()
 
 
+@element("Þm", 1)
 def zero_matrix(lhs, ctx):
     """Element Þm
     Return a matrix with dimensions each item of a, where the first is the
@@ -6656,6 +7363,7 @@ def zero_matrix(lhs, ctx):
     return mat
 
 
+@element("Ẏ", 2)
 def zero_slice(lhs, rhs, ctx):
     """Element Ẏ
     (any, num) -> a[0:b]
@@ -6689,6 +7397,7 @@ def zero_slice(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zero_slice, lhs, rhs, ctx=ctx))()
 
 
+@element("∆Z", 2)
 def zfiller(lhs, rhs, ctx):
     """Element ∆Z
     zfill to rhs
@@ -6705,698 +7414,6 @@ def zfiller(lhs, rhs, ctx):
     }.get(ts, lambda: vectorise(zfiller, lhs, rhs, ctx=ctx))()
 
 
-elements: dict[str, tuple[str, int]] = {
-    "¬": process_element("sympy.nsimplify(int(not lhs))", 1),
-    "∧": process_element("rhs and lhs", 2),
-    "∨": process_element("rhs or lhs", 2),
-    "⟇": process_element(remove_at_index, 2),
-    "÷": (
-        "lhs = pop(stack, 1, ctx); stack += iterable(lhs, ctx=ctx)",
-        1,
-    ),
-    "×": process_element("'*'", 0),
-    "•": process_element(log_mold_multi, 2),
-    "†": (
-        "top = function_call(stack, ctx)\n"
-        + "if top is not None: stack.append(top)",
-        1,
-    ),
-    "€": process_element(split_on, 2),
-    "½": process_element(halve, 1),
-    "↔": process_element(combinations_with_replacement, 2),
-    "¢": process_element(infinite_replace, 3),
-    "⌐": process_element(complement, 1),
-    "æ": process_element(is_prime, 1),
-    "ʀ": process_element(inclusive_zero_range, 1),
-    "ʁ": process_element(exclusive_zero_range, 1),
-    "ɾ": process_element(inclusive_one_range, 1),
-    "ɽ": process_element(exclusive_one_range, 1),
-    "ƈ": process_element(n_choose_r, 2),
-    "∞": process_element(palindromise, 1),
-    "!": process_element("len(stack)", -1),
-    '"': process_element("[lhs, rhs]", 2),
-    "$": (
-        "rhs, lhs = pop(stack, 2, ctx); stack.append(rhs); "
-        "stack.append(lhs)",
-        2,
-    ),
-    "%": process_element(modulo, 2),
-    "*": process_element(multiply, 2),
-    "+": process_element(add, 2),
-    ",": ("top = pop(stack, 1, ctx); vy_print(top, ctx=ctx)", 1),
-    "-": process_element(subtract, 2),
-    "/": process_element(divide, 2),
-    ":": (
-        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
-        "stack.append(top)",
-        1,
-    ),
-    "<": process_element(less_than, 2),
-    "=": process_element(equals, 2),
-    ">": process_element(greater_than, 2),
-    "?": (
-        "ctx.use_top_input = True; lhs = get_input(ctx, explicit=True); "
-        "ctx.use_top_input = False; stack.append(lhs)",
-        0,
-    ),
-    "A": process_element(all_true, 1),
-    "B": process_element("vy_int(lhs, 2)", 1),
-    "C": process_element(chr_ord, 1),
-    "D": (
-        "top = pop(stack, 1, ctx); stack.append(top);"
-        "stack.append(deep_copy(top)); stack.append(deep_copy(top));",
-        1,
-    ),
-    "E": process_element(exp2_or_eval, 1),
-    "F": process_element(vy_filter, 2),
-    "G": process_element(monadic_maximum, 1),
-    "H": process_element(vy_hex, 1),
-    "I": process_element(into_two, 1),
-    "J": process_element(merge, 2),
-    "K": process_element(divisors_or_prefixes, 1),
-    "L": process_element(length, 1),
-    "M": process_element(vy_map_or_pair_each, 2),
-    "N": process_element(negate, 1),
-    "O": process_element(count_item, 2),
-    "P": process_element(strip, 2),
-    "Q": process_element("exit()", 0),
-    "R": (
-        """
-ts = (vy_type(stack[-1]),) if len(stack) < 2 else (vy_type(stack[-2]), vy_type(stack[-1]))
-if ts == (NUMBER_TYPE, NUMBER_TYPE):
-    rhs, lhs = pop(stack, 2, ctx)
-    stack.append(string_base_convert(lhs, rhs, ctx))
-elif types.FunctionType in ts:
-    rhs, lhs = pop(stack, 2, ctx)
-    stack.append(vy_reduce(lhs, rhs, ctx))
-else:
-    stack.append(vectorise(reverse, pop(stack, 1, ctx), ctx=ctx))
-""",
-        2,
-    ),
-    "S": process_element(vy_str, 1),
-    "T": process_element(truthy_indices, 1),
-    "U": process_element(uniquify, 1),
-    "V": process_element(replace, 3),
-    "W": (
-        "temp = list(deep_copy(stack))\n"
-        "pop(stack, len(stack), ctx)\n"
-        "stack.append(temp)",
-        -1,
-    ),
-    # X doesn't need to be implemented here, because it's already a structure
-    "Y": process_element(interleave, 2),
-    "Z": process_element(vy_zip, 2),
-    "^": ("stack += wrapify(stack, len(stack), ctx)", -1),
-    "_": ("pop(stack, 1, ctx)", 1),
-    "a": process_element(any_true, 1),
-    "b": process_element(vy_bin, 1),
-    "c": process_element(contains, 2),
-    "d": process_element("multiply(lhs, 2, ctx)", 1),
-    "e": process_element(exponent, 2),
-    "f": process_element(deep_flatten, 1),
-    "g": process_element(monadic_minimum, 1),
-    "h": process_element(head, 1),
-    "i": process_element(index, 2),
-    "j": process_element(join, 2),
-    "l": process_element(overlapping_groups, 2),
-    "m": process_element(mirror, 1),
-    "n": process_element("ctx.context_values[-1]", 0),
-    "o": process_element(remove, 2),
-    "p": process_element(prepend, 2),
-    "q": process_element(quotify, 1),
-    "r": process_element(orderless_range, 2),
-    "s": process_element(vy_sort, 1),
-    "t": process_element(tail, 1),
-    "u": process_element("-1", 0),
-    "w": process_element("[lhs]", 1),
-    "x": process_element("", 2),
-    "y": ("stack += uninterleave(pop(stack, 1, ctx), ctx)", 1),
-    "z": process_element("vy_zip(lhs, deep_copy(lhs), ctx)", 1),
-    "↑": process_element(max_by_tail, 1),
-    "↓": process_element(min_by_tail, 1),
-    "∴": process_element(dyadic_maximum, 2),
-    "∵": process_element(dyadic_minimum, 2),
-    "∷": process_element(parity, 1),
-    "¤": process_element("''", 0),
-    "ð": process_element("' '", 0),
-    "β": process_element(from_base, 2),
-    "τ": process_element(to_base, 2),
-    "›": process_element(increment, 1),
-    "‹": process_element(decrement, 1),
-    "ȧ": process_element(vy_abs, 1),
-    "ḃ": process_element(boolify, 1),
-    "ċ": process_element(is_falsey, 1),
-    "ḋ": process_element(vy_divmod, 2),
-    "ė": process_element(vy_enumerate, 1),
-    "ḟ": process_element(find, 2),
-    "ġ": (
-        "top = pop(stack, 1, ctx)\n"
-        "if vy_type(top, simple=True) is list:\n"
-        "    stack.append(vy_gcd(top, ctx=ctx))\n"
-        "else:\n"
-        "    stack.append(vy_gcd(pop(stack, 1, ctx), top, ctx))\n",
-        2,
-    ),
-    "ḣ": (
-        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
-        " stack.append(head(top, ctx));"
-        " stack.append(top[1:])",
-        1,
-    ),
-    "ḭ": process_element(integer_divide, 2),
-    "ŀ": process_element(ljust, 3),
-    "ṁ": process_element(mean, 1),
-    "ṅ": process_element(first_integer, 1),
-    "ȯ": process_element(slice_from, 2),
-    "ṗ": process_element(powerset, 1),
-    "ṙ": process_element(vy_round, 1),
-    "ṡ": process_element(sort_by, 2),
-    "ṫ": (
-        "top = iterable(pop(stack, 1, ctx), ctx=ctx);"
-        " stack.append(index(top, [None, -1], ctx));"
-        " stack.append(tail(top, ctx))",
-        1,
-    ),
-    "ẇ": process_element(wrap, 2),
-    "ẋ": process_element(repeat, 2),
-    "ẏ": process_element(zero_length_range, 1),
-    "ż": process_element(one_length_range, 1),
-    "√": process_element(square_root, 1),
-    "₀": process_element("10", 0),
-    "₁": process_element("100", 0),
-    "₂": process_element(is_even, 1),
-    "₃": process_element(is_divisible_by_three, 1),
-    "₄": process_element("26", 0),
-    "₅": (
-        "top = pop(stack, 1, ctx); stack += is_divisible_by_five(top, ctx)",
-        1,
-    ),
-    "₆": process_element("64", 0),
-    "₇": process_element("128", 0),
-    "₈": process_element("256", 0),
-    "¶": process_element("'\\n'", 0),
-    "⁋": process_element(join_newlines, 1),
-    "§": process_element(vertical_join, 1),
-    "ε": process_element(absolute_difference, 2),
-    "¡": process_element(factorial, 1),
-    "∑": process_element(vy_sum, 1),
-    "¦": process_element(cumulative_sum, 1),
-    "≈": process_element(all_equal, 1),
-    "Ȧ": process_element(assign_iterable, 3),
-    "Ḃ": (
-        "top = pop(stack, 1, ctx); stack.append(deep_copy(top)); "
-        "stack.append(reverse(top, ctx))",
-        1,
-    ),
-    "Ċ": process_element(counts, 1),
-    "Ḋ": (
-        "rhs, lhs = pop(stack, 2, ctx); stack += is_divisible(lhs, rhs, ctx)",
-        2,
-    ),
-    "Ė": (
-        "stack += vy_exec(pop(stack, 1, ctx), ctx)",
-        1,
-    ),
-    "Ḟ": process_element(gen_from_fn, 2),
-    "Ġ": process_element(group_consecutive, 1),
-    "Ḣ": process_element(head_remove, 1),
-    "İ": process_element(index_indices_or_cycle, 2),
-    "Ŀ": process_element(transliterate, 3),
-    "Ṁ": process_element(insert_or_map_nth, 3),
-    "Ṅ": process_element(integer_parts_or_join_spaces, 1),
-    "Ȯ": (
-        "if len(stack) > 1: stack.append(index(stack, -2, ctx))\n"
-        "else: stack.append(get_input(ctx))",
-        0,
-    ),
-    "Ṗ": process_element(permutations, 1),
-    "Ṙ": process_element(reverse, 1),
-    "Ṡ": process_element(vectorised_sum, 1),
-    "Ṫ": (
-        "top = pop(stack, 1, ctx)\n"
-        "if vy_type(top) == NUMBER_TYPE:\n"
-        "    stack.append(1)\n"
-        "    stack.append(top)\n"
-        "else:\n"
-        "    stack.append(tail_remove(top, ctx))",
-        1,
-    ),
-    "Ẇ": process_element(split_keep, 2),
-    "Ẋ": process_element(cartesian_product, 2),
-    "Ẏ": process_element(zero_slice, 2),
-    "Ż": process_element(one_slice, 2),
-    "⁰": process_element("ctx.inputs[0][0][-1]", 0),
-    "¹": process_element("ctx.inputs[0][0][-2]", 0),
-    "²": process_element(square, 1),
-    "∇": (
-        "third, second, first = pop(stack, 3, ctx); "
-        "stack.append(third); stack.append(first); "
-        "stack.append(second)",
-        3,
-    ),
-    "⌈": process_element(vy_ceil, 1),
-    "⌊": process_element(vy_floor, 1),
-    "¯": process_element(deltas, 1),
-    "±": process_element(sign_of, 1),
-    "₴": ("top = pop(stack, 1, ctx); vy_print(top, end='', ctx=ctx)", 1),
-    "…": (
-        "top = pop(stack, 1, ctx); "
-        "vy_print(top, end='\\n', ctx=ctx); stack.append(top)",
-        1,
-    ),
-    "□": (
-        "if ctx.inputs[0][0]: stack.append(ctx.inputs[0][0])\n"
-        "else:\n"
-        "    stdin = open(0)\n"
-        "    if stdin:\n"
-        "        a = [x[:-1] if ctx.inputs_as_strings else vy_eval(x[:-1], ctx=ctx) for x in stdin]\n"
-        "        ctx.inputs[0][0] = deep_copy(a)\n"
-        "        stack.append(a)\n"
-        "    else:\n"
-        "        input_list = []\n"
-        "        try:\n"
-        "            temp = input()\n"
-        "            while temp:\n"
-        "                input_list.append(temp if ctx.inputs_as_strings else vy_eval(temp, ctx=ctx))\n"
-        "                temp = input()\n"
-        "            ctx.inputs[0][0] = list(deep_copy(input_list))\n"
-        "            stack.append(input_list)\n"
-        "        except EOFError: ctx.inputs[0][0] = list(deep_copy(input_list)); stack.append(input_list)",
-        0,
-    ),
-    "↳": process_element(right_bit_shift, 2),
-    "↲": process_element(left_bit_shift, 2),
-    "⋏": process_element(bitwise_and, 2),
-    "⋎": process_element(bitwise_or, 2),
-    "꘍": process_element(bitwise_xor, 2),
-    "ꜝ": process_element(bitwise_not, 1),
-    "℅": process_element(random_choice, 1),
-    "≤": process_element(less_than_or_equal, 2),
-    "≥": process_element(greater_than_or_equal, 2),
-    "≠": process_element(not_equals, 2),
-    "⁼": process_element(non_vectorising_equals, 2),
-    "∪": process_element(union, 2),
-    "∩": process_element(transpose, 1),
-    "⊍": process_element(symmetric_difference, 2),
-    "£": ("ctx.register = pop(stack, 1, ctx)", 1),
-    "¥": process_element("ctx.register", 0),
-    "⇧": process_element(grade_up, 1),
-    "⇩": process_element(grade_down, 1),
-    "Ǎ": process_element(remove_non_alphabets, 1),
-    "ǎ": process_element(substrings, 1),
-    "Ǐ": process_element(prime_factorisation, 1),
-    "ǐ": process_element(prime_factors, 1),
-    "Ǒ": process_element(multiplicity, 2),
-    "ǒ": process_element(modulo_3, 1),
-    "Ǔ": (
-        "rhs = pop(stack, 1, ctx)\n"
-        + "if vy_type(rhs) == NUMBER_TYPE: \n"
-        + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(rotate_left(lhs, rhs, ctx))\n"
-        + "else:\n"
-        + "    stack.append(rotate_left(rhs, 1, ctx))\n",
-        2,
-    ),
-    "ǔ": (
-        "rhs = pop(stack, 1, ctx)\n"
-        + "if vy_type(rhs) == NUMBER_TYPE: \n"
-        + "    lhs = pop(stack, 1, ctx)\n"
-        + "    stack.append(rotate_right(lhs, rhs, ctx))\n"
-        + "else:\n"
-        + "    stack.append(rotate_right(rhs, 1, ctx))\n",
-        2,
-    ),
-    "↵": process_element(newline_split, 1),
-    "¼": process_element("ctx.global_array.pop()", 0),
-    "⅛": ("lhs = pop(stack,1,ctx); ctx.global_array.append(lhs)", 1),
-    "¾": process_element("list(deep_copy(ctx.global_array))", 0),
-    "Π": process_element(product, 1),
-    "„": (
-        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
-        "stack += temp[1:] + [temp[0]]",
-        -1,
-    ),
-    "‟": (
-        "temp = wrapify(stack, len(stack), ctx)[::-1]; "
-        "stack += [temp[-1]] + temp[:-1]",
-        -1,
-    ),
-    "ඞ": process_element('"sus"', 0),
-    "🍪": process_element(cookie, 0),
-    "∆²": process_element(is_square, 1),
-    "∆c": process_element(cosine, 1),
-    "∆C": process_element(arccos, 1),
-    "∆s": process_element(sine, 1),
-    "∆S": process_element(arcsin, 1),
-    "∆t": process_element(tangent, 1),
-    "∆T": process_element(arctan, 1),
-    "∆Ṫ": process_element(arctan2, 2),
-    "∆q": process_element(quadratic_solver, 2),
-    "∆Q": process_element(general_quadratic_solver, 2),
-    "∆P": process_element(polynomial_roots, 1),
-    "∆ƈ": process_element(n_pick_r, 2),
-    "∆i": process_element(nth_pi, 1),
-    "∆b": process_element(binary_string, 1),
-    "∆ė": process_element(nth_e, 1),
-    "∆I": process_element("pi_digits(lhs)", 1),
-    "∆Ė": process_element(e_digits, 1),
-    "∆f": process_element(nth_fibonacci, 1),
-    "∆F": process_element(nth_fibonacci_0, 1),
-    "∆±": process_element(copy_sign, 2),
-    "∆%": process_element(mod_pow, 3),
-    "∆K": process_element(divisor_sum, 1),
-    "∆e": process_element(expe, 1),
-    "∆E": process_element(expe_minus_1, 1),
-    "∆L": process_element(natural_log, 1),
-    "∆l": process_element(log_2, 1),
-    "∆τ": process_element(log_10, 1),
-    "∆d": process_element(euclidean_distance, 2),
-    "∆D": process_element(to_degrees, 1),
-    "∆R": process_element(to_radians, 1),
-    "∆Ṗ": process_element(next_prime, 1),
-    "∆ṗ": process_element(prev_prime, 1),
-    "∆p": process_element(nearest_prime, 1),
-    "∆ṙ": process_element(polynomial_from_roots, 1),
-    "∆W": process_element(round_to, 2),
-    "∆Ŀ": (
-        "top = pop(stack, 1, ctx)\n"
-        "if vy_type(top, simple=True) is list:\n"
-        "    stack.append(lowest_common_multiple(top, ctx=ctx))\n"
-        "else:\n"
-        "    stack.append(lowest_common_multiple(pop(stack, 1, ctx), top, ctx))\n",
-        2,
-    ),
-    "∆Ṙ": process_element("sympy.nsimplify(random.random(), rational=True)", 0),
-    "∆Z": process_element(zfiller, 2),
-    "∆ċ": process_element(nth_cardinal, 1),
-    "∆o": process_element(nth_ordinal, 1),
-    "∆M": process_element(mode, 1),
-    "∆ṁ": process_element(median, 1),
-    "∆ṫ": process_element(totient, 1),
-    "∆Ċ": process_element(polynomial_expr_from_coeffs, 1),
-    "∆¢": process_element(carmichael_function, 1),
-    "∆›": process_element(increment_until_false, 2),
-    "∆‹": process_element(decrement_until_false, 2),
-    "∆ǐ": process_element(prime_exponents, 1),
-    "∆Ǐ": process_element(prime_exponents_all, 1),
-    "∆*": process_element(next_multiple, 2),
-    "∆n": process_element(next_power, 2),
-    "∆ḟ": process_element(prev_power, 2),
-    "∆ȯ": process_element(hyperbolic_cosine, 1),
-    "∆ṡ": process_element(hyperbolic_sine, 1),
-    "∆ṅ": process_element(hyperbolic_tangent, 1),
-    "∆Ȯ": process_element(hyperbolic_arccosine, 1),
-    "∆Ṡ": process_element(hyperbolic_arcsine, 1),
-    "∆Ṅ": process_element(hyperbolic_arctangent, 1),
-    "∆/": process_element(hypotenuse, 1),
-    "∆r": process_element(reduced_echelon_form, 1),
-    "øḂ": process_element(angle_bracketify, 1),
-    "øḃ": process_element(curly_bracketify, 1),
-    "øb": process_element(parenthesise, 1),
-    "øB": process_element(bracketify, 1),
-    "øβ": process_element(brackets_balanced, 1),
-    "øc": process_element(base_255_string_compress, 1),
-    "øC": process_element(base_255_number_compress, 1),
-    "øĊ": process_element(center, 1),
-    "øċ": process_element(optimal_number_compress, 1),
-    "ød": process_element(run_length_decoding, 1),
-    "øD": process_element(optimal_compress, 1),
-    "øḋ": process_element(to_decimal, 1),
-    "øḊ": process_element(dyadic_runl_decode, 2),
-    "øe": process_element(run_length_encoding, 1),
-    "øĖ": process_element(separate_runl_encode, 1),
-    "ø↲": process_element(custom_pad_left, 3),
-    "ø↳": process_element(custom_pad_right, 3),
-    "øM": process_element(flip_brackets_vertical_palindromise, 1),
-    "øṁ": process_element(vertical_mirror, 1),
-    "øṗ": process_element(vertical_palindromise_center_join, 1),
-    "øm": process_element(vertical_mirror_center_join, 1),
-    "øṀ": process_element(flip_brackets_vertical_mirror, 1),
-    "øW": process_element(group_on_words, 1),
-    "øA": process_element(letter_to_number, 1),
-    "øP": process_element(pluralise_count, 2),
-    "øp": process_element(starts_with, 2),
-    "øE": process_element(ends_with, 2),
-    "øs": process_element(starts_with_set, 2),
-    "øf": process_element(ends_with_set, 2),
-    "øṖ": process_element(all_partitions, 1),
-    "øo": process_element(remove_until_no_change, 2),
-    "øO": process_element(count_overlapping, 2),
-    "øV": process_element(replace_until_no_change, 3),
-    "øF": process_element(factorial_of_range, 1),
-    "øṙ": process_element(regex_sub, 3),
-    "øJ": process_element(json_parse, 1),
-    "øṄ": process_element(replace_nth_occurrence, 4),
-    "øṘ": process_element(roman_numeral, 1),
-    "ø⟇": process_element(codepage_digraph, 1),
-    "øḞ": process_element(replace_first, 3),
-    "øS": process_element(strip_whitespace, 1),
-    "øL": process_element(strip_whitespace_left, 1),
-    "øR": process_element(strip_whitespace_right, 1),
-    "øl": process_element(strip_left, 2),
-    "ør": process_element(strip_right, 2),
-    "ø^": process_element(canvas_draw, 3),
-    "ø∧": (
-        "other, rhs, lhs = pop(stack, 3, ctx)\n"
-        "canvas_global_draw(lhs, rhs, other, ctx)\n",
-    ),
-    "øε": process_element(vertical_join_with_filler, 2),
-    "ø.": process_element(surround, 2),
-    "øŀ": process_element(align_left, 1),
-    "øɽ": process_element(align_right, 1),
-    "Þ*": process_element(cartesian_over_list, 1),
-    "Þa": process_element(adjacency_matrix_dir, 1),
-    "ÞA": process_element(adjacency_matrix_undir, 1),
-    "Þo": process_element(infinite_ordinals, 0),
-    "Þc": process_element(infinite_cardinals, 0),
-    "Þp": process_element(infinite_primes, 0),
-    "Þx": process_element(all_combos, 1),
-    "Þ×": process_element(all_combos_with_replacement, 1),
-    "Þu": process_element(all_unique, 1),
-    "Þj": process_element(depth, 1),
-    "ÞẊ": process_element(cartesian_power, 2),
-    "ÞB": process_element(rand_bits, 1),
-    "ÞU": process_element(uniquify_mask, 1),
-    "Þ÷": process_element(divide_lists, 2),
-    "Þf": (
-        "rhs = pop(stack, 1, ctx)\n"
-        "if vy_type(rhs) != NUMBER_TYPE:\n"
-        "    stack.append(flatten_by(rhs, 1, ctx))\n"
-        "else:\n"
-        "    stack.append(flatten_by(pop(stack, 1, ctx), rhs, ctx))\n",
-        2,
-    ),
-    "Þċ": process_element(cycle, 1),
-    "Þǔ": process_element(untruth, 1),
-    "Þi": process_element(multi_dimensional_index, 2),
-    "ÞI": process_element(all_indices_multidim, 2),
-    "Þḟ": process_element(multi_dimensional_search, 2),
-    "ÞḞ": process_element(fill, 2),
-    "Þm": process_element(zero_matrix, 1),
-    "Þ…": process_element(evenly_distribute, 2),
-    "Þ<": process_element(all_less_than_increasing, 2),
-    "ÞD": process_element(all_diagonals, 1),
-    "Þ√": process_element(all_diagonals_ordered, 1),
-    "Þḋ": process_element(all_antidiagonals, 1),
-    "Þ`": process_element(all_antidiagonals_ordered, 1),
-    "ÞS": process_element(sublists, 1),
-    "ÞṪ": process_element(transpose, 2),
-    "ÞṀ": process_element(matrix_multiply, 2),
-    "Þ•": process_element(dot_product, 2),
-    "ÞḊ": process_element(matrix_determinant, 1),
-    "Þ\\": process_element(anti_diagonal, 1),
-    "Þ/": process_element(diagonal, 1),
-    "Þ↓": process_element(min_by_function, 2),
-    "Þ↑": process_element(max_by_function, 2),
-    "ÞZ": process_element(coords_deepmap, 2),
-    "ÞF": process_element(fibonaacis, 0),
-    "ÞṄ": process_element(infinite_integer_partitions, 0),
-    "Þ!": process_element(factorials, 0),
-    "Þ℅": process_element(shuffle, 1),
-    "ÞC": process_element(foldl_columns, 2),
-    "Þṁ": process_element(mold_special, 2),
-    "ÞM": process_element(maximal_indices, 1),
-    "Þ∞": process_element(infinite_positives, 0),
-    "Þ:": process_element(infinite_non_negative_integers, 0),
-    "Þn": process_element(infinite_all_integers, 0),
-    "Þ∴": process_element(element_wise_dyadic_maximum, 2),
-    "Þ∵": process_element(element_wise_dyadic_minimum, 2),
-    "Þs": process_element(all_slices, 2),
-    "ÞǓ": process_element(connected_uniquify, 1),
-    "Þk": process_element(convolve, 2),
-    "Þ¾": ("ctx.global_array = []", 0),
-    "Þr": process_element(sans_last_prepend_zero, 1),
-    "ÞR": process_element(cumul_sum_sans_last_prepend_zero, 1),
-    "Þẇ": (
-        "res = unwrap(pop(stack, 1, ctx), ctx); "
-        "stack.append(res[0]); stack.append(res[1])",
-        1,
-    ),
-    "Þż": process_element(lift, 1),
-    "Þg": process_element(shortest, 1),
-    "ÞG": process_element(longest, 1),
-    "ÞĠ": process_element(gridify, 1),
-    "Þṡ": process_element(sort_by_length, 1),
-    "ÞṠ": process_element(is_sorted_ascending, 1),
-    "ÞṘ": process_element(is_sorted_descending, 1),
-    "Þ⇧": process_element(is_sorted_strictly_ascending, 1),
-    "Þ⇩": process_element(is_sorted_strictly_descending, 1),
-    "ÞȮ": process_element(is_ordered, 1),
-    "ÞĊ": process_element(is_unordered, 1),
-    "ÞK": process_element(suffixes_element, 1),
-    "ÞT": process_element(multidimensional_truthy_indices, 1),
-    "Þİ": (
-        "rhs, lhs = pop(stack, 2, ctx)\n"
-        "if vy_type(rhs) != NUMBER_TYPE:\n"
-        "    lhs, rhs = rhs, lhs\n"
-        "stack.append(index(lhs, [0, rhs], ctx))\n"
-        "stack.append(index(lhs, [rhs, None], ctx))\n",
-        2,
-    ),
-    "ÞN": process_element(alternating_negations, 1),
-    "Þ□": process_element(identity_matrix, 1),
-    "Þe": process_element(matrix_exponentiation, 2),
-    "Þd": process_element(dist_matrix_dir, 1),
-    "Þw": process_element(dist_matrix_undir, 1),
-    "Þ∨": process_element(multiset_difference, 2),
-    "Þ∩": process_element(multiset_intersection, 2),
-    "Þ∪": process_element(multiset_union, 2),
-    "Þ⊍": process_element(multiset_symmetric_difference, 2),
-    "ÞŻ": process_element(sort_every_level, 1),
-    "ÞṖ": process_element(index_partition, 2),
-    "Þṗ": process_element(boolean_partition, 2),
-    "Þė": process_element(multi_dimensional_enumerate, 1),
-    "Þẏ": process_element(multi_dimensional_indices, 1),
-    "¨□": process_element(parse_direction_arrow_to_integer, 1),
-    "¨^": process_element(parse_direction_arrow_to_vector, 1),
-    "¨,": ("top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx)", 1),
-    "¨…": (
-        "top = pop(stack, 1, ctx); vy_print(top, end=' ', ctx=ctx); "
-        "stack.append(top)",
-        1,
-    ),
-    "¨M": process_element(apply_at, 3),
-    "¨U": (
-        "if not ctx.online: stack.append(request(pop(stack, 1, ctx), ctx))",
-        1,
-    ),
-    "¨>": process_element(strict_greater_than, 2),
-    "¨<": process_element(strict_less_than, 2),
-    "¨ẇ": ("stack.append(wrapify(stack, pop(stack, 1, ctx), ctx)[::-1])", 1),
-    "¨*": process_element(all_multiples, 1),
-    "¨?": (
-        'stack.append(vy_eval(input("> " * ctx.repl_mode), ctx))',
-        0,
-    ),
-    "¨S": (
-        "a = [list(stack.pop()), 0]; ctx.inputs.insert(0, a); ctx.inputs.append(a)",
-        1,
-    ),
-    "¨R": ("ctx.inputs.pop(0); ctx.inputs.pop()", 0),
-    "¨e": process_element(all_powers, 1),
-    "¨²": ("stack.append(all_powers(2, ctx))", 0),
-    "¨₀": ("stack.append(all_powers(10, ctx))", 0),
-    "kA": process_element('"ABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0),
-    "ke": process_element("sympy.E", 0),
-    "kf": process_element('"Fizz"', 0),
-    "kb": process_element('"Buzz"', 0),
-    "kF": process_element('"FizzBuzz"', 0),
-    "kH": process_element('"Hello, World!"', 0),
-    "kh": process_element('"Hello World"', 0),
-    "k1": process_element("1000", 0),
-    "k2": process_element("10000", 0),
-    "k3": process_element("100000", 0),
-    "k4": process_element("1000000", 0),
-    "ka": process_element('"abcdefghijklmnopqrstuvwxyz"', 0),
-    "kL": process_element(
-        '"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
-    ),
-    "kd": process_element('"0123456789"', 0),
-    "k6": process_element('"0123456789abcdef"', 0),
-    "k^": process_element('"0123456789ABCDEF"', 0),
-    "ko": process_element('"01234567"', 0),
-    "kp": process_element("string.punctuation", 0),
-    "kP": process_element(
-        '"!\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
-        0,
-    ),
-    "kQ": process_element(
-        '" !\\"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"',
-        0,
-    ),
-    "kw": process_element('" \\t\\n\\r\\u000b\\u000c"', 0),
-    "kr": process_element(
-        '"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"', 0
-    ),
-    "kB": process_element(
-        '"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"', 0
-    ),
-    "kZ": process_element('"ZYXWVUTSRQPONMLKJIHGFEDCBA"', 0),
-    "kz": process_element(' "zyxwvutsrqponmlkjihgfedcba"', 0),
-    "kl": process_element(
-        '"ZYXWVUTSRQPONMLKJIHGFEDCBAzyxwvutsrqponmlkjihgfedcba"', 0
-    ),
-    "ki": process_element("sympy.pi", 0),
-    "kg": process_element(
-        "sympy.nsimplify('1/2 + sqrt(5)/2', rational=True)", 0
-    ),
-    "kD": process_element('datetime.now().strftime("%Y-%m-%d")', 0),
-    "kN": process_element(
-        "LazyList([(t:=datetime.now()).hour, t.minute, t.second])", 0
-    ),
-    "kḋ": process_element('datetime.now().strftime("%d/%m/%Y")', 0),
-    "kḊ": process_element('datetime.now().strftime("%m/%d/%Y")', 0),
-    "kð": process_element(
-        "LazyList([(d:=datetime.now()).day, d.month, d.year])", 0
-    ),
-    "kβ": process_element('"{}[]<>()"', 0),
-    "kḂ": process_element('"()[]{}"', 0),
-    "kḃ": process_element("'([{'", 0),
-    "kß": process_element('"()[]"', 0),
-    "k≤": process_element('"([{<"', 0),
-    "k≥": process_element('")]}"', 0),
-    "kΠ": process_element('")]}>"', 0),
-    "kv": process_element('"aeiou"', 0),
-    "kV": process_element('"AEIOU"', 0),
-    "k∨": process_element('"aeiouAEIOU"', 0),
-    "k⟇": process_element("vyxal.encoding.codepage", 0),
-    "k½": process_element("LazyList([1,2])", 0),
-    "kḭ": process_element("2 ** 32", 0),
-    "k₁": process_element("LazyList([1, 1])", 0),
-    "k+": process_element("LazyList([1, -1])", 0),
-    "k-": process_element("LazyList([-1, 1])", 0),
-    "k≈": process_element("LazyList([0, 1])", 0),
-    "k/": process_element('"/\\\\"', 0),
-    "kR": process_element("360", 0),
-    "kW": process_element('"https://"', 0),
-    "k℅": process_element('"http://"', 0),
-    "k↳": process_element('"https://www."', 0),
-    "k²": process_element('"http://www."', 0),
-    "k¶": process_element("512", 0),
-    "k⁋": process_element("1024", 0),
-    "k¦": process_element("2048", 0),
-    "kṄ": process_element("4096", 0),
-    "kṅ": process_element("8192", 0),
-    "k¡": process_element("2 ** 14", 0),
-    "kε": process_element("2 ** 15", 0),
-    "k₴": process_element("2 ** 16", 0),
-    "k×": process_element("2 ** 31", 0),
-    "k⁰": process_element('"bcdfghjklmnpqrstvwxyz"', 0),
-    "k¹": process_element('"bcdfghjklmnpqrstvwxz"', 0),
-    "kT": process_element('"[]<>-+.,"', 0),
-    "kṗ": process_element('LazyList(["()","[]","{}","<>"])', 0),
-    "kṖ": process_element('"([{<>}])"', 0),
-    "kS": process_element('"ඞ"', 0),
-    "k₂": process_element("2 ** 20", 0),
-    "k₃": process_element("2 ** 30", 0),
-    "k∪": process_element('"aeiouy"', 0),
-    "k⊍": process_element('"AEIOUY"', 0),
-    "k∩": process_element('"aeiouyAEIOUY"', 0),
-    "k□": process_element("[[0,1],[1,0],[0,-1],[-1,0]]", 0),
-    "kṘ": process_element('"IVXLCDM"', 0),
-    "k•": process_element('["qwertyuiop","asdfghjkl","zxcvbnm"]', 0),
-}
 modifiers: dict[str, str] = {
     "&": (
         "stack.append(ctx.register)\n"
