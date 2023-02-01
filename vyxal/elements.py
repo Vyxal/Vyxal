@@ -5924,7 +5924,8 @@ def string_base_convert(lhs, rhs, ctx):
 
     if rhs < 2 or rhs > 62:
         raise ValueError(
-            f"Error in R (num, num) overload - " "rhs must be between 2 and 62, was {rhs}"
+            f"Error in R (num, num) overload - "
+            "rhs must be between 2 and 62, was {rhs}"
         )
 
     temp = to_base_digits(lhs, rhs)
@@ -5936,7 +5937,9 @@ def string_base_convert(lhs, rhs, ctx):
         )
     return "".join(
         index_indices_or_cycle(
-            string.digits + string.ascii_uppercase + string.ascii_lowercase, temp, ctx
+            string.digits + string.ascii_uppercase + string.ascii_lowercase,
+            temp,
+            ctx,
         )
     )
 
