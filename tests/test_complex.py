@@ -281,6 +281,12 @@ def test_slice_to_end_infinite_lists():
     assert stack[-1][:5] == [21, 22, 23, 24, 25]
 
 
+def test_first_integers():
+    stack = run_vyxal("λ1; 5 ȯ")
+    # Lambda basically accepts everything
+    assert stack[-1][:5] == [0, 1, -1, 2, -2]
+
+
 def test_strip_infinite_lists():
     """Ensure that P only strips from the start for infinite lists"""
     stack = run_vyxal("⁽›1Ḟ 1 9 r P")
