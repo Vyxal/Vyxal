@@ -87,6 +87,9 @@ enum EndPrintMode:
   /** Sum/concatenate the top of the stack */
   case Sum
 
+  /** Don't print anything - disable implicit output */
+  case None
+
 // todo use a proper logging library instead
 enum LogLevel:
   case Debug, Normal

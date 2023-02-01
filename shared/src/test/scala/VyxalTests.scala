@@ -20,7 +20,7 @@ trait VyxalTests extends AnyFunSpec:
       desc: String,
       code: String,
       expected: VAny,
-      ctx: Context = Context()
+      ctx: Context = Context(testMode = true)
   ) =
     it(desc) {
       Interpreter.execute(code)(using ctx)
@@ -33,7 +33,7 @@ trait VyxalTests extends AnyFunSpec:
       desc: String,
       ast: AST,
       expected: VAny,
-      ctx: Context = Context()
+      ctx: Context = Context(testMode = true)
   ) =
     it(desc) {
       Interpreter.execute(ast)(using ctx)
@@ -48,7 +48,7 @@ trait VyxalTests extends AnyFunSpec:
   def testMulti(getRes: Context ?=> VAny)(tests: (List[VAny], VAny)*) =
     for (inputs, expected) <- tests do
       it(s"$inputs -> $expected") {
-        val res = getRes(using Context(inputs = inputs))
+        val res = getRes(using Context(inputs = inputs, testMode = true))
         assertResult(expected)(res)
       }
 
@@ -59,7 +59,7 @@ trait VyxalTests extends AnyFunSpec:
   def testMulti(code: String)(tests: (List[VAny], VAny)*) =
     for (inputs, expected) <- tests do
       it(s"${inputs.mkString("[", ",", "]")} -> $expected") {
-        given ctx: Context = Context(inputs = inputs)
+        given ctx: Context = Context(inputs = inputs, testMode = true)
         Interpreter.execute(code)
         assert(!ctx.isStackEmpty)
         assertResult(expected)(ctx.peek)
@@ -72,7 +72,7 @@ trait VyxalTests extends AnyFunSpec:
   def testMulti(tests: (String, VAny)*) =
     for (code, expected) <- tests do
       it(s"$code -> $expected") {
-        given ctx: Context = Context()
+        given ctx: Context = Context(testMode = true)
         Interpreter.execute(code)
         assert(!ctx.isStackEmpty)
         assertResult(expected)(ctx.peek)

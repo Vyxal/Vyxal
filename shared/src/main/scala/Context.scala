@@ -32,9 +32,12 @@ class Context private (
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
-    val globals: Globals = Globals()
+    val globals: Globals = Globals(),
+    val testMode: Boolean = false
 ):
-  def settings: Settings = globals.settings
+  def settings: Settings = if testMode then
+    Settings(endPrintMode = EndPrintMode.None)
+  else globals.settings
 
   /** Pop the top of the stack
     *
@@ -141,19 +144,22 @@ class Context private (
     vars,
     inputs,
     Some(this),
-    globals
+    globals,
+    testMode
   )
 end Context
 
 object Context:
   def apply(
       inputs: Seq[VAny] = Seq.empty,
-      globals: Globals = Globals()
+      globals: Globals = Globals(),
+      testMode: Boolean = false
   ): Context =
     new Context(
       stack = mut.ArrayBuffer(),
       inputs = Inputs(inputs),
-      globals = globals
+      globals = globals,
+      testMode = testMode
     )
 
   /** Find a parent that has a variable with the given name */
@@ -191,7 +197,8 @@ object Context:
       mut.Map(params.zip(inputs)*),
       Inputs(inputs),
       Some(origCtx),
-      currCtx.globals
+      currCtx.globals,
+      currCtx.testMode
     )
   end makeFnCtx
 end Context
