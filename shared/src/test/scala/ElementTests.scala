@@ -80,33 +80,33 @@ class ElementTests extends VyxalTests:
 
   describe("Element B") {
     describe("when given a number") {
-      testMulti(
-        "110 B" -> VNum(6),
-        "1000 B" -> VNum(8),
-        "69 B" -> VNum(21),
-        "69420 B" -> VNum(188),
-        "7654 N B" -> VNum(-94),
-        "111 N B" -> VNum(-7)
+      testMulti("B")(
+        List[VAny](110) -> VNum(6),
+        List[VAny](1000) -> VNum(8),
+        List[VAny](69) -> VNum(21),
+        List[VAny](69420) -> VNum(188),
+        List[VAny](-7654) -> VNum(-94),
+        List[VAny](-111) -> VNum(-7)
       )
     }
     describe("when given a string") {
-      testMulti(
-        "\"110\" B" -> VNum(6),
-        "\"1000\" B" -> VNum(8),
-        "\"69\" B" -> VNum(21),
-        "\"69420\" B" -> VNum(188),
-        "\"-7654\" B" -> VNum(-94),
-        "\"-111\" B" -> VNum(-7)
+      testMulti("B")(
+        List[VAny]("110") -> VNum(6),
+        List[VAny]("1000") -> VNum(8),
+        List[VAny]("69") -> VNum(21),
+        List[VAny]("69420") -> VNum(188),
+        List[VAny]("-7654") -> VNum(-94),
+        List[VAny]("-111") -> VNum(-7)
       )
     }
     describe("when given a list") {
-      testMulti(
-        "#[1|1|0#] B" -> VNum(6),
-        "#[1|0|0|0#] B" -> VNum(8),
-        "#[6|9#] B" -> VNum(21),
-        "#[6|9|4|2|0#] B" -> VNum(188),
-        "#[7|6|5|4#] N B" -> VNum(-94),
-        "#[1|1|1#] N B" -> VNum(-7)
+      testMulti("B")(
+        List[VAny](VList(1, 1, 0)) -> VNum(6),
+        List[VAny](VList(1, 0, 0, 0)) -> VNum(8),
+        List[VAny](VList(6, 9)) -> VNum(21),
+        List[VAny](VList(6, 9, 4, 2, 0)) -> VNum(188),
+        List[VAny](VList(-7, -6, -5, -4)) -> VNum(-94),
+        List[VAny](VList(-1, -1, -1)) -> VNum(-7)
       )
     }
     describe("With lists of strings and lists") {
