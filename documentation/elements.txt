@@ -1,73 +1,19 @@
-÷ (Divide | Split) (vectorising)
-- a: num, b: num -> a / b
-- a: str, b: str -> Split a on the regex b
+! (Factorial | To Uppercase) (vectorising)
+- a: num -> a!
+- a: str -> a.toUpperCase()
 ---------------------
-₀ (Ten) (non-vectorising)
-- -> 10
+#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
+- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
 ---------------------
-n (Get Context Variable N) (non-vectorising)
-- ->  -> context variable n
----------------------
-N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
-- a: num -> -a
-- a: str -> a.swapcase()
-- a: fun -> first non-negative integer where predicate a is true
----------------------
-₁ (Sixteen) (non-vectorising)
-- -> 16
----------------------
-= (Equals) (vectorising)
-- a: any, b: any -> a == b
----------------------
-< (Less Than) (vectorising)
-- a: num, b: num -> a < b
-- a: str, b: num -> a < str(b)
-- a: num, b: str -> str(a) < b
-- a: str, b: str -> a < b
----------------------
-A (All Truthy | All() | Is Vowel?) (non-vectorising)
-- a: str -> is (a) a vowel? vectorises for strings len > 1
-- a: list -> is (a) all truthy?
----------------------
-₆ (One hundred twenty-eight) (non-vectorising)
-- -> 128
----------------------
-b (Convert To Binary) (vectorising)
-- a: num -> convert a to binary
-- a: str -> bin(ord(x) for x in a)
----------------------
-B (Convert From Binary) (non-vectorising)
-- a: num -> str(a) from binary
-- a: str -> int(a, 2)
-- a: lst -> int(a, 2), using list of digits
----------------------
-Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
-- a: fun -> Execute a
-- a: str -> Evaluate a as Vyxal
-- a: num -> 10 ** n
----------------------
-+ (Addition) (vectorising)
-- a: num, b: num -> a + b
-- a: num, b: str -> a + b
-- a: str, b: num -> a + b
-- a: str, b: str -> a + b
----------------------
-O (Ord/Chr) (vectorising)
-- a: str -> ord(a)
-- a: num -> chr(a)
----------------------
-× (Multiplication) (vectorising)
-- a: num, b: num -> a * b
-- a: num, b: str -> b repeated a times
-- a: str, b: num -> a repeated b times
-- a: str, b: str -> ring translate a according to b
+$ (Swap) (non-vectorising)
+- a, b -> b, a
 ---------------------
 % (Modulo | String Formatting) (vectorising)
 - a: num, b: num -> a % b
 - a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)
 ---------------------
-₅ (One hundred) (non-vectorising)
-- -> 100
+& (Append) (non-vectorising)
+- a: any, b: any -> list(a) ++ [b]
 ---------------------
 * (Exponentation | Remove Nth Letter | Trim) (vectorising)
 - a: num, b: num -> a ^ b
@@ -75,27 +21,14 @@ O (Ord/Chr) (vectorising)
 - a: num, b: str -> b with the ath letter removed
 - a: str, b: str -> trim b from both sides of a
 ---------------------
-₉ (Empty array) (non-vectorising)
-- -> []
++ (Addition) (vectorising)
+- a: num, b: num -> a + b
+- a: num, b: str -> a + b
+- a: str, b: num -> a + b
+- a: str, b: str -> a + b
 ---------------------
-& (Append) (non-vectorising)
-- a: any, b: any -> list(a) ++ [b]
----------------------
-! (Factorial | To Uppercase) (vectorising)
-- a: num -> a!
-- a: str -> a.toUpperCase()
----------------------
-m (Get Context Variable M) (non-vectorising)
-- ->  -> context variable m
----------------------
-M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
-- a: any, b: fun -> a.map(b)
-- a: fun, b: any -> b.map(a)
-- a: lst, b: lst -> a molded to the shape of b
-- a: num, b: num -> how many times b divides a
----------------------
-₂ (Twenty-six) (non-vectorising)
-- -> 26
+, (Print) (non-vectorising)
+- a -> printed to stdout
 ---------------------
 - (Subtraction) (vectorising)
 - a: num, b: num -> a - b
@@ -103,32 +36,59 @@ M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
 - a: num, b: str -> a '-'s + b
 - a: str, b: str -> a with b removed
 ---------------------
-, (Print) (non-vectorising)
-- a -> printed to stdout
+: (Duplicate) (non-vectorising)
+- a -> a, a
 ---------------------
 ; (Pair) (non-vectorising)
 - a, b -> [a, b]
 ---------------------
-#v (Vectorise (Element Form) [Internal Use]) (non-vectorising)
-- *a, f -> f vectorised over however many arguments in a. It is recommended to use the modifier instead
+< (Less Than) (vectorising)
+- a: num, b: num -> a < b
+- a: str, b: num -> a < str(b)
+- a: num, b: str -> str(a) < b
+- a: str, b: str -> a < b
 ---------------------
-₃ (Thirty-two) (non-vectorising)
-- -> 32
+= (Equals) (vectorising)
+- a: any, b: any -> a == b
+---------------------
+> (Greater Than) (vectorising)
+- a: num, b: num -> a > b
+- a: str, b: num -> a > str(b)
+- a: num, b: str -> str(a) > b
+- a: str, b: str -> a > b
 ---------------------
 ? (Get Input) (non-vectorising)
 - ->  -> input
 ---------------------
-_ (Pop and Discard) (non-vectorising)
-- a ->
+A (All Truthy | All() | Is Vowel?) (non-vectorising)
+- a: str -> is (a) a vowel? vectorises for strings len > 1
+- a: list -> is (a) all truthy?
+---------------------
+B (Convert From Binary) (non-vectorising)
+- a: num -> str(a) from binary
+- a: str -> int(a, 2)
+- a: lst -> int(a, 2), using list of digits
 ---------------------
 C (Count) (non-vectorising)
 - a: any, b: any -> count(b in a)
 ---------------------
-₇ (Two hundred fifty-six) (non-vectorising)
-- -> 256
+D (Triplicate) (non-vectorising)
+- a -> [a, a, a]
 ---------------------
-: (Duplicate) (non-vectorising)
-- a -> a, a
+M (Map Function | Mold Lists | Multiplicity) (non-vectorising)
+- a: any, b: fun -> a.map(b)
+- a: fun, b: any -> b.map(a)
+- a: lst, b: lst -> a molded to the shape of b
+- a: num, b: num -> how many times b divides a
+---------------------
+N (Negation | Swap Case | First Non-Negative Integer Where Predicate is True) (vectorising)
+- a: num -> -a
+- a: str -> a.swapcase()
+- a: fun -> first non-negative integer where predicate a is true
+---------------------
+O (Ord/Chr) (vectorising)
+- a: str -> ord(a)
+- a: num -> chr(a)
 ---------------------
 R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 - a: fun, b: any -> reduce iterable b by function a
@@ -136,21 +96,61 @@ R (Reduce by Function Object | Dyadic Range | Regex Match) (non-vectorising)
 - a: num, b: num -> the range [a, b)
 - a: str, b: num|str -> does regex pattern b match haystack a?
 ---------------------
+_ (Pop and Discard) (non-vectorising)
+- a ->
+---------------------
+b (Convert To Binary) (vectorising)
+- a: num -> convert a to binary
+- a: str -> bin(ord(x) for x in a)
+---------------------
+m (Get Context Variable M) (non-vectorising)
+- ->  -> context variable m
+---------------------
+n (Get Context Variable N) (non-vectorising)
+- ->  -> context variable n
+---------------------
+Ė (Execute lambda | Evaluate as Vyxal | Power with base 10) (non-vectorising)
+- a: fun -> Execute a
+- a: str -> Evaluate a as Vyxal
+- a: num -> 10 ** n
+---------------------
+₀ (Ten) (non-vectorising)
+- -> 10
+---------------------
+₁ (Sixteen) (non-vectorising)
+- -> 16
+---------------------
+₂ (Twenty-six) (non-vectorising)
+- -> 26
+---------------------
+₃ (Thirty-two) (non-vectorising)
+- -> 32
+---------------------
 ₄ (Sixty-four) (non-vectorising)
 - -> 64
 ---------------------
-$ (Swap) (non-vectorising)
-- a, b -> b, a
+₅ (One hundred) (non-vectorising)
+- -> 100
+---------------------
+₆ (One hundred twenty-eight) (non-vectorising)
+- -> 128
+---------------------
+₇ (Two hundred fifty-six) (non-vectorising)
+- -> 256
 ---------------------
 ₈ (Alphabet) (non-vectorising)
 - -> "abcdefghijklmnopqrstuvwxyz"
 ---------------------
-D (Triplicate) (non-vectorising)
-- a -> [a, a, a]
+₉ (Empty array) (non-vectorising)
+- -> []
 ---------------------
-> (Greater Than) (vectorising)
-- a: num, b: num -> a > b
-- a: str, b: num -> a > str(b)
-- a: num, b: str -> str(a) > b
-- a: str, b: str -> a > b
+× (Multiplication) (vectorising)
+- a: num, b: num -> a * b
+- a: num, b: str -> b repeated a times
+- a: str, b: num -> a repeated b times
+- a: str, b: str -> ring translate a according to b
+---------------------
+÷ (Divide | Split) (vectorising)
+- a: num, b: num -> a / b
+- a: str, b: str -> Split a on the regex b
 ---------------------
