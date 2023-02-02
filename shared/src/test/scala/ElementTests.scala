@@ -153,12 +153,11 @@ class ElementTests extends VyxalTests:
   describe("Element M") {
     describe("when given two lists") {
       it("should mold them properly") {
-        given Context = Context(testMode = true)
-        assertResult(VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)))(
-          Impls.mapElement(
-            VList(1, 2, VList(3, 4), 5),
-            VList(1, 2, VList(VList(3, 4, 6), 5))
-          )
+        testEquals(VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)))(ctx ?=>
+          ctx.push(VList(1, 2, VList(3, 4), 5))
+          ctx.push(VList(1, 2, VList(VList(3, 4, 6), 5)))
+          Interpreter.execute(AST.Command("M"))
+          ctx.peek
         )
       }
     }
@@ -167,21 +166,19 @@ class ElementTests extends VyxalTests:
   describe("Element R") {
     describe("when given function and iterable") {
       it("should work with singleton lists") {
-        given ctx: Context = Context(testMode = true)
-        assertResult(1: VNum)(
-          Impls.reduction(
-            VList(1),
-            VFun(Elements.elements("+").impl, 2, List.empty, ctx)
-          )
+        testEquals(1)(ctx ?=>
+          ctx.push(VList(1))
+          ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Interpreter.execute(AST.Command("R"))
+          ctx.peek
         )
       }
       it("should calculate sum properly") {
-        given ctx: Context = Context(testMode = true)
-        assertResult(15: VNum)(
-          Impls.reduction(
-            VNum(5),
-            VFun(Elements.elements("+").impl, 2, List.empty, ctx)
-          )
+        testEquals(15)(ctx ?=>
+          ctx.push(VList(1, 2, 3, 4, 5))
+          ctx.push(VFun(Elements.elements("+").impl, 2, List.empty, ctx))
+          Interpreter.execute(AST.Command("R"))
+          ctx.peek
         )
       }
     }
@@ -189,21 +186,23 @@ class ElementTests extends VyxalTests:
 
   describe("Element Ė") {
     describe("when given a number") {
-      it("should do 10**n properly") {
-        given ctx: Context = Context(testMode = true)
-        assertResult(1: VNum)(Impls.execute(0))
-        assertResult(100: VNum)(Impls.execute(2))
-        assertResult(VNum(1) / 1000)(Impls.execute(-3))
-      }
+      testMulti("Ė")(
+        List[VAny](0) -> 1,
+        List[VAny](1) -> 10,
+        List[VAny](2) -> 100,
+        List[VAny](-3) -> VNum(1) / 1000
+      )
     }
 
     describe("when given a string") {
-      it("should properly execute code that uses the stack") {
-        given ctx: Context = Context(testMode = true)
-        assertResult(3: VNum)(Impls.execute("1 2 + D"))
-      }
+      testCode(
+        "should properly execute code that uses the stack",
+        """ "1 2 + D" Ė """,
+        3
+      )
 
       it("should use the same context for executing the code") {
+        // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
         assertResult(7: VNum)(Impls.execute("+"))
       }
@@ -211,10 +210,11 @@ class ElementTests extends VyxalTests:
 
     describe("when given a function") {
       it("should execute the function") {
-        given ctx: Context = Context(testMode = true)
-        ctx.push(1, 2)
-        assertResult(3: VNum)(
-          Impls.execute(VFun.fromElement(Elements.elements("+")))
+        testEquals(3)(ctx ?=>
+          ctx.push(1, 2)
+          ctx.push(VFun.fromElement(Elements.elements("+")))
+          Interpreter.execute(AST.Command("Ė"))
+          ctx.peek
         )
       }
     }

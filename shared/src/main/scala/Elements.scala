@@ -174,8 +174,8 @@ object Elements:
       "Append",
       List("append"),
       "a: any, b: any -> list(a) ++ [b]"
-    ) {
-      case (a, b) => VList(ListHelpers.makeIterable(a) :+ b*)
+    ) { case (a, b) =>
+      VList(ListHelpers.makeIterable(a) :+ b*)
     }
 
     addFull(
