@@ -150,6 +150,17 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element D") {
+    describe("when given anything") {
+      it("should leave three copies of it on the stack") {
+        given ctx: Context = Context(testMode = true)
+        ctx.push(1, 2, 3)
+        Interpreter.execute(AST.Command("D"))
+        assertResult(VList(3, 3, 3))(VList(ctx.pop(), ctx.pop(), ctx.pop()))
+      }
+    }
+  }
+
   describe("Element M") {
     describe("when given two lists") {
       it("should mold them properly") {
