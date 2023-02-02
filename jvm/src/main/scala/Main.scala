@@ -62,24 +62,32 @@ object Main:
   end main
 
   private def printDocs(): Unit =
-    Elements.elements.values.foreach {
-      case Element(
-            symbol,
-            name,
-            keywords,
-            arity,
-            vectorises,
-            overloads,
-            impl
-          ) =>
-        print(
-          s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
+    Elements.elements.values.toSeq
+      .sortBy { elem =>
+        // Have to use tuple in case of digraphs
+        (
+          vyxal.CODEPAGE.indexOf(elem.symbol.charAt(0)),
+          vyxal.CODEPAGE.indexOf(elem.symbol.substring(1))
         )
-        overloads.foreach { overload =>
-          println(s"- $overload")
-        }
-        println("---------------------")
-    }
+      }
+      .foreach {
+        case Element(
+              symbol,
+              name,
+              keywords,
+              arity,
+              vectorises,
+              overloads,
+              impl
+            ) =>
+          print(
+            s"$symbol ($name) (${if vectorises then "" else "non-"}vectorising)\n"
+          )
+          overloads.foreach { overload =>
+            println(s"- $overload")
+          }
+          println("---------------------")
+      }
 
   private val builder = OParser.builder[CLIConfig]
 
