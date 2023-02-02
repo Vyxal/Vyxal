@@ -244,6 +244,22 @@ object Elements:
       case (a: String, b: String) => a == b
     }
 
+    val exec = addElem(
+      Monad,
+      "Ė",
+      "Execute lambda | Evaluate as Vyxal | Power with base 10",
+      List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
+      "a: fun -> Execute a",
+      "a: str -> Evaluate a as Vyxal",
+      "a: num -> 10 ** n"
+    ) {
+      case fn: VFun => Interpreter.executeFn(fn)
+      case code: String =>
+        Interpreter.execute(code)
+        summon[Context].pop()
+      case n: VNum => 10 ** n
+    }
+
     val exponentation = addVect(
       Dyad,
       "*",
@@ -271,22 +287,6 @@ object Elements:
       None,
       "a ->"
     ) { ctx ?=> ctx.pop() }
-
-    val execute = addElem(
-      Monad,
-      "Ė",
-      "Execute lambda | Evaluate as Vyxal | Power with base 10",
-      List("execute-lambda", "evaluate-as-vyxal", "power-base-10"),
-      "a: fun -> Execute a",
-      "a: str -> Evaluate a as Vyxal",
-      "a: num -> 10 ** n"
-    ) {
-      case fn: VFun => Interpreter.executeFn(fn)
-      case code: String =>
-        Interpreter.execute(code)
-        summon[Context].pop()
-      case n: VNum => 10 ** n
-    }
 
     val factorial = addVect(
       Monad,
