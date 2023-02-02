@@ -8,6 +8,16 @@ import Elements.Impls
 /** Tests for specific elements */
 class ElementTests extends VyxalTests:
 
+  describe("Element !") {
+    testMulti("!")(
+      List[VAny](0) -> 1,
+      List[VAny](10) -> 3628800,
+      List[VAny](-5) -> 120,
+      List[VAny](VNum("5.1")) -> VNum("142.4519440656788"),
+      List[VAny](VNum("1.654")) -> VNum("1.4898045048177275")
+    )
+  }
+
   describe("Element &") {
     testMulti("&")(
       List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),

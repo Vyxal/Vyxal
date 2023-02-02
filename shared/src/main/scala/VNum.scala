@@ -25,7 +25,10 @@ class VNum private (val underlying: Complex[Real]):
     Complex(this.real.tmod(rhs.real), this.imag.tmod(rhs.imag))
 
   override def toString =
-    if this.imag == 0 then this.real.toString else this.underlying.toString
+    if this.imag == 0 then
+      if this.real.isWhole then this.real.toInt.toString
+      else this.real.toDouble.toString
+    else this.underlying.toString
 
   override def equals(obj: Any) = obj match
     case n: VNum =>
@@ -39,7 +42,7 @@ object VNum:
 
   private val MaxRadix = 36
 
-  private val Epsilon = Real(10) ** -15
+  private val Epsilon = Real(10) ** -9
 
   /** To force an implicit conversion */
   def apply[T](n: T)(using Conversion[T, VNum]): VNum = n

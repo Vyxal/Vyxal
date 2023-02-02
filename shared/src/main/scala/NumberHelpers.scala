@@ -1,7 +1,9 @@
 package vyxal
 
 import vyxal.*
+
 import scala.collection.mutable.ListBuffer
+import scala.math
 
 object NumberHelpers:
 
@@ -11,6 +13,42 @@ object NumberHelpers:
       case l: VList  => toInt(l, 2)
       case s: String => toInt(s, 2)
       case _         => throw new Exception("Cannot convert to binary")
+
+  def gamma(a: VNum): VNum =
+    val colist = List(
+      "57.156235665862923517",
+      "-59.597960355475491248",
+      "14.136097974741747174",
+      "-0.49191381609762019978",
+      "0.000033994649984811888699",
+      "0.000046523628927048575665",
+      "-0.000098374475304879564677",
+      "0.00015808870322491248884",
+      "-0.00021026444172410488319",
+      "0.00021743961811521264320",
+      "-0.00016431810653676389022",
+      "0.000084418223983852743293",
+      "-0.000026190838401581408670",
+      "0.0000036899182659531622704"
+    )
+
+    val coefficents =
+      colist.map(g =>
+        VNum(g)
+      ) // from http://www.mrob.com/pub/ries/lanczos-gamma.html
+
+    val A_g = VNum("0.99999999999999709182") + coefficents.zipWithIndex
+      .map((c, i) => c / ((a - 1) + (i + 1)))
+      .reduce(_ + _)
+
+    val g = VNum("4.7421875")
+    val z = a - 1
+    spire.math.sqrt(2 * math.Pi) * ((z + g + 0.5) ** (z + 0.5)) * spire.math
+      .exp(
+        -(z + g + 0.5).underlying.toDouble
+      ) * A_g
+
+  end gamma
 
   def multiplicity(a: VNum, b: VNum): VNum =
     var result = 0
@@ -50,7 +88,12 @@ object NumberHelpers:
         var res: VAny = VNum(0)
         var exponent = 0
         for i <- l.reverse do
-          res = MiscHelpers.add(res, MiscHelpers.multiply(toInt(i, 10), VNum(radix) ** VNum(exponent))(using ctx))
+          res = MiscHelpers.add(
+            res,
+            MiscHelpers.multiply(toInt(i, 10), VNum(radix) ** VNum(exponent))(
+              using ctx
+            )
+          )
           exponent += 1
         res
       case s: String => VNum(s, radix).toIntegral
