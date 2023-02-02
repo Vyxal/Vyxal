@@ -9,56 +9,31 @@ import Elements.Impls
 class ElementTests extends VyxalTests:
 
   describe("Element &") {
-    it("should convert the first to a list and append the other onto it") {
-      given Context = Context(testMode = true)
-      assertResult(VList(1, 2, 3, VList(4, 5)))(
-        Impls.append(VList(1, 2, 3), VList(4, 5))
-      )
-      assertResult(VList(1, 2, 3, 69))(Impls.append(VList(1, 2, 3), 69))
-      assertResult(VList("a", "b", "c", VList()))(Impls.append("abc", VList()))
-    }
+    testMulti("&")(
+      List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),
+      List[VAny](VList(1, 2, 3), 69) -> VList(1, 2, 3, 69),
+      List[VAny]("abc", VList()) -> VList("a", "b", "c", VList())
+    )
   }
 
   describe("Element +") {
     describe("when given lists") {
-      it("should vectorise properly") {
-        given ctx: Context = Context(testMode = true)
-        ctx.push(VList(VList(2, 5), "foo"), VList(VList(3, 4)))
-        Interpreter.execute(AST.Command("+"))
-        assertResult(VList(VList(5, 9), "foo0"))(ctx.pop())
-      }
+      testMulti("+")(
+        List[VAny](VList(VList(2, 5), "foo"), VList(VList(3, 4))) -> VList(
+          VList(5, 9),
+          "foo0"
+        )
+      )
     }
     describe("when given two non-list values") {
-      it("should add numbers properly") {
-        given ctx: Context = Context(testMode = true)
-        ctx.push(2, 3)
-        Interpreter.execute(AST.Command("+"))
-        assertResult(VNum(5))(ctx.pop())
-
-        ctx.push(0, 0)
-        Interpreter.execute(AST.Command("+"))
-        assertResult(VNum(0))(ctx.pop())
-
-        ctx.push(VNum("5.1"), VNum("-45.4"))
-        Interpreter.execute(AST.Command("+"))
-        assertResult(VNum("-40.3"))(ctx.pop())
-      }
-      it("should concatenate strings properly") {
-        given ctx: Context = Context(testMode = true)
-        ctx.push("foo", "bar")
-        Interpreter.execute(AST.Command("+"))
-        assertResult("foobar")(ctx.pop())
-      }
-      it("should concatenate numbers and strings properly") {
-        given ctx: Context = Context(testMode = true)
-        ctx.push("foo", 3)
-        Interpreter.execute(AST.Command("+"))
-        assertResult("foo3")(ctx.pop())
-
-        ctx.push(3, "foo")
-        Interpreter.execute(AST.Command("+"))
-        assertResult("3foo")(ctx.pop())
-      }
+      testMulti("+")(
+        List[VAny](2, 3) -> 5,
+        List[VAny](0, 0) -> 0,
+        List[VAny](VNum("5.1"), VNum("-45.4")) -> VNum("-40.3"),
+        List[VAny]("foo", "bar") -> "foobar",
+        List[VAny]("foo", 3) -> "foo3",
+        List[VAny](3, "foo") -> "3foo"
+      )
     }
 
     describe("when given functions") {
@@ -84,33 +59,22 @@ class ElementTests extends VyxalTests:
 
   describe("Element A") {
     describe("when given lists") {
-      it("should check if all are truthy") {
-        given Context = Context(testMode = true)
-        assertResult(1: VNum)(
-          Impls.allTruthy(VList(1, 391, "dqw4w9wgxcq", VList(0)))
-        )
-        assertResult(0: VNum)(
-          Impls.allTruthy(VList(0, 69420, VList()))
-        )
-      }
+      testMulti("A")(
+        List[VAny](VList(1, 391, "dqw4w9wgxcq", VList(0))) -> 1,
+        List[VAny](VList(0, 69420, VList())) -> 0
+      )
     }
 
     describe("when given a single-character string") {
-      it("should return a single number according to if it is a vowel or not") {
-        given Context = Context(testMode = true)
-        assertResult(1: VNum)(Impls.allTruthy("a"))
-        assertResult(1: VNum)(Impls.allTruthy("E"))
-        assertResult(0: VNum)(Impls.allTruthy("y"))
-      }
+      testMulti("A")(
+        List[VAny]("a") -> 1,
+        List[VAny]("E") -> 1,
+        List[VAny]("y") -> 0
+      )
     }
 
     describe("when given a multi-character string") {
-      it("should vectorize and work properly") {
-        given Context = Context(testMode = true)
-        assertResult(VList(1, 0, 0, 1, 0))(
-          Impls.allTruthy("asdEy")
-        )
-      }
+      testMulti("A")(List[VAny]("asdEy") -> VList(1, 0, 0, 1, 0))
     }
   }
 
