@@ -5,7 +5,9 @@ import spire.math.{Complex, Real}
 
 class InterpreterTests extends VyxalTests:
   describe("Literals") {
-    testCode("Make lists", "#[1 | 2 3 + | 4#]", VList(1, 5, 4))
+    it("should make lists") {
+      testCode("#[1 | 2 3 + | 4#]", VList(1, 5, 4))
+    }
   }
 
   describe("Structures") {

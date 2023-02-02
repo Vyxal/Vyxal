@@ -17,16 +17,13 @@ trait VyxalTests extends AnyFunSpec:
     *   If needed, context to override default context
     */
   def testCode(
-      desc: String,
       code: String,
       expected: VAny,
       ctx: Context = Context(testMode = true)
   ) =
-    it(desc) {
-      Interpreter.execute(code)(using ctx)
-      assert(!ctx.isStackEmpty)
-      assertResult(expected)(ctx.peek)
-    }
+    Interpreter.execute(code)(using ctx)
+    assert(!ctx.isStackEmpty)
+    assertResult(expected)(ctx.peek)
 
   /** Like [[testCode]], but with an already-parsed AST */
   def testAST(

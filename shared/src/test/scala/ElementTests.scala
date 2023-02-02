@@ -111,12 +111,14 @@ class ElementTests extends VyxalTests:
     }
     describe("With lists of strings and lists") {
       it("Shouldn't do string multiplication") {
-        testEquals(5)(ctx ?=> {
-          ctx.push(VList("1", "0", VList("0", "1")))
-          Interpreter.execute(AST.Command("B"))
-          ctx.peek
-        })
-
+        testCode(
+          "B",
+          5,
+          Context(
+            inputs = List(VList("1", "0", VList("0", "1"))),
+            testMode = true
+          )
+        )
       }
     }
   }
@@ -206,11 +208,9 @@ class ElementTests extends VyxalTests:
     }
 
     describe("when given a string") {
-      testCode(
-        "should properly execute code that uses the stack",
-        """ "1 2 + D" Ė """,
-        3
-      )
+      it("should properly execute code that uses the stack") {
+        testCode(""" "1 2 + D" Ė """, 3)
+      }
 
       it("should use the same context for executing the code") {
         // Doesn't use the test helpers because of context handling
