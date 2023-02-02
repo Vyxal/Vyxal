@@ -26,9 +26,7 @@ class InterpreterTests extends VyxalTests:
 
   describe("Vectorisation") {
     describe("Simple monads") {
-      testMulti(
-        "#[100 | #[101 | 0#] #] vB" -> VList(4, VList(5, 0))
-      )
+      testMulti("#[100 | #[101 | 0#] #] vB" -> VList(4, VList(5, 0)))
     }
 
     describe("Simple dyads") {
@@ -45,64 +43,67 @@ class InterpreterTests extends VyxalTests:
     }
 
     describe("Monadic lambdas") {
-      testAST(
-        "Vectorise lambda for factorial",
-        Modifiers
-          .modifiers("v")
-          .from(List(AST.Lambda(1, List.empty, AST.Command("!")))),
-        VList(1, 6, VList(2, 1)),
-        Context(inputs = Seq(VList(0, 3, VList(2, 1))))
-      )
+      it("should vectorise lambda for factorial") {
+        testAST(
+          Modifiers
+            .modifiers("v")
+            .from(List(AST.Lambda(1, List.empty, AST.Command("!")))),
+          VList(1, 6, VList(2, 1)),
+          inputs = Seq(VList(0, 3, VList(2, 1)))
+        )
+      }
     }
 
     describe("Dyadic lambdas") {
-      testAST(
-        "Vectorise lambda for subtraction",
-        Modifiers
-          .modifiers("v")
-          .from(List(AST.Lambda(2, List.empty, AST.Command("-")))),
-        VList(-4, 1, VList(-4, -5)),
-        Context(inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6)))
-      )
+      it("should vectorise lambda for subtraction") {
+        testAST(
+          Modifiers
+            .modifiers("v")
+            .from(List(AST.Lambda(2, List.empty, AST.Command("-")))),
+          VList(-4, 1, VList(-4, -5)),
+          inputs = Seq(VList(0, 3, VList(2, 1)), VList(4, 2, 6))
+        )
+      }
     }
   }
 
   describe("Executing lambdas/functions") {
-    describe("Named functions") {
+    it("should execute a simple named function") {
       testAST(
-        "should execute a simple named function",
         AST.makeSingle(
           AST.FnDef("f", AST.Lambda(2, List.empty, AST.Command("-"))),
           AST.GetVar("f"),
           AST.Command("Ė")
         ),
         VNum(-1),
-        Context(inputs = Seq(3, 4))
+        inputs = Seq(3, 4)
       )
     }
 
     describe("Monadic lambdas") {
-      testAST(
-        "Simple lambda",
-        AST.makeSingle(
-          AST.Lambda(1, List.empty, AST.Command("!")),
-          AST.ExecuteFn
-        ),
-        VNum(6),
-        Context(inputs = Seq(3))
-      )
+      it("Simple lambda") {
+        testAST(
+          AST.makeSingle(
+            AST.Lambda(1, List.empty, AST.Command("!")),
+            AST.ExecuteFn
+          ),
+          VNum(6),
+          inputs = Seq(3)
+        )
+      }
     }
 
     describe("Dyadic lambdas") {
-      testAST(
-        "Simple lambda",
-        AST.makeSingle(
-          AST.Lambda(2, List.empty, AST.Command("-")),
-          AST.ExecuteFn
-        ),
-        VNum(2),
-        Context(inputs = Seq(3, 1))
-      )
+      it("Simple lambda") {
+        testAST(
+          AST.makeSingle(
+            AST.Lambda(2, List.empty, AST.Command("-")),
+            AST.ExecuteFn
+          ),
+          VNum(2),
+          inputs = Seq(3, 1)
+        )
+      }
     }
   }
 

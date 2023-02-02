@@ -111,14 +111,7 @@ class ElementTests extends VyxalTests:
     }
     describe("With lists of strings and lists") {
       it("Shouldn't do string multiplication") {
-        testCode(
-          "B",
-          5,
-          Context(
-            inputs = List(VList("1", "0", VList("0", "1"))),
-            testMode = true
-          )
-        )
+        testCode("B", 5, inputs = List(VList("1", "0", VList("0", "1"))))
       }
     }
   }
@@ -166,11 +159,13 @@ class ElementTests extends VyxalTests:
   describe("Element M") {
     describe("when given two lists") {
       it("should mold them properly") {
-        testEquals(VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)))(ctx ?=>
-          ctx.push(VList(1, 2, VList(3, 4), 5))
-          ctx.push(VList(1, 2, VList(VList(3, 4, 6), 5)))
-          Interpreter.execute(AST.Command("M"))
-          ctx.peek
+        testCode(
+          "M",
+          VList(1, 2, VList(VList(VList(3, 4), 5, 1), 2)),
+          List(
+            VList(1, 2, VList(3, 4), 5),
+            VList(1, 2, VList(VList(3, 4, 6), 5))
+          )
         )
       }
     }
@@ -215,6 +210,8 @@ class ElementTests extends VyxalTests:
       it("should use the same context for executing the code") {
         // Doesn't use the test helpers because of context handling
         given ctx: Context = Context(inputs = List(3, 4), testMode = true)
+        // I think I (user) may have screwed this test up at some point, since
+        // there's no Ė here anymore
         assertResult(7: VNum)(Impls.execute("+"))
       }
     }

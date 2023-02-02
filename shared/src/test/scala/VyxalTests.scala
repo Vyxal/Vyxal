@@ -13,30 +13,29 @@ trait VyxalTests extends AnyFunSpec:
     assertResult(expected)(getRes(using Context(testMode = true)))
 
   /** Run some code and check if it matches the expected value
-    * @param ctx
-    *   If needed, context to override default context
+    * @param inputs
+    *   Inputs to pass to the code
     */
   def testCode(
       code: String,
       expected: VAny,
-      ctx: Context = Context(testMode = true)
+      inputs: Seq[VAny] = Seq.empty
   ) =
+    val ctx = Context(testMode = true, inputs = inputs)
     Interpreter.execute(code)(using ctx)
     assert(!ctx.isStackEmpty)
     assertResult(expected)(ctx.peek)
 
   /** Like [[testCode]], but with an already-parsed AST */
   def testAST(
-      desc: String,
       ast: AST,
       expected: VAny,
-      ctx: Context = Context(testMode = true)
+      inputs: Seq[VAny] = Seq.empty
   ) =
-    it(desc) {
-      Interpreter.execute(ast)(using ctx)
-      assert(!ctx.isStackEmpty)
-      assertResult(expected)(ctx.peek)
-    }
+    val ctx = Context(testMode = true, inputs = inputs)
+    Interpreter.execute(ast)(using ctx)
+    assert(!ctx.isStackEmpty)
+    assertResult(expected)(ctx.peek)
 
   /** Run a function on multiple inputs
     * @param tests
