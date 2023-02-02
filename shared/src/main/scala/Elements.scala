@@ -296,12 +296,12 @@ object Elements:
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {
-      case a: VNum => {
+      case a: VNum =>
         a match
           case VNum(r, i) =>
             if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
             else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
-      }
+
       case a: String => a.toUpperCase()
     }
 
