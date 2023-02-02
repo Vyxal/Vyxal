@@ -111,10 +111,12 @@ class ElementTests extends VyxalTests:
     }
     describe("With lists of strings and lists") {
       it("Shouldn't do string multiplication") {
-        given ctx: Context = Context(testMode = true)
-        assertResult(5: VNum)(
-          NumberHelpers.fromBinary(VList("1", "0", VList("0", "1")))
-        )
+        testEquals(5)(ctx ?=> {
+          ctx.push(VList("1", "0", VList("0", "1")))
+          Interpreter.execute(AST.Command("B"))
+          ctx.peek
+        })
+
       }
     }
   }
