@@ -25,7 +25,7 @@ trait VyxalTests extends AnyFunSpec:
     it(desc) {
       Interpreter.execute(code)(using ctx)
       assert(!ctx.isStackEmpty)
-      assertResult(expected)(ctx.pop())
+      assertResult(expected)(ctx.peek)
     }
 
   /** Like [[testCode]], but with an already-parsed AST */
@@ -38,7 +38,7 @@ trait VyxalTests extends AnyFunSpec:
     it(desc) {
       Interpreter.execute(ast)(using ctx)
       assert(!ctx.isStackEmpty)
-      assertResult(expected)(ctx.pop())
+      assertResult(expected)(ctx.peek)
     }
 
   /** Run a function on multiple inputs
