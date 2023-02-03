@@ -8,7 +8,7 @@
 $ (Swap) (non-vectorising)
 - a, b -> b, a
 ---------------------
-% (Modulo | String Formatting) (vectorising)
+% (Modulo | String Formatting) (non-vectorising)
 - a: num, b: num -> a % b
 - a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)
 ---------------------
