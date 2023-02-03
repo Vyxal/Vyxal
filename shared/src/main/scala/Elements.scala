@@ -274,10 +274,12 @@ object Elements:
       case (a: String, b: VNum) => StringHelpers.remove(a, b.toInt)
       case (a: VNum, b: String) => StringHelpers.remove(b, a.toInt)
       case (a: String, b: String) =>
-        a.dropWhile(_.toString == b)
-          .reverse
-          .dropWhile(_.toString == b)
-          .reverse // https://stackoverflow.com/a/17995686/9363594
+        if b == "" then a
+        else
+          var res = a
+          while res.startsWith(b) do res = res.drop(b.length)
+          while res.endsWith(b) do res = res.dropRight(b.length)
+          res
     }
 
     val discard = addDirect(
@@ -296,7 +298,7 @@ object Elements:
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {
-      case a@VNum(r, i) =>
+      case a @ VNum(r, i) =>
         if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
         else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
       case a: String => a.toUpperCase()
@@ -378,14 +380,14 @@ object Elements:
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
       case (_: VNum, VNum(0, _)) => 0
-      case (a: VNum, b: VNum) => a % b
-      case (a: VList, b: VNum) => a.vmap(Impls.modulo(_, b))
-      case (a: VNum, b: VList) => b.vmap(Impls.modulo(a, _))
-      case (a: VList, b: VList) => a.zipWith(b)(Impls.modulo)
+      case (a: VNum, b: VNum)    => a % b
+      case (a: VList, b: VNum)   => a.vmap(Impls.modulo(_, b))
+      case (a: VNum, b: VList)   => b.vmap(Impls.modulo(a, _))
+      case (a: VList, b: VList)  => a.zipWith(b)(Impls.modulo)
       case (a: String, b: VList) => StringHelpers.formatString(a, b*)
       case (a: VList, b: String) => StringHelpers.formatString(b, a*)
-      case (a: String, b) => StringHelpers.formatString(a, b)
-      case (a, b: String) => StringHelpers.formatString(b, a)
+      case (a: String, b)        => StringHelpers.formatString(a, b)
+      case (a, b: String)        => StringHelpers.formatString(b, a)
     }
 
     val multiply = addFull(
