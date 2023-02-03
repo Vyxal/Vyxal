@@ -380,20 +380,13 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
-      case (a: VNum, b: VNum) =>
-        b match
-          case VNum(0, _) => 0
-          case _          => a % b
-      case (a: VList, b: VNum) => VList(a.map(Impls.modulo(_, b))*)
-      case (a: VNum, b: VList) => VList(b.map(Impls.modulo(a, _))*)
-      case (a: VList, b: VList) =>
-        VList(a.zip(b).map { case (a, b) => Impls.modulo(a, b) }*)
-      case (a: String, b: VList) =>
-        if b.length != 1 then StringHelpers.formatString(a, b*)
-        else StringHelpers.formatString(a, b(0))
-      case (a: VList, b: String) =>
-        if a.length != 1 then StringHelpers.formatString(b, a*)
-        else StringHelpers.formatString(b, a(0))
+      case (_: VNum, VNum(0, _)) => 0
+      case (a: VNum, b: VNum) => a % b
+      case (a: VList, b: VNum) => a.vmap(Impls.modulo(_, b))
+      case (a: VNum, b: VList) => b.vmap(Impls.modulo(a, _))
+      case (a: VList, b: VList) => a.zipWith(b)(Impls.modulo)
+      case (a: String, b: VList) => StringHelpers.formatString(a, b*)
+      case (a: VList, b: String) => StringHelpers.formatString(b, a*)
       case (a: String, b) => StringHelpers.formatString(a, b)
       case (a, b: String) => StringHelpers.formatString(b, a)
     }
