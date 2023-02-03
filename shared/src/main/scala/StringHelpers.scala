@@ -10,7 +10,7 @@ object StringHelpers:
   def countString(haystack: String, needle: String): Int =
     haystack.split(needle, -1).length - 1
 
-  def formatString(fmtstr: String, args: Any*): String =
+  def formatString(fmtstr: String, args: VAny*): String =
     val sb = StringBuilder()
     var i = 0
     var j = 0
@@ -21,6 +21,7 @@ object StringHelpers:
           i += 2
         else
           sb.append(args(j % args.length))
+          j += 1
           i += 1
       else
         sb.append(fmtstr(i))

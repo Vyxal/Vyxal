@@ -37,6 +37,15 @@ class ElementTests extends VyxalTests:
         List[VAny](420, -69.69) -> VNum("-67.83")
       )
     }
+    describe("When given a string and any value") {
+      testMulti("%")(
+        List[VAny]("Hello, %", "World") -> "Hello, World",
+        List[VAny]("Hello, %", 69) -> "Hello, 69",
+        List[VAny]("Hello, %", VList(VList(1, 2, 3))) -> "Hello, [ 1 | 2 | 3 ]",
+        List[VAny]("Hello, %", VNum("69.69")) -> "Hello, 69.69",
+        List[VAny]("% + % = %", VList(1, 2, 3)) -> "1 + 2 = 3"
+      )
+    }
   }
 
   describe("Element &") {

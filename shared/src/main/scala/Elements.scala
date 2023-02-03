@@ -372,7 +372,7 @@ object Elements:
         ListHelpers.map(a, ListHelpers.makeIterable(b, Some(true)))
     }
 
-    val modulo: Dyad = addVect(
+    val modulo: Dyad = addElem(
       Dyad,
       "%",
       "Modulo | String Formatting",
@@ -384,6 +384,16 @@ object Elements:
         b match
           case VNum(0, _) => 0
           case _          => a % b
+      case (a: VList, b: VNum) => VList(a.map(Impls.modulo(_, b))*)
+      case (a: VNum, b: VList) => VList(b.map(Impls.modulo(a, _))*)
+      case (a: VList, b: VList) =>
+        VList(a.zip(b).map { case (a, b) => Impls.modulo(a, b) }*)
+      case (a: String, b: VList) =>
+        if b.length != 1 then StringHelpers.formatString(a, b*)
+        else StringHelpers.formatString(a, b(0))
+      case (a: VList, b: String) =>
+        if a.length != 1 then StringHelpers.formatString(b, a*)
+        else StringHelpers.formatString(b, a(0))
       case (a: String, b) => StringHelpers.formatString(a, b)
       case (a, b: String) => StringHelpers.formatString(b, a)
     }

@@ -47,6 +47,9 @@ class VList private (val lst: Seq[VAny])
     */
   override def length: Int = lst.length
 
+  override def toString(): String =
+    lst.map(_.toString).mkString("[ ", " | ", " ]")
+
   override protected def fromSpecific(coll: IterableOnce[VAny]): VList =
     VList.fromSpecific(coll)
 
