@@ -18,6 +18,13 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element $") {
+    testStackLike("$")(
+      List[VAny](1, 2, 3, 4, 5) -> List[VAny](5, 4),
+      List[VAny](4) -> List[VAny](4, 4)
+    )
+  }
+
   describe("Element &") {
     testMulti("&")(
       List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),

@@ -74,6 +74,19 @@ trait VyxalTests extends AnyFunSpec:
         assertResult(expected)(ctx.peek)
       }
 
+  /** Run a piece of code on multiple inputs and check the stack at the end
+    * @param tests
+    *   A list of pairs with the inputs and expected stack for each case
+    */
+  def testStackLike(code: String)(tests: (List[VAny], List[VAny])*) =
+    for (inputs, stackEnd) <- tests do
+      it(s"$inputs -> $stackEnd") {
+        given ctx: Context = Context(inputs = inputs, testMode = true)
+        for i <- inputs do ctx.push(i)
+        Interpreter.execute(code)
+        assertResult(ctx.pop(stackEnd.length))(stackEnd)
+      }
+
   // TODO figure out how to do group without macros
   // TODO figure out why we need to go through another inline method in the
   //     companion instead of calling groupImpl directly from here
