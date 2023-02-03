@@ -56,6 +56,41 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element *") {
+    describe("when given two numbers") {
+      testMulti("*")(
+        List[VAny](3, 2) -> 9,
+        List[VAny](0, 1) -> 0,
+        List[VAny](2, -1) -> VNum(0.5),
+        List[VAny](VNum("5.1"), VNum("4.2")) -> VNum("937.11899215207"),
+        List[VAny](3, 0) -> 1,
+        List[VAny](0, 0) -> 1
+      )
+    }
+
+    describe("when given a string and a number") {
+      testMulti("*")(
+        List[VAny](
+          "the fitnessgram pacer test",
+          6
+        ) -> "the finessgram pacer test",
+        List[VAny](4.2, "airpod shotty") -> "airpd shotty",
+        List[VAny]("sussy baka", 0) -> "ussy baka",
+        List[VAny]("sussy baka", -1) -> "sussy bak",
+        List[VAny]("vyxal", 7) -> "vyal"
+      )
+    }
+
+    describe("when given two strings") {
+      testMulti("*")(
+        List[VAny]("abcdefabc", "abc") -> "def",
+        List[VAny]("abc", "abcdefabc") -> "abc",
+        List[VAny]("abc", "abc") -> "",
+        List[VAny]("abcdefabc", "") -> "abcdefabc"
+      )
+    }
+  }
+
   describe("Element +") {
     describe("when given lists") {
       testMulti("+")(
