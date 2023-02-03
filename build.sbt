@@ -16,13 +16,13 @@ Test / testOptions += Tests.Argument("-oNCXEHLOPQRM")
 
 lazy val root = project
   .in(file("."))
-  .aggregate(vyxal.js, vyxal.jvm)
+  .aggregate(vyxal.js, vyxal.jvm, vyxal.native)
   .settings(
     publish := {},
     publishLocal := {}
   )
 
-lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
+lazy val vyxal = crossProject(JSPlatform, JVMPlatform, NativePlatform)
   .in(file("."))
   .settings(
     // Shared settings
@@ -80,4 +80,11 @@ lazy val vyxal = crossProject(JSPlatform, JVMPlatform)
     // Where the compiled JS is output
     Compile / fastOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js",
     Compile / fullOptJS / artifactPath := baseDirectory.value / "lib" / s"scalajs-$vyxalVersion.js"
+  )
+  .nativeSettings(
+    // Scala Native-specific settings
+    libraryDependencies ++= Seq(
+      // For command line parsing
+      "com.github.scopt" %%% "scopt" % "4.1.0"
+    )
   )

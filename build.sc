@@ -2,6 +2,8 @@ import mill._
 import mill.scalajslib._
 import mill.scalajslib.api._
 import mill.scalalib._
+import mill.scalanativelib._
+import mill.scalanativelib.api._
 
 /** Shared settings for all modules */
 trait VyxalModule extends SbtModule {
@@ -51,6 +53,8 @@ object jvm extends VyxalModule {
   def platform = "jvm"
 
   def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt:4.1.0") }
+
+  object test extends VyxalTestModule
 }
 
 /** Shared and JS-specific code */
@@ -58,6 +62,16 @@ object js extends VyxalModule with ScalaJSModule {
   def platform = "js"
   def scalaJSVersion = "1.12.0"
   def moduleKind = T { ModuleKind.NoModule }
+
+  object test extends VyxalTestModule
+}
+
+/** Shared and native-specific code */
+object native extends VyxalModule with ScalaNativeModule {
+  def platform = "native"
+  def scalaNativeVersion = "0.4.9"
+
+  def ivyDeps = T { super.ivyDeps() ++ Seq(ivy"com.github.scopt::scopt::4.1.0") }
 
   object test extends VyxalTestModule
 }
