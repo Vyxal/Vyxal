@@ -265,4 +265,28 @@ class ElementTests extends VyxalTests:
       }
     }
   }
+
+  describe("Element >") {
+    describe("With numbers") {
+      testMulti(">")(
+        Seq[VAny](1, 2) -> VNum(0),
+        Seq[VAny](1, 1) -> VNum(0),
+        Seq[VAny](2, 1) -> VNum(1),
+        Seq[VAny](VNum.complex(1, 50), 2) -> VNum(0)
+      )
+    }
+    describe("Should stringify") {
+      testMulti(">")(
+        Seq[VAny]("abc", 1) -> VNum(1),
+        Seq[VAny](20, "3") -> VNum(0),
+        Seq[VAny]("ABC", "abc") -> VNum(0)
+      )
+    }
+    describe("should vectorise") {
+      testMulti(">")(
+        Seq[VAny](VList(1, VList(2, 4), -5), 3) -> VList(0, VList(0, 1), 0),
+        Seq[VAny](VList(6, "foo"), VList(4, 20)) -> VList(1, 1)
+      )
+    }
+  }
 end ElementTests

@@ -52,7 +52,7 @@ trait VyxalTests extends AnyFunSpec:
     * @param tests
     *   A list of pairs with the inputs and expected output for each case
     */
-  def testMulti(code: String)(tests: (List[VAny], VAny)*) =
+  def testMulti(code: String)(tests: (Seq[VAny], VAny)*) =
     for (inputs, expected) <- tests do
       it(s"${inputs.mkString("[", ",", "]")} -> $expected") {
         given ctx: Context = Context(inputs = inputs, testMode = true)
