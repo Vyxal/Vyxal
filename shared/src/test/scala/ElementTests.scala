@@ -25,6 +25,20 @@ class ElementTests extends VyxalTests:
     )
   }
 
+  describe("Element %") {
+    describe("When given two numbers") {
+      testMulti("%")(
+        List[VAny](5, 2) -> 1,
+        List[VAny](5, 3) -> 2,
+        List[VAny](0, 1) -> 0,
+        List[VAny](1, 0) -> 0,
+        List[VAny](VNum("6.9"), VNum("4.2")) -> VNum("2.7"),
+        List[VAny](420, -69) -> -63,
+        List[VAny](420, -69.69) -> VNum("-67.83")
+      )
+    }
+  }
+
   describe("Element &") {
     testMulti("&")(
       List[VAny](VList(1, 2, 3), VList(4, 5)) -> VList(1, 2, 3, VList(4, 5)),

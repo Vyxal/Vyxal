@@ -380,9 +380,12 @@ object Elements:
       "a: num, b: num -> a % b",
       "a: str, b: any -> a.format(b) (replace %s with b if scalar value or each item in b if vector)"
     ) {
-      case (a: VNum, b: VNum) => a % b
-      case (a: String, b)     => StringHelpers.formatString(a, b)
-      case (a, b: String)     => StringHelpers.formatString(b, a)
+      case (a: VNum, b: VNum) =>
+        b match
+          case VNum(0, _) => 0
+          case _          => a % b
+      case (a: String, b) => StringHelpers.formatString(a, b)
+      case (a, b: String) => StringHelpers.formatString(b, a)
     }
 
     val multiply = addFull(

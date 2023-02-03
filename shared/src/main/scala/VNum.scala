@@ -22,7 +22,10 @@ class VNum private (val underlying: Complex[Real]):
   def **(rhs: VNum): VNum = underlying ** rhs.underlying
 
   def %(rhs: VNum): VNum =
-    Complex(this.real.tmod(rhs.real), this.imag.tmod(rhs.imag))
+    // implement floating point floored modulus
+    val q = this / rhs
+    val r = this - spire.math.floor(q.real.toDouble) * rhs
+    r
 
   override def toString =
     if this.imag == 0 then
