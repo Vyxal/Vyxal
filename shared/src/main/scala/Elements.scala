@@ -296,12 +296,9 @@ object Elements:
       "a: num -> a!",
       "a: str -> a.toUpperCase()"
     ) {
-      case a: VNum =>
-        a match
-          case VNum(r, i) =>
-            if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
-            else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
-
+      case a@VNum(r, i) =>
+        if r.isWhole then spire.math.fact(spire.math.abs(a.toLong))
+        else NumberHelpers.gamma(spire.math.abs(a.underlying.real) + 1)
       case a: String => a.toUpperCase()
     }
 
@@ -509,7 +506,6 @@ object Elements:
       case (a: VNum, b: String) => "-" * a.toInt + b
       case (a: String, b: String) =>
         a.replace(b, "")
-      // todo consider doing something like APL's forks
     }
 
     val swap = addDirect("$", "Swap", List("swap"), None, "a, b -> b, a") {
