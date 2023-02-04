@@ -27,8 +27,8 @@ import scala.io.StdIn
   */
 class Context private (
     private var stack: mut.ArrayBuffer[VAny],
-    private var _contextVarN: Option[VAny] = None,
     private var _contextVarM: Option[VAny] = None,
+    private var _contextVarN: Option[VAny] = None,
     private val vars: mut.Map[String, VAny] = mut.Map(),
     private var inputs: Inputs = Inputs(),
     private val parent: Option[Context] = None,
@@ -192,8 +192,8 @@ object Context:
   ) =
     new Context(
       mut.ArrayBuffer.empty,
-      contextVarM.orElse(currCtx._contextVarN),
-      contextVarN.orElse(currCtx._contextVarM),
+      contextVarM.orElse(currCtx._contextVarM),
+      contextVarN.orElse(currCtx._contextVarN),
       mut.Map(params.zip(inputs)*),
       Inputs(inputs),
       Some(origCtx),

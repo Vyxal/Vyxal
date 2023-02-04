@@ -22,6 +22,20 @@ class InterpreterTests extends VyxalTests:
         "6 { : 2 - | 1 -}" -> VNum(2)
       )
     }
+
+    describe("For loops") {
+      testMulti(
+        "1 5 ( 1 + }" -> VNum(6)
+      )
+    }
+
+    describe("Map lambda") {
+      testMulti(
+        "10 ƛ 5 + }" -> VList(6, 7, 8, 9, 10, 11, 12, 13, 14, 15),
+        "10 ƛ n + }" -> VList(2, 4, 6, 8, 10, 12, 14, 16, 18, 20),
+        "10 ƛ m + }" -> VList(1, 3, 5, 7, 9, 11, 13, 15, 17, 19)
+      )
+    }
   }
 
   describe("Vectorisation") {
