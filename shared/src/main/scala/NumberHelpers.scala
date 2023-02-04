@@ -67,7 +67,7 @@ object NumberHelpers:
 
     VList((start to end by step).map(VNum(_))*)
 
-  def toBinary(a: VAny): VAny =
+  def toBinary(a: VAny)(using Context): VAny =
     a match
       case n: VNum =>
         val binary = n.toInt.abs.toBinaryString
