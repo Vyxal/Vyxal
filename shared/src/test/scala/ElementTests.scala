@@ -132,6 +132,36 @@ class ElementTests extends VyxalTests:
     }
   }
 
+  describe("Element -") {
+    describe("when given two numbers") {
+      testMulti("-")(
+        List[VAny](420, 69) -> 351,
+        List[VAny](420, -69) -> 489,
+        List[VAny](VNum("6.9"), VNum("4.2")) -> VNum("2.7")
+      )
+    }
+    describe("when given a string and a number") {
+      testMulti("-")(
+        List[VAny]("Hello, World", 5) -> "Hello, World-----",
+        List[VAny]("Hello, World", -5) -> "-----Hello, World",
+        List[VAny]("Hello, World", 0) -> "Hello, World",
+        List[VAny](5, "Hello, World") -> "-----Hello, World",
+        List[VAny]("Hello, World", 5.2) -> "Hello, World-----"
+      )
+    }
+    describe("when given two strings") {
+      testMulti("-")(
+        List[VAny]("Hello, World", "Hello, ") -> "World",
+        List[VAny]("Hello, World", "World") -> "Hello, ",
+        List[VAny]("Hello, World", "Hello, World") -> "",
+        List[VAny]("Hello, World", "Hello, World!") -> "Hello, World",
+        List[VAny]("abcbde", "b") -> "acde",
+        List[VAny]("aaa", "a") -> "",
+        List[VAny]("Hello, World", "") -> "Hello, World"
+      )
+    }
+  }
+
   describe("Element A") {
     describe("when given lists") {
       testMulti("A")(

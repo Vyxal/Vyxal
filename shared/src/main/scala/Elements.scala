@@ -498,14 +498,15 @@ object Elements:
         "-"
       ),
       "a: num, b: num -> a - b",
-      "a: str, b: num -> a + b '-'s",
-      "a: num, b: str -> a '-'s + b",
+      "a: str, b: num -> a + b '-'s (or '-'s + a if b < 0)",
+      "a: num, b: str -> a '-'s + b (or b + '-'s if a < 0)",
       "a: str, b: str -> a with b removed"
     ) {
       case (a: VNum, b: VNum) => a - b
       case (a: String, b: VNum) =>
-        a + "-" * b.toInt
-      case (a: VNum, b: String) => "-" * a.toInt + b
+        if b.toInt > 0 then a + "-" * b.toInt else "-" * b.toInt.abs + a
+      case (a: VNum, b: String) =>
+        if a.toInt > 0 then "-" * a.toInt + b else b + "-" * a.toInt.abs
       case (a: String, b: String) =>
         a.replace(b, "")
     }
